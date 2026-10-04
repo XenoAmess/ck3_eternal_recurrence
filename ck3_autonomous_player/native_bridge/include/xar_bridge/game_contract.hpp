@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/war_occupation_targets_v1.hpp"
+#include "xar_bridge/battle_native_owner_recall_inputs_12003.hpp"
 
 #include <array>
 #include <cstdint>
@@ -2201,6 +2202,8 @@ struct BattleTransitionSnapshot {
   // Null on older adapters or absent lifecycle; an unavailable leaf
   // preserves the successfully observed original lifecycle.
   std::optional<BattleCurrentObservationSnapshotV1> current_observation;
+  // Current owner recall operands; no scheduler or command-event claim.
+  std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
 
   friend bool operator==(const BattleTransitionSnapshot &,
                          const BattleTransitionSnapshot &) = default;

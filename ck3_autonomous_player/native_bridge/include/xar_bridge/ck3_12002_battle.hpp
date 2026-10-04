@@ -56,6 +56,8 @@ struct BattleBindings {
   void **game_state_slot = nullptr;
   void **jomini_state_slot = nullptr;
   void **army_storage_slot = nullptr;
+  // Exact .3 readonly owner-target resolver; optional on older adapters.
+  void **native_owner_recall_title_storage_slot = nullptr;
   void **army_internal_storage_slot = nullptr;
   void **army_internal_fallback_slot = nullptr;
   void **regiment_storage_slot = nullptr;

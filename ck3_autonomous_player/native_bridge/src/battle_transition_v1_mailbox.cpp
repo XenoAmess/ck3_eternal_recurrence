@@ -176,6 +176,99 @@ bool ValidCurrentObservation(
          ValidCurrentSide(observation.defender);
 }
 
+template <typename T>
+bool AppendRecallNullableNumber(std::string &output,
+                                const std::optional<T> &value) {
+  if (!value) { output += "null"; return true; }
+  return AppendNumber(output, static_cast<std::int64_t>(*value));
+}
+
+void AppendRecallNullableBool(std::string &output,
+                             const std::optional<bool> &value) {
+  output += !value ? "null" : (*value ? "true" : "false");
+}
+
+bool AppendOwnerRecallUnit(
+    std::string &output, const game::BattleNativeOwnerRecallUnitInputsV1 &unit) {
+  output += "{\"public_cunit_id\":";
+  if (!AppendNumber(output, unit.public_cunit_id)) return false;
+  output += ",\"status\":";
+  AppendJsonString(output, unit.status);
+  output += ",\"receiver_owner_character_id\":";
+  if (!AppendRecallNullableNumber(output, unit.receiver_owner_character_id)) return false;
+  output += ",\"native_carmy_id\":";
+  if (!AppendRecallNullableNumber(output, unit.native_carmy_id)) return false;
+  output += ",\"attached_combat_id\":";
+  if (!AppendRecallNullableNumber(output, unit.attached_combat_id)) return false;
+  output += ",\"current_province_id\":";
+  if (!AppendRecallNullableNumber(output, unit.current_province_id)) return false;
+  output += ",\"army_1d4_raw\":";
+  if (!AppendRecallNullableNumber(output, unit.army_1d4_raw)) return false;
+  output += ",\"army_1ec_raw\":";
+  if (!AppendRecallNullableNumber(output, unit.army_1ec_raw)) return false;
+  output += ",\"first_fallback_raw_condition\":";
+  AppendRecallNullableBool(output, unit.first_fallback_raw_condition);
+  output += ",\"second_fallback_raw_condition\":";
+  AppendRecallNullableBool(output, unit.second_fallback_raw_condition);
+  output.push_back('}');
+  return true;
+}
+
+bool AppendOwnerRecallOwner(
+    std::string &output, const game::BattleNativeOwnerRecallOwnerInputsV1 &owner) {
+  output += "{\"owner_character_id\":";
+  if (!AppendNumber(output, owner.owner_character_id)) return false;
+  output += ",\"land_318_count_raw\":";
+  if (!AppendRecallNullableNumber(output, owner.land_318_count_raw)) return false;
+  output += ",\"owner_target_source_title_id\":";
+  if (!AppendRecallNullableNumber(output, owner.owner_target_source_title_id)) return false;
+  output += ",\"owner_native_recall_target_province_id\":";
+  if (!AppendRecallNullableNumber(output, owner.owner_native_recall_target_province_id)) return false;
+  output += ",\"target_status\":";
+  AppendJsonString(output, owner.target_status);
+  output += ",\"owned_cunit_roster_status\":";
+  AppendJsonString(output, owner.owned_cunit_roster_status);
+  output += ",\"raw_inputs_ready\":";
+  output += owner.raw_inputs_ready ? "true" : "false";
+  output += ",\"owned_cunits_in_stored_order\":[";
+  bool first = true;
+  for (const auto &unit : owner.owned_cunits_in_stored_order) {
+    if (!first) output.push_back(',');
+    first = false;
+    if (!AppendOwnerRecallUnit(output, unit)) return false;
+  }
+  output += "]}";
+  return true;
+}
+
+bool AppendNativeOwnerRecallInputs(
+    std::string &output,
+    const std::optional<game::BattleNativeOwnerRecallInputsV1> &inputs) {
+  if (!inputs) { output += "null"; return true; }
+  output += "{\"schema_version\":1,\"status\":";
+  AppendJsonString(output, inputs->available ? "available" : "unavailable");
+  output += ",\"unavailable_reason\":";
+  if (inputs->available) output += "null";
+  else AppendJsonString(output, inputs->unavailable_reason);
+  output += ",\"raw_inputs_ready\":";
+  output += inputs->raw_inputs_ready ? "true" : "false";
+  output += ",\"native_context_prefix_status\":";
+  AppendJsonString(output, inputs->native_context_prefix_status);
+  output += ",\"native_context_prefix_admitted\":";
+  AppendRecallNullableBool(output, inputs->native_context_prefix_admitted);
+  output += ",\"native_selection_ready\":";
+  output += inputs->native_selection_ready ? "true" : "false";
+  output += ",\"owners_in_stored_order\":[";
+  bool first = true;
+  for (const auto &owner : inputs->owners_in_stored_order) {
+    if (!first) output.push_back(',');
+    first = false;
+    if (!AppendOwnerRecallOwner(output, owner)) return false;
+  }
+  output += "]}";
+  return true;
+}
+
 bool ValidateSnapshot(
     const game::BattleTransitionSnapshot &snapshot) noexcept {
   if (snapshot.snapshot_revision == 0 || snapshot.combat_id == -1 ||
@@ -195,7 +288,8 @@ bool ValidateSnapshot(
            snapshot.battle_result_id == -1 &&
            snapshot.attacker_public_cunit_ids_in_stored_order.empty() &&
            snapshot.defender_public_cunit_ids_in_stored_order.empty() &&
-           !snapshot.current_observation.has_value();
+           !snapshot.current_observation.has_value() &&
+           !snapshot.native_owner_recall_inputs_v1.has_value();
   }
   const bool phase_valid =
       (snapshot.phase_raw == 0 && snapshot.phase == "maneuver") ||
@@ -454,6 +548,12 @@ std::string_view BattleTransitionFailureMessageV1(
   return "application-main battle-transition completion is inconsistent";
 }
 
+std::string SerializeBattleNativeOwnerRecallInputsV1(
+    const std::optional<game::BattleNativeOwnerRecallInputsV1> &inputs) {
+  std::string output;
+  return AppendNativeOwnerRecallInputs(output, inputs) ? output : std::string{};
+}
+
 std::string SerializeBattleTransitionV1(
     const game::BattleTransitionSnapshot &snapshot) {
   if (!ValidateSnapshot(snapshot)) {
@@ -514,6 +614,8 @@ std::string SerializeBattleTransitionV1(
   }
   output += ",\"current_observation\":";
   if (!AppendCurrentObservation(output, snapshot.current_observation)) return {};
+  output += ",\"native_owner_recall_inputs_v1\":";
+  if (!AppendNativeOwnerRecallInputs(output, snapshot.native_owner_recall_inputs_v1)) return {};
   output.push_back('}');
   return output;
 }

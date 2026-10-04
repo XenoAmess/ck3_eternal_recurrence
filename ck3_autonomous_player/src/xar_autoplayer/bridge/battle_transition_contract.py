@@ -9,6 +9,10 @@ from .public_unit_contract import (
 
 from typing import Final
 
+from .battle_native_owner_recall_inputs_contract import (
+    normalize_battle_native_owner_recall_inputs_v1,
+)
+
 
 QUERY_BATTLE_TRANSITION_V1_CAPABILITY: Final = (
     "game.command.query-battle-transition-v1-N"
@@ -47,7 +51,7 @@ _FIELDS: Final = {
     "attacker_public_cunit_ids_in_stored_order",
     "defender_public_cunit_ids_in_stored_order",
 }
-_OPTIONAL_FIELDS: Final = {"current_observation"}
+_OPTIONAL_FIELDS: Final = {"current_observation", "native_owner_recall_inputs_v1"}
 _CURRENT_OBSERVATION_FIELDS: Final = {
     "status",
     "unavailable_reason",
@@ -305,6 +309,13 @@ def normalize_battle_transition_v1(
     if combat_id != expected_combat_id:
         raise ValueError("battle_transition_snapshot CombatID binding changed")
 
+    native_owner_recall_inputs = (
+        {"native_owner_recall_inputs_v1": normalize_battle_native_owner_recall_inputs_v1(
+            value["native_owner_recall_inputs_v1"], lifecycle_status=status
+        )}
+        if "native_owner_recall_inputs_v1" in value
+        else {}
+    )
     current_observation = (
         {"current_observation": _current_observation(
             value["current_observation"], lifecycle_status=status
@@ -348,6 +359,7 @@ def normalize_battle_transition_v1(
         return {
             **value,
             **current_observation,
+            **native_owner_recall_inputs,
             "attacker_public_cunit_ids_in_stored_order": attacker_ids,
             "defender_public_cunit_ids_in_stored_order": defender_ids,
         }
@@ -400,6 +412,7 @@ def normalize_battle_transition_v1(
     return {
         **value,
         **current_observation,
+            **native_owner_recall_inputs,
         "province_id": province_id,
         "phase": phase,
         "phase_raw": phase_raw,

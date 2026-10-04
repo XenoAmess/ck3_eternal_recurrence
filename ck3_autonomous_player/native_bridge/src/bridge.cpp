@@ -10345,7 +10345,12 @@ bool ExecuteTypedQuery12002(
         xar::ck3_12002::ReadBattleTransitionSnapshot(
             bindings, snapshot, query.transition_request, query.transition);
         if (xar::game::IsCk3_12003Descriptor(envelope->game->descriptor())) {
+          xar::ck3_12003::EnableBattleNativeOwnerRecallInputs12003(
+              bindings, query.image_base,
+              envelope->game->descriptor().executable_sha256);
           xar::ck3_12003::AttachBattleCurrentObservationV1(
+              bindings, snapshot, query.transition);
+          xar::ck3_12003::AttachBattleNativeOwnerRecallInputsV1(
               bindings, snapshot, query.transition);
         }
         query.typed_result = true;

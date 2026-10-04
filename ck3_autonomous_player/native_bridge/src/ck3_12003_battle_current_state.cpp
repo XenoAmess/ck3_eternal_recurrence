@@ -208,6 +208,163 @@ bool Sample(const BattleBindings &bindings,
   return true;
 }
 
+void ReadOwnerRecallTarget(const BattleBindings &bindings, const void *land,
+                          game::BattleNativeOwnerRecallOwnerInputsV1 &owner) {
+  const auto source_title_id = At<std::int32_t>(land, 0x1F8);
+  if (source_title_id == -1) {
+    owner.target_status = "fallback_title_selection_unread_28B2220";
+    return;
+  }
+  owner.owner_target_source_title_id = source_title_id;
+  if (!bindings.native_owner_recall_title_storage_slot) {
+    owner.target_status = "title_storage_unbound";
+    return;
+  }
+  auto title_id = source_title_id;
+  std::vector<std::int32_t> seen;
+  for (;;) {
+    auto *title = Resolve(bindings.native_owner_recall_title_storage_slot,
+                          title_id, 0x10);
+    if (!title) {
+      owner.target_status = "source_title_unresolved";
+      return;
+    }
+    const auto *type = At<const void *>(title, 0x48);
+    if (!type) {
+      owner.target_status = "title_type_unavailable";
+      return;
+    }
+    if (At<std::int32_t>(type, 0x64) != 2) {
+      auto *province = At<void *>(title, 0x338);
+      if (!province || !bindings.resolve_province) {
+        owner.target_status = "title_province_unavailable";
+        return;
+      }
+      const auto province_id = At<std::int32_t>(province, 0x10);
+      if (bindings.resolve_province(bindings.province_context, province_id) !=
+          province) {
+        owner.target_status = "title_province_unresolved";
+        return;
+      }
+      owner.owner_native_recall_target_province_id = province_id;
+      owner.target_status = "available_owner_land_1F8";
+      return;
+    }
+    if (std::find(seen.begin(), seen.end(), title_id) != seen.end()) {
+      owner.target_status = "title_child_chain_repeated";
+      return;
+    }
+    seen.push_back(title_id);
+    const auto *children = At<const void *>(title, 0x110);
+    if (!children || At<std::int32_t>(title, 0x11C) == 0) {
+      owner.target_status = "type2_first_child_unavailable";
+      return;
+    }
+    title_id = At<std::int32_t>(children, 0);
+  }
+}
+
+void ReadOwnerRecallInputs(const BattleBindings &bindings,
+                          std::int32_t owner_id,
+                          game::BattleNativeOwnerRecallOwnerInputsV1 &result) {
+  result.owner_character_id = owner_id;
+  auto *character = Resolve(bindings.character_storage_slot, owner_id, 0x18);
+  if (!character) return;
+  const auto *land = At<const void *>(character, 0x1C0);
+  if (!land) return;
+  // Source 1A7BB06/1A7E068 uses count!=0, not count>0.
+  result.land_318_count_raw = At<std::int32_t>(land, 0x324);
+  ReadOwnerRecallTarget(bindings, land, result);
+  const void *data{};
+  std::int32_t count{};
+  if (!Header(land, 0x278, data, count)) {
+    result.owned_cunit_roster_status = "owner_cunit_header_unavailable";
+    return;
+  }
+  result.owned_cunit_roster_status = "available";
+  result.raw_inputs_ready = true;
+  for (std::int32_t i = 0; i < count; ++i) {
+    game::BattleNativeOwnerRecallUnitInputsV1 unit_result{};
+    const auto public_id = At<std::int32_t>(data, static_cast<std::size_t>(i) * 4U);
+    unit_result.public_cunit_id = public_id;
+    auto *unit = Resolve(bindings.army_storage_slot, public_id, 0x10);
+    if (unit) {
+      const auto receiver_owner = At<std::int32_t>(unit, 0x174);
+      if (Resolve(bindings.character_storage_slot, receiver_owner, 0x18))
+        unit_result.receiver_owner_character_id = receiver_owner;
+      const auto army_id = At<std::int32_t>(unit, 0x178);
+      auto *army = Resolve(bindings.army_internal_storage_slot, army_id, 0x10);
+      unit_result.status = "army_unresolved";
+      if (army) {
+        unit_result.status = "available";
+        unit_result.native_carmy_id = army_id;
+        const auto combat_id = At<std::int32_t>(army, 0x128);
+        if (Resolve(bindings.combat_storage_slot, combat_id, 8U))
+          unit_result.attached_combat_id = combat_id;
+        auto *province = At<void *>(unit, 0x20);
+        if (province && bindings.resolve_province) {
+          const auto province_id = At<std::int32_t>(province, 0x10);
+          if (bindings.resolve_province(bindings.province_context, province_id) ==
+              province) unit_result.current_province_id = province_id;
+        }
+        unit_result.army_1d4_raw = At<std::uint8_t>(army, 0x1D4);
+        unit_result.army_1ec_raw = At<std::uint8_t>(army, 0x1EC);
+      }
+    }
+    unit_result.first_fallback_raw_condition = OwnerRecallFallbackRawConditionV1(
+        result.land_318_count_raw, unit_result.army_1d4_raw);
+    unit_result.second_fallback_raw_condition = OwnerRecallFallbackRawConditionV1(
+        result.land_318_count_raw, unit_result.army_1ec_raw);
+    result.raw_inputs_ready = result.raw_inputs_ready &&
+        unit_result.status == "available" &&
+        unit_result.receiver_owner_character_id.has_value();
+    result.owned_cunits_in_stored_order.push_back(std::move(unit_result));
+  }
+}
+
+bool SampleOwnerRecallInputs(const BattleBindings &bindings,
+                            const game::BattleTransitionSnapshot &transition,
+                            game::BattleNativeOwnerRecallInputsV1 &result,
+                            const char *&reason) {
+  auto *combat = Resolve(bindings.combat_storage_slot, transition.combat_id, 8U);
+  if (!combat || !MatchesLifecycle(bindings, combat, transition)) {
+    reason = "current_combat_or_lifecycle_changed";
+    return false;
+  }
+  std::vector<std::int32_t> army_ids;
+  if (!ReadArmyIds(bindings, combat,
+        static_cast<const std::byte *>(combat) + ck3_12002::kBattleAttackerSideOffset,
+        transition.combat_id, transition.attacker_public_cunit_ids_in_stored_order,
+        army_ids) ||
+      !ReadArmyIds(bindings, combat,
+        static_cast<const std::byte *>(combat) + ck3_12002::kBattleDefenderSideOffset,
+        transition.combat_id, transition.defender_public_cunit_ids_in_stored_order,
+        army_ids)) {
+    reason = "combat_owner_roster_unavailable";
+    return false;
+  }
+  std::vector<std::int32_t> owner_ids;
+  result.raw_inputs_ready = true;
+  for (const auto army_id : army_ids) {
+    auto *army = Resolve(bindings.army_internal_storage_slot, army_id, 0x10);
+    auto *unit = Resolve(bindings.army_storage_slot,
+                        At<std::int32_t>(army, 0x124), 0x10);
+    const auto owner_id = At<std::int32_t>(unit, 0x174);
+    if (std::find(owner_ids.begin(), owner_ids.end(), owner_id) != owner_ids.end())
+      continue;
+    owner_ids.push_back(owner_id);
+    game::BattleNativeOwnerRecallOwnerInputsV1 owner{};
+    ReadOwnerRecallInputs(bindings, owner_id, owner);
+    result.raw_inputs_ready = result.raw_inputs_ready && owner.raw_inputs_ready;
+    result.owners_in_stored_order.push_back(std::move(owner));
+  }
+  if (!MatchesLifecycle(bindings, combat, transition)) {
+    reason = "current_combat_or_lifecycle_changed";
+    return false;
+  }
+  result.available = true;
+  return true;
+}
 } // namespace
 
 void AttachBattleCurrentObservationV1(
@@ -242,4 +399,88 @@ void AttachBattleCurrentObservationV1(
   transition.current_observation = std::move(unavailable);
 }
 
+void EnableBattleNativeOwnerRecallInputs12003(
+    ck3_12002::BattleBindings &bindings, std::uintptr_t image_base,
+    std::string_view executable_sha256) noexcept {
+  bindings.native_owner_recall_title_storage_slot = nullptr;
+  if (image_base != 0 && executable_sha256 ==
+      "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") {
+    // New source 28B1CDE /230F90A exact .3 TitleStorage pointer slot.
+    bindings.native_owner_recall_title_storage_slot =
+        reinterpret_cast<void **>(image_base + 0x5D1DAF8);
+  }
+}
+
+void AttachBattleNativeOwnerRecallInputsV1(
+    const ck3_12002::BattleBindings &bindings,
+    const game::Snapshot &paused_scope,
+    game::BattleTransitionSnapshot &transition) noexcept {
+  transition.native_owner_recall_inputs_v1.reset();
+  if (transition.status != game::BattleTransitionSnapshotStatus::available ||
+      !transition.battle_transition_ready) return;
+  game::BattleNativeOwnerRecallInputsV1 result{};
+  result.unavailable_reason = "paused_exact_combat_scope_unavailable";
+  try {
+    if (transition.observed_date_raw == paused_scope.date_raw &&
+        SamePausedScope(bindings, paused_scope)) {
+      const char *reason = "owner_recall_inputs_unavailable";
+      if (!SampleOwnerRecallInputs(bindings, transition, result, reason) ||
+          !SamePausedScope(bindings, paused_scope)) {
+        result = {};
+        result.unavailable_reason = reason;
+      } else {
+        result.unavailable_reason.clear();
+      }
+    }
+  } catch (...) {
+    result = {};
+    result.unavailable_reason = "owner_recall_inputs_unavailable";
+  }
+  transition.native_owner_recall_inputs_v1 = std::move(result);
+}
+
+void AttachBattleNativeOwnerRecallInputsForUnitsV1(
+    const ck3_12002::BattleBindings &bindings,
+    const game::Snapshot &paused_scope,
+    const std::vector<std::int32_t> &public_cunit_ids,
+    game::BattleNativeOwnerRecallInputsV1 &result) noexcept {
+  result = {};
+  result.unavailable_reason = "paused_exact_unit_scope_unavailable";
+  try {
+    if (!SamePausedScope(bindings, paused_scope)) return;
+    std::vector<std::int32_t> owner_ids;
+    result.raw_inputs_ready = true;
+    for (const auto public_id : public_cunit_ids) {
+      auto *unit = Resolve(bindings.army_storage_slot, public_id, 0x10);
+      if (!unit) {
+        result = {};
+        result.unavailable_reason = "scoped_public_unit_unresolved";
+        return;
+      }
+      const auto owner_id = At<std::int32_t>(unit, 0x174);
+      if (!Resolve(bindings.character_storage_slot, owner_id, 0x18)) {
+        result = {};
+        result.unavailable_reason = "scoped_unit_owner_unresolved";
+        return;
+      }
+      if (std::find(owner_ids.begin(), owner_ids.end(), owner_id) != owner_ids.end())
+        continue;
+      owner_ids.push_back(owner_id);
+      game::BattleNativeOwnerRecallOwnerInputsV1 owner{};
+      ReadOwnerRecallInputs(bindings, owner_id, owner);
+      result.raw_inputs_ready = result.raw_inputs_ready && owner.raw_inputs_ready;
+      result.owners_in_stored_order.push_back(std::move(owner));
+    }
+    if (!SamePausedScope(bindings, paused_scope)) {
+      result = {};
+      result.unavailable_reason = "current_unit_scope_changed";
+      return;
+    }
+    result.available = true;
+    result.unavailable_reason.clear();
+  } catch (...) {
+    result = {};
+    result.unavailable_reason = "owner_recall_inputs_unavailable";
+  }
+}
 } // namespace xar::ck3_12003
