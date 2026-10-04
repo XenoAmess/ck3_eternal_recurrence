@@ -359,3 +359,19 @@ War117440524：玩家attacker/primary leader、opponent35991、score0；target t
 P472 rich siege251658324由own301989997执行，current work **24615916/40000000**，remaining15384084，progress **61.539%**（raw61539/100000），ETA **102天**。本14日work `22003232→24615916`，增加2612684 raw；progress `55008→61539`，ETA `120→102`。**Day13实际work增加650906、ETA108→103**；其余13日各增加150906，strength全程3515。只记录数值，不猜event原因。Breach0、无突击；ordinary daily progress及phase字段继续null。
 
 First health014已由army_reinforcement独立缓存证明在**baseline raw53256120** restored available（父提供），该证据不回填之后日期或generic null。本14日不另增加health/counter能力、clock匹配或recall信用；g64历史24日clock证据保持独立。此缓存作者原raw/TOP/health014/source/Git/SDK/test访问均0。
+
+## R35：18 个完整普通存档日，event26 实际回交
+
+新增仅为 **18 个完整普通存档日 / 432h**，raw `53256456→53256888`。每完整日7工具leaf+1日结果，合计 **126 GREEN工具leaf＋18结果＝144原JSON**；账本为 **4690 / res1537 / Oct5+32**，Oct4仍冻结633。原32日预算在第18个实际完成日因 `actual_active_event_requires_root` 回交，余预算不计信用。
+
+末完整 wholeSAVE/M7：**h7869 / raw53256888 / 96786861B**，SHA-256 `f1c6424a97235cbd23a1b9815a178d964b22cf281ee61a3de94f2ffc3a7e188a`；episode `native-29829-2bc2d599f7f9`、character29829、ordinary campaign/xar_off。Runtime g67 / source091bb268 / PID110044，environment `38666cec554cab6152f16df89440a448cf8c988347a54e961777238aa666e626`。当前 `native:80 / public73`，paused/map-ready true，Robert存活、stress0。
+
+当前active event **instance26**，两个选项均enabled，title/labels为null；pending interaction为null。该快照只证明事件实际出现并回交，不替代独立事件context查询或玩家选项结果。
+
+Own `301989997@472 sieging`、`184549452@2619 regular`，均controllable、无combat/retreat、route为空；enemy `268435597(owner35991)@470 regular`。War117440524仍为玩家attacker/primary leader、opponent35991、score0，objectives[470,3711,472]。三军generic soldiers等未发布字段保持null。
+
+P472仍未占领，rich siege251658324由own301989997执行：work **27313660/40000000**，remaining **12686340**，progress **68.284%**（raw68284/100000），ETA **85天**；B3480、garrison500、fort4、breach0、无突击，native CanStart=false。此段work增加2697744 raw，progress61.539%→68.284%，ETA102→85。**Day1实际观察B3515→3480**，仅记录变化，不归因于attrition、clock或某事件；ordinary-progress/phase字段仍null，不由旧g64clock回填。P470/P3711均未占领、无active siege，fort6、garrison550/500。
+
+Readiness限定于十八个完整保存的ordinary exact-day OODA轮次及真实event26回交；不宣称围城完成、自然继承、health/counter/clock/recall新完成，**不宣称final-readfault根因修复**。此前[R34十四日母账](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v61/r34-progress-after-restored-strength-query-consumed01/ROOT-DAY-WEEK-FIELDS.json)及[74130零日母账](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v62/r35-ordinary-next32-days-01-consumed01/CACHED-FAILED01-SAVE-AND-DERIVED-FAILURE.json)只回链，不重计、不重读。
+
+本段输入为 sealed [ROOT-DAY-WEEK-FIELDS](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v62/r35-ordinary-after-final-read-failed-next32-02-consumed01/ROOT-DAY-WEEK-FIELDS.json)及[CACHED-EIGHTEEN-ACTUAL-DAYS-AND-EVENT26](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/ordinary-v62/r35-ordinary-after-final-read-failed-next32-02-consumed01/CACHED-EIGHTEEN-ACTUAL-DAYS-AND-EVENT26.json)。缓存作者不读取原day/TOP/eventquery；共享topic只读当前前像一次，变更仅交Root单topic外置LF patch。
