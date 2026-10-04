@@ -236,7 +236,9 @@ class McpTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_query_profile_event_window_v1", "ck3_set_profile_simulation_v1",
                     "ck3_query_profile_pending_interaction_v1", "ck3_reply_profile_pending_interaction_v1",
                     "ck3_pause_profile_simulation_v1",
-                    "ck3_select_profile_event_option_v1", "ck3_save_profile_checkpoint_v1"})
+                    "ck3_select_profile_event_option_v1", "ck3_save_profile_checkpoint_v1",
+                    "ck3_query_profile_decision_item_v1", "ck3_open_profile_decisions_v1",
+                    "ck3_select_profile_decision_item_v1", "ck3_confirm_profile_decision_outcome_v1"})
                 for tool in tools:
                     self.assertFalse(tool.input_schema["additionalProperties"])
                     if tool.name in {"ck3_query_native_profile_v1", "ck3_attach_profile_bridge_v1", "ck3_take_profile_native_snapshot_v1", "ck3_pause_profile_simulation_v1"}:

@@ -1,0 +1,2062 @@
+{
+  "schema": "lossless-gzip-review-projection-v1",
+  "status": "OFFLINE_CANDIDATES_NOT_LIVE",
+  "files": [
+    {
+      "path": "native-006/LF-normalization-revision004.json.gz",
+      "original_path": "LF-normalization-revision004.json",
+      "original_bytes": 1970,
+      "original_sha256": "4ed0d950ff58a267c727e1454711c7b4012e642fed710e0b55fc77e771cbb319",
+      "archive_bytes": 687,
+      "archive_sha256": "f1a2da58ca422b8e799831429ef7862cf9f212c4208b4c20d2008bc6f4599eb9"
+    },
+    {
+      "path": "native-006/REPORT.md.gz",
+      "original_path": "REPORT.md",
+      "original_bytes": 2354,
+      "original_sha256": "e2065ba4438b004378011fdfba58e7ce5fe9e0edc4370c64faf505d6f79451e7",
+      "archive_bytes": 1259,
+      "archive_sha256": "1cc538991eea2815ddc20828fa647f5894ac448e2fff7f274fb1b0f558585c9f"
+    },
+    {
+      "path": "native-006/allows_actor_drift.compile.stderr.gz",
+      "original_path": "allows_actor_drift.compile.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/allows_actor_drift.compile.stdout.gz",
+      "original_path": "allows_actor_drift.compile.stdout",
+      "original_bytes": 10,
+      "original_sha256": "6e2e4145452f714f569f04f9bb6dde79b736f28c460d8fd7b46872ffa6a24e51",
+      "archive_bytes": 30,
+      "archive_sha256": "460cd2229ee43492d32364bcd3a36bfe58e217aaf7fa1c6d73a5beb83bfdf479"
+    },
+    {
+      "path": "native-006/allows_actor_drift.run.stderr.gz",
+      "original_path": "allows_actor_drift.run.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/allows_actor_drift.run.stdout.gz",
+      "original_path": "allows_actor_drift.run.stdout",
+      "original_bytes": 21,
+      "original_sha256": "88408fd31ab1ace0d2712444cf9c95bf30842d995c61eb056db838f980585d90",
+      "archive_bytes": 41,
+      "archive_sha256": "05647ba5204ddd6c4cb11c120d575a344af04b886b121a85105a6ccd721ee3ab"
+    },
+    {
+      "path": "native-006/allows_date_drift.compile.stderr.gz",
+      "original_path": "allows_date_drift.compile.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/allows_date_drift.compile.stdout.gz",
+      "original_path": "allows_date_drift.compile.stdout",
+      "original_bytes": 10,
+      "original_sha256": "6e2e4145452f714f569f04f9bb6dde79b736f28c460d8fd7b46872ffa6a24e51",
+      "archive_bytes": 30,
+      "archive_sha256": "460cd2229ee43492d32364bcd3a36bfe58e217aaf7fa1c6d73a5beb83bfdf479"
+    },
+    {
+      "path": "native-006/allows_date_drift.run.stderr.gz",
+      "original_path": "allows_date_drift.run.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/allows_date_drift.run.stdout.gz",
+      "original_path": "allows_date_drift.run.stdout",
+      "original_bytes": 21,
+      "original_sha256": "88408fd31ab1ace0d2712444cf9c95bf30842d995c61eb056db838f980585d90",
+      "archive_bytes": 41,
+      "archive_sha256": "05647ba5204ddd6c4cb11c120d575a344af04b886b121a85105a6ccd721ee3ab"
+    },
+    {
+      "path": "native-006/allows_pending_interaction.compile.stderr.gz",
+      "original_path": "allows_pending_interaction.compile.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/allows_pending_interaction.compile.stdout.gz",
+      "original_path": "allows_pending_interaction.compile.stdout",
+      "original_bytes": 10,
+      "original_sha256": "6e2e4145452f714f569f04f9bb6dde79b736f28c460d8fd7b46872ffa6a24e51",
+      "archive_bytes": 30,
+      "archive_sha256": "460cd2229ee43492d32364bcd3a36bfe58e217aaf7fa1c6d73a5beb83bfdf479"
+    },
+    {
+      "path": "native-006/allows_pending_interaction.run.stderr.gz",
+      "original_path": "allows_pending_interaction.run.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/allows_pending_interaction.run.stdout.gz",
+      "original_path": "allows_pending_interaction.run.stdout",
+      "original_bytes": 21,
+      "original_sha256": "88408fd31ab1ace0d2712444cf9c95bf30842d995c61eb056db838f980585d90",
+      "archive_bytes": 41,
+      "archive_sha256": "05647ba5204ddd6c4cb11c120d575a344af04b886b121a85105a6ccd721ee3ab"
+    },
+    {
+      "path": "native-006/allows_preexisting_event.compile.stderr.gz",
+      "original_path": "allows_preexisting_event.compile.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/allows_preexisting_event.compile.stdout.gz",
+      "original_path": "allows_preexisting_event.compile.stdout",
+      "original_bytes": 10,
+      "original_sha256": "6e2e4145452f714f569f04f9bb6dde79b736f28c460d8fd7b46872ffa6a24e51",
+      "archive_bytes": 30,
+      "archive_sha256": "460cd2229ee43492d32364bcd3a36bfe58e217aaf7fa1c6d73a5beb83bfdf479"
+    },
+    {
+      "path": "native-006/allows_preexisting_event.run.stderr.gz",
+      "original_path": "allows_preexisting_event.run.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/allows_preexisting_event.run.stdout.gz",
+      "original_path": "allows_preexisting_event.run.stdout",
+      "original_bytes": 21,
+      "original_sha256": "88408fd31ab1ace0d2712444cf9c95bf30842d995c61eb056db838f980585d90",
+      "archive_bytes": 41,
+      "archive_sha256": "05647ba5204ddd6c4cb11c120d575a344af04b886b121a85105a6ccd721ee3ab"
+    },
+    {
+      "path": "native-006/allows_resource_scale_drift.compile.stderr.gz",
+      "original_path": "allows_resource_scale_drift.compile.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/allows_resource_scale_drift.compile.stdout.gz",
+      "original_path": "allows_resource_scale_drift.compile.stdout",
+      "original_bytes": 10,
+      "original_sha256": "6e2e4145452f714f569f04f9bb6dde79b736f28c460d8fd7b46872ffa6a24e51",
+      "archive_bytes": 30,
+      "archive_sha256": "460cd2229ee43492d32364bcd3a36bfe58e217aaf7fa1c6d73a5beb83bfdf479"
+    },
+    {
+      "path": "native-006/allows_resource_scale_drift.run.stderr.gz",
+      "original_path": "allows_resource_scale_drift.run.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/allows_resource_scale_drift.run.stdout.gz",
+      "original_path": "allows_resource_scale_drift.run.stdout",
+      "original_bytes": 21,
+      "original_sha256": "88408fd31ab1ace0d2712444cf9c95bf30842d995c61eb056db838f980585d90",
+      "archive_bytes": 41,
+      "archive_sha256": "05647ba5204ddd6c4cb11c120d575a344af04b886b121a85105a6ccd721ee3ab"
+    },
+    {
+      "path": "native-006/before/CMakeLists.txt.gz",
+      "original_path": "before/CMakeLists.txt",
+      "original_bytes": 339152,
+      "original_sha256": "ca8e2f32139d1d3b9aa9d500cc308562b9920ce8ed98e0f6c320161f497bd958",
+      "archive_bytes": 35685,
+      "archive_sha256": "6ff903b802d7ff8550d425d5dc04adf47e4699de9081008783ad1a79668cef68"
+    },
+    {
+      "path": "native-006/before/include/xar_bridge/ingame_decision_item_v1.hpp.gz",
+      "original_path": "before/include/xar_bridge/ingame_decision_item_v1.hpp",
+      "original_bytes": 3856,
+      "original_sha256": "33c84b5e82fe04c0570a86b7894e90006a32e4a3af47c0055e8747759cc26f4b",
+      "archive_bytes": 1120,
+      "archive_sha256": "ffb507ccf3c7f29b1e973bcbeb165b5a4c2ca29db39c593b8cd78f7543993eed"
+    },
+    {
+      "path": "native-006/before/src/bridge.cpp.gz",
+      "original_path": "before/src/bridge.cpp",
+      "original_bytes": 1336622,
+      "original_sha256": "0b8b4ca2a07328dd7e49e3c6eddbed8cecbf24e3d61542c8cdf70071790b045c",
+      "archive_bytes": 146965,
+      "archive_sha256": "91a395c6f7896386d6f4dde5106f704ecaf26135d97ec801aaad0949b939296a"
+    },
+    {
+      "path": "native-006/before/src/ck3_12003_adapter.cpp.gz",
+      "original_path": "before/src/ck3_12003_adapter.cpp",
+      "original_bytes": 12985,
+      "original_sha256": "61d545ee206be716545547a8b63baf6968787465fe5e4ddf527b6d8cbaff2c33",
+      "archive_bytes": 3262,
+      "archive_sha256": "71350aa765019cfe0341a0ccae8043413aadaafbf64d95374edce2cb5c896c16"
+    },
+    {
+      "path": "native-006/before/src/ingame_decision_item_v1.cpp.gz",
+      "original_path": "before/src/ingame_decision_item_v1.cpp",
+      "original_bytes": 49202,
+      "original_sha256": "e060766a0269cb869528cae6a5b42509064b4d941f1f2ade30f0d24bd946e21f",
+      "archive_bytes": 11638,
+      "archive_sha256": "af0308c76e16fa3a0674710f9b71385acf45155c761d42abdf47424c6c052fd3"
+    },
+    {
+      "path": "native-006/build-inputs/.ninja_deps.gz",
+      "original_path": "build-inputs/.ninja_deps",
+      "original_bytes": 116696,
+      "original_sha256": "2b6373766989f4102b16ace10be0072e211d16e5f01055989fcd833e499f2429",
+      "archive_bytes": 20716,
+      "archive_sha256": "d7b98dccb5e64b722808752009253ef30b28a6436ec6ee29836a26124dcc3b5a"
+    },
+    {
+      "path": "native-006/build-inputs/.ninja_log.gz",
+      "original_path": "build-inputs/.ninja_log",
+      "original_bytes": 47808,
+      "original_sha256": "f16ab811fb5da13b42e1658bbd7af319e8b817e9590adeab50615ee9e3a79251",
+      "archive_bytes": 13244,
+      "archive_sha256": "f4a9292bfcab28456439393165715df85d24fc2023e48dcf1c44ce4a13d8bdf9"
+    },
+    {
+      "path": "native-006/build-inputs/CMakeCache.txt.gz",
+      "original_path": "build-inputs/CMakeCache.txt",
+      "original_bytes": 36566,
+      "original_sha256": "b2334690d45a5743256dad9a71aad20c47272d26347b91991d5d8d60755cba9b",
+      "archive_bytes": 8446,
+      "archive_sha256": "c266121cd8111a3e8043b864b0f1c4146b64f2420e8127732c383449a5b1e0c9"
+    },
+    {
+      "path": "native-006/build-inputs/CMakeFiles/rules.ninja.gz",
+      "original_path": "build-inputs/CMakeFiles/rules.ninja",
+      "original_bytes": 829703,
+      "original_sha256": "325ff60759581f4f643b921413786384140588a34820a820e119549370a7076b",
+      "archive_bytes": 15772,
+      "archive_sha256": "208c4b1254a59480b32c736193f12aa11c6f99c4ebf8c3cd562d53a4e1034a76"
+    },
+    {
+      "path": "native-006/build-inputs/build.ninja.gz",
+      "original_path": "build-inputs/build.ninja",
+      "original_bytes": 1912206,
+      "original_sha256": "d068b56bdf49c9b3ecbd28deb6937dc3d6fa2cfba46c6f2afe938167f8cefad2",
+      "archive_bytes": 68371,
+      "archive_sha256": "103c313755b4c35e90837d2847283abed75d6a31f3e518932393676d52329324"
+    },
+    {
+      "path": "native-006/build-receipts-005.json.gz",
+      "original_path": "build-receipts-005.json",
+      "original_bytes": 1041,
+      "original_sha256": "7e3396a9beab3202a04b3fd25c1886af4f2fa8de1ff5ce90fa3c2b819a5bf3bd",
+      "archive_bytes": 368,
+      "archive_sha256": "92592646ffc3b61666f3e9ad0f51d9a3f76a41a39e052d38ab5a2cb8b4efa8f7"
+    },
+    {
+      "path": "native-006/build-receipts-006.json.gz",
+      "original_path": "build-receipts-006.json",
+      "original_bytes": 1040,
+      "original_sha256": "090b691120e20b24f46cfd959b9fbe87aefbfaac1bd288cab76eec4accefb657",
+      "archive_bytes": 369,
+      "archive_sha256": "6f7e4a1243e06fc916c65436871e0a5f9b4401a00dba4203a1fb585925408d43"
+    },
+    {
+      "path": "native-006/build_candidate_002.py.gz",
+      "original_path": "build_candidate_002.py",
+      "original_bytes": 3624,
+      "original_sha256": "6e8ce8ccb72fcbe98588f885bddb946b0deddab535575bfd9b4061312956f0ec",
+      "archive_bytes": 1538,
+      "archive_sha256": "ef1be78db700e3e886fc5eca7143f148488a3baa042fb19377b69649a5e8cdca"
+    },
+    {
+      "path": "native-006/candidate/CMakeLists.txt.gz",
+      "original_path": "candidate/CMakeLists.txt",
+      "original_bytes": 340486,
+      "original_sha256": "d99c1961adf77f697ac6ae6ddec8794a161038fd663c82410b76e697508e2fbe",
+      "archive_bytes": 35892,
+      "archive_sha256": "ad6f5827d21fd8ff68522c8b48c4cb32bedc6730679980e0b2a95f968c495a28"
+    },
+    {
+      "path": "native-006/candidate/include/xar_bridge/ingame_decision_item_v1.hpp.gz",
+      "original_path": "candidate/include/xar_bridge/ingame_decision_item_v1.hpp",
+      "original_bytes": 4298,
+      "original_sha256": "b2d823a8510a99d049762b773ba1bdb21785ffe44e839ceaa6ca3e23f299f51f",
+      "archive_bytes": 1179,
+      "archive_sha256": "97fe9433443e620217c0bc7acdddbe90710e8eb64b87d1400add6b221a92401b"
+    },
+    {
+      "path": "native-006/candidate/include/xar_bridge/ingame_decision_outcome_contract_v1.hpp.gz",
+      "original_path": "candidate/include/xar_bridge/ingame_decision_outcome_contract_v1.hpp",
+      "original_bytes": 3371,
+      "original_sha256": "7fbebd4a86a8e9e6986e2888f2e129a3b7c43b532fba8e874e8d21dedf97ea35",
+      "archive_bytes": 1245,
+      "archive_sha256": "c6dfcc8ee1c7ce9bd3f30a6140bfac56ff34dc9a41156e42d816e35ba0b1b1e4"
+    },
+    {
+      "path": "native-006/candidate/src/bridge.cpp.gz",
+      "original_path": "candidate/src/bridge.cpp",
+      "original_bytes": 1337820,
+      "original_sha256": "37ed17bdb569b8ca2a87dfb4283d4f2aa2c39a00a72e20e8097cb776eacfa862",
+      "archive_bytes": 147178,
+      "archive_sha256": "eb81c0adbe5d41ada7e4cb74c313a212cae7c16811182dc29a22234d8a7c7cb6"
+    },
+    {
+      "path": "native-006/candidate/src/ck3_12003_adapter.cpp.gz",
+      "original_path": "candidate/src/ck3_12003_adapter.cpp",
+      "original_bytes": 13131,
+      "original_sha256": "61144d2409e2333f38dffc6a30164281ee5ad639a9c13098fca2096e5d959f85",
+      "archive_bytes": 3280,
+      "archive_sha256": "b51aa6939643e22870c229c65c09ce68f97725305c49f1edd17b47821ca55b3d"
+    },
+    {
+      "path": "native-006/candidate/src/ingame_decision_item_v1.cpp.gz",
+      "original_path": "candidate/src/ingame_decision_item_v1.cpp",
+      "original_bytes": 51070,
+      "original_sha256": "6762b3c89d4c17c66f7e7e310d26ea94458f073da71ae88a5070b19fc7c00f9e",
+      "archive_bytes": 12002,
+      "archive_sha256": "3c1bc196e7c59cc89417f20f05450b6be09e0530bf3405cf8ab709913a6061fe"
+    },
+    {
+      "path": "native-006/candidate/tests/ingame_decision_outcome_contract_v1_test.cpp.gz",
+      "original_path": "candidate/tests/ingame_decision_outcome_contract_v1_test.cpp",
+      "original_bytes": 5020,
+      "original_sha256": "25a9727568ce95d0f77ce348c508724b1e9704cfdbe9aeca045cd3175fbff088",
+      "archive_bytes": 1059,
+      "archive_sha256": "f21284b77e9f751531f27d93b43cbb8f1b0faf508f92b8882bb79abc534ea181"
+    },
+    {
+      "path": "native-006/checkout-before-drift-004.json.gz",
+      "original_path": "checkout-before-drift-004.json",
+      "original_bytes": 1773,
+      "original_sha256": "577f4ef7cc4a1d6b2391c2ee6412faa0f704539c160f9594026623a114cdd3cb",
+      "archive_bytes": 469,
+      "archive_sha256": "d85d6b27a0a0a35dff45ce8c6cda6e971b792627630f9b12dcecb71975a001a2"
+    },
+    {
+      "path": "native-006/closed_branch_accepts_event.compile.stderr.gz",
+      "original_path": "closed_branch_accepts_event.compile.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/closed_branch_accepts_event.compile.stdout.gz",
+      "original_path": "closed_branch_accepts_event.compile.stdout",
+      "original_bytes": 10,
+      "original_sha256": "6e2e4145452f714f569f04f9bb6dde79b736f28c460d8fd7b46872ffa6a24e51",
+      "archive_bytes": 30,
+      "archive_sha256": "460cd2229ee43492d32364bcd3a36bfe58e217aaf7fa1c6d73a5beb83bfdf479"
+    },
+    {
+      "path": "native-006/closed_branch_accepts_event.run.stderr.gz",
+      "original_path": "closed_branch_accepts_event.run.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/closed_branch_accepts_event.run.stdout.gz",
+      "original_path": "closed_branch_accepts_event.run.stdout",
+      "original_bytes": 21,
+      "original_sha256": "88408fd31ab1ace0d2712444cf9c95bf30842d995c61eb056db838f980585d90",
+      "archive_bytes": 41,
+      "archive_sha256": "05647ba5204ddd6c4cb11c120d575a344af04b886b121a85105a6ccd721ee3ab"
+    },
+    {
+      "path": "native-006/closed_branch_accepts_eventkey.compile.stderr.gz",
+      "original_path": "closed_branch_accepts_eventkey.compile.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/closed_branch_accepts_eventkey.compile.stdout.gz",
+      "original_path": "closed_branch_accepts_eventkey.compile.stdout",
+      "original_bytes": 10,
+      "original_sha256": "6e2e4145452f714f569f04f9bb6dde79b736f28c460d8fd7b46872ffa6a24e51",
+      "archive_bytes": 30,
+      "archive_sha256": "460cd2229ee43492d32364bcd3a36bfe58e217aaf7fa1c6d73a5beb83bfdf479"
+    },
+    {
+      "path": "native-006/closed_branch_accepts_eventkey.run.stderr.gz",
+      "original_path": "closed_branch_accepts_eventkey.run.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/closed_branch_accepts_eventkey.run.stdout.gz",
+      "original_path": "closed_branch_accepts_eventkey.run.stdout",
+      "original_bytes": 21,
+      "original_sha256": "88408fd31ab1ace0d2712444cf9c95bf30842d995c61eb056db838f980585d90",
+      "archive_bytes": 41,
+      "archive_sha256": "05647ba5204ddd6c4cb11c120d575a344af04b886b121a85105a6ccd721ee3ab"
+    },
+    {
+      "path": "native-006/compile-candidate-dll-006.stderr.gz",
+      "original_path": "compile-candidate-dll-006.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/compile-candidate-dll-006.stdout.gz",
+      "original_path": "compile-candidate-dll-006.stdout",
+      "original_bytes": 879,
+      "original_sha256": "66e27c8cef150dad6efbf4fb72b408eb8fe9251a50bf43f7a543c59f3616fb2a",
+      "archive_bytes": 292,
+      "archive_sha256": "d856ec250974ff462960da92e683cc20e965c3b51eaf067398bdb37c2226f992"
+    },
+    {
+      "path": "native-006/compile-focused-contract-006.stderr.gz",
+      "original_path": "compile-focused-contract-006.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/compile-focused-contract-006.stdout.gz",
+      "original_path": "compile-focused-contract-006.stdout",
+      "original_bytes": 686,
+      "original_sha256": "4c5b30ba68fa24bd6746c9ce420b8c03506074fb2b8e80bbdea481db840fe5a3",
+      "archive_bytes": 341,
+      "archive_sha256": "94659d924e745b68edef91aa5e80cded4e873b2cf7a9c20c74ed8cefa9a23ee1"
+    },
+    {
+      "path": "native-006/compile-serializer-projection-002.stderr.gz",
+      "original_path": "compile-serializer-projection-002.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/compile-serializer-projection-002.stdout.gz",
+      "original_path": "compile-serializer-projection-002.stdout",
+      "original_bytes": 46,
+      "original_sha256": "aa68177a8798b79a15d0a8a71d928dfbb050679e23ea8de0c87f2fdfe521106f",
+      "archive_bytes": 59,
+      "archive_sha256": "483ff13dbc509054ea59b898611b5e6ae66adc9a4a06295b65c040d5f2852a46"
+    },
+    {
+      "path": "native-006/compile_projection_002.py.gz",
+      "original_path": "compile_projection_002.py",
+      "original_bytes": 1807,
+      "original_sha256": "cb9343dee797da4fb79ed6be72a0f7c3b1d3f6a9098ebaf35628c4d7ea3874d1",
+      "archive_bytes": 876,
+      "archive_sha256": "18166e90f1ceae15d8a37afb18b077fc75e89d22f9f4bb5771ffe4f8fb03df7a"
+    },
+    {
+      "path": "native-006/compiled-artifacts-005.json.gz",
+      "original_path": "compiled-artifacts-005.json",
+      "original_bytes": 695,
+      "original_sha256": "fe1c1b6bac5159e235d681ed1054ab13c12d264e3ae34ea40c244a3daf168122",
+      "archive_bytes": 327,
+      "archive_sha256": "b4ee9827b90d0fa0c49772a25cf7686951792941cb46594469a8c58500771614"
+    },
+    {
+      "path": "native-006/compiled-artifacts-006.json.gz",
+      "original_path": "compiled-artifacts-006.json",
+      "original_bytes": 695,
+      "original_sha256": "911c0e925e80cdfe9b5473602c95ad8701710e65f07f9d04c8d61356c00eb813",
+      "archive_bytes": 325,
+      "archive_sha256": "ce6d3f0d0e2c9a5112a14e034411c397a51617bfc1cc200f82959a6b90846e47"
+    },
+    {
+      "path": "native-006/configure-bad-dependency-002.stderr.gz",
+      "original_path": "configure-bad-dependency-002.stderr",
+      "original_bytes": 116,
+      "original_sha256": "300c35d9ff91713ee938e4c00fe9a55eda4ace8bff35c57737fb9c1839114240",
+      "archive_bytes": 119,
+      "archive_sha256": "b3f014870d1b2edbad47cad653f719283479041b5a909afa98c02845ad34fe45"
+    },
+    {
+      "path": "native-006/configure-bad-dependency-002.stdout.gz",
+      "original_path": "configure-bad-dependency-002.stdout",
+      "original_bytes": 396,
+      "original_sha256": "e4ad20f6616c7b718ee65d712ecc48b8075659988ab86be795a6bca00c782ba2",
+      "archive_bytes": 244,
+      "archive_sha256": "b67dcee77687a3d3055f388cfb08b0f53a758ee718a646debeee27eb1d857b29"
+    },
+    {
+      "path": "native-006/configure-default-off-004.receipt.json.gz",
+      "original_path": "configure-default-off-004.receipt.json",
+      "original_bytes": 595,
+      "original_sha256": "05e61bc700c98361b9e9a248b3a641ec9f9538b17af522ec6c473f6276774ae5",
+      "archive_bytes": 317,
+      "archive_sha256": "fa4a0e5bd9960f45be19d8bf187027f8768aa1a277776b5fa3735849838ea6b0"
+    },
+    {
+      "path": "native-006/configure-default-off-004.stderr.gz",
+      "original_path": "configure-default-off-004.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/configure-default-off-004.stdout.gz",
+      "original_path": "configure-default-off-004.stdout",
+      "original_bytes": 473,
+      "original_sha256": "21817d9aa892ca02af2fe79a9532dd55b7f938da14f3e29ad44092310ff7135b",
+      "archive_bytes": 288,
+      "archive_sha256": "3487d232e36dcedc6cd96172e989d97a54dc73e3156a0a0976e83970cdf7e587"
+    },
+    {
+      "path": "native-006/delta-manifest.json.gz",
+      "original_path": "delta-manifest.json",
+      "original_bytes": 1664,
+      "original_sha256": "b8889c2f89526ef39167f576b7f0274a27161ff363fc9dfa56a4dc41dc9d0a86",
+      "archive_bytes": 726,
+      "archive_sha256": "d4b93e331ea460fe2fff7d94c215ec307520258715df119e6829de986b4f4f92"
+    },
+    {
+      "path": "native-006/diffs/CMakeLists.txt.diff.gz",
+      "original_path": "diffs/CMakeLists.txt.diff",
+      "original_bytes": 2708,
+      "original_sha256": "3acc19d0de5240fd5beb08feb67247598d154705d30f5e937caf65e9fb6920ea",
+      "archive_bytes": 926,
+      "archive_sha256": "c121d6a671399ca509a1a83c8c67b83f193a3b7e6179d8c84db73661f0a4f13f"
+    },
+    {
+      "path": "native-006/diffs/include__xar_bridge__ingame_decision_item_v1.hpp.diff.gz",
+      "original_path": "diffs/include__xar_bridge__ingame_decision_item_v1.hpp.diff",
+      "original_bytes": 2390,
+      "original_sha256": "a02d557bdacb1d40ade045446e6f50e7608a2683bebfdb7a29c0c1c1bd3611eb",
+      "archive_bytes": 787,
+      "archive_sha256": "be999ec78423bacaa3bda5fa112a67237252abaadcc085a205e976595f6bdca8"
+    },
+    {
+      "path": "native-006/diffs/include__xar_bridge__ingame_decision_outcome_contract_v1.hpp.diff.gz",
+      "original_path": "diffs/include__xar_bridge__ingame_decision_outcome_contract_v1.hpp.diff",
+      "original_bytes": 3590,
+      "original_sha256": "6b4ed498c1fa596b8a3507fd8d06e05892c4ebcfb63de92473eaf5425908fea0",
+      "archive_bytes": 1303,
+      "archive_sha256": "9e7589c30022f42ad7a5770e9478556c6a54e1c5c522ab9e036ec4a5013a4734"
+    },
+    {
+      "path": "native-006/diffs/src__bridge.cpp.diff.gz",
+      "original_path": "diffs/src__bridge.cpp.diff",
+      "original_bytes": 5413,
+      "original_sha256": "4076c48f63d83f43f49e03d4bd56358bdc445defea1223d754d57a8b2f5b1eac",
+      "archive_bytes": 1486,
+      "archive_sha256": "4a4cd1fb2fa810eced48cdb433ace6d940e4461f4d1513a71f763ff8a4180605"
+    },
+    {
+      "path": "native-006/diffs/src__ck3_12003_adapter.cpp.diff.gz",
+      "original_path": "diffs/src__ck3_12003_adapter.cpp.diff",
+      "original_bytes": 548,
+      "original_sha256": "27c49fdaa0799912af2349085e7bf4aa39bc23c7f8f219802cda85540a320b6f",
+      "archive_bytes": 283,
+      "archive_sha256": "3c92f8c5f992d2d9c2c963d0259de90d8276091dd75d9bdd3723ed26622c7fa3"
+    },
+    {
+      "path": "native-006/diffs/src__ingame_decision_item_v1.cpp.diff.gz",
+      "original_path": "diffs/src__ingame_decision_item_v1.cpp.diff",
+      "original_bytes": 8253,
+      "original_sha256": "adae9614aa8e8d696a20a758e82429d7553ff83fadc9f595c056d9940708ba5a",
+      "archive_bytes": 2363,
+      "archive_sha256": "9ff04a25781a4c711a226988a106264d86679999783a2ca2f3cee69cc7a0b3ce"
+    },
+    {
+      "path": "native-006/diffs/tests__ingame_decision_outcome_contract_v1_test.cpp.diff.gz",
+      "original_path": "diffs/tests__ingame_decision_outcome_contract_v1_test.cpp.diff",
+      "original_bytes": 5223,
+      "original_sha256": "cc872a36ae4194897a8020568f4ce7c0e80614d529b78d48530bb99eef52da5d",
+      "archive_bytes": 1105,
+      "archive_sha256": "ff01fa8c49263116a598021fb06669ce18312bec1bc36360bbb456a78cb28916"
+    },
+    {
+      "path": "native-006/final-build-bindings.json.gz",
+      "original_path": "final-build-bindings.json",
+      "original_bytes": 14388,
+      "original_sha256": "1cbdb72f8b07b685217c8c9349d1cf08ab0e6c1fa8872f0ce683aa45a34f0760",
+      "archive_bytes": 3604,
+      "archive_sha256": "40ca1c3f92e7b110499e1e958afae202d4ac07e119621c4a91c7806ca7964751"
+    },
+    {
+      "path": "native-006/final-source-input-manifest.json.gz",
+      "original_path": "final-source-input-manifest.json",
+      "original_bytes": 562298,
+      "original_sha256": "13373ad799335cc0e01eb282ced6c2a0e381d512a2bad14b23f3cb2217a2c48d",
+      "archive_bytes": 170659,
+      "archive_sha256": "2c807cfc08e4cf6f7ea19729fcb342a36b67d0646953b95d8364688b049264ec"
+    },
+    {
+      "path": "native-006/final_revision003_build.py.gz",
+      "original_path": "final_revision003_build.py",
+      "original_bytes": 4379,
+      "original_sha256": "9905731c7c0b012dd252685ec45e8ff44cc2549f9de50daf5d68449ba9c5de71",
+      "archive_bytes": 1546,
+      "archive_sha256": "bdcdaf8bfe8da913ed5fd3cc4f8adbc6cbd4a610824333244d66588c317be74f"
+    },
+    {
+      "path": "native-006/final_revision004_build.py.gz",
+      "original_path": "final_revision004_build.py",
+      "original_bytes": 3539,
+      "original_sha256": "075018be4308b606fa4258b706fcd8f1f951d96172dcff94a4e0e4584056bc3b",
+      "archive_bytes": 1329,
+      "archive_sha256": "bd9cf1a866f47e322e40431130be43b53ca2b66658ef6ebf70d6a3686df86694"
+    },
+    {
+      "path": "native-006/make_candidate.py.gz",
+      "original_path": "make_candidate.py",
+      "original_bytes": 20132,
+      "original_sha256": "313ed4aadfd7801d536f3c20f09d60726b9c261f9f16a21c1894c9b8db495111",
+      "archive_bytes": 4927,
+      "archive_sha256": "a304ab6a8b9c11b4e0d2956e9798f5938432de8c91449b604e38c8c2773c0b11"
+    },
+    {
+      "path": "native-006/mutation-checks.json.gz",
+      "original_path": "mutation-checks.json",
+      "original_bytes": 2969,
+      "original_sha256": "0fe45b0d0cf6a384bf6ea79827e8abace72ae754839b933b97a4a50236334f2b",
+      "archive_bytes": 473,
+      "archive_sha256": "9b6d7a5e3460b67f94e4019c78ee79eb2593e65accab1c325e8523777aa09774"
+    },
+    {
+      "path": "native-006/mutation_checks.py.gz",
+      "original_path": "mutation_checks.py",
+      "original_bytes": 3433,
+      "original_sha256": "a3eaea87bb3da621d6a1dfaae7301e23811f94b4a1ccdaa5b5311d87c7f04404",
+      "archive_bytes": 1390,
+      "archive_sha256": "ddea1c5840ff54c72781a71298d15d3726d9fed3fa050a5df9786941b37425ff"
+    },
+    {
+      "path": "native-006/native-outcome-contract.json.gz",
+      "original_path": "native-outcome-contract.json",
+      "original_bytes": 2695,
+      "original_sha256": "0fff1601e6dc2c0af737669c7fbfad0b1453f4ced3d5837eb14fa5cf3c724b90",
+      "archive_bytes": 1282,
+      "archive_sha256": "5360e68f78194286eb4a3a26ef40318fe1842415152eebf7e769c9543278065f"
+    },
+    {
+      "path": "native-006/rebase005-current-native-baseline.json.gz",
+      "original_path": "rebase005-current-native-baseline.json",
+      "original_bytes": 595524,
+      "original_sha256": "275888614dbca07ccf8a1169f02cb29610781da9ed8800894389df17035ff5e9",
+      "archive_bytes": 172937,
+      "archive_sha256": "aa47e841583766708c8a2ac7c2dd420d7378cd51fcc61533695c8ffc4631d317"
+    },
+    {
+      "path": "native-006/rebase005_build.py.gz",
+      "original_path": "rebase005_build.py",
+      "original_bytes": 5567,
+      "original_sha256": "8a9b62eb0f720a4ce0fe87c63a8cfb7f670e7b72eb5c1a81a13d749ce74e59d6",
+      "archive_bytes": 1986,
+      "archive_sha256": "5b08b676117c4b6b7cf7eadd35467b902465536644f7b97597e1f15dfd9c4451"
+    },
+    {
+      "path": "native-006/retained-attempt-failures.json.gz",
+      "original_path": "retained-attempt-failures.json",
+      "original_bytes": 1580,
+      "original_sha256": "084d60428370c0a2bfcfcfb7b1153ea1070d2c5f117b59e737ab589529fd76f3",
+      "archive_bytes": 777,
+      "archive_sha256": "f922abe83532b69cca286214f4a4e19be1d7fed31e3181e537476177a35970e8"
+    },
+    {
+      "path": "native-006/revision002.py.gz",
+      "original_path": "revision002.py",
+      "original_bytes": 3466,
+      "original_sha256": "2cdd88183eb124f2d114d903c893a9de68eb4188c708816dce7d825cab798d36",
+      "archive_bytes": 1295,
+      "archive_sha256": "6fbae7c3fdac071862a76139f52cb76ed90e2ae2cc4003fcf5d4f81d0c252d7d"
+    },
+    {
+      "path": "native-006/run-serializer-projection-002.stderr.gz",
+      "original_path": "run-serializer-projection-002.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/run-serializer-projection-002.stdout.gz",
+      "original_path": "run-serializer-projection-002.stdout",
+      "original_bytes": 131,
+      "original_sha256": "b60ba9a3b4a6f9ec14cc62da4711dd947431e66a6037cecbf6eb79077be7c69c",
+      "archive_bytes": 132,
+      "archive_sha256": "469764cd032f4a661b4bf7d44a95a295a2a76330e501d1df47bf81e4b14742f9"
+    },
+    {
+      "path": "native-006/serialize-production-projection-test-002.cpp.gz",
+      "original_path": "serialize-production-projection-test-002.cpp",
+      "original_bytes": 13323,
+      "original_sha256": "9b747c7e0860b189003ea65da5970ea8b06fdaf4706dae1e88a94eedac109f55",
+      "archive_bytes": 2135,
+      "archive_sha256": "5062d87e6a19c8c214b28c16257864ef19cc547e983b078bc3da6190261a96c8"
+    },
+    {
+      "path": "native-006/serialize_projection.py.gz",
+      "original_path": "serialize_projection.py",
+      "original_bytes": 4104,
+      "original_sha256": "b6a21bdffba28239d7ee58f381fbdeb2b98aa98e5d28be9b0c6a00b605fa5bf3",
+      "archive_bytes": 1463,
+      "archive_sha256": "e3e4f9db51a331e723c1aa8f4b3fd33176edce79adb6e4e564be79c306ea98be"
+    },
+    {
+      "path": "native-006/serializer-projection-artifact-002.json.gz",
+      "original_path": "serializer-projection-artifact-002.json",
+      "original_bytes": 282,
+      "original_sha256": "3e2382e24ec731cc4220bccfb520fe9f09656f752e1d79e10c9fa3f3a9b9745b",
+      "archive_bytes": 236,
+      "archive_sha256": "78130730fbc318b450e027e45dba4afd7c2d3017c660f0ea03356ea9545be5d9"
+    },
+    {
+      "path": "native-006/serializer-projection-receipts-002.json.gz",
+      "original_path": "serializer-projection-receipts-002.json",
+      "original_bytes": 817,
+      "original_sha256": "ab9e24adce4cb7e4a2c35bd7cdc298e8d3dbce742ffe4aee9d0258388680173f",
+      "archive_bytes": 388,
+      "archive_sha256": "a3313415e51184d2aaca3f0382a8e137b4e03be1ea1ca1349e465e2e3486766f"
+    },
+    {
+      "path": "native-006/static-review-final006.json.gz",
+      "original_path": "static-review-final006.json",
+      "original_bytes": 2482,
+      "original_sha256": "8dfb7179b9f9078a9d74483f8e1c71bfe99fce958eb9797443a8b1f60c6ddaad",
+      "archive_bytes": 698,
+      "archive_sha256": "140622ebab4b24730c3c79126d3c491c270db0a2f0a7b036fce12c2cbb97f050"
+    },
+    {
+      "path": "native-006/static_review_final006.py.gz",
+      "original_path": "static_review_final006.py",
+      "original_bytes": 4250,
+      "original_sha256": "fa1522dcbc58ca085f383d9557950404bff15109eef0396b8cf6d582384bfc9a",
+      "archive_bytes": 1770,
+      "archive_sha256": "550510cb61d8a322a353908e97adaf9bee4e7ed27ddf461b28b5b319cfcebc4c"
+    },
+    {
+      "path": "native-006/static_review_final006.stderr.gz",
+      "original_path": "static_review_final006.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/static_review_final006.stdout.gz",
+      "original_path": "static_review_final006.stdout",
+      "original_bytes": 43,
+      "original_sha256": "d37c03f0ded8aa8736a3c8613e564ea685af1d176d36bae43966a216cc8a7b93",
+      "archive_bytes": 62,
+      "archive_sha256": "b1da542bc20bf46a37d5ae6caef7e28f75542a8d396720b2988000709814e8b4"
+    },
+    {
+      "path": "native-006/test-focused-contract-006.stderr.gz",
+      "original_path": "test-focused-contract-006.stderr",
+      "original_bytes": 0,
+      "original_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "archive_bytes": 20,
+      "archive_sha256": "9ceffb7310338057cfe71a4ae1e2c98d2c485d81cdef906532a801f457a38d64"
+    },
+    {
+      "path": "native-006/test-focused-contract-006.stdout.gz",
+      "original_path": "test-focused-contract-006.stdout",
+      "original_bytes": 92,
+      "original_sha256": "4572a7a3e6db0228a575d0dbc6ac87e6c7f375d11b1e531fd2c5ebafec8d297e",
+      "archive_bytes": 108,
+      "archive_sha256": "c9fea903b9503511b0de73b327c8cbc6d3885737b9ea62724c82ab96d4283c87"
+    },
+    {
+      "path": "native-006/wire006_build.py.gz",
+      "original_path": "wire006_build.py",
+      "original_bytes": 7089,
+      "original_sha256": "b10c8ea1475030f3b9b095dc6b7a9a6d9d8d9bd80891c0654c5b1d1ab60d5eac",
+      "archive_bytes": 2339,
+      "archive_sha256": "30178d78ab52d522b5cbf70f65f86ea4dfbc3faa8f8eefb8c179a3b7117bf5d5"
+    },
+    {
+      "path": "native-006/INDEX.json.gz",
+      "original_path": "INDEX.json",
+      "original_bytes": 16555,
+      "original_sha256": "aa7dffddcde98ce93662d1161536a60721dce04b24e01eb17eab7090411820cf",
+      "archive_bytes": 4098,
+      "archive_sha256": "435b7c39c30e708516768defe6cbaf8f8e550ade7e1c06ef4cc29fc90a7b7ff9"
+    },
+    {
+      "path": "python-003/ACTUAL-MCP-2.0-SCHEMAS.json.gz",
+      "original_path": "ACTUAL-MCP-2.0-SCHEMAS.json",
+      "original_bytes": 13119,
+      "original_sha256": "a579217623507cac89126009da86e5558e4733c8b5867a843dc6481e5d4118e6",
+      "archive_bytes": 1148,
+      "archive_sha256": "642221efc9f00e361701e8463a45d5bf02c8979e837a91577422e20d6767924f"
+    },
+    {
+      "path": "python-003/before/ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py.gz",
+      "original_path": "before/ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "original_bytes": 186132,
+      "original_sha256": "5082636a0c46b8254894debfa88a513b701ae91372e3c56cdf5481afa0d17531",
+      "archive_bytes": 27294,
+      "archive_sha256": "5bfe707c0d610941bb5b6053fd10d5e329038161219ec94f743e04bb6698027c"
+    },
+    {
+      "path": "python-003/before/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py.gz",
+      "original_path": "before/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "original_bytes": 1361211,
+      "original_sha256": "3f226b10e19542cdf58f3ca2c41851f77a1221d2f9b402bb21eb5915cd54b086",
+      "archive_bytes": 180279,
+      "archive_sha256": "c59328cd66fa6366b426efd4c757cfabef37bf4cabb0b227118e492c6214de0a"
+    },
+    {
+      "path": "python-003/before/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py.gz",
+      "original_path": "before/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "original_bytes": 600404,
+      "original_sha256": "3ac9bbf86240eeeae9aa90a28fd79660e333494c42e678d7a4f9e46d367df7fe",
+      "archive_bytes": 62473,
+      "archive_sha256": "d7d55a1616213d6c46f31b65ae2a7895c0635753c49dc7a31c031619d78ccf88"
+    },
+    {
+      "path": "python-003/before/tools/ck3_native_profile_mcp.py.gz",
+      "original_path": "before/tools/ck3_native_profile_mcp.py",
+      "original_bytes": 37539,
+      "original_sha256": "4fa041c9ea9ea81885e5ca8a17cdac2a8880d7a1b980497012d600058f60a1ed",
+      "archive_bytes": 7633,
+      "archive_sha256": "db38a0f5409337509770ae6854bc215393f00f9bebf2c9f4169f6774dd967246"
+    },
+    {
+      "path": "python-003/before/tools/test_ck3_native_profile_mcp.py.gz",
+      "original_path": "before/tools/test_ck3_native_profile_mcp.py",
+      "original_bytes": 23785,
+      "original_sha256": "2a3428413c0e6756370f278879389420abd2623b402d9990bc7907f3103683ad",
+      "archive_bytes": 4789,
+      "archive_sha256": "3bb33f91f04a0ba13b9d4c4ad502a096120abd688a1c792c7a808f1cb25471fe"
+    },
+    {
+      "path": "python-003/BEFORE.json.gz",
+      "original_path": "BEFORE.json",
+      "original_bytes": 919,
+      "original_sha256": "8553b4ff0d1ed1ff9291e6ffa7ff66ede3e0449b91e4b8f91eeb3fc460f301a1",
+      "archive_bytes": 411,
+      "archive_sha256": "7f92d1abd1323f532799db4b04b90f75ad91f10a689d3354eb6004085331e0e6"
+    },
+    {
+      "path": "python-003/build_candidate.py.gz",
+      "original_path": "build_candidate.py",
+      "original_bytes": 16905,
+      "original_sha256": "504465d796c779cd78e68ac9c9cb08859dad97fca6d3dc9ab48a28241dc646a7",
+      "archive_bytes": 3521,
+      "archive_sha256": "4d2a22660b60340e84f1c7f48eed61c02d55bbf9c84934f6674e58ea3caa0e5e"
+    },
+    {
+      "path": "python-003/candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decision_outcome_contract.py.gz",
+      "original_path": "candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decision_outcome_contract.py",
+      "original_bytes": 9016,
+      "original_sha256": "7a6b0533f77f9032c6f2c3cf5ca17c90c5c3108df471cc59a22b8a0e64552ea2",
+      "archive_bytes": 2841,
+      "archive_sha256": "7315107a10afccdb8b99e5802985ca004e30cb31a5382a6a73c5637e4907e748"
+    },
+    {
+      "path": "python-003/candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py.gz",
+      "original_path": "candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+      "original_bytes": 186948,
+      "original_sha256": "c071154913b6e2e58028e379fcc3399f7872aded8365b18b7773eebbf9fa44a7",
+      "archive_bytes": 27417,
+      "archive_sha256": "0e1aee7cd3179a67a18d3096dda8ab632ad67ce89a1346d9972bb17116a58e26"
+    },
+    {
+      "path": "python-003/candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py.gz",
+      "original_path": "candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "original_bytes": 1371743,
+      "original_sha256": "2bc01f6766112cecebe2d41e6b171c7bc6bbcf5b452331212b882ee7bc6458c9",
+      "archive_bytes": 181507,
+      "archive_sha256": "60997dfe62237b9b8d38892af791cfe1842c8583c9294d7d86dad6736a385c7a"
+    },
+    {
+      "path": "python-003/candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py.gz",
+      "original_path": "candidate/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "original_bytes": 603855,
+      "original_sha256": "08d379ea73939cf0dad148b097513f3cf8601af58fc0935b20643841f11c23a5",
+      "archive_bytes": 63019,
+      "archive_sha256": "8cb9ae16e06b22c365ffade564b9d9a2898f14cdea727f28bd3b581f79096d22"
+    },
+    {
+      "path": "python-003/candidate/ck3_autonomous_player/tests/unit/test_ingame_decision_outcomes.py.gz",
+      "original_path": "candidate/ck3_autonomous_player/tests/unit/test_ingame_decision_outcomes.py",
+      "original_bytes": 33870,
+      "original_sha256": "b63922bc083c9a41a966b4cdbac035a935d4a9a7ad4d27517cc607f25f9cd125",
+      "archive_bytes": 7303,
+      "archive_sha256": "ee69d3646ada1a3f25209142d99bbd791ed2d5c2f7962de86b776c2ba4c27ba1"
+    },
+    {
+      "path": "python-003/candidate/tools/ck3_native_profile_mcp.py.gz",
+      "original_path": "candidate/tools/ck3_native_profile_mcp.py",
+      "original_bytes": 44145,
+      "original_sha256": "a018fee74d44b788e6ee554b078e1df4196dfe3652a737ef8a65b119e3fefb65",
+      "archive_bytes": 8641,
+      "archive_sha256": "8fa42ac70b4522e308c91448e1b22fc8c203a3419a8a5f263099595c0962d23e"
+    },
+    {
+      "path": "python-003/candidate/tools/test_ck3_native_profile_mcp.py.gz",
+      "original_path": "candidate/tools/test_ck3_native_profile_mcp.py",
+      "original_bytes": 23978,
+      "original_sha256": "4d2c66b23a55f9e73a4eef28c866dd71d175f1a9e980e09ffd6d30ed65e495aa",
+      "archive_bytes": 4825,
+      "archive_sha256": "c495c0f9b2f07ed72f16eda90a211169f253b1c84d9903e905fe7cf8222d4566"
+    },
+    {
+      "path": "python-003/checks-003/claims/sdk-outcome-atwt0715/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/sdk-outcome-atwt0715/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 791,
+      "original_sha256": "cd88048eaeb3df5bae8c83fa9d7bea16174df1f40ed986bf24ad36d4a46e1f65",
+      "archive_bytes": 352,
+      "archive_sha256": "0566cb19f4a2c736e9a3f7aab0e98b33677a8da8f2c80525ebe38784a26bea41"
+    },
+    {
+      "path": "python-003/checks-003/claims/sdk-outcome-atwt0715/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/sdk-outcome-atwt0715/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2829,
+      "original_sha256": "fb2108aa2612ec5454a473b655bae5b8bf2a96f8f45cbe573b37bdf3cdc7866b",
+      "archive_bytes": 806,
+      "archive_sha256": "c53252264a97c7981f3acbf460e17d928b959645aaec0c72881590d0ce65ebb2"
+    },
+    {
+      "path": "python-003/checks-003/claims/sdk-outcome-atwt0715/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json.gz",
+      "original_path": "checks-003/claims/sdk-outcome-atwt0715/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json",
+      "original_bytes": 7850,
+      "original_sha256": "b5c15205a75f3044d61504591148ac973ff1608618c87f65f96d8c9e661bd3d8",
+      "archive_bytes": 1655,
+      "archive_sha256": "97ad0342ef7b30502a3f524e66aaf60636e393326a2fb754f022fb3a05b06e3d"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-0ht11hp_/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-0ht11hp_/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 791,
+      "original_sha256": "7e28e79e4905a03e8c47ed5d0d142aac44a24598d4a25c27cb0374a8f5dc61e2",
+      "archive_bytes": 355,
+      "archive_sha256": "5a2e01121c68d0f3cd97c4c6ece5a42da61f7e8029cedab12db4a00930b0dd2b"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-0ht11hp_/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-0ht11hp_/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2829,
+      "original_sha256": "cde1b2b5edd374e178e9f6f2316e22e1ea28a82886cbc16aff3b701d5ca01607",
+      "archive_bytes": 809,
+      "archive_sha256": "8adf125b50500a32f08e1b925b18316cf8a9911a037faf7f4faa75bd895313e7"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-0ht11hp_/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-0ht11hp_/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json",
+      "original_bytes": 7856,
+      "original_sha256": "925ef2de987ca9039e70a967c2fc7a80319c201742849efb5bec71313c6a7192",
+      "archive_bytes": 1658,
+      "archive_sha256": "42e4d7de4551574693922b209715bfbe8ac9d31d2acbae498a70ec24a0dad26f"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-23hdmjwy/ingame-decision-item-actions/51e1800fe10eee43d5ebd8b73411166f8513335d81d9a16269560955a21a9037.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-23hdmjwy/ingame-decision-item-actions/51e1800fe10eee43d5ebd8b73411166f8513335d81d9a16269560955a21a9037.claim.json",
+      "original_bytes": 718,
+      "original_sha256": "ffd5db8b0e7e6b45dd3f323e94255f7cfbe2eafe01777b5d43a3bbe236a5ed7e",
+      "archive_bytes": 343,
+      "archive_sha256": "400272de7dfbf8712463687ae1f4e55ed0f59836b4c0cf20babd2162ab8c4000"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-2rdd51il/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-2rdd51il/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 791,
+      "original_sha256": "2c08276dcfabaa7c57ba29bf3fd0255b94d15da2595407c5deb260c98c196237",
+      "archive_bytes": 354,
+      "archive_sha256": "7d6aeee580d8a4fa31f4f4596fc9edb53a09f36969dfc67193b611dbd31f52d1"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-2rdd51il/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-2rdd51il/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2829,
+      "original_sha256": "e2a7cc3fe5332f90115f597f1cc7a269c89296f009e1a6f12f8a6f094a928853",
+      "archive_bytes": 808,
+      "archive_sha256": "ee15bf3e1ef9a263fd98d3f5acaf44e3fc16165accad8e81bfda44dd8dc99b63"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-2yc6ip0k/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-2yc6ip0k/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "7d1f537291ccbfe4e936e62ad3af6a035c6188f83e4519ae2480e3cecd38831f",
+      "archive_bytes": 360,
+      "archive_sha256": "951a77eac460cb8054786e8701d59dd75ab8a377caab2a08fdd0b542fc0b2f1d"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-2yc6ip0k/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-2yc6ip0k/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2844,
+      "original_sha256": "54117364e75897d86155d86bb10ed66710b33465c82edc8f694231cba6483380",
+      "archive_bytes": 814,
+      "archive_sha256": "a015fdba7cce435cef601acb834169f8d0900257ae8fc97d5fcc305faeeec518"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-3rz9zht8/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-3rz9zht8/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 791,
+      "original_sha256": "6bd97b63f61f5f400fa9b0fcd6f46360837f5d2b857a2077777ee5eca2b0ead3",
+      "archive_bytes": 354,
+      "archive_sha256": "b6c50f0f9990019bd7581331c1202d52844d3cbb8983c790aa0b248119505072"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-7bmm6cdv/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-7bmm6cdv/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 791,
+      "original_sha256": "32828f3bf5f75c82029ad6326e3de0180abc0450d54bafd9d923bd6e707caa3b",
+      "archive_bytes": 353,
+      "archive_sha256": "564050d5e205bf3aef1f3b2124136c21a4840d6c9bdc6247bca29daf76e6d72c"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-7bmm6cdv/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-7bmm6cdv/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2829,
+      "original_sha256": "1f962822c075de9ccc41a065d6e641c0a8e43af537be162d56031f41c2e12c79",
+      "archive_bytes": 806,
+      "archive_sha256": "581d75d2ccb57ec331af56e74ea9089c231888542d19d13c683c68f4b1573f26"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-7bmm6cdv/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-7bmm6cdv/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json",
+      "original_bytes": 6557,
+      "original_sha256": "155dc7648af252c92b858722d1f643bb7a065401d30c723141e96fabfa76c933",
+      "archive_bytes": 1408,
+      "archive_sha256": "2e1af610f46f9a003911b887967283a93b49ba00b3ddcf964f783f0b8b56f802"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-7dsfsr1d/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-7dsfsr1d/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 791,
+      "original_sha256": "386db13f10e057b849508c0797ebe1214194d9d79a63dcc6ea83160a093f4118",
+      "archive_bytes": 355,
+      "archive_sha256": "6aad58616ffa8b6acd4144dda8102f0f339ee7a74cfe4f830b58b6795402c9ef"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-7dsfsr1d/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-7dsfsr1d/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2829,
+      "original_sha256": "e2171597dca8fb3cd6224a2e2445f6831fc82c73315876ebaf96344d0d674b1c",
+      "archive_bytes": 808,
+      "archive_sha256": "7eb134ecc8737aad9e3ece11abc2fd68f6ded7595464f1e52d9242f61c46ab22"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-7dsfsr1d/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-7dsfsr1d/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json",
+      "original_bytes": 7856,
+      "original_sha256": "669d2d742252e5203a22b450604af88c102a38b569dbcb4497d1afaebb2df5d7",
+      "archive_bytes": 1659,
+      "archive_sha256": "e47fe80e257555d27d457c63eea9f409e2fc60a7dd3ba1b2d62f64d3a41a722a"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-7hf5vr95/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-7hf5vr95/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "9dc125388fb6f859ff84de5f5c03ad91106093a202a80839d44c243ae564e569",
+      "archive_bytes": 360,
+      "archive_sha256": "6c21c1c8e3bf2349828be2e06ff222e9645037392b1eee40abd00da449d9d867"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-7hf5vr95/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-7hf5vr95/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2844,
+      "original_sha256": "8fed39d6f80e71775c6bf702d6871fd8d20b44e2ca749c4c42ad5e1aa4dd6560",
+      "archive_bytes": 813,
+      "archive_sha256": "9e0c9c27eb21cfd47dd6362a38d13a1584d98d9ebff7fbad931376da59b77d8e"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-8gzc1q3f/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-8gzc1q3f/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "5e51767ba4be5178ae7d226e04fa259e9a7300880e7d43c697c8f1e73f2ce476",
+      "archive_bytes": 359,
+      "archive_sha256": "f6b4b0f5bddef5cbda1c8bd722e3338919bad8bf3513abb9c521e5b8072caaef"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-8gzc1q3f/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-8gzc1q3f/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2844,
+      "original_sha256": "70e383e536214b398b6bc1708d9d50aaa27a38d370befec986bde381520d0f24",
+      "archive_bytes": 814,
+      "archive_sha256": "13651cc66ee7dcd6ef24e6bf398741ab8db695040d28f0ddc6446d30deba8dd7"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-8jmusoik/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-8jmusoik/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 791,
+      "original_sha256": "07fc36178c11e97c0855a6d7b28ac4aca8e8d88980f29ad362245ec2a489bc73",
+      "archive_bytes": 354,
+      "archive_sha256": "dfa6ce78c0a34aace0ca52a0aaea143b52e70aac69a93838c621bb181d2653c5"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-8jmusoik/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-8jmusoik/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2829,
+      "original_sha256": "b36c6a8b977c4e9c009bf84cd8502d711f6749a2364a440b9fcc12e70237360e",
+      "archive_bytes": 808,
+      "archive_sha256": "056a3a8050d43adefd2abdb4b164fb4c5159a8d09a6663fb5be6ffc18b832e29"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-8jmusoik/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-8jmusoik/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json",
+      "original_bytes": 7856,
+      "original_sha256": "f5c672fd3723e7ec4c8aa83e73b04c24383fe5993874586c5b3bce20580f1a88",
+      "archive_bytes": 1658,
+      "archive_sha256": "fb081635958a750c584696d8a85c90027cb71ee13f32b166bca65f1f7b0a0244"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-8rmrgw49/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-8rmrgw49/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "025dcec9f61b02c84cd0a5ace9200ace392370f83468c0acb1cfd96448957af0",
+      "archive_bytes": 362,
+      "archive_sha256": "733acc399d6937946d23fc97aec2219da98cf6a1de2a68e8c81307a616bf4bef"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-8rmrgw49/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-8rmrgw49/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2844,
+      "original_sha256": "31d54435a5847b5bd5fb45ffbb8d53f693353b01fac82b0ffdffb68f0b672d8d",
+      "archive_bytes": 814,
+      "archive_sha256": "43f9da2ac52d91a767328c154d1b7dc31b7e9babec99c2adb75a7ed2155791e5"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-9dgtwkde/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-9dgtwkde/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json",
+      "original_bytes": 561,
+      "original_sha256": "88ed4a56fad531e7d5b48b4cc833c9f5ce5d3f8ec70da15a119000b1613030aa",
+      "archive_bytes": 298,
+      "archive_sha256": "fa773caa9f9adfbc259a321d0d80ec3cd5394e0c443199b8879f558a8e842cfc"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-a9ks0b_e/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-a9ks0b_e/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "470aa8c5e9e3d88a385d63280e804b7c42317496546e0824e104b88f845c5507",
+      "archive_bytes": 360,
+      "archive_sha256": "78f4e26031d927a0e4cd5b121ddc2d889677c1ff5cf396a40b9a16be0e666264"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-a9ks0b_e/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-a9ks0b_e/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2845,
+      "original_sha256": "5ac17861a9720f6e0ac7847ddb2a88b5d0ec605b41537fc65e82e14e03b37939",
+      "archive_bytes": 820,
+      "archive_sha256": "38854a89266630e7c9f6711b9c2ea29e889c4f5fc1329a8d7a315c0f355ef8da"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-aclyxtyh/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-aclyxtyh/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "f9d2477133e4ff6dfc7af2f04c3852b6de05936aa23f9fc3162f21af0d332529",
+      "archive_bytes": 359,
+      "archive_sha256": "eeaacf7dae5f77e4e597cd842c19b231e7169f3e238fb5401d4187069b5987c9"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-aclyxtyh/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-aclyxtyh/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2844,
+      "original_sha256": "622360de57b167051e9f717bd9df4955d15bdd540f3750743605fb441ea6eb93",
+      "archive_bytes": 813,
+      "archive_sha256": "9155f6f9d33e08468e4c08ef1d7fc32d796a1515b5adb4d34a402fb0db73df07"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-apzbe4of/ingame-decision-item-actions/9d72b87faf9326503ca6aa9e9a3f6825ca04841d2fd0a0412683efad31b53789.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-apzbe4of/ingame-decision-item-actions/9d72b87faf9326503ca6aa9e9a3f6825ca04841d2fd0a0412683efad31b53789.claim.json",
+      "original_bytes": 727,
+      "original_sha256": "245ad9fb7be99e032819752d396cb0d0b63fb8ef1d0ff01aa4b13103d4c805b6",
+      "archive_bytes": 346,
+      "archive_sha256": "b801b4eee328e2e051239606423a6b58a2d3ece127dde2c8bed6147511c9df41"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-apzbe4of/ingame-decision-item-actions/9d72b87faf9326503ca6aa9e9a3f6825ca04841d2fd0a0412683efad31b53789.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-apzbe4of/ingame-decision-item-actions/9d72b87faf9326503ca6aa9e9a3f6825ca04841d2fd0a0412683efad31b53789.claim.result.json",
+      "original_bytes": 2709,
+      "original_sha256": "748be0462dc1c863e73773c564eb102554223c1da0bd2daacf9f6420c38cd8c5",
+      "archive_bytes": 782,
+      "archive_sha256": "efdc046fb63fe0c685441f8f212974782807e0791de50e124368000eb70afb46"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-apzbe4of/ingame-decision-item-actions/9d72b87faf9326503ca6aa9e9a3f6825ca04841d2fd0a0412683efad31b53789.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-apzbe4of/ingame-decision-item-actions/9d72b87faf9326503ca6aa9e9a3f6825ca04841d2fd0a0412683efad31b53789.claim.verified.json",
+      "original_bytes": 7449,
+      "original_sha256": "e0fc658eef31644bedd603089840f606394160039cfab8ef02d034f4285d7166",
+      "archive_bytes": 1296,
+      "archive_sha256": "1a2eaf4f3afcdec08786923b3495f0c94b29eb76fdfa900a29727ded29142e16"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-apzbe4of/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-apzbe4of/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json",
+      "original_bytes": 727,
+      "original_sha256": "1fd66b4a11c2edbbdc17d4bbc6f29dd6751ede5dabe253af6150aea389cd5a4e",
+      "archive_bytes": 345,
+      "archive_sha256": "0e586c360b18135d8247d3e28f7641c4bfb620585e895606a438b6e4c72f8259"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-apzbe4of/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-apzbe4of/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.result.json",
+      "original_bytes": 2709,
+      "original_sha256": "7a6862fd15d0bf15a372dab4d4682cb3d2d01b40050cc922bbf8bf5b0b891f64",
+      "archive_bytes": 781,
+      "archive_sha256": "4dab67beec94c6fcc876c49c4c7c647988be0f983f8821aea483e54741116504"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-apzbe4of/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-apzbe4of/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.verified.json",
+      "original_bytes": 7449,
+      "original_sha256": "d7cbca7e171e616a6c988f26c0838f2c688b75dc2afd0c2ec37d6b79a6ff5675",
+      "archive_bytes": 1294,
+      "archive_sha256": "5c5c4a7f45b4f5ac9a43a536f56805009969739f9ecd5f482877d295a4f8a924"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-bd7ofyfc/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-bd7ofyfc/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 791,
+      "original_sha256": "dbf164c946017d142ff884cdb05c19f63acc8c995d43e8a550c8af7bdd9be3ff",
+      "archive_bytes": 353,
+      "archive_sha256": "8c759af854f2510755ea4f6b66fb9c74cf43a58dac10baac3d16a4138f81e7b1"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-bd7ofyfc/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-bd7ofyfc/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2829,
+      "original_sha256": "1ffb20c4044e7b4f66431d4069ba7dbf07afe19663fcfd221fbd4fccd3ef4e6a",
+      "archive_bytes": 808,
+      "archive_sha256": "e5dffcce7deccc542111af48b8946c841a07397ec6f758bc7bf00b3c76fe6691"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-efjycg29/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-efjycg29/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "05e834efdf92c74935aaefe6e32d8c59d899ab0abf68c9615b095a21e1569186",
+      "archive_bytes": 361,
+      "archive_sha256": "f2dce644a8d809dd933172c25d5bdd1c54227e0dcf9bc3c4a8228cfb0d185b36"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-efjycg29/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-efjycg29/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2844,
+      "original_sha256": "4ab9c8f613b34923161304b4ae0e5b59f8bd45d19515f0833f58911891d7d598",
+      "archive_bytes": 815,
+      "archive_sha256": "bdd996f2ccf892ee2a56bbb7e7ee89982bf92322afc9d31ee0e0e88f3ea88b85"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-hujs_0bo/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-hujs_0bo/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 791,
+      "original_sha256": "ab04c80d59918cab8f64d3f8e0ac9970194f2827fd9331b0746b90278666c8f0",
+      "archive_bytes": 353,
+      "archive_sha256": "c4fc3b48165eef046cd018d3d3260feb25ca8c319013bdad84d09809e31d0f93"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-hujs_0bo/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-hujs_0bo/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2829,
+      "original_sha256": "3872c8e47dc0459981b396b5584eba8439cb3bfd4cacaab4861f90b702d0e8b3",
+      "archive_bytes": 807,
+      "archive_sha256": "68642644312df52874103f70510fc507fc8085a940a54ac455988cfbfa9ef8bc"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-hvynexav/actual-production-encoder-01.bin.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-hvynexav/actual-production-encoder-01.bin",
+      "original_bytes": 408,
+      "original_sha256": "21b4ee0f990a9d0d6b47311d9ad8755ea700ec99c60b0d961b840dc8d905e466",
+      "archive_bytes": 246,
+      "archive_sha256": "a32d7026be7a20afe31350688c714cde2759b6b26c27f39603ac5a11ffdd8949"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-hvynexav/actual-production-encoder-01.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-hvynexav/actual-production-encoder-01.json",
+      "original_bytes": 461,
+      "original_sha256": "0c32610c794275bd21a9574a86324bfa0ee5a43fe2ca3a0e916a1fea522b0ef3",
+      "archive_bytes": 252,
+      "archive_sha256": "f8ab5e1021c174e7c29a0f884edd40fcb7534b8fa64f8ecbee89abc5835607af"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-hvynexav/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-hvynexav/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "f9cf4f276e2b95f5b48356178cf722c153b123172efafda80701aca99b643baa",
+      "archive_bytes": 361,
+      "archive_sha256": "38d447e73aa8fdba5bd91a6181b80e20cbfa30299d16903c67119c28879e0c3b"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-hvynexav/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-hvynexav/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2881,
+      "original_sha256": "b38254cddf3334403223c3e55545795ddca85dbcbef6e856af283c31ac0b9964",
+      "archive_bytes": 833,
+      "archive_sha256": "4a41ae7ecd38f941a1ff4b726821fb406c284591c2cf62f7968e9ee33387ddce"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-hvynexav/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-hvynexav/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json",
+      "original_bytes": 9955,
+      "original_sha256": "781c382123fc02ceea73ca22d296f9e9988d62617a1ca528290382d272e86bf4",
+      "archive_bytes": 2160,
+      "archive_sha256": "8efe307e83fc910fa2e53cee7a72e16c01286aa5e22cfa46cac6ee8facfa902e"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-ilv0i5ch/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-ilv0i5ch/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "3d8ce71ec8b784565d710fe11a18e369c4f5b186f63068e1074795da32da3b68",
+      "archive_bytes": 362,
+      "archive_sha256": "ac25df537d1594fe3aa373ffd5a6a26138880719d6c4c5a45d70660f6862bd11"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-ilv0i5ch/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-ilv0i5ch/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2847,
+      "original_sha256": "5827218d7c9bbe7a8c09d1e9eb1c9202ca240234c3387062a9d2d7b408304147",
+      "archive_bytes": 814,
+      "archive_sha256": "8c07d2ece7874cf6062fae48fcf08cf6132b35589185b3457de31cfe7551a58d"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-kk17yhbh/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-kk17yhbh/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "e67f05684ad9c33c14ed7d1fe98cc9668e8a76c57930b06ec037f3b0ff6e4f96",
+      "archive_bytes": 361,
+      "archive_sha256": "81361fe5bd3d6d5519389353e48695991976903ef01337a66098b3f8818622c0"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-kk17yhbh/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-kk17yhbh/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2844,
+      "original_sha256": "66c4cb33638bf9d3bb46a9641553d6c1e245ad45b3d875aff50923e2facbdac3",
+      "archive_bytes": 814,
+      "archive_sha256": "492107acaf61fb9107ffdc46fa0a0f8bf4178c60df9321f00d19bcbc0b63ae27"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-n35eynbr/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-n35eynbr/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "31ca49303c18bc3267422e7e6234184a9769a74cbf82acfcdb09d21114b2a31e",
+      "archive_bytes": 360,
+      "archive_sha256": "c50e63146a8c1853570b6ebae4802346c5e4a5d2ae493d98787e7d66e9996240"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-n35eynbr/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-n35eynbr/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2845,
+      "original_sha256": "bb0a9ef6b68bd2f35fa94bb3a3cfb1fa2425d450b2824443e6d9f4d318986a38",
+      "archive_bytes": 812,
+      "archive_sha256": "36bf74b2cb5fa6877a81c882edc1bff942c52e8d5cf024567c83fbe27250ed7b"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-noy7c9dw/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-noy7c9dw/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "cdcb8f3840058af6566213400d0a7ac6178ae3accb5a0a048bdc0b551bd4edeb",
+      "archive_bytes": 361,
+      "archive_sha256": "696ec85ec6f69453f32933ab1d3d6a444388fa2fe60ad315fa620ce4e0209eb0"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-noy7c9dw/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-noy7c9dw/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2844,
+      "original_sha256": "ecad495b367d903f458bfda21a7714f227b47ca7c9adf5f6036b5cca8e2b9a43",
+      "archive_bytes": 814,
+      "archive_sha256": "d63f429c949dd9495bbd82ab1979ee90f1b3a8ad0a9243265697229c365b1c81"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-oms3a19d/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-oms3a19d/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json",
+      "original_bytes": 727,
+      "original_sha256": "5ac058da0a3397e98c3a15ad00cb34a49a2fb2f82b729f96fb227ef229161c7d",
+      "archive_bytes": 346,
+      "archive_sha256": "3a29b21b8e594b07a3f8c4752b3bfc4688e8733b3f25769125162e9e3a0313bb"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pfh1a2bf/ingame-decisions-opener-actions/23293f50b6920cfd854b232401af09e00387a2632ba2a6f15c8aa0660f24dd3b.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pfh1a2bf/ingame-decisions-opener-actions/23293f50b6920cfd854b232401af09e00387a2632ba2a6f15c8aa0660f24dd3b.claim.json",
+      "original_bytes": 561,
+      "original_sha256": "06c01f7c3b13473f56bac77ba402ffd029c2b2152bfd19ec062e9aedb359720f",
+      "archive_bytes": 300,
+      "archive_sha256": "04b13d1713c6c9e11f6cd7876641009d20264b0992724ed4ca0ef459997db239"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pfh1a2bf/ingame-decisions-opener-actions/23293f50b6920cfd854b232401af09e00387a2632ba2a6f15c8aa0660f24dd3b.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pfh1a2bf/ingame-decisions-opener-actions/23293f50b6920cfd854b232401af09e00387a2632ba2a6f15c8aa0660f24dd3b.claim.result.json",
+      "original_bytes": 875,
+      "original_sha256": "25861d3731af7e3c6a794112c1bd8f44b35e38ed45f931e8b5f799305b82af76",
+      "archive_bytes": 421,
+      "archive_sha256": "a18b55948876b0c99e576bfc1c9e026a8348748e08395448e2de16a0d7cb7112"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pfh1a2bf/ingame-decisions-opener-actions/23293f50b6920cfd854b232401af09e00387a2632ba2a6f15c8aa0660f24dd3b.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pfh1a2bf/ingame-decisions-opener-actions/23293f50b6920cfd854b232401af09e00387a2632ba2a6f15c8aa0660f24dd3b.claim.verified.json",
+      "original_bytes": 2647,
+      "original_sha256": "fa98285abe3026331d3e184617c8c5b028c5b290abe2d453d73305d39395d37d",
+      "archive_bytes": 852,
+      "archive_sha256": "9e986cee0b0b62c768db60b5c82fd11db9c56ad56c0561291e648beb28cf80b5"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pfh1a2bf/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pfh1a2bf/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json",
+      "original_bytes": 561,
+      "original_sha256": "555009df7adb04b140dd23f09dd93c9a80939033fb85b79b8a5b775af92e0c60",
+      "archive_bytes": 299,
+      "archive_sha256": "5b30ece90345e6796194b3a372f8c5d4b49d6b0f9a6033c781783872a4a66dde"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pfh1a2bf/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pfh1a2bf/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.result.json",
+      "original_bytes": 875,
+      "original_sha256": "ab34d73f07d2cf97b0436d40c8d65de0aa471803100c6dfa5f6779344008ead0",
+      "archive_bytes": 420,
+      "archive_sha256": "f43c92600fbb67235688e3f0e932668c4919139e7b0389dba3961abb94a79a41"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pfh1a2bf/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pfh1a2bf/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.verified.json",
+      "original_bytes": 2647,
+      "original_sha256": "b4ed4491bc3f0471781a68f82a71a4eb005eb08e3cfe97fa81040ab7cf3251f8",
+      "archive_bytes": 853,
+      "archive_sha256": "7c5235ff2768bcbb706b6e0ba4a7867da6bf7a4f9714e738d2fa1ff8b6fc61b4"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pulxu0o9/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pulxu0o9/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "05ac2e89e8288bc3b68c8e62e90e7227882097842036f8692fa600eeb334b512",
+      "archive_bytes": 362,
+      "archive_sha256": "061dde9c72bd89ca69c767b9d654452ad9a800f245baf3445a2da77cf0e98f45"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pulxu0o9/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pulxu0o9/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2844,
+      "original_sha256": "6294381c1e480475d4adf8ec57e3430edb4ca15c8adfea05cb07c219719e51a8",
+      "archive_bytes": 814,
+      "archive_sha256": "649ec789e39669c1c8150cd81c688150951e9dbfb8d5e99e5f7a1f4ab84afdd0"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pv5_plj5/ingame-decision-item-actions/785030dc8a470207cc543ccfe6fe5c3ab401e028b910a5376d2092c3e03ae01f.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pv5_plj5/ingame-decision-item-actions/785030dc8a470207cc543ccfe6fe5c3ab401e028b910a5376d2092c3e03ae01f.claim.json",
+      "original_bytes": 791,
+      "original_sha256": "4f2a36174918a990936a22ab68937c2a15eabe435ecf6495596ebe4dc38301ce",
+      "archive_bytes": 354,
+      "archive_sha256": "60dd2c77c7c9303c1c0eb4ee023be06086dea2ed3ca84e483ef4a0b232674c7f"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pv5_plj5/ingame-decision-item-actions/785030dc8a470207cc543ccfe6fe5c3ab401e028b910a5376d2092c3e03ae01f.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pv5_plj5/ingame-decision-item-actions/785030dc8a470207cc543ccfe6fe5c3ab401e028b910a5376d2092c3e03ae01f.claim.result.json",
+      "original_bytes": 2829,
+      "original_sha256": "802a8361a07ef402ee691f8c834f96740cc48b8c84585430d64d65bc4675706b",
+      "archive_bytes": 808,
+      "archive_sha256": "17402346e13fcb56cdefeb5385950838939f0bf02d9707eda5fa0f8050ffff70"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pv5_plj5/ingame-decision-item-actions/785030dc8a470207cc543ccfe6fe5c3ab401e028b910a5376d2092c3e03ae01f.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pv5_plj5/ingame-decision-item-actions/785030dc8a470207cc543ccfe6fe5c3ab401e028b910a5376d2092c3e03ae01f.claim.verified.json",
+      "original_bytes": 7856,
+      "original_sha256": "3df8a2cb765583fc2565c6112a352e38d739de1e8618a2c9a425feb1d197ccbe",
+      "archive_bytes": 1657,
+      "archive_sha256": "99dd7e68a1d02d09c6f29b9e1e533db8d9b5a7e257f3d20ac6c476d29285e754"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pv5_plj5/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pv5_plj5/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 791,
+      "original_sha256": "cb1ef025a1836e7dcd9e7241f4544d18c5e74258609bbf6e364d94cca5b82b94",
+      "archive_bytes": 354,
+      "archive_sha256": "10a80424af89ce15e05c374454bc7e936c266f9b492e98845179bb2d16f19b34"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pv5_plj5/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pv5_plj5/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2829,
+      "original_sha256": "a0c4c21b68ca1778b0ff0ea63823577bb8ce45b208d43d664ee6f99b78eaca02",
+      "archive_bytes": 808,
+      "archive_sha256": "dc9da1122d256553ceee8260523680eb701fbcb896f4cc2fecd13740fda73009"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-pv5_plj5/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-pv5_plj5/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json",
+      "original_bytes": 7856,
+      "original_sha256": "a64271778ae9e2cdc5669770578286654ddc8c2b7ca80246d34b9160b3ae0096",
+      "archive_bytes": 1658,
+      "archive_sha256": "fe717cb2265cfea36186d0d7f8a07be226d72dadac8146d73ae578fd637a6c59"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-rwtl692v/actual-production-encoder-01.bin.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-rwtl692v/actual-production-encoder-01.bin",
+      "original_bytes": 393,
+      "original_sha256": "6845053d278e677ef27f85da0ef01d0dfbae937e663c1343c4a68999ab5d72e6",
+      "archive_bytes": 241,
+      "archive_sha256": "d11680d5e3d92035216aef67a68a55e31c2f96e0237323c28a729231609455c4"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-rwtl692v/actual-production-encoder-01.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-rwtl692v/actual-production-encoder-01.json",
+      "original_bytes": 446,
+      "original_sha256": "310ca068396ba5d02e143b45a9367362bb1cbb8288653b040d871dd7e17752ee",
+      "archive_bytes": 246,
+      "archive_sha256": "af7a3b5e9707b7bd2837315f1ec15db2cfab5960684d94f87d56b8687badc4f0"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-rwtl692v/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-rwtl692v/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 791,
+      "original_sha256": "49829d4aa3ce62db03a06d5c18eefc0fa8e753eb6380b3af6b28ebfe947121a7",
+      "archive_bytes": 355,
+      "archive_sha256": "6474c70726fbb87051a6a9514c27fa9244448ce3e2774b481bc93b57f69e19a5"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-rwtl692v/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-rwtl692v/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2866,
+      "original_sha256": "21f88fa855154b35181cedcc655abb38696a1ccb1b0d96bd38b2e93b08c83ddd",
+      "archive_bytes": 825,
+      "archive_sha256": "2244a9af37e8238ad4c653e3e63737b509319b9b4ee6ea54c42bdc852a63ddd4"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-rwtl692v/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-rwtl692v/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json",
+      "original_bytes": 7932,
+      "original_sha256": "e05d0b5647f707cd00a093fd264a98ed0fa23a2f506d6fe3bd76994d0e986e18",
+      "archive_bytes": 1677,
+      "archive_sha256": "259732011b72268219b9feea4805e626ba5bbf03f816ba7c0e7b6e57e3c25a40"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-sfmoi4hi/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-sfmoi4hi/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "b74550eba0063bad4b6efc35d53a67b3b4d1127bbb02eed5c98bb7c2952ae932",
+      "archive_bytes": 361,
+      "archive_sha256": "2939584f592c7eb4558ef46cb665c6ffd162d7dbf248c19fd3cba3b677d20167"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-sfmoi4hi/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-sfmoi4hi/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2844,
+      "original_sha256": "5bb87aafcb59d8f5d78e0b8de5b76ae946760ec2ae0351d34b752fa4f695ed1b",
+      "archive_bytes": 814,
+      "archive_sha256": "b4d8125883f6061849817de31578ce84465d8fef57f433462cb008f6ce3c0154"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-sfmoi4hi/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-sfmoi4hi/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json",
+      "original_bytes": 9956,
+      "original_sha256": "6da82908476c11a70e432805315e41cb92c5f09e09666ffd1606e5c5be8d2e37",
+      "archive_bytes": 2161,
+      "archive_sha256": "d62b77154eac71dfaebc7353456250da6226b7dd60f0727f8248efe07fafd56a"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-sg72fnoa/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-sg72fnoa/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "0fb686259492350411eb0a0c1c7a1086ddf8490fd32b1fcc2ff895e7a1ab1c83",
+      "archive_bytes": 361,
+      "archive_sha256": "dc4df0b4cf894640a17e74410a5487f28dbd4c456098e2118190229044882b9c"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-sg72fnoa/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-sg72fnoa/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2844,
+      "original_sha256": "e015d5bea0de35a58c420adcf9b3d7318d869f8dade1f17034232b736f0cf078",
+      "archive_bytes": 814,
+      "archive_sha256": "56077507ed4dd6c5cc97e2a8647b749930cbb7f21fddcbdca5b87d1608f1c2fb"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-sw577ese/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-sw577ese/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 791,
+      "original_sha256": "3acc32978baac9cb56b14476bff78f90294c69f18244c155b055d863f5aac33d",
+      "archive_bytes": 355,
+      "archive_sha256": "46208c4ed2bb25674ccb817e7e1878132175fef82acd39f5bda7a02f53b42c2a"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-sw577ese/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-sw577ese/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2829,
+      "original_sha256": "a6eb53e3f6079ff04d12bd7c8ad1c3322b30fc83e53fc3a8e5ee9a6181c469c3",
+      "archive_bytes": 809,
+      "archive_sha256": "1ebe3840e953c2b760e41c456b010687df426651a4ab85d3accca0675d1bb36b"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-sw577ese/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-sw577ese/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json",
+      "original_bytes": 7856,
+      "original_sha256": "9c7e0ab25e9073a021a0e91599ed9ba6973fec3e7a422dbc20727188a06dab58",
+      "archive_bytes": 1659,
+      "archive_sha256": "5d1aecd887b10fec44bc26bb7ec0d84efc96e57a0286ad4ece7b0466b60c6040"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-tp32pqa2/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-tp32pqa2/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "6e028e99dffdd4852725531ccf175124960204814e649da2302421d7e7e06509",
+      "archive_bytes": 359,
+      "archive_sha256": "a04f0d79ab341b7ef5d9ae9bb67051f87bd0d37e1046962e05311b8e3a9752ec"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-tp32pqa2/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-tp32pqa2/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2844,
+      "original_sha256": "f4412f17a2efed76e7ca76f8b9579f56e950415a8a35410aa1a99be2baf69623",
+      "archive_bytes": 812,
+      "archive_sha256": "bc086cdd760cc2ae3896e602af5aee494c0ab8cfa43053b1c21a8c540361ccaa"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-tp32pqa2/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-tp32pqa2/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.verified.json",
+      "original_bytes": 9879,
+      "original_sha256": "b72f0c602d66472a088e83e55680a6811d02c6ed64142673cc2f12950f31bc1a",
+      "archive_bytes": 2140,
+      "archive_sha256": "17c55bdaa168486b09821deaecb266900da6485f6263f34de2a2a3b476c463ea"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-v19a0136/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-v19a0136/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "d9788c8b0081a8313e210a85676f705e68f842186e2260aa3f6a1392c3da57d0",
+      "archive_bytes": 361,
+      "archive_sha256": "b1904216e25e55cd8fee414c5f5e05bb72c827c5a72af0b5a6c0a8be20d9f6ed"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-v19a0136/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-v19a0136/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2844,
+      "original_sha256": "7671a0e92c511af3b35a3ef77f9ddc21d5aa1b62b836bc63d00ef634e48ce6ca",
+      "archive_bytes": 815,
+      "archive_sha256": "05b9793175a0d265c736c6406eeb90b701d53edf6dddceac63c0bb7d6159f729"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-wpoubaol/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-wpoubaol/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "fe6c5152553c317b0934d97dd4b3801fccaa743717606e704c46124a7080a484",
+      "archive_bytes": 362,
+      "archive_sha256": "f8a04b22376b8eb5fa9e42a5df7b1d6639be6373efed43e80bbbc68a143ea50c"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-x4k7bdlw/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-x4k7bdlw/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "ed52c5056a90d2687b428cc452e4a3c5d2c3bc5bc52ee55bad6653898cededf8",
+      "archive_bytes": 361,
+      "archive_sha256": "55984f22edfa91d823f49fbb23d987f8c69e1279f4ec6aa350856c305eed4abb"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-x4k7bdlw/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-x4k7bdlw/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2845,
+      "original_sha256": "8f7a92a5f672b5cf3a5ab171bd5dde15b6d15dd251f7a3007b4ecf322fd668bd",
+      "archive_bytes": 814,
+      "archive_sha256": "8b4ef41b5922b508b3a06adf20d443470612e0d0c8a196695b6d3f5a97ba88b6"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-xg_pfut_/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-xg_pfut_/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "eb53ca0f5417bb906c1bbf2cbb4b1145a542f9ddb4cd73413263e27785d8614a",
+      "archive_bytes": 361,
+      "archive_sha256": "890f40f022a0460bb3221a59ccf55d8eca43c03c68622dcb68e25954890c125f"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-xg_pfut_/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-xg_pfut_/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2845,
+      "original_sha256": "35efc8939cdf049ff14b1ac9b40100fc5aa79ecccc0fcc056083df198da38109",
+      "archive_bytes": 816,
+      "archive_sha256": "dcf23aeb611cbd8605cdacf92eea5fbe8f74de1742532ffce3065489cf608e74"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-ytubhd7g/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-ytubhd7g/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "446ad2a29a1edcbd7e932991ecfcf36589431dab9459e0abadd2314a0163c28d",
+      "archive_bytes": 359,
+      "archive_sha256": "8a37c84bcb00e418419629566d8e14e21b18b1594ff4c974d25780bee572d591"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-ytubhd7g/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-ytubhd7g/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2845,
+      "original_sha256": "d7c903c815ab82540966598c37a6c67cad6e861e00bb9d7eb98d15203e20a8eb",
+      "archive_bytes": 812,
+      "archive_sha256": "93f7294029d37038eb4edb4bf96743bfac9c7b21177053cf9d4ce7f405498e5a"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-zlyd8prt/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-zlyd8prt/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.json",
+      "original_bytes": 806,
+      "original_sha256": "284af658456b99355726952b50bf6f19a1092470a41159376d53739fd767ea7b",
+      "archive_bytes": 361,
+      "archive_sha256": "55aacd8b06a38d76751e7c9d120dc99a9131adfb057b182583ac16f4d10f7147"
+    },
+    {
+      "path": "python-003/checks-003/claims/synthetic-outcome-zlyd8prt/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json.gz",
+      "original_path": "checks-003/claims/synthetic-outcome-zlyd8prt/ingame-decision-item-actions/ce3712187f2c9b433b6cfb5b2ed565c3919e2593ebd0570830cf71545a1e90f2.claim.result.json",
+      "original_bytes": 2843,
+      "original_sha256": "ed5f99e8bd865a216dee7fda1c18ea7f04a1b6f29d28a2a43272ca3516996c96",
+      "archive_bytes": 815,
+      "archive_sha256": "24717b16b7da4a37340b2e68585aa83988ca8dcff5f6c86a3dd944ee1a1e952a"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-56yropat/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-56yropat/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json",
+      "original_bytes": 727,
+      "original_sha256": "ac508068b838f8c8f336238f5762a3685752d548660a545b7ee6ffc07cdab194",
+      "archive_bytes": 346,
+      "archive_sha256": "d977b28405dd6e1b09a1f164e48e01b5b2559ff308df04fe288105164a7685a4"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-_1n89ioz/ingame-decision-item-actions/51e1800fe10eee43d5ebd8b73411166f8513335d81d9a16269560955a21a9037.claim.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-_1n89ioz/ingame-decision-item-actions/51e1800fe10eee43d5ebd8b73411166f8513335d81d9a16269560955a21a9037.claim.json",
+      "original_bytes": 718,
+      "original_sha256": "dc5560cbf1ad53a424057dd711692bf3a3bcb16127ed3da2fd9b29d6a7ec84cb",
+      "archive_bytes": 343,
+      "archive_sha256": "53ba4ca49468bef93de0f463b385b4c1c726cb87e74adbc8b45efe8e2fa79e10"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-_1n89ioz/ingame-decision-item-actions/51e1800fe10eee43d5ebd8b73411166f8513335d81d9a16269560955a21a9037.claim.result.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-_1n89ioz/ingame-decision-item-actions/51e1800fe10eee43d5ebd8b73411166f8513335d81d9a16269560955a21a9037.claim.result.json",
+      "original_bytes": 2741,
+      "original_sha256": "836801a8bf721b61e269cd008a7983ffc39b389c0d556416948974e866225dfc",
+      "archive_bytes": 780,
+      "archive_sha256": "b2a9302b3bab882169642fc738969abd88d0ae5c70932442622a67cd7b487128"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-_1n89ioz/ingame-decision-item-actions/51e1800fe10eee43d5ebd8b73411166f8513335d81d9a16269560955a21a9037.claim.verified.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-_1n89ioz/ingame-decision-item-actions/51e1800fe10eee43d5ebd8b73411166f8513335d81d9a16269560955a21a9037.claim.verified.json",
+      "original_bytes": 6884,
+      "original_sha256": "ac5748097302585fe2f1db5c1d49cdcdc0fba95c69513a4aa9d448ba46416601",
+      "archive_bytes": 1393,
+      "archive_sha256": "9765c70d16779cde1e6e5cf39e25bd3fa4259d819c0fae49222a7b84e41c69dd"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-audy8fn2/ingame-decision-item-actions/51e1800fe10eee43d5ebd8b73411166f8513335d81d9a16269560955a21a9037.claim.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-audy8fn2/ingame-decision-item-actions/51e1800fe10eee43d5ebd8b73411166f8513335d81d9a16269560955a21a9037.claim.json",
+      "original_bytes": 718,
+      "original_sha256": "69f81da9437007a61e6788354dd63baa3c3deecea413355560319c88611a6d6a",
+      "archive_bytes": 342,
+      "archive_sha256": "0eafb8d92bfc067b758af767a39bd47b2aa656225840cc24231fee9da013fa1c"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-audy8fn2/ingame-decision-item-actions/51e1800fe10eee43d5ebd8b73411166f8513335d81d9a16269560955a21a9037.claim.result.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-audy8fn2/ingame-decision-item-actions/51e1800fe10eee43d5ebd8b73411166f8513335d81d9a16269560955a21a9037.claim.result.json",
+      "original_bytes": 2741,
+      "original_sha256": "db17cf0a8583c302b9d67e014d316fbad745bbc7bc5414dc1c68e21f83ff344a",
+      "archive_bytes": 780,
+      "archive_sha256": "07aec2b78a72e6b2af99e4fe40b82e9475067a062f88a54a34d4c1af72f1fb70"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-bbmxshae/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-bbmxshae/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json",
+      "original_bytes": 727,
+      "original_sha256": "6714fb32fdb25ba440b7bd5a6073ba411093ac2a892795c9c18817e734d36b51",
+      "archive_bytes": 346,
+      "archive_sha256": "6f302e02ec1c7cf534dd7651e675b88a6f9bf6aece3e9d3843d76b44e68b6caa"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-bbmxshae/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.result.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-bbmxshae/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.result.json",
+      "original_bytes": 2710,
+      "original_sha256": "30dbe29942c7ac7b95d8b73431d72e7984d8943331e311dc5f538f1de79acabd",
+      "archive_bytes": 781,
+      "archive_sha256": "3f3c043ac3882d0bb2805e7d1efd62d64246342d5535ce3394625e076c2fb548"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-jnwa2cp7/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-jnwa2cp7/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json",
+      "original_bytes": 727,
+      "original_sha256": "524f2226d43d921d967e79809bb2e3aacfec7f92eb92692dd786db56a7aaec5c",
+      "archive_bytes": 346,
+      "archive_sha256": "8397827fb669ef4d552050e54f7ff76dd155ea47006b561407802f8712e3f6c6"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-jnwa2cp7/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.result.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-jnwa2cp7/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.result.json",
+      "original_bytes": 2710,
+      "original_sha256": "a365fd95ccda800e97d4651dcb4cbddc333e7dcdde9fd81ca22719afc6d609fd",
+      "archive_bytes": 784,
+      "archive_sha256": "d26c75cb54c46e3c784de4eedec092771eace9561d68fabc0e3ce3b4a4b7878a"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-ph2ykisq/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-ph2ykisq/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json",
+      "original_bytes": 727,
+      "original_sha256": "71458b1cca6b523bde397f691be6003489135f66107cd827333d39aa54abe5dd",
+      "archive_bytes": 344,
+      "archive_sha256": "37d6697b2cc04d06ddcf7b1a7d6d9aeb7d188f69f67392d7c050c4e34db192cc"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-ph2ykisq/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.result.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-ph2ykisq/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.result.json",
+      "original_bytes": 2738,
+      "original_sha256": "a5d074069488dd2fd315a3a91595a6e21680022db7bb0a6605dcc9b6058950a7",
+      "archive_bytes": 775,
+      "archive_sha256": "ce7ea9ebf14496697c2f9003fe2a4a673fc1b5601ed23a61f85f920f7cab1f66"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-ph2ykisq/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.verified.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-ph2ykisq/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.verified.json",
+      "original_bytes": 7521,
+      "original_sha256": "ba401a9177bdae7a7f49249b8207490183b382ce562aa6351316b3881b9a0807",
+      "archive_bytes": 1267,
+      "archive_sha256": "088819aba9ba0c293c5cec41634e91f5ef4ad88f35252fe933e3388de75fd2a5"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-s478rz0_/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-s478rz0_/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json",
+      "original_bytes": 727,
+      "original_sha256": "78edfda85881f3ef22a9101886e89c585207e4d80b3c012fa8c03413ff3f7645",
+      "archive_bytes": 345,
+      "archive_sha256": "35303611dd9a05b1197c6b94c788e1f1f8b33224aa05c86b563ff370c7558481"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-s478rz0_/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.result.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-s478rz0_/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.result.json",
+      "original_bytes": 2710,
+      "original_sha256": "edf71455eebf2c088b19d4835cb2d65b0fc2afa95458a0c880b7ea25c57fb029",
+      "archive_bytes": 784,
+      "archive_sha256": "5b79fac4bc7e43041c23cb02a4e044a9c7da0e2d1fe3775dd557f50bff86beaa"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-tyc4lfg6/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-tyc4lfg6/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.json",
+      "original_bytes": 727,
+      "original_sha256": "9f5a791d71648deaf9743b84fae85d41bd8771a7852ebeb729f7eb0d4fb4e4f6",
+      "archive_bytes": 347,
+      "archive_sha256": "6a78903a115102e05fc57a4ed766ac148c164682cf7fd051ad211f82dcb0cb75"
+    },
+    {
+      "path": "python-003/checks-003/legacy-claims/synthetic-decision-claim-tyc4lfg6/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.result.json.gz",
+      "original_path": "checks-003/legacy-claims/synthetic-decision-claim-tyc4lfg6/ingame-decision-item-actions/b7c677e445b43a5d164bafb4fa48165ad96ecd8be733163b64efdead45a11ec0.claim.result.json",
+      "original_bytes": 2710,
+      "original_sha256": "683d73ce96f7107ffc91145c76b1aae6be9f2328fa123accc87c0c9edaf4bc08",
+      "archive_bytes": 784,
+      "archive_sha256": "193dd626c7cf9aded3709e05495411429e90c50d0d46358a804587734b64542c"
+    },
+    {
+      "path": "python-003/checks-003/opener-claims/synthetic-claim-75hnkhc_/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json.gz",
+      "original_path": "checks-003/opener-claims/synthetic-claim-75hnkhc_/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json",
+      "original_bytes": 561,
+      "original_sha256": "115a7fa745585615add336cce11ce2590e857da1de4fc7c14a74a1d506dbe2d2",
+      "archive_bytes": 299,
+      "archive_sha256": "7a6afb05d334191654985a621fd9741dab34f6f9adadbba0c77c176fcba50c33"
+    },
+    {
+      "path": "python-003/checks-003/opener-claims/synthetic-claim-75hnkhc_/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.result.json.gz",
+      "original_path": "checks-003/opener-claims/synthetic-claim-75hnkhc_/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.result.json",
+      "original_bytes": 876,
+      "original_sha256": "7365fe631c5f531120fd10674f8671bfddb1ea1e7aed624860cd475bf3d63adb",
+      "archive_bytes": 421,
+      "archive_sha256": "ef1f43cedc2da9303f394d851138e9fcd5034d4e7182dd301caabae589c9691a"
+    },
+    {
+      "path": "python-003/checks-003/opener-claims/synthetic-claim-7zz8a7_q/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json.gz",
+      "original_path": "checks-003/opener-claims/synthetic-claim-7zz8a7_q/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json",
+      "original_bytes": 561,
+      "original_sha256": "45d030200530922f568e95539c53006d0684c3ee58a162a7c9adc08683033e0b",
+      "archive_bytes": 299,
+      "archive_sha256": "6b97ca0d8d445f1b754b77eb62bc2e0d245679451f36b3e80830de8e4f93d99b"
+    },
+    {
+      "path": "python-003/checks-003/opener-claims/synthetic-claim-hj6f4r5n/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json.gz",
+      "original_path": "checks-003/opener-claims/synthetic-claim-hj6f4r5n/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json",
+      "original_bytes": 561,
+      "original_sha256": "a200243def1b5251d34a9cfe940735a6211c1ab172368bb055a153c3e7f84850",
+      "archive_bytes": 300,
+      "archive_sha256": "498ef258bdc9b3f1b672eb2f4abc55cd802dd5ff79c3faf8671a1b2983ab0d5f"
+    },
+    {
+      "path": "python-003/checks-003/opener-claims/synthetic-claim-hj6f4r5n/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.result.json.gz",
+      "original_path": "checks-003/opener-claims/synthetic-claim-hj6f4r5n/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.result.json",
+      "original_bytes": 875,
+      "original_sha256": "7a0e3975f1298e17901cda2bdfa11ea794870483a6b0a0f001c8ae26c5719e59",
+      "archive_bytes": 420,
+      "archive_sha256": "ce7bdf52e1b4aa139e9d5b764c8e037764c5fe7531380df1a18d4dfd13668b6a"
+    },
+    {
+      "path": "python-003/checks-003/opener-claims/synthetic-claim-hj6f4r5n/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.verified.json.gz",
+      "original_path": "checks-003/opener-claims/synthetic-claim-hj6f4r5n/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.verified.json",
+      "original_bytes": 2652,
+      "original_sha256": "a944c392f7f2b56b93a7532c20d630ea535e42bb75a3d9f9c98556b51bb96d1d",
+      "archive_bytes": 854,
+      "archive_sha256": "1e4511141d257324ebb0423d1e71e23d1147c28260a53e7bec4b7140bb33fb15"
+    },
+    {
+      "path": "python-003/checks-003/opener-claims/synthetic-claim-m7_pzh6r/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json.gz",
+      "original_path": "checks-003/opener-claims/synthetic-claim-m7_pzh6r/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json",
+      "original_bytes": 561,
+      "original_sha256": "8984ed1f744aa8044903b92d9eeff35884f3d3f1a1217eabfb3fbc55a9e2a319",
+      "archive_bytes": 297,
+      "archive_sha256": "f729ab00a1a5fa039e3cf96efda78cb4c6bd21e4999892b7ddb96334cb36ead4"
+    },
+    {
+      "path": "python-003/checks-003/opener-claims/synthetic-claim-m7_pzh6r/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.result.json.gz",
+      "original_path": "checks-003/opener-claims/synthetic-claim-m7_pzh6r/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.result.json",
+      "original_bytes": 876,
+      "original_sha256": "8adc2a149dad6be33626ae87787f5ad84baeb46dbcd813af5e42591806da535b",
+      "archive_bytes": 420,
+      "archive_sha256": "afa1199b184e07ed4a7f8374f0c1b7d37057e2e30657e274468b9ff438a0e416"
+    },
+    {
+      "path": "python-003/checks-003/opener-claims/synthetic-claim-tikke0e1/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json.gz",
+      "original_path": "checks-003/opener-claims/synthetic-claim-tikke0e1/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.json",
+      "original_bytes": 561,
+      "original_sha256": "c01d11ef67bbb69f053e31a07bc10f32bc4c587f0560c3474ff1fe90d4715c9d",
+      "archive_bytes": 296,
+      "archive_sha256": "89b051e1c01d734bc44ccb2a8dd3f8b79e90febcc706e89c9e9373c3fe26e106"
+    },
+    {
+      "path": "python-003/checks-003/opener-claims/synthetic-claim-tikke0e1/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.result.json.gz",
+      "original_path": "checks-003/opener-claims/synthetic-claim-tikke0e1/ingame-decisions-opener-actions/e2a8d20293b0eef032b116d7050ed4b10616f4a7040e5f4274f0a33b8823b6ec.claim.result.json",
+      "original_bytes": 875,
+      "original_sha256": "bcaf210148e64cfc62501bf1f923a7ec06186955a318771f9b006d54797e9d4d",
+      "archive_bytes": 419,
+      "archive_sha256": "04b217779a50168b4b19cf376bf054ac0cc33e52d2c84b12de1a0b263630e2b8"
+    },
+    {
+      "path": "python-003/checks-003/REPORT.json.gz",
+      "original_path": "checks-003/REPORT.json",
+      "original_bytes": 1990,
+      "original_sha256": "f919ee2573f979afaf3b333692f943977ce24cecea9f939cf029cd1c2e263af3",
+      "archive_bytes": 560,
+      "archive_sha256": "38dc877a19cb71a53e78949b3fbb072003862e3e2ac66f567f1f373c44e778eb"
+    },
+    {
+      "path": "python-003/checks-003/tests.log.gz",
+      "original_path": "checks-003/tests.log",
+      "original_bytes": 11334,
+      "original_sha256": "3754874cd74f7817dedb6323b61e373b1ccadeb36af8969bad53d8292f11a071",
+      "archive_bytes": 2049,
+      "archive_sha256": "b64e0d12478ec94ebb6931db24ea2019229da7b74f8c8c1a15d4243205869559"
+    },
+    {
+      "path": "python-003/CURRENT-BEFORE-VERIFIED.json.gz",
+      "original_path": "CURRENT-BEFORE-VERIFIED.json",
+      "original_bytes": 3004,
+      "original_sha256": "0c5c181b0f11f04da9cdffba4cd78b3cbf98e76d831ca40087e3a9bf7d6d2c6d",
+      "archive_bytes": 810,
+      "archive_sha256": "02475004a652526c62d2af58fe23cb0d380bc8667057dc45fecb8801fd818939"
+    },
+    {
+      "path": "python-003/DELTA.json.gz",
+      "original_path": "DELTA.json",
+      "original_bytes": 1878,
+      "original_sha256": "3fcd7a2adbfec727d52ae8f5857eb65a9ff5f9236983075f4fd4dbecd078d0a2",
+      "archive_bytes": 765,
+      "archive_sha256": "c6f9c2f75dc965143f883104f7ee1abc8312d2c47857a596be1bbd9a043d47a6"
+    },
+    {
+      "path": "python-003/patches/ck3_autonomous_player__src__xar_autoplayer__bridge__ingame_decision_outcome_contract.py.patch.gz",
+      "original_path": "patches/ck3_autonomous_player__src__xar_autoplayer__bridge__ingame_decision_outcome_contract.py.patch",
+      "original_bytes": 9559,
+      "original_sha256": "1fff4e559d7b478d0d118d862c7b5dceee031380f5e2c0e62f6b9640633687af",
+      "archive_bytes": 2931,
+      "archive_sha256": "6bc0e13e2580f28f382eee4d66bca6a2f199c5c5e2b1c90531f12752d2202c98"
+    },
+    {
+      "path": "python-003/patches/ck3_autonomous_player__src__xar_autoplayer__bridge__mcp_server.py.patch.gz",
+      "original_path": "patches/ck3_autonomous_player__src__xar_autoplayer__bridge__mcp_server.py.patch",
+      "original_bytes": 2250,
+      "original_sha256": "0d0f6639fe7a8ce24111b9127460fe05be183245c8e427a50dfe1379a477fa9b",
+      "archive_bytes": 750,
+      "archive_sha256": "396b3ed0995f6625cb06ded3deb48808020fedaaaccceecc7648c1cbf876ff01"
+    },
+    {
+      "path": "python-003/patches/ck3_autonomous_player__src__xar_autoplayer__bridge__native_driver.py.patch.gz",
+      "original_path": "patches/ck3_autonomous_player__src__xar_autoplayer__bridge__native_driver.py.patch",
+      "original_bytes": 15238,
+      "original_sha256": "f948c5f31b29ec022aff7ad39b408712f108502aaae35b23a4b0989d85626f59",
+      "archive_bytes": 3277,
+      "archive_sha256": "6617e2714d41de28ddd29d71c99508b64ecec48c5e376dd7feaf5d72f1e0a9f2"
+    },
+    {
+      "path": "python-003/patches/ck3_autonomous_player__src__xar_autoplayer__bridge__service.py.patch.gz",
+      "original_path": "patches/ck3_autonomous_player__src__xar_autoplayer__bridge__service.py.patch",
+      "original_bytes": 4041,
+      "original_sha256": "80637b6ab192ac2561beff5aa1e5523bbd57a1377b9e03f2888f4e05ec67f155",
+      "archive_bytes": 1145,
+      "archive_sha256": "e362d15ad5072ef0e0fcfade8a2889e583e282f2debdcd2308bb59c09a651018"
+    },
+    {
+      "path": "python-003/patches/ck3_autonomous_player__tests__unit__test_ingame_decision_outcomes.py.patch.gz",
+      "original_path": "patches/ck3_autonomous_player__tests__unit__test_ingame_decision_outcomes.py.patch",
+      "original_bytes": 35033,
+      "original_sha256": "38533be3bd58d449f174f47f1461a52d37426047e6c6abd060bdbcf3c14b7041",
+      "archive_bytes": 7403,
+      "archive_sha256": "c4723cc9bf21491da4643dcde30de7ece46ea1dbc72eab4f28400f8a87a1820f"
+    },
+    {
+      "path": "python-003/patches/tools__ck3_native_profile_mcp.py.patch.gz",
+      "original_path": "patches/tools__ck3_native_profile_mcp.py.patch",
+      "original_bytes": 8127,
+      "original_sha256": "142089465acaa1dfc39b3798fc3a154e44db65bee8bbcd384a3bfc97f7d88ade",
+      "archive_bytes": 1787,
+      "archive_sha256": "a620b3f50c4e822bd56014e712cb21723527d65b0dd2213374dfe3a99380ac08"
+    },
+    {
+      "path": "python-003/patches/tools__test_ck3_native_profile_mcp.py.patch.gz",
+      "original_path": "patches/tools__test_ck3_native_profile_mcp.py.patch",
+      "original_bytes": 1051,
+      "original_sha256": "8069468e7372fc6f6696ce611012c06f9b63e0d11d2b4da3ab6660e3b53c97bb",
+      "archive_bytes": 350,
+      "archive_sha256": "5bd0e81e7cb94b6c3e5981a0b43678e4d6a66462c2ea71c7128d127f9ae01f8f"
+    },
+    {
+      "path": "python-003/PROVIDER-INPUTS.json.gz",
+      "original_path": "PROVIDER-INPUTS.json",
+      "original_bytes": 948,
+      "original_sha256": "112380ebcebcde0134539a87b674cc80776ba44348e119e443623150cbc6f5ab",
+      "archive_bytes": 430,
+      "archive_sha256": "c35e5026b848f8959539f5f36efcdf6e3ebb32d0e6fb942a2f01b818ca198883"
+    },
+    {
+      "path": "python-003/README.md.gz",
+      "original_path": "README.md",
+      "original_bytes": 6709,
+      "original_sha256": "c27b8ce2d7c3bf735c3c098e3a446f9bd82f606bcb86e62de0292ca4473f7ea1",
+      "archive_bytes": 2984,
+      "archive_sha256": "a7b22e7640894f4538191cbe1782e51fc53089b461f28cc4570ac0236188d753"
+    },
+    {
+      "path": "python-003/REPORT.json.gz",
+      "original_path": "REPORT.json",
+      "original_bytes": 1535,
+      "original_sha256": "a4e1f52356ba823d163c0eba8b970d02662283022ee2c811304ce8e105261722",
+      "archive_bytes": 866,
+      "archive_sha256": "6c56389e2a479e55d21754b64b0149fbb7c7b1785e016baca4b5bd7a5fe533b5"
+    },
+    {
+      "path": "python-003/run_focused.py.gz",
+      "original_path": "run_focused.py",
+      "original_bytes": 2456,
+      "original_sha256": "6ac027e0ac2e57f481c8a53c1d841fdff6550fc8d51adfcbebdfa425b6444364",
+      "archive_bytes": 1023,
+      "archive_sha256": "55600cdce7402ff09ecc451a0e393b58f9daabba764fc113481e4c7508f305f2"
+    },
+    {
+      "path": "python-003/UNCHANGED-TEST-CONTRACT-INPUTS.json.gz",
+      "original_path": "UNCHANGED-TEST-CONTRACT-INPUTS.json",
+      "original_bytes": 1748,
+      "original_sha256": "2f072b79f633922875175059c24f65e88c8bfcded93e56a07a815c7e2b18ef63",
+      "archive_bytes": 560,
+      "archive_sha256": "3d1bc059cb09e812444316d5fa5ac20d6ea1e36742f013ad490d4544fed2a642"
+    },
+    {
+      "path": "python-003/INDEX.json.gz",
+      "original_path": "INDEX.json",
+      "original_bytes": 42662,
+      "original_sha256": "62b996641de6f6c78b71c36cd743b41f8f70db3d618125b79323317c73abe59f",
+      "archive_bytes": 8799,
+      "archive_sha256": "dc7329b80c2c6090fba09068e5063e74ca86aa7ba3e41e845a204c04bd4f0476"
+    }
+  ]
+}

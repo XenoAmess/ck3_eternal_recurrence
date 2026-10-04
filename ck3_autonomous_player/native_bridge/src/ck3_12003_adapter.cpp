@@ -72,6 +72,9 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
 #if defined(XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1)
     result.push_back(ck3_11906::kIngameDecisionItemSelectV1Capability);
     result.push_back(ck3_11906::kIngameDecisionItemConfirmV1Capability);
+#if defined(XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
+    result.push_back(ck3_11906::kIngameDecisionOutcomeConfirmV1Capability);
+#endif
 #endif
 #endif
 #if defined(XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1)

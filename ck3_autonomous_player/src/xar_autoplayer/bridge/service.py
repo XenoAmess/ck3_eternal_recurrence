@@ -10458,6 +10458,58 @@ class GameplayBridgeService:
             raise BridgeUnavailableError("typed Confirm lacks later actual inner modal proof")
         return result
 
+    def confirm_ingame_decision_outcome_v1(self, decision_key: str, expected_outcome: str, *,
+                                          expected_event_definition_key: str | None = None,
+                                          expected_revision: int) -> dict[str, object]:
+        from .ingame_decision_item_contract import validate_decision_key
+        from .ingame_decisions_open_contract import opening_binding
+        from .ingame_decision_outcome_contract import (
+            SCHEMA, validate_expected_outcome, normalize_outcome_ack, outcome_frame_matches,
+            actual_expected_event, actual_closed_decision_detail,
+        )
+        validate_decision_key(decision_key)
+        event_key = validate_expected_outcome(expected_outcome, expected_event_definition_key)
+        if type(expected_revision) is not int or expected_revision < 0:
+            raise ValueError("expected_revision must be a nonnegative integer")
+        method = getattr(self.driver, "confirm_ingame_decision_outcome_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks the typed generic decision Confirm")
+        before = self.driver.take_snapshot()
+        try:
+            binding = opening_binding(before)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        if before.get("revision") != expected_revision:
+            raise BridgeUnavailableError("generic Confirm expected public revision is stale")
+        result = method(decision_key, expected_outcome,
+                        expected_event_definition_key=expected_event_definition_key,
+                        expected_revision=expected_revision)
+        if (not isinstance(result, dict) or result.get("schema") != SCHEMA
+                or result.get("decision_key") != decision_key
+                or result.get("expected_outcome") != expected_outcome
+                or result.get("expected_event_definition_key") != event_key
+                or result.get("postcondition_verified") is not True
+                or result.get("verification_pending") is not False
+                or result.get("business_effects_verified") is not False
+                or result.get("full_product_acceptance_credit") is not False
+                or result.get("front_event_verified") is not False
+                or result.get("event_option_selection_authorized") is not False):
+            raise BridgeUnavailableError("generic Confirm lacks independent UI-outcome proof")
+        try:
+            normalize_outcome_ack(result.get("native_ack"), binding, decision_key, expected_outcome, event_key)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        after = result.get("snapshot_after")
+        if not isinstance(after, dict) or not outcome_frame_matches(before, after, binding):
+            raise BridgeUnavailableError("generic Confirm later owner/date/connection binding changed")
+        observation = result.get("later_actual_observation")
+        verified = (actual_expected_event(observation, after, binding, event_key)
+                    if expected_outcome == "event_window" else
+                    after.get("active_event") is None and actual_closed_decision_detail(observation))
+        if not verified:
+            raise BridgeUnavailableError("generic Confirm later observation does not prove the requested outcome")
+        return result
+
     def query_aub_business_state_v1(self, *, expected_revision: int | None = None) -> dict[str, object]:
         return self.driver.query_aub_business_state_v1(expected_revision=expected_revision)
 

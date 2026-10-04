@@ -1,0 +1,287 @@
+{
+  "schema": "lyd-external-evidence-index/v1",
+  "index_excludes_self": true,
+  "created_at_utc": "2026-10-04T20:19:04.591284+00:00",
+  "files": [
+    {
+      "path": "bodies/a2-artifacts-37231135004-001.json.gz",
+      "bytes": 52,
+      "sha256": "e42c79294dbbc6a5ff415a3d77760a0a3242b5521791b894cac886b710080792"
+    },
+    {
+      "path": "bodies/a2-artifacts-37231135004-002.json.gz",
+      "bytes": 52,
+      "sha256": "e42c79294dbbc6a5ff415a3d77760a0a3242b5521791b894cac886b710080792"
+    },
+    {
+      "path": "bodies/a2-baseline-c40-tree.json.gz",
+      "bytes": 1773,
+      "sha256": "151613c340e003ca869bc5877bbb214010004581988c4960317e7c0720c3163f"
+    },
+    {
+      "path": "bodies/a2-commit.json.gz",
+      "bytes": 23122,
+      "sha256": "d10eede6320ae939dcf82172f552b98463632cc9b07000f10f5c6fb7d18adfa8"
+    },
+    {
+      "path": "bodies/a2-definition-cla.yml.yml.gz",
+      "bytes": 878,
+      "sha256": "f0ea3313765be70a6eb8c3349cdd1e2f3a0daac232dcac08cb94f6880d0b1629"
+    },
+    {
+      "path": "bodies/a2-definition-coat-of-arms-editor-pages.yml.yml.gz",
+      "bytes": 1827,
+      "sha256": "f586b9de3e833973b93bf125be45cbf84b070657dcc0af5a86c8105e6ab8aa6a"
+    },
+    {
+      "path": "bodies/a2-definition-independent-maintained-mods.yml.yml.gz",
+      "bytes": 915,
+      "sha256": "a1980f02e2c3e619abd7a8caecf01c3e545632961885d5ebbf297497c7a03896"
+    },
+    {
+      "path": "bodies/a2-definition-li-yu-dao-static.yml.yml.gz",
+      "bytes": 573,
+      "sha256": "3e9d508a4fe47e9ad403468b9f69c4d62388b951fd2f6132a4b5c7f352d32fde"
+    },
+    {
+      "path": "bodies/a2-definition-static-ci.yml.yml.gz",
+      "bytes": 3626,
+      "sha256": "a8a6732e1d87f713e203b35a2d2eb66d1340adb1bf392efe1cf30a77ed6b0582"
+    },
+    {
+      "path": "bodies/a2-head-acceptance-tree.json.gz",
+      "bytes": 1057,
+      "sha256": "f77f4f5c50e8a69d117143d0d1823e0fe0fc68207e2ba7cdba17312c9ae3f811"
+    },
+    {
+      "path": "bodies/a2-head-docs-li-yu-dao-tree.json.gz",
+      "bytes": 861,
+      "sha256": "fb487430343b985f4fc0bd0ebc6e67d0a5c701e9005d5b1e017d4f683c335330"
+    },
+    {
+      "path": "bodies/a2-head-docs-tree.json.gz",
+      "bytes": 10010,
+      "sha256": "30245944056820eb1a25bb1683d0a73eb66ef8fd569a24b2e49967c371a9ef40"
+    },
+    {
+      "path": "bodies/a2-head-tree.json.gz",
+      "bytes": 1775,
+      "sha256": "4b34effd2b61e23b7810fb79b925385e620ed65671771c6ac40d20ed959411a7"
+    },
+    {
+      "path": "bodies/a2-jobs-37231135004-001.json.gz",
+      "bytes": 1909,
+      "sha256": "2c34cc6f2fdf10eef2d128f53b929ea25a422b74983cc1785f8bc86bb2bf13a2"
+    },
+    {
+      "path": "bodies/a2-jobs-37231135004-002.json.gz",
+      "bytes": 2037,
+      "sha256": "7c628929f55f04ec5aedeb03f7178ffdf3373c2eaeee8f5ed7fb0e4d45200bba"
+    },
+    {
+      "path": "bodies/a2-jobs-37231135004-003.json.gz",
+      "bytes": 2028,
+      "sha256": "f851ac9d9753110045068b2e96e59b18726cbf58dd5f012beec17cb2751b84ed"
+    },
+    {
+      "path": "bodies/a2-logs-111520817550.log.gz",
+      "bytes": 35057,
+      "sha256": "41e9efeaf6a471bde9324a3fd9c5fd44e36d7e70d6c4f2c63329f198902f0009"
+    },
+    {
+      "path": "bodies/a2-parent-acceptance-tree.json.gz",
+      "bytes": 1022,
+      "sha256": "8ed7ff8a0bf9b657df8c2aa758c27b7915806f3ffe7be00c5cd0b71212ae66f1"
+    },
+    {
+      "path": "bodies/a2-parent-docs-li-yu-dao-tree.json.gz",
+      "bytes": 860,
+      "sha256": "9048c1b7fb9e02f7ed7bba156a0ba8f28b5330756e07aa36778aa2b942f60c20"
+    },
+    {
+      "path": "bodies/a2-parent-docs-tree.json.gz",
+      "bytes": 10008,
+      "sha256": "6b033812360ff4d866e977f04c0260f90f8d0882d64052c4e7cee1d136a17ca7"
+    },
+    {
+      "path": "bodies/a2-parent-git-commit.json.gz",
+      "bytes": 498,
+      "sha256": "327d7bc6ca3f92550e33f560a335d2f6571f5f3782b7eb99b3fa72e02daad06e"
+    },
+    {
+      "path": "bodies/a2-parent-tree.json.gz",
+      "bytes": 1776,
+      "sha256": "71dce182fd02661e14d2665a635b025b8f3f913f6f6dc27ad0266dd39720adc9"
+    },
+    {
+      "path": "bodies/a2-runs-001.json.gz",
+      "bytes": 1721,
+      "sha256": "1947868f1f1f4fb848b9887b852286373ce792a361f56c6c0731932607c020e3"
+    },
+    {
+      "path": "bodies/a2-runs-002.json.gz",
+      "bytes": 1721,
+      "sha256": "1947868f1f1f4fb848b9887b852286373ce792a361f56c6c0731932607c020e3"
+    },
+    {
+      "path": "bodies/a2-runs-003.json.gz",
+      "bytes": 1723,
+      "sha256": "40e061e404944d63cecb8098c4432e69b5809c8f5d378702c9be5a48e49e0508"
+    },
+    {
+      "path": "bodies/a2-workflow-directory.json.gz",
+      "bytes": 674,
+      "sha256": "59a6fee245852db353b66cc4cfbcb43a0c9eabd52402de11f91651e59b419fa0"
+    },
+    {
+      "path": "build_evidence.py",
+      "bytes": 11109,
+      "sha256": "e8b1c40d04ebb1a84302fc34b24cc95a0bb7925b23d35a38078b123d17e651ae"
+    },
+    {
+      "path": "PRESERVATION.json",
+      "bytes": 27067,
+      "sha256": "2a5be0ce691786091670e665fb3376c6254563d3b8d71415f960cee9dfc7981e"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 24933,
+      "sha256": "64fc41230954ab2f4bccbb03e8a2cec4d15ce2f898971e96af44591d2eaa74fc"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1052,
+      "sha256": "e16073a08ef4453d9686d9d6a4a991b25631bc7b2c539968d52112d8a3aec429"
+    },
+    {
+      "path": "responses/a2-artifacts-37231135004-001.json.gz",
+      "bytes": 368,
+      "sha256": "e6dcc409bf86830134bde2cd304e0725e88754916a3dce2a09c4b35675a81c05"
+    },
+    {
+      "path": "responses/a2-artifacts-37231135004-002.json.gz",
+      "bytes": 369,
+      "sha256": "e48887a538617145c723507bb9d14cd9ce6889f8d392bdef0b6cf0755d60dc6d"
+    },
+    {
+      "path": "responses/a2-baseline-c40-tree.json.gz",
+      "bytes": 2157,
+      "sha256": "4355c1f86707dba0182ad3ee4b40835ad9a9fcbafc1d989bf2e50238f97cfd88"
+    },
+    {
+      "path": "responses/a2-commit.json.gz",
+      "bytes": 47273,
+      "sha256": "70043b88e3ba229e646a746a402a779d5ab8b7199ce75bc0cce88710033f9ac2"
+    },
+    {
+      "path": "responses/a2-definition-cla.yml.json.gz",
+      "bytes": 1247,
+      "sha256": "35bda92541d5639b102edb85d4a4d37c3d12b1714f951574a4c75b5ba5313e92"
+    },
+    {
+      "path": "responses/a2-definition-coat-of-arms-editor-pages.yml.json.gz",
+      "bytes": 2247,
+      "sha256": "cb7fd461aa3d6d7891c47531f30afbf405b02ac46e642dc1774c4567af081a05"
+    },
+    {
+      "path": "responses/a2-definition-independent-maintained-mods.yml.json.gz",
+      "bytes": 1279,
+      "sha256": "81ad3771fc7e429fd4d00e5a1b7e9493495e5df5c5703e0b925f31af14e9d106"
+    },
+    {
+      "path": "responses/a2-definition-li-yu-dao-static.yml.json.gz",
+      "bytes": 918,
+      "sha256": "adb45bf33e255442e632d0d5694847526fa6b3370a80645aaae0f4f84d3d8e61"
+    },
+    {
+      "path": "responses/a2-definition-static-ci.yml.json.gz",
+      "bytes": 4297,
+      "sha256": "f239311fa2e886f2bf5d644ae68f65e547389721796dba41335e780419668f41"
+    },
+    {
+      "path": "responses/a2-head-acceptance-tree.json.gz",
+      "bytes": 1379,
+      "sha256": "4a7aac7165adc51a6cabd030902a0653074a5a67db7768a30e59e8abba1d539d"
+    },
+    {
+      "path": "responses/a2-head-docs-li-yu-dao-tree.json.gz",
+      "bytes": 1163,
+      "sha256": "e39cd4704124817faf6312a83a9f09a2b623ac839ac909570b6e9c65fce19c34"
+    },
+    {
+      "path": "responses/a2-head-docs-tree.json.gz",
+      "bytes": 20072,
+      "sha256": "989ba6cdf079bebdca881d6681ea54b7c27c5120aa5fbfd236d38e0d22847052"
+    },
+    {
+      "path": "responses/a2-head-tree.json.gz",
+      "bytes": 2153,
+      "sha256": "2617e0bdf14166c7a16bbac40d4a06033aeac57612a3c667f091dee6121885ca"
+    },
+    {
+      "path": "responses/a2-jobs-37231135004-001.json.gz",
+      "bytes": 2337,
+      "sha256": "225691923068accb8f32f538df56d85f15272eba7e16213cd7ac1156dd1aa368"
+    },
+    {
+      "path": "responses/a2-jobs-37231135004-002.json.gz",
+      "bytes": 2499,
+      "sha256": "f1e7f2e5b8acda4d34ccc0de2f1fc7242d2cb63529d15189609ef77e04455e72"
+    },
+    {
+      "path": "responses/a2-jobs-37231135004-003.json.gz",
+      "bytes": 2490,
+      "sha256": "ae9c5722894265cbe4ce707aa8eaec84ce9a77025445c7220ebe3a5b2d49a0fa"
+    },
+    {
+      "path": "responses/a2-logs-111520817550.json.gz",
+      "bytes": 35452,
+      "sha256": "c07e577d77136a514794ebea4653db3954862d8f61ef0b7931756e6a4cb317b7"
+    },
+    {
+      "path": "responses/a2-parent-acceptance-tree.json.gz",
+      "bytes": 1340,
+      "sha256": "8940b22eb8474a3caa3beca521b84ab50d27b2957a4eaadba55a48b60f1ecb9f"
+    },
+    {
+      "path": "responses/a2-parent-docs-li-yu-dao-tree.json.gz",
+      "bytes": 1164,
+      "sha256": "be1e2541dfb5d5e0eda6c61ace2fb70a5d0b82bc0f198c25752c96feabf9769c"
+    },
+    {
+      "path": "responses/a2-parent-docs-tree.json.gz",
+      "bytes": 20072,
+      "sha256": "dca21fcf4dfbede690e7afa305b3ad615e2a9e6a465581989a32263f5ec80070"
+    },
+    {
+      "path": "responses/a2-parent-git-commit.json.gz",
+      "bytes": 743,
+      "sha256": "bc63044cc0f65437c3b080874abe5931c67134c2ca83705f2a893fadc2b9994f"
+    },
+    {
+      "path": "responses/a2-parent-tree.json.gz",
+      "bytes": 2157,
+      "sha256": "640be0fef7a0657953107cc38cf117eaad72250d64fa5d625d4a72051c86ede3"
+    },
+    {
+      "path": "responses/a2-runs-001.json.gz",
+      "bytes": 2133,
+      "sha256": "999ae0303b4244013bd4b4de9631b3d447dbaddc1016888ed55de298c56682c2"
+    },
+    {
+      "path": "responses/a2-runs-002.json.gz",
+      "bytes": 2131,
+      "sha256": "20bf2890f046bd6eb189d3648b32c4b36c47612434b9c971f81e231deccb2bcf"
+    },
+    {
+      "path": "responses/a2-runs-003.json.gz",
+      "bytes": 2132,
+      "sha256": "c68173fae9474373fb81c54b2498220010d790f04fa3865963aba60d11f6e70f"
+    },
+    {
+      "path": "responses/a2-workflow-directory.json.gz",
+      "bytes": 1002,
+      "sha256": "b6e1a243eb79b6b499c0f27671bf68d726c386e883ec195304e477d5a45de946"
+    }
+  ]
+}

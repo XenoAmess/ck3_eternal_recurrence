@@ -3207,6 +3207,16 @@ def create_server(
         return service.confirm_ingame_decision_item_v1(decision_key, expected_window_kind, expected_revision=expected_revision)
 
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
+    def ck3_confirm_ingame_decision_outcome_v1(
+        decision_key: str, expected_outcome: Literal["event_window", "decision_closed"],
+        expected_revision: int, expected_event_definition_key: str | None = None,
+    ) -> dict[str, object]:
+        """Confirm the actual selected player decision once and read its declared UI outcome; business acceptance remains separate."""
+        return service.confirm_ingame_decision_outcome_v1(
+            decision_key, expected_outcome, expected_revision=expected_revision,
+            expected_event_definition_key=expected_event_definition_key)
+
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=False, idempotentHint=False, openWorldHint=False))
     def ck3_click_white_numeric_control_v1(control: Literal["diplomacy_plus_1", "martial_plus_1", "stewardship_plus_1", "intrigue_plus_1", "learning_plus_1", "prowess_plus_1"], expected_before_value: int, expected_before_price_text: str, intent_id: str, expected_revision: IngameUiRevisionV1 | None = None) -> dict[str, object]:
         """One fixed skill+1 callback, separate actual business/text after, actual price values only."""
         return service.click_white_numeric_control_v1(control, expected_before_value, expected_before_price_text, intent_id, expected_revision=expected_revision)
@@ -3990,6 +4000,7 @@ def create_server(
     _forbid_unknown_tool_arguments_v1(server, "ck3_query_ingame_decision_item_v1")
     _forbid_unknown_tool_arguments_v1(server, "ck3_select_ingame_decision_item_v1")
     _forbid_unknown_tool_arguments_v1(server, "ck3_confirm_ingame_decision_item_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_confirm_ingame_decision_outcome_v1")
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_inspect_gui_window_tree_v1"
     )

@@ -380,6 +380,73 @@ class NativeProfileService:
             self._bound_frame(expected_revision, paused=True)
             return self._receipt("event-query", {"status": "native_event_query_verified", "result": result})
 
+    def query_decision(self, decision_key: str, expected_revision: int) -> dict:
+        with self._lock:
+            self._bound_frame(expected_revision, paused=True)
+            result = self._gameplay_service().query_ingame_decision_item_v1(
+                decision_key, expected_revision=expected_revision)
+            self._bound_frame(expected_revision, paused=True)
+            return self._receipt("decision-query", {"status": "native_decision_query_observed", "result": result,
+                "business_effects_verified": False, "full_product_acceptance_credit": False})
+
+    def decision_action(self, action: str, expected_revision: int, *, decision_key: str | None = None,
+                        expected_outcome: str | None = None,
+                        expected_event_definition_key: str | None = None) -> dict:
+        from xar_autoplayer.bridge.ingame_decision_item_contract import validate_decision_key
+        from xar_autoplayer.bridge.ingame_decision_outcome_contract import (
+            SCHEMA, validate_expected_outcome, actual_expected_event, actual_closed_decision_detail,
+        )
+        if action not in {"open", "select", "confirm_outcome"}:
+            raise ValueError("unsupported typed profile decision action")
+        if action != "open":
+            validate_decision_key(decision_key)
+        if action == "confirm_outcome":
+            validate_expected_outcome(expected_outcome, expected_event_definition_key)
+        def invoke(gameplay):
+            if action == "open":
+                return gameplay.open_ingame_decisions_v1(expected_revision=expected_revision)
+            if action == "select":
+                return gameplay.select_ingame_decision_item_v1(decision_key, expected_revision=expected_revision)
+            return gameplay.confirm_ingame_decision_outcome_v1(
+                decision_key, expected_outcome, expected_event_definition_key=expected_event_definition_key,
+                expected_revision=expected_revision)
+        def verify(result, before, after):
+            if (not isinstance(result, dict) or result.get("postcondition_verified") is not True
+                    or result.get("verification_pending") is not False):
+                raise _PostconditionPending("profile decision dispatch lacks an independently observed UI outcome")
+            actor = before.get("played_character", {}).get("character_id")
+            if (type(actor) is not int or actor <= 0
+                    or before.get("played_character", {}).get("alive") is not True
+                    or after.get("paused") is not True or before.get("date_raw") != after.get("date_raw")
+                    or before.get("speed") != after.get("speed")
+                    or before.get("played_character", {}).get("character_id") != after.get("played_character", {}).get("character_id")):
+                raise RuntimeError("profile decision outcome changed its actor/date/paused frame")
+            if action != "open" and result.get("decision_key") != decision_key:
+                raise RuntimeError("profile decision outcome changed its actual definition")
+            if action == "confirm_outcome":
+                expected_key = expected_event_definition_key if expected_outcome == "event_window" else ""
+                if (result.get("schema") != SCHEMA or result.get("action") != "confirm_outcome"
+                        or result.get("expected_outcome") != expected_outcome
+                        or result.get("expected_event_definition_key") != expected_key
+                        or result.get("business_effects_verified") is not False
+                        or result.get("full_product_acceptance_credit") is not False
+                        or result.get("front_event_verified") is not False
+                        or result.get("event_option_selection_authorized") is not False):
+                    raise RuntimeError("profile generic Confirm returned a mismatched or overcredited outcome")
+                proved = result.get("snapshot_after")
+                if (not isinstance(proved, dict) or proved.get("active_event") != after.get("active_event")
+                        or proved.get("native_revision") != after.get("native_revision")
+                        or proved.get("revision") != after.get("revision")):
+                    raise RuntimeError("profile generic Confirm actual readback no longer matches the current event frame")
+                binding = {"date_raw": before["date_raw"], "played_character_id": actor}
+                observation = result.get("later_actual_observation")
+                verified = (actual_expected_event(observation, after, binding, expected_key)
+                            if expected_outcome == "event_window" else
+                            after.get("active_event") is None and actual_closed_decision_detail(observation))
+                if not verified:
+                    raise RuntimeError("profile generic Confirm lacks its actual declared outcome observation")
+        return self._ordinary_action("decision-" + action, expected_revision, invoke, verify, paused=True)
+
     def query_pending_interaction(self, pending_interaction_id: int, expected_revision: int) -> dict:
         from xar_autoplayer.bridge.pending_character_interaction_context_contract import normalize_pending_interaction_id
         pending_interaction_id = normalize_pending_interaction_id(pending_interaction_id)
@@ -595,7 +662,25 @@ def create_server(service: NativeProfileService):
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False))
     def ck3_save_profile_checkpoint_v1(expected_revision: int) -> dict[str, object]:
         return service.checkpoint(expected_revision)
-    for name in ("ck3_query_native_profile_v1", "ck3_attach_profile_bridge_v1", "ck3_resume_profile_bridge_v1", "ck3_take_profile_native_snapshot_v1",
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=True))
+    def ck3_query_profile_decision_item_v1(decision_key: str, expected_revision: int) -> dict[str, object]:
+        return service.query_decision(decision_key, expected_revision)
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, idempotentHint=False))
+    def ck3_open_profile_decisions_v1(expected_revision: int) -> dict[str, object]:
+        return service.decision_action("open", expected_revision)
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, idempotentHint=False))
+    def ck3_select_profile_decision_item_v1(decision_key: str, expected_revision: int) -> dict[str, object]:
+        return service.decision_action("select", expected_revision, decision_key=decision_key)
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, idempotentHint=False))
+    def ck3_confirm_profile_decision_outcome_v1(
+        decision_key: str, expected_outcome: Literal["event_window", "decision_closed"],
+        expected_revision: int, expected_event_definition_key: str | None = None,
+    ) -> dict[str, object]:
+        return service.decision_action("confirm_outcome", expected_revision, decision_key=decision_key,
+            expected_outcome=expected_outcome, expected_event_definition_key=expected_event_definition_key)
+    for name in ("ck3_query_profile_decision_item_v1", "ck3_open_profile_decisions_v1",
+                 "ck3_select_profile_decision_item_v1", "ck3_confirm_profile_decision_outcome_v1",
+                 "ck3_query_native_profile_v1", "ck3_attach_profile_bridge_v1", "ck3_resume_profile_bridge_v1", "ck3_take_profile_native_snapshot_v1",
                  "ck3_query_profile_event_window_v1", "ck3_set_profile_simulation_v1",
                  "ck3_query_profile_pending_interaction_v1",
                  "ck3_reply_profile_pending_interaction_v1",

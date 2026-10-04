@@ -428,6 +428,13 @@ if(XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1 AND
   message(FATAL_ERROR "Decision item actions require the exact .3 Decisions owner/query admission")
 endif()
 
+option(XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1
+  "Admit guarded stock Confirm once with independent event-window or closed-detail verification" OFF)
+if(XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1 AND
+   NOT XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1)
+  message(FATAL_ERROR "Decision outcome confirmation requires exact .3 keyed item actions")
+endif()
+
 option(
   XAR_CK3_FEUDAL_1066_TARGET_ROBERT_V1
   "Bind the exact-build supported 1066 bookmark candidate to Duke Robert"
@@ -1187,6 +1194,7 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1
     XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1
     XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1
+    XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1
     XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1
     XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1
     XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1
@@ -1947,6 +1955,9 @@ if(XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1)
 endif()
 if(XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1=1)
+endif()
+if(XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
@@ -7790,6 +7801,18 @@ if(BUILD_TESTING AND WIN32)
     FIXTURES_SETUP army_replenishment_records_wire)
   set_tests_properties(xar_ck3_12003_army_replenishment_records_registered_mcp PROPERTIES
     FIXTURES_REQUIRED army_replenishment_records_wire)
+endif()
+
+# Outcome invariants are synthetic DTO tests and never start or attach CK3.
+if(BUILD_TESTING AND XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
+  add_executable(xar_ck3_ingame_decision_outcome_contract_v1_test
+    tests/ingame_decision_outcome_contract_v1_test.cpp src/protocol.cpp)
+  target_include_directories(xar_ck3_ingame_decision_outcome_contract_v1_test PRIVATE include)
+  target_compile_features(xar_ck3_ingame_decision_outcome_contract_v1_test PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(xar_ck3_ingame_decision_outcome_contract_v1_test PRIVATE /W4 /WX /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_ingame_decision_outcome_contract_v1 COMMAND xar_ck3_ingame_decision_outcome_contract_v1_test)
 endif()
 
 # Fixed text memory/UTF-8 tests; this target never starts or attaches CK3.

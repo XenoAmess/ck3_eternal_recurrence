@@ -15693,21 +15693,31 @@ void RunConnectedSession(
               connected=write_frame(pipe,response);
             }
 #if defined(XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1)
-          } else if (step == xar::ck3_11906::kIngameDecisionItemSelectV1Step || step == xar::ck3_11906::kIngameDecisionItemConfirmV1Step) {
+          } else if (step == xar::ck3_11906::kIngameDecisionItemSelectV1Step || step == xar::ck3_11906::kIngameDecisionItemConfirmV1Step
+#if defined(XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
+              || step == xar::ck3_11906::kIngameDecisionOutcomeConfirmV1Step
+#endif
+              ) {
             std::uint64_t expected_revision=0, expected_actor=0, expected_pid=0, expected_generation=0;
-            std::string decision_key,window_kind; xar::game::Snapshot current{};
+            std::string decision_key,window_kind,expected_outcome,event_key; xar::game::Snapshot current{};
             const bool select=step==xar::ck3_11906::kIngameDecisionItemSelectV1Step;
+            const bool outcome=step==xar::ck3_11906::kIngameDecisionOutcomeConfirmV1Step;
             if (!xar::bridge::JsonUnsignedField(incoming.payload,"expected_revision",expected_revision) ||
                 !xar::bridge::JsonUnsignedField(incoming.payload,"expected_player_character_id",expected_actor) ||
                 !xar::bridge::JsonUnsignedField(incoming.payload,"expected_game_pid",expected_pid) ||
                 !xar::bridge::JsonUnsignedField(incoming.payload,"expected_connection_generation",expected_generation) ||
                 !xar::bridge::JsonStringField(incoming.payload,"decision_key",decision_key,192) ||
-                (!select&&(!xar::bridge::JsonStringField(incoming.payload,"expected_window_kind",window_kind,32)||window_kind!="vivhite_courtier")) ||
+                (!select&&!outcome&&(!xar::bridge::JsonStringField(incoming.payload,"expected_window_kind",window_kind,32)||window_kind!="vivhite_courtier")) ||
+                (outcome&&(!xar::bridge::JsonStringField(incoming.payload,"expected_outcome",expected_outcome,32)||
+                  (expected_outcome=="decision_closed"?!xar::ck3_11906::IngameDecisionOutcomeEmptyEventKeyWireV1(incoming.payload):
+                    !xar::bridge::JsonStringField(incoming.payload,"expected_event_definition_key",event_key,192))||
+                  !xar::ck3_11906::IngameDecisionOutcomeRequestValidV1(expected_outcome,event_key))) ||
                 expected_revision==0 || expected_revision!=state_revision ||
                 expected_pid!=GetCurrentProcessId() || expected_generation!=connection_generation ||
                 !previous_snapshot.has_value() || !xar::game::ReadSnapshot(game,current) || current!=*previous_snapshot ||
                 !current.map_ready || !current.paused || !current.has_played_character || !current.played_character_alive ||
                 current.played_character_id<=0 || expected_actor!=static_cast<std::uint64_t>(current.played_character_id) ||
+                (outcome&&(current.has_active_event||current.has_pending_character_interaction)) ||
                 game.descriptor().game_version!="1.20.0.3" ||
                 game.descriptor().executable_sha256!="94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") {
               connected=write_frame(pipe,CommandResultFrame(request_id,step,false,"exact_alive_paused_decision_action_binding_changed"));
@@ -15716,7 +15726,9 @@ void RunConnectedSession(
               query.mailbox=&g_main_thread_query_mailbox_v1;
               query.operation=xar::ck3_11906::FrontendGuiRouteOperationV1::action_ingame_decision_item;
               auto &action=query.ingame_decision_action;
-              action.action=select?xar::ck3_11906::IngameDecisionItemActionKindV1::select:xar::ck3_11906::IngameDecisionItemActionKindV1::confirm;
+              action.action=outcome?xar::ck3_11906::IngameDecisionItemActionKindV1::confirm_outcome:
+                  select?xar::ck3_11906::IngameDecisionItemActionKindV1::select:xar::ck3_11906::IngameDecisionItemActionKindV1::confirm;
+              action.expected_outcome=expected_outcome;action.expected_event_definition_key=event_key;
               action.expected_window_kind=window_kind;
               action.observation.game=&game;action.observation.expected_snapshot=current;
               action.observation.native_revision=state_revision;action.observation.connection_generation=connection_generation;
@@ -15734,7 +15746,9 @@ void RunConnectedSession(
                   waited=xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1,query.ticket,2'000);
                 if(waited==xar::ck3_11906::MainThreadQueryWaitResultV1::completed) {
                   xar::game::Snapshot completion{};
-                  if(!xar::game::ReadSnapshot(game,completion)||completion!=current||state_revision!=expected_revision) {
+                  if(!xar::game::ReadSnapshot(game,completion)||
+                      (outcome?!xar::ck3_11906::IngameDecisionOutcomeFrameMatchesV1(current,completion,expected_outcome):completion!=current)||
+                      state_revision!=expected_revision) {
                     action.result.frame_verified=false;action.result.postcondition_verified=false;
                     action.result.status="unavailable";action.result.unavailable_reason="pipe_completion_decision_action_binding_changed";
                   }

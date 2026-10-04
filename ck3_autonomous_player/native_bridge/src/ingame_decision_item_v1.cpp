@@ -408,8 +408,12 @@ bool ExecuteIngameDecisionItemActionV1(IngameDecisionItemActionContextV1 &query,
     MainThreadQueryMailboxV1 &mailbox,const MainThreadExecutionStampV1 &stamp,
     const ZhongguoScoreboardNativeEnvironmentV1 &env,ZhongguoScoreboardActionDispatchEnvironmentV1 &dispatch) noexcept {
   auto &out=query.result;out={};out.action=query.action;
+  const bool outcome=query.action==IngameDecisionItemActionKindV1::confirm_outcome;
+  if(outcome){out.expected_outcome=query.expected_outcome;out.expected_event_definition_key=query.expected_event_definition_key;}
   try {
     const auto reject=[&](const char *why){out.unavailable_reason=why;return true;};
+    if(outcome&&(!IngameDecisionOutcomeRequestValidV1(query.expected_outcome,query.expected_event_definition_key)||
+        (query.observation.expected_snapshot.has_active_event||query.observation.expected_snapshot.has_pending_character_interaction)))return reject("typed_outcome_or_empty_event_before_unqualified");
     if(!ExecuteIngameDecisionItemQueryV1(query.observation,mailbox,stamp,env))return reject("keyed_before_execution_unavailable");
     out.before=query.observation.result;
     if(!out.before.available)return reject("actual_keyed_before_unavailable");
@@ -434,14 +438,19 @@ bool ExecuteIngameDecisionItemActionV1(IngameDecisionItemActionContextV1 &query,
       if(!NoVisibleModals(context))return reject("source_select_blocked_by_visible_modal");
       out.no_blocking_modal_verified=true;out.receiver_qualified=true;
     }else{
-      if(query.expected_window_kind!="vivhite_courtier")return reject("fixed_expected_modal_scope_unavailable");
+      if(!outcome&&query.expected_window_kind!="vivhite_courtier")return reject("fixed_expected_modal_scope_unavailable");
       if(first.selected_definition!=target_row->definition||!out.before.detail_root_visible||
           !out.before.detail_tree_complete||first.detail_actor_reference_key!=out.before.played_character_id)
         return reject("actual_selected_detail_definition_actor_or_visibility_unqualified");
       out.detail_actor_binding_verified=true;
-      bool modal_before=false,modal_complete=false;
-      if(!InnerPanel(env,context,query.expected_window_kind,modal_before,modal_complete)||!modal_complete||modal_before)
-        return reject("actual_expected_inner_modal_before_not_closed_or_incomplete");
+      if(outcome){
+        if(!NoVisibleModals(context))return reject("source_outcome_confirm_blocked_by_visible_modal");
+        out.no_blocking_modal_verified=true;
+      }else{
+        bool modal_before=false,modal_complete=false;
+        if(!InnerPanel(env,context,query.expected_window_kind,modal_before,modal_complete)||!modal_complete||modal_before)
+          return reject("actual_expected_inner_modal_before_not_closed_or_incomplete");
+      }
       if(!ConfirmReceiver(env,dispatch,first,context,target,vtable,out.target_child_path))return reject("fixed_visible_confirm_receiver_unqualified");
       out.receiver_qualified=true;
     }
@@ -463,19 +472,29 @@ bool ExecuteIngameDecisionItemActionV1(IngameDecisionItemActionContextV1 &query,
           out.after.detail_root_visible&&out.after.detail_definition_matches_target&&out.after.detail_actor_binding_verified;
     }else{
       // Resolve and qualify the source receiver again immediately before its one dispatcher invocation.
+      if(outcome&&!NoVisibleModals(context))return reject("source_outcome_confirm_predispatch_modal_changed");
       void *last_target=nullptr,*last_vtable=nullptr;std::string last_path;
       if(!ConfirmReceiver(env,dispatch,pre_model,context,last_target,last_vtable,last_path)||last_target!=target||
          last_vtable!=vtable||last_path!=out.target_child_path)return reject("fixed_confirm_predispatch_receiver_changed");
-      out.dispatch_invoked=DispatchFixedGuiWidgetNativeV1(&dispatch,game::ZhongguoScoreboardActionV1::open,target,vtable,out.native_handled);
-      if(!out.dispatch_invoked)return reject("native_confirm_dispatch_failed_no_retry");
-      // Take first sets open_pending. Only the production GUI bridge can open the actual inner modal.
-      out.native_after_read=InnerPanel(env,context,query.expected_window_kind,out.inner_modal_visible,out.inner_modal_tree_complete);
+      if(outcome){
+        out.dispatch_invoked=true; // Consume the one attempt before entering the original dispatcher, including faults.
+        out.native_call_completed=DispatchFixedGuiWidgetNativeV1(&dispatch,game::ZhongguoScoreboardActionV1::open,target,vtable,out.native_handled);
+        if(!out.native_call_completed)return reject("native_outcome_confirm_result_unknown_no_retry");
+        // An ACK cannot prove either event identity or business state. An independent fresh reader must follow.
+      }else{
+        out.dispatch_invoked=DispatchFixedGuiWidgetNativeV1(&dispatch,game::ZhongguoScoreboardActionV1::open,target,vtable,out.native_handled);
+        if(!out.dispatch_invoked)return reject("native_confirm_dispatch_failed_no_retry");
+        // Take first sets open_pending. Only the production GUI bridge can open the actual inner modal.
+        out.native_after_read=InnerPanel(env,context,query.expected_window_kind,out.inner_modal_visible,out.inner_modal_tree_complete);
+      }
     }
     game::Snapshot after{};void *after_context=nullptr,*after_owner=nullptr;
     out.gui_owner_binding_verified=ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,after_context,after_owner)&&
         after_context==context&&after_owner==owner;
-    out.frame_verified=game::ReadSnapshot(*query.observation.game,after)&&after==query.observation.expected_snapshot&&ActualActor(env,out.before.played_character_id);
-    out.postcondition_verified=out.gui_owner_binding_verified&&out.frame_verified&&
+    out.frame_verified=game::ReadSnapshot(*query.observation.game,after)&&
+        (outcome?IngameDecisionOutcomeFrameMatchesV1(query.observation.expected_snapshot,after,query.expected_outcome):
+            after==query.observation.expected_snapshot)&&ActualActor(env,out.before.played_character_id);
+    out.postcondition_verified=!outcome&&out.gui_owner_binding_verified&&out.frame_verified&&
         (query.action==IngameDecisionItemActionKindV1::select?out.selected_after_verified:
             out.native_after_read&&out.inner_modal_tree_complete&&out.inner_modal_visible);
     out.status=out.postcondition_verified?"observed_postcondition":
@@ -550,9 +569,11 @@ bool ExecuteAubConfirmWithStockReceiverV1(ck3_12003::AubConfirmContextV1 &q,Main
 
 std::string SerializeIngameDecisionItemActionV1(const IngameDecisionItemActionResultV1 &v){
   const bool select=v.action==IngameDecisionItemActionKindV1::select;
-  std::string s="{\"schema\":\"ck3-ingame-decision-item-action-v1\",\"step\":\"";
-  s+=select?kIngameDecisionItemSelectV1Step:kIngameDecisionItemConfirmV1Step;
-  s+="\",\"action\":\"";s+=select?"select":"confirm";
+  const bool outcome=v.action==IngameDecisionItemActionKindV1::confirm_outcome;
+  std::string s="{\"schema\":\"";s+=outcome?"ck3-ingame-decision-outcome-confirm-v1":"ck3-ingame-decision-item-action-v1";
+  s+="\",\"step\":\"";
+  s+=outcome?kIngameDecisionOutcomeConfirmV1Step:select?kIngameDecisionItemSelectV1Step:kIngameDecisionItemConfirmV1Step;
+  s+="\",\"action\":\"";s+=outcome?"confirm_outcome":select?"select":"confirm";
   s+="\",\"game_version\":\"1.20.0.3\",\"executable_sha256\":\"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\"";
   const auto number=[&](const char *key,auto n){s+=",\"";s+=key;s+="\":";s+=std::to_string(n);};
   const auto boolean=[&](const char *key,bool b){s+=",\"";s+=key;s+="\":";s+=b?"true":"false";};
@@ -569,6 +590,7 @@ std::string SerializeIngameDecisionItemActionV1(const IngameDecisionItemActionRe
   boolean("inner_modal_visible",v.inner_modal_visible);boolean("inner_modal_tree_complete",v.inner_modal_tree_complete);
   boolean("postcondition_verified",v.postcondition_verified);boolean("verification_pending",!v.postcondition_verified&&(v.dispatch_invoked||v.before_already_selected));
   text("decision_key",v.before.decision_key);text("target_child_path",v.target_child_path);text("status",v.status);text("unavailable_reason",v.unavailable_reason);
+  if(outcome){text("expected_outcome",v.expected_outcome);text("expected_event_definition_key",v.expected_event_definition_key);}
   s+=",\"before_actual_model\":";s+=SerializeIngameDecisionItemV1(v.before);
   s+=",\"after_actual_model\":";s+=SerializeIngameDecisionItemV1(v.after);return s+'}';
 }

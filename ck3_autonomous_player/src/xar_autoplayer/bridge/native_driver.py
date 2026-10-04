@@ -6366,6 +6366,145 @@ class NativeHeadlessGameplayDriver:
         return self._decision_item_action_v1(decision_key, action="confirm", expected_revision=expected_revision,
                                              expected_window_kind=expected_window_kind)
 
+    def confirm_ingame_decision_outcome_v1(
+        self, decision_key: str, expected_outcome: str, *,
+        expected_event_definition_key: str | None = None,
+        expected_revision: int,
+    ) -> dict[str, object]:
+        """One selected-player Confirm; prove only the actual declared UI outcome."""
+        from .ingame_decision_item_contract import validate_decision_key
+        from .ingame_decision_item_action_contract import actual_selected_detail
+        from .ingame_decisions_open_contract import opening_binding
+        from .ingame_decision_outcome_contract import (
+            STEP, CAPABILITY, validate_expected_outcome, normalize_outcome_ack,
+            outcome_frame_matches, actual_expected_event, actual_closed_decision_detail,
+            reject_unresolved_claims, preserve_verified_claim,
+        )
+        import hashlib
+        import os
+        validate_decision_key(decision_key)
+        event_key = validate_expected_outcome(expected_outcome, expected_event_definition_key)
+        _validate_revision(expected_revision, "expected_revision")
+        starting = self.take_snapshot()
+        try:
+            binding = opening_binding(starting)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        revision = int(starting["revision"])
+        if revision != expected_revision:
+            raise PreSubmissionRevisionMismatchError("decision Confirm public revision changed")
+        if starting.get("active_event") is not None or starting.get("pending_character_interaction") is not None:
+            raise BridgeUnavailableError("generic Confirm requires no current event or pending interaction")
+        required = {CAPABILITY, "game.command.query-ingame-decision-item-v1"}
+        required.add("game.command.query-current-event-window-context-v1"
+                     if expected_outcome == "event_window" else "game.command.inspect-gui-window-tree-v1")
+        if expected_outcome == "decision_closed":
+            # The existing stock GUI census uses the frontend-family identity
+            # binder even in a running campaign. Require that advertised
+            # dependency before the one Confirm dispatch, not after consuming it.
+            required.add("game.command.query-frontend-gui-route-v1")
+        if not required.issubset(set(_string_list(self.capabilities().get("bridge_capabilities")))):
+            raise UnsupportedStepError("native DLL lacks the exact generic Confirm and outcome observation capabilities")
+        claim_dir = self._native_driver_state_path().parent / "ingame-decision-item-actions"
+        identity = {"game_pid": binding["game_pid"], "actor_id": binding["played_character_id"],
+                    "episode_run_id": binding["episode_run_id"], "decision_key": decision_key,
+                    "action": "confirm_outcome", "public_revision": revision}
+        try:
+            reject_unresolved_claims(claim_dir, identity)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode("utf-8")).hexdigest()
+        claim = claim_dir / f"{key}.claim.json"
+        if claim.exists():
+            raise BridgeUnavailableError("generic Confirm already claimed at this revision; no retry")
+        before_model = self.query_ingame_decision_item_v1(decision_key, expected_revision=revision)
+        if not actual_selected_detail(before_model, binding, decision_key):
+            raise BridgeUnavailableError("generic Confirm lacks actual selected detail and current-player owner")
+        current = self.take_snapshot()
+        if (opening_binding(current) != binding or not _same_paused_native_frame(starting, current)
+                or current.get("revision") != revision or current.get("active_event") is not None
+                or current.get("pending_character_interaction") is not None):
+            raise BridgeUnavailableError("generic Confirm before-read crossed its frame")
+        claim_dir.mkdir(parents=True, exist_ok=True)
+        request_id = f"decision-outcome-{uuid.uuid4().hex}"
+        try:
+            with claim.open("x", encoding="utf-8", newline="\n") as stream:
+                json.dump({"schema": "ck3-ingame-decision-outcome-once-claim-v1",
+                           "request_id": request_id, "binding": binding,
+                           "action_identity": identity, "decision_key": decision_key,
+                           "action": "confirm_outcome", "expected_outcome": expected_outcome,
+                           "expected_event_definition_key": event_key,
+                           "status": "claimed_result_unknown_no_retry"}, stream,
+                          ensure_ascii=False, indent=2)
+                stream.write("\n"); stream.flush(); os.fsync(stream.fileno())
+        except FileExistsError as error:
+            raise BridgeUnavailableError("generic Confirm already claimed; no retry") from error
+        raw = None
+        try:
+            raw = self._execute_primitive_step(
+                STEP, expected_revision=revision, required_capability=CAPABILITY,
+                request_fields={"decision_key": decision_key, "expected_outcome": expected_outcome,
+                                "expected_event_definition_key": event_key,
+                                "expected_player_character_id": binding["played_character_id"],
+                                "expected_game_pid": binding["game_pid"],
+                                "expected_connection_generation": binding["connection_generation"]},
+                protocol_request_id=request_id)
+            with claim.with_suffix(".result.json").open("x", encoding="utf-8", newline="\n") as stream:
+                json.dump({"request_id": request_id, "raw": raw}, stream, ensure_ascii=False, indent=2)
+                stream.write("\n"); stream.flush(); os.fsync(stream.fileno())
+            result = normalize_outcome_ack(raw, binding, decision_key, expected_outcome, event_key)
+            deadline = time.monotonic() + 5.0
+            while True:
+                current = self.take_snapshot()
+                if not outcome_frame_matches(starting, current, binding):
+                    raise BridgeUnavailableError("generic Confirm later owner/date/connection frame changed")
+                if current.get("pending_character_interaction") is not None:
+                    raise BridgeUnavailableError("generic Confirm unexpectedly opened a pending interaction")
+                if expected_outcome == "event_window":
+                    active = current.get("active_event")
+                    instance = active.get("instance_id") if isinstance(active, dict) else None
+                    if type(instance) is int and 1 <= instance <= 2**31 - 1:
+                        later = self.query_current_event_window_context_v1(
+                            instance, expected_revision=int(current["revision"]))
+                        verified = actual_expected_event(later, current, binding, event_key)
+                    else:
+                        later = None
+                        verified = False
+                else:
+                    if current.get("active_event") is not None:
+                        raise BridgeUnavailableError("decision_closed unexpectedly opened an event")
+                    later = self.inspect_gui_window_tree_v1("decision_detail")
+                    verified = actual_closed_decision_detail(later)
+                ending = self.take_snapshot()
+                if (not outcome_frame_matches(starting, ending, binding)
+                        or not _same_paused_native_frame(current, ending)
+                        or current.get("revision") != ending.get("revision")
+                        or current.get("active_event") != ending.get("active_event")):
+                    raise BridgeUnavailableError("generic Confirm outcome read crossed its actual frame")
+                if verified:
+                    break
+                remaining = deadline - time.monotonic()
+                if remaining <= 0:
+                    raise BridgeUnavailableError("generic Confirm lacks the actual requested outcome; no retry")
+                time.sleep(min(0.1, remaining))
+            result.update({"postcondition_verified": True, "verification_pending": False,
+                           "status": "observed_current_event_window" if expected_outcome == "event_window"
+                                     else "observed_decision_detail_closed",
+                           "later_actual_observation": later, "native_ack": dict(raw),
+                           "action_request_id": request_id, "action_claim_path": str(claim),
+                           "episode_run_id": binding["episode_run_id"], "queried_revision": revision,
+                           "snapshot_after": ending,
+                           "verification_scope": "receiver_dispatch_and_declared_ui_outcome",
+                           "business_effects_verified": False, "full_product_acceptance_credit": False,
+                           "front_event_verified": False, "event_option_selection_authorized": False,
+                           "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False})
+            preserve_verified_claim(claim, request_id, result)
+        except Exception as error:
+            self._record_command(STEP, ok=False, result={"raw": raw, "action_claim_path": str(claim)},
+                                 error=f"{type(error).__name__}: {error}")
+            raise
+        self._record_command(STEP, ok=True, result=result)
+        return result
     def _decision_item_action_v1(self, decision_key: str, *, action: str, expected_revision: int | None,
                                  expected_window_kind: str | None = None) -> dict[str, object]:
         from .ingame_decision_item_contract import validate_decision_key
@@ -6395,8 +6534,15 @@ class NativeHeadlessGameplayDriver:
         # Refuse an existing claim before any additional model observation. The
         # exclusive create below still resolves a race between simultaneous callers.
         claim_dir = self._native_driver_state_path().parent / "ingame-decision-item-actions"
+        from .ingame_decision_outcome_contract import reject_unresolved_claims, preserve_verified_claim
         identity = {"game_pid": binding["game_pid"], "actor_id": binding["played_character_id"],
                     "episode_run_id": binding["episode_run_id"], "decision_key": decision_key, "action": action}
+        if action == "select":
+            identity["public_revision"] = revision
+        try:
+            reject_unresolved_claims(claim_dir, identity)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
         key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode("utf-8")).hexdigest()
         claim = claim_dir / f"{key}.claim.json"
         if claim.exists():
@@ -6416,7 +6562,7 @@ class NativeHeadlessGameplayDriver:
         try:
             with claim.open("x", encoding="utf-8", newline="\n") as stream:
                 json.dump({"schema": "ck3-ingame-decision-item-once-claim-v1", "request_id": request_id,
-                           "binding": binding, "decision_key": decision_key, "action": action,
+                           "binding": binding, "action_identity": identity, "decision_key": decision_key, "action": action,
                            "expected_window_kind": expected_window_kind, "status": "claimed_result_unknown_no_retry"},
                           stream, ensure_ascii=False, indent=2)
                 stream.write("\n"); stream.flush(); os.fsync(stream.fileno())
@@ -6462,6 +6608,7 @@ class NativeHeadlessGameplayDriver:
                            "later_actual_observation": later, "native_ack": dict(raw), "action_request_id": request_id,
                            "action_claim_path": str(claim), "episode_run_id": binding["episode_run_id"],
                            "queried_revision": revision, "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False})
+            preserve_verified_claim(claim, request_id, result)
         except Exception as error:
             self._record_command(step, ok=False, result={"raw": raw, "action_claim_path": str(claim)},
                                  error=f"{type(error).__name__}: {error}")
@@ -6788,14 +6935,20 @@ class NativeHeadlessGameplayDriver:
         # This append-only create claim survives reconnect/lost ACK. It is not
         # removed by failure or made repeatable by a new connection generation.
         claim_dir = self._native_driver_state_path().parent / "ingame-decisions-opener-actions"
+        from .ingame_decision_outcome_contract import reject_unresolved_claims, preserve_verified_claim
         claim_dir.mkdir(parents=True, exist_ok=True)
         identity = {"game_pid": binding["game_pid"], "actor_id": binding["played_character_id"],
-                    "episode_run_id": binding["episode_run_id"]}
+                    "episode_run_id": binding["episode_run_id"], "decision_key": "",
+                    "action": "open", "public_revision": revision}
+        try:
+            reject_unresolved_claims(claim_dir, identity)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
         key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode("utf-8")).hexdigest()
         claim = claim_dir / f"{key}.claim.json"
         request_id = f"decisions-{uuid.uuid4().hex}"
         claim_data = {"schema": "ck3-ingame-decisions-once-claim-v1", "request_id": request_id,
-                      "binding": binding, "status": "claimed_result_unknown_no_retry"}
+                      "binding": binding, "action_identity": identity, "status": "claimed_result_unknown_no_retry"}
         try:
             with claim.open("x", encoding="utf-8", newline="\n") as stream:
                 json.dump(claim_data, stream, ensure_ascii=False, indent=2)
@@ -6838,6 +6991,7 @@ class NativeHeadlessGameplayDriver:
                            "native_ack": dict(raw), "action_request_id": request_id,
                            "action_claim_path": str(claim), "episode_run_id": binding["episode_run_id"],
                            "queried_revision": revision, "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False})
+            preserve_verified_claim(claim, request_id, result)
         except Exception as error:
             self._record_command(STEP, ok=False, result={"raw": raw, "action_claim_path": str(claim)},
                                  error=f"{type(error).__name__}: {error}")

@@ -1,5 +1,6 @@
 #pragma once
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/ingame_decision_outcome_contract_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 #include "xar_bridge/zhongguo_scoreboard_action_v1.hpp"
 #include <string>
@@ -11,6 +12,8 @@ inline constexpr std::string_view kIngameDecisionItemSelectV1Step = "select-inga
 inline constexpr std::string_view kIngameDecisionItemSelectV1Capability = "game.command.select-ingame-decision-item-v1";
 inline constexpr std::string_view kIngameDecisionItemConfirmV1Step = "confirm-ingame-decision-item-v1";
 inline constexpr std::string_view kIngameDecisionItemConfirmV1Capability = "game.command.confirm-ingame-decision-item-v1";
+inline constexpr std::string_view kIngameDecisionOutcomeConfirmV1Step = "confirm-ingame-decision-outcome-v1";
+inline constexpr std::string_view kIngameDecisionOutcomeConfirmV1Capability = "game.command.confirm-ingame-decision-outcome-v1";
 struct IngameDecisionItemResultV1 {
   std::uint64_t native_revision=0, connection_generation=0;
   std::uint32_t game_pid=0, row_context_reference_key=0;
@@ -40,7 +43,7 @@ bool ExecuteIngameDecisionItemQueryV1(IngameDecisionItemContextV1 &,
     MainThreadQueryMailboxV1 &, const MainThreadExecutionStampV1 &,
     const ZhongguoScoreboardNativeEnvironmentV1 &) noexcept;
 std::string SerializeIngameDecisionItemV1(const IngameDecisionItemResultV1 &);
-enum class IngameDecisionItemActionKindV1 { select, confirm };
+enum class IngameDecisionItemActionKindV1 { select, confirm, confirm_outcome };
 struct IngameDecisionItemActionResultV1 {
   IngameDecisionItemResultV1 before{},after{};
   IngameDecisionItemActionKindV1 action=IngameDecisionItemActionKindV1::select;
@@ -50,11 +53,13 @@ struct IngameDecisionItemActionResultV1 {
   bool selected_after_verified=false,inner_modal_visible=false,inner_modal_tree_complete=false;
   bool postcondition_verified=false;
   std::string target_child_path,status="unavailable",unavailable_reason;
+  std::string expected_outcome,expected_event_definition_key;
 };
 struct IngameDecisionItemActionContextV1 {
   IngameDecisionItemContextV1 observation{};
   IngameDecisionItemActionKindV1 action=IngameDecisionItemActionKindV1::select;
   std::string expected_window_kind;
+  std::string expected_outcome,expected_event_definition_key;
   IngameDecisionItemActionResultV1 result{};
 };
 bool ExecuteIngameDecisionItemActionV1(IngameDecisionItemActionContextV1 &,
