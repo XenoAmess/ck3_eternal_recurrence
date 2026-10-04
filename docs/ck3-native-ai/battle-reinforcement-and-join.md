@@ -878,3 +878,24 @@ For runtime v51 third Combat **1593835526 @2629**, Root reports DAY01 typed atta
 Root reports current fighting **2957 attacker /3911 defender**, resolved advantage **-10 attacker** (our defender-relative **+10**, a derived sign conversion), with commander **70766 / Robert** unchanged. Initial `militaryrelief02` army inventory **1944 /3911**, historical DAY55 nearby **2066 /1134** without join, and the earlier conditional **4563** remain separately labelled observations or scenarios. They are not substitutes for the DAY01 roster/fighting fields. No engine-total change, casualty amount or join-size attribution is inferred from their differences.
 
 The existing native AI reinforcement tree remains the research input. This increment records an actual participant join, adds no candidate gate or restriction, and does not establish full campaign completion. All current facts are Root-reported; parent alone consumes DAY01 cache. This lane only writes external documentation, with no raw/cache read, SDK, advance, source reread, test, build, Git, shared edit, window or child.
+## 2026-10-04: enemy committed timeline as a counter-policy input
+
+The existing exact .3 [target triage tree](army-target-triage-1.20.0.3.md) supplies
+current-target continuity, support, distance, enemy-power scoring and native route
+evaluation as inputs before our counter-policy; it does not prove this enemy's motive.
+
+Actual enemy CUnit16777683's available/ready query reports current2614, end2669,
+committed route `[8757,2669]`, native arrival raws `[53250000,53250192]` from
+observed raw53249808: calendar arrival deltas **8/16 whole days**.
+The independent first-edge duration is **839506 Q100000-days = 8.39506 days**;
+it is not the end-to-end ETA or a replacement for the arrival-date array.
+Help asking/assigned are false/false; assignment target is null, provenance `none`,
+and active CombatID is null. These are legal available/ready observations.
+Parent native order is stored search/subunit order, not ordinary target scoring
+or threat-avoidance motive. Unpublished motive adds no execution gate.
+
+The minimal counter can compare **8757** as intermediate point and **2669** as
+endpoint, using Root's existing own-move preview/native ETA against this enemy timeline.
+Root's2669 preview was RED because `action_steps` omitted enemy target/route provinces;
+the sole war_movement owner's focused-GREEN fix is **pending Root merge, not live**.
+This input ledger claims no future join, avoidance, flight, battle victory or complete OODA.
