@@ -10,14 +10,16 @@ GUI_WINDOW_TREE_ROOTS = {
     "decision_detail": "decisiondetail_view",
     "courtier": "xar_courtier_creator_window",
     "vivhite_courtier": "ervc_courtier_creator_window",
+    "death_succession": "succession_event_window",
+    "death_destiny": "succession_select_destiny_window",
 }
 
 def normalize_gui_window_tree_v1(raw: object, window_kind: str) -> dict[str, object]:
     if window_kind not in GUI_WINDOW_TREE_ROOTS:
         raise ValueError("unsupported GUI window census scope")
     root_name = GUI_WINDOW_TREE_ROOTS[window_kind]
-    if window_kind == "ingame_topbar" and isinstance(raw, dict) and raw.get("truncated") is not False:
-        raise ValueError("native ingame topbar census is incomplete")
+    if window_kind in {"ingame_topbar", "death_succession", "death_destiny"} and isinstance(raw, dict) and raw.get("truncated") is not False:
+        raise ValueError("native fixed window census is incomplete")
     if not isinstance(raw, dict) or raw.get("step") != GUI_WINDOW_TREE_STEP or raw.get("scope_root_name") != root_name:
         raise ValueError("GUI window census does not match requested native scope")
     if raw.get("root_available") is True:

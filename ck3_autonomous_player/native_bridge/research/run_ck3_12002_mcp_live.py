@@ -447,6 +447,31 @@ class PlanClient:
                                                "verified": True, "snapshot": before, "campaign_root": root})
         return copy.deepcopy(self.episode_identity)
 
+    async def observe_terminal_window(self, row: dict[str, object]) -> dict[str, object]:
+        """Observe fixed death roots under the original process binding, without a living snapshot."""
+        from xar_autoplayer.bridge.frontend_gui_route_contract import frontend_gui_route_binding_from_capabilities
+        from xar_autoplayer.bridge.gui_window_tree_contract import normalize_gui_window_tree_v1
+        kind = row.get("window_kind")
+        if kind not in {"death_succession", "death_destiny"}:
+            raise ValueError("terminal window observation accepts only fixed death roots")
+        anchor = self.episode_identity
+        if not isinstance(anchor, dict) or anchor.get("verified") is not True:
+            raise ValueError("terminal window observation requires the original episode anchor")
+        binding = {key: anchor[key] for key in ("bridge_pid", "connection_generation")}
+        before = await self.call("ck3_get_capabilities")
+        if frontend_gui_route_binding_from_capabilities(before) != binding:
+            raise ValueError("terminal window observation changed its original process binding")
+        raw = await self.call("ck3_inspect_gui_window_tree_v1", {"window_kind": kind})
+        # The call journal has the full raw DTO even if validation/owner reread fails.
+        tree = normalize_gui_window_tree_v1(raw, kind)
+        after = await self.call("ck3_get_capabilities")
+        if frontend_gui_route_binding_from_capabilities(after) != binding:
+            raise ValueError("terminal window observation crossed its original process binding")
+        return {**tree, "observation_binding": binding,
+                "anchored_episode_run_id": anchor["episode_run_id"],
+                "anchored_episode_character_id": anchor["episode_character_id"],
+                "terminal_actor_proven": False, "settlement_rendered_values_proven": False}
+
     async def invoke(self, name: str, arguments: object = None, *, fresh_revision: bool = True) -> object:
         properties = self.tools.get(name, {}).get("inputSchema", {}).get("properties", {})
         needs_snapshot = fresh_revision and "expected_revision" in properties
@@ -696,6 +721,8 @@ class PlanClient:
                 elif kind == "finish_hold":
                     self.report["hold_finished_by_control_plan"] = True
                     result = {"hold_finished": True}
+                elif kind == "terminal_window_read_only":
+                    result = await self.observe_terminal_window(step)
                 elif kind == "frontend_read_only":
                     name = step["tool"]
                     if name not in {"ck3_query_frontend_gui_route_v1", "ck3_inspect_frontend_gui_tree_v1",
@@ -721,7 +748,7 @@ class PlanClient:
                     if actual != expected:
                         raise ValueError(f"result {path} expected {expected!r}, received {actual!r}")
                 self.results[str(row["id"])] = result
-                if kind != "frontend_read_only":
+                if kind not in {"frontend_read_only", "terminal_window_read_only"}:
                     row["after_snapshot"] = await self.fresh()
                 row["ok"] = True
             except Exception as error:
