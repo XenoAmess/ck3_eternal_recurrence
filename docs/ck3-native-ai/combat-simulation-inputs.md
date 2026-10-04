@@ -1896,3 +1896,30 @@ cadence 仅使用 SAME normalized snapshot 可选 roll_cadence_interval 的正�
 唯一 focused attempt1 的 **2/2 GREEN** 覆盖 production normalizer→P1 adapter→P1 runner→新 carry/prepare：Q 状态与 native order、backing／owner ledger 分离、caller DrawState、显式 interval5/counter4→0、stored cache 与 derived sum 分离，以及 fresh authority 不重复扣损。属于 synthetic paused DTO 的离线验证；新 live、game day、SDK／pipe／window、完整多日、完整 MC 与胜率均为零或未实现。
 
 源码树与三文件最小 LF 交付：Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-current-next-day-p2-offline/ROOT-DELIVERY.json；原生树先于实现落盘，fixture 不重跑。下一接口是 caller 提供 next actual normalized condition 与动态 roster／属性刷新；本模型输出不替代下一帧原生观测。
+
+## 2026-10-04: complete SideArmy backing whole-current census
+
+CK3 1.20.0.3 / Steam build 25652598 / EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. Source is reused from the sealed `.3` `0x2667E90` projector contract; no new EXE scan or game interaction is needed. The projector enumerates Side+0x10 ordered Army IDs, each Army's +0x38/+0x44 complete Regiment IDs, then strict genuine backing Regiments' +0x38 whole current troops. A separate current observation leaf retains this census and its completeness, preserving native order and associations. Entry-level resume `backing_components` are a combat Entry subset and cannot establish complete coverage.
+
+```mermaid
+flowchart TD
+  S[Combat Side +0x10 ordered Army IDs] --> A[Strict genuine Army]
+  A --> R[Army +0x38 / +0x44 complete Regiment IDs]
+  R --> G[Strict genuine backing Regiment]
+  G --> W[Regiment +0x38 integer current soldiers]
+  W --> C[Separate full backing census leaf]
+  C --> P[Native and Python preserve order, units and availability]
+  P --> T[Explicit TerminalBackingRegiment tuple per side]
+  T --> Q[Requested Q output: integer sum times 100000]
+  Q --> F{Normal-result intent observed or supplied?}
+  F -->|true| O[Current deterministic survivor projection]
+  F -->|unknown or false| N[Final survivors null]
+  C -. missing or incomplete coverage .-> U[Unavailable terminal backing input]
+  E[Entry backing_components subset] -. insufficient complete census .-> U
+```
+
+The additive nullable `ck3_query_battle_control_snapshot_v1.full_backing_inputs_v1` leaf carries `scale=1`, same-frame source Combat/province IDs, `enumeration_complete=true`, side indices and ordered Army/Regiment rows. The whole leaf is null if either side is unobserved or unresolved, and older wires may omit it; existing `battle_control_ready` is unchanged. The pure terminal API accepts explicit `backing_current_by_side` parameters: flatten each complete side's Army/Regiment rows in native order into `TerminalBackingRegiment(native_carmy_id, regiment_id, current_soldiers)`. It does not require a nonexistent current `CurrentBattleSide.regiment_backing` field. Complete empty coverage is zero; missing or incomplete coverage remains null. Whole integers are not fighting Q, baseline minus hard losses, named deaths, or owner hard-ledger credit. Future simulated pursuit must update its complete backing state before terminal projection; the current census alone is not a final native observation or full battle forecast. Wiring this private caller recipe into a production consumer remains a separate adoption step. Source context: [exact `.3` final projector](battle-terminal-final-survivor-character-observation-1.20.0.3-2026-10-03.md).
+
+Readiness is **static-ready**: the one source-to-reader-to-DTO-to-wire-to-Python reconciliation has no contract mismatch, and the parent-owned sole focused evidence is GREEN. Exactly two native scenarios emitted three frames in one execution batch; three registered `ck3_query_battle_control_snapshot_v1` MCP calls under Python `-O` reused those frames. The production reader/serializer preserves native non-ID-sorted order, a physical backing row absent from Combat Entries, legitimate whole zero and a null incomplete census while all three base control frames remain ready. Eight strict `/W4 /WX /O2 /DNDEBUG` TUs closed the focused link; missing production `phase_character` linkage and isolated `tools/build_release` import were harness REDs retained in the final receipt, with existing objects and native frames reused after necessary recovery. No whole DLL build or live deployment is claimed. Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-full-backing-observer-v56/fixture/ROOT-DELIVERY.json` (SHA-256 `af6f26ef069f116b80570ca8c18ebeb93ceaa282215b5c70d765e9f5f4131d26`) and `crosswire/SOURCE-TO-WIRE-RECONCILIATION.md`.
+
+New live credit0, normal days0, saved days0 and natural successions0. Whole Monte Carlo, win odds and full OODA completion remain unclaimed. Root owns exact-build production deployment and a real paused sample, shared topic/day/week publication and commit/push.

@@ -65,6 +65,7 @@ _OPTIONAL_SNAPSHOT_KEYS = {
     "pursuit_modifier_sides",
     "active_counter_inputs_v1",
     "current_loss_inputs_v1",
+    "full_backing_inputs_v1",
 }
 _ACTIVE_COUNTER_KEYS = {
     "schema_version", "status", "operand_census_complete", "source_combat_id",
@@ -177,6 +178,17 @@ _CURRENT_PURSUIT_INPUT_KEYS = {
 }
 
 _OPTIONAL_CURRENT_PURSUIT_INPUT_KEYS = {"losing_side_skip_pursuit"}
+
+_FULL_BACKING_INPUT_KEYS = {
+    "scale", "source_combat_id", "source_target_province_id",
+    "enumeration_complete", "sides",
+}
+_FULL_BACKING_SIDE_KEYS = {"side_index", "ordered_armies"}
+_FULL_BACKING_ARMY_KEYS = {
+    "native_carmy_id", "public_cunit_id", "owner_character_id",
+    "ordered_regiments",
+}
+_FULL_BACKING_REGIMENT_KEYS = {"regiment_id", "current_soldiers"}
 
 _CURRENT_LOSS_INPUT_KEYS = {
     "scale",
@@ -662,6 +674,14 @@ def normalize_battle_control_snapshot_v1(
             attacker=attacker,
             defender=defender,
         )
+    if "full_backing_inputs_v1" in value:
+        result["full_backing_inputs_v1"] = _normalize_full_backing_inputs_v1(
+            value["full_backing_inputs_v1"],
+            combat_id=combat_id,
+            province_id=province_id,
+            attacker=attacker,
+            defender=defender,
+        )
     if "current_pursuit_inputs_v1" in value:
         result["current_pursuit_inputs_v1"] = _normalize_current_pursuit_inputs_v1(
             value["current_pursuit_inputs_v1"], combat_id=combat_id
@@ -718,6 +738,107 @@ def _normalize_current_pursuit_inputs_v1(
             )
         )
     return normalized
+
+
+def _normalize_full_backing_inputs_v1(
+    value: object, *, combat_id: int, province_id: int,
+    attacker: dict[str, object], defender: dict[str, object],
+) -> dict[str, object] | None:
+    """Retain the complete native backing census apart from fighting buckets."""
+    if value is None:
+        return None
+    name = "battle_control_snapshot.full_backing_inputs_v1"
+    if not isinstance(value, dict) or set(value) != _FULL_BACKING_INPUT_KEYS:
+        raise ValueError(f"{name} has a malformed schema")
+    scale = _signed_int32(value["scale"], f"{name}.scale")
+    source_combat_id = _full_component_id(
+        value["source_combat_id"], f"{name}.source_combat_id"
+    )
+    source_province_id = _positive_int32(
+        value["source_target_province_id"], f"{name}.source_target_province_id"
+    )
+    if (
+        scale != 1
+        or source_combat_id != combat_id
+        or source_province_id != province_id
+    ):
+        raise ValueError(f"{name} identity or whole-soldier scale disagrees")
+    if _strict_bool(
+        value["enumeration_complete"], f"{name}.enumeration_complete"
+    ) is not True:
+        raise ValueError(f"{name} does not contain a complete backing census")
+    sides = value["sides"]
+    if not isinstance(sides, list) or len(sides) != 2:
+        raise ValueError(f"{name} requires both actual sides")
+    normalized_sides = []
+    for index, (side, parent) in enumerate(zip(sides, (attacker, defender), strict=True)):
+        side_name = f"{name}.sides[{index}]"
+        if not isinstance(side, dict) or set(side) != _FULL_BACKING_SIDE_KEYS:
+            raise ValueError(f"{side_name} has a malformed schema")
+        side_index = _signed_int32(side["side_index"], f"{side_name}.side_index")
+        if side_index != index:
+            raise ValueError(f"{side_name} actual native side order disagrees")
+        armies = side["ordered_armies"]
+        if not isinstance(armies, list):
+            raise ValueError(f"{side_name}.ordered_armies must be a list")
+        normalized_armies = []
+        for army_index, army in enumerate(armies):
+            army_name = f"{side_name}.ordered_armies[{army_index}]"
+            if not isinstance(army, dict) or set(army) != _FULL_BACKING_ARMY_KEYS:
+                raise ValueError(f"{army_name} has a malformed schema")
+            normalized_army = {
+                "native_carmy_id": _positive_int32(
+                    army["native_carmy_id"], f"{army_name}.native_carmy_id"
+                ),
+                "public_cunit_id": _public_cunit_id(
+                    army["public_cunit_id"], f"{army_name}.public_cunit_id"
+                ),
+                "owner_character_id": _positive_int32(
+                    army["owner_character_id"], f"{army_name}.owner_character_id"
+                ),
+            }
+            regiments = army["ordered_regiments"]
+            if not isinstance(regiments, list):
+                raise ValueError(f"{army_name}.ordered_regiments must be a list")
+            normalized_regiments = []
+            for regiment_index, regiment in enumerate(regiments):
+                regiment_name = f"{army_name}.ordered_regiments[{regiment_index}]"
+                if (
+                    not isinstance(regiment, dict)
+                    or set(regiment) != _FULL_BACKING_REGIMENT_KEYS
+                ):
+                    raise ValueError(f"{regiment_name} has a malformed schema")
+                normalized_regiments.append({
+                    "regiment_id": _full_component_id(
+                        regiment["regiment_id"], f"{regiment_name}.regiment_id"
+                    ),
+                    "current_soldiers": _signed_int32(
+                        regiment["current_soldiers"], f"{regiment_name}.current_soldiers"
+                    ),
+                })
+            normalized_army["ordered_regiments"] = normalized_regiments
+            normalized_armies.append(normalized_army)
+        army_identity_keys = ("native_carmy_id", "public_cunit_id", "owner_character_id")
+        observed_army_identities = [
+            tuple(army[key] for key in army_identity_keys) for army in normalized_armies
+        ]
+        expected_army_identities = [
+            tuple(army[key] for key in army_identity_keys)
+            for army in parent["ordered_armies"]
+        ]
+        if observed_army_identities != expected_army_identities:
+            raise ValueError(f"{side_name} complete native Army order disagrees")
+        normalized_sides.append({
+            "side_index": side_index,
+            "ordered_armies": normalized_armies,
+        })
+    return {
+        "scale": scale,
+        "source_combat_id": source_combat_id,
+        "source_target_province_id": source_province_id,
+        "enumeration_complete": True,
+        "sides": normalized_sides,
+    }
 
 
 def _normalize_current_loss_inputs_v1(

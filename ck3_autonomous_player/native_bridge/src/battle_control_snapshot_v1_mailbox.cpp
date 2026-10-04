@@ -1021,6 +1021,83 @@ bool AppendCurrentPursuitInputsV1(
   return true;
 }
 
+bool AppendFullBackingInputsV1(
+    std::string &output,
+    const std::optional<game::BattleControlFullBackingInputsV1> &inputs) {
+  if (!inputs.has_value()) {
+    output += "null";
+    return true;
+  }
+  const auto &value = *inputs;
+  output += "{\"scale\":";
+  if (!AppendNumber(output, value.scale)) {
+    return false;
+  }
+  output += ",\"source_combat_id\":";
+  if (!AppendNumber(output, value.source_combat_id)) {
+    return false;
+  }
+  output += ",\"source_target_province_id\":";
+  if (!AppendNumber(output, value.source_target_province_id)) {
+    return false;
+  }
+  output += ",\"enumeration_complete\":";
+  output += value.enumeration_complete ? "true" : "false";
+  output += ",\"sides\":[";
+  for (std::size_t side_index = 0; side_index < value.sides.size();
+       ++side_index) {
+    if (side_index != 0) {
+      output.push_back(',');
+    }
+    const auto &side = value.sides[side_index];
+    output += "{\"side_index\":";
+    if (!AppendNumber(output, side.side_index)) {
+      return false;
+    }
+    output += ",\"ordered_armies\":[";
+    for (std::size_t army_index = 0; army_index < side.ordered_armies.size();
+         ++army_index) {
+      if (army_index != 0) {
+        output.push_back(',');
+      }
+      const auto &army = side.ordered_armies[army_index];
+      output += "{\"native_carmy_id\":";
+      if (!AppendNumber(output, army.native_carmy_id)) {
+        return false;
+      }
+      output += ",\"public_cunit_id\":";
+      if (!AppendNumber(output, army.public_cunit_id)) {
+        return false;
+      }
+      output += ",\"owner_character_id\":";
+      if (!AppendNumber(output, army.owner_character_id)) {
+        return false;
+      }
+      output += ",\"ordered_regiments\":[";
+      for (std::size_t regiment_index = 0;
+           regiment_index < army.ordered_regiments.size(); ++regiment_index) {
+        if (regiment_index != 0) {
+          output.push_back(',');
+        }
+        const auto &regiment = army.ordered_regiments[regiment_index];
+        output += "{\"regiment_id\":";
+        if (!AppendNumber(output, regiment.regiment_id)) {
+          return false;
+        }
+        output += ",\"current_soldiers\":";
+        if (!AppendNumber(output, regiment.current_soldiers)) {
+          return false;
+        }
+        output.push_back('}');
+      }
+      output += "]}";
+    }
+    output += "]}";
+  }
+  output += "]}";
+  return true;
+}
+
 bool AppendCurrentLossInputsV1(
     std::string &output,
     const std::optional<game::BattleControlCurrentLossInputsV1> &inputs) {
@@ -1828,6 +1905,10 @@ std::string SerializeBattleControlSnapshotV1(
   }
   output += ",\"current_loss_inputs_v1\":";
   if (!AppendCurrentLossInputsV1(output, snapshot.current_loss_inputs_v1)) {
+    return {};
+  }
+  output += ",\"full_backing_inputs_v1\":";
+  if (!AppendFullBackingInputsV1(output, snapshot.full_backing_inputs_v1)) {
     return {};
   }
   if (snapshot.actual_hard_casualty_sides.attempted) {

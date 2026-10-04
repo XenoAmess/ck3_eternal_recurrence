@@ -93,6 +93,8 @@ struct BattleBindings {
   bool (*province_has_holding)(void *) = nullptr;
   ReadAdvantageModifierValue read_loss_province_modifier = nullptr;
   // Exact .3 only, and attempted only for explicit requested CharacterIDs.
+  // Complete backing census is independently nullable and exact .3 only.
+  bool full_backing_inputs_enabled = false;
   bool current_battle_knight_identity_enabled = false;
   bool current_person_state_enabled = false;
   bool current_person_effective_prowess_enabled = false;
@@ -105,6 +107,10 @@ BattleBindings BindBattleImage(std::uintptr_t image_base,
 // Installs only the reviewed current-person leaves for the exact .3 image.
 void EnableBattleCurrentPerson12003(BattleBindings &, std::uintptr_t image_base,
                                     std::string_view executable_sha256) noexcept;
+
+// Enables only the reviewed complete backing census for the exact .3 image.
+void EnableBattleFullBacking12003(BattleBindings &, std::uintptr_t image_base,
+                                  std::string_view executable_sha256) noexcept;
 
 game::BattleControlSnapshotStatus ReadBattleControlSnapshot(
     const BattleBindings &, const game::Snapshot &paused_scope,

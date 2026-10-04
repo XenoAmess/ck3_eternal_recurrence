@@ -10329,6 +10329,11 @@ bool ExecuteTypedQuery12002(
           xar::ck3_12002::EnableBattleCurrentPerson12003(
               bindings, query.image_base, envelope->game->descriptor().executable_sha256);
       }
+      if constexpr (Kind == QueryKind12002::battle_control) {
+        if (xar::game::IsCk3_12003Descriptor(envelope->game->descriptor()))
+          xar::ck3_12002::EnableBattleFullBacking12003(
+              bindings, query.image_base, envelope->game->descriptor().executable_sha256);
+      }
       bindings.province_context = &province;
       bindings.resolve_province = &ResolveBattleProvince12002;
       if constexpr (Kind == QueryKind12002::battle_control) {

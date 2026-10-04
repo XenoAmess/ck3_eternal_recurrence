@@ -1852,6 +1852,45 @@ struct BattleControlPursuitModifierSides {
                          const BattleControlPursuitModifierSides &) = default;
 };
 
+// Complete current CArmyRegiment backing census in native side/army order.
+// Whole soldiers are distinct from the sampled CCombat fighting-entry buckets.
+struct BattleControlFullBackingRegimentV1 {
+  std::int32_t regiment_id = -1;
+  std::int32_t current_soldiers = 0;
+
+  friend bool operator==(const BattleControlFullBackingRegimentV1 &,
+                         const BattleControlFullBackingRegimentV1 &) = default;
+};
+
+struct BattleControlFullBackingArmyV1 {
+  std::int32_t native_carmy_id = -1;
+  std::int32_t public_cunit_id = -1;
+  std::int32_t owner_character_id = -1;
+  std::vector<BattleControlFullBackingRegimentV1> ordered_regiments;
+
+  friend bool operator==(const BattleControlFullBackingArmyV1 &,
+                         const BattleControlFullBackingArmyV1 &) = default;
+};
+
+struct BattleControlFullBackingSideV1 {
+  std::int32_t side_index = -1;
+  std::vector<BattleControlFullBackingArmyV1> ordered_armies;
+
+  friend bool operator==(const BattleControlFullBackingSideV1 &,
+                         const BattleControlFullBackingSideV1 &) = default;
+};
+
+struct BattleControlFullBackingInputsV1 {
+  std::int32_t scale = 1;
+  std::int32_t source_combat_id = -1;
+  std::int32_t source_target_province_id = -1;
+  bool enumeration_complete = true;
+  std::array<BattleControlFullBackingSideV1, 2> sides{};
+
+  friend bool operator==(const BattleControlFullBackingInputsV1 &,
+                         const BattleControlFullBackingInputsV1 &) = default;
+};
+
 // Current operands of the native loss branches. These are not a retained
 // outgoing damage result and do not execute a combat-loss operation.
 struct BattleControlCurrentLossSideInputsV1 {
@@ -1951,6 +1990,9 @@ struct BattleControlSnapshot {
   BattleControlPursuitModifierSides pursuit_modifier_sides;
   // Null is an unobserved leaf; zero remains a native numeric observation.
   std::optional<BattleControlCurrentLossInputsV1> current_loss_inputs_v1;
+  // Null means the full native backing census was not resolved; zero is valid.
+  // This additive observation does not change battle_control_ready.
+  std::optional<BattleControlFullBackingInputsV1> full_backing_inputs_v1;
   // Runtime pursuit rules are independent nullable observations, not a gate.
   std::optional<BattleControlCurrentPursuitInputsV1> current_pursuit_inputs_v1;
   bool battle_control_ready = false;

@@ -464,6 +464,52 @@ std::optional<game::BattleControlCurrentLossInputsV1> CurrentLossInputs(
   return out;
 }
 
+std::optional<game::BattleControlFullBackingInputsV1> FullBackingInputs(
+    const BattleBindings &b, const game::BattleControlSnapshot &snapshot) {
+  if (!b.full_backing_inputs_enabled)
+    return std::nullopt;
+
+  game::BattleControlFullBackingInputsV1 out{};
+  out.source_combat_id = snapshot.combat_id;
+  out.source_target_province_id = snapshot.province_id;
+  const std::array<const game::BattleControlSideSnapshot *, 2> sides{
+      &snapshot.attacker, &snapshot.defender};
+  for (std::size_t side_index = 0; side_index < sides.size(); ++side_index) {
+    auto &side = out.sides[side_index];
+    side.side_index = static_cast<std::int32_t>(side_index);
+    for (const auto &identity : sides[side_index]->ordered_armies) {
+      auto *army = Resolve(b.army_internal_storage_slot,
+                           identity.native_carmy_id, 0x10);
+      if (!army)
+        return std::nullopt;
+      const void *data{};
+      std::int32_t count{};
+      if (!Header(army, 0x38, 0x40, 0x44, data, count))
+        return std::nullopt;
+      game::BattleControlFullBackingArmyV1 row{};
+      row.native_carmy_id = identity.native_carmy_id;
+      row.public_cunit_id = identity.public_cunit_id;
+      row.owner_character_id = identity.owner_character_id;
+      for (std::int32_t regiment_index = 0; regiment_index < count;
+           ++regiment_index) {
+        const auto id = At<std::int32_t>(data, regiment_index * 4ULL);
+        auto *regiment = Resolve(b.regiment_storage_slot, id, 0x10);
+        if (!regiment)
+          return std::nullopt;
+        const auto current = At<std::int32_t>(regiment, 0x38);
+        if (current < 0)
+          return std::nullopt;
+        // 2667E90 counts these physical backing rows, including legitimate zero.
+        // Combat fighting entries are a separate view and do not filter this list.
+        row.ordered_regiments.push_back({id, current});
+      }
+      side.ordered_armies.push_back(std::move(row));
+    }
+  }
+  out.enumeration_complete = true;
+  return out;
+}
+
 bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
                    const game::BattleControlRequest &req,
                    game::BattleControlSnapshot &out) {
@@ -522,6 +568,7 @@ bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
       At<std::uint8_t>(combat, kBattleDailyGuardOffset))
     return false;
   out.current_loss_inputs_v1 = CurrentLossInputs(b, combat, province, out);
+  out.full_backing_inputs_v1 = FullBackingInputs(b, out);
   out.current_pursuit_inputs_v1 = CurrentPursuitInputs(b, combat, out);
   if (Province(b, At<void *>(combat, 0x6B8)) != province)
     return false;
@@ -1169,6 +1216,12 @@ bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
 }
 } // namespace
 
+void EnableBattleFullBacking12003(BattleBindings &b, std::uintptr_t base,
+                                  std::string_view sha) noexcept {
+  b.full_backing_inputs_enabled =
+      b.enabled && base != 0 && sha == ck3_12003::kExecutableSha256;
+}
+
 void EnableBattleCurrentPerson12003(BattleBindings &b, std::uintptr_t base,
                                     std::string_view sha) noexcept {
   if (!b.enabled || !base || sha != ck3_12003::kExecutableSha256) return;
@@ -1306,8 +1359,13 @@ ReadBattleControlSnapshot(const BattleBindings &b, const game::Snapshot &s,
     return o.status;
   }
   game::BattleControlSnapshot a{}, c{};
-  if (!ControlSample(b, s, r, a) || !ControlSample(b, s, r, c) || a != c ||
-      !Scope(b, s)) {
+  const bool sampled = ControlSample(b, s, r, a) && ControlSample(b, s, r, c);
+  if (sampled && a.full_backing_inputs_v1 != c.full_backing_inputs_v1) {
+    // A changing optional census cannot invalidate the existing control frame.
+    a.full_backing_inputs_v1.reset();
+    c.full_backing_inputs_v1.reset();
+  }
+  if (!sampled || a != c || !Scope(b, s)) {
     o.status = game::BattleControlSnapshotStatus::state_changed;
     return o.status;
   }
