@@ -60,3 +60,32 @@ selector 自身没有独立的 army-size、war-leader 固定奖金或所有 prim
 若策略确需逐候选排序账本，下一施工应在同一 shell/native helper 闭包内读取有序候选 CharacterID 与 `0x2589E10` 返回 signed raw 分数，并保留真实 side 输入顺序；不能先凭通用质量选人再补 native 数据。完整大联军 tie 的具体入口为 `0x11D2400/0x11D2520`；primary 身份 producer 的入口为 populate `0x264DE30`；modifier 名字/来源归因入口为 `0x28C3AE0/0x2C4D550` 和 exact loaded definition lookup。它们不阻止已发布的最终输入被独立使用。
 
 父专题：[有效战斗输入](commander-effective-combat-inputs-12003.md)、[战斗模拟输入](combat-simulation-inputs.md)、[指挥官任命](commander-candidates-and-assignment-12003.md)。新日报/周报字段由 `REPORT-FIELDS.json` 提供给父协调者合并，Git 由 Root 收口。
+
+### 2026-10-04：v54 同 contextual MCP 的 commander 输入与部分来源
+
+v54 在既有每侧 context 中新增可选 `commander_source_inputs`（17 项输入）
+与 `commander_sources`（七个原生调用阶段、每行 14 字段）。Python 只改
+`combat_contract.py`，保留 v53 side 来源与 missing/null 兼容。signed32 martial
+及 EF0 effect points、uint32 province 位模式、uint8 gathering、实际 1AE 缓存／
+gate／canonical null Army、primary 1B1/B0 身份输入，以及 signed64 Q100000
+贡献均按原值传递。空 loaded key 保持空字符串；ID sentinel 的 null 不抹去
+canonical null Character 其余已读输入。
+
+阶段 1/2 的 opaque helper 输出未捕获，保持 `unavailable`、null contribution
+与真实 provenance；后续未知 accumulator 不由旧总数差值倒填。这里不重调用
+未知 helper，不猜 modifier 人类名称；部分来源和部分 sum 不新增 readiness
+gate，原 totals、schema、参数、MC=false 保留。已有 R26 hypo2619 的 commander
+21/41 仍未因果归因；R26 的 side dynamic 为零，当前游戏仍是旧 g57，不能把
+该帧或静态夹具冒充 v53/v54 live。背景推进继续，不等待这些部分观察。
+
+native fixture 是唯一 producer／真实 serializer 产包者，Python 最后仅串接
+一次原注册 MCP→service→driver→候选 normalizer 的 `-O` 显式检查，不重跑
+旧 suite 或首次 snapshot 修复。能力界限与后续入口回链
+[同 MCP 来源说明](battle-contextual-source-explanation-12003-2026-10-04.md)。
+
+Python `registered-chain-01` 首次运行 GREEN：三份原 producer context 与旧
+missing/null 外壳在同一次运行中共五次消费，原生值／来源顺序／provenance
+均保持，且原调用体与候选 normalizer 执行路径已钉。signed32 −1、uint32
+0xFFFFFFFF、null Character、null Army 的实际 gate 与 −125001 贡献、false
+gate 的零贡献及 opaque 输出／后续 accumulator 的 null 均保真。这里只达到
+`static-ready`，零 SDK、游戏日、窗口、State、共享源码或完整 DLL 操作。
