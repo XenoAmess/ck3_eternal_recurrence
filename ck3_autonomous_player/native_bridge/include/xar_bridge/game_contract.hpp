@@ -923,6 +923,11 @@ struct WarObjectiveProvinceState {
   // Current phase is freshly evaluated; prepared phase is last prepare's cache.
   bool siege_ordinary_daily_progress_observable = false;
   FixedPointValue siege_ordinary_daily_progress;
+  // Current eligible Province contribution and highest eligible engine tier.
+  bool siege_eligible_regiment_siege_work_observable = false;
+  FixedPointValue siege_eligible_regiment_siege_work;
+  bool siege_highest_eligible_siege_tier_observable = false;
+  std::int32_t siege_highest_eligible_siege_tier = 0;
   bool siege_current_phase_length_observable = false;
   FixedPointValue siege_current_phase_length;
   bool siege_prepared_phase_length_observable = false;

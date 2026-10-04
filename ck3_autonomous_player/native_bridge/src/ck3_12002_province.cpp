@@ -38,6 +38,10 @@ ProvinceBindings BindProvinceImage(std::uintptr_t base, std::string_view sha) no
   result.fort_level = reinterpret_cast<ProvinceIntGetter>(base + 0x247AB90);
   result.garrison_size = reinterpret_cast<ProvinceIntGetter>(base + 0x247F370);
   result.besieging_strength = reinterpret_cast<ProvinceIntGetter>(base + 0x247F1D0);
+  result.eligible_regiment_siege_work =
+      reinterpret_cast<ProvinceFixedGetter>(base + 0x247ECE0);
+  result.highest_eligible_siege_tier =
+      reinterpret_cast<ProvinceIntGetter>(base + 0x247EFC0);
   result.siege_progress = reinterpret_cast<SiegeFixedGetter>(base + 0x251C9C0);
   result.siege_total_work = reinterpret_cast<SiegeFixedGetter>(base + 0x251DD20);
   result.siege_days_left = reinterpret_cast<ProvinceIntGetter>(base + 0x251CB00);
@@ -176,6 +180,23 @@ game::WarObjectiveProvinceState ReadObjectiveProvince(
   out.siege_progress_fraction.raw = progress;
   out.siege_current_work.raw = current;
   out.siege_total_work.raw = total;
+  // Current Province eligibility is independent of commander and assault.
+  // Native zero is a valid empty contribution/tier, never a missing read.
+  if (b.eligible_regiment_siege_work != nullptr) {
+    std::int64_t eligible_work{};
+    if (b.eligible_regiment_siege_work(province, &eligible_work) == &eligible_work &&
+        eligible_work >= 0) {
+      out.siege_eligible_regiment_siege_work_observable = true;
+      out.siege_eligible_regiment_siege_work.raw = eligible_work;
+    }
+  }
+  if (b.highest_eligible_siege_tier != nullptr) {
+    const auto tier = b.highest_eligible_siege_tier(province);
+    if (tier >= 0) {
+      out.siege_highest_eligible_siege_tier_observable = true;
+      out.siege_highest_eligible_siege_tier = tier;
+    }
+  }
   const auto internal_id = Read<std::int32_t>(siege, kObjectiveSiegeArmyIdOffset);
   std::size_t matches = 0;
   std::int32_t unit_id = -1;

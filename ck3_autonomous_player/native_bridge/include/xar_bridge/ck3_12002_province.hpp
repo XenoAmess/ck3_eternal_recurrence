@@ -38,6 +38,8 @@ inline constexpr std::size_t kObjectiveSiegeAssaultOffset = 0x44C;
 
 using ProvinceOccupiedGetter = bool (*)(void *);
 using ProvinceIntGetter = std::int32_t (*)(void *);
+// Exact .3 Province eligible-regiment siege-work accumulator.
+using ProvinceFixedGetter = std::int64_t *(*)(void *, std::int64_t *);
 using SiegeFixedGetter = std::int64_t *(*)(void *, std::int64_t *);
 // Exact .3 owning-thread getters. IDs are the actual commander and internal
 // CArmy full IDs; the optional tooltip/breakdown pointer is always null.
@@ -62,6 +64,8 @@ struct ProvinceBindings {
   ProvinceIntGetter fort_level = nullptr;
   ProvinceIntGetter garrison_size = nullptr;
   ProvinceIntGetter besieging_strength = nullptr;
+  ProvinceFixedGetter eligible_regiment_siege_work = nullptr;
+  ProvinceIntGetter highest_eligible_siege_tier = nullptr;
   SiegeFixedGetter siege_progress = nullptr;
   SiegeFixedGetter siege_total_work = nullptr;
   ProvinceIntGetter siege_days_left = nullptr;
