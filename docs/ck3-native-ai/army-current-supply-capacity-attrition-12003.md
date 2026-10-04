@@ -236,3 +236,11 @@ Root 报告 SDK `69894` 正常关闭、退出码 `0`、批次 `GREEN`。本消�
 上述4268日三军查询保留为历史临战帧。Root随后确认SDK72142已正常closed；55实际日为saved/bounded/whole，当前总4323/res1170/Oct4+298，normal h6509（93584151 B，SHA-256 `375ab8dd80c2aeeb6e9e48411038e7b671213cd2da118a0c05c4f339023046c9`）。Root提供的终态critical同帧raw53248080、native1089/public220、seq81：我军3920/4231，supply113.34217/cap300、monthly+20、attrition0。这是新截面，不从较早3728的变化归因伤亡、补员或其他机制，也不据当前健康字段宣称regiment记录全覆盖。
 
 Root提供main838@2629已进入combat1577058310（defender=1、maneuver=1）；真实首都2619的Siege201326609仍为37.421%，ETA122是估计，尚未解围。此处只引用已封Rootmetadata，不读55日raw、不增加文档消费者游戏天数或战果信用；后续12738战斗尚属未来，不并入本截面。
+
+### 2026-10-04：30个正常日后实际抵达首都2619及同帧健康（v52）
+
+Root确认该30日推进为normal/calendar/bounded/whole（720小时），global4359→4389、res1236、Oct4+364。R26/g57、native build1791d84、PID7388终态raw53249664、native134/public122，normal h6814存档94123640 B，SHA-256 `2d04bc628a93beb1482c4660e73a2de0239c004122063e53569128d93580e3bd`。main838实际位于2619，inCombat=true、combatstate=2、no retreat，route为complete_empty（0）、target=null。
+
+协调者一次消费同帧critical cache后提供的具名摘要：army838→nativeCArmy50331794，row/status与metadata均available，query seq11、queried native134/public122、raw53249664，final frame match=true；当前3893/4231、47 regiment，supply133.34217/cap300、monthly+20、attrition0。对应raw为13334217/30000000/2000000/0，scale均100000；map soldiers=null仍保留。gathering_days_left=null、status=not_gathering、ready=true是合法非集结状态，不代表战斗质量；该摘要未提供补员record覆盖，不能宣称全47团记录完整或推断兵数差原因。
+
+同一Root摘要给出FullCombat1728053248的defender=1、maneuver=1；首都enemy-active Siege201326609进度71.177%、breach=0、nonoccupied=true，战争129分数−22。已抵达与健康字段仅为production-live primitive，首都尚未解围、战争未胜利；后续4392帧排除。本doc消费者仅引用封存摘要（`ART3/military-ooda-continuation/capital2619-v52/relief64-consumption/DAY30-TERMINAL-CRITICAL.json`，SHA-256 `adb4d32a6f55ed4122ee645eeb60bb99765f0797660561aac980f870fc51a38d`），未重复读取该critical/raw，新增游戏天数、动作及战果信用均0。

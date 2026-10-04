@@ -284,3 +284,14 @@ Root 后续正常推进 55 日（1320 raw hours），在接敌时停机；批次
 当前王国首都是 `2619 / county 2142`；`2640 / county 2115` 是另一伯爵领首府，历史记录保留。首都敌方围城 `201326609` 仍活动，进度 `37.421% / ETA 122`，本批次没有解围、抵达或胜负信用。战争 `16777231` 不在末帧 active 集合，仅说明该帧不再活动，结算类型及原因仍未闭合。已有 consumer CLI RED 保留为历史失败，不覆盖正常存档证据。
 
 55 日已由 Root 计入累计 `4323 / resume 1170 / Oct4 +298`，本专题消费新增 `0` 日、`0` 动作；单日与批次不重复加总。能力边界是生产实机行军及有限推进至接敌交回，尚不代表完整行军抵达、首都解围或整场战役完成。证据为 [零日 moving/control/SAVE 封包](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/v51-relief2619-moving-zero-day-control/ROOT-DELIVERY.json) 与 [55 日 sealed critical](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/capital2619-v51/relief55-sealed-day-consumption/DAY55-TERMINAL-CRITICAL.json)；后续战斗由 Root 独占消费，不在本页提前认定结果。
+
+
+### 2026-10-04：30 日正常推进，真实抵达首都并接敌交回
+
+Root 已封本次 30 个独立正常存档日：每次推进 24 raw hours、episode 连续，合计 30 calendar / 30 bounded / 30 whole days、720 raw hours；累计 `4359→4389 / resume 1236 / Oct4 +364`。本专题消费新增 0 日、0 动作，不重复计入 Root 的日数。末帧为 `raw 53249664 / native:134 / public 122 / normal h6814`，运行身份为 `R26 / g57 / 1791 / PID 7388`；正常存档 `94123640 B / SHA-256 2d04bc628a93beb1482c4660e73a2de0239c004122063e53569128d93580e3bd`。后继 4392 日不回填本截点。
+
+玩家主军 `83886367` 已实际位于王国首都 `2619 / county 2142`，处于 `combat / code 2`、非退却；路线 `[]` 是 `complete_empty / count 0`，移动目标为 `null`。其当前实际战斗为 `1728053248 / defender side 1 / maneuver day 1`，是本次抵达帧的具名战斗，不沿用旧战斗或旧兵力零值。旧 `2640 / county 2115` 是另一伯爵领首府，原历史记录保留。
+
+抵达已经闭合为 `production-live primitive`，正常行军推进至真实接敌并交回控制的有限 `production-live loop` 也已闭合；战斗尚无终局。首都 occupation 可观测且 `is_occupied=false / occupier=null`，同时敌方活动围城 `201326609` 仍非空：领军 `268435747 / player=false`，进度 `71.177%`、`B0`、`days_left=null`，堡垒 3、守军 540、breach 1、`CanStart=false`。因此位置抵达、空路线及未被占领均不能替代解围验证，本帧无解围、战斗终局或战争胜利信用。
+
+证据只链接 Root sole-consumer 已封 [DAY30-TERMINAL-CRITICAL.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/military-ooda-continuation/capital2619-v52/relief64-consumption/DAY30-TERMINAL-CRITICAL.json)，其 SHA-256 为 `adb4d32a6f55ed4122ee645eeb60bb99765f0797660561aac980f870fc51a38d`。文件名 terminal 表示本推进批次末帧，不表示战斗终局；本 lane 不重读该缓存、原始 ledger 或后续战斗。
