@@ -442,3 +442,40 @@ Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-
 Actual new EXE reads total **770 B**: 682 B code, 60 B `.pdata`, 28 B unwind; 13 previously sealed `.pdata` rows were reused. B analyzed only the cached main ASM, adding zero EXE reads. The optional direct-callee body budget was unused because the actual writer target already had sealed evidence. `FORCED_CACHE_CALL_EDGE_SOURCE_READY=true`; destination consumption, trait-request-to-refresh timing, numeric preparation and Entry order remain partial. No model, fixture, test, current EC prediction, Entry-day claim, SDK, live RPM, game/window action, shared mutation or Git operation was performed.
 
 Next source construction remains the actual relative destination `+B0/+BC` consumer and its admission. Registered, unread manager methods from v70 still provide bounded concrete entry points (`2A3D3C0`, `2A3DB50` with v71 pinned extents), without assigning a tick or consumer role in advance. The known reset helper's direct writer edge is adopted source knowledge rather than a guessed queue-drain completion.
+
+
+## v73 — destination admission and old-pending processing (2026-10-05 / W41)
+
+Sequential source base is v72's 46,564-byte EOF projection (`45b8e0112ce4bdcfacb44dd98bf103ed77072683cf680baee657f6779eb374f7`), preserved exactly. Root supplied v71 adoption prefix `5c1dc646` and reviewed/queued v72 adoption; no full or later commit is invented. Exact CK3 **1.20.0.3**, frozen EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6` remains the identity.
+
+Two registered entries were uniquely captured using existing v71 `.pdata` pins: `2A3D3C0..2A3D52F` (367 B) and `2A3DB50..2A3DF6E` (1054 B). The first range is a **runtime fragment**, not a complete logical method: final `3D529` branches to uncaptured `3D5F5`, while fallthrough `3D52F` is also uncaptured. No return was captured. `WHOLE_FIRST_METHOD_SOURCE_READY=false`.
+
+In the first fragment, the incoming receiver is secondary CModifierManager. Secondary `+A8/+B4` resolves to primary destination `+B0/+BC`, and secondary `+90/+9C` to old primary `+98/+A4`. At `2A3D41C`, direct helper **`9CE070`** receives `RCX=old vector descriptor`, `EDX=old count`, `R8=destination begin`, `R9=destination begin+sign_extend32(count)*8`. On normal return, `2A3D424` clears destination count `primary+BC`. The helper's range-transfer semantics are unread, so the argument/count-clear proof does not assert a completed copy.
+
+The following captured old-vector pass stably compacts rows using model `+8` owner, owner magic `+1C=43686172`, full ID `+18!=-1`, and qword `+1D0=0`. The qword's meaning is unassigned; no alive, incapable, prowess or knight-detach predicate is proved. The fragment then starts bounded progress setup and exits the captured range through the two explicit continuations above.
+
+The second body is an actual old-pending processing wrapper. It reads old primary `+98/+A4`. A saved prefix N from primary `+84`, paired with 16-byte rows at primary `+78`, drives `291CF50(model, paired argument)` calls for the first N old models. After paired dispatch/cleanup (`2A40E60`, `22C0C20`, paired count zero), remaining models N..M-1 reach **`291C0D0`**. The current old vector is then passed to **`2A41170`**. These workers remain unread. Later post-helpers run, primary `+EC/+104/+A4` are zeroed and the function tail-jumps to `2A3D630(primary)`.
+
+```mermaid
+flowchart TD
+    Q["trait request destination primary+B0/+BC"] --> A["registered2A3D3C0 fragment
+range arguments to9CE070"]
+    A --> Z["normal return: destination countBC=0"]
+    Z --> F["old98/A4 primitive owner filter
+stable compaction"]
+    F -. "first continuation unread" .-> C["3D52F / conditional3D5F5"]
+    A -. "transfer-helper semantics unread" .-> O["old pending98/A4"]
+    O --> P["registered2A3DB50
+prefix291CF50 then rest291C0D0"]
+    P --> W["old vector to2A41170
+worker body unread"]
+    W --> R["posthelpers; old countA4=0
+tail2A3D630"]
+    W -. "numeric preparation / Entry time unknown" .-> E["battle feedback partial"]
+```
+
+All normal conditional branches in the second captured body stay within its extent; its final tail target is an explicit external callee. Cached unwind flags2 identify handler `4225A84`, which was not followed; there is no CHAININFO. Neither captured body directly accesses model `+2F4`, and the second has no direct destination `+B0/+BC` or `28C3BC0/28C3F60` operand. Counter clears and model-worker calls do not prove the entire trait-to-numeric/cache/Entry transition or daily admission.
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-modifier-manager-pending-consumer-v73/source/{ROOT-DELIVERY.json,SOURCE-RECEIPT.json,TREE.md,A-FIRST-ADMISSION-ROLE.json,INPUT-CONTRACT.json,READ-COST.json}` and `cached-pending-role/{ROOT-DELIVERY.json,README.md,OCT5-W41-FIELDS.json}`. Actual new EXE reads: **1477 B = 1421 B code + 56 B necessary unwind**, with zero new `.pdata` search/read; cached row pins were reused. B interpreted only cached second-body ASM, with zero additional EXE read. The two-body budget was exhausted without following other bodies.
+
+Source-ready components now include destination argument admission, destination count clear and old-pending wrapper order. Full range-transfer semantics, first-method continuations, pending worker effects, calendar timing, future numeric values and Entry order remain partial. Concrete next source entries are `9CE070`, reachable continuations `2A3D52F/2A3D5F5`, and old-queue worker `2A41170`; these are actual calls/branches, not a generic search plan. No model, test, SDK, live RPM, game/window action, shared mutation, Git operation, current EC prediction or Entry-day claim was produced.
