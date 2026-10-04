@@ -1,0 +1,87 @@
+{
+  "schema": "superman-qiang.root-public-cdn-review.v1",
+  "reviewer": "root Codex",
+  "reviewed_at_utc": "2026-10-04T06:36:27.341619+00:00",
+  "status": "PUBLIC_COVER_AND_FIVE_MEDIA_DIRECT_REVIEW_ACCEPTED",
+  "files": [
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\main-preview.public",
+      "bytes": 785139,
+      "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b",
+      "pixels": [
+        640,
+        640
+      ],
+      "format": "PNG",
+      "root_direct_view_completed": true,
+      "same_reviewed_source_bytes": true,
+      "observation": "One adult king and one adult queen, reviewed title and composition."
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-00.public",
+      "bytes": 840984,
+      "sha256": "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238",
+      "pixels": [
+        1600,
+        900
+      ],
+      "format": "JPEG",
+      "root_direct_view_completed": true,
+      "same_reviewed_source_bytes": true,
+      "observation": "Seven attributes including health; labelled promotional illustration and rules."
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-01.public",
+      "bytes": 838222,
+      "sha256": "e4f9360eda0d65f9eb46d96654ea0e81075c3ad41ec2da5d90f82742860b9066",
+      "pixels": [
+        1600,
+        900
+      ],
+      "format": "JPEG",
+      "root_direct_view_completed": true,
+      "same_reviewed_source_bytes": true,
+      "observation": "Six abilities +/-1; health +/-0.00075; eligible categories equal weight."
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-02.public",
+      "bytes": 802191,
+      "sha256": "cbe8a7be4a3e72f57480e8031525ab2be551dda0d53bbc67f01356bf353c371f",
+      "pixels": [
+        1600,
+        900
+      ],
+      "format": "JPEG",
+      "root_direct_view_completed": true,
+      "same_reviewed_source_bytes": true,
+      "observation": "Notification describes count and attributes directly; no unsupported hover claim."
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-03.public",
+      "bytes": 159032,
+      "sha256": "0f4f7ebc49ae07fadcca65e4382498c2ee3110f6bd0116807066b76f36ad6356",
+      "pixels": [
+        684,
+        380
+      ],
+      "format": "JPEG",
+      "root_direct_view_completed": true,
+      "same_reviewed_source_bytes": true,
+      "observation": "Actual normal-game seduction-success event; not a health-transfer claim."
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-04.public",
+      "bytes": 138982,
+      "sha256": "51ac5484e3a82bcac65c65c2fe3fe3d058c2868715980171192f1d1886c0d6ff",
+      "pixels": [
+        785,
+        364
+      ],
+      "format": "JPEG",
+      "root_direct_view_completed": true,
+      "same_reviewed_source_bytes": true,
+      "observation": "Actual ordinary NPC profile and native notification: XP1, health4.16622/net0; not staged health transfer."
+    }
+  ],
+  "boundary": "Only these exact downloaded CDN bytes were directly viewed. No image edits, no approval invented for other source or failed attempts."
+}

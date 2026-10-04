@@ -1,0 +1,42 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "fa71dc874cd1e07ce1b97c72fccf1c9e9b7c4b96"
+    },
+    "last_sequence": 4242,
+    "next_step": "",
+    "pid": 10928,
+    "repo": "D:\\ar",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "done",
+    "summary": "superman-1.1.0-publication-screen-released",
+    "task_id": "ck3-superman-qiang-publication-screen-20261004-1.1.0-p0003",
+    "updated_at_utc": "2026-10-04T06:35:42.106746+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 4242,
+    "event_id": "ab34c61e94a1481ca72e6bb661365db1",
+    "timestamp_utc": "2026-10-04T06:35:42.107915+00:00",
+    "kind": "completed",
+    "task_id": "ck3-superman-qiang-publication-screen-20261004-1.1.0-p0003",
+    "to": [
+      "*"
+    ],
+    "state": "done",
+    "summary": "superman-1.1.0-publication-screen-released",
+    "next_step": "",
+    "resources": [],
+    "repo": "D:\\ar",
+    "git": {
+      "branch": null,
+      "dirty_entries": 0,
+      "head": "fa71dc874cd1e07ce1b97c72fccf1c9e9b7c4b96"
+    }
+  }
+}

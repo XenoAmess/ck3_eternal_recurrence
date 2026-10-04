@@ -1,0 +1,56 @@
+{
+  "ok": true,
+  "state": "observed",
+  "required_dlc_app_ids": [],
+  "required_mod_item_ids": [],
+  "item_id": "3812991990",
+  "observed_at_utc": "2026-10-04T06:33:22.195835+00:00",
+  "verified": true,
+  "anonymous": true,
+  "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=english",
+  "http_status": 200,
+  "http_body_sha256": "149f0e35a7f4785e04ec0aae3f42f65848f02e4dca98c7dcca7f8bab88c97fc5",
+  "dom_sha256": "dd8ad6050bf1a300ed5ccd853634b79834fca7cc533fc4ce6e0e8a00c7b3a290",
+  "observation_sha256": "e6210a282d1e2fab12dd574f66bb3add7187b3b6a0b8e13103e50a63c7ac0e3f",
+  "sidebar_sha256": "09f8221a7afe921a876b7820301a944c3deecce01e9c884b3151b199c7ef3dae",
+  "actual_sidebar_locator": "html:nth-of-type(1) > body:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(6) > div:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(8) > div:nth-of-type(1) > div:nth-of-type(1)",
+  "visible_sidebar_titles": [
+    "Created by",
+    ""
+  ],
+  "header_stat_names": [
+    "File Size",
+    "Posted",
+    "Updated"
+  ],
+  "rule": "Unique visible #rightContents > .sidebar; direct .panel; visible normalized .rightSectionTopTitle textContent; independent header File Size/Posted; Created by present; Required DLC/items section and proven container selectors absent in complete actual DOM",
+  "page_response": {
+    "source": "preserved anonymous browser main HTTP response",
+    "requested_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=english",
+    "final_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=english",
+    "http_status": 200,
+    "request_cookie_or_authorization": false,
+    "body": {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\sidebar-verification-a01\\http-response.html",
+      "size": 78006,
+      "sha256": "149f0e35a7f4785e04ec0aae3f42f65848f02e4dca98c7dcca7f8bab88c97fc5"
+    },
+    "browser_dom": {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\sidebar-verification-a01\\http-response.browser-dom.html",
+      "size": 79651,
+      "sha256": "dd8ad6050bf1a300ed5ccd853634b79834fca7cc533fc4ce6e0e8a00c7b3a290"
+    },
+    "browser_observation": {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\sidebar-verification-a01\\http-response.browser-observation.json",
+      "size": 114782,
+      "sha256": "e6210a282d1e2fab12dd574f66bb3add7187b3b6a0b8e13103e50a63c7ac0e3f"
+    },
+    "original_observation": {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\anonymous-item-a01\\observation.json",
+      "size": 114782,
+      "sha256": "e6210a282d1e2fab12dd574f66bb3add7187b3b6a0b8e13103e50a63c7ac0e3f"
+    }
+  },
+  "API_missing_fields_used_as_empty": false,
+  "direct_visual_review": "independent step, pending recorded inspection"
+}

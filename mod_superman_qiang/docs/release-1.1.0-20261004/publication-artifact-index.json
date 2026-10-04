@@ -1,0 +1,165 @@
+{
+  "schema": "superman-qiang.publication-archive.v1",
+  "at_utc": "2026-10-04T06:42:31.381548+00:00",
+  "state": "ACTUAL_STEAM_CLOSURE_ARCHIVED_REPOSITORY_DELIVERY_PENDING",
+  "files": [
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\final\\closure-a02.json",
+        "bytes": 68023,
+        "sha256": "994678080b9ac87329f3d3182ff57538088dbd1555f9aa2f5d479e468a0d343e"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\publication.snapshot.json",
+        "bytes": 68023,
+        "sha256": "994678080b9ac87329f3d3182ff57538088dbd1555f9aa2f5d479e468a0d343e"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\final\\raw-asset-index-a02.json",
+        "bytes": 118136,
+        "sha256": "49b3fa392253b4c76cd92d534a57ed0139693228314d5012ea805d744f81112c"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\publication-raw-index.snapshot.json",
+        "bytes": 118136,
+        "sha256": "49b3fa392253b4c76cd92d534a57ed0139693228314d5012ea805d744f81112c"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\frozen-inputs.json",
+        "bytes": 4508,
+        "sha256": "05c9cc038ae2eca057733fee5d7152aa1b8b200d74441f3aa55988da884763d8"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\publication-freeze.snapshot.json",
+        "bytes": 4508,
+        "sha256": "05c9cc038ae2eca057733fee5d7152aa1b8b200d74441f3aa55988da884763d8"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\native-receipt.json",
+        "bytes": 2226,
+        "sha256": "5531078fdf5d273640af42627594e67614043404fe3445690c7574b1170210c2"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\native-submit.snapshot.json",
+        "bytes": 2226,
+        "sha256": "5531078fdf5d273640af42627594e67614043404fe3445690c7574b1170210c2"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\native-download-a01\\stdout.json",
+        "bytes": 2673,
+        "sha256": "c810a8d704491d885387619ec464cc37e7ae07000bab0f43cc06671ab560beef"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\native-download.snapshot.json",
+        "bytes": 2673,
+        "sha256": "c810a8d704491d885387619ec464cc37e7ae07000bab0f43cc06671ab560beef"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\cache-verification-a01\\report.json",
+        "bytes": 1817,
+        "sha256": "db0ca9e26b1a1e80277b2c0fd9940957924e5f73c049889ad2775eab6f564270"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\cache-verification.snapshot.json",
+        "bytes": 1817,
+        "sha256": "db0ca9e26b1a1e80277b2c0fd9940957924e5f73c049889ad2775eab6f564270"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\verification.json",
+        "bytes": 14576,
+        "sha256": "306707490bb9accebf5ac5d3e6106d1b4b712417a7c8b4825d65afbd2517870e"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\public-readback.snapshot.json",
+        "bytes": 14576,
+        "sha256": "306707490bb9accebf5ac5d3e6106d1b4b712417a7c8b4825d65afbd2517870e"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\sidebar-verification-a01\\report.json",
+        "bytes": 2874,
+        "sha256": "02056eb6b8c14c4e98e2ffc8f390c827ed0394f0d1ce363ef188dc9be9e5fdb4"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\dependencies.snapshot.json",
+        "bytes": 2874,
+        "sha256": "02056eb6b8c14c4e98e2ffc8f390c827ed0394f0d1ce363ef188dc9be9e5fdb4"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\screen-lease-a01\\release-screen-cas.json",
+        "bytes": 1179,
+        "sha256": "3e9085342f6430bf9038d45b75dd78f481982b7ec53853887c6d1c69fb2fa906"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\screen-release.snapshot.json",
+        "bytes": 1179,
+        "sha256": "3e9085342f6430bf9038d45b75dd78f481982b7ec53853887c6d1c69fb2fa906"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\root-public-cdn-review-a01.json",
+        "bytes": 3497,
+        "sha256": "c99da74e13812272d67fa08a613ec391a5c77f86b58091bf4f6423f0c311ffea"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\root-public-cdn-review.snapshot.json",
+        "bytes": 3497,
+        "sha256": "c99da74e13812272d67fa08a613ec391a5c77f86b58091bf4f6423f0c311ffea"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\root-offline-image-review-a01.json",
+        "bytes": 1401,
+        "sha256": "a39928fa5819a4fbfa955c548b1f41fd60714c02ce16bcf38c2559bae3316694"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\root-offline-image-review.snapshot.json",
+        "bytes": 1401,
+        "sha256": "a39928fa5819a4fbfa955c548b1f41fd60714c02ce16bcf38c2559bae3316694"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\final\\change-notes.public.normalized.txt",
+        "bytes": 1836,
+        "sha256": "958ed4f208adffefdfe985763057169039f65600086c3c7db677907514bffae9"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\steam-change-notes.public.txt",
+        "bytes": 1836,
+        "sha256": "958ed4f208adffefdfe985763057169039f65600086c3c7db677907514bffae9"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\final\\description.public.normalized.bbcode",
+        "bytes": 4368,
+        "sha256": "1f0ddc2e92c487893c981657f82734c3e4e373e98eb6e129b6ee0c0853d0313c"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\description.public.bbcode",
+        "bytes": 4368,
+        "sha256": "1f0ddc2e92c487893c981657f82734c3e4e373e98eb6e129b6ee0c0853d0313c"
+      }
+    }
+  ],
+  "original_closure_retained": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\final\\closure.json",
+  "original_raw_index_retained": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\final\\raw-asset-index.json"
+}

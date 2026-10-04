@@ -1,0 +1,1522 @@
+{
+  "schema": "superman-qiang.publication.actual-closure.v1",
+  "publisher_gates_ok": true,
+  "publication_state": "workshop-public-readback-and-cache-complete",
+  "repository_changelog_master_delivery": "root-owned final step, not asserted by publisher",
+  "completed_at_utc": "2026-10-04T06:38:04.131026+00:00",
+  "product": "超人强：越超人越强",
+  "version": "1.1.0",
+  "workshop_item_id": "3812991990",
+  "workshop_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990",
+  "source_tag": "superman-qiang-v1.1.0",
+  "source_commit": "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+  "post_tag_docs_only_commit": "c821c19fd9ffe719b57831586b4c709952fab42f",
+  "formal": {
+    "staging": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang",
+    "manifest": {
+      "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.manifest.json",
+      "bytes": 4077,
+      "sha256": "e2a67b0e3ffaa26ec72f2c7cc4310f16946fe7fc9e7c155f05fc8af29678554c"
+    },
+    "zip": {
+      "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.zip",
+      "bytes": 806076,
+      "sha256": "bd85845dbc7c9ddb19749c14f6a4f20576d488619d7c7e035dab874f68b29cf4"
+    },
+    "closure": {
+      "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\closure.json",
+      "bytes": 30595,
+      "sha256": "7274de2121bb4a641e1b2a5eda27b5c83f6510bbd5c890fe81f5b84e5ddc4f8c"
+    },
+    "files": [
+      {
+        "path": "common/character_interactions/sxad_interactions.txt",
+        "sha256": "49af8002a9d26eeb08b99073bb2393a6bd7c2e25f11610df990bcebbfe8e92d5",
+        "size": 1177
+      },
+      {
+        "path": "common/modifiers/sxad_skill_balance_modifiers.txt",
+        "sha256": "c21257a41a0b83428b0840ea198bd62581d1b02879235a86d056bc98d81bf995",
+        "size": 2342
+      },
+      {
+        "path": "common/script_values/sxad_values.txt",
+        "sha256": "fd7c4dfad2de83a6bcd7a3d0ab303835ead7a103abe5d954f0bb2e5a82b94a7d",
+        "size": 5344
+      },
+      {
+        "path": "common/scripted_effects/sxad_experience_effects.txt",
+        "sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50",
+        "size": 2872
+      },
+      {
+        "path": "common/scripted_effects/sxad_probe_skill_effects.txt",
+        "sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd",
+        "size": 11144
+      },
+      {
+        "path": "common/scripted_effects/sxad_transfer_effects.txt",
+        "sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458",
+        "size": 11909
+      },
+      {
+        "path": "common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+        "sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2",
+        "size": 9868
+      },
+      {
+        "path": "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+        "sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1",
+        "size": 1353
+      },
+      {
+        "path": "common/traits/sxad_traits.txt",
+        "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d",
+        "size": 482
+      },
+      {
+        "path": "descriptor.mod",
+        "sha256": "7b0bae16d8d339bff9c9f2fb3cceee5fa2d4a2a0b3b1f2ce4da6a77347e41ca5",
+        "size": 153
+      },
+      {
+        "path": "events/sxad_events.txt",
+        "sha256": "e21cfe6edc1a0f511eb90f0bc6083988e3a596cec947039268175b6652272701",
+        "size": 243
+      },
+      {
+        "path": "gfx/interface/icons/traits/sxad_sex_experience.dds",
+        "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5",
+        "size": 57728
+      },
+      {
+        "path": "localization/english/sxad_l_english.yml",
+        "sha256": "5422b387afa491de136372e4072f556ad76d2dc2f532563ddc70bc5453daf089",
+        "size": 3324
+      },
+      {
+        "path": "localization/french/sxad_l_french.yml",
+        "sha256": "b137d300c787228c3cfa41fcfae7dca78ebe3caac9ad081e793d371ae009ec1b",
+        "size": 3450
+      },
+      {
+        "path": "localization/german/sxad_l_german.yml",
+        "sha256": "4c5bfbd396fde27bdda47bcf5dd43bd12b0f6f30cee09b6b55541369c308eab9",
+        "size": 3443
+      },
+      {
+        "path": "localization/japanese/sxad_l_japanese.yml",
+        "sha256": "ed7ab2fe996dabe694513f90a7e6d7fa8ee26d3701fcfe6059397784e9c58081",
+        "size": 3343
+      },
+      {
+        "path": "localization/korean/sxad_l_korean.yml",
+        "sha256": "fa609dc5e373f5f327286d1e53dfa874715fb0d89ee92756b957cfcccadde960",
+        "size": 3309
+      },
+      {
+        "path": "localization/polish/sxad_l_polish.yml",
+        "sha256": "67de102874b1d6537598389ba49643e0ecf7dcaac7db8d1882c6b9238338bd40",
+        "size": 3464
+      },
+      {
+        "path": "localization/russian/sxad_l_russian.yml",
+        "sha256": "6fcc180ce7d2baae95e4c34e46645cd74f6cc2b4a46d85273432f265e914244f",
+        "size": 3732
+      },
+      {
+        "path": "localization/simp_chinese/sxad_l_simp_chinese.yml",
+        "sha256": "11eb3d59e31cfd0cd417d67ac3803986a00bff0b298af5c42799a0472baecd6b",
+        "size": 3263
+      },
+      {
+        "path": "localization/spanish/sxad_l_spanish.yml",
+        "sha256": "eb7c3a5143c32b498cc266d2af5ab8afe75371357a2ba3bdea7d20cb2446be21",
+        "size": 3405
+      },
+      {
+        "path": "thumbnail.png",
+        "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b",
+        "size": 785139
+      }
+    ],
+    "runtime_file_count": 22
+  },
+  "native_update": {
+    "create_calls": 0,
+    "submit_calls": 1,
+    "actual_result": 1,
+    "actual_completion_receipt_utc": "2026-10-04T06:24:47.284641+00:00",
+    "submit_call_exact_utc": null,
+    "timestamp_scope": "Receipt submitted_at records successful native completion; exact API invocation UTC was not separately recorded. Full actual transport start/finish bounds are preserved.",
+    "receipt": {
+      "identity": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\native-receipt.json",
+        "bytes": 2226,
+        "sha256": "5531078fdf5d273640af42627594e67614043404fe3445690c7574b1170210c2"
+      },
+      "actual": {
+        "additional_preview_changes": {
+          "add": [
+            {
+              "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\02_transfer.jpg",
+              "sha256": "e4f9360eda0d65f9eb46d96654ea0e81075c3ad41ec2da5d90f82742860b9066",
+              "size": 838222
+            },
+            {
+              "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\03_records.jpg",
+              "sha256": "cbe8a7be4a3e72f57480e8031525ab2be551dda0d53bbc67f01356bf353c371f",
+              "size": 802191
+            },
+            {
+              "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\04_natural_event.jpg",
+              "sha256": "0f4f7ebc49ae07fadcca65e4382498c2ee3110f6bd0116807066b76f36ad6356",
+              "size": 159032
+            },
+            {
+              "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\05_notification.jpg",
+              "sha256": "51ac5484e3a82bcac65c65c2fe3fe3d058c2868715980171192f1d1886c0d6ff",
+              "size": 138982
+            }
+          ],
+          "remove_indices": [],
+          "update": [
+            {
+              "index": 0,
+              "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\01_absorption.jpg",
+              "sha256": "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238",
+              "size": 840984
+            }
+          ]
+        },
+        "additional_previews_before": {
+          "app_id": 1158310,
+          "item_id": "3812991990",
+          "previews": [
+            {
+              "index": 0,
+              "original_filename": "01_experience_view.jpg",
+              "type": 0,
+              "url": "https://images.steamusercontent.com/ugc/17503576911910782537/20D46CB9F8F5DA77E57B999F93C71B56B3F634D8/"
+            }
+          ]
+        },
+        "app_id": 1158310,
+        "created_at": "2026-10-04T06:24:22.469523+00:00",
+        "item_id": "3812991990",
+        "legal_agreement_required": false,
+        "operation": "update",
+        "operation_id": "superman-qiang-1.1.0-20261004-P0003",
+        "payload_sha256": "e619972d834cc0769d4b781ea9619052c8ec85aae87ec305fbf550bcfd5b2481",
+        "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+        "stage": "complete",
+        "steam_result": 1,
+        "submitted_at": "2026-10-04T06:24:47.284641+00:00",
+        "updated_at": "2026-10-04T06:24:47.284689+00:00"
+      }
+    },
+    "transport_started": {
+      "identity": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\native-update-a01\\transport.started.json",
+        "bytes": 908,
+        "sha256": "0bb2f7084f9057c507e87e66f265cb78089408df5ac07ece303f8df612a7270b"
+      },
+      "actual": {
+        "schema": "superman-qiang.native-call.transport.v1",
+        "started_at_utc": "2026-10-04T06:24:20.548979+00:00",
+        "tool": "workshop_native_publish",
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-m",
+          "ck3_workshop_mcp.call_tool",
+          "--provider",
+          "steam-native",
+          "--state-dir",
+          "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\native-update-a01\\mcp-state",
+          "--tool",
+          "workshop_native_publish",
+          "--arguments-file",
+          "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\native-update-a01\\arguments.snapshot.json"
+        ],
+        "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+        "arguments_sha256": "946187f203968426e1cefe26f860765b3b0141ce59dc1fcc5d119423bb80ca6a",
+        "retry": false,
+        "process_local_app_context": {
+          "SteamAppId": "1158310",
+          "SteamGameId": "1158310"
+        }
+      }
+    },
+    "transport_finished": {
+      "identity": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\native-update-a01\\transport.finished.json",
+        "bytes": 1273,
+        "sha256": "9ba9689fb4b66c037afb9e62cd03457184b6cfb0065a124906b2d385b0573a7e"
+      },
+      "actual": {
+        "schema": "superman-qiang.native-call.transport.v1",
+        "started_at_utc": "2026-10-04T06:24:20.548979+00:00",
+        "tool": "workshop_native_publish",
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-m",
+          "ck3_workshop_mcp.call_tool",
+          "--provider",
+          "steam-native",
+          "--state-dir",
+          "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\native-update-a01\\mcp-state",
+          "--tool",
+          "workshop_native_publish",
+          "--arguments-file",
+          "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\native-update-a01\\arguments.snapshot.json"
+        ],
+        "cwd": "D:\\workspace\\ck3_eternal_recurrence",
+        "arguments_sha256": "946187f203968426e1cefe26f860765b3b0141ce59dc1fcc5d119423bb80ca6a",
+        "retry": false,
+        "process_local_app_context": {
+          "SteamAppId": "1158310",
+          "SteamGameId": "1158310"
+        },
+        "finished_at_utc": "2026-10-04T06:24:47.693921+00:00",
+        "returncode": 0,
+        "stdout_sha256": "3d6a9e1d41ffc73f0529d5f900e6821ecaea3ebfe61acbaa00416a8f501e249f",
+        "stderr_sha256": "2d979cdbfe9eed3ec4e84c0893899b0a437a6adb721095807ec5097c20804101",
+        "transport_ok": true,
+        "business_ok": true,
+        "business_status": "complete",
+        "item_id": "3812991990"
+      }
+    },
+    "payload_sha256": "e619972d834cc0769d4b781ea9619052c8ec85aae87ec305fbf550bcfd5b2481",
+    "public_success_inferred_from_eresult_only": false
+  },
+  "subscription_cache": {
+    "ok": true,
+    "callback": {
+      "app_id": 1158310,
+      "callback_id": 3406,
+      "item_id": "3812991990",
+      "result": 1
+    },
+    "state_flags": {
+      "download_pending": false,
+      "downloading": false,
+      "installed": true,
+      "legacy": false,
+      "needs_update": false,
+      "raw": 5,
+      "subscribed": true
+    },
+    "fresh_cache_requested": true,
+    "cache_absent_before_download": true,
+    "source_copied_into_cache": false,
+    "cache_root": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990",
+    "verification": {
+      "identity": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\cache-verification-a01\\report.json",
+        "bytes": 1817,
+        "sha256": "db0ca9e26b1a1e80277b2c0fd9940957924e5f73c049889ad2775eab6f564270"
+      },
+      "actual": {
+        "started_utc": "2026-10-04T06:32:25.259154+00:00",
+        "finished_utc": "2026-10-04T06:32:25.643211+00:00",
+        "ok": true,
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\build_release.py",
+          "--verify",
+          "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990",
+          "--manifest",
+          "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.manifest.json"
+        ],
+        "returncode": 0,
+        "actual_callback": {
+          "app_id": 1158310,
+          "callback_id": 3406,
+          "item_id": "3812991990",
+          "result": 1
+        },
+        "actual_state_flags": {
+          "download_pending": false,
+          "downloading": false,
+          "installed": true,
+          "legacy": false,
+          "needs_update": false,
+          "raw": 5,
+          "subscribed": true
+        },
+        "manifest": {
+          "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.manifest.json",
+          "bytes": 4077,
+          "sha256": "e2a67b0e3ffaa26ec72f2c7cc4310f16946fe7fc9e7c155f05fc8af29678554c"
+        },
+        "native_download": {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\native-download-a01\\stdout.json",
+          "bytes": 2673,
+          "sha256": "c810a8d704491d885387619ec464cc37e7ae07000bab0f43cc06671ab560beef"
+        },
+        "stdout": {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\cache-verification-a01\\stdout.bin",
+          "bytes": 30,
+          "sha256": "76dbc1e5dbc9bdc1cd178f8441e309bf87d32d99cc57a37b72811e26b44c0a2d"
+        },
+        "stderr": {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\cache-verification-a01\\stderr.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "source_copied_into_cache": false
+      }
+    },
+    "download": {
+      "identity": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\native-download-a01\\stdout.json",
+        "bytes": 2673,
+        "sha256": "c810a8d704491d885387619ec464cc37e7ae07000bab0f43cc06671ab560beef"
+      },
+      "actual": {
+        "content": [
+          {
+            "annotations": null,
+            "meta": null,
+            "text": "{\n  \"app_id\": 1158310,\n  \"callback\": {\n    \"app_id\": 1158310,\n    \"callback_id\": 3406,\n    \"item_id\": \"3812991990\",\n    \"result\": 1\n  },\n  \"dll_path\": \"C:\\\\SteamLibrary\\\\steamapps\\\\common\\\\Crusader Kings III\\\\binaries\\\\steam_api64.dll\",\n  \"dll_sha256\": \"1db3fd414039d3e5815a5721925dd2e0a3a9f2549603c6cab7c49b84966a1af3\",\n  \"download_info\": {\n    \"available\": true,\n    \"downloaded_bytes\": 0,\n    \"total_bytes\": 0\n  },\n  \"elapsed_seconds\": 8.935,\n  \"expected_cache_absent_before_start\": true,\n  \"expected_cache_path\": \"C:\\\\SteamLibrary\\\\steamapps\\\\workshop\\\\content\\\\1158310\\\\3812991990\",\n  \"fresh_cache_requested\": true,\n  \"ignored_callbacks\": 30,\n  \"install_info\": {\n    \"path\": \"C:\\\\SteamLibrary\\\\steamapps\\\\workshop\\\\content\\\\1158310\\\\3812991990\",\n    \"size_on_disk\": 920487,\n    \"timestamp\": 1791095091\n  },\n  \"isolated_worker\": true,\n  \"item_id\": \"3812991990\",\n  \"ok\": true,\n  \"schema\": \"ck3_workshop_mcp.steam_native.download.v1\",\n  \"started\": true,\n  \"state_flags\": {\n    \"download_pending\": false,\n    \"downloading\": false,\n    \"installed\": true,\n    \"legacy\": false,\n    \"needs_update\": false,\n    \"raw\": 5,\n    \"subscribed\": true\n  },\n  \"status\": \"complete\",\n  \"timeout_seconds\": 300.0,\n  \"worker_pid\": 13836,\n  \"worker_exit_code\": 0\n}",
+            "type": "text"
+          }
+        ],
+        "ok": true,
+        "result": {
+          "app_id": 1158310,
+          "callback": {
+            "app_id": 1158310,
+            "callback_id": 3406,
+            "item_id": "3812991990",
+            "result": 1
+          },
+          "dll_path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\steam_api64.dll",
+          "dll_sha256": "1db3fd414039d3e5815a5721925dd2e0a3a9f2549603c6cab7c49b84966a1af3",
+          "download_info": {
+            "available": true,
+            "downloaded_bytes": 0,
+            "total_bytes": 0
+          },
+          "elapsed_seconds": 8.935,
+          "expected_cache_absent_before_start": true,
+          "expected_cache_path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990",
+          "fresh_cache_requested": true,
+          "ignored_callbacks": 30,
+          "install_info": {
+            "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990",
+            "size_on_disk": 920487,
+            "timestamp": 1791095091
+          },
+          "isolated_worker": true,
+          "item_id": "3812991990",
+          "ok": true,
+          "schema": "ck3_workshop_mcp.steam_native.download.v1",
+          "started": true,
+          "state_flags": {
+            "download_pending": false,
+            "downloading": false,
+            "installed": true,
+            "legacy": false,
+            "needs_update": false,
+            "raw": 5,
+            "subscribed": true
+          },
+          "status": "complete",
+          "timeout_seconds": 300.0,
+          "worker_exit_code": 0,
+          "worker_pid": 13836
+        },
+        "tool": "workshop_native_download"
+      }
+    },
+    "old_cache_preservation": {
+      "identity": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\fresh-download-preparation-a01\\receipt.json",
+        "bytes": 8188,
+        "sha256": "6f742fcfcc8b1e22fb20688c2b221c187f73902905fc350aef534718d1882ac6"
+      },
+      "actual": {
+        "at_utc": "2026-10-04T06:25:36.544856+00:00",
+        "exact_cache": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990",
+        "checked_root": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310",
+        "preserved": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\fresh-download-preparation-a01\\preserved-subscription-cache",
+        "before_inventory": [
+          {
+            "path": "common/character_interactions/sxad_interactions.txt",
+            "bytes": 921,
+            "sha256": "2b81d6cdde8512197c60edbee473a9b235d3c9fec8479a82d2f39f581bb82a7e"
+          },
+          {
+            "path": "common/modifiers/sxad_skill_balance_modifiers.txt",
+            "bytes": 2040,
+            "sha256": "6d97fa914b5b6a9c49baa537359866e35ac0139a40b6be7efb3d3a191995a42f"
+          },
+          {
+            "path": "common/script_values/sxad_values.txt",
+            "bytes": 4651,
+            "sha256": "63fab3a51d616e848c9ea15ba3b19eeb8779ca141c1f853b88cbdb1fe7903468"
+          },
+          {
+            "path": "common/scripted_effects/sxad_experience_effects.txt",
+            "bytes": 2872,
+            "sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50"
+          },
+          {
+            "path": "common/scripted_effects/sxad_probe_skill_effects.txt",
+            "bytes": 9604,
+            "sha256": "2bf2599cebd91659b58b8adad1241f136394af252a03f3123c9250ef9e07719a"
+          },
+          {
+            "path": "common/scripted_effects/sxad_transfer_effects.txt",
+            "bytes": 10285,
+            "sha256": "2141d3bc944fffa0dfbd62d5d34238baddafc649c861ed0e47a0e775ebf63323"
+          },
+          {
+            "path": "common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+            "bytes": 9868,
+            "sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2"
+          },
+          {
+            "path": "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+            "bytes": 1353,
+            "sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1"
+          },
+          {
+            "path": "common/traits/sxad_traits.txt",
+            "bytes": 482,
+            "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d"
+          },
+          {
+            "path": "descriptor.mod",
+            "bytes": 153,
+            "sha256": "52be9ae5db1310a2d8a846bd754621e1461fa30d70c0fb2187f5b1fe8dbd8e06"
+          },
+          {
+            "path": "events/sxad_events.txt",
+            "bytes": 390,
+            "sha256": "a3e84da90696f3b246f8301d744ebe8dd04d7441ebdc31d426cda04e80da9cb0"
+          },
+          {
+            "path": "gfx/interface/icons/traits/sxad_sex_experience.dds",
+            "bytes": 57728,
+            "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5"
+          },
+          {
+            "path": "localization/english/sxad_l_english.yml",
+            "bytes": 3987,
+            "sha256": "d16c7f9cd076096cc39f2734b496119d23d3630aa9dab23f16c3d07b3c49a59b"
+          },
+          {
+            "path": "localization/french/sxad_l_french.yml",
+            "bytes": 4501,
+            "sha256": "bde1db01f5e5b7cb391eba0b2affce817ec8a49d9ededf471665d31fb069c3e2"
+          },
+          {
+            "path": "localization/german/sxad_l_german.yml",
+            "bytes": 4356,
+            "sha256": "66a54d3e970e615d460877c319ee7fd6211a861ad3f2ece783ff3ae49b609d5f"
+          },
+          {
+            "path": "localization/japanese/sxad_l_japanese.yml",
+            "bytes": 4199,
+            "sha256": "7b29d4811b16eedbb5e4af655aa58b604d3f777131531bc45be9472cb39f8451"
+          },
+          {
+            "path": "localization/korean/sxad_l_korean.yml",
+            "bytes": 3758,
+            "sha256": "a31d5ba52ff3591c843d76f817fe8ce2c15c4bfe916c5f918dd6417450f023e6"
+          },
+          {
+            "path": "localization/polish/sxad_l_polish.yml",
+            "bytes": 4331,
+            "sha256": "dab3e3ebd984dd9ecaaea69d9ebc4cd018cb4aaf441266f7361c4a448f156079"
+          },
+          {
+            "path": "localization/russian/sxad_l_russian.yml",
+            "bytes": 5633,
+            "sha256": "cac22ed9a85c79893c73eb910a8493a63a1738cebe1374f6b675ba4f0a2f868a"
+          },
+          {
+            "path": "localization/simp_chinese/sxad_l_simp_chinese.yml",
+            "bytes": 3736,
+            "sha256": "29ac11c5a8ad6c2f5b115974658d6d32616fdcf03081bbd24ddaff06c285e25a"
+          },
+          {
+            "path": "localization/spanish/sxad_l_spanish.yml",
+            "bytes": 4208,
+            "sha256": "52303622d7fb968fe64fea7671bd021c337212bbf46ec63acf757b89c1e2bfa1"
+          },
+          {
+            "path": "thumbnail.png",
+            "bytes": 778046,
+            "sha256": "732deee357a6d322340fa9e6bb6d7b619b8c9da44b3c68711c23154079df863f"
+          }
+        ],
+        "after_inventory": [
+          {
+            "path": "common/character_interactions/sxad_interactions.txt",
+            "bytes": 921,
+            "sha256": "2b81d6cdde8512197c60edbee473a9b235d3c9fec8479a82d2f39f581bb82a7e"
+          },
+          {
+            "path": "common/modifiers/sxad_skill_balance_modifiers.txt",
+            "bytes": 2040,
+            "sha256": "6d97fa914b5b6a9c49baa537359866e35ac0139a40b6be7efb3d3a191995a42f"
+          },
+          {
+            "path": "common/script_values/sxad_values.txt",
+            "bytes": 4651,
+            "sha256": "63fab3a51d616e848c9ea15ba3b19eeb8779ca141c1f853b88cbdb1fe7903468"
+          },
+          {
+            "path": "common/scripted_effects/sxad_experience_effects.txt",
+            "bytes": 2872,
+            "sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50"
+          },
+          {
+            "path": "common/scripted_effects/sxad_probe_skill_effects.txt",
+            "bytes": 9604,
+            "sha256": "2bf2599cebd91659b58b8adad1241f136394af252a03f3123c9250ef9e07719a"
+          },
+          {
+            "path": "common/scripted_effects/sxad_transfer_effects.txt",
+            "bytes": 10285,
+            "sha256": "2141d3bc944fffa0dfbd62d5d34238baddafc649c861ed0e47a0e775ebf63323"
+          },
+          {
+            "path": "common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+            "bytes": 9868,
+            "sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2"
+          },
+          {
+            "path": "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+            "bytes": 1353,
+            "sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1"
+          },
+          {
+            "path": "common/traits/sxad_traits.txt",
+            "bytes": 482,
+            "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d"
+          },
+          {
+            "path": "descriptor.mod",
+            "bytes": 153,
+            "sha256": "52be9ae5db1310a2d8a846bd754621e1461fa30d70c0fb2187f5b1fe8dbd8e06"
+          },
+          {
+            "path": "events/sxad_events.txt",
+            "bytes": 390,
+            "sha256": "a3e84da90696f3b246f8301d744ebe8dd04d7441ebdc31d426cda04e80da9cb0"
+          },
+          {
+            "path": "gfx/interface/icons/traits/sxad_sex_experience.dds",
+            "bytes": 57728,
+            "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5"
+          },
+          {
+            "path": "localization/english/sxad_l_english.yml",
+            "bytes": 3987,
+            "sha256": "d16c7f9cd076096cc39f2734b496119d23d3630aa9dab23f16c3d07b3c49a59b"
+          },
+          {
+            "path": "localization/french/sxad_l_french.yml",
+            "bytes": 4501,
+            "sha256": "bde1db01f5e5b7cb391eba0b2affce817ec8a49d9ededf471665d31fb069c3e2"
+          },
+          {
+            "path": "localization/german/sxad_l_german.yml",
+            "bytes": 4356,
+            "sha256": "66a54d3e970e615d460877c319ee7fd6211a861ad3f2ece783ff3ae49b609d5f"
+          },
+          {
+            "path": "localization/japanese/sxad_l_japanese.yml",
+            "bytes": 4199,
+            "sha256": "7b29d4811b16eedbb5e4af655aa58b604d3f777131531bc45be9472cb39f8451"
+          },
+          {
+            "path": "localization/korean/sxad_l_korean.yml",
+            "bytes": 3758,
+            "sha256": "a31d5ba52ff3591c843d76f817fe8ce2c15c4bfe916c5f918dd6417450f023e6"
+          },
+          {
+            "path": "localization/polish/sxad_l_polish.yml",
+            "bytes": 4331,
+            "sha256": "dab3e3ebd984dd9ecaaea69d9ebc4cd018cb4aaf441266f7361c4a448f156079"
+          },
+          {
+            "path": "localization/russian/sxad_l_russian.yml",
+            "bytes": 5633,
+            "sha256": "cac22ed9a85c79893c73eb910a8493a63a1738cebe1374f6b675ba4f0a2f868a"
+          },
+          {
+            "path": "localization/simp_chinese/sxad_l_simp_chinese.yml",
+            "bytes": 3736,
+            "sha256": "29ac11c5a8ad6c2f5b115974658d6d32616fdcf03081bbd24ddaff06c285e25a"
+          },
+          {
+            "path": "localization/spanish/sxad_l_spanish.yml",
+            "bytes": 4208,
+            "sha256": "52303622d7fb968fe64fea7671bd021c337212bbf46ec63acf757b89c1e2bfa1"
+          },
+          {
+            "path": "thumbnail.png",
+            "bytes": 778046,
+            "sha256": "732deee357a6d322340fa9e6bb6d7b619b8c9da44b3c68711c23154079df863f"
+          }
+        ],
+        "cache_absent": true,
+        "source_copy_to_cache": false
+      }
+    },
+    "observed_files": [
+      {
+        "relative_path": "common/character_interactions/sxad_interactions.txt",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\common\\character_interactions\\sxad_interactions.txt",
+        "bytes": 1177,
+        "sha256": "49af8002a9d26eeb08b99073bb2393a6bd7c2e25f11610df990bcebbfe8e92d5"
+      },
+      {
+        "relative_path": "common/modifiers/sxad_skill_balance_modifiers.txt",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\common\\modifiers\\sxad_skill_balance_modifiers.txt",
+        "bytes": 2342,
+        "sha256": "c21257a41a0b83428b0840ea198bd62581d1b02879235a86d056bc98d81bf995"
+      },
+      {
+        "relative_path": "common/script_values/sxad_values.txt",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\common\\script_values\\sxad_values.txt",
+        "bytes": 5344,
+        "sha256": "fd7c4dfad2de83a6bcd7a3d0ab303835ead7a103abe5d954f0bb2e5a82b94a7d"
+      },
+      {
+        "relative_path": "common/scripted_effects/sxad_experience_effects.txt",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\common\\scripted_effects\\sxad_experience_effects.txt",
+        "bytes": 2872,
+        "sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50"
+      },
+      {
+        "relative_path": "common/scripted_effects/sxad_probe_skill_effects.txt",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\common\\scripted_effects\\sxad_probe_skill_effects.txt",
+        "bytes": 11144,
+        "sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd"
+      },
+      {
+        "relative_path": "common/scripted_effects/sxad_transfer_effects.txt",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\common\\scripted_effects\\sxad_transfer_effects.txt",
+        "bytes": 11909,
+        "sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458"
+      },
+      {
+        "relative_path": "common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\common\\scripted_effects\\zz_sxad_had_sex_with_effect.txt",
+        "bytes": 9868,
+        "sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2"
+      },
+      {
+        "relative_path": "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\common\\scripted_effects\\zz_sxad_had_sex_with_unknown_effect.txt",
+        "bytes": 1353,
+        "sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1"
+      },
+      {
+        "relative_path": "common/traits/sxad_traits.txt",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\common\\traits\\sxad_traits.txt",
+        "bytes": 482,
+        "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d"
+      },
+      {
+        "relative_path": "descriptor.mod",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\descriptor.mod",
+        "bytes": 153,
+        "sha256": "7b0bae16d8d339bff9c9f2fb3cceee5fa2d4a2a0b3b1f2ce4da6a77347e41ca5"
+      },
+      {
+        "relative_path": "events/sxad_events.txt",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\events\\sxad_events.txt",
+        "bytes": 243,
+        "sha256": "e21cfe6edc1a0f511eb90f0bc6083988e3a596cec947039268175b6652272701"
+      },
+      {
+        "relative_path": "gfx/interface/icons/traits/sxad_sex_experience.dds",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\gfx\\interface\\icons\\traits\\sxad_sex_experience.dds",
+        "bytes": 57728,
+        "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5"
+      },
+      {
+        "relative_path": "localization/english/sxad_l_english.yml",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\localization\\english\\sxad_l_english.yml",
+        "bytes": 3324,
+        "sha256": "5422b387afa491de136372e4072f556ad76d2dc2f532563ddc70bc5453daf089"
+      },
+      {
+        "relative_path": "localization/french/sxad_l_french.yml",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\localization\\french\\sxad_l_french.yml",
+        "bytes": 3450,
+        "sha256": "b137d300c787228c3cfa41fcfae7dca78ebe3caac9ad081e793d371ae009ec1b"
+      },
+      {
+        "relative_path": "localization/german/sxad_l_german.yml",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\localization\\german\\sxad_l_german.yml",
+        "bytes": 3443,
+        "sha256": "4c5bfbd396fde27bdda47bcf5dd43bd12b0f6f30cee09b6b55541369c308eab9"
+      },
+      {
+        "relative_path": "localization/japanese/sxad_l_japanese.yml",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\localization\\japanese\\sxad_l_japanese.yml",
+        "bytes": 3343,
+        "sha256": "ed7ab2fe996dabe694513f90a7e6d7fa8ee26d3701fcfe6059397784e9c58081"
+      },
+      {
+        "relative_path": "localization/korean/sxad_l_korean.yml",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\localization\\korean\\sxad_l_korean.yml",
+        "bytes": 3309,
+        "sha256": "fa609dc5e373f5f327286d1e53dfa874715fb0d89ee92756b957cfcccadde960"
+      },
+      {
+        "relative_path": "localization/polish/sxad_l_polish.yml",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\localization\\polish\\sxad_l_polish.yml",
+        "bytes": 3464,
+        "sha256": "67de102874b1d6537598389ba49643e0ecf7dcaac7db8d1882c6b9238338bd40"
+      },
+      {
+        "relative_path": "localization/russian/sxad_l_russian.yml",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\localization\\russian\\sxad_l_russian.yml",
+        "bytes": 3732,
+        "sha256": "6fcc180ce7d2baae95e4c34e46645cd74f6cc2b4a46d85273432f265e914244f"
+      },
+      {
+        "relative_path": "localization/simp_chinese/sxad_l_simp_chinese.yml",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\localization\\simp_chinese\\sxad_l_simp_chinese.yml",
+        "bytes": 3263,
+        "sha256": "11eb3d59e31cfd0cd417d67ac3803986a00bff0b298af5c42799a0472baecd6b"
+      },
+      {
+        "relative_path": "localization/spanish/sxad_l_spanish.yml",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\localization\\spanish\\sxad_l_spanish.yml",
+        "bytes": 3405,
+        "sha256": "eb7c3a5143c32b498cc266d2af5ab8afe75371357a2ba3bdea7d20cb2446be21"
+      },
+      {
+        "relative_path": "thumbnail.png",
+        "path": "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990\\thumbnail.png",
+        "bytes": 785139,
+        "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b"
+      }
+    ]
+  },
+  "public_text": {
+    "verification": {
+      "title_exact": true,
+      "description_exact": true,
+      "description_characters": 1811,
+      "description_sha256": "1F0DDC2E92C487893C981657F82734C3E4E373E98EB6E129B6EE0C0853D0313C",
+      "expected_description_sha256": "1F0DDC2E92C487893C981657F82734C3E4E373E98EB6E129B6EE0C0853D0313C",
+      "change_notes_exact": true,
+      "changelog_entry_id": "1791095091",
+      "change_notes_characters": 706,
+      "change_notes_lines": 24,
+      "change_notes_sha256": "958ED4F208ADFFEFDFE985763057169039F65600086C3C7DB677907514BFFAE9",
+      "expected_change_notes_characters": 706,
+      "expected_change_notes_lines": 24,
+      "expected_change_notes_sha256": "958ED4F208ADFFEFDFE985763057169039F65600086C3C7DB677907514BFFAE9",
+      "time_updated": 1791095091,
+      "file_size": "920487",
+      "ok": true
+    },
+    "description_lines": 57,
+    "actual_description": {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\final\\description.public.normalized.bbcode",
+      "bytes": 4368,
+      "sha256": "1f0ddc2e92c487893c981657f82734c3e4e373e98eb6e129b6ee0c0853d0313c"
+    },
+    "actual_full_notes": {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\final\\change-notes.public.normalized.txt",
+      "bytes": 1836,
+      "sha256": "958ed4f208adffefdfe985763057169039f65600086c3c7db677907514bffae9"
+    },
+    "actual_notes_entry_id": "1791095091",
+    "owner_edit_required": false,
+    "normalization": "Existing verify_workshop_publication HTML decoding and newline/BOM normalization; exact normalized full text; no notes/body semantic relaxation",
+    "raw_tags": [
+      {
+        "tag": "Gameplay"
+      },
+      {
+        "tag": "Balance "
+      },
+      {
+        "tag": "Events"
+      }
+    ],
+    "tags_comparison_rule": "Only tag fields strip leading/trailing ASCII U+0020; raw strings preserved"
+  },
+  "public_cover": {
+    "response": {
+      "requested_url": "https://images.steamusercontent.com/ugc/10392289429568267408/DD9603C4C6DE73D8052249E84365D661AFC4E86D/",
+      "final_url": "https://images.steamusercontent.com/ugc/10392289429568267408/DD9603C4C6DE73D8052249E84365D661AFC4E86D/",
+      "http_status": 200,
+      "content_type": "image/png",
+      "request_cookie_or_authorization": false,
+      "body": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\main-preview.public",
+        "size": 785139,
+        "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b"
+      }
+    },
+    "comparison": {
+      "dimensions": [
+        640,
+        640
+      ],
+      "expected_dimensions": [
+        640,
+        640
+      ],
+      "bytes_equal": true,
+      "decoded_pixels_equal": true,
+      "ok": true
+    }
+  },
+  "public_gallery": [
+    {
+      "index": 0,
+      "url": "https://images.steamusercontent.com/ugc/16947023489356182834/AA6C46CB490EB9A5BBFB0D96CFFCEE1798A06621/",
+      "response": {
+        "requested_url": "https://images.steamusercontent.com/ugc/16947023489356182834/AA6C46CB490EB9A5BBFB0D96CFFCEE1798A06621/",
+        "final_url": "https://images.steamusercontent.com/ugc/16947023489356182834/AA6C46CB490EB9A5BBFB0D96CFFCEE1798A06621/",
+        "http_status": 200,
+        "content_type": "image/jpeg",
+        "request_cookie_or_authorization": false,
+        "body": {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-00.public",
+          "size": 840984,
+          "sha256": "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238"
+        }
+      },
+      "public_page_references_exact_cdn_path": true,
+      "comparison": {
+        "dimensions": [
+          1600,
+          900
+        ],
+        "expected_dimensions": [
+          1600,
+          900
+        ],
+        "bytes_equal": true,
+        "decoded_pixels_equal": true,
+        "ok": true
+      }
+    },
+    {
+      "index": 1,
+      "url": "https://images.steamusercontent.com/ugc/10957355448787063784/7DB0F17BD850833791DC31D7243541B4EEC4B6BF/",
+      "response": {
+        "requested_url": "https://images.steamusercontent.com/ugc/10957355448787063784/7DB0F17BD850833791DC31D7243541B4EEC4B6BF/",
+        "final_url": "https://images.steamusercontent.com/ugc/10957355448787063784/7DB0F17BD850833791DC31D7243541B4EEC4B6BF/",
+        "http_status": 200,
+        "content_type": "image/jpeg",
+        "request_cookie_or_authorization": false,
+        "body": {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-01.public",
+          "size": 838222,
+          "sha256": "e4f9360eda0d65f9eb46d96654ea0e81075c3ad41ec2da5d90f82742860b9066"
+        }
+      },
+      "public_page_references_exact_cdn_path": true,
+      "comparison": {
+        "dimensions": [
+          1600,
+          900
+        ],
+        "expected_dimensions": [
+          1600,
+          900
+        ],
+        "bytes_equal": true,
+        "decoded_pixels_equal": true,
+        "ok": true
+      }
+    },
+    {
+      "index": 2,
+      "url": "https://images.steamusercontent.com/ugc/14596191750725775845/5CB1B4323F82C8A2DC86B103031BA0BE22BC3761/",
+      "response": {
+        "requested_url": "https://images.steamusercontent.com/ugc/14596191750725775845/5CB1B4323F82C8A2DC86B103031BA0BE22BC3761/",
+        "final_url": "https://images.steamusercontent.com/ugc/14596191750725775845/5CB1B4323F82C8A2DC86B103031BA0BE22BC3761/",
+        "http_status": 200,
+        "content_type": "image/jpeg",
+        "request_cookie_or_authorization": false,
+        "body": {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-02.public",
+          "size": 802191,
+          "sha256": "cbe8a7be4a3e72f57480e8031525ab2be551dda0d53bbc67f01356bf353c371f"
+        }
+      },
+      "public_page_references_exact_cdn_path": true,
+      "comparison": {
+        "dimensions": [
+          1600,
+          900
+        ],
+        "expected_dimensions": [
+          1600,
+          900
+        ],
+        "bytes_equal": true,
+        "decoded_pixels_equal": true,
+        "ok": true
+      }
+    },
+    {
+      "index": 3,
+      "url": "https://images.steamusercontent.com/ugc/10411524402642958918/A7A388CDDE156F1353C6BC330CEE7A2F02A20573/",
+      "response": {
+        "requested_url": "https://images.steamusercontent.com/ugc/10411524402642958918/A7A388CDDE156F1353C6BC330CEE7A2F02A20573/",
+        "final_url": "https://images.steamusercontent.com/ugc/10411524402642958918/A7A388CDDE156F1353C6BC330CEE7A2F02A20573/",
+        "http_status": 200,
+        "content_type": "image/jpeg",
+        "request_cookie_or_authorization": false,
+        "body": {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-03.public",
+          "size": 159032,
+          "sha256": "0f4f7ebc49ae07fadcca65e4382498c2ee3110f6bd0116807066b76f36ad6356"
+        }
+      },
+      "public_page_references_exact_cdn_path": true,
+      "comparison": {
+        "dimensions": [
+          684,
+          380
+        ],
+        "expected_dimensions": [
+          684,
+          380
+        ],
+        "bytes_equal": true,
+        "decoded_pixels_equal": true,
+        "ok": true
+      }
+    },
+    {
+      "index": 4,
+      "url": "https://images.steamusercontent.com/ugc/10404271489872955626/187A3F508E37CC00E51102C26265B6B99FDC053A/",
+      "response": {
+        "requested_url": "https://images.steamusercontent.com/ugc/10404271489872955626/187A3F508E37CC00E51102C26265B6B99FDC053A/",
+        "final_url": "https://images.steamusercontent.com/ugc/10404271489872955626/187A3F508E37CC00E51102C26265B6B99FDC053A/",
+        "http_status": 200,
+        "content_type": "image/jpeg",
+        "request_cookie_or_authorization": false,
+        "body": {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-04.public",
+          "size": 138982,
+          "sha256": "51ac5484e3a82bcac65c65c2fe3fe3d058c2868715980171192f1d1886c0d6ff"
+        }
+      },
+      "public_page_references_exact_cdn_path": true,
+      "comparison": {
+        "dimensions": [
+          785,
+          364
+        ],
+        "expected_dimensions": [
+          785,
+          364
+        ],
+        "bytes_equal": true,
+        "decoded_pixels_equal": true,
+        "ok": true
+      }
+    }
+  ],
+  "highlight_strip_count": 5,
+  "highlight_strip_count_exact": true,
+  "anonymous_metadata_media_notes": {
+    "verification": {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\verification.json",
+      "bytes": 14576,
+      "sha256": "306707490bb9accebf5ac5d3e6106d1b4b712417a7c8b4825d65afbd2517870e"
+    },
+    "metadata_notes_cover_media_ok": true,
+    "helper_pending_dependency_observation": "Original helper report preserved unchanged; separate actual sidebar evidence closes this gate"
+  },
+  "required_dependencies": {
+    "evidence": {
+      "identity": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\sidebar-verification-a01\\report.json",
+        "bytes": 2874,
+        "sha256": "02056eb6b8c14c4e98e2ffc8f390c827ed0394f0d1ce363ef188dc9be9e5fdb4"
+      },
+      "actual": {
+        "ok": true,
+        "state": "observed",
+        "required_dlc_app_ids": [],
+        "required_mod_item_ids": [],
+        "item_id": "3812991990",
+        "observed_at_utc": "2026-10-04T06:33:22.195835+00:00",
+        "verified": true,
+        "anonymous": true,
+        "url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=english",
+        "http_status": 200,
+        "http_body_sha256": "149f0e35a7f4785e04ec0aae3f42f65848f02e4dca98c7dcca7f8bab88c97fc5",
+        "dom_sha256": "dd8ad6050bf1a300ed5ccd853634b79834fca7cc533fc4ce6e0e8a00c7b3a290",
+        "observation_sha256": "e6210a282d1e2fab12dd574f66bb3add7187b3b6a0b8e13103e50a63c7ac0e3f",
+        "sidebar_sha256": "09f8221a7afe921a876b7820301a944c3deecce01e9c884b3151b199c7ef3dae",
+        "actual_sidebar_locator": "html:nth-of-type(1) > body:nth-of-type(1) > div:nth-of-type(1) > div:nth-of-type(6) > div:nth-of-type(4) > div:nth-of-type(2) > div:nth-of-type(1) > div:nth-of-type(8) > div:nth-of-type(1) > div:nth-of-type(1)",
+        "visible_sidebar_titles": [
+          "Created by",
+          ""
+        ],
+        "header_stat_names": [
+          "File Size",
+          "Posted",
+          "Updated"
+        ],
+        "rule": "Unique visible #rightContents > .sidebar; direct .panel; visible normalized .rightSectionTopTitle textContent; independent header File Size/Posted; Created by present; Required DLC/items section and proven container selectors absent in complete actual DOM",
+        "page_response": {
+          "source": "preserved anonymous browser main HTTP response",
+          "requested_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=english",
+          "final_url": "https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990&l=english",
+          "http_status": 200,
+          "request_cookie_or_authorization": false,
+          "body": {
+            "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\sidebar-verification-a01\\http-response.html",
+            "size": 78006,
+            "sha256": "149f0e35a7f4785e04ec0aae3f42f65848f02e4dca98c7dcca7f8bab88c97fc5"
+          },
+          "browser_dom": {
+            "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\sidebar-verification-a01\\http-response.browser-dom.html",
+            "size": 79651,
+            "sha256": "dd8ad6050bf1a300ed5ccd853634b79834fca7cc533fc4ce6e0e8a00c7b3a290"
+          },
+          "browser_observation": {
+            "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\sidebar-verification-a01\\http-response.browser-observation.json",
+            "size": 114782,
+            "sha256": "e6210a282d1e2fab12dd574f66bb3add7187b3b6a0b8e13103e50a63c7ac0e3f"
+          },
+          "original_observation": {
+            "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\anonymous-item-a01\\observation.json",
+            "size": 114782,
+            "sha256": "e6210a282d1e2fab12dd574f66bb3add7187b3b6a0b8e13103e50a63c7ac0e3f"
+          }
+        },
+        "API_missing_fields_used_as_empty": false,
+        "direct_visual_review": "independent step, pending recorded inspection"
+      }
+    },
+    "required_dlc_app_ids": [],
+    "required_mod_item_ids": [],
+    "API_missing_fields_used_as_empty": false
+  },
+  "direct_visual_review": {
+    "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\final\\direct-visual-review.json",
+    "bytes": 3302,
+    "sha256": "d0e5bac4a6b2ff6800b82913cbde750859d50370cf3a3d232d6d3d6c13a47ee7"
+  },
+  "canonical_outer": {
+    "identity": {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\canonical-outer-a01\\report.json",
+      "bytes": 1512,
+      "sha256": "65f2fb7a8e1527ec15207587d54e10ed085e481dd21fad3e24444e23a530d612"
+    },
+    "actual": {
+      "ok": true,
+      "observed_at_utc": "2026-10-04T06:34:11.724191+00:00",
+      "canonical_outer": {
+        "path": "C:\\Users\\1\\Documents\\Paradox Interactive\\Crusader Kings III\\mod\\superman_qiang.mod",
+        "bytes": 263,
+        "sha256": "cc762cd270d7502194f00259cc1cc7da5947e803b39e429e422763caea42e6af"
+      },
+      "before": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\canonical-outer-a01\\outer.before.mod",
+        "bytes": 267,
+        "sha256": "6e30f2a4fe71977a9984e7c7d1dbd9c5b6e42d15fcd6d6f6cec7ad088fdc5a57"
+      },
+      "readback": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\canonical-outer-a01\\outer.readback.mod",
+        "bytes": 263,
+        "sha256": "cc762cd270d7502194f00259cc1cc7da5947e803b39e429e422763caea42e6af"
+      },
+      "content": "version=\"1.1.0\"\ntags={\n    \"Gameplay\"\n    \"Balance\"\n    \"Events\"\n}\nname=\"超人强：越超人越强\"\nsupported_version=\"1.20.*\"\npicture=\"thumbnail.png\"\npath=\"C:/ck3-superman-qiang-1.1.0-20261004/formal-1.1.0-A0001/mod_superman_qiang\"\nremote_file_id=\"3812991990\"\n",
+      "staging": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang",
+      "inner_descriptor": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang\\descriptor.mod",
+        "bytes": 153,
+        "sha256": "7b0bae16d8d339bff9c9f2fb3cceee5fa2d4a2a0b3b1f2ce4da6a77347e41ca5"
+      },
+      "inner_remote_id_absent": true,
+      "remote_id_only_outer": true
+    }
+  },
+  "steam_mode": {
+    "restored_offline": true,
+    "before": {
+      "freshness_receipt": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-before-a01\\probe-1\\steam-frame-freshness.json",
+        "bytes": 1198,
+        "sha256": "e49cc3470b815cd2b9df16c2e2234e365f49357baae70ae65ed4eaff13c510a8"
+      },
+      "actual": {
+        "schema": "ck3.steam_fresh_desktop_frame.v1",
+        "captured_at_utc": "2026-10-04T06:20:54.172431+00:00",
+        "steam_hwnd": 460192,
+        "steam_pid": 1896,
+        "desktop_size": [
+          1024,
+          768
+        ],
+        "before_rect": [
+          0,
+          0,
+          962,
+          767
+        ],
+        "moved_rect": [
+          20,
+          0,
+          982,
+          767
+        ],
+        "restored_rect": [
+          0,
+          0,
+          962,
+          767
+        ],
+        "before_path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-before-a01\\probe-1\\steam-before.png",
+        "before_sha256": "0D86A33B13801D744AD36C195EF142B93A138844F199114DE1F1442F48263ACD",
+        "moved_path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-before-a01\\probe-1\\steam-moved.png",
+        "moved_sha256": "61CA44D3DC27266721A3BE27C2A57DF21E0453F8F88912A7C77C44CC7D210479",
+        "moved_identity": {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-before-a01\\probe-1\\steam-moved.png",
+          "bytes": 88833,
+          "sha256": "61CA44D3DC27266721A3BE27C2A57DF21E0453F8F88912A7C77C44CC7D210479"
+        },
+        "pixel_difference_bbox": [
+          0,
+          0,
+          1024,
+          768
+        ],
+        "moving_edge_changed": true,
+        "clock_check": null,
+        "offline_status_observed": null
+      },
+      "before_frame": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-before-a01\\probe-1\\steam-before.png",
+        "bytes": 82054,
+        "sha256": "0d86a33b13801d744ad36c195ef142b93a138844f199114de1f1442f48263acd"
+      },
+      "moved_frame": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-before-a01\\probe-1\\steam-moved.png",
+        "bytes": 88833,
+        "sha256": "61ca44d3dc27266721a3be27c2a57df21e0453f8f88912a7c77c44cc7d210479"
+      },
+      "direct_review": {
+        "reviewer": "/root/superman_publication",
+        "offline_text": "离线模式",
+        "clock_observation": "Rendered desktop clock13:48 lagged actual14:20; Steam webview was black. Actual window displacement and changed desktop pixels/menu proved current capture; lag is retained as limitation.",
+        "freshness_basis": "Actual HWND rectangle movement plus changed desktop pixels and moving edge; file timestamp is not used as proof"
+      },
+      "phase": "before necessary online task"
+    },
+    "restoration": {
+      "freshness_receipt": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-restoration-a01\\probe-1\\steam-frame-freshness.json",
+        "bytes": 1213,
+        "sha256": "cf843da3c7df61b829197df6c0b3b07c19392384dacad879ed39b5f3ea22010d"
+      },
+      "actual": {
+        "schema": "ck3.steam_fresh_desktop_frame.v1",
+        "captured_at_utc": "2026-10-04T06:26:56.762482+00:00",
+        "steam_hwnd": 460192,
+        "steam_pid": 1896,
+        "desktop_size": [
+          1024,
+          768
+        ],
+        "before_rect": [
+          0,
+          0,
+          962,
+          767
+        ],
+        "moved_rect": [
+          20,
+          0,
+          982,
+          767
+        ],
+        "restored_rect": [
+          0,
+          0,
+          962,
+          767
+        ],
+        "before_path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-restoration-a01\\probe-1\\steam-before.png",
+        "before_sha256": "9914DB001F425264D97AB8082B5986AD28F880F651E2A11AD09764211C11C489",
+        "moved_path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-restoration-a01\\probe-1\\steam-moved.png",
+        "moved_sha256": "BF6F271502AD4BFE27A62A6ED00421E30064FF68D28CDDAFB5EBD14800A17CDA",
+        "moved_identity": {
+          "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-restoration-a01\\probe-1\\steam-moved.png",
+          "bytes": 288656,
+          "sha256": "BF6F271502AD4BFE27A62A6ED00421E30064FF68D28CDDAFB5EBD14800A17CDA"
+        },
+        "pixel_difference_bbox": [
+          0,
+          0,
+          962,
+          768
+        ],
+        "moving_edge_changed": true,
+        "clock_check": null,
+        "offline_status_observed": null
+      },
+      "before_frame": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-restoration-a01\\probe-1\\steam-before.png",
+        "bytes": 285475,
+        "sha256": "9914db001f425264d97ab8082b5986ad28f880f651e2a11ad09764211c11c489"
+      },
+      "moved_frame": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-restoration-a01\\probe-1\\steam-moved.png",
+        "bytes": 288656,
+        "sha256": "bf6f271502ad4bfe27a62a6ed00421e30064ff68d28cddafb5ebd14800a17cda"
+      },
+      "direct_review": {
+        "reviewer": "/root/superman_publication",
+        "offline_text": "离线模式",
+        "clock_observation": "Desktop clock14:26 matched current task time; bottom bar explicitly 离线模式; Steam webview rendered after native work.",
+        "freshness_basis": "Actual HWND rectangle movement plus changed desktop pixels and moving edge; file timestamp is not used as proof"
+      },
+      "phase": "immediately after necessary native update/download"
+    },
+    "offline_invoke": {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-invoke-a01.stdout.bin",
+      "bytes": 229,
+      "sha256": "f38f289c5483323c8b71ad2af24c51107a61bb60c2c1ce5c07b51cdb12d06fc6"
+    },
+    "screen_operations_after_restoration": 0
+  },
+  "screen_release": {
+    "identity": {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\screen-lease-a01\\release-screen-cas.json",
+      "bytes": 1179,
+      "sha256": "3e9085342f6430bf9038d45b75dd78f481982b7ec53853887c6d1c69fb2fa906"
+    },
+    "actual": {
+      "schema": "codex.task_bus.v1",
+      "ok": true,
+      "task": {
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "fa71dc874cd1e07ce1b97c72fccf1c9e9b7c4b96"
+        },
+        "last_sequence": 4242,
+        "next_step": "",
+        "pid": 10928,
+        "repo": "D:\\ar",
+        "resources": [],
+        "schema": "codex.task_bus.v1",
+        "state": "done",
+        "summary": "superman-1.1.0-publication-screen-released",
+        "task_id": "ck3-superman-qiang-publication-screen-20261004-1.1.0-p0003",
+        "updated_at_utc": "2026-10-04T06:35:42.106746+00:00"
+      },
+      "event": {
+        "schema": "codex.task_bus.v1",
+        "sequence": 4242,
+        "event_id": "ab34c61e94a1481ca72e6bb661365db1",
+        "timestamp_utc": "2026-10-04T06:35:42.107915+00:00",
+        "kind": "completed",
+        "task_id": "ck3-superman-qiang-publication-screen-20261004-1.1.0-p0003",
+        "to": [
+          "*"
+        ],
+        "state": "done",
+        "summary": "superman-1.1.0-publication-screen-released",
+        "next_step": "",
+        "resources": [],
+        "repo": "D:\\ar",
+        "git": {
+          "branch": null,
+          "dirty_entries": 0,
+          "head": "fa71dc874cd1e07ce1b97c72fccf1c9e9b7c4b96"
+        }
+      }
+    }
+  },
+  "keeper": {
+    "identity": {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\screen-lease-a01\\keeper-final.json",
+      "bytes": 313,
+      "sha256": "26b564af8fccaa8f5d854fb21af1af4527ce95c5689258e94083aa97c66183b4"
+    },
+    "actual": {
+      "schema": "xar.promo.screen-lease-keeper/v1",
+      "task_id": "ck3-superman-qiang-publication-screen-20261004-1.1.0-p0003",
+      "last_sequence": 4241,
+      "failure": null,
+      "thread_exited": true,
+      "journal": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\screen-lease-a01\\keeper.jsonl"
+    }
+  },
+  "failure_attempts_preserved": [
+    "source-stage-readonly-a01 failed assertion of manually typed expected manifest hash; corrected a02 before any native mutation",
+    "native-owner-probe-a01 BLoggedOnfalse during necessary mode transition; corrected actual a02 logged-on owner probe",
+    "media candidate earlier hash transcription assertion and no-effect shell helper read/stop quoting failures retained in tool transcript; no extra Submit"
+  ],
+  "github_release": {
+    "root_owned_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/superman-qiang-v1.1.0",
+    "publisher_writes": 0
+  },
+  "immutable_raw_asset_index": {
+    "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\final\\raw-asset-index-a02.json",
+    "bytes": 118136,
+    "sha256": "49b3fa392253b4c76cd92d534a57ed0139693228314d5012ea805d744f81112c"
+  },
+  "preceding_closure": {
+    "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\final\\closure.json",
+    "bytes": 61027,
+    "sha256": "55aa18a1108a3cfed409c8063834bb7b7273f82bf7d05b91cff2cd2de2e21e1b"
+  },
+  "root_direct_reviews": [
+    {
+      "source": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\root-public-cdn-review-a01.json",
+        "bytes": 3497,
+        "sha256": "c99da74e13812272d67fa08a613ec391a5c77f86b58091bf4f6423f0c311ffea"
+      },
+      "preserved_copy": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\final\\root-public-cdn-review-a01.json",
+        "bytes": 3497,
+        "sha256": "c99da74e13812272d67fa08a613ec391a5c77f86b58091bf4f6423f0c311ffea"
+      },
+      "actual": {
+        "schema": "superman-qiang.root-public-cdn-review.v1",
+        "reviewer": "root Codex",
+        "reviewed_at_utc": "2026-10-04T06:36:27.341619+00:00",
+        "status": "PUBLIC_COVER_AND_FIVE_MEDIA_DIRECT_REVIEW_ACCEPTED",
+        "files": [
+          {
+            "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\main-preview.public",
+            "bytes": 785139,
+            "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b",
+            "pixels": [
+              640,
+              640
+            ],
+            "format": "PNG",
+            "root_direct_view_completed": true,
+            "same_reviewed_source_bytes": true,
+            "observation": "One adult king and one adult queen, reviewed title and composition."
+          },
+          {
+            "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-00.public",
+            "bytes": 840984,
+            "sha256": "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238",
+            "pixels": [
+              1600,
+              900
+            ],
+            "format": "JPEG",
+            "root_direct_view_completed": true,
+            "same_reviewed_source_bytes": true,
+            "observation": "Seven attributes including health; labelled promotional illustration and rules."
+          },
+          {
+            "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-01.public",
+            "bytes": 838222,
+            "sha256": "e4f9360eda0d65f9eb46d96654ea0e81075c3ad41ec2da5d90f82742860b9066",
+            "pixels": [
+              1600,
+              900
+            ],
+            "format": "JPEG",
+            "root_direct_view_completed": true,
+            "same_reviewed_source_bytes": true,
+            "observation": "Six abilities +/-1; health +/-0.00075; eligible categories equal weight."
+          },
+          {
+            "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-02.public",
+            "bytes": 802191,
+            "sha256": "cbe8a7be4a3e72f57480e8031525ab2be551dda0d53bbc67f01356bf353c371f",
+            "pixels": [
+              1600,
+              900
+            ],
+            "format": "JPEG",
+            "root_direct_view_completed": true,
+            "same_reviewed_source_bytes": true,
+            "observation": "Notification describes count and attributes directly; no unsupported hover claim."
+          },
+          {
+            "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-03.public",
+            "bytes": 159032,
+            "sha256": "0f4f7ebc49ae07fadcca65e4382498c2ee3110f6bd0116807066b76f36ad6356",
+            "pixels": [
+              684,
+              380
+            ],
+            "format": "JPEG",
+            "root_direct_view_completed": true,
+            "same_reviewed_source_bytes": true,
+            "observation": "Actual normal-game seduction-success event; not a health-transfer claim."
+          },
+          {
+            "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\public-verification-a01\\media-04.public",
+            "bytes": 138982,
+            "sha256": "51ac5484e3a82bcac65c65c2fe3fe3d058c2868715980171192f1d1886c0d6ff",
+            "pixels": [
+              785,
+              364
+            ],
+            "format": "JPEG",
+            "root_direct_view_completed": true,
+            "same_reviewed_source_bytes": true,
+            "observation": "Actual ordinary NPC profile and native notification: XP1, health4.16622/net0; not staged health transfer."
+          }
+        ],
+        "boundary": "Only these exact downloaded CDN bytes were directly viewed. No image edits, no approval invented for other source or failed attempts."
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\root-offline-image-review-a01.json",
+        "bytes": 1401,
+        "sha256": "a39928fa5819a4fbfa955c548b1f41fd60714c02ce16bcf38c2559bae3316694"
+      },
+      "preserved_copy": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\final\\root-offline-image-review-a01.json",
+        "bytes": 1401,
+        "sha256": "a39928fa5819a4fbfa955c548b1f41fd60714c02ce16bcf38c2559bae3316694"
+      },
+      "actual": {
+        "schema": "superman-qiang.root-offline-image-review.v1",
+        "reviewer": "root Codex",
+        "reviewed_at_utc": "2026-10-04T06:33:00.801931+00:00",
+        "images": [
+          {
+            "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-before-a01\\probe-1\\steam-moved.png",
+            "bytes": 88833,
+            "sha256": "61ca44d3dc27266721a3be27c2a57df21e0453f8f88912a7c77c44cc7d210479",
+            "displayed_clock": "13:48",
+            "direct_view_completed": true,
+            "observation": "Directly viewed: footer states offline; web body black; screen clock lags wall time. Freshness cannot follow mtime alone."
+          },
+          {
+            "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-restoration-a01\\probe-1\\steam-moved.png",
+            "bytes": 288656,
+            "sha256": "bf6f271502ad4bfe27a62a6ed00421e30064ff68d28cddafb5ebd14800a17cda",
+            "displayed_clock": "14:26",
+            "direct_view_completed": true,
+            "observation": "Directly viewed: footer states offline; Steam Workshop editor body has actually redrawn; displayed clock changed. This is the old 1.0.0 notes editor, not evidence of new public Change Notes."
+          }
+        ],
+        "boundary": "No desktop input by root. Freshness requires publication-agent window-motion/new-pixel receipts, which the final release closure must bind. These images do not prove complete release or public notes."
+      }
+    }
+  ],
+  "finalized_at_utc": "2026-10-04T06:39:13.573677+00:00"
+}

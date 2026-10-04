@@ -1,0 +1,42 @@
+{
+  "schema": "superman-qiang.github-release-evidence.v1",
+  "state": "GITHUB_RELEASE_PUBLIC_FULL_NOTES_AND_BOTH_ASSETS_EXACT",
+  "files": [
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\github-release-1.1.0-A0001\\receipt.json",
+        "bytes": 10959,
+        "sha256": "cbdfdf282243b7f3e5bad910678ac1dcd69aa9c0f862a4d192a87dbfa91dfcd4"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\github-assets.snapshot.json",
+        "bytes": 10959,
+        "sha256": "cbdfdf282243b7f3e5bad910678ac1dcd69aa9c0f862a4d192a87dbfa91dfcd4"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\github-release-1.1.0-A0001\\release-after.stdout",
+        "bytes": 3800,
+        "sha256": "fe17641e729625cc756bb63ef6ec011249814237ed763780931ed1d00429f714"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\github-release-public.snapshot.json",
+        "bytes": 3800,
+        "sha256": "fe17641e729625cc756bb63ef6ec011249814237ed763780931ed1d00429f714"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\github-release-1.1.0-A0001\\release-notes.md",
+        "bytes": 2391,
+        "sha256": "b919f4cade8e0827604eb092b13a82a6b60542228e02c91d3c8f170dac863f5a"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\github-release-notes.md",
+        "bytes": 2391,
+        "sha256": "b919f4cade8e0827604eb092b13a82a6b60542228e02c91d3c8f170dac863f5a"
+      }
+    }
+  ]
+}

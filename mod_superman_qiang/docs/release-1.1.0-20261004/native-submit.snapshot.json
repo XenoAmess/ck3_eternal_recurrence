@@ -1,0 +1,59 @@
+{
+  "additional_preview_changes": {
+    "add": [
+      {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\02_transfer.jpg",
+        "sha256": "e4f9360eda0d65f9eb46d96654ea0e81075c3ad41ec2da5d90f82742860b9066",
+        "size": 838222
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\03_records.jpg",
+        "sha256": "cbe8a7be4a3e72f57480e8031525ab2be551dda0d53bbc67f01356bf353c371f",
+        "size": 802191
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\04_natural_event.jpg",
+        "sha256": "0f4f7ebc49ae07fadcca65e4382498c2ee3110f6bd0116807066b76f36ad6356",
+        "size": 159032
+      },
+      {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\05_notification.jpg",
+        "sha256": "51ac5484e3a82bcac65c65c2fe3fe3d058c2868715980171192f1d1886c0d6ff",
+        "size": 138982
+      }
+    ],
+    "remove_indices": [],
+    "update": [
+      {
+        "index": 0,
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\01_absorption.jpg",
+        "sha256": "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238",
+        "size": 840984
+      }
+    ]
+  },
+  "additional_previews_before": {
+    "app_id": 1158310,
+    "item_id": "3812991990",
+    "previews": [
+      {
+        "index": 0,
+        "original_filename": "01_experience_view.jpg",
+        "type": 0,
+        "url": "https://images.steamusercontent.com/ugc/17503576911910782537/20D46CB9F8F5DA77E57B999F93C71B56B3F634D8/"
+      }
+    ]
+  },
+  "app_id": 1158310,
+  "created_at": "2026-10-04T06:24:22.469523+00:00",
+  "item_id": "3812991990",
+  "legal_agreement_required": false,
+  "operation": "update",
+  "operation_id": "superman-qiang-1.1.0-20261004-P0003",
+  "payload_sha256": "e619972d834cc0769d4b781ea9619052c8ec85aae87ec305fbf550bcfd5b2481",
+  "schema": "ck3_workshop_mcp.steam_native.receipt.v1",
+  "stage": "complete",
+  "steam_result": 1,
+  "submitted_at": "2026-10-04T06:24:47.284641+00:00",
+  "updated_at": "2026-10-04T06:24:47.284689+00:00"
+}

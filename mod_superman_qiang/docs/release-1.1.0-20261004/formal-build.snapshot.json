@@ -1,0 +1,788 @@
+{
+  "schema": "superman-qiang.formal-110-tagbound-build.v1",
+  "status": "GREEN",
+  "started_at_utc": "2026-10-04T06:04:28.316113+00:00",
+  "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "phases": [
+    {
+      "name": "source-before-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "started_at_utc": "2026-10-04T06:04:28.316141+00:00",
+      "completed_at_utc": "2026-10-04T06:04:28.374051+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-before-head.stdout.bin",
+        "size": 41,
+        "sha256": "c933bc1f439ce94221a927df26d79652be0bdbd8fb3c4a036b841aed8cac6c9e"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-before-head.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "source-before-tag",
+      "argv": [
+        "git",
+        "rev-parse",
+        "superman-qiang-v1.1.0^{commit}"
+      ],
+      "started_at_utc": "2026-10-04T06:04:28.385796+00:00",
+      "completed_at_utc": "2026-10-04T06:04:28.440071+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-before-tag.stdout.bin",
+        "size": 41,
+        "sha256": "c933bc1f439ce94221a927df26d79652be0bdbd8fb3c4a036b841aed8cac6c9e"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-before-tag.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "source-tag-object-type",
+      "argv": [
+        "git",
+        "cat-file",
+        "-t",
+        "superman-qiang-v1.1.0"
+      ],
+      "started_at_utc": "2026-10-04T06:04:28.446578+00:00",
+      "completed_at_utc": "2026-10-04T06:04:28.490908+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-tag-object-type.stdout.bin",
+        "size": 4,
+        "sha256": "ccda8f9a2cb0295182b9a99e4c8270badcc89525850e1e737a294fb426363ac9"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-tag-object-type.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "source-before-status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "started_at_utc": "2026-10-04T06:04:28.492254+00:00",
+      "completed_at_utc": "2026-10-04T06:04:28.651698+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-before-status.stdout.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-before-status.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "formal-build",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "mod_superman_qiang/tools/build_release.py",
+        "--output",
+        "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang",
+        "--git-tag",
+        "superman-qiang-v1.1.0",
+        "--workshop-item-id",
+        "3812991990"
+      ],
+      "started_at_utc": "2026-10-04T06:04:28.741736+00:00",
+      "completed_at_utc": "2026-10-04T06:04:30.156846+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\formal-build.stdout.bin",
+        "size": 427,
+        "sha256": "65b092f9810d9e03d62bd13ce9bc4cc6d14ae2b69ff47ad89347f09f458ffdb8"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\formal-build.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "manifest-verify",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "mod_superman_qiang/tools/build_release.py",
+        "--verify",
+        "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang",
+        "--manifest",
+        "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.manifest.json"
+      ],
+      "started_at_utc": "2026-10-04T06:04:30.172134+00:00",
+      "completed_at_utc": "2026-10-04T06:04:30.396494+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\manifest-verify.stdout.bin",
+        "size": 30,
+        "sha256": "76dbc1e5dbc9bdc1cd178f8441e309bf87d32d99cc57a37b72811e26b44c0a2d"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\manifest-verify.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-01",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/character_interactions/sxad_interactions.txt"
+      ],
+      "started_at_utc": "2026-10-04T06:04:30.413289+00:00",
+      "completed_at_utc": "2026-10-04T06:04:30.468583+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-01.stdout.bin",
+        "size": 1177,
+        "sha256": "49af8002a9d26eeb08b99073bb2393a6bd7c2e25f11610df990bcebbfe8e92d5"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-01.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-02",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/modifiers/sxad_skill_balance_modifiers.txt"
+      ],
+      "started_at_utc": "2026-10-04T06:04:30.471497+00:00",
+      "completed_at_utc": "2026-10-04T06:04:30.531818+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-02.stdout.bin",
+        "size": 2342,
+        "sha256": "c21257a41a0b83428b0840ea198bd62581d1b02879235a86d056bc98d81bf995"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-02.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-03",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/script_values/sxad_values.txt"
+      ],
+      "started_at_utc": "2026-10-04T06:04:30.535879+00:00",
+      "completed_at_utc": "2026-10-04T06:04:30.595186+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-03.stdout.bin",
+        "size": 5344,
+        "sha256": "fd7c4dfad2de83a6bcd7a3d0ab303835ead7a103abe5d954f0bb2e5a82b94a7d"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-03.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-04",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/scripted_effects/sxad_experience_effects.txt"
+      ],
+      "started_at_utc": "2026-10-04T06:04:30.598268+00:00",
+      "completed_at_utc": "2026-10-04T06:04:30.657061+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-04.stdout.bin",
+        "size": 2872,
+        "sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-04.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-05",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/scripted_effects/sxad_probe_skill_effects.txt"
+      ],
+      "started_at_utc": "2026-10-04T06:04:30.661673+00:00",
+      "completed_at_utc": "2026-10-04T06:04:30.713047+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-05.stdout.bin",
+        "size": 11144,
+        "sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-05.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-06",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/scripted_effects/sxad_transfer_effects.txt"
+      ],
+      "started_at_utc": "2026-10-04T06:04:30.739700+00:00",
+      "completed_at_utc": "2026-10-04T06:04:30.789305+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-06.stdout.bin",
+        "size": 11909,
+        "sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-06.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-07",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/scripted_effects/zz_sxad_had_sex_with_effect.txt"
+      ],
+      "started_at_utc": "2026-10-04T06:04:30.804746+00:00",
+      "completed_at_utc": "2026-10-04T06:04:30.852040+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-07.stdout.bin",
+        "size": 9868,
+        "sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-07.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-08",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt"
+      ],
+      "started_at_utc": "2026-10-04T06:04:30.864299+00:00",
+      "completed_at_utc": "2026-10-04T06:04:30.915676+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-08.stdout.bin",
+        "size": 1353,
+        "sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-08.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-09",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/traits/sxad_traits.txt"
+      ],
+      "started_at_utc": "2026-10-04T06:04:30.918543+00:00",
+      "completed_at_utc": "2026-10-04T06:04:30.969241+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-09.stdout.bin",
+        "size": 482,
+        "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-09.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-10",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/descriptor.mod"
+      ],
+      "started_at_utc": "2026-10-04T06:04:30.973186+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.024628+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-10.stdout.bin",
+        "size": 153,
+        "sha256": "7b0bae16d8d339bff9c9f2fb3cceee5fa2d4a2a0b3b1f2ce4da6a77347e41ca5"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-10.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-11",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/events/sxad_events.txt"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.031016+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.078342+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-11.stdout.bin",
+        "size": 243,
+        "sha256": "e21cfe6edc1a0f511eb90f0bc6083988e3a596cec947039268175b6652272701"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-11.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-12",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/gfx/interface/icons/traits/sxad_sex_experience.dds"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.081201+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.130254+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-12.stdout.bin",
+        "size": 57728,
+        "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-12.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-13",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/english/sxad_l_english.yml"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.148393+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.201419+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-13.stdout.bin",
+        "size": 3324,
+        "sha256": "5422b387afa491de136372e4072f556ad76d2dc2f532563ddc70bc5453daf089"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-13.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-14",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/french/sxad_l_french.yml"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.204498+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.256340+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-14.stdout.bin",
+        "size": 3450,
+        "sha256": "b137d300c787228c3cfa41fcfae7dca78ebe3caac9ad081e793d371ae009ec1b"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-14.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-15",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/german/sxad_l_german.yml"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.282122+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.345476+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-15.stdout.bin",
+        "size": 3443,
+        "sha256": "4c5bfbd396fde27bdda47bcf5dd43bd12b0f6f30cee09b6b55541369c308eab9"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-15.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-16",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/japanese/sxad_l_japanese.yml"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.373879+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.438699+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-16.stdout.bin",
+        "size": 3343,
+        "sha256": "ed7ab2fe996dabe694513f90a7e6d7fa8ee26d3701fcfe6059397784e9c58081"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-16.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-17",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/korean/sxad_l_korean.yml"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.441777+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.493372+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-17.stdout.bin",
+        "size": 3309,
+        "sha256": "fa609dc5e373f5f327286d1e53dfa874715fb0d89ee92756b957cfcccadde960"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-17.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-18",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/polish/sxad_l_polish.yml"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.497874+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.559217+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-18.stdout.bin",
+        "size": 3464,
+        "sha256": "67de102874b1d6537598389ba49643e0ecf7dcaac7db8d1882c6b9238338bd40"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-18.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-19",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/russian/sxad_l_russian.yml"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.563457+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.616556+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-19.stdout.bin",
+        "size": 3732,
+        "sha256": "6fcc180ce7d2baae95e4c34e46645cd74f6cc2b4a46d85273432f265e914244f"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-19.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-20",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/simp_chinese/sxad_l_simp_chinese.yml"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.619562+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.670971+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-20.stdout.bin",
+        "size": 3263,
+        "sha256": "11eb3d59e31cfd0cd417d67ac3803986a00bff0b298af5c42799a0472baecd6b"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-20.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-21",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/spanish/sxad_l_spanish.yml"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.673871+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.724680+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-21.stdout.bin",
+        "size": 3405,
+        "sha256": "eb7c3a5143c32b498cc266d2af5ab8afe75371357a2ba3bdea7d20cb2446be21"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-21.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "tag-blob-22",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/thumbnail.png"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.728602+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.787751+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-22.stdout.bin",
+        "size": 785139,
+        "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\tag-blob-22.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "source-after-head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.838264+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.879706+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-after-head.stdout.bin",
+        "size": 41,
+        "sha256": "c933bc1f439ce94221a927df26d79652be0bdbd8fb3c4a036b841aed8cac6c9e"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-after-head.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "source-after-tag",
+      "argv": [
+        "git",
+        "rev-parse",
+        "superman-qiang-v1.1.0^{commit}"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.883495+00:00",
+      "completed_at_utc": "2026-10-04T06:04:31.933015+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-after-tag.stdout.bin",
+        "size": 41,
+        "sha256": "c933bc1f439ce94221a927df26d79652be0bdbd8fb3c4a036b841aed8cac6c9e"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-after-tag.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "name": "source-after-status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "started_at_utc": "2026-10-04T06:04:31.936388+00:00",
+      "completed_at_utc": "2026-10-04T06:04:32.078800+00:00",
+      "exit_code": 0,
+      "stdout": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-after-status.stdout.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\source-after-status.stderr.bin",
+        "size": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "ck3_started": false,
+  "workshop_uploaded": false,
+  "git_tag_created": false,
+  "repo_files_written": false,
+  "previous_L0_matrix_repeated": false,
+  "previous_double_build_repeated": false,
+  "source_integration_formatting": "The source-only health_fixture_data.py trailing-LF normalization does not replace historical freeze hashes; all 22 production files are checked directly against A4.",
+  "git_identity": {
+    "head": "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+    "tag": "superman-qiang-v1.1.0",
+    "tag_commit": "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+    "tag_object_type": "tag",
+    "worktree_before": "",
+    "worktree_after": ""
+  },
+  "root_source_receipt": {
+    "source": {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\source-110-final-A0004\\receipt.json",
+      "size": 3069,
+      "sha256": "3028227b0ac9cc6d66081b908a3d9099b8ea9a406849ee8af4963d6173b396d7"
+    },
+    "preserved": {
+      "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\root-source-receipt.json",
+      "size": 3069,
+      "sha256": "3028227b0ac9cc6d66081b908a3d9099b8ea9a406849ee8af4963d6173b396d7"
+    }
+  },
+  "accepted_A0004_manifest": {
+    "source": {
+      "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\live-candidate-A0004\\mod_superman_qiang.manifest.json",
+      "size": 4058,
+      "sha256": "92dffc1e2dd66bc5a72dfa797632b320b5b6d8bf8a43ce4712a203b4e684fda5"
+    },
+    "preserved": {
+      "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\accepted-A0004.manifest.json",
+      "size": 4058,
+      "sha256": "92dffc1e2dd66bc5a72dfa797632b320b5b6d8bf8a43ce4712a203b4e684fda5"
+    }
+  },
+  "accepted_A0004_closure": {
+    "source": {
+      "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\live-candidate-A0004\\closure.json",
+      "size": 21149,
+      "sha256": "bcb3d75b31b158389a4aa4a22a7a0c34d6b4087982fc563de290de9079f5611b"
+    },
+    "preserved": {
+      "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\accepted-A0004.closure.json",
+      "size": 21149,
+      "sha256": "bcb3d75b31b158389a4aa4a22a7a0c34d6b4087982fc563de290de9079f5611b"
+    }
+  },
+  "live_acceptance": {
+    "status": "GREEN",
+    "scope": "R19 targeted20 health mechanism + R20 actual cold reload + R21 direct body/holder trait/readonly + R22 no-confirm normal self/NPC + readonly. Not a new full42 v1.0 matrix.",
+    "aggregate": {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\acceptance-1.1.0-20261004.json",
+        "size": 77096,
+        "sha256": "55595c477b87a04e594abcaac18e885c8ec2a12e3c48de548b536ac9ce60e6be"
+      },
+      "preserved": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\native-acceptance-aggregate.json",
+        "size": 77096,
+        "sha256": "55595c477b87a04e594abcaac18e885c8ec2a12e3c48de548b536ac9ce60e6be"
+      }
+    },
+    "raw_index": {
+      "source": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\acceptance-1.1.0-20261004-raw-index.json",
+        "size": 16921,
+        "sha256": "5c6bb55d0240c226bb12941259a51c623808baa94d23261a6507b473efac34ca"
+      },
+      "preserved": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\native-acceptance-raw-index.json",
+        "size": 16921,
+        "sha256": "5c6bb55d0240c226bb12941259a51c623808baa94d23261a6507b473efac34ca"
+      }
+    }
+  },
+  "upstream_item_id": null,
+  "builder_result": {
+    "staging": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang",
+    "manifest": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.manifest.json",
+    "archive": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.zip",
+    "file_count": 22,
+    "git_sha": "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+    "git_tag": "superman-qiang-v1.1.0"
+  },
+  "verification_result": {
+    "verified_files": 22
+  },
+  "runtime_byte_equivalence": {
+    "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\runtime-byte-equivalence.json",
+    "size": 6943,
+    "sha256": "2e413fef2fef73be30b708e1f83d262715577cfb100ff81427d2194455475a2f"
+  },
+  "archive_verification": {
+    "file_count": 22,
+    "all_archive_payloads_equal_staging": true,
+    "whole_archive_equals_native_A0004": true
+  },
+  "closure_status": "FORMAL_BUILD_GREEN_PUBLICATION_PENDING",
+  "git_sha": "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+  "git_tag": "superman-qiang-v1.1.0",
+  "workshop_item_id": "3812991990",
+  "runtime_file_count": 22,
+  "staging": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang",
+  "manifest": {
+    "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.manifest.json",
+    "size": 4077,
+    "sha256": "e2a67b0e3ffaa26ec72f2c7cc4310f16946fe7fc9e7c155f05fc8af29678554c"
+  },
+  "zip": {
+    "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.zip",
+    "size": 806076,
+    "sha256": "bd85845dbc7c9ddb19749c14f6a4f20576d488619d7c7e035dab874f68b29cf4"
+  },
+  "inner_descriptor_remote_file_id": null,
+  "completed_at_utc": "2026-10-04T06:04:32.082699+00:00"
+}

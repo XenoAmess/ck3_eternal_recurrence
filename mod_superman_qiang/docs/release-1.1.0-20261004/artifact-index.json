@@ -1,0 +1,108 @@
+{
+  "schema": "superman-qiang.release-evidence.v1",
+  "created_at_utc": "2026-10-04T06:21:31.254493+00:00",
+  "state": "FORMAL_AND_CI_EVIDENCE_ARCHIVED_STEAM_PUBLICATION_PENDING",
+  "source_tag": "superman-qiang-v1.1.0",
+  "source_commit": "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+  "files": [
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\closure.json",
+        "bytes": 30595,
+        "sha256": "7274de2121bb4a641e1b2a5eda27b5c83f6510bbd5c890fe81f5b84e5ddc4f8c"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\formal-build.snapshot.json",
+        "bytes": 30595,
+        "sha256": "7274de2121bb4a641e1b2a5eda27b5c83f6510bbd5c890fe81f5b84e5ddc4f8c"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\runtime-byte-equivalence.json",
+        "bytes": 6943,
+        "sha256": "2e413fef2fef73be30b708e1f83d262715577cfb100ff81427d2194455475a2f"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\runtime-byte-equivalence.snapshot.json",
+        "bytes": 6943,
+        "sha256": "2e413fef2fef73be30b708e1f83d262715577cfb100ff81427d2194455475a2f"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.manifest.json",
+        "bytes": 4077,
+        "sha256": "e2a67b0e3ffaa26ec72f2c7cc4310f16946fe7fc9e7c155f05fc8af29678554c"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\mod_superman_qiang.manifest.json",
+        "bytes": 4077,
+        "sha256": "e2a67b0e3ffaa26ec72f2c7cc4310f16946fe7fc9e7c155f05fc8af29678554c"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\source-110-final-A0004\\receipt.json",
+        "bytes": 3069,
+        "sha256": "3028227b0ac9cc6d66081b908a3d9099b8ea9a406849ee8af4963d6173b396d7"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\tag-source.snapshot.json",
+        "bytes": 3069,
+        "sha256": "3028227b0ac9cc6d66081b908a3d9099b8ea9a406849ee8af4963d6173b396d7"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\ci-doc-correction-A0001\\receipt.json",
+        "bytes": 18712,
+        "sha256": "49ed7d726caf2756b71810f58eb190d03dba53518a7b36fdb0afe53252604bd9"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\documentation-ci-correction.snapshot.json",
+        "bytes": 18712,
+        "sha256": "49ed7d726caf2756b71810f58eb190d03dba53518a7b36fdb0afe53252604bd9"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-superman-qiang-media-redo-20261004\\ci-doc-correction-A0001\\remote-check-20261004T061948Z\\receipt.json",
+        "bytes": 29586,
+        "sha256": "db034324164388297116291e3265d097df2eec292f004357cade16caaea1b74e"
+      },
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\official-ci.snapshot.json",
+        "bytes": 29586,
+        "sha256": "db034324164388297116291e3265d097df2eec292f004357cade16caaea1b74e"
+      }
+    },
+    {
+      "tag_blob": "workshop/superman_qiang_change_notes.txt",
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\steam-change-notes.txt",
+        "bytes": 1836,
+        "sha256": "958ed4f208adffefdfe985763057169039f65600086c3c7db677907514bffae9"
+      },
+      "characters": 706,
+      "lines": 24
+    },
+    {
+      "tag_blob": "workshop/superman_qiang_description.bbcode",
+      "archived": {
+        "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\release-1.1.0-20261004\\description.bbcode",
+        "bytes": 4368,
+        "sha256": "1f0ddc2e92c487893c981657f82734c3e4e373e98eb6e129b6ee0c0853d0313c"
+      },
+      "characters": 1811,
+      "lines": 57
+    }
+  ],
+  "external_assets": [
+    {
+      "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.zip",
+      "bytes": 806076,
+      "sha256": "bd85845dbc7c9ddb19749c14f6a4f20576d488619d7c7e035dab874f68b29cf4"
+    }
+  ]
+}

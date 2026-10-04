@@ -1,0 +1,535 @@
+{
+  "at_utc": "2026-10-04T06:07:04.242459+00:00",
+  "tag": "superman-qiang-v1.1.0",
+  "tag_commit": "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+  "scope": "one documentation sentence only; no runtime/tag changes",
+  "commands": [
+    {
+      "name": "ci-tag-runs",
+      "argv": [
+        "gh",
+        "run",
+        "list",
+        "--commit",
+        "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+        "--limit",
+        "20",
+        "--json",
+        "databaseId,status,conclusion,headSha,url,workflowName"
+      ],
+      "exit": 0,
+      "stdout_sha256": "193a8656f5e38393530e93c5c5df620dbd95d413f7fccd10a380943d06381738",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "ci-failed-37181372794",
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "37181372794",
+        "--log-failed"
+      ],
+      "exit": 0,
+      "stdout_sha256": "eae8433a67aa7c193f882a562903102dbef76bc87a3f07987b7402a62f624a9b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "ci-failed-37181368580",
+      "argv": [
+        "gh",
+        "run",
+        "view",
+        "37181368580",
+        "--log-failed"
+      ],
+      "exit": 0,
+      "stdout_sha256": "ffc69992e8aa4dc601bcc181960caa85079a1aa12ba616b513a7142fd4a90344",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "doc-diff",
+      "argv": [
+        "git",
+        "diff",
+        "--",
+        "mod_superman_qiang/docs/health-native-acceptance-tools-1.1.0.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "d2951382a35cdfd80c01d4b48d3f524039e42a10f306daf6382b2ff48c6b7630",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "python-only",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "tools/validate_python_only.py"
+      ],
+      "exit": 0,
+      "stdout_sha256": "c38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-0",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/character_interactions/sxad_interactions.txt"
+      ],
+      "exit": 0,
+      "stdout_sha256": "49af8002a9d26eeb08b99073bb2393a6bd7c2e25f11610df990bcebbfe8e92d5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-1",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/modifiers/sxad_skill_balance_modifiers.txt"
+      ],
+      "exit": 0,
+      "stdout_sha256": "c21257a41a0b83428b0840ea198bd62581d1b02879235a86d056bc98d81bf995",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-2",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/script_values/sxad_values.txt"
+      ],
+      "exit": 0,
+      "stdout_sha256": "fd7c4dfad2de83a6bcd7a3d0ab303835ead7a103abe5d954f0bb2e5a82b94a7d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-3",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/scripted_effects/sxad_experience_effects.txt"
+      ],
+      "exit": 0,
+      "stdout_sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-4",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/scripted_effects/sxad_probe_skill_effects.txt"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-5",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/scripted_effects/sxad_transfer_effects.txt"
+      ],
+      "exit": 0,
+      "stdout_sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-6",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/scripted_effects/zz_sxad_had_sex_with_effect.txt"
+      ],
+      "exit": 0,
+      "stdout_sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-7",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt"
+      ],
+      "exit": 0,
+      "stdout_sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-8",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/common/traits/sxad_traits.txt"
+      ],
+      "exit": 0,
+      "stdout_sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-9",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/descriptor.mod"
+      ],
+      "exit": 0,
+      "stdout_sha256": "7b0bae16d8d339bff9c9f2fb3cceee5fa2d4a2a0b3b1f2ce4da6a77347e41ca5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-10",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/events/sxad_events.txt"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e21cfe6edc1a0f511eb90f0bc6083988e3a596cec947039268175b6652272701",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-11",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/gfx/interface/icons/traits/sxad_sex_experience.dds"
+      ],
+      "exit": 0,
+      "stdout_sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-12",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/english/sxad_l_english.yml"
+      ],
+      "exit": 0,
+      "stdout_sha256": "5422b387afa491de136372e4072f556ad76d2dc2f532563ddc70bc5453daf089",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-13",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/french/sxad_l_french.yml"
+      ],
+      "exit": 0,
+      "stdout_sha256": "b137d300c787228c3cfa41fcfae7dca78ebe3caac9ad081e793d371ae009ec1b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-14",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/german/sxad_l_german.yml"
+      ],
+      "exit": 0,
+      "stdout_sha256": "4c5bfbd396fde27bdda47bcf5dd43bd12b0f6f30cee09b6b55541369c308eab9",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-15",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/japanese/sxad_l_japanese.yml"
+      ],
+      "exit": 0,
+      "stdout_sha256": "ed7ab2fe996dabe694513f90a7e6d7fa8ee26d3701fcfe6059397784e9c58081",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-16",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/korean/sxad_l_korean.yml"
+      ],
+      "exit": 0,
+      "stdout_sha256": "fa609dc5e373f5f327286d1e53dfa874715fb0d89ee92756b957cfcccadde960",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-17",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/polish/sxad_l_polish.yml"
+      ],
+      "exit": 0,
+      "stdout_sha256": "67de102874b1d6537598389ba49643e0ecf7dcaac7db8d1882c6b9238338bd40",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-18",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/russian/sxad_l_russian.yml"
+      ],
+      "exit": 0,
+      "stdout_sha256": "6fcc180ce7d2baae95e4c34e46645cd74f6cc2b4a46d85273432f265e914244f",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-19",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/simp_chinese/sxad_l_simp_chinese.yml"
+      ],
+      "exit": 0,
+      "stdout_sha256": "11eb3d59e31cfd0cd417d67ac3803986a00bff0b298af5c42799a0472baecd6b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-20",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/localization/spanish/sxad_l_spanish.yml"
+      ],
+      "exit": 0,
+      "stdout_sha256": "eb7c3a5143c32b498cc266d2af5ab8afe75371357a2ba3bdea7d20cb2446be21",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "blob-21",
+      "argv": [
+        "git",
+        "show",
+        "superman-qiang-v1.1.0:mod_superman_qiang/thumbnail.png"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "stage-doc",
+      "argv": [
+        "git",
+        "add",
+        "--",
+        "mod_superman_qiang/docs/health-native-acceptance-tools-1.1.0.md"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "staged-check",
+      "argv": [
+        "git",
+        "diff",
+        "--cached",
+        "--check"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "commit",
+      "argv": [
+        "git",
+        "commit",
+        "-m",
+        "Clarify Python and CMD acceptance instructions for the repository documentation gate"
+      ],
+      "exit": 0,
+      "stdout_sha256": "ba99876357404fd689f333b995f408ec76cecf9358ecc4b56deb7a8d60146afc",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "fetch-1",
+      "argv": [
+        "git",
+        "fetch",
+        "origin",
+        "master"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "2e3ed2f429cc0767250e3e61d4e3f2b0aa0ae6fb0a0ee5a6f9f281f52feb7aa3"
+    },
+    {
+      "name": "rebase-1",
+      "argv": [
+        "git",
+        "rebase",
+        "origin/master"
+      ],
+      "exit": 0,
+      "stdout_sha256": "8a6596cee7493cf5ebb3fcfa3cb3e24d451c15a37dcefcbd4fc1c9520f783de2",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "push-1",
+      "argv": [
+        "git",
+        "push",
+        "origin",
+        "master"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "a2d575237b4e44c340a3063c25cda04f0e99fe1933602261d34a33810b2b4d48"
+    },
+    {
+      "name": "head",
+      "argv": [
+        "git",
+        "rev-parse",
+        "HEAD"
+      ],
+      "exit": 0,
+      "stdout_sha256": "1327174e3a7a7f28efbfbfe637f17c7e0341fb6712c39b3cc9303d16237aa93a",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "tag-still",
+      "argv": [
+        "git",
+        "rev-parse",
+        "superman-qiang-v1.1.0^{commit}"
+      ],
+      "exit": 0,
+      "stdout_sha256": "c933bc1f439ce94221a927df26d79652be0bdbd8fb3c4a036b841aed8cac6c9e",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "name": "status",
+      "argv": [
+        "git",
+        "status",
+        "--porcelain"
+      ],
+      "exit": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "runtime": [
+    {
+      "path": "common/character_interactions/sxad_interactions.txt",
+      "sha256": "49af8002a9d26eeb08b99073bb2393a6bd7c2e25f11610df990bcebbfe8e92d5",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "common/modifiers/sxad_skill_balance_modifiers.txt",
+      "sha256": "c21257a41a0b83428b0840ea198bd62581d1b02879235a86d056bc98d81bf995",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "common/script_values/sxad_values.txt",
+      "sha256": "fd7c4dfad2de83a6bcd7a3d0ab303835ead7a103abe5d954f0bb2e5a82b94a7d",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "common/scripted_effects/sxad_experience_effects.txt",
+      "sha256": "3ba408a0320378b6f09c4d16880d925a16aab07a5904847e0e59af2a183e8a50",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "common/scripted_effects/sxad_probe_skill_effects.txt",
+      "sha256": "e4d6e1d40b552440a5f5042d1d6833337cfb1b55565504e1cd5dea4ef12ab7cd",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "common/scripted_effects/sxad_transfer_effects.txt",
+      "sha256": "7991c7000897755735fad9d6785ee3840811b3ad958a155675b9d67918a59458",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_had_sex_with_effect.txt",
+      "sha256": "46e066aa7e7e81ab2f6292e9650a479de9e8c7ae7e5808d35868396bf99c4ba2",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "common/scripted_effects/zz_sxad_had_sex_with_unknown_effect.txt",
+      "sha256": "afaab280b0be669bf019203e2b3d16f97f087daa5b682338fdcb3bbfaca75fe1",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "common/traits/sxad_traits.txt",
+      "sha256": "2139b3fb753bb72607162f65f88eb94e1494057060550bf9ba8fb5bbdd07d53d",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "descriptor.mod",
+      "sha256": "7b0bae16d8d339bff9c9f2fb3cceee5fa2d4a2a0b3b1f2ce4da6a77347e41ca5",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "events/sxad_events.txt",
+      "sha256": "e21cfe6edc1a0f511eb90f0bc6083988e3a596cec947039268175b6652272701",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "gfx/interface/icons/traits/sxad_sex_experience.dds",
+      "sha256": "7f4c9f2925ac10d6803261ae0e28ec0b417b3a9917664b5297e45a955c4de5b5",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "localization/english/sxad_l_english.yml",
+      "sha256": "5422b387afa491de136372e4072f556ad76d2dc2f532563ddc70bc5453daf089",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "localization/french/sxad_l_french.yml",
+      "sha256": "b137d300c787228c3cfa41fcfae7dca78ebe3caac9ad081e793d371ae009ec1b",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "localization/german/sxad_l_german.yml",
+      "sha256": "4c5bfbd396fde27bdda47bcf5dd43bd12b0f6f30cee09b6b55541369c308eab9",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "localization/japanese/sxad_l_japanese.yml",
+      "sha256": "ed7ab2fe996dabe694513f90a7e6d7fa8ee26d3701fcfe6059397784e9c58081",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "localization/korean/sxad_l_korean.yml",
+      "sha256": "fa609dc5e373f5f327286d1e53dfa874715fb0d89ee92756b957cfcccadde960",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "localization/polish/sxad_l_polish.yml",
+      "sha256": "67de102874b1d6537598389ba49643e0ecf7dcaac7db8d1882c6b9238338bd40",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "localization/russian/sxad_l_russian.yml",
+      "sha256": "6fcc180ce7d2baae95e4c34e46645cd74f6cc2b4a46d85273432f265e914244f",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "localization/simp_chinese/sxad_l_simp_chinese.yml",
+      "sha256": "11eb3d59e31cfd0cd417d67ac3803986a00bff0b298af5c42799a0472baecd6b",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "localization/spanish/sxad_l_spanish.yml",
+      "sha256": "eb7c3a5143c32b498cc266d2af5ab8afe75371357a2ba3bdea7d20cb2446be21",
+      "tag_current_stage_equal": true
+    },
+    {
+      "path": "thumbnail.png",
+      "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b",
+      "tag_current_stage_equal": true
+    }
+  ],
+  "correction_commit": "c821c19fd9ffe719b57831586b4c709952fab42f",
+  "state": "DOCUMENTATION_FIX_PUSHED_RUNTIME22_UNCHANGED_CI_PENDING"
+}

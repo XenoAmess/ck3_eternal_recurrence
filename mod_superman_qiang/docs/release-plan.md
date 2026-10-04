@@ -2,6 +2,8 @@
 
 ## 当前 1.1.0 更新
 
+2026-10-04实际执行完成：同ID仅一次Submit、EResult1，22文件真实订阅核对、完整新Change Notes条目1791095091、介绍和封面/五媒体均已公开回读，Steam恢复离线、CAS4242释放。源tag `superman-qiang-v1.1.0` 指向 `f7fde816e295a62807ab636ee2d93cf307ea69cf`；GitHub双附件实际下载匹配。见[正式报告](release-1.1.0-20261004/README.md)和[永久changelog](../../docs/release-changelogs/superman-qiang/1.1.0.md)。以下保留执行方案，仓库交付另由报告内的实际master收据记录。
+
 目标为同一 Workshop item **3812991990**，tag `superman-qiang-v1.1.0`，上一公开版本 `superman-qiang-v1.0.0`。新增健康候选和原生通知，代码发生变化，必须完成 [增量验收](test-plan.md) 后再以正式 allowlist staging 更新；不能套用未发布媒体候选的“21文件不变”结论。
 
 冻结一男一女封面、三张准确区分能力±1与健康±0.00075的宣传图、正常游玩的性行为事件与新通知实机图、全文介绍和独立完整 Steam Change Notes。上传后匿名回读目标条目完整正文与精确哈希，实际订阅下载核对22文件，并立即恢复离线。最终报告进入 `docs/release-1.1.0-20261004/`，永久 changelog 为仓库 `docs/release-changelogs/superman-qiang/1.1.0.md`；正式发布事实只在实际成功后记录、提交推送。

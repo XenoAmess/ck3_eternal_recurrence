@@ -1,6 +1,6 @@
 # 超人强：越超人越强
 
-当前源码为 1.1.0，健康吸取机制、新进程保存重载及原生气泡的一步查看已通过实机验收；正式发布仍待完成。上一公开版本 1.0.0：[Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990) · [GitHub 下载](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/superman-qiang-v1.0.0)。
+当前公开版本为 **1.1.0**，2026-10-04 更新：[Steam Workshop](https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990) · [GitHub 下载](https://github.com/XenoAmess/ck3_eternal_recurrence/releases/tag/superman-qiang-v1.1.0)。健康吸取、保存重载和通知一步查看已通过实机验收，完整更新说明、封面与五张媒体已公开核对，真实订阅包22文件与正式构建一致。
 
 独立 CK3 模组。每次游戏明确结算两位成年角色之间的性行为时，经验较多的一方可以从经验较少的一方吸取随机属性。
 
@@ -22,7 +22,9 @@
 - [全部可见界面审阅](docs/ui-review-1.1.0.md)
 - [1.1.0 增量实机验收汇总](docs/acceptance-1.1.0-20261004.md)
 - [首发实机验收汇总](docs/acceptance-1.0.0-20261004.md)
-- [正式发布与完整回读证据](docs/release-1.0.0-20261004/README.md)
+- [1.1.0 正式发布与完整回读证据](docs/release-1.1.0-20261004/README.md)
+- [1.1.0 永久更新记录](../docs/release-changelogs/superman-qiang/1.1.0.md)
+- [首发发布证据](docs/release-1.0.0-20261004/README.md)
 - [永久首发 changelog](../docs/release-changelogs/superman-qiang/1.0.0.md)
 - [技能边界及原版缩放依据](docs/skill-boundaries-reference.md)
 - [发布方案与完成门槛](docs/release-plan.md)
@@ -30,4 +32,4 @@
 
 正式包由 `tools/build_release.py` 的明确文件清单构建，仅含 22 个运行文件。1.0.0 已通过中文机制、正常查看、百万经验与安全极值、真实保存重载、旧存档启用及双向属性边界；其真实订阅下载、公开媒体和完整 Steam Change Notes 亦已核验。
 
-1.1.0 的健康机制在 [R0019](docs/live-R0019-health-1.1.0.md) 通过20条实机案例，[R0020](docs/live-R0020-health-reload-1.1.0.md) 新进程保存重载通过。[R0021](docs/live-R0021-normal-ui-1.1.0.md) 已验证玩家与NPC的通知读数、特质持有人记录及查看只读，正文直接显示六项能力与健康；同时审阅发现原生额外确认窗，其失败历史保留。关闭确认后的 [R0022](docs/live-R0022-compact-ui-1.1.0.md) 已在普通存档验证自己与NPC一次菜单点击直接出气泡、无额外确认或事件大窗及查看只读。1.1.0正式发布仍待完成。这些结果不由首发记录外推；旧试扣方案 R0006 RED、R0007 失败断言、未发布的媒体候选及全部历史过程继续保留。
+1.1.0 的健康机制在 [R0019](docs/live-R0019-health-1.1.0.md) 通过20条实机案例，[R0020](docs/live-R0020-health-reload-1.1.0.md) 新进程保存重载通过。[R0021](docs/live-R0021-normal-ui-1.1.0.md) 已验证玩家与NPC的通知读数、特质持有人记录及查看只读，正文直接显示六项能力与健康；同时审阅发现原生额外确认窗，其失败历史保留。关闭确认后的 [R0022](docs/live-R0022-compact-ui-1.1.0.md) 已在普通存档验证自己与NPC一次菜单点击直接出气泡、无额外确认或事件大窗及查看只读。1.1.0已完成同ID工坊更新、完整公开更新说明及真实订阅下载核对，Steam已恢复离线。这些结果不由首发记录外推；旧试扣方案 R0006 RED、R0007 失败断言、未发布的媒体候选及全部历史过程继续保留。

@@ -1,0 +1,116 @@
+{
+  "state": "FROZEN_NOT_SUBMITTED",
+  "at_utc": "2026-10-04T06:23:59.654624+00:00",
+  "version": "1.1.0",
+  "tag": "superman-qiang-v1.1.0",
+  "tag_commit": "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+  "tag_resolution": "refs/tags/<tag>^{commit}",
+  "input_spec": {
+    "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\planned-inputs\\final-inputs.a01.json",
+    "bytes": 3767,
+    "sha256": "611eb231bef6e1290a45551815b9845c33e359e638bb8c4e3ec8fcb1e32e933c"
+  },
+  "manifest": {
+    "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.manifest.json",
+    "bytes": 4077,
+    "sha256": "e2a67b0e3ffaa26ec72f2c7cc4310f16946fe7fc9e7c155f05fc8af29678554c"
+  },
+  "staging": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang",
+  "runtime22matched_manifest_and_tag_blobs": true,
+  "accepted_live_report_reference": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\docs\\acceptance-1.1.0-20261004.json",
+    "bytes": 77096,
+    "sha256": "55595c477b87a04e594abcaac18e885c8ec2a12e3c48de548b536ac9ce60e6be"
+  },
+  "native_previews": {
+    "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\native-previews-before-a01\\stdout.json",
+    "bytes": 849,
+    "sha256": "7c0fc3aac911a4a50f8ac4f7edce1d7adfb680ee8dc171f6f40b1caa5a8f5e5d"
+  },
+  "cover": {
+    "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang\\thumbnail.png",
+    "bytes": 785139,
+    "sha256": "e70f54115bef351ee6e363bb116ee81bb25570f683cdc7606cf769b45d2b4f9b"
+  },
+  "gallery": [
+    {
+      "index": 0,
+      "role": "marketing illustration: seven candidates",
+      "pixels": [
+        1600,
+        900
+      ],
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\01_absorption.jpg",
+      "bytes": 840984,
+      "sha256": "af7c226187d1024e62ed4ad881d2d07889a3c24d9715026442ccbd3ec835a238"
+    },
+    {
+      "index": 1,
+      "role": "marketing illustration: raw correction transfer",
+      "pixels": [
+        1600,
+        900
+      ],
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\02_transfer.jpg",
+      "bytes": 838222,
+      "sha256": "e4f9360eda0d65f9eb46d96654ea0e81075c3ad41ec2da5d90f82742860b9066"
+    },
+    {
+      "index": 2,
+      "role": "marketing illustration: attributes directly in notification body",
+      "pixels": [
+        1600,
+        900
+      ],
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\03_records.jpg",
+      "bytes": 802191,
+      "sha256": "cbe8a7be4a3e72f57480e8031525ab2be551dda0d53bbc67f01356bf353c371f"
+    },
+    {
+      "index": 3,
+      "role": "normal original gameplay seduce event: both XP0 to1, tie without absorption",
+      "pixels": [
+        684,
+        380
+      ],
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\04_natural_event.jpg",
+      "bytes": 159032,
+      "sha256": "0f4f7ebc49ae07fadcca65e4382498c2ee3110f6bd0116807066b76f36ad6356"
+    },
+    {
+      "index": 4,
+      "role": "normal R22 NPC XP1 notification body, no large record event window",
+      "pixels": [
+        785,
+        364
+      ],
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\media\\05_notification.jpg",
+      "bytes": 138982,
+      "sha256": "51ac5484e3a82bcac65c65c2fe3fe3d058c2868715980171192f1d1886c0d6ff"
+    }
+  ],
+  "native_plan": {
+    "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\native-plan.json",
+    "bytes": 4153,
+    "sha256": "8ae27dc34183cbc1ce778d63edd8f1003806975d9571b2cd0dfb5152f06d4350"
+  },
+  "native_payload_sha256": "e619972d834cc0769d4b781ea9619052c8ec85aae87ec305fbf550bcfd5b2481",
+  "description": {
+    "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\description.bbcode",
+    "bytes": 4368,
+    "sha256": "1f0ddc2e92c487893c981657f82734c3e4e373e98eb6e129b6ee0c0853d0313c",
+    "characters": 1811,
+    "lines": 57
+  },
+  "change_notes": {
+    "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\update-freeze\\change-notes.txt",
+    "bytes": 1836,
+    "sha256": "958ed4f208adffefdfe985763057169039f65600086c3c7db677907514bffae9",
+    "characters": 706,
+    "lines": 24
+  },
+  "DLL_loaded": false,
+  "screen_actions": 0,
+  "submit_calls": 0,
+  "create_calls": 0
+}

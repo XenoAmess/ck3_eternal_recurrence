@@ -1,6 +1,6 @@
 # 《超人强》当前工坊宣传图片
 
-2026-10-04，1.1.0 发布候选：三张统一红金风格的宣传海报加入第七项健康，区分能力±1与健康±0.00075，并说明通知查看方式。第四张保留真实勾引成功事件，第五张为新版本原生通知实机图。当前仍在实机收口与发布准备，公开回读在实际上传后补齐。
+2026-10-04，**1.1.0 已实际更新公开**：三张统一红金风格的宣传海报加入第七项健康，区分能力±1与健康±0.00075，并说明通知查看方式。第四张保留真实勾引成功事件，第五张为新版本原生通知实机图。封面与五张媒体的公开CDN原件全部HTTP200、字节与解码像素一致，root直接审阅通过；见[发布报告](../mod_superman_qiang/docs/release-1.1.0-20261004/README.md)。
 
 工坊条目：[3812991990](https://steamcommunity.com/sharedfiles/filedetails/?id=3812991990)。封面改为成年国王与王后，见 [封面来源](../mod_superman_qiang/docs/key-art.md)。运行版本为1.1.0，新通知与健康代码已变化，正式包绑定 `superman-qiang-v1.1.0`；不能沿用旧媒体候选的21文件不变结论。未发布的 `superman-qiang-media-v1/v2` 标签与全部过程素材保留历史。
 
@@ -40,7 +40,7 @@ tools\.venv\Scripts\python.exe tools/compose_superman_qiang_promotional_media.py
 
 宣传选择与中文介绍要求见 [promotional-media.md](../mod_superman_qiang/docs/promotional-media.md)，活动中文全文见 [BBCode](superman_qiang_description.bbcode)。图片与文案同次提交，发布后核对完整描述、五张CDN原图和独立Steam Change Notes。
 
-P0002普通production战役已取得真实勾引成功事件与阿梅利娜自然累计1次记录：双方事前0→1、平手不吸取。见[永久取材证据](../mod_superman_qiang/docs/normal-gameplay-media-20261004/README.md)。事件图来自1.0.0正常游玩，体现保留的原版事件与经验规则，不用作1.1.0健康吸取证据。用户随后否决旧经验大窗，因此旧图与来源继续保留，但不再作为当前宣传；新通知图须在1.1.0 production-only加载该正常旧存档、真实右键查看后取得。
+P0002普通production战役已取得真实勾引成功事件与阿梅利娜自然累计1次记录：双方事前0→1、平手不吸取。见[永久取材证据](../mod_superman_qiang/docs/normal-gameplay-media-20261004/README.md)。事件图来自1.0.0正常游玩，体现保留的原版事件与经验规则，不用作1.1.0健康吸取证据。用户随后否决旧经验大窗，因此旧图与来源继续保留，但不再作为当前宣传；新通知图已在1.1.0 production-only加载该正常旧存档、真实右键查看后取得。
 
 ![真实勾引成功](superman_qiang_media/v2/04_natural_event.jpg)
 

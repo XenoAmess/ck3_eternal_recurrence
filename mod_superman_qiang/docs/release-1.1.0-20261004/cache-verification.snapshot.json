@@ -1,0 +1,50 @@
+{
+  "started_utc": "2026-10-04T06:32:25.259154+00:00",
+  "finished_utc": "2026-10-04T06:32:25.643211+00:00",
+  "ok": true,
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "D:\\workspace\\ck3_eternal_recurrence\\mod_superman_qiang\\tools\\build_release.py",
+    "--verify",
+    "C:\\SteamLibrary\\steamapps\\workshop\\content\\1158310\\3812991990",
+    "--manifest",
+    "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.manifest.json"
+  ],
+  "returncode": 0,
+  "actual_callback": {
+    "app_id": 1158310,
+    "callback_id": 3406,
+    "item_id": "3812991990",
+    "result": 1
+  },
+  "actual_state_flags": {
+    "download_pending": false,
+    "downloading": false,
+    "installed": true,
+    "legacy": false,
+    "needs_update": false,
+    "raw": 5,
+    "subscribed": true
+  },
+  "manifest": {
+    "path": "C:\\ck3-superman-qiang-1.1.0-20261004\\formal-1.1.0-A0001\\mod_superman_qiang.manifest.json",
+    "bytes": 4077,
+    "sha256": "e2a67b0e3ffaa26ec72f2c7cc4310f16946fe7fc9e7c155f05fc8af29678554c"
+  },
+  "native_download": {
+    "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\native-download-a01\\stdout.json",
+    "bytes": 2673,
+    "sha256": "c810a8d704491d885387619ec464cc37e7ae07000bab0f43cc06671ab560beef"
+  },
+  "stdout": {
+    "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\cache-verification-a01\\stdout.bin",
+    "bytes": 30,
+    "sha256": "76dbc1e5dbc9bdc1cd178f8441e309bf87d32d99cc57a37b72811e26b44c0a2d"
+  },
+  "stderr": {
+    "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\cache-verification-a01\\stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "source_copied_into_cache": false
+}

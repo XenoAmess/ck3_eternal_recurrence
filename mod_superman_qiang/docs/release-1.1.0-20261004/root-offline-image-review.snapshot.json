@@ -1,0 +1,24 @@
+{
+  "schema": "superman-qiang.root-offline-image-review.v1",
+  "reviewer": "root Codex",
+  "reviewed_at_utc": "2026-10-04T06:33:00.801931+00:00",
+  "images": [
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-before-a01\\probe-1\\steam-moved.png",
+      "bytes": 88833,
+      "sha256": "61ca44d3dc27266721a3be27c2a57df21e0453f8f88912a7c77c44cc7d210479",
+      "displayed_clock": "13:48",
+      "direct_view_completed": true,
+      "observation": "Directly viewed: footer states offline; web body black; screen clock lags wall time. Freshness cannot follow mtime alone."
+    },
+    {
+      "path": "C:\\ck3-superman-qiang-media-redo-20261004\\publication-P0003\\offline-restoration-a01\\probe-1\\steam-moved.png",
+      "bytes": 288656,
+      "sha256": "bf6f271502ad4bfe27a62a6ed00421e30064ff68d28cddafb5ebd14800a17cda",
+      "displayed_clock": "14:26",
+      "direct_view_completed": true,
+      "observation": "Directly viewed: footer states offline; Steam Workshop editor body has actually redrawn; displayed clock changed. This is the old 1.0.0 notes editor, not evidence of new public Change Notes."
+    }
+  ],
+  "boundary": "No desktop input by root. Freshness requires publication-agent window-motion/new-pixel receipts, which the final release closure must bind. These images do not prove complete release or public notes."
+}
