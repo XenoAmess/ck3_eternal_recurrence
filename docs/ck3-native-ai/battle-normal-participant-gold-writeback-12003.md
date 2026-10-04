@@ -60,3 +60,27 @@ The supported subset is **static-ready**, conditional on explicit source operand
 Source/API/Mermaid were sealed before code. Artifact root: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-normal-participant-resource-writeback-v65/`. Final focused receipt SHA-256: `579dbd70146a50a52e4cd626ebfe69aa60cc36a0ef9cb19b4bf1c35873ecf0ce`. Frozen implementation base is g68 `60a11f657c6e49db165cb79ad23be97343d7a86c`. New native extraction was limited to two bounded spans,1867 bytes total. Whole EXE scan/hash, SDK/RPM/pipe/game/window calls, shared-source/Git edits, native full builds, actual game days and live credit:0.
 
 Current control DTOs did not yet publish native owner row+0C weight when this package was qualified. That exact same-query readonly input is the highest-priority separate observer increment; current backing or hard loss is not a substitute. Actual ordered2650F50 output and264E380 membership remain explicit source inputs. This conditional package does not claim those observations complete and does not wait for the separate observer or unclosed post-store hooks.
+
+## Current Army owner membership and terminal order (2026-10-05)
+
+Exact 1.20.0.3 / Steam25652598 / EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`; v73 reused the closed phase3 count contract and read only462 new frozen code bytes across two logical bodies.
+Complete `264E380` scans current Side+10/+1C Army FullIDs, resolves Army+124 Unit FullID, and compares Unit+174 owner FullID with its requested dword; first match returns true, exhaustion false.
+It reads no Entry, soldier count, owner weight table, kind3 or knight gate; failed generation lookup uses the actual canonical Army/Unit fallback, so an unobserved reached fallback remains unknown rather than false.
+Complete `2650F50` walks the supplied Side's current Army owners in stored order; `258BF70` supplies only the selected winner-side roster, with the already documented winner−1 summary fallback preserved.
+Its `880430(begin,end,&ownerID)` search and conditional `B02D10(vector,&ownerID)` append call are closed at the caller; their generic helper bodies remain unknown, so stable uniqueness needs actual output or an explicit helper witness.
+Participant membership selects Combat+78 attacker or+3C0 defender rows before the existing row+0C integer share calculation; current whole counts and retained weight rows do not substitute for each other.
+The participant loop precedes Result+48..97 summary copy, both `2667E90` survivor copies, normal envelopes and late Army cleanup; intervening scripted effects and withdrawal leaf semantics remain separate inputs.
+Source/API/pins and report fields: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-phase3-reaggregate-v73/tree+bindings/ROOT-DELIVERY.json`; readiness **research**, new tests/live days/SDK/RPM/window operations0, with no repeated P1/P2 debit or owner hard credit.
+
+```mermaid
+flowchart TD
+  P[Existing phase3 current backing reaggregation] --> F[Admitted normal finalizer]
+  F --> L[2650F50 selected-side current Army owners]
+  L --> H[880430 search and conditional B02D10 append]
+  H -. generic helper bodies unknown .-> O[Actual ordered participant output]
+  O --> M[264E380 current attacker Army owner match]
+  M --> S[Selected owner rows and row0C share]
+  S --> R[Summary Result copy then2667E90 side survivors]
+  R --> E[Normal envelopes then late Army cleanup]
+  E -. script and withdrawal effects unknown .-> U[Separate outcome inputs]
+```
