@@ -144,3 +144,43 @@ cash caller/store 时钟为独立精确施工入口，不阻此 Army observer。
 剩余实际输入采样、timing optional 的生产验证、callback admission/普通 create
 覆盖和现金 posting ledger 都明确另包。已有 current health/cash primitives
 继续供普通游戏 loop 使用，不因未知分支停止合法动作。
+
+
+
+## 2026-10-04 Episode04 increment — gathering grace anchor and real sampling
+
+This increment is **static-confirmed / research**, with zero new gameplay days, SDK queries or footage. CK3 exact identity remains `1.20.0.3 / Steam25652598`, EXE SHA-256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`. The explicit interpreter is `D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe`, Python3.14.7, pefile2024.8.26, capstone5.0.9. `open_kaishek` is not-applicable: this question concerns compiled CArmy scheduling, field producers and native eligibility, outside its parser/script IR/runtime semantics; no CK3 acceptance or gameplay action was performed.
+
+Reuse [army-monthly-update-order-12003.md](army-monthly-update-order-12003.md) for the already-closed real clock: regular refill uses calendar month-first; actual supply/loss dispatch uses the daily callback's stored GameState+9C unsigned modulo30 and **actual ArmyManager bucket membership**. The display forecast's30-day grid is a separate producer. `0x24E3425` is INT3 padding; the actual wrapper starts at `0x24E3430` and calls the updater at `0x24E3450`. The scheduler is no longer a new research gap; actual current membership/phase and loaded values remain observation work.
+
+The previously unresolved grace anchor has a concrete production writer. `0x2A9AF40` takes CArmyManager and the admitted date pointer; its roster resolves full CArmy identity to r13. In the selected gathering path, a pending entry is processed when its due date is not after the current date (`0x2A9B0E8..EC`). After the processed entry is removed, `0x2A9B418` decrements CArmy+0x5C. If pending count is still nonzero, `0x2A9B429` skips the anchor write. When it becomes zero, `0x2A9B4C4..CF` loads GameState through global `0x5C68C50`, reads the current date64 from GameState+8, and writes that value to **CArmy+0x190**. This is the gathering-completion grace anchor, rather than the last successful supply update.
+
+The two dates remain distinct. Successful updater `0x24E4D10` writes its passed date64 to **CArmy+0x188** at `0x24E4E27`. Before that write it requires gathering count+0x5C=0 and the selected Province/context eligibility branches to pass, then requires `trunc0(int32(date.low32-anchor.low32)/24) > loaded_signed_grace`. The comparison at `0x24E4E18` reads the signed32 define slot `0x5C69AA0`. At or below grace, this selected path skips the **entire** rate application, including a positive current rate; “no supply loss” is the define's name, not a promise that gains are posted during grace.
+
+Define registration `0x23801F0` binds the `0x5C69AA0` destination to exact strings `NO_SUPPLY_LOSS_DAYS` at `0x4716718` and `NArmy` at `0x4716D68`. Installed `game/common/defines/00_defines.txt:660` declares `NO_SUPPLY_LOSS_DAYS = 30` with the after-gathering comment; file SHA-256 `8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982`. This closes the slot's name and stock source contract. It does **not** read a running process's loaded value or exclude mod overrides. The destination is in PE virtual zero-fill space; an empty on-disk read is not a runtime zero.
+
+Consequently “first update is on the31st day after gathering” is too strong. The age must exceed the loaded grace, the actual30-bucket must be selected, and current eligibility must pass. Supplies can remain unchanged because of grace, because this army was not dispatched, because the rate is zero, or because a successful positive-rate application was clamped at capacity. A successful-date change is the clean discriminator for the last case.
+
+Identity/lifecycle reuse: the .3 half-split clone `0x296B6E0` copies source CArmy+0x188/+0x180/+0x190 into the sibling at `0x296B948..96B`; a new ArmyID therefore does not by itself imply a fresh grace anchor. This is an exact clone-path fact, not proof that every split/merge/raise path shares identical lifetime behavior. The split owner retains its independent bytes proof and actual split remains separate.
+
+```mermaid
+flowchart TD
+  G["Daily gathering callback: due entry processed"] --> Q{"Pending CArmy+5C reaches zero?"}
+  Q -->|yes| A["2A9B4CF: current GameState date64 -> CArmy+190"]
+  A --> E["Actual daily Army bucket dispatch ->24E3430"]
+  E --> P{"Context eligible; gather count=0; age>loaded grace?"}
+  P -->|yes| U["24E4E27: date64 -> CArmy+188"]
+  U --> S["Add whole current signed rate; clamp0..capacity"]
+  P -->|no| X["No successful supply application"]
+  D["Stock NArmy.NO_SUPPLY_LOSS_DAYS=30"] --> N["23801F0 binds slot5C69AA0"]
+  N -. "actual loaded value unobserved" .-> P
+  O["Same Army paused samples around dispatched date"] -. "pending live evidence" .-> S
+```
+
+For production observation, extend the existing `ck3_query_army_strengths` optional timing block already authorized by the monthly-order topic, retaining its exact build/same-frame identity: actual bucket membership (scan the30 pointer buckets against resolved CArmy*, not only FullID%30), GameState+9C signed D with date_raw, CArmy+188 successDate64, CArmy+190 graceAnchorDate64, and loaded signed32 grace from5C69AA0. No new named action/tool is necessary. Current stock/capacity/monthly-rate/attrition getters remain reused production primitives. Implementation/focused fixture/runtime deployment are separate facts; this file claims none.
+
+Episode04 P0-SUPPLY filming uses the same army and same commander/province/compiled inputs, before a chosen real dispatch and immediately after one admitted day. Keep stock, capacity and current rate raw Q100000, date64, commander, ArmyID/CUnitID, full regiment identities, state, actual bucket/D/last-success/anchor/grace where available, paused revision, loading content and save SHA. After the boundary, require an independent query rather than an action ACK. During the grace edge and capacity edge, film the native tooltip and exact changed or unchanged stock in continuous footage. If timing fields are unavailable, basic natural stock-change footage can still be collected, but unchanged stock cannot establish a successful clamp or exact eligibility cause.
+
+Use `tools/run_ck3_native_army_update_clock.py --current-raw <fresh> --days <bounded> --observed-army-bucket <actual>` to select the date; the CLI writes a prospective clock only and does not run CK3. Without an observed bucket omit the option and leave army selection unknown. Root freezes the actual subject, save and natural runtime window before executing the separately bound plan. Stop after the first discriminating boundary pair; if grace edge is specifically needed, at most61 admitted days from a fresh gathering-completion baseline is a bounded search for two potential bucket selections under stock30, subject to unchanged eligibility. A zero-change window excludes no mechanism by itself; preserve it and record which fields or conditions were absent. This is a small observation recipe, not a new gameplay gate.
+
+New bytes are retained at `D:/ck3-war-episode04-research-20261004-a01/supply-clock/`. The gathering span `[2A9AF40,2A9B592)` SHA-256 is `27b16dfc3ab56e1088c7a24676433317a7f86b8ecf82c6108b6b3468aec706e8`; updater slice SHA-256 matches existing `a6214a58f3b8a1ff58fff6148ecf121688ccdaf1a5317f0865991a5367d183f4`; registration function `[23801F0,2380447)` SHA-256 `d7c5bcb41c03e53475f2661fe7171647852e7636109e88cb985ad9207e01b3d3`. The bound plan, generated graph and `ROOT-DELIVERY.json` enumerate actual paths and file hashes. Root integrates this candidate append; this lane does not modify Git refs or canonical repository files.

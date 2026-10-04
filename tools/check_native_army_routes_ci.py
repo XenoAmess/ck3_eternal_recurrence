@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
 """Compile and run the isolated army reader fixtures with x64 MSVC C++20.
 
-Only the army producer and its fixture test are linked. No game executable,
-native bridge DLL, Steam installation or private feature definition is used.
+Only the army producer, its supply timing dependency and fixture test are linked.
+No game executable, native bridge DLL, Steam installation or private feature
+definition is used.
 The caller supplies a fresh build directory; logs and failures are retained.
 """
 from __future__ import annotations
@@ -21,11 +22,17 @@ from run_native_msvc import child_environment, visual_studio_installation
 
 ROOT = Path(__file__).resolve().parents[1]
 SOURCE = ROOT / "ck3_autonomous_player/native_bridge"
-INPUTS = (
+TRANSLATION_UNITS = (
     "src/ck3_12002_army.cpp",
+    "src/ck3_12003_army_supply_timing.cpp",
     "src/ck3_12002_army_test.cpp",
+)
+INPUTS = (
+    *TRANSLATION_UNITS,
     "include/xar_bridge/ck3_12002_army.hpp",
+    "include/xar_bridge/ck3_12003_army_supply_timing.hpp",
     "include/xar_bridge/ck3_12002.hpp",
+    "include/xar_bridge/ck3_12003.hpp",
     "include/xar_bridge/game_contract.hpp",
 )
 
@@ -90,8 +97,9 @@ def run(build_dir: Path, requested_vs: Path | None) -> dict:
         executable = build_dir / "xar_ck3_12002_army_test.exe"
         argv = [compiler, "/nologo", "/std:c++20", "/O2", "/MD", "/W4",
                 "/permissive-", "/EHsc", "/utf-8", "/UNDEBUG",
-                f"/I{SOURCE / 'include'}", str(SOURCE / INPUTS[0]),
-                str(SOURCE / INPUTS[1]), f"/Fe{executable}"]
+                f"/I{SOURCE / 'include'}",
+                *(str(SOURCE / name) for name in TRANSLATION_UNITS),
+                f"/Fe{executable}"]
         run_logged(argv, "compile", build_dir, compiler_environment, report)
         run_logged([str(executable)], "army-fixtures", build_dir, compiler_environment, report)
         report["executable_sha256"] = hashlib.sha256(executable.read_bytes()).hexdigest()

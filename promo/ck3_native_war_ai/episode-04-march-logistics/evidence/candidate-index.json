@@ -1,0 +1,435 @@
+{
+  "schema": "xar.ck3.episode04.research-candidate-index.v1",
+  "frozen_at_utc": "2026-10-04T14:24:07.231251+00:00",
+  "reading_repo_head": "f8530f4aeb64735dbeae4831f3bc6c315276bb88",
+  "intent": "Candidate repository knowledge only; Root owns import, final source freeze, strict native build, deployment and current-case live evidence",
+  "exact_game": {
+    "version": "1.20.0.3",
+    "steam_build": "25652598",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "evidence_layers": {
+    "static": "current stock files/exact EXE and source code only",
+    "fixture": "offline execution of production/candidate code with fixed inputs or mocked native functions",
+    "historical_live": "only tracked historical subjects/dates/builds, never current Episode04 result",
+    "current_live": "requires new Root SDK reports + actual screenshot/video and identity/date/revision binding; none supplied to this index"
+  },
+  "source_commits_observed_locally": {
+    "clock": "b148719256a92b1d0fe014f9f62f659e44f0d105",
+    "regiment_strengths": "c30d6b1bcee72c2d7aa40270bd18311a427572d1",
+    "halt": "f8530f4aeb64735dbeae4831f3bc6c315276bb88"
+  },
+  "source_commit_boundary": "Read-only local commit presence is recorded. Push, exact-SHA official CI, DLL deployment and live acceptance require their own Root receipts; this index does not claim them.",
+  "case_candidates": [
+    {
+      "name": "Jan11-landed-first-cold-load",
+      "absolute_save_path": "C:/ck3-war-episode03-expansion-20261003-a01/checkpoints/checkpoint-landed-a01.ck3",
+      "bytes": 72222213,
+      "sha256": "d94be518cc52fefb62d896de8fabc8bd560f49674925049dab863cef77a1e14b",
+      "historical_actor": 33388,
+      "historical_date_raw": 53147160,
+      "historical_armies": [
+        0,
+        16777220
+      ],
+      "historical_first_province": 1506,
+      "status": "historical-save-byte-verified; new Episode04 load/feasibility pending"
+    },
+    {
+      "name": "Jan1-sea-alternative",
+      "absolute_save_path": "D:/ck3-war-episode03-20261002-a01/vanilla-state-carmy-zero-a05/profile/save games/autosave_1.ck3",
+      "bytes": 71837528,
+      "sha256": "17d98cd24f955dd951be14965502c8ba49856ad8524371430348cd60ecd098c1",
+      "historical_actor": 33388,
+      "historical_date_raw": 53146920,
+      "status": "historical-save-byte-verified; not a split/rest departure"
+    }
+  ],
+  "abc_departure_checkpoint": null,
+  "abc_execution_receipts": [],
+  "current_live_sdk_packets": [],
+  "new_raw_recordings": [],
+  "open_kaishek": "Native binary/GUI/process-wrapper lanes report not-applicable with specific reasons. No script/runtime model success substitutes for current native rendering or actions.",
+  "lanes": [
+    {
+      "id": "P0-TERM",
+      "status": "source-verified / current-tooltip-pending",
+      "repo_topics": [],
+      "artifacts": [
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/terms/army-logistics-native-terminology-12003.md",
+          "bytes": 12235,
+          "sha256": "66badaed5db0d5cd9d6765873305f483074a142f3fd3532a7600e334ea30dcf6",
+          "proof_layer": "static-localization-gui",
+          "supports": "107 bilingual keys, units and GUI routes"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/terms/terminology-evidence.json",
+          "bytes": 107836,
+          "sha256": "7e9296a754ec274d62d2434b4a6e44474a24a609d24942fe0739ec016e51d437",
+          "proof_layer": "static-localization-gui",
+          "supports": "raw bilingual lines and current EXE/stock identity"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/terms/verification-receipt.json",
+          "bytes": 10108,
+          "sha256": "99353d9a636182ffaca698e1a918bbca5255eef1ff21e43dff55332b110ca6db",
+          "proof_layer": "file-verification",
+          "supports": "26 source files / 214 localization lines checked; zero live screenshots"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/terms/shot-checklist.json",
+          "bytes": 2652,
+          "sha256": "d0be2bfbef7d57ca119347fca72e77264e29fb9001c1d04dd90e5f76fc8c87ef",
+          "proof_layer": "prospective-capture-plan",
+          "supports": "11 pending current-tooltip shots"
+        }
+      ]
+    },
+    {
+      "id": "P0-SUPPLY",
+      "status": "exact-static-chain / existing-clock-reused / current-boundary-pending",
+      "repo_topics": [
+        "docs/ck3-native-ai/army-monthly-update-order-12003.md",
+        "docs/ck3-native-ai/army-supply-depletion-update-and-state-12003.md"
+      ],
+      "artifacts": [
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/supply-clock/candidate-append.md",
+          "bytes": 7579,
+          "sha256": "e8b85854484bce66f2869c32cf9fc24e4030499d028af99b4ae5c11497d35344",
+          "proof_layer": "exact-exe-static",
+          "supports": "gathering grace producer, success update witness, actual dispatch semantics"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/supply-clock/ROOT-DELIVERY.json",
+          "bytes": 26573,
+          "sha256": "cbf53b21eddd195c0389682b34d21b3a8518a7dd2f141e36edf4414923604b9f",
+          "proof_layer": "static-artifact-index",
+          "supports": "bounded current EXE spans and source hashes"
+        },
+        {
+          "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/supply-timing/EXISTING-CAPABILITY-REUSE.json",
+          "bytes": 6940,
+          "sha256": "1a98d058d9530bc45beb20869801f61d65ca5647a1fd3c46f2aa08e224a5bfa3",
+          "proof_layer": "production-source-review",
+          "supports": "reuse existing army_update_clock_v1, no new implementation or executed test"
+        },
+        {
+          "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/supply-timing/POST-JSON-ANALYSIS.md",
+          "bytes": 1840,
+          "sha256": "4b299b7ff800626aa49e0029cae2b47654f855988b830e02e9f5649544a9f1fc",
+          "proof_layer": "prospective-capture-plan",
+          "supports": "paired paused sample interpretation"
+        }
+      ]
+    },
+    {
+      "id": "P0-LOSS",
+      "status": "exact-static-executor-writer / current-causal-transition-pending",
+      "repo_topics": [
+        "docs/ck3-native-ai/army-current-supply-capacity-attrition-12003.md"
+      ],
+      "artifacts": [
+        {
+          "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/loss-cause/army-attrition-soldier-writeback-12003.md",
+          "bytes": 11882,
+          "sha256": "75d85c2385de939c454111cb2cb99111bcf287f736ac3670accc875897b88241",
+          "proof_layer": "exact-exe-static",
+          "supports": "separate integer loss budgets and actual-regiment/chunk writes"
+        },
+        {
+          "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/loss-cause/ROOT-DELIVERY.json",
+          "bytes": 11957,
+          "sha256": "d4ce8f0c8fd8691cc1741da57522c668926c5f7506a45ad497ba1a4c0a28864f",
+          "proof_layer": "static-artifact-index",
+          "supports": "bounded source slices and proof layers"
+        },
+        {
+          "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/loss-cause/focused-static-byte-check.json",
+          "bytes": 4212,
+          "sha256": "4ebb2284cec35e60532f0a25420a85566bf0c3723bcbb71f86a2127f1e54066c",
+          "proof_layer": "exact-byte-verification",
+          "supports": "source byte positions only; no live transition"
+        }
+      ]
+    },
+    {
+      "id": "P0-SPLIT",
+      "status": "exact-static-split / historical-merge-rule-reused / current-identities-pending",
+      "repo_topics": [
+        "docs/ck3-native-ai/army-meeting-merge-supply-inheritance-12003.md",
+        "docs/ck3-native-ai/province-supply-limit-native-usage-preview-12003.md"
+      ],
+      "artifacts": [
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/split-merge/SOURCE-CONTRACT-a02.md",
+          "bytes": 8752,
+          "sha256": "da0d738852e0f6fa35905912c5610b633ee9d0501fbf1cb15549006de052a2da",
+          "proof_layer": "exact-exe-static",
+          "supports": "clone copies current supply and anchors, transfers whole regiment IDs, commander selection"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/split-merge/CAPTURE-RECIPE.md",
+          "bytes": 7511,
+          "sha256": "1a0c643f6b94cd57c3e602c84e9431f86c20f9217654981b4a51130562bac35a",
+          "proof_layer": "prospective-capture-plan",
+          "supports": "split/merge identity and local occupancy postconditions"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/split-merge/ROOT-FINAL-DELIVERY.json",
+          "bytes": 6911,
+          "sha256": "59dcba4ebfe7285f8882083a0c4c07f25f236e9fdc5c5bc64643e7c9d9f6832d",
+          "proof_layer": "static-artifact-index",
+          "supports": "corrected complete source spans, original a01 retained"
+        }
+      ]
+    },
+    {
+      "id": "P0-MOVE",
+      "status": "exact-static-Halt / focused-fixture-passed / root-build-deploy-live-pending",
+      "repo_topics": [
+        "docs/ck3-native-ai/army-march-remaining-timeline-12003.md"
+      ],
+      "artifacts": [
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/move-control/NATIVE-CHAIN-REVIEW.md",
+          "bytes": 7139,
+          "sha256": "3474056a66a6c73893afa123affd100a5b8f7e20d4b223e0e229f599376392e6",
+          "proof_layer": "exact-exe-static",
+          "supports": "CHaltUnitsCommand and strict progress > loaded cutoff semantics"
+        },
+        {
+          "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/move-control/focused01/RESULT.json",
+          "bytes": 1729,
+          "sha256": "e69ae805e544a3a0820004f96bb87bb8ea7eb988afb23def3863fabd95c66243",
+          "proof_layer": "offline-production-candidate-fixture",
+          "supports": "real submit code with mock constructor/validator/queue and production Python checks; not game allocator/executor"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/move-control/CAPTURE-SEQUENCE.md",
+          "bytes": 4697,
+          "sha256": "0ce080007ee6d69d8d1683f9bf322d64e99a5e5bcfcead4870773a33c27bf041",
+          "proof_layer": "prospective-capture-plan",
+          "supports": "before/after lock and route suffix removal shots"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/move-control/ROOT-DELIVERY.json",
+          "bytes": 2213,
+          "sha256": "e7feb9fae38faefeadd6056c33651a588de5a181af79992247c5b37b527a2582",
+          "proof_layer": "candidate-source-index",
+          "supports": "candidate02 fixes earlier preserved candidate01 advertisement"
+        }
+      ]
+    },
+    {
+      "id": "P0-REFILL",
+      "status": "minimum-actual-regiment-source / production-reader-fixture-passed / current-read-and-change-pending",
+      "repo_topics": [
+        "docs/ck3-native-ai/army-regiment-replenishment-raised-reserve-12003.md"
+      ],
+      "artifacts": [
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/refill/P0-REFILL-RESEARCH.md",
+          "bytes": 10363,
+          "sha256": "dfd6deab79bfe3a372e4babafd9c36f5efb6b13fbb553da58ca5860df9983cc1",
+          "proof_layer": "static-contract-and-capture-plan",
+          "supports": "different supply and soldier states, first-record limits"
+        },
+        {
+          "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/refill/implementation-a01/checks-a01/result.json",
+          "bytes": 288,
+          "sha256": "623a1f509c14d14655a590c57b30f00940d319d8e9fe103906d8107c45a7fd45",
+          "proof_layer": "offline-production-reader-fixture",
+          "supports": "8 production wire cases and 10 Python contract tests, no live"
+        },
+        {
+          "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/refill/implementation-a01/native-build-a01/army-reader-ci-result.json",
+          "bytes": 3113,
+          "sha256": "564bd0f3d60187e6a80bf9aa26924014d925cee3a2346d6706edeb150638faf3",
+          "proof_layer": "offline-production-reader-fixture",
+          "supports": "reader compiled/executed against offline fixture only"
+        },
+        {
+          "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/refill/implementation-a01/patch-manifest.json",
+          "bytes": 1865,
+          "sha256": "3ef8ee94f4ff43d110f04f94619699ef239e6217c4c66ab92b67623525849468",
+          "proof_layer": "candidate-source-index",
+          "supports": "six-file regiment_strengths extension, no additional native getter"
+        }
+      ]
+    },
+    {
+      "id": "CASE",
+      "status": "two-historical-save-byte-pins / first-cold-load-candidate / new-start-not-frozen",
+      "repo_topics": [],
+      "artifacts": [
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/case-selection/case-selection-a01.md",
+          "bytes": 5192,
+          "sha256": "6ede782e59ced1dbebf76b36b97ebc928c9e66cc3d74164ff071fbeb5d2c6883",
+          "proof_layer": "historical-file-revalidation",
+          "supports": "two William save candidates checked once; current feasibility unobserved"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/case-selection/candidate-index-a01.json",
+          "bytes": 38288,
+          "sha256": "a1063833077abc40dd95f06a1ea5893909ef5694d59e679474e907577594a6cb",
+          "proof_layer": "historical-source-index",
+          "supports": "save SHA, old packets and raw identity without large raw reread"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/case-selection/candidate-index-freeze-a01.json",
+          "bytes": 693,
+          "sha256": "b0cbf29bba118b948c44c26ccc92d99d10b9310c7c1279a206304a3cbbd66b45",
+          "proof_layer": "file-verification",
+          "supports": "hash binding for candidate index and excerpts"
+        }
+      ]
+    },
+    {
+      "id": "COST",
+      "status": "existing-production-live-primitive-reused / new-case-money-and-payment-pending",
+      "repo_topics": [
+        "docs/ck3-native-ai/war-cash-current-resources-12003.md"
+      ],
+      "artifacts": [
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/costs/costs-research-and-capture-recipe.md",
+          "bytes": 11621,
+          "sha256": "112036e7d2b7c278be1faaee65302b5d77e7a54a775d1ea77d38dcbb7af5844a",
+          "proof_layer": "production-source-reuse-and-stock",
+          "supports": "existing same-frame current cash/maintenance; no complete period expense ledger"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/costs/capture-fields.json",
+          "bytes": 3320,
+          "sha256": "4bc78833c4f68446992f413c64d71a59bacd4bd177298bf0ebf4d93eaeea0d31",
+          "proof_layer": "prospective-capture-plan",
+          "supports": "current rates, wallet endpoints, embark payment and event separation"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/costs/PACKAGE-INDEX.json",
+          "bytes": 7595,
+          "sha256": "63e446be2c829494bff16003110427ad02977e86320cb68a374a41f290aeab25",
+          "proof_layer": "static-artifact-index",
+          "supports": "current stock cost sources and plan pins"
+        }
+      ]
+    },
+    {
+      "id": "CAPTURE",
+      "status": "offline-wrapper-ready / 11-focused-checks / no-new-recording",
+      "repo_topics": [],
+      "artifacts": [
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/capture-runner/README.md",
+          "bytes": 12265,
+          "sha256": "206aa49c510eed7276010c979b8a85e7006e52e70b1ce8ac0f9b57c28db7e640",
+          "proof_layer": "prospective-capture-plan",
+          "supports": "one owner bootstrap, sample and recorder request route"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/capture-runner/offline-validation-a01/report.json",
+          "bytes": 10492,
+          "sha256": "358fe24252a530d4553a2125cf9a33a0a82fa86d9c78b59dc388ab05441629be",
+          "proof_layer": "offline-wrapper-fixture",
+          "supports": "11 focused offline checks; no CK3, SDK, game days or ffmpeg launch"
+        },
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/capture-runner/package-final-a01/ROOT-DELIVERY.json",
+          "bytes": 3596,
+          "sha256": "f814ca65bae0d5da67048c1295618ffe8ee78ec030abcdf606f4c001cb6c279f",
+          "proof_layer": "candidate-source-index",
+          "supports": "derivation and terminal-serialization recompile pinned"
+        }
+      ]
+    },
+    {
+      "id": "ENVIRONMENT",
+      "status": "current-install-identity / partial-offline-visual-proof / latest-wheel-verified",
+      "repo_topics": [
+        "docs/codex-task-bus.md",
+        "docs/ck3-native-ai/steam-offline-frame-freshness.md"
+      ],
+      "artifacts": [
+        {
+          "absolute_path": "D:/ck3-war-episode04-research-20261004-a01/terms/current-build-identity.json",
+          "bytes": 532,
+          "sha256": "60b36e12d823028ce5464e09cd961285b8e338e4f7c6d99bef9a5aa710564269",
+          "proof_layer": "current-installed-file-identity",
+          "supports": "Steam25652598 and matching current EXE SHA"
+        },
+        {
+          "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/steam-offline-root-review-a01.json",
+          "bytes": 1033,
+          "sha256": "6579cbefbcc160ce111029e7093cfdc6eb18bca60a2b41a73ae7505251ddd34b",
+          "proof_layer": "current-desktop-visual-evidence",
+          "supports": "Root reviewed moving-window/new-nonce offline label; desktop clock/content issues not fully recovered"
+        },
+        {
+          "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/toolchain-check-a01/completion.json",
+          "bytes": 2205,
+          "sha256": "7335413c87c961aeed453fb9193602d841eb8b4c23b8a8a7cd755e774dc165db",
+          "proof_layer": "environment-release-verification",
+          "supports": "v0.2.1 wheel SHA and installed version/help checks"
+        }
+      ]
+    }
+  ],
+  "candidate_outputs": [
+    {
+      "external_candidate": "C:/ck3-war-episode04-research-20261004-a01/docs-integration/candidate/promo/ck3_native_war_ai/episode-04-march-logistics/research-status-20261004.md",
+      "repository_target": "promo/ck3_native_war_ai/episode-04-march-logistics/research-status-20261004.md",
+      "mode": "new"
+    },
+    {
+      "external_candidate": "C:/ck3-war-episode04-research-20261004-a01/docs-integration/candidate/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/candidate-index.json",
+      "repository_target": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/candidate-index.json",
+      "mode": "new"
+    },
+    {
+      "external_candidate": "C:/ck3-war-episode04-research-20261004-a01/docs-integration/candidate/promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.append.md",
+      "repository_target": "promo/ck3_native_war_ai/episode-04-march-logistics/director-plan.md",
+      "mode": "append"
+    },
+    {
+      "external_candidate": "C:/ck3-war-episode04-research-20261004-a01/docs-integration/candidate/docs/handover/2026-10-04-war-episode04-march-logistics.append.md",
+      "repository_target": "docs/handover/2026-10-04-war-episode04-march-logistics.md",
+      "mode": "append"
+    }
+  ],
+  "root_status_cutoff": {
+    "reported_time": "2026-10-04 14:29 UTC",
+    "new_episode04_sdk_queries": 0,
+    "new_episode04_game_days": 0,
+    "new_episode04_raw_recordings": 0,
+    "official_ci_for_halt_f853": "Root-reported failure; fix pending at cutoff. This bundle supplies no fabricated terminal PASS or run ID.",
+    "native_build_later_receipt": "three targets/jobs16 built from f853; no game contacted. Deployment and live not claimed.",
+    "fresh_steam": "Root directly reviewed challenge-a03 offline label/new nonce; repeat current evidence before actual launch",
+    "parent_source": "Root collaboration status message to terms; external machine receipts below cover build/delivery only"
+  },
+  "root_build_and_delivery_receipts": [
+    {
+      "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/native-build-a02/root-result.json",
+      "bytes": 101,
+      "sha256": "c521cbd2ea13d98cfbddb947bae114e77862f7ff98fd3cd1a3e76252b5798c78",
+      "proof_layer": "root-offline-build-and-delivery-receipt",
+      "supports": "returncode0 / exact source f853 / game_contacted false"
+    },
+    {
+      "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/native-build-a02/native-msvc-result.json",
+      "bytes": 1243,
+      "sha256": "0525104ae919b0cdfa9943732fe1ddc1e439714741ef09c8059a7410dc11e87a",
+      "proof_layer": "root-offline-build-and-delivery-receipt",
+      "supports": "Release configured and built, jobs16, three native targets, no CK3"
+    },
+    {
+      "absolute_path": "C:/ck3-war-episode04-research-20261004-a01/git-halt-a01/completion.json",
+      "bytes": 145,
+      "sha256": "eb82dca15ef74bbda7ba9fbefb9e363f614a3ac5e1185f41eded479dc19c500f",
+      "proof_layer": "root-offline-build-and-delivery-receipt",
+      "supports": "f853 pushed; focused offline only; this earlier receipt recorded official_ci pending"
+    }
+  ]
+}

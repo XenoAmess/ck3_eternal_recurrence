@@ -103,3 +103,13 @@
 修复只更新MCP契约测试：验证终局查询的integer/null两种schema分支、合法null转发，同时保留所有军队ID的0及上限、布尔/浮点/字符串/越界拒绝检查；其他必填军队参数继续拒绝null。与CI相同的四份测试在普通及`-O`模式均实际通过，各为30 tests、351 subtests；没有游戏/原生transport调用，没有修改生产API。
 
 首次失败回执保留在本任务外置目录的 `ci-a01/terminal.json` 与 `ci-failure-a01/`，本地两模式回执在 `ci-repair-tests-normal-a01/`、`ci-repair-tests-optimized-a01/`。测试修复与本节为独立收口提交，真实普通推送及官方新CI结果分别由随后生成的 `git-delivery-a02/completion.json`、`ci-a02/terminal.json`记录；本节冻结时不预填其SHA或PASS。首轮CI失败不回改成成功，第4期研究与媒体状态不因测试修复增加信用。
+
+
+
+## 2026-10-04 接手后的首批增量
+
+用户已授权开始高并发研究与拍摄。接手者应继续读[第4期研究总账](../../promo/ck3_native_war_ai/episode-04-march-logistics/research-status-20261004.md)及[证据索引](../../promo/ck3_native_war_ai/episode-04-march-logistics/evidence/candidate-index.json)，不要停留在本交接初版“尚未开始”的时间截面。首批TERM/SUPPLY/LOSS/SPLIT/MOVE/REFILL、主案、费用及capture文件包已经交付；静态、offline fixture、历史live与本期live分层记录，不能混加完成信用。
+
+当前已核对Jan11登陆候选SHA `d94be518cc52fefb62d896de8fabc8bd560f49674925049dab863cef77a1e14b`，尚待新冷载检查后保存第4期A/B/C出发档。真实补给时钟及`army_update_clock_v1`已在主线，复用现原语；逐团actual人数与Halt最小增量已入源码，Root负责严格构建、部署和当前案例后读。原生构建收据built不等于新实读；截至Root文件研究切点尚无本期SDK/新游戏日/录像，Halt f853官方CI失败待修，其他研究包不因该CI等待而停止。
+
+后续先取得当次新鲜Steam离线及当前运行输入，再闭合总账的六项P0门槛与11项真实tooltip；同档独立拍A/B/C后才冻结全文、配音和成片。旧原片、失败候选、环境RED及既有存档原样保留。Root另存本批文档真实commit/push与exact SHA官方CI；本增量不预填影片或交付完成事实。

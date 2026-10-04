@@ -259,3 +259,16 @@ D 的兵力 `1770` 是 007 当前 native getter 的结果，可以计入实际�
 这两条强度观测达到 `production-live primitive`。Root 发起的 `83886367-with167772189` 合并动作和成员结果由另一个唯一消费者确认；本包不从“后查询只请求主军”推断 J 已消失，不重复读取其他 snapshot、merge、war、result 或 checkpoint，也不宣称独立战斗终态、完整战争或完整自动游玩完成。本增量推进 `0` 日，当前 Root 全局日数未随任务给出，不沿用历史 `4032/4040` 作为当前数值。
 
 Receipt：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/army-reinforcement-raise/runtime-v49-postbattle-merge-strength-consumption/ROOT-DELIVERY.json`，9545 bytes，SHA-256 `88897872d38c4a7ac00b64aaa12b248bc8c19877e77977c851dd96e79aa2c426`；其中保留两输入完整 SHA、原生前后数值和精确参数。Oct4／2026-W40 报告字段在同目录 `report-lane/`。SDK、重复查询、推进、测试、Git、共享写入、窗口和构建均为 `0`；未重复读取旧 `1770` 证据。
+
+
+## 2026-10-04 第4期：完整actual逐团人数投影，离线验证通过
+
+第4期的P0-LOSS/P0-REFILL需要比较每个actual军团的真实人数。现有首record补员行只覆盖persistent匹配chunk，不能替代完整actual军团人数，尤其是无首record与多record行。现有军力查询新增可选`regiment_strengths`数组，每行只发布`army_regiment_id/current_soldiers/maximum_soldiers/scale=1`；ID是generation-checked CArmy成员数组里的CArmyRegiment FullID，数值直接复用同次Strength迭代已有的`+0x38/+0x3C`读取，没有新增getter或扩大persistent record遍历。
+
+整军current/max继续来自原生getter。**数组求和一致性是现有producer的available输出不变量，不是新推导的原生普适公式**：旧Strength已要求native getter结果等于该迭代sum，否则返回`native_helper_mismatch/unavailable`。新增数组只在旧准入通过后发布，normalizer镜像这一构造约束。无可用整军帧不发布部分数组；实际零团为`[]`，旧生产者缺字段保持可读。原补员两bool、wholepersistent比例和first-record覆盖语义不变。
+
+本机只读重新核对CK3 1.20.0.3 / Steam25652598、EXE SHA `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`；解释器为主树`tools/.venv/Scripts/python.exe`，Python3.14.7。focused验证通过：MSVC仅生产reader+fixture EXE，生产reader→共享serializer→候选Python normalizer的8条生成wire，以及Python契约10 tests。原始编译与fixture回执为`C:/ck3-war-episode04-research-20261004-a01/refill/implementation-a01/native-build-a01/army-reader-ci-result.json`，完整wire、Python输出和结果在同包`checks-a01/`。六文件patch和before/after SHA保全在`regiment-strengths.patch`与`patch-manifest.json`，patch SHA `dd66ab4446ad27dcd9b7d07f390337aa028a0c10f7cd38472da9e9cc12b1ec20`。
+
+最初外置镜像缺主树`tools/build_release`导致import失败，保留为environment RED；显式供应主树tools只读路径后，同一主venv验证通过，未将环境缺失记为业务代码RED。所有旧输入、失败和中间编译产物保留。此包没有SDK、游戏/窗口操作、DLL构建/部署或新实机样本；readiness为**offline production-reader fixture**，不是production-live。
+
+下一步由正式操作者冻结新runtime、严格构建并在真实paused query验证完整逐团数组。P0-LOSS采样绑定session/date/revision、public CUnit/native CArmy及完整actual FullID，分别保存逐团current/max、补给/容量/月贡献/当前损耗，并记录战斗、补员、集结和编成变化。端点人数差只记净变化；确切损耗因果要结合执行链和排除混杂。P0-REFILL用同一军队真实补给恢复的连续镜头对照实际兵数；人数端点不变可以说明两项状态不同，不能证明过程完全未补员。详细最小案例、native plan及日/周字段保全在`D:/ck3-war-episode04-research-20261004-a01/refill/`。
