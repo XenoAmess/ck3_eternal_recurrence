@@ -25,7 +25,7 @@ inline constexpr std::uintptr_t kBattleDamageScalingRva = 0x5C69B90;
 // Exact .3 loaded advantage rule; distinct from outgoing damage scaling.
 inline constexpr std::uintptr_t kBattleAdvantageScaling12003Rva = 0x5C6A230;
 inline constexpr std::uintptr_t kBattleMainHardConversionRva = 0x5C69BA0;
-inline constexpr std::uintptr_t kBattlePursuitHardConversionRva = 0x5C69BB0;
+inline constexpr std::uintptr_t kBattlePursuitHardConversionRva = 0x5C69B98;
 inline constexpr std::uintptr_t kBattleLossSideModifierRva = 0x264DD20;
 inline constexpr std::uintptr_t kBattlePrimaryLevyDamageRva = 0x2C15610;
 inline constexpr std::size_t kBattleStoredAdvantageDamageFactorOffset = 0x6D8;

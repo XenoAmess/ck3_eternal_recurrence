@@ -27,3 +27,32 @@ The source tree closes local pursuit arithmetic, initialization, counter orderin
 The first and only new focused run passed 2/2 production Python paths under `-O` in 0.251 seconds: pursuit dayN allocation then dayN+1 zero-casualty finish, initial-pool persistence/current-pool clamp, and terminal signed-Q accounts versus complete whole backing (including legitimate empty zero and absent null). No old suite or native build was rerun. New live observations and new game days remain zero. See the external [native tree](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-current-pursuit-terminal-v57/native-tree/TREE.md) and final implementation receipt for exact evidence, output API and preserved attempt pins.
 
 [Focused result](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-current-pursuit-terminal-v57/parent-focused-run-01/RESULT.json) and [implementation receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-current-pursuit-terminal-v57/ROOT-DELIVERY.json) pin the two candidate APIs and source. Readiness is **static-ready**, with zero new live observations. The actual all-SideArmy backing producer and loser-skip observer are separate Root-owned source packages; their future values must be passed as current inputs, not fabricated here.
+
+
+## 2026-10-04 cached-slot correction: pursuit hard conversion
+
+The exact .3 cached instruction at `2651FE3` loads a signed qword using RIP
+`3617BAE`; next instruction `2651FEA` resolves the slot to `5C69B98`.
+`5C69BB0` is the separate maneuver-entry signed-int32 threshold read at
+`2AD8135`; it is not the pursuit hard-conversion slot. The prior v57 source
+ledger identified the wrong slot and is preserved as historical evidence with
+an explicit erratum.
+
+The error also existed in production: `kBattlePursuitHardConversionRva` bound
+`BattleBindings.pursuit_hard_conversion`, and `CurrentLossInputs` copied that
+slot into `runtime_pursuit_hard_conversion_raw`. The minimal fix changes only
+the constant to `5C69B98`. Pure pursuit formulas, explicit numeric inputs, the
+query schema and gameplay actions stay unchanged. Previous frozen producer
+outputs are not retroactively relabeled as measurements from the corrected slot.
+
+Source: cached `battle-current-pursuit-terminal-v57/native-tree/evidence/02651fd0.txt`
+SHA `fc4f1bf1c664e384b6138e60cd30391f0deb832d7ccea269a72b1d75c1a9fdbb`,
+reused without reading the EXE. External correction package:
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-pursuit-hard-conversion-slot-v60/`.
+It preserves the previous facts and current preimages. Focused validation and
+readiness are recorded in `ROOT-DELIVERY.json`; the fixture distinguishes loaded
+B98 and BB0 values through the real binding and current-loss reader. No old
+pure/registered matrix is rerun. The existing R30/g62 runtime is unchanged;
+new SDK/game/window operations and calendar days:0.
+
+The targeted production binding -> current-loss reader -> existing serializer case is GREEN: loaded B98=73123 is emitted while the unrelated BB0=919007 remains distinct. The first offline attempt is preserved as HARNESS-RED because fresh CurrentLoss DTO was linked with a v59 serializer object using the previous layout; only affected current objects were recompiled for the successful attempt. The fixture does not establish a corrected live observation. See [focused result](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-pursuit-hard-conversion-slot-v60/parent-focused-run-02/RESULT.json). Readiness is static-ready; the deployed R30/g62 runtime and prior frozen producer measurements remain historical.
