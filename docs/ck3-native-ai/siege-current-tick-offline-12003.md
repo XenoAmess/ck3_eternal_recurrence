@@ -276,3 +276,39 @@ SHA-256 `0989f53560371a8602d27710b6017c167e6ee7000a61eece73fd6f3223d3de0a`。
 累计cut4539/恢复1386/Oct4+514沿用协调者账，本包新增0日、0SDK/窗口/共享源码/Git写入/测试。
 缓存、单topic append补丁和Oct4/W40字段统一封存在
 [r31-first-phase-levels-once/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r31-first-phase-levels-once/ROOT-DELIVERY.json)。
+
+## R31：事前当前tick预测与独立实日验证（2026-10-04）
+
+R31 / g63 `df6e` / CK3 PID73976，Robert29829原普通战役与同episode继续。
+事前封存的实际输入为 rawdate53253264、Siege251658324：
+work4294490与D126385（均Q100000）、counter12，纯模型预测work4420875、counter13，
+phase_due=false / event_pending=false / normal_completion=false。预测在正常推进前封存，
+receipt为`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r31-current-model-once/ROOT-DELIVERY.json`
+（SHA `0989f53560371a8602d27710b6017c167e6ee7000a61eece73fd6f3223d3de0a`）。
+
+Root随后正常推进一天；本lane消费独立occupation查询缓存：rawdate53253288，
+native9 / published2 / connection generation4 / query sequence2。P472同Siege251658324、
+围攻军301989997，实际work4420875/Q100000与counter13均精确匹配事前预测；
+真实24小时增量work126385。本步形成有限 **production-live loop**：
+实际观察 → 事前纯预测 → 正常一天 → 独立work/counter验证及normalSAVE。
+军务snapshot的counter为null，独立查询counter13补闭合；不把snapshot缺项当零。
+
+当前D126385、fresh L1800000、prepared L1800000均Q100000，can_advance=true。
+phase state仍为breach/starvation/disease/desertion/stalemate `0/0/0/1/0`，
+prepared enum仍5；原生phase_due布尔未发布，counter13低于当前阈18仅与预测false一致，
+不能称作真实phase_due标志。prepared cache和既存desertion_count不证明本步发生事件。
+P472仍未占领；remaining_work35579125/Q100000、动态days_left282不是承诺终结日期。
+本循环不取得phase-event/RNG replay、完整围城、占领或战争结果信用。
+
+Root中央军务+1已封存，累计4540/恢复1387/Oct4+515；normalSAVE h7376，
+rawdate53253288、96273938 bytes、SHA
+`e8a6c6f8fbf92e759ffb96ede50e2e1a24ad1e07ffc789a70ad712622aae49bb`。
+本consumer新增0日，不重复计入该+1；未重跑pure model、测试、逆向或完整构建。
+新独立缓存与单topic补丁/Oct4-W40字段索引位于
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r31-post-predicted-tick-once/report/ROOT-DELIVERY.json`。
+
+本记录是 raw53253288 / 4540日的历史cut，后续正常批次另记。上述一天的正常SAVE
+h7376已由军务owner封存；Root独占的零日query收尾SAVE为h7378 / raw53253288 /
+96273938 B / SHA-256 `9dea6bdc2b602164d5c125d25889bae46ff63bf9b89da46297e8d2f4a60df2a6`。
+前瞻性依据是工具执行前已冻结的actual model0989及Root before-tool decision；后来建立的
+registry按真实生成时间保留，没有回填mtime，也不赋予事前注册信用。
