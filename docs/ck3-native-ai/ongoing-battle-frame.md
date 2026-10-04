@@ -619,3 +619,20 @@ readiness为七个连续实际有界战斗日，以及主军行军到同一玩�
 [21个既有正常保存日索引](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-first-battle-saved-days-index/ROOT-DELIVERY.json) 与 [CSV](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-first-battle-saved-days-index/TWENTY-ONE-NORMAL-SAVED-DAYS.csv) 仅链接，未二解析；失败/诊断没有day row。
 
 sealed来源： [06](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-exact-day06-consumption/ROOT-DELIVERY.json)、[07](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-exact-day07-consumption/ROOT-DELIVERY.json)、[08](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-exact-day08-consumption/ROOT-DELIVERY.json)、[diagnostics02](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/pursuit-v47-bridge-diagnostics-02/ROOT-DELIVERY.json)、[09](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/battle-observation-schedule/player-v47-exact-day09-consumption/ROOT-DELIVERY.json)。本增量SDK/raw/query/cap/source audit/Git/tests/window/shared动作均0。
+
+### 2026-10-04：第三场 2629 战斗实际新增敌军 473（v51/day01）
+
+`Combat1593835526` 的同一份归一化 `DAY01-CACHED-CRITICAL.json` 保留了推进前后军列：maneuver day1 attacker 为 `[251658381]`，day2 变为 `[251658381,473]`；defender 始终仅 `[83886367]`。新增项为 public CUnit `473`、native CArmy `461`、owner `70766`、`combat_backlink_id=1593835526`，是本战实际加入。两侧当前 commander 分别仍为 `70766 / Robert29829`，没有 commander-change 信用。
+
+| 同战观察 | attacker ordered CUnit IDs | defender ordered CUnit IDs | 已验证新增 |
+| --- | --- | --- | --- |
+| 推进前，maneuver day1 | `[251658381]` | `[83886367]` | — |
+| 正常一日后，maneuver day2 | `[251658381,473]` | `[83886367]` | attacker `473` |
+
+一日为 raw `53248344→53248368`（`+24`）；终帧 `native:1141 / public revision5 / native revision1141 / paused=true`。两侧当前 stored 与 derived fighting 相等：attacker `295700000`、defender `391100000`，Q100000 后为 `2957 / 3911`。resolved advantage raw `-1000000`，attacker 视角 `-10`、defender `+10`；没有证据把这项变化或人数差额单独归因于 join。本 cache 没有发布该 post-join 帧逐军 current/max，不能从 Root 提供的起始整军 `1944` 与侧 fighting `2957` 差额推出 473 的加入人数或伤亡。
+
+此前 day55 的 `Combat1577058310` 实际 attacker 为 `150995107`，`251658381/473` 尚在 `2628` 且未加入；当时 `1363+2066+1134=4563` 只是条件整军人数算式。旧数与第三战不是同一 Combat/帧，不覆盖新的 actual `2957`，也不构成加入时刻或成功率预测。join 的原生语义见 [battle-reinforcement-and-join.md](battle-reinforcement-and-join.md)。
+
+一日观察器因 `ordered_rosters` 改变而暂停，stop reason 为 `actual_battle_decision_state_changed_requires_root`；新军列经同 Combat backlink 验证并正常保存，有限的“前帧 → 正常日 → 军列变化暂停 → 后帧验证/保存”达到 `production-live loop`。本战仍 `winner=none/finalized=false`；retreat 原生结果为 elapsed `1`、`legal_now=false/reason=too_early`。没有解围完成、战斗终态、完整战役或新的候选门禁信用，Root 已继续执行后续实际战斗。
+
+normalSAVE：`h6565 / date53248368 / 93544360 B / SHA532c1edf19ed41ee5c77f45ad55284576447b04132e974ac1ddb570c586c2323`。源归一化 cache `9784 B / SHA4c2d9a1359d85c3ab013e14fefbf79544e507253ac2f898fa1e101fb4d21257c`，本消费者仅读一次、0 raw/SDK/推进。军事 owner 已计该一日，截止 global `4335 / resumed1182 / Oct4+310`；消费者附加信用为 `0`。实际 binding 按 cache 保留 `R25/Py g56/nativeg54`；已构建但未部署的 g57 不作此帧 runtime 证据。封存包：`army-reinforcement-raise/runtime-v51-third-battle-actual-join-consumption/ROOT-FINAL-DELIVERY.json`。
