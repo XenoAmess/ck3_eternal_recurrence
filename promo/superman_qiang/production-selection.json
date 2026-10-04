@@ -1,0 +1,30 @@
+{
+  "format_version": 1,
+  "kind": "superman_qiang_promo_production_selection",
+  "selected_on": "2026-10-04",
+  "authority": "用户选择2分钟稿，废弃5/10分钟稿；视频宣传给玩家，成片1.5–5分钟",
+  "selected_project": "02m/promo-project.json",
+  "selected_director": "02m/director.json",
+  "selected_run": "02m/runs/player-trailer-20261004-a01/run-manifest.json",
+  "objective": "让CK3玩家与潜在玩家想玩这个mod",
+  "duration": {
+    "minimum_seconds": 90,
+    "maximum_seconds": 300,
+    "reference_seconds": 130,
+    "strict_reference_duration": false
+  },
+  "retired_projects": [
+    {
+      "path": "05m",
+      "status": "discarded_by_user",
+      "reason": "教学与算账取向不符合本片宣传目标"
+    },
+    {
+      "path": "10m",
+      "status": "discarded_by_user",
+      "reason": "教学与算账取向不符合本片宣传目标"
+    }
+  ],
+  "keep_history": true,
+  "media_state": "not_produced"
+}

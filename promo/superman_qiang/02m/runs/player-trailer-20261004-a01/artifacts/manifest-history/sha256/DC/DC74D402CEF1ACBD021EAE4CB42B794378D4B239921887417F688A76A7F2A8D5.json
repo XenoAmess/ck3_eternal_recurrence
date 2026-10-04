@@ -1,0 +1,57 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "player-trailer-20261004-a01"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/2F/2F6D48ECC39593294F15AF33F559A3CAD467DB85BF82CBA0E5089E8E4AAB31FC.json",
+    "bytes": 7078,
+    "sha256": "2F6D48ECC39593294F15AF33F559A3CAD467DB85BF82CBA0E5089E8E4AAB31FC"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [],
+  "artifacts": [
+    {
+      "id": "player-director-md",
+      "collection": "raw",
+      "role": "director-script",
+      "path": "artifacts/raw/sha256/30/3062126BBD242D562C9651504034D4F08A4AA75FEED0DDB9B2DA94C94EA80D25.md",
+      "label": "director.md",
+      "bytes": 9436,
+      "sha256": "3062126BBD242D562C9651504034D4F08A4AA75FEED0DDB9B2DA94C94EA80D25",
+      "media_type": "text/markdown",
+      "source_name": "director.md"
+    },
+    {
+      "id": "player-director-json",
+      "collection": "raw",
+      "role": "director-script",
+      "path": "artifacts/raw/sha256/1B/1BA326C2C58CF0E746540A5397FABF1D10ED11331DC5CCE51BFB1B1DF4114D9F.json",
+      "label": "director.json",
+      "bytes": 9082,
+      "sha256": "1BA326C2C58CF0E746540A5397FABF1D10ED11331DC5CCE51BFB1B1DF4114D9F",
+      "media_type": "application/json",
+      "source_name": "director.json"
+    },
+    {
+      "id": "player-production-brief",
+      "collection": "raw",
+      "role": "production-brief",
+      "path": "artifacts/raw/sha256/88/888401A17A99A616141B3EFCE3BDC96AF693D5CE6E0C3053C0C6DEF1E1233AAD.md",
+      "label": "production-brief.md",
+      "bytes": 2103,
+      "sha256": "888401A17A99A616141B3EFCE3BDC96AF693D5CE6E0C3053C0C6DEF1E1233AAD",
+      "media_type": "text/markdown",
+      "source_name": "production-brief.md"
+    }
+  ],
+  "audits": [],
+  "signoffs": []
+}

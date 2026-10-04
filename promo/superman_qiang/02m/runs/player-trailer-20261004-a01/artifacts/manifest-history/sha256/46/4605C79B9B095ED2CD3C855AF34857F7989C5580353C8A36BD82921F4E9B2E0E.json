@@ -1,0 +1,23 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "player-trailer-20261004-a01"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/2F/2F6D48ECC39593294F15AF33F559A3CAD467DB85BF82CBA0E5089E8E4AAB31FC.json",
+    "bytes": 7078,
+    "sha256": "2F6D48ECC39593294F15AF33F559A3CAD467DB85BF82CBA0E5089E8E4AAB31FC"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [],
+  "artifacts": [],
+  "audits": [],
+  "signoffs": []
+}
