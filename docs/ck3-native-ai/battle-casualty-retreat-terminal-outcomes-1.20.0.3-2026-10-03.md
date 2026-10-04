@@ -279,3 +279,47 @@ Root已计本战25 normal days、末batch10日/240小时，total4359/resume1206/
 该帧54 typed entries：敌levy3/MAA4、我levy17/MAA30，各owner hard ledger1；34 MAA 的
 positive knight raw IDs 为空，不代表骑士不存在，实际终局已有43706/32023两条wound记录。
 旧typed的type/prowess未发布只作为字段现状记载，不产生未知研究或march门禁；本报告仍新增0查询/0日。
+
+## Oct4 fourth player normal terminal — capital2619 battle victory
+
+Combat1728053248@2619 的真实 paused journal event22（after19/latest22）发布 normal_result，
+native164/public13/date53249808、phase3/day0、Result1442840576。winner_raw1 对应 defender
+Robert29829/CUnit83886367；attacker primary35863/CUnit268435747，final commander63316。
+This observed player battle victory is a production-live primitive. Capital relief is independently recorded by Root:
+[Root-owned independent capital receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/current-capital-2619-query/actual-after-battle1728053248-v52-01/ROOT-DELIVERY.json) (6878B, SHA256 42deeec47f3737de5b79840cff59b5b1493399c1a63bd1c0d1051855cca53f25).
+Root supplied native166/public2/date53249808: capital2619 unoccupied and Siege null.
+This lane cites the external receipt without reading or repeating it; this terminal does not itself provide occupation, whole-war completion or full OODA credit.
+
+| side | baseline人数 | hard Q100000 / 当量 | cached fighting Q100000 | final survivors人数 |
+|---|---|---|---|---|
+| attacker0 | 151 | 15100000 / 151 | 0 | 1 |
+| defender1 | 3893 | 198373 / 1.98373 | 388748832 | 3893 |
+
+native wipe_raw=true 与 captured attacker final100000Q100000（1人）并存，两个原生字段均原样保留。
+不能把wipe flag改写成final0、推所有敌方人物死亡或因该组合启动跨账审计。敌方soft/cache均0；
+玩家levy/MAA soft为279499/73296Q100000（2.79499/0.73296），cached fighting3887.48832
+与final3893、nativehard1.98373各自保留，不互相替代；fresh army整数strength仍由另owner发布。
+
+recorded battle warscore实际绑定 War129/row0，value921750Q100000、attacker-relative delta−921750
+（−9.2175）；winner_is_war_attacker=false、combat_side0_is_war_attacker=true。只给该单场battle row
+信用，不猜War50331736归属，不把本行当current whole-war score或前后总分变化。
+selected CB scale/denominator合法null；finalized_before=false是捕获前字段，不否认observed终局。
+
+旧Combat strict resolves=false、省份已不含旧ID；Result retained/relevant_player_count1。
+subject83886367@2619/CArmy50331794 active/backlink null、blocked=false、AI membership none，
+successor=no_successor、move target null、route observed empty。Root sole cached consumer报告main regular；
+movement_or_retreat_state_raw0仅作为独立native字段保留，不将其当current-control同一enum。
+The independent Root occupation receipt above supplies capital relief; terminal/result and occupation retain their own native observations.
+No terminal, character or occupation query is repeated, and no game day is added.
+
+native人物result rows observed empty，不代表完整骑士零伤亡。当前35863/29829/63316均alive=true、
+custody none/actual_jailer−1；这是同query的当前人物事实，不推战斗因果或全体敌人物状态。
+top character_observations=null因未请求额外character_ids，不否认prior三人物已实测；本包不读traits。
+历史prestep date53249784的fulltyped另由numeric owner封包，只引用numeric-person/RETAINED-ENTRIES.json，
+不重读control/owner export、不产生新研究或门禁。
+
+本lane仅消费父TERMINAL-DECODED.json、TERMINAL-CONSUMED-FACTS.json、ORIGIN-PIN.json。
+本战实际6 normal days=3+3，末批实际3日/72小时（不是8日budget）；transit30与这些日期已由Root计存量。
+normalh6844、save94141190B、Root relay SHA675a…20706；total4395/resume1242/Oct4+370。
+本报告新增游戏日/动作/查询/测试均0；text-only两个owned专题与Oct4/W40字段由Root合并commit/push，
+observer/central/source/settlement保留其各自owner。

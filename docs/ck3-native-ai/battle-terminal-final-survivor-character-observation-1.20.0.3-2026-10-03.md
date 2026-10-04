@@ -115,3 +115,28 @@ total4359/resume1206/Oct4+334，本报告新增0日/0query/0test；h6666部署�
 该帧54 typed entries：敌levy3/MAA4、我levy17/MAA30，各owner hard ledger1；34 MAA 的
 positive knight raw IDs 为空，不代表骑士不存在，实际终局已有43706/32023两条wound记录。
 旧typed的type/prowess未发布只作为字段现状记载，不产生未知研究或march门禁；本报告仍新增0查询/0日。
+
+## Oct4 fourth actual final survivor — wipe flag and enemy1 coexist
+
+Combat1728053248 normal_result event22>19 于native164/public13/date53249808发布，
+phase3/day0/winner1 defender Robert29829，Result1442840576 retained/relevant1。
+side0 selected commander63316、baseline15100000、final survivors100000Q100000（151→1）；
+side1 commander29829、baseline389300000、survivors389300000Q100000（3893→3893）。
+wipe_raw=true和敌final1是同一实际终局的两个值；不改final0、不推所有敌人物死、不启动跨账差审计。
+native hard双方为15100000/198373Q100000，current cached fighting为0/388748832Q100000；
+side1 soft levy279499/MAA73296Q100000，分别保留，不能用cached fighting替代final survivors。
+
+人物native result rows为observed empty。prior发布35863/29829/63316的当前alive=true、
+custody none/jailer−1；这不等于完整骑士伤亡集合或战斗捕杀因果。top character_observations=null
+是没有额外人物请求，不增加traits或重复query。War129/row0的battle attacker delta−9.2175
+仅为本场行，不能猜另一个WarID或当前整场战争总分。
+
+旧Combat删除、subject@2619 active/backlink clear/no_successor、targetnull/route empty；
+Root current-control报告main regular，native movement raw0独立保留。只给玩家战斗胜利信用，
+Capital siege clearance is independently credited by [Root-owned independent capital receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/siege-efficiency-inputs/current-capital-2619-query/actual-after-battle1728053248-v52-01/ROOT-DELIVERY.json).
+Root supplied native166/public2/date53249808 capital2619 unoccupied/Siege null, GREEN.
+Receipt SHA256 42deeec47f3737de5b79840cff59b5b1493399c1a63bd1c0d1051855cca53f25 (6878B); this lane does not read or repeat it.
+Terminal and occupation retain separate native observations. The earlier arrival date53249664 with Siege201326609 still present remains historical.
+prestep53249784的typed明细仅引用numeric-person/RETAINED-ENTRIES.json，由numeric owner独占消费。
+Root已计本战6日=3+3、末批3日/72小时和transit30；normalh6844/94141190B/
+relay save SHA675a…20706、total4395/resume1242/Oct4+370。本text消费新增0日/0query/0test。
