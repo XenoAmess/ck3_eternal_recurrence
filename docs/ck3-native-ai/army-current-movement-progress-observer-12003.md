@@ -377,3 +377,43 @@ append and Oct4/W40 fields are indexed in
 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/movement-progress/after32-r31/ROOT-DELIVERY.json`.
 No old raw body, TOP, SDK, game/window, build, test or shared/Git mutation was
 performed by this consumer.
+
+## R0031 next39 real saved days: current health delta
+
+New raw004 was consumed once:160615 bytes, SHA-256
+`96787fbd57106c29dc59f3cfa777a52ebdfa33764cba163a199b43b8157e735f`.
+Actual frame **native300 / public2 / raw53254992 / paused true**, query/scope
+available, same three CArmy identities and war117440524. Root binds the frame
+to actor29829/R0031/PID73976/g63-df6e and closed SDK93053. Prior cached
+53254056→53254992 is **936 hours /39 days**; initial cold53253264→current
+spans72 days. The failed40th `state_changed` planning guard added no advance.
+
+| Public CUnit / CArmy | Soldiers prior→current / maximum / regiments | Supply / cap | Monthly supply / attrition fraction | State |
+|---|---|---|---|---:|
+| 184549452 / 167772208 | 3000→3000 / 3000 / 24 | 100 / 100 | +20 / 0 | 1 |
+| 301989997 / 201326670 | 3621→3585 / 3884 / 41 | 300 / 300 | 0 / 0.01 | 3 |
+| 268435597 / 184549476 | 2539→2692 / 4702 / 41 | 300 / 300 | +20 / 0 | 1 |
+
+Current own3585 independently matches Root's generic siege B3585. Net own-36
+and enemy+153 are real interval stock differences; no cold-restart loss or
+specific monthly causal order is inferred. All movement blocks remain
+not_applicable with null edge getters, accumulated0 and actual cache raw
+525000/435000/471000. These caches do not create an active route.
+
+Per-regiment metadata coverage remains24/24 available for old184,
+28 available/13 unavailable for own301,38/3 for enemy268. The enemy's first
+selected persistent record1408/chunk0 now publishes51/73 soldiers, both
+replenishment predicates true, and monthly fraction**2775/100000**, versus
+the prior cached49/73 and1275/100000. Own first906/chunk1 remains44/44,
+true/false,3675/100000; old first33572591 remains300/300,false/false,
+3000/100000. These are current predicates and rates, not executed month order
+or full native data-array coverage.
+
+Root's sole39-day ledger supplies total4611 / resumed1458 / Oct4+586;
+this consumer adds0 days and leaves normal-save binding to Root. Current
+primitives and the earlier finite arrival loop retain their evidence, with no
+new siege completion or war-result claim. Current cache, month sidecar,
+one-topic append and Oct4/W40 fields are indexed at
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/movement-progress/after39-r31/ROOT-DELIVERY.json`.
+This consumer performs0 SDK/window/game/build/test/Git/shared operations,
+0 new agents and0 old-raw reads.

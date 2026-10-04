@@ -336,3 +336,23 @@ can_start_assault=false；P470 Fort6/garrison598、P3711 Fort6/garrison565均未
 独占TOP维护，本包没有读取TOP。新raw006只缓存一次，后续只用本缓存及前期sealed字段。
 短append补丁、当前字段和Oct4/W40报告统一封存在
 [r31-after32-phase-once/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r31-after32-phase-once/ROOT-DELIVERY.json)。
+
+## R31 实机：后继39日与零推进 state_changed attempt（2026-10-04）
+
+新query在 raw53254992 / native300 / published2 / gen8 / sequence4，沿用R31 /
+PID73976 / frozen g63 df6e5039、同Robert29829 episode和Siege251658324。与前一cut相比，
+实际desertion_count2→3、stalemate_count0→1；当前state为breach0/starvation0/disease1/
+desertion3/stalemate1。当前D138561、fresh L1800000、prepared L1800000均Q100000，
+phase_counter12、can_advance=true，cached selected enum仍5；未外推下一选择或重构事件顺序/RNG。
+
+P472实际work15208452/total40000000/remaining24791548均Q100000，progress38021/Q100000、
+动态ETA179、B3585，仍未占领、Fort4/garrison500；breach0/walls=false/assault=false/
+can_start_assault=false。P470与P3711均未占且无active siege，garrison分别621与565。
+本包只记录状态变化，没有依据D或B反推补员/健康/病疫因果，也没有新模型调用或围城终态信用。
+
+raw53254056→53254992的936小时属于Root已计账的39个正常日，cut4611/恢复1458/Oct4+586。
+随后attempt40的`native gameplay step failed: state_changed`由Root保留为独立失败：
+没有life advance、0日期小时、0新增日；本包不把它归为mapfault或纯模型失败。
+此历史cut的normal anchor由Root独占TOP维护，本consumer新增0日、未读TOP/旧raw/测试矩阵，
+也不改变此前已验证的一日prospective current-tick有限loop。当前字段、短append和Oct4/W40报告：
+[r31-after39-state-changed-phase-once/ROOT-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r31-after39-state-changed-phase-once/ROOT-DELIVERY.json)。
