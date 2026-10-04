@@ -53,3 +53,20 @@ After the user releases the game: complete the freeze-only repair; render the la
 原四 Sway、现金、指挥官与 route preview 的 SDK `53439` 已 CLOSED GREEN。其正常 SAVE 为 h`7127` / raw date `53251464` / 95,107,270 B / SHA-256 `a265c124196a8e289ef0512ab6721a45ea69654b13a25eb9857a93d42dc569d9`。current cash 实际 `available`、各 readiness 均为 true，现金只读观测达到 production-live primitive；current-person / loss / P1 的 ongoing live 资格仍待真实接触，不能仅凭新源码、部署或 schema 记成战斗 loop 完成。
 
 本次部署记 0 日，闭合累计 `4464` / resumed `1311` / Oct4 `+439`；自然继承 `0`，G2 `5/8`，NW2 `2/4`。Root move `98187` 已 CLOSED GREEN，随后 8 日行军 SDK `14458` 仍运行；此处不消费该包、不增加行军日数。来源为 Root 既有回执与外置 `runtime-preparation/v56` artifact；当次部署闭合不依赖下一批 P2 / cadence 候选，也不将它们冒充当前 f3 能力。
+
+
+## 2026-10-04 R30 实际部署收口（v57）
+
+本条接续已采用的 R29 收口；用户此前游玩暂停已解除，R29 按实际回执保留为 superseded。R30 的 native / Python 统一冻结于 `Z:/g62` / `d1b7f18d200cffd302815a05a12c1d3e958ab2de`，游戏 exact build `1.20.0.3`。后续 g38 文档或源码 head 不是当前 active frozen source，不改写本次身份。
+
+v57 同一 exact head 的四 target Release `/W4 /WX`、64 jobs 全构建 GREEN，81.955581 秒；115 flags / 65 ON / 50 OFF，562 TU / 559 unique / 1088 compiled inputs。DLL 9,148,928 B，SHA-256 `91cc62d12eb7839582254fce443bf5dea8c5518402867f2cab28b27cbc6938b7`。正常 prepare 已收录 1 个生成 `.inc`，freeze supplemental 为零，复用同次 deps，没有再次 repair 或编译。官方 exact-source CI run `37188480128` success；只引用 Root 的 `runtime-preparation/v57/ROOT-EXACT-SOURCE-CI-RESULT.json`，不重读或重验。
+
+Root 的 officialprepare / verify / stage ten streams / ordinary rebind / preflight 均实际 exit0 GREEN；R29 于 `2026-10-04T08:30:03.032047Z` 标记 superseded。R30 allocated `2026-10-04T08:32:19.319959Z`，launch-started `08:32:19.744377Z`。实际顺序继续采用 normalstop before officialprepare，并等待 rebind 完成后 preflight；失败历史随十条完整流保留。
+
+实际 run 为 `xenoamess-full-tower-eb9d2c1186--eternal-recurrence--R0030`，execution `72457e9f-d8f2-4350-b08c-0f5683d37e5b`；managed controller `69340` / game PID `120956` active。cold SDK `73336` 与原四 Sway / health / targets SDK `59491` 均已 CLOSED GREEN。环境 SHA-256 `b17543f45334043db6725c4183ae3ab2f59fa7645de4ec7443ffe303b7eb6a29`。
+
+部署后已闭合正常 SAVE 为 h`7257` / raw date `53252424` / 95,804,561 B / SHA-256 `42fc6ddd48326ce2b1a07f32aeba416cb82b543efe3a4925bc905c4c65096ad6`。source anchor h`7252` / raw date `53252424` / 95,804,821 B / SHA-256 `8c8557def103f73519387fecd006b23336d1e3ac659249af7f468dedbb1c21fc` 仅作为恢复来源；不替代部署后最新保存。
+
+原四 Sway completion / execution / termination / invalidation hooks 保持 FullID `134217986` / generation `8`，新 PID 冷读已完成，没有重发 Start。pre-stop 独立存档为 current continuation、Can=true、chance 55%；三 rings 均 `0/0`、empty、gap=false。health 当前三条 CArmy soldiers 为 player `3000`、new player `3693`、enemy `2459`；另两个 PublicCUnit 行返回 `native_carmy_not_found`，只记录 missing native，不据此推断 shadow 或舰船身份。
+
+新 movement observer 已有实际只读 primitive：first edge `5.48572` days 是当前预测耗时，不是已经推进的自然日。部署闭合 cut 为 h`7257` / 累计 `4504` 日，部署记 `0` 日；h`7252` 仅为来源存档锚点。Root 的后续 6 个 normal bounded days 已开始，此文档 lane 不消费、不记行军日数；没有新增 P1 或自然继承信用。原自然继承 `0`、G2 `5/8`、NW2 `2/4` 的历史事实保留；新源码、cold GREEN 和只读字段不冒充完整 OODA 或自然继承完成。

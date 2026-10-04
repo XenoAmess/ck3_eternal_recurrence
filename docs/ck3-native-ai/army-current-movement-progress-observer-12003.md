@@ -215,3 +215,60 @@ total saved calendar days are unchanged. This file-only consumer adds **0 SDK
 calls,0 actions,0 days and0 tests**, and leaves the original R0029 body untouched.
 The earlier focused HARNESS RED and successful actual two-case execution remain
 their own retained evidence; they were not rerun for this live receipt.
+
+## R0030 six normal saved days: actual landfall and empty-route verification
+
+The next distinct health response is Root's
+`actual-r30-landfall-six-siege-current-operands-01/004-ck3_query_army_strengths.json`.
+It was consumed once into the `movement-progress/landfall-six-r30` cache:
+160955 original bytes, SHA-256
+`ad1df52ea5bfaa672c02f2d7768b1bd8ab5af7e9658447a894ce524378cfc152`.
+All three selected health rows are available at **native31 / public2 /
+raw53252568 / paused true**. The enclosing scope remains partial. The prior
+R0030 first frame is reused through its frozen parsed cache, with no repeat
+read of the original packet. The observed date difference is
+53252424→53252568, **144 raw hours / six calendar days**, and Root reports
+these as six real normal saved days.
+
+| Public CUnit / same CArmy | Soldiers / maximum / regiments | Supply / capacity | Current monthly supply | Current attrition fraction | Movement state/status | Cache raw / accumulated raw |
+|---|---|---|---:|---:|---|---|
+| 184549452 / 167772208 | 3000 / 3000 / 24 | 95.45305 / 100 | +20 | 0 | 1 / not_applicable | 525000 / 0 |
+| 301989997 / 201326670 | 3693 / 3884 / 41 | 300 / 300 | -1.81818 | 0.01 | 3 / not_applicable | 100000 / 0 |
+| 268435597 / 184549476 | 2459 / 4702 / 41 | 300 / 300 | 0 | 0 | 4 / available | 3450000 / 6750000 |
+
+All three troop counts, maxima, regiment counts and supplies match the first
+R0030 frame. New army301's current attrition changed from raw0 to
+raw1000/100000 (**0.01**), and monthly supply change from raw0 to
+raw-181818/100000 (**-1.81818**). Those current operands do not establish any
+future casualty count or elapsed supply loss. Its state is now3, sieging;
+movement is not_applicable with **both edge getters null**, accumulated0 and
+cached100000. Old regular army184 also retains not_applicable/null while its
+cache becomes525000; a cache value is an independent observed operand and
+does not create an active edge.
+
+Root independently observed301 at **province472**, sieging/code3 with a
+**complete empty route**. Province and path are enclosing snapshot evidence,
+not newly invented fields in this health response. The prior first-edge
+5.48572-day estimate remains a historical decision input. Actual arrival is
+established by the later paused location/state/route observation, rather than
+by subtracting six days from that estimate or setting its value to zero.
+
+Enemy268's current first-edge progress is raw42993/100000 (**42.993%**), and
+remaining duration raw259420/100000 (**2.5942 native days**), with no
+unavailable reason. The first frame's95.454% and0.10144-day values described
+that earlier first edge. Across a six-day march, edge-local accumulator and
+progress can reset or refer to another edge; these two responses do not
+identify a common edge or prove backward travel, a stall or a duration
+forecast failure. The current values inform its current edge only.
+
+The first available native inputs → Root's bounded normal-day operation →
+independently observed472 landfall → current empty-edge not_applicable/null
+form a **finite production-live movement/arrival verification loop**. Normal
+save-pair sealing and the six-day calendar credit belong to Root's day ledger;
+this consumer adds **zero days**. This scope establishes arrival and current
+sieging state. It does not establish a siege completion, occupation change,
+battle victory or complete war. Root's total4510 is supplied as pending ledger
+seal; natural succession remains0. The file-only consumer performed0 SDK
+calls,0 window operations,0 tests and0 shared/Git changes. The one-topic
+append, cache comparison and Oct4/W40 report fields are indexed at
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/movement-progress/landfall-six-r30/ROOT-DELIVERY.json`.

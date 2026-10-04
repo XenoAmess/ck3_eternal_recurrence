@@ -169,3 +169,45 @@ CLI `python siege_current_phase_event.py INPUT.json --output OUTPUT.json` 只读
 原生合同SHA `e68c25fb451e11b7a962fe340a206ec5a8e8d1499094ec1fc3b0cd3800679583`，
 stock补充明确loaded vector cap，当前规则覆盖值与完整RNG/outerclock保持来源账本。
 本包0SDK/pipe/window/query/gameinput/day/live/Git；Root继续军务，此增量不制造当前noSiege阻点。
+
+## R30 实机：472 active Siege 与五项当前输入（2026-10-04）
+
+R30 / g62 `d1b7f18d` / CK3 PID120956 / controller69340 在 Robert29829 的原普通战役，
+沿用同一 `ck3_query_war_occupation_targets_v1` 观察 War117440524：
+rawdate53252568，native31 / published2 / connection generation4 / query sequence2。
+EXE仍绑定本专题1.20.0.3 SHA；本段只消费已封存缓存，没有新增SDK、输入或游戏日。
+
+P472（holding1359）仍未占领，Fort4 / garrison500；实际 active Siege251658324，
+围攻军301989997，player_army_besieging=true，besieging strength3693。
+本帧五项均 present且非null，当前只读观测从 static-ready 达到 **production-live primitive**：
+
+| 当前实测输入 | 值 |
+|---|---|
+| ordinary_daily_progress | 126595/Q100000 |
+| current_phase_length | 1800000/Q100000 |
+| prepared_phase_length | 1800000/Q100000 |
+| phase_counter | 1 |
+| can_advance | true |
+
+fresh与prepared本帧恰好相等，不改变两者独立语义；本次不以ETA反算日速。
+实际 current_work126595、total_work40000000、remaining_work39873405均Q100000，
+当前动态days_left315；breach_level0、walls_breached=false、assault_in_progress=false、
+can_start_assault=false。315不是承诺完成日期，未观察完成、占领、围城事件或战争结算。
+P470仍Fort6/garrison550、P3711仍Fort6/garrison565，均未占领且active_siege=null。
+
+独立landfall_model lane用g62 CLI一次消费同一full goal row，结果GREEN/status projected、missing=[]：
+126595+D126595形成离线work253190/Q100000，counter1形成离线2，
+当前L1800000的阈值18，phase_due=false、event_pending=false、normal_completion=false。
+这证明真实五项当前输入与有限纯模型兼容；未观察实机next-day work/counter或围城终态，
+不把离线投影记为实际进展。模型receipt为
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r30-landfall-current-model-once/ROOT-DELIVERY.json`
+（SHA `7490a713b718e998bcd48b8d29eb5056125346919f91855e1a488d4c873cd710`）。
+
+R30 g62只实际发布/验收上述五项current-tick operands；后续phase_event_state新等级和
+prepared_selected_phase_event_enum没有本帧production-live资格，不补0或推断事件。
+普通tick、phase-event条件模型与完整RNG/outerclock的边界继续按本专题原生树执行。
+
+冻结缓存：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/r29-route-actual/r30-landfall-active-siege-once/ACTIVE-SIEGE-CACHE-FIELDS.json`。
+本段补丁、缓存SHA与Oct4/W40字段在该目录`report/ROOT-DELIVERY.json`。
+协调者累计cut4510/恢复1357/Oct4+485（parent day-credit seal pending）；
+本consumer新增0日，不再计入上级六日批次。
