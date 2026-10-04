@@ -24,6 +24,7 @@
 
         item = {
             value = aub_policy_treasury_only_pause_choice
+            icon = "gfx/interface/icons/message_feed/building.dds"
             localization = aub_policy_treasury_only_pause
             current_description = aub_policy_treasury_only_pause_desc
             is_valid = { always = yes }
@@ -31,6 +32,7 @@
         }
         item = {
             value = aub_policy_treasury_only_continue_choice
+            icon = "gfx/interface/icons/message_feed/building.dds"
             localization = aub_policy_treasury_only_continue
             current_description = aub_policy_treasury_only_continue_desc
             is_valid = { always = yes }
@@ -38,6 +40,7 @@
         }
         item = {
             value = aub_policy_personal_only_pause_choice
+            icon = "gfx/interface/icons/message_feed/building.dds"
             localization = aub_policy_personal_only_pause
             current_description = aub_policy_personal_only_pause_desc
             is_valid = { always = yes }
@@ -45,6 +48,7 @@
         }
         item = {
             value = aub_policy_personal_only_continue_choice
+            icon = "gfx/interface/icons/message_feed/building.dds"
             localization = aub_policy_personal_only_continue
             current_description = aub_policy_personal_only_continue_desc
             is_valid = { always = yes }
@@ -52,6 +56,7 @@
         }
         item = {
             value = aub_policy_treasury_first_pause_choice
+            icon = "gfx/interface/icons/message_feed/building.dds"
             localization = aub_policy_treasury_first_pause
             current_description = aub_policy_treasury_first_pause_desc
             is_valid = { always = yes }
@@ -59,6 +64,7 @@
         }
         item = {
             value = aub_policy_treasury_first_continue_choice
+            icon = "gfx/interface/icons/message_feed/building.dds"
             localization = aub_policy_treasury_first_continue
             current_description = aub_policy_treasury_first_continue_desc
             is_valid = { always = yes }
