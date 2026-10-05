@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/owned_regiments_v1_serializer.hpp"
 
 #include <string>
 
@@ -139,6 +140,11 @@ inline void AppendArmyStrengthV1(
     result += ",\"native_maa_recruitment_inputs_v1\":";
     AppendNativeMaaRecruitmentInputsV1(
         result, *strength.native_maa_recruitment_inputs_v1, number, append_json_string);
+  }
+  if (strength.owned_regiments_v1) {
+    result += ",\"owned_regiments_v1\":";
+    ck3_12003::AppendOwnedRegimentsV1(
+        result, *strength.owned_regiments_v1, number, append_json_string);
   }
   result += ",\"regiment_count\":";
   if (strength.available) {

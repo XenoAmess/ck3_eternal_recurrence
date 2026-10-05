@@ -33,6 +33,7 @@ struct Ck3_12002AdapterBindings {
   ck3_12002::ArmyBindings armies;
   ck3_12002::BattleBindings native_owner_recall;
   ck3_12003::NativeMaaRecruitmentBindings native_maa_recruitment;
+  ck3_12003::OwnedRegimentsBindingsV1 owned_regiments;
   ck3_12002::WorldBindings world;
   ck3_12002::ProvinceBindings provinces;
   ck3_12002::MilitaryBindings military;
@@ -53,6 +54,11 @@ struct Ck3_12002AdapterBindings {
 void AttachNativeMaaRecruitmentInputsToArmyRowsV1(
     const ck3_12003::NativeMaaRecruitmentBindings &,
     std::vector<ArmyStrengthSnapshot> &) noexcept;
+
+void AttachPlayerOwnedRegimentsToArmyRowsV1(
+    const ck3_12002::CoreBindings &,
+    const ck3_12003::OwnedRegimentsBindingsV1 &,
+    const Snapshot &, std::vector<ArmyStrengthSnapshot> &) noexcept;
 
 Ck3_12002AdapterBindings BindCk3_12002AdapterImage(
     std::uintptr_t image_base, std::string_view executable_sha256) noexcept;

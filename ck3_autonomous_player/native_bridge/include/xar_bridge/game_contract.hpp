@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12003_maa_recruitment.hpp"
+#include "xar_bridge/owned_regiments.hpp"
 
 #include "xar_bridge/war_occupation_targets_v1.hpp"
 #include "xar_bridge/battle_native_owner_recall_inputs_12003.hpp"
@@ -352,6 +353,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyLossApplicationInputsV1> loss_application_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<NativeMaaRecruitmentInputsV1> native_maa_recruitment_inputs_v1;
+  std::optional<ck3_12003::OwnedRegimentsSnapshotV1> owned_regiments_v1;
   std::optional<std::int32_t> gathering_days_left;
   ArmyGatheringDaysStatus gathering_days_status =
       ArmyGatheringDaysStatus::unavailable;

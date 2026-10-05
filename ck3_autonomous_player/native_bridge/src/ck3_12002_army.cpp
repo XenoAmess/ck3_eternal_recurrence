@@ -7,6 +7,7 @@
 #include <algorithm>
 #include <cstring>
 #include <limits>
+#include <utility>
 
 namespace xar::ck3_12002 {
 namespace {
@@ -24,11 +25,10 @@ constexpr std::int32_t kMaximumRegiments = 65'536;
 constexpr std::size_t kMaximumDatabaseObjectKeyBytes = 4'096;
 constexpr std::size_t kMsvcStringInlineCapacity = 15;
 
-void ReadRegimentComposition(
-    void *regiment, game::ArmyRegimentStrengthSnapshot &output) noexcept {
+void ReadMaaTypeCompositionV1(
+    void *maa_type, game::ArmyRegimentStrengthSnapshot &output) noexcept {
   // The existing combat reader uses this ArRg -> GDbo type/key path. Exact .3
   // province tier getter 0x247EFC0 reads the same type's signed +0x2A0 operand.
-  void *const maa_type = Load<void *>(regiment, 0x18);
   if (maa_type == nullptr ||
       Load<std::uint32_t>(maa_type, 0x38) != 0x4744624FU) {
     output.maa_type_status = game::ArmyRegimentTypeStatusV1::absent;
@@ -52,6 +52,11 @@ void ReadRegimentComposition(
   output.maa_type_key.assign(data, size);
   output.siege_tier = Load<std::int32_t>(maa_type, 0x2A0);
   output.maa_type_status = game::ArmyRegimentTypeStatusV1::available;
+}
+
+void ReadRegimentComposition(
+    void *regiment, game::ArmyRegimentStrengthSnapshot &output) noexcept {
+  ReadMaaTypeCompositionV1(Load<void *>(regiment, 0x18), output);
 }
 
 bool Storage(void **slot, void *&objects, std::int32_t &capacity) noexcept {
@@ -545,6 +550,27 @@ void AppendScope(std::vector<ArmyStrengthScope> &scope, std::int32_t id,
 }
 
 } // namespace
+
+void ReadOwnedRegimentTypeV1(
+    void *, void *maa_type,
+    ck3_12003::OwnedRegimentTypeSnapshotV1 &output) noexcept {
+  game::ArmyRegimentStrengthSnapshot observed;
+  ReadMaaTypeCompositionV1(maa_type, observed);
+  switch (observed.maa_type_status) {
+  case game::ArmyRegimentTypeStatusV1::available:
+    output.status = ck3_12003::OwnedRegimentTypeStatusV1::available;
+    break;
+  case game::ArmyRegimentTypeStatusV1::absent:
+    output.status = ck3_12003::OwnedRegimentTypeStatusV1::absent;
+    break;
+  case game::ArmyRegimentTypeStatusV1::unavailable:
+    output.status = ck3_12003::OwnedRegimentTypeStatusV1::unavailable;
+    break;
+  }
+  output.maa_type_key = std::move(observed.maa_type_key);
+  output.siege_tier = observed.siege_tier;
+  output.unavailable_reason = std::move(observed.composition_unavailable_reason);
+}
 
 ArmyBindings BindArmyImage(std::uintptr_t image_base,
                           std::string_view executable_sha256) noexcept {

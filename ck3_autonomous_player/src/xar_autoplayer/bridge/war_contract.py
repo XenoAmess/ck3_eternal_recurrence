@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 from .native_maa_recruitment_inputs_contract import normalize_native_maa_recruitment_inputs_v1
+from .owned_regiments_v1 import normalize_owned_regiments_v1
 
 from .army_replenishment_records_contract import normalize_regiment_replenishment_records_v1
 
@@ -270,7 +271,7 @@ _ARMY_STRENGTH_GATHERING_DAYS_KEYS = {
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
     key for pair in _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS for key in pair
 } | {"regiment_replenishment", "regiment_strengths", "regiment_replenishment_records_v1", "current_movement_progress",
-     "army_update_clock_v1", "native_owner_recall_inputs_v1", "native_maa_recruitment_inputs_v1",
+     "army_update_clock_v1", "native_owner_recall_inputs_v1", "native_maa_recruitment_inputs_v1", "owned_regiments_v1",
      "loss_application_inputs_v1", "native_army_resolution_v1"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
@@ -1850,6 +1851,8 @@ def _normalize_army_strength_row(
         result["native_maa_recruitment_inputs_v1"] = normalize_native_maa_recruitment_inputs_v1(
             value["native_maa_recruitment_inputs_v1"]
         )
+    if "owned_regiments_v1" in value:
+        result["owned_regiments_v1"] = normalize_owned_regiments_v1(value["owned_regiments_v1"])
     if "regiment_strengths" in value:
         if status != "available":
             raise ValueError(f"native unavailable {name} cannot publish regiment_strengths")

@@ -376,6 +376,10 @@ public:
         result == ReadArmyStrengthsResult::partial)
       AttachNativeMaaRecruitmentInputsToArmyRowsV1(
           bindings_.native_maa_recruitment, output);
+    if (result == ReadArmyStrengthsResult::available ||
+        result == ReadArmyStrengthsResult::partial)
+      AttachPlayerOwnedRegimentsToArmyRowsV1(
+          bindings_.core, bindings_.owned_regiments, scope, output);
     diagnostic.reader.store(result == ReadArmyStrengthsResult::unavailable
         ? "baseline_unavailable" : "returned");
     return result;
@@ -553,6 +557,21 @@ void AttachNativeMaaRecruitmentInputsToArmyRowsV1(
   }
 }
 
+
+void AttachPlayerOwnedRegimentsToArmyRowsV1(
+    const ck3_12002::CoreBindings &core,
+    const ck3_12003::OwnedRegimentsBindingsV1 &bindings,
+    const Snapshot &scope, std::vector<ArmyStrengthSnapshot> &output) noexcept {
+  if (!bindings.read_type || !scope.has_played_character) return;
+  for (auto &row : output) {
+    if (row.scope_role != ArmyStrengthScopeRole::player) continue;
+    row.owned_regiments_v1.emplace();
+    ck3_12003::ReadPlayerOwnedRegimentsV1(
+        bindings, ck3_12002::ResolveCoreCharacter(core, scope.played_character_id),
+        scope.played_character_id, *row.owned_regiments_v1);
+    return;
+  }
+}
 
 Ck3_12002AdapterBindings BindCk3_12002AdapterImage(
     std::uintptr_t image_base, std::string_view executable_sha256) noexcept {

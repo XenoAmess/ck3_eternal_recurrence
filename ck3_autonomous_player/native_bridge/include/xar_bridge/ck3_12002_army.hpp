@@ -85,6 +85,11 @@ struct ArmyBindings {
   std::int64_t *(*get_merge_destination_weight_part_b)(void *, std::int64_t *) = nullptr;
 };
 
+// Same GDbo key/tier implementation used by the raised ArRg reader.
+void ReadOwnedRegimentTypeV1(
+    void *, void *maa_type,
+    ck3_12003::OwnedRegimentTypeSnapshotV1 &) noexcept;
+
 ArmyBindings BindArmyImage(std::uintptr_t image_base,
                           std::string_view executable_sha256) noexcept;
 

@@ -155,6 +155,9 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
             image_base + ck3_12002::kArmyAttritionFractionRva12003);
     result.armies.persistent_regiment_storage_slot = reinterpret_cast<void **>(
         image_base + ck3_12002::kPersistentRegimentStorageSlotRva12003);
+    result.owned_regiments.persistent_regiment_storage_slot =
+        result.armies.persistent_regiment_storage_slot;
+    result.owned_regiments.read_type = ck3_12002::ReadOwnedRegimentTypeV1;
     result.armies.can_regiment_replenish =
         reinterpret_cast<decltype(result.armies.can_regiment_replenish)>(
             image_base + ck3_12002::kRegimentCanReplenishRva12003);
