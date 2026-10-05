@@ -429,3 +429,46 @@ No old passed case or wire was rerun. New native target
 serializer wires under `ck3_12003_maa_stat_inputs_wire`; the child did not
 compile it. Central build, first new CTest and new-wire production consumption
 remain pending. Pure consumer is static-ready; no live or game-day claim.
+
+### First new native/production-wire qualification (2026-10-06 02:17)
+
+Root adopted the baseline as3678bd12 and observer asb1a2e118. Central exact
+source `47ecd200e6ef72d46c4d58e1ed7378a76aebae21` passed the full DLL
+and five new targets in195.8294221 seconds. The new MAA CTest first passed
+in0.10 seconds; the five distinct new targets passed5/5 in2.75 seconds at
+2026-10-05T18:16:47UTC. The child performed no native build or rerun.
+
+After explicit Root authorization, only the five newly emitted MAA files
+were read once each: `full_sources.json`, `class_absent.json`,
+`inner_ordinary_fallback.json`, `unavailable_selected_context.json`
+and `native_government_definition_skips.json`. Serializer metadata and
+literal C++ were excluded. All five passed the actual Root production Regiment
+normalizer -> source-derived six-stat adapter -> existing FinalEntryStatInput
+consumer, **5/5 GREEN in0.05907099997 seconds**, completed
+2026-10-06T02:17:40.293892+08:00. Native and consumer source commits both
+equal47ecd200e6ef72d46c4d58e1ed7378a76aebae21.
+
+The full-source cache is (104,50000,167019,150000,200000,250000). Actual class
+absence skips extra inputs; inner ordinary fallback preserves pursuit-1 while
+applying the two Q floors; invalid government and definition guards preserve
+valid empty/omitted source branches. The unavailable selected context produces
+no modeled tuple while retaining the original available target query. All
+four complete source cases set full_getter_construction_ready, without
+promoting them to executed Entry or future post-effect observations.
+
+Receipt `NEW-MAA-WIRE-CONSUMER-OCT6.json` in the external round5
+ordinary-maa-stat-inputs packet binds all five file SHA256/read counts and
+seven actual production consumer module SHA256 values. Old wire reads,
+old passed case reruns, game operations and child native builds are all0.
+Current MAA getter sources and their pure production consumption are now
+static-ready, including actual accolade/environment operand groups.
+
+The Entry owner confirmed there is no separate current accolade/environment
+field gap after this same-Province six tuple is available. The remaining
+frontier is outer post247AB1F stage assembly feeding247AB32/41: actual complete
+person stage, changed selected/extra/selector inputs where a modeled operation
+changes them, and correct Combat+6B8 Province provenance. Changed tier, linked
+census or environment data require explicit named-stage replacements only
+when actually changed.2650A80 Side+110 aggregate is distinct from30C4360's
+fresh11E1350 scratch; no source consumer edge permits substituting one for the
+other. Existing source/qualification is reused; no current source is reopened.
