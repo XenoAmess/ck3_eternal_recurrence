@@ -498,15 +498,104 @@ def _normalize_nine_cache_byte_inputs(
     return out
 
 
+def _normalize_title_census_inputs(value: object, field: str) -> dict[str, object] | None:
+    if value is None:
+        return None
+    raw = _exact_dict(value, field, {
+        "status", "ready", "character_id", "scratch_present", "model_present",
+        "model_owner_present", "model_owner_full_character_id_raw_i32",
+        "model_owner_matches_character", "model_magic_raw_u32", "header_source",
+        "title_count_raw_i32", "title_occurrences", "unavailable_reason",
+    })
+    def i32(item: object, name: str) -> int | None:
+        return _optional_integer(item, field + "." + name, minimum=-(2**31), maximum=2**31-1)
+    result = dict(raw)
+    result["character_id"] = _positive_int32(raw["character_id"], field + ".character_id")
+    result["scratch_present"] = _boolean(raw["scratch_present"], field + ".scratch_present")
+    for key in ("model_present", "model_owner_present", "model_owner_matches_character"):
+        result[key] = _optional_boolean(raw[key], field + "." + key)
+    for key in ("model_owner_full_character_id_raw_i32", "title_count_raw_i32"):
+        result[key] = i32(raw[key], key)
+    result["model_magic_raw_u32"] = _optional_integer(raw["model_magic_raw_u32"],
+        field + ".model_magic_raw_u32", minimum=0, maximum=2**32-1)
+    if raw["header_source"] not in {"landed", "static"}:
+        raise ValueError(field + ".header_source is invalid")
+    rows_value = raw["title_occurrences"]
+    rows = None
+    complete = result["title_count_raw_i32"] is not None and result["title_count_raw_i32"] >= 0
+    if result["scratch_present"]:
+        complete = complete and result["model_present"] is not None
+        if result["model_present"] is True:
+            complete = complete and result["model_owner_present"] is not None and result["model_owner_matches_character"] is not None
+            if result["model_owner_present"] is True:
+                complete = complete and result["model_owner_full_character_id_raw_i32"] is not None
+            if result["model_owner_matches_character"] is True:
+                complete = complete and result["model_magic_raw_u32"] is not None
+    if rows_value is not None:
+        if not isinstance(rows_value, list):
+            raise ValueError(field + ".title_occurrences must be a list or null")
+        rows = []
+        for i, item in enumerate(rows_value):
+            name = f"{field}.title_occurrences[{i}]"
+            row = _exact_dict(item, name, {
+                "native_row_index", "requested_full_title_id_raw_i32", "resolution",
+                "resolved_full_title_id_raw_i32", "qualifier_1d8_raw_u8",
+                "qualifier_130_raw_u8", "qualifier_12c_raw_i32", "government_bit14",
+                "template_tier_raw_i32",
+            })
+            row = dict(row)
+            if _integer(row["native_row_index"], name + ".native_row_index", minimum=0, maximum=2**31-1) != i:
+                raise ValueError(name + " native row order disagrees")
+            row["requested_full_title_id_raw_i32"] = _integer(row["requested_full_title_id_raw_i32"],
+                name + ".requested_full_title_id_raw_i32", minimum=-(2**31), maximum=2**31-1)
+            for key in ("resolved_full_title_id_raw_i32", "qualifier_12c_raw_i32", "template_tier_raw_i32"):
+                row[key] = i32(row[key], f"title_occurrences[{i}].{key}")
+            for key in ("qualifier_1d8_raw_u8", "qualifier_130_raw_u8"):
+                row[key] = _optional_integer(row[key], name + "." + key, minimum=0, maximum=255)
+            row["government_bit14"] = _optional_boolean(row["government_bit14"], name + ".government_bit14")
+            if row["resolution"] not in {"matched", "fallback", "unavailable"}:
+                raise ValueError(name + " resolution is invalid")
+            row_complete = row["resolution"] != "unavailable" and row["resolved_full_title_id_raw_i32"] is not None
+            demanded = row_complete
+            for key, expected in (("qualifier_1d8_raw_u8", 0), ("qualifier_130_raw_u8", 0),
+                                  ("qualifier_12c_raw_i32", -1)):
+                if demanded:
+                    row_complete = row_complete and row[key] is not None
+                    demanded = row[key] == expected
+            if demanded:
+                row_complete = row_complete and row["government_bit14"] is not None
+                if row["government_bit14"] is True:
+                    row_complete = row_complete and row["template_tier_raw_i32"] is not None
+            complete = complete and row_complete
+            rows.append(row)
+    else:
+        complete = False
+    if rows is not None and result["title_count_raw_i32"] is not None and len(rows) != max(result["title_count_raw_i32"], 0):
+        raise ValueError(field + " occurrence count disagrees")
+    result["title_occurrences"] = rows
+    ready = _boolean(raw["ready"], field + ".ready")
+    if raw["status"] not in {"available", "partial", "unavailable"}:
+        raise ValueError(field + " status is invalid")
+    if ready != complete or (raw["status"] == "available") != ready:
+        raise ValueError(field + " readiness disagrees with demanded census operands")
+    reason = raw["unavailable_reason"]
+    if ((ready and reason is not None) or (not ready and (not isinstance(reason, str) or not reason))):
+        raise ValueError(field + " reason disagrees with readiness")
+    return result
+
+
 def _normalize_context_branch_inputs(value: object, field: str) -> dict[str, object] | None:
     """Keep actual readonly291D1D0 operands distinct from final context/EC."""
     if value is None:
         return None
-    raw = _exact_dict(value, field, {
+    fields = {
         "status", "ready", "character_id", "flag14", "selected_index",
         "selected_property_block", "group_counts", "group_property_blocks",
         "unavailable_reason",
-    })
+    }
+    if isinstance(value, dict) and "census_inputs" in value:
+        fields.add("census_inputs")
+    raw = _exact_dict(value, field, fields)
 
     def properties(item: object, name: str) -> dict[str, object] | None:
         if item is None:
@@ -556,11 +645,17 @@ def _normalize_context_branch_inputs(value: object, field: str) -> dict[str, obj
     if ((ready and reason is not None)
             or (not ready and (not isinstance(reason, str) or not reason))):
         raise ValueError(field + " reason disagrees with readiness")
-    return {"status": status, "ready": ready,
+    result = {"status": status, "ready": ready,
         "character_id": _positive_int32(raw["character_id"], field + ".character_id"),
         "flag14": flag, "selected_index": selected_index,
         "selected_property_block": selected, "group_counts": counts,
         "group_property_blocks": blocks, "unavailable_reason": reason}
+    if "census_inputs" in raw:
+        result["census_inputs"] = _normalize_title_census_inputs(raw["census_inputs"], field + ".census_inputs")
+        census = result["census_inputs"]
+        if census is not None and census["character_id"] != result["character_id"]:
+            raise ValueError(field + " census receiver disagrees with queried actor")
+    return result
 
 
 def _normalize_current_prior_context_inputs(value: object, field: str) -> dict[str, object] | None:

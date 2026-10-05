@@ -1126,7 +1126,9 @@ game::BattleCurrentPersonRawNumericInputsSnapshotV1 CurrentRawNumericInputs(
 // Source-exact registry resolver for 291D1D0. Full DWORD identities can have
 // signed high bits; do not apply the other battle resolver's positive-ID gate.
 const void *CurrentContextBranchRecord(const BattleBindings &b,
-                                      std::int32_t full_id) {
+                                      std::int32_t full_id,
+                                      bool *used_fallback = nullptr) {
+  if (used_fallback) *used_fallback = true;
   const void *storage = b.current_person_context_record_storage_slot
       ? *b.current_person_context_record_storage_slot : nullptr;
   if (storage) {
@@ -1135,7 +1137,10 @@ const void *CurrentContextBranchRecord(const BattleBindings &b,
     const auto *rows = At<const void *>(storage, 0x20);
     if (index < capacity && rows) {
       const auto *record = At<const void *>(rows, index * 0x10ULL + 8);
-      if (record && At<std::int32_t>(record, 0x10) == full_id) return record;
+      if (record && At<std::int32_t>(record, 0x10) == full_id) {
+        if (used_fallback) *used_fallback = false;
+        return record;
+      }
     }
   }
   return b.current_person_context_record_fallback_slot
@@ -1166,6 +1171,29 @@ game::BattleCurrentPersonContextBranchInputsSnapshotV1 CurrentContextBranchInput
     return out;
   }
   bool complete = true;
+  out.census_inputs.emplace();
+  auto &raw_census = *out.census_inputs;
+  raw_census.character_id = character_id;
+  bool raw_complete = true;
+  const auto raw_fail = [&raw_census, &raw_complete](const char *reason) {
+    raw_complete = false;
+    if (raw_census.unavailable_reason.empty()) raw_census.unavailable_reason = reason;
+  };
+  const auto *scratch = At<const void *>(character, 0x1B0);
+  raw_census.scratch_present = scratch != nullptr;
+  if (scratch) {
+    const auto *model = At<const void *>(scratch, 0x258);
+    raw_census.model_present = model != nullptr;
+    if (model) {
+      const auto *owner = At<const void *>(model, 8);
+      raw_census.model_owner_present = owner != nullptr;
+      raw_census.model_owner_matches_character = owner == character;
+      if (owner)
+        raw_census.model_owner_full_character_id_raw_i32 = At<std::int32_t>(owner, 0x18);
+      // The local28C3BC0 caller demands model magic only after owner match.
+      if (owner == character) raw_census.model_magic_raw_u32 = At<std::uint32_t>(model, 0x2F0);
+    }
+  }
   const auto fail = [&out, &complete](const char *reason) {
     complete = false;
     if (out.unavailable_reason.empty()) out.unavailable_reason = reason;
@@ -1201,52 +1229,73 @@ game::BattleCurrentPersonContextBranchInputsSnapshotV1 CurrentContextBranchInput
   const auto *header = carrier
       ? static_cast<const std::byte *>(carrier) + 0x1E0
       : b.current_person_context_static_header;
+  raw_census.header_source = carrier ? "landed" : "static";
   if (!header) {
     census_complete = false;
     fail("context_branch_object_header_unavailable");
+    raw_fail("context_branch_object_header_unavailable");
   } else {
     const auto count = At<std::int32_t>(header, 0xC);
+    raw_census.title_count_raw_i32 = count;
     const auto *ids = At<const void *>(header, 0);
     if (count < 0 || (count > 0 && !ids)) {
       census_complete = false;
       fail("context_branch_object_census_unavailable");
-    } else for (std::int32_t i = 0; i < count; ++i) {
-      const auto full_id = At<std::int32_t>(ids, static_cast<std::size_t>(i) * 4);
-      const auto *record = CurrentContextBranchRecord(b, full_id);
-      if (!record) {
-        census_complete = false;
-        fail("context_branch_record_unavailable");
-        continue;
+      raw_fail("context_branch_object_census_unavailable");
+    } else {
+      raw_census.title_occurrences.emplace();
+      for (std::int32_t i = 0; i < count; ++i) {
+        const auto full_id = At<std::int32_t>(ids, static_cast<std::size_t>(i) * 4);
+        auto &row = raw_census.title_occurrences->emplace_back();
+        row.native_row_index = i;
+        row.requested_full_title_id_raw_i32 = full_id;
+        bool used_fallback = false;
+        const auto *record = CurrentContextBranchRecord(b, full_id, &used_fallback);
+        if (!record) {
+          census_complete = false;
+          fail("context_branch_record_unavailable");
+          raw_fail("context_branch_record_unavailable");
+          continue;
+        }
+        row.resolution = used_fallback ? "fallback" : "matched";
+        row.resolved_full_title_id_raw_i32 = At<std::int32_t>(record, 0x10);
+        row.qualifier_1d8_raw_u8 = At<std::uint8_t>(record, 0x1D8);
+        if (*row.qualifier_1d8_raw_u8 != 0) continue;
+        row.qualifier_130_raw_u8 = At<std::uint8_t>(record, 0x130);
+        if (*row.qualifier_130_raw_u8 != 0) continue;
+        row.qualifier_12c_raw_i32 = At<std::int32_t>(record, 0x12C);
+        if (*row.qualifier_12c_raw_i32 != -1) continue;
+        // Native re-reads the same Character government for each eligible row.
+        // The first flag alone cannot prove that all group counts are zero.
+        const auto row_flag = government_flag();
+        row.government_bit14 = row_flag;
+        if (!row_flag) {
+          census_complete = false;
+          fail("context_branch_record_flag_unavailable");
+          raw_fail("context_branch_record_flag_unavailable");
+          continue;
+        }
+        if (!*row_flag) continue;
+        const auto *category = At<const void *>(record, 0x48);
+        if (!category) {
+          census_complete = false;
+          fail("context_branch_category_unavailable");
+          raw_fail("context_branch_category_unavailable");
+          continue;
+        }
+        const auto index = At<std::int32_t>(category, 0x64);
+        row.template_tier_raw_i32 = index;
+        if (index < 0 || index >= static_cast<std::int32_t>(counts.size())) {
+          census_complete = false;
+          // This seven-count projection cannot represent the native out-of-array
+          // store. Do not clamp/discard it and publish completed prefix counts.
+          out.unavailable_reason = "context_branch_category_outside_0_6";
+          complete = false;
+          continue;
+        }
+        counts[static_cast<std::size_t>(index)] = static_cast<std::int32_t>(
+            static_cast<std::uint32_t>(counts[static_cast<std::size_t>(index)]) + 1U);
       }
-      if (At<std::uint8_t>(record, 0x1D8) != 0 ||
-          At<std::uint8_t>(record, 0x130) != 0 ||
-          At<std::int32_t>(record, 0x12C) != -1) continue;
-      // Native re-reads the same Character government for each eligible row.
-      // The first flag alone cannot prove that all group counts are zero.
-      const auto row_flag = government_flag();
-      if (!row_flag) {
-        census_complete = false;
-        fail("context_branch_record_flag_unavailable");
-        continue;
-      }
-      if (!*row_flag) continue;
-      const auto *category = At<const void *>(record, 0x48);
-      if (!category) {
-        census_complete = false;
-        fail("context_branch_category_unavailable");
-        continue;
-      }
-      const auto index = At<std::int32_t>(category, 0x64);
-      if (index < 0 || index >= static_cast<std::int32_t>(counts.size())) {
-        census_complete = false;
-        // This seven-count projection cannot represent the native out-of-array
-        // store. Do not clamp/discard it and publish completed prefix counts.
-        out.unavailable_reason = "context_branch_category_outside_0_6";
-        complete = false;
-        continue;
-      }
-      counts[static_cast<std::size_t>(index)] = static_cast<std::int32_t>(
-          static_cast<std::uint32_t>(counts[static_cast<std::size_t>(index)]) + 1U);
     }
   }
   for (std::size_t i = 0; i < counts.size(); ++i) {
@@ -1264,6 +1313,8 @@ game::BattleCurrentPersonContextBranchInputsSnapshotV1 CurrentContextBranchInput
   }
   out.ready = complete && census_complete;
   out.status = out.ready ? "available" : "partial";
+  raw_census.ready = raw_complete;
+  raw_census.status = raw_complete ? "available" : "partial";
   return out;
 }
 

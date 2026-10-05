@@ -2711,6 +2711,39 @@ struct BattleCurrentPersonRawNumericInputsSnapshotV1 {
                          const BattleCurrentPersonRawNumericInputsSnapshotV1 &) = default;
 };
 
+struct BattleCurrentPersonTitleCensusRowSnapshotV1 {
+  std::int32_t native_row_index = 0;
+  std::int32_t requested_full_title_id_raw_i32 = -1;
+  std::string resolution = "unavailable";
+  std::optional<std::int32_t> resolved_full_title_id_raw_i32;
+  std::optional<std::uint8_t> qualifier_1d8_raw_u8;
+  std::optional<std::uint8_t> qualifier_130_raw_u8;
+  std::optional<std::int32_t> qualifier_12c_raw_i32;
+  std::optional<bool> government_bit14;
+  std::optional<std::int32_t> template_tier_raw_i32;
+  friend bool operator==(const BattleCurrentPersonTitleCensusRowSnapshotV1 &,
+                         const BattleCurrentPersonTitleCensusRowSnapshotV1 &) = default;
+};
+
+// Current raw source occurrences, independent of stored/future context values.
+struct BattleCurrentPersonTitleCensusInputsSnapshotV1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::int32_t character_id = -1;
+  bool scratch_present = false;
+  std::optional<bool> model_present;
+  std::optional<bool> model_owner_present;
+  std::optional<std::int32_t> model_owner_full_character_id_raw_i32;
+  std::optional<bool> model_owner_matches_character;
+  std::optional<std::uint32_t> model_magic_raw_u32;
+  std::string header_source;
+  std::optional<std::int32_t> title_count_raw_i32;
+  std::optional<std::vector<BattleCurrentPersonTitleCensusRowSnapshotV1>> title_occurrences;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleCurrentPersonTitleCensusInputsSnapshotV1 &,
+                         const BattleCurrentPersonTitleCensusInputsSnapshotV1 &) = default;
+};
+
 // Readonly operands of the exact .3 291D1D0 preparation branch.
 // Current prepared contributions; not a final-context or future-state cache.
 struct BattleCurrentPersonContextBranchInputsSnapshotV1 {
@@ -2723,6 +2756,7 @@ struct BattleCurrentPersonContextBranchInputsSnapshotV1 {
   std::array<std::optional<std::int32_t>, 7> group_counts{};
   std::array<std::optional<BattleCurrentPersonRawPropertiesSnapshotV1>, 7>
       group_property_blocks{};
+  std::optional<BattleCurrentPersonTitleCensusInputsSnapshotV1> census_inputs;
   std::string unavailable_reason;
   friend bool operator==(const BattleCurrentPersonContextBranchInputsSnapshotV1 &,
                          const BattleCurrentPersonContextBranchInputsSnapshotV1 &) = default;

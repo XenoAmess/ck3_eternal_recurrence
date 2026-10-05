@@ -192,6 +192,67 @@ inline std::string SerializeRawNumericInputs(
   return out;
 }
 
+inline void AppendOptionalBool(std::string &out, const std::optional<bool> &value) {
+  out += value ? (*value ? "true" : "false") : "null";
+}
+
+inline std::string SerializeTitleCensusInputs(
+    const xar::game::BattleCurrentPersonTitleCensusInputsSnapshotV1 &p) {
+  std::string out = "{\"status\":";
+  AppendString(out, p.status);
+  out += ",\"ready\":";
+  out += p.ready ? "true" : "false";
+  out += ",\"character_id\":" + std::to_string(p.character_id);
+  out += ",\"scratch_present\":";
+  out += p.scratch_present ? "true" : "false";
+  out += ",\"model_present\":";
+  AppendOptionalBool(out, p.model_present);
+  out += ",\"model_owner_present\":";
+  AppendOptionalBool(out, p.model_owner_present);
+  out += ",\"model_owner_full_character_id_raw_i32\":";
+  AppendRawNumber(out, p.model_owner_full_character_id_raw_i32);
+  out += ",\"model_owner_matches_character\":";
+  AppendOptionalBool(out, p.model_owner_matches_character);
+  out += ",\"model_magic_raw_u32\":";
+  AppendRawNumber(out, p.model_magic_raw_u32);
+  out += ",\"header_source\":";
+  AppendString(out, p.header_source);
+  out += ",\"title_count_raw_i32\":";
+  AppendRawNumber(out, p.title_count_raw_i32);
+  out += ",\"title_occurrences\":";
+  if (!p.title_occurrences) out += "null";
+  else {
+    out += '[';
+    for (std::size_t i = 0; i < p.title_occurrences->size(); ++i) {
+      if (i) out += ',';
+      const auto &row = (*p.title_occurrences)[i];
+      out += "{\"native_row_index\":" + std::to_string(row.native_row_index);
+      out += ",\"requested_full_title_id_raw_i32\":" +
+          std::to_string(row.requested_full_title_id_raw_i32);
+      out += ",\"resolution\":";
+      AppendString(out, row.resolution);
+      out += ",\"resolved_full_title_id_raw_i32\":";
+      AppendRawNumber(out, row.resolved_full_title_id_raw_i32);
+      out += ",\"qualifier_1d8_raw_u8\":";
+      AppendRawNumber(out, row.qualifier_1d8_raw_u8);
+      out += ",\"qualifier_130_raw_u8\":";
+      AppendRawNumber(out, row.qualifier_130_raw_u8);
+      out += ",\"qualifier_12c_raw_i32\":";
+      AppendRawNumber(out, row.qualifier_12c_raw_i32);
+      out += ",\"government_bit14\":";
+      AppendOptionalBool(out, row.government_bit14);
+      out += ",\"template_tier_raw_i32\":";
+      AppendRawNumber(out, row.template_tier_raw_i32);
+      out += '}';
+    }
+    out += ']';
+  }
+  out += ",\"unavailable_reason\":";
+  AppendReason(out, p.ready, p.unavailable_reason, "title_census_inputs_unavailable");
+  out += '}';
+  return out;
+}
+
 inline std::string SerializeContextBranchInputs(
     const xar::game::BattleCurrentPersonContextBranchInputsSnapshotV1 &p) {
   std::string out = "{\"status\":";
@@ -217,7 +278,12 @@ inline std::string SerializeContextBranchInputs(
     if (p.group_property_blocks[i]) AppendRawProperties(out, *p.group_property_blocks[i]);
     else out += "null";
   }
-  out += "],\"unavailable_reason\":";
+  out += ']';
+  if (p.census_inputs) {
+    out += ",\"census_inputs\":";
+    out += SerializeTitleCensusInputs(*p.census_inputs);
+  }
+  out += ",\"unavailable_reason\":";
   AppendReason(out, p.ready, p.unavailable_reason, "context_branch_inputs_unavailable");
   out += '}';
   return out;
