@@ -187,3 +187,13 @@ Root 正常 `20302` 批次 CLOSED GREEN 并已记 24 日；随后 `38425` 查询
 三个 `last_supply_update_date_raw` 分别为主军 `53260080`、守军 `53260032`、敌军 `53260224`，均较前帧锚点前移720 raw小时。当前 day index `394181`、selected phase `11`，三个 army bucket 为 `0 / 28 / 6`；锚点变化可观测，当前暂停帧不据 phase 推定即时执行。三个 resolver 仍 available/ready/resolved，原生预算与损耗标签沿用已获得的 production-live primitive 资格。
 
 完整 health/FULLDATA 缓存已交 ArmyReinforcement 独立 diff；本专题只保留当前损耗与供给输入。compact 为 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-loss-r39-after24-actual/COMPACT-AFTER24-HEALTH-CACHE.json`（SHA `48980e0bf75947732f12648d8fd04e8a3faf6e04da002c8909d1fbc035cb2bd8`）。旧 R38 错标签、R39 首次 decoder HARNESS_RED 与原005两次 buffer 读取继续保留；新006实际仅一次 buffer 读取。本消费不新增 SDK、测试、动作或游戏日；母批次累计 `4834 / resume1681 / Oct5+176` 由 Root 记账。
+
+### 2026-10-05：R40 同一补给与损耗口的缓存复用
+
+CommanderObserver 唯一读取 R40 原军力叶后封完整缓存；军需只消费该缓存一次，未重复读取原叶。真实 paused `raw53260776 / native:3 / native3 / public2 / seq1`，三个 scope row 均 available；外层为 `R40 / g72 / PID110616`，原生版本与 EXE SHA null 原样保留。主军仍 `3178/3874/39reg`、补给 `293.63637/300`、当前月率 `−1.81818`、attrition `.01`、`raid_association_id=-1 / raid_active=false / siege_active=true`，当前围城/劫掠/供给预算 `31/0/0`；这些值与 R39 after24 基线一致，保留 production-live primitive 资格，不把预算解释为已扣兵。
+
+守军仍 `3000/3000/24reg`、供给100、月率+20、attrition0。敌军 `3045→2759`（独立人数净−286），上限4702、41reg与库存285不变，当前月率 `−10→+15`、attrition0、当前三预算0；`unit_state_raw=2` 但本口没有 battle ID/side，不从这次查询归因区间损失或认定具体战斗。三个 gathering 均 not_gathering/ready=true；主军缺额696、守军0、敌军1943，缺额变化不冒充已实现补员预测。
+
+当前 day index394199/selected phase29，三军 bucket0/28/6；main/enemy 的 last_supply_update_date_raw 仍为 `53260080 / 53260224`，距当前分别696/552 raw小时，守军锚点 `53260032→53260752`、距当前24 raw小时。仅记录当前时钟与锚点变化，不把暂停帧 phase 当 updater/setter 执行轨迹。当前 movement progress 三行均 not_applicable、ETA null，不沿用旧移动边ETA。
+
+军需派生 compact：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-loss-r40-cached-trend/COMPACT-R40-HEALTH-LOSS-CACHE.json`（SHA `123a25d82a9829216f7fc7346ee7c3015e98f0321f6378fee594fad751b64699`）；完整源缓存由 CommanderObserver 持有。单位类型库存与省供给/K保持独立；本次供给值直接来自 health 字段。R39 after24 之后18正常日由 Root 已计至4852，本缓存消费新增0日、0 SDK、0测试、0窗口操作；既有失败 archive 与唯一生产回归保留、不重跑。
