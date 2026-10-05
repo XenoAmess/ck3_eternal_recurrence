@@ -917,3 +917,203 @@ Actualeffects/loss=false, actualpoststate/datecalltime=null, fullmonthly
 live/appliedloss=false. Gamequeries/actions/newdays/runtimechanges all0.
 The nextsource2A9FA10/dailyconsumer/datepointerpackage is separatelysealed
 withOct6 timestamps; its newprovider/kernel work isongoing.
+
+## 2026-10-06 source-first: daily deferred ArmyID transfer and real date pointer
+
+Source sealed before daily-queue production implementation. Receipt: `Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/monthly-caller-effects/queue-consumer-source/ROOT-DELIVERY.json`, SHA `cdbfeaf8e1a0e79419060d30ab1dc7049bce721735397d7adf4d983a73338180`. Only621 B new frozen code; reused dispatcher and removal bodies. No game access/newdays0.
+
+# Actual daily consumer of GameData+2A5A8
+
+Exact1.20.0.3 / Steam25652598 / frozen EXE SHA
+`94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`.
+Reuse cached daily dispatcher and Army-removal source. Only the genuinely
+missing2A9FA10 transfer body required a new frozen-file read: verified pdata
+`2A9FA10..2A9FC7D`, unwind5127064, record146869,621B SHA
+`05b125d14dbe142ff29bfba1c09536eaa8a81e8799694c21e2d66646a28745c2`.
+Targeted pdata metadata uses the existing PE map; no new header/data scan,
+whole EXE scan/hash, process access, native call, game query, test or build.
+
+## Receiver and reachable ordering
+
+GameState global5C68C50 points to an object whose+A0 is GameData.
+Primary CArmyManager isGameData+2A540. The daily callback2A9A590 receives
+its secondary interface atprimary+8: it savesRCX inR14, then2A9A681 forms
+R15=R14−8. This is also corroborated by its later explicit GameData+2A540
+receiver at2A9A9B2 before another2A978A0 call.
+
+Thus the monthly tail's descriptor atGameData+2A5A8 is:
+
+`primary CArmyManager+68 = daily secondary receiver+60`.
+
+Its count isprimary+74 / secondary+6C. These relative operands explain why
+searching only the large absolute2A5A8 offset did not reveal the consumer.
+The cached daily body2A9A590..2A9AB93 contains both the consumer and the
+later daily30-bucket monthly caller. No new dispatcher execution is inferred.
+
+At2A9A69D, zero descriptor count skips the transfer/removal loop. Otherwise
+2A9A6A7..C0 initializes an empty stack DWORD-vector descriptor with its
+actual temporary allocator.2A9A6C5 setsRDX=secondary+60,RCX=stackdescriptor,
+and2A9A6CE invokes2A9FA10. The source descriptor is transferred/drained before
+iterating the temporary IDs. This phase precedes2A9AB66→24E3430 in the same
+callback, so IDs newly appended by that final monthly caller are processed
+on a later daily consumer entry; this does not invent an actual future frame.
+
+##2A9FA10 exact transfer
+
+The receiver layout is the already closed DWORD-vector shape:
+data+0,capacity+8,count+C,allocator+10. Destination isRCX, source isRDX.
+
+*Equal allocator path2A9FA35..8A*: release destinationdata through allocator
+vtable+10, zero its pointer/capacity/count, then transfer source pointer to
+destination and clear source pointer. Swap the counts and capacities; for
+this actual empty destination, source count/capacity become0. Element order
+is retained without per-ID resolution, sorting or deduplication.
+
+*Different allocator path2A9FB21..FC55*: destinationcount is set0; source IDs
+are copied in stored order into existing or newly allocated destination
+storage, growing when needed.2A9FC55 explicitly sets sourcecount0. The source
+pointer/capacity remain allocated in this path. Its capacity-growth constant
+is the previously read49F6400 float1.5; no reread was necessary. Three reverse
+calls atFC3A/45/50 are bypassed for this initialized-empty destination prefix,
+so no unrelated helper tree is needed to establish its actual transfer.
+
+Both normal caller branches therefore yield the same **logical** poststate:
+temporary orderedIDs equal source entryIDs and the source logical list is[]
+before Army-removal calls. Physical source data/capacity afterstate depends
+on allocator equality and is not substituted with one universal value.
+Platform allocation/free and the generic second-compare/recursive exchange
+machinery are not expanded into gameplay claims.
+
+## Ordered lookup and actual removal route
+
+2A9A6D4..74E walks the transferred temporary IDs in stored order. Each
+iteration newly generation-resolves the raw ArmyFullID through globalArmy
+database5D1DE48 (slot low24, database+2C bound, database+20 entries/+8 pointer,
+receiver FullID+10 comparison), or fallback5D1DE50. It checks native Army
+magic+14=`41726D79` and ID+10!=-1. Invalid/fallback non-Army occurrences skip.
+For a valid occurrence,2A9A737 calls2A978A0(primaryManager,actualArmyPointer).
+The database globals are reloaded after that call.2A9A758..775 releases the
+temporary vector; it does not restore the source logical count.
+
+This is a genuine delayed Army-removal route, rather than the B02D10 append
+being immediate teardown. Each later occurrence resolves **after earlier
+removal effects**. A frozen initial-generation predicate cannot stand in for
+the later stage. In an ordinary successful registry removal, a duplicated
+ArmyID is no longer resolved by its original FullID on its next occurrence;
+the source itself rechecks this instead of deduplicating the temporary list.
+Other registry gates/virtual effects can affect that outcome, so a whole
+ordered removal-request list is not ready from initial observations alone.
+
+## Reused2A978A0 body and honest effect boundary
+
+The full1569B body2A978A0..2A97EC1 was already read inround2 holy-order-release,
+selected-native SHA
+`b324251def171eaf33abbef8e4e5eea70c359611a9619787dcb76bf4063f8aef`.
+Its metadata and actual assembly are reused, with no new EXE access:
+
+*2A978B6 calls2A98200 withmanager/rawArmyID before its own Army magic/ID
+checks. That already cached method removes manager/bucket and auxiliary
+collection references. Actual daily loop reaches it only after its Army
+magic/ID checks, but it has its own deeper gates afterward.
+*Valid-body branches detach combat-side references (264E180), raid association
+(24E3F60), commander linkage (28CC110), and iterate regimental IDs with its
+published detach/manager cleanup calls including2A972B0. These are calls,
+not a proof that every downstream/virtual side effect is modeled here.
+*Direct2A97C43 setsArmy regimental count+44=0;2A97CA4 setsFleetID+12C=-1,
+with an earlier conditional fleet-manager removal. Later calls maintain
+Army/Unit and cached owner/province references.
+*At2A97DC8 it reads the actual database atprimaryManager+48. Registry
+destruction requires database byte+48==0, a valid low24 slot within+2C,
+non-null slot pointer and matching current FullID+10. When those gates pass,
+it decrements database+3C and sets byte+4A=1, invokes the object's virtual
+destructor atvtable+0 withEDX=0, clears208h bytes through4226F30, writes the
+recycled sentinel FullID (`old generation bits OR00FFFFFF`) to+10, nulls
+the slot pointer, updates the last-occupied scan and free-slot chain/+40.
+
+Consequently an actual source-reachable registry removal and Army destructor
+call are now established for the gated daily route. The complete polymorphic
+destructor and subordinate cleanup effects remain outside this finite
+source model. It is not full monthly lifecycle completion, a live deletion
+receipt, or a holy-order-employer release claim. No new virtual subtree is
+opened for this independent transfer/route result.
+
+## Actual monthly entry-date pointer source
+
+The same cached daily body also closes the actual pointer origin, without
+another read:
+
+| RVA | Dataflow |
+| --- | --- |
+|2A9A65A|RAX=QWORD[global5C68C50], actualGameState pointer|
+|2A9A669|RBX=GameState+8|
+|2A9A66D|`[rsp+B0]=RBX`|
+|2A9AB52|RSI=`[rsp+B0]`|
+|2A9AB60|RDX=RSI, pointer to actualGameState+8 date storage|
+|2A9AB63|RCX=stored CArmy pointer from selected actual30-bucket|
+|2A9AB66|call24E3430(CArmy*,GameState+8)|
+
+The cached9B prologue3430..3439 only storesRCX and adjustsRSP. Its following
+fragment through3450 makes noRDX assignment before calling24E4D10. Thus the
+real daily-bucket updater receives the actualGameState+8 storage pointer; no
+64-bit high half is reconstructed from the public low32 date. This upgrades
+**pointer-origin source knowledge**, not sampled event-time value readiness.
+The current-frame observed64-bit storage may still be chosen only as the
+explicit hypothetical entry argument in the existing conditional model:
+`actual_caller_passed_date_raw64` remainsnull until an actual entry-time
+observation exists. Other systems may run between a current query and the
+future callback; source address identity is not that future-value receipt.
+
+```mermaid
+flowchart TD
+  D[Actual daily secondary ArmyManager callback2A9A590] --> Q{secondary plus6C count zero?}
+  Q -->|yes| L[Later daily work and30-bucket dispatch]
+  Q -->|no| T[2A9FA10 source plus60 to empty stack vector]
+  T --> Z[Logical source queue empty; temp preserves ordered rawIDs]
+  Z --> I[Each occurrence resolves CURRENT FullID generation]
+  I --> V{Army magic and ID nonminus1?}
+  V -->|no| N[Next occurrence]
+  V -->|yes| R[2A978A0 manager refs and subordinate cleanup]
+  R --> G{Actual database destruction gates pass?}
+  G -->|yes| X[Virtual destructor,208h clear, slot null and recycling]
+  G -->|no| N
+  X --> N
+  N --> I
+  N -->|end| F[Release temp vector]
+  F --> L
+  L --> B[2A9AB66 monthly caller; RDX actualGameState plus8]
+  B --> A[Possible new orderedID append for later daily entry]
+  X -. virtual and subordinate effect footprint not fully modeled .-> U[Complete lifecycle remains open]
+```
+
+
+The minimum current-frame provider planned here is optional `monthly_daily_queue_inputs_v1`: ordered raw list plus initial per-occurrence generation/fallback, actualArmyID/magic and the caller identity predicate. The independent `same_input_conditional_daily_id_transfer_v1` can reproduce temporary orderedIDs/source logical[] and select only the first reachable removal call after an initial invalid prefix. Subsequent occurrences need post-call slot/generation/effect state. Actualtransfer/lifecycle/poststate and fullmonthly remainfalse/null. The already shipped monthly model retains compatibility inputbasis but will additionally identify the source-closed native argument cell as GameState+8; actualevent-time date staysnull.
+
+
+### 2026-10-06 current-frame daily transfer implementation
+
+The exact.3 ArmyStrength provider now optionally publishes
+`monthly_daily_queue_inputs_v1`: the full ordered manager ID list and each
+initial generation/fallback resolution, actualFullID, rawArmy+14 magic and
+nativeidentitypredicate. It doesnot call transfer/removal. An independent
+two-sample comparison preservesstablepartial operands and clears drift.
+The .2 binder and oldfakefixturebindings leave this familyabsent.
+
+The production allocation sibling
+`same_input_conditional_daily_id_transfer_v1` models temporaryorderedIDs and
+logicalsource[] at the explicit same-input consumerentry. It consumes an
+initialinvalidprefix and selects atmostthe first source-eligible2A978A0
+request; a source-eligible fallback object remainslegal. Lateroccurrences
+afterthatcall require post-callgeneration/slot/virtualeffectstate and stay
+partial, even iftheirinitialsnapshot lookedvalid. No pointer/capacityreset,
+actualdrain/removal or complete lifecycle is fabricated.
+
+One NEW productionservicecase passedonce (1case0.003s/process1.6225922s),
+covering duplicateIDalias suffix, validfallback, empty/unknown/allinvalid
+prefixes, immutableonequery and actualfalse/null. It also verifies the
+monthly model's new GameState+8 source-closed dateprovenance while retaining
+actualpasseddate64=null and compatibilityexplicitcurrentframeinputbasis.
+The newnative target `xar_ck3_12003_daily_queue_inputs_test` / CTest
+`xar_ck3_12003_daily_queue_inputs` and fourproductionserializer wires await
+Rootcentralfirstqualification: invalid-prefix-first-call, empty-queue,
+partial-prefix and valid-fallback-first-call, underdaily-queue-inputs-wire.
+Currentreadiness is static-ready/PythonGREEN; no newlive/newgamedays.

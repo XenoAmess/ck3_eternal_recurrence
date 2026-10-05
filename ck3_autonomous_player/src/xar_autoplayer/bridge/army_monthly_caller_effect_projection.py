@@ -38,6 +38,8 @@ def project_conditional_monthly_caller_effects(
         "conditional_supply_update_date_raw64": None,
         "conditional_supply_update_date_ready": False,
         "conditional_date_input_basis": "current_frame_date_storage_as_explicit_entry_argument",
+        "native_date_pointer_origin": "GameState+8",
+        "native_date_pointer_origin_source_closed": True,
         "war_counter_increment_soldiers": None, "war_counter_ready": False,
         "war_counter_writes": [], "war_counter_skipped_occurrences": [],
         "conditional_war_counter_cells_after": None,
@@ -67,8 +69,9 @@ def project_conditional_monthly_caller_effects(
     result["supply_update_date_before_raw64"] = previous_date
     admitted = budget_projection.get("supply_updater_admitted")
     if admitted is True:
-        # The true24E3430 RDX origin is not observed. Choose this actual
-        # current-date cell as an explicit hypothetical entry argument only.
+        # The daily dispatcher source passes this GameState+8 storage pointer.
+        # Its observed current64 value is the explicit hypothetical entry
+        # value; the future event-time value is still not observed.
         date_key = "current_date_storage_raw64"
         date = inputs.get(date_key)
     elif admitted is False:

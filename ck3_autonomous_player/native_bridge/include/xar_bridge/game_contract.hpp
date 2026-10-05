@@ -331,6 +331,30 @@ struct ArmyMonthlyCallerEffectInputsV1 {
                          const ArmyMonthlyCallerEffectInputsV1 &) = default;
 };
 
+struct ArmyDailyQueueInitialResolutionRowV1 {
+  bool available = false;
+  std::string unavailable_reason;
+  std::int32_t stored_index = 0;
+  std::int32_t raw_army_reference_id = -1;
+  std::optional<std::int32_t> resolved_army_id;
+  std::optional<bool> used_fallback;
+  std::optional<std::uint32_t> army_magic_14_raw;
+  std::optional<bool> native_army_identity_valid;
+  friend bool operator==(const ArmyDailyQueueInitialResolutionRowV1 &,
+                         const ArmyDailyQueueInitialResolutionRowV1 &) = default;
+};
+
+// Initial current frame, before2A9FA10 and any2A978A0 call. These resolutions
+// must not substitute for later occurrences after a removal call mutates slots.
+struct ArmyDailyQueueInputsV1 {
+  bool available = false;
+  std::string unavailable_reason;
+  std::optional<std::vector<std::int32_t>> manager_army_id_list_2a5a8;
+  std::optional<std::vector<ArmyDailyQueueInitialResolutionRowV1>> initial_army_resolution_rows;
+  friend bool operator==(const ArmyDailyQueueInputsV1 &,
+                         const ArmyDailyQueueInputsV1 &) = default;
+};
+
 // Current native county-entry budget, independent of a route or applied event.
 // The predicate uses the validated current province and the FIRST province of
 // the complete stored route. It omits the entry executor's special-call flag;
@@ -445,6 +469,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyLossApplicationInputsV1> loss_application_inputs_v1;
   std::optional<ArmyMonthlyLossBudgetInputsV1> monthly_loss_budget_inputs_v1;
   std::optional<ArmyMonthlyCallerEffectInputsV1> monthly_caller_effect_inputs_v1;
+  std::optional<ArmyDailyQueueInputsV1> monthly_daily_queue_inputs_v1;
   std::optional<ArmyCountyEntryInputsV1> county_entry_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<NativeMaaRecruitmentInputsV1> native_maa_recruitment_inputs_v1;

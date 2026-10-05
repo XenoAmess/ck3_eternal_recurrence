@@ -71,6 +71,11 @@ struct ArmyMonthlyCallerEffectBindings12003 {
   bool (*contains_war_participant)(const void *, std::int32_t) = nullptr;
 };
 
+struct ArmyDailyQueueBindings12003 {
+  bool enabled = false;
+  void **army_fallback_slot = nullptr;
+};
+
 struct ArmyBindings {
   bool enabled = false;
   void **game_state_slot = nullptr;
@@ -137,6 +142,7 @@ struct ArmyBindings {
   bool (*is_army_regiment_loss_writer_skipped)(void *) = nullptr;
   ArmyMonthlyLossBudgetBindings12003 monthly_loss_budget_bindings{};
   ArmyMonthlyCallerEffectBindings12003 monthly_caller_effect_bindings{};
+  ArmyDailyQueueBindings12003 monthly_daily_queue_bindings{};
 };
 
 // Same GDbo key/tier implementation used by the raised ArRg reader.

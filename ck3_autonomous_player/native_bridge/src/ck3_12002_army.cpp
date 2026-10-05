@@ -552,6 +552,54 @@ game::ArmyMonthlyCallerEffectInputsV1 MonthlyCallerInputs(
   return result;
 }
 
+game::ArmyDailyQueueInputsV1 DailyQueueSample(const ArmyBindings &bindings) {
+  game::ArmyDailyQueueInputsV1 result{};
+  if (bindings.game_state_slot != nullptr && *bindings.game_state_slot != nullptr) {
+    void *manager = Load<void *>(*bindings.game_state_slot, 0xA0);
+    if (manager != nullptr)
+      result.manager_army_id_list_2a5a8 = CallerIdList(
+          static_cast<std::byte *>(manager) + 0x2A5A8);
+  }
+  if (result.manager_army_id_list_2a5a8) {
+    result.initial_army_resolution_rows.emplace();
+    const auto &ids = *result.manager_army_id_list_2a5a8;
+    result.initial_army_resolution_rows->reserve(ids.size());
+    for (std::size_t index = 0; index < ids.size(); ++index) {
+      game::ArmyDailyQueueInitialResolutionRowV1 row{};
+      row.stored_index = static_cast<std::int32_t>(index);
+      row.raw_army_reference_id = ids[index];
+      bool fallback = false;
+      void *army = ResolveBudgetObject(bindings.internal_army_storage_slot,
+          bindings.monthly_daily_queue_bindings.army_fallback_slot,
+          row.raw_army_reference_id, 0x10, &fallback);
+      if (army != nullptr) {
+        row.resolved_army_id = Load<std::int32_t>(army, 0x10);
+        row.used_fallback = fallback;
+        row.army_magic_14_raw = Load<std::uint32_t>(army, 0x14);
+        row.native_army_identity_valid = *row.army_magic_14_raw == 0x41726D79U &&
+                                         *row.resolved_army_id != -1;
+        row.available = true;
+      } else row.unavailable_reason = "daily_queue_initial_army_resolution_unavailable";
+      result.initial_army_resolution_rows->push_back(row);
+    }
+  }
+  result.available = result.manager_army_id_list_2a5a8.has_value() &&
+                     result.initial_army_resolution_rows.has_value();
+  if (result.initial_army_resolution_rows)
+    for (const auto &row : *result.initial_army_resolution_rows) result.available &= row.available;
+  if (!result.available) result.unavailable_reason = "daily_queue_initial_operands_unavailable";
+  return result;
+}
+
+game::ArmyDailyQueueInputsV1 DailyQueueInputs(const ArmyBindings &bindings) {
+  const auto first = DailyQueueSample(bindings);
+  const auto second = DailyQueueSample(bindings);
+  if (first == second) return second;
+  game::ArmyDailyQueueInputsV1 result{};
+  result.unavailable_reason = "daily_queue_initial_inputs_changed_during_read";
+  return result;
+}
+
 game::ArmyCountyEntryInputsV1 CountyEntryInputs(
     const ArmyBindings &bindings, void *army, void *unit,
     std::int32_t whole_soldiers) {
@@ -788,6 +836,10 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
     if (bindings.monthly_caller_effect_bindings.enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("monthly_caller_effect_inputs_readonly");
       result.monthly_caller_effect_inputs_v1 = MonthlyCallerInputs(bindings, army, unit);
+    }
+    if (bindings.monthly_daily_queue_bindings.enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("daily_queue_initial_inputs_readonly");
+      result.monthly_daily_queue_inputs_v1 = DailyQueueInputs(bindings);
     }
     if (bindings.county_entry_inputs_enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("county_entry_current_inputs_getters");
