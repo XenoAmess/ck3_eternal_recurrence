@@ -1088,3 +1088,7 @@ GEN-034 子包进度另按 `4/4` 汇报：A/B/C/D 均已完成；
 ## 2026-10-05T07:33:53+08:00 R39 当前 4852 日：普通围城继续
 
 当前 4852/36524 日、resume1699、Oct5+194；4810 后新增 24+2+16=42 个正常 whole/calendar/bounded 保存日（1008h），本批 86779 closed exit0 GREEN、16 日/384h、partial0。R39/g71/PID126252 主军 301989997@470 sieging、空 route/无 owncombat，470 尚未占领，War117440524 active/+25、eventclear、Robert alive。M/K、三 resolution 成功分支及 corrected LOSS 预算已验只读 production-live primitive；trait_specific.4001 option2 拒绝→独立 eventnull→normal 保存为0日有限 loop，无 trait/secret/piety 信用。下一 P0 继续实际围城 OODA 与正常保存；新 Type6、berserker wrapper 仅 static-ready，trait callback/producer 为 research，不计 g72 实机。G2 5/8、NW2 2/4、自然终态0不变；最新 normal h8406/raw53260776/98135224B/SHA256 f3291550ce642b7836b84c7994568d7e387a613635d4932931374018c3602b5a；[16 日军事封存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/military-r39-siege-next16-03-consumed01/ROOT-DELIVERY.json)。
+
+## 2026-10-05T08:11:48+08:00 R40 零日：自有围城兵种与雇佣兵组成已观测
+
+当前仍 4852/36524 日、resume1699、Oct5+194，R40/g72/PID110616 本次查询和 normal 保存0日。三个已召集军队 scope 的104行均读出：36 tier0、1 positive tier2、67合法 type absence/null；自有主军39行与守军24行均无正围城等级，敌方41行中唯一正值是 mangonel20/20 tier2。554雇佣公司可读，1538持久 regiment 行含984 typed tier0及554非MAA；30可雇 terms 含27 affordable、3 debt-allowed，当前无 siege-goal 公司。两组成查询为只读 production-live primitive，未 hire/buy/AI-loop。下一 P0 继续真实围城 OODA，以必要观测选择策略；G2 5/8、NW2 2/4、自然终态0不变。normal h8411/raw53260776/98135202B/SHA256 bc71178f3b934498c3286f12d1243ef71f723f03c6f0e7610d9838542677064c。
