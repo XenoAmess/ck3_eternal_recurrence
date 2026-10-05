@@ -65,7 +65,8 @@ int RunStoredAdvantageSourceFixtures(const char *directory) {
                     rows[2].effect_key == "def_custom" && rows[2].contribution_raw == -333'333,
                 "ordered 16B retained rows must not use current effect points");
       } else Require(stored.sides[0].rows.empty(), "empty or unavailable source vector rows");
-      const auto wire = TransitionWire(frame);
+      frame.snapshot_revision = 2;
+      const auto wire = xar::ck3_11906::SerializeBattleTransitionV1(frame);
       Require(wire.find("\"stored_advantage_sources_v1\"") != std::string::npos,
               "new stored source production serializer missing");
       const char *names[]{"retained.json", "empty-side.json", "unavailable-side.json"};
