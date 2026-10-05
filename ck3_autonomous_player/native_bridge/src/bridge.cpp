@@ -3245,6 +3245,41 @@ void AppendCombatRegiment(
     result += ",\"initialization_context_stats\":";
     AppendCombatEffectiveStats(result, *regiment.initialization_context_stats);
   }
+  if (regiment.ordinary_stat_inputs_v1.has_value()) {
+    const auto &source = *regiment.ordinary_stat_inputs_v1;
+    result += ",\"ordinary_stat_inputs_v1\":{\"status\":\"";
+    result += source.available ? "available" : "unavailable";
+    result += "\",\"selected_character_full_id\":";
+    result += source.selected_character_full_id ? SignedNumber(*source.selected_character_full_id) : "null";
+    result += ",\"character_resolution\":";
+    if (source.character_resolution.empty()) result += "null";
+    else AppendJsonString(result, source.character_resolution);
+    result += ",\"aggregate_properties\":{\"count\":";
+    result += source.aggregate_count ? SignedNumber(*source.aggregate_count) : "null";
+    result += ",\"keys_u16\":";
+    if (!source.aggregate_keys_u16) result += "null";
+    else { result += '[';
+      for (std::size_t i = 0; i != source.aggregate_keys_u16->size(); ++i) {
+        if (i) result += ','; result += SignedNumber((*source.aggregate_keys_u16)[i]);
+      } result += ']'; }
+    result += ",\"values_q64\":";
+    if (!source.aggregate_values_q64) result += "null";
+    else { result += '[';
+      for (std::size_t i = 0; i != source.aggregate_values_q64->size(); ++i) {
+        if (i) result += ','; result += SignedNumber((*source.aggregate_values_q64)[i]);
+      } result += ']'; }
+    result += "},\"loaded_bases\":{";
+    constexpr std::array<std::string_view, 5> names{
+        "siege_raw", "damage_raw", "toughness_raw", "pursuit_raw", "screen_raw"};
+    for (std::size_t i = 0; i != names.size(); ++i) {
+      if (i) result += ','; AppendJsonString(result, names[i]); result += ':';
+      result += source.loaded_bases[i] ? SignedNumber(*source.loaded_bases[i]) : "null";
+    }
+    result += "},\"scale\":"; result += SignedNumber(source.scale);
+    result += ",\"unavailable_reason\":";
+    AppendUnavailableReason(result, !source.available, source.unavailable_reason);
+    result += '}';
+  }
   result += ",\"counter\":";
   AppendCombatCounter(result, regiment.counter);
   result += ",\"unavailable_reason\":";

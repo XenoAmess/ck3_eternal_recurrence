@@ -48,7 +48,18 @@ struct CombatBindings {
   const std::int32_t *knight_toughness_per_prowess = nullptr;
   const std::int32_t *minimum_combat_width = nullptr;
   const std::int64_t *base_combat_width_ratio = nullptr;
+  bool ordinary_stat_inputs_enabled = false;
+  void **ordinary_regiment_storage_slot = nullptr;
+  void **ordinary_regiment_fallback_slot = nullptr;
+  void **ordinary_selector_storage_slot = nullptr;
+  void **ordinary_selector_fallback_slot = nullptr;
+  void **ordinary_character_fallback_slot = nullptr;
+  std::array<const std::int64_t *, 5> ordinary_stat_loaded_bases{};
 };
+
+// Source-closed only for exact .3; the unchanged .2 binder leaves this disabled.
+void EnableOrdinaryRegimentStatInputs12003(
+    CombatBindings &, std::uintptr_t image_base, std::string_view executable_sha256) noexcept;
 
 // The same owning-thread paused snapshot supplies participant/war scope.
 // No process discovery, remote reads or changes to CK3 state are performed.

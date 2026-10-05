@@ -103,3 +103,68 @@ decomposition and usable complete/partial final-cache inputs. The production
 consumer was loaded from the Root integrated source tree. Receipt:
 `ordinary-maa-stat-inputs/focused-damage-once/RESULT.json`. No old case, native
 build or game operation was performed by this package.
+
+## Source-closed remaining ordinary getters and observer plan
+
+The four remaining `.pdata` bodies each contain 684 bytes. Comparing their
+complete instruction shape with the manually reviewed damage body shows only
+the loaded-base RIP displacement and the two U16 property keys differ. The
+native body uses exactly these parameters, including the nonsequential siege
+multiplier and the swapped pursuit/screen base addresses:
+
+| Stat | Getter | Signed Q64 loaded base | Add key | Mult key |
+|---|---|---|---|---|
+| damage | 2C15610 | 5C69BC0 | B0 | 1B3 |
+| toughness | 2C158C0 | 5C69BC8 | B1 | 1B4 |
+| siege | 2C15B70 | 5C69BD0 | B2 | 1B2 |
+| pursuit | 2C15E20 | 5C69BE0 | B3 | 1B5 |
+| screen | 2C160D0 | 5C69BD8 | B4 | 1B6 |
+
+`ORDINARY-FIVE-GETTER-SOURCE.json` binds the full bodies and exact parameters.
+`ORDINARY-COLLECTOR-PLAN.json`, its rendered Mermaid and
+`ORDINARY-QUERY-PLAN-CLOSED.json` were sealed before expanding the model and
+observer. No person preparation process is duplicated. The minimal source leaf
+is optional `Regiment.ordinary_stat_inputs_v1`: actual selected Character full
+ID/resolution, aggregate property keys/count/Q64 values, the five loaded bases,
+scale and independent status/reason. It is present for the actual ordinary
+nonspecial/nonGDbo branch only. Its base source does not depend on a target
+Province; a conditional changed context must be explicitly supplied.
+
+The MAA30C4360 `.pdata` extent is `[30C4360,30C50AD)`,3405 bytes. Its metadata
+was read without sampling code because it exceeds the first narrow body limit.
+The known exact body and its actual next operands are the separate next source
+package. The ordinary branch now has all five arithmetic sources closed; MAA
+source arithmetic remains partial.
+
+The full ordinary six-stat calculator is implemented with the exact parameter
+table above. `ordinary_six_stats_from_combat_regiment_12003` consumes the new
+normalized same-query source leaf as frozen current;
+`ordinary_six_stats_from_person_stage_12003` consumes an explicitly named
+prepared or intermediate PersonStatStage with the observed loaded bases.
+`ordinary_six_stats_to_final_stat_input_12003` connects all six source-derived
+values to the existing occurrence-bound final setter. It never constructs
+person context from trait flags or guesses a prior stage. Ordinary max_size
+is the source-established zero; the other five outputs preserve negatives.
+
+The native observer uses the existing Regiment loop and actual selector chain,
+calls the already-bound readonly28C3AE0 getter for the selected Character,
+copies only its aggregate and the five loaded globals, and leaves target query
+readiness independent. Full generation resolution and actual native fallback
+are separate `character_resolution` values; a selected fallback's actual full
+ID -1 is retained. Only the exact `.3` adapter installs its bindings, while
+the unchanged `.2` binder omits this leaf. No new whole-person observer or
+preparation process was introduced.
+
+One new focused Python case passed 1/1 GREEN once in 0.136 seconds on Oct6.
+It uses the production strict normalizer, evaluates all five exact getter
+parameters, supplies a distinct changed context and final side1 input, and
+preserves available zero/empty versus independent missing base. Receipt:
+`ordinary-maa-stat-inputs/focused-six-stat-once/RESULT.json`. The earlier
+damage case was not rerun. The new native target is
+`xar_ck3_12003_ordinary_stat_inputs_test`; its seven fresh production-wire
+cases cover direct/nested selection, actual Character fallback, native empty
+first row, unavailable context/base, zero/empty and MAA/special omission.
+Root owns its first build/CTest and wire consumption. This owner has not
+compiled native code. The pure source-derived ordinary six tuple is
+static-ready; native source observer qualification, MAA and complete Entry
+remain pending. Game operations and added game days are zero.
