@@ -546,6 +546,9 @@ from .war_occupation_targets_contract import (
     query_war_occupation_targets_v1_step,
     war_occupation_query_scope,
 )
+from .assault_holding_observation_v1 import (
+    fresh_holding_siege_states, holding_assault_steps,
+)
 from .title_holder_contract import (
     QUERY_TITLE_HOLDER_V1_CAPABILITY,
     QUERY_TITLE_HOLDER_V1_STEP_PREFIX,
@@ -1916,6 +1919,14 @@ class NativeHeadlessGameplayDriver:
             else None
         )
         if isinstance(current_snapshot, dict):
+            action_steps.update(holding_assault_steps(
+                current_snapshot,
+                fresh_holding_siege_states(
+                    current_snapshot,
+                    _native_history_after_latest_restore(self._history_tail_snapshot(128)),
+                ),
+                bridge_capabilities,
+            ))
             action_steps.update(
                 _fresh_war_occupation_route_steps(
                     current_snapshot,
@@ -12605,6 +12616,9 @@ class NativeHeadlessGameplayDriver:
         start_siege_id = parse_start_assault_step(step)
         stop_siege_id = parse_stop_assault_step(step)
         if start_siege_id is not None or stop_siege_id is not None:
+            starting = _with_fresh_holding_siege_states(
+                starting, self._history_tail_snapshot(128)
+            )
             starting_siege_id = (
                 start_siege_id
                 if start_siege_id is not None
@@ -12660,26 +12674,42 @@ class NativeHeadlessGameplayDriver:
             expected_active = is_start
             war_id = int(observation["war_id"])
             province_id = int(observation["province_id"])
+            holding_source = observation.get("observation_source") == "war_occupation_query"
+            holding_postreads: dict[tuple[int, int], dict[str, object]] = {}
+
+            def assault_postcondition(snapshot: dict[str, object]) -> bool:
+                if snapshot.get("paused") is not True:
+                    return False
+                if holding_source:
+                    # Queue ACK is not the flag transition. This independent
+                    # owning-thread query reads the holding even when a change
+                    # outside the objective projection leaves the frame stable.
+                    key = (int(snapshot["revision"]), int(snapshot["native_revision"]))
+                    if key not in holding_postreads:
+                        query_step = query_war_occupation_targets_v1_step(war_id)
+                        queried = self.execute_step(
+                            query_step, expected_revision=int(snapshot["revision"])
+                        )
+                        holding_postreads[key] = _with_fresh_holding_siege_states(
+                            snapshot, [{"command": query_step, "ok": True, "result": queried}]
+                        )
+                    snapshot = holding_postreads[key]
+                observed = _assault_siege_observation(
+                    snapshot, siege_id=starting_siege_id,
+                    war_id=war_id, province_id=province_id,
+                )
+                return (isinstance(observed, dict)
+                        and observed["active_siege"].get("assault_in_progress") is expected_active)
+
             changed = self._wait_for_snapshot(
                 self.take_snapshot(),
-                lambda snapshot: (
-                    snapshot.get("paused") is True
-                    and (
-                        observed := _assault_siege_observation(
-                            snapshot,
-                            siege_id=starting_siege_id,
-                            war_id=war_id,
-                            province_id=province_id,
-                        )
-                    )
-                    is not None
-                    and observed["active_siege"].get(
-                        "assault_in_progress"
-                    )
-                    is expected_active
-                ),
+                assault_postcondition,
                 timeout_seconds=self.command_timeout_seconds,
             )
+            if holding_source:
+                changed = holding_postreads.get(
+                    (int(changed["revision"]), int(changed["native_revision"])), changed
+                )
             applied = _assault_siege_observation(
                 changed,
                 siege_id=starting_siege_id,
@@ -12704,6 +12734,7 @@ class NativeHeadlessGameplayDriver:
                 "war_id": war_id,
                 "province_id": province_id,
                 "assault_in_progress": expected_active,
+                "observation_source": observation.get("observation_source", "war_objective_snapshot"),
             }
             return {
                 **result,
@@ -21971,6 +22002,9 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 "exact one-day advance requires a paused map"
             )
+        starting = _with_fresh_holding_siege_states(
+            starting, self._history_tail_snapshot(128)
+        )
         # Assault lifecycle checks are read-only.  Scan the owned transcript
         # under its lock so a timeline slice does not deep-copy an ever-growing
         # command history merely to decide whether it may resume the map.
@@ -26434,7 +26468,7 @@ def _native_unobservable_started_assaults(
         war = wars_by_id.get(lifecycle["war_id"])
         if not isinstance(war, dict):
             continue
-        states = war.get("objective_province_states")
+        states = _war_siege_province_states(snapshot, war)
         state = next(
             (
                 row
@@ -26910,7 +26944,7 @@ def _player_assault_in_progress(snapshot: dict[str, object]) -> bool:
     for war in wars if isinstance(wars, list) else []:
         if not isinstance(war, dict):
             continue
-        states = war.get("objective_province_states")
+        states = _war_siege_province_states(snapshot, war)
         for state in states if isinstance(states, list) else []:
             active_siege = (
                 state.get("active_siege")
@@ -31168,6 +31202,30 @@ def _white_peace_submission_fence(
     return None
 
 
+def _with_fresh_holding_siege_states(
+    snapshot: dict[str, object], history: list[dict[str, object]],
+) -> dict[str, object]:
+    # This is a local consumer view; the native objective projection and the
+    # public snapshot state source remain unchanged.
+    return {**snapshot, "_queried_holding_siege_states": fresh_holding_siege_states(
+        snapshot, _native_history_after_latest_restore(history)
+    )}
+
+
+def _war_siege_province_states(
+    snapshot: dict[str, object], war: dict[str, object],
+) -> list[dict[str, object]]:
+    objectives = war.get("objective_province_states")
+    states = [row for row in objectives if isinstance(row, dict)] if isinstance(objectives, list) else []
+    # Prefer an observable native objective row when both sources cover it.
+    observed_provinces = {row.get("province_id") for row in states
+                          if row.get("siege_observable") is True}
+    holdings = snapshot.get("_queried_holding_siege_states")
+    return states + [row for row in (holdings if isinstance(holdings, list) else [])
+                     if isinstance(row, dict) and row.get("war_id") == war.get("war_id")
+                     and row.get("province_id") not in observed_provinces]
+
+
 def _assault_siege_observation(
     snapshot: dict[str, object],
     *,
@@ -31188,7 +31246,7 @@ def _assault_siege_observation(
             war_id is not None and candidate_war_id != war_id
         ):
             continue
-        states = war.get("objective_province_states")
+        states = _war_siege_province_states(snapshot, war)
         for state in states if isinstance(states, list) else []:
             if not isinstance(state, dict):
                 continue
@@ -31214,6 +31272,7 @@ def _assault_siege_observation(
                     "war_id": int(candidate_war_id),
                     "province_id": int(candidate_province_id),
                     "active_siege": active_siege,
+                    "observation_source": state.get("observation_source", "war_objective_snapshot"),
                 }
             )
     return matches[0] if len(matches) == 1 else None
