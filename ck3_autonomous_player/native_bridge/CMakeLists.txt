@@ -8390,6 +8390,27 @@ if(BUILD_TESTING AND WIN32)
       "${CMAKE_CURRENT_BINARY_DIR}/first-removal-cleanup-wire")
 endif()
 
+# Current helper's nonzero Domain operands; never calls2A98590 or2C57020.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12003_current_helper_domain_inputs_test
+    src/ck3_12002_army.cpp
+    src/ck3_12003_army_supply_timing.cpp
+    src/ck3_12003_army_replenishment_records.cpp
+    src/ck3_12003_current_helper_domain_inputs_test.cpp)
+  target_include_directories(xar_ck3_12003_current_helper_domain_inputs_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_current_helper_domain_inputs_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_current_helper_domain_inputs_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_current_helper_domain_inputs_test PRIVATE
+      /W4 /WX /permissive- /EHsc /Gy /O2)
+    target_link_options(xar_ck3_12003_current_helper_domain_inputs_test PRIVATE /OPT:REF)
+  endif()
+  add_test(NAME xar_ck3_12003_current_helper_domain_inputs
+    COMMAND xar_ck3_12003_current_helper_domain_inputs_test
+      "${CMAKE_CURRENT_BINARY_DIR}/current-helper-domain-wire")
+endif()
+
 # Outcome invariants are synthetic DTO tests and never start or attach CK3.
 if(BUILD_TESTING AND XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
   add_executable(xar_ck3_ingame_decision_outcome_contract_v1_test
