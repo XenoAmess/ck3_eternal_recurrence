@@ -473,3 +473,105 @@ The wire/consumer boundary preserves all four-family order, stored duplicates, n
 This is static-ready offline fake-memory producer-to-production-DTO/emitter evidence. It does not establish paused/live observation or a complete person/Entry/forecast stage. No game days advanced; baseline remains R0046/h9052/raw53265168/campaign5035/36524. No CK3 launch/attach/query/SDK/pipe/UI/Steam/process/runtime/profile/save/cache operations.
 
 Exact next source work remains absent1C8 recipient2BFB4C0 ->2BFAC30 current contribution inputs, then independent current-person caller291F550/291F940. These gaps do not erase the useful present1C8 four-family or independent three-family observer.
+
+
+## Current raw title census and model-owner association, 2026-10-05
+
+The exact source receiver/title/qualifier census now has a current read-only
+implementation. Source tree and physical input plan were sealed before code in
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-changed-stage-census/`:
+`SOURCE-TREE.md`, `SOURCE-RECEIPT.json`, `QUERY-PLAN.json`. Reused exact .3 sources
+are291C0D0,291D1D0,28C2E10,28AC6B0 and the bounded28C3BC0 admission prefix.
+New EXE/code/pdata/unwind reads are all0; no source bodies are copied.
+
+Existing exact.3 `title_holder12003_abi.json` closes the prior unnamed record type
+as Title: registry5D1DAF8/fallback5D1DAE0, FullID10, template48/tier64. The census
+uses receiver Character1C0 landedData1E0, or actual static5439C88; it does not
+substitute DeathData's held-title list. Highest held tier28AC6B0 separately prefers
+landed1D4 unless7, then first held FullID/template tier, and only uses death68/74
+when landed data is absent. Its source and government getter's different
+precedence are documented; this package reuses both existing getter bindings.
+
+The same current-person query optionally adds
+`current_person_state.context_branch_inputs.census_inputs`. It publishes current
+scratch/model presence, actual model8 owner's raw Character FullID and pointer
+match, and local28C3BC0 model2F0 magic only after an owner match. It retains the
+queried actor and never replaces that Character with the model owner. This
+association is separate from the AE0 numeric-context fallback and current final
+stored context. The census remains independently useful even when model is absent
+or associated with another actual Character; those facts stay explicit.
+
+Raw Title occurrences retain DWORD FullIDs in native order, duplicates, resolution
+matched/fallback/unavailable and the actual resolved record FullID (including a
+different fallback ID). Demand order is Title1D8 byte, then130 byte, then12C
+signed32, fresh government bit14 on the same receiver Character, then signed32
+template tier. Skipped fields are null. The implementation captures those values
+inside the existing single traversal and government calls, preserving old counts,
+property blocks, readiness and selected contribution. Raw census readiness is
+independent of the older property contribution family's readiness. An observed
+tier outside0..6 remains raw/source-ready while the seven-counter projection
+stays partial. No category is clamped or discarded.
+
+The strict optional-family normalizer retains native widths, occurrence positions,
+actor join and demanded-source readiness, and accepts older producers with an
+absent/null family. `compute_seven_group_census_from_native_inputs_12003` counts
+the raw occurrences with source wrap32 math, independently of the old summary
+fields. It returns row admission and model-association facts; missing required
+row operands retain null seven-count output. No native writer or getter is called
+by the pure kernel.
+
+The one new production normalizer-to-kernel Python case is **1/1 GREEN**, 1.61s
+(outer2.1966s), with receipt/log `PYTHON-VALIDATION.json/.log`. It covers ordered
+duplicates/zero FullID, fallback identity, short circuit and fresh government
+selection, absent/mismatched/wrong-magic model, static empty census, missing rows,
+raw outside tier, native widths, actor join and old producer compatibility.
+Existing auxiliary/nine-byte tests were not repeated. New native target/CTest
+`xar_ck3_12003_person_title_census_test` uses the production query and serializer,
+with10 fake-memory samples output at`BUILD_DIR/person_title_census_12003.json`.
+This lane did not compile/run it; Root qualifies that necessary target centrally.
+
+Readiness is Python **static-ready**, native implemented/pending build. It exposes
+actual current raw source values and independently computes the current census.
+It does not supply an actual changed-stage frame, explicit stage-start baseline,
+current-final-as-prior assembly, complete person/Entry, forecast or live evidence.
+The next specific changed-stage construction seam is the actual stage's
+Character1C0 held-title1E0 membership and Title1D8/130/12C operands, tied to its
+actual model8 receiver; current query and pure census now provide that physical
+input interface. Source-stage context baseline and intervening contributions
+remain separate. All game/SDK/pipe/UI/Steam/runtime/profile/save/cache operations
+and advanced game days are0; remaining background work is not exhausted.
+
+```mermaid
+flowchart TD
+  Q["Current queried Character"] --> S["Character1B0 -> scratch258 actual model"]
+  S --> O["model8 receiver pointer/full ID; model2F0 magic; pointer match"]
+  O --> A["28C3BC0 matched-model admission operands"]
+  A --> C["291C0D0: model8 Character, context ADDRESS model10"]
+  C --> H["291C204 ->291D1D0: landed1E0 / static5439C88 FullID occurrences"]
+  H --> R["Title registry5D1DAF8 / actual fallback5D1DAE0"]
+  R --> F["Title1D8 ->130 ->12C; exact short circuit"]
+  F --> G["Fresh government bit14 on receiver Character per eligible occurrence"]
+  G --> T["Title48 template64 signed tier"]
+  T --> N["Seven wrap32 counters; positive group0..6 source blocks"]
+  Q --> I["Current raw census, association and demand chain observer"]
+  I --> P["Pure current census recomputation; preserves order and fallback"]
+  N --> P
+  P -. "actual changed-stage input capture still required" .-> U["Changed-stage receiver/title/qualifier adapter"]
+  U -. "explicit stage-starting context absent" .-> B["Stage context assembly unknown"]
+  B -. "general Entry24E0EB0 Province / encounter admission" .-> E["Complete first-contact Entry unknown"]
+  classDef unknown stroke-dasharray:6 4,fill:#fff4e5,stroke:#b36b00;
+  class U,B,E unknown;
+```
+
+### 当前七组 Title census 原生与消费者验收完成
+
+实际收口时间：2026-10-05T22:06:41+08:00。Source-first当前raw Title census/model-owner关联源e46db613→Rootd2d2d341已接入既有只读查询；完整bridge和newtarget离线 `/WX`、jobs4 below-normal build GREEN148.40秒（native-census-02）。新夹具fix65415a63→Root12a9caf2仅改fake-memory test：query稳定性连续双采样，每帧Provider重置government序列，累计两次Provider/正常10次government；scratch扩到290补query已有custody288读取。生产代码与旧Python用例不改不重跑，整DLL无需因test-only变化重编。新target单独重建GREEN5.89秒；新CTest一次修复后1/1 GREEN0.07秒（总0.11）。
+
+真实生产reader/serializer新JSON22497B，SHA25b7d129abbf535873f88ac935ee1cbf7c5a09c1d4af71982d54bc6951dfd13f；十份输出只消费一次，Z:/gb0 authoritative normalizer→pure seven-group kernel 45checks GREEN。compiled-wire-02/RESULT.json14563B，SHAd6174b5efc5544706f09979a072c24bb77e2fdd1e8a411abee491920244b3fc6。旧aux/nine/其他已通过样本0重跑。Raw census独立ready，outside-tier原值留存但七计数partial；头衔重复/顺序/fallback、实际actor/model-owner关联与短路source读取保留，不拿旧汇总或当前final代阶段baseline。
+
+首次native-census-01因Root错误DLL target名无compile执行；native-census-ctest-01因夹具未模拟第二帧throw穿过noexcept而RED0xc0000409，输出0bytes。Root随后consumer也在byte0 JSONDecodeError，实际消费0份。原失败与empty wire均保留person-changed-stage-census/native-attempt-01-red/RESULT.json和owner ROOT-FIXTURE-FIX-DELIVERY.json；最小fixture修复后才首次实际消费十份GREEN，不能改写失败。新增路径共11项不同native CTests已通过、60份新真实fixture输出已消费通过，资格为static-ready，非game fixture-live。
+
+整DLL归档source12a9caf2-census-qualified-binaries/xar_ck3_bridge.dll：9748992bytes，SHAce472bc34028dc675d9f5c47cf10f6ff65f082387bd93e0be8ebde115277f44a；编译production source为d2d2d341，fixture source为12a9caf2。同档案保留newEXE/wire/cache/result/consumer pins及source差异只有此test的证据，未stage/deploy/inject。前一已推送fc628dca官方CI37319699503 SUCCESS，归档tag archive/g2-background-20261005-round2-pre-rebase保全原编译源；新publication的实际SHA/CI另记，不借上一CI结果。
+
+三条后台依赖继续source-first推进：291F550/291F940人物剩余helper，291C0D0 model10真实reset/显式起始状态，以及月度初始供给/围城/劫掠预算。阶段baseline、实际changed-stage receiver/operands、完整人物/Entry/fullmonthly/forecast仍未完成；无新paused/live或战争loop信用。CK3启动/连接/SDK/realpipe/UI/Steam/profile/save/cache/runtimeprepare/stage/deploy与新增游戏日0；历史5035/36524、G2 5/8、NW2 2/4、natural0保持。日/周rolling，后台工作未耗尽。
+

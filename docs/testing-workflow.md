@@ -3012,3 +3012,6 @@ flowchart LR
 CTest 的 target 名可能不同于 `add_test(NAME ...)`。本次 supply 名误含 `_test` 时组合过滤器仍因 writer 匹配而返回 GREEN，但仅执行1/1；实际日志确认遗漏后，只补跑正确 `xar_ck3_12003_supply_loss_eligibility` 一次。报告以实际执行名和数量为准，不将整体 exit0 当作每个传入名字都已执行。
 
 2026-10-05 retained Rules 的外置 native-wire consumer 首次在导入 dataclasses 时失败：同目录临时 `inspect.py` 遮蔽 Python stdlib inspect。该 harness RED 消费0帧；仅修正外置 import path 后，首次实际消费7份生产 JSON GREEN。生产代码与旧测试未修改或重跑。失败和修复结果分别保存在第二批 `retained-geometry/loaded-effects/NATIVE-WIRE-REPLAY-ATTEMPT-01-RED.json` 与 `NATIVE-WIRE-REPLAY.json`。临时工具采用任务名称，遇到导入失败先核对实际模块路径。
+
+
+2026-10-05 新 census fake-memory fixture 实证：`ReadBattleTerminalTransitionV1` 为稳定性比较连续执行两个 TerminalSample，模拟getter必须逐sample重复原返回序列。原fixture仅首call返回false，第二sample误进入UndemandedIndex并throw穿过noexcept，表现0xc0000409、wire0bytes；每帧Provider重置局部government序列后总2provider/10government，newtarget一次修复后GREEN。另仅补此fixture已有query必读的scratch288 operand。该故障属于夹具，不更改生产双采样、不放宽compiler flags，也不据此扫描或重跑旧fixture。consumer只在目标GREEN且真实wire产生后执行；本次失败后的empty JSONDecodeError消费0份，原日志/receipt保留。

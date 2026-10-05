@@ -1,5 +1,10 @@
 # CK3 自动游玩智能体进度中心
 
+## 当前七组census后台交付（2026-10-05T22:06:41+08:00）
+
+当前raw Title census/model-owner关联已完成整DLL与newnative/consumer资格；第二轮11项新增原生测试通过、60份生产fixture字节消费GREEN。首个双采样fixture RED原样保留并最小修复，仅重跑此新增失败目标。人物后段helper、显式stage baseline及monthly预算三个实际依赖继续施工；完整人物/Entry/真实整月/live仍未完。详情：[后台续行交接](../handover/2026-10-05-g2-background-successor.md)。5035历史保存日、新自动游戏日0；游戏与现场继续由用户使用。
+
+
 ## 后台合批验收继续交付（2026-10-05T21:45:29+08:00）
 
 新source52391完整bridge已含九byte/helper/真正loaded Rules，严格联编及两newonly tests GREEN；第二轮10项新增native CTests各一次GREEN、50份真实fixture字节消费GREEN。四pass same-input conditional loss current/max子系统已接入，actual loss/poststage仍false/null、fullmonthly与Entry/live未完。另403B first-contact Province/admission source澄清初始/返回缓存两阶段；七group当前rawcensus与model-owner关联继续施工。旧游戏冻结5035日、新自动游戏日0，CK3/SDK/窗口/Steam/现场由用户使用且本轮未接触。详情：[后台续行交接](../handover/2026-10-05-g2-background-successor.md)，真实live资格仍见各原生专题。
