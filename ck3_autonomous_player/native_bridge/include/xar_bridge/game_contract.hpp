@@ -2650,6 +2650,25 @@ struct BattleCurrentPersonAuxiliaryScratchInputsSnapshotV1 {
   friend bool operator==(const BattleCurrentPersonAuxiliaryScratchInputsSnapshotV1 &,
                          const BattleCurrentPersonAuxiliaryScratchInputsSnapshotV1 &) = default;
 };
+// Inputs of 2949010's independent nine-byte cache; actual scratch258 model.
+struct BattleCurrentPersonNineCacheByteInputsSnapshotV1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::optional<bool> model_present;
+  std::optional<BattleCurrentPersonRawPropertiesSnapshotV1> aggregate_properties;
+  std::optional<bool> carrier278_present;
+  std::optional<std::uint32_t> carrier278_magic_raw;
+  std::optional<bool> linked20_present;
+  std::optional<bool> used_native_definition_fallback;
+  std::optional<bool> selected_definition_present;
+  std::optional<std::uint32_t> selected_definition_magic_raw;
+  std::optional<std::vector<std::uint16_t>> selected_definition_keys_u16;
+  std::optional<bool> current_cache_present;
+  std::optional<std::vector<std::int8_t>> current_cache_bytes;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleCurrentPersonNineCacheByteInputsSnapshotV1 &,
+                         const BattleCurrentPersonNineCacheByteInputsSnapshotV1 &) = default;
+};
 struct BattleCurrentPersonRawNumericInputsSnapshotV1 {
   std::string status = "unavailable";
   bool raw_numeric_inputs_ready = false;
@@ -2664,6 +2683,7 @@ struct BattleCurrentPersonRawNumericInputsSnapshotV1 {
   std::optional<std::int32_t> scratch_factor_denominator;
   std::optional<BattleCurrentPersonRawContextSnapshotV1> context;
   std::optional<BattleCurrentPersonAuxiliaryScratchInputsSnapshotV1> auxiliary_scratch_inputs;
+  std::optional<BattleCurrentPersonNineCacheByteInputsSnapshotV1> nine_cache_byte_inputs;
   std::string unavailable_reason;
   friend bool operator==(const BattleCurrentPersonRawNumericInputsSnapshotV1 &,
                          const BattleCurrentPersonRawNumericInputsSnapshotV1 &) = default;

@@ -291,6 +291,8 @@ def _normalize_raw_numeric_inputs(value: object, field: str) -> dict[str, object
     }
     if isinstance(value, dict) and "auxiliary_scratch_inputs" in value:
         fields.add("auxiliary_scratch_inputs")
+    if isinstance(value, dict) and "nine_cache_byte_inputs" in value:
+        fields.add("nine_cache_byte_inputs")
     raw = _exact_dict(value, field, fields)
 
     def optional_i32(item: object, name: str) -> int | None:
@@ -387,6 +389,9 @@ def _normalize_raw_numeric_inputs(value: object, field: str) -> dict[str, object
     if "auxiliary_scratch_inputs" in raw:
         normalized["auxiliary_scratch_inputs"] = _normalize_auxiliary_scratch_inputs(
             raw["auxiliary_scratch_inputs"], f"{field}.auxiliary_scratch_inputs", scratch)
+    if "nine_cache_byte_inputs" in raw:
+        normalized["nine_cache_byte_inputs"] = _normalize_nine_cache_byte_inputs(
+            raw["nine_cache_byte_inputs"], f"{field}.nine_cache_byte_inputs", scratch)
     return normalized
 
 
@@ -429,6 +434,67 @@ def _normalize_auxiliary_scratch_inputs(
     if ready is not complete or (ready and reason is not None) or (
         not ready and (not isinstance(reason, str) or not reason)):
         raise ValueError(f"{field} auxiliary scratch completeness disagrees")
+    return out
+
+
+def _normalize_nine_cache_byte_inputs(
+    value: object, field: str, scratch_present: bool | None,
+) -> dict[str, object] | None:
+    if value is None:
+        return None
+    raw = _exact_dict(value, field, {
+        "status", "ready", "model_present", "aggregate_properties", "carrier278_present",
+        "carrier278_magic_raw", "linked20_present", "used_native_definition_fallback",
+        "selected_definition_present", "selected_definition_magic_raw",
+        "selected_definition_keys_u16", "current_cache_present", "current_cache_bytes",
+        "unavailable_reason",
+    })
+    out = dict(raw)
+    for key in ("model_present", "carrier278_present", "linked20_present",
+                "used_native_definition_fallback", "selected_definition_present", "current_cache_present"):
+        out[key] = _optional_boolean(raw[key], f"{field}.{key}")
+    for key in ("carrier278_magic_raw", "selected_definition_magic_raw"):
+        out[key] = _optional_integer(raw[key], f"{field}.{key}", minimum=0, maximum=2**32 - 1)
+    for key, minimum, maximum in (("selected_definition_keys_u16", 0, 65535),
+                                  ("current_cache_bytes", -128, 127)):
+        items = raw[key]
+        if items is not None:
+            if not isinstance(items, list) or len(items) != 9:
+                raise ValueError(f"{field}.{key} must contain nine native occurrences")
+            out[key] = [_integer(item, f"{field}.{key}[{i}]", minimum=minimum, maximum=maximum)
+                        for i, item in enumerate(items)]
+    properties = raw["aggregate_properties"]
+    properties_complete = False
+    if properties is not None:
+        p = _exact_dict(properties, f"{field}.aggregate_properties", {"count", "keys_u16", "values_q64"})
+        count = _optional_integer(p["count"], f"{field}.aggregate_properties.count",
+                                  minimum=-(2**31), maximum=2**31 - 1)
+        p = dict(p, count=count)
+        for key, minimum, maximum in (("keys_u16", 0, 65535), ("values_q64", -(2**63), 2**63 - 1)):
+            if p[key] is not None:
+                if not isinstance(p[key], list):
+                    raise ValueError(f"{field}.aggregate_properties.{key} must be a list or null")
+                p[key] = [_integer(item, f"{field}.aggregate_properties.{key}[{i}]",
+                                   minimum=minimum, maximum=maximum) for i, item in enumerate(p[key])]
+                if count is not None and len(p[key]) != max(0, count):
+                    raise ValueError(f"{field}.aggregate_properties native count disagrees")
+        properties_complete = count is not None and p["keys_u16"] is not None and p["values_q64"] is not None
+        out["aggregate_properties"] = p
+    first_magic, second_magic = out["carrier278_magic_raw"], out["selected_definition_magic_raw"]
+    optional_complete = out["carrier278_present"] is True and first_magic is not None and (
+        first_magic != 0x41495374 or (out["linked20_present"] is not None
+        and out["used_native_definition_fallback"] is (out["linked20_present"] is False)
+        and out["selected_definition_present"] is True and second_magic is not None
+        and (second_magic != 0x4744624F or out["selected_definition_keys_u16"] is not None)))
+    complete = scratch_present is False or (scratch_present is True
+        and out["model_present"] is True and properties_complete and optional_complete)
+    ready = _boolean(raw["ready"], f"{field}.ready")
+    status, reason = raw["status"], raw["unavailable_reason"]
+    if status not in {"available", "partial", "unavailable"} or ready is not (status == "available"):
+        raise ValueError(f"{field} nine-byte input availability disagrees")
+    if ready is not complete or (ready and reason is not None) or (
+        not ready and (not isinstance(reason, str) or not reason)):
+        raise ValueError(f"{field} nine-byte input completeness disagrees")
     return out
 
 

@@ -977,6 +977,63 @@ bool CurrentRawContextReady(
         !CurrentRawPropertiesReady(*row.properties)) return false;
   return true;
 }
+game::BattleCurrentPersonNineCacheByteInputsSnapshotV1 CurrentNineCacheByteInputs(
+    const BattleBindings &b, const void *scratch) {
+  game::BattleCurrentPersonNineCacheByteInputsSnapshotV1 out{};
+  if (!scratch) {
+    out.status = "available";
+    out.ready = true;
+    return out;
+  }
+  const auto *model = At<const void *>(scratch, 0x258);
+  out.model_present = model != nullptr;
+  if (model) out.aggregate_properties = CurrentRawProperties(
+      static_cast<const std::byte *>(model) + 0x78);
+  // This native helper has no model8==Character owner test or context fallback.
+  const auto *carrier = At<const void *>(scratch, 0x278);
+  out.carrier278_present = carrier != nullptr;
+  bool optional_family_complete = false;
+  if (carrier) {
+    out.carrier278_magic_raw = At<std::uint32_t>(carrier, 0x28);
+    if (*out.carrier278_magic_raw != 0x41495374U) {
+      optional_family_complete = true;
+    } else {
+      const auto *linked = At<const void *>(carrier, 0x20);
+      out.linked20_present = linked != nullptr;
+      out.used_native_definition_fallback = linked == nullptr;
+      const void *definition = nullptr;
+      bool definition_selection_observed = false;
+      if (linked) {
+        definition = At<const void *>(linked, 0x238);
+        definition_selection_observed = true;
+      } else if (b.current_person_nine_cache_definition_fallback_slot) {
+        definition = *b.current_person_nine_cache_definition_fallback_slot;
+        definition_selection_observed = true;
+      }
+      if (definition_selection_observed)
+        out.selected_definition_present = definition != nullptr;
+      if (definition) {
+        out.selected_definition_magic_raw = At<std::uint32_t>(definition, 0x38);
+        if (*out.selected_definition_magic_raw == 0x4744624FU) {
+          out.selected_definition_keys_u16.emplace();
+          for (std::size_t i = 0; i < 9; ++i)
+            out.selected_definition_keys_u16->push_back(
+                At<std::uint16_t>(definition, 0x312 + i * 2));
+        }
+        optional_family_complete = true;
+      }
+    }
+  }
+  const auto *cache = At<const std::int8_t *>(scratch, 0x310);
+  out.current_cache_present = cache != nullptr;
+  if (cache) out.current_cache_bytes.emplace(cache, cache + 9);
+  // Source inputs remain useful independently of the current cache pointer.
+  out.ready = out.aggregate_properties && CurrentRawPropertiesReady(*out.aggregate_properties) &&
+      optional_family_complete;
+  out.status = out.ready ? "available" : "partial";
+  if (!out.ready) out.unavailable_reason = "nine_cache_byte_source_inputs_unavailable";
+  return out;
+}
 game::BattleCurrentPersonRawNumericInputsSnapshotV1 CurrentRawNumericInputs(
     const BattleBindings &b, void *character, std::int32_t character_id) {
   game::BattleCurrentPersonRawNumericInputsSnapshotV1 out{};
@@ -999,6 +1056,7 @@ game::BattleCurrentPersonRawNumericInputsSnapshotV1 CurrentRawNumericInputs(
   else complete = false;
   const auto *scratch = At<const void *>(character, 0x1B0);
   out.scratch_present = scratch != nullptr;
+  out.nine_cache_byte_inputs = CurrentNineCacheByteInputs(b, scratch);
   out.auxiliary_scratch_inputs.emplace();
   auto &aux = *out.auxiliary_scratch_inputs;
   if (!scratch) {
@@ -1856,6 +1914,8 @@ void EnableBattleCurrentPerson12003(BattleBindings &b, std::uintptr_t base,
   b.current_person_auxiliary_high_thresholds = {
       reinterpret_cast<const std::int32_t *>(base + 0x05C69D18),
       reinterpret_cast<const std::int32_t *>(base + 0x05C69D14)};
+  b.current_person_nine_cache_definition_fallback_slot =
+      reinterpret_cast<void **>(base + 0x05D1F7B8);
   b.current_person_raw_fallback_context =
       reinterpret_cast<const void *>(base + 0x05D67B90);
   constexpr std::array<std::uintptr_t, 4> category_rvas{
