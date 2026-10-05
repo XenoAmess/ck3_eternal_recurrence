@@ -1,0 +1,50 @@
+{
+  "status": "ACTUAL_PAUSED_NATIVE_SELECTION_SUBJECT_VERIFIED_UI_AND_ORIGINAL_CAPTURE",
+  "at_utc": "2026-10-05T19:33:03.982258+00:00",
+  "actual_pid": 19560,
+  "episode": "native-33388-23726fbd8a80",
+  "date_raw": 53149200,
+  "subject_army": 0,
+  "expected_player_army_count": 2,
+  "actual_available_UI_subject_verified": true,
+  "foreground_hwnd": 174392418,
+  "foreground_pid": 19560,
+  "desktop_size": [
+    1920,
+    1080
+  ],
+  "image": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-Main-positive-write-frame-a01\\desktop.png",
+    "bytes": 3281952,
+    "sha256": "6f56ac1b5000ac9aa42ac446c52ad388c575b59ec4617c3ac7985bfc126848c4"
+  },
+  "before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-Main-positive-write-frame-a01\\before.json",
+    "bytes": 240369,
+    "sha256": "3147407a5a3619d586a5f72df98259f5653ab74049302779392af473fa848fcb"
+  },
+  "UI_query": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-Main-positive-write-frame-a01\\ui.json",
+    "bytes": 85508,
+    "sha256": "9eed578d0bc687958c3ee198db6fb1654a19bb97ff8b6ce2ceb0a7347100962a"
+  },
+  "after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-Main-positive-write-frame-a01\\after.json",
+    "bytes": 240369,
+    "sha256": "b4c9ff95ba218b7b284c8c7a195f0006a3bd358cc7e274a5b1cbea49fd849f7c"
+  },
+  "phase0_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-phase0-a03\\result.json",
+    "bytes": 578,
+    "sha256": "4462d8979b3ff5d88c13932bb623bf87590c674c16f276fe48cd51ae4f1fe2c2"
+  },
+  "retained_this_B_runtime_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-phase0-a03\\ready-move-before.json",
+    "bytes": 232075,
+    "sha256": "20e2e58eb5cae004c0868b6b7856279e96d9666417d191551dce7ed47842f813"
+  },
+  "mouse_keyboard_calls": 0,
+  "Root_direct_original_review_pending": true,
+  "human_full_film_signoff": null,
+  "strategy_time_advanced": false
+}

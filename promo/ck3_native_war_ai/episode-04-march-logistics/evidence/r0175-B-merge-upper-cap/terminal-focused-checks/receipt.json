@@ -1,0 +1,30 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-I",
+    "-S",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\test_terminal_append_a02.py"
+  ],
+  "started_utc": "2026-10-05T20:09:12.775573+00:00",
+  "finished_utc": "2026-10-05T20:09:12.929699+00:00",
+  "returncode": 0,
+  "producer": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\test_terminal_append_a02.py",
+    "bytes": 5169,
+    "sha256": "51848da1e68e11d3e1ae8c70096c3fedf596bf8a526c888dd604294625ddb052"
+  },
+  "stdout": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\checks-a02-terminal\\stdout.json",
+    "bytes": 616,
+    "sha256": "c4c2ac8abcc2d7858968e00c24d235bebb8898328ec0c843bdc6cbcff0563e60"
+  },
+  "stderr": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\checks-a02-terminal\\stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "SDK_GUI_Game_media_TTS_Git_calls": 0
+}

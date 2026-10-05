@@ -1,0 +1,48 @@
+{
+  "schema": "ck3.e04.B.closed-bundle-index.v1",
+  "observed": {
+    "B_disposition": "STOPPED_GATE_INCOMPLETE",
+    "episode_run_id": "native-33388-23726fbd8a80",
+    "start_raw": 53148432,
+    "stopped_raw": 53149344,
+    "absolute_end_raw": 53150592,
+    "actual_days_used": 38,
+    "remaining_days": 52,
+    "deadline_reached": false,
+    "frozen_cohort_gate_pass": false,
+    "commander_preserved": false,
+    "actual_owned_runtime_closed": true,
+    "actual_release_sequence": 5115,
+    "original_pending_fields_retained": true,
+    "B_London_endpoint": null,
+    "C_terminal": null,
+    "winner": null,
+    "S02_machine_audit": "PASS",
+    "S02_reviewed_single_frames": 3,
+    "continuous_clean_span": null,
+    "human_1x_complete_watch": false,
+    "human_signoff": false,
+    "new_unit_type_or_cause": null
+  },
+  "components": {
+    "merge_exception": {
+      "root": "merge-exception",
+      "catalogue": "merge-exception/manifest-final-a02.json",
+      "values": "merge-exception/B-merge-exception-values.json",
+      "native_observer_reexecuted_by_bundle": false
+    },
+    "closed_terminal": {
+      "root": "closed-terminal",
+      "values": "closed-terminal/B-closed-terminal-values.json"
+    },
+    "S02_media_review": {
+      "root": "media-review",
+      "values": "media-review/B-S02-media-review-values.json"
+    },
+    "actual_release": "source-events/actual-release.json",
+    "upper_cap_math_repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/index.json"
+  },
+  "entry": "code/verify_B_closed_bundle.py --verify",
+  "reuse_boundary": "Python standard library; checks small relative bytes and existing metadata joins. Does not run Game/SDK, read media, or repeat the full native cohort observer.",
+  "historical_pending_fields": "Old merge/terminal/media source bodies retain their pending fields; later closure and review are separate immutable inputs."
+}

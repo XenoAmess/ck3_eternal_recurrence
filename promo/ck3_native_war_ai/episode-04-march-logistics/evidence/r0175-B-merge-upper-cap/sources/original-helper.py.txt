@@ -1,0 +1,532 @@
+"""Root B-a02 stages: default PLAN; only explicit --run publishes.
+
+Three independent modes: return child to2174, merge into nativeMain0, then
+whole London move. No resume, time loop, retry, save, UI, media, bus or Git.
+Machine-local Root run recipe; source paths are not a portable SDK launcher.
+"""
+from __future__ import annotations
+import argparse
+import copy
+import hashlib
+import importlib.util
+import json
+from pathlib import Path
+import re
+import sys
+
+ROOT = Path('C:/ck3-war-episode04-research-20261004-a01')
+PREP = ROOT / 'r0175-capture-preparation-a02'
+RUN = ROOT / 'native-live-r0175-a02'
+PACKETS = ROOT / 'root-packets-r0175-a02'
+PROTOCOL = ROOT / 'root-r0174-abc-protocol-freeze-a01/protocol.json'
+PROTOCOL_SHA = '63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa'
+SHARED = ROOT / 'r0174-abc-pulse-preparation-a02'
+PHASE = ROOT / 'r0175-B-phase-operation-preparation-a02'
+START, END, ACTOR = 53148432, 53150592, 33388
+PYTHON = Path('D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe')
+SOURCE_PINS = {
+    PREP / 'live_api_r0175_root_a02.py': '2680328d7a354544ac6cbcd5e3fd33d415c0b03a44c3fbc568a07ed6cc23aec7',
+    PREP / 'queue_tool_r0175_root_a02.py': '6060e81f3cde19ec94d807ff0723488327bb3c025c0f8ae7c105b26211449607',
+    PREP / 'read_ready_r0175_a02.py': 'ba6910aeb4d801932ab1441b8bdb2dfd083a72720c87933828901c11549137f3',
+    SHARED / 'r0174_abc_guard.py': '2cc6ef157c677a3d8964a061934fc79f6289e6eede16b0d3bb4f3d5ce1596e1b',
+    PHASE / 'root_B_pair_driver_a02.py': '1f6abe80f4f7e3314bc6c479f9e6785a5125be376c888e21627c73ecc2add96c',
+    PHASE / 'root_B_phase0_a02.py': 'a45801a1bf4cba1835ad52ed9adfded8514bb4ef3e3f84d5ce37c6d5402d97d9',
+}
+TOOLS = {'ck3_take_snapshot', 'ck3_query_army_strengths', 'ck3_query_army_commander_candidates_v1',
+         'ck3_get_capabilities', 'ck3_execute_step', 'ck3_move_army'}
+
+def need(ok, reason):
+    if not ok:
+        raise RuntimeError(reason)
+
+def load(path):
+    return json.loads(Path(path).read_bytes())
+
+def pin(path):
+    p = Path(path).resolve(strict=True)
+    b = p.read_bytes()
+    return {'path': str(p), 'bytes': len(b), 'sha256': hashlib.sha256(b).hexdigest()}
+
+def check_ref(ref):
+    need(isinstance(ref, dict), 'exact source pin required')
+    actual = pin(ref['path'])
+    need(Path(actual['path']) == Path(ref['path']).resolve(strict=True)
+         and all(actual[k] == ref[k] for k in ('bytes', 'sha256')), 'canonical source bytes/SHA differ')
+    return actual
+
+def explicit_ref(path, sha):
+    need(path and isinstance(sha, str) and re.fullmatch('[0-9a-fA-F]{64}', sha), 'explicit path and exact SHA required')
+    ref = pin(path); need(ref['sha256'] == sha.lower(), 'explicit source SHA differs')
+    return ref
+
+def write(path, value):
+    with Path(path).open('x', encoding='utf-8', newline='\n') as handle:
+        json.dump(value, handle, ensure_ascii=False, indent=2); handle.write('\n')
+
+def module(path, name):
+    spec = importlib.util.spec_from_file_location(name, path)
+    obj = importlib.util.module_from_spec(spec); spec.loader.exec_module(obj)
+    return obj
+
+def pure_modules():
+    for path, sha in SOURCE_PINS.items():
+        need(pin(path)['sha256'] == sha, 'frozen helper source changed: ' + path.name)
+    sys.path.insert(0, str(PHASE))
+    guard = module(SHARED / 'r0174_abc_guard.py', 'B_stage_existing_pure_guard')
+    pair = module(PHASE / 'root_B_pair_driver_a02.py', 'B_stage_existing_pair_window')
+    return guard, pair
+
+def maps(rows):
+    regs, records = {}, {}
+    for row in rows:
+        for item in row['regiment_strengths']:
+            key = item['army_regiment_id']
+            need(key not in regs and item['scale'] == 1, 'duplicate Regiment or bad integer scale')
+            regs[key] = item
+        for container in row['regiment_replenishment_records_v1']:
+            need(container['status'] == 'available' and container['ready'] is True, 'DATA container incomplete')
+            for item in container['records']:
+                need(item['status'] == 'available', 'DATA record unavailable')
+                key = (container['army_regiment_id'], item['record_index'], item['persistent_regiment_id'], item['chunk_index'])
+                need(key not in records, 'duplicate DATA record identity')
+                records[key] = item
+    need(len(regs) == 27 and len(records) == 37, 'complete27Reg/37DATA required')
+    return regs, records
+
+def numeric_union(before, after):
+    a, x = maps(before); b, y = maps(after)
+    need(set(a) == set(b) and set(x) == set(y), 'immediate mutation cohort identities changed')
+    for left, right in ((a, b), (x, y)):
+        for key in left:
+            for field in ('current_soldiers', 'maximum_soldiers'):
+                need(left[key][field] == right[key][field], 'immediate current/max changed: ' + field)
+            if 'effective_current_soldiers' in left[key]:
+                need(left[key]['effective_current_soldiers'] == right[key]['effective_current_soldiers'], 'immediate effective soldiers changed')
+    need(sum(r['current_soldiers'] for r in before) == sum(r['current_soldiers'] for r in after)
+         and sum(r['maximum_soldiers'] for r in before) == sum(r['maximum_soldiers'] for r in after), 'immediate aggregate soldiers changed')
+    return {'regiment_entire_diffs': [{'FullID': k, 'before': a[k], 'after': b[k]} for k in a if a[k] != b[k]],
+            'DATA_entire_diffs': [{'identity': list(k), 'before': x[k], 'after': y[k]} for k in x if x[k] != y[k]],
+            'actual_application_ledger': None, 'prepared_changes_are_integer_gain': False}
+
+MOVE_QUEUE_FIELDS = frozenset({'army_state', 'army_state_code', 'move_target_observable',
+    'move_target_province_id', 'route_province_ids', 'route_read_status', 'route_source_count'})
+
+def player_projection(snapshot):
+    rows = snapshot['player_armies']
+    need(isinstance(rows, list), 'actual player roster unavailable')
+    result = {}
+    for row in rows:
+        aid = row.get('army_id')
+        need(type(aid) is int and aid not in result and row.get('owner_character_id') == ACTOR
+             and row.get('controllable') is True and row.get('source') == 'native',
+             'trusted owned native player roster required')
+        result[aid] = row
+    return result
+
+def war_outside_player_projection(snapshot, players):
+    wars = copy.deepcopy(snapshot['active_wars'])
+    participants = []
+    for war in wars:
+        allied = war.get('allied_armies')
+        need(isinstance(allied, list), 'allied roster unavailable')
+        own = set(); outside = []
+        for row in allied:
+            if row.get('owner_character_id') == ACTOR:
+                aid = row.get('army_id')
+                need(aid in players and aid not in own and row == players[aid],
+                     'owned allied row must exactly match its same-frame player projection')
+                own.add(aid)
+            else:
+                outside.append(row)
+        participants.append(own)
+        war['allied_armies'] = outside
+    return wars, participants
+
+def expected_player_mutation(before, after, mutation):
+    left = player_projection(before); right = player_projection(after)
+    kind = mutation.get('kind')
+    if kind == 'move':
+        aid = mutation['army_id']; target = mutation['target']
+        need(set(left) == set(right) and aid in left, 'move changed player identities')
+        for key in left:
+            if key != aid:
+                need(left[key] == right[key], 'non-target player changed during move')
+                continue
+            need({k:v for k,v in left[key].items() if k not in MOVE_QUEUE_FIELDS}
+                 == {k:v for k,v in right[key].items() if k not in MOVE_QUEUE_FIELDS},
+                 'move changed player material beyond instructed queue')
+            r = right[key]
+            need(isinstance(r['army_state'], str) and r['army_state'] not in {'', 'unknown'}
+                 and type(r['army_state_code']) is int
+                 and r['move_target_observable'] is True and r['move_target_province_id'] == target
+                 and r['route_read_status'] == 'complete_nonempty' and r['route_province_ids']
+                 and r['route_province_ids'][-1] == target
+                 and r['route_source_count'] == len(r['route_province_ids']),
+                 'actual instructed native move queue incomplete')
+    elif kind == 'merge':
+        D, S = mutation['destination'], mutation['source']
+        need(D != S and D in left and S in left and set(right) == set(left)-{S},
+             'merge changed player identities beyond source absorption')
+        need(all(left[k] == right[k] for k in right),
+             'merge changed surviving player projection; Root review required')
+    else:
+        need(False, 'explicit move or merge context required')
+    b, bi = war_outside_player_projection(before, left)
+    a, ai = war_outside_player_projection(after, right)
+    need(b == a and len(bi) == len(ai), 'NPC or other war/world material changed during mutation')
+    need(all(y == x.intersection(right) for x,y in zip(bi,ai)),
+         'allied player membership differs actual source absorption')
+
+def stable_world(guard, before, after, *, mutation=None):
+    guard.after(before, after)
+    need(before['date_raw'] == after['date_raw'], 'paused stage unexpectedly advanced time')
+    if mutation is None:
+        need(before['active_wars'] == after['active_wars'], 'material/world changed during paused stage')
+    else:
+        expected_player_mutation(before, after, mutation)
+    need(before.get('played_character_gold') == after.get('played_character_gold'), 'treasury changed in paused stage; Root review required')
+
+def stationary(row, target=2174):
+    return (row.get('current_province_id') == target and row.get('army_state') == 'regular'
+            and row.get('route_read_status') == 'complete_empty' and row.get('route_province_ids') == []
+            and row.get('in_combat') is False and row.get('retreating') is False)
+
+def validate_binding(binding):
+    need(binding.get('status') == 'PHASE0_ACTUAL_SPLIT_AND_CHILD_ROUTE_SUBMITTED_PAUSED'
+         and binding.get('date_raw') == START and binding.get('main_native_id') == 0,
+         'actual thisB phase0 mapping required')
+    need(all(type(binding.get(k)) is int for k in ('main_public_id', 'child_public_id', 'child_native_id'))
+         and binding['main_public_id'] != binding['child_public_id'] and binding['child_native_id'] != 0,
+         'actual phase0 distinct full IDs unavailable')
+
+def paired_observation(ref, binding, guard, pair):
+    check_ref(ref); obs = load(ref['path'])
+    guard.health_join(obs['health'], obs['before']); guard.after(obs['before'], obs['after'])
+    need(obs['before']['date_raw'] == obs['after']['date_raw'], 'saved observation not paused same date')
+    return obs, pair.role_rows(obs, binding)
+
+def qualification(receipt, binding, phase_ref, protocol_ref, guard, pair, episode):
+    need(receipt.get('status') == 'ROOT_ACTUAL_B_REST_QUALIFIED'
+         and receipt.get('start_raw') == START and receipt.get('absolute_end_raw') == END
+         and Path(receipt['run_dir']).resolve() == RUN.resolve() and receipt['episode_run_id'] == episode,
+         'qualification is not this B run/episode')
+    for key, expected in (('phase0_result', phase_ref), ('Root_protocol', protocol_ref)):
+        actual = check_ref(receipt[key]); need(actual == expected, 'qualification source binding differs: ' + key)
+    dates = []
+    latest = None
+    for role in ('main', 'child'):
+        ref = receipt[role + '_window']; check_ref(ref); window = load(ref['path'])
+        left_obs, left = paired_observation(window['before_observation'], binding, guard, pair)
+        right_obs, right = paired_observation(window['after_observation'], binding, guard, pair)
+        guard.after(left_obs['after'], right_obs['after'])
+        need(left_obs['after']['episode_run_id'] == right_obs['after']['episode_run_id'] == episode,
+             'qualification window episode differs')
+        actual = pair.window(left, right)
+        need(actual == window['actual_window'] and actual[role + '_window_success'] is True,
+             'actual paired supply window does not qualify: ' + role)
+        dates.extend(actual['pair_dates_raw'])
+        if latest is None or right_obs['after']['date_raw'] > latest['after']['date_raw']:
+            latest = right_obs
+    anchor = pin(PACKETS / 'B-first-rest-anchor-a01.json')
+    if receipt.get('rest_anchor') is not None:
+        need(check_ref(receipt['rest_anchor']) == anchor, 'qualification changed original canonical rest anchor')
+    saved_anchor = load(anchor['path'])
+    need(saved_anchor['status'] == 'ACTUAL_FIRST_OBSERVED_BOTH_STATIONARY_POSITIVE_REST_ANCHOR'
+         and saved_anchor['fixed_global_END'] == END and saved_anchor['local_max_days'] == 31,
+         'original rest anchor missing or changed')
+    need(check_ref(saved_anchor['phase0_result']) == phase_ref, 'original rest anchor phase0 binding differs')
+    anchor_obs, anchor_pair = paired_observation(saved_anchor['observation'], binding, guard, pair)
+    need(pair.positive(anchor_pair) and saved_anchor['date_raw'] == anchor_obs['after']['date_raw']
+         and min(dates) >= saved_anchor['date_raw'] and max(dates) <= saved_anchor['date_raw'] + 31 * 24,
+         'qualification windows exceed original31day anchor')
+    return latest
+
+def weighted_supply(D, S, cap):
+    need(D['merge_supply_destination_weight_scale'] == D['current_supply_scale'] ==
+         S['current_supply_scale'] == 100000, 'native merge fixed scales unknown')
+    wD = D['merge_supply_destination_weight_raw']; wS = S['current_soldiers'] * 100000
+    need(type(wD) is int and wD > 0 and wS > 0 and type(cap) is int and cap >= 0, 'positive native merge weights/cap required')
+    weights = [wD, wS]; stocks = [D['current_supply_raw'], S['current_supply_raw']]
+    need(all(type(stock) is int and stock >= 0 for stock in stocks), 'nonnegative actual merge stock required')
+    shares = [w * 100000 // sum(weights) for w in weights]
+    terms = [q * stock // 100000 for q, stock in zip(shares, stocks)]
+    return {'role_weights_raw': weights, 'fixed_shares_raw': shares, 'fixed_contributions_raw': terms,
+            'preclamp_raw': sum(terms), 'expected_post_stock_raw': min(cap, max(0, sum(terms))),
+            'scale': 100000, 'source_current_role_weight': 'native current aggregate *100000',
+            'applied_update_ledger': None}
+
+class Stage:
+    def __init__(self, api, guard, inputs, binding, episode, pid, name, out, protocol_ref):
+        self.api, self.guard, self.inputs, self.binding = api, guard, inputs, binding
+        self.episode, self.pid, self.name, self.out, self.protocol_ref = episode, pid, name, out, protocol_ref
+        self.commands = 0
+
+    def call(self, tag, tool, arguments, ref=None):
+        n = self.name + '-' + tag
+        result = self.api.call(n, tool, arguments, run=True, before_snapshot=ref,
+                               Root_protocol=self.protocol_ref if ref is not None else None)
+        write(self.out / (tag + '.json'), result)
+        return result
+
+    def snapshot(self, tag):
+        n = self.name + '-' + tag
+        result = self.api.snap(n, run=True)
+        write(self.out / (tag + '.json'), result)
+        self.guard.snapshot(result, episode=self.episode, pipe=self.inputs['pipe_name'])
+        runtime = self.guard.runtime(result)
+        need(runtime['bridge_pid'] == self.pid and runtime['hello']['pid'] == self.pid, 'fresh actual native PID differs')
+        need(result.get('episode_character_id') == ACTOR, 'episode actor differs')
+        need(len(list((PACKETS / 'abc-batches').glob('*.json'))) <= 120, 'shared120batch store exceeded')
+        return result, self.api.snapshot_reference(n)
+
+    def collect(self, tag, whole=False):
+        before, _ = self.snapshot(tag + '-before')
+        ids = [r['army_id'] for r in before['player_armies']]
+        health = self.call(tag + '-health', 'ck3_query_army_strengths', {'army_ids': ids, 'expected_revision': before['revision']})
+        complete = self.guard.health_join(health, before)
+        need(complete['regiments'] == self.inputs['expected_complete_cohort']['regiments']
+             and complete['record_identities'] == self.inputs['expected_complete_cohort']['record_identities'],
+             'whole frozen27/37 identities/max/type changed; no net count restriction across dates')
+        rows = {r['army_id']: r for r in health['army_strengths']}
+        expected = {self.binding['main_public_id']: 0}
+        if not whole:
+            expected[self.binding['child_public_id']] = self.binding['child_native_id']
+        need(complete['mapping'] == expected, 'fresh roster/available native mapping differs phase0 roles; global partial stops')
+        maps(list(rows.values()))
+        commanders = {}
+        for aid, native in expected.items():
+            c = self.call(tag + '-commander-' + str(aid), 'ck3_query_army_commander_candidates_v1', {'army_id': aid, 'expected_revision': before['revision']})
+            for key in ('snapshot_id', 'revision', 'native_revision'):
+                need(c.get('queried_' + key) == before[key], 'typed commander exact frame differs')
+            ctx = c['army_commander_candidates']; current = ctx.get('current_commander') or {}
+            need(c.get('accepted') is True and c.get('read_only') is True
+                 and c.get('backend_id') == before['backend_id']
+                 and c.get('date_raw') == before['date_raw']
+                 and ctx.get('snapshot_revision') == before['native_revision']
+                 and ctx.get('date_raw') == before['date_raw']
+                 and ctx.get('status') == 'available' and ctx.get('army_id') == aid
+                 and ctx.get('native_carmy_id') == native and ctx.get('owner_character_id') == ACTOR
+                 and current.get('status') == 'available' and current.get('character_id') == (27357 if native == 0 else 33388),
+                 'actual current commander/owner/subject differs; no automatic reassignment')
+            commanders[str(aid)] = {'native_carmy_id': native, 'commander_character_id': current['character_id']}
+        after, ref = self.snapshot(tag + '-after')
+        stable_world(self.guard, before, after)
+        for key in ('snapshot_id', 'revision', 'native_revision'):
+            need(before[key] == after[key], 'readonly bracket source frame changed')
+        need(before['player_armies'] == after['player_armies'], 'readonly bracket roster changed')
+        obs = {'before': before, 'health': health, 'after': after, 'commanders': commanders,
+               'mapping': complete['mapping'], 'complete_cohort': complete, 'reference': ref}
+        write(self.out / (tag + '-observation.json'), obs)
+        return obs
+
+    def mutation(self, tag, tool, args, ref):
+        need(self.commands == 0, 'only one mutation per stage; no retry')
+        self.commands += 1
+        result = self.call(tag, tool, args, ref)
+        need(result.get('accepted') is True, 'native command rejected or unconfirmed; no retry')
+        return result
+
+    def move(self, before, aid, target):
+        s = before['after']
+        preview = self.call('preview', 'ck3_execute_step', {'step': f'preview-move-army-{aid}-to-{target}', 'expected_revision': s['revision']})
+        route = preview.get('route_preview') or {}
+        need(preview.get('accepted') is True and preview.get('status') == 'available'
+             and route.get('target_province_id') == target and route.get('route_province_ids')
+             and route['route_province_ids'][-1] == target, 'complete fresh native route preview unavailable')
+        for key in ('snapshot_id', 'revision', 'native_revision', 'episode_run_id'):
+            need(preview.get('queried_' + key) == s[key], 'preview stale exact frame')
+        check, ref = self.snapshot('move-before')
+        stable_world(self.guard, s, check)
+        need(all(check[k] == s[k] for k in ('snapshot_id', 'revision', 'native_revision'))
+             and check['player_armies'] == s['player_armies'], 'preview to mutation frame changed')
+        command = self.mutation('move-command', 'ck3_move_army', {'army_id': aid, 'target_province_id': target, 'expected_revision': check['revision']}, ref)
+        post = self.collect('post', whole=target == 1527)
+        stable_world(self.guard, s, post['after'], mutation={'kind': 'move', 'army_id': aid, 'target': target})
+        actual = next(r for r in post['after']['player_armies'] if r['army_id'] == aid)
+        need(actual.get('move_target_province_id') == target and actual.get('route_read_status') == 'complete_nonempty'
+             and actual.get('route_province_ids') == route['route_province_ids'], 'independent actual route differs submitted preview')
+        numeric = numeric_union(before['health']['army_strengths'], post['health']['army_strengths'])
+        for old in before['health']['army_strengths']:
+            new = next(r for r in post['health']['army_strengths'] if r['army_id'] == old['army_id'])
+            for key in ('current_supply_raw', 'current_supply_capacity_raw', 'army_update_clock_v1'):
+                need(old[key] == new[key], 'unexpected paused move stock/cap/clock change; Root review')
+        if target == 2174:
+            main = next(r for r in post['after']['player_armies'] if r['army_id'] == self.binding['main_public_id'])
+            need(stationary(main), 'Main moved during child return submission')
+        return post, command, numeric
+
+    def merge(self, before):
+        s = before['after']; D = self.binding['main_public_id']; S = self.binding['child_public_id']
+        need(all(stationary(r) for r in s['player_armies']), 'both actual2174 regular empty routes required before merge')
+        caps = self.call('capabilities', 'ck3_get_capabilities', {})
+        step = f'merge-armies-{D}-with-{S}'
+        need(caps.get('backend_id') == s['backend_id'] and step in (caps.get('action_steps') or []), 'current native merge direction not advertised')
+        check, ref = self.snapshot('merge-before')
+        stable_world(self.guard, s, check)
+        need(all(check[k] == s[k] for k in ('snapshot_id', 'revision', 'native_revision'))
+             and check['player_armies'] == s['player_armies'], 'capability to mutation frame changed')
+        command = self.mutation('merge-command', 'ck3_execute_step', {'step': step, 'expected_revision': check['revision']}, ref)
+        # A new roster is taken by collect before querying Strength. Absorbed S
+        # is never included in the post request.
+        post = self.collect('post', whole=True)
+        stable_world(self.guard, s, post['after'], mutation={'kind': 'merge', 'destination': D, 'source': S})
+        need(all(stationary(r) for r in post['after']['player_armies']), 'merged Main not stationary2174')
+        numeric = numeric_union(before['health']['army_strengths'], post['health']['army_strengths'])
+        rows = {r['army_id']: r for r in before['health']['army_strengths']}
+        actual = post['health']['army_strengths'][0]
+        need(actual['current_supply_capacity_scale'] == 100000, 'postmerge actual capacity fixed scale unknown')
+        arithmetic = weighted_supply(rows[D], rows[S], actual['current_supply_capacity_raw'])
+        need(actual['current_supply_raw'] == arithmetic['expected_post_stock_raw'], 'native weighted stock mismatch; Root review required')
+        return post, command, numeric, arithmetic
+
+def default_plan(args):
+    return {'status': 'DEFAULT_PLAN_NO_ACTIONS', 'mode': args.mode, 'new_attempt': args.name,
+            'run_dir': str(RUN), 'start_raw': START, 'absolute_end_raw': END,
+            'shared_batch_budget': 120, 'qualification_and_poststate': None,
+            'require_explicit_run_and_source_pins': True, 'one_mutation_maximum': 1,
+            'no_resume_or_retry': True, 'SDK_UI_bus_Git_RAW_Game_calls': 0,
+            'future_missing_ids_revision_are_read_fresh': True,
+            'mutation_player_war_projection': 'Only exact fresh owned player queue projection; NPC and outside world exact. Readonly/pre-mutation exact unchanged.',
+            'partial_health_policy': 'STOP. No A2 scope reuse; this helper does not bypass global partial. New B scope/binder requires separately reviewed implementation.'}
+
+def execute(args):
+    need(Path(sys.executable).resolve() == PYTHON.resolve(), 'explicit verified main venv required')
+    need(re.fullmatch(r'r0175-[A-Za-z0-9_-]{1,55}', args.name or '') is not None, 'new bounded thisB attempt name required')
+    need(type(args.game_pid) is int and args.game_pid > 0 and args.episode, 'Root actual PID/episode required')
+    inputs_ref = explicit_ref(args.input_manifest, args.input_manifest_sha256)
+    phase_ref = explicit_ref(args.phase0_result, args.phase0_sha256)
+    qualification_ref = explicit_ref(args.qualification, args.qualification_sha256)
+    admission_ref = explicit_ref(args.runtime_admission, args.runtime_admission_sha256)
+    inputs, binding = load(inputs_ref['path']), load(phase_ref['path'])
+    validate_binding(binding)
+    need(inputs['arm'] == 'B' and Path(inputs['run_dir']).resolve() == RUN.resolve()
+         and Path(inputs['packets_dir']).resolve() == PACKETS.resolve()
+         and inputs['start_raw'] == START and inputs['absolute_end_raw'] == END, 'sameB inputmanifest/budget required')
+    for ref in inputs['sources']:
+        check_ref(ref)
+    protocol_ref = pin(PROTOCOL)
+    need(protocol_ref['sha256'] == PROTOCOL_SHA and check_ref(inputs['Root_protocol']) == protocol_ref,
+         'Root63b exact protocol required')
+    guard, pair = pure_modules(); guard.protocol(load(PROTOCOL))
+    latest = qualification(load(qualification_ref['path']), binding, phase_ref, protocol_ref, guard, pair, args.episode)
+    stage_refs = {'qualification': qualification_ref, 'input_manifest': inputs_ref,
+                  'phase0_result': phase_ref, 'Root_protocol': protocol_ref, 'Root_runtime_admission': admission_ref}
+    if args.mode == 'merge':
+        arrival_ref = explicit_ref(args.return_arrival, args.return_arrival_sha256)
+        receipt = load(arrival_ref['path']); stage_refs['return_arrival'] = arrival_ref
+        need(Path(receipt['run_dir']).resolve() == RUN.resolve() and receipt['episode_run_id'] == args.episode,
+             'return arrival is not thisB episode')
+        need(receipt.get('status') == 'STOP_ACTUAL_BOTH2174_REGULAR_EMPTYROUTE'
+             and check_ref(receipt['rest_qualification']) == qualification_ref
+             and check_ref(receipt['phase0_result']) == phase_ref
+             and check_ref(receipt['Root_protocol']) == protocol_ref,
+             'return arrival input pins differ')
+        return_result_ref = check_ref(receipt['return_move_result'])
+        return_result = load(return_result_ref['path'])
+        need(return_result.get('status') == 'ACTUAL_B_RETURN_COMMAND_SUBMITTED_PAUSED'
+             and return_result.get('episode_run_id') == args.episode
+             and check_ref(return_result['qualification']) == qualification_ref,
+             'arrival was not bound to accepted sameB return submission')
+        obs, roles = paired_observation(receipt['latest_observation'], binding, guard, pair)
+        need(stationary(roles['main_roster']) and stationary(roles['child_roster']), 'arrival receipt does not prove both2174 empty routes')
+        latest = obs
+    if args.mode == 'london':
+        merge_ref = explicit_ref(args.merge_result, args.merge_result_sha256)
+        receipt = load(merge_ref['path']); stage_refs['merge_result'] = merge_ref
+        need(receipt['status'] == 'ACTUAL_B_MERGE_WHOLE_MAIN_PAUSED'
+             and receipt['episode_run_id'] == args.episode and Path(receipt['run_dir']).resolve() == RUN.resolve()
+             and check_ref(receipt['qualification']) == qualification_ref
+             and check_ref(receipt['phase0_result']) == phase_ref
+             and check_ref(receipt['Root_protocol']) == protocol_ref
+             and receipt.get('destination_native_id') == 0 and receipt.get('source_absent') is True
+             and receipt.get('full27reg37DATA_conserved') is True,
+             'sameB actual merge result required')
+        ref = check_ref(receipt['after_observation']); latest = load(ref['path'])
+        guard.health_join(latest['health'], latest['before']); guard.after(latest['before'], latest['after'])
+        need(inputs['expected_player_army_count'] == 1, 'new actual postmerge whole inputmanifest required')
+    else:
+        need(inputs['expected_player_army_count'] == 2, 'actual paired inputmanifest required')
+    # No live API imported before all saved-file gates above have passed.
+    sys.path.insert(0, str(PREP))
+    import live_api_r0175_root_a02 as api
+    import read_ready_r0175_a02 as ready
+    current_ready = ready.read_ready()
+    need(current_ready['game_pid_from_this_run_native_session_ready'] == args.game_pid, 'saved ready PID differs')
+    schema = load(RUN / 'sdk-tools.json')
+    need(TOOLS <= {t['name'] for t in schema['tools']}, 'actual dynamic schema lacks required typed tools')
+    out = ROOT / args.name; out.mkdir(exist_ok=False)
+    write(out / 'intent.json', {'plan': default_plan(args), 'sources': stage_refs, 'argv': sys.argv,
+          'script': pin(__file__), 'saved_ready': current_ready,
+          'runtime_admission_is_Root_preserved_input_not_liveness_by_helper': True})
+    stage = Stage(api, guard, inputs, binding, args.episode, args.game_pid, args.name, out, protocol_ref)
+    try:
+        before = stage.collect('initial', whole=args.mode == 'london')
+        guard.after(latest['after'], before['before'], pipe=inputs['pipe_name'])
+        need(latest['after']['active_wars'] == before['before']['active_wars'], 'world changed since accepted source; Root new disposition required')
+        if args.mode == 'return':
+            need(before['after']['date_raw'] == latest['after']['date_raw'],
+                 'game advanced after qualification; Root fresh qualification review required')
+            need(all(stationary(r, 2174 if r['army_id'] == binding['main_public_id'] else 2327)
+                     for r in before['after']['player_armies']), 'current qualified two rest sites no longer stationary')
+            need(all(r['current_supply_change_monthly_raw'] > 0 for r in before['health']['army_strengths']), 'actual qualified monthly inputs changed')
+            post, command, numeric = stage.move(before, binding['child_public_id'], 2174)
+            status = 'ACTUAL_B_RETURN_COMMAND_SUBMITTED_PAUSED'
+            arithmetic = None
+        elif args.mode == 'merge':
+            need(before['after']['date_raw'] == latest['after']['date_raw'], 'arrival to merge actual date changed; fresh arrival receipt required')
+            numeric_union(latest['health']['army_strengths'], before['health']['army_strengths'])
+            post, command, numeric, arithmetic = stage.merge(before)
+            status = 'ACTUAL_B_MERGE_WHOLE_MAIN_PAUSED'
+        else:
+            need(before['after']['date_raw'] == latest['after']['date_raw'], 'merge review to London date changed; new review required')
+            numeric_union(latest['health']['army_strengths'], before['health']['army_strengths'])
+            need(all(stationary(r) for r in before['after']['player_armies']), 'whole Main no longer stationary2174')
+            post, command, numeric = stage.move(before, binding['main_public_id'], 1527)
+            status = 'ACTUAL_WHOLE_LONDON_ROUTE_SUBMITTED_PAUSED_NOT_ARRIVED'; arithmetic = None
+        result = {'status': status, 'run_dir': str(RUN), 'episode_run_id': args.episode,
+                  'qualification': qualification_ref, 'phase0_result': phase_ref, 'Root_protocol': protocol_ref,
+                  'date_raw': post['after']['date_raw'], 'actual_paused': True, 'mutation_count': stage.commands,
+                  'post_observation': pin(out / 'post-observation.json'), 'numeric_diffs': numeric,
+                  'weighted_supply_arithmetic': arithmetic, 'no_resume_or_retry': True,
+                  'ABC_completed': False, 'applied_refill_loss_payment_ledger': None,
+                  'main_public_id': binding['main_public_id'], 'main_native_id': 0}
+        result['after_observation'] = result['post_observation']
+        if args.mode == 'return':
+            result['accepted_move_response'] = pin(RUN / 'responses' / (args.name + '-move-command.json'))
+            result['actually_arrived2174'] = False
+        if args.mode == 'merge':
+            result.update(destination_public_id=binding['main_public_id'], destination_native_id=0,
+                          source_absent=True, full27reg37DATA_conserved=True,
+                          Root_result_review_required_before_London=True)
+        write(out / 'result.json', result); print(json.dumps({'result': pin(out / 'result.json'), 'status': status}, ensure_ascii=False))
+        return 0
+    except Exception as exc:
+        result = {'status': 'STOP_NO_RETRY_ROOT_REVIEW_REQUIRED', 'error': repr(exc),
+                  'mutation_count': stage.commands, 'actual_paused': None,
+                  'unknown_or_failed_not_relabelled_as_success': True, 'no_more_mutations': True,
+                  'no_resume_ever': True, 'ABC_completed': False}
+        write(out / 'STOP.json', result); print(json.dumps(result, ensure_ascii=False), file=sys.stderr)
+        return 2
+
+def main():
+    p = argparse.ArgumentParser(description=__doc__)
+    p.add_argument('--mode', choices=('return', 'merge', 'london'), default='return')
+    p.add_argument('--run', action='store_true')
+    p.add_argument('--name')
+    p.add_argument('--game-pid', type=int)
+    p.add_argument('--episode')
+    for key in ('input-manifest', 'phase0-result', 'qualification', 'runtime-admission', 'return-arrival', 'merge-result'):
+        p.add_argument('--' + key, type=Path)
+        sha_key = 'phase0' if key == 'phase0-result' else key
+        p.add_argument('--' + sha_key + '-sha256')
+    args = p.parse_args()
+    if not args.run:
+        print(json.dumps(default_plan(args), ensure_ascii=False, indent=2)); return 0
+    try:
+        return execute(args)
+    except Exception as exc:
+        print(json.dumps({'status': 'STOP_FILE_OR_SOURCE_GATE_NO_NEW_PUBLICATION', 'reason': repr(exc)}, ensure_ascii=False), file=sys.stderr)
+        return 2
+
+if __name__ == '__main__':
+    raise SystemExit(main())

@@ -1,0 +1,41 @@
+{
+  "at_utc": "2026-10-05T20:06:25.898401+00:00",
+  "arm": "B",
+  "bootstrap": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02\\bootstrap-result.json",
+    "bytes": 13779,
+    "sha256": "35265177f6db71e62ee047002ffc623eab849178d4146ddfca145156cce33993"
+  },
+  "SDK_thread_exited": true,
+  "keeper_thread_exited": true,
+  "GameJob0": true,
+  "native_CK3_inventory_empty": true,
+  "watchdog_absent": true,
+  "supervisor_exit0_actual_unified_session": 57698,
+  "first_recorder_closed": true,
+  "continuation_recorder": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-continuation-a01\\result.json",
+    "bytes": 1057,
+    "sha256": "3db7f2f83352a157174b91aa25828e0cf21fe2b428daf8b2fa9afc8e42458d9e"
+  },
+  "continuation_job0": true,
+  "all_owned_process_trees_zero": true,
+  "current_process_inventory": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-final-closure-and-release-a01\\current-process-inventory.json",
+    "bytes": 236,
+    "sha256": "ab1771acd168e64a8bf238c85a5c49d4536c5069daac065d913d6915f7275b8e"
+  },
+  "Root_frozen_gate_terminal": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-terminal-gate-failure-a01\\terminal.json",
+    "bytes": 3963,
+    "sha256": "6f8eaa3cdef8942effe5b2809a13cb5417d54504c0147f195f3a56396978f163"
+  },
+  "B_actual_days": 38,
+  "B_status": "STOPPED_GATE_INCOMPLETE",
+  "B_deadline_censor": false,
+  "B_actual_London_arrival": null,
+  "B_comparable_London_metrics": null,
+  "C_and_winner": null,
+  "media_audit_pending": true,
+  "human_signoff": false
+}

@@ -1,0 +1,14 @@
+{
+  "step": "split-army-half-0",
+  "accepted": true,
+  "status": "split_submitted",
+  "backend_id": "native-headless",
+  "war_action": {
+    "status": "split_submitted",
+    "source_army_id": 0,
+    "submitted_date_raw": 53148432,
+    "player_army_ids_before": [
+      0
+    ]
+  }
+}

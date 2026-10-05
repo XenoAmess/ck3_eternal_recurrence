@@ -1,0 +1,147 @@
+from pathlib import Path
+import copy
+import importlib.util
+import json
+import re
+import sys
+
+ROOT = Path(__file__).parent
+PACK = ROOT / 'candidate-a01'
+OUT = Path(sys.argv[1])
+BASE = ROOT.parent / 'e04-B-rest-oral-candidate-a01/candidate-a03'
+A_BASE = ROOT.parent / 'e04-A-result-oral-increment-a01/candidate-a01'
+spec = importlib.util.spec_from_file_location('offline_merge_replay', PACK / 'replay_merge_arithmetic.py')
+consumer = importlib.util.module_from_spec(spec)
+spec.loader.exec_module(consumer)
+index, source = consumer.load_sources(PACK)
+function, _ = consumer.source_function(source['original-helper'])
+rows = {row['army_id']: row for row in source['pre-observation']['health']['army_strengths']}
+D, S = rows[0], rows[204]
+result = consumer.replay(PACK)
+passed = []
+def case(name, callback):
+    callback()
+    passed.append(name)
+def equal(actual, expected):
+    assert actual == expected, (actual, expected)
+def reject(callback):
+    try:
+        callback()
+    except ValueError:
+        return
+    raise AssertionError('expected explicit rejection')
+
+case('exact_actual_integer_trace_and_upper_cap_match', lambda: equal(
+    [result['arithmetic'][key] for key in ('role_weights_raw','fixed_shares_raw','fixed_contributions_raw','preclamp_raw','expected_post_stock_raw')],
+    [[334100000,334500000],[49970,50029],[6303209,5002900],11306109,10000000]))
+case('actual_post_stock_capacity_are_equal_and_preclamp_above_cap', lambda: equal(
+    [result['upper_cap_observed_this_window'], result['observed_post_stock_raw'],result['observed_post_capacity_raw']],
+    [True,10000000,10000000]))
+
+def source_role_test():
+    changed = copy.deepcopy(S)
+    changed['merge_supply_destination_weight_raw'] = 9000000000
+    equal(function(D, changed, 10000000), function(D, S, 10000000))
+    changed['current_soldiers'] = 3343
+    counterfactual = function(D, changed, 10000000)
+    assert counterfactual['fixed_shares_raw'] != [49970,50029]
+    assert counterfactual['preclamp_raw'] != 11306109
+    assert counterfactual['expected_post_stock_raw'] == 10000000
+case('S_destination_getter_cannot_replace_current_role_and_clamp_alone_would_hide_error', source_role_test)
+
+def destination_role_test():
+    changed = copy.deepcopy(D)
+    changed['current_soldiers'] = 10000
+    equal(function(changed, S, 10000000), function(D, S, 10000000))
+    changed['merge_supply_destination_weight_raw'] = 334400000
+    counterfactual = function(changed, S, 10000000)
+    assert counterfactual['preclamp_raw'] != 11306109
+    assert counterfactual['expected_post_stock_raw'] == 10000000
+case('D_native_getter_not_current_aggregate_and_trace_required_before_clamp', destination_role_test)
+
+def two_integer_stages():
+    a, b = copy.deepcopy(D), copy.deepcopy(S)
+    a['merge_supply_destination_weight_raw'] = 100000
+    b['current_soldiers'] = 1
+    a['current_supply_raw'] = b['current_supply_raw'] = 1
+    trace = function(a, b, 100)
+    equal([trace['fixed_shares_raw'],trace['fixed_contributions_raw'],trace['preclamp_raw']], [[50000,50000],[0,0],0])
+    # An ordinary real-valued average is1 here. This is a fake arithmetic test only.
+    assert (a['current_supply_raw'] + b['current_supply_raw']) / 2 == 1
+case('separate_contribution_truncations_not_ordinary_average_fake_only', two_integer_stages)
+
+def invalid_values():
+    for field, value in [('current_supply_raw',-1), ('merge_supply_destination_weight_raw', True), ('current_supply_scale',1000)]:
+        a = copy.deepcopy(D)
+        a[field] = value
+        reject(lambda: function(a, S, 10000000))
+    reject(lambda: function(D, S, -1))
+case('actual_function_rejects_invalid_native_scales_weight_stock_and_cap', invalid_values)
+case('modified_full_helper_rejected_before_function_compile', lambda: reject(
+    lambda: consumer.source_function(source['original-helper'] + b'\n#changed\n')))
+
+def source_swap():
+    path = OUT / 'fake-invalid-source-swap'
+    path.mkdir(exist_ok=False)
+    original = next(row for row in index['files'] if row['id'] == 'merge-command')
+    raw = (PACK / original['path']).read_bytes()
+    (path / 'changed.json').write_bytes(raw + b' ')
+    row = dict(original, path='changed.json')
+    (path / 'source-index.json').write_text(json.dumps({'files':[row]}), encoding='utf-8')
+    reject(lambda: consumer.load_sources(path))
+case('changed_manifest_bound_source_bytes_rejected_fake_only', source_swap)
+
+def path_escape():
+    path = OUT / 'fake-invalid-relative-path'
+    path.mkdir(exist_ok=False)
+    row = dict(index['files'][0], path='../candidate-a01/sources/pre-observation.json')
+    (path / 'source-index.json').write_text(json.dumps({'files':[row]}), encoding='utf-8')
+    reject(lambda: consumer.load_sources(path))
+case('source_path_escape_rejected_before_read_fake_only', path_escape)
+
+def actual_failed_gate():
+    cohort = result['cohort']
+    equal([cohort['pre_regiments'],cohort['post_regiments'],cohort['pre_DATA'],cohort['post_DATA']], [27,28,37,37])
+    equal(cohort['missing_original_regiment_ids'], [])
+    equal(cohort['original_regiment_entire_row_diff_ids'], [])
+    equal(cohort['added_DATA_identities'], [])
+    equal(cohort['missing_DATA_identities'], [])
+    equal(cohort['DATA_entire_row_diff_identities'], [])
+    equal([cohort['pre_soldier_current_max'],cohort['post_soldier_current_max']], [[6689,6747],[6690,6748]])
+    added = cohort['added_regiment_rows']
+    assert len(added) == 1
+    equal([added[0][key] for key in ('army_regiment_id','current_soldiers','maximum_soldiers')], [16778273,1,1])
+    equal([result['commander'][key] for key in ('pre_destination','pre_source','post_destination')], [27357,33388,33388])
+    equal([cohort['frozen_27_regiment_gate_pass'],result['commander']['frozen_destination_commander_gate_pass']], [False,False])
+case('actual_original_27_and_37_preserved_but_new_1row_and_commander_fail_frozen_gate', actual_failed_gate)
+
+def narration_diff():
+    parse = lambda path: dict(re.findall(r'^\[(C\d\d-\d\d)\] (.+)$', path.read_text(encoding='utf-8'), re.M))
+    old = parse(BASE / 'projected-full-narration-B-rest-candidate.md')
+    actual_A = parse(A_BASE / 'six-chapter-player-narration-a05-A-only.md')
+    new = parse(PACK / 'projected-full-narration-B-merge-candidate.md')
+    equal(len(new), 69)
+    equal(list(old), list(new))
+    equal([key for key in old if old[key] != new[key]], ['C05-04','C05-10','C05-14'])
+    equal([key for key in actual_A if actual_A[key] != new[key]], ['C05-04','C05-08','C05-10','C05-14'])
+    assert all(new[key] == actual_A[key] for key in ('C05-03','C05-15','C05-16'))
+    ledger = json.loads((PACK / 'claim-ledger.json').read_bytes())
+    for row in ledger['claims']:
+        equal(row['new_text_zh'], new[row['id']])
+        equal(row['old_text_zh'], old[row['id']])
+        assert set(row['source_keys']).issubset({source['id'] for source in index['files']})
+case('69IDs_three_diff_vs_B_rest_four_vs_current_audio_A_results_exact', narration_diff)
+
+def no_fiction():
+    for key in ('cause_of_new_regiment_or_commander_change','new_regiment_is_knight','applied_update_payment_loss_refill_ledger','Root_formal_B_terminal','B_London','C_terminal','winner'):
+        assert result[key] is None
+    equal([result['endpoint_game_days_advanced'],result['endpoint_paused'],result['days_from_common_T0']], [0,True,38])
+    equal(json.loads((PACK / 'arithmetic-result.json').read_bytes()), result)
+    audio = json.loads((PACK / 'changed-ID-and-audio-plan.json').read_bytes())
+    equal([audio['production_TTS_permitted_now'],audio['baseline_A_only_actual_seconds'],audio['baseline_A_only_PCM_samples']], [False,1579.176,37900224])
+    assert all(audio[key] is None for key in ('new_audio','new_global_PCM_clock','offsets'))
+case('formal_terminal_cause_payment_winner_unknown_and_frozen_audio_untouched', no_fiction)
+
+print(json.dumps({'status':'PASS', 'checks':len(passed), 'check_names':passed,
+    'actual_sources':10, 'upper_cap_window_observed':True, 'frozen_B_gate_pass':False,
+    'new_TTS_media_SDK_GUI_Game_Git_calls':0, 'Root_formal_B_terminal':None, 'human_signoff':False}, ensure_ascii=False))

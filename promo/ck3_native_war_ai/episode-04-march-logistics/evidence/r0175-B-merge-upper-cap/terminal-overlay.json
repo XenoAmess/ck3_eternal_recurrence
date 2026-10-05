@@ -1,0 +1,61 @@
+{
+  "schema": "ck3.e04.B-formal-terminal-overlay.v1",
+  "created_utc": "2026-10-05T20:07:22.554540+00:00",
+  "source_cut": "Later formal terminal append; original merge arithmetic/history is preserved unchanged.",
+  "sources": [
+    {
+      "id": "formal-B-terminal",
+      "path": "terminal-sources/formal-B-terminal.json",
+      "bytes": 3963,
+      "sha256": "6f8eaa3cdef8942effe5b2809a13cb5417d54504c0147f195f3a56396978f163",
+      "original_source_relative_to_research_root": "root-r0175-B-terminal-gate-failure-a01/terminal.json",
+      "public_commit": null
+    },
+    {
+      "id": "Root-postmerge-frame-receipt",
+      "path": "terminal-sources/Root-postmerge-frame-receipt.json",
+      "bytes": 2036,
+      "sha256": "b2457fa89ae8921008918592e309203b10f45a635799aadba986264cc8d0f46e",
+      "original_source_relative_to_research_root": "r0175-B-postmerge-Main-exception-frame-a01/receipt.json",
+      "public_commit": null
+    }
+  ],
+  "Root_formal_B_terminal": {
+    "status": "STOPPED_GATE_INCOMPLETE",
+    "arm": "B",
+    "date_raw": 53149344,
+    "common_T0_raw": 53148432,
+    "absolute_END_raw": 53150592,
+    "actual_days_used": 38,
+    "remaining_actual_days": 52,
+    "deadline_reached": false,
+    "episode_run_id": "native-33388-23726fbd8a80",
+    "no_more_resume_or_strategy_mutations": true,
+    "actual_London_arrival": false,
+    "London_endpoint_metrics": null,
+    "arrival_comparable": false,
+    "winner": null,
+    "ABC_complete": false,
+    "raw_closure_pending_at_terminal_cut": true,
+    "failure_reasons": [
+      "Frozen cohort requires27Regiment FullIDs/max and immediate current/max conservation: original27 rows unchanged but new FullID16778273 1/1 observed; immediate6689/6747 to6690/6748.",
+      "Frozen postmerge Main0 commander must remain27357: actual typed current commander33388."
+    ],
+    "new_Regiment_identity_or_mechanism": null
+  },
+  "Root_direct_original_frame_review_reported": {
+    "image": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-postmerge-Main-exception-frame-a01\\desktop.png",
+      "bytes": 3278512,
+      "sha256": "a6cb01c96a0a21db6a5440da1961957236377a0a1f6616df315edf347fa029a2"
+    },
+    "observed": "Root original1920x1080: paused1067Apr12; whole6690/S100of100/0%/waiting; commanderportrait33388/crown matches typed readback. Native IDs verified from source, not inferred from pixels."
+  },
+  "UI_receipt_itself_preserved_pending_review_history": true,
+  "this_candidate_pixel_or_media_reads": 0,
+  "human_full_film_signoff": false,
+  "new_TTS_requests": 0,
+  "old_arithmetic_terminal_unknown_at_earlier_cut_not_rewritten": true,
+  "C_terminal": null,
+  "winner": null
+}

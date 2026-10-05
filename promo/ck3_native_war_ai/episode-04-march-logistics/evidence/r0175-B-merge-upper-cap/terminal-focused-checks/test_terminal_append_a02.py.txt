@@ -1,0 +1,92 @@
+from pathlib import Path
+import hashlib
+import json
+import re
+
+ROOT=Path(__file__).parent
+OLD=ROOT/'candidate-a01'
+NEW=ROOT/'candidate-a02'
+CURRENT_A=ROOT.parent/'e04-A-result-oral-increment-a01/candidate-a01'
+def parse(path): return dict(re.findall(r'^\[(C\d\d-\d\d)\] (.+)$',path.read_text(encoding='utf-8'),re.M))
+passed=[]
+def case(name,fn):
+    fn()
+    passed.append(name)
+def equal(actual,expected): assert actual==expected,(actual,expected)
+overlay=json.loads((NEW/'terminal-overlay.json').read_bytes())
+terminal=overlay['Root_formal_B_terminal']
+original=json.loads((NEW/'terminal-sources/formal-B-terminal.json').read_bytes())
+new=parse(NEW/'projected-full-narration-B-merge-candidate.md')
+old=parse(OLD/'projected-full-narration-B-merge-candidate.md')
+actual_A=parse(CURRENT_A/'six-chapter-player-narration-a05-A-only.md')
+
+def pins():
+    for row in overlay['sources']:
+        raw=(NEW/row['path']).read_bytes()
+        equal(len(raw),row['bytes'])
+        equal(hashlib.sha256(raw).hexdigest(),row['sha256'])
+    equal(hashlib.sha256((NEW/'terminal-sources/formal-B-terminal.json').read_bytes()).hexdigest(),
+          '6f8eaa3cdef8942effe5b2809a13cb5417d54504c0147f195f3a56396978f163')
+    equal(hashlib.sha256((NEW/'terminal-sources/Root-postmerge-frame-receipt.json').read_bytes()).hexdigest(),
+          'b2457fa89ae8921008918592e309203b10f45a635799aadba986264cc8d0f46e')
+case('two_exact_new_terminal_sources',pins)
+
+def formal_binding():
+    equal(terminal['status'],'STOPPED_GATE_INCOMPLETE')
+    equal([terminal['actual_days_used'],terminal['remaining_actual_days'],terminal['deadline_reached']], [38,52,False])
+    equal(terminal['date_raw'],53149344)
+    assert (terminal['date_raw']-terminal['common_T0_raw'])/24==38
+    assert (terminal['absolute_END_raw']-terminal['date_raw'])/24==52
+    equal(terminal['episode_run_id'],'native-33388-23726fbd8a80')
+    equal([terminal['actual_London_arrival'],terminal['arrival_comparable'],terminal['London_endpoint_metrics'],terminal['winner']], [False,False,None,None])
+    equal(terminal['failure_reasons'],original['failure_reasons'])
+case('formal_stop_budget_and_frozen_gate_reason_bound_not_deadline',formal_binding)
+
+def immutable_arithmetic_history():
+    for name in ('replay_merge_arithmetic.py','arithmetic-result.json','source-index.json'):
+        equal((NEW/name).read_bytes(),(OLD/name).read_bytes())
+    result=json.loads((NEW/'arithmetic-result.json').read_bytes())
+    equal(result['Root_formal_B_terminal'],None)
+    equal(result['date_raw'],terminal['date_raw'])
+    equal(result['arithmetic']['preclamp_raw'],11306109)
+    equal(result['observed_post_stock_raw'],10000000)
+    equal(result['cause_of_new_regiment_or_commander_change'],None)
+    assert overlay['old_arithmetic_terminal_unknown_at_earlier_cut_not_rewritten'] is True
+case('original_math_consumer_and_sourcecut_exact_preserved',immutable_arithmetic_history)
+
+def paragraph_changes():
+    equal(len(new),69)
+    equal(list(new),list(old))
+    equal([key for key in old if new[key]!=old[key]],['C05-14','C05-16'])
+    equal([key for key in actual_A if new[key]!=actual_A[key]],['C05-04','C05-08','C05-10','C05-14','C05-16'])
+    assert all(new[key]==actual_A[key] for key in ('C05-03','C05-15'))
+    equal(new['C05-16'].split('现在只有方案A')[0],actual_A['C05-16'].split('现在只有方案A')[0])
+    assert '第三十八日停止' in new['C05-14'] and '五十二日预算' in new['C05-14'] and '不是时间耗尽' in new['C05-14']
+    assert 'C还没有拍摄' in new['C05-16']
+case('only_two_new_C05_paragraph_changes_A_cash_prefix_exact',paragraph_changes)
+
+def ledger_closure():
+    ledger=json.loads((NEW/'claim-ledger.json').read_bytes())
+    source_ids={row['id'] for row in ledger['sources']}
+    for claim in ledger['claims']:
+        equal(claim['new_text_zh'],new[claim['id']])
+        assert set(claim['source_keys']).issubset(source_ids)
+    equal(ledger['Root_formal_B_terminal'],terminal)
+    equal(ledger['cohort_commander_gate']['cause'],None)
+    equal(ledger['new_TTS_requests'],0)
+case('claim_ledger_closes_current_terminal_without_invented_mechanism',ledger_closure)
+
+def no_production_or_image_credit():
+    plan=json.loads((NEW/'changed-ID-and-audio-plan.json').read_bytes())
+    equal(plan['production_TTS_permitted_now'],False)
+    equal([plan['baseline_A_only_actual_seconds'],plan['baseline_A_only_PCM_samples']], [1579.176,37900224])
+    assert all(plan[key] is None for key in ('new_audio','new_global_PCM_clock','offsets'))
+    equal(overlay['this_candidate_pixel_or_media_reads'],0)
+    equal(overlay['human_full_film_signoff'],False)
+    equal([overlay['C_terminal'],overlay['winner']],[None,None])
+    assert original['new_Regiment_identity_or_mechanism'] is None
+case('A_audio_and_media_C_winner_limits_preserved',no_production_or_image_credit)
+print(json.dumps({'status':'PASS','checks':len(passed),'check_names':passed,
+    'new_changes_vs_merge_a01':['C05-14','C05-16'],'other67exact':True,
+    'formal_B_status':'STOPPED_GATE_INCOMPLETE','day':38,'remaining':52,'deadline_reached':False,
+    'new_TTS_media_SDK_GUI_Game_Git_calls':0,'human_signoff':False},ensure_ascii=False))

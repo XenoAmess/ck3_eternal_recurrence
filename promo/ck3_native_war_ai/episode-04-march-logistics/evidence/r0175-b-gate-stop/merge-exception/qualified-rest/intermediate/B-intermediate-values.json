@@ -1,0 +1,2256 @@
+{
+  "schema": "ck3.e04.B.intermediate-portable-values.v1",
+  "status": "PASS_B_INTERMEDIATE_CHILD_CAP_AND_INTEGER_GROWTH_ONLY",
+  "run": "R0175-a02",
+  "episode_run_id": "native-33388-23726fbd8a80",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "rest_anchor_raw": 53148576,
+  "local31_absolute_END_raw": 53149320,
+  "budget_reset": false,
+  "preserved_child_cap_case": {
+    "result": "child-cap/B-child-partial-result.json",
+    "child_success": true,
+    "Main_success_in_that_window": false
+  },
+  "integer_window": {
+    "actual_pair": {
+      "pair_dates_raw": [
+        53149056,
+        53149080
+      ],
+      "both_stationary_positive_before_after": true,
+      "main_window_success": false,
+      "child_window_success": false,
+      "applied_refill_loss_payment_ledger": null,
+      "complete_source_window_credit_only": true,
+      "main": {
+        "public": 0,
+        "native": 0,
+        "stock_before": 10613988,
+        "stock_after": 10613988,
+        "delta_raw": 0,
+        "cap_before": 30000000,
+        "cap_after": 30000000,
+        "scale": 100000,
+        "monthly_before": 2000000,
+        "monthly_after": 2000000,
+        "+188_storage": [
+          300336024996477760,
+          300336024996477760
+        ],
+        "+188_date_raw": [
+          53148480,
+          53148480
+        ],
+        "+190_storage": [
+          300061168564366016,
+          300061168564366016
+        ],
+        "mark188_changed_inside_observed_window": false
+      },
+      "child": {
+        "public": 204,
+        "native": 199,
+        "stock_before": 10000000,
+        "stock_after": 10000000,
+        "delta_raw": 0,
+        "cap_before": 10000000,
+        "cap_after": 10000000,
+        "scale": 100000,
+        "monthly_before": 2000000,
+        "monthly_after": 2000000,
+        "+188_storage": [
+          300336106600856840,
+          300336106600856840
+        ],
+        "+188_date_raw": [
+          53148936,
+          53148936
+        ],
+        "+190_storage": [
+          300061168564366016,
+          300061168564366016
+        ],
+        "mark188_changed_inside_observed_window": false
+      },
+      "actual_current_sum_before": 6679,
+      "actual_current_sum_after": 6689,
+      "Regiment_entire_row_diffs": [
+        {
+          "FullID": 50,
+          "before": {
+            "army_regiment_id": 50,
+            "current_soldiers": 275,
+            "maximum_soldiers": 277,
+            "scale": 1,
+            "maa_type_status": "absent",
+            "maa_type_key": null,
+            "siege_tier_observable": false,
+            "siege_tier": null,
+            "composition_unavailable_reason": null
+          },
+          "after": {
+            "army_regiment_id": 50,
+            "current_soldiers": 277,
+            "maximum_soldiers": 277,
+            "scale": 1,
+            "maa_type_status": "absent",
+            "maa_type_key": null,
+            "siege_tier_observable": false,
+            "siege_tier": null,
+            "composition_unavailable_reason": null
+          }
+        },
+        {
+          "FullID": 54,
+          "before": {
+            "army_regiment_id": 54,
+            "current_soldiers": 318,
+            "maximum_soldiers": 321,
+            "scale": 1,
+            "maa_type_status": "absent",
+            "maa_type_key": null,
+            "siege_tier_observable": false,
+            "siege_tier": null,
+            "composition_unavailable_reason": null
+          },
+          "after": {
+            "army_regiment_id": 54,
+            "current_soldiers": 321,
+            "maximum_soldiers": 321,
+            "scale": 1,
+            "maa_type_status": "absent",
+            "maa_type_key": null,
+            "siege_tier_observable": false,
+            "siege_tier": null,
+            "composition_unavailable_reason": null
+          }
+        },
+        {
+          "FullID": 62,
+          "before": {
+            "army_regiment_id": 62,
+            "current_soldiers": 69,
+            "maximum_soldiers": 70,
+            "scale": 1,
+            "maa_type_status": "absent",
+            "maa_type_key": null,
+            "siege_tier_observable": false,
+            "siege_tier": null,
+            "composition_unavailable_reason": null
+          },
+          "after": {
+            "army_regiment_id": 62,
+            "current_soldiers": 70,
+            "maximum_soldiers": 70,
+            "scale": 1,
+            "maa_type_status": "absent",
+            "maa_type_key": null,
+            "siege_tier_observable": false,
+            "siege_tier": null,
+            "composition_unavailable_reason": null
+          }
+        },
+        {
+          "FullID": 82,
+          "before": {
+            "army_regiment_id": 82,
+            "current_soldiers": 87,
+            "maximum_soldiers": 89,
+            "scale": 1,
+            "maa_type_status": "absent",
+            "maa_type_key": null,
+            "siege_tier_observable": false,
+            "siege_tier": null,
+            "composition_unavailable_reason": null
+          },
+          "after": {
+            "army_regiment_id": 82,
+            "current_soldiers": 88,
+            "maximum_soldiers": 89,
+            "scale": 1,
+            "maa_type_status": "absent",
+            "maa_type_key": null,
+            "siege_tier_observable": false,
+            "siege_tier": null,
+            "composition_unavailable_reason": null
+          }
+        },
+        {
+          "FullID": 52,
+          "before": {
+            "army_regiment_id": 52,
+            "current_soldiers": 198,
+            "maximum_soldiers": 200,
+            "scale": 1,
+            "maa_type_status": "available",
+            "maa_type_key": "armored_footmen",
+            "siege_tier_observable": true,
+            "siege_tier": 0,
+            "composition_unavailable_reason": null
+          },
+          "after": {
+            "army_regiment_id": 52,
+            "current_soldiers": 200,
+            "maximum_soldiers": 200,
+            "scale": 1,
+            "maa_type_status": "available",
+            "maa_type_key": "armored_footmen",
+            "siege_tier_observable": true,
+            "siege_tier": 0,
+            "composition_unavailable_reason": null
+          }
+        },
+        {
+          "FullID": 53,
+          "before": {
+            "army_regiment_id": 53,
+            "current_soldiers": 9,
+            "maximum_soldiers": 10,
+            "scale": 1,
+            "maa_type_status": "available",
+            "maa_type_key": "mangonel",
+            "siege_tier_observable": true,
+            "siege_tier": 2,
+            "composition_unavailable_reason": null
+          },
+          "after": {
+            "army_regiment_id": 53,
+            "current_soldiers": 10,
+            "maximum_soldiers": 10,
+            "scale": 1,
+            "maa_type_status": "available",
+            "maa_type_key": "mangonel",
+            "siege_tier_observable": true,
+            "siege_tier": 2,
+            "composition_unavailable_reason": null
+          }
+        }
+      ],
+      "DATA_entire_row_diffs": [
+        {
+          "identity": [
+            50,
+            0,
+            2624,
+            1
+          ],
+          "before": {
+            "record_index": 0,
+            "persistent_regiment_id": 2624,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 73,
+            "maximum_soldiers": 75,
+            "effective_current_soldiers": 73,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": true,
+            "persistent_monthly_replenishment_fraction_raw": 5325,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 0,
+            "persistent_regiment_id": 2624,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 75,
+            "maximum_soldiers": 75,
+            "effective_current_soldiers": 75,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 5325,
+            "persistent_prepared_replenishment_fraction_raw": 5325,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            50,
+            1,
+            2606,
+            1
+          ],
+          "before": {
+            "record_index": 1,
+            "persistent_regiment_id": 2606,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 75,
+            "maximum_soldiers": 75,
+            "effective_current_soldiers": 75,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 5325,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 1,
+            "persistent_regiment_id": 2606,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 75,
+            "maximum_soldiers": 75,
+            "effective_current_soldiers": 75,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 5325,
+            "persistent_prepared_replenishment_fraction_raw": 5325,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            50,
+            2,
+            2626,
+            2
+          ],
+          "before": {
+            "record_index": 2,
+            "persistent_regiment_id": 2626,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3750,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 2,
+            "persistent_regiment_id": 2626,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3750,
+            "persistent_prepared_replenishment_fraction_raw": 3750,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            50,
+            3,
+            2608,
+            2
+          ],
+          "before": {
+            "record_index": 3,
+            "persistent_regiment_id": 2608,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3525,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 3,
+            "persistent_regiment_id": 2608,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3525,
+            "persistent_prepared_replenishment_fraction_raw": 3525,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            50,
+            4,
+            2630,
+            1
+          ],
+          "before": {
+            "record_index": 4,
+            "persistent_regiment_id": 2630,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3075,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 4,
+            "persistent_regiment_id": 2630,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3075,
+            "persistent_prepared_replenishment_fraction_raw": 3075,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            50,
+            5,
+            2628,
+            1
+          ],
+          "before": {
+            "record_index": 5,
+            "persistent_regiment_id": 2628,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 123,
+            "maximum_soldiers": 123,
+            "effective_current_soldiers": 123,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 5325,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 5,
+            "persistent_regiment_id": 2628,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 123,
+            "maximum_soldiers": 123,
+            "effective_current_soldiers": 123,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 5325,
+            "persistent_prepared_replenishment_fraction_raw": 5325,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            50,
+            6,
+            2632,
+            2
+          ],
+          "before": {
+            "record_index": 6,
+            "persistent_regiment_id": 2632,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 2925,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 6,
+            "persistent_regiment_id": 2632,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 2925,
+            "persistent_prepared_replenishment_fraction_raw": 2925,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            54,
+            0,
+            2610,
+            0
+          ],
+          "before": {
+            "record_index": 0,
+            "persistent_regiment_id": 2610,
+            "chunk_index": 0,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 299,
+            "maximum_soldiers": 302,
+            "effective_current_soldiers": 299,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": true,
+            "persistent_monthly_replenishment_fraction_raw": 5760,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 0,
+            "persistent_regiment_id": 2610,
+            "chunk_index": 0,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 302,
+            "maximum_soldiers": 302,
+            "effective_current_soldiers": 302,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 5760,
+            "persistent_prepared_replenishment_fraction_raw": 5760,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            54,
+            1,
+            2612,
+            0
+          ],
+          "before": {
+            "record_index": 1,
+            "persistent_regiment_id": 2612,
+            "chunk_index": 0,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 19,
+            "maximum_soldiers": 19,
+            "effective_current_soldiers": 19,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3300,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 1,
+            "persistent_regiment_id": 2612,
+            "chunk_index": 0,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 19,
+            "maximum_soldiers": 19,
+            "effective_current_soldiers": 19,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3300,
+            "persistent_prepared_replenishment_fraction_raw": 3300,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            61,
+            0,
+            10178,
+            1
+          ],
+          "before": {
+            "record_index": 0,
+            "persistent_regiment_id": 10178,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 0,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 0,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": true,
+            "persistent_monthly_replenishment_fraction_raw": 3600,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 0,
+            "persistent_regiment_id": 10178,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 0,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 0,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": true,
+            "persistent_monthly_replenishment_fraction_raw": 3600,
+            "persistent_prepared_replenishment_fraction_raw": 3600,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            61,
+            1,
+            2616,
+            1
+          ],
+          "before": {
+            "record_index": 1,
+            "persistent_regiment_id": 2616,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 69,
+            "maximum_soldiers": 69,
+            "effective_current_soldiers": 69,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 4950,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 1,
+            "persistent_regiment_id": 2616,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 69,
+            "maximum_soldiers": 69,
+            "effective_current_soldiers": 69,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 4950,
+            "persistent_prepared_replenishment_fraction_raw": 4950,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            61,
+            2,
+            2618,
+            2
+          ],
+          "before": {
+            "record_index": 2,
+            "persistent_regiment_id": 2618,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3750,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 2,
+            "persistent_regiment_id": 2618,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3750,
+            "persistent_prepared_replenishment_fraction_raw": 3750,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            62,
+            0,
+            2620,
+            1
+          ],
+          "before": {
+            "record_index": 0,
+            "persistent_regiment_id": 2620,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 68,
+            "maximum_soldiers": 69,
+            "effective_current_soldiers": 68,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": true,
+            "persistent_monthly_replenishment_fraction_raw": 4665,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 0,
+            "persistent_regiment_id": 2620,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 69,
+            "maximum_soldiers": 69,
+            "effective_current_soldiers": 69,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 4665,
+            "persistent_prepared_replenishment_fraction_raw": 4665,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            62,
+            1,
+            2622,
+            2
+          ],
+          "before": {
+            "record_index": 1,
+            "persistent_regiment_id": 2622,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3000,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 1,
+            "persistent_regiment_id": 2622,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3000,
+            "persistent_prepared_replenishment_fraction_raw": 3000,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            82,
+            0,
+            2604,
+            1
+          ],
+          "before": {
+            "record_index": 0,
+            "persistent_regiment_id": 2604,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 0,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 0,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": true,
+            "persistent_monthly_replenishment_fraction_raw": 3600,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 0,
+            "persistent_regiment_id": 2604,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 0,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 0,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": true,
+            "persistent_monthly_replenishment_fraction_raw": 3600,
+            "persistent_prepared_replenishment_fraction_raw": 3600,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            82,
+            1,
+            2602,
+            1
+          ],
+          "before": {
+            "record_index": 1,
+            "persistent_regiment_id": 2602,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 68,
+            "maximum_soldiers": 69,
+            "effective_current_soldiers": 68,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": true,
+            "persistent_monthly_replenishment_fraction_raw": 4020,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 1,
+            "persistent_regiment_id": 2602,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 69,
+            "maximum_soldiers": 69,
+            "effective_current_soldiers": 69,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 4020,
+            "persistent_prepared_replenishment_fraction_raw": 4020,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            82,
+            2,
+            9884,
+            2
+          ],
+          "before": {
+            "record_index": 2,
+            "persistent_regiment_id": 9884,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3450,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 2,
+            "persistent_regiment_id": 9884,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 1,
+            "maximum_soldiers": 1,
+            "effective_current_soldiers": 1,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3450,
+            "persistent_prepared_replenishment_fraction_raw": 3450,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            82,
+            3,
+            9886,
+            2
+          ],
+          "before": {
+            "record_index": 3,
+            "persistent_regiment_id": 9886,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 18,
+            "maximum_soldiers": 18,
+            "effective_current_soldiers": 18,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3450,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 3,
+            "persistent_regiment_id": 9886,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 18,
+            "maximum_soldiers": 18,
+            "effective_current_soldiers": 18,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3450,
+            "persistent_prepared_replenishment_fraction_raw": 3450,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            52,
+            0,
+            17948,
+            0
+          ],
+          "before": {
+            "record_index": 0,
+            "persistent_regiment_id": 17948,
+            "chunk_index": 0,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 198,
+            "maximum_soldiers": 200,
+            "effective_current_soldiers": 198,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": true,
+            "persistent_monthly_replenishment_fraction_raw": 10000,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 0,
+            "persistent_regiment_id": 17948,
+            "chunk_index": 0,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 200,
+            "maximum_soldiers": 200,
+            "effective_current_soldiers": 200,
+            "state_raw": 0,
+            "native_can_replenish": false,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 10000,
+            "persistent_prepared_replenishment_fraction_raw": 10000,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            53,
+            0,
+            16793680,
+            0
+          ],
+          "before": {
+            "record_index": 0,
+            "persistent_regiment_id": 16793680,
+            "chunk_index": 0,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 9,
+            "maximum_soldiers": 10,
+            "effective_current_soldiers": 9,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": true,
+            "persistent_monthly_replenishment_fraction_raw": 10000,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 0,
+            "persistent_regiment_id": 16793680,
+            "chunk_index": 0,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 10,
+            "maximum_soldiers": 10,
+            "effective_current_soldiers": 10,
+            "state_raw": 0,
+            "native_can_replenish": false,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 10000,
+            "persistent_prepared_replenishment_fraction_raw": 10000,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            51,
+            0,
+            2638,
+            1
+          ],
+          "before": {
+            "record_index": 0,
+            "persistent_regiment_id": 2638,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 17,
+            "maximum_soldiers": 17,
+            "effective_current_soldiers": 17,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 4140,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 0,
+            "persistent_regiment_id": 2638,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 17,
+            "maximum_soldiers": 17,
+            "effective_current_soldiers": 17,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 4140,
+            "persistent_prepared_replenishment_fraction_raw": 4140,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            51,
+            1,
+            2634,
+            1
+          ],
+          "before": {
+            "record_index": 1,
+            "persistent_regiment_id": 2634,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 17,
+            "maximum_soldiers": 17,
+            "effective_current_soldiers": 17,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 4140,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 1,
+            "persistent_regiment_id": 2634,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 17,
+            "maximum_soldiers": 17,
+            "effective_current_soldiers": 17,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 4140,
+            "persistent_prepared_replenishment_fraction_raw": 4140,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            51,
+            2,
+            2636,
+            2
+          ],
+          "before": {
+            "record_index": 2,
+            "persistent_regiment_id": 2636,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 4,
+            "maximum_soldiers": 4,
+            "effective_current_soldiers": 4,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3075,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 2,
+            "persistent_regiment_id": 2636,
+            "chunk_index": 2,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 4,
+            "maximum_soldiers": 4,
+            "effective_current_soldiers": 4,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 3075,
+            "persistent_prepared_replenishment_fraction_raw": 3075,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        },
+        {
+          "identity": [
+            55,
+            0,
+            2614,
+            1
+          ],
+          "before": {
+            "record_index": 0,
+            "persistent_regiment_id": 2614,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 6,
+            "maximum_soldiers": 6,
+            "effective_current_soldiers": 6,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 4050,
+            "persistent_prepared_replenishment_fraction_raw": 0,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          },
+          "after": {
+            "record_index": 0,
+            "persistent_regiment_id": 2614,
+            "chunk_index": 1,
+            "status": "available",
+            "unavailable_reason": null,
+            "current_soldiers": 6,
+            "maximum_soldiers": 6,
+            "effective_current_soldiers": 6,
+            "state_raw": 0,
+            "native_can_replenish": true,
+            "native_chunk_can_replenish": false,
+            "persistent_monthly_replenishment_fraction_raw": 4050,
+            "persistent_prepared_replenishment_fraction_raw": 4050,
+            "persistent_monthly_replenishment_fraction_scale": 100000,
+            "persistent_prepared_replenishment_fraction_scale": 100000
+          }
+        }
+      ],
+      "prepared_or_permission_change_is_integer_refill_credit": false
+    },
+    "roles": {
+      "0": {
+        "before": {
+          "public_id": 0,
+          "native_carmy_id": 0,
+          "owner": 33388,
+          "commander": 27357,
+          "province": 2174,
+          "state": "regular",
+          "route": [],
+          "route_status": "complete_empty",
+          "route_count": 0,
+          "current_soldiers": 3337,
+          "maximum_soldiers": 3371,
+          "regiments": 15,
+          "DATA": 25,
+          "stock": 10613988,
+          "capacity": 30000000,
+          "monthly": 2000000,
+          "scales": {
+            "current_supply_scale": 100000,
+            "current_supply_capacity_scale": 100000,
+            "current_supply_change_monthly_scale": 100000
+          },
+          "last_supply_update_storage": 300336024996477760,
+          "last_supply_update_raw": 53148480,
+          "grace_storage": 300061168564366016,
+          "grace_raw": 53144256,
+          "clock_status": "available",
+          "stationary_at_required_site": true
+        },
+        "after": {
+          "public_id": 0,
+          "native_carmy_id": 0,
+          "owner": 33388,
+          "commander": 27357,
+          "province": 2174,
+          "state": "regular",
+          "route": [],
+          "route_status": "complete_empty",
+          "route_count": 0,
+          "current_soldiers": 3344,
+          "maximum_soldiers": 3371,
+          "regiments": 15,
+          "DATA": 25,
+          "stock": 10613988,
+          "capacity": 30000000,
+          "monthly": 2000000,
+          "scales": {
+            "current_supply_scale": 100000,
+            "current_supply_capacity_scale": 100000,
+            "current_supply_change_monthly_scale": 100000
+          },
+          "last_supply_update_storage": 300336024996477760,
+          "last_supply_update_raw": 53148480,
+          "grace_storage": 300061168564366016,
+          "grace_raw": 53144256,
+          "clock_status": "available",
+          "stationary_at_required_site": true
+        },
+        "integer_current_net": 7
+      },
+      "204": {
+        "before": {
+          "public_id": 204,
+          "native_carmy_id": 199,
+          "owner": 33388,
+          "commander": 33388,
+          "province": 2327,
+          "state": "regular",
+          "route": [],
+          "route_status": "complete_empty",
+          "route_count": 0,
+          "current_soldiers": 3342,
+          "maximum_soldiers": 3376,
+          "regiments": 12,
+          "DATA": 12,
+          "stock": 10000000,
+          "capacity": 10000000,
+          "monthly": 2000000,
+          "scales": {
+            "current_supply_scale": 100000,
+            "current_supply_capacity_scale": 100000,
+            "current_supply_change_monthly_scale": 100000
+          },
+          "last_supply_update_storage": 300336106600856840,
+          "last_supply_update_raw": 53148936,
+          "grace_storage": 300061168564366016,
+          "grace_raw": 53144256,
+          "clock_status": "available",
+          "stationary_at_required_site": true
+        },
+        "after": {
+          "public_id": 204,
+          "native_carmy_id": 199,
+          "owner": 33388,
+          "commander": 33388,
+          "province": 2327,
+          "state": "regular",
+          "route": [],
+          "route_status": "complete_empty",
+          "route_count": 0,
+          "current_soldiers": 3345,
+          "maximum_soldiers": 3376,
+          "regiments": 12,
+          "DATA": 12,
+          "stock": 10000000,
+          "capacity": 10000000,
+          "monthly": 2000000,
+          "scales": {
+            "current_supply_scale": 100000,
+            "current_supply_capacity_scale": 100000,
+            "current_supply_change_monthly_scale": 100000
+          },
+          "last_supply_update_storage": 300336106600856840,
+          "last_supply_update_raw": 53148936,
+          "grace_storage": 300061168564366016,
+          "grace_raw": 53144256,
+          "clock_status": "available",
+          "stationary_at_required_site": true
+        },
+        "integer_current_net": 3
+      }
+    },
+    "whole_current_before": 6679,
+    "whole_current_after": 6689,
+    "whole_current_net": 10,
+    "individual_FullIDs_and_maxima_preserved": true,
+    "DATA_integer_grow_rows": [
+      {
+        "identity": [
+          50,
+          0,
+          2624,
+          1
+        ],
+        "arm_public": 0,
+        "integer_fields": {
+          "current_soldiers": {
+            "before": 73,
+            "after": 75
+          },
+          "effective_current_soldiers": {
+            "before": 73,
+            "after": 75
+          }
+        },
+        "original_entire_before": {
+          "record_index": 0,
+          "persistent_regiment_id": 2624,
+          "chunk_index": 1,
+          "status": "available",
+          "unavailable_reason": null,
+          "current_soldiers": 73,
+          "maximum_soldiers": 75,
+          "effective_current_soldiers": 73,
+          "state_raw": 0,
+          "native_can_replenish": true,
+          "native_chunk_can_replenish": true,
+          "persistent_monthly_replenishment_fraction_raw": 5325,
+          "persistent_prepared_replenishment_fraction_raw": 0,
+          "persistent_monthly_replenishment_fraction_scale": 100000,
+          "persistent_prepared_replenishment_fraction_scale": 100000
+        },
+        "original_entire_after": {
+          "record_index": 0,
+          "persistent_regiment_id": 2624,
+          "chunk_index": 1,
+          "status": "available",
+          "unavailable_reason": null,
+          "current_soldiers": 75,
+          "maximum_soldiers": 75,
+          "effective_current_soldiers": 75,
+          "state_raw": 0,
+          "native_can_replenish": true,
+          "native_chunk_can_replenish": false,
+          "persistent_monthly_replenishment_fraction_raw": 5325,
+          "persistent_prepared_replenishment_fraction_raw": 5325,
+          "persistent_monthly_replenishment_fraction_scale": 100000,
+          "persistent_prepared_replenishment_fraction_scale": 100000
+        }
+      },
+      {
+        "identity": [
+          54,
+          0,
+          2610,
+          0
+        ],
+        "arm_public": 0,
+        "integer_fields": {
+          "current_soldiers": {
+            "before": 299,
+            "after": 302
+          },
+          "effective_current_soldiers": {
+            "before": 299,
+            "after": 302
+          }
+        },
+        "original_entire_before": {
+          "record_index": 0,
+          "persistent_regiment_id": 2610,
+          "chunk_index": 0,
+          "status": "available",
+          "unavailable_reason": null,
+          "current_soldiers": 299,
+          "maximum_soldiers": 302,
+          "effective_current_soldiers": 299,
+          "state_raw": 0,
+          "native_can_replenish": true,
+          "native_chunk_can_replenish": true,
+          "persistent_monthly_replenishment_fraction_raw": 5760,
+          "persistent_prepared_replenishment_fraction_raw": 0,
+          "persistent_monthly_replenishment_fraction_scale": 100000,
+          "persistent_prepared_replenishment_fraction_scale": 100000
+        },
+        "original_entire_after": {
+          "record_index": 0,
+          "persistent_regiment_id": 2610,
+          "chunk_index": 0,
+          "status": "available",
+          "unavailable_reason": null,
+          "current_soldiers": 302,
+          "maximum_soldiers": 302,
+          "effective_current_soldiers": 302,
+          "state_raw": 0,
+          "native_can_replenish": true,
+          "native_chunk_can_replenish": false,
+          "persistent_monthly_replenishment_fraction_raw": 5760,
+          "persistent_prepared_replenishment_fraction_raw": 5760,
+          "persistent_monthly_replenishment_fraction_scale": 100000,
+          "persistent_prepared_replenishment_fraction_scale": 100000
+        }
+      },
+      {
+        "identity": [
+          62,
+          0,
+          2620,
+          1
+        ],
+        "arm_public": 0,
+        "integer_fields": {
+          "current_soldiers": {
+            "before": 68,
+            "after": 69
+          },
+          "effective_current_soldiers": {
+            "before": 68,
+            "after": 69
+          }
+        },
+        "original_entire_before": {
+          "record_index": 0,
+          "persistent_regiment_id": 2620,
+          "chunk_index": 1,
+          "status": "available",
+          "unavailable_reason": null,
+          "current_soldiers": 68,
+          "maximum_soldiers": 69,
+          "effective_current_soldiers": 68,
+          "state_raw": 0,
+          "native_can_replenish": true,
+          "native_chunk_can_replenish": true,
+          "persistent_monthly_replenishment_fraction_raw": 4665,
+          "persistent_prepared_replenishment_fraction_raw": 0,
+          "persistent_monthly_replenishment_fraction_scale": 100000,
+          "persistent_prepared_replenishment_fraction_scale": 100000
+        },
+        "original_entire_after": {
+          "record_index": 0,
+          "persistent_regiment_id": 2620,
+          "chunk_index": 1,
+          "status": "available",
+          "unavailable_reason": null,
+          "current_soldiers": 69,
+          "maximum_soldiers": 69,
+          "effective_current_soldiers": 69,
+          "state_raw": 0,
+          "native_can_replenish": true,
+          "native_chunk_can_replenish": false,
+          "persistent_monthly_replenishment_fraction_raw": 4665,
+          "persistent_prepared_replenishment_fraction_raw": 4665,
+          "persistent_monthly_replenishment_fraction_scale": 100000,
+          "persistent_prepared_replenishment_fraction_scale": 100000
+        }
+      },
+      {
+        "identity": [
+          82,
+          1,
+          2602,
+          1
+        ],
+        "arm_public": 0,
+        "integer_fields": {
+          "current_soldiers": {
+            "before": 68,
+            "after": 69
+          },
+          "effective_current_soldiers": {
+            "before": 68,
+            "after": 69
+          }
+        },
+        "original_entire_before": {
+          "record_index": 1,
+          "persistent_regiment_id": 2602,
+          "chunk_index": 1,
+          "status": "available",
+          "unavailable_reason": null,
+          "current_soldiers": 68,
+          "maximum_soldiers": 69,
+          "effective_current_soldiers": 68,
+          "state_raw": 0,
+          "native_can_replenish": true,
+          "native_chunk_can_replenish": true,
+          "persistent_monthly_replenishment_fraction_raw": 4020,
+          "persistent_prepared_replenishment_fraction_raw": 0,
+          "persistent_monthly_replenishment_fraction_scale": 100000,
+          "persistent_prepared_replenishment_fraction_scale": 100000
+        },
+        "original_entire_after": {
+          "record_index": 1,
+          "persistent_regiment_id": 2602,
+          "chunk_index": 1,
+          "status": "available",
+          "unavailable_reason": null,
+          "current_soldiers": 69,
+          "maximum_soldiers": 69,
+          "effective_current_soldiers": 69,
+          "state_raw": 0,
+          "native_can_replenish": true,
+          "native_chunk_can_replenish": false,
+          "persistent_monthly_replenishment_fraction_raw": 4020,
+          "persistent_prepared_replenishment_fraction_raw": 4020,
+          "persistent_monthly_replenishment_fraction_scale": 100000,
+          "persistent_prepared_replenishment_fraction_scale": 100000
+        }
+      },
+      {
+        "identity": [
+          52,
+          0,
+          17948,
+          0
+        ],
+        "arm_public": 204,
+        "integer_fields": {
+          "current_soldiers": {
+            "before": 198,
+            "after": 200
+          },
+          "effective_current_soldiers": {
+            "before": 198,
+            "after": 200
+          }
+        },
+        "original_entire_before": {
+          "record_index": 0,
+          "persistent_regiment_id": 17948,
+          "chunk_index": 0,
+          "status": "available",
+          "unavailable_reason": null,
+          "current_soldiers": 198,
+          "maximum_soldiers": 200,
+          "effective_current_soldiers": 198,
+          "state_raw": 0,
+          "native_can_replenish": true,
+          "native_chunk_can_replenish": true,
+          "persistent_monthly_replenishment_fraction_raw": 10000,
+          "persistent_prepared_replenishment_fraction_raw": 0,
+          "persistent_monthly_replenishment_fraction_scale": 100000,
+          "persistent_prepared_replenishment_fraction_scale": 100000
+        },
+        "original_entire_after": {
+          "record_index": 0,
+          "persistent_regiment_id": 17948,
+          "chunk_index": 0,
+          "status": "available",
+          "unavailable_reason": null,
+          "current_soldiers": 200,
+          "maximum_soldiers": 200,
+          "effective_current_soldiers": 200,
+          "state_raw": 0,
+          "native_can_replenish": false,
+          "native_chunk_can_replenish": false,
+          "persistent_monthly_replenishment_fraction_raw": 10000,
+          "persistent_prepared_replenishment_fraction_raw": 10000,
+          "persistent_monthly_replenishment_fraction_scale": 100000,
+          "persistent_prepared_replenishment_fraction_scale": 100000
+        }
+      },
+      {
+        "identity": [
+          53,
+          0,
+          16793680,
+          0
+        ],
+        "arm_public": 204,
+        "integer_fields": {
+          "current_soldiers": {
+            "before": 9,
+            "after": 10
+          },
+          "effective_current_soldiers": {
+            "before": 9,
+            "after": 10
+          }
+        },
+        "original_entire_before": {
+          "record_index": 0,
+          "persistent_regiment_id": 16793680,
+          "chunk_index": 0,
+          "status": "available",
+          "unavailable_reason": null,
+          "current_soldiers": 9,
+          "maximum_soldiers": 10,
+          "effective_current_soldiers": 9,
+          "state_raw": 0,
+          "native_can_replenish": true,
+          "native_chunk_can_replenish": true,
+          "persistent_monthly_replenishment_fraction_raw": 10000,
+          "persistent_prepared_replenishment_fraction_raw": 0,
+          "persistent_monthly_replenishment_fraction_scale": 100000,
+          "persistent_prepared_replenishment_fraction_scale": 100000
+        },
+        "original_entire_after": {
+          "record_index": 0,
+          "persistent_regiment_id": 16793680,
+          "chunk_index": 0,
+          "status": "available",
+          "unavailable_reason": null,
+          "current_soldiers": 10,
+          "maximum_soldiers": 10,
+          "effective_current_soldiers": 10,
+          "state_raw": 0,
+          "native_can_replenish": false,
+          "native_chunk_can_replenish": false,
+          "persistent_monthly_replenishment_fraction_raw": 10000,
+          "persistent_prepared_replenishment_fraction_raw": 10000,
+          "persistent_monthly_replenishment_fraction_scale": 100000,
+          "persistent_prepared_replenishment_fraction_scale": 100000
+        }
+      }
+    ],
+    "DATA_cache_or_permission_changes": [
+      {
+        "identity": [
+          50,
+          0,
+          2624,
+          1
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "native_chunk_can_replenish": {
+            "before": true,
+            "after": false
+          },
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 5325
+          }
+        }
+      },
+      {
+        "identity": [
+          50,
+          1,
+          2606,
+          1
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 5325
+          }
+        }
+      },
+      {
+        "identity": [
+          50,
+          2,
+          2626,
+          2
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 3750
+          }
+        }
+      },
+      {
+        "identity": [
+          50,
+          3,
+          2608,
+          2
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 3525
+          }
+        }
+      },
+      {
+        "identity": [
+          50,
+          4,
+          2630,
+          1
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 3075
+          }
+        }
+      },
+      {
+        "identity": [
+          50,
+          5,
+          2628,
+          1
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 5325
+          }
+        }
+      },
+      {
+        "identity": [
+          50,
+          6,
+          2632,
+          2
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 2925
+          }
+        }
+      },
+      {
+        "identity": [
+          54,
+          0,
+          2610,
+          0
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "native_chunk_can_replenish": {
+            "before": true,
+            "after": false
+          },
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 5760
+          }
+        }
+      },
+      {
+        "identity": [
+          54,
+          1,
+          2612,
+          0
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 3300
+          }
+        }
+      },
+      {
+        "identity": [
+          61,
+          0,
+          10178,
+          1
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 3600
+          }
+        }
+      },
+      {
+        "identity": [
+          61,
+          1,
+          2616,
+          1
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 4950
+          }
+        }
+      },
+      {
+        "identity": [
+          61,
+          2,
+          2618,
+          2
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 3750
+          }
+        }
+      },
+      {
+        "identity": [
+          62,
+          0,
+          2620,
+          1
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "native_chunk_can_replenish": {
+            "before": true,
+            "after": false
+          },
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 4665
+          }
+        }
+      },
+      {
+        "identity": [
+          62,
+          1,
+          2622,
+          2
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 3000
+          }
+        }
+      },
+      {
+        "identity": [
+          82,
+          0,
+          2604,
+          1
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 3600
+          }
+        }
+      },
+      {
+        "identity": [
+          82,
+          1,
+          2602,
+          1
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "native_chunk_can_replenish": {
+            "before": true,
+            "after": false
+          },
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 4020
+          }
+        }
+      },
+      {
+        "identity": [
+          82,
+          2,
+          9884,
+          2
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 3450
+          }
+        }
+      },
+      {
+        "identity": [
+          82,
+          3,
+          9886,
+          2
+        ],
+        "arm_public": 0,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 3450
+          }
+        }
+      },
+      {
+        "identity": [
+          52,
+          0,
+          17948,
+          0
+        ],
+        "arm_public": 204,
+        "cache_or_permission_fields": {
+          "native_can_replenish": {
+            "before": true,
+            "after": false
+          },
+          "native_chunk_can_replenish": {
+            "before": true,
+            "after": false
+          },
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 10000
+          }
+        }
+      },
+      {
+        "identity": [
+          53,
+          0,
+          16793680,
+          0
+        ],
+        "arm_public": 204,
+        "cache_or_permission_fields": {
+          "native_can_replenish": {
+            "before": true,
+            "after": false
+          },
+          "native_chunk_can_replenish": {
+            "before": true,
+            "after": false
+          },
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 10000
+          }
+        }
+      },
+      {
+        "identity": [
+          51,
+          0,
+          2638,
+          1
+        ],
+        "arm_public": 204,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 4140
+          }
+        }
+      },
+      {
+        "identity": [
+          51,
+          1,
+          2634,
+          1
+        ],
+        "arm_public": 204,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 4140
+          }
+        }
+      },
+      {
+        "identity": [
+          51,
+          2,
+          2636,
+          2
+        ],
+        "arm_public": 204,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 3075
+          }
+        }
+      },
+      {
+        "identity": [
+          55,
+          0,
+          2614,
+          1
+        ],
+        "arm_public": 204,
+        "cache_or_permission_fields": {
+          "persistent_prepared_replenishment_fraction_raw": {
+            "before": 0,
+            "after": 4050
+          }
+        }
+      }
+    ],
+    "other_DATA_changes": [],
+    "Regiment_entire_row_diffs": [
+      {
+        "FullID": 50,
+        "before": {
+          "army_regiment_id": 50,
+          "current_soldiers": 275,
+          "maximum_soldiers": 277,
+          "scale": 1,
+          "maa_type_status": "absent",
+          "maa_type_key": null,
+          "siege_tier_observable": false,
+          "siege_tier": null,
+          "composition_unavailable_reason": null
+        },
+        "after": {
+          "army_regiment_id": 50,
+          "current_soldiers": 277,
+          "maximum_soldiers": 277,
+          "scale": 1,
+          "maa_type_status": "absent",
+          "maa_type_key": null,
+          "siege_tier_observable": false,
+          "siege_tier": null,
+          "composition_unavailable_reason": null
+        }
+      },
+      {
+        "FullID": 54,
+        "before": {
+          "army_regiment_id": 54,
+          "current_soldiers": 318,
+          "maximum_soldiers": 321,
+          "scale": 1,
+          "maa_type_status": "absent",
+          "maa_type_key": null,
+          "siege_tier_observable": false,
+          "siege_tier": null,
+          "composition_unavailable_reason": null
+        },
+        "after": {
+          "army_regiment_id": 54,
+          "current_soldiers": 321,
+          "maximum_soldiers": 321,
+          "scale": 1,
+          "maa_type_status": "absent",
+          "maa_type_key": null,
+          "siege_tier_observable": false,
+          "siege_tier": null,
+          "composition_unavailable_reason": null
+        }
+      },
+      {
+        "FullID": 62,
+        "before": {
+          "army_regiment_id": 62,
+          "current_soldiers": 69,
+          "maximum_soldiers": 70,
+          "scale": 1,
+          "maa_type_status": "absent",
+          "maa_type_key": null,
+          "siege_tier_observable": false,
+          "siege_tier": null,
+          "composition_unavailable_reason": null
+        },
+        "after": {
+          "army_regiment_id": 62,
+          "current_soldiers": 70,
+          "maximum_soldiers": 70,
+          "scale": 1,
+          "maa_type_status": "absent",
+          "maa_type_key": null,
+          "siege_tier_observable": false,
+          "siege_tier": null,
+          "composition_unavailable_reason": null
+        }
+      },
+      {
+        "FullID": 82,
+        "before": {
+          "army_regiment_id": 82,
+          "current_soldiers": 87,
+          "maximum_soldiers": 89,
+          "scale": 1,
+          "maa_type_status": "absent",
+          "maa_type_key": null,
+          "siege_tier_observable": false,
+          "siege_tier": null,
+          "composition_unavailable_reason": null
+        },
+        "after": {
+          "army_regiment_id": 82,
+          "current_soldiers": 88,
+          "maximum_soldiers": 89,
+          "scale": 1,
+          "maa_type_status": "absent",
+          "maa_type_key": null,
+          "siege_tier_observable": false,
+          "siege_tier": null,
+          "composition_unavailable_reason": null
+        }
+      },
+      {
+        "FullID": 52,
+        "before": {
+          "army_regiment_id": 52,
+          "current_soldiers": 198,
+          "maximum_soldiers": 200,
+          "scale": 1,
+          "maa_type_status": "available",
+          "maa_type_key": "armored_footmen",
+          "siege_tier_observable": true,
+          "siege_tier": 0,
+          "composition_unavailable_reason": null
+        },
+        "after": {
+          "army_regiment_id": 52,
+          "current_soldiers": 200,
+          "maximum_soldiers": 200,
+          "scale": 1,
+          "maa_type_status": "available",
+          "maa_type_key": "armored_footmen",
+          "siege_tier_observable": true,
+          "siege_tier": 0,
+          "composition_unavailable_reason": null
+        }
+      },
+      {
+        "FullID": 53,
+        "before": {
+          "army_regiment_id": 53,
+          "current_soldiers": 9,
+          "maximum_soldiers": 10,
+          "scale": 1,
+          "maa_type_status": "available",
+          "maa_type_key": "mangonel",
+          "siege_tier_observable": true,
+          "siege_tier": 2,
+          "composition_unavailable_reason": null
+        },
+        "after": {
+          "army_regiment_id": 53,
+          "current_soldiers": 10,
+          "maximum_soldiers": 10,
+          "scale": 1,
+          "maa_type_status": "available",
+          "maa_type_key": "mangonel",
+          "siege_tier_observable": true,
+          "siege_tier": 2,
+          "composition_unavailable_reason": null
+        }
+      }
+    ],
+    "full27_and37_entire_source_arrays_relative": [
+      "inputs/growth-before/observation.json",
+      "inputs/growth-after/observation.json"
+    ]
+  },
+  "observed_world_changed_paths": [
+    "/active_wars/0/objective_province_states/5/garrison_size",
+    "/active_wars/0/objective_province_states/6/active_siege/current_work/raw",
+    "/active_wars/0/objective_province_states/6/active_siege/days_left",
+    "/active_wars/0/objective_province_states/6/active_siege/progress_fraction/raw",
+    "/active_wars/0/objective_province_states/6/active_siege/remaining_work/raw",
+    "/active_wars/0/objective_province_states/6/besieging_strength"
+  ],
+  "Root_world_review_original": "inputs/root-review-growth.json",
+  "Main_positive_stock_write_full_qualification_return_merge_London_B_terminal_final_raw_result": null,
+  "applied_refill_death_payment_ledger_producer_PC_or_B_C_winner": null,
+  "integer_growth_not_inferred_from_prepared_or_permission_changes": true,
+  "ABC_complete_comparison_or_media_clean_human_credit": 0
+}

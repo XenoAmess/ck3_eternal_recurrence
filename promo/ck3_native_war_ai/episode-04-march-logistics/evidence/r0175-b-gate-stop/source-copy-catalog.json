@@ -1,0 +1,1460 @@
+{
+  "schema": "ck3.e04.B.exact-original-source-copy.v1",
+  "sources": [
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/B-merge-exception-values.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\B-merge-exception-values.json",
+        "bytes": 4311,
+        "sha256": "171e78be4912abef78bebf3214b017de6b39a048c5d21ece24c8491a2a3af22b"
+      },
+      "bytes": 4311,
+      "sha256": "171e78be4912abef78bebf3214b017de6b39a048c5d21ece24c8491a2a3af22b",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/code/verify_B_merge_exception.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\code\\verify_B_merge_exception.py",
+        "bytes": 12388,
+        "sha256": "f4893065d33dc835d74f8278d87d671d7679a6a47926a8f38e7765cf7d06c922"
+      },
+      "bytes": 12388,
+      "sha256": "f4893065d33dc835d74f8278d87d671d7679a6a47926a8f38e7765cf7d06c922",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/inputs/immediate-post-before.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\inputs\\immediate-post-before.json",
+        "bytes": 34932,
+        "sha256": "e92bc600cfaa47d9f0d9396fb723e8994af7140b425105fd186438711623f556"
+      },
+      "bytes": 34932,
+      "sha256": "e92bc600cfaa47d9f0d9396fb723e8994af7140b425105fd186438711623f556",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/inputs/immediate-post-health.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\inputs\\immediate-post-health.json",
+        "bytes": 79958,
+        "sha256": "30a3788859571375e90db80b1d78dfc41861496a4d1efa0ffa4a68debab7f236"
+      },
+      "bytes": 79958,
+      "sha256": "30a3788859571375e90db80b1d78dfc41861496a4d1efa0ffa4a68debab7f236",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/inputs/merge-before.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\inputs\\merge-before.json",
+        "bytes": 234126,
+        "sha256": "4084bd7110f9cf0de91d92df9a50f26cb495bd7c81b8cb27c863f64083cecfbc"
+      },
+      "bytes": 234126,
+      "sha256": "4084bd7110f9cf0de91d92df9a50f26cb495bd7c81b8cb27c863f64083cecfbc",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/inputs/merge-command-body.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\inputs\\merge-command-body.json",
+        "bytes": 992,
+        "sha256": "d583675bd1332eecb97096100bebd5c0bafdc1362582ea490f2e985e6fb850a1"
+      },
+      "bytes": 992,
+      "sha256": "d583675bd1332eecb97096100bebd5c0bafdc1362582ea490f2e985e6fb850a1",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/inputs/merge-response.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\inputs\\merge-response.json",
+        "bytes": 5421,
+        "sha256": "f9bd634cb6593075d99e11d87f67ff1ec122b9bc7e2622c344a38d57655e93ca"
+      },
+      "bytes": 5421,
+      "sha256": "f9bd634cb6593075d99e11d87f67ff1ec122b9bc7e2622c344a38d57655e93ca",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/inputs/post/commander-0.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\inputs\\post\\commander-0.json",
+        "bytes": 11484,
+        "sha256": "33e30ddfea916157e17230614e10dcbaa23f2b32f127f1b876e00ec8f8a8f4c0"
+      },
+      "bytes": 11484,
+      "sha256": "33e30ddfea916157e17230614e10dcbaa23f2b32f127f1b876e00ec8f8a8f4c0",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/inputs/post/observation.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\inputs\\post\\observation.json",
+        "bytes": 563626,
+        "sha256": "73292374f8b14f0cf0d4ba47e9276e082086b3bc062404e3fdca8a56ee3f25ff"
+      },
+      "bytes": 563626,
+      "sha256": "73292374f8b14f0cf0d4ba47e9276e082086b3bc062404e3fdca8a56ee3f25ff",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/inputs/pre/commander-0.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\inputs\\pre\\commander-0.json",
+        "bytes": 11485,
+        "sha256": "160e797e149bafe4ab81e50161c907a0d456d72a403c8e8676c230aaf086e6df"
+      },
+      "bytes": 11485,
+      "sha256": "160e797e149bafe4ab81e50161c907a0d456d72a403c8e8676c230aaf086e6df",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/inputs/pre/commander-204.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\inputs\\pre\\commander-204.json",
+        "bytes": 11495,
+        "sha256": "ce5143e3ebb6ac29bcef3f4d27611db04d80c84f01250f3ff6d9435101d476e4"
+      },
+      "bytes": 11495,
+      "sha256": "ce5143e3ebb6ac29bcef3f4d27611db04d80c84f01250f3ff6d9435101d476e4",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/inputs/pre/observation.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\inputs\\pre\\observation.json",
+        "bytes": 605505,
+        "sha256": "c4ec2cb8243aefd579e6c1ec69ea2d00f1ce3f5090445a092618ecaf80078a4f"
+      },
+      "bytes": 605505,
+      "sha256": "c4ec2cb8243aefd579e6c1ec69ea2d00f1ce3f5090445a092618ecaf80078a4f",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/inputs/Root-readback-summary.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\inputs\\Root-readback-summary.json",
+        "bytes": 1176,
+        "sha256": "e104d7b214a3494a30c659f6250e6be45b4e25fc8960e9ff35221fd2a0aff768"
+      },
+      "bytes": 1176,
+      "sha256": "e104d7b214a3494a30c659f6250e6be45b4e25fc8960e9ff35221fd2a0aff768",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/inputs/stage-STOP.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\inputs\\stage-STOP.json",
+        "bytes": 352,
+        "sha256": "b971e5a09920d3ba5a42d70e1fe57bacc9fde7732c5d1bb0e3e4681e7b096033"
+      },
+      "bytes": 352,
+      "sha256": "b971e5a09920d3ba5a42d70e1fe57bacc9fde7732c5d1bb0e3e4681e7b096033",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/manifest-final-a02.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\manifest-final-a02.json",
+        "bytes": 35350,
+        "sha256": "4b1666df2a17a075e7d5f6ac79e9493f7b4492cd592fcf5088aca1d0b484dc64"
+      },
+      "bytes": 35350,
+      "sha256": "4b1666df2a17a075e7d5f6ac79e9493f7b4492cd592fcf5088aca1d0b484dc64",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/manifest.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\manifest.json",
+        "bytes": 35088,
+        "sha256": "6d2780baa26c62e8bce21584b5823442dd54dbabd1adfaee3f28453e15dca3d8"
+      },
+      "bytes": 35088,
+      "sha256": "6d2780baa26c62e8bce21584b5823442dd54dbabd1adfaee3f28453e15dca3d8",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/B-qualified-rest-values.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\B-qualified-rest-values.json",
+        "bytes": 6865,
+        "sha256": "7091ff474280a979f8de08767959536f744f0739a941ac1ace8fced5eddaca83"
+      },
+      "bytes": 6865,
+      "sha256": "7091ff474280a979f8de08767959536f744f0739a941ac1ace8fced5eddaca83",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/code/verify_B_rest_increment.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\code\\verify_B_rest_increment.py",
+        "bytes": 6853,
+        "sha256": "c46a107d9d530e20e9d0e63d55a98ffdc45113cb7996fe4e25b3f010e589dd87"
+      },
+      "bytes": 6853,
+      "sha256": "c46a107d9d530e20e9d0e63d55a98ffdc45113cb7996fe4e25b3f010e589dd87",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/inputs/Main-after/commander-0.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\inputs\\Main-after\\commander-0.json",
+        "bytes": 11385,
+        "sha256": "fb8db1a47f0fc3e9d138026017353d7cd5aab73f1b30cb75e1563a1efab01bf7"
+      },
+      "bytes": 11385,
+      "sha256": "fb8db1a47f0fc3e9d138026017353d7cd5aab73f1b30cb75e1563a1efab01bf7",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/inputs/Main-after/commander-204.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\inputs\\Main-after\\commander-204.json",
+        "bytes": 11395,
+        "sha256": "ad76654f40a258b5155194bfad90c2cf6d89dc5c16359a64631c01a8046937ef"
+      },
+      "bytes": 11395,
+      "sha256": "ad76654f40a258b5155194bfad90c2cf6d89dc5c16359a64631c01a8046937ef",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/inputs/Main-after/observation.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\inputs\\Main-after\\observation.json",
+        "bytes": 383376,
+        "sha256": "6aad8eabab1bf38daed955d655d3c4a715fc921f600a7a8defbbf5fcc03b45c1"
+      },
+      "bytes": 383376,
+      "sha256": "6aad8eabab1bf38daed955d655d3c4a715fc921f600a7a8defbbf5fcc03b45c1",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/inputs/Main-before/commander-0.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\inputs\\Main-before\\commander-0.json",
+        "bytes": 11385,
+        "sha256": "49e70eedcd72c55c4b79f556abc0d52e3f90cf446957c16dbbb33987031a3f76"
+      },
+      "bytes": 11385,
+      "sha256": "49e70eedcd72c55c4b79f556abc0d52e3f90cf446957c16dbbb33987031a3f76",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/inputs/Main-before/commander-204.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\inputs\\Main-before\\commander-204.json",
+        "bytes": 11395,
+        "sha256": "c8e6dce3c71df0ecdfbe2c3b3665c8a3d4d4581cf9084ee198617ff2e0e3bc42"
+      },
+      "bytes": 11395,
+      "sha256": "c8e6dce3c71df0ecdfbe2c3b3665c8a3d4d4581cf9084ee198617ff2e0e3bc42",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/inputs/Main-before/observation.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\inputs\\Main-before\\observation.json",
+        "bytes": 591984,
+        "sha256": "dfabe1013d2d4af62b9eaaa3011df105e17697e68d494aa53ac74ab04f8f421d"
+      },
+      "bytes": 591984,
+      "sha256": "dfabe1013d2d4af62b9eaaa3011df105e17697e68d494aa53ac74ab04f8f421d",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/inputs/Main-source-diff.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\inputs\\Main-source-diff.json",
+        "bytes": 10585,
+        "sha256": "04d5c1ce4d8c19337fe625de8c0284f315d792a06a36d0f7a040490ff6cd687d"
+      },
+      "bytes": 10585,
+      "sha256": "04d5c1ce4d8c19337fe625de8c0284f315d792a06a36d0f7a040490ff6cd687d",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/inputs/Main-UI-receipt.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\inputs\\Main-UI-receipt.json",
+        "bytes": 2016,
+        "sha256": "61842df7f9dbb3ed65963f03c8aea56545e513a4dc1bca0575ecd4e8a380d81a"
+      },
+      "bytes": 2016,
+      "sha256": "61842df7f9dbb3ed65963f03c8aea56545e513a4dc1bca0575ecd4e8a380d81a",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/inputs/Main-window.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\inputs\\Main-window.json",
+        "bytes": 2280,
+        "sha256": "ef7090a45665e0977920cac4460c930496525e2613be951c5edbfb5ac84353b8"
+      },
+      "bytes": 2280,
+      "sha256": "ef7090a45665e0977920cac4460c930496525e2613be951c5edbfb5ac84353b8",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/inputs/Root-note.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\inputs\\Root-note.txt",
+        "bytes": 1014,
+        "sha256": "e0f52ab937d285770200fb322182ce60d031e938c2a0d5b4e67388f02a31f0e7"
+      },
+      "bytes": 1014,
+      "sha256": "e0f52ab937d285770200fb322182ce60d031e938c2a0d5b4e67388f02a31f0e7",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/inputs/Root-qualification.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\inputs\\Root-qualification.json",
+        "bytes": 18586,
+        "sha256": "c9ee065214f9ce5120b188db9b8d4949c8ff9957ea472a7287e9efbd7242ed29"
+      },
+      "bytes": 18586,
+      "sha256": "c9ee065214f9ce5120b188db9b8d4949c8ff9957ea472a7287e9efbd7242ed29",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/B-intermediate-values.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\B-intermediate-values.json",
+        "bytes": 73595,
+        "sha256": "c63229d496d8db7dfa0562db3642623bbf1113a93c71b0264b562b2d92177092"
+      },
+      "bytes": 73595,
+      "sha256": "c63229d496d8db7dfa0562db3642623bbf1113a93c71b0264b562b2d92177092",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/B-child-partial-result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\B-child-partial-result.json",
+        "bytes": 2417,
+        "sha256": "26597ebbfc93db2aa74751afbdb57f915d6588784d82bce3545bafac6232e7c3"
+      },
+      "bytes": 2417,
+      "sha256": "26597ebbfc93db2aa74751afbdb57f915d6588784d82bce3545bafac6232e7c3",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/code/frozen-cohort.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\code\\frozen-cohort.json",
+        "bytes": 1929,
+        "sha256": "8a8382fbf050fb55b81e901b710430b35163abe259c27bd1c31778835d2eb02f"
+      },
+      "bytes": 1929,
+      "sha256": "8a8382fbf050fb55b81e901b710430b35163abe259c27bd1c31778835d2eb02f",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/code/paired_snapshot_reader.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\code\\paired_snapshot_reader.py",
+        "bytes": 17072,
+        "sha256": "be3a638de2bb803bc1be3658148af20b4c7c75636f59dc487cd932dee225ff40"
+      },
+      "bytes": 17072,
+      "sha256": "be3a638de2bb803bc1be3658148af20b4c7c75636f59dc487cd932dee225ff40",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/code/paired_window_pure.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\code\\paired_window_pure.py",
+        "bytes": 4377,
+        "sha256": "838942b56df46c64bcea8892fc6d4718b8aadca5f509735db703186cfbef9ffd"
+      },
+      "bytes": 4377,
+      "sha256": "838942b56df46c64bcea8892fc6d4718b8aadca5f509735db703186cfbef9ffd",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/code/verify_child_partial.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\code\\verify_child_partial.py",
+        "bytes": 6698,
+        "sha256": "d8971c9dd14d2cc25938b93dc3cb1684f2bfcf7851af96cc147c95b1ddf7fdcf"
+      },
+      "bytes": 6698,
+      "sha256": "d8971c9dd14d2cc25938b93dc3cb1684f2bfcf7851af96cc147c95b1ddf7fdcf",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/after/commander-0.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\after\\commander-0.json",
+        "bytes": 11381,
+        "sha256": "833dad597cb49deedf77a8218326eb50698902feabae982d3595cbda0ecb7c76"
+      },
+      "bytes": 11381,
+      "sha256": "833dad597cb49deedf77a8218326eb50698902feabae982d3595cbda0ecb7c76",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/after/commander-204.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\after\\commander-204.json",
+        "bytes": 11391,
+        "sha256": "42e4e5f3a661be33fb4590eb30ac7ecd85069a1e3ff80403932ccb5ec4d982ac"
+      },
+      "bytes": 11391,
+      "sha256": "42e4e5f3a661be33fb4590eb30ac7ecd85069a1e3ff80403932ccb5ec4d982ac",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/after/observation.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\after\\observation.json",
+        "bytes": 380302,
+        "sha256": "60e4f5dbe2c1944be8b97fbc117725eb461e9f055f4bb3a29b4b9a63b504545e"
+      },
+      "bytes": 380302,
+      "sha256": "60e4f5dbe2c1944be8b97fbc117725eb461e9f055f4bb3a29b4b9a63b504545e",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/anchor/commander-0.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\anchor\\commander-0.json",
+        "bytes": 11381,
+        "sha256": "079d0a68d19ea0e9461d4f13cb5a257705314a6ee04cc8215d08da678bffe765"
+      },
+      "bytes": 11381,
+      "sha256": "079d0a68d19ea0e9461d4f13cb5a257705314a6ee04cc8215d08da678bffe765",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/anchor/commander-204.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\anchor\\commander-204.json",
+        "bytes": 11391,
+        "sha256": "bf7c33feff887c053a4a674e062f2d02f8ca8decf70ddf0700e0d3470954f71e"
+      },
+      "bytes": 11391,
+      "sha256": "bf7c33feff887c053a4a674e062f2d02f8ca8decf70ddf0700e0d3470954f71e",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/anchor/observation.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\anchor\\observation.json",
+        "bytes": 382947,
+        "sha256": "0ebee749f16a0d20abb96daaf0943d5c45beea873da05448493134495f12cc51"
+      },
+      "bytes": 382947,
+      "sha256": "0ebee749f16a0d20abb96daaf0943d5c45beea873da05448493134495f12cc51",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/before/commander-0.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\before\\commander-0.json",
+        "bytes": 11381,
+        "sha256": "6bf8f9987898f4069b3eb3ecee764e9687177e292dd09afde8c78f5de38020dd"
+      },
+      "bytes": 11381,
+      "sha256": "6bf8f9987898f4069b3eb3ecee764e9687177e292dd09afde8c78f5de38020dd",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/before/commander-204.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\before\\commander-204.json",
+        "bytes": 11391,
+        "sha256": "f1f8908493d855aa1810e55f98610370866405acec0896a5f519ddf3253527a3"
+      },
+      "bytes": 11391,
+      "sha256": "f1f8908493d855aa1810e55f98610370866405acec0896a5f519ddf3253527a3",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/before/observation.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\before\\observation.json",
+        "bytes": 380302,
+        "sha256": "9b75d9755d7ac09f8c5a961a46765ae1e90978fde181735051626fa1b8f9bed5"
+      },
+      "bytes": 380302,
+      "sha256": "9b75d9755d7ac09f8c5a961a46765ae1e90978fde181735051626fa1b8f9bed5",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/child-window.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\child-window.json",
+        "bytes": 2239,
+        "sha256": "74512a020238044bd723853fda8b9f6f255a1eb013d504a0aba223439985ca3a"
+      },
+      "bytes": 2239,
+      "sha256": "74512a020238044bd723853fda8b9f6f255a1eb013d504a0aba223439985ca3a",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/phase0/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\phase0\\result.json",
+        "bytes": 578,
+        "sha256": "4462d8979b3ff5d88c13932bb623bf87590c674c16f276fe48cd51ae4f1fe2c2"
+      },
+      "bytes": 578,
+      "sha256": "4462d8979b3ff5d88c13932bb623bf87590c674c16f276fe48cd51ae4f1fe2c2",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/phase0/split-after.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\phase0\\split-after.json",
+        "bytes": 232075,
+        "sha256": "b3bf7fc12045fbc1dae315541d8b404618e1b1717aa13fd9a502a146a60d1183"
+      },
+      "bytes": 232075,
+      "sha256": "b3bf7fc12045fbc1dae315541d8b404618e1b1717aa13fd9a502a146a60d1183",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/phase0/split-before.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\phase0\\split-before.json",
+        "bytes": 35887,
+        "sha256": "612425fa472163b796ec4cc8e967c7f160d3f88d1843c64fbe5239c8b62b55f6"
+      },
+      "bytes": 35887,
+      "sha256": "612425fa472163b796ec4cc8e967c7f160d3f88d1843c64fbe5239c8b62b55f6",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/phase0/split-command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\phase0\\split-command.json",
+        "bytes": 283,
+        "sha256": "60d5356bd63b5233f751caae1c7bf6a548de908d58bebfeec4a9ee017514720a"
+      },
+      "bytes": 283,
+      "sha256": "60d5356bd63b5233f751caae1c7bf6a548de908d58bebfeec4a9ee017514720a",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/phase0/split-commander-0.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\phase0\\split-commander-0.json",
+        "bytes": 11471,
+        "sha256": "f74b3249ec77e18d9c8620a79263a4c348a6d8f8891cd5012904136c6b62ffd5"
+      },
+      "bytes": 11471,
+      "sha256": "f74b3249ec77e18d9c8620a79263a4c348a6d8f8891cd5012904136c6b62ffd5",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/phase0/split-commander-204.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\phase0\\split-commander-204.json",
+        "bytes": 11481,
+        "sha256": "53675cf1fca2bed4f599d12b694233ba7163f8e183754a4c105a3724b2198276"
+      },
+      "bytes": 11481,
+      "sha256": "53675cf1fca2bed4f599d12b694233ba7163f8e183754a4c105a3724b2198276",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/phase0/split-conservation.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\phase0\\split-conservation.json",
+        "bytes": 524,
+        "sha256": "a99c33fb7a332788267eccfee4315e280455defeeefad5be969690babed7c68f"
+      },
+      "bytes": 524,
+      "sha256": "a99c33fb7a332788267eccfee4315e280455defeeefad5be969690babed7c68f",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/phase0/split-strength.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\phase0\\split-strength.json",
+        "bytes": 92080,
+        "sha256": "e0cd1fdcb73678ab6f78e47684d3052e3f7116f673e651ccf9edbc3ae6894c0b"
+      },
+      "bytes": 92080,
+      "sha256": "e0cd1fdcb73678ab6f78e47684d3052e3f7116f673e651ccf9edbc3ae6894c0b",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/phase0/whole-after.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\phase0\\whole-after.json",
+        "bytes": 217676,
+        "sha256": "bfd1de2d5a6a460f4d4b9d94acf4f3523973b8ec355c47801161bf8376840212"
+      },
+      "bytes": 217676,
+      "sha256": "bfd1de2d5a6a460f4d4b9d94acf4f3523973b8ec355c47801161bf8376840212",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/phase0/whole-before.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\phase0\\whole-before.json",
+        "bytes": 217676,
+        "sha256": "6aed7c24fb584504fd32151fbdad2a2bc5fc743e48f425077fd7aa764bbcabf5"
+      },
+      "bytes": 217676,
+      "sha256": "6aed7c24fb584504fd32151fbdad2a2bc5fc743e48f425077fd7aa764bbcabf5",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/phase0/whole-commander-0.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\phase0\\whole-commander-0.json",
+        "bytes": 11470,
+        "sha256": "c200012412b51c2a67ba7f598de576e113cddad174d851854d06f272d5c55e3e"
+      },
+      "bytes": 11470,
+      "sha256": "c200012412b51c2a67ba7f598de576e113cddad174d851854d06f272d5c55e3e",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/phase0/whole-strength.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\phase0\\whole-strength.json",
+        "bytes": 78964,
+        "sha256": "4b8d35146455868fc25022b88f5fde70da9650d82f6ed4deaa4c67e1df667f27"
+      },
+      "bytes": 78964,
+      "sha256": "4b8d35146455868fc25022b88f5fde70da9650d82f6ed4deaa4c67e1df667f27",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/protocol.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\protocol.json",
+        "bytes": 54230,
+        "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+      },
+      "bytes": 54230,
+      "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/rest-anchor.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\rest-anchor.json",
+        "bytes": 668,
+        "sha256": "f831b130dbdf48ea9b9c9e57fa1120a857ab94b06022fc7618ba071d15a06a64"
+      },
+      "bytes": 668,
+      "sha256": "f831b130dbdf48ea9b9c9e57fa1120a857ab94b06022fc7618ba071d15a06a64",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/inputs/root-review.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\inputs\\root-review.json",
+        "bytes": 3540,
+        "sha256": "d1a19f561766d8df9c568e7aca5e72fd4c365ca56a5bc5177e02c3074f3680f9"
+      },
+      "bytes": 3540,
+      "sha256": "d1a19f561766d8df9c568e7aca5e72fd4c365ca56a5bc5177e02c3074f3680f9",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/manifest-final-a02.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\manifest-final-a02.json",
+        "bytes": 12497,
+        "sha256": "3ea2ca2acbea2946748b98efe94014b66896f25a9d52911e7e393335b8dbc0f2"
+      },
+      "bytes": 12497,
+      "sha256": "3ea2ca2acbea2946748b98efe94014b66896f25a9d52911e7e393335b8dbc0f2",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/child-cap/manifest.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\child-cap\\manifest.json",
+        "bytes": 12312,
+        "sha256": "0d7e65d94fe69c5e225bd123e5f4651b0ada6b6a4bf31030f3e447bacb36a216"
+      },
+      "bytes": 12312,
+      "sha256": "0d7e65d94fe69c5e225bd123e5f4651b0ada6b6a4bf31030f3e447bacb36a216",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/code/verify_B_intermediate.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\code\\verify_B_intermediate.py",
+        "bytes": 7821,
+        "sha256": "7877bfa5c156be503362b1917d34cd69533d4c72f98f5be530994fabb6dd5e14"
+      },
+      "bytes": 7821,
+      "sha256": "7877bfa5c156be503362b1917d34cd69533d4c72f98f5be530994fabb6dd5e14",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/inputs/growth-after/commander-0.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\inputs\\growth-after\\commander-0.json",
+        "bytes": 11382,
+        "sha256": "882d909dd89dfb57145d5462c446529a7952053c73610a456ec54ee134977921"
+      },
+      "bytes": 11382,
+      "sha256": "882d909dd89dfb57145d5462c446529a7952053c73610a456ec54ee134977921",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/inputs/growth-after/commander-204.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\inputs\\growth-after\\commander-204.json",
+        "bytes": 11392,
+        "sha256": "8fb5b048cc7f20cff527e9cd72f4d4d96560af6d94f96b6a5fac164ceda32a3d"
+      },
+      "bytes": 11392,
+      "sha256": "8fb5b048cc7f20cff527e9cd72f4d4d96560af6d94f96b6a5fac164ceda32a3d",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/inputs/growth-after/observation.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\inputs\\growth-after\\observation.json",
+        "bytes": 383362,
+        "sha256": "f1668954728020d63da649daaaf8e1678d6de0c7181586498f020eb3709ff781"
+      },
+      "bytes": 383362,
+      "sha256": "f1668954728020d63da649daaaf8e1678d6de0c7181586498f020eb3709ff781",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/inputs/growth-before/commander-0.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\inputs\\growth-before\\commander-0.json",
+        "bytes": 11381,
+        "sha256": "e9a48b95a18327484ad84b1cdaa3f21352786868ad79f96b27f7809ec273130c"
+      },
+      "bytes": 11381,
+      "sha256": "e9a48b95a18327484ad84b1cdaa3f21352786868ad79f96b27f7809ec273130c",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/inputs/growth-before/commander-204.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\inputs\\growth-before\\commander-204.json",
+        "bytes": 11391,
+        "sha256": "80109c9c7dd672ead70745c2ebb9926edb4e7508c5d15191bcc5416857f0c4b4"
+      },
+      "bytes": 11391,
+      "sha256": "80109c9c7dd672ead70745c2ebb9926edb4e7508c5d15191bcc5416857f0c4b4",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/inputs/growth-before/observation.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\inputs\\growth-before\\observation.json",
+        "bytes": 591250,
+        "sha256": "c78c75c6db4d06603bafa0e67ecdb1171e31007de45c3eb69fab2ca97cce24bf"
+      },
+      "bytes": 591250,
+      "sha256": "c78c75c6db4d06603bafa0e67ecdb1171e31007de45c3eb69fab2ca97cce24bf",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/inputs/growth-window.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\inputs\\growth-window.json",
+        "bytes": 42379,
+        "sha256": "2bb1a067a772f412c61e7cc25d28298abc18d02f011d4e8f58764dd352390188"
+      },
+      "bytes": 42379,
+      "sha256": "2bb1a067a772f412c61e7cc25d28298abc18d02f011d4e8f58764dd352390188",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/inputs/root-review-growth.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\inputs\\root-review-growth.json",
+        "bytes": 3571,
+        "sha256": "84d75a992d4bf24b20c19984c1940e516259d44452c23b3c8e8a41920ac3898c"
+      },
+      "bytes": 3571,
+      "sha256": "84d75a992d4bf24b20c19984c1940e516259d44452c23b3c8e8a41920ac3898c",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/manifest-final-a02.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\manifest-final-a02.json",
+        "bytes": 19024,
+        "sha256": "f1cf979e9f657fbe3390edd8f0d02f315a345e56b7d0d5be75b47565fb6585b5"
+      },
+      "bytes": 19024,
+      "sha256": "f1cf979e9f657fbe3390edd8f0d02f315a345e56b7d0d5be75b47565fb6585b5",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/intermediate/manifest.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\intermediate\\manifest.json",
+        "bytes": 18770,
+        "sha256": "f5893e3dc37eb138d87539ed359cd7e42992983c733a1494c6d74d54b94ca4ed"
+      },
+      "bytes": 18770,
+      "sha256": "f5893e3dc37eb138d87539ed359cd7e42992983c733a1494c6d74d54b94ca4ed",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/manifest-final-a02.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\manifest-final-a02.json",
+        "bytes": 26753,
+        "sha256": "2673ca1af54b62ea9a4cd399f073eb42004716560f7e52ee908ff721b4480be7"
+      },
+      "bytes": 26753,
+      "sha256": "2673ca1af54b62ea9a4cd399f073eb42004716560f7e52ee908ff721b4480be7",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/merge-exception/qualified-rest/manifest.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\qualified-rest\\manifest.json",
+        "bytes": 26498,
+        "sha256": "55577f22ec8df45dda9d86290c33efc4433d40dcbccefdd33a5cdba9340ea99c"
+      },
+      "bytes": 26498,
+      "sha256": "55577f22ec8df45dda9d86290c33efc4433d40dcbccefdd33a5cdba9340ea99c",
+      "reason": "original73 source package+manifest; exactcopy no native recompute"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/B-closed-terminal-values.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\B-closed-terminal-values.json",
+        "bytes": 1522,
+        "sha256": "12bd6783667388f574cfc08a69ac4e39b4522ca9e4b44a2a5a77451ef2b02bcb"
+      },
+      "bytes": 1522,
+      "sha256": "12bd6783667388f574cfc08a69ac4e39b4522ca9e4b44a2a5a77451ef2b02bcb",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/CLOSED-BOUNDARY.md",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\CLOSED-BOUNDARY.md",
+        "bytes": 1413,
+        "sha256": "4f88fd8126f2f3f531646755b67aadcfa83a72504e66f47c83ca82759509aefb"
+      },
+      "bytes": 1413,
+      "sha256": "4f88fd8126f2f3f531646755b67aadcfa83a72504e66f47c83ca82759509aefb",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/code/verify_B_closed_terminal.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\code\\verify_B_closed_terminal.py",
+        "bytes": 6732,
+        "sha256": "991f6ae53d70b8aeb5f078cd6d6a494dbc4acb38f8fe37a23c82b4cf12cd5baf"
+      },
+      "bytes": 6732,
+      "sha256": "991f6ae53d70b8aeb5f078cd6d6a494dbc4acb38f8fe37a23c82b4cf12cd5baf",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/inputs/B-actual-closure.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\inputs\\B-actual-closure.json",
+        "bytes": 1606,
+        "sha256": "76282f501f7b7c52a7c585180db1695040e251ad40de7e3dd60d7c03db5a66ef"
+      },
+      "bytes": 1606,
+      "sha256": "76282f501f7b7c52a7c585180db1695040e251ad40de7e3dd60d7c03db5a66ef",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/inputs/B-release-result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\inputs\\B-release-result.json",
+        "bytes": 22,
+        "sha256": "1e3f6691f455051e8adb15d961e4bf3c7a17e83dd88b2afdd13315cc288250bb"
+      },
+      "bytes": 22,
+      "sha256": "1e3f6691f455051e8adb15d961e4bf3c7a17e83dd88b2afdd13315cc288250bb",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/inputs/B-release-stdout.bin",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\inputs\\B-release-stdout.bin",
+        "bytes": 1332,
+        "sha256": "b34dd0d9b173f24832b353c6254e1e6c064a127258928486bdc060106292d0e8"
+      },
+      "bytes": 1332,
+      "sha256": "b34dd0d9b173f24832b353c6254e1e6c064a127258928486bdc060106292d0e8",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/inputs/B-S02-sealed-result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\inputs\\B-S02-sealed-result.json",
+        "bytes": 1057,
+        "sha256": "3db7f2f83352a157174b91aa25828e0cf21fe2b428daf8b2fa9afc8e42458d9e"
+      },
+      "bytes": 1057,
+      "sha256": "3db7f2f83352a157174b91aa25828e0cf21fe2b428daf8b2fa9afc8e42458d9e",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/manifest.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\manifest.json",
+        "bytes": 2358,
+        "sha256": "94043826aeecd0df7ba96707dc2332e9efa39792c4eade3132c53ab21bc991c0"
+      },
+      "bytes": 2358,
+      "sha256": "94043826aeecd0df7ba96707dc2332e9efa39792c4eade3132c53ab21bc991c0",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/terminal-stage/B-terminal-append-values.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\terminal-stage\\B-terminal-append-values.json",
+        "bytes": 1987,
+        "sha256": "b30b0ee2e2e4c39bac58aafbb691bd6184e3bf93e4438225d233a5d30d2c1dfc"
+      },
+      "bytes": 1987,
+      "sha256": "b30b0ee2e2e4c39bac58aafbb691bd6184e3bf93e4438225d233a5d30d2c1dfc",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/terminal-stage/code/verify_B_terminal_append.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\terminal-stage\\code\\verify_B_terminal_append.py",
+        "bytes": 6321,
+        "sha256": "8eabce3fbcfa62dc831b5c7bac1908b9c625eada739a69ac62a6902686cee17d"
+      },
+      "bytes": 6321,
+      "sha256": "8eabce3fbcfa62dc831b5c7bac1908b9c625eada739a69ac62a6902686cee17d",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/terminal-stage/inputs/base-73-pin-catalog.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\terminal-stage\\inputs\\base-73-pin-catalog.json",
+        "bytes": 35350,
+        "sha256": "4b1666df2a17a075e7d5f6ac79e9493f7b4492cd592fcf5088aca1d0b484dc64"
+      },
+      "bytes": 35350,
+      "sha256": "4b1666df2a17a075e7d5f6ac79e9493f7b4492cd592fcf5088aca1d0b484dc64",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/terminal-stage/inputs/Root-Main-UI-receipt.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\terminal-stage\\inputs\\Root-Main-UI-receipt.json",
+        "bytes": 2036,
+        "sha256": "b2457fa89ae8921008918592e309203b10f45a635799aadba986264cc8d0f46e"
+      },
+      "bytes": 2036,
+      "sha256": "b2457fa89ae8921008918592e309203b10f45a635799aadba986264cc8d0f46e",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/terminal-stage/inputs/terminal.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\terminal-stage\\inputs\\terminal.json",
+        "bytes": 3963,
+        "sha256": "6f8eaa3cdef8942effe5b2809a13cb5417d54504c0147f195f3a56396978f163"
+      },
+      "bytes": 3963,
+      "sha256": "6f8eaa3cdef8942effe5b2809a13cb5417d54504c0147f195f3a56396978f163",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/closed-terminal/terminal-stage/TERMINAL-BOUNDARY.md",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\terminal-stage\\TERMINAL-BOUNDARY.md",
+        "bytes": 1418,
+        "sha256": "1f0deec00514428de77609d5f914b5424b9a782ff75ce54c7e6da796b2f21ade"
+      },
+      "bytes": 1418,
+      "sha256": "1f0deec00514428de77609d5f914b5424b9a782ff75ce54c7e6da796b2f21ade",
+      "reason": "original13 closed append+manifest; exactcopy later event, original pending preserved"
+    },
+    {
+      "repo_relative_path": "docs/ck3-native-ai/army-r0175-B-merge-upper-cap-runtime-12003.md",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\docs\\ck3-native-ai\\army-r0175-B-merge-upper-cap-runtime-12003.md",
+        "bytes": 5252,
+        "sha256": "29960d405828a7a1af0e0f36b27ce42390acfd2843937f405d831439495bdc57"
+      },
+      "bytes": 5252,
+      "sha256": "29960d405828a7a1af0e0f36b27ce42390acfd2843937f405d831439495bdc57",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/.gitattributes",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\.gitattributes",
+        "bytes": 30,
+        "sha256": "32966c8f89acc0110f6a39bf66f2c0cfe327afcaf642ca8546e36bdad19f1e18"
+      },
+      "bytes": 30,
+      "sha256": "32966c8f89acc0110f6a39bf66f2c0cfe327afcaf642ca8546e36bdad19f1e18",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/arithmetic-result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\arithmetic-result.json",
+        "bytes": 5992,
+        "sha256": "f47c55bcb0b32848ef81deb8f1c2c9dfd422be8efda696bf4cac665963f11d0e"
+      },
+      "bytes": 5992,
+      "sha256": "f47c55bcb0b32848ef81deb8f1c2c9dfd422be8efda696bf4cac665963f11d0e",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/focused-checks/1.stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\focused-checks\\1.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/focused-checks/1.stdout.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\focused-checks\\1.stdout.json",
+        "bytes": 613,
+        "sha256": "dd00737d4a5e29b9b762a98c8df26881913ab34b8945da1efb0328d9db445c4f"
+      },
+      "bytes": 613,
+      "sha256": "dd00737d4a5e29b9b762a98c8df26881913ab34b8945da1efb0328d9db445c4f",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/focused-checks/2.stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\focused-checks\\2.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/focused-checks/2.stdout.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\focused-checks\\2.stdout.json",
+        "bytes": 1039,
+        "sha256": "1e698cdfba129abdcf632322d5407461ce9fc35ed306969675478a59e116cd15"
+      },
+      "bytes": 1039,
+      "sha256": "1e698cdfba129abdcf632322d5407461ce9fc35ed306969675478a59e116cd15",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/focused-checks/receipt.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\focused-checks\\receipt.json",
+        "bytes": 2831,
+        "sha256": "b37de1ea5c99884ba1505c9a1657a4f9117ff8436d56f32e55ae14eb25147e49"
+      },
+      "bytes": 2831,
+      "sha256": "b37de1ea5c99884ba1505c9a1657a4f9117ff8436d56f32e55ae14eb25147e49",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/focused-checks/test_focus_a01.py.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\focused-checks\\test_focus_a01.py.txt",
+        "bytes": 8080,
+        "sha256": "9acf5460776b8693e4c9b3be95bc00e1900b7b42c651a31410f4e9e8a997a252"
+      },
+      "bytes": 8080,
+      "sha256": "9acf5460776b8693e4c9b3be95bc00e1900b7b42c651a31410f4e9e8a997a252",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/index.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\index.json",
+        "bytes": 9106,
+        "sha256": "f7ca0be86f3982c3f32a30ca050b42f0b2235621f365091015669c62d814cc20"
+      },
+      "bytes": 9106,
+      "sha256": "f7ca0be86f3982c3f32a30ca050b42f0b2235621f365091015669c62d814cc20",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/manifest.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\manifest.json",
+        "bytes": 4976,
+        "sha256": "3ccdc9969d7b2c68c9009fb6fbc63d948192df381566e2960289a67161c414da"
+      },
+      "bytes": 4976,
+      "sha256": "3ccdc9969d7b2c68c9009fb6fbc63d948192df381566e2960289a67161c414da",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/README.md",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\README.md",
+        "bytes": 1273,
+        "sha256": "f270781455b621a475d97105d61f3ced7ed772b5dcfb45f57b5dbd635a751a6a"
+      },
+      "bytes": 1273,
+      "sha256": "f270781455b621a475d97105d61f3ced7ed772b5dcfb45f57b5dbd635a751a6a",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/replay_merge_arithmetic.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\replay_merge_arithmetic.py",
+        "bytes": 9123,
+        "sha256": "44dd1d1b0fc45234b6ea43cb5d44f80dcb7d9ff43c73859c93f6143178b16b63"
+      },
+      "bytes": 9123,
+      "sha256": "44dd1d1b0fc45234b6ea43cb5d44f80dcb7d9ff43c73859c93f6143178b16b63",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/source-index.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\source-index.json",
+        "bytes": 3403,
+        "sha256": "a3b866b8cec1e6153ade616da5cad3cc7a40241eb6454dd8acea491564a3dcc4"
+      },
+      "bytes": 3403,
+      "sha256": "a3b866b8cec1e6153ade616da5cad3cc7a40241eb6454dd8acea491564a3dcc4",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/sources/fresh-post-commander-0.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\sources\\fresh-post-commander-0.json",
+        "bytes": 11484,
+        "sha256": "33e30ddfea916157e17230614e10dcbaa23f2b32f127f1b876e00ec8f8a8f4c0"
+      },
+      "bytes": 11484,
+      "sha256": "33e30ddfea916157e17230614e10dcbaa23f2b32f127f1b876e00ec8f8a8f4c0",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/sources/fresh-post-observation.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\sources\\fresh-post-observation.json",
+        "bytes": 563626,
+        "sha256": "73292374f8b14f0cf0d4ba47e9276e082086b3bc062404e3fdca8a56ee3f25ff"
+      },
+      "bytes": 563626,
+      "sha256": "73292374f8b14f0cf0d4ba47e9276e082086b3bc062404e3fdca8a56ee3f25ff",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/sources/fresh-post-summary.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\sources\\fresh-post-summary.json",
+        "bytes": 1176,
+        "sha256": "e104d7b214a3494a30c659f6250e6be45b4e25fc8960e9ff35221fd2a0aff768"
+      },
+      "bytes": 1176,
+      "sha256": "e104d7b214a3494a30c659f6250e6be45b4e25fc8960e9ff35221fd2a0aff768",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/sources/merge-command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\sources\\merge-command.json",
+        "bytes": 992,
+        "sha256": "d583675bd1332eecb97096100bebd5c0bafdc1362582ea490f2e985e6fb850a1"
+      },
+      "bytes": 992,
+      "sha256": "d583675bd1332eecb97096100bebd5c0bafdc1362582ea490f2e985e6fb850a1",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/sources/original-helper.py.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\sources\\original-helper.py.txt",
+        "bytes": 34391,
+        "sha256": "529bf4f1f6f97a52b0ba51f67a47aa79f97c2a10570946f3ac1be2ff139e07ca"
+      },
+      "bytes": 34391,
+      "sha256": "529bf4f1f6f97a52b0ba51f67a47aa79f97c2a10570946f3ac1be2ff139e07ca",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/sources/post-health.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\sources\\post-health.json",
+        "bytes": 79958,
+        "sha256": "30a3788859571375e90db80b1d78dfc41861496a4d1efa0ffa4a68debab7f236"
+      },
+      "bytes": 79958,
+      "sha256": "30a3788859571375e90db80b1d78dfc41861496a4d1efa0ffa4a68debab7f236",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/sources/pre-commander-0.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\sources\\pre-commander-0.json",
+        "bytes": 11485,
+        "sha256": "160e797e149bafe4ab81e50161c907a0d456d72a403c8e8676c230aaf086e6df"
+      },
+      "bytes": 11485,
+      "sha256": "160e797e149bafe4ab81e50161c907a0d456d72a403c8e8676c230aaf086e6df",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/sources/pre-commander-204.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\sources\\pre-commander-204.json",
+        "bytes": 11495,
+        "sha256": "ce5143e3ebb6ac29bcef3f4d27611db04d80c84f01250f3ff6d9435101d476e4"
+      },
+      "bytes": 11495,
+      "sha256": "ce5143e3ebb6ac29bcef3f4d27611db04d80c84f01250f3ff6d9435101d476e4",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/sources/pre-observation.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\sources\\pre-observation.json",
+        "bytes": 605505,
+        "sha256": "c4ec2cb8243aefd579e6c1ec69ea2d00f1ce3f5090445a092618ecaf80078a4f"
+      },
+      "bytes": 605505,
+      "sha256": "c4ec2cb8243aefd579e6c1ec69ea2d00f1ce3f5090445a092618ecaf80078a4f",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/sources/root-stage-stop.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\sources\\root-stage-stop.json",
+        "bytes": 352,
+        "sha256": "b971e5a09920d3ba5a42d70e1fe57bacc9fde7732c5d1bb0e3e4681e7b096033"
+      },
+      "bytes": 352,
+      "sha256": "b971e5a09920d3ba5a42d70e1fe57bacc9fde7732c5d1bb0e3e4681e7b096033",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/terminal-focused-checks/receipt.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\terminal-focused-checks\\receipt.json",
+        "bytes": 1158,
+        "sha256": "d0f7fda9fd5e13619fcfa1caa57c97e84e2f96ea3dee1b39eeae76851ece4f04"
+      },
+      "bytes": 1158,
+      "sha256": "d0f7fda9fd5e13619fcfa1caa57c97e84e2f96ea3dee1b39eeae76851ece4f04",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/terminal-focused-checks/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\terminal-focused-checks\\stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/terminal-focused-checks/stdout.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\terminal-focused-checks\\stdout.json",
+        "bytes": 616,
+        "sha256": "c4c2ac8abcc2d7858968e00c24d235bebb8898328ec0c843bdc6cbcff0563e60"
+      },
+      "bytes": 616,
+      "sha256": "c4c2ac8abcc2d7858968e00c24d235bebb8898328ec0c843bdc6cbcff0563e60",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/terminal-focused-checks/test_terminal_append_a02.py.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\terminal-focused-checks\\test_terminal_append_a02.py.txt",
+        "bytes": 5169,
+        "sha256": "51848da1e68e11d3e1ae8c70096c3fedf596bf8a526c888dd604294625ddb052"
+      },
+      "bytes": 5169,
+      "sha256": "51848da1e68e11d3e1ae8c70096c3fedf596bf8a526c888dd604294625ddb052",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/terminal-overlay.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\terminal-overlay.json",
+        "bytes": 2671,
+        "sha256": "a5256174a4bfd195d9999df0ad1369d0f5b858f5444aee9f9a473191024cb799"
+      },
+      "bytes": 2671,
+      "sha256": "a5256174a4bfd195d9999df0ad1369d0f5b858f5444aee9f9a473191024cb799",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/terminal-sources/formal-B-terminal.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\terminal-sources\\formal-B-terminal.json",
+        "bytes": 3963,
+        "sha256": "6f8eaa3cdef8942effe5b2809a13cb5417d54504c0147f195f3a56396978f163"
+      },
+      "bytes": 3963,
+      "sha256": "6f8eaa3cdef8942effe5b2809a13cb5417d54504c0147f195f3a56396978f163",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/terminal-sources/Root-postmerge-frame-receipt.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\terminal-sources\\Root-postmerge-frame-receipt.json",
+        "bytes": 2036,
+        "sha256": "b2457fa89ae8921008918592e309203b10f45a635799aadba986264cc8d0f46e"
+      },
+      "bytes": 2036,
+      "sha256": "b2457fa89ae8921008918592e309203b10f45a635799aadba986264cc8d0f46e",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-B-merge-upper-cap/verify_frozen_package.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\repo-research-candidate-a01\\tree\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0175-B-merge-upper-cap\\verify_frozen_package.py",
+        "bytes": 3018,
+        "sha256": "2fdec7745cdb5dae73d8038179560c368a2313d952dd726c540db5e56188e1ef"
+      },
+      "bytes": 3018,
+      "sha256": "2fdec7745cdb5dae73d8038179560c368a2313d952dd726c540db5e56188e1ef",
+      "reason": "costs exact32 research source; no oral or TTS"
+    },
+    {
+      "repo_relative_path": "docs/ck3-native-ai/army-episode04-B-gate-stopped-12003.md",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-knowledge-candidate-a02\\army-episode04-B-gate-stopped-12003.md",
+        "bytes": 7220,
+        "sha256": "870bc2eea874dd1dd7fd2d4d6145b9e244637f4ee1d8f9e6e72c5a9f4e43f030"
+      },
+      "bytes": 7220,
+      "sha256": "870bc2eea874dd1dd7fd2d4d6145b9e244637f4ee1d8f9e6e72c5a9f4e43f030",
+      "reason": "case a02 append-only source knowledge; old6100B retained external a01"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/source-events/actual-release.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-final-closure-and-release-a01\\actual-release.json",
+        "bytes": 1762,
+        "sha256": "b1040f3a209e3a6481f0da57292c1c7d7ee953d98a750868350bdf0a5971b6eb"
+      },
+      "bytes": 1762,
+      "sha256": "b1040f3a209e3a6481f0da57292c1c7d7ee953d98a750868350bdf0a5971b6eb",
+      "reason": "later exact Root release summary, original13 append unchanged"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/media-review/B-S02-media-review-values.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-media-review-append-a01\\package-a01\\B-S02-media-review-values.json",
+        "bytes": 2442,
+        "sha256": "c32c33d91bd848d366bfa717d1f2ea29bb2e2844463adcd7b431213f11665c03"
+      },
+      "bytes": 2442,
+      "sha256": "c32c33d91bd848d366bfa717d1f2ea29bb2e2844463adcd7b431213f11665c03",
+      "reason": "Root separately authorized S02 unique audit and three encoded stills; metadata only"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/media-review/code/verify_B_S02_metadata.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-media-review-append-a01\\package-a01\\code\\verify_B_S02_metadata.py",
+        "bytes": 7302,
+        "sha256": "1757cf86743d0c6629edff9bb20b181a5d765b652dbbe4d025d08db454f2a41a"
+      },
+      "bytes": 7302,
+      "sha256": "1757cf86743d0c6629edff9bb20b181a5d765b652dbbe4d025d08db454f2a41a",
+      "reason": "Root separately authorized S02 unique audit and three encoded stills; metadata only"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/media-review/inputs/B-formal-terminal.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-media-review-append-a01\\package-a01\\inputs\\B-formal-terminal.json",
+        "bytes": 3963,
+        "sha256": "6f8eaa3cdef8942effe5b2809a13cb5417d54504c0147f195f3a56396978f163"
+      },
+      "bytes": 3963,
+      "sha256": "6f8eaa3cdef8942effe5b2809a13cb5417d54504c0147f195f3a56396978f163",
+      "reason": "Root separately authorized S02 unique audit and three encoded stills; metadata only"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/media-review/inputs/B-S02-sealed-result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-media-review-append-a01\\package-a01\\inputs\\B-S02-sealed-result.json",
+        "bytes": 1057,
+        "sha256": "3db7f2f83352a157174b91aa25828e0cf21fe2b428daf8b2fa9afc8e42458d9e"
+      },
+      "bytes": 1057,
+      "sha256": "3db7f2f83352a157174b91aa25828e0cf21fe2b428daf8b2fa9afc8e42458d9e",
+      "reason": "Root separately authorized S02 unique audit and three encoded stills; metadata only"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/media-review/inputs/media-audit-report.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-media-review-append-a01\\package-a01\\inputs\\media-audit-report.json",
+        "bytes": 12022,
+        "sha256": "e4ba0ec769776e0250ea00fa5e86e4f2b9730d9f834aa22e6f113209b0cd7c3b"
+      },
+      "bytes": 12022,
+      "sha256": "e4ba0ec769776e0250ea00fa5e86e4f2b9730d9f834aa22e6f113209b0cd7c3b",
+      "reason": "Root separately authorized S02 unique audit and three encoded stills; metadata only"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/media-review/inputs/media-delivery.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-media-review-append-a01\\package-a01\\inputs\\media-delivery.json",
+        "bytes": 11583,
+        "sha256": "22434e2bf7402a509b97ba9b8be0e609c52f8ba71f502dca7507521017b23e6c"
+      },
+      "bytes": 11583,
+      "sha256": "22434e2bf7402a509b97ba9b8be0e609c52f8ba71f502dca7507521017b23e6c",
+      "reason": "Root separately authorized S02 unique audit and three encoded stills; metadata only"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/media-review/inputs/Root-encoded-review.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-media-review-append-a01\\package-a01\\inputs\\Root-encoded-review.json",
+        "bytes": 3363,
+        "sha256": "95d9fe4fafb082e84c95bd018077ebf17d833c65d82553b7a77d076cd3986c4b"
+      },
+      "bytes": 3363,
+      "sha256": "95d9fe4fafb082e84c95bd018077ebf17d833c65d82553b7a77d076cd3986c4b",
+      "reason": "Root separately authorized S02 unique audit and three encoded stills; metadata only"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/media-review/manifest.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-media-review-append-a01\\package-a01\\manifest.json",
+        "bytes": 1377,
+        "sha256": "3a24749d657c3339e1728f7fca393e24a776e8e4e4f48f7b7fc47fe6bee85b46"
+      },
+      "bytes": 1377,
+      "sha256": "3a24749d657c3339e1728f7fca393e24a776e8e4e4f48f7b7fc47fe6bee85b46",
+      "reason": "Root separately authorized S02 unique audit and three encoded stills; metadata only"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0175-b-gate-stop/media-review/MEDIA-BOUNDARY.md",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-media-review-append-a01\\package-a01\\MEDIA-BOUNDARY.md",
+        "bytes": 1166,
+        "sha256": "70d9aeff6b00d42ad88132d99cb352cc6f018d76ea8d1b2e723b070d430b39df"
+      },
+      "bytes": 1166,
+      "sha256": "70d9aeff6b00d42ad88132d99cb352cc6f018d76ea8d1b2e723b070d430b39df",
+      "reason": "Root separately authorized S02 unique audit and three encoded stills; metadata only"
+    }
+  ],
+  "source_locator_policy": "Historical source paths are metadata; consumers only open repo_relative_path.",
+  "original_sources_not_rewritten": true,
+  "large_media_or_save_copied": false
+}

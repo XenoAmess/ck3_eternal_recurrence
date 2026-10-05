@@ -1,0 +1,43 @@
+{
+  "schema": "ck3.e04.B.terminal-append-projection.v1",
+  "status": "PASS_TERMINAL_APPEND_SOURCE_PINS_ONLY",
+  "B_disposition": "STOPPED_GATE_INCOMPLETE",
+  "actual_raw": 53149344,
+  "actual_days_used": 38,
+  "remaining_actual_days": 52,
+  "deadline_reached": false,
+  "is_90_day_censored_arrival_result": false,
+  "budget_reset": false,
+  "Root_terminal_original": "inputs/terminal.json",
+  "Root_postmerge_UI_original": "inputs/Root-Main-UI-receipt.json",
+  "preserved_base_catalog": {
+    "path": "inputs/base-73-pin-catalog.json",
+    "bytes": 35350,
+    "sha256": "4b1666df2a17a075e7d5f6ac79e9493f7b4492cd592fcf5088aca1d0b484dc64",
+    "old_pinned_files": 73
+  },
+  "base_dataset_must_be_retained_for_full_native_cohort_recompute": true,
+  "old_73_body_rescan_or_original_cohort_revalidation": false,
+  "Root_declared_return_arrival_reference_unopened": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-return-arrival-review-a01\\Root-actual-return-arrival-a02.json",
+    "bytes": 3067,
+    "sha256": "2dfe3b5fa65fece28af3f65d338c95336623422fe6774e8eb0e152b9e3427f24"
+  },
+  "London_arrival": false,
+  "London_endpoint_metrics": null,
+  "arrival_comparable": false,
+  "winner": null,
+  "frozen_cohort_PASS_or_commander_preserved": false,
+  "new_unit_type_or_cause": null,
+  "actual_S02_sealed_raw_or_final_SDK_Game_closure": null,
+  "original_terminal_raw_closure_pending_preserved": true,
+  "Root_original_pixels_review_source": {
+    "image": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-postmerge-Main-exception-frame-a01\\desktop.png",
+      "bytes": 3278512,
+      "sha256": "a6cb01c96a0a21db6a5440da1961957236377a0a1f6616df315edf347fa029a2"
+    },
+    "observed": "Root original1920x1080: paused1067Apr12; whole6690/S100of100/0%/waiting; commanderportrait33388/crown matches typed readback. Native IDs verified from source, not inferred from pixels."
+  },
+  "full_film_clean_human_signoff_ABC_complete_comparison_credit": 0
+}

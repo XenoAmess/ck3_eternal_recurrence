@@ -1,0 +1,182 @@
+{
+  "schema": "ck3.e04.B-merge-offline-replay.v1",
+  "status": "ACTUAL_UPPER_CAP_WINDOW_REPLAY_MATCHES_NOT_FROZEN_B_PASS",
+  "source_files": [
+    {
+      "id": "pre-observation",
+      "path": "sources/pre-observation.json",
+      "bytes": 605505,
+      "sha256": "c4ec2cb8243aefd579e6c1ec69ea2d00f1ce3f5090445a092618ecaf80078a4f",
+      "original_source_relative_to_research_root": "r0175-B-merge-command-a01/initial-observation.json",
+      "public_commit": null
+    },
+    {
+      "id": "pre-commander-0",
+      "path": "sources/pre-commander-0.json",
+      "bytes": 11485,
+      "sha256": "160e797e149bafe4ab81e50161c907a0d456d72a403c8e8676c230aaf086e6df",
+      "original_source_relative_to_research_root": "r0175-B-merge-command-a01/initial-commander-0.json",
+      "public_commit": null
+    },
+    {
+      "id": "pre-commander-204",
+      "path": "sources/pre-commander-204.json",
+      "bytes": 11495,
+      "sha256": "ce5143e3ebb6ac29bcef3f4d27611db04d80c84f01250f3ff6d9435101d476e4",
+      "original_source_relative_to_research_root": "r0175-B-merge-command-a01/initial-commander-204.json",
+      "public_commit": null
+    },
+    {
+      "id": "post-health",
+      "path": "sources/post-health.json",
+      "bytes": 79958,
+      "sha256": "30a3788859571375e90db80b1d78dfc41861496a4d1efa0ffa4a68debab7f236",
+      "original_source_relative_to_research_root": "r0175-B-merge-command-a01/post-health.json",
+      "public_commit": null
+    },
+    {
+      "id": "merge-command",
+      "path": "sources/merge-command.json",
+      "bytes": 992,
+      "sha256": "d583675bd1332eecb97096100bebd5c0bafdc1362582ea490f2e985e6fb850a1",
+      "original_source_relative_to_research_root": "r0175-B-merge-command-a01/merge-command.json",
+      "public_commit": null
+    },
+    {
+      "id": "root-stage-stop",
+      "path": "sources/root-stage-stop.json",
+      "bytes": 352,
+      "sha256": "b971e5a09920d3ba5a42d70e1fe57bacc9fde7732c5d1bb0e3e4681e7b096033",
+      "original_source_relative_to_research_root": "r0175-B-merge-command-a01/STOP.json",
+      "public_commit": null
+    },
+    {
+      "id": "fresh-post-observation",
+      "path": "sources/fresh-post-observation.json",
+      "bytes": 563626,
+      "sha256": "73292374f8b14f0cf0d4ba47e9276e082086b3bc062404e3fdca8a56ee3f25ff",
+      "original_source_relative_to_research_root": "root-r0175-B-postmerge-readonly-exception-a01/observation.json",
+      "public_commit": null
+    },
+    {
+      "id": "fresh-post-commander-0",
+      "path": "sources/fresh-post-commander-0.json",
+      "bytes": 11484,
+      "sha256": "33e30ddfea916157e17230614e10dcbaa23f2b32f127f1b876e00ec8f8a8f4c0",
+      "original_source_relative_to_research_root": "root-r0175-B-postmerge-readonly-exception-a01/commander-0.json",
+      "public_commit": null
+    },
+    {
+      "id": "fresh-post-summary",
+      "path": "sources/fresh-post-summary.json",
+      "bytes": 1176,
+      "sha256": "e104d7b214a3494a30c659f6250e6be45b4e25fc8960e9ff35221fd2a0aff768",
+      "original_source_relative_to_research_root": "root-r0175-B-postmerge-readonly-exception-a01/readback-summary.json",
+      "public_commit": null
+    },
+    {
+      "id": "original-helper",
+      "path": "sources/original-helper.py.txt",
+      "bytes": 34391,
+      "sha256": "529bf4f1f6f97a52b0ba51f67a47aa79f97c2a10570946f3ac1be2ff139e07ca",
+      "original_source_relative_to_research_root": "r0175-B-stage-helper-preparation-a02/root_B_stages_a02.py",
+      "public_commit": null
+    }
+  ],
+  "date_raw": 53149344,
+  "days_from_common_T0": 38,
+  "common_T0_raw": 53148432,
+  "absolute_END_raw": 53150592,
+  "budget_reset": false,
+  "endpoint_game_days_advanced": 0,
+  "endpoint_paused": true,
+  "frame": {
+    "before": "native:129",
+    "after": "native:130"
+  },
+  "roles": {
+    "destination_public_id": 0,
+    "source_public_id": 204,
+    "D_current_soldiers": 3344,
+    "S_current_soldiers": 3345,
+    "D_actual_native_weight_raw": 334100000,
+    "S_current_role_weight_raw": 334500000,
+    "S_destination_getter_not_used_raw": 334300000,
+    "D_stock_raw": 12613988,
+    "S_stock_raw": 10000000,
+    "pre_capacities_raw": [
+      30000000,
+      10000000
+    ]
+  },
+  "arithmetic": {
+    "role_weights_raw": [
+      334100000,
+      334500000
+    ],
+    "fixed_shares_raw": [
+      49970,
+      50029
+    ],
+    "fixed_contributions_raw": [
+      6303209,
+      5002900
+    ],
+    "preclamp_raw": 11306109,
+    "expected_post_stock_raw": 10000000,
+    "scale": 100000,
+    "source_current_role_weight": "native current aggregate *100000",
+    "applied_update_ledger": null
+  },
+  "observed_post_stock_raw": 10000000,
+  "observed_post_capacity_raw": 10000000,
+  "upper_cap_observed_this_window": true,
+  "cohort": {
+    "pre_regiments": 27,
+    "post_regiments": 28,
+    "pre_DATA": 37,
+    "post_DATA": 37,
+    "missing_original_regiment_ids": [],
+    "added_regiment_rows": [
+      {
+        "army_regiment_id": 16778273,
+        "current_soldiers": 1,
+        "maximum_soldiers": 1,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null,
+        "composition_unavailable_reason": null
+      }
+    ],
+    "original_regiment_entire_row_diff_ids": [],
+    "added_DATA_identities": [],
+    "missing_DATA_identities": [],
+    "DATA_entire_row_diff_identities": [],
+    "pre_soldier_current_max": [
+      6689,
+      6747
+    ],
+    "post_soldier_current_max": [
+      6690,
+      6748
+    ],
+    "frozen_27_regiment_gate_pass": false
+  },
+  "commander": {
+    "pre_destination": 27357,
+    "pre_source": 33388,
+    "post_destination": 33388,
+    "frozen_destination_commander_gate_pass": false
+  },
+  "cause_of_new_regiment_or_commander_change": null,
+  "new_regiment_is_knight": null,
+  "applied_update_payment_loss_refill_ledger": null,
+  "Root_formal_B_terminal": null,
+  "B_London": null,
+  "C_terminal": null,
+  "winner": null,
+  "human_signoff": false,
+  "TTS_media_SDK_GUI_Game_calls": 0
+}

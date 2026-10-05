@@ -1,0 +1,45 @@
+{
+  "schema": "ck3.e04.B.S02.small-media-package.v1",
+  "files": [
+    {
+      "path": "B-S02-media-review-values.json",
+      "bytes": 2442,
+      "sha256": "c32c33d91bd848d366bfa717d1f2ea29bb2e2844463adcd7b431213f11665c03"
+    },
+    {
+      "path": "code/verify_B_S02_metadata.py",
+      "bytes": 7302,
+      "sha256": "1757cf86743d0c6629edff9bb20b181a5d765b652dbbe4d025d08db454f2a41a"
+    },
+    {
+      "path": "inputs/B-formal-terminal.json",
+      "bytes": 3963,
+      "sha256": "6f8eaa3cdef8942effe5b2809a13cb5417d54504c0147f195f3a56396978f163"
+    },
+    {
+      "path": "inputs/B-S02-sealed-result.json",
+      "bytes": 1057,
+      "sha256": "3db7f2f83352a157174b91aa25828e0cf21fe2b428daf8b2fa9afc8e42458d9e"
+    },
+    {
+      "path": "inputs/media-audit-report.json",
+      "bytes": 12022,
+      "sha256": "e4ba0ec769776e0250ea00fa5e86e4f2b9730d9f834aa22e6f113209b0cd7c3b"
+    },
+    {
+      "path": "inputs/media-delivery.json",
+      "bytes": 11583,
+      "sha256": "22434e2bf7402a509b97ba9b8be0e609c52f8ba71f502dca7507521017b23e6c"
+    },
+    {
+      "path": "inputs/Root-encoded-review.json",
+      "bytes": 3363,
+      "sha256": "95d9fe4fafb082e84c95bd018077ebf17d833c65d82553b7a77d076cd3986c4b"
+    },
+    {
+      "path": "MEDIA-BOUNDARY.md",
+      "bytes": 1166,
+      "sha256": "70d9aeff6b00d42ad88132d99cb352cc6f018d76ea8d1b2e723b070d430b39df"
+    }
+  ]
+}

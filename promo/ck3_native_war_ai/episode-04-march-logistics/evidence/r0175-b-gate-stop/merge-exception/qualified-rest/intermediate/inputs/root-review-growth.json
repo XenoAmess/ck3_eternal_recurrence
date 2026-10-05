@@ -1,0 +1,65 @@
+{
+  "status": "ROOT_EXPLICIT_COMPLETED_SOURCE_DISPOSITION_SAME_B_CONTINUE",
+  "reviewer": "/root",
+  "at_utc": "2026-10-05T19:14:58.804002+00:00",
+  "source_diff": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-rest-material-review-a07\\source-diff.json",
+    "bytes": 23956,
+    "sha256": "5ca21d91f8999c7a267b06542a8ff01285d447c506d78755bfb4fc07e5210467"
+  },
+  "observation_sources": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a06\\initial\\observation.json",
+      "bytes": 591250,
+      "sha256": "c78c75c6db4d06603bafa0e67ecdb1171e31007de45c3eb69fab2ca97cce24bf"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a06\\batch-001-pulse-01\\inspect\\observation.json",
+      "bytes": 383362,
+      "sha256": "f1668954728020d63da649daaaf8e1678d6de0c7181586498f020eb3709ff781"
+    }
+  ],
+  "actual_dates_raw": [
+    53149056,
+    53149080
+  ],
+  "root_note": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-rest-material-review-a07\\root-note.txt",
+    "bytes": 1136,
+    "sha256": "7887a5b427e6e64780920faa30c130f2e91d35778aa1f89c6b8e0070d7f47a11"
+  },
+  "decision_reason": "Root reviewed actual+26→+27/raw53149056→53149080. Main3337→3344(net+7) and child3342→3345(net+3), aggregate6679→6689(net+10). Full27reg37DATA identities/max remain conserved by actualpaired source guards; integer current/effective increments, can_replenish flag transitions and persistentpreparedfraction refreshes are all retained in exactsource/fullrows, not replaced by an aggregate. This observed integergrowth is distinct from permission/cache-only refresh; applied replenishment/loss/pay ledger remainsUNKNOWN. Bothstations2174/2327regularroutes[], R+20, MainS10613988/childS10000000 and storedsupply/graceanchors unchanged; Mainpositive-stock-window stillpending. Offsite1609garrison25→41 plus existing1606 NPCsiegeprogress and strength749→748 retained as separateworldconfounders; corewar/source/actor/commanders unchanged. NewstableNPCprogresspolicy must also STOP strengthchange, not falselyacceptthiswindow. Continue strictpairedrest toimmutablefirstanchor+31/local53149320/global53150592/120batches; noreset. Actual Main3344 originalArmyUI paused filmed, source-bracket truthful no advancement from selection.",
+  "frozen_START": 53148432,
+  "frozen_END": 53150592,
+  "max_batches_global": 120,
+  "budget_reset": false,
+  "old_material_stops_preserved": true,
+  "applied_ledger_credit": null,
+  "human_video_signoff": null,
+  "next_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-phase-operation-preparation-a02\\root_B_pair_driver_a02.py",
+    "--run",
+    "--mode",
+    "rest",
+    "--input-manifest",
+    "C:\\ck3-war-episode04-research-20261004-a01\\r0175-capture-preparation-a02\\abc-input-preparation-a02\\ABC-INPUTS-B-paired-Root-bound-a02.json",
+    "--input-manifest-sha256",
+    "06ad601d80f99e934deadaecf14182590b8f9c2ef4bcdf2e15fcbc214ec1a2fd",
+    "--phase0-result",
+    "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-phase0-a03\\result.json",
+    "--name",
+    "r0175-B-paired-rest-a07",
+    "--max-batches",
+    "120",
+    "--max-pulses",
+    "8",
+    "--dwell-seconds",
+    "0.5",
+    "--rest-anchor",
+    "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0175-a02\\B-first-rest-anchor-a01.json"
+  ]
+}

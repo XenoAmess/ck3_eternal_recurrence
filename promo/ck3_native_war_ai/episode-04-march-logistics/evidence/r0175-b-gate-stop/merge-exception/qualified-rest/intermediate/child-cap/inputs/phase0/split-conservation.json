@@ -1,0 +1,19 @@
+{
+  "status": "ACTUAL_FULL27_37_SPLIT_UNION_PASS",
+  "main_public": 0,
+  "main_native": 0,
+  "child_public": 204,
+  "child_native": 199,
+  "full_regiment_count": 27,
+  "full_DATA_count": 37,
+  "source_strength": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-phase0-a03\\split-strength.json",
+    "bytes": 92080,
+    "sha256": "e0cd1fdcb73678ab6f78e47684d3052e3f7116f673e651ccf9edbc3ae6894c0b"
+  },
+  "capacity_by_actual_arm": {
+    "0": 30000000,
+    "204": 10000000
+  },
+  "new_ABC_complete": false
+}

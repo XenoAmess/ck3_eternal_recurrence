@@ -1,0 +1,10 @@
+{
+  "status": "STOP_NO_RETRY_ROOT_REVIEW_REQUIRED",
+  "error": "RuntimeError('whole frozen27/37 identities/max/type changed; no net count restriction across dates')",
+  "mutation_count": 1,
+  "actual_paused": null,
+  "unknown_or_failed_not_relabelled_as_success": true,
+  "no_more_mutations": true,
+  "no_resume_ever": true,
+  "ABC_completed": false
+}

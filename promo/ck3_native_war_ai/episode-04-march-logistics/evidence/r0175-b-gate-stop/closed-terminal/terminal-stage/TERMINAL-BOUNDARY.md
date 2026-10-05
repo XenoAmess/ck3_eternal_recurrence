@@ -1,0 +1,9 @@
+# 正式停止增量，原合军失败证据保留
+
+Root已冻结B为STOPPED_GATE_INCOMPLETE：+38日raw53149344，原END53150592，剩52日，deadline_reached=false。它是冻结编成／将领门禁失败的早停，不是90日未到达截尾结果。Root没有重新分配将领、排除新增团、重载或另选结果；London端点数字、winner、ABC整体完成都未取得。
+
+本小包追加两份完整原JSON：正式terminal和已完成Main UI小收据。Root在terminal内记录直接审阅了Apr12 paused／6690／S100of100的同一原图；小UI收据里的Root_direct_original_review_pending保留原历史，不覆盖成false。图片只留元数据，未复制或读取PNG/原片。
+
+原73条merge-exception资料未修改、未重读。此包只exact-copy其35KB catalog并按pin连接原protocol、rest资格、合法merge回执、STOP和post原观察；它的validator PASS只证明新增terminal的source/pin/预算合同。完整native cohort重算仍应使用保留的原merge-exception包，其validator已独立验证过原27／37整行未变、新1/1团及commander变化。
+
+新增单位类型、形成原因、将领选择与库存producer仍UNKNOWN。S02封口和SDK/Game/recorder整体闭合尚待真正新结果，当前全部NULL。不要把terminal的原raw_closure_pending=true改写，后续只追加闭合证据。没有影片clean、人工1×签核或整体ABC胜负信用。

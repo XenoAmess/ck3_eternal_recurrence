@@ -1,0 +1,39 @@
+{
+  "status": "ACTUAL_PAUSED_POSTMERGE_READBACK_NOT_FROZEN_COHORT_PASS",
+  "date_raw": 53149344,
+  "current_commander": {
+    "status": "available",
+    "character_id": 33388,
+    "unavailable_reason": null
+  },
+  "health_summary": {
+    "army_id": 0,
+    "native_carmy_id": 0,
+    "current_soldiers": 6690,
+    "maximum_soldiers": 6748,
+    "current_supply_raw": 10000000,
+    "current_supply_capacity_raw": 10000000,
+    "current_supply_change_monthly_raw": -423728
+  },
+  "original_regiment_ids_preserved": true,
+  "new_regiment_rows": [
+    {
+      "army_regiment_id": 16778273,
+      "current_soldiers": 1,
+      "maximum_soldiers": 1,
+      "scale": 1,
+      "maa_type_status": "absent",
+      "maa_type_key": null,
+      "siege_tier_observable": false,
+      "siege_tier": null,
+      "composition_unavailable_reason": null
+    }
+  ],
+  "original_regiment_entire_diff": [],
+  "cohort_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-postmerge-readonly-exception-a01\\observation.json",
+    "bytes": 563626,
+    "sha256": "73292374f8b14f0cf0d4ba47e9276e082086b3bc062404e3fdca8a56ee3f25ff"
+  },
+  "ABC_or_London_or_human_credit": false
+}

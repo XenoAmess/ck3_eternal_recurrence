@@ -1,0 +1,63 @@
+{
+  "schema": "ck3.e04.B.S02.media-review-metadata.v1",
+  "status": "PASS_PINNED_SMALL_MEDIA_AUDIT_AND_ROOT_THREE_STILL_REVIEW",
+  "B_disposition": "STOPPED_GATE_INCOMPLETE",
+  "B_stopped_day": 38,
+  "B_London_endpoint": null,
+  "winner": null,
+  "media_audit_state": "PASS",
+  "raw_pin_from_owned_terminal_only": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-continuation-a01\\raw.mkv",
+    "bytes": 3363279647,
+    "sha256": "de8f9c72f64e62bc14461ee6611a301d1dc765599f138b015cacaf54dcd7f468"
+  },
+  "actual_duration_seconds": "2080.000000",
+  "decoded_frames": 62400,
+  "video_packets": 62400,
+  "fps": "30/1",
+  "resolution": [
+    1920,
+    1080
+  ],
+  "audio_streams": 0,
+  "Root_reviewed_stills": [
+    {
+      "frame_ordinal": 6000,
+      "PTS_ms": 200000,
+      "observed_original_pixels": "Apr6 paused Main3344/S126of300 and mapchild3345",
+      "image_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-continuation-media-tools-a01\\encoded-candidates-a01\\r0175-b-s02-0-main_positive\\candidate-00.png",
+        "bytes": 2776399,
+        "sha256": "be6db678c4d8f1ea445203aa941ddbb33c572a441e3ce23f937689175cb8f01c"
+      }
+    },
+    {
+      "frame_ordinal": 31200,
+      "PTS_ms": 1040000,
+      "observed_original_pixels": "Apr12 paused child3345/S100of100",
+      "image_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-continuation-media-tools-a01\\encoded-candidates-a01\\r0175-b-s02-1-child_return\\candidate-00.png",
+        "bytes": 2840007,
+        "sha256": "650a27169ea681997f81c4cd220d74b235086acedcd9bc95991e21f9f1cf4026"
+      }
+    },
+    {
+      "frame_ordinal": 43980,
+      "PTS_ms": 1466000,
+      "observed_original_pixels": "Apr12 paused whole6690/S100of100 and commander portrait changed",
+      "image_pin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-continuation-media-tools-a01\\encoded-candidates-a01\\r0175-b-s02-2-postmerge_exception\\candidate-00.png",
+        "bytes": 2840524,
+        "sha256": "f6a7066bce0b9f3e6920df8ac03f9d4e32463873d4e096ba34243010a0dca82c"
+      }
+    }
+  ],
+  "per_segment_PTS_independent": true,
+  "exact_native_event_PTS": null,
+  "continuous_clean_span": null,
+  "human_1x_complete_watch": false,
+  "human_signoff": false,
+  "raw_or_PNG_read_by_this_consumer": false,
+  "native_source_body_rescan": false,
+  "original_delivery_Root_review_pending_retained": true
+}

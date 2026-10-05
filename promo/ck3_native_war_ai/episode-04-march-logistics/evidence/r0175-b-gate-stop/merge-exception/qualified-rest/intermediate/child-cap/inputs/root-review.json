@@ -1,0 +1,65 @@
+{
+  "status": "ROOT_EXPLICIT_COMPLETED_SOURCE_DISPOSITION_SAME_B_CONTINUE",
+  "reviewer": "/root",
+  "at_utc": "2026-10-05T19:03:27.731864+00:00",
+  "source_diff": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-rest-material-review-a05\\source-diff.json",
+    "bytes": 7667,
+    "sha256": "f5c0aaaefc1b9f3d1c2eb94c841872c1ecdbe945fd57e1de71641bb1f17d067f"
+  },
+  "observation_sources": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-003-pulse-01\\inspect\\observation.json",
+      "bytes": 380302,
+      "sha256": "9b75d9755d7ac09f8c5a961a46765ae1e90978fde181735051626fa1b8f9bed5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-004-pulse-01\\inspect\\observation.json",
+      "bytes": 380302,
+      "sha256": "60e4f5dbe2c1944be8b97fbc117725eb461e9f055f4bb3a29b4b9a63b504545e"
+    }
+  ],
+  "actual_dates_raw": [
+    53148912,
+    53148936
+  ],
+  "root_note": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-rest-material-review-a05\\root-note.txt",
+    "bytes": 1086,
+    "sha256": "8d581e2e02e7478ecb0894b9f4f466985f3a7599ae4892cf435bf2aed908d4a3"
+  },
+  "decision_reason": "Root reviewed actual+20→+21/raw53148912→53148936, withinfirst+6anchor+15days. Child204/native199 actually S11037716→10000000 (−1037716raw/−10.37716), cap10000000 and positiveR2000000stable; +188storage300334916894914672→300336106600856840/date53147760→53148936 insideobservedwindow; +190 unchanged. Both stationary2174/2327/regular/emptyroutes, full27reg37DATA entire rows/current/max/commanders unchanged, aggregate6679. Child full-branch predicate true, Main-stock-growth predicate false (S10613988unchanged/+188unchanged), so Brest remains incomplete. Record childcapconvergence, notpositivegrowth/integerrefill or appliedlossledger. Actualpaired-window2239B SHA74512a020238044bd723853fda8b9f6f255a1eb013d504a0aba223439985ca3a is retained originalsuccesswindow for later two-rolequalification. Offsite1518garrison484→400 also changed, causeunknown/corewarunchanged, preserveconfounder. Continue strictpairedrest sameoriginal+37deadline/global90/120; no anchor/window/budgetreset. Actual child100/100 originalnativeGUI filmedpausednow; no strategytimeadvance from UI.",
+  "frozen_START": 53148432,
+  "frozen_END": 53150592,
+  "max_batches_global": 120,
+  "budget_reset": false,
+  "old_material_stops_preserved": true,
+  "applied_ledger_credit": null,
+  "human_video_signoff": null,
+  "next_argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-phase-operation-preparation-a02\\root_B_pair_driver_a02.py",
+    "--run",
+    "--mode",
+    "rest",
+    "--input-manifest",
+    "C:\\ck3-war-episode04-research-20261004-a01\\r0175-capture-preparation-a02\\abc-input-preparation-a02\\ABC-INPUTS-B-paired-Root-bound-a02.json",
+    "--input-manifest-sha256",
+    "06ad601d80f99e934deadaecf14182590b8f9c2ef4bcdf2e15fcbc214ec1a2fd",
+    "--phase0-result",
+    "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-phase0-a03\\result.json",
+    "--name",
+    "r0175-B-paired-rest-a05",
+    "--max-batches",
+    "120",
+    "--max-pulses",
+    "8",
+    "--dwell-seconds",
+    "0.5",
+    "--rest-anchor",
+    "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0175-a02\\B-first-rest-anchor-a01.json"
+  ]
+}

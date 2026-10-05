@@ -1,0 +1,32 @@
+{
+  "state": "NORMAL_TREE_EMPTY",
+  "job": {
+    "schema": "xar.promo.recorder-job/v1",
+    "state": "NORMAL_TREE_EMPTY",
+    "pid": 17720,
+    "returncode": 0,
+    "job_active_processes": 0,
+    "error": null,
+    "at_utc": "2026-10-05T20:04:29.325304+00:00"
+  },
+  "raw": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-continuation-a01\\raw.mkv",
+    "bytes": 3363279647,
+    "sha256": "de8f9c72f64e62bc14461ee6611a301d1dc765599f138b015cacaf54dcd7f468"
+  },
+  "raw_hash_performed_once_after_job_empty": true,
+  "started_at_utc": "2026-10-05T19:29:49.018951+00:00",
+  "start_monotonic_ns": 451615629316900,
+  "completed_at_utc": "2026-10-05T20:04:41.391925+00:00",
+  "end_monotonic_ns": 453708002282000,
+  "same_B": true,
+  "episode_run_id": "native-33388-23726fbd8a80",
+  "checkpoint_reload": false,
+  "budget_reset": false,
+  "absolute_end_raw": 53150592,
+  "media_audit_pending": true,
+  "failure_not_relabelled_normal": null,
+  "partial_assets_retained": true,
+  "clean_spans_certified": false,
+  "human_approval": false
+}

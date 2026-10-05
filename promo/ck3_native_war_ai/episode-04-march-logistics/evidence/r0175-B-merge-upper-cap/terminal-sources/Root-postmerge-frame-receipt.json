@@ -1,0 +1,50 @@
+{
+  "status": "ACTUAL_PAUSED_NATIVE_SELECTION_SUBJECT_VERIFIED_UI_AND_ORIGINAL_CAPTURE",
+  "at_utc": "2026-10-05T19:54:10.964679+00:00",
+  "actual_pid": 19560,
+  "episode": "native-33388-23726fbd8a80",
+  "date_raw": 53149344,
+  "subject_army": 0,
+  "expected_player_army_count": 1,
+  "actual_available_UI_subject_verified": true,
+  "foreground_hwnd": 174392418,
+  "foreground_pid": 19560,
+  "desktop_size": [
+    1920,
+    1080
+  ],
+  "image": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-postmerge-Main-exception-frame-a01\\desktop.png",
+    "bytes": 3278512,
+    "sha256": "a6cb01c96a0a21db6a5440da1961957236377a0a1f6616df315edf347fa029a2"
+  },
+  "before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-postmerge-Main-exception-frame-a01\\before.json",
+    "bytes": 226717,
+    "sha256": "199b02dac83d1407ecc74ed5751db444975a2d4a89fc4cabf9929a5b5b8c7942"
+  },
+  "UI_query": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-postmerge-Main-exception-frame-a01\\ui.json",
+    "bytes": 85429,
+    "sha256": "e8d1e981d912ea257648fdd1af4e02f6eaf4657dc8fa8f7f02c451ac565a3d9e"
+  },
+  "after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-postmerge-Main-exception-frame-a01\\after.json",
+    "bytes": 226717,
+    "sha256": "5af020bfc6727674497bb178cac34297d2d36072ac9cb6bc5036c35ef96fe340"
+  },
+  "phase0_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-phase0-a03\\result.json",
+    "bytes": 578,
+    "sha256": "4462d8979b3ff5d88c13932bb623bf87590c674c16f276fe48cd51ae4f1fe2c2"
+  },
+  "retained_this_B_runtime_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-phase0-a03\\ready-move-before.json",
+    "bytes": 232075,
+    "sha256": "20e2e58eb5cae004c0868b6b7856279e96d9666417d191551dce7ed47842f813"
+  },
+  "mouse_keyboard_calls": 0,
+  "Root_direct_original_review_pending": true,
+  "human_full_film_signoff": null,
+  "strategy_time_advanced": false
+}

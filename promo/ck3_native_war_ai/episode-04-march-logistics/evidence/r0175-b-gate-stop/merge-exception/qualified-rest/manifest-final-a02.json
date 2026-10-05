@@ -1,0 +1,568 @@
+{
+  "schema": "ck3.e04.B.rest-increment-manifest.v1",
+  "status": "PASS_B_TWO_REST_NUMERIC_BRANCHES_OBSERVED_NO_TERMINAL",
+  "files": [
+    {
+      "path": "intermediate/child-cap/inputs/child-window.json",
+      "bytes": 2239,
+      "sha256": "74512a020238044bd723853fda8b9f6f255a1eb013d504a0aba223439985ca3a",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\child-window.json",
+        "bytes": 2239,
+        "sha256": "74512a020238044bd723853fda8b9f6f255a1eb013d504a0aba223439985ca3a"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/before/observation.json",
+      "bytes": 380302,
+      "sha256": "9b75d9755d7ac09f8c5a961a46765ae1e90978fde181735051626fa1b8f9bed5",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\before\\observation.json",
+        "bytes": 380302,
+        "sha256": "9b75d9755d7ac09f8c5a961a46765ae1e90978fde181735051626fa1b8f9bed5"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/before/commander-0.json",
+      "bytes": 11381,
+      "sha256": "6bf8f9987898f4069b3eb3ecee764e9687177e292dd09afde8c78f5de38020dd",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\before\\commander-0.json",
+        "bytes": 11381,
+        "sha256": "6bf8f9987898f4069b3eb3ecee764e9687177e292dd09afde8c78f5de38020dd"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/before/commander-204.json",
+      "bytes": 11391,
+      "sha256": "f1f8908493d855aa1810e55f98610370866405acec0896a5f519ddf3253527a3",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\before\\commander-204.json",
+        "bytes": 11391,
+        "sha256": "f1f8908493d855aa1810e55f98610370866405acec0896a5f519ddf3253527a3"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/after/observation.json",
+      "bytes": 380302,
+      "sha256": "60e4f5dbe2c1944be8b97fbc117725eb461e9f055f4bb3a29b4b9a63b504545e",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\after\\observation.json",
+        "bytes": 380302,
+        "sha256": "60e4f5dbe2c1944be8b97fbc117725eb461e9f055f4bb3a29b4b9a63b504545e"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/after/commander-0.json",
+      "bytes": 11381,
+      "sha256": "833dad597cb49deedf77a8218326eb50698902feabae982d3595cbda0ecb7c76",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\after\\commander-0.json",
+        "bytes": 11381,
+        "sha256": "833dad597cb49deedf77a8218326eb50698902feabae982d3595cbda0ecb7c76"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/after/commander-204.json",
+      "bytes": 11391,
+      "sha256": "42e4e5f3a661be33fb4590eb30ac7ecd85069a1e3ff80403932ccb5ec4d982ac",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\after\\commander-204.json",
+        "bytes": 11391,
+        "sha256": "42e4e5f3a661be33fb4590eb30ac7ecd85069a1e3ff80403932ccb5ec4d982ac"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/anchor/observation.json",
+      "bytes": 382947,
+      "sha256": "0ebee749f16a0d20abb96daaf0943d5c45beea873da05448493134495f12cc51",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\anchor\\observation.json",
+        "bytes": 382947,
+        "sha256": "0ebee749f16a0d20abb96daaf0943d5c45beea873da05448493134495f12cc51"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/anchor/commander-0.json",
+      "bytes": 11381,
+      "sha256": "079d0a68d19ea0e9461d4f13cb5a257705314a6ee04cc8215d08da678bffe765",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\anchor\\commander-0.json",
+        "bytes": 11381,
+        "sha256": "079d0a68d19ea0e9461d4f13cb5a257705314a6ee04cc8215d08da678bffe765"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/anchor/commander-204.json",
+      "bytes": 11391,
+      "sha256": "bf7c33feff887c053a4a674e062f2d02f8ca8decf70ddf0700e0d3470954f71e",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\anchor\\commander-204.json",
+        "bytes": 11391,
+        "sha256": "bf7c33feff887c053a4a674e062f2d02f8ca8decf70ddf0700e0d3470954f71e"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/rest-anchor.json",
+      "bytes": 668,
+      "sha256": "f831b130dbdf48ea9b9c9e57fa1120a857ab94b06022fc7618ba071d15a06a64",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\rest-anchor.json",
+        "bytes": 668,
+        "sha256": "f831b130dbdf48ea9b9c9e57fa1120a857ab94b06022fc7618ba071d15a06a64"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/root-review.json",
+      "bytes": 3540,
+      "sha256": "d1a19f561766d8df9c568e7aca5e72fd4c365ca56a5bc5177e02c3074f3680f9",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\root-review.json",
+        "bytes": 3540,
+        "sha256": "d1a19f561766d8df9c568e7aca5e72fd4c365ca56a5bc5177e02c3074f3680f9"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/phase0/result.json",
+      "bytes": 578,
+      "sha256": "4462d8979b3ff5d88c13932bb623bf87590c674c16f276fe48cd51ae4f1fe2c2",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\phase0\\result.json",
+        "bytes": 578,
+        "sha256": "4462d8979b3ff5d88c13932bb623bf87590c674c16f276fe48cd51ae4f1fe2c2"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/phase0/split-command.json",
+      "bytes": 283,
+      "sha256": "60d5356bd63b5233f751caae1c7bf6a548de908d58bebfeec4a9ee017514720a",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\phase0\\split-command.json",
+        "bytes": 283,
+        "sha256": "60d5356bd63b5233f751caae1c7bf6a548de908d58bebfeec4a9ee017514720a"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/phase0/split-conservation.json",
+      "bytes": 524,
+      "sha256": "a99c33fb7a332788267eccfee4315e280455defeeefad5be969690babed7c68f",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\phase0\\split-conservation.json",
+        "bytes": 524,
+        "sha256": "a99c33fb7a332788267eccfee4315e280455defeeefad5be969690babed7c68f"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/phase0/whole-before.json",
+      "bytes": 217676,
+      "sha256": "6aed7c24fb584504fd32151fbdad2a2bc5fc743e48f425077fd7aa764bbcabf5",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\phase0\\whole-before.json",
+        "bytes": 217676,
+        "sha256": "6aed7c24fb584504fd32151fbdad2a2bc5fc743e48f425077fd7aa764bbcabf5"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/phase0/whole-after.json",
+      "bytes": 217676,
+      "sha256": "bfd1de2d5a6a460f4d4b9d94acf4f3523973b8ec355c47801161bf8376840212",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\phase0\\whole-after.json",
+        "bytes": 217676,
+        "sha256": "bfd1de2d5a6a460f4d4b9d94acf4f3523973b8ec355c47801161bf8376840212"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/phase0/whole-strength.json",
+      "bytes": 78964,
+      "sha256": "4b8d35146455868fc25022b88f5fde70da9650d82f6ed4deaa4c67e1df667f27",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\phase0\\whole-strength.json",
+        "bytes": 78964,
+        "sha256": "4b8d35146455868fc25022b88f5fde70da9650d82f6ed4deaa4c67e1df667f27"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/phase0/whole-commander-0.json",
+      "bytes": 11470,
+      "sha256": "c200012412b51c2a67ba7f598de576e113cddad174d851854d06f272d5c55e3e",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\phase0\\whole-commander-0.json",
+        "bytes": 11470,
+        "sha256": "c200012412b51c2a67ba7f598de576e113cddad174d851854d06f272d5c55e3e"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/phase0/split-before.json",
+      "bytes": 35887,
+      "sha256": "612425fa472163b796ec4cc8e967c7f160d3f88d1843c64fbe5239c8b62b55f6",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\phase0\\split-before.json",
+        "bytes": 35887,
+        "sha256": "612425fa472163b796ec4cc8e967c7f160d3f88d1843c64fbe5239c8b62b55f6"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/phase0/split-after.json",
+      "bytes": 232075,
+      "sha256": "b3bf7fc12045fbc1dae315541d8b404618e1b1717aa13fd9a502a146a60d1183",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\phase0\\split-after.json",
+        "bytes": 232075,
+        "sha256": "b3bf7fc12045fbc1dae315541d8b404618e1b1717aa13fd9a502a146a60d1183"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/phase0/split-strength.json",
+      "bytes": 92080,
+      "sha256": "e0cd1fdcb73678ab6f78e47684d3052e3f7116f673e651ccf9edbc3ae6894c0b",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\phase0\\split-strength.json",
+        "bytes": 92080,
+        "sha256": "e0cd1fdcb73678ab6f78e47684d3052e3f7116f673e651ccf9edbc3ae6894c0b"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/phase0/split-commander-0.json",
+      "bytes": 11471,
+      "sha256": "f74b3249ec77e18d9c8620a79263a4c348a6d8f8891cd5012904136c6b62ffd5",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\phase0\\split-commander-0.json",
+        "bytes": 11471,
+        "sha256": "f74b3249ec77e18d9c8620a79263a4c348a6d8f8891cd5012904136c6b62ffd5"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/phase0/split-commander-204.json",
+      "bytes": 11481,
+      "sha256": "53675cf1fca2bed4f599d12b694233ba7163f8e183754a4c105a3724b2198276",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\phase0\\split-commander-204.json",
+        "bytes": 11481,
+        "sha256": "53675cf1fca2bed4f599d12b694233ba7163f8e183754a4c105a3724b2198276"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/code/paired_snapshot_reader.py",
+      "bytes": 17072,
+      "sha256": "be3a638de2bb803bc1be3658148af20b4c7c75636f59dc487cd932dee225ff40",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\code\\paired_snapshot_reader.py",
+        "bytes": 17072,
+        "sha256": "be3a638de2bb803bc1be3658148af20b4c7c75636f59dc487cd932dee225ff40"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/code/paired_window_pure.py",
+      "bytes": 4377,
+      "sha256": "838942b56df46c64bcea8892fc6d4718b8aadca5f509735db703186cfbef9ffd",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\code\\paired_window_pure.py",
+        "bytes": 4377,
+        "sha256": "838942b56df46c64bcea8892fc6d4718b8aadca5f509735db703186cfbef9ffd"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/code/frozen-cohort.json",
+      "bytes": 1929,
+      "sha256": "8a8382fbf050fb55b81e901b710430b35163abe259c27bd1c31778835d2eb02f",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\code\\frozen-cohort.json",
+        "bytes": 1929,
+        "sha256": "8a8382fbf050fb55b81e901b710430b35163abe259c27bd1c31778835d2eb02f"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/inputs/protocol.json",
+      "bytes": 54230,
+      "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\inputs\\protocol.json",
+        "bytes": 54230,
+        "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/code/verify_child_partial.py",
+      "bytes": 6698,
+      "sha256": "d8971c9dd14d2cc25938b93dc3cb1684f2bfcf7851af96cc147c95b1ddf7fdcf",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\code\\verify_child_partial.py",
+        "bytes": 6698,
+        "sha256": "d8971c9dd14d2cc25938b93dc3cb1684f2bfcf7851af96cc147c95b1ddf7fdcf"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/B-child-partial-result.json",
+      "bytes": 2417,
+      "sha256": "26597ebbfc93db2aa74751afbdb57f915d6588784d82bce3545bafac6232e7c3",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\B-child-partial-result.json",
+        "bytes": 2417,
+        "sha256": "26597ebbfc93db2aa74751afbdb57f915d6588784d82bce3545bafac6232e7c3"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/manifest.json",
+      "bytes": 12312,
+      "sha256": "0d7e65d94fe69c5e225bd123e5f4651b0ada6b6a4bf31030f3e447bacb36a216",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\manifest.json",
+        "bytes": 12312,
+        "sha256": "0d7e65d94fe69c5e225bd123e5f4651b0ada6b6a4bf31030f3e447bacb36a216"
+      }
+    },
+    {
+      "path": "intermediate/child-cap/manifest-final-a02.json",
+      "bytes": 12497,
+      "sha256": "3ea2ca2acbea2946748b98efe94014b66896f25a9d52911e7e393335b8dbc0f2",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\child-cap\\manifest-final-a02.json",
+        "bytes": 12497,
+        "sha256": "3ea2ca2acbea2946748b98efe94014b66896f25a9d52911e7e393335b8dbc0f2"
+      }
+    },
+    {
+      "path": "intermediate/inputs/growth-window.json",
+      "bytes": 42379,
+      "sha256": "2bb1a067a772f412c61e7cc25d28298abc18d02f011d4e8f58764dd352390188",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\inputs\\growth-window.json",
+        "bytes": 42379,
+        "sha256": "2bb1a067a772f412c61e7cc25d28298abc18d02f011d4e8f58764dd352390188"
+      }
+    },
+    {
+      "path": "intermediate/inputs/growth-before/observation.json",
+      "bytes": 591250,
+      "sha256": "c78c75c6db4d06603bafa0e67ecdb1171e31007de45c3eb69fab2ca97cce24bf",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\inputs\\growth-before\\observation.json",
+        "bytes": 591250,
+        "sha256": "c78c75c6db4d06603bafa0e67ecdb1171e31007de45c3eb69fab2ca97cce24bf"
+      }
+    },
+    {
+      "path": "intermediate/inputs/growth-before/commander-0.json",
+      "bytes": 11381,
+      "sha256": "e9a48b95a18327484ad84b1cdaa3f21352786868ad79f96b27f7809ec273130c",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\inputs\\growth-before\\commander-0.json",
+        "bytes": 11381,
+        "sha256": "e9a48b95a18327484ad84b1cdaa3f21352786868ad79f96b27f7809ec273130c"
+      }
+    },
+    {
+      "path": "intermediate/inputs/growth-before/commander-204.json",
+      "bytes": 11391,
+      "sha256": "80109c9c7dd672ead70745c2ebb9926edb4e7508c5d15191bcc5416857f0c4b4",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\inputs\\growth-before\\commander-204.json",
+        "bytes": 11391,
+        "sha256": "80109c9c7dd672ead70745c2ebb9926edb4e7508c5d15191bcc5416857f0c4b4"
+      }
+    },
+    {
+      "path": "intermediate/inputs/growth-after/observation.json",
+      "bytes": 383362,
+      "sha256": "f1668954728020d63da649daaaf8e1678d6de0c7181586498f020eb3709ff781",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\inputs\\growth-after\\observation.json",
+        "bytes": 383362,
+        "sha256": "f1668954728020d63da649daaaf8e1678d6de0c7181586498f020eb3709ff781"
+      }
+    },
+    {
+      "path": "intermediate/inputs/growth-after/commander-0.json",
+      "bytes": 11382,
+      "sha256": "882d909dd89dfb57145d5462c446529a7952053c73610a456ec54ee134977921",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\inputs\\growth-after\\commander-0.json",
+        "bytes": 11382,
+        "sha256": "882d909dd89dfb57145d5462c446529a7952053c73610a456ec54ee134977921"
+      }
+    },
+    {
+      "path": "intermediate/inputs/growth-after/commander-204.json",
+      "bytes": 11392,
+      "sha256": "8fb5b048cc7f20cff527e9cd72f4d4d96560af6d94f96b6a5fac164ceda32a3d",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\inputs\\growth-after\\commander-204.json",
+        "bytes": 11392,
+        "sha256": "8fb5b048cc7f20cff527e9cd72f4d4d96560af6d94f96b6a5fac164ceda32a3d"
+      }
+    },
+    {
+      "path": "intermediate/inputs/root-review-growth.json",
+      "bytes": 3571,
+      "sha256": "84d75a992d4bf24b20c19984c1940e516259d44452c23b3c8e8a41920ac3898c",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\inputs\\root-review-growth.json",
+        "bytes": 3571,
+        "sha256": "84d75a992d4bf24b20c19984c1940e516259d44452c23b3c8e8a41920ac3898c"
+      }
+    },
+    {
+      "path": "intermediate/code/verify_B_intermediate.py",
+      "bytes": 7821,
+      "sha256": "7877bfa5c156be503362b1917d34cd69533d4c72f98f5be530994fabb6dd5e14",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\code\\verify_B_intermediate.py",
+        "bytes": 7821,
+        "sha256": "7877bfa5c156be503362b1917d34cd69533d4c72f98f5be530994fabb6dd5e14"
+      }
+    },
+    {
+      "path": "intermediate/B-intermediate-values.json",
+      "bytes": 73595,
+      "sha256": "c63229d496d8db7dfa0562db3642623bbf1113a93c71b0264b562b2d92177092",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\B-intermediate-values.json",
+        "bytes": 73595,
+        "sha256": "c63229d496d8db7dfa0562db3642623bbf1113a93c71b0264b562b2d92177092"
+      }
+    },
+    {
+      "path": "intermediate/manifest.json",
+      "bytes": 18770,
+      "sha256": "f5893e3dc37eb138d87539ed359cd7e42992983c733a1494c6d74d54b94ca4ed",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\manifest.json",
+        "bytes": 18770,
+        "sha256": "f5893e3dc37eb138d87539ed359cd7e42992983c733a1494c6d74d54b94ca4ed"
+      }
+    },
+    {
+      "path": "intermediate/manifest-final-a02.json",
+      "bytes": 19024,
+      "sha256": "f1cf979e9f657fbe3390edd8f0d02f315a345e56b7d0d5be75b47565fb6585b5",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-intermediate-portable-a01\\package-a01\\manifest-final-a02.json",
+        "bytes": 19024,
+        "sha256": "f1cf979e9f657fbe3390edd8f0d02f315a345e56b7d0d5be75b47565fb6585b5"
+      }
+    },
+    {
+      "path": "inputs/Main-window.json",
+      "bytes": 2280,
+      "sha256": "ef7090a45665e0977920cac4460c930496525e2613be951c5edbfb5ac84353b8",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\batch-001-pulse-01\\paired-window.json",
+        "bytes": 2280,
+        "sha256": "ef7090a45665e0977920cac4460c930496525e2613be951c5edbfb5ac84353b8"
+      }
+    },
+    {
+      "path": "inputs/Main-before/observation.json",
+      "bytes": 591984,
+      "sha256": "dfabe1013d2d4af62b9eaaa3011df105e17697e68d494aa53ac74ab04f8f421d",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\initial\\observation.json",
+        "bytes": 591984,
+        "sha256": "dfabe1013d2d4af62b9eaaa3011df105e17697e68d494aa53ac74ab04f8f421d"
+      }
+    },
+    {
+      "path": "inputs/Main-before/commander-0.json",
+      "bytes": 11385,
+      "sha256": "49e70eedcd72c55c4b79f556abc0d52e3f90cf446957c16dbbb33987031a3f76",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\initial\\commander-0.json",
+        "bytes": 11385,
+        "sha256": "49e70eedcd72c55c4b79f556abc0d52e3f90cf446957c16dbbb33987031a3f76"
+      }
+    },
+    {
+      "path": "inputs/Main-before/commander-204.json",
+      "bytes": 11395,
+      "sha256": "c8e6dce3c71df0ecdfbe2c3b3665c8a3d4d4581cf9084ee198617ff2e0e3bc42",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\initial\\commander-204.json",
+        "bytes": 11395,
+        "sha256": "c8e6dce3c71df0ecdfbe2c3b3665c8a3d4d4581cf9084ee198617ff2e0e3bc42"
+      }
+    },
+    {
+      "path": "inputs/Main-after/observation.json",
+      "bytes": 383376,
+      "sha256": "6aad8eabab1bf38daed955d655d3c4a715fc921f600a7a8defbbf5fcc03b45c1",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\batch-001-pulse-01\\inspect\\observation.json",
+        "bytes": 383376,
+        "sha256": "6aad8eabab1bf38daed955d655d3c4a715fc921f600a7a8defbbf5fcc03b45c1"
+      }
+    },
+    {
+      "path": "inputs/Main-after/commander-0.json",
+      "bytes": 11385,
+      "sha256": "fb8db1a47f0fc3e9d138026017353d7cd5aab73f1b30cb75e1563a1efab01bf7",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\batch-001-pulse-01\\inspect\\commander-0.json",
+        "bytes": 11385,
+        "sha256": "fb8db1a47f0fc3e9d138026017353d7cd5aab73f1b30cb75e1563a1efab01bf7"
+      }
+    },
+    {
+      "path": "inputs/Main-after/commander-204.json",
+      "bytes": 11395,
+      "sha256": "ad76654f40a258b5155194bfad90c2cf6d89dc5c16359a64631c01a8046937ef",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\batch-001-pulse-01\\inspect\\commander-204.json",
+        "bytes": 11395,
+        "sha256": "ad76654f40a258b5155194bfad90c2cf6d89dc5c16359a64631c01a8046937ef"
+      }
+    },
+    {
+      "path": "inputs/Root-qualification.json",
+      "bytes": 18586,
+      "sha256": "c9ee065214f9ce5120b188db9b8d4949c8ff9957ea472a7287e9efbd7242ed29",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-rest-material-review-a10\\qualification.json",
+        "bytes": 18586,
+        "sha256": "c9ee065214f9ce5120b188db9b8d4949c8ff9957ea472a7287e9efbd7242ed29"
+      }
+    },
+    {
+      "path": "inputs/Main-source-diff.json",
+      "bytes": 10585,
+      "sha256": "04d5c1ce4d8c19337fe625de8c0284f315d792a06a36d0f7a040490ff6cd687d",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-rest-material-review-a10\\source-diff.json",
+        "bytes": 10585,
+        "sha256": "04d5c1ce4d8c19337fe625de8c0284f315d792a06a36d0f7a040490ff6cd687d"
+      }
+    },
+    {
+      "path": "inputs/Root-note.txt",
+      "bytes": 1014,
+      "sha256": "e0f52ab937d285770200fb322182ce60d031e938c2a0d5b4e67388f02a31f0e7",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-rest-material-review-a10\\Root-note.txt",
+        "bytes": 1014,
+        "sha256": "e0f52ab937d285770200fb322182ce60d031e938c2a0d5b4e67388f02a31f0e7"
+      }
+    },
+    {
+      "path": "inputs/Main-UI-receipt.json",
+      "bytes": 2016,
+      "sha256": "61842df7f9dbb3ed65963f03c8aea56545e513a4dc1bca0575ecd4e8a380d81a",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-Main-positive-write-frame-a01\\receipt.json",
+        "bytes": 2016,
+        "sha256": "61842df7f9dbb3ed65963f03c8aea56545e513a4dc1bca0575ecd4e8a380d81a"
+      }
+    },
+    {
+      "path": "code/verify_B_rest_increment.py",
+      "bytes": 6853,
+      "sha256": "c46a107d9d530e20e9d0e63d55a98ffdc45113cb7996fe4e25b3f010e589dd87"
+    },
+    {
+      "path": "B-qualified-rest-values.json",
+      "bytes": 6865,
+      "sha256": "7091ff474280a979f8de08767959536f744f0739a941ac1ace8fced5eddaca83",
+      "derived": true
+    }
+  ],
+  "old_intermediate_pins_preserved": 42
+}

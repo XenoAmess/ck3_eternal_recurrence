@@ -1,0 +1,68 @@
+{
+  "commands": [
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-I",
+        "-S",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\candidate-a01\\replay_merge_arithmetic.py",
+        "--output",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\checks-a01\\arithmetic-replayed.json"
+      ],
+      "started_utc": "2026-10-05T20:03:48.757278+00:00",
+      "finished_utc": "2026-10-05T20:03:48.989860+00:00",
+      "returncode": 0,
+      "producer": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\candidate-a01\\replay_merge_arithmetic.py",
+        "bytes": 9123,
+        "sha256": "44dd1d1b0fc45234b6ea43cb5d44f80dcb7d9ff43c73859c93f6143178b16b63"
+      },
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\checks-a01\\1.stdout.json",
+        "bytes": 613,
+        "sha256": "dd00737d4a5e29b9b762a98c8df26881913ab34b8945da1efb0328d9db445c4f"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\checks-a01\\1.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-I",
+        "-S",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\test_focus_a01.py",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\checks-a01"
+      ],
+      "started_utc": "2026-10-05T20:03:49.010063+00:00",
+      "finished_utc": "2026-10-05T20:03:49.335083+00:00",
+      "returncode": 0,
+      "producer": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\test_focus_a01.py",
+        "bytes": 8080,
+        "sha256": "9acf5460776b8693e4c9b3be95bc00e1900b7b42c651a31410f4e9e8a997a252"
+      },
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\checks-a01\\2.stdout.json",
+        "bytes": 1039,
+        "sha256": "1e698cdfba129abdcf632322d5407461ce9fc35ed306969675478a59e116cd15"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\checks-a01\\2.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "all_returncode_zero": true,
+  "failed_attempts_preserved": true,
+  "SDK_GUI_Game_RAW_media_TTS_Git_calls": 0
+}

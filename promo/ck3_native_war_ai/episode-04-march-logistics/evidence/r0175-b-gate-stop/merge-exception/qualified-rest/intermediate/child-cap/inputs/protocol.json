@@ -1,0 +1,899 @@
+{
+  "schema": "xar.episode04.common-save-abc-protocol-candidate/v1",
+  "created_at_utc": "2026-10-05T14:14:38.851678+00:00",
+  "status": "Root-frozen-prospective-ABC-intent-before-first-army-action",
+  "is_executed_run": false,
+  "completed_arms": 0,
+  "sdk_calls": 0,
+  "game_actions": 0,
+  "human_approval": null,
+  "film_signoff": null,
+  "git_integration_authorized": false,
+  "scope": "Pure-file preparation. All live actions and final experiment freeze belong to Root.",
+  "common_input": {
+    "path": "C:/ck3-war-episode04-research-20261004-a01/root-packets-r0172-a01/attempts/r0172-whole-arrival-common-checkpoint-a01/actual-checkpoint.ck3",
+    "bytes": 73795635,
+    "sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a",
+    "actual_date_raw": 53148432,
+    "bytes_read_by_this_attempt": 0,
+    "pin_basis": "Existing actual checkpoint result and preserved input pin; no new save copy or hash.",
+    "split_c43_backup_permitted_as_input": false,
+    "fresh_per_arm_save_hash_and_cold_load_required": true
+  },
+  "timeline": {
+    "t0_date_raw": 53148432,
+    "raw_units_per_day": 24,
+    "maximum_actual_game_days": 90,
+    "absolute_end_date_raw": 53150592,
+    "display_date_at_t0_root_authority": "1067-03-05",
+    "prior_jan20_days_at_t0": 44,
+    "denominator": "Each new A/B/C cold load starts from the same d052 whole save. Travel, site waiting, return and merge are all included in the same90 actual days.",
+    "actual_elapsed_formula": "(current_date_raw - 53148432) / 24",
+    "day_budget_is_not": [
+      "filename pulse count",
+      "wallclock minutes",
+      "display ETA",
+      "new allowance after checkpoint or SDK restart"
+    ],
+    "old_qualification_end_date_raw_preserved": 53149536,
+    "old_qualification_unchanged": true,
+    "new_common_save_protocol_requires_independent_runs": true
+  },
+  "exact_build": {
+    "source_head": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+    "a08_dll": {
+      "target": "xar_ck3_bridge",
+      "target_type": "SHARED_LIBRARY",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\xar_ck3_bridge.dll",
+      "bytes": 5558784,
+      "sha256": "8d4d80249ccdfed0954181df38d81daec9740f809fe59dc6c3e7b6708872cc28",
+      "machine": 34404,
+      "is_dll": true
+    },
+    "game_version": "1.20.0.3",
+    "steam_build": 25652598,
+    "game_executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "build_receipt_role": "a08_build_receipt",
+    "original_strength_source_version_and_executable_are_null": true,
+    "fresh_runtime_dll_and_game_admission_required": true,
+    "helper_exe_registration_manifest_role": "a08_helper_exe_registration_manifest",
+    "game_identity_requirement_role": "a08_next_session_prepared_inputs",
+    "game_identity_status": "Required existing frozen target; fresh perarm runtime game/DLL admission remains pending. Helper EXE registration manifest does not prove CK3 executable identity.",
+    "binding_scope": "Inherited frozen7f/a08 target requirements only. No new EXE/DLL read, deployment or runtime admission by this attempt. Each new arm must independently match actual Root admission."
+  },
+  "common_baseline": {
+    "actor_character_id": 33388,
+    "native_main_carmy_id": 0,
+    "main_commander_character_id": 27357,
+    "current_province_id": 2174,
+    "route_empty": true,
+    "regular": true,
+    "whole_current_soldiers": 6679,
+    "whole_maximum_soldiers": 6747,
+    "complete_actual_regiment_count": 27,
+    "complete_data_record_count": 37,
+    "gold": {
+      "raw": 63754562,
+      "scale": 100000
+    },
+    "stock": {
+      "raw": 11037716,
+      "scale": 100000
+    },
+    "capacity": {
+      "raw": 30000000,
+      "scale": 100000
+    },
+    "current_monthly_supply": {
+      "raw": -423728,
+      "scale": 100000
+    },
+    "baseline_projection": "prior-candidate-a01/inherited/day44-baseline.json",
+    "public_cunit_id_is_resolved_from_each_fresh_roster": true,
+    "historical_child_public_204_native_199_must_not_be_reused": true,
+    "fresh_cold_DATA_baseline": {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/strength.json",
+      "bytes": 78964,
+      "sha256": "9d8ae09a8a73595444b8f8d2ff1d39958eb2c7261116fb6e61d6ef3e2bdf5603"
+    },
+    "cold_vs_hot_prepared_difference_count": 22,
+    "cold_cache_producer_closed": false,
+    "cold_DATA_admission_decision": {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/ROOT-COLD-DATA-ADMISSION-REQUEST-a04.json",
+      "bytes": 3776,
+      "sha256": "0b1d249bb52d444b877a82aa669418dc9a713803cadd1c151e3664b0955e044b"
+    }
+  },
+  "admission_and_frame_join": [
+    "New independent plan/prepared/state/SDK/raw directories per arm; same immutable d052 input and frozen7f/a08. No overwrite or rollback of the ordinary campaign.",
+    "Fresh runtime/source/DLL/EXE and connection/episode/actor binding. Tool count and schemas are read from actual new sdk-tools, never hardcoded.",
+    "Paused fresh snapshot before, then ck3_query_army_strengths with dynamically read owned fullCUnit IDs and expected_revision from that snapshot, then independent snapshot after. Required subject rows available and all queried source snapshot/date/public/native revisions join.",
+    "Fresh main binding: nativeCArmy0, owner33388/controllable, current2174/emptyroute/regular, current commander27357, full27 actual rows and37 DATA records matching the day44 identities/current/max. Gold63754562/100000 and raw53148432 must be read, not inherited from a later packet.",
+    "Read active wars, opponent, objective ownership/fort/garrison, allied/enemy observed roster and event/interaction state at T0. Preserve discrepancies or unavailable fields; never fill missing enemy soldiers with zero.",
+    "Do not resume until every required subject/actor/source/baseline gate is confirmed. Unknown ancillary CUnit is retained as unknown and is not a0soldier army.",
+    "All new arms compare their complete37DATA freshcold rows with the actual R0174 cold baseline, keeping22 hot-vs-cold prepared cache differences explicit. Cache producer unknown; no native normalization, no copying hot cache values into game state."
+  ],
+  "arms": {
+    "A": {
+      "start": "fresh whole d052 at T0",
+      "main_commander": 27357,
+      "actions": [
+        "Fresh whole Main London1527 read-only native move preview.",
+        "Typed ordinary move using current fullCUnit, target1527 and fresh expected_revision.",
+        "Sample actual route and losses until first confirmed stationary London1527 or common stop."
+      ],
+      "destination_province_id": 1527,
+      "actual_route_province_ids": [
+        1009,
+        725,
+        965,
+        686,
+        628,
+        629,
+        1527
+      ],
+      "whole_preview_receipt": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/preview-1527.json",
+        "bytes": 1331,
+        "sha256": "01abefde741473100e72984eb487858dd35fc1a8f28fbe17b999528d27afaad5"
+      }
+    },
+    "B": {
+      "start": "fresh whole d052 at T0",
+      "main_commander": 27357,
+      "child_commander": 33388,
+      "main_rest_province_id": 2174,
+      "child_rest_province_id": 2327,
+      "actions": [
+        "Use the actual enabled normal split-in-half operation at pausedT0, not handpicked regiment redistribution. Read new roster and resolve child fullCUnit/nativeCArmy dynamically.",
+        "Postsplit at the same actual date verify the complete27 actual and37 DATA cohort partition, total6679/6747; preserve operation receipt and individual actual stocks/caps/clocks.",
+        "Legally assign actor33388 as child commander via the existing enabled native operation, using fresh candidate eligibility/owner/generation checks. Confirm actual current commander33388; keep Main27357.",
+        "Main stays2174. Fresh child preview then typed move to2327. Wait for actual regular/emptyroute/stationary there; independently read both commanders, local supply limit/usage and monthly contributions.",
+        "Begin a fresh paired recovery window only after BOTH armies are stationary and each monthly contribution>0. Require Main belowcap; require child at/abovecap to use the designated full branch. Preserve actual stocks if these branch conditions fail.",
+        "Observe Main first real positive stock delta with changed last_supply_update storage64/raw stamp. Independently observe child changed stamp with stock at cap/clamp; no positive stock growth is required for that full/overcap branch.",
+        "When both bounded write criteria are confirmed, immediately command child return2174; after actual sameprovince emptyroute confirm legal merge with Main0 as destination and both operand identities current.",
+        "Postmerge read Main0 identity/commander27357, cohort/current/max and actual supply/cap/merge weight. Then fresh whole London1527 preview and typed move. Stop at first confirmed stationary London or common stop."
+      ],
+      "recovery": {
+        "site_evidence": "prior-candidate-a01/inherited/stationary-site-evidence.json",
+        "fresh_branch_qualification_required": true,
+        "qualification_window_maximum_actual_days": 31,
+        "qualification_window_start": "first samepaused read showing both stationary at2174/2327 and both positive monthly",
+        "main_success": [
+          "stock_before<cap_before",
+          "stock_after>stock_before",
+          "last_supply_update storage_raw64 changes with raw stamp observed",
+          "same owner/native identity and stationary site throughout paired endpoint window"
+        ],
+        "child_full_branch_success": [
+          "stock_before>=cap_before",
+          "monthly before/after positive",
+          "last_supply_update storage_raw64 changes with raw stamp observed",
+          "after stock equals actual cap, with zero or negative stock delta permitted",
+          "same owner/native identity and stationary site throughout paired endpoint window"
+        ],
+        "branch_boundary": "In each new B, test the actual child stock against its actual capacity. The designated full branch requires stock>=cap and a new +188 change to stock==cap; zero or negative delta is honest. A belowcap child is not silently accepted as this branch. Stop incomplete or authorize a new predeclared protocol; do not use historical204/native199.",
+        "refill": "Record complete actual integer and all DATA count/permitted/prepared changes independently. Permission or monthly fraction is not actual soldier growth; no zero-hidden-refill claim.",
+        "on_failure_or_timeout": "Stop and record B qualification incomplete; do not adapt to2325 or extend90day budget. A new protocol would be required.",
+        "main_pair_requires_actual_stock_and_capacity_and_monthly_and_clock": true,
+        "two_windows_may_be_distinct": true,
+        "success_is_not_a_predicted_bucket_opportunity": true,
+        "full_max_and_identity_cohort_required_throughout": true,
+        "known_integer_growth_policy": "Pause on each material full-record change. Same27 FullIDs/37 DATA identity keys/max, actual integer/effective/prepared/permission diffs consistent with the known calendar producer may be accepted by a saved Root disposition; endpoints do not prove complete applied refill/loss/death ledger. Unexpected cohort/max/owner/native-identity change stops the arm."
+      },
+      "actual_child_public_cunit_id": null,
+      "actual_child_native_carmy_id": null,
+      "actual_routes": null,
+      "recovery_pair_receipts": null,
+      "merge_receipt": null,
+      "merge_gate": {
+        "destination_role": "freshly resolved Main nativeCArmy0; current fullCUnit required",
+        "source_role": "freshly resolved dynamic child; never historical204/native199",
+        "place": 2174,
+        "preconditions": [
+          "Both actual current provinces2174, regular/empty complete route, owner33388, no combat/retreat.",
+          "Fresh legal merge availability and current source/destination mapping; current Main commander27357 and child33388 confirmed.",
+          "Before pair reads full27 Regiment IDs plus all37 DATA, actual perrecord current/max, D/S stocks/caps/weights/commander/+188/+190 and complete source join.",
+          "If merge availability/identity/co-location unknown, stop; no synthetic teleport or immediate same-stock splitmerge substitute."
+        ],
+        "independent_after": [
+          "Main destination identity survives; source absence checked by fresh own roster, not a query against the gone source.",
+          "27 Regiment FullID/37 DATA exact disjoint union transfer; current/max equal immediately-before operands, not day44 counts after calendar changes.",
+          "Read actual Main commander/capacity/stock/monthly/+188/+190. Review fixed native D/S role arithmetic only if all needed operands and actual capacity are available.",
+          "Do not assume upper clamp or symmetric/headcount-weighted average. No extra stock/growth credit for a merge ACK."
+        ],
+        "actual_before_receipts": null,
+        "actual_action_receipt": null,
+        "actual_after_receipts": null
+      }
+    },
+    "C": {
+      "start": "fresh whole d052 at T0",
+      "main_commander": 27357,
+      "candidate_waypoint_province_ids": [
+        2176,
+        2179
+      ],
+      "selected_waypoint_province_id": 2176,
+      "selected_actual_route_province_ids": [
+        2175,
+        2179,
+        2176
+      ],
+      "fresh_whole_preview_receipts": {
+        "1527": {
+          "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/preview-1527.json",
+          "bytes": 1331,
+          "sha256": "01abefde741473100e72984eb487858dd35fc1a8f28fbe17b999528d27afaad5"
+        },
+        "2176": {
+          "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/preview-2176.json",
+          "bytes": 1288,
+          "sha256": "ebccea6f07106a2ddfb0353264b2c96e2a219eb462e74f2d0f500a246190d287"
+        },
+        "2179": {
+          "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/preview-2179.json",
+          "bytes": 1276,
+          "sha256": "b162d44f57b81b6f7527f8e35dbb6c2d7d21d4a80e03e7e39bb2cc140a8283e7"
+        }
+      },
+      "root_final_selection_receipt": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/ROOT-C-SELECTION-REQUEST-a04.json",
+        "bytes": 1677,
+        "sha256": "3267beb39e4d957fb35ba33d36568d6d600df5d55730278147127fdba7ef79ee"
+      },
+      "selection_pending": false,
+      "predeclared_selection_gate": [
+        "Fresh samepaused WHOLE Main preview to2176 and2179, alongside WHOLE Main directLondon preview. Existing half Main or child routes cannot stand in.",
+        "At least one waypoint must be a legal native-accepted complete route for owner33388/current wholeCArmy0 and represent a genuine distinct first leg from directLondon.",
+        "Root selects a qualified waypoint and records the reason plus all preview pins in ONE final protocol freeze before any new ABC arm begins. No route or winner is currently selected.",
+        "If multiple qualify, declare the choice from preview evidence before outcomes. Fullroute ETA unknown remains null; first-edge duration cannot supply it. No choice based on later soldier/stock/cash results.",
+        "If neither qualifies, keep C unready and do not start the threearm comparison. Never fabricate a secondleg route from an imaginary waypoint position."
+      ],
+      "actions": [
+        "Move WHOLE Main to the frozen qualified waypoint, retaining commander27357.",
+        "At actual stationary waypoint take complete samepaused sample; immediately fresh preview and typed move WHOLE Main toLondon1527 without a rest phase.",
+        "Read actual secondleg route and stop at stationary London or common stop. The future secondleg route is observed then and is null now."
+      ],
+      "second_leg_actual_route_province_ids": null,
+      "actual_second_leg_preview_receipt": null,
+      "whole_preview_frame_gate": "London1527/Fecamp2176/Rouen2179 previews must join a fresh paused WHOLE day44 snapshot and complete strength read for the same Main, actor, date and actual public/native revisions. Preserve unavailable or illegal candidates. No historical half preview or hypothetical waypoint secondleg.",
+      "root_final_selection_receipt_scope": "Root supplied pre-outcome choice; exact final protocol copy/approval still pending, never inferred from file preflight.",
+      "final_protocol_freeze_pending": false,
+      "selected_first_leg_ETA": null
+    }
+  },
+  "sampling_policy": {
+    "speed": 1,
+    "root_only_live_owner": true,
+    "sampler_source_role": "safe_sampler_source",
+    "fresh_ordered_roster_queries": true,
+    "tool_count_from_actual_sdk_schema": true,
+    "maximum_pulses_per_batch": 8,
+    "maximum_batches_per_arm": 120,
+    "maximum_dwell_seconds": 0.5,
+    "maximum_target_game_days_per_batch": 1,
+    "global_end_date_raw_never_reset": 53150592,
+    "pre_resume_reserved_game_days": 1,
+    "near_boundaries": "Use fresh clocks/route to choose a nearer raw target. A bucket opportunity is conditional, not a promised write.",
+    "progress_rule": "Actual raw date is authoritative. Zero-day pulses consume pulse/batch budget; no unlimited retry or assumed one-day advance.",
+    "pause_rule": "On any pause error, immediately take independent fresh snapshot before analysis. If exact source/connection/episode/actor/event binding proves still running, use only the existing generic safe idempotent pause recovery and prove paused. If recovery unconfirmed, stop and no further resume; restore pause before media review or SDK close.",
+    "overshoot_rule": "Queued/native overshoot is possible. Preserve actual dates and mark budget breach/ineligible; never relabel as planned90 or change END.",
+    "checkpoint_rule": "Save, new SDK connection or cold restart does not reset this arm T0, END or consumed budget."
+  },
+  "fixed_stop_conditions": [
+    "SUCCESS_EVENT: first independent paused complete Main read atLondon1527, complete emptyroute, actual regular or stationary sieging, no combat/retreat; stop before further gameadvance.",
+    "TIME_BOUND: currentraw at/after53150592; no resume within onegame day reserve at53150568. Record deadline censoring if London not reached.",
+    "Actor33388 dead/changed, episode/source/DLL/connection binding changed or unconfirmed.",
+    "Required subject in combat/retreat; active war ends or changes; blocking event/interaction appears. Preserve actual world state and stop.",
+    "Unexplained cohort/maximum/ownership/nativeArmy/commander change, required DTO/source frame unavailable, or pause postcondition unconfirmed.",
+    "B site qualification fails or both write branches are not confirmed within31actual days from shared stationary window or global deadline.",
+    "Finite120 batch or8pulse-per-batch cap exhausted; pending action/native request or uncertain revision means no further resume."
+  ],
+  "common_metrics": {
+    "time_alignment": "Report both common absolute game date and elapseddays since53148432. Primary comparison is the same event: first confirmed stationaryLondon arrival, or deadline-censored outcome. Do not imply equal arrival dates or continuous sameworld evolution.",
+    "milestone_samples": [
+      "T0 preaction",
+      "postsplit/commander/merge paused checks where applicable",
+      "every paused movement or loss/stock-write boundary",
+      "B bothstationary entry and both write pairs",
+      "C waypointstationary",
+      "firststationaryLondon or stop"
+    ],
+    "each_sample": [
+      "Snapshot/rawdate/publicrevision/nativerevision/epoch/actor/conn/sourcebinding and before-query-after join.",
+      "Ordered dynamic fullCUnit roster; nativeCArmy mapping, owner/controllable/state/province/target/fullroute/combat/retreat/currentcommander.",
+      "Whole/perarmy current/max; COMPLETE actual FullID/current/max/scale1 vector; COMPLETE DATA record identity/current/max/effective/state/permissions/prepared/fraction fields.",
+      "Actual stock/cap/monthly raw+scale; last_supply_update storage_raw64/raw(+188), graceanchor storage_raw64/raw(+190), actual native day/bucket/grace and moving progress/remaining raw+scale if available.",
+      "Current supply/siege/raid/county budgets and eligibility inputs as current getters only; not actual loss execution ledger.",
+      "Currentprovince/preview target limits/usage/commander and getter sourceframe; actual enemy/allied/world/war/objective/siege/event differences.",
+      "Actual played_character_gold raw+scale and any separately observed maintenance/NET breakdown/payment event receipt; unavailable actual payment amounts remain null."
+    ],
+    "supply_comparison": "Compare like wholeMain afterBmerge and atLondon; retain split armies individually. No invented headcount-weighted aggregate or symmetric merge average.",
+    "soldier_comparison": "Net integer current changes against complete baseline27, plus perrecord differences. No death totals or zero hidden replenishment without execution ledger.",
+    "cash_comparison": {
+      "baseline_gold": {
+        "raw": 63754562,
+        "scale": 100000
+      },
+      "net_treasury_formula": "(actual endpoint gold raw / actual endpoint scale) - 637.54562",
+      "payments_are_separate": true,
+      "unknown_payment_amount": null,
+      "boundary": "Balance includes income and other events; never rename netcash delta to military payments or sum maintenance rates as actual spending.",
+      "fixed_scale100000_delta_raw_formula": "actual_endpoint_gold_raw - 63754562; only if actual endpoint scale==100000",
+      "endpoint_sample_requirement": "Fresh paused snapshot/query-source join at this arm actual terminal. Preserve current marked NET receipt separately when available; do not require historical site cash or insert a missing payment.",
+      "marked_NET_is_current_rate_not_paid_ledger": true,
+      "marked_NET_already_includes_military_do_not_subtract_again": true
+    },
+    "causal_boundary": "Same save provides a common starting world, not identical enemy/world trajectories. B includes normal splitting, child commander assignment, rest, return and merge. Preserve confounds; no guarantee any scheme wins. Historical full rest-site province control/garrison continuity is unknown per Root coverage addendum. Observed treasury flow and net current soldier changes are descriptive endpoint differences, not proven military expenditure or death totals."
+  },
+  "readiness": {
+    "historical_day44_save_gold_cohort_pin_checked": true,
+    "historical_two_stationary_positive_month_sites_checked": true,
+    "fresh_whole_A_C_previews": "actual samepaused WHOLE observed and pinned",
+    "final_C_selection_and_one_protocol_freeze": "Root suppliedC2176 before outcomes; exact final freeze/approval pending",
+    "new_independent_arm_prepare_and_runtime_baselines": "Root R0174 WHOLE actual baseline observed only; perarm source/runtime/final gates retained, B/C coldload pending",
+    "actual_B_first_main_positive_write_and_child_full_clamp": "pending in new independent B; both separate historical qualification windows now observed",
+    "actual_B_return_and_main0_merge": "pending",
+    "three_actual_comparable_arms": "0/3",
+    "continuous_clean_spans_fullreview_signoff": "pending",
+    "historical_child_full_overcap_clamp_endpoint_checked": true,
+    "historical_main_belowcap_positive_stock_write_checked": true,
+    "historical_numeric_qualification_gates": "8/8 observed; no new arm credit",
+    "c43_split_input_permitted": false,
+    "full_rest_site_world_control_coverage": null
+  },
+  "native_research_plan": {
+    "purpose": "File-only experimental contract, not executable bootstrap plan and not live admission.",
+    "allowed_in_this_lane": [
+      "Read named completed JSON/text packets",
+      "Write this new external attempt",
+      "Run isolated stdlib validation of candidate and named source pins"
+    ],
+    "forbidden_in_this_lane": [
+      "SDK/game/GUI/media actions",
+      "New native EXE read or binary hash",
+      "Taskbus/Git/main/frozen source changes",
+      "Save mutation or invented game facts"
+    ],
+    "root_observation_plan_pending": "After final C preview selection, Root generates a new perarm bootstrap native_research_plan and executes its actual prepare/check --for-observation. This draft does not grant that gate.",
+    "main_venv_python": "D:/workspace/ck3_eternal_recurrence/tools/.venv/Scripts/python.exe",
+    "main_venv_python_version_prior_verified": "3.14.7",
+    "dependencies": "stdlib only; not a promo media toolchain run.",
+    "open_kaishek": "not-applicable: no script/parser changes or new native reverse engineering; uses completed exact12003 runtime packets and existing native clock semantics."
+  },
+  "prior_qualification_appendix": "prior-candidate-a01/inherited/prior-child-clamp-appendix.json",
+  "metadata_correction": "a04 preserves a01 exact bytes and adds nine actual R0174 WHOLE receipts plus Root supplied pre-outcome C2176 choice. T0/END/gold/d052/strategy unchanged. No actual arm movement or arrival credit.",
+  "candidate_attempt": "r0173-abc-final-protocol-preparation-a01/candidate-a04",
+  "final_r0173_numeric_qualification": {
+    "index": "prior-candidate-a01/qualification-only/numeric-qualification-index.json",
+    "observed_numeric_gates": 8,
+    "completed_new_ABC_arms": 0,
+    "main_belowcap_growth": {
+      "case": "prior-candidate-a01/qualification-only/main-positive-stock-case.json",
+      "pair_dates_raw": [
+        53149152,
+        53149200
+      ],
+      "stock_before_raw": 10613988,
+      "stock_after_raw": 12613988,
+      "delta_raw": 2000000,
+      "capacity_raw": 30000000,
+      "last_update_storage64": [
+        300336024996477760,
+        300337120213138960
+      ],
+      "last_update_date_raw": [
+        53148480,
+        53149200
+      ],
+      "all27_regiment_and37_DATA_entire_rows_unchanged": true
+    },
+    "child_abovecap_to_cap": {
+      "case": "prior-candidate-a01/qualification-only/child-above-cap-case.json",
+      "pair_dates_raw": [
+        53148912,
+        53148960
+      ],
+      "stock_before_raw": 11037716,
+      "stock_after_raw": 10000000,
+      "delta_raw": -1037716,
+      "capacity_raw": 10000000,
+      "last_update_date_raw": [
+        53147760,
+        53148936
+      ]
+    },
+    "same_paired_window_claimed": false,
+    "qualification_is_new_ABC_result": false,
+    "c43_split_backup_is_ABC_common_start": false,
+    "source_execution_ledger": null,
+    "world_coverage_addendum": "prior-candidate-a01/qualification-only/root-world-coverage-addendum.json",
+    "full_rest_site_world_control_coverage": null,
+    "coverage_boundary": "Historical rest-site equality covers available own army location/route/control/health/monthly/stock/anchor. Objective arrays did not contain2174/2327; province occupation/controller/garrison continuity was not directly covered. Unknown fields remain unknown."
+  },
+  "world_and_material_review": {
+    "initial_common_save_scope": "Same save supplies the same starting world. Matching T0 is checked from actual available fields; no guarantee of identical later enemy/world trajectories.",
+    "mandatory_stop": [
+      "Actor/source/connection/episode binding unconfirmed or changed.",
+      "Subject combat/retreat, required owner/native/commander change, war identity/participant/objective change or war end, blocking event/interaction.",
+      "Cohort FullID/DATA identity/max change, required sourceframe unavailable, failed pause recovery or uncertain pending action."
+    ],
+    "pause_for_review": [
+      "Actual integer/prepared/permission refresh or supply update/cap event.",
+      "Enemy/allied/world observation differences, including external occupation changes."
+    ],
+    "resume_disposition": "Only Root can save a dated exact-packet disposition within this already frozen policy. An observed external world change may be accepted if required own subject/war/route/stock gates still hold; preserve confound and unread fields. No silently changed strategy, inputs, deadline, destination or winner selection.",
+    "unknown_field_policy": "A field required for the gate fails closed if unavailable. Ancillary world inputs outside available coverage remain null and narrow causal claims; never write unchanged/zero from missing rows.",
+    "runtime_execution_by_this_candidate": false
+  },
+  "minimum_terminal_and_comparison_contract": {
+    "protocol_freeze_before_any_arm": [
+      "Root samepaused WHOLE directLondon/Fecamp/Rouen previews pinned.",
+      "Exactly one qualified C waypoint selected before outcomes; C secondleg remains later actual read.",
+      "Same immutable whole d052, common T0/END, strategies/branch criteria/source/settings and stop policy frozen once."
+    ],
+    "per_arm_admission": [
+      "New never-consumed allocator/plan/run/prepared/SDK/raw/state paths, actual admission and fresh source/runtime.",
+      "Actual independently coldloaded d052 whole day44; actor33388 alive/native and complete baseline27Reg/37DATA current/max/stock/cap/gold join.",
+      "Frozen Main commander27357 confirmed from a current native commander query; exact roles dynamic public mapping."
+    ],
+    "arrival_predicate": [
+      "Independent paused complete before-query-after source join, date<=53150592.",
+      "Actual Main current province1527, complete emptyroute, regular or actual known stationary sieging state; no combat/retreat. Read actual state, never infer from route ACK.",
+      "Fresh complete full27Reg/37DATA, identity/owner/current commander and stock/cap/clock read. B also completed both new stock branches and actual return/merge."
+    ],
+    "not_arrival_evidence": [
+      "Action ACK",
+      "native accepted preview",
+      "ETA text",
+      "route containing1527",
+      "current province1527 while moving",
+      "recording mark"
+    ],
+    "terminal_states": [
+      "ARRIVED_VALID_EVENT",
+      "CENSORED_CONSERVATIVE_TIME_GUARD",
+      "CENSORED_DEADLINE",
+      "STOPPED_GATE_INCOMPLETE",
+      "INVALID_BUDGET_BREACH"
+    ],
+    "deadline": {
+      "absolute_end_raw": 53150592,
+      "maximum_days": 90,
+      "pre_resume_guard_raw": 53150568,
+      "rule": "No resume at/after conservative guard unless an existing verified shorter safe bound is explicitly admitted before the arm. Guard stop is reported at its actual date, not fictitious day90. At END pause/read only; >END invalid. No save/restart/waypoint/site/merge resets T0 or END."
+    },
+    "execute_completion_vs_arrival": "Three preserved terminal runs can complete the bounded experiment as censored outcomes. Three arrivals require3 actual valid arrival receipts. Do not call failed or incomplete B strategy an arrival-comparable B result; publish the complete outcomes table and its scope.",
+    "valid_arrival_comparison": "Compare all available valid event endpoints with actual elapsed date; a censored/incomplete arm has no invented London numbers. A complete3arm London comparison requires3 valid admitted event endpoints and B strategy gates. No equal elapsed time or world continuity is inferred.",
+    "result_table_columns": [
+      "arm",
+      "immutable common save SHA",
+      "T0/admission gate",
+      "terminal status/date",
+      "actual elapsed (date_raw-53148432)/24",
+      "London arrival boolean",
+      "integer current/max and complete cohort diff",
+      "stock/cap/monthly/anchors raw and scales",
+      "treasury endpoint/net change",
+      "actual payment evidence or null",
+      "world/confounds/coverage",
+      "media audit separate"
+    ],
+    "completed_terminal_runs": 0,
+    "valid_arrival_runs": 0,
+    "three_arm_London_comparison_complete": false,
+    "file_preflight_is_live_admission": false,
+    "arrival_allowed_states": [
+      "regular",
+      "sieging"
+    ],
+    "arrival_state_unknown_fails_closed": true
+  },
+  "this_run_is_ABC": true,
+  "this_run_is_ABC_scope": "Requested prospective ABC protocol intent, awaiting Root exact copy/final gate. It does not grant any movement/advance/arrival/launch completion.",
+  "start_raw": 53148432,
+  "end_raw": 53150592,
+  "actor_character_id": 33388,
+  "common_checkpoint": {
+    "sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a",
+    "bytes": 73795635,
+    "whole": true
+  },
+  "root_final_protocol_freeze_receipt": null,
+  "fresh_WHOLE_baseline_and_previews": {
+    "root_packet_directory": "C:/ck3-war-episode04-research-20261004-a01/root-r0174-readonly-start-and-previews-a03",
+    "exact_preserved_pins": {
+      "baseline.json": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/baseline.json",
+        "bytes": 34577,
+        "sha256": "da0454906ff6af6ab81da354471dcac6062882eddaac4e274b5f79e6d2fd33e9"
+      },
+      "after.json": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/after.json",
+        "bytes": 217676,
+        "sha256": "6a5785df05686dcd0844926d9265155f685e2bdd21d239afbe2cec69d6b4da0c"
+      },
+      "strength.json": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/strength.json",
+        "bytes": 78964,
+        "sha256": "9d8ae09a8a73595444b8f8d2ff1d39958eb2c7261116fb6e61d6ef3e2bdf5603"
+      },
+      "commander.json": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/commander.json",
+        "bytes": 11470,
+        "sha256": "2bbb099318a1927a9b87d67df4b0b67658dcc27919b2d8321608a3e1fddfcdf3"
+      },
+      "ui.json": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/ui.json",
+        "bytes": 85639,
+        "sha256": "8b981ae9a1d2cca9d2856d09d3bbd9e61ae46b52116812f0b85d417b68ebda31"
+      },
+      "preview-1527.json": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/preview-1527.json",
+        "bytes": 1331,
+        "sha256": "01abefde741473100e72984eb487858dd35fc1a8f28fbe17b999528d27afaad5"
+      },
+      "preview-2176.json": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/preview-2176.json",
+        "bytes": 1288,
+        "sha256": "ebccea6f07106a2ddfb0353264b2c96e2a219eb462e74f2d0f500a246190d287"
+      },
+      "preview-2179.json": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/preview-2179.json",
+        "bytes": 1276,
+        "sha256": "b162d44f57b81b6f7527f8e35dbb6c2d7d21d4a80e03e7e39bb2cc140a8283e7"
+      },
+      "summary.json": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/summary.json",
+        "bytes": 517,
+        "sha256": "a346e098a1e744b32daa397bc57d7a9d4395156eb9b4268358fa1695f8b77546"
+      }
+    },
+    "frame": {
+      "date_raw": 53148432,
+      "paused": true,
+      "map_ready": true,
+      "snapshot_id": "native:2",
+      "revision": 3,
+      "native_revision": 2,
+      "episode_run_id": "native-33388-938bf03cdbfc",
+      "episode_character_id": 33388
+    },
+    "queried_connection_generation": 1,
+    "current_whole_regiment_entire_vector_matches_day44": true,
+    "current_whole_DATA_entire_vector_matches_hot_day44": false,
+    "current_whole_DATA_all_nonprepared_fields_match_day44": true,
+    "actual_cold_DATA_baseline_for_all_ABC_arms": {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/strength.json",
+      "bytes": 78964,
+      "sha256": "9d8ae09a8a73595444b8f8d2ff1d39958eb2c7261116fb6e61d6ef3e2bdf5603"
+    },
+    "cold_vs_hot_prepared_diffs": [
+      {
+        "path": "/13/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 5325,
+        "after": 0
+      },
+      {
+        "path": "/13/records/1/persistent_prepared_replenishment_fraction_raw",
+        "before": 5325,
+        "after": 0
+      },
+      {
+        "path": "/13/records/2/persistent_prepared_replenishment_fraction_raw",
+        "before": 3750,
+        "after": 0
+      },
+      {
+        "path": "/13/records/3/persistent_prepared_replenishment_fraction_raw",
+        "before": 3525,
+        "after": 0
+      },
+      {
+        "path": "/13/records/4/persistent_prepared_replenishment_fraction_raw",
+        "before": 3075,
+        "after": 0
+      },
+      {
+        "path": "/13/records/5/persistent_prepared_replenishment_fraction_raw",
+        "before": 5325,
+        "after": 0
+      },
+      {
+        "path": "/13/records/6/persistent_prepared_replenishment_fraction_raw",
+        "before": 2925,
+        "after": 0
+      },
+      {
+        "path": "/14/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 4140,
+        "after": 0
+      },
+      {
+        "path": "/14/records/1/persistent_prepared_replenishment_fraction_raw",
+        "before": 4140,
+        "after": 0
+      },
+      {
+        "path": "/14/records/2/persistent_prepared_replenishment_fraction_raw",
+        "before": 3075,
+        "after": 0
+      },
+      {
+        "path": "/17/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 5820,
+        "after": 0
+      },
+      {
+        "path": "/17/records/1/persistent_prepared_replenishment_fraction_raw",
+        "before": 3300,
+        "after": 0
+      },
+      {
+        "path": "/18/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 4050,
+        "after": 0
+      },
+      {
+        "path": "/24/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 3600,
+        "after": 0
+      },
+      {
+        "path": "/24/records/1/persistent_prepared_replenishment_fraction_raw",
+        "before": 4950,
+        "after": 0
+      },
+      {
+        "path": "/24/records/2/persistent_prepared_replenishment_fraction_raw",
+        "before": 3750,
+        "after": 0
+      },
+      {
+        "path": "/25/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 4665,
+        "after": 0
+      },
+      {
+        "path": "/25/records/1/persistent_prepared_replenishment_fraction_raw",
+        "before": 3000,
+        "after": 0
+      },
+      {
+        "path": "/26/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 3600,
+        "after": 0
+      },
+      {
+        "path": "/26/records/1/persistent_prepared_replenishment_fraction_raw",
+        "before": 4020,
+        "after": 0
+      },
+      {
+        "path": "/26/records/2/persistent_prepared_replenishment_fraction_raw",
+        "before": 3450,
+        "after": 0
+      },
+      {
+        "path": "/26/records/3/persistent_prepared_replenishment_fraction_raw",
+        "before": 3450,
+        "after": 0
+      }
+    ],
+    "cache_difference_producer_closed": false,
+    "game_days_advanced": 0,
+    "move_split_merge_commands": 0,
+    "source_version_null_in_original_Strength": true,
+    "separate_UI_game_version": "1.20.0.3",
+    "separate_UI_executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "UI_EXE_hash_case_comparison": "Hex identity case-insensitive; original actual UI uppercase text/packet bytes unchanged.",
+    "source_DLL_and_launch_admission_scope": "Separate Root exact runtime/source/Steam/CAS receipts required; neither this file check nor UI target EXE fields prove loaded DLL SHA.",
+    "target_usage0_is": "Current observed target province aggregation. No future incoming allocation or promised supply rate."
+  },
+  "source_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+  "ABC": {
+    "this_run_is_ABC": true,
+    "source_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+    "start_raw": 53148432,
+    "end_raw": 53150592,
+    "actor_character_id": 33388,
+    "common_checkpoint": {
+      "sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a",
+      "bytes": 73795635,
+      "whole": true
+    },
+    "arms": {
+      "A": {
+        "start": "fresh whole d052 at T0",
+        "main_commander": 27357,
+        "actions": [
+          "Fresh whole Main London1527 read-only native move preview.",
+          "Typed ordinary move using current fullCUnit, target1527 and fresh expected_revision.",
+          "Sample actual route and losses until first confirmed stationary London1527 or common stop."
+        ],
+        "destination_province_id": 1527,
+        "actual_route_province_ids": [
+          1009,
+          725,
+          965,
+          686,
+          628,
+          629,
+          1527
+        ],
+        "whole_preview_receipt": {
+          "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/preview-1527.json",
+          "bytes": 1331,
+          "sha256": "01abefde741473100e72984eb487858dd35fc1a8f28fbe17b999528d27afaad5"
+        }
+      },
+      "B": {
+        "start": "fresh whole d052 at T0",
+        "main_commander": 27357,
+        "child_commander": 33388,
+        "main_rest_province_id": 2174,
+        "child_rest_province_id": 2327,
+        "actions": [
+          "Use the actual enabled normal split-in-half operation at pausedT0, not handpicked regiment redistribution. Read new roster and resolve child fullCUnit/nativeCArmy dynamically.",
+          "Postsplit at the same actual date verify the complete27 actual and37 DATA cohort partition, total6679/6747; preserve operation receipt and individual actual stocks/caps/clocks.",
+          "Legally assign actor33388 as child commander via the existing enabled native operation, using fresh candidate eligibility/owner/generation checks. Confirm actual current commander33388; keep Main27357.",
+          "Main stays2174. Fresh child preview then typed move to2327. Wait for actual regular/emptyroute/stationary there; independently read both commanders, local supply limit/usage and monthly contributions.",
+          "Begin a fresh paired recovery window only after BOTH armies are stationary and each monthly contribution>0. Require Main belowcap; require child at/abovecap to use the designated full branch. Preserve actual stocks if these branch conditions fail.",
+          "Observe Main first real positive stock delta with changed last_supply_update storage64/raw stamp. Independently observe child changed stamp with stock at cap/clamp; no positive stock growth is required for that full/overcap branch.",
+          "When both bounded write criteria are confirmed, immediately command child return2174; after actual sameprovince emptyroute confirm legal merge with Main0 as destination and both operand identities current.",
+          "Postmerge read Main0 identity/commander27357, cohort/current/max and actual supply/cap/merge weight. Then fresh whole London1527 preview and typed move. Stop at first confirmed stationary London or common stop."
+        ],
+        "recovery": {
+          "site_evidence": "prior-candidate-a01/inherited/stationary-site-evidence.json",
+          "fresh_branch_qualification_required": true,
+          "qualification_window_maximum_actual_days": 31,
+          "qualification_window_start": "first samepaused read showing both stationary at2174/2327 and both positive monthly",
+          "main_success": [
+            "stock_before<cap_before",
+            "stock_after>stock_before",
+            "last_supply_update storage_raw64 changes with raw stamp observed",
+            "same owner/native identity and stationary site throughout paired endpoint window"
+          ],
+          "child_full_branch_success": [
+            "stock_before>=cap_before",
+            "monthly before/after positive",
+            "last_supply_update storage_raw64 changes with raw stamp observed",
+            "after stock equals actual cap, with zero or negative stock delta permitted",
+            "same owner/native identity and stationary site throughout paired endpoint window"
+          ],
+          "branch_boundary": "In each new B, test the actual child stock against its actual capacity. The designated full branch requires stock>=cap and a new +188 change to stock==cap; zero or negative delta is honest. A belowcap child is not silently accepted as this branch. Stop incomplete or authorize a new predeclared protocol; do not use historical204/native199.",
+          "refill": "Record complete actual integer and all DATA count/permitted/prepared changes independently. Permission or monthly fraction is not actual soldier growth; no zero-hidden-refill claim.",
+          "on_failure_or_timeout": "Stop and record B qualification incomplete; do not adapt to2325 or extend90day budget. A new protocol would be required.",
+          "main_pair_requires_actual_stock_and_capacity_and_monthly_and_clock": true,
+          "two_windows_may_be_distinct": true,
+          "success_is_not_a_predicted_bucket_opportunity": true,
+          "full_max_and_identity_cohort_required_throughout": true,
+          "known_integer_growth_policy": "Pause on each material full-record change. Same27 FullIDs/37 DATA identity keys/max, actual integer/effective/prepared/permission diffs consistent with the known calendar producer may be accepted by a saved Root disposition; endpoints do not prove complete applied refill/loss/death ledger. Unexpected cohort/max/owner/native-identity change stops the arm."
+        },
+        "actual_child_public_cunit_id": null,
+        "actual_child_native_carmy_id": null,
+        "actual_routes": null,
+        "recovery_pair_receipts": null,
+        "merge_receipt": null,
+        "merge_gate": {
+          "destination_role": "freshly resolved Main nativeCArmy0; current fullCUnit required",
+          "source_role": "freshly resolved dynamic child; never historical204/native199",
+          "place": 2174,
+          "preconditions": [
+            "Both actual current provinces2174, regular/empty complete route, owner33388, no combat/retreat.",
+            "Fresh legal merge availability and current source/destination mapping; current Main commander27357 and child33388 confirmed.",
+            "Before pair reads full27 Regiment IDs plus all37 DATA, actual perrecord current/max, D/S stocks/caps/weights/commander/+188/+190 and complete source join.",
+            "If merge availability/identity/co-location unknown, stop; no synthetic teleport or immediate same-stock splitmerge substitute."
+          ],
+          "independent_after": [
+            "Main destination identity survives; source absence checked by fresh own roster, not a query against the gone source.",
+            "27 Regiment FullID/37 DATA exact disjoint union transfer; current/max equal immediately-before operands, not day44 counts after calendar changes.",
+            "Read actual Main commander/capacity/stock/monthly/+188/+190. Review fixed native D/S role arithmetic only if all needed operands and actual capacity are available.",
+            "Do not assume upper clamp or symmetric/headcount-weighted average. No extra stock/growth credit for a merge ACK."
+          ],
+          "actual_before_receipts": null,
+          "actual_action_receipt": null,
+          "actual_after_receipts": null
+        }
+      },
+      "C": {
+        "start": "fresh whole d052 at T0",
+        "main_commander": 27357,
+        "candidate_waypoint_province_ids": [
+          2176,
+          2179
+        ],
+        "selected_waypoint_province_id": 2176,
+        "selected_actual_route_province_ids": [
+          2175,
+          2179,
+          2176
+        ],
+        "fresh_whole_preview_receipts": {
+          "1527": {
+            "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/preview-1527.json",
+            "bytes": 1331,
+            "sha256": "01abefde741473100e72984eb487858dd35fc1a8f28fbe17b999528d27afaad5"
+          },
+          "2176": {
+            "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/preview-2176.json",
+            "bytes": 1288,
+            "sha256": "ebccea6f07106a2ddfb0353264b2c96e2a219eb462e74f2d0f500a246190d287"
+          },
+          "2179": {
+            "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/preview-2179.json",
+            "bytes": 1276,
+            "sha256": "b162d44f57b81b6f7527f8e35dbb6c2d7d21d4a80e03e7e39bb2cc140a8283e7"
+          }
+        },
+        "root_final_selection_receipt": {
+          "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/ROOT-C-SELECTION-REQUEST-a04.json",
+          "bytes": 1677,
+          "sha256": "3267beb39e4d957fb35ba33d36568d6d600df5d55730278147127fdba7ef79ee"
+        },
+        "selection_pending": false,
+        "predeclared_selection_gate": [
+          "Fresh samepaused WHOLE Main preview to2176 and2179, alongside WHOLE Main directLondon preview. Existing half Main or child routes cannot stand in.",
+          "At least one waypoint must be a legal native-accepted complete route for owner33388/current wholeCArmy0 and represent a genuine distinct first leg from directLondon.",
+          "Root selects a qualified waypoint and records the reason plus all preview pins in ONE final protocol freeze before any new ABC arm begins. No route or winner is currently selected.",
+          "If multiple qualify, declare the choice from preview evidence before outcomes. Fullroute ETA unknown remains null; first-edge duration cannot supply it. No choice based on later soldier/stock/cash results.",
+          "If neither qualifies, keep C unready and do not start the threearm comparison. Never fabricate a secondleg route from an imaginary waypoint position."
+        ],
+        "actions": [
+          "Move WHOLE Main to the frozen qualified waypoint, retaining commander27357.",
+          "At actual stationary waypoint take complete samepaused sample; immediately fresh preview and typed move WHOLE Main toLondon1527 without a rest phase.",
+          "Read actual secondleg route and stop at stationary London or common stop. The future secondleg route is observed then and is null now."
+        ],
+        "second_leg_actual_route_province_ids": null,
+        "actual_second_leg_preview_receipt": null,
+        "whole_preview_frame_gate": "London1527/Fecamp2176/Rouen2179 previews must join a fresh paused WHOLE day44 snapshot and complete strength read for the same Main, actor, date and actual public/native revisions. Preserve unavailable or illegal candidates. No historical half preview or hypothetical waypoint secondleg.",
+        "root_final_selection_receipt_scope": "Root supplied pre-outcome choice; exact final protocol copy/approval still pending, never inferred from file preflight.",
+        "final_protocol_freeze_pending": true,
+        "selected_first_leg_ETA": null
+      }
+    },
+    "sampling_policy": {
+      "speed": 1,
+      "root_only_live_owner": true,
+      "sampler_source_role": "safe_sampler_source",
+      "fresh_ordered_roster_queries": true,
+      "tool_count_from_actual_sdk_schema": true,
+      "maximum_pulses_per_batch": 8,
+      "maximum_batches_per_arm": 120,
+      "maximum_dwell_seconds": 0.5,
+      "maximum_target_game_days_per_batch": 1,
+      "global_end_date_raw_never_reset": 53150592,
+      "pre_resume_reserved_game_days": 1,
+      "near_boundaries": "Use fresh clocks/route to choose a nearer raw target. A bucket opportunity is conditional, not a promised write.",
+      "progress_rule": "Actual raw date is authoritative. Zero-day pulses consume pulse/batch budget; no unlimited retry or assumed one-day advance.",
+      "pause_rule": "On any pause error, immediately take independent fresh snapshot before analysis. If exact source/connection/episode/actor/event binding proves still running, use only the existing generic safe idempotent pause recovery and prove paused. If recovery unconfirmed, stop and no further resume; restore pause before media review or SDK close.",
+      "overshoot_rule": "Queued/native overshoot is possible. Preserve actual dates and mark budget breach/ineligible; never relabel as planned90 or change END.",
+      "checkpoint_rule": "Save, new SDK connection or cold restart does not reset this arm T0, END or consumed budget."
+    },
+    "arrival_allowed_states": [
+      "regular",
+      "sieging"
+    ],
+    "fresh_cold_DATA_baseline": {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/fresh-WHOLE-r0174-a04/strength.json",
+      "bytes": 78964,
+      "sha256": "9d8ae09a8a73595444b8f8d2ff1d39958eb2c7261116fb6e61d6ef3e2bdf5603"
+    },
+    "cold_vs_hot_prepared_difference_count": 22,
+    "cold_DATA_admission_decision": {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/r0173-abc-final-protocol-preparation-a01/candidate-a04/ROOT-COLD-DATA-ADMISSION-REQUEST-a04.json",
+      "bytes": 3776,
+      "sha256": "0b1d249bb52d444b877a82aa669418dc9a713803cadd1c151e3664b0955e044b"
+    },
+    "root_final_protocol_freeze_receipt": null,
+    "completed_arms": 0
+  },
+  "absolute_end_raw": 53150592,
+  "actor_id": 33388,
+  "root_cli_aliases": {
+    "absolute_end_raw": "exact equal alias of end_raw",
+    "actor_id": "exact equal alias of actor_character_id",
+    "candidate_original_bytes_preserved": true
+  }
+}

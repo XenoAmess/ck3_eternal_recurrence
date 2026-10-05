@@ -1,0 +1,79 @@
+{
+  "status": "STOPPED_GATE_INCOMPLETE",
+  "arm": "B",
+  "at_utc": "2026-10-05T19:59:02.129061+00:00",
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02",
+  "episode_run_id": "native-33388-23726fbd8a80",
+  "actual_game_pid": 19560,
+  "Root_protocol": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-abc-protocol-freeze-a01\\protocol.json",
+    "bytes": 54230,
+    "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+  },
+  "source_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "observed_stop_raw": 53149344,
+  "actual_days_used": 38,
+  "remaining_actual_days": 52,
+  "deadline_reached": false,
+  "no_more_resume_or_strategy_mutations": true,
+  "checkpoint_reload_or_date_reset": false,
+  "rest_qualification": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-rest-material-review-a10\\qualification.json",
+    "bytes": 18586,
+    "sha256": "c9ee065214f9ce5120b188db9b8d4949c8ff9957ea472a7287e9efbd7242ed29"
+  },
+  "actual_return_arrival": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-return-arrival-review-a01\\Root-actual-return-arrival-a02.json",
+    "bytes": 3067,
+    "sha256": "2dfe3b5fa65fece28af3f65d338c95336623422fe6774e8eb0e152b9e3427f24"
+  },
+  "merge_command": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02\\responses\\r0175-B-merge-command-a01-merge-command.json",
+    "bytes": 5421,
+    "sha256": "f9bd634cb6593075d99e11d87f67ff1ec122b9bc7e2622c344a38d57655e93ca"
+  },
+  "original_merge_STOP": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-command-a01\\STOP.json",
+    "bytes": 352,
+    "sha256": "b971e5a09920d3ba5a42d70e1fe57bacc9fde7732c5d1bb0e3e4681e7b096033"
+  },
+  "actual_postmerge_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-postmerge-readonly-exception-a01\\observation.json",
+    "bytes": 563626,
+    "sha256": "73292374f8b14f0cf0d4ba47e9276e082086b3bc062404e3fdca8a56ee3f25ff"
+  },
+  "postmerge_original_UI": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-postmerge-Main-exception-frame-a01\\receipt.json",
+    "bytes": 2036,
+    "sha256": "b2457fa89ae8921008918592e309203b10f45a635799aadba986264cc8d0f46e"
+  },
+  "Root_direct_original_review": {
+    "image": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-postmerge-Main-exception-frame-a01\\desktop.png",
+      "bytes": 3278512,
+      "sha256": "a6cb01c96a0a21db6a5440da1961957236377a0a1f6616df315edf347fa029a2"
+    },
+    "observed": "Root original1920x1080: paused1067Apr12; whole6690/S100of100/0%/waiting; commanderportrait33388/crown matches typed readback. Native IDs verified from source, not inferred from pixels."
+  },
+  "failure_reasons": [
+    "Frozen cohort requires27Regiment FullIDs/max and immediate current/max conservation: original27 rows unchanged but new FullID16778273 1/1 observed; immediate6689/6747 to6690/6748.",
+    "Frozen postmerge Main0 commander must remain27357: actual typed current commander33388."
+  ],
+  "observed_original_Regiment_rows_preserved": true,
+  "observed_DATA_identity_set_preserved37": true,
+  "new_Regiment_identity_or_mechanism": null,
+  "Main_identity_preserved_native0": true,
+  "stock_raw": 10000000,
+  "capacity_raw": 10000000,
+  "current_supply_change_monthly_raw": -423728,
+  "actual_London_arrival": false,
+  "London_endpoint_metrics": null,
+  "arrival_comparable": false,
+  "winner": null,
+  "ABC_complete": false,
+  "raw_closure_pending": true,
+  "media_clean_or_human_signoff": null,
+  "reason_boundary": "Early frozen-gate termination at+38; not90-day deadline censoring. No commander repair, extra-unit exclusion, new attempt or outcome-dependent continuation is authorized by the original protocol. Previously observed rest windows and return remain separate research evidence."
+}

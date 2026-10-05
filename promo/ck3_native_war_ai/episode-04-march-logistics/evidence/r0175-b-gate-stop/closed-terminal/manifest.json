@@ -1,0 +1,72 @@
+{
+  "schema": "ck3.e04.B.closed-terminal-manifest.v1",
+  "status": "PASS_SMALL_CLOSED_GATE_TERMINAL_METADATA_ONLY",
+  "files": [
+    {
+      "path": "terminal-stage/inputs/terminal.json",
+      "bytes": 3963,
+      "sha256": "6f8eaa3cdef8942effe5b2809a13cb5417d54504c0147f195f3a56396978f163"
+    },
+    {
+      "path": "terminal-stage/inputs/Root-Main-UI-receipt.json",
+      "bytes": 2036,
+      "sha256": "b2457fa89ae8921008918592e309203b10f45a635799aadba986264cc8d0f46e"
+    },
+    {
+      "path": "terminal-stage/inputs/base-73-pin-catalog.json",
+      "bytes": 35350,
+      "sha256": "4b1666df2a17a075e7d5f6ac79e9493f7b4492cd592fcf5088aca1d0b484dc64"
+    },
+    {
+      "path": "terminal-stage/code/verify_B_terminal_append.py",
+      "bytes": 6321,
+      "sha256": "8eabce3fbcfa62dc831b5c7bac1908b9c625eada739a69ac62a6902686cee17d"
+    },
+    {
+      "path": "terminal-stage/TERMINAL-BOUNDARY.md",
+      "bytes": 1418,
+      "sha256": "1f0deec00514428de77609d5f914b5424b9a782ff75ce54c7e6da796b2f21ade"
+    },
+    {
+      "path": "terminal-stage/B-terminal-append-values.json",
+      "bytes": 1987,
+      "sha256": "b30b0ee2e2e4c39bac58aafbb691bd6184e3bf93e4438225d233a5d30d2c1dfc"
+    },
+    {
+      "path": "inputs/B-actual-closure.json",
+      "bytes": 1606,
+      "sha256": "76282f501f7b7c52a7c585180db1695040e251ad40de7e3dd60d7c03db5a66ef"
+    },
+    {
+      "path": "inputs/B-release-stdout.bin",
+      "bytes": 1332,
+      "sha256": "b34dd0d9b173f24832b353c6254e1e6c064a127258928486bdc060106292d0e8"
+    },
+    {
+      "path": "inputs/B-release-result.json",
+      "bytes": 22,
+      "sha256": "1e3f6691f455051e8adb15d961e4bf3c7a17e83dd88b2afdd13315cc288250bb"
+    },
+    {
+      "path": "inputs/B-S02-sealed-result.json",
+      "bytes": 1057,
+      "sha256": "3db7f2f83352a157174b91aa25828e0cf21fe2b428daf8b2fa9afc8e42458d9e"
+    },
+    {
+      "path": "code/verify_B_closed_terminal.py",
+      "bytes": 6732,
+      "sha256": "991f6ae53d70b8aeb5f078cd6d6a494dbc4acb38f8fe37a23c82b4cf12cd5baf"
+    },
+    {
+      "path": "CLOSED-BOUNDARY.md",
+      "bytes": 1413,
+      "sha256": "4f88fd8126f2f3f531646755b67aadcfa83a72504e66f47c83ca82759509aefb"
+    },
+    {
+      "path": "B-closed-terminal-values.json",
+      "bytes": 1522,
+      "sha256": "12bd6783667388f574cfc08a69ac4e39b4522ca9e4b44a2a5a77451ef2b02bcb",
+      "derived": true
+    }
+  ]
+}

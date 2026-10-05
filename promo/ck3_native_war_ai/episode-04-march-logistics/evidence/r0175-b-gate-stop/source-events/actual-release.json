@@ -1,0 +1,52 @@
+{
+  "at_utc": "2026-10-05T20:09:13.922146+00:00",
+  "actual_release": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73"
+      },
+      "last_sequence": 5115,
+      "next_step": "",
+      "pid": 6468,
+      "repo": "C:\\w\\e4countybuilda01",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "done",
+      "summary": "B frozen cohort and commander gate failed at +38; both recorder Jobs empty, SDK keeper exited GameJob0; C filming pending.",
+      "task_id": "war-e04-capture-abc-B-a08-20261006-a24",
+      "updated_at_utc": "2026-10-05T20:06:26.709648+00:00"
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 5115,
+      "event_id": "7f0bb79304b8473ea9b74bcd5e6de9ec",
+      "timestamp_utc": "2026-10-05T20:06:26.710839+00:00",
+      "kind": "completed",
+      "task_id": "war-e04-capture-abc-B-a08-20261006-a24",
+      "to": [
+        "*"
+      ],
+      "state": "done",
+      "summary": "B frozen cohort and commander gate failed at +38; both recorder Jobs empty, SDK keeper exited GameJob0; C filming pending.",
+      "next_step": "",
+      "resources": [],
+      "repo": "C:\\w\\e4countybuilda01",
+      "git": {
+        "branch": null,
+        "dirty_entries": 0,
+        "head": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73"
+      }
+    }
+  },
+  "original_stdout": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-final-closure-and-release-a01\\release-stdout.bin",
+    "bytes": 1332,
+    "sha256": "b34dd0d9b173f24832b353c6254e1e6c064a127258928486bdc060106292d0e8"
+  },
+  "actual_returncode": 0,
+  "expected_keeper_last_sequence": 5113
+}

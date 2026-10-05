@@ -1,0 +1,78 @@
+{
+  "before_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\initial\\observation.json",
+    "bytes": 591984,
+    "sha256": "dfabe1013d2d4af62b9eaaa3011df105e17697e68d494aa53ac74ab04f8f421d"
+  },
+  "after_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\batch-001-pulse-01\\inspect\\observation.json",
+    "bytes": 383376,
+    "sha256": "6aad8eabab1bf38daed955d655d3c4a715fc921f600a7a8defbbf5fcc03b45c1"
+  },
+  "actual_window": {
+    "pair_dates_raw": [
+      53149176,
+      53149200
+    ],
+    "both_stationary_positive_before_after": true,
+    "main_window_success": true,
+    "child_window_success": false,
+    "applied_refill_loss_payment_ledger": null,
+    "complete_source_window_credit_only": true,
+    "main": {
+      "public": 0,
+      "native": 0,
+      "stock_before": 10613988,
+      "stock_after": 12613988,
+      "delta_raw": 2000000,
+      "cap_before": 30000000,
+      "cap_after": 30000000,
+      "scale": 100000,
+      "monthly_before": 2000000,
+      "monthly_after": 2000000,
+      "+188_storage": [
+        300336024996477760,
+        300337120213138960
+      ],
+      "+188_date_raw": [
+        53148480,
+        53149200
+      ],
+      "+190_storage": [
+        300061168564366016,
+        300061168564366016
+      ],
+      "mark188_changed_inside_observed_window": true
+    },
+    "child": {
+      "public": 204,
+      "native": 199,
+      "stock_before": 10000000,
+      "stock_after": 10000000,
+      "delta_raw": 0,
+      "cap_before": 10000000,
+      "cap_after": 10000000,
+      "scale": 100000,
+      "monthly_before": 2000000,
+      "monthly_after": 2000000,
+      "+188_storage": [
+        300336106600856840,
+        300336106600856840
+      ],
+      "+188_date_raw": [
+        53148936,
+        53148936
+      ],
+      "+190_storage": [
+        300061168564366016,
+        300061168564366016
+      ],
+      "mark188_changed_inside_observed_window": false
+    },
+    "actual_current_sum_before": 6689,
+    "actual_current_sum_after": 6689,
+    "Regiment_entire_row_diffs": [],
+    "DATA_entire_row_diffs": [],
+    "prepared_or_permission_change_is_integer_refill_credit": false
+  }
+}

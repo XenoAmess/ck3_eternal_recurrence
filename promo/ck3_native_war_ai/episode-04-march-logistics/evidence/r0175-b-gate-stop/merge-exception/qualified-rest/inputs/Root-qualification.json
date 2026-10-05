@@ -1,0 +1,433 @@
+{
+  "schema": "ck3.e04.B.rest-qualification.v1",
+  "status": "ROOT_ACTUAL_B_REST_QUALIFIED",
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0175-a02",
+  "episode_run_id": "native-33388-23726fbd8a80",
+  "phase0_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-phase0-a03\\result.json",
+    "bytes": 578,
+    "sha256": "4462d8979b3ff5d88c13932bb623bf87590c674c16f276fe48cd51ae4f1fe2c2"
+  },
+  "Root_protocol": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-abc-protocol-freeze-a01\\protocol.json",
+    "bytes": 54230,
+    "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+  },
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "rest_anchor": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0175-a02\\B-first-rest-anchor-a01.json",
+    "bytes": 668,
+    "sha256": "f831b130dbdf48ea9b9c9e57fa1120a857ab94b06022fc7618ba071d15a06a64"
+  },
+  "rest_anchor_raw": 53148576,
+  "local31_absolute_END_raw": 53149320,
+  "main_window": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\batch-001-pulse-01\\paired-window.json",
+    "bytes": 2280,
+    "sha256": "ef7090a45665e0977920cac4460c930496525e2613be951c5edbfb5ac84353b8"
+  },
+  "child_window": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-004-pulse-01\\paired-window.json",
+    "bytes": 2239,
+    "sha256": "74512a020238044bd723853fda8b9f6f255a1eb013d504a0aba223439985ca3a"
+  },
+  "qualification_evidence": {
+    "anchor": {
+      "observation": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-travel-a07\\batch-001-pulse-01\\inspect\\observation.json",
+        "bytes": 382947,
+        "sha256": "0ebee749f16a0d20abb96daaf0943d5c45beea873da05448493134495f12cc51"
+      },
+      "commander_source_brackets": {
+        "0": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-travel-a07\\batch-001-pulse-01\\inspect\\commander-0.json",
+          "bytes": 11381,
+          "sha256": "079d0a68d19ea0e9461d4f13cb5a257705314a6ee04cc8215d08da678bffe765"
+        },
+        "204": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-travel-a07\\batch-001-pulse-01\\inspect\\commander-204.json",
+          "bytes": 11391,
+          "sha256": "bf7c33feff887c053a4a674e062f2d02f8ca8decf70ddf0700e0d3470954f71e"
+        }
+      }
+    },
+    "main": {
+      "role": "main",
+      "source_brackets": {
+        "before": {
+          "observation": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\initial\\observation.json",
+            "bytes": 591984,
+            "sha256": "dfabe1013d2d4af62b9eaaa3011df105e17697e68d494aa53ac74ab04f8f421d"
+          },
+          "commander_source_brackets": {
+            "0": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\initial\\commander-0.json",
+              "bytes": 11385,
+              "sha256": "49e70eedcd72c55c4b79f556abc0d52e3f90cf446957c16dbbb33987031a3f76"
+            },
+            "204": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\initial\\commander-204.json",
+              "bytes": 11395,
+              "sha256": "c8e6dce3c71df0ecdfbe2c3b3665c8a3d4d4581cf9084ee198617ff2e0e3bc42"
+            }
+          }
+        },
+        "after": {
+          "observation": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\batch-001-pulse-01\\inspect\\observation.json",
+            "bytes": 383376,
+            "sha256": "6aad8eabab1bf38daed955d655d3c4a715fc921f600a7a8defbbf5fcc03b45c1"
+          },
+          "commander_source_brackets": {
+            "0": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\batch-001-pulse-01\\inspect\\commander-0.json",
+              "bytes": 11385,
+              "sha256": "fb8db1a47f0fc3e9d138026017353d7cd5aab73f1b30cb75e1563a1efab01bf7"
+            },
+            "204": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\batch-001-pulse-01\\inspect\\commander-204.json",
+              "bytes": 11395,
+              "sha256": "ad76654f40a258b5155194bfad90c2cf6d89dc5c16359a64631c01a8046937ef"
+            }
+          }
+        }
+      },
+      "actual_window": {
+        "pair_dates_raw": [
+          53149176,
+          53149200
+        ],
+        "both_stationary_positive_before_after": true,
+        "main_window_success": true,
+        "child_window_success": false,
+        "applied_refill_loss_payment_ledger": null,
+        "complete_source_window_credit_only": true,
+        "main": {
+          "public": 0,
+          "native": 0,
+          "stock_before": 10613988,
+          "stock_after": 12613988,
+          "delta_raw": 2000000,
+          "cap_before": 30000000,
+          "cap_after": 30000000,
+          "scale": 100000,
+          "monthly_before": 2000000,
+          "monthly_after": 2000000,
+          "+188_storage": [
+            300336024996477760,
+            300337120213138960
+          ],
+          "+188_date_raw": [
+            53148480,
+            53149200
+          ],
+          "+190_storage": [
+            300061168564366016,
+            300061168564366016
+          ],
+          "mark188_changed_inside_observed_window": true
+        },
+        "child": {
+          "public": 204,
+          "native": 199,
+          "stock_before": 10000000,
+          "stock_after": 10000000,
+          "delta_raw": 0,
+          "cap_before": 10000000,
+          "cap_after": 10000000,
+          "scale": 100000,
+          "monthly_before": 2000000,
+          "monthly_after": 2000000,
+          "+188_storage": [
+            300336106600856840,
+            300336106600856840
+          ],
+          "+188_date_raw": [
+            53148936,
+            53148936
+          ],
+          "+190_storage": [
+            300061168564366016,
+            300061168564366016
+          ],
+          "mark188_changed_inside_observed_window": false
+        },
+        "actual_current_sum_before": 6689,
+        "actual_current_sum_after": 6689,
+        "Regiment_entire_row_diffs": [],
+        "DATA_entire_row_diffs": [],
+        "prepared_or_permission_change_is_integer_refill_credit": false
+      },
+      "observed_world_changed_paths": [
+        "/active_wars/0/objective_province_states/6/active_siege/current_work/raw",
+        "/active_wars/0/objective_province_states/6/active_siege/days_left",
+        "/active_wars/0/objective_province_states/6/active_siege/progress_fraction/raw",
+        "/active_wars/0/objective_province_states/6/active_siege/remaining_work/raw"
+      ],
+      "Root_world_acceptance_not_inferred": null,
+      "source_window_credit_only": true
+    },
+    "child": {
+      "role": "child",
+      "source_brackets": {
+        "before": {
+          "observation": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-003-pulse-01\\inspect\\observation.json",
+            "bytes": 380302,
+            "sha256": "9b75d9755d7ac09f8c5a961a46765ae1e90978fde181735051626fa1b8f9bed5"
+          },
+          "commander_source_brackets": {
+            "0": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-003-pulse-01\\inspect\\commander-0.json",
+              "bytes": 11381,
+              "sha256": "6bf8f9987898f4069b3eb3ecee764e9687177e292dd09afde8c78f5de38020dd"
+            },
+            "204": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-003-pulse-01\\inspect\\commander-204.json",
+              "bytes": 11391,
+              "sha256": "f1f8908493d855aa1810e55f98610370866405acec0896a5f519ddf3253527a3"
+            }
+          }
+        },
+        "after": {
+          "observation": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-004-pulse-01\\inspect\\observation.json",
+            "bytes": 380302,
+            "sha256": "60e4f5dbe2c1944be8b97fbc117725eb461e9f055f4bb3a29b4b9a63b504545e"
+          },
+          "commander_source_brackets": {
+            "0": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-004-pulse-01\\inspect\\commander-0.json",
+              "bytes": 11381,
+              "sha256": "833dad597cb49deedf77a8218326eb50698902feabae982d3595cbda0ecb7c76"
+            },
+            "204": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-004-pulse-01\\inspect\\commander-204.json",
+              "bytes": 11391,
+              "sha256": "42e4e5f3a661be33fb4590eb30ac7ecd85069a1e3ff80403932ccb5ec4d982ac"
+            }
+          }
+        }
+      },
+      "actual_window": {
+        "pair_dates_raw": [
+          53148912,
+          53148936
+        ],
+        "both_stationary_positive_before_after": true,
+        "main_window_success": false,
+        "child_window_success": true,
+        "applied_refill_loss_payment_ledger": null,
+        "complete_source_window_credit_only": true,
+        "main": {
+          "public": 0,
+          "native": 0,
+          "stock_before": 10613988,
+          "stock_after": 10613988,
+          "delta_raw": 0,
+          "cap_before": 30000000,
+          "cap_after": 30000000,
+          "scale": 100000,
+          "monthly_before": 2000000,
+          "monthly_after": 2000000,
+          "+188_storage": [
+            300336024996477760,
+            300336024996477760
+          ],
+          "+188_date_raw": [
+            53148480,
+            53148480
+          ],
+          "+190_storage": [
+            300061168564366016,
+            300061168564366016
+          ],
+          "mark188_changed_inside_observed_window": false
+        },
+        "child": {
+          "public": 204,
+          "native": 199,
+          "stock_before": 11037716,
+          "stock_after": 10000000,
+          "delta_raw": -1037716,
+          "cap_before": 10000000,
+          "cap_after": 10000000,
+          "scale": 100000,
+          "monthly_before": 2000000,
+          "monthly_after": 2000000,
+          "+188_storage": [
+            300334916894914672,
+            300336106600856840
+          ],
+          "+188_date_raw": [
+            53147760,
+            53148936
+          ],
+          "+190_storage": [
+            300061168564366016,
+            300061168564366016
+          ],
+          "mark188_changed_inside_observed_window": true
+        },
+        "actual_current_sum_before": 6679,
+        "actual_current_sum_after": 6679,
+        "Regiment_entire_row_diffs": [],
+        "DATA_entire_row_diffs": [],
+        "prepared_or_permission_change_is_integer_refill_credit": false
+      },
+      "observed_world_changed_paths": [
+        "/active_wars/0/objective_province_states/17/garrison_size"
+      ],
+      "Root_world_acceptance_not_inferred": null,
+      "source_window_credit_only": true
+    }
+  },
+  "source_pins": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-rest-qualification-writer-a01\\paired_snapshot_reader.py",
+      "bytes": 17072,
+      "sha256": "be3a638de2bb803bc1be3658148af20b4c7c75636f59dc487cd932dee225ff40"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-rest-qualification-writer-a01\\paired_window_pure.py",
+      "bytes": 4377,
+      "sha256": "838942b56df46c64bcea8892fc6d4718b8aadca5f509735db703186cfbef9ffd"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-phase0-a03\\result.json",
+      "bytes": 578,
+      "sha256": "4462d8979b3ff5d88c13932bb623bf87590c674c16f276fe48cd51ae4f1fe2c2"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-abc-protocol-freeze-a01\\protocol.json",
+      "bytes": 54230,
+      "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0175-a02\\B-first-rest-anchor-a01.json",
+      "bytes": 668,
+      "sha256": "f831b130dbdf48ea9b9c9e57fa1120a857ab94b06022fc7618ba071d15a06a64"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-phase0-a03\\result.json",
+      "bytes": 578,
+      "sha256": "4462d8979b3ff5d88c13932bb623bf87590c674c16f276fe48cd51ae4f1fe2c2"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-travel-a07\\batch-001-pulse-01\\inspect\\observation.json",
+      "bytes": 382947,
+      "sha256": "0ebee749f16a0d20abb96daaf0943d5c45beea873da05448493134495f12cc51"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-travel-a07\\batch-001-pulse-01\\inspect\\commander-0.json",
+      "bytes": 11381,
+      "sha256": "079d0a68d19ea0e9461d4f13cb5a257705314a6ee04cc8215d08da678bffe765"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-travel-a07\\batch-001-pulse-01\\inspect\\commander-204.json",
+      "bytes": 11391,
+      "sha256": "bf7c33feff887c053a4a674e062f2d02f8ca8decf70ddf0700e0d3470954f71e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-rest-qualification-writer-a01\\frozen-cohort.json",
+      "bytes": 1929,
+      "sha256": "8a8382fbf050fb55b81e901b710430b35163abe259c27bd1c31778835d2eb02f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\batch-001-pulse-01\\paired-window.json",
+      "bytes": 2280,
+      "sha256": "ef7090a45665e0977920cac4460c930496525e2613be951c5edbfb5ac84353b8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\initial\\observation.json",
+      "bytes": 591984,
+      "sha256": "dfabe1013d2d4af62b9eaaa3011df105e17697e68d494aa53ac74ab04f8f421d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\initial\\commander-0.json",
+      "bytes": 11385,
+      "sha256": "49e70eedcd72c55c4b79f556abc0d52e3f90cf446957c16dbbb33987031a3f76"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\initial\\commander-204.json",
+      "bytes": 11395,
+      "sha256": "c8e6dce3c71df0ecdfbe2c3b3665c8a3d4d4581cf9084ee198617ff2e0e3bc42"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-rest-qualification-writer-a01\\frozen-cohort.json",
+      "bytes": 1929,
+      "sha256": "8a8382fbf050fb55b81e901b710430b35163abe259c27bd1c31778835d2eb02f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\batch-001-pulse-01\\inspect\\observation.json",
+      "bytes": 383376,
+      "sha256": "6aad8eabab1bf38daed955d655d3c4a715fc921f600a7a8defbbf5fcc03b45c1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\batch-001-pulse-01\\inspect\\commander-0.json",
+      "bytes": 11385,
+      "sha256": "fb8db1a47f0fc3e9d138026017353d7cd5aab73f1b30cb75e1563a1efab01bf7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-offsite-world-dispositions-a05-continuation-01\\batch-001-pulse-01\\inspect\\commander-204.json",
+      "bytes": 11395,
+      "sha256": "ad76654f40a258b5155194bfad90c2cf6d89dc5c16359a64631c01a8046937ef"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-rest-qualification-writer-a01\\frozen-cohort.json",
+      "bytes": 1929,
+      "sha256": "8a8382fbf050fb55b81e901b710430b35163abe259c27bd1c31778835d2eb02f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-004-pulse-01\\paired-window.json",
+      "bytes": 2239,
+      "sha256": "74512a020238044bd723853fda8b9f6f255a1eb013d504a0aba223439985ca3a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-003-pulse-01\\inspect\\observation.json",
+      "bytes": 380302,
+      "sha256": "9b75d9755d7ac09f8c5a961a46765ae1e90978fde181735051626fa1b8f9bed5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-003-pulse-01\\inspect\\commander-0.json",
+      "bytes": 11381,
+      "sha256": "6bf8f9987898f4069b3eb3ecee764e9687177e292dd09afde8c78f5de38020dd"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-003-pulse-01\\inspect\\commander-204.json",
+      "bytes": 11391,
+      "sha256": "f1f8908493d855aa1810e55f98610370866405acec0896a5f519ddf3253527a3"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-rest-qualification-writer-a01\\frozen-cohort.json",
+      "bytes": 1929,
+      "sha256": "8a8382fbf050fb55b81e901b710430b35163abe259c27bd1c31778835d2eb02f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-004-pulse-01\\inspect\\observation.json",
+      "bytes": 380302,
+      "sha256": "60e4f5dbe2c1944be8b97fbc117725eb461e9f055f4bb3a29b4b9a63b504545e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-004-pulse-01\\inspect\\commander-0.json",
+      "bytes": 11381,
+      "sha256": "833dad597cb49deedf77a8218326eb50698902feabae982d3595cbda0ecb7c76"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-rest-a04\\batch-004-pulse-01\\inspect\\commander-204.json",
+      "bytes": 11391,
+      "sha256": "42e4e5f3a661be33fb4590eb30ac7ecd85069a1e3ff80403932ccb5ec4d982ac"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-rest-qualification-writer-a01\\frozen-cohort.json",
+      "bytes": 1929,
+      "sha256": "8a8382fbf050fb55b81e901b710430b35163abe259c27bd1c31778835d2eb02f"
+    }
+  ],
+  "budget_reset": false,
+  "Root_dispatch_or_world_acceptance_or_continuous_between_endpoints_proof": null,
+  "B_return_merge_London_terminal_final_closed_raw_result": null,
+  "ABC_complete_comparison_refill_death_payment_ledger_media_clean_human_credit": 0
+}

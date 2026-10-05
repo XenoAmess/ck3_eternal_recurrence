@@ -1,0 +1,17 @@
+{
+  "status": "ACTUAL_FIRST_OBSERVED_BOTH_STATIONARY_POSITIVE_REST_ANCHOR",
+  "date_raw": 53148576,
+  "observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-paired-travel-a07\\batch-001-pulse-01\\inspect\\observation.json",
+    "bytes": 382947,
+    "sha256": "0ebee749f16a0d20abb96daaf0943d5c45beea873da05448493134495f12cc51"
+  },
+  "phase0_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-phase0-a03\\result.json",
+    "bytes": 578,
+    "sha256": "4462d8979b3ff5d88c13932bb623bf87590c674c16f276fe48cd51ae4f1fe2c2"
+  },
+  "fixed_global_END": 53150592,
+  "local_max_days": 31,
+  "producer_or_ABC_credit": false
+}

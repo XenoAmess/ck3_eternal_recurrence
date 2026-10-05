@@ -1,0 +1,9 @@
+# B 闭合补充，不改正式早停结果
+
+Root实际新closure证明SDK/keeper退出、GameJob0、native inventory为空、watchdog absent、首段recorder closed、续段Job0和所有owned process trees零。supervisor实际unified session57698 exit0；它不等于Game进程exitcode0，未给Game退出码的字段保持NULL。screen任务正式DONE5115/resources[]，release returncode0。
+
+续段S02为NORMAL_TREE_EMPTY／returncode0／job_active_processes0。终端原receipt保存raw3363279647 B，SHA de8f9c72f64e62bc14461ee6611a301d1dc765599f138b015cacaf54dcd7f468；本包仅复制小sealed receipt和其rawpin字符串，未打开、stat、探测、重算原片。媒体审计由其他独占lane负责，当前未知。
+
+原+38日STOPPED_GATE_INCOMPLETE判定不变，剩52日，非90日预算截尾。London数字、winner、新增团类型或原因依旧NULL，合军cohort及将领条件不是PASS。原terminal内raw_closure_pending=true、原closure内media_audit_pending=true均逐字节保留；新projection另记真实B已闭合，不倒填历史。
+
+本版本复制上一terminal-stage的小文件并加四份小闭合源收据；旧73body不重读，原merge-exception独立完整资料必须继续保留。可移植stdlib validator只验证小来源／identity／预算／Job与release元数据合同，不提供原native cohort、影片clean、人类1×或整体ABC对照完成信用。
