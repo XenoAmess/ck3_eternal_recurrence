@@ -29,6 +29,7 @@ struct ContextSourceTokenCursorV1 { void *node = nullptr; };
 #include "xar_bridge/ck3_12003_provider_bucket_bindings.inc.hpp"
 #include "xar_bridge/ck3_12003_qualifier_28bc0d0_sources.inc.hpp"
 #include "xar_bridge/ck3_12003_list_predicate_2530dd0_sources.inc.hpp"
+#include "xar_bridge/ck3_12003_gated_temporary_tail_sources.inc.hpp"
 static_assert(sizeof(ContextSourceTokenSliceV1) == 16);
 static_assert(offsetof(ContextSourceTokenSliceV1, length) == 8);
 static_assert(offsetof(ContextSourceTokenSliceV1, flag) == 0xC);
@@ -90,6 +91,7 @@ struct ContextSourceBindingsV1 {
   ProviderBucket291c5b2BindingsV1 provider_bucket_291c5b2{};
   ContextSourceQualifier28bc0d0BindingsV1 qualifier_28bc0d0{};
   ContextSourceListPredicate2530dd0BindingsV1 list_predicate_2530dd0{};
+  ContextSourceGatedTemporaryTailBindingsV1 gated_temporary_tail{};
   void *(*provider)() = nullptr;
   bool post_291d7e0_sources_enabled = false;
   const void *post_ab_object_fallback_slot = nullptr;
