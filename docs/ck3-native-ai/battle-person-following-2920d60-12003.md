@@ -103,3 +103,11 @@ Highest actual unowned dependencies after this package: `scripted_rule43_for_cha
 ## Sealed source delivery
 
 Packet `Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-tail/following2920d60-source` contains exact source receipts, bytecost ledger, pure raw input proposal, Mermaid tree and daily/weekly report fields. No implementation, actual schema, callback, test, build or live artifact was produced. Parent owns Git and canonical report merge.
+
+## Shortest nonempty numeric continuation, 2026-10-06
+
+Root chose actual nonempty numeric production rather than another zero-only stage. [Diac literal numeric source](battle-person-diac-literal-numeric-12003.md) closes `325B080 ->28727B0 ->2872320`, exact typed ID/value copy, unit scaling and final metadata quantization. An actual declaration DWORD280=0 selects100000 without any ScriptValue evaluation. Physical PC keys0/countC and QWORD values68/count74 are copied in source order; the actual metadata provider5D1F7B0 and BA/B8 flags determine preserve versus signed32 unit quantization. This is a nonempty independently computable source value. The additional producer read cost is2671B (2191code/480pdata), separate from this original708-B caller packet.
+
+The sole necessary rule-loader capture is complete `1D65660` [1D65660,1D656B7),87B. `1D65664` loads QWORDslot5D21DC8: nextRIP1D6566B plus displacement3FBC75D. Actual nonnull returns directly; null calls3F8B660 then reloads the same slot. A readonly observer never performs that callback. New cost is243B (87code/156pdata), separate from the numeric producer. Cached1D65B00 then selects the actual rules array QWORDproviderEF0 plus43*D0=22F0.
+
+Reused exact372DF30/372E020 has no empty-count rule-true shortcut. It validates the actual Character scope and compiled predicate applicability, then evaluates the concrete trigger's vtable+C8. That real rule43 result remains unclosed; it must not be inferred from a pointer, count, metadata address, or the ability to compute a selected definition's numeric rows. Primary true still suppresses secondary, including an empty primary result. The independent literal numeric packet does not claim either whole-stage admission or future context reconstruction.
