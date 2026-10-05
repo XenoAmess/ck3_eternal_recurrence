@@ -420,3 +420,187 @@ flowchart TD
   H --> R[Conditional final ArRg current/max and unique physical changes]
   U[Actual paused poststage and fullmonthly outcome] -. unobserved .-> R
 ```
+
+
+## Source-closed monthly budget construction before the loss writers
+
+Adoption time: 2026-10-05T22:20:30+08:00. SOURCE-PLAN-DELIVERY.json sealed SOURCE-BUDGETS.md / QUERY-PLAN.md before production changes. The current readonly optional inputs and conditional budget connection are now being implemented. No new provider/kernel/native/live qualification is claimed at this source adoption.
+
+Source tree before new observer/kernel implementation. Reuse Steam25652598 /
+EXE SHA94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6.
+Only cached artifacts and frozen-file seeks were used; no game/SDK/pipe/UI,
+Steam/profile/save/cache/runtime operation or new game day.
+
+## Caller order and labels
+
+The corrected labels already established by later canonical evidence apply:
+24E8560 is **siege**, loaded scalar5C69618; Army+1E8 is **raid** association,
+loaded scalar5C69098. Early archived docs named these oppositely; reuse their
+instruction bytes, not those withdrawn labels.
+
+1.24E3450 invokes24E4D10(CArmy,date). It first writes byteArmy+22=1. On
+   rejection ALfalse,24E3468 sets the supply budget0. Success alone invokes
+  24E345E→24E32E0 against the **post-updater** stock.
+2.24E3473 reads siege predicate24E8560. True invokes24DD580 with the VALUE
+  QWORD[5C69618]; false stores siege budget0 at24E3494.
+3.24E349B tests signed32Army+1E8!=-1. True invokes24DD580 with the VALUE
+  QWORD[5C69098]; false stores raid budget0 at24E34BC.
+4.All three whole budgets exist before the first26341B0 soldier write at
+  24E361A. Supply allocation completes first.24E3666..3676 then combines the
+  two original siege/raid whole budgets with signed32 addition. They are
+  never recomputed using post-supply current.
+
+This input stage must precede the already delivered four-pass conditional
+loss subsystem; current readonly supplybudget is not the event's post-update
+budget. The manager's actual bucket admission and any earlier reinforcement
+remain separately observed/context-bound.
+
+##24E4D10 admission and stock update
+
+Resolve Army+124 FullCUnitID through Unit table5D1E380, generation match+10,
+fallback5D1E378. Admission rejects if resolved Unit signed32+170==3, then if
+native24AC3E0 true, then if native24AC160 true, then if signed Army+5C!=0.
+It computes signed32 wrapping `elapsed=date.low32−Army+190.low32`, trunc0
+`elapsed/24`, and rejects unless this is strictly greater than loaded signed32
+grace[5C69AA0]. RawUnit+170 is a source operand: the published D19140-derived
+`current_movement_progress.unit_state_raw` must not silently replace it.
+
+New closed24AC160 reads Unit+18==0, generation-resolves its Army+178 through
+5D1DE48/fallback5D1DE50 and returns Army+5C!=0. It has no calls or stores.
+The later direct Army+5C test is retained as written; strict samequery backlink
+will make both use the same actual Army, but a public gathering-days status is
+not the raw signed count itself.
+
+Success writes the supplied date64 to Army+188, then passes the resolved
+Unit+20 currentProvince/fallback5D1E390 to24E51A0(CArmy,out,Province,null).
+It adds this whole signed Q100000 change once to signed64 Army+180 (native
+wrap); it neither divides by30 nor multiplies by elapsed days. A negative
+sum is stored0; otherwise store `min(sum,current capacity2C53C10)`. Both successful
+paths returntrue. Failure leaves stock and+188 unchanged but byte+22 was
+already set. The output model must call these conditional changes, not actual
+write receipts. Actual clock source/readonly anchors/bucket are already
+implemented; this package does not reopen cadence or register/load writers.
+
+##24E32E0 post-update supply budget
+
+It first calls readonly24E8460. The now complete256B window proves:
+generation-resolve Army+12C Fleet through5D1F9B8/fallback5D1F9A8; Fleet
+magic466C6574 and FullID+10!=-1 are required. Resolve Army+124 Unit and
+Fleet+18 Unit through5D1E380/fallback5D1E378, obtain each Unit+20 Province
+or5D1E390 fallback, compare their Province FullID+10. ALtrue means matching
+resolved provinces for a validFleet, not simply a non−1 fleet ID. No calls
+or stores. Both true and false terminal paths are closed.
+
+If this predicate istrue,24E3338 reads signed32Fleet+20. Supply budget is0
+when that value differs from signed32global[5C83A68] and is greater than the
+current date at pointer[5C68C50]+8. Equality with the sentinel or date equality
+does not suppress. Keep the two date values and loaded sentinel explicit;
+do not infer suppression from a public embarked/fleet label.
+
+Otherwise24E335B invokes24E4FA0(CArmy,out). Component<=0 immediately returns
+budget0 without counting eligible rows. Positive component sums signed32
+current+38 of identity-valid ArRg with2A956D0 true; definition tier is **not**
+part of this budget count. At24E33FE it multiplies sign-extended wrapped count
+by component with low64 signed multiplication, divides signed64 by100000
+toward0, compares the quotient's signed low32 to count and returns their
+signed32 minimum. In the ordinary nonoverflow domain:
+
+`supplybudget=min(eligibleCurrent,trunc0(eligibleCurrent*component/100000))`.
+
+##24E4FA0 component and the necessary actual inputs
+
+Supply rawArmy+180 is divided signed64 by100000 toward0; the threshold
+comparison uses its signed low32 integer. Consumer vector slots, calculated
+from the actual RIP displacements, are levels **5456498/54564A4**, fractions
+**5451308/5451314**. For levels count<=0 or no matching entry, index=count−1;
+otherwise select the first stored threshold satisfied by integerstock>=level.
+Negative index or index>=fraction count returns0 (new20B tail5183..5197).
+No stock-defined `{60,10,0}` / `{0,0,5000}` table is silently substituted for
+runtime vectors.
+
+Read selected signed64base from the fraction vector. Base0 returns0 directly.
+Resolve Army+120 Character through5C67568/fallback5C67570; magicChar and
+FullID+18!=-1 determine whether a commander is valid. Absent/invalid commander
+returns the selectedbase **without a final clamp** at517E, a distinction lost
+by the earlier ordinary-case prose. With valid commander:
+
+*28C3AE0 returns actual current modifier context; generic PropertyContainer
+ receiver is context+68, not the model pointer itself.
+*24E0EB0 supplies actual currentProvince. Its76B leaf was just closed by the
+ first-contact owner, SHA4240b7f0d19d423a52cfa429c23db62a2065cb1e6d738b461ead8da6d20a7fe3:
+ it only reads Army+124, resolved Unit+20 andfallback; **no stock/+22/+188
+ read**. This context remains the same during this single stock update.
+*The selected modifier ordinal is U16[QWORD[QWORD[Province+20]+B8]+770].
+ Read it through existing2303700(context+68,out,ordinal), signed Q100000.
+ Its generic lower-bound/missing-key0 contract and28C3AE0 context fallback
+ are already published and reused; no name/ordinal guess or modifier-tree
+ expansion is needed.
+*Set multiplier=i64(100000+modifier). The ordinary formula is
+ `trunc0(base*multiplier/100000)`. Exact native fast path applies only when
+ uint64(x+3037000499)<=6074000998 for both operands. Otherwise select high
+ and low operands and compute native wrapped64
+ `trunc0(high/100000)*low + trunc0((high−trunc0(high/100000)*100000)*low/100000)`.
+ Then clamp the resulting signed64 to0..100000. Those overflow branches are
+ already in cached5018..517E; they are not arbitrary-precision multiplication.
+
+The effective modifier/context need not be attributed to traits or individual
+modifiers to construct this budget. Native current actual query output is
+required, and missing reads staynull; true missing key remains a legal0.
+
+##24DD580 siege and raid budgets
+
+Independently traverse the complete Army+38/44 FullID roster in stored order,
+validate ArRg identity, sum signed32current+38 with wrap. Neither tier nor
+2A956D0 filters this total. Clamp the passed signed64 scalar VALUE to0..100000,
+then low64 multiply the sign-extended count, signed divide100000 toward0,
+and return the signed32 minimum of quotient/count. With a valid signed32
+count and clamped rate this product fits64; ordinary positive-domain formula:
+
+`budget=min(allCurrent,trunc0(allCurrent*clamp(rate,0,100000)/100000))`.
+
+Inactive branch0 is independent of loaded rate value. Active branch can still
+produce0 (rate<=0, current0 or whole-soldier truncation). Two fractions are
+rounded separately; sum of their integer budgets is not truncation of their
+combinedfraction. Both use current **before all loss writers**, including
+when the supply update creates a positive post-update supply budget.
+
+## Exact new source and limits
+
+Necessary new code is only228B:20B5183 zero tail,128B84E0 fleet continuation,
+80B24AC160 through bothRET andpadding. Cached fleet front128B pin matches;
+combined256B SHA4c6cc9e823d3c9a55de0cf713e676323217423299f48278d5e88956aafd18047.
+No new24E0EB0/read of its EXE bytes; Root's sealed source is reused. The first
+extraction's cached-RVA parser expected8digits while printed source had9;
+this harness RED was corrected from already saved slices, no code reread.
+Receipt states that the original metadata seek ledger was lost by that final
+parser failure; source span offsets/lengths/SHAs and bounded reader are kept.
+
+Source formula/read-order frontier is closed for the budget subsystem given
+the listed current native inputs. New observer, pure post-updater budget
+construction and live remainpending. Prior allocation/C/D/refresh/sequence
+tests are not rerun. `actual_loss=false`, actualpoststage=null and complete
+monthly applied outcome/live remain outside source-only credit.
+
+```mermaid
+flowchart TD
+  A[Entry date / resolvedUnit raw170 / nativecombat / gather / grace] --> G{24E4D10 admitted?}
+  G -->|no| Z[Supplybudget0; stock unchanged]
+  G -->|yes| U[Signed whole rate once; conditional stock clamp]
+  U --> F{Exact fleet-date suppression?}
+  F -->|yes| Z
+  F -->|no| L[Loaded threshold/fraction vectors from POST-update stock]
+  L --> C{Valid commander?}
+  C -->|no| B[Selected rawbase]
+  C -->|yes| M[ActualProvince ordinal / context+68 /2303700 modifier]
+  M --> Q[Native Q multiply and0..100000 clamp]
+  B --> S[Positive component; eligible current count; whole supplybudget]
+  Q --> S
+  Z --> P[Siege nativepredicate / raidassociation]
+  S --> P
+  P --> R[Two loaded scalar VALUEs / all-current count / separate whole budgets]
+  R --> W[Previously closed four-pass loss subsystem]
+  O[New readonly vector/admission/fleet/modifier observations] -. pending provider .-> G
+  O -. pending provider .-> L
+  O -. pending provider .-> M
+  V[Actual poststage / fullmonthly live] -. unobserved .-> W
+```
