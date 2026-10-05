@@ -341,3 +341,10 @@ Military 同 raw 部署前 h8573 派生 cache 与本帧21字段相同，work del
 - day02 LASTWHOLE为native47/public9/raw53263128、normalh8745/98368344 bytes/SHA `28e1bbead87270d209f7750a699d73bd489b7f23cbd69ce4cc0237c9dd4b6fe5`；失败零日normalh8748/SHA `1740fd6d4183127c7ac7a21acd68b7b6d0e9110fc70f91dc4b101ce746d30166`另列，不能替代whole SAVE。
 - 器械军268435481仍2619 moving7→470/route[8651,8652,470]，未到470，不信用器械围城贡献；main301@470与guard184@3711仍sieging。P470 C26589323/T55000000/B3054/ETA281估计，P3711 C5714765/T55000000/B2970/ETA501估计，两处未占/CanStartAssault=false；owncombat0/eventnull/War117440524 active/+25。
 - 父sole原件消费者提供失败literal：004 `life-advance-one-day(expected_revision10)` → `native gameplay step failed: CK3 map state is unavailable`；before001/primed003/after005同raw53263128/native48/public10、paused/mapready=true。根因未知，此lane未重发动作；Generic兵供及phase null保留，无共享专题读取或补丁生成。
+
+- 2026-10-05 R44 prearrival 基线 SDK37572 已 closed GREEN：只读 occupation 叶为 `public2/native50/native:50/raw53263128`，Robert29829、War117440524、episode `native-29829-2bc2d599f7f9`；来源为 frozen `g76/cd14f96c446b382ad286f75cb8f546bd68459f68`，本次不增加游戏日。
+- P470 `holding1334/county1333/Siege503316504/main301989997` 未占领，`fort6/G550/B3054`；实际 `M60300/K0/D101312`（M/D 为 Q100000，K 为合法零），`C26589323/T55000000/rem28410677/48.344%/ETA281`。
+- P3711 `holding1352/county1351/Siege486539314/lead184549452` 为独立未占领围城，`fort6/G500/B2970`；实际 `M88950/K0/D98465`，`C5714765/T55000000/rem49285235/10.390%/ETA501`，不得混作 Engine470 的贡献。
+- 两城 fresh/prepared phase 均为18/18，counter 分别2/12、can_advance 均 true；当前五状态依 breach/starvation/disease/desertion/stalemate 顺序为 `0/2/2/3/1` 与 `0/1/0/0/0`；prepared enum5 仅旧 prepare 诊断，两城 CanStartAssault 均 false，未观测下一次随机事件。
+- Engine50347099→ArRg184549917→CUnit268435481 的 `6/10、库存 tier2、2619→470 moving` 来自同 raw 的旧 `native48/public10` 移动记录；本次仍无首次抵达/新增攻城贡献证据，库存 tier2 不等于 target470 实测 K0，main301989997 也不是 Engine 公共单位268435481。
+- 旧移动帧的 M/K 缺 key、D/phase 等 null 仅属历史 scope，本次两城 M/K/D 已实读，合法0不改 null；leaf 未提供 pause/map/alive/env，Root 独立 SAVE `h8751/SHA417e4ec1cfad822f35e3c66f3cae2e837dcdb621f9945c3cb93c34600a50c072` 提供这些绑定。ETA 仅当前估计，不承诺完工日；新增日/抵达/归因贡献均0。
