@@ -104,4 +104,3 @@ struct ContextSourceRemainingHelpersV1 {
   friend bool operator==(const ContextSourceRemainingHelpersV1 &,
                          const ContextSourceRemainingHelpersV1 &) = default;
 };
-
