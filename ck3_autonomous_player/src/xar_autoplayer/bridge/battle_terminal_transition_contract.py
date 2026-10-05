@@ -283,12 +283,15 @@ def _normalize_raw_numeric_inputs(value: object, field: str) -> dict[str, object
     """Preserve actual native operands, independently from cached current EC."""
     if value is None:
         return None
-    raw = _exact_dict(value, field, {
+    fields = {
         "status", "raw_numeric_inputs_ready", "character_id", "scratch_present",
         "context_source", "base_points", "caps", "prowess_adjustment",
         "category_counts", "scratch_factor_numerator", "scratch_factor_denominator",
         "context", "unavailable_reason",
-    })
+    }
+    if isinstance(value, dict) and "auxiliary_scratch_inputs" in value:
+        fields.add("auxiliary_scratch_inputs")
+    raw = _exact_dict(value, field, fields)
 
     def optional_i32(item: object, name: str) -> int | None:
         return _optional_integer(item, name, minimum=-(2**31), maximum=2**31 - 1)
@@ -381,7 +384,52 @@ def _normalize_raw_numeric_inputs(value: object, field: str) -> dict[str, object
         not ready and (not isinstance(reason, str) or not reason)
     ):
         raise ValueError(f"{field} raw numeric completeness disagrees")
+    if "auxiliary_scratch_inputs" in raw:
+        normalized["auxiliary_scratch_inputs"] = _normalize_auxiliary_scratch_inputs(
+            raw["auxiliary_scratch_inputs"], f"{field}.auxiliary_scratch_inputs", scratch)
     return normalized
+
+
+def _normalize_auxiliary_scratch_inputs(
+    value: object, field: str, scratch_present: bool | None,
+) -> dict[str, object] | None:
+    if value is None:
+        return None
+    raw = _exact_dict(value, field, {
+        "status", "ready", "base430_q64", "base438_q64", "selector_flag_raw",
+        "selector_metric_raw", "selected_low_threshold_raw", "selected_high_threshold_raw",
+        "prepared430_q64", "prepared438_q64", "copied430_q64", "copied438_q64",
+        "ready440_raw", "unavailable_reason",
+    })
+    out = dict(raw)
+    for key in ("base430_q64", "base438_q64", "prepared430_q64", "prepared438_q64",
+                "copied430_q64", "copied438_q64"):
+        out[key] = _optional_integer(raw[key], f"{field}.{key}",
+                                     minimum=-(2**63), maximum=2**63 - 1)
+    for key in ("selector_flag_raw", "ready440_raw"):
+        out[key] = _optional_integer(raw[key], f"{field}.{key}", minimum=0, maximum=255)
+    out["selector_metric_raw"] = _optional_integer(
+        raw["selector_metric_raw"], f"{field}.selector_metric_raw",
+        minimum=-(2**15), maximum=2**15 - 1)
+    for key in ("selected_low_threshold_raw", "selected_high_threshold_raw"):
+        out[key] = _optional_integer(raw[key], f"{field}.{key}",
+                                     minimum=-(2**31), maximum=2**31 - 1)
+    metric, low, high = (out[k] for k in (
+        "selector_metric_raw", "selected_low_threshold_raw", "selected_high_threshold_raw"))
+    inputs = ("base430_q64", "base438_q64", "selector_flag_raw", "selector_metric_raw",
+              "selected_low_threshold_raw", "prepared430_q64", "prepared438_q64",
+              "copied430_q64", "copied438_q64", "ready440_raw")
+    complete = scratch_present is False or (scratch_present is True
+        and all(out[k] is not None for k in inputs)
+        and (metric < low or high is not None))
+    ready = _boolean(raw["ready"], f"{field}.ready")
+    status, reason = raw["status"], raw["unavailable_reason"]
+    if status not in {"available", "partial", "unavailable"} or ready is not (status == "available"):
+        raise ValueError(f"{field} auxiliary scratch availability disagrees")
+    if ready is not complete or (ready and reason is not None) or (
+        not ready and (not isinstance(reason, str) or not reason)):
+        raise ValueError(f"{field} auxiliary scratch completeness disagrees")
+    return out
 
 
 def _normalize_context_branch_inputs(value: object, field: str) -> dict[str, object] | None:

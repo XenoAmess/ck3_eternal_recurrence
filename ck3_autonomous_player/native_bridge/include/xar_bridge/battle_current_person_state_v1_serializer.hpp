@@ -139,6 +139,27 @@ inline std::string SerializeRawNumericInputs(
     }
     out += '}';
   }
+  if (p.auxiliary_scratch_inputs) {
+    const auto &aux = *p.auxiliary_scratch_inputs;
+    out += ",\"auxiliary_scratch_inputs\":{\"status\":";
+    AppendString(out, aux.status);
+    out += ",\"ready\":";
+    out += aux.ready ? "true" : "false";
+    out += ",\"base430_q64\":"; AppendRawNumber(out, aux.base430_q64);
+    out += ",\"base438_q64\":"; AppendRawNumber(out, aux.base438_q64);
+    out += ",\"selector_flag_raw\":"; AppendRawNumber(out, aux.selector_flag_raw);
+    out += ",\"selector_metric_raw\":"; AppendRawNumber(out, aux.selector_metric_raw);
+    out += ",\"selected_low_threshold_raw\":"; AppendRawNumber(out, aux.selected_low_threshold_raw);
+    out += ",\"selected_high_threshold_raw\":"; AppendRawNumber(out, aux.selected_high_threshold_raw);
+    out += ",\"prepared430_q64\":"; AppendRawNumber(out, aux.prepared430_q64);
+    out += ",\"prepared438_q64\":"; AppendRawNumber(out, aux.prepared438_q64);
+    out += ",\"copied430_q64\":"; AppendRawNumber(out, aux.copied430_q64);
+    out += ",\"copied438_q64\":"; AppendRawNumber(out, aux.copied438_q64);
+    out += ",\"ready440_raw\":"; AppendRawNumber(out, aux.ready440_raw);
+    out += ",\"unavailable_reason\":";
+    AppendReason(out, aux.ready, aux.unavailable_reason, "auxiliary_scratch_inputs_unavailable");
+    out += '}';
+  }
   out += ",\"unavailable_reason\":";
   AppendReason(out, p.raw_numeric_inputs_ready, p.unavailable_reason,
                "raw_numeric_input_reads_unavailable");

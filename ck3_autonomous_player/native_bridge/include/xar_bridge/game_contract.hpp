@@ -2631,6 +2631,25 @@ struct BattleCurrentPersonRawContextSnapshotV1 {
   friend bool operator==(const BattleCurrentPersonRawContextSnapshotV1 &,
                          const BattleCurrentPersonRawContextSnapshotV1 &) = default;
 };
+// Independent current operands/results of 2948DF0/2948F00; no preparation call.
+struct BattleCurrentPersonAuxiliaryScratchInputsSnapshotV1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::optional<std::int64_t> base430_q64;
+  std::optional<std::int64_t> base438_q64;
+  std::optional<std::uint8_t> selector_flag_raw;
+  std::optional<std::int16_t> selector_metric_raw;
+  std::optional<std::int32_t> selected_low_threshold_raw;
+  std::optional<std::int32_t> selected_high_threshold_raw;
+  std::optional<std::int64_t> prepared430_q64;
+  std::optional<std::int64_t> prepared438_q64;
+  std::optional<std::int64_t> copied430_q64;
+  std::optional<std::int64_t> copied438_q64;
+  std::optional<std::uint8_t> ready440_raw;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleCurrentPersonAuxiliaryScratchInputsSnapshotV1 &,
+                         const BattleCurrentPersonAuxiliaryScratchInputsSnapshotV1 &) = default;
+};
 struct BattleCurrentPersonRawNumericInputsSnapshotV1 {
   std::string status = "unavailable";
   bool raw_numeric_inputs_ready = false;
@@ -2644,6 +2663,7 @@ struct BattleCurrentPersonRawNumericInputsSnapshotV1 {
   std::optional<std::int32_t> scratch_factor_numerator;
   std::optional<std::int32_t> scratch_factor_denominator;
   std::optional<BattleCurrentPersonRawContextSnapshotV1> context;
+  std::optional<BattleCurrentPersonAuxiliaryScratchInputsSnapshotV1> auxiliary_scratch_inputs;
   std::string unavailable_reason;
   friend bool operator==(const BattleCurrentPersonRawNumericInputsSnapshotV1 &,
                          const BattleCurrentPersonRawNumericInputsSnapshotV1 &) = default;

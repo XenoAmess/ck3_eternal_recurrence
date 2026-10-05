@@ -999,6 +999,35 @@ game::BattleCurrentPersonRawNumericInputsSnapshotV1 CurrentRawNumericInputs(
   else complete = false;
   const auto *scratch = At<const void *>(character, 0x1B0);
   out.scratch_present = scratch != nullptr;
+  out.auxiliary_scratch_inputs.emplace();
+  auto &aux = *out.auxiliary_scratch_inputs;
+  if (!scratch) {
+    aux.status = "available";
+    aux.ready = true;
+  } else {
+    aux.base430_q64 = At<std::int64_t>(scratch, 0x2D8);
+    aux.base438_q64 = At<std::int64_t>(scratch, 0x2E8);
+    aux.selector_flag_raw = At<std::uint8_t>(character, 0x1A1);
+    aux.selector_metric_raw = At<std::int16_t>(character, 0x68);
+    const auto selection = *aux.selector_flag_raw == 0 ? 0U : 1U;
+    if (b.current_person_auxiliary_low_thresholds[selection])
+      aux.selected_low_threshold_raw = *b.current_person_auxiliary_low_thresholds[selection];
+    // Native low branch never loads the high threshold.
+    if (aux.selected_low_threshold_raw &&
+        *aux.selector_metric_raw >= *aux.selected_low_threshold_raw &&
+        b.current_person_auxiliary_high_thresholds[selection])
+      aux.selected_high_threshold_raw = *b.current_person_auxiliary_high_thresholds[selection];
+    aux.prepared430_q64 = At<std::int64_t>(scratch, 0x430);
+    aux.prepared438_q64 = At<std::int64_t>(scratch, 0x438);
+    aux.copied430_q64 = At<std::int64_t>(scratch, 0x2E0);
+    aux.copied438_q64 = At<std::int64_t>(scratch, 0x2F0);
+    aux.ready440_raw = At<std::uint8_t>(scratch, 0x440);
+    aux.ready = aux.selected_low_threshold_raw.has_value() &&
+        (*aux.selector_metric_raw < *aux.selected_low_threshold_raw ||
+         aux.selected_high_threshold_raw.has_value());
+    aux.status = aux.ready ? "available" : "partial";
+    if (!aux.ready) aux.unavailable_reason = "auxiliary_selector_threshold_unbound";
+  }
   for (std::size_t i = 0; i < out.category_counts.size(); ++i) {
     if (b.current_person_raw_category_getters[i])
       out.category_counts[i] = b.current_person_raw_category_getters[i](character);
@@ -1821,6 +1850,12 @@ void EnableBattleCurrentPerson12003(BattleBindings &b, std::uintptr_t base,
         reinterpret_cast<const std::int32_t *>(base + cap_rvas[i]);
   b.current_person_raw_factor_denominator =
       reinterpret_cast<const std::int32_t *>(base + 0x05C68CE8);
+  b.current_person_auxiliary_low_thresholds = {
+      reinterpret_cast<const std::int32_t *>(base + 0x05C6A15C),
+      reinterpret_cast<const std::int32_t *>(base + 0x05C69D10)};
+  b.current_person_auxiliary_high_thresholds = {
+      reinterpret_cast<const std::int32_t *>(base + 0x05C69D18),
+      reinterpret_cast<const std::int32_t *>(base + 0x05C69D14)};
   b.current_person_raw_fallback_context =
       reinterpret_cast<const void *>(base + 0x05D67B90);
   constexpr std::array<std::uintptr_t, 4> category_rvas{
