@@ -811,3 +811,60 @@ Readiness is **static-ready** for these two independent source stages, using nat
 game/SDK/realpipe/UI/Steam/profile/save/cache/runtime部署操作0、新增游戏日0。Z机器历史R0046关闭、v73 h9052/raw53265168与5035/36524、G2 5/8、NW2 2/4、natural0保持；其他机器单独授权的日报记录保留，不外推本机live。相关实现与本次专题/报告一起普通commit/push到master；最终发布SHA、archive tag和CI回执保存于外置FINAL-PUBLICATION.json。
 
 专题：[人物阶段基线](battle-person-stage-baseline-12003.md)、[人物后缀与frontier](battle-first-contact-person-preparation-frontier-12003.md)、[月度budget/writer](army-attrition-soldier-writeback-12003.md)。最终子包资格：第二批person-later-suffix/remaining-two-helper/FINAL-QUALIFICATION.json SHA97eece0edbdfc89ee1b4881611a33e4c94cdc9fc4bbd51580372e1627caa53aa；第三批monthly-budget-source/ROOT-DELIVERY.json SHAbc88d0aad351fef88342cf1f76e5f82bf1108b815c03a34e2cbca4c5ad0b93ba。日周fields已分别由工作包代理封存，由Root合并，没有漏报。
+
+
+## Round4: source-closed sparse tail input families before observation
+
+# Current-person caller 291C467 onward: first closed tail source leaves
+
+Source status: static-confirmed exact CK3 1.20.0.3 / Steam25652598 / EXE SHA 94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6. Worktree Z:/gbs1 starts at published614440b9a7e37dc759ae6003a666aebb1a3f3875. This initial packet reuses cached full caller291C0D0 and raw getter28C2E10; new EXE I/O is 0 B. Independent helper source lanes preserve their own new read ledger rather than altering this initial 0 B receipt.
+
+R13=model, R14=QWORD[model+8]=Character, RSI=model+10 recipient. Closed earlier helper291F940 returns at291C467. The remaining caller is not a single known contribution: it contains independent helpers and direct families, several temporary evaluated maps, and native receiver appends. Current final storage is not a pre-tail baseline.
+
+## Closed government family at291C5B7-291C620
+
+Read QWORD[Character+1C0]; actual null skips both direct leaves. Nonnull calls28C2E10(Character). Its already-closed raw selection (Character magic1C/fullID18; death1D0+88, land1C0+3F8, or relay1B8+C8 through Character store5C67568/fallback5C67570; final government fallback5D1E2A8) is reused through the readonly observer. No native getter/diagnostic/initializer is called.
+
+Read selected government DWORD+38. Wrong magic4744624F skips both contributions. Matching magic contributes government+870 at291C5E4 with unit100000. Then native caller rereads QWORD[Character+1C0]. Actual null skips additionalA30. Nonnull reads QWORD[land+1C0], DWORD[subcarrier+C]. Only when that magic equals5362436F does it demand signed32[subcarrier+8]; matchingmagic and fullID!=-1 skipsA30. Wrongmagic or fullID==-1 contributes the same selected government's +A30 at291C61B, unit100000. The subcarrier native pointer has no null skip in this caller; unreadable/null demanded object is unavailable, not a manufactured false predicate. The two contributions preserve this source order.
+
+## Closed weighted carrier family at291CB70-291CC6B
+
+Read QWORD[Character+1B0]. Actual null is a known empty family. Nonnull reads signed32[carrier+274]; -1 is a known skip before registry demand. Other full keys are preserved exactly. The selected object resolves via actual storeQWORD5D1E310, capacityDWORD+2C and tableQWORD+20, low24 index/16byte slots/pointer+8, then exact fullID DWORD[selected+8]; native miss uses QWORD5D1E2D0. A failed demanded read does not establish a native miss.
+
+Read signed32[selected+63C]. Exactzero skips before QWORD[selected+630] demand. Nonzero native path acquires the native readerlock+858; readonly observer does not change that lock. It reads the actual current array630/count63C, stride16. Every row contains QWORD PC pointer at+0 and signed64 weight at+8. Caller291CC49 invokes2438850(model+10, PCpointer, rawweight). Preserve every native occurrence, duplicate PC pointer and weight including zero/negative; the weight is not converted to unit100000. Read each PC using the existing paired key/value scheme. Negative/nonrepresentable stored counts retain raw count and unavailable status instead of becoming a knownempty family. This is a separate source stage from government870/A30; intervening stages remain explicit.
+
+## Remaining native order and research entries
+
+291C4C7->2753860 after Character158/fullID10 selected firstbyte218 gate; first+1D0 is the receiver source and Character isthirdarg. Then291C4D2->2922070;291C4DD->2922530; Conference Character1C8+80/fullID8 through5D1...? magic436F6E66/fullID!=-1 gates291C548->24B1D00;291C553->291F260. Then signed carrier2F8 with28BC5A0 chooses provider11F8 bucket or actual fallback5D1E0B0, Def+40 unit contribution291C5B2. The newly closedgovernment870/A30 follows. The middle region includes qualifier-count evaluation28BC0D0 and repeated Def+40 at291C68D,291C6CF->291FB10, then28AA8B0 list and2530DD0 predicate selecting+D8/+298. Flag20 branches include currentland458 related A20/BE0 list and temporary model slices291FE20/2920020/326A8E0 with291B3D0. After291CB0F->2920310, signed16Character192 loaded thresholds5C69FE4/5C69FE0 choose provider16A0/16B0 or actualfallback5D1E0B0 and291CB60 Def+40.291CB6B->2920850 precedes the newly closed weighted630 family. Then291CC71->2920B50;2BCA620 selects a provider bucket/+1690/fallback and291CCD2 Def+40; government bit29/title318 negative/312A950 contributes291CD8D;291CD98->2920D60,291CDA3->2921350,291CDAE->2921020; Character1C8+20 and signedb70 chooses table3D8/stride340 or31937C0 fallback and291CE06 contribution;291CE11->2921AB0,291CE1C->29226A0; governmentbit19 andDomainb68 throughB01F90/25B9100 gates provider16C0 contribution291CE90;291CE9B->291E3C0; six evaluated attributes2BA95E0 produce providerF08/F58 contributions291CEE4/291CF16. These untranslated dependencies remain research entries, not omitted contributions.
+
+```mermaid
+flowchart TD
+  Prior["closed291F940"] --> Tail["291C467 remaining caller; same Character / model+10"]
+  Tail -.-> Early["unknown helper2753860/2922070/2922530/conference24B1D00/291F260"]
+  Early -.-> Bucket["unknown signed2F8 provider bucket; qualifier-count28BC0D0"]
+  Early --> Land["Character1C0"]
+  Land -->|null| SkipGov["known no870/A30"]
+  Land -->|nonnull| Gov["raw28C2E10 selection"]
+  Gov --> Magic["government38 == 4744624F"]
+  Magic -->|false| SkipGov
+  Magic -->|true| PC870["291C5E4 government870 unit100000"]
+  PC870 --> Sub["rereadland; subcarrier1C0 magicC/fullID8"]
+  Sub -->|magic5362436F and fullID!=-1| SkipA["known noA30"]
+  Sub -->|wrongmagic or -1| PCA30["291C61B governmentA30 unit100000"]
+  SkipGov -.-> Middle["unknown other intervening helper/list/evaluated slices"]
+  SkipA -.-> Middle
+  PCA30 -.-> Middle
+  Middle -.-> BeforeWeighted["unknown 2920310/thresholdCB60/2920850"]
+  BeforeWeighted --> Carrier["Character1B0 / key274"]
+  Carrier -->|null or -1| SkipWeighted["known emptyweighted family"]
+  Carrier -->|other fullkey| Registry["5D1E310/5D1E2D0 exactfullID8 selection"]
+  Registry --> Count["selected63C signedcount"]
+  Count -->|zero| SkipWeighted
+  Count -->|positive| Rows["selected630 stride16: PCpointer0 / signed64weight8"]
+  Rows --> Merge["291CC49 stored occurrence order; model+10"]
+  Count -.-> BadCount["negative count unavailable; no inventedempty"]
+  Merge -.-> Rest["unknown helpers from291CC71 throughsix attribute calls291CEC4"]
+  SkipWeighted -.-> Rest
+```
+
+The existing fields for291DED0 and291DCE0 are already available in current_context_task_position_inputs/evaluated parser and must be reused. Stagechain owner is isolating291D460 trait-growth evaluated vector; that real missing observation is the highest current dependency. Another source-only agent owns earlier absent1C8->2BFAC30 and this owner implements it after closure; this packet does not reread those functions.
