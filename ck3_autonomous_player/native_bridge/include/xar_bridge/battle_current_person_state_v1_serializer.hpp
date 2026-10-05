@@ -225,6 +225,97 @@ inline std::string SerializeCurrentPriorContextInputs(
   return out;
 }
 
+inline void AppendStoredBoolean(std::string &out, const std::optional<bool> &value) {
+  out += value ? (*value ? "true" : "false") : "null";
+}
+template <typename T>
+inline void AppendStoredArrayHeader(
+    std::string &out, const xar::game::BattleCurrentStoredArraySnapshotV1<T> &array) {
+  out += "{\"data_address\":";
+  AppendRawNumber(out, array.data_address);
+  out += ",\"capacity_raw\":";
+  AppendRawNumber(out, array.capacity_raw);
+  out += ",\"count\":";
+  AppendRawNumber(out, array.count);
+  out += ",\"items\":";
+}
+template <typename T>
+inline void AppendStoredScalarArray(
+    std::string &out, const xar::game::BattleCurrentStoredArraySnapshotV1<T> &array) {
+  AppendStoredArrayHeader(out, array);
+  AppendRawVector(out, array.items);
+  out += '}';
+}
+inline void AppendStoredWeightedArray(
+    std::string &out, const xar::game::BattleCurrentStoredArraySnapshotV1<
+        xar::game::BattleCurrentStoredWeightedRowSnapshotV1> &array) {
+  AppendStoredArrayHeader(out, array);
+  if (!array.items) out += "null";
+  else {
+    out += '[';
+    for (std::size_t i = 0; i < array.items->size(); ++i) {
+      if (i) out += ',';
+      const auto &row = (*array.items)[i];
+      out += "{\"native_index\":" + std::to_string(row.native_index)
+          + ",\"weight_raw\":";
+      AppendRawNumber(out, row.weight_raw);
+      out += ",\"property_block\":";
+      if (!row.property_block) out += "null";
+      else {
+        out += "{\"key_array\":";
+        AppendStoredScalarArray(out, row.property_block->key_array);
+        out += ",\"value_array\":";
+        AppendStoredScalarArray(out, row.property_block->value_array);
+        out += '}';
+      }
+      out += '}';
+    }
+    out += ']';
+  }
+  out += '}';
+}
+inline std::string SerializeCurrentStoredContextState(
+    const xar::game::BattleCurrentStoredContextStateSnapshotV1 &state) {
+  std::string out = "{\"available\":";
+  out += state.available ? "true" : "false";
+  out += ",\"reason\":";
+  AppendReason(out, state.available, state.reason, "stored_context_reads_unavailable");
+  out += ",\"character_full_id\":" + std::to_string(state.character_full_id)
+      + ",\"scratch_present\":";
+  AppendStoredBoolean(out, state.scratch_present);
+  out += ",\"scratch_address\":";
+  AppendRawNumber(out, state.scratch_address);
+  out += ",\"model_present\":";
+  AppendStoredBoolean(out, state.model_present);
+  out += ",\"model_address\":";
+  AppendRawNumber(out, state.model_address);
+  out += ",\"context_address\":";
+  AppendRawNumber(out, state.context_address);
+  out += ",\"owner_address\":";
+  AppendRawNumber(out, state.owner_address);
+  out += ",\"owner_character_full_id\":";
+  AppendRawNumber(out, state.owner_character_full_id);
+  out += ",\"bound_to_requested_character\":";
+  AppendStoredBoolean(out, state.bound_to_requested_character);
+  out += ",\"pending_raw\":";
+  AppendRawNumber(out, state.pending_raw);
+  out += ",\"owned_count_raw\":";
+  AppendRawNumber(out, state.owned_count_raw);
+  out += ",\"weighted\":";
+  if (state.weighted) AppendStoredWeightedArray(out, *state.weighted);
+  else out += "null";
+  out += ",\"key_array\":";
+  if (state.key_array) AppendStoredScalarArray(out, *state.key_array);
+  else out += "null";
+  out += ",\"value_array\":";
+  if (state.value_array) AppendStoredScalarArray(out, *state.value_array);
+  else out += "null";
+  out += ",\"reset_input\":{\"weighted_count_nonzero\":";
+  AppendStoredBoolean(out, state.weighted_count_nonzero);
+  out += "}}";
+  return out;
+}
+
 }  // namespace battle_current_person_state_v1_detail
 
 // Insert inside xar::bridge, after the existing detail namespace closes and
@@ -426,6 +517,10 @@ inline std::string SerializeBattleCurrentPersonStateV1(
   if (state.current_prior_context_inputs) {
     output += ",\"current_prior_context_inputs\":";
     output += SerializeCurrentPriorContextInputs(*state.current_prior_context_inputs);
+  }
+  if (state.current_stored_context_state) {
+    output += ",\"current_stored_context_state\":";
+    output += SerializeCurrentStoredContextState(*state.current_stored_context_state);
   }
   if (state.current_context_source_inputs) {
     output += ",\"current_context_source_inputs\":";

@@ -590,6 +590,84 @@ def _normalize_pending_death_queue(value: object) -> dict[str, object] | None:
     return normalized
 
 
+def _normalize_current_stored_context_state(
+    value: object, field: str,
+) -> dict[str, object] | None:
+    """Preserve independently observed current stored descriptors and arrays."""
+    if value is None:
+        return None
+    raw = _exact_dict(value, field, {
+        "available", "reason", "character_full_id", "scratch_present",
+        "scratch_address", "model_present", "model_address", "context_address",
+        "owner_address", "owner_character_full_id", "bound_to_requested_character",
+        "pending_raw", "owned_count_raw", "weighted", "key_array", "value_array",
+        "reset_input",
+    })
+
+    def integer(item: object, name: str, minimum: int, maximum: int) -> int | None:
+        return _optional_integer(item, name, minimum=minimum, maximum=maximum)
+
+    def array(item: object, name: str, kind: str) -> dict[str, object] | None:
+        if item is None:
+            return None
+        source = _exact_dict(item, name, {"data_address", "capacity_raw", "count", "items"})
+        count = integer(source["count"], name + ".count", -(2**31), 2**31 - 1)
+        items = source["items"]
+        if items is not None:
+            if not isinstance(items, list):
+                raise ValueError(name + ".items must be a list or null")
+            if count is None or count < 0 or len(items) != count:
+                raise ValueError(name + ".items must retain its native active count")
+            copied = []
+            for index, entry in enumerate(items):
+                entry_name = f"{name}.items[{index}]"
+                if kind == "weighted":
+                    row = _exact_dict(entry, entry_name, {"native_index", "weight_raw", "property_block"})
+                    native_index = _integer(row["native_index"], entry_name + ".native_index",
+                                            minimum=0, maximum=2**31 - 1)
+                    if native_index != index:
+                        raise ValueError(entry_name + " native index/order disagrees")
+                    block = row["property_block"]
+                    if block is not None:
+                        block = _exact_dict(block, entry_name + ".property_block", {"key_array", "value_array"})
+                        block = {
+                            "key_array": array(block["key_array"], entry_name + ".property_block.key_array", "key"),
+                            "value_array": array(block["value_array"], entry_name + ".property_block.value_array", "value"),
+                        }
+                    copied.append({"native_index": native_index,
+                                   "weight_raw": integer(row["weight_raw"], entry_name + ".weight_raw", -(2**63), 2**63 - 1),
+                                   "property_block": block})
+                else:
+                    minimum, maximum = (0, 2**16 - 1) if kind == "key" else (-(2**63), 2**63 - 1)
+                    copied.append(_integer(entry, entry_name, minimum=minimum, maximum=maximum))
+            items = copied
+        return {"data_address": integer(source["data_address"], name + ".data_address", 0, 2**64 - 1),
+                "capacity_raw": integer(source["capacity_raw"], name + ".capacity_raw", 0, 2**32 - 1),
+                "count": count, "items": items}
+
+    available = _boolean(raw["available"], field + ".available")
+    reason = raw["reason"]
+    if ((available and reason is not None)
+            or (not available and (not isinstance(reason, str) or not reason))):
+        raise ValueError(field + " current observation availability/reason disagrees")
+    result = {"available": available, "reason": reason,
+              "character_full_id": _positive_int32(raw["character_full_id"], field + ".character_full_id")}
+    for name in ("scratch_present", "model_present", "bound_to_requested_character"):
+        result[name] = _optional_boolean(raw[name], field + "." + name)
+    for name in ("scratch_address", "model_address", "context_address", "owner_address"):
+        result[name] = integer(raw[name], field + "." + name, 0, 2**64 - 1)
+    for name in ("owner_character_full_id", "owned_count_raw"):
+        result[name] = integer(raw[name], field + "." + name, -(2**31), 2**31 - 1)
+    result["pending_raw"] = integer(raw["pending_raw"], field + ".pending_raw", 0, 255)
+    result["weighted"] = array(raw["weighted"], field + ".weighted", "weighted")
+    result["key_array"] = array(raw["key_array"], field + ".key_array", "key")
+    result["value_array"] = array(raw["value_array"], field + ".value_array", "value")
+    reset = _exact_dict(raw["reset_input"], field + ".reset_input", {"weighted_count_nonzero"})
+    result["reset_input"] = {"weighted_count_nonzero": _optional_boolean(
+        reset["weighted_count_nonzero"], field + ".reset_input.weighted_count_nonzero")}
+    return result
+
+
 def _normalize_current_person_state(
     value: object, field: str,
 ) -> dict[str, object]:
@@ -605,6 +683,8 @@ def _normalize_current_person_state(
         fields.add("context_branch_inputs")
     if isinstance(value, dict) and "current_prior_context_inputs" in value:
         fields.add("current_prior_context_inputs")
+    if isinstance(value, dict) and "current_stored_context_state" in value:
+        fields.add("current_stored_context_state")
     if isinstance(value, dict) and "current_context_source_inputs" in value:
         fields.add("current_context_source_inputs")
     state = _exact_dict(value, field, fields)
@@ -704,6 +784,9 @@ def _normalize_current_person_state(
     if "current_prior_context_inputs" in state:
         normalized["current_prior_context_inputs"] = _normalize_current_prior_context_inputs(
             state["current_prior_context_inputs"], f"{field}.current_prior_context_inputs")
+    if "current_stored_context_state" in state:
+        normalized["current_stored_context_state"] = _normalize_current_stored_context_state(
+            state["current_stored_context_state"], f"{field}.current_stored_context_state")
     if "current_context_source_inputs" in state:
         normalized["current_context_source_inputs"] = normalize_current_context_source_inputs(
             state["current_context_source_inputs"], f"{field}.current_context_source_inputs")
@@ -760,6 +843,9 @@ def _normalize_character_custody_rows(
             prior = normalized["current_person_state"].get("current_prior_context_inputs")
             if prior is not None and prior["character_full_id"] != character_id:
                 raise ValueError(f"{field}[{index}] prior context CharacterID disagrees")
+            stored = normalized["current_person_state"].get("current_stored_context_state")
+            if stored is not None and stored["character_full_id"] != character_id:
+                raise ValueError(f"{field}[{index}] stored context CharacterID disagrees")
             sources = normalized["current_person_state"].get("current_context_source_inputs")
             if sources is not None and sources["character_id"] != character_id:
                 raise ValueError(f"{field}[{index}] context source CharacterID disagrees")

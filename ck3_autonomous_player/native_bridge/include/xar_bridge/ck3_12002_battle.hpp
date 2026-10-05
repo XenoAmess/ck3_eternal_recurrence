@@ -126,6 +126,7 @@ struct BattleBindings {
   bool current_person_context_branch_inputs_enabled = false;
   // Exact .3 current selector observation; never invokes model preparation.
   bool current_person_prior_context_inputs_enabled = false;
+  bool current_person_stored_context_state_enabled = false;
   const std::uint32_t *(*current_person_prior_find_key)(
       const std::uint32_t *, const std::uint32_t *, const std::uint32_t *) = nullptr;
   void **current_person_prior_owner_slot = nullptr;

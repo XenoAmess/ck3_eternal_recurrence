@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_battle.hpp"
+#include "xar_bridge/ck3_12003_current_stored_context.hpp"
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12002_battle_journal.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
@@ -1352,6 +1353,9 @@ game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
     observed.context_branch_inputs = CurrentContextBranchInputs(b, character, character_id);
   if (b.current_person_prior_context_inputs_enabled)
     observed.current_prior_context_inputs = CurrentPriorContextInputs(b, character, character_id);
+  if (b.current_person_stored_context_state_enabled)
+    observed.current_stored_context_state =
+        current_stored_context_12003::ReadCurrentStoredState(character, character_id);
   if (b.current_person_context_source_inputs.enabled)
     observed.current_context_source_inputs = ReadCurrentContextSourceInputs12003(
         b.current_person_context_source_inputs, character, character_id);
@@ -1783,6 +1787,7 @@ void EnableBattleCurrentPerson12003(BattleBindings &b, std::uintptr_t base,
   b.current_person_raw_numeric_inputs_enabled = true;
   b.current_person_context_branch_inputs_enabled = true;
   b.current_person_prior_context_inputs_enabled = true;
+  b.current_person_stored_context_state_enabled = true;
   b.current_person_context_source_inputs = BindContextSourceInputs12003(base, sha);
   b.current_person_task_position = ck3_12003::task_position::BindImage12003(base, sha);
   b.current_person_prior_find_key = reinterpret_cast<const std::uint32_t *(*)(

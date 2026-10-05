@@ -2706,6 +2706,52 @@ struct BattleCurrentPersonTaskPositionInputsSnapshotV1 {
 // std::optional<BattleCurrentPersonTaskPositionInputsSnapshotV1>
 //     current_context_task_position_inputs;
 
+// Actual stored .3 model descriptors; these are current independent arrays.
+// Capacity is raw DWORD bits, never a six-skill cap or an admission policy.
+template <typename T> struct BattleCurrentStoredArraySnapshotV1 {
+  std::optional<std::uint64_t> data_address;
+  std::optional<std::uint32_t> capacity_raw;
+  std::optional<std::int32_t> count;
+  std::optional<std::vector<T>> items;
+  friend bool operator==(const BattleCurrentStoredArraySnapshotV1 &,
+                         const BattleCurrentStoredArraySnapshotV1 &) = default;
+};
+struct BattleCurrentStoredPropertyBlockSnapshotV1 {
+  BattleCurrentStoredArraySnapshotV1<std::uint16_t> key_array;
+  BattleCurrentStoredArraySnapshotV1<std::int64_t> value_array;
+  friend bool operator==(const BattleCurrentStoredPropertyBlockSnapshotV1 &,
+                         const BattleCurrentStoredPropertyBlockSnapshotV1 &) = default;
+};
+struct BattleCurrentStoredWeightedRowSnapshotV1 {
+  std::int32_t native_index = 0;
+  std::optional<std::int64_t> weight_raw;
+  std::optional<BattleCurrentStoredPropertyBlockSnapshotV1> property_block;
+  friend bool operator==(const BattleCurrentStoredWeightedRowSnapshotV1 &,
+                         const BattleCurrentStoredWeightedRowSnapshotV1 &) = default;
+};
+struct BattleCurrentStoredContextStateSnapshotV1 {
+  bool available = false;
+  std::string reason;
+  std::int32_t character_full_id = -1;
+  std::optional<bool> scratch_present;
+  std::optional<std::uint64_t> scratch_address;
+  std::optional<bool> model_present;
+  std::optional<std::uint64_t> model_address;
+  std::optional<std::uint64_t> context_address;
+  std::optional<std::uint64_t> owner_address;
+  std::optional<std::int32_t> owner_character_full_id;
+  std::optional<bool> bound_to_requested_character;
+  std::optional<std::uint8_t> pending_raw;
+  std::optional<std::int32_t> owned_count_raw;
+  std::optional<BattleCurrentStoredArraySnapshotV1<BattleCurrentStoredWeightedRowSnapshotV1>> weighted;
+  std::optional<BattleCurrentStoredArraySnapshotV1<std::uint16_t>> key_array;
+  std::optional<BattleCurrentStoredArraySnapshotV1<std::int64_t>> value_array;
+  // Pure predicate on the current operand, not an observed reset invocation.
+  std::optional<bool> weighted_count_nonzero;
+  friend bool operator==(const BattleCurrentStoredContextStateSnapshotV1 &,
+                         const BattleCurrentStoredContextStateSnapshotV1 &) = default;
+};
+
 struct BattleCurrentPersonStateSnapshotV1 {
   BattleCurrentPersonEffectiveProwessSnapshotV1 effective_prowess;
   BattleCurrentPersonInjuryTraitsSnapshotV1 injury_traits;
@@ -2714,6 +2760,7 @@ struct BattleCurrentPersonStateSnapshotV1 {
   std::optional<BattleCurrentPersonTaskPositionInputsSnapshotV1> current_context_task_position_inputs;
   std::optional<BattleCurrentPersonContextBranchInputsSnapshotV1> context_branch_inputs;
   std::optional<BattleCurrentPersonPriorContextInputsSnapshotV1> current_prior_context_inputs;
+  std::optional<BattleCurrentStoredContextStateSnapshotV1> current_stored_context_state;
   std::optional<BattleCurrentPersonContextSourceInputsSnapshotV1> current_context_source_inputs;
   friend bool operator==(const BattleCurrentPersonStateSnapshotV1 &,
                          const BattleCurrentPersonStateSnapshotV1 &) = default;
