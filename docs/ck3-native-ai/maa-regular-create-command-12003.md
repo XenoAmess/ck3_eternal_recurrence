@@ -67,3 +67,38 @@ flowchart TD
 The action module independently re-evaluates native CanCreate at submission. Root supplies the fresh published revision and action identity. Source quantity 10 is not a statement that ten current soldiers or machines exist after creation. The following eight saved days change the runtime date; they do not alter or duplicate the historical R41 price frame or this lane's zero-day credit.
 
 Action source/qualified patch and Oct5/W41 fields: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-engine-catalog-current/normal-create-action-delivery/ROOT-DELIVERY.json`. This source/topic work advances zero game days and performs zero SDK or Create actions.
+
+
+## 2026-10-05: live callback registration failure and focused correction
+
+The first v69 normal-create attempt used type 50 and action ID
+`robert-r42-v69-mangonel-20261005-015730-01` once. Its native error was
+`native_regular_maa_create_mailbox_submit_unavailable`. Preserve this production
+RED: the earlier constructor/queue fixture did not cover full mailbox admission.
+
+Exact g74 source closes the missing registration: the .3 installer omitted
+`ExecuteRegularMaaCreateMailbox12003`, while the existing permitted-executor list
+rejected its pointer before worker admission. The correction adds the dedicated
+`permitted_executor_regular_maa_create12003` slot, its install/copy/clear and
+membership checks, and the .3 bridge registration. It changes no native create,
+quote, payment or queue policy.
+
+One NEW focused production case passed on its first and only invocation, with five
+final-layout TUs compiled concurrently under `/W4 /WX`. Real unregistered
+`TrySubmit` returned `invalid_request` (code 1); real old `Handle` reproduced the
+live error. With registration, real `Handle`, mailbox installer and pump admitted,
+started, executed, completed and reclaimed the actual callback once. Fixture
+snapshot backing then returned `native_regular_maa_create_frame_unavailable` as a
+separate boundary. The bridge install body, native C create wrapper and CK3 were
+not executed by this case. The correction is static-ready; actual reload and a
+fresh action with independent inventory/payment readback remain necessary.
+
+The independent before/after direct-owned census remained complete with IDs
+17003 and 17004, no record or chunk changes and no positive siege tier. Root's
+same-date gold remained 702.60152. These endpoint observations supply no creation
+or payment credit; source admission evidence is recorded separately. The failed
+attempt's normal anchor is h8618/date 53262288, 98332694 bytes, SHA-256
+`c8a6f91e245ebd7b2c2e12597aeb2cfbbf22e77060b5c61687b25986fcc6ae43`.
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-engine-catalog-current/actual-v69-mailbox-submit-fix/parent-delivery/ROOT-DELIVERY.json`.
+No retry, SDK call, game day or material result is credited by this source package.
