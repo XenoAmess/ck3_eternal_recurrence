@@ -1,0 +1,144 @@
+{
+  "schema": "xar.ck3.root-reviewed-external-world-change/v1",
+  "at_utc": "2026-10-05T12:54:36.799291+00:00",
+  "observer": "Root actual saved-packet review",
+  "status": "KNOWN_EXTERNAL_OCCUPATION_CHANGE_RECORDED_REST_CONTINUATION_ADMITTED",
+  "accepted_current_baseline_directory": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-rest-batch01-a01-r01-inspect",
+  "endpoint_bindings": [
+    {
+      "label": "before",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-rest-batch01-a01-r01-inspect\\before.json",
+        "bytes": 34872,
+        "sha256": "c503ebc255d487eca92e52a79e9aa396cc6b1b52059293812bd543d5cd09574c"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\r0173-rest-batch01-a01-r01-inspect-before.json",
+        "bytes": 152584,
+        "sha256": "fe5b3b9ec227e48a9630adf04ced1621755810872a1b1a1920c4e5f1505bd879"
+      }
+    },
+    {
+      "label": "after",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-rest-batch01-a01-r01-inspect\\after.json",
+        "bytes": 34872,
+        "sha256": "b82f0a202171dd1ab1edeb25053d7305d54f2cfaee1754e91fc64a2aa5b5be26"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\r0173-rest-batch01-a01-r01-inspect-after.json",
+        "bytes": 152582,
+        "sha256": "a0c8588e3ac67578a6c41a3fc7538aec6567a47a50d0d7c7eada3d3632eeb06c"
+      }
+    },
+    {
+      "label": "strength",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-rest-batch01-a01-r01-inspect\\strength.json",
+        "bytes": 92095,
+        "sha256": "e27729f3c0ffa31608b965532dd2eb07be554cad3970a23941cdedd711c8ae2c"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\r0173-rest-batch01-a01-r01-inspect-strength.json",
+        "bytes": 400271,
+        "sha256": "ac14c4f7dd819e705b508ad35f1f2ec462786661835bbdd136541799fada9e2e"
+      }
+    }
+  ],
+  "proof": {
+    "date_raw": 53148624,
+    "episode_run_id": "native-33388-930004d2d2a0",
+    "actual_days_used": 52.0,
+    "remaining_days": 38.0,
+    "budget_reset": false,
+    "public_army_ids": [
+      0,
+      204
+    ],
+    "native_carmy_ids": [
+      0,
+      199
+    ],
+    "regiment_count": 27,
+    "DATA_record_count": 37
+  },
+  "actual_foreign_province_id": 1609,
+  "actual_before_objective": {
+    "province_id": 1609,
+    "occupation_observable": true,
+    "is_occupied": false,
+    "occupying_character_id": null,
+    "fort_level": 3,
+    "garrison_size": 400,
+    "besieging_strength": 5235,
+    "siege_observable": true,
+    "active_siege": {
+      "siege_id": 3,
+      "besieging_army_id": 7,
+      "player_army_besieging": false,
+      "progress_fraction": {
+        "raw": 95510,
+        "scale": 100000
+      },
+      "current_work": {
+        "raw": 30415000,
+        "scale": 100000
+      },
+      "total_work": {
+        "raw": 31844575,
+        "scale": 100000
+      },
+      "remaining_work": {
+        "raw": 1429575,
+        "scale": 100000
+      },
+      "days_left": 5,
+      "ordinary_daily_progress": null,
+      "current_phase_length": null,
+      "prepared_phase_length": null,
+      "phase_counter": null,
+      "can_advance": null,
+      "phase_event_state": null,
+      "prepared_selected_phase_event_enum": null,
+      "assault_observable": true,
+      "breach_level": 2,
+      "walls_breached": true,
+      "assault_in_progress": false,
+      "can_start_assault": false,
+      "can_stop_assault": false,
+      "assault_daily_progress": {
+        "raw": 1183490,
+        "scale": 100000
+      },
+      "assault_daily_casualties": 52
+    }
+  },
+  "actual_after_objective": {
+    "province_id": 1609,
+    "occupation_observable": true,
+    "is_occupied": true,
+    "occupying_character_id": 31280,
+    "fort_level": 3,
+    "garrison_size": 25,
+    "besieging_strength": 0,
+    "siege_observable": true,
+    "active_siege": null
+  },
+  "actual_army7_player_army_besieging": false,
+  "inference": "Endpoint transition is consistent with another army completing its siege; no execution-time ledger or exact siege-finish tick was captured.",
+  "known_player_and_rest_site_inputs_unchanged": true,
+  "world_not_assumed_static": true,
+  "old_batch_STOP_retained": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-rest-batch01-a01\\result.json",
+    "bytes": 4353,
+    "sha256": "c2cdfc131751c479e7a8d2a528ba70200b6cc81e55e2ec356a45b298447cedd8"
+  },
+  "world_diff": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-world-diff-a01\\diff.json",
+    "bytes": 2328,
+    "sha256": "f03d8d44326801848d8771d3f90be72820aaab6162e1d403f7d0b59b863cb049"
+  },
+  "continuation_scope": "Same finite protocol, resting0at2174/204at2327; END53149536 unchanged. Ordinary external non-site siege/garrison/occupation progress must be retained separately. War/actor/source/player/site/cohort/stock/anchors new material conditions still stop for Root review.",
+  "no_ABC_or_film_or_signoff_credit": true,
+  "old_STOP_relabelled": false
+}

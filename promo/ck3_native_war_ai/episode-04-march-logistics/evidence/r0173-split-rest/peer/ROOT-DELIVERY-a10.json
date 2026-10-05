@@ -1,0 +1,33 @@
+{
+  "status": "R0173_FINAL_MAIN_POSITIVE_CASE_AND_NUMERIC_QUALIFICATION_INDEX_FROZEN",
+  "preceding_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\ROOT-DELIVERY-a09.json",
+    "bytes": 1422,
+    "sha256": "77d183e6df49433dec503d88b74a7ffdc1f065d1698595e3e317561661a1a2e2"
+  },
+  "q15_to_q16_full_cohort_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\QUALIFICATION-q-inspect16-a01.json",
+    "bytes": 11914,
+    "sha256": "78192514e2ae7db8be723e1df53cc43e19ea2458ca7a76a5ba776ee4096bf3c5"
+  },
+  "main_positive_case": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\CASE-a01.json",
+    "bytes": 11491,
+    "sha256": "0760542c6b896b452c446754eb445c51c607d706b1adf57616ded99a26ed7ef0"
+  },
+  "final_numeric_qualification_index": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\QUALIFICATION-INDEX-final-a10.json",
+    "bytes": 5200,
+    "sha256": "03d48aaceb4b83e6ff60211150bbaabf09f6c2872ed360a8f5fc333e1d0990ba"
+  },
+  "declared_numeric_gates": 8,
+  "all_declared_numeric_gates_pass": true,
+  "main_stock_delta_raw": 2000000,
+  "child_stock_delta_raw": 0,
+  "all27_Reg_and37_DATA_full_rows_unchanged_in_stock_window": true,
+  "original_days_used": 76,
+  "fixed_original_end_raw": 53149536,
+  "remaining_days": 14,
+  "additional_source_ledger_clean_human_ABC_or_weighted_merge_clamp_credit": false,
+  "reviewer_live_requests_actions_or_system_changes": 0
+}

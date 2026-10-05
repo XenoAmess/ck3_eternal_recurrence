@@ -1,0 +1,54 @@
+{
+  "step": "preview-move-army-204-to-1527",
+  "accepted": true,
+  "status": "available",
+  "route_preview": {
+    "status": "available",
+    "army_id": 204,
+    "origin_province_id": 2327,
+    "target_province_id": 1527,
+    "route_province_ids": [
+      2174,
+      1009,
+      725,
+      965,
+      686,
+      628,
+      629,
+      1527
+    ],
+    "province_supply": {
+      "status": "available",
+      "unavailable_reason": null,
+      "army_id": 204,
+      "native_carmy_id": 199,
+      "owner_character_id": 33388,
+      "commander_character_id": 33388,
+      "current": {
+        "status": "available",
+        "unavailable_reason": null,
+        "role": "current",
+        "province_id": 2327,
+        "native_supply_limit_soldiers": 4160,
+        "native_supply_usage_soldiers": 3342,
+        "scale": 1
+      },
+      "target": {
+        "status": "available",
+        "unavailable_reason": null,
+        "role": "target",
+        "province_id": 1527,
+        "native_supply_limit_soldiers": 7342,
+        "native_supply_usage_soldiers": 0,
+        "scale": 1
+      }
+    },
+    "previewed_date_raw": 53148576
+  },
+  "backend_id": "native-headless",
+  "queried_snapshot_id": "native:19",
+  "queried_revision": 20,
+  "queried_native_revision": 19,
+  "queried_connection_generation": 1,
+  "queried_episode_run_id": "native-33388-930004d2d2a0"
+}

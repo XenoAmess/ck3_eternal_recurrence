@@ -1,0 +1,2 @@
+# Only this bounded R0173 split/rest evidence preserves original bytes.
+* -text whitespace=trailing-space,space-before-tab,cr-at-eol

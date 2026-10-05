@@ -1,0 +1,30 @@
+{
+  "observer": "Root direct original image view",
+  "at_utc": "2026-10-05T13:24:18.592515+00:00",
+  "image": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-qualified-positive-frame-a01\\desktop.png",
+    "bytes": 3332361,
+    "sha256": "483cbded16b5ada4ccfbb08ba484d8d5e2d7309f555a8bc04e345601e96ddc18"
+  },
+  "observations": [
+    "Paused1067April6.",
+    "Main3344, supply126/300, attrition0%, waiting.",
+    "Two mapflags3344 and3345 at distinctsites.",
+    "Hovered remote-province43days/May19 is a proposed route, not an active route or departure."
+  ],
+  "actual_packet": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-qualified-final-ui-a01\\after.json",
+    "bytes": 233830,
+    "sha256": "892dbbe5ecdad213d8c67140b97ef10bc412e712254732c036e3153dd1b1e7ca"
+  },
+  "actual_strength": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-qualified-final-ui-a01\\strength.json",
+    "bytes": 92189,
+    "sha256": "9184a0502f77c74f97fe372a72ac96ccfcb1b60a4b3fe3cec68dcfbefec3dda7"
+  },
+  "outside_finished900s_raw": true,
+  "encoded_timecode_binding": null,
+  "full_1x_review": false,
+  "human_approval": false,
+  "clean_spans_certified": false
+}

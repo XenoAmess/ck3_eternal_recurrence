@@ -1,0 +1,13 @@
+{
+  "prior_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-world-reviewed-a01\\review.json",
+    "bytes": 5225,
+    "sha256": "71ab927a49528448155cc5134d8d86b7374d82a443fb55fdca31f1d7d9cd88da"
+  },
+  "clarification": "Rest-site input equality refers to the available player location/route/control/health/monthly/stock/anchor fields. War objective arrays did not contain2174/2327. Whole province occupation/controller/garrison continuity was not directly covered.",
+  "candidate_objective_rows": [],
+  "full_rest_site_world_control_coverage": null,
+  "unread_fields_not_assumed_unchanged": true,
+  "prior_external1609_change_preserved": true,
+  "no_new_live_actions": true
+}

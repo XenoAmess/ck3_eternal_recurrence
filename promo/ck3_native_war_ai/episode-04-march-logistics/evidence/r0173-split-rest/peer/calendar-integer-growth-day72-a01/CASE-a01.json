@@ -1,0 +1,952 @@
+{
+  "schema": "ck3-e04-r0173-day72-calendar-refill-consistent-integer-endpoints-v1",
+  "status": "KNOWN_CALENDAR_REFILL_MODE_CONSISTENT_WITH_SIX_OBSERVED_INTEGER_GAINS",
+  "created_utc": "2026-10-05T13:17:05.972646+00:00",
+  "source_pair_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\QUALIFICATION-q-inspect14-a01.json",
+    "bytes": 23352,
+    "sha256": "2b52f9e533483f5848b2d37557cc133f7e66f160285c1ffd20d44cdc4b1ae941"
+  },
+  "preserved_receipts": [
+    {
+      "label": "q-inspect13-before",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect13-a01\\before.json",
+        "bytes": 36123,
+        "sha256": "1e3bb0385d76a25640e020ca657a2ab31e57a1c00af5a95da1f2d9983761ae0a"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\calendar-integer-growth-day72-a01\\q-inspect13-before.json",
+        "bytes": 36123,
+        "sha256": "1e3bb0385d76a25640e020ca657a2ab31e57a1c00af5a95da1f2d9983761ae0a"
+      }
+    },
+    {
+      "label": "q-inspect13-after",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect13-a01\\after.json",
+        "bytes": 36123,
+        "sha256": "371bba48b4384a4d72241f120cc7c0a41560e6ec52602ec4cb6df8d48954ff00"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\calendar-integer-growth-day72-a01\\q-inspect13-after.json",
+        "bytes": 36123,
+        "sha256": "371bba48b4384a4d72241f120cc7c0a41560e6ec52602ec4cb6df8d48954ff00"
+      }
+    },
+    {
+      "label": "q-inspect13-strength",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect13-a01\\strength.json",
+        "bytes": 92097,
+        "sha256": "3729dfb7f7fbe859c0221a016a4ef45e7dc54cda36bb360e9168554ed07b7c95"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\calendar-integer-growth-day72-a01\\q-inspect13-strength.json",
+        "bytes": 92097,
+        "sha256": "3729dfb7f7fbe859c0221a016a4ef45e7dc54cda36bb360e9168554ed07b7c95"
+      }
+    },
+    {
+      "label": "q-pulse13-before",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-q-pulse13-a01\\before.json",
+        "bytes": 232271,
+        "sha256": "876f2073afbb0dc239a12c14d093fd5becf7ae579658bd8cad362f4345d3513f"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\calendar-integer-growth-day72-a01\\q-pulse13-before.json",
+        "bytes": 232271,
+        "sha256": "876f2073afbb0dc239a12c14d093fd5becf7ae579658bd8cad362f4345d3513f"
+      }
+    },
+    {
+      "label": "q-pulse13-after",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-q-pulse13-a01\\after.json",
+        "bytes": 36122,
+        "sha256": "e87e1427230a0e6d9fac697eea7fce44a554806daba4a3430d58c092ef221cdc"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\calendar-integer-growth-day72-a01\\q-pulse13-after.json",
+        "bytes": 36122,
+        "sha256": "e87e1427230a0e6d9fac697eea7fce44a554806daba4a3430d58c092ef221cdc"
+      }
+    },
+    {
+      "label": "q-pulse13-result",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-q-pulse13-a01\\result.json",
+        "bytes": 1213,
+        "sha256": "92a409fd902fb3bdb11f753777fa46b764ab6e017602042aec169298d855c40f"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\calendar-integer-growth-day72-a01\\q-pulse13-result.json",
+        "bytes": 1213,
+        "sha256": "92a409fd902fb3bdb11f753777fa46b764ab6e017602042aec169298d855c40f"
+      }
+    },
+    {
+      "label": "q-inspect14-before",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect14-a01\\before.json",
+        "bytes": 36123,
+        "sha256": "72d3e5044a3930e243be500062b6ae278441b0d54159b986afaf517364355f4e"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\calendar-integer-growth-day72-a01\\q-inspect14-before.json",
+        "bytes": 36123,
+        "sha256": "72d3e5044a3930e243be500062b6ae278441b0d54159b986afaf517364355f4e"
+      }
+    },
+    {
+      "label": "q-inspect14-after",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect14-a01\\after.json",
+        "bytes": 36123,
+        "sha256": "9f8eca9fcf660a873e9e6eb3dfc5fb7872f0e63d36e3739eb84011986de1b188"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\calendar-integer-growth-day72-a01\\q-inspect14-after.json",
+        "bytes": 36123,
+        "sha256": "9f8eca9fcf660a873e9e6eb3dfc5fb7872f0e63d36e3739eb84011986de1b188"
+      }
+    },
+    {
+      "label": "q-inspect14-strength",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect14-a01\\strength.json",
+        "bytes": 92191,
+        "sha256": "b50a1d7cfbdbdd7e21f06da7a55948b0c5cb57cb0bec2f011ec1f4bdec4a1566"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\calendar-integer-growth-day72-a01\\q-inspect14-strength.json",
+        "bytes": 92191,
+        "sha256": "b50a1d7cfbdbdd7e21f06da7a55948b0c5cb57cb0bec2f011ec1f4bdec4a1566"
+      }
+    },
+    {
+      "label": "q-pulse14-before",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-q-pulse14-a01\\before.json",
+        "bytes": 233522,
+        "sha256": "e0bd94e7e3fcf9d7591cab4ed9a7d48221ae6217b048db27283cea1f62fbf8c2"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\calendar-integer-growth-day72-a01\\q-pulse14-before.json",
+        "bytes": 233522,
+        "sha256": "e0bd94e7e3fcf9d7591cab4ed9a7d48221ae6217b048db27283cea1f62fbf8c2"
+      }
+    },
+    {
+      "label": "q-pulse14-after",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-q-pulse14-a01\\after.json",
+        "bytes": 36122,
+        "sha256": "f430ccd648db03f25eecf1faac0718150ad242831532e4d2d7157cbd1312a479"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\calendar-integer-growth-day72-a01\\q-pulse14-after.json",
+        "bytes": 36122,
+        "sha256": "f430ccd648db03f25eecf1faac0718150ad242831532e4d2d7157cbd1312a479"
+      }
+    },
+    {
+      "label": "q-pulse14-result",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-q-pulse14-a01\\result.json",
+        "bytes": 1213,
+        "sha256": "2d595ffb2c885f412997ecbf5d7fa90885368e8ff593dbffec0d51ad6a3c5bac"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\calendar-integer-growth-day72-a01\\q-pulse14-result.json",
+        "bytes": 1213,
+        "sha256": "2d595ffb2c885f412997ecbf5d7fa90885368e8ff593dbffec0d51ad6a3c5bac"
+      }
+    }
+  ],
+  "native_calendar_arithmetic": [
+    {
+      "date_raw": 53149056,
+      "native_day_index": 389544,
+      "native_day_of_year": 89,
+      "native_month_index_zero_based": 2,
+      "native_day_of_month_zero_based": 30,
+      "month_first": false
+    },
+    {
+      "date_raw": 53149080,
+      "native_day_index": 389545,
+      "native_day_of_year": 90,
+      "native_month_index_zero_based": 3,
+      "native_day_of_month_zero_based": 0,
+      "month_first": true
+    },
+    {
+      "date_raw": 53149104,
+      "native_day_index": 389546,
+      "native_day_of_year": 91,
+      "native_month_index_zero_based": 3,
+      "native_day_of_month_zero_based": 1,
+      "month_first": false
+    }
+  ],
+  "source_semantics": {
+    "pins": [
+      {
+        "path": "C:\\w\\e4countya01\\docs\\ck3-native-ai\\army-monthly-update-order-12003.md",
+        "bytes": 34893,
+        "sha256": "fe5454433b8fb3e78cbf2d0e1203b545465d1b4484a8f8d23195783297feebd8"
+      },
+      {
+        "path": "C:\\w\\e4countya01\\docs\\ck3-native-ai\\army-regiment-replenishment-raised-reserve-12003.md",
+        "bytes": 85239,
+        "sha256": "f332a174767ca30a0da5741da7de7f3ac4f8e78e643d88462d0415f9f317c2f5"
+      }
+    ],
+    "calendar_month_first_dispatch_lines": "army-monthly-update-order-12003.md:11-25",
+    "prepared_integer_refill_and_full_DATA_refresh_lines": "army-monthly-update-order-12003.md:77-95",
+    "matching_historical_Reg53_current9_to10_pattern_lines": "army-regiment-replenishment-raised-reserve-12003.md:547-557",
+    "interpretation": "Existing exact native calendar-month prepare/refill chain is compatible with the newly observed prepared-cache refresh, deficient chunks reaching maximum and full-record Army strength refresh. This is source-plus-endpoint consistency, not a traced producer execution or applied ledger."
+  },
+  "integer_grown_records": [
+    {
+      "army_id": 0,
+      "identity": [
+        50,
+        0,
+        2624,
+        1
+      ],
+      "before": {
+        "record_index": 0,
+        "persistent_regiment_id": 2624,
+        "chunk_index": 1,
+        "status": "available",
+        "unavailable_reason": null,
+        "current_soldiers": 73,
+        "maximum_soldiers": 75,
+        "effective_current_soldiers": 73,
+        "state_raw": 0,
+        "native_can_replenish": true,
+        "native_chunk_can_replenish": true,
+        "persistent_monthly_replenishment_fraction_raw": 5325,
+        "persistent_prepared_replenishment_fraction_raw": 0,
+        "persistent_monthly_replenishment_fraction_scale": 100000,
+        "persistent_prepared_replenishment_fraction_scale": 100000
+      },
+      "after": {
+        "record_index": 0,
+        "persistent_regiment_id": 2624,
+        "chunk_index": 1,
+        "status": "available",
+        "unavailable_reason": null,
+        "current_soldiers": 75,
+        "maximum_soldiers": 75,
+        "effective_current_soldiers": 75,
+        "state_raw": 0,
+        "native_can_replenish": true,
+        "native_chunk_can_replenish": false,
+        "persistent_monthly_replenishment_fraction_raw": 5325,
+        "persistent_prepared_replenishment_fraction_raw": 5325,
+        "persistent_monthly_replenishment_fraction_scale": 100000,
+        "persistent_prepared_replenishment_fraction_scale": 100000
+      },
+      "integer_current_and_effective_delta": 2
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        54,
+        0,
+        2610,
+        0
+      ],
+      "before": {
+        "record_index": 0,
+        "persistent_regiment_id": 2610,
+        "chunk_index": 0,
+        "status": "available",
+        "unavailable_reason": null,
+        "current_soldiers": 299,
+        "maximum_soldiers": 302,
+        "effective_current_soldiers": 299,
+        "state_raw": 0,
+        "native_can_replenish": true,
+        "native_chunk_can_replenish": true,
+        "persistent_monthly_replenishment_fraction_raw": 5760,
+        "persistent_prepared_replenishment_fraction_raw": 0,
+        "persistent_monthly_replenishment_fraction_scale": 100000,
+        "persistent_prepared_replenishment_fraction_scale": 100000
+      },
+      "after": {
+        "record_index": 0,
+        "persistent_regiment_id": 2610,
+        "chunk_index": 0,
+        "status": "available",
+        "unavailable_reason": null,
+        "current_soldiers": 302,
+        "maximum_soldiers": 302,
+        "effective_current_soldiers": 302,
+        "state_raw": 0,
+        "native_can_replenish": true,
+        "native_chunk_can_replenish": false,
+        "persistent_monthly_replenishment_fraction_raw": 5760,
+        "persistent_prepared_replenishment_fraction_raw": 5760,
+        "persistent_monthly_replenishment_fraction_scale": 100000,
+        "persistent_prepared_replenishment_fraction_scale": 100000
+      },
+      "integer_current_and_effective_delta": 3
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        62,
+        0,
+        2620,
+        1
+      ],
+      "before": {
+        "record_index": 0,
+        "persistent_regiment_id": 2620,
+        "chunk_index": 1,
+        "status": "available",
+        "unavailable_reason": null,
+        "current_soldiers": 68,
+        "maximum_soldiers": 69,
+        "effective_current_soldiers": 68,
+        "state_raw": 0,
+        "native_can_replenish": true,
+        "native_chunk_can_replenish": true,
+        "persistent_monthly_replenishment_fraction_raw": 4665,
+        "persistent_prepared_replenishment_fraction_raw": 0,
+        "persistent_monthly_replenishment_fraction_scale": 100000,
+        "persistent_prepared_replenishment_fraction_scale": 100000
+      },
+      "after": {
+        "record_index": 0,
+        "persistent_regiment_id": 2620,
+        "chunk_index": 1,
+        "status": "available",
+        "unavailable_reason": null,
+        "current_soldiers": 69,
+        "maximum_soldiers": 69,
+        "effective_current_soldiers": 69,
+        "state_raw": 0,
+        "native_can_replenish": true,
+        "native_chunk_can_replenish": false,
+        "persistent_monthly_replenishment_fraction_raw": 4665,
+        "persistent_prepared_replenishment_fraction_raw": 4665,
+        "persistent_monthly_replenishment_fraction_scale": 100000,
+        "persistent_prepared_replenishment_fraction_scale": 100000
+      },
+      "integer_current_and_effective_delta": 1
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        82,
+        1,
+        2602,
+        1
+      ],
+      "before": {
+        "record_index": 1,
+        "persistent_regiment_id": 2602,
+        "chunk_index": 1,
+        "status": "available",
+        "unavailable_reason": null,
+        "current_soldiers": 68,
+        "maximum_soldiers": 69,
+        "effective_current_soldiers": 68,
+        "state_raw": 0,
+        "native_can_replenish": true,
+        "native_chunk_can_replenish": true,
+        "persistent_monthly_replenishment_fraction_raw": 4020,
+        "persistent_prepared_replenishment_fraction_raw": 0,
+        "persistent_monthly_replenishment_fraction_scale": 100000,
+        "persistent_prepared_replenishment_fraction_scale": 100000
+      },
+      "after": {
+        "record_index": 1,
+        "persistent_regiment_id": 2602,
+        "chunk_index": 1,
+        "status": "available",
+        "unavailable_reason": null,
+        "current_soldiers": 69,
+        "maximum_soldiers": 69,
+        "effective_current_soldiers": 69,
+        "state_raw": 0,
+        "native_can_replenish": true,
+        "native_chunk_can_replenish": false,
+        "persistent_monthly_replenishment_fraction_raw": 4020,
+        "persistent_prepared_replenishment_fraction_raw": 4020,
+        "persistent_monthly_replenishment_fraction_scale": 100000,
+        "persistent_prepared_replenishment_fraction_scale": 100000
+      },
+      "integer_current_and_effective_delta": 1
+    },
+    {
+      "army_id": 204,
+      "identity": [
+        52,
+        0,
+        17948,
+        0
+      ],
+      "before": {
+        "record_index": 0,
+        "persistent_regiment_id": 17948,
+        "chunk_index": 0,
+        "status": "available",
+        "unavailable_reason": null,
+        "current_soldiers": 198,
+        "maximum_soldiers": 200,
+        "effective_current_soldiers": 198,
+        "state_raw": 0,
+        "native_can_replenish": true,
+        "native_chunk_can_replenish": true,
+        "persistent_monthly_replenishment_fraction_raw": 10000,
+        "persistent_prepared_replenishment_fraction_raw": 0,
+        "persistent_monthly_replenishment_fraction_scale": 100000,
+        "persistent_prepared_replenishment_fraction_scale": 100000
+      },
+      "after": {
+        "record_index": 0,
+        "persistent_regiment_id": 17948,
+        "chunk_index": 0,
+        "status": "available",
+        "unavailable_reason": null,
+        "current_soldiers": 200,
+        "maximum_soldiers": 200,
+        "effective_current_soldiers": 200,
+        "state_raw": 0,
+        "native_can_replenish": false,
+        "native_chunk_can_replenish": false,
+        "persistent_monthly_replenishment_fraction_raw": 10000,
+        "persistent_prepared_replenishment_fraction_raw": 10000,
+        "persistent_monthly_replenishment_fraction_scale": 100000,
+        "persistent_prepared_replenishment_fraction_scale": 100000
+      },
+      "integer_current_and_effective_delta": 2
+    },
+    {
+      "army_id": 204,
+      "identity": [
+        53,
+        0,
+        16793680,
+        0
+      ],
+      "before": {
+        "record_index": 0,
+        "persistent_regiment_id": 16793680,
+        "chunk_index": 0,
+        "status": "available",
+        "unavailable_reason": null,
+        "current_soldiers": 9,
+        "maximum_soldiers": 10,
+        "effective_current_soldiers": 9,
+        "state_raw": 0,
+        "native_can_replenish": true,
+        "native_chunk_can_replenish": true,
+        "persistent_monthly_replenishment_fraction_raw": 10000,
+        "persistent_prepared_replenishment_fraction_raw": 0,
+        "persistent_monthly_replenishment_fraction_scale": 100000,
+        "persistent_prepared_replenishment_fraction_scale": 100000
+      },
+      "after": {
+        "record_index": 0,
+        "persistent_regiment_id": 16793680,
+        "chunk_index": 0,
+        "status": "available",
+        "unavailable_reason": null,
+        "current_soldiers": 10,
+        "maximum_soldiers": 10,
+        "effective_current_soldiers": 10,
+        "state_raw": 0,
+        "native_can_replenish": false,
+        "native_chunk_can_replenish": false,
+        "persistent_monthly_replenishment_fraction_raw": 10000,
+        "persistent_prepared_replenishment_fraction_raw": 10000,
+        "persistent_monthly_replenishment_fraction_scale": 100000,
+        "persistent_prepared_replenishment_fraction_scale": 100000
+      },
+      "integer_current_and_effective_delta": 1
+    }
+  ],
+  "prepared_refresh_records": [
+    {
+      "army_id": 0,
+      "identity": [
+        50,
+        0,
+        2624,
+        1
+      ],
+      "before_raw": 0,
+      "after_raw": 5325,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        50,
+        1,
+        2606,
+        1
+      ],
+      "before_raw": 0,
+      "after_raw": 5325,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        50,
+        2,
+        2626,
+        2
+      ],
+      "before_raw": 0,
+      "after_raw": 3750,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        50,
+        3,
+        2608,
+        2
+      ],
+      "before_raw": 0,
+      "after_raw": 3525,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        50,
+        4,
+        2630,
+        1
+      ],
+      "before_raw": 0,
+      "after_raw": 3075,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        50,
+        5,
+        2628,
+        1
+      ],
+      "before_raw": 0,
+      "after_raw": 5325,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        50,
+        6,
+        2632,
+        2
+      ],
+      "before_raw": 0,
+      "after_raw": 2925,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        54,
+        0,
+        2610,
+        0
+      ],
+      "before_raw": 0,
+      "after_raw": 5760,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        54,
+        1,
+        2612,
+        0
+      ],
+      "before_raw": 0,
+      "after_raw": 3300,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        61,
+        0,
+        10178,
+        1
+      ],
+      "before_raw": 0,
+      "after_raw": 3600,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        61,
+        1,
+        2616,
+        1
+      ],
+      "before_raw": 0,
+      "after_raw": 4950,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        61,
+        2,
+        2618,
+        2
+      ],
+      "before_raw": 0,
+      "after_raw": 3750,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        62,
+        0,
+        2620,
+        1
+      ],
+      "before_raw": 0,
+      "after_raw": 4665,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        62,
+        1,
+        2622,
+        2
+      ],
+      "before_raw": 0,
+      "after_raw": 3000,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        82,
+        0,
+        2604,
+        1
+      ],
+      "before_raw": 0,
+      "after_raw": 3600,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        82,
+        1,
+        2602,
+        1
+      ],
+      "before_raw": 0,
+      "after_raw": 4020,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        82,
+        2,
+        9884,
+        2
+      ],
+      "before_raw": 0,
+      "after_raw": 3450,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        82,
+        3,
+        9886,
+        2
+      ],
+      "before_raw": 0,
+      "after_raw": 3450,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 204,
+      "identity": [
+        51,
+        0,
+        2638,
+        1
+      ],
+      "before_raw": 0,
+      "after_raw": 4140,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 204,
+      "identity": [
+        51,
+        1,
+        2634,
+        1
+      ],
+      "before_raw": 0,
+      "after_raw": 4140,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 204,
+      "identity": [
+        51,
+        2,
+        2636,
+        2
+      ],
+      "before_raw": 0,
+      "after_raw": 3075,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 204,
+      "identity": [
+        52,
+        0,
+        17948,
+        0
+      ],
+      "before_raw": 0,
+      "after_raw": 10000,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 204,
+      "identity": [
+        53,
+        0,
+        16793680,
+        0
+      ],
+      "before_raw": 0,
+      "after_raw": 10000,
+      "new_prepared_equals_current_fresh_getter": true
+    },
+    {
+      "army_id": 204,
+      "identity": [
+        55,
+        0,
+        2614,
+        1
+      ],
+      "before_raw": 0,
+      "after_raw": 4050,
+      "new_prepared_equals_current_fresh_getter": true
+    }
+  ],
+  "permission_changes": [
+    {
+      "army_id": 0,
+      "identity": [
+        50,
+        0,
+        2624,
+        1
+      ],
+      "field": "native_chunk_can_replenish",
+      "before": true,
+      "after": false,
+      "after_current_equals_maximum": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        54,
+        0,
+        2610,
+        0
+      ],
+      "field": "native_chunk_can_replenish",
+      "before": true,
+      "after": false,
+      "after_current_equals_maximum": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        62,
+        0,
+        2620,
+        1
+      ],
+      "field": "native_chunk_can_replenish",
+      "before": true,
+      "after": false,
+      "after_current_equals_maximum": true
+    },
+    {
+      "army_id": 0,
+      "identity": [
+        82,
+        1,
+        2602,
+        1
+      ],
+      "field": "native_chunk_can_replenish",
+      "before": true,
+      "after": false,
+      "after_current_equals_maximum": true
+    },
+    {
+      "army_id": 204,
+      "identity": [
+        52,
+        0,
+        17948,
+        0
+      ],
+      "field": "native_can_replenish",
+      "before": true,
+      "after": false,
+      "after_current_equals_maximum": true
+    },
+    {
+      "army_id": 204,
+      "identity": [
+        52,
+        0,
+        17948,
+        0
+      ],
+      "field": "native_chunk_can_replenish",
+      "before": true,
+      "after": false,
+      "after_current_equals_maximum": true
+    },
+    {
+      "army_id": 204,
+      "identity": [
+        53,
+        0,
+        16793680,
+        0
+      ],
+      "field": "native_can_replenish",
+      "before": true,
+      "after": false,
+      "after_current_equals_maximum": true
+    },
+    {
+      "army_id": 204,
+      "identity": [
+        53,
+        0,
+        16793680,
+        0
+      ],
+      "field": "native_chunk_can_replenish",
+      "before": true,
+      "after": false,
+      "after_current_equals_maximum": true
+    }
+  ],
+  "cohort": {
+    "all27_regiment_full_IDs_and_maxima_preserved": true,
+    "all37_DATA_identity_tuples_and_maxima_preserved": true,
+    "state_and_current_monthly_fraction_fields_unchanged": true,
+    "main_current_before": 3337,
+    "main_current_after": 3344,
+    "main_maximum": 3371,
+    "child_current_before": 3342,
+    "child_current_after": 3345,
+    "child_maximum": 3376,
+    "whole_current_before": 6679,
+    "whole_current_after": 6689,
+    "whole_maximum": 6747
+  },
+  "stock_clocks": {
+    "main_stock_before_and_after": 10613988,
+    "child_stock_before_and_after": 10000000,
+    "current_monthly_both_raw": 2000000,
+    "both_supply_update_and_grace_marks_unchanged": true,
+    "stock_growth_credit": false,
+    "extra_supply_update_credit": false
+  },
+  "visible_context": {
+    "active_event": {
+      "before": null,
+      "after": null,
+      "changed": false
+    },
+    "pending_character_interaction": {
+      "before": null,
+      "after": null,
+      "changed": false
+    },
+    "played_character": {
+      "before": {
+        "character_id": 33388,
+        "alive": true,
+        "source": "native",
+        "stress_points": 25,
+        "betrothed_id": null,
+        "primary_spouse_id": 34290,
+        "spouse_ids": [
+          34290
+        ]
+      },
+      "after": {
+        "character_id": 33388,
+        "alive": true,
+        "source": "native",
+        "stress_points": 25,
+        "betrothed_id": null,
+        "primary_spouse_id": 34290,
+        "spouse_ids": [
+          34290
+        ]
+      },
+      "changed": false
+    }
+  },
+  "fresh_commander_id_readback": {
+    "status": "unknown",
+    "reason": "The supplied fresh snapshot and strength packets contain no dedicated commander identity; capacity does not substitute for it."
+  },
+  "budget": {
+    "original_start_raw": 53147376,
+    "fixed_end_raw": 53149536,
+    "used_days": 72,
+    "remaining_days": 18,
+    "reset": false
+  },
+  "pending": [
+    "Actual intermediate producer PC/call receipt or applied refill/loss ledger is not supplied.",
+    "Exact execution day within the two-day observed pair is not directly traced.",
+    "Post-endpoint prepared values and false-at-full predicates are not backfilled as execution-time inputs.",
+    "No death, unseen loss/refill cancellation or global flow amount is reconstructed.",
+    "Main positive stock writeback remains pending."
+  ],
+  "reviewer_runtime_side_effects": 0
+}

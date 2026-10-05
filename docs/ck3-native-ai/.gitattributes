@@ -2,3 +2,5 @@
 army-county-entry-current-inputs-r0171-runtime.md -text whitespace=trailing-space,space-before-tab,cr-at-eol
 # Retain the exact R0172 periodic-loss handover text bytes.
 army-r0172-periodic-siege-loss-runtime-12003.md -text whitespace=trailing-space,space-before-tab,cr-at-eol
+# Retain exact R0173 qualification knowledge bytes.
+army-r0173-split-rest-qualification-12003.md -text whitespace=trailing-space,space-before-tab,cr-at-eol

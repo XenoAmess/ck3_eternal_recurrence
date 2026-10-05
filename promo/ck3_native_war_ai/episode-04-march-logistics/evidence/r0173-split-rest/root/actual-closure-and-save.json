@@ -1,0 +1,31 @@
+{
+  "at_utc": "2026-10-05T13:28:30.927054+00:00",
+  "bootstrap": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\bootstrap-result.json",
+    "bytes": 13797,
+    "sha256": "225548591a1aa124c40394abce724f55793723f57b0175f19755b9b06137f114"
+  },
+  "sdk_thread_exited": true,
+  "keeper_thread_exited": true,
+  "GameJob_active_processes": 0,
+  "tree_gone": true,
+  "watchdog_absent": true,
+  "native_CK3_inventory_empty": true,
+  "owned_Game_termination_exit": 1,
+  "supervisor_exit0_observed_by_unified_exec_session": 8183,
+  "recorder_state": "NORMAL_TREE_EMPTY",
+  "final_qualification_raw": 53149200,
+  "original_budget_START": 53147376,
+  "original_budget_END": 53149536,
+  "used_actual_days": 76,
+  "remaining_actual_days": 14,
+  "split_qualification_save": {
+    "source": "C:\\ck3-war-episode04-research-20261004-a01\\state-r0173-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "preserved_path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-qualified-rest-checkpoint-a01\\actual-checkpoint.ck3",
+    "bytes": 74386976,
+    "sha256": "c43f71c4973e035e04fb44609ba86f04407beb7af1a775191e09fddb9e943b66"
+  },
+  "ABC_common_whole_save_SHA_unchanged": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a",
+  "ABC_completed_arms": 0,
+  "movie_or_human_approval_credit": 0
+}

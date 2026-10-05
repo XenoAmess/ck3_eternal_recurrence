@@ -1,0 +1,106 @@
+{
+  "status": "STOP_FOR_ROOT_REVIEW",
+  "outcome": {
+    "status": "STOP",
+    "reason": "STOP_BUDGET_OR_NEW_STATE_OR_UNCERTAINTY",
+    "error": "coalition or active war state changed",
+    "actual_paused": true,
+    "actual_date_raw": 53148624,
+    "blind_retry_allowed": false
+  },
+  "rounds": [
+    {
+      "round": 1,
+      "pulse_process": {
+        "returncode": 0,
+        "pid": 22360,
+        "waited_exit": true,
+        "started_at_utc": "2026-10-05T12:48:37.886019+00:00",
+        "finished_at_utc": "2026-10-05T12:48:44.243750+00:00",
+        "stdout": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-rest-batch01-a01\\round-01\\pulse-process\\stdout.bin",
+          "bytes": 1256,
+          "sha256": "c43888548664bcb06964da548e47a84b9ac81d4d6b755b5c8ab3e74198eca993"
+        },
+        "stderr": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-rest-batch01-a01\\round-01\\pulse-process\\stderr.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "inspect_process": {
+        "returncode": 0,
+        "pid": 3780,
+        "waited_exit": true,
+        "started_at_utc": "2026-10-05T12:48:44.286320+00:00",
+        "finished_at_utc": "2026-10-05T12:48:46.999963+00:00",
+        "stdout": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-rest-batch01-a01\\round-01\\inspect-process\\stdout.bin",
+          "bytes": 6582,
+          "sha256": "93e93072a0d0238cf4e33de162800101894047a620da368d51161eb4e20ddc0b"
+        },
+        "stderr": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-rest-batch01-a01\\round-01\\inspect-process\\stderr.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      "endpoint_bindings": [
+        {
+          "label": "before",
+          "saved_body": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-rest-batch01-a01-r01-inspect\\before.json",
+            "bytes": 34872,
+            "sha256": "c503ebc255d487eca92e52a79e9aa396cc6b1b52059293812bd543d5cd09574c"
+          },
+          "actual_response": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\r0173-rest-batch01-a01-r01-inspect-before.json",
+            "bytes": 152584,
+            "sha256": "fe5b3b9ec227e48a9630adf04ced1621755810872a1b1a1920c4e5f1505bd879"
+          }
+        },
+        {
+          "label": "after",
+          "saved_body": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-rest-batch01-a01-r01-inspect\\after.json",
+            "bytes": 34872,
+            "sha256": "b82f0a202171dd1ab1edeb25053d7305d54f2cfaee1754e91fc64a2aa5b5be26"
+          },
+          "actual_response": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\r0173-rest-batch01-a01-r01-inspect-after.json",
+            "bytes": 152582,
+            "sha256": "a0c8588e3ac67578a6c41a3fc7538aec6567a47a50d0d7c7eada3d3632eeb06c"
+          }
+        },
+        {
+          "label": "strength",
+          "saved_body": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-rest-batch01-a01-r01-inspect\\strength.json",
+            "bytes": 92095,
+            "sha256": "e27729f3c0ffa31608b965532dd2eb07be554cad3970a23941cdedd711c8ae2c"
+          },
+          "actual_response": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\r0173-rest-batch01-a01-r01-inspect-strength.json",
+            "bytes": 400271,
+            "sha256": "ac14c4f7dd819e705b508ad35f1f2ec462786661835bbdd136541799fada9e2e"
+          }
+        }
+      ],
+      "classification": {
+        "status": "STOP",
+        "reason": "STOP_BUDGET_OR_NEW_STATE_OR_UNCERTAINTY",
+        "error": "coalition or active war state changed",
+        "actual_paused": true,
+        "actual_date_raw": 53148624,
+        "blind_retry_allowed": false
+      }
+    }
+  ],
+  "original_start_raw": 53147376,
+  "absolute_end_raw": 53149536,
+  "budget_reset": false,
+  "no_more_requests_published": true,
+  "all_started_child_processes_waited": true,
+  "qualification_or_ABC_completion": false,
+  "TERM_or_clean_or_film_credit": 0
+}

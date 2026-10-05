@@ -1,0 +1,1011 @@
+{
+  "status": "STOP_NEW_SUBJECT_HEALTH",
+  "before": [
+    {
+      "label": "before",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect10-a01\\before.json",
+        "bytes": 34871,
+        "sha256": "bbd356e45a5484e2124995965b3be5ed30c3618b5b9ec8bc015d60bea1267177"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\root-r0173-q-inspect10-a01-before.json",
+        "bytes": 152564,
+        "sha256": "d4f98e94869ffcfefad63af99e3257ff6c1790c41931c5e31dfeebf20cae24b9"
+      }
+    },
+    {
+      "label": "after",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect10-a01\\after.json",
+        "bytes": 34871,
+        "sha256": "2809aaf4ed154e5d0695f0026dec108a01c44a3362d0b7d4b7f1205cb9af191d"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\root-r0173-q-inspect10-a01-after.json",
+        "bytes": 152562,
+        "sha256": "09f4922349afdf98d1940668813fb8f18f9a4a7ffc6591956e2548f786d0d38e"
+      }
+    },
+    {
+      "label": "strength",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect10-a01\\strength.json",
+        "bytes": 92097,
+        "sha256": "3daf863effb9b5b8a2be96ee53fa525a550d618f7cae4d6862c335256724bd0b"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\root-r0173-q-inspect10-a01-strength.json",
+        "bytes": 400263,
+        "sha256": "086dec79fc8c209f4ca43e35216bd63f805b5182fa3761dbffe50eff61683146"
+      }
+    }
+  ],
+  "after": [
+    {
+      "label": "before",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect11-a01\\before.json",
+        "bytes": 34872,
+        "sha256": "a9bd7d5814b448b9e984eb385287b20e5897c403b9964339bbf9997b36ac38e7"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\root-r0173-q-inspect11-a01-before.json",
+        "bytes": 152568,
+        "sha256": "8b2300bf122d21b83c13e0bf20716b2d09c5cccd3dc4c3792d53b47bbd8c75a3"
+      }
+    },
+    {
+      "label": "after",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect11-a01\\after.json",
+        "bytes": 34872,
+        "sha256": "e66c56e36f77b654d3cc4d67c6ab2e70180a1f4be39a48c7abf434b2ea04b6e5"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\root-r0173-q-inspect11-a01-after.json",
+        "bytes": 152566,
+        "sha256": "794eb9cf0dd1e47f7772a2e9888bd037640a7429eea9324399178169ccb88f08"
+      }
+    },
+    {
+      "label": "strength",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect11-a01\\strength.json",
+        "bytes": 92097,
+        "sha256": "d91bedda8a480cb83ffc30cec71b5b843622281a00782c96241b2cf5791ac9b8"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\root-r0173-q-inspect11-a01-strength.json",
+        "bytes": 400263,
+        "sha256": "e67907a6c535b38fde400c8e508c628266b62ff80b5b84069e5ec5535a2458d0"
+      }
+    }
+  ],
+  "actual_date_raw": 53148960,
+  "actual_paused": true,
+  "health_changed_public_army_ids": [
+    204
+  ],
+  "external_world_records": [
+    {
+      "war_id": 1,
+      "score_before": 0,
+      "score_after": 0,
+      "objective_before": [
+        {
+          "province_id": 1527,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 540,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1514,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 400,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1538,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 524,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1531,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 480,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1551,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 480,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1609,
+          "occupation_observable": true,
+          "is_occupied": true,
+          "occupying_character_id": 31280,
+          "fort_level": 3,
+          "garrison_size": 25,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1606,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 540,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1635,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 730,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1639,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 524,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1637,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 412,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1643,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 476,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1621,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 524,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1595,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 7,
+          "garrison_size": 580,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1588,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 500,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1591,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 500,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1583,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 500,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1522,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 476,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1518,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 484,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1534,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 484,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1603,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 400,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1615,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 524,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1618,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 524,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1627,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 400,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1624,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 468,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1541,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 476,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1600,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 476,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1646,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 476,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1632,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 468,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1580,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 468,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1561,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 540,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1558,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 540,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1555,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 540,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1502,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 572,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1510,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 484,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1506,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 484,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1544,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 5,
+          "garrison_size": 742,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1549,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 540,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1565,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 500,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1576,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 500,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1569,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 500,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1573,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 468,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        }
+      ],
+      "objective_after": [
+        {
+          "province_id": 1527,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 540,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1514,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 400,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1538,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 524,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1531,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 480,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1551,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 480,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1609,
+          "occupation_observable": true,
+          "is_occupied": true,
+          "occupying_character_id": 31280,
+          "fort_level": 3,
+          "garrison_size": 25,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1606,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 540,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1635,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 730,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1639,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 524,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1637,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 412,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1643,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 476,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1621,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 524,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1595,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 7,
+          "garrison_size": 580,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1588,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 500,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1591,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 500,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1583,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 500,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1522,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 476,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1518,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 400,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1534,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 484,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1603,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 400,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1615,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 524,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1618,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 524,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1627,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 400,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1624,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 468,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1541,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 476,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1600,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 476,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1646,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 476,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1632,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 468,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1580,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 468,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1561,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 540,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1558,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 540,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1555,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 540,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1502,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 572,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1510,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 484,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1506,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 484,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1544,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 5,
+          "garrison_size": 742,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1549,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 4,
+          "garrison_size": 540,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1565,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 500,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1576,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 500,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1569,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 500,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        },
+        {
+          "province_id": 1573,
+          "occupation_observable": true,
+          "is_occupied": false,
+          "occupying_character_id": null,
+          "fort_level": 3,
+          "garrison_size": 468,
+          "besieging_strength": 0,
+          "siege_observable": true,
+          "active_siege": null
+        }
+      ]
+    }
+  ],
+  "root_acceptance": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-world-reviewed-a01\\review.json",
+    "bytes": 5225,
+    "sha256": "71ab927a49528448155cc5134d8d86b7374d82a443fb55fdca31f1d7d9cd88da"
+  },
+  "not_a_resumption_command": true,
+  "original_END_unchanged": 53149536,
+  "film_or_human_signoff_credit": 0
+}

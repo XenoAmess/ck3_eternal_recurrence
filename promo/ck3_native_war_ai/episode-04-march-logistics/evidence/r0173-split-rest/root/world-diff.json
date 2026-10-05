@@ -1,0 +1,81 @@
+{
+  "before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect04-a01\\after.json",
+    "bytes": 36122,
+    "sha256": "e951bb64191d201cd254d9695569c114460e7919ec44c9f18d334182f435885a"
+  },
+  "after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-rest-batch01-a01-r01-inspect\\after.json",
+    "bytes": 34872,
+    "sha256": "b82f0a202171dd1ab1edeb25053d7305d54f2cfaee1754e91fc64a2aa5b5be26"
+  },
+  "differences": [
+    {
+      "path": "active_wars[0].objective_province_states[5].active_siege",
+      "before": {
+        "siege_id": 3,
+        "besieging_army_id": 7,
+        "player_army_besieging": false,
+        "progress_fraction": {
+          "raw": 95510,
+          "scale": 100000
+        },
+        "current_work": {
+          "raw": 30415000,
+          "scale": 100000
+        },
+        "total_work": {
+          "raw": 31844575,
+          "scale": 100000
+        },
+        "remaining_work": {
+          "raw": 1429575,
+          "scale": 100000
+        },
+        "days_left": 5,
+        "ordinary_daily_progress": null,
+        "current_phase_length": null,
+        "prepared_phase_length": null,
+        "phase_counter": null,
+        "can_advance": null,
+        "phase_event_state": null,
+        "prepared_selected_phase_event_enum": null,
+        "assault_observable": true,
+        "breach_level": 2,
+        "walls_breached": true,
+        "assault_in_progress": false,
+        "can_start_assault": false,
+        "can_stop_assault": false,
+        "assault_daily_progress": {
+          "raw": 1183490,
+          "scale": 100000
+        },
+        "assault_daily_casualties": 52
+      },
+      "after": null
+    },
+    {
+      "path": "active_wars[0].objective_province_states[5].besieging_strength",
+      "before": 5235,
+      "after": 0
+    },
+    {
+      "path": "active_wars[0].objective_province_states[5].garrison_size",
+      "before": 400,
+      "after": 25
+    },
+    {
+      "path": "active_wars[0].objective_province_states[5].is_occupied",
+      "before": false,
+      "after": true
+    },
+    {
+      "path": "active_wars[0].objective_province_states[5].occupying_character_id",
+      "before": null,
+      "after": 31280
+    }
+  ],
+  "actual_game_paused": true,
+  "actual_date_raw": 53148624,
+  "resumption_authorized_by_this_diff": false
+}

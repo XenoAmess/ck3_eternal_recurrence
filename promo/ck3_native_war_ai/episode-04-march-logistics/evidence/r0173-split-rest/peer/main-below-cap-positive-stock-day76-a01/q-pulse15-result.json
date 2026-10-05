@@ -1,0 +1,43 @@
+{
+  "status": "passed",
+  "mode": "pulse",
+  "episode_run_id": "native-33388-930004d2d2a0",
+  "proof": {
+    "date_raw": 53149152,
+    "actual_real_days_used": 74.0,
+    "remaining_raw_hours": 384,
+    "absolute_end_raw": 53149536,
+    "episode_run_id": "native-33388-930004d2d2a0",
+    "actor_id": 33388,
+    "revision": 67,
+    "native_revision": 66,
+    "original_start_raw": 53147376,
+    "loaded_current_min_raw": 53148432,
+    "budget_reset": false,
+    "before_date_raw": 53149104,
+    "actual_raw_hours_delta": 48,
+    "actual_real_days_delta": 2.0,
+    "stop_before_next_resume": false,
+    "future_pause_overshoot_excluded": false
+  },
+  "error": null,
+  "after_observed": true,
+  "actual_after_date_raw": 53149152,
+  "actual_after_actor": {
+    "character_id": 33388,
+    "alive": true,
+    "source": "native",
+    "stress_points": 25,
+    "betrothed_id": null,
+    "primary_spouse_id": 34290,
+    "spouse_ids": [
+      34290
+    ]
+  },
+  "preserved_actual_checkpoint": null,
+  "start_raw_never_reset": 53147376,
+  "absolute_end_raw": 53149536,
+  "budget_measure": "actual game raw hours /24; not successful supply updates",
+  "future_pause_overshoot_excluded": false,
+  "blind_retry_allowed": false
+}

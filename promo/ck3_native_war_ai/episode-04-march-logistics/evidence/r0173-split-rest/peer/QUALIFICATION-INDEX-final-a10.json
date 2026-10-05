@@ -1,0 +1,131 @@
+{
+  "schema": "ck3-e04-r0173-numeric-qualification-final-index-v1",
+  "status": "ALL_DECLARED_NUMERIC_QUALIFICATION_GATES_OBSERVED_PASS",
+  "created_utc": "2026-10-05T13:21:13.004875+00:00",
+  "gates": [
+    {
+      "gate": "normal_half_actual_dynamic_identity",
+      "status": "observed_numeric_pass",
+      "evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\SPLIT-REVIEW-a01.json",
+        "bytes": 44284,
+        "sha256": "2bf8ea5f1f1f9fe3a04d05a346eef31606cda8dc5ac2e37163beab27631a44fe"
+      },
+      "numbers": {
+        "parent_regs": 15,
+        "child_regs": 12,
+        "whole_current": 6679,
+        "whole_maximum": 6747
+      }
+    },
+    {
+      "gate": "all27_full_regiment_IDs_and37_DATA_conserved",
+      "status": "observed_numeric_pass",
+      "evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\SPLIT-REVIEW-a01.json",
+        "bytes": 44284,
+        "sha256": "2bf8ea5f1f1f9fe3a04d05a346eef31606cda8dc5ac2e37163beab27631a44fe"
+      }
+    },
+    {
+      "gate": "two_distinct_stationary_positive_current_monthly_getters",
+      "status": "observed_numeric_pass",
+      "evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\two-positive-sites-qualification-a01\\CASE-a01.json",
+        "bytes": 9073,
+        "sha256": "91a97933f2fec19efb95bd408005e81f14f1b0cd8efdd77bfa04af63fa51a826"
+      },
+      "numbers": {
+        "main_province": 2174,
+        "child_province": 2327,
+        "monthly_raw_both": 2000000
+      }
+    },
+    {
+      "gate": "independent_child_above_capacity_to_exact_capacity_window",
+      "status": "observed_numeric_pass",
+      "evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\first-above-cap-to-cap-case-a01\\CASE-a01.json",
+        "bytes": 15197,
+        "sha256": "6fc169c3f7692e317eeb82f8c5d46a9dedb0ac55ad6204b9c2c1dfac0e3037f1"
+      },
+      "numbers": {
+        "before_stock": 11037716,
+        "after_stock_and_capacity": 10000000
+      }
+    },
+    {
+      "gate": "known_calendar_refill_consistency_without_cohort_replacement",
+      "status": "observed_numeric_pass_with_cause_limits",
+      "evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\calendar-integer-growth-day72-a01\\CASE-a01.json",
+        "bytes": 28015,
+        "sha256": "d6b50aed926e2e8bd69819ab763954bd43fe12db028edc7d5b3acea10b6ed966"
+      },
+      "numbers": {
+        "main_integer_gain": 7,
+        "child_integer_gain": 3,
+        "prepared_refresh_records": 24
+      }
+    },
+    {
+      "gate": "independent_main_below_capacity_positive_stock_writeback",
+      "status": "observed_numeric_pass",
+      "evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\CASE-a01.json",
+        "bytes": 11491,
+        "sha256": "0760542c6b896b452c446754eb445c51c607d706b1adf57616ded99a26ed7ef0"
+      },
+      "numbers": {
+        "before_stock": 10613988,
+        "after_stock": 12613988,
+        "stock_gain": 2000000,
+        "capacity": 30000000
+      }
+    },
+    {
+      "gate": "final_stock_window_all27_regiment_and37_DATA_entire_rows_unchanged",
+      "status": "observed_numeric_pass",
+      "evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\QUALIFICATION-q-inspect16-a01.json",
+        "bytes": 11914,
+        "sha256": "78192514e2ae7db8be723e1df53cc43e19ea2458ca7a76a5ba776ee4096bf3c5"
+      }
+    },
+    {
+      "gate": "original90day_ceiling_not_reset",
+      "status": "observed_numeric_pass",
+      "evidence": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-q-pulse16-a01\\result.json",
+        "bytes": 1213,
+        "sha256": "b77a72bab232beba54e71aff87755a4cd597c8fe0f3276bfd7277132594184eb"
+      },
+      "numbers": {
+        "original_start_raw": 53147376,
+        "actual_end_raw": 53149200,
+        "absolute_ceiling_raw": 53149536,
+        "used_days": 76,
+        "remaining_days": 14
+      }
+    }
+  ],
+  "scope": "Numeric qualification under Root actual runtime binding only. The different supply and calendar-refill windows are individually preserved.",
+  "source_and_media_credits": {
+    "additional_source_ledger": false,
+    "clean_footage": false,
+    "human_review": false,
+    "signoff": false,
+    "encoded_media": false
+  },
+  "excluded_completion": {
+    "ABC_three_branches": false,
+    "prospective_shared_start_saved_by_reviewer": false,
+    "weighted_merge_upper_clamp": false,
+    "applied_refill_loss_death_ledger": false
+  },
+  "limits": [
+    "The fulfilled numeric qualification supports a later prospective shared-start candidate; it does not complete the ABC experiment.",
+    "No generic whole-army DATA sum identity or net loss/refill forecast is introduced.",
+    "Root actual raw/source/capture chains and later save/CommonT0 provenance remain separate producers."
+  ]
+}

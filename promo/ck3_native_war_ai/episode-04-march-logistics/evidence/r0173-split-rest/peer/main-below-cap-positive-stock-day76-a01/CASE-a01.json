@@ -1,0 +1,271 @@
+{
+  "schema": "ck3-e04-r0173-main-below-cap-positive-supply-writeback-v1",
+  "status": "ACTUAL_MAIN_BELOW_CAP_POSITIVE_STOCK_WRITEBACK_OBSERVED",
+  "created_utc": "2026-10-05T13:21:12.987579+00:00",
+  "source_pair_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\QUALIFICATION-q-inspect16-a01.json",
+    "bytes": 11914,
+    "sha256": "78192514e2ae7db8be723e1df53cc43e19ea2458ca7a76a5ba776ee4096bf3c5"
+  },
+  "preserved_receipts": [
+    {
+      "label": "q-inspect15-before",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect15-a01\\before.json",
+        "bytes": 36124,
+        "sha256": "e37e93b2580ee04724ccedc3406c350a0668340fb8bed67f2cfa9845a0855644"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\q-inspect15-before.json",
+        "bytes": 36124,
+        "sha256": "e37e93b2580ee04724ccedc3406c350a0668340fb8bed67f2cfa9845a0855644"
+      }
+    },
+    {
+      "label": "q-inspect15-after",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect15-a01\\after.json",
+        "bytes": 36124,
+        "sha256": "ffc7a9d83fca08d246006061bf89d14a357c6f1ddae535f2ad4d7dd73f1793b1"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\q-inspect15-after.json",
+        "bytes": 36124,
+        "sha256": "ffc7a9d83fca08d246006061bf89d14a357c6f1ddae535f2ad4d7dd73f1793b1"
+      }
+    },
+    {
+      "label": "q-inspect15-strength",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect15-a01\\strength.json",
+        "bytes": 92191,
+        "sha256": "2a7d2d373208e70d7d2a52a9c37ad7b3d2f181b7edc56e73bc3c17588bd44130"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\q-inspect15-strength.json",
+        "bytes": 92191,
+        "sha256": "2a7d2d373208e70d7d2a52a9c37ad7b3d2f181b7edc56e73bc3c17588bd44130"
+      }
+    },
+    {
+      "label": "q-pulse15-before",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-q-pulse15-a01\\before.json",
+        "bytes": 233834,
+        "sha256": "99588388ee67aa4fdfa90938c4b997c40817fea11373e940ef35b38959266627"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\q-pulse15-before.json",
+        "bytes": 233834,
+        "sha256": "99588388ee67aa4fdfa90938c4b997c40817fea11373e940ef35b38959266627"
+      }
+    },
+    {
+      "label": "q-pulse15-after",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-q-pulse15-a01\\after.json",
+        "bytes": 36123,
+        "sha256": "95f675c4b722a06345630c54cb40a2413a7f6291bad12bc562c1f7e95fc10945"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\q-pulse15-after.json",
+        "bytes": 36123,
+        "sha256": "95f675c4b722a06345630c54cb40a2413a7f6291bad12bc562c1f7e95fc10945"
+      }
+    },
+    {
+      "label": "q-pulse15-result",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-q-pulse15-a01\\result.json",
+        "bytes": 1213,
+        "sha256": "79d4d1a8a99f401428dfcfad83e77ff79321cfb6d27dc44cb98dc4b1e8b3c652"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\q-pulse15-result.json",
+        "bytes": 1213,
+        "sha256": "79d4d1a8a99f401428dfcfad83e77ff79321cfb6d27dc44cb98dc4b1e8b3c652"
+      }
+    },
+    {
+      "label": "q-inspect16-before",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect16-a01\\before.json",
+        "bytes": 36123,
+        "sha256": "00e4db137b56055e737ea21efdbd4aa2561ad73adec4d36fb512cd699c668571"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\q-inspect16-before.json",
+        "bytes": 36123,
+        "sha256": "00e4db137b56055e737ea21efdbd4aa2561ad73adec4d36fb512cd699c668571"
+      }
+    },
+    {
+      "label": "q-inspect16-after",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect16-a01\\after.json",
+        "bytes": 36123,
+        "sha256": "08a8e6774b6e8335e174ae36c0431c9c5bd51e07cf93a0b8702f03fc1b757bd9"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\q-inspect16-after.json",
+        "bytes": 36123,
+        "sha256": "08a8e6774b6e8335e174ae36c0431c9c5bd51e07cf93a0b8702f03fc1b757bd9"
+      }
+    },
+    {
+      "label": "q-inspect16-strength",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect16-a01\\strength.json",
+        "bytes": 92189,
+        "sha256": "8e21c1a3fcd29f0b5867534c14b1a71e48828e35130afc2c6fb62eaaf8a11515"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\q-inspect16-strength.json",
+        "bytes": 92189,
+        "sha256": "8e21c1a3fcd29f0b5867534c14b1a71e48828e35130afc2c6fb62eaaf8a11515"
+      }
+    },
+    {
+      "label": "q-pulse16-before",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-q-pulse16-a01\\before.json",
+        "bytes": 233833,
+        "sha256": "8f00ae769e9ec82f8ae07553006396dd0c5f711580297066f2bd50e2690757ed"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\q-pulse16-before.json",
+        "bytes": 233833,
+        "sha256": "8f00ae769e9ec82f8ae07553006396dd0c5f711580297066f2bd50e2690757ed"
+      }
+    },
+    {
+      "label": "q-pulse16-after",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-q-pulse16-a01\\after.json",
+        "bytes": 36122,
+        "sha256": "b0e9d64f36cbe57396e576f5b79f3610d88fba13871d9e2a03cbef6074de12a4"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\q-pulse16-after.json",
+        "bytes": 36122,
+        "sha256": "b0e9d64f36cbe57396e576f5b79f3610d88fba13871d9e2a03cbef6074de12a4"
+      }
+    },
+    {
+      "label": "q-pulse16-result",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0173-a01\\attempts\\r0173-q-pulse16-a01\\result.json",
+        "bytes": 1213,
+        "sha256": "b77a72bab232beba54e71aff87755a4cd597c8fe0f3276bfd7277132594184eb"
+      },
+      "preserved": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-split-qualification-analysis-a01\\main-below-cap-positive-stock-day76-a01\\q-pulse16-result.json",
+        "bytes": 1213,
+        "sha256": "b77a72bab232beba54e71aff87755a4cd597c8fe0f3276bfd7277132594184eb"
+      }
+    }
+  ],
+  "pair": {
+    "before_date_raw": 53149152,
+    "after_date_raw": 53149200,
+    "game_days_elapsed": 2,
+    "original_start_raw": 53147376,
+    "fixed_end_raw": 53149536,
+    "days_used": 76,
+    "remaining_days": 14,
+    "reset": false
+  },
+  "main": {
+    "public_army_id": 0,
+    "native_carmy_id": 0,
+    "province_id": 2174,
+    "state": "regular",
+    "stored_route": [],
+    "regiment_count": 15,
+    "DATA_count": 25,
+    "current_soldiers": 3344,
+    "maximum_soldiers": 3371,
+    "stock_before_raw": 10613988,
+    "stock_after_raw": 12613988,
+    "stock_delta_raw": 2000000,
+    "capacity_before_and_after_raw": 30000000,
+    "monthly_before_and_after_raw": 2000000,
+    "last_supply_update_before_storage64": 300336024996477760,
+    "last_supply_update_after_storage64": 300337120213138960,
+    "last_supply_update_before_date_raw": 53148480,
+    "last_supply_update_after_date_raw": 53149200,
+    "observed_army_bucket_before_and_after": 0
+  },
+  "child": {
+    "public_army_id": 204,
+    "native_carmy_id": 199,
+    "province_id": 2327,
+    "state": "regular",
+    "stored_route": [],
+    "regiment_count": 12,
+    "DATA_count": 12,
+    "current_soldiers": 3345,
+    "maximum_soldiers": 3376,
+    "stock_before_and_after_raw": 10000000,
+    "capacity_before_and_after_raw": 10000000,
+    "monthly_before_and_after_raw": 2000000,
+    "last_supply_update_before_and_after_storage64": 300336106600856840,
+    "last_supply_update_before_and_after_date_raw": 53148936,
+    "observed_army_bucket_before_and_after": 19
+  },
+  "both_grace_before_and_after": {
+    "storage64": 300061168564366016,
+    "date_raw": 53144256,
+    "loaded_days": 30,
+    "reset": false
+  },
+  "cohort": {
+    "27_full_regiment_IDs_and_entire_rows_unchanged": true,
+    "37_DATA_keys_and_entire_rows_unchanged": true,
+    "integer_current_delta": 0
+  },
+  "snapshot_resource_pairs": {
+    "played_character_gold": {
+      "status": "observed_snapshot_pair",
+      "before_raw": 63848329,
+      "after_raw": 63848329,
+      "delta_raw": 0,
+      "scale": 100000
+    },
+    "played_character_prestige": {
+      "status": "observed_snapshot_pair",
+      "before_raw": 106081500,
+      "after_raw": 106081500,
+      "delta_raw": 0,
+      "scale": 100000
+    },
+    "played_character_piety": {
+      "status": "observed_snapshot_pair",
+      "before_raw": -3635000,
+      "after_raw": -3635000,
+      "delta_raw": 0,
+      "scale": 100000
+    }
+  },
+  "source_role_boundaries": {
+    "current_packet_game_version_executable_sha_null_preserved": true,
+    "runtime_source_identity": "Separate Root admission provenance; not backfilled into these source packet fields.",
+    "fresh_commander_identity": "Not supplied by this pair; no new commander-ID invariance claim."
+  },
+  "event_credit": {
+    "actual_main_stock_growth": true,
+    "main_before_and_after_stock_below_capacity": true,
+    "numeric_stock_delta_equals_actual_current_monthly_getter": true,
+    "child_above_cap_to_cap_is_separate_earlier_window": true,
+    "weighted_merge_upper_clamp": false,
+    "ABC_completion": false,
+    "refill_loss_or_death_ledger": false
+  },
+  "limits": [
+    "Paired endpoints and changed +188 bind a successful supply-update observation; no complete hidden instruction or execution ledger is reconstructed.",
+    "Integer refill growth at day72 is a separate earlier window; no current-soldier change occurs in the day74→76 stock-growth window.",
+    "This reviewer makes no new source-ledger, raw/clean footage, PTS extraction, encoded media, human review or signoff assertion.",
+    "All original failed/stopped attempts and the original90day ceiling remain preserved."
+  ],
+  "reviewer_runtime_side_effects": 0
+}

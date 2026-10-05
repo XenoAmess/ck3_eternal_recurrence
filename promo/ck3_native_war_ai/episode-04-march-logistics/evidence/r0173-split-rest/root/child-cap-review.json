@@ -1,0 +1,117 @@
+{
+  "schema": "xar.ck3.root-accepted-known-supply-cap-endpoint/v1",
+  "at_utc": "2026-10-05T13:06:52.939413+00:00",
+  "status": "KNOWN_CHILD_OVER_CAP_TO_CAP_AND_UPDATE_ANCHOR_CHANGE_REVIEWED",
+  "before": [
+    {
+      "label": "before",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect10-a01\\before.json",
+        "bytes": 34871,
+        "sha256": "bbd356e45a5484e2124995965b3be5ed30c3618b5b9ec8bc015d60bea1267177"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\root-r0173-q-inspect10-a01-before.json",
+        "bytes": 152564,
+        "sha256": "d4f98e94869ffcfefad63af99e3257ff6c1790c41931c5e31dfeebf20cae24b9"
+      }
+    },
+    {
+      "label": "after",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect10-a01\\after.json",
+        "bytes": 34871,
+        "sha256": "2809aaf4ed154e5d0695f0026dec108a01c44a3362d0b7d4b7f1205cb9af191d"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\root-r0173-q-inspect10-a01-after.json",
+        "bytes": 152562,
+        "sha256": "09f4922349afdf98d1940668813fb8f18f9a4a7ffc6591956e2548f786d0d38e"
+      }
+    },
+    {
+      "label": "strength",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect10-a01\\strength.json",
+        "bytes": 92097,
+        "sha256": "3daf863effb9b5b8a2be96ee53fa525a550d618f7cae4d6862c335256724bd0b"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\root-r0173-q-inspect10-a01-strength.json",
+        "bytes": 400263,
+        "sha256": "086dec79fc8c209f4ca43e35216bd63f805b5182fa3761dbffe50eff61683146"
+      }
+    }
+  ],
+  "after": [
+    {
+      "label": "before",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect11-a01\\before.json",
+        "bytes": 34872,
+        "sha256": "a9bd7d5814b448b9e984eb385287b20e5897c403b9964339bbf9997b36ac38e7"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\root-r0173-q-inspect11-a01-before.json",
+        "bytes": 152568,
+        "sha256": "8b2300bf122d21b83c13e0bf20716b2d09c5cccd3dc4c3792d53b47bbd8c75a3"
+      }
+    },
+    {
+      "label": "after",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect11-a01\\after.json",
+        "bytes": 34872,
+        "sha256": "e66c56e36f77b654d3cc4d67c6ab2e70180a1f4be39a48c7abf434b2ea04b6e5"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\root-r0173-q-inspect11-a01-after.json",
+        "bytes": 152566,
+        "sha256": "794eb9cf0dd1e47f7772a2e9888bd037640a7429eea9324399178169ccb88f08"
+      }
+    },
+    {
+      "label": "strength",
+      "saved_body": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect11-a01\\strength.json",
+        "bytes": 92097,
+        "sha256": "d91bedda8a480cb83ffc30cec71b5b843622281a00782c96241b2cf5791ac9b8"
+      },
+      "actual_response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0173-a01\\responses\\root-r0173-q-inspect11-a01-strength.json",
+        "bytes": 400263,
+        "sha256": "e67907a6c535b38fde400c8e508c628266b62ff80b5b84069e5ec5535a2458d0"
+      }
+    }
+  ],
+  "actual_after_raw": 53148960,
+  "actual_after_paused": true,
+  "public_army_id": 204,
+  "native_carmy_id": 199,
+  "stock_before": 11037716,
+  "stock_after": 10000000,
+  "stock_delta": -1037716,
+  "capacity": 10000000,
+  "monthly_current_before_and_after": 2000000,
+  "actual_update_anchor_raw": 53148936,
+  "all27_regiments_and37_DATA_rows_unchanged": true,
+  "belowcap_stock_growth": false,
+  "integer_replenishment_or_death_credit": 0,
+  "applied_execution_ledger": null,
+  "first_observed_endpoint_window_days": [
+    64,
+    66
+  ],
+  "native_update_mark_original_day": 65,
+  "native_mark_is_not_an_execution_time_ledger": true,
+  "remaining_objective": "Main0 belowcap at2174, first observed positive stock write with actual update anchor",
+  "same_END": 53149536,
+  "accepted_next_baseline": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect11-a01",
+  "resumption_command_published": false,
+  "movie_or_human_signoff_credit": 0,
+  "prior_health_STOP_retained": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q11-rest-review-a01\\review.json",
+    "bytes": 30995,
+    "sha256": "ff63f2a46744380b657a8e27fa57da172035c8482d1e140aa2f8295aa68d4aef"
+  }
+}

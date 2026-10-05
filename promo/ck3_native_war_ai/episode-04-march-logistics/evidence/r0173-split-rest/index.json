@@ -1,0 +1,941 @@
+{
+  "schema": "xar.ck3.r0173.portable-endpoints.v1",
+  "created_utc": "2026-10-05T13:32:05.353240+00:00",
+  "status": "FROZEN_NUMERIC_QUALIFICATION_AND_ROOT_SESSION_CLOSURE_CANDIDATE",
+  "scope": "Knowledge and code reuse only. No raw recording, screenshots or saved-game bytes distributed. No ABC arm executed by this package.",
+  "reader_contract": "Resolve only artifact.path relative to this index; historical_attempt_path is provenance text. Absolute paths inside original source JSON remain untouched and are never resolved by review_frozen.py.",
+  "artifacts": [
+    {
+      "id": "protocol",
+      "path": "inputs/protocol.json",
+      "bytes": 6031,
+      "sha256": "8736bc756b0580ef5cf0f6031c96c51ae6ff88a8b911bad5f175fbd9eea8089a",
+      "role": "Root frozen qualification policy",
+      "historical_attempt_path": "root-r0173-protocol-freeze-a03/protocol.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "checkpoint_pin",
+      "path": "inputs/loaded-whole-checkpoint-pin.json",
+      "bytes": 388,
+      "sha256": "b68bfb5ce26275280a2146899efa2089b6004401a89b4f03b0cabf4971852970",
+      "role": "Root original immutable whole-save metadata only",
+      "historical_attempt_path": "root-packets-r0172-a01/attempts/r0172-whole-arrival-common-checkpoint-a01/actual-checkpoint-pin.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "baseline_before",
+      "path": "inputs/baseline/before.json",
+      "bytes": 34577,
+      "sha256": "2dabc5ce1a95aea0815bad2545b2602ff93c88e0f3a8cbad7842eb7d45e5ea58",
+      "role": "original whole27 baseline body",
+      "historical_attempt_path": "root-r0173-baseline-a02/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "baseline_after",
+      "path": "inputs/baseline/after.json",
+      "bytes": 34581,
+      "sha256": "a82a49c327fe66b3c104daf7d7923a1cc9142f9032b9335907b4330c5ce7dec6",
+      "role": "original whole27 baseline body",
+      "historical_attempt_path": "root-r0173-baseline-a02/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "baseline_strength",
+      "path": "inputs/baseline/strength.json",
+      "bytes": 78964,
+      "sha256": "f390d27e142f3a3abacb515f5007e498ddea78daae5554053bf7dc1b7a6d6e60",
+      "role": "original whole27 baseline body",
+      "historical_attempt_path": "root-r0173-baseline-a02/strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "split_before",
+      "path": "inputs/split/before.json",
+      "bytes": 217676,
+      "sha256": "ade38cdb8436ad71adbbc84d9f6c1cd609765d9fbafcac2a69fe47bf8e5ca3bd",
+      "role": "actual legal half-split body",
+      "historical_attempt_path": "root-r0173-half-split-a01/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "split_command",
+      "path": "inputs/split/command.json",
+      "bytes": 283,
+      "sha256": "60d5356bd63b5233f751caae1c7bf6a548de908d58bebfeec4a9ee017514720a",
+      "role": "actual legal half-split body",
+      "historical_attempt_path": "root-r0173-half-split-a01/command.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "split_after",
+      "path": "inputs/split/after.json",
+      "bytes": 35886,
+      "sha256": "b40106a9fc23871d725919b7a02043cb98b82f9f617b2dce026f44a0d7aa4e55",
+      "role": "actual legal half-split body",
+      "historical_attempt_path": "root-r0173-half-split-a01/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "split_strength",
+      "path": "inputs/split/strength.json",
+      "bytes": 92080,
+      "sha256": "bfaebf02099e78a2a827a9959c7a773f48a8fca7a025cfec433fbffca3c3ffdb",
+      "role": "actual legal half-split body",
+      "historical_attempt_path": "root-r0173-half-split-a01/strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "split_summary",
+      "path": "inputs/split/summary.json",
+      "bytes": 6690,
+      "sha256": "b5f1ef57c71fd354ac9afdfc01adfab19b83cb6c11c7bb59210cbae6fb6b5ac5",
+      "role": "actual legal half-split body",
+      "historical_attempt_path": "root-r0173-half-split-a01/summary.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q01_before",
+      "path": "inputs/q01/before.json",
+      "bytes": 36168,
+      "sha256": "4298e44c5e8e512211b6b7aabc9673cb83b43cc01cc381d54e61587ea8cc5de8",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect01-a01/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q01_after",
+      "path": "inputs/q01/after.json",
+      "bytes": 36168,
+      "sha256": "638919a55fdbecf2d9127721bf0b3c0894bcd8b1ee16373f0688e1d946f442f3",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect01-a01/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q01_strength",
+      "path": "inputs/q01/strength.json",
+      "bytes": 92189,
+      "sha256": "04d46da37cbbdb2897ca50f9af6c645d13b8551ddf24563dba78b55932d04254",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect01-a01/strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q02_before",
+      "path": "inputs/q02/before.json",
+      "bytes": 36171,
+      "sha256": "45c359d24f7bd408a150534acc16315b5e9d3829bc150c53e1beaf4abf021c0b",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect02-a01/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q02_after",
+      "path": "inputs/q02/after.json",
+      "bytes": 36171,
+      "sha256": "aaf449a7639ee99ea515fd2aced1bfab2f4aed7f23f59c4faa7b8955d786996b",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect02-a01/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q02_strength",
+      "path": "inputs/q02/strength.json",
+      "bytes": 92194,
+      "sha256": "b29f405d60394b5eec5ad47411e543c85d438e733fd1d94476fb2d2cb964b241",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect02-a01/strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q03_before",
+      "path": "inputs/q03/before.json",
+      "bytes": 36172,
+      "sha256": "492c7c3efe4de75367a3fd9fe8c58ac4d40f6223c7abc4c458f75e7041271074",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect03-a01/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q03_after",
+      "path": "inputs/q03/after.json",
+      "bytes": 36172,
+      "sha256": "2df43c02e92ce56296605624741b369b492898f682be5a96da09302bdd57b27a",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect03-a01/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q03_strength",
+      "path": "inputs/q03/strength.json",
+      "bytes": 92193,
+      "sha256": "78930c314a5120e234b6958e6c87ca711e4a60385aa453fbfb93cc99575bdc88",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect03-a01/strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q04_before",
+      "path": "inputs/q04/before.json",
+      "bytes": 36122,
+      "sha256": "2eb1ba7ed173f5c2c2f5f9455372ec06ed60de4ce9d42aa55cefded258d84a2e",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect04-a01/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q04_after",
+      "path": "inputs/q04/after.json",
+      "bytes": 36122,
+      "sha256": "e951bb64191d201cd254d9695569c114460e7919ec44c9f18d334182f435885a",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect04-a01/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q04_strength",
+      "path": "inputs/q04/strength.json",
+      "bytes": 92094,
+      "sha256": "1e824cc25354ea2f856cd4cc88b7147e09a934285e295de08edae5878f99144b",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect04-a01/strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q10_before",
+      "path": "inputs/q10/before.json",
+      "bytes": 34871,
+      "sha256": "bbd356e45a5484e2124995965b3be5ed30c3618b5b9ec8bc015d60bea1267177",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect10-a01/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q10_after",
+      "path": "inputs/q10/after.json",
+      "bytes": 34871,
+      "sha256": "2809aaf4ed154e5d0695f0026dec108a01c44a3362d0b7d4b7f1205cb9af191d",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect10-a01/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q10_strength",
+      "path": "inputs/q10/strength.json",
+      "bytes": 92097,
+      "sha256": "3daf863effb9b5b8a2be96ee53fa525a550d618f7cae4d6862c335256724bd0b",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect10-a01/strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q11_before",
+      "path": "inputs/q11/before.json",
+      "bytes": 34872,
+      "sha256": "a9bd7d5814b448b9e984eb385287b20e5897c403b9964339bbf9997b36ac38e7",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect11-a01/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q11_after",
+      "path": "inputs/q11/after.json",
+      "bytes": 34872,
+      "sha256": "e66c56e36f77b654d3cc4d67c6ab2e70180a1f4be39a48c7abf434b2ea04b6e5",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect11-a01/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q11_strength",
+      "path": "inputs/q11/strength.json",
+      "bytes": 92097,
+      "sha256": "d91bedda8a480cb83ffc30cec71b5b843622281a00782c96241b2cf5791ac9b8",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect11-a01/strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q13_before",
+      "path": "inputs/q13/before.json",
+      "bytes": 36123,
+      "sha256": "1e3bb0385d76a25640e020ca657a2ab31e57a1c00af5a95da1f2d9983761ae0a",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect13-a01/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q13_after",
+      "path": "inputs/q13/after.json",
+      "bytes": 36123,
+      "sha256": "371bba48b4384a4d72241f120cc7c0a41560e6ec52602ec4cb6df8d48954ff00",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect13-a01/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q13_strength",
+      "path": "inputs/q13/strength.json",
+      "bytes": 92097,
+      "sha256": "3729dfb7f7fbe859c0221a016a4ef45e7dc54cda36bb360e9168554ed07b7c95",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect13-a01/strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q14_before",
+      "path": "inputs/q14/before.json",
+      "bytes": 36123,
+      "sha256": "72d3e5044a3930e243be500062b6ae278441b0d54159b986afaf517364355f4e",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect14-a01/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q14_after",
+      "path": "inputs/q14/after.json",
+      "bytes": 36123,
+      "sha256": "9f8eca9fcf660a873e9e6eb3dfc5fb7872f0e63d36e3739eb84011986de1b188",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect14-a01/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q14_strength",
+      "path": "inputs/q14/strength.json",
+      "bytes": 92191,
+      "sha256": "b50a1d7cfbdbdd7e21f06da7a55948b0c5cb57cb0bec2f011ec1f4bdec4a1566",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect14-a01/strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q15_before",
+      "path": "inputs/q15/before.json",
+      "bytes": 36124,
+      "sha256": "e37e93b2580ee04724ccedc3406c350a0668340fb8bed67f2cfa9845a0855644",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect15-a01/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q15_after",
+      "path": "inputs/q15/after.json",
+      "bytes": 36124,
+      "sha256": "ffc7a9d83fca08d246006061bf89d14a357c6f1ddae535f2ad4d7dd73f1793b1",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect15-a01/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q15_strength",
+      "path": "inputs/q15/strength.json",
+      "bytes": 92191,
+      "sha256": "2a7d2d373208e70d7d2a52a9c37ad7b3d2f181b7edc56e73bc3c17588bd44130",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect15-a01/strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q16_before",
+      "path": "inputs/q16/before.json",
+      "bytes": 36123,
+      "sha256": "00e4db137b56055e737ea21efdbd4aa2561ad73adec4d36fb512cd699c668571",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect16-a01/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q16_after",
+      "path": "inputs/q16/after.json",
+      "bytes": 36123,
+      "sha256": "08a8e6774b6e8335e174ae36c0431c9c5bd51e07cf93a0b8702f03fc1b757bd9",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect16-a01/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "q16_strength",
+      "path": "inputs/q16/strength.json",
+      "bytes": 92189,
+      "sha256": "8e21c1a3fcd29f0b5867534c14b1a71e48828e35130afc2c6fb62eaaf8a11515",
+      "role": "actual frozen paused native body",
+      "historical_attempt_path": "root-r0173-q-inspect16-a01/strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "stationary_before",
+      "path": "inputs/stationary/before.json",
+      "bytes": 233518,
+      "sha256": "f19f94f188d708c3f1f43eee512c8d15d8c29facd37b8f3185da620a0b519dcd",
+      "role": "same paused day50 Root typed native readback",
+      "historical_attempt_path": "root-r0173-stationary-queries-a01/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "stationary_after",
+      "path": "inputs/stationary/after.json",
+      "bytes": 233518,
+      "sha256": "51ffe9217aec217f086e89d8ee7c9878650d8b2159b25ddf7d54256432c55701",
+      "role": "same paused day50 Root typed native readback",
+      "historical_attempt_path": "root-r0173-stationary-queries-a01/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "commander_0",
+      "path": "inputs/stationary/commander-0.json",
+      "bytes": 11477,
+      "sha256": "550b3de50ee512174dd492b194dfd6499ca0d333211a0f89e65dfc9b8f52aefc",
+      "role": "same paused day50 Root typed native readback",
+      "historical_attempt_path": "root-r0173-stationary-queries-a01/commander-0.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "commander_204",
+      "path": "inputs/stationary/commander-204.json",
+      "bytes": 11487,
+      "sha256": "7d82c0371e0fd24f393fe61c6c914714a508db2c805ff606691fd7b900b01ae4",
+      "role": "same paused day50 Root typed native readback",
+      "historical_attempt_path": "root-r0173-stationary-queries-a01/commander-204.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "preview_0",
+      "path": "inputs/stationary/london-preview-0.json",
+      "bytes": 1334,
+      "sha256": "9672a07f362560e2f17707cc94366e33a63694514adefb512c46089889fbbec7",
+      "role": "same paused day50 Root typed native readback",
+      "historical_attempt_path": "root-r0173-stationary-queries-a01/london-preview-0.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "preview_204",
+      "path": "inputs/stationary/london-preview-204.json",
+      "bytes": 1354,
+      "sha256": "884a7a93f921f2720349216c6ac26a7296423ba62cc139f5751e3c2582d6bcdd",
+      "role": "same paused day50 Root typed native readback",
+      "historical_attempt_path": "root-r0173-stationary-queries-a01/london-preview-204.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "peer_split",
+      "path": "peer/SPLIT-REVIEW-a01.json",
+      "bytes": 44284,
+      "sha256": "2bf8ea5f1f1f9fe3a04d05a346eef31606cda8dc5ac2e37163beab27631a44fe",
+      "role": "independent split_merge frozen review",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/SPLIT-REVIEW-a01.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "peer_split_action",
+      "path": "peer/ACTION-BINDING-a02.json",
+      "bytes": 2052,
+      "sha256": "db18d0d24677e06a080a2ad3fe9830aa2e22408282a3d4b5fb64294047a168b9",
+      "role": "independent split_merge frozen review",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/ACTION-BINDING-a02.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "peer_integer_review",
+      "path": "peer/QUALIFICATION-q-inspect14-a01.json",
+      "bytes": 23352,
+      "sha256": "2b52f9e533483f5848b2d37557cc133f7e66f160285c1ffd20d44cdc4b1ae941",
+      "role": "independent split_merge frozen review",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/QUALIFICATION-q-inspect14-a01.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "peer_stock_review",
+      "path": "peer/QUALIFICATION-q-inspect16-a01.json",
+      "bytes": 11914,
+      "sha256": "78192514e2ae7db8be723e1df53cc43e19ea2458ca7a76a5ba776ee4096bf3c5",
+      "role": "independent split_merge frozen review",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/QUALIFICATION-q-inspect16-a01.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "peer_final_index",
+      "path": "peer/QUALIFICATION-INDEX-final-a10.json",
+      "bytes": 5200,
+      "sha256": "03d48aaceb4b83e6ff60211150bbaabf09f6c2872ed360a8f5fc333e1d0990ba",
+      "role": "independent split_merge frozen review",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/QUALIFICATION-INDEX-final-a10.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "peer_final_delivery",
+      "path": "peer/ROOT-DELIVERY-a10.json",
+      "bytes": 1626,
+      "sha256": "4827e2c7e48be250a628635c5d250046357183c6d9d5332f5a920d745c9cb596",
+      "role": "independent split_merge frozen review",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/ROOT-DELIVERY-a10.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_integer_CASE-a01",
+      "path": "peer/calendar-integer-growth-day72-a01/CASE-a01.json",
+      "bytes": 28015,
+      "sha256": "d6b50aed926e2e8bd69819ab763954bd43fe12db028edc7d5b3acea10b6ed966",
+      "role": "independent frozen endpoint case",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/calendar-integer-growth-day72-a01/CASE-a01.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_integer_q-inspect13-after",
+      "path": "peer/calendar-integer-growth-day72-a01/q-inspect13-after.json",
+      "bytes": 36123,
+      "sha256": "371bba48b4384a4d72241f120cc7c0a41560e6ec52602ec4cb6df8d48954ff00",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/calendar-integer-growth-day72-a01/q-inspect13-after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_integer_q-inspect13-before",
+      "path": "peer/calendar-integer-growth-day72-a01/q-inspect13-before.json",
+      "bytes": 36123,
+      "sha256": "1e3bb0385d76a25640e020ca657a2ab31e57a1c00af5a95da1f2d9983761ae0a",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/calendar-integer-growth-day72-a01/q-inspect13-before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_integer_q-inspect13-strength",
+      "path": "peer/calendar-integer-growth-day72-a01/q-inspect13-strength.json",
+      "bytes": 92097,
+      "sha256": "3729dfb7f7fbe859c0221a016a4ef45e7dc54cda36bb360e9168554ed07b7c95",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/calendar-integer-growth-day72-a01/q-inspect13-strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_integer_q-inspect14-after",
+      "path": "peer/calendar-integer-growth-day72-a01/q-inspect14-after.json",
+      "bytes": 36123,
+      "sha256": "9f8eca9fcf660a873e9e6eb3dfc5fb7872f0e63d36e3739eb84011986de1b188",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/calendar-integer-growth-day72-a01/q-inspect14-after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_integer_q-inspect14-before",
+      "path": "peer/calendar-integer-growth-day72-a01/q-inspect14-before.json",
+      "bytes": 36123,
+      "sha256": "72d3e5044a3930e243be500062b6ae278441b0d54159b986afaf517364355f4e",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/calendar-integer-growth-day72-a01/q-inspect14-before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_integer_q-inspect14-strength",
+      "path": "peer/calendar-integer-growth-day72-a01/q-inspect14-strength.json",
+      "bytes": 92191,
+      "sha256": "b50a1d7cfbdbdd7e21f06da7a55948b0c5cb57cb0bec2f011ec1f4bdec4a1566",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/calendar-integer-growth-day72-a01/q-inspect14-strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_integer_q-pulse13-after",
+      "path": "peer/calendar-integer-growth-day72-a01/q-pulse13-after.json",
+      "bytes": 36122,
+      "sha256": "e87e1427230a0e6d9fac697eea7fce44a554806daba4a3430d58c092ef221cdc",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/calendar-integer-growth-day72-a01/q-pulse13-after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_integer_q-pulse13-before",
+      "path": "peer/calendar-integer-growth-day72-a01/q-pulse13-before.json",
+      "bytes": 232271,
+      "sha256": "876f2073afbb0dc239a12c14d093fd5becf7ae579658bd8cad362f4345d3513f",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/calendar-integer-growth-day72-a01/q-pulse13-before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_integer_q-pulse13-result",
+      "path": "peer/calendar-integer-growth-day72-a01/q-pulse13-result.json",
+      "bytes": 1213,
+      "sha256": "92a409fd902fb3bdb11f753777fa46b764ab6e017602042aec169298d855c40f",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/calendar-integer-growth-day72-a01/q-pulse13-result.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_integer_q-pulse14-after",
+      "path": "peer/calendar-integer-growth-day72-a01/q-pulse14-after.json",
+      "bytes": 36122,
+      "sha256": "f430ccd648db03f25eecf1faac0718150ad242831532e4d2d7157cbd1312a479",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/calendar-integer-growth-day72-a01/q-pulse14-after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_integer_q-pulse14-before",
+      "path": "peer/calendar-integer-growth-day72-a01/q-pulse14-before.json",
+      "bytes": 233522,
+      "sha256": "e0bd94e7e3fcf9d7591cab4ed9a7d48221ae6217b048db27283cea1f62fbf8c2",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/calendar-integer-growth-day72-a01/q-pulse14-before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_integer_q-pulse14-result",
+      "path": "peer/calendar-integer-growth-day72-a01/q-pulse14-result.json",
+      "bytes": 1213,
+      "sha256": "2d595ffb2c885f412997ecbf5d7fa90885368e8ff593dbffec0d51ad6a3c5bac",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/calendar-integer-growth-day72-a01/q-pulse14-result.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_stock_CASE-a01",
+      "path": "peer/main-below-cap-positive-stock-day76-a01/CASE-a01.json",
+      "bytes": 11491,
+      "sha256": "0760542c6b896b452c446754eb445c51c607d706b1adf57616ded99a26ed7ef0",
+      "role": "independent frozen endpoint case",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/main-below-cap-positive-stock-day76-a01/CASE-a01.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_stock_q-inspect15-after",
+      "path": "peer/main-below-cap-positive-stock-day76-a01/q-inspect15-after.json",
+      "bytes": 36124,
+      "sha256": "ffc7a9d83fca08d246006061bf89d14a357c6f1ddae535f2ad4d7dd73f1793b1",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/main-below-cap-positive-stock-day76-a01/q-inspect15-after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_stock_q-inspect15-before",
+      "path": "peer/main-below-cap-positive-stock-day76-a01/q-inspect15-before.json",
+      "bytes": 36124,
+      "sha256": "e37e93b2580ee04724ccedc3406c350a0668340fb8bed67f2cfa9845a0855644",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/main-below-cap-positive-stock-day76-a01/q-inspect15-before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_stock_q-inspect15-strength",
+      "path": "peer/main-below-cap-positive-stock-day76-a01/q-inspect15-strength.json",
+      "bytes": 92191,
+      "sha256": "2a7d2d373208e70d7d2a52a9c37ad7b3d2f181b7edc56e73bc3c17588bd44130",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/main-below-cap-positive-stock-day76-a01/q-inspect15-strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_stock_q-inspect16-after",
+      "path": "peer/main-below-cap-positive-stock-day76-a01/q-inspect16-after.json",
+      "bytes": 36123,
+      "sha256": "08a8e6774b6e8335e174ae36c0431c9c5bd51e07cf93a0b8702f03fc1b757bd9",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/main-below-cap-positive-stock-day76-a01/q-inspect16-after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_stock_q-inspect16-before",
+      "path": "peer/main-below-cap-positive-stock-day76-a01/q-inspect16-before.json",
+      "bytes": 36123,
+      "sha256": "00e4db137b56055e737ea21efdbd4aa2561ad73adec4d36fb512cd699c668571",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/main-below-cap-positive-stock-day76-a01/q-inspect16-before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_stock_q-inspect16-strength",
+      "path": "peer/main-below-cap-positive-stock-day76-a01/q-inspect16-strength.json",
+      "bytes": 92189,
+      "sha256": "8e21c1a3fcd29f0b5867534c14b1a71e48828e35130afc2c6fb62eaaf8a11515",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/main-below-cap-positive-stock-day76-a01/q-inspect16-strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_stock_q-pulse15-after",
+      "path": "peer/main-below-cap-positive-stock-day76-a01/q-pulse15-after.json",
+      "bytes": 36123,
+      "sha256": "95f675c4b722a06345630c54cb40a2413a7f6291bad12bc562c1f7e95fc10945",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/main-below-cap-positive-stock-day76-a01/q-pulse15-after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_stock_q-pulse15-before",
+      "path": "peer/main-below-cap-positive-stock-day76-a01/q-pulse15-before.json",
+      "bytes": 233834,
+      "sha256": "99588388ee67aa4fdfa90938c4b997c40817fea11373e940ef35b38959266627",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/main-below-cap-positive-stock-day76-a01/q-pulse15-before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_stock_q-pulse15-result",
+      "path": "peer/main-below-cap-positive-stock-day76-a01/q-pulse15-result.json",
+      "bytes": 1213,
+      "sha256": "79d4d1a8a99f401428dfcfad83e77ff79321cfb6d27dc44cb98dc4b1e8b3c652",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/main-below-cap-positive-stock-day76-a01/q-pulse15-result.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_stock_q-pulse16-after",
+      "path": "peer/main-below-cap-positive-stock-day76-a01/q-pulse16-after.json",
+      "bytes": 36122,
+      "sha256": "b0e9d64f36cbe57396e576f5b79f3610d88fba13871d9e2a03cbef6074de12a4",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/main-below-cap-positive-stock-day76-a01/q-pulse16-after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_stock_q-pulse16-before",
+      "path": "peer/main-below-cap-positive-stock-day76-a01/q-pulse16-before.json",
+      "bytes": 233833,
+      "sha256": "8f00ae769e9ec82f8ae07553006396dd0c5f711580297066f2bd50e2690757ed",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/main-below-cap-positive-stock-day76-a01/q-pulse16-before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "case_stock_q-pulse16-result",
+      "path": "peer/main-below-cap-positive-stock-day76-a01/q-pulse16-result.json",
+      "bytes": 1213,
+      "sha256": "b77a72bab232beba54e71aff87755a4cd597c8fe0f3276bfd7277132594184eb",
+      "role": "peer preserved exact original body",
+      "historical_attempt_path": "r0173-split-qualification-analysis-a01/main-below-cap-positive-stock-day76-a01/q-pulse16-result.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "root_world_diff",
+      "path": "root/world-diff.json",
+      "bytes": 2328,
+      "sha256": "f03d8d44326801848d8771d3f90be72820aaab6162e1d403f7d0b59b863cb049",
+      "role": "Root explicit saved-packet review or original preserved STOP",
+      "historical_attempt_path": "root-r0173-world-diff-a01/diff.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "root_world_review",
+      "path": "root/world-review.json",
+      "bytes": 5225,
+      "sha256": "71ab927a49528448155cc5134d8d86b7374d82a443fb55fdca31f1d7d9cd88da",
+      "role": "Root explicit saved-packet review or original preserved STOP",
+      "historical_attempt_path": "root-r0173-world-reviewed-a01/review.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "root_cap_review",
+      "path": "root/child-cap-review.json",
+      "bytes": 4817,
+      "sha256": "442cb3b5b006a24c7a47c3b9363f166128c5a0b158bc8eff147ac1ee99c35157",
+      "role": "Root explicit saved-packet review or original preserved STOP",
+      "historical_attempt_path": "root-r0173-child-cap-reviewed-a01/review.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "root_world_stop",
+      "path": "root/world-stop-original.json",
+      "bytes": 4353,
+      "sha256": "c2cdfc131751c479e7a8d2a528ba70200b6cc81e55e2ec356a45b298447cedd8",
+      "role": "Root explicit saved-packet review or original preserved STOP",
+      "historical_attempt_path": "r0173-rest-batch01-a01/result.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "root_cap_stop",
+      "path": "root/child-cap-stop-original.json",
+      "bytes": 30995,
+      "sha256": "ff63f2a46744380b657a8e27fa57da172035c8482d1e140aa2f8295aa68d4aef",
+      "role": "Root explicit saved-packet review or original preserved STOP",
+      "historical_attempt_path": "root-r0173-q11-rest-review-a01/review.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "root_world_endpoint_before",
+      "path": "root/world-change-endpoint/before.json",
+      "bytes": 34872,
+      "sha256": "c503ebc255d487eca92e52a79e9aa396cc6b1b52059293812bd543d5cd09574c",
+      "role": "original day52 endpoint referenced by Root accepted world review",
+      "historical_attempt_path": "r0173-rest-batch01-a01-r01-inspect/before.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "root_world_endpoint_after",
+      "path": "root/world-change-endpoint/after.json",
+      "bytes": 34872,
+      "sha256": "b82f0a202171dd1ab1edeb25053d7305d54f2cfaee1754e91fc64a2aa5b5be26",
+      "role": "original day52 endpoint referenced by Root accepted world review",
+      "historical_attempt_path": "r0173-rest-batch01-a01-r01-inspect/after.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "root_world_endpoint_strength",
+      "path": "root/world-change-endpoint/strength.json",
+      "bytes": 92095,
+      "sha256": "e27729f3c0ffa31608b965532dd2eb07be554cad3970a23941cdedd711c8ae2c",
+      "role": "original day52 endpoint referenced by Root accepted world review",
+      "historical_attempt_path": "r0173-rest-batch01-a01-r01-inspect/strength.json",
+      "representation": "original exact bytes; historical absolute paths inside body are not runtime dependencies"
+    },
+    {
+      "id": "verifier",
+      "path": "review_frozen.py",
+      "bytes": 20562,
+      "sha256": "384b60a0ce7d04b45e7ef77e23bd5ba2d4082df223a1234315fb09b5f1ca0a20",
+      "role": "read-only stdlib verifier; prints derived JSON to stdout",
+      "representation": "authored portable code"
+    },
+    {
+      "id": "root_closure",
+      "path": "root/actual-closure-and-save.json",
+      "bytes": 1363,
+      "sha256": "b3e817b9e922d324b0b3a26ee641f31d4b8d4e5dab61151beb7a3c2477d6058d",
+      "role": "Root actual final save/closure or coverage review; exact original small JSON",
+      "historical_attempt_path": "root-r0173-closure-and-release-a01/actual-closure-and-save.json",
+      "representation": "original exact bytes; no save or media bytes copied"
+    },
+    {
+      "id": "root_world_coverage",
+      "path": "root/world-review-coverage-addendum.json",
+      "bytes": 706,
+      "sha256": "ef842ffee3f4d24350435433235aeda2fcd0e595c82984cc11bfa673e05ce40d",
+      "role": "Root actual final save/closure or coverage review; exact original small JSON",
+      "historical_attempt_path": "root-r0173-closure-and-release-a01/world-review-coverage-addendum.json",
+      "representation": "original exact bytes; no save or media bytes copied"
+    },
+    {
+      "id": "qualified_checkpoint_pin",
+      "path": "inputs/qualified-split-checkpoint-pin.json",
+      "bytes": 382,
+      "sha256": "f309eae082ce8f9aa84c611befbaa9aa21e1b9aedeb8b5a99dfcab001420352d",
+      "role": "Root actual final save/closure or coverage review; exact original small JSON",
+      "historical_attempt_path": "root-packets-r0173-a01/attempts/r0173-qualified-rest-checkpoint-a01/actual-checkpoint-pin.json",
+      "representation": "original exact bytes; no save or media bytes copied"
+    },
+    {
+      "id": "root_frame_review",
+      "path": "root/original-frame-review.json",
+      "bytes": 1217,
+      "sha256": "bfd236c51da05f78b708d62495cff2a27f136eb60bd648f783dfef6f0291d2fa",
+      "role": "Root actual final save/closure or coverage review; exact original small JSON",
+      "historical_attempt_path": "root-r0173-preserve-and-stop-a01/root-original-frame-review.json",
+      "representation": "original exact bytes; no save or media bytes copied"
+    },
+    {
+      "id": "root_bootstrap_closure",
+      "path": "root/bootstrap-result.json",
+      "bytes": 13797,
+      "sha256": "225548591a1aa124c40394abce724f55793723f57b0175f19755b9b06137f114",
+      "role": "Root actual final save/closure or coverage review; exact original small JSON",
+      "historical_attempt_path": "native-live-r0173-a01/bootstrap-result.json",
+      "representation": "original exact bytes; no save or media bytes copied"
+    }
+  ],
+  "protocol": {
+    "original_start_raw": 53147376,
+    "absolute_end_raw": 53149536,
+    "max_actual_days": 90,
+    "loaded_whole_raw": 53148432,
+    "used_before_R0173": 44,
+    "latest_raw": 53149200,
+    "original_days_used": 76,
+    "remaining_original_days": 14,
+    "budget_reset": false
+  },
+  "excluded_large_assets": [
+    {
+      "kind": "whole landed save",
+      "bytes": 73795635,
+      "sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a",
+      "available_in_package": false,
+      "rehashed_or_copied_by_this_attempt": false,
+      "metadata_artifact_id": "checkpoint_pin"
+    },
+    {
+      "kind": "recordings and pixels",
+      "available_in_package": false,
+      "media_read_or_rehashed_by_this_attempt": false
+    },
+    {
+      "kind": "qualified split backup save; notABC whole common",
+      "bytes": 74386976,
+      "sha256": "c43f71c4973e035e04fb44609ba86f04407beb7af1a775191e09fddb9e943b66",
+      "available_in_package": false,
+      "rehashed_or_copied_by_this_attempt": false,
+      "metadata_artifact_id": "qualified_checkpoint_pin"
+    }
+  ],
+  "observed_windows": [
+    {
+      "endpoints": [
+        "q01",
+        "q02"
+      ],
+      "original_days": [
+        45,
+        47
+      ],
+      "claim": "Main negative stock110.37716 to106.13988; actual update mark originalday46; no troop or full DATA changes"
+    },
+    {
+      "endpoints": [
+        "q03",
+        "q04"
+      ],
+      "original_days": [
+        49,
+        50
+      ],
+      "claim": "Both halves stationary at distinct2174/2327 and monthly+20 atday50; stocks unchanged across this arrival window"
+    },
+    {
+      "endpoints": [
+        "q10",
+        "q11"
+      ],
+      "original_days": [
+        64,
+        66
+      ],
+      "claim": "Child overcap110.37716 tocapacity100, +188 markday65; not positive recovery or soldier gain"
+    },
+    {
+      "endpoints": [
+        "q13",
+        "q14"
+      ],
+      "original_days": [
+        70,
+        72
+      ],
+      "claim": "Same27FullIDs/37DATA keys and max; six DATA integer gains total+7/+3, stocks and supply anchors unchanged; known calendar consistency is not producer-PC attribution"
+    },
+    {
+      "endpoints": [
+        "q15",
+        "q16"
+      ],
+      "original_days": [
+        74,
+        76
+      ],
+      "claim": "Main106.13988 to126.13988 with monthly+20/cap300 and new update markday76; full27/37 rows unchanged; child atcap100 unchanged"
+    }
+  ],
+  "credits": {
+    "ABC_completed_arms": 0,
+    "film": 0,
+    "clean_span": 0,
+    "human_signoff": 0
+  },
+  "pending": [
+    "ABC common whole checkpoint choice and fresh live rebind for each arm",
+    "C actual distinct route validation",
+    "producer/applied refill or death ledger and weighted merge clamp",
+    "encoded media scope, clean span, final film and actual human review"
+  ],
+  "source_boundary": "Original health.source game_version/executable_sha256 are null in these packets; retain null. Root protocol separately pins prepared source commit7f1db1a773e647b9f31378d4a9ccf57a60cf9e73. This review verifies endpoint-source joins and does not fabricate missing executable attribution.",
+  "revision": "a02 preserves a01 original files and failed status-contract verification; native query successful status is available, not completed"
+}

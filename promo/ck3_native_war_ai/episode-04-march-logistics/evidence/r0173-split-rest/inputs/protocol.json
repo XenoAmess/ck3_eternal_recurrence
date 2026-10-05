@@ -1,0 +1,101 @@
+{
+  "schema": "xar.ck3.episode04.bounded-qualification-continuation/v1",
+  "frozen_at": "2026-10-05T11:48:43.878809+00:00",
+  "run": "R0173 independent cold load of R0172 actual wholearrival; same Jan20-to90day qualification, not a reset",
+  "source_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+  "prepared_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\ROOT-DELIVERY-a01.json",
+    "bytes": 9367,
+    "sha256": "36a28c850b4f3bf31e68b60528bea89deee12f00e34115f658c756a7f5ce4e91"
+  },
+  "original_common_save": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-postmerge-common-start-a01\\common-t0.ck3",
+    "bytes": 72572576,
+    "sha256": "dcd54f1270e4c5e18af2d2a8adb5b9d2af2cd5af60ae3d71330b782adf122260"
+  },
+  "actor_id": 33388,
+  "start_raw": 53147376,
+  "absolute_end_raw": 53149536,
+  "max_actual_game_days": 90,
+  "budget_measure": "actual raw-hour difference/24; all travel/rest counts; checkpoint does not reset budget",
+  "reason_for_new_protocol": "Existing SDK permits exactly one recorder attempt; prior900s capture closed before44day endpoint. Continue rest qualification in a new recorded session from exact unsplit stationary2174 save.",
+  "old_R0171_end_unchanged": 53148096,
+  "old_R0171_actual_days_advanced": 0,
+  "old_R0171_halt_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0171-halt-a01\\halt.json",
+    "bytes": 268,
+    "sha256": "ba3f2b05f4579c99f5a3e0835faccea62e7a828921a5b30f24a0c1ac0101c91b"
+  },
+  "old_R0171_after_halt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0171-halt-a01\\after.json",
+    "bytes": 37046,
+    "sha256": "12e0793a3be28cd0e734b10660db9cc333cc27b659a92a74938cb9be695aaea2"
+  },
+  "full_route_ETA_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-protocol-freeze-a01\\r0171-full-route-ETA-original-review.json",
+    "bytes": 820,
+    "sha256": "2acf4c77db2c75fbb4079c3036a1a62ee280d165b4a1f7f92d24f6894738c672"
+  },
+  "native_full_route_ETA_unavailable": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0171-a01\\responses\\r0171-main-route-eta-2174-a01.json",
+    "bytes": 1370,
+    "sha256": "99eb49e693d3cc20185919864dc211ba42bf8837ffb4ff26d8cbc5cb10a3148b"
+  },
+  "qualification_actions": [
+    "Verify independent actual paused actor/world/source/cohort match d052 savedwhole at raw53148432; Main0 27reg6679/6747 S11037716 cap30000000 monthly−423728",
+    "Normal half split; recorddisjoint FullIDs union and all37DATA identity/current/max, no injected stock or troops",
+    "D stays2174; childfreshpreview and legal move2327, predefined2325fallback only if2327fails",
+    "Require both actual stationary positive monthly; apply existing belowcap/atcap recoverycondition; preserve first actual clamp distinctly",
+    "Stop at actual original END53149536, actor/world/events/combat/health uncertainty or unexplainedsubjectcohort change; travel/rest allcount"
+  ],
+  "predefined_recovery_condition": {
+    "stock_below_capacity": "first observed successful positive supply write with same Army identity and actual stock increase; preserve amount and update anchors",
+    "stock_at_or_above_capacity": "report already-full/overcapacity branch honestly, zero required growth; preserve first actual clamp if observed, do not call clamp replenishment"
+  },
+  "stop_conditions": [
+    "actual90-day endpoint with one-day final reserve before resume",
+    "actor death/change",
+    "combat/retreat",
+    "war ends",
+    "blocking event/interaction",
+    "unexpected cohort change outside independently explained known update",
+    "pause failure or source/revision uncertainty",
+    "candidate sites fail within finite budget"
+  ],
+  "ABC": {
+    "completed_arms": 0,
+    "this_run_is_ABC": false,
+    "must_all_cold_load_same_unsplit_new_checkpoint_SHA": true,
+    "whole_start_need_not_have_positive_monthly": true,
+    "common_input_date_and_actual_roster_commander_war_enemies_cash_must_be_frozen": true,
+    "later_common_observation_max_actual_days": 90,
+    "later_common_absolute_end": "exact new common T0 raw +2160; freeze once before any A/B/C arm, never extend individual arm",
+    "A": "whole direct London1527",
+    "B": "normal halves to validated2174/2327; predefined recovery condition; reunite2174; legal merge retaining Main lineage; same London1527",
+    "C": "whole via prevalidated distinct waypoint2176 or2179; same London1527",
+    "C_waypoint_and_routes": "pending new actual previews; no actual route credit from this plan",
+    "comparisons": "each arm arrival or same absolute endpoint; treasury net separate from current/counterfactual maintenance, random events and enemy divergence retained"
+  },
+  "new_Game_or_SDK_actions": 0,
+  "movie_or_clean_span_or_signoff_credit": 0,
+  "parent_protocol": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-protocol-freeze-a01\\protocol.json",
+    "bytes": 4729,
+    "sha256": "4c78679fee6f75fe1d5ad2a846fc910cd565c0771fbe59081ab5d84c0f0a6017"
+  },
+  "R0172_actual_closure": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0172-a01\\bootstrap-result.json",
+    "bytes": 13796,
+    "sha256": "d80fe060915ddcb69589b744791399912ea3451151cf37d83c3dc7910f5057fe"
+  },
+  "loaded_whole_checkpoint": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0172-a01\\attempts\\r0172-whole-arrival-common-checkpoint-a01\\actual-checkpoint.ck3",
+    "bytes": 73795635,
+    "sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a"
+  },
+  "loaded_start_raw": 53148432,
+  "actual_days_already_used": 44,
+  "remaining_actual_days": 46,
+  "loaded_landing_boundary": "R0172 +42→+44 paused interval, not exactarrival tick; day44 firststationary read, outside prior900s raw",
+  "unknown_non_subject_units": "R0172 CUnit190 CArmyreference−1, notzero or typedtransport; absentbywholelandingsave. Futureunavailable rows retained, any changed subject stops."
+}

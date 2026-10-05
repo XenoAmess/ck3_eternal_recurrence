@@ -1,0 +1,307 @@
+{
+  "status": "PASS_FROZEN_SPLIT_REST_ENDPOINTS",
+  "schema": "xar.ck3.r0173.portable-review.v1",
+  "verified_artifact_count": 92,
+  "runtime": {
+    "python_version": "3.14.7",
+    "stdlib_only": true
+  },
+  "split": {
+    "regiments": [
+      15,
+      12
+    ],
+    "soldiers": [
+      3337,
+      3342
+    ],
+    "maximum": [
+      3371,
+      3376
+    ],
+    "DATA_count": 37,
+    "absolute_stock_copied_raw": 11037716
+  },
+  "windows": {
+    "01": {
+      "0": {
+        "current_soldiers": 3337,
+        "maximum_soldiers": 3371,
+        "current_supply_raw": 11037716,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": -423728
+      },
+      "204": {
+        "current_soldiers": 3342,
+        "maximum_soldiers": 3376,
+        "current_supply_raw": 11037716,
+        "current_supply_capacity_raw": 10000000,
+        "current_supply_change_monthly_raw": -423728
+      }
+    },
+    "02": {
+      "0": {
+        "current_soldiers": 3337,
+        "maximum_soldiers": 3371,
+        "current_supply_raw": 10613988,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": -423728
+      },
+      "204": {
+        "current_soldiers": 3342,
+        "maximum_soldiers": 3376,
+        "current_supply_raw": 11037716,
+        "current_supply_capacity_raw": 10000000,
+        "current_supply_change_monthly_raw": -423728
+      }
+    },
+    "03": {
+      "0": {
+        "current_soldiers": 3337,
+        "maximum_soldiers": 3371,
+        "current_supply_raw": 10613988,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": -423728
+      },
+      "204": {
+        "current_soldiers": 3342,
+        "maximum_soldiers": 3376,
+        "current_supply_raw": 11037716,
+        "current_supply_capacity_raw": 10000000,
+        "current_supply_change_monthly_raw": -423728
+      }
+    },
+    "04": {
+      "0": {
+        "current_soldiers": 3337,
+        "maximum_soldiers": 3371,
+        "current_supply_raw": 10613988,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 2000000
+      },
+      "204": {
+        "current_soldiers": 3342,
+        "maximum_soldiers": 3376,
+        "current_supply_raw": 11037716,
+        "current_supply_capacity_raw": 10000000,
+        "current_supply_change_monthly_raw": 2000000
+      }
+    },
+    "10": {
+      "0": {
+        "current_soldiers": 3337,
+        "maximum_soldiers": 3371,
+        "current_supply_raw": 10613988,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 2000000
+      },
+      "204": {
+        "current_soldiers": 3342,
+        "maximum_soldiers": 3376,
+        "current_supply_raw": 11037716,
+        "current_supply_capacity_raw": 10000000,
+        "current_supply_change_monthly_raw": 2000000
+      }
+    },
+    "11": {
+      "0": {
+        "current_soldiers": 3337,
+        "maximum_soldiers": 3371,
+        "current_supply_raw": 10613988,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 2000000
+      },
+      "204": {
+        "current_soldiers": 3342,
+        "maximum_soldiers": 3376,
+        "current_supply_raw": 10000000,
+        "current_supply_capacity_raw": 10000000,
+        "current_supply_change_monthly_raw": 2000000
+      }
+    },
+    "13": {
+      "0": {
+        "current_soldiers": 3337,
+        "maximum_soldiers": 3371,
+        "current_supply_raw": 10613988,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 2000000
+      },
+      "204": {
+        "current_soldiers": 3342,
+        "maximum_soldiers": 3376,
+        "current_supply_raw": 10000000,
+        "current_supply_capacity_raw": 10000000,
+        "current_supply_change_monthly_raw": 2000000
+      }
+    },
+    "14": {
+      "0": {
+        "current_soldiers": 3344,
+        "maximum_soldiers": 3371,
+        "current_supply_raw": 10613988,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 2000000
+      },
+      "204": {
+        "current_soldiers": 3345,
+        "maximum_soldiers": 3376,
+        "current_supply_raw": 10000000,
+        "current_supply_capacity_raw": 10000000,
+        "current_supply_change_monthly_raw": 2000000
+      }
+    },
+    "15": {
+      "0": {
+        "current_soldiers": 3344,
+        "maximum_soldiers": 3371,
+        "current_supply_raw": 10613988,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 2000000
+      },
+      "204": {
+        "current_soldiers": 3345,
+        "maximum_soldiers": 3376,
+        "current_supply_raw": 10000000,
+        "current_supply_capacity_raw": 10000000,
+        "current_supply_change_monthly_raw": 2000000
+      }
+    },
+    "16": {
+      "0": {
+        "current_soldiers": 3344,
+        "maximum_soldiers": 3371,
+        "current_supply_raw": 12613988,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_change_monthly_raw": 2000000
+      },
+      "204": {
+        "current_soldiers": 3345,
+        "maximum_soldiers": 3376,
+        "current_supply_raw": 10000000,
+        "current_supply_capacity_raw": 10000000,
+        "current_supply_change_monthly_raw": 2000000
+      }
+    }
+  },
+  "six_grown_DATA_records": [
+    {
+      "identity": [
+        50,
+        0,
+        2624,
+        1
+      ],
+      "delta": 2,
+      "after": 75,
+      "max": 75
+    },
+    {
+      "identity": [
+        54,
+        0,
+        2610,
+        0
+      ],
+      "delta": 3,
+      "after": 302,
+      "max": 302
+    },
+    {
+      "identity": [
+        62,
+        0,
+        2620,
+        1
+      ],
+      "delta": 1,
+      "after": 69,
+      "max": 69
+    },
+    {
+      "identity": [
+        82,
+        1,
+        2602,
+        1
+      ],
+      "delta": 1,
+      "after": 69,
+      "max": 69
+    },
+    {
+      "identity": [
+        52,
+        0,
+        17948,
+        0
+      ],
+      "delta": 2,
+      "after": 200,
+      "max": 200
+    },
+    {
+      "identity": [
+        53,
+        0,
+        16793680,
+        0
+      ],
+      "delta": 1,
+      "after": 10,
+      "max": 10
+    }
+  ],
+  "commander_readback_at_original_day50": {
+    "0": 27357,
+    "204": 33388
+  },
+  "actual_province_supply_at_original_day50": {
+    "0": {
+      "status": "available",
+      "unavailable_reason": null,
+      "role": "current",
+      "province_id": 2174,
+      "native_supply_limit_soldiers": 4960,
+      "native_supply_usage_soldiers": 3337,
+      "scale": 1
+    },
+    "204": {
+      "status": "available",
+      "unavailable_reason": null,
+      "role": "current",
+      "province_id": 2327,
+      "native_supply_limit_soldiers": 4160,
+      "native_supply_usage_soldiers": 3342,
+      "scale": 1
+    }
+  },
+  "latest_raw": 53149200,
+  "absolute_end_raw": 53149536,
+  "actual_original_days_used": 76,
+  "remaining_original_days": 14,
+  "Main_positive_stock_delta_raw": 2000000,
+  "pending": [
+    "ABC common whole checkpoint choice and fresh live rebind for each arm",
+    "C actual distinct route validation",
+    "producer/applied refill or death ledger and weighted merge clamp",
+    "encoded media scope, clean span, final film and actual human review"
+  ],
+  "credits": {
+    "ABC_completed_arms": 0,
+    "film": 0,
+    "clean_span": 0,
+    "human_signoff": 0
+  },
+  "side_effects": {
+    "files_written": 0,
+    "game_or_SDK_or_network_or_media": 0
+  },
+  "limits": [
+    "only saved endpoint values, identities and source-frame joins are verified",
+    "no producer PC/applied ledger, exact update tick or death attribution",
+    "day50 commander readback does not establish day76 commander stability",
+    "positive monthly values alone do not establish positive stock growth; q15/q16 additionally verifies actual stock endpoints",
+    "original save and recordings are deliberately not distributed or rehashed"
+  ]
+}

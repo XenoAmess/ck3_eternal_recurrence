@@ -1,0 +1,30 @@
+{
+  "schema": "xar.ck3.r0173.portable-verifier-execution.v1",
+  "started_utc": "2026-10-05T13:32:39.019635+00:00",
+  "finished_utc": "2026-10-05T13:32:39.328409+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-war-episode04-research-20261004-a01\\r0173-portable-candidate-a01\\repo-projection-a02\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0173-split-rest\\review_frozen.py"
+  ],
+  "cwd": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-portable-candidate-a01\\repo-projection-a02\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0173-split-rest",
+  "returncode": 0,
+  "interpreter_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "output_pins": {
+    "argv.json": {
+      "bytes": 307,
+      "sha256": "efd8a74e29b0e4b35ccb3132d46819fcf52b58e37ad855768c7bba0d1fd1b79d"
+    },
+    "stdout.json": {
+      "bytes": 8221,
+      "sha256": "7bcb183160bbe3e7da253d6112d33105e4605d925cdc2c2e70b013264437d274"
+    },
+    "stderr.txt": {
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "game_sdk_network_media_security_task_actions": 0
+}

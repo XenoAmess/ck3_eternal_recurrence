@@ -1,0 +1,409 @@
+{
+  "status": "COHORT_IDENTITIES_AND_MAXIMA_PRESERVED",
+  "created_utc": "2026-10-05T13:18:37.943990+00:00",
+  "tag": "q-inspect16",
+  "input_pins": {
+    "baseline_after": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-half-split-a01\\after.json",
+      "bytes": 35886,
+      "sha256": "b40106a9fc23871d725919b7a02043cb98b82f9f617b2dce026f44a0d7aa4e55"
+    },
+    "baseline_strength": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-half-split-a01\\strength.json",
+      "bytes": 92080,
+      "sha256": "bfaebf02099e78a2a827a9959c7a773f48a8fca7a025cfec433fbffca3c3ffdb"
+    },
+    "prior_after": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect15-a01\\after.json",
+      "bytes": 36124,
+      "sha256": "ffc7a9d83fca08d246006061bf89d14a357c6f1ddae535f2ad4d7dd73f1793b1"
+    },
+    "prior_strength": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect15-a01\\strength.json",
+      "bytes": 92191,
+      "sha256": "2a7d2d373208e70d7d2a52a9c37ad7b3d2f181b7edc56e73bc3c17588bd44130"
+    },
+    "stage_after": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect16-a01\\after.json",
+      "bytes": 36123,
+      "sha256": "08a8e6774b6e8335e174ae36c0431c9c5bd51e07cf93a0b8702f03fc1b757bd9"
+    },
+    "stage_strength": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-q-inspect16-a01\\strength.json",
+      "bytes": 92189,
+      "sha256": "8e21c1a3fcd29f0b5867534c14b1a71e48828e35130afc2c6fb62eaaf8a11515"
+    }
+  },
+  "original_t0_raw": 53147376,
+  "absolute_end_raw": 53149536,
+  "elapsed_real_game_days_from_original_t0": 76.0,
+  "remaining_to_fixed_end_days": 14.0,
+  "stage_date_raw": 53149200,
+  "prior_date_raw": 53149152,
+  "actual_stage_days": 2.0,
+  "checks": [
+    {
+      "check": "actual_baseline_two_armies",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "baseline_paused_native_actor",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "baseline_within_original90day_absolute_end",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "baseline_same_public_army_cohort",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "baseline_strength_exact_snapshot_frame",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "prior_paused_native_actor",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "prior_within_original90day_absolute_end",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "prior_same_public_army_cohort",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "prior_strength_exact_snapshot_frame",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "stage_paused_native_actor",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "stage_within_original90day_absolute_end",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "stage_same_public_army_cohort",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "stage_strength_exact_snapshot_frame",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "chronological_actual_dates",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0_available_same_native_generation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0_owner_native_no_combat_or_retreat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0_full_regiment_IDs_same",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0_all_DATA_identities_same",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0_maximum_cohort_unchanged",
+      "passed": true,
+      "detail": {
+        "regiments": {},
+        "DATA": {}
+      }
+    },
+    {
+      "check": "0_clock_available",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0_current_supply_raw_observed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0_current_supply_capacity_raw_observed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0_current_supply_change_monthly_raw_observed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0_current_supply_scale_scale100000",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0_current_supply_capacity_scale_scale100000",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "0_current_supply_change_monthly_scale_scale100000",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "204_available_same_native_generation",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "204_owner_native_no_combat_or_retreat",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "204_full_regiment_IDs_same",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "204_all_DATA_identities_same",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "204_maximum_cohort_unchanged",
+      "passed": true,
+      "detail": {
+        "regiments": {},
+        "DATA": {}
+      }
+    },
+    {
+      "check": "204_clock_available",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "204_current_supply_raw_observed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "204_current_supply_capacity_raw_observed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "204_current_supply_change_monthly_raw_observed",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "204_current_supply_scale_scale100000",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "204_current_supply_capacity_scale_scale100000",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "204_current_supply_change_monthly_scale_scale100000",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "armies": [
+    {
+      "army_id": 0,
+      "native_carmy_id": 0,
+      "owner_character_id": 33388,
+      "current_province_id": 2174,
+      "route": [],
+      "route_read_status": "complete_empty",
+      "army_state": "regular",
+      "regiment_count": 15,
+      "DATA_count": 25,
+      "current_soldiers": 3344,
+      "maximum_soldiers": 3371,
+      "soldier_net_change_from_prior": 0,
+      "regiment_changes_from_prior": [],
+      "DATA_changes_from_prior": [],
+      "stock_before_raw": 10613988,
+      "stock_after_raw": 12613988,
+      "stock_delta_raw": 2000000,
+      "capacity_before_raw": 30000000,
+      "capacity_after_raw": 30000000,
+      "monthly_change_before_raw": 2000000,
+      "monthly_change_after_raw": 2000000,
+      "stock_event_classifications": [
+        "OBSERVED_POSITIVE_STOCK_CHANGE"
+      ],
+      "clock_before": {
+        "status": "available",
+        "ready": true,
+        "current_date_raw": 53149152,
+        "native_day_index": 389548,
+        "selected_bucket_phase": 28,
+        "observed_army_bucket_phase": 0,
+        "last_supply_update_date_storage_raw64": 300336024996477760,
+        "last_supply_update_date_raw": 53148480,
+        "grace_anchor_date_storage_raw64": 300061168564366016,
+        "grace_anchor_date_raw": 53144256,
+        "loaded_grace_days": 30,
+        "unavailable_reason": null
+      },
+      "clock_after": {
+        "status": "available",
+        "ready": true,
+        "current_date_raw": 53149200,
+        "native_day_index": 389550,
+        "selected_bucket_phase": 0,
+        "observed_army_bucket_phase": 0,
+        "last_supply_update_date_storage_raw64": 300337120213138960,
+        "last_supply_update_date_raw": 53149200,
+        "grace_anchor_date_storage_raw64": 300061168564366016,
+        "grace_anchor_date_raw": 53144256,
+        "loaded_grace_days": 30,
+        "unavailable_reason": null
+      },
+      "clock_changes": {
+        "current_date_raw": {
+          "before": 53149152,
+          "after": 53149200,
+          "delta": 48
+        },
+        "last_supply_update_date_raw": {
+          "before": 53148480,
+          "after": 53149200,
+          "delta": 720
+        },
+        "last_supply_update_date_storage_raw64": {
+          "before": 300336024996477760,
+          "after": 300337120213138960,
+          "delta": 1095216661200
+        },
+        "native_day_index": {
+          "before": 389548,
+          "after": 389550,
+          "delta": 2
+        },
+        "selected_bucket_phase": {
+          "before": 28,
+          "after": 0,
+          "delta": -28
+        }
+      },
+      "grace_anchor_equals_original_baseline": true,
+      "last_supply_update_mark_changed": true,
+      "cause_claim": "endpoint net observations only; no hidden refill, death or applied-loss ledger inferred"
+    },
+    {
+      "army_id": 204,
+      "native_carmy_id": 199,
+      "owner_character_id": 33388,
+      "current_province_id": 2327,
+      "route": [],
+      "route_read_status": "complete_empty",
+      "army_state": "regular",
+      "regiment_count": 12,
+      "DATA_count": 12,
+      "current_soldiers": 3345,
+      "maximum_soldiers": 3376,
+      "soldier_net_change_from_prior": 0,
+      "regiment_changes_from_prior": [],
+      "DATA_changes_from_prior": [],
+      "stock_before_raw": 10000000,
+      "stock_after_raw": 10000000,
+      "stock_delta_raw": 0,
+      "capacity_before_raw": 10000000,
+      "capacity_after_raw": 10000000,
+      "monthly_change_before_raw": 2000000,
+      "monthly_change_after_raw": 2000000,
+      "stock_event_classifications": [
+        "OBSERVED_STOCK_UNCHANGED"
+      ],
+      "clock_before": {
+        "status": "available",
+        "ready": true,
+        "current_date_raw": 53149152,
+        "native_day_index": 389548,
+        "selected_bucket_phase": 28,
+        "observed_army_bucket_phase": 19,
+        "last_supply_update_date_storage_raw64": 300336106600856840,
+        "last_supply_update_date_raw": 53148936,
+        "grace_anchor_date_storage_raw64": 300061168564366016,
+        "grace_anchor_date_raw": 53144256,
+        "loaded_grace_days": 30,
+        "unavailable_reason": null
+      },
+      "clock_after": {
+        "status": "available",
+        "ready": true,
+        "current_date_raw": 53149200,
+        "native_day_index": 389550,
+        "selected_bucket_phase": 0,
+        "observed_army_bucket_phase": 19,
+        "last_supply_update_date_storage_raw64": 300336106600856840,
+        "last_supply_update_date_raw": 53148936,
+        "grace_anchor_date_storage_raw64": 300061168564366016,
+        "grace_anchor_date_raw": 53144256,
+        "loaded_grace_days": 30,
+        "unavailable_reason": null
+      },
+      "clock_changes": {
+        "current_date_raw": {
+          "before": 53149152,
+          "after": 53149200,
+          "delta": 48
+        },
+        "native_day_index": {
+          "before": 389548,
+          "after": 389550,
+          "delta": 2
+        },
+        "selected_bucket_phase": {
+          "before": 28,
+          "after": 0,
+          "delta": -28
+        }
+      },
+      "grace_anchor_equals_original_baseline": true,
+      "last_supply_update_mark_changed": false,
+      "cause_claim": "endpoint net observations only; no hidden refill, death or applied-loss ledger inferred"
+    }
+  ],
+  "limits": [
+    "First endpoint classification means earliest provided consecutive pair, not direct visibility into an update/clamp instruction.",
+    "Monthly rate sign and preview destination usage are current observations, not future stock promises.",
+    "Maximum or cohort identity failure recommends stop; positive or negative current-soldier deltas remain net changes with cause unknown.",
+    "No pause/advance/SDK/Game/UI/task bus action has been issued by this reviewer.",
+    "No prior original90day budget is reset by split, movement, reload or this report."
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "status": "ACTUAL_CANONICAL_HALF_ACTION_BOUND_TO_ENDPOINT_DATE_AND_PARENT",
+  "action_pin": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-half-split-a01\\command.json",
+    "bytes": 283,
+    "sha256": "60d5356bd63b5233f751caae1c7bf6a548de908d58bebfeec4a9ee017514720a"
+  },
+  "canonical_action": {
+    "step": "split-army-half-0",
+    "accepted": true,
+    "status": "split_submitted",
+    "backend_id": "native-headless",
+    "war_action": {
+      "status": "split_submitted",
+      "source_army_id": 0,
+      "submitted_date_raw": 53148432,
+      "player_army_ids_before": [
+        0
+      ]
+    }
+  },
+  "endpoint_frames": {
+    "baseline": {
+      "snapshot_id": "native:2",
+      "revision": 3,
+      "native_revision": 2,
+      "date_raw": 53148432,
+      "paused": true
+    },
+    "before_split_snapshot": {
+      "snapshot_id": "native:2",
+      "revision": 3,
+      "native_revision": 2,
+      "date_raw": 53148432,
+      "paused": true
+    },
+    "after_split_snapshot": {
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3,
+      "date_raw": 53148432,
+      "paused": true
+    }
+  },
+  "count_frame_interpretation": "Array comparison uses full baseline strength then full post-split strength at the same paused date; fresh before-split snapshot is not itself a full strength or DATA query. Endpoint equality proves no observed normalized current/max or DATA value changes across that bounded source pair; no hidden transition is asserted.",
+  "new_child": 204,
+  "actual_supply_capacity_boundary": {
+    "new_child_stock_raw": 11037716,
+    "new_child_capacity_raw": 10000000,
+    "stock_exceeds_capacity_at_post_split_endpoint": true,
+    "claim": "Both values are direct observed outputs; capacity is not used to clamp or replace the observed copied stock. No future clamp or loss transition is inferred."
+  },
+  "commander_role": {
+    "status": "unknown",
+    "reason": "No dedicated commander receipt supplied in this task packet set."
+  },
+  "runtime_queries_or_actions": 0
+}
