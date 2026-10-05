@@ -1,0 +1,72 @@
+{
+  "schema": "lyd.r8.actual-closure.v1",
+  "status": "ACTUAL_RUNTIME_AND_SCREEN_CLOSED",
+  "client": {
+    "closed": true,
+    "closed_at_utc": "2026-10-05T04:30:37.117148+00:00",
+    "claimed_request_count": 36,
+    "receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\mcp-client-evidence-001\\session-closed.json",
+      "bytes": 1678,
+      "sha256": "b66854c083d215359303f38b69b7f3093c5ef5102531b46e9a74a381cace34e0"
+    }
+  },
+  "normal_exit_query": {
+    "status": "unavailable",
+    "reason": "actual_launch_userdir_contract_unsupported",
+    "actual_loadsave_route": true,
+    "claim_consumed": false,
+    "dispatch_invoked": false,
+    "normal_exit_MCP_credit": false,
+    "request": "0035"
+  },
+  "maintenance_exit": {
+    "at_utc": "2026-10-05T04:33:29.337349+00:00",
+    "coordinate_call_returncode": 0,
+    "wait_result": 0,
+    "retained_handle_signaled": true,
+    "exit_code_read": true,
+    "exit_code": 0,
+    "exact_process_absent": true,
+    "actual_creation_filetime_100ns": 134356467035222309,
+    "process_termination_used": false,
+    "mouse_used_for_maintenance": true,
+    "OCR_used": false,
+    "mcp_normal_exit_credit": false,
+    "business_acceptance_credit": false,
+    "status": "MAINTENANCE_EXIT_CODE_ZERO_OBSERVED",
+    "receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\maintenance-close-002\\EXIT-OBSERVATION.json",
+      "bytes": 495,
+      "sha256": "9b2c86f5c5cff46db8e83e5124b48f3b3b49c310831fa2ba10d0cfcdca6e6de4"
+    }
+  },
+  "keeper": {
+    "stopped": true,
+    "failure": null,
+    "last_sequence": 2943,
+    "at_utc": "2026-10-05T04:41:57.156632+00:00",
+    "screen_released_by_keeper": false,
+    "receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0008\\FINAL.json",
+      "bytes": 384,
+      "sha256": "eab7c16e79354a6e32cccfa4dd819174e5f22b57e2f940b3034e6c032f77ac6e"
+    }
+  },
+  "ROOT_CAS_release": {
+    "actual_from_sequence": 2943,
+    "actual_to_sequence": 2944,
+    "at_utc": "2026-10-05T04:42:25.151607+00:00",
+    "owners_after": [],
+    "notices_count": 0,
+    "receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-closure-20261005-001\\RESULT.json",
+      "bytes": 1952,
+      "sha256": "b458c9d43a5b32c886624f216dec9afba81503a946bf186f9838ef155041129e"
+    }
+  },
+  "game_process_returncode_zero_observed": true,
+  "MCP_normal_exit_credit": false,
+  "whole_mod_green": false,
+  "full_repeat_cycle_pass": false
+}

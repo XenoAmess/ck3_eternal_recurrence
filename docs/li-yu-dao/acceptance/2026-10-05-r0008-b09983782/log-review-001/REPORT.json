@@ -1,0 +1,464 @@
+{
+  "schema": "lyd.r8.actual-log-diagnosis.final.v1",
+  "status": "ACTUAL_R8_PRODUCT_LOG_RED_NOT_SIGNED_OFF",
+  "utc": "2026-10-05T04:57:42.174565+00:00",
+  "actual_cold_revision": "b09983782670e0646e5c911bb4a385d30750ab01",
+  "scope": "All bytes and all header records of error/debug/game logs read; exact per-record source/namespace classification; bounded current cold-source cause diagnosis. No repaired-build or later runtime credit.",
+  "supersedes_interpretation_only": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r8-actual-log-diagnosis-20261005-001\\quick-review-package-001\\REPORT.json",
+    "sha256": "ed8d424a78c5d4626a70efe87f86fc0a6d75e48924eb26ae1316b14b2ec34d31",
+    "correction": "Quick001 interpretation sentence overgeneralized tooltip headers; final explicitly separates 81939 tooltip errors from 6 non-tooltip errors. Historical quick001 is unchanged."
+  },
+  "metadata_refs": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\COLD-MATERIALIZED.json",
+      "bytes": 2761,
+      "sha256": "1d83a5741df2e3b73b82022cd3e4ab27fc2343fb60d1b78c22b0594c7c8c4c7a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\INPUTS.json",
+      "bytes": 62329,
+      "sha256": "d3474e1eba9bc5432f6c6dcf5153ed9f009413c761fc6700cfe8df10a9ecf916"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\COLD-SOURCE-INVENTORY.json",
+      "bytes": 31560,
+      "sha256": "cbf589516bed4c904200d6bbd8fcdc391c358b0cd87f3d53a91a706792a864fd"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\launch.json",
+      "bytes": 828,
+      "sha256": "2d8680a82890b3ab6da1f2b4fab3e6899d5d0f80c8084553a48e2017523eacf5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\live-run-id.json",
+      "bytes": 376,
+      "sha256": "20117c4d985b4e2cd7c80bbedbc12be21b7c84f1e764421b0edcbdd472d43d4c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\dlc_load.json",
+      "bytes": 195,
+      "sha256": "371ad12fe9455ee2c7b4bf31d5fd371b7dc2727a6143ddf590cdedf3cd7a93f3"
+    }
+  ],
+  "cold_source_review": {
+    "index": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-cold-source-namespace-review-20261005-001\\review-package-001\\INDEX.json",
+      "bytes": 7672,
+      "sha256": "7215d2371869f52c5695e41d365e1d3ada02ed21184eaed5b2af254febdb4e0e"
+    },
+    "report": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-cold-source-namespace-review-20261005-001\\review-package-001\\REPORT.json",
+      "bytes": 6133,
+      "sha256": "ab9a733fabbd494338dc0dcd44326793c6b59e459eff95388f63492bae2e3253"
+    },
+    "product70_verified": true,
+    "all_five_mounts_122_verified": true,
+    "actual_product_inventory_sha256": "078e6a90ac9f359ad113b90413061de3b7b124120058adf8d7f233576fa407a9"
+  },
+  "logs": {
+    "error.log": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\error.log",
+      "bytes": 39614491,
+      "sha256": "6e40b39c054c0c074a74d33cb2dcd8fce8d0cbdf4da8809fd4aa5b716571905a",
+      "line_count": 492260,
+      "record_count": 82523,
+      "stable_while_read": true,
+      "first_header_time": "12:07:01",
+      "last_header_time": "12:23:14",
+      "backwards_header_times": [],
+      "severity_records": {
+        "E": 82523
+      },
+      "origin_records": {
+        "jomini_effect.cpp:1146": 578,
+        "jomini_script_system.cpp:304": 81945
+      },
+      "category_records": {
+        "fixture_mentioned": 578,
+        "product_namespace_mentioned": 81945
+      },
+      "unique_signatures": 322,
+      "unique_project_signatures": 322
+    },
+    "debug.log": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\debug.log",
+      "bytes": 39986729,
+      "sha256": "c93fc2e17165e486db112dcdcde37ee8bf818440049dc0e6d491d8c381aa1017",
+      "line_count": 496106,
+      "record_count": 86308,
+      "stable_while_read": true,
+      "first_header_time": "12:05:04",
+      "last_header_time": "12:33:22",
+      "backwards_header_times": [],
+      "severity_records": {
+        "D": 4347,
+        "I": 4,
+        "W": 12,
+        "E": 81945
+      },
+      "origin_records": {
+        "jomini_game_setup.cpp:351": 1,
+        "main.cpp:658": 1,
+        "main.cpp:665": 1,
+        "pdx_task.cpp:271": 1,
+        "pdx_task.cpp:272": 1,
+        "pdx_localize.cpp:128": 2,
+        "systemsettings.cpp:326": 4,
+        "pdx_text_settings.cpp:141": 1,
+        "pdx_enum_setting.cpp:102": 4,
+        "pdx_account.cpp:603": 1,
+        "gfx_dx11_master_context.cpp:153": 4,
+        "gfx_dx11_master_context.cpp:300": 1,
+        "gfx_dx11_master_context.cpp:301": 1,
+        "gfx_dx11_master_context.cpp:302": 1,
+        "gfx_dx11_master_context.cpp:303": 1,
+        "pdx_matchmaking.cpp:70": 1,
+        "contextowner.cpp:916": 1,
+        "defines.cpp:180": 2,
+        "jomini_game_setup.cpp:138": 1,
+        "virtualfilesystem_physfs.cpp:814": 35,
+        "virtualfilesystem.cpp:340": 198,
+        "virtualfilesystem.cpp:314": 198,
+        "pdx_localize.cpp:142": 1,
+        "database_dependencies.cpp:437": 313,
+        "pdxassetutil.cpp:74": 1,
+        "pdxassetutil.cpp:83": 1,
+        "pdx_font.cpp:156": 40,
+        "jomini_social.cpp:18": 1,
+        "pdx_gui_assetfactory.cpp:680": 541,
+        "pdx_gui_assetfactory.cpp:689": 541,
+        "pdx_mesh_streamer.cpp:249": 594,
+        "gfx_texture_on_demand.cpp:292": 288,
+        "jomini_eventmanager.cpp:666": 508,
+        "jomini_eventmanager.cpp:619": 589,
+        "onaction.cpp:451": 1,
+        "layered_icon.cpp:89": 7,
+        "bookmark.cpp:280": 3,
+        "holy_order_effect.cpp:99": 9,
+        "gameapplication.cpp:583": 3,
+        "pdx_online_telemetry.cpp:28": 5,
+        "pdx_online_telemetry.cpp:46": 3,
+        "history.cpp:1497": 1,
+        "savegameitem.cpp:734": 1,
+        "main.cpp:809": 1,
+        "pdx_legal_documents.cpp:109": 1,
+        "player.cpp:153": 2,
+        "frontend_game_setup_view.cpp:638": 1,
+        "pdx_account.cpp:450": 1,
+        "characterhistory.cpp:271": 1,
+        "characterhistory.cpp:211": 2,
+        "characterhistory.cpp:221": 2,
+        "characterhistory.cpp:274": 1,
+        "history.cpp:1543": 1,
+        "jomini_game_setup.cpp:195": 1,
+        "jomini_game_setup.cpp:47": 1,
+        "jomini_game_setup.cpp:55": 1,
+        "checksum.cpp:272": 1,
+        "checksum.cpp:290": 1,
+        "gamestate.cpp:155": 1,
+        "gamestate.cpp:344": 1,
+        "scheme_manager.cpp:1429": 4,
+        "checksum.cpp:292": 1,
+        "gamestate.cpp:329": 1,
+        "gameapplication.cpp:632": 1,
+        "gameapplication.cpp:635": 1,
+        "rivers_ambience_node.cpp:20": 2,
+        "jomini_mapobject_manager.cpp:3196": 1,
+        "pdx_gui_animation_datatype_valuehelpers.h:147": 32,
+        "gamestate_persistence.cpp:222": 10,
+        "gamestate_persistence.cpp:161": 370,
+        "jomini_script_system.cpp:304": 81945,
+        "gamestate.cpp:1382": 1,
+        "confederation.cpp:739": 2,
+        "jomini_effect_impl.cpp:450": 1,
+        "effectimpl.cpp:642": 2,
+        "confederation.cpp:745": 1,
+        "application.cpp:1256": 1
+      },
+      "category_records": {
+        "no_project_namespace_mentioned": 4345,
+        "fixture_mentioned": 13,
+        "product_namespace_mentioned": 81950
+      },
+      "unique_signatures": 4041,
+      "unique_project_signatures": 51
+    },
+    "game.log": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\game.log",
+      "bytes": 39478062,
+      "sha256": "23d7a2b9f996d0f8fb3c98d9945018087a82573ad8f0e9bbee9c60b29e051737",
+      "line_count": 491696,
+      "record_count": 81959,
+      "stable_while_read": true,
+      "first_header_time": "12:07:00",
+      "last_header_time": "12:23:14",
+      "backwards_header_times": [],
+      "severity_records": {
+        "W": 12,
+        "I": 2,
+        "E": 81945
+      },
+      "origin_records": {
+        "bookmark.cpp:280": 3,
+        "holy_order_effect.cpp:99": 9,
+        "savegameitem.cpp:734": 1,
+        "frontend_game_setup_view.cpp:638": 1,
+        "jomini_script_system.cpp:304": 81945
+      },
+      "category_records": {
+        "no_project_namespace_mentioned": 14,
+        "product_namespace_mentioned": 81945
+      },
+      "unique_signatures": 39,
+      "unique_project_signatures": 33
+    }
+  },
+  "errors": {
+    "single_engine_product_script_error_records": 81945,
+    "unique_product_error_signatures_ignoring_header_time": 33,
+    "tooltip_error_records": 81939,
+    "non_tooltip_error_records": 6,
+    "non_tooltip_errors": [
+      {
+        "first_time": "12:18:44",
+        "last_time": "12:18:44",
+        "first_line": 579,
+        "last_line": 579,
+        "first_byte_offset": 138556,
+        "count": 1,
+        "severity": "E",
+        "origin": "jomini_script_system.cpp:304",
+        "families": [
+          "product_c2",
+          "product_lyd_other"
+        ],
+        "tooltip": false,
+        "text": "[12:18:44][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Failed to fetch variable for 'lyd_c2_source_signed' due to not being set\n  Script location: file: common/scripted_effects/lyd_c2_vote_effects.txt line: 90 (lyd_c2_request_target_consent_effect)\n    file: common/scripted_effects/lyd_c2_vote_effects.txt line: 31 (lyd_c2_target_vote_effect[args#1121046119])\n    file: events/lyd_c2_consent_events.txt line: 39 (lyd.211:option)\n    file: common/scripted_effects/lyd_c2_setup_effects.txt line: 210 (lyd_c2_collect_target_effect)\n    file: common/scripted_effects/lyd_c2_setup_effects.txt line: 127 (lyd_c2_start_round_effect[args#1307334705])\n    file: common/scripted_effects/lyd_c2_setup_effects.txt line: 137 (lyd_c2_begin_join_effect)\n    file: common/character_interactions/lyd_c2_consent_interactions.txt line: 21 (lyd_c2_propose_join_interaction:on_auto_accept)\n\r\n"
+      },
+      {
+        "first_time": "12:18:44",
+        "last_time": "12:18:44",
+        "first_line": 589,
+        "last_line": 589,
+        "first_byte_offset": 139448,
+        "count": 1,
+        "severity": "E",
+        "origin": "jomini_script_system.cpp:304",
+        "families": [
+          "product_c2",
+          "product_lyd_other"
+        ],
+        "tooltip": false,
+        "text": "[12:18:44][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Event target link 'var' returned an unset scope\n  Script location: file: common/scripted_effects/lyd_c2_vote_effects.txt line: 90 (lyd_c2_request_target_consent_effect)\n    file: common/scripted_effects/lyd_c2_vote_effects.txt line: 31 (lyd_c2_target_vote_effect[args#1121046119])\n    file: events/lyd_c2_consent_events.txt line: 39 (lyd.211:option)\n    file: common/scripted_effects/lyd_c2_setup_effects.txt line: 210 (lyd_c2_collect_target_effect)\n    file: common/scripted_effects/lyd_c2_setup_effects.txt line: 127 (lyd_c2_start_round_effect[args#1307334705])\n    file: common/scripted_effects/lyd_c2_setup_effects.txt line: 137 (lyd_c2_begin_join_effect)\n    file: common/character_interactions/lyd_c2_consent_interactions.txt line: 21 (lyd_c2_propose_join_interaction:on_auto_accept)\n\r\n"
+      },
+      {
+        "first_time": "12:18:44",
+        "last_time": "12:18:44",
+        "first_line": 599,
+        "last_line": 599,
+        "first_byte_offset": 140315,
+        "count": 1,
+        "severity": "E",
+        "origin": "jomini_script_system.cpp:304",
+        "families": [
+          "product_c2",
+          "product_lyd_other"
+        ],
+        "tooltip": false,
+        "text": "[12:18:44][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Invalid left side during comparison 'var'\n  Script location: file: common/scripted_effects/lyd_c2_vote_effects.txt line: 90 (lyd_c2_request_target_consent_effect)\n    file: common/scripted_effects/lyd_c2_vote_effects.txt line: 31 (lyd_c2_target_vote_effect[args#1121046119])\n    file: events/lyd_c2_consent_events.txt line: 39 (lyd.211:option)\n    file: common/scripted_effects/lyd_c2_setup_effects.txt line: 210 (lyd_c2_collect_target_effect)\n    file: common/scripted_effects/lyd_c2_setup_effects.txt line: 127 (lyd_c2_start_round_effect[args#1307334705])\n    file: common/scripted_effects/lyd_c2_setup_effects.txt line: 137 (lyd_c2_begin_join_effect)\n    file: common/character_interactions/lyd_c2_consent_interactions.txt line: 21 (lyd_c2_propose_join_interaction:on_auto_accept)\n\r\n"
+      },
+      {
+        "first_time": "12:21:01",
+        "last_time": "12:21:01",
+        "first_line": 144051,
+        "last_line": 144051,
+        "first_byte_offset": 10955109,
+        "count": 1,
+        "severity": "E",
+        "origin": "jomini_script_system.cpp:304",
+        "families": [
+          "product_c2",
+          "product_lyd_other"
+        ],
+        "tooltip": false,
+        "text": "[12:21:01][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Failed to fetch variable for 'lyd_c2_source_signed' due to not being set\n  Script location: file: common/scripted_effects/lyd_c2_vote_effects.txt line: 90 (lyd_c2_request_target_consent_effect)\n    file: common/scripted_effects/lyd_c2_vote_effects.txt line: 45 (lyd_c2_player_yes_effect)\n    file: events/lyd_c2_consent_events.txt line: 53 (lyd.212:option)\n\r\n"
+      },
+      {
+        "first_time": "12:21:01",
+        "last_time": "12:21:01",
+        "first_line": 144057,
+        "last_line": 144057,
+        "first_byte_offset": 10955543,
+        "count": 1,
+        "severity": "E",
+        "origin": "jomini_script_system.cpp:304",
+        "families": [
+          "product_c2",
+          "product_lyd_other"
+        ],
+        "tooltip": false,
+        "text": "[12:21:01][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Event target link 'var' returned an unset scope\n  Script location: file: common/scripted_effects/lyd_c2_vote_effects.txt line: 90 (lyd_c2_request_target_consent_effect)\n    file: common/scripted_effects/lyd_c2_vote_effects.txt line: 45 (lyd_c2_player_yes_effect)\n    file: events/lyd_c2_consent_events.txt line: 53 (lyd.212:option)\n\r\n"
+      },
+      {
+        "first_time": "12:21:01",
+        "last_time": "12:21:01",
+        "first_line": 144063,
+        "last_line": 144063,
+        "first_byte_offset": 10955952,
+        "count": 1,
+        "severity": "E",
+        "origin": "jomini_script_system.cpp:304",
+        "families": [
+          "product_c2",
+          "product_lyd_other"
+        ],
+        "tooltip": false,
+        "text": "[12:21:01][E][jomini_script_system.cpp:304]: Script system error!\n  Error: Invalid left side during comparison 'var'\n  Script location: file: common/scripted_effects/lyd_c2_vote_effects.txt line: 90 (lyd_c2_request_target_consent_effect)\n    file: common/scripted_effects/lyd_c2_vote_effects.txt line: 45 (lyd_c2_player_yes_effect)\n    file: events/lyd_c2_consent_events.txt line: 53 (lyd.212:option)\n\r\n"
+      }
+    ],
+    "by_actual_product_source_line": {
+      "common/scripted_effects/lyd_c2_vote_effects.txt:90": {
+        "tooltip_records": 23907,
+        "non_tooltip_records": 6,
+        "unique_signatures": 9,
+        "first_time": "12:18:44",
+        "last_time": "12:21:01",
+        "variables": [
+          "lyd_c2_source_signed"
+        ]
+      },
+      "common/scripted_effects/lyd_c2_snapshot_effects.txt:228": {
+        "tooltip_records": 7254,
+        "non_tooltip_records": 0,
+        "unique_signatures": 3,
+        "first_time": "12:22:32",
+        "last_time": "12:23:14",
+        "variables": [
+          "lyd_c2_check_count"
+        ]
+      },
+      "common/scripted_effects/lyd_c2_snapshot_effects.txt:239": {
+        "tooltip_records": 7254,
+        "non_tooltip_records": 0,
+        "unique_signatures": 3,
+        "first_time": "12:22:32",
+        "last_time": "12:23:14",
+        "variables": [
+          "lyd_c2_check_count"
+        ]
+      },
+      "common/scripted_effects/lyd_c2_snapshot_effects.txt:250": {
+        "tooltip_records": 7254,
+        "non_tooltip_records": 0,
+        "unique_signatures": 3,
+        "first_time": "12:22:32",
+        "last_time": "12:23:14",
+        "variables": [
+          "lyd_c2_check_count"
+        ]
+      },
+      "common/scripted_effects/lyd_c2_snapshot_effects.txt:261": {
+        "tooltip_records": 7254,
+        "non_tooltip_records": 0,
+        "unique_signatures": 3,
+        "first_time": "12:22:32",
+        "last_time": "12:23:14",
+        "variables": [
+          "lyd_c2_check_count"
+        ]
+      },
+      "common/scripted_effects/lyd_c2_snapshot_effects.txt:276": {
+        "tooltip_records": 7254,
+        "non_tooltip_records": 0,
+        "unique_signatures": 3,
+        "first_time": "12:22:32",
+        "last_time": "12:23:14",
+        "variables": [
+          "lyd_c2_check_count"
+        ]
+      },
+      "common/scripted_effects/lyd_c2_snapshot_effects.txt:319": {
+        "tooltip_records": 7254,
+        "non_tooltip_records": 0,
+        "unique_signatures": 3,
+        "first_time": "12:22:32",
+        "last_time": "12:23:14",
+        "variables": [
+          "lyd_c2_check_rites"
+        ]
+      },
+      "common/scripted_effects/lyd_c2_snapshot_effects.txt:338": {
+        "tooltip_records": 7254,
+        "non_tooltip_records": 0,
+        "unique_signatures": 3,
+        "first_time": "12:22:32",
+        "last_time": "12:23:14",
+        "variables": [
+          "lyd_c2_check_count"
+        ]
+      },
+      "common/scripted_effects/lyd_c2_snapshot_effects.txt:339": {
+        "tooltip_records": 7254,
+        "non_tooltip_records": 0,
+        "unique_signatures": 3,
+        "first_time": "12:22:32",
+        "last_time": "12:23:14",
+        "variables": [
+          "lyd_c2_check_followers"
+        ]
+      }
+    },
+    "fixture_load_unused_variable_records": 578,
+    "fixture_load_unique_variables": 289,
+    "fixture_namespace": "lyd_im",
+    "fixture_warning_engine_severity": "E",
+    "no_product_load_unused_variable_records": true,
+    "project_script_error_sequence_sha256": "25a4238eb4fde166c7ac39e1f0bdb86f1f3b756af7e3bf033468eb7f35b03160",
+    "three_log_error_sequences_are_byte_identical": true,
+    "do_not_sum_copies": true
+  },
+  "non_project_warnings": {
+    "records_in_game_and_debug": 12,
+    "bookmark_invalid_dynasty_records": 3,
+    "create_holy_order_explicit_and_random_records": 9,
+    "at_log_clock": "12:07:00",
+    "ownership": "No loaded product/fixture mount changes bookmark or holy-order effect source files; these non-project warnings have no project namespace or script trace. The holy_order warning does not itself name a script file, so exact originating stock script is not asserted."
+  },
+  "root_causes": [
+    {
+      "id": "C2-source-signature-absence",
+      "evidence": "Cold setup clears source_signed at line23; collect_target at127 precedes collect_source at129. Target YES may request target consent before source mandate signs. Vote58 sets source_signed only upon signing, but request_target90 reads it without presence guard.",
+      "actual_execution_trace": "Non-tooltip three-error chain at12:18:44 originates ordinary join on_auto_accept→collect_target→NPClyd.211 option; second chain at12:21:01 originates playerlyd.212 YES.",
+      "repair_scope": "Add a presence gate preserving unsigned as false, including a separate nested gate if engine evaluates sibling comparisons; do not pre-sign/default consent."
+    },
+    {
+      "id": "C2-preview-check-temporaries",
+      "evidence": "Snapshot writes temporary check_count/check_rites/check_followers during refresh, then compares them at228/239/250/261/276/319/338/339; preview logs show these preceding writes do not provide a readable temporary in tooltip mode.",
+      "actual_runtime_boundary": "All errors at these snapshot lines are explicitly tooltip/description in this run; no non-tooltip refresh error is recorded.",
+      "repair_scope": "Guard preview reads or hide mutating refresh effects from preview while keeping actual refresh validation and current actual set/serial/nonce authorization. Repair is separate and is not credited as loaded here."
+    }
+  ],
+  "time_boundaries": {
+    "header_times_are_log_wall_clock_only": true,
+    "full_log_header_order_monotonic": true,
+    "product_error_phase1": "12:18:44–12:21:01",
+    "product_error_phase2": "12:22:32–12:23:14",
+    "fixture_unused_phase": "loading at12:07:01",
+    "debug_start": "12:05:04 Log system initialized",
+    "debug_end": "12:33:22",
+    "explicit_trusted_before_after_marker": null,
+    "limitation": "No explicit task before/after marker was inserted into these logs. Header wall clocks distinguish file-internal phases; not treated as UTC, precise public revision, or a saved-business causality certificate."
+  },
+  "namespace_count_semantics": "Counts of distinct mentioned namespace families per record overlap when a C2 trace also names lyd.211/212. Exclusive product/fixture counts are in logs.category_records. Zero errors in other namespaces here is observation only; no unexecuted I3/I4/C3 feature acceptance.",
+  "source_proof": "COLD-PRODUCT-ERROR-SOURCE-PROOF.json",
+  "mutations": {
+    "main": false,
+    "game": false,
+    "pipe": false,
+    "claim": false,
+    "git": false
+  },
+  "raw_log_copies_created": false,
+  "raw_log_retention": "Original live-attempt008 logs and ci snapshot003 lossless tar preserved externally; this package stores full SHA/counts and bounded snippets only."
+}

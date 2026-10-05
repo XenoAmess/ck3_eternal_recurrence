@@ -1,0 +1,95 @@
+{
+  "schema": "lyd.r8.complete-log-preservation.v1",
+  "status": "FULL_FINAL_RAW_LOGS_PRESERVED_NOT_SIGNED_OFF",
+  "log_files": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\code_revisions.log",
+      "bytes": 1387,
+      "sha256": "915601e4cc09125c6759fad8beb7ccffbc6e3f446fd8a55aa5a0e1280c6426bf"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\custom_automated_stats.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\database_conflicts.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\debug.log",
+      "bytes": 39986729,
+      "sha256": "c93fc2e17165e486db112dcdcde37ee8bf818440049dc0e6d491d8c381aa1017"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\dedicated_server.log",
+      "bytes": 241,
+      "sha256": "c5fdb1735b1e81fe585bdfaeba46b32bfb98d5c2d57e3e050faa9603a4dd800b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\error.log",
+      "bytes": 39614491,
+      "sha256": "6e40b39c054c0c074a74d33cb2dcd8fce8d0cbdf4da8809fd4aa5b716571905a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\game.log",
+      "bytes": 39478062,
+      "sha256": "23d7a2b9f996d0f8fb3c98d9945018087a82573ad8f0e9bbee9c60b29e051737"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\gui_warnings.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\memory.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\message.log",
+      "bytes": 388,
+      "sha256": "630e7dafca88021caf0429b0d1a24796646bfe3d90faa996e0bc94c16e4fee5c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\multiplayer.log",
+      "bytes": 4096,
+      "sha256": "9b13a976906fff3011db74bab738e74faf9897b6cca8410013d67536bb4378cf"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\pdxsdk.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\profile.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\setup.log",
+      "bytes": 37356,
+      "sha256": "280f971bd791344f09cd53d6853aa97c6cc82a76f35eeccfdc817bfa56869a6e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\system.log",
+      "bytes": 926,
+      "sha256": "e8824393ed58e71cd6f140cf86def8d3ed8696b6ebbd5db3b4ef7e92cf6d2202"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\logs\\text.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "error_log_raw_line_count": 492260,
+  "engine_header_count": 82523,
+  "header_counts": {
+    "E": 82523
+  },
+  "collector_truncation": false,
+  "startup_baseline_snapshot": "Only actual captured files in RAW-MAPPINGS are included; no fabricated pre-start snapshot. Final logs contain the observed startup/runtime history.",
+  "business_result_scope": "Saved proposal/vote/withdraw assertions pass narrowly; errors/SDK mismatch and missing successful join remain unresolved for full acceptance.",
+  "semantic_log_signoff": "NOT_SIGNED_OFF; independent review pending, to be appended without rewriting raw R8 facts."
+}

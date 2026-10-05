@@ -1,0 +1,101 @@
+{
+  "schema": "lyd.r8.case-status.v1",
+  "overall": "CLOSED_NOT_GREEN",
+  "cases": [
+    {
+      "case": "R8 source/export/Release",
+      "status": "PASS_SOURCE_ONLY",
+      "evidence": "SOURCE-REFS.json"
+    },
+    {
+      "case": "Exact b099 push general and LYD CI",
+      "status": "PASS_CI_ONLY",
+      "evidence": "SOURCE-REFS.json"
+    },
+    {
+      "case": "0005 ordinary query full recipient 65866",
+      "status": "PASS_QUERY_CONTEXT_ONLY",
+      "ready": true,
+      "MCP_business_credit": false
+    },
+    {
+      "case": "0006 first ordinary send",
+      "status": "SDK_ERROR_AFTER_NATIVE_SEND_UNKNOWN",
+      "error": "ordinary interaction after_native_revision is mismatched",
+      "retried": false,
+      "opened_proposal_proven_by": "0009 saved readback",
+      "ordinary_send_full_green": false
+    },
+    {
+      "case": "0009 C2 proposal saved state",
+      "status": "PASS_NARROW_READBACK",
+      "checks": 18,
+      "new_serial": 4,
+      "new_nonce": 4,
+      "wallet_deltas": 0
+    },
+    {
+      "case": "0029 vote saved state",
+      "status": "PASS_NARROW_READBACK_NO_QUORUM",
+      "checks": 4,
+      "source_yes": 1,
+      "source_total": 2,
+      "required_fraction": "2/3",
+      "NPC_recorded_NO": true,
+      "target_yes": 1,
+      "target_total": 1,
+      "human_yes": 1,
+      "human_total": 1,
+      "merged": false,
+      "source_failure_classification": "NATURAL_NPC_NO_NO_CODE_RED"
+    },
+    {
+      "case": "0034 withdrawn round",
+      "status": "PASS_NARROW_READBACK",
+      "checks": 9,
+      "result": 3,
+      "wallet_deltas": 0,
+      "joins": 0,
+      "detaches": 1,
+      "reset_count": 1,
+      "moving_rite": 169,
+      "moving_parent": 105,
+      "selected_titles_and_character_guard_preserved": true
+    },
+    {
+      "case": "0035 official normal exit map query",
+      "status": "UNAVAILABLE_LOADSAVE_CONTRACT",
+      "claim_consumed": false,
+      "dispatch_invoked": false,
+      "MCP_exit_credit": false
+    },
+    {
+      "case": "0036 persistent client close",
+      "status": "CLOSED_ACTUAL"
+    },
+    {
+      "case": "Maintenance game exit / keeper stop / ROOT CAS release",
+      "status": "CLOSED_ACTUAL_EXIT_CODE_ZERO",
+      "MCP_exit_credit": false
+    },
+    {
+      "case": "Successful rejoin after prior detach / repeated join-detach cycle",
+      "status": "NOT_COMPLETED",
+      "full_cycle_credit": false
+    },
+    {
+      "case": "C3 / I3b / practices / I4 full matrix",
+      "status": "NOT_RUN_IN_R8",
+      "live_credit": false
+    },
+    {
+      "case": "ROOT ordinary after-observation fix after actual closure",
+      "status": "PASS_SOURCE_ONLY_50_CASES",
+      "new_tests": 8,
+      "existing_ordinary_tests": 24,
+      "official_profile_tests": 18,
+      "post_fix_live": "NOT_RUN",
+      "R8_SDK_error_unchanged": true
+    }
+  ]
+}

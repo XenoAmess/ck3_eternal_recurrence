@@ -1,0 +1,137 @@
+{
+  "schema": "lyd.r8.external-assets.v1",
+  "full_save_and_game_binary_in_Git": false,
+  "checkpoint_saves": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\checkpoints\\0004-baseline-save\\checkpoint.ck3",
+      "bytes": 90679246,
+      "sha256": "bb327fefffb356962e614747b01b76f45f3b5f16312c0d9b73fc9d30516f8770",
+      "binding_receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\checkpoints\\0004-baseline-save\\PRESERVED.json",
+        "bytes": 866,
+        "sha256": "ad574c0c1873ff760933d6e97b382dabbdef070c3e5e0dcc428798a4b015a8ff"
+      },
+      "hash_method": "producer preserved receipt; not rehashed by report author",
+      "full_save_in_Git": false
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\checkpoints\\0009-proposal-opened-save\\checkpoint.ck3",
+      "bytes": 90689179,
+      "sha256": "993a213fe69d4ffbbeb159664d533cb2fd65a2c005d63a15f6f9c9f3def007b1",
+      "binding_receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\checkpoints\\0009-proposal-opened-save\\PRESERVED.json",
+        "bytes": 887,
+        "sha256": "b0a8847f1b87b314032684937438a8e6295156f3f9e5e9858177e8f9fc2f552e"
+      },
+      "hash_method": "producer preserved receipt; not rehashed by report author",
+      "full_save_in_Git": false
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\checkpoints\\0029-vote-state-save\\checkpoint.ck3",
+      "bytes": 91401011,
+      "sha256": "6eb3d213fa8cf6fc6f6db7339897ccbc76dd77ad1346ade567a97904ea571251",
+      "binding_receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\checkpoints\\0029-vote-state-save\\PRESERVED.json",
+        "bytes": 873,
+        "sha256": "1af535e326a32a7cda0ce026b7bceb04f096e7bc1b982bbe35d728e80c3244f4"
+      },
+      "hash_method": "producer preserved receipt; not rehashed by report author",
+      "full_save_in_Git": false
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\checkpoints\\0034-post-withdraw-save\\checkpoint.ck3",
+      "bytes": 91399931,
+      "sha256": "20c4528e70b420e469cf90616ab5770779cfcd1e152484c9e1fa6ad63e423e1d",
+      "binding_receipt": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\checkpoints\\0034-post-withdraw-save\\PRESERVED.json",
+        "bytes": 882,
+        "sha256": "f10c0be9926a31122f4ef39dcb87cccf4e3bdbacf3394e9198cb4809fe4694bd"
+      },
+      "hash_method": "producer preserved receipt; not rehashed by report author",
+      "full_save_in_Git": false
+    }
+  ],
+  "current_save_stat_only": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\save games\\autosave.ck3",
+      "bytes": 91399931,
+      "mtime_ns": 1791174502561753000,
+      "sha256": null,
+      "hash_status": "Not rehashed by report author; stat does not prove equality or autosave success."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\save games\\autosave_1.ck3",
+      "bytes": 91401011,
+      "mtime_ns": 1791174298698043900,
+      "sha256": null,
+      "hash_status": "Not rehashed by report author; stat does not prove equality or autosave success."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\save games\\autosave_2.ck3",
+      "bytes": 90689179,
+      "mtime_ns": 1791174004940333700,
+      "sha256": null,
+      "hash_status": "Not rehashed by report author; stat does not prove equality or autosave success."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\save games\\autosave_exit.ck3",
+      "bytes": 91399931,
+      "mtime_ns": 1791174801353677400,
+      "sha256": null,
+      "hash_status": "Not rehashed by report author; stat does not prove equality or autosave success."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\save games\\lyd_r8_resume_0111.ck3",
+      "bytes": 90677633,
+      "mtime_ns": 1791172683489000200,
+      "sha256": null,
+      "hash_status": "Not rehashed by report author; stat does not prove equality or autosave success."
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\userdir\\save games\\xar_checkpoint.ck3",
+      "bytes": 91399931,
+      "mtime_ns": 1791174503599008300,
+      "sha256": null,
+      "hash_status": "Not rehashed by report author; stat does not prove equality or autosave success."
+    }
+  ],
+  "complete_original_frames_preserved": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\maintenance-close-001\\official-confirmation.png",
+      "bytes": 1783555,
+      "sha256": "37caf5d7a95bece467d1d5a727d709006a58c1183dd77c2a50894921876102d8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\maintenance-close-002\\official-exit-coordinate-receipt.png",
+      "bytes": 1778368,
+      "sha256": "e397deeddd84635743deeaa9b6909844e9d773cda685438697908ab16701dd85"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-steam-offline-fresh-frame-20261005-001\\steam-before.png",
+      "bytes": 327236,
+      "sha256": "de6c434664025bbdf59a01027793900cddeb57773e735dd226f909594fcb627b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-steam-offline-fresh-frame-20261005-001\\steam-moved.png",
+      "bytes": 327355,
+      "sha256": "7d09b18c33add82a253546c463950c9296de8f7a831806a63ac3f94e5b9f430f"
+    }
+  ],
+  "selected_imported_media": [
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\maintenance-close-001\\official-confirmation.png",
+      "path": "media/37caf5d7a95bece467d1d5a727d709006a58c1183dd77c2a50894921876102d8.png",
+      "bytes": 1783555,
+      "sha256": "37caf5d7a95bece467d1d5a727d709006a58c1183dd77c2a50894921876102d8",
+      "caption": "WM_CLOSE official confirmation frame; process exit is proved by retained HANDLE, not pixels."
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\maintenance-close-002\\official-exit-coordinate-receipt.png",
+      "path": "media/e397deeddd84635743deeaa9b6909844e9d773cda685438697908ab16701dd85.png",
+      "bytes": 1778368,
+      "sha256": "e397deeddd84635743deeaa9b6909844e9d773cda685438697908ab16701dd85",
+      "caption": "Original mapped maintenance confirmation receipt; no MCP exit credit."
+    }
+  ],
+  "large_asset_policy": "All external originals are preserved. Full saves/source archive/binaries/cache are not imported. Known producer save SHA bindings remain explicit; stat-only final saves receive no invented SHA or MCP autosave credit."
+}

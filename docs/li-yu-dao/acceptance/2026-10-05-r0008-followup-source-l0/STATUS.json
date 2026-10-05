@@ -1,0 +1,9 @@
+{
+  "status": "SOURCE_ONLY_EVIDENCE_PRESERVED",
+  "sources": 794,
+  "objects": 353,
+  "archive_bytes": 1128964,
+  "archive_sha256": "00e54c6a4d29c1d11956dc9c06355298e7f98bda696e464ee0452965ec6ae4cb",
+  "all_archived_members_verified": true,
+  "postfix_game": "NOT_RUN"
+}

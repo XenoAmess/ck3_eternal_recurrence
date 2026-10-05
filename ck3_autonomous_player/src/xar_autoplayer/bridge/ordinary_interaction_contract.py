@@ -272,8 +272,25 @@ def normalize_public_initiation(raw: object, binding: dict, interaction_key: str
     for key in ("action_request_id", "action_claim_path"):
         if not isinstance(raw[key], str) or not raw[key]:
             raise ValueError(f"public ordinary initiation lacks {key}")
+    # The driver preserves its first after read. A wrapper may observe a later
+    # published state while the same paused command is still only pending.
+    # Validate that earlier observation without relabeling it as the latest one.
+    observed_revision = _integer(after["revision"], binding["revision"], 2**64 - 1, "observed after_revision")
+    observed_native = _integer(after["native_revision"], binding["native_revision"], 2**64 - 1, "observed after_native_revision")
+    recorded = {**after,
+        "revision": _integer(raw["after_revision"], binding["revision"], observed_revision, "after_revision"),
+        "native_revision": _integer(raw["after_native_revision"], binding["native_revision"], observed_native, "after_native_revision"),
+        "snapshot_id": raw["after_snapshot_id"]}
+    for endpoint in (binding, after):
+        if recorded["revision"] == endpoint["revision"]:
+            _exact(recorded, "native_revision", endpoint["native_revision"])
+        if recorded["native_revision"] == endpoint["native_revision"]:
+            _exact(recorded, "snapshot_id", endpoint["snapshot_id"])
+    if binding["native_revision"] < recorded["native_revision"] < observed_native:
+        # StateSnapshotFrame uses this native revision identity (bridge.cpp).
+        _exact(recorded, "snapshot_id", f"native:{recorded['native_revision']}")
     expected = project_initiation({key: raw[key] for key in INITIATE_ENVELOPE_KEYS}, binding, interaction_key,
-                                  recipient_id, after, raw["action_request_id"], Path(raw["action_claim_path"]))
+                                  recipient_id, recorded, raw["action_request_id"], Path(raw["action_claim_path"]))
     for key in INITIATE_PUBLIC_KEYS - INITIATE_ENVELOPE_KEYS:
         _exact(raw, key, expected[key])
     return deepcopy(raw)

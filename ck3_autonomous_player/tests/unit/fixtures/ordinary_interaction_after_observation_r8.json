@@ -1,0 +1,463 @@
+{
+  "schema": "ck3-ordinary-after-observation-actual-r8-fixture-v1",
+  "source_references": [
+    {
+      "kind": "sdk_error",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\mcp-client-evidence-001\\0006-0006-join-send.sdk-result.json",
+      "copy": "actual-inputs/mcp-client-evidence-001/0006-0006-join-send.sdk-result.json",
+      "sha256": "4d523c753ab506d2b335ce3f96caa91b8d0a76b046963e5b023943d4fed288ed",
+      "bytes": 481
+    },
+    {
+      "kind": "sdk_error_dispatch",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\mcp-client-evidence-001\\0006-0006-join-send.response.json",
+      "copy": "actual-inputs/mcp-client-evidence-001/0006-0006-join-send.response.json",
+      "sha256": "37ec011627e16b1567e9635b467268709f99128f47d0dc2592f47a37e6daf265",
+      "bytes": 657
+    },
+    {
+      "kind": "query",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\mcp-client-evidence-001\\0005-0005-join-query.sdk-result.json",
+      "copy": "actual-inputs/mcp-client-evidence-001/0005-0005-join-query.sdk-result.json",
+      "sha256": "5b39ae9c4f30e3bd1fa6c1fd69d658423e8ccc15de1cc8aacce8bd7d5a83396e",
+      "bytes": 7601
+    },
+    {
+      "kind": "before",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\mcp-client-evidence-001\\0004-0004-baseline-save.sdk-result.json",
+      "copy": "actual-inputs/mcp-client-evidence-001/0004-0004-baseline-save.sdk-result.json",
+      "sha256": "273c46efaef732f748446cec071356d4fecb94bae06ec2bf8b58ca5fc01947c6",
+      "bytes": 62689
+    },
+    {
+      "kind": "after",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\mcp-client-evidence-001\\0007-0007-post-send-snapshot.sdk-result.json",
+      "copy": "actual-inputs/mcp-client-evidence-001/0007-0007-post-send-snapshot.sdk-result.json",
+      "sha256": "0344c0ed8262226e24e7f564423042f85ecc748ba0ab1be67eccf27139df23d0",
+      "bytes": 35343
+    },
+    {
+      "kind": "event",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\native-evidence\\14d29aace4784e578000a9e75d66273d\\0006-event-query.json",
+      "copy": "actual-inputs/native-evidence/14d29aace4784e578000a9e75d66273d/0006-event-query.json",
+      "sha256": "7f6a045aa0928a97d1cef2f72885cda5d380bba89a04a533fca18a042cfb9920",
+      "bytes": 19298
+    },
+    {
+      "kind": "claim",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\native-state\\native-session\\ordinary-interaction-actions\\93629cbabe3e6383a99a8a4d2091e8bec4b68e03bd18c68f4cd50970c0e57aa5.00000000.claim.json",
+      "copy": "actual-inputs/native-state/native-session/ordinary-interaction-actions/93629cbabe3e6383a99a8a4d2091e8bec4b68e03bd18c68f4cd50970c0e57aa5.00000000.claim.json",
+      "sha256": "39849d5995aa576525bdeb585a5e40f3cbbaf095187697c7dcf6bbba0511e48d",
+      "bytes": 1208
+    },
+    {
+      "kind": "packet",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\native-state\\native-session\\ordinary-interaction-actions\\93629cbabe3e6383a99a8a4d2091e8bec4b68e03bd18c68f4cd50970c0e57aa5.00000000.claim.packet.bin",
+      "copy": "actual-inputs/native-state/native-session/ordinary-interaction-actions/93629cbabe3e6383a99a8a4d2091e8bec4b68e03bd18c68f4cd50970c0e57aa5.00000000.claim.packet.bin",
+      "sha256": "85b3c1284a6b8c3f5f99b39bec6b9a7a5ad2ff3e563f9c8d5382988c27e32c39",
+      "bytes": 361
+    },
+    {
+      "kind": "native",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\native-state\\native-session\\ordinary-interaction-actions\\93629cbabe3e6383a99a8a4d2091e8bec4b68e03bd18c68f4cd50970c0e57aa5.00000000.claim.native-result.json",
+      "copy": "actual-inputs/native-state/native-session/ordinary-interaction-actions/93629cbabe3e6383a99a8a4d2091e8bec4b68e03bd18c68f4cd50970c0e57aa5.00000000.claim.native-result.json",
+      "sha256": "9ebf8e5fe7e2a15486f96c645ce16850735dc318dfd915a951eb0f0b73c87a3e",
+      "bytes": 4004
+    },
+    {
+      "kind": "receipt",
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\native-state\\native-session\\ordinary-interaction-actions\\93629cbabe3e6383a99a8a4d2091e8bec4b68e03bd18c68f4cd50970c0e57aa5.00000000.claim.receipt.json",
+      "copy": "actual-inputs/native-state/native-session/ordinary-interaction-actions/93629cbabe3e6383a99a8a4d2091e8bec4b68e03bd18c68f4cd50970c0e57aa5.00000000.claim.receipt.json",
+      "sha256": "5866affa04c44f1c161bdb2e57c8235d92f0372e40aa0587b0a269cc99d4cb67",
+      "bytes": 4675
+    }
+  ],
+  "before_frame": {
+    "revision": 3,
+    "native_revision": 2,
+    "snapshot_id": "native:2",
+    "date_raw": 53144688,
+    "speed": 1,
+    "paused": true,
+    "map_ready": true,
+    "played_character": {
+      "character_id": 31254,
+      "alive": true,
+      "source": "native",
+      "stress_points": 0,
+      "betrothed_id": null,
+      "primary_spouse_id": 36311,
+      "spouse_ids": [
+        36311
+      ]
+    },
+    "active_event": null,
+    "pending_character_interaction": null,
+    "episode_run_id": null,
+    "episode_character_id": null,
+    "local_player_id": 1,
+    "one_life_terminal_reason": null,
+    "diagnostics": {
+      "connected": true,
+      "connection_generation": 1,
+      "bridge_pid": 3524,
+      "hello": {
+        "pid": 3524,
+        "ck3_build_match": true,
+        "game_adapter_id": "ck3-1.20.0.3-msvc-x64",
+        "expected_ck3_version": "1.20.0.3",
+        "expected_ck3_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+      }
+    }
+  },
+  "later_frame": {
+    "revision": 4,
+    "native_revision": 3,
+    "snapshot_id": "native:3",
+    "date_raw": 53144688,
+    "speed": 1,
+    "paused": true,
+    "map_ready": true,
+    "played_character": {
+      "character_id": 31254,
+      "alive": true,
+      "source": "native",
+      "stress_points": 0,
+      "betrothed_id": null,
+      "primary_spouse_id": 36311,
+      "spouse_ids": [
+        36311
+      ]
+    },
+    "active_event": {
+      "source": "native",
+      "instance_id": 26,
+      "option_count": 2,
+      "title": null,
+      "options": [
+        {
+          "index": 0,
+          "option_number": 1,
+          "label": null,
+          "enabled": true
+        },
+        {
+          "index": 1,
+          "option_number": 2,
+          "label": null,
+          "enabled": true
+        }
+      ]
+    },
+    "pending_character_interaction": null,
+    "episode_run_id": null,
+    "episode_character_id": null,
+    "local_player_id": 1,
+    "one_life_terminal_reason": null,
+    "diagnostics": {
+      "connected": true,
+      "connection_generation": 1,
+      "bridge_pid": 3524,
+      "hello": {
+        "pid": 3524,
+        "ck3_build_match": true,
+        "game_adapter_id": "ck3-1.20.0.3-msvc-x64",
+        "expected_ck3_version": "1.20.0.3",
+        "expected_ck3_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+      }
+    }
+  },
+  "original_claim_binding": {
+    "native_revision": 2,
+    "connection_generation": 1,
+    "game_pid": 3524,
+    "played_character_id": 31254,
+    "date_raw": 53144688,
+    "episode_run_id": null,
+    "revision": 3,
+    "snapshot_id": "native:2",
+    "observed_stress_points": 0,
+    "active_event_present": false,
+    "incoming_interaction_present": false
+  },
+  "native_result": {
+    "type": "command_result",
+    "protocol_version": 1,
+    "request_id": "ordinary-interaction-c3ad065d63a34ba4a0f9b5286721c04a",
+    "ok": true,
+    "result": {
+      "step": "initiate-character-interaction-ordinary-v1",
+      "accepted": true,
+      "status": "pending",
+      "read_only": false,
+      "query_sequence": 3,
+      "snapshot_revision": 2,
+      "date_raw": 53144688,
+      "game_pid": 3524,
+      "connection_generation": 1,
+      "character_interaction_ordinary_initiation": {
+        "schema": "ck3-character-interaction-ordinary-initiation-v1",
+        "status": "pending",
+        "source": "native_current_ordinary_interaction_command_1.20.0.3",
+        "read_only": false,
+        "exact_build": "1.20.0.3",
+        "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+        "snapshot_revision": 2,
+        "date_raw": 53144688,
+        "game_pid": 3524,
+        "connection_generation": 1,
+        "player_character_id": 31254,
+        "recipient_id": 65866,
+        "interaction_key": "lyd_c2_propose_join_interaction",
+        "source_code_pins_verified": true,
+        "actor_binding_verified": true,
+        "recipient_binding_verified": true,
+        "owner_thread_verified": true,
+        "tls_verified": true,
+        "frame_verified": true,
+        "owner_thread_id": 19324,
+        "owner_pump_epoch": 9713,
+        "native_call_completed": true,
+        "dispatch_invoked": true,
+        "native_queue_result": "submitted",
+        "queue_submitted": true,
+        "verification_pending": true,
+        "postcondition_verified": false,
+        "business_postcondition_verified": false,
+        "reason": null,
+        "preflight_context": {
+          "schema": "ck3-character-interaction-ordinary-context-v1",
+          "status": "available",
+          "source": "native_current_ordinary_interaction_context_1.20.0.3",
+          "read_only": true,
+          "exact_build": "1.20.0.3",
+          "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+          "snapshot_revision": 2,
+          "date_raw": 53144688,
+          "game_pid": 3524,
+          "connection_generation": 1,
+          "player_character_id": 31254,
+          "recipient_id": 65866,
+          "interaction_key": "lyd_c2_propose_join_interaction",
+          "actor_alive": true,
+          "recipient_alive": true,
+          "definition_stable_hash": 382989941,
+          "effective_roles": {
+            "actor_id": 31254,
+            "recipient_id": 65866,
+            "secondary_actor_id": null,
+            "secondary_recipient_id": null,
+            "intermediary_id": null,
+            "sixth_role_id": 31254
+          },
+          "declared_option_count": 0,
+          "selected_option_count": 0,
+          "special_payload_present": false,
+          "shown": true,
+          "can_send": true,
+          "costs_raw": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "cost_scale": 100000,
+          "cost_order": [
+            "gold",
+            "prestige",
+            "piety",
+            "renown",
+            "influence",
+            "herd",
+            "treasury",
+            "treasury_or_gold",
+            "merit",
+            "barter_goods"
+          ],
+          "auto_accept": true,
+          "recipient_score_raw": 100000,
+          "intermediary_score_raw": 10000000,
+          "outer_answer_status": 0,
+          "native_context_available": true,
+          "ordinary_context_supported": true,
+          "active_event_present": false,
+          "incoming_interaction_present": false,
+          "source_code_pins_verified": true,
+          "actor_binding_verified": true,
+          "recipient_binding_verified": true,
+          "owner_thread_verified": true,
+          "tls_verified": true,
+          "frame_verified": true,
+          "owner_thread_id": 19324,
+          "owner_pump_epoch": 9713,
+          "ready_to_initiate": true,
+          "unavailable_reason": null,
+          "unsupported_reason": null,
+          "business_postcondition_verified": false
+        }
+      },
+      "backend_id": "native-headless"
+    }
+  },
+  "driver_receipt": {
+    "schema": "ck3-ordinary-interaction-pending-receipt-v1",
+    "request_id": "ordinary-interaction-c3ad065d63a34ba4a0f9b5286721c04a",
+    "result": {
+      "step": "initiate-character-interaction-ordinary-v1",
+      "accepted": true,
+      "status": "pending",
+      "read_only": false,
+      "query_sequence": 3,
+      "snapshot_revision": 2,
+      "date_raw": 53144688,
+      "game_pid": 3524,
+      "connection_generation": 1,
+      "character_interaction_ordinary_initiation": {
+        "schema": "ck3-character-interaction-ordinary-initiation-v1",
+        "status": "pending",
+        "source": "native_current_ordinary_interaction_command_1.20.0.3",
+        "read_only": false,
+        "exact_build": "1.20.0.3",
+        "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+        "snapshot_revision": 2,
+        "date_raw": 53144688,
+        "game_pid": 3524,
+        "connection_generation": 1,
+        "player_character_id": 31254,
+        "recipient_id": 65866,
+        "interaction_key": "lyd_c2_propose_join_interaction",
+        "source_code_pins_verified": true,
+        "actor_binding_verified": true,
+        "recipient_binding_verified": true,
+        "owner_thread_verified": true,
+        "tls_verified": true,
+        "frame_verified": true,
+        "owner_thread_id": 19324,
+        "owner_pump_epoch": 9713,
+        "native_call_completed": true,
+        "dispatch_invoked": true,
+        "native_queue_result": "submitted",
+        "queue_submitted": true,
+        "verification_pending": true,
+        "postcondition_verified": false,
+        "business_postcondition_verified": false,
+        "reason": null,
+        "preflight_context": {
+          "schema": "ck3-character-interaction-ordinary-context-v1",
+          "status": "available",
+          "source": "native_current_ordinary_interaction_context_1.20.0.3",
+          "read_only": true,
+          "exact_build": "1.20.0.3",
+          "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+          "snapshot_revision": 2,
+          "date_raw": 53144688,
+          "game_pid": 3524,
+          "connection_generation": 1,
+          "player_character_id": 31254,
+          "recipient_id": 65866,
+          "interaction_key": "lyd_c2_propose_join_interaction",
+          "actor_alive": true,
+          "recipient_alive": true,
+          "definition_stable_hash": 382989941,
+          "effective_roles": {
+            "actor_id": 31254,
+            "recipient_id": 65866,
+            "secondary_actor_id": null,
+            "secondary_recipient_id": null,
+            "intermediary_id": null,
+            "sixth_role_id": 31254
+          },
+          "declared_option_count": 0,
+          "selected_option_count": 0,
+          "special_payload_present": false,
+          "shown": true,
+          "can_send": true,
+          "costs_raw": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "cost_scale": 100000,
+          "cost_order": [
+            "gold",
+            "prestige",
+            "piety",
+            "renown",
+            "influence",
+            "herd",
+            "treasury",
+            "treasury_or_gold",
+            "merit",
+            "barter_goods"
+          ],
+          "auto_accept": true,
+          "recipient_score_raw": 100000,
+          "intermediary_score_raw": 10000000,
+          "outer_answer_status": 0,
+          "native_context_available": true,
+          "ordinary_context_supported": true,
+          "active_event_present": false,
+          "incoming_interaction_present": false,
+          "source_code_pins_verified": true,
+          "actor_binding_verified": true,
+          "recipient_binding_verified": true,
+          "owner_thread_verified": true,
+          "tls_verified": true,
+          "frame_verified": true,
+          "owner_thread_id": 19324,
+          "owner_pump_epoch": 9713,
+          "ready_to_initiate": true,
+          "unavailable_reason": null,
+          "unsupported_reason": null,
+          "business_postcondition_verified": false
+        }
+      },
+      "backend_id": "native-headless",
+      "queried_snapshot_id": "native:2",
+      "queried_revision": 3,
+      "queried_native_revision": 2,
+      "after_snapshot_id": "native:2",
+      "after_revision": 3,
+      "after_native_revision": 2,
+      "after_control_frame_verified": true,
+      "action_request_id": "ordinary-interaction-c3ad065d63a34ba4a0f9b5286721c04a",
+      "action_claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\native-state\\native-session\\ordinary-interaction-actions\\93629cbabe3e6383a99a8a4d2091e8bec4b68e03bd18c68f4cd50970c0e57aa5.00000000.claim.json",
+      "business_effects_verified": false,
+      "full_product_acceptance_credit": false
+    },
+    "business_postcondition_verified": false
+  },
+  "original_sdk_error": {
+    "_meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "CK3 frozen native profile",
+        "version": ""
+      }
+    },
+    "content": [
+      {
+        "type": "text",
+        "text": "Error executing tool ck3_initiate_profile_character_interaction_ordinary_v1: ordinary interaction after_native_revision is mismatched",
+        "annotations": null,
+        "_meta": null
+      }
+    ],
+    "structuredContent": null,
+    "isError": true,
+    "resultType": "complete"
+  },
+  "scope": "Immutable actual R8 data projection; replaying adapters offline does not resend or prove business success"
+}

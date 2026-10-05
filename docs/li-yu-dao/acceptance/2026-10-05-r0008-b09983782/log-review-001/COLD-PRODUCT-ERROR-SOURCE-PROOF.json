@@ -1,0 +1,2133 @@
+{
+  "common/scripted_effects/lyd_c2_vote_effects.txt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\content\\production\\common\\scripted_effects\\lyd_c2_vote_effects.txt",
+    "bytes": 5150,
+    "sha256": "4c97286cbae254d7d31fda11b3793f218b5e3818ef085a88b82be62cc74a6d92",
+    "ranges": [
+      {
+        "start": 1,
+        "end": 103,
+        "lines": [
+          {
+            "line": 1,
+            "text": "# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py."
+          },
+          {
+            "line": 2,
+            "text": "# Character root is a voter, not the initiator. The saved proposal scope and serial"
+          },
+          {
+            "line": 3,
+            "text": "# must match before touching the initiating actor's counters."
+          },
+          {
+            "line": 4,
+            "text": "lyd_c2_source_vote_effect = {"
+          },
+          {
+            "line": 5,
+            "text": "    if = {"
+          },
+          {
+            "line": 6,
+            "text": "        limit = { lyd_c2_source_ballot_trigger = yes }"
+          },
+          {
+            "line": 7,
+            "text": "        set_variable = { name = lyd_c2_vote_owner value = scope:lyd_c2_actor }"
+          },
+          {
+            "line": 8,
+            "text": "        set_variable = { name = lyd_c2_vote_serial value = scope:lyd_c2_event_serial }"
+          },
+          {
+            "line": 9,
+            "text": "        set_variable = { name = lyd_c2_vote_nonce value = scope:lyd_c2_event_nonce }"
+          },
+          {
+            "line": 10,
+            "text": "        set_variable = { name = lyd_c2_vote_yes value = $YES$ }"
+          },
+          {
+            "line": 11,
+            "text": "        # Preview does not set vote_yes; real execution has just stored it."
+          },
+          {
+            "line": 12,
+            "text": "        if = { limit = { has_variable = lyd_c2_vote_yes }"
+          },
+          {
+            "line": 13,
+            "text": "            if = { limit = { var:lyd_c2_vote_yes = 1 } scope:lyd_c2_actor = { change_variable = { name = lyd_c2_source_yes add = 1 } } }"
+          },
+          {
+            "line": 14,
+            "text": "        }"
+          },
+          {
+            "line": 15,
+            "text": "    }"
+          },
+          {
+            "line": 16,
+            "text": "}"
+          },
+          {
+            "line": 17,
+            "text": "lyd_c2_target_vote_effect = {"
+          },
+          {
+            "line": 18,
+            "text": "    if = {"
+          },
+          {
+            "line": 19,
+            "text": "        limit = { lyd_c2_target_ballot_trigger = yes }"
+          },
+          {
+            "line": 20,
+            "text": "        set_variable = { name = lyd_c2_vote_owner value = scope:lyd_c2_actor }"
+          },
+          {
+            "line": 21,
+            "text": "        set_variable = { name = lyd_c2_vote_serial value = scope:lyd_c2_event_serial }"
+          },
+          {
+            "line": 22,
+            "text": "        set_variable = { name = lyd_c2_vote_nonce value = scope:lyd_c2_event_nonce }"
+          },
+          {
+            "line": 23,
+            "text": "        set_variable = { name = lyd_c2_vote_yes value = $YES$ }"
+          },
+          {
+            "line": 24,
+            "text": "        # Same post-write presence gate for receiving-school ballots."
+          },
+          {
+            "line": 25,
+            "text": "        if = { limit = { has_variable = lyd_c2_vote_yes }"
+          },
+          {
+            "line": 26,
+            "text": "            if = {"
+          },
+          {
+            "line": 27,
+            "text": "                limit = { var:lyd_c2_vote_yes = 1 }"
+          },
+          {
+            "line": 28,
+            "text": "                rite = { change_variable = { name = lyd_c2_target_yes add = 1 } }"
+          },
+          {
+            "line": 29,
+            "text": "                scope:lyd_c2_actor = {"
+          },
+          {
+            "line": 30,
+            "text": "                    change_variable = { name = lyd_c2_target_yes add = 1 }"
+          },
+          {
+            "line": 31,
+            "text": "                    lyd_c2_request_target_consent_effect = yes"
+          },
+          {
+            "line": 32,
+            "text": "                }"
+          },
+          {
+            "line": 33,
+            "text": "            }"
+          },
+          {
+            "line": 34,
+            "text": "        }"
+          },
+          {
+            "line": 35,
+            "text": "    }"
+          },
+          {
+            "line": 36,
+            "text": "}"
+          },
+          {
+            "line": 37,
+            "text": "lyd_c2_player_yes_effect = {"
+          },
+          {
+            "line": 38,
+            "text": "    if = {"
+          },
+          {
+            "line": 39,
+            "text": "        limit = { lyd_c2_player_consent_trigger = yes }"
+          },
+          {
+            "line": 40,
+            "text": "        set_variable = { name = lyd_c2_player_owner value = scope:lyd_c2_actor }"
+          },
+          {
+            "line": 41,
+            "text": "        set_variable = { name = lyd_c2_player_serial value = scope:lyd_c2_event_serial }"
+          },
+          {
+            "line": 42,
+            "text": "        set_variable = { name = lyd_c2_player_nonce value = scope:lyd_c2_event_nonce }"
+          },
+          {
+            "line": 43,
+            "text": "        scope:lyd_c2_actor = {"
+          },
+          {
+            "line": 44,
+            "text": "            change_variable = { name = lyd_c2_player_yes add = 1 }"
+          },
+          {
+            "line": 45,
+            "text": "            if = { limit = { var:lyd_c2_kind = 1 } lyd_c2_request_target_consent_effect = yes }"
+          },
+          {
+            "line": 46,
+            "text": "        }"
+          },
+          {
+            "line": 47,
+            "text": "    }"
+          },
+          {
+            "line": 48,
+            "text": "}"
+          },
+          {
+            "line": 49,
+            "text": "lyd_c2_player_no_effect = {"
+          },
+          {
+            "line": 50,
+            "text": "    if = {"
+          },
+          {
+            "line": 51,
+            "text": "        limit = { lyd_c2_player_consent_trigger = yes }"
+          },
+          {
+            "line": 52,
+            "text": "        scope:lyd_c2_actor = { lyd_c2_reject_round_effect = yes }"
+          },
+          {
+            "line": 53,
+            "text": "    }"
+          },
+          {
+            "line": 54,
+            "text": "}"
+          },
+          {
+            "line": 55,
+            "text": "lyd_c2_sign_source_effect = {"
+          },
+          {
+            "line": 56,
+            "text": "    if = {"
+          },
+          {
+            "line": 57,
+            "text": "        limit = { lyd_c2_source_mandate_trigger = { ACTOR = scope:lyd_c2_actor } }"
+          },
+          {
+            "line": 58,
+            "text": "        set_variable = { name = lyd_c2_source_signed value = 1 }"
+          },
+          {
+            "line": 59,
+            "text": "        if = {"
+          },
+          {
+            "line": 60,
+            "text": "            limit = { has_variable = lyd_c2_source_head var:lyd_c2_source_head = this }"
+          },
+          {
+            "line": 61,
+            "text": "            set_variable = { name = lyd_c2_source_head_yes value = 1 }"
+          },
+          {
+            "line": 62,
+            "text": "        }"
+          },
+          {
+            "line": 63,
+            "text": "        if = {"
+          },
+          {
+            "line": 64,
+            "text": "            limit = { var:lyd_c2_kind = 1 }"
+          },
+          {
+            "line": 65,
+            "text": "            lyd_c2_request_target_consent_effect = yes"
+          },
+          {
+            "line": 66,
+            "text": "            if = {"
+          },
+          {
+            "line": 67,
+            "text": "                limit = { exists = var:lyd_c2_source_head NOT = { var:lyd_c2_source_head = this } }"
+          },
+          {
+            "line": 68,
+            "text": "                var:lyd_c2_source_head = { trigger_event = lyd.223 }"
+          },
+          {
+            "line": 69,
+            "text": "            }"
+          },
+          {
+            "line": 70,
+            "text": "        }"
+          },
+          {
+            "line": 71,
+            "text": "        else_if = {"
+          },
+          {
+            "line": 72,
+            "text": "            limit = { exists = var:lyd_c2_source_head }"
+          },
+          {
+            "line": 73,
+            "text": "            var:lyd_c2_source_head = { trigger_event = lyd.224 }"
+          },
+          {
+            "line": 74,
+            "text": "        }"
+          },
+          {
+            "line": 75,
+            "text": "    }"
+          },
+          {
+            "line": 76,
+            "text": "}"
+          },
+          {
+            "line": 77,
+            "text": "# Event-only wrapper: validate the original popup before the current helper can"
+          },
+          {
+            "line": 78,
+            "text": "# sign or send follow-up events. Never refresh/rebind the saved nonce here."
+          },
+          {
+            "line": 79,
+            "text": "lyd_c2_event_sign_source_effect = {"
+          },
+          {
+            "line": 80,
+            "text": "    if = {"
+          },
+          {
+            "line": 81,
+            "text": "        limit = { lyd_c2_initiator_event_context_trigger = yes }"
+          },
+          {
+            "line": 82,
+            "text": "        lyd_c2_sign_source_effect = yes"
+          },
+          {
+            "line": 83,
+            "text": "    }"
+          },
+          {
+            "line": 84,
+            "text": "}"
+          },
+          {
+            "line": 85,
+            "text": "lyd_c2_request_target_consent_effect = {"
+          },
+          {
+            "line": 86,
+            "text": "    if = {"
+          },
+          {
+            "line": 87,
+            "text": "        limit = {"
+          },
+          {
+            "line": 88,
+            "text": "            lyd_c2_current_proposal_trigger = { ACTOR = scope:lyd_c2_actor }"
+          },
+          {
+            "line": 89,
+            "text": "            var:lyd_c2_kind = 1"
+          },
+          {
+            "line": 90,
+            "text": "            var:lyd_c2_source_signed = 1"
+          },
+          {
+            "line": 91,
+            "text": "            lyd_c2_receiving_mandates_trigger = { ACTOR = scope:lyd_c2_actor }"
+          },
+          {
+            "line": 92,
+            "text": "            NOT = { has_variable = lyd_c2_target_requested }"
+          },
+          {
+            "line": 93,
+            "text": "        }"
+          },
+          {
+            "line": 94,
+            "text": "        set_variable = { name = lyd_c2_target_requested value = 1 }"
+          },
+          {
+            "line": 95,
+            "text": "        var:lyd_c2_target_rep = { trigger_event = lyd.221 }"
+          },
+          {
+            "line": 96,
+            "text": "    }"
+          },
+          {
+            "line": 97,
+            "text": "}"
+          },
+          {
+            "line": 98,
+            "text": "lyd_c2_sign_target_effect = {"
+          },
+          {
+            "line": 99,
+            "text": "    if = {"
+          },
+          {
+            "line": 100,
+            "text": "        limit = {"
+          },
+          {
+            "line": 101,
+            "text": "            lyd_c2_ballot_context_trigger = yes"
+          },
+          {
+            "line": 102,
+            "text": "            this = scope:lyd_c2_actor.var:lyd_c2_target_rep"
+          },
+          {
+            "line": 103,
+            "text": "            has_variable = lyd_c2_vote_owner"
+          }
+        ]
+      }
+    ]
+  },
+  "common/scripted_effects/lyd_c2_snapshot_effects.txt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\content\\production\\common\\scripted_effects\\lyd_c2_snapshot_effects.txt",
+    "bytes": 20434,
+    "sha256": "ba5b02a594aab32e475cfc2bb6d368ed14a11b1316f60354a3a09585e052529d",
+    "ranges": [
+      {
+        "start": 1,
+        "end": 45,
+        "lines": [
+          {
+            "line": 1,
+            "text": "# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py."
+          },
+          {
+            "line": 2,
+            "text": "# Compare actual sets as well as counts: replacement electors, new players or a"
+          },
+          {
+            "line": 3,
+            "text": "# doctrine/status change invalidate the round even when totals remain identical."
+          },
+          {
+            "line": 4,
+            "text": "lyd_c2_snapshot_terms_effect = {"
+          },
+          {
+            "line": 5,
+            "text": ""
+          },
+          {
+            "line": 6,
+            "text": "set_variable = { name = lyd_c2_source_core_total value = 0 }"
+          },
+          {
+            "line": 7,
+            "text": "var:lyd_c2_moving_rite = {"
+          },
+          {
+            "line": 8,
+            "text": "    every_rite_tenet = {"
+          },
+          {
+            "line": 9,
+            "text": "        status = core"
+          },
+          {
+            "line": 10,
+            "text": "        save_scope_as = lyd_c2_snapshot_item"
+          },
+          {
+            "line": 11,
+            "text": "        scope:lyd_c2_actor = {"
+          },
+          {
+            "line": 12,
+            "text": "            add_to_variable_list = { name = lyd_c2_source_core target = scope:lyd_c2_snapshot_item }"
+          },
+          {
+            "line": 13,
+            "text": "            change_variable = { name = lyd_c2_source_core_total add = 1 }"
+          },
+          {
+            "line": 14,
+            "text": "        }"
+          },
+          {
+            "line": 15,
+            "text": "    }"
+          },
+          {
+            "line": 16,
+            "text": "}"
+          },
+          {
+            "line": 17,
+            "text": ""
+          },
+          {
+            "line": 18,
+            "text": ""
+          },
+          {
+            "line": 19,
+            "text": "set_variable = { name = lyd_c2_source_permitted_total value = 0 }"
+          },
+          {
+            "line": 20,
+            "text": "var:lyd_c2_moving_rite = {"
+          },
+          {
+            "line": 21,
+            "text": "    every_rite_tenet = {"
+          },
+          {
+            "line": 22,
+            "text": "        status = permitted"
+          },
+          {
+            "line": 23,
+            "text": "        save_scope_as = lyd_c2_snapshot_item"
+          },
+          {
+            "line": 24,
+            "text": "        scope:lyd_c2_actor = {"
+          },
+          {
+            "line": 25,
+            "text": "            add_to_variable_list = { name = lyd_c2_source_permitted target = scope:lyd_c2_snapshot_item }"
+          },
+          {
+            "line": 26,
+            "text": "            change_variable = { name = lyd_c2_source_permitted_total add = 1 }"
+          },
+          {
+            "line": 27,
+            "text": "        }"
+          },
+          {
+            "line": 28,
+            "text": "    }"
+          },
+          {
+            "line": 29,
+            "text": "}"
+          },
+          {
+            "line": 30,
+            "text": ""
+          },
+          {
+            "line": 31,
+            "text": ""
+          },
+          {
+            "line": 32,
+            "text": "set_variable = { name = lyd_c2_source_known_total value = 0 }"
+          },
+          {
+            "line": 33,
+            "text": "var:lyd_c2_moving_rite = {"
+          },
+          {
+            "line": 34,
+            "text": "    every_rite_tenet = {"
+          },
+          {
+            "line": 35,
+            "text": "        status = known"
+          },
+          {
+            "line": 36,
+            "text": "        save_scope_as = lyd_c2_snapshot_item"
+          },
+          {
+            "line": 37,
+            "text": "        scope:lyd_c2_actor = {"
+          },
+          {
+            "line": 38,
+            "text": "            add_to_variable_list = { name = lyd_c2_source_known target = scope:lyd_c2_snapshot_item }"
+          },
+          {
+            "line": 39,
+            "text": "            change_variable = { name = lyd_c2_source_known_total add = 1 }"
+          },
+          {
+            "line": 40,
+            "text": "        }"
+          },
+          {
+            "line": 41,
+            "text": "    }"
+          },
+          {
+            "line": 42,
+            "text": "}"
+          },
+          {
+            "line": 43,
+            "text": ""
+          },
+          {
+            "line": 44,
+            "text": ""
+          },
+          {
+            "line": 45,
+            "text": "set_variable = { name = lyd_c2_source_prohibited_total value = 0 }"
+          }
+        ]
+      },
+      {
+        "start": 204,
+        "end": 290,
+        "lines": [
+          {
+            "line": 204,
+            "text": "    if = {"
+          },
+          {
+            "line": 205,
+            "text": "        limit = { scope:lyd_c2_actor.var:lyd_c2_moving_rite = { NOT = { rite_has_doctrine = scope:lyd_c2_snapshot_item } } }"
+          },
+          {
+            "line": 206,
+            "text": "        scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } }"
+          },
+          {
+            "line": 207,
+            "text": "    }"
+          },
+          {
+            "line": 208,
+            "text": "}"
+          },
+          {
+            "line": 209,
+            "text": ""
+          },
+          {
+            "line": 210,
+            "text": ""
+          },
+          {
+            "line": 211,
+            "text": "if = { limit = { var:lyd_c2_kind = 1 }"
+          },
+          {
+            "line": 212,
+            "text": "    every_in_list = { variable = lyd_c2_target_rites"
+          },
+          {
+            "line": 213,
+            "text": "        save_scope_as = lyd_c2_target_school"
+          },
+          {
+            "line": 214,
+            "text": "        if = { limit = { OR = {"
+          },
+          {
+            "line": 215,
+            "text": "            faith != scope:lyd_c2_actor.var:lyd_c2_target_faith"
+          },
+          {
+            "line": 216,
+            "text": "            rite_counties != var:lyd_c2_snapshot_counties"
+          },
+          {
+            "line": 217,
+            "text": "        } } scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } } }"
+          },
+          {
+            "line": 218,
+            "text": "        if = { limit = { has_variable = lyd_c2_snapshot_holder }"
+          },
+          {
+            "line": 219,
+            "text": "            if = { limit = { OR = { NOT = { exists = head_of_rite } NOT = { head_of_rite = var:lyd_c2_snapshot_holder } } }"
+          },
+          {
+            "line": 220,
+            "text": "                scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } }"
+          },
+          {
+            "line": 221,
+            "text": "            }"
+          },
+          {
+            "line": 222,
+            "text": "        }"
+          },
+          {
+            "line": 223,
+            "text": "        else_if = { limit = { exists = head_of_rite } scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } } }"
+          },
+          {
+            "line": 224,
+            "text": ""
+          },
+          {
+            "line": 225,
+            "text": ""
+          },
+          {
+            "line": 226,
+            "text": "        set_variable = { name = lyd_c2_check_count value = 0 }"
+          },
+          {
+            "line": 227,
+            "text": "        every_rite_tenet = { status = core scope:lyd_c2_target_school = { change_variable = { name = lyd_c2_check_count add = 1 } } }"
+          },
+          {
+            "line": 228,
+            "text": "        if = { limit = { var:lyd_c2_check_count != var:lyd_c2_target_core_total } scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } } }"
+          },
+          {
+            "line": 229,
+            "text": "        every_in_list = { variable = lyd_c2_target_core"
+          },
+          {
+            "line": 230,
+            "text": "            save_scope_as = lyd_c2_snapshot_item"
+          },
+          {
+            "line": 231,
+            "text": "            if = { limit = { scope:lyd_c2_target_school = { NOT = { any_rite_tenet = { status = core this = scope:lyd_c2_snapshot_item } } } }"
+          },
+          {
+            "line": 232,
+            "text": "                scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } }"
+          },
+          {
+            "line": 233,
+            "text": "            }"
+          },
+          {
+            "line": 234,
+            "text": "        }"
+          },
+          {
+            "line": 235,
+            "text": ""
+          },
+          {
+            "line": 236,
+            "text": ""
+          },
+          {
+            "line": 237,
+            "text": "        set_variable = { name = lyd_c2_check_count value = 0 }"
+          },
+          {
+            "line": 238,
+            "text": "        every_rite_tenet = { status = permitted scope:lyd_c2_target_school = { change_variable = { name = lyd_c2_check_count add = 1 } } }"
+          },
+          {
+            "line": 239,
+            "text": "        if = { limit = { var:lyd_c2_check_count != var:lyd_c2_target_permitted_total } scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } } }"
+          },
+          {
+            "line": 240,
+            "text": "        every_in_list = { variable = lyd_c2_target_permitted"
+          },
+          {
+            "line": 241,
+            "text": "            save_scope_as = lyd_c2_snapshot_item"
+          },
+          {
+            "line": 242,
+            "text": "            if = { limit = { scope:lyd_c2_target_school = { NOT = { any_rite_tenet = { status = permitted this = scope:lyd_c2_snapshot_item } } } }"
+          },
+          {
+            "line": 243,
+            "text": "                scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } }"
+          },
+          {
+            "line": 244,
+            "text": "            }"
+          },
+          {
+            "line": 245,
+            "text": "        }"
+          },
+          {
+            "line": 246,
+            "text": ""
+          },
+          {
+            "line": 247,
+            "text": ""
+          },
+          {
+            "line": 248,
+            "text": "        set_variable = { name = lyd_c2_check_count value = 0 }"
+          },
+          {
+            "line": 249,
+            "text": "        every_rite_tenet = { status = known scope:lyd_c2_target_school = { change_variable = { name = lyd_c2_check_count add = 1 } } }"
+          },
+          {
+            "line": 250,
+            "text": "        if = { limit = { var:lyd_c2_check_count != var:lyd_c2_target_known_total } scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } } }"
+          },
+          {
+            "line": 251,
+            "text": "        every_in_list = { variable = lyd_c2_target_known"
+          },
+          {
+            "line": 252,
+            "text": "            save_scope_as = lyd_c2_snapshot_item"
+          },
+          {
+            "line": 253,
+            "text": "            if = { limit = { scope:lyd_c2_target_school = { NOT = { any_rite_tenet = { status = known this = scope:lyd_c2_snapshot_item } } } }"
+          },
+          {
+            "line": 254,
+            "text": "                scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } }"
+          },
+          {
+            "line": 255,
+            "text": "            }"
+          },
+          {
+            "line": 256,
+            "text": "        }"
+          },
+          {
+            "line": 257,
+            "text": ""
+          },
+          {
+            "line": 258,
+            "text": ""
+          },
+          {
+            "line": 259,
+            "text": "        set_variable = { name = lyd_c2_check_count value = 0 }"
+          },
+          {
+            "line": 260,
+            "text": "        every_rite_tenet = { status = prohibited scope:lyd_c2_target_school = { change_variable = { name = lyd_c2_check_count add = 1 } } }"
+          },
+          {
+            "line": 261,
+            "text": "        if = { limit = { var:lyd_c2_check_count != var:lyd_c2_target_prohibited_total } scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } } }"
+          },
+          {
+            "line": 262,
+            "text": "        every_in_list = { variable = lyd_c2_target_prohibited"
+          },
+          {
+            "line": 263,
+            "text": "            save_scope_as = lyd_c2_snapshot_item"
+          },
+          {
+            "line": 264,
+            "text": "            if = { limit = { scope:lyd_c2_target_school = { NOT = { any_rite_tenet = { status = prohibited this = scope:lyd_c2_snapshot_item } } } }"
+          },
+          {
+            "line": 265,
+            "text": "                scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } }"
+          },
+          {
+            "line": 266,
+            "text": "            }"
+          },
+          {
+            "line": 267,
+            "text": "        }"
+          },
+          {
+            "line": 268,
+            "text": ""
+          },
+          {
+            "line": 269,
+            "text": ""
+          },
+          {
+            "line": 270,
+            "text": "        set_variable = { name = lyd_c2_check_count value = 0 }"
+          },
+          {
+            "line": 271,
+            "text": "        scope:lyd_c2_actor.var:lyd_c2_target_rep = {"
+          },
+          {
+            "line": 272,
+            "text": "            every_character_doctrine = { rite_filter = scope:lyd_c2_target_school"
+          },
+          {
+            "line": 273,
+            "text": "                scope:lyd_c2_target_school = { change_variable = { name = lyd_c2_check_count add = 1 } }"
+          },
+          {
+            "line": 274,
+            "text": "            }"
+          },
+          {
+            "line": 275,
+            "text": "        }"
+          },
+          {
+            "line": 276,
+            "text": "        if = { limit = { var:lyd_c2_check_count != var:lyd_c2_target_doctrines_total }"
+          },
+          {
+            "line": 277,
+            "text": "            scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } }"
+          },
+          {
+            "line": 278,
+            "text": "        }"
+          },
+          {
+            "line": 279,
+            "text": "        every_in_list = { variable = lyd_c2_target_doctrines"
+          },
+          {
+            "line": 280,
+            "text": "            save_scope_as = lyd_c2_snapshot_item"
+          },
+          {
+            "line": 281,
+            "text": "            if = { limit = { scope:lyd_c2_target_school = { NOT = { rite_has_doctrine = scope:lyd_c2_snapshot_item } } }"
+          },
+          {
+            "line": 282,
+            "text": "                scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } }"
+          },
+          {
+            "line": 283,
+            "text": "            }"
+          },
+          {
+            "line": 284,
+            "text": "        }"
+          },
+          {
+            "line": 285,
+            "text": "    }"
+          },
+          {
+            "line": 286,
+            "text": "}"
+          },
+          {
+            "line": 287,
+            "text": ""
+          },
+          {
+            "line": 288,
+            "text": "    set_variable = { name = lyd_c2_check_players value = 0 }"
+          },
+          {
+            "line": 289,
+            "text": ""
+          },
+          {
+            "line": 290,
+            "text": "set_variable = { name = lyd_c2_check_count value = 0 }"
+          }
+        ]
+      },
+      {
+        "start": 305,
+        "end": 349,
+        "lines": [
+          {
+            "line": 305,
+            "text": "                    NOT = { var:lyd_c2_elector_serial = scope:lyd_c2_actor.var:lyd_c2_serial }"
+          },
+          {
+            "line": 306,
+            "text": "                    NOT = { rite = var:lyd_c2_elector_rite }"
+          },
+          {
+            "line": 307,
+            "text": "                } }"
+          },
+          {
+            "line": 308,
+            "text": "        scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } }"
+          },
+          {
+            "line": 309,
+            "text": "    }"
+          },
+          {
+            "line": 310,
+            "text": "}"
+          },
+          {
+            "line": 311,
+            "text": ""
+          },
+          {
+            "line": 312,
+            "text": ""
+          },
+          {
+            "line": 313,
+            "text": "if = { limit = { var:lyd_c2_kind = 1 }"
+          },
+          {
+            "line": 314,
+            "text": "    set_variable = { name = lyd_c2_check_rites value = 0 }"
+          },
+          {
+            "line": 315,
+            "text": "    set_variable = { name = lyd_c2_active_receivers value = 0 }"
+          },
+          {
+            "line": 316,
+            "text": "    set_variable = { name = lyd_c2_mandated_receivers value = 0 }"
+          },
+          {
+            "line": 317,
+            "text": "    set_variable = { name = lyd_c2_unorganized_receivers value = 0 }"
+          },
+          {
+            "line": 318,
+            "text": "    var:lyd_c2_target_faith = { every_faith_rite = { scope:lyd_c2_actor = { change_variable = { name = lyd_c2_check_rites add = 1 } } } }"
+          },
+          {
+            "line": 319,
+            "text": "    if = { limit = { var:lyd_c2_check_rites != var:lyd_c2_target_rite_total } set_variable = { name = lyd_c2_snapshot_valid value = 0 } }"
+          },
+          {
+            "line": 320,
+            "text": "    every_in_list = { variable = lyd_c2_target_rites"
+          },
+          {
+            "line": 321,
+            "text": "        save_scope_as = lyd_c2_target_school"
+          },
+          {
+            "line": 322,
+            "text": "        set_variable = { name = lyd_c2_check_count value = 0 }"
+          },
+          {
+            "line": 323,
+            "text": "        set_variable = { name = lyd_c2_check_followers value = 0 }"
+          },
+          {
+            "line": 324,
+            "text": "        scope:lyd_c2_actor.var:lyd_c2_target_faith = {"
+          },
+          {
+            "line": 325,
+            "text": "            every_faith_character = { limit = { rite = scope:lyd_c2_target_school }"
+          },
+          {
+            "line": 326,
+            "text": "                if = { limit = { is_alive = yes }"
+          },
+          {
+            "line": 327,
+            "text": "                    scope:lyd_c2_target_school = { change_variable = { name = lyd_c2_check_followers add = 1 } }"
+          },
+          {
+            "line": 328,
+            "text": "                }"
+          },
+          {
+            "line": 329,
+            "text": "                if = { limit = { lyd_c2_elector_trigger = yes }"
+          },
+          {
+            "line": 330,
+            "text": "                    scope:lyd_c2_target_school = { change_variable = { name = lyd_c2_check_count add = 1 } }"
+          },
+          {
+            "line": 331,
+            "text": "                }"
+          },
+          {
+            "line": 332,
+            "text": "                if = { limit = { is_ai = no is_alive = yes }"
+          },
+          {
+            "line": 333,
+            "text": "                    scope:lyd_c2_actor = { change_variable = { name = lyd_c2_check_players add = 1 } }"
+          },
+          {
+            "line": 334,
+            "text": "                }"
+          },
+          {
+            "line": 335,
+            "text": "            }"
+          },
+          {
+            "line": 336,
+            "text": "        }"
+          },
+          {
+            "line": 337,
+            "text": "        if = { limit = { OR = {"
+          },
+          {
+            "line": 338,
+            "text": "            var:lyd_c2_check_count != var:lyd_c2_target_total"
+          },
+          {
+            "line": 339,
+            "text": "            var:lyd_c2_check_followers != var:lyd_c2_target_followers"
+          },
+          {
+            "line": 340,
+            "text": "            faith != scope:lyd_c2_actor.var:lyd_c2_target_faith"
+          },
+          {
+            "line": 341,
+            "text": "        } } scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } } }"
+          },
+          {
+            "line": 342,
+            "text": "        if = { limit = { NOT = { lyd_c2_dormant_receiving_rite_trigger = yes } }"
+          },
+          {
+            "line": 343,
+            "text": "            scope:lyd_c2_actor = { change_variable = { name = lyd_c2_active_receivers add = 1 } }"
+          },
+          {
+            "line": 344,
+            "text": "            if = { limit = { lyd_c2_receiver_rite_quorum_trigger = { ACTOR = scope:lyd_c2_actor } }"
+          },
+          {
+            "line": 345,
+            "text": "                scope:lyd_c2_actor = { change_variable = { name = lyd_c2_mandated_receivers add = 1 } }"
+          },
+          {
+            "line": 346,
+            "text": "            }"
+          },
+          {
+            "line": 347,
+            "text": "            if = { limit = { var:lyd_c2_target_total = 0 NOT = { head_of_rite = { is_alive = yes is_adult = yes NOT = { has_trait = incapable } rite = scope:lyd_c2_target_school } } }"
+          },
+          {
+            "line": 348,
+            "text": "                scope:lyd_c2_actor = { change_variable = { name = lyd_c2_unorganized_receivers add = 1 } }"
+          },
+          {
+            "line": 349,
+            "text": "            }"
+          }
+        ]
+      },
+      {
+        "start": 389,
+        "end": 408,
+        "lines": [
+          {
+            "line": 389,
+            "text": "            }"
+          },
+          {
+            "line": 390,
+            "text": "        }"
+          },
+          {
+            "line": 391,
+            "text": "        scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } }"
+          },
+          {
+            "line": 392,
+            "text": "    }"
+          },
+          {
+            "line": 393,
+            "text": "}"
+          },
+          {
+            "line": 394,
+            "text": ""
+          },
+          {
+            "line": 395,
+            "text": "}"
+          },
+          {
+            "line": 396,
+            "text": "lyd_c2_open_review_effect = {"
+          },
+          {
+            "line": 397,
+            "text": "    if = {"
+          },
+          {
+            "line": 398,
+            "text": "        limit = { lyd_c2_current_proposal_trigger = { ACTOR = root } }"
+          },
+          {
+            "line": 399,
+            "text": "        save_scope_as = lyd_c2_actor"
+          },
+          {
+            "line": 400,
+            "text": "        var:lyd_c2_moving_rite = { save_scope_as = lyd_c2_event_school }"
+          },
+          {
+            "line": 401,
+            "text": "        save_scope_value_as = { name = lyd_c2_event_serial value = var:lyd_c2_serial }"
+          },
+          {
+            "line": 402,
+            "text": "        save_scope_value_as = { name = lyd_c2_event_terms value = var:lyd_c2_terms_revision }"
+          },
+          {
+            "line": 403,
+            "text": "        save_scope_value_as = { name = lyd_c2_event_nonce value = var:lyd_c2_callback_nonce }"
+          },
+          {
+            "line": 404,
+            "text": "        lyd_c2_refresh_snapshot_effect = yes"
+          },
+          {
+            "line": 405,
+            "text": "        trigger_event = lyd.220"
+          },
+          {
+            "line": 406,
+            "text": "    }"
+          },
+          {
+            "line": 407,
+            "text": "}"
+          }
+        ]
+      }
+    ]
+  },
+  "common/scripted_effects/lyd_c2_setup_effects.txt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\content\\production\\common\\scripted_effects\\lyd_c2_setup_effects.txt",
+    "bytes": 12698,
+    "sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21",
+    "ranges": [
+      {
+        "start": 1,
+        "end": 32,
+        "lines": [
+          {
+            "line": 1,
+            "text": "# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py."
+          },
+          {
+            "line": 2,
+            "text": "# ACTOR must be a live player. All snapshots belong to this round, not a faith ID."
+          },
+          {
+            "line": 3,
+            "text": "lyd_c2_reset_round_effect = {"
+          },
+          {
+            "line": 4,
+            "text": "    remove_variable = lyd_c2_active"
+          },
+          {
+            "line": 5,
+            "text": "remove_variable = lyd_c2_kind"
+          },
+          {
+            "line": 6,
+            "text": "remove_variable = lyd_c2_terms_revision"
+          },
+          {
+            "line": 7,
+            "text": "remove_variable = lyd_c2_source_faith"
+          },
+          {
+            "line": 8,
+            "text": "remove_variable = lyd_c2_source_main"
+          },
+          {
+            "line": 9,
+            "text": "remove_variable = lyd_c2_moving_rite"
+          },
+          {
+            "line": 10,
+            "text": "remove_variable = lyd_c2_source_head"
+          },
+          {
+            "line": 11,
+            "text": "remove_variable = lyd_c2_target_rep"
+          },
+          {
+            "line": 12,
+            "text": "remove_variable = lyd_c2_target_faith"
+          },
+          {
+            "line": 13,
+            "text": "remove_variable = lyd_c2_target_main"
+          },
+          {
+            "line": 14,
+            "text": "remove_variable = lyd_c2_target_head"
+          },
+          {
+            "line": 15,
+            "text": "remove_variable = lyd_c2_source_total"
+          },
+          {
+            "line": 16,
+            "text": "remove_variable = lyd_c2_target_total"
+          },
+          {
+            "line": 17,
+            "text": "remove_variable = lyd_c2_target_rite_total"
+          },
+          {
+            "line": 18,
+            "text": "remove_variable = lyd_c2_dormant_total"
+          },
+          {
+            "line": 19,
+            "text": "remove_variable = lyd_c2_source_yes"
+          },
+          {
+            "line": 20,
+            "text": "remove_variable = lyd_c2_target_yes"
+          },
+          {
+            "line": 21,
+            "text": "remove_variable = lyd_c2_player_total"
+          },
+          {
+            "line": 22,
+            "text": "remove_variable = lyd_c2_player_yes"
+          },
+          {
+            "line": 23,
+            "text": "remove_variable = lyd_c2_source_signed"
+          },
+          {
+            "line": 24,
+            "text": "remove_variable = lyd_c2_target_signed"
+          },
+          {
+            "line": 25,
+            "text": "remove_variable = lyd_c2_source_head_yes"
+          },
+          {
+            "line": 26,
+            "text": "remove_variable = lyd_c2_target_head_yes"
+          },
+          {
+            "line": 27,
+            "text": "remove_variable = lyd_c2_source_singleton"
+          },
+          {
+            "line": 28,
+            "text": "remove_variable = lyd_c2_source_head_title"
+          },
+          {
+            "line": 29,
+            "text": "remove_variable = lyd_c2_source_rite_head"
+          },
+          {
+            "line": 30,
+            "text": "remove_variable = lyd_c2_source_head_retired"
+          },
+          {
+            "line": 31,
+            "text": "remove_variable = lyd_c2_target_requested"
+          },
+          {
+            "line": 32,
+            "text": "remove_variable = lyd_c2_old_permission"
+          }
+        ]
+      },
+      {
+        "start": 113,
+        "end": 144,
+        "lines": [
+          {
+            "line": 113,
+            "text": "        set_variable = { name = lyd_c2_dormant_total value = 0 }"
+          },
+          {
+            "line": 114,
+            "text": "        set_variable = { name = lyd_c2_source_yes value = 0 }"
+          },
+          {
+            "line": 115,
+            "text": "        set_variable = { name = lyd_c2_target_yes value = 0 }"
+          },
+          {
+            "line": 116,
+            "text": "        set_variable = { name = lyd_c2_player_total value = 0 }"
+          },
+          {
+            "line": 117,
+            "text": "        set_variable = { name = lyd_c2_player_yes value = 0 }"
+          },
+          {
+            "line": 118,
+            "text": "        if = {"
+          },
+          {
+            "line": 119,
+            "text": "            limit = { var:lyd_c2_kind = 1 }"
+          },
+          {
+            "line": 120,
+            "text": "            set_variable = { name = lyd_c2_target_rep value = scope:recipient }"
+          },
+          {
+            "line": 121,
+            "text": "            set_variable = { name = lyd_c2_target_faith value = scope:recipient.faith }"
+          },
+          {
+            "line": 122,
+            "text": "            set_variable = { name = lyd_c2_target_main value = scope:recipient.faith.main_rite }"
+          },
+          {
+            "line": 123,
+            "text": "            if = {"
+          },
+          {
+            "line": 124,
+            "text": "                limit = { exists = scope:recipient.faith.religious_head }"
+          },
+          {
+            "line": 125,
+            "text": "                set_variable = { name = lyd_c2_target_head value = scope:recipient.faith.religious_head }"
+          },
+          {
+            "line": 126,
+            "text": "            }"
+          },
+          {
+            "line": 127,
+            "text": "            lyd_c2_collect_target_effect = yes"
+          },
+          {
+            "line": 128,
+            "text": "        }"
+          },
+          {
+            "line": 129,
+            "text": "        lyd_c2_collect_source_effect = yes"
+          },
+          {
+            "line": 130,
+            "text": "        lyd_c2_snapshot_terms_effect = yes"
+          },
+          {
+            "line": 131,
+            "text": "        trigger_event = lyd.200"
+          },
+          {
+            "line": 132,
+            "text": "        trigger_event = { id = lyd.229 days = 365 }"
+          },
+          {
+            "line": 133,
+            "text": "    }"
+          },
+          {
+            "line": 134,
+            "text": "    }"
+          },
+          {
+            "line": 135,
+            "text": "}"
+          },
+          {
+            "line": 136,
+            "text": "lyd_c2_begin_join_effect = {"
+          },
+          {
+            "line": 137,
+            "text": "    if = { limit = { lyd_c2_start_join_trigger = yes } scope:actor = { lyd_c2_start_round_effect = { KIND = 1 } } }"
+          },
+          {
+            "line": 138,
+            "text": "}"
+          },
+          {
+            "line": 139,
+            "text": "lyd_c2_begin_detach_effect = {"
+          },
+          {
+            "line": 140,
+            "text": "    if = { limit = { lyd_c2_start_detach_trigger = yes } lyd_c2_start_round_effect = { KIND = 2 } }"
+          },
+          {
+            "line": 141,
+            "text": "}"
+          },
+          {
+            "line": 142,
+            "text": "# The initiator is proposed as the source representative; the selected recipient"
+          },
+          {
+            "line": 143,
+            "text": "# is proposed as receiving representative. Their ballots authorize THESE people,"
+          },
+          {
+            "line": 144,
+            "text": "# rather than treating sponsor or recipient selection as an existing mandate."
+          }
+        ]
+      },
+      {
+        "start": 188,
+        "end": 218,
+        "lines": [
+          {
+            "line": 188,
+            "text": "                change_variable = { name = lyd_c2_target_rite_total add = 1 }"
+          },
+          {
+            "line": 189,
+            "text": "            }"
+          },
+          {
+            "line": 190,
+            "text": "        }"
+          },
+          {
+            "line": 191,
+            "text": "        every_faith_character = {"
+          },
+          {
+            "line": 192,
+            "text": "            save_scope_as = lyd_c2_voter"
+          },
+          {
+            "line": 193,
+            "text": "            if = { limit = { is_alive = yes }"
+          },
+          {
+            "line": 194,
+            "text": "                set_variable = { name = lyd_c2_follower_owner value = scope:lyd_c2_actor }"
+          },
+          {
+            "line": 195,
+            "text": "                set_variable = { name = lyd_c2_follower_serial value = scope:lyd_c2_event_serial }"
+          },
+          {
+            "line": 196,
+            "text": "                set_variable = { name = lyd_c2_follower_rite value = rite }"
+          },
+          {
+            "line": 197,
+            "text": "                rite = { change_variable = { name = lyd_c2_target_followers add = 1 } }"
+          },
+          {
+            "line": 198,
+            "text": "                scope:lyd_c2_actor = { add_to_variable_list = { name = lyd_c2_target_followers target = scope:lyd_c2_voter } }"
+          },
+          {
+            "line": 199,
+            "text": "            }"
+          },
+          {
+            "line": 200,
+            "text": "            if = {"
+          },
+          {
+            "line": 201,
+            "text": "                limit = { lyd_c2_elector_trigger = yes }"
+          },
+          {
+            "line": 202,
+            "text": "                set_variable = { name = lyd_c2_elector_owner value = scope:lyd_c2_actor }"
+          },
+          {
+            "line": 203,
+            "text": "                set_variable = { name = lyd_c2_elector_serial value = scope:lyd_c2_event_serial }"
+          },
+          {
+            "line": 204,
+            "text": "                set_variable = { name = lyd_c2_elector_rite value = rite }"
+          },
+          {
+            "line": 205,
+            "text": "                rite = { change_variable = { name = lyd_c2_target_total add = 1 } }"
+          },
+          {
+            "line": 206,
+            "text": "                scope:lyd_c2_actor = {"
+          },
+          {
+            "line": 207,
+            "text": "                    add_to_variable_list = { name = lyd_c2_target_electors target = scope:lyd_c2_voter }"
+          },
+          {
+            "line": 208,
+            "text": "                    change_variable = { name = lyd_c2_target_total add = 1 }"
+          },
+          {
+            "line": 209,
+            "text": "                }"
+          },
+          {
+            "line": 210,
+            "text": "                trigger_event = lyd.211"
+          },
+          {
+            "line": 211,
+            "text": "            }"
+          },
+          {
+            "line": 212,
+            "text": "            if = {"
+          },
+          {
+            "line": 213,
+            "text": "                limit = { is_ai = no is_alive = yes }"
+          },
+          {
+            "line": 214,
+            "text": "                set_variable = { name = lyd_c2_affected_owner value = scope:lyd_c2_actor }"
+          },
+          {
+            "line": 215,
+            "text": "                set_variable = { name = lyd_c2_affected_serial value = scope:lyd_c2_event_serial }"
+          },
+          {
+            "line": 216,
+            "text": "                set_variable = { name = lyd_c2_affected_rite value = rite }"
+          },
+          {
+            "line": 217,
+            "text": "                scope:lyd_c2_actor = {"
+          },
+          {
+            "line": 218,
+            "text": "                    add_to_variable_list = { name = lyd_c2_players target = scope:lyd_c2_voter }"
+          }
+        ]
+      }
+    ]
+  },
+  "events/lyd_c2_consent_events.txt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\content\\production\\events\\lyd_c2_consent_events.txt",
+    "bytes": 6618,
+    "sha256": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e",
+    "ranges": [
+      {
+        "start": 1,
+        "end": 70,
+        "lines": [
+          {
+            "line": 1,
+            "text": "# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py."
+          },
+          {
+            "line": 2,
+            "text": "namespace = lyd"
+          },
+          {
+            "line": 3,
+            "text": ""
+          },
+          {
+            "line": 4,
+            "text": "lyd.200 = {"
+          },
+          {
+            "line": 5,
+            "text": "    type = character_event"
+          },
+          {
+            "line": 6,
+            "text": "    title = lyd_c2_proposal_t"
+          },
+          {
+            "line": 7,
+            "text": "    desc = lyd_c2_proposal_desc"
+          },
+          {
+            "line": 8,
+            "text": "    theme = faith"
+          },
+          {
+            "line": 9,
+            "text": "    trigger = { lyd_c2_initiator_event_context_trigger = yes }"
+          },
+          {
+            "line": 10,
+            "text": "    option = { name = lyd_c2_wait }"
+          },
+          {
+            "line": 11,
+            "text": "    option = { name = lyd_c2_cancel trigger = { lyd_c2_initiator_event_context_trigger = yes } lyd_c2_event_cancel_round_effect = yes }"
+          },
+          {
+            "line": 12,
+            "text": "}"
+          },
+          {
+            "line": 13,
+            "text": "lyd.210 = {"
+          },
+          {
+            "line": 14,
+            "text": "    type = character_event"
+          },
+          {
+            "line": 15,
+            "text": "    title = lyd_c2_source_ballot_t"
+          },
+          {
+            "line": 16,
+            "text": "    desc = lyd_c2_source_ballot_desc"
+          },
+          {
+            "line": 17,
+            "text": "    theme = faith"
+          },
+          {
+            "line": 18,
+            "text": "    trigger = { lyd_c2_source_ballot_trigger = yes }"
+          },
+          {
+            "line": 19,
+            "text": "    option = {"
+          },
+          {
+            "line": 20,
+            "text": "        name = lyd_c2_vote_yes"
+          },
+          {
+            "line": 21,
+            "text": "        ai_chance = { base = 60 }"
+          },
+          {
+            "line": 22,
+            "text": "        lyd_c2_source_vote_effect = { YES = 1 }"
+          },
+          {
+            "line": 23,
+            "text": "    }"
+          },
+          {
+            "line": 24,
+            "text": "    option = {"
+          },
+          {
+            "line": 25,
+            "text": "        name = lyd_c2_vote_no"
+          },
+          {
+            "line": 26,
+            "text": "        ai_chance = { base = 40 }"
+          },
+          {
+            "line": 27,
+            "text": "        lyd_c2_source_vote_effect = { YES = 0 }"
+          },
+          {
+            "line": 28,
+            "text": "    }"
+          },
+          {
+            "line": 29,
+            "text": "}"
+          },
+          {
+            "line": 30,
+            "text": "lyd.211 = {"
+          },
+          {
+            "line": 31,
+            "text": "    type = character_event"
+          },
+          {
+            "line": 32,
+            "text": "    title = lyd_c2_target_ballot_t"
+          },
+          {
+            "line": 33,
+            "text": "    desc = lyd_c2_target_ballot_desc"
+          },
+          {
+            "line": 34,
+            "text": "    theme = faith"
+          },
+          {
+            "line": 35,
+            "text": "    trigger = { lyd_c2_target_ballot_trigger = yes }"
+          },
+          {
+            "line": 36,
+            "text": "    option = {"
+          },
+          {
+            "line": 37,
+            "text": "        name = lyd_c2_vote_yes"
+          },
+          {
+            "line": 38,
+            "text": "        ai_chance = { base = 60 }"
+          },
+          {
+            "line": 39,
+            "text": "        lyd_c2_target_vote_effect = { YES = 1 }"
+          },
+          {
+            "line": 40,
+            "text": "    }"
+          },
+          {
+            "line": 41,
+            "text": "    option = {"
+          },
+          {
+            "line": 42,
+            "text": "        name = lyd_c2_vote_no"
+          },
+          {
+            "line": 43,
+            "text": "        ai_chance = { base = 40 }"
+          },
+          {
+            "line": 44,
+            "text": "        lyd_c2_target_vote_effect = { YES = 0 }"
+          },
+          {
+            "line": 45,
+            "text": "    }"
+          },
+          {
+            "line": 46,
+            "text": "}"
+          },
+          {
+            "line": 47,
+            "text": "lyd.212 = {"
+          },
+          {
+            "line": 48,
+            "text": "    type = character_event"
+          },
+          {
+            "line": 49,
+            "text": "    title = lyd_c2_player_consent_t"
+          },
+          {
+            "line": 50,
+            "text": "    desc = lyd_c2_player_consent_desc"
+          },
+          {
+            "line": 51,
+            "text": "    theme = faith"
+          },
+          {
+            "line": 52,
+            "text": "    trigger = { lyd_c2_player_consent_trigger = yes }"
+          },
+          {
+            "line": 53,
+            "text": "    option = { name = lyd_c2_player_yes lyd_c2_player_yes_effect = yes }"
+          },
+          {
+            "line": 54,
+            "text": "    option = { name = lyd_c2_player_no lyd_c2_player_no_effect = yes }"
+          },
+          {
+            "line": 55,
+            "text": "}"
+          },
+          {
+            "line": 56,
+            "text": "lyd.220 = {"
+          },
+          {
+            "line": 57,
+            "text": "    type = character_event"
+          },
+          {
+            "line": 58,
+            "text": "    title = lyd_c2_review_t"
+          },
+          {
+            "line": 59,
+            "text": "    desc = lyd_c2_review_desc"
+          },
+          {
+            "line": 60,
+            "text": "    theme = faith"
+          },
+          {
+            "line": 61,
+            "text": "    trigger = { lyd_c2_initiator_event_context_trigger = yes }"
+          },
+          {
+            "line": 62,
+            "text": "    option = {"
+          },
+          {
+            "line": 63,
+            "text": "        name = lyd_c2_sign_source"
+          },
+          {
+            "line": 64,
+            "text": "        trigger = {"
+          },
+          {
+            "line": 65,
+            "text": "            lyd_c2_initiator_event_context_trigger = yes"
+          },
+          {
+            "line": 66,
+            "text": "            lyd_c2_source_mandate_trigger = { ACTOR = root }"
+          },
+          {
+            "line": 67,
+            "text": "            NOT = { has_variable = lyd_c2_source_signed }"
+          },
+          {
+            "line": 68,
+            "text": "            var:lyd_c2_snapshot_valid = 1"
+          },
+          {
+            "line": 69,
+            "text": "        }"
+          },
+          {
+            "line": 70,
+            "text": "        custom_tooltip = lyd_c2_sign_source_tt"
+          }
+        ]
+      }
+    ]
+  },
+  "common/decisions/lyd_c2_consent_decisions.txt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-008\\content\\production\\common\\decisions\\lyd_c2_consent_decisions.txt",
+    "bytes": 2408,
+    "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549",
+    "ranges": [
+      {
+        "start": 1,
+        "end": 45,
+        "lines": [
+          {
+            "line": 1,
+            "text": "# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py."
+          },
+          {
+            "line": 2,
+            "text": "lyd_c2_propose_detach_decision = {"
+          },
+          {
+            "line": 3,
+            "text": "    picture = { reference = \"gfx/interface/illustrations/decisions/decision_personal_religious.dds\" }"
+          },
+          {
+            "line": 4,
+            "text": "    decision_group_type = religious"
+          },
+          {
+            "line": 5,
+            "text": "    ai_check_interval = 0"
+          },
+          {
+            "line": 6,
+            "text": "    desc = lyd_c2_propose_detach_decision_desc"
+          },
+          {
+            "line": 7,
+            "text": "    selection_tooltip = lyd_c2_propose_detach_decision_tooltip"
+          },
+          {
+            "line": 8,
+            "text": "    confirm_text = lyd_c2_propose_detach_decision_confirm"
+          },
+          {
+            "line": 9,
+            "text": "    is_shown = { lyd_c2_actor_trigger = yes NOT = { rite = faith.main_rite } }"
+          },
+          {
+            "line": 10,
+            "text": "    is_valid = {"
+          },
+          {
+            "line": 11,
+            "text": "        custom_description = {"
+          },
+          {
+            "line": 12,
+            "text": "            text = lyd_c2_detach_requirements_tt"
+          },
+          {
+            "line": 13,
+            "text": "            lyd_c2_start_detach_trigger = yes"
+          },
+          {
+            "line": 14,
+            "text": "        }"
+          },
+          {
+            "line": 15,
+            "text": "    }"
+          },
+          {
+            "line": 16,
+            "text": "    effect = {"
+          },
+          {
+            "line": 17,
+            "text": "        custom_tooltip = lyd_c2_detach_open_tt"
+          },
+          {
+            "line": 18,
+            "text": "        hidden_effect = { lyd_c2_begin_detach_effect = yes }"
+          },
+          {
+            "line": 19,
+            "text": "    }"
+          },
+          {
+            "line": 20,
+            "text": "    ai_will_do = { base = 0 }"
+          },
+          {
+            "line": 21,
+            "text": "}"
+          },
+          {
+            "line": 22,
+            "text": "lyd_c2_review_proposal_decision = {"
+          },
+          {
+            "line": 23,
+            "text": "    picture = { reference = \"gfx/interface/illustrations/decisions/decision_personal_religious.dds\" }"
+          },
+          {
+            "line": 24,
+            "text": "    decision_group_type = religious"
+          },
+          {
+            "line": 25,
+            "text": "    ai_check_interval = 0"
+          },
+          {
+            "line": 26,
+            "text": "    desc = lyd_c2_review_proposal_decision_desc"
+          },
+          {
+            "line": 27,
+            "text": "    selection_tooltip = lyd_c2_review_proposal_decision_tooltip"
+          },
+          {
+            "line": 28,
+            "text": "    confirm_text = lyd_c2_review_proposal_decision_confirm"
+          },
+          {
+            "line": 29,
+            "text": "    is_shown = { lyd_c2_actor_trigger = yes has_variable = lyd_c2_active }"
+          },
+          {
+            "line": 30,
+            "text": "    is_valid = {"
+          },
+          {
+            "line": 31,
+            "text": "        custom_description = {"
+          },
+          {
+            "line": 32,
+            "text": "            text = lyd_c2_review_requirements_tt"
+          },
+          {
+            "line": 33,
+            "text": "            lyd_c2_current_proposal_trigger = { ACTOR = root }"
+          },
+          {
+            "line": 34,
+            "text": "        }"
+          },
+          {
+            "line": 35,
+            "text": "    }"
+          },
+          {
+            "line": 36,
+            "text": "    effect = {"
+          },
+          {
+            "line": 37,
+            "text": "        custom_tooltip = lyd_c2_review_open_tt"
+          },
+          {
+            "line": 38,
+            "text": "        hidden_effect = { lyd_c2_open_review_effect = yes }"
+          },
+          {
+            "line": 39,
+            "text": "    }"
+          },
+          {
+            "line": 40,
+            "text": "    ai_will_do = { base = 0 }"
+          },
+          {
+            "line": 41,
+            "text": "}"
+          },
+          {
+            "line": 42,
+            "text": "lyd_c2_cancel_proposal_decision = {"
+          },
+          {
+            "line": 43,
+            "text": "    picture = { reference = \"gfx/interface/illustrations/decisions/decision_personal_religious.dds\" }"
+          },
+          {
+            "line": 44,
+            "text": "    decision_group_type = religious"
+          },
+          {
+            "line": 45,
+            "text": "    ai_check_interval = 0"
+          }
+        ]
+      }
+    ]
+  }
+}

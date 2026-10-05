@@ -1,0 +1,133 @@
+{
+  "schema": "lyd.r8.root-integration.v1",
+  "original_15_files_exact": true,
+  "original_index_unchanged": true,
+  "files": [
+    {
+      "path": "CASE-STATUS.json",
+      "bytes": 2822,
+      "sha256": "a64db2ad33252e7c4b3542edefd81ff87852ef5c344d5b7288c47313264b88dc"
+    },
+    {
+      "path": "CLOSURE.json",
+      "bytes": 2502,
+      "sha256": "3b28d57f8a02cd69a90eda157612d21991f7e9bdafda21d5f05d768f3cf9eea7"
+    },
+    {
+      "path": "EXTERNAL-ASSETS.json",
+      "bytes": 6799,
+      "sha256": "36a62249c2b600abf654f1b35ebfbc339e95ed2c931b48babdaffe37ecbace12"
+    },
+    {
+      "path": "INDEX.json",
+      "bytes": 3141,
+      "sha256": "20d8bff32905aa111e86e06d9ff957e42771d1440f2d552d10aebf54b737c2b0"
+    },
+    {
+      "path": "LOG-ADDENDUM.md",
+      "bytes": 830,
+      "sha256": "2ea149a662fedd21858bcdfe4603b4a08474df5e9f0d3750a89a36cc3c8e11b9"
+    },
+    {
+      "path": "LOG-DIAGNOSTICS.json",
+      "bytes": 4298,
+      "sha256": "503ffddcf27ec028b2a080efbe1e6556129c776ae3270b19e636c1179697f3f2"
+    },
+    {
+      "path": "log-review-001/COLD-PRODUCT-ERROR-SOURCE-PROOF.json",
+      "bytes": 62419,
+      "sha256": "7981851494aa5576b0d40186bdb06b0e79bc4868a01b5eead1ae3731fd762339"
+    },
+    {
+      "path": "log-review-001/DEEP-SCAN.json",
+      "bytes": 314138,
+      "sha256": "99f53303cb200dafda8fe85c54dbfdc5d8cfb47ac2bf11f0887af888700639aa"
+    },
+    {
+      "path": "log-review-001/deep_scan.py",
+      "bytes": 5122,
+      "sha256": "a6a84dd9df1d15c79215dda47fc9c6fab40e801751094594365133fb5c0fca7f"
+    },
+    {
+      "path": "log-review-001/finalize.py",
+      "bytes": 10625,
+      "sha256": "4bc15c574977547268c14764cee7b8feb5f8d986649266a1271b5c5078368bb1"
+    },
+    {
+      "path": "log-review-001/INDEX.json",
+      "bytes": 1320,
+      "sha256": "c452d9f54e8946f3e24e6321c77fed3b5c252a52b7a1770b97ed550fab482dd8"
+    },
+    {
+      "path": "log-review-001/REPORT-zh.md",
+      "bytes": 1649,
+      "sha256": "a63d8c931c7323147bb1acc5d4252da3a7678f8609048fed390849bfed9c5bde"
+    },
+    {
+      "path": "log-review-001/REPORT.json",
+      "bytes": 21540,
+      "sha256": "ec577256fc96b64badcce4b28bfe086a3120ef5f2419038e35b77d4d94a09b12"
+    },
+    {
+      "path": "log-review-001/SCAN.json",
+      "bytes": 114254,
+      "sha256": "23c9056b25240dd426b1f3327e30cdb84ae56d56c4b7dbb4a35bfc11720d4d3e"
+    },
+    {
+      "path": "log-review-001/scan_logs.py",
+      "bytes": 5890,
+      "sha256": "cb10104c8cffc83b4a9ea112a70d92e1d329c3d897a7ebc3ae92f41bc333f388"
+    },
+    {
+      "path": "media/37caf5d7a95bece467d1d5a727d709006a58c1183dd77c2a50894921876102d8.png",
+      "bytes": 1783555,
+      "sha256": "37caf5d7a95bece467d1d5a727d709006a58c1183dd77c2a50894921876102d8"
+    },
+    {
+      "path": "media/e397deeddd84635743deeaa9b6909844e9d773cda685438697908ab16701dd85.png",
+      "bytes": 1778368,
+      "sha256": "e397deeddd84635743deeaa9b6909844e9d773cda685438697908ab16701dd85"
+    },
+    {
+      "path": "NEXT-SOURCE-ONLY.json",
+      "bytes": 8955,
+      "sha256": "3f02043716dd85c68e95697139cdf62604e1ee48ba6a7cbfbe7ae25be3d49f5d"
+    },
+    {
+      "path": "raw/text-evidence.tar.gz",
+      "bytes": 6697577,
+      "sha256": "cf087201de8023679a644033233e527c9b63fc0635c076882bca4d0b6b4948e5"
+    },
+    {
+      "path": "RAW-MAPPINGS.json",
+      "bytes": 533181,
+      "sha256": "c4cb59fa86cde640fcab72683884f4724d7bf473680349600c402f0d534717af"
+    },
+    {
+      "path": "README.md",
+      "bytes": 207,
+      "sha256": "d1877b79809139489b5ca1fc4fe6d66e924574ad35187dd1d1af518af4b326f4"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 3621,
+      "sha256": "f9d730b0b8ef2e98ed2e4217fbd94a53f04b6cef22326dad0d9bb12ebd21e937"
+    },
+    {
+      "path": "SAVED-READBACK.json",
+      "bytes": 487874,
+      "sha256": "9059a0133f894c0528ee39c9363c8c14bff775d6df4deb421ed6ee5bf73f0db5"
+    },
+    {
+      "path": "SOURCE-REFS.json",
+      "bytes": 34549,
+      "sha256": "98f33e36a4e3a7f8df1031818d21017b90c936e31606724c89bebe5f42dd9b93"
+    },
+    {
+      "path": "STATUS.json",
+      "bytes": 982,
+      "sha256": "00947d0534f8fae19227f2bb80208865b74f4e679a385e5ba7d65d800d28a657"
+    }
+  ],
+  "status": "CLOSED_NOT_GREEN"
+}

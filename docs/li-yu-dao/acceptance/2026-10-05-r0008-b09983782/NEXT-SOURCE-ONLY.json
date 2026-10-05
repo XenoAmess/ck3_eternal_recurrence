@@ -1,0 +1,208 @@
+{
+  "schema": "lyd.r8.after-closure-source-followup.v1",
+  "status": "ACTUAL_SOURCE_ONLY_FIX_AFTER_CLOSURE",
+  "R8_loaded_source": "b09983782670e0646e5c911bb4a385d30750ab01",
+  "fix_receipt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-ordinary-fix-apply-20261005-002\\RESULT.json",
+    "bytes": 1158,
+    "sha256": "8d2ca9c625b5974d71c6b710d9daa2ba289849bea9675287540b59778566d1e9"
+  },
+  "actual_fix": {
+    "status": "APPLIED_SOURCE_ONLY_AFTER_ACTUAL_CLOSURE",
+    "deltas": [
+      {
+        "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_interaction_contract.py",
+        "before_sha256": "db5468b1f0a98af1a0d846ecf82b2aa5dc2a0c84b97e8194751682eee9457139",
+        "candidate_sha256": "e0a96aa39626df166270d3d5467a8e4d57cec77d7577cebcced03983feba5fa3",
+        "bytes": 23762,
+        "diff_path": "diffs/05.diff"
+      },
+      {
+        "target": "ck3_autonomous_player/tests/unit/fixtures/ordinary_interaction_after_observation_r8.json",
+        "before_sha256": null,
+        "candidate_sha256": "1f9d87884e260904b410c6c13e6cc52612d06260b2505ea7e53ce7ee43bfdb5f",
+        "bytes": 17660,
+        "diff_path": "diffs/09.diff"
+      },
+      {
+        "target": "ck3_autonomous_player/tests/unit/test_ordinary_interaction_after_observation.py",
+        "before_sha256": null,
+        "candidate_sha256": "59a88cadc4fd2f9209ffbbc972ba4f06c6c80aa93bbadadf6a16b3ed054bfc1f",
+        "bytes": 7541,
+        "diff_path": "diffs/10.diff"
+      }
+    ],
+    "live_after_fix": "NOT_RUN",
+    "original_R8_SDK_status": "RED_UNCHANGED",
+    "claim_release_used": false
+  },
+  "ROOT_actual_checks": [
+    {
+      "check": "after",
+      "test_cases": 8,
+      "result": {
+        "at_utc": "2026-10-05T04:45:36.972770+00:00",
+        "case": "after",
+        "status": "PASS",
+        "returncode": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "2c19991a9a719baef99acd85d247764c7a65cb10055cf4496b8f24bc3ea4c4e0"
+      },
+      "result_binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\after\\RESULT.json",
+        "bytes": 289,
+        "sha256": "d806aa9bcc03e521d93a06af6989ce19948d794310fe59a9c56e0767c2da9968"
+      },
+      "input_binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\after\\INPUTS.json",
+        "bytes": 583,
+        "sha256": "607db601d5dc2100ee2932b96a8a7b74af6f2378336a35b93d6f72e1a60426a6"
+      },
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\after\\stdout.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\after\\stderr.bin",
+        "bytes": 111,
+        "sha256": "2c19991a9a719baef99acd85d247764c7a65cb10055cf4496b8f24bc3ea4c4e0"
+      }
+    },
+    {
+      "check": "ordinary",
+      "test_cases": 24,
+      "result": {
+        "at_utc": "2026-10-05T04:45:37.548123+00:00",
+        "case": "ordinary",
+        "status": "PASS",
+        "returncode": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "07110f3a2bbfa82ff4e856ac6a63f9e7a5f16c78a0a18f57273816255d8fb107"
+      },
+      "result_binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\ordinary\\RESULT.json",
+        "bytes": 292,
+        "sha256": "8166f62adb1720ea9238ef5fe5cb61fef5424f75b6f8121578e165a3a1f64c09"
+      },
+      "input_binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\ordinary\\INPUTS.json",
+        "bytes": 565,
+        "sha256": "ccc03028425f1214ee3871ff4d299b803c8f2fddce75af81c86cb1ce54935615"
+      },
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\ordinary\\stdout.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\ordinary\\stderr.bin",
+        "bytes": 128,
+        "sha256": "07110f3a2bbfa82ff4e856ac6a63f9e7a5f16c78a0a18f57273816255d8fb107"
+      }
+    },
+    {
+      "check": "profile",
+      "test_cases": 18,
+      "result": {
+        "at_utc": "2026-10-05T04:45:40.504731+00:00",
+        "case": "profile",
+        "status": "PASS",
+        "returncode": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "b45306e663fd14aef450adb860af0bf5ad3664d0f6ec00a21fd5e36c0f50840b"
+      },
+      "result_binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\profile\\RESULT.json",
+        "bytes": 291,
+        "sha256": "0e5759e91d65057dc1b4385f5065a09c4b9525c23c50c0eabb81585c9a9c1d2a"
+      },
+      "input_binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\profile\\INPUTS.json",
+        "bytes": 465,
+        "sha256": "85d5be7bb7f77dc1f7fda0220d92b9b963a90f646bb9c3e54003ec09b930877d"
+      },
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\profile\\stdout.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\profile\\stderr.bin",
+        "bytes": 749,
+        "sha256": "b45306e663fd14aef450adb860af0bf5ad3664d0f6ec00a21fd5e36c0f50840b"
+      }
+    },
+    {
+      "check": "python-only",
+      "test_cases": null,
+      "result": {
+        "at_utc": "2026-10-05T04:46:53.646111+00:00",
+        "case": "python-only",
+        "status": "PASS",
+        "returncode": 0,
+        "stdout_sha256": "c38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "result_binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\python-only\\RESULT.json",
+        "bytes": 295,
+        "sha256": "ae297d4633657209d41a73167da58a0cd94e21d29b19c8d5d53867d580f26aa7"
+      },
+      "input_binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\python-only\\INPUTS.json",
+        "bytes": 458,
+        "sha256": "414d086681fd540bcf76aa4a79e2b3700d4b782f0f2d50cf4a3453a7ac45ff72"
+      },
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\python-only\\stdout.bin",
+        "bytes": 19,
+        "sha256": "c38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\python-only\\stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "check": "diff",
+      "test_cases": null,
+      "result": {
+        "at_utc": "2026-10-05T04:49:32.893708+00:00",
+        "case": "diff",
+        "status": "PASS",
+        "returncode": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "result_binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\diff\\RESULT.json",
+        "bytes": 288,
+        "sha256": "10879649407c6d80013d2c88236d248eb67a5da076ac6c2b47a57974cf0d1b35"
+      },
+      "input_binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\diff\\INPUTS.json",
+        "bytes": 336,
+        "sha256": "743f29783c5552931179a3ed534bfa78cb935a738e91aa77432c37d9bb141961"
+      },
+      "stdout": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\diff\\stdout.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-root-fix-checks-20261005-001\\diff\\stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ],
+  "focused_test_total": 50,
+  "new_Release_after_fix": "NOT_OBSERVED_BY_THIS_REPORT",
+  "new_live_after_fix": "NOT_RUN",
+  "R8_original_SDK_RED_unchanged": true,
+  "source_fix_rewrites_R8": false,
+  "MCP_exit_credit": false,
+  "future_remote_or_rebase_facts": false
+}

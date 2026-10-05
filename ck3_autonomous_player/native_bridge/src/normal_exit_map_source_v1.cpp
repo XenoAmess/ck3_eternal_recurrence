@@ -177,6 +177,43 @@ constexpr std::array<StockFile,6> kStock{{
 }};
 } // namespace
 
+bool ParseNormalExitMapLaunchArgumentsV1(std::span<const std::wstring_view> arguments,
+    NormalExitMapLaunchArgumentsV1 &output) noexcept {
+  try {
+    if(arguments.size()<2 || arguments.size()>5 || arguments.front().empty()) return false;
+    NormalExitMapLaunchArgumentsV1 parsed{};
+    bool userdir=false, debug=false, gdpr=false, loadsave=false;
+    for(std::size_t i=1;i<arguments.size();++i) {
+      const auto arg=arguments[i];
+      if(arg.starts_with(L"-userdir=")) {
+        if(userdir) return false;
+        userdir=true;
+        const auto value=arg.substr(9);
+        if(value.empty() || value.find(L'\0')!=std::wstring_view::npos) return false;
+        parsed.userdir=fs::path(value);
+      } else if(arg==L"-debug_mode") {
+        if(debug) return false;
+        debug=true;
+      } else if(arg==L"-gdpr-compliant") {
+        if(gdpr) return false;
+        gdpr=true;
+      } else if(arg.starts_with(L"-loadsave=")) {
+        if(loadsave) return false;
+        loadsave=true;
+        const auto value=arg.substr(10);
+        if(value.empty() || value.size()>128) return false;
+        for(const auto c:value)
+          if(!((c>=L'a'&&c<=L'z') || (c>=L'A'&&c<=L'Z') ||
+               (c>=L'0'&&c<=L'9') || c==L'_' || c==L'-')) return false;
+        parsed.load_save_key=value;
+      } else return false;
+    }
+    if(!userdir || parsed.userdir.empty() || !parsed.userdir.is_absolute()) return false;
+    output=std::move(parsed);
+    return true;
+  } catch(...) { return false; }
+}
+
 bool NormalExitMapSha256V1(std::string_view bytes,std::string &digest) noexcept {
   BCRYPT_ALG_HANDLE algorithm=nullptr; BCRYPT_HASH_HANDLE hash=nullptr;
   bool okay=false; digest.clear();
@@ -206,15 +243,16 @@ bool VerifyNormalExitMapSourcesV1(std::string_view expected_sha,bool &stock_veri
     if(!Hex(expected_sha)) return reject("source_inventory_reference_missing");
     int argc=0; auto **argv=CommandLineToArgvW(GetCommandLineW(),&argc);
     if(!argv) return reject("actual_launch_arguments_unreadable");
-    fs::path userdir; bool args_okay=argc>=2;
-    for(int i=1;i<argc;++i) {
-      const std::wstring_view arg(argv[i]);
-      if(arg.starts_with(L"-userdir=")) {
-        if(!userdir.empty()) args_okay=false;
-        userdir=fs::path(arg.substr(9));
-      } else if(arg!=L"-debug_mode" && arg!=L"-gdpr-compliant") args_okay=false;
+    NormalExitMapLaunchArgumentsV1 launch{};
+    bool args_okay=false;
+    if(argc>=2 && argc<=5) {
+      std::array<std::wstring_view,5> arguments{};
+      for(int i=0;i<argc;++i) arguments[static_cast<std::size_t>(i)]=argv[i];
+      args_okay=ParseNormalExitMapLaunchArgumentsV1(
+          std::span<const std::wstring_view>(arguments.data(),static_cast<std::size_t>(argc)),launch);
     }
     LocalFree(argv);
+    const auto &userdir=launch.userdir;
     if(!args_okay || userdir.empty() || !userdir.is_absolute() || !Plain(userdir)) return reject("actual_launch_userdir_contract_unsupported");
     const auto manifest_path=userdir/L"normal-exit-source-inventory-v1.json";
     std::string bytes,actual_sha;

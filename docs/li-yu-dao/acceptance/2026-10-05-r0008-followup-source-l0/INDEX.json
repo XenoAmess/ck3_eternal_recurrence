@@ -1,0 +1,26 @@
+{
+  "schema": "lyd.r8.followup.index.v1",
+  "status": "SOURCE_ONLY",
+  "files": [
+    {
+      "path": "raw/source-and-checks.tar.gz",
+      "bytes": 1128964,
+      "sha256": "00e54c6a4d29c1d11956dc9c06355298e7f98bda696e464ee0452965ec6ae4cb"
+    },
+    {
+      "path": "RAW-MAPPINGS.json",
+      "bytes": 428632,
+      "sha256": "97dc94d704c9f7edd055b5e8a91d65c07e35bb7922709abe26f13d7f00997c31"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 2923,
+      "sha256": "66939407a41a5f515774e7d7a292ce5ed124c1906858334b6240c74cc353b971"
+    },
+    {
+      "path": "STATUS.json",
+      "bytes": 278,
+      "sha256": "826166958fbd82cc46454279f7063c1772bad4abbe79686de708bc1d0202b6a1"
+    }
+  ]
+}

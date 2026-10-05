@@ -1,0 +1,46 @@
+{
+  "schema": "external-review-index.v1",
+  "files": [
+    {
+      "path": "COLD-PRODUCT-ERROR-SOURCE-PROOF.json",
+      "bytes": 62419,
+      "sha256": "7981851494aa5576b0d40186bdb06b0e79bc4868a01b5eead1ae3731fd762339"
+    },
+    {
+      "path": "DEEP-SCAN.json",
+      "bytes": 314138,
+      "sha256": "99f53303cb200dafda8fe85c54dbfdc5d8cfb47ac2bf11f0887af888700639aa"
+    },
+    {
+      "path": "deep_scan.py",
+      "bytes": 5122,
+      "sha256": "a6a84dd9df1d15c79215dda47fc9c6fab40e801751094594365133fb5c0fca7f"
+    },
+    {
+      "path": "finalize.py",
+      "bytes": 10625,
+      "sha256": "4bc15c574977547268c14764cee7b8feb5f8d986649266a1271b5c5078368bb1"
+    },
+    {
+      "path": "REPORT-zh.md",
+      "bytes": 1649,
+      "sha256": "a63d8c931c7323147bb1acc5d4252da3a7678f8609048fed390849bfed9c5bde"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 21540,
+      "sha256": "ec577256fc96b64badcce4b28bfe086a3120ef5f2419038e35b77d4d94a09b12"
+    },
+    {
+      "path": "SCAN.json",
+      "bytes": 114254,
+      "sha256": "23c9056b25240dd426b1f3327e30cdb84ae56d56c4b7dbb4a35bfc11720d4d3e"
+    },
+    {
+      "path": "scan_logs.py",
+      "bytes": 5890,
+      "sha256": "cb10104c8cffc83b4a9ea112a70d92e1d329c3d897a7ebc3ae92f41bc333f388"
+    }
+  ],
+  "status": "ACTUAL_R8_PRODUCT_LOG_RED_NOT_SIGNED_OFF"
+}

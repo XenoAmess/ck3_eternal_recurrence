@@ -82,6 +82,9 @@ lyd_c2_event_sign_source_effect = {
     }
 }
 lyd_c2_request_target_consent_effect = {
+    # A round is unsigned until the source representative actually signs.
+    # Keep this as an outer branch: sibling conditions need not short-circuit.
+    if = { limit = { has_variable = lyd_c2_source_signed }
     if = {
         limit = {
             lyd_c2_current_proposal_trigger = { ACTOR = scope:lyd_c2_actor }
@@ -92,6 +95,7 @@ lyd_c2_request_target_consent_effect = {
         }
         set_variable = { name = lyd_c2_target_requested value = 1 }
         var:lyd_c2_target_rep = { trigger_event = lyd.221 }
+    }
     }
 }
 lyd_c2_sign_target_effect = {

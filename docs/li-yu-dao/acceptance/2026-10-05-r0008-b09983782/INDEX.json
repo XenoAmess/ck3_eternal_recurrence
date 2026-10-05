@@ -1,0 +1,98 @@
+{
+  "schema": "lyd.r8.permanent-candidate-index.v1",
+  "status": "SEALED_CLOSED_NOT_GREEN",
+  "created_at_utc": "2026-10-05T04:52:39.913913+00:00",
+  "source_head": "b09983782670e0646e5c911bb4a385d30750ab01",
+  "payload_count": 14,
+  "payloads": [
+    {
+      "path": "CASE-STATUS.json",
+      "bytes": 2822,
+      "sha256": "a64db2ad33252e7c4b3542edefd81ff87852ef5c344d5b7288c47313264b88dc"
+    },
+    {
+      "path": "CLOSURE.json",
+      "bytes": 2502,
+      "sha256": "3b28d57f8a02cd69a90eda157612d21991f7e9bdafda21d5f05d768f3cf9eea7"
+    },
+    {
+      "path": "EXTERNAL-ASSETS.json",
+      "bytes": 6799,
+      "sha256": "36a62249c2b600abf654f1b35ebfbc339e95ed2c931b48babdaffe37ecbace12"
+    },
+    {
+      "path": "LOG-DIAGNOSTICS.json",
+      "bytes": 4298,
+      "sha256": "503ffddcf27ec028b2a080efbe1e6556129c776ae3270b19e636c1179697f3f2"
+    },
+    {
+      "path": "media/37caf5d7a95bece467d1d5a727d709006a58c1183dd77c2a50894921876102d8.png",
+      "bytes": 1783555,
+      "sha256": "37caf5d7a95bece467d1d5a727d709006a58c1183dd77c2a50894921876102d8"
+    },
+    {
+      "path": "media/e397deeddd84635743deeaa9b6909844e9d773cda685438697908ab16701dd85.png",
+      "bytes": 1778368,
+      "sha256": "e397deeddd84635743deeaa9b6909844e9d773cda685438697908ab16701dd85"
+    },
+    {
+      "path": "NEXT-SOURCE-ONLY.json",
+      "bytes": 8955,
+      "sha256": "3f02043716dd85c68e95697139cdf62604e1ee48ba6a7cbfbe7ae25be3d49f5d"
+    },
+    {
+      "path": "raw/text-evidence.tar.gz",
+      "bytes": 6697577,
+      "sha256": "cf087201de8023679a644033233e527c9b63fc0635c076882bca4d0b6b4948e5"
+    },
+    {
+      "path": "RAW-MAPPINGS.json",
+      "bytes": 533181,
+      "sha256": "c4cb59fa86cde640fcab72683884f4724d7bf473680349600c402f0d534717af"
+    },
+    {
+      "path": "README.md",
+      "bytes": 207,
+      "sha256": "d1877b79809139489b5ca1fc4fe6d66e924574ad35187dd1d1af518af4b326f4"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 3621,
+      "sha256": "f9d730b0b8ef2e98ed2e4217fbd94a53f04b6cef22326dad0d9bb12ebd21e937"
+    },
+    {
+      "path": "SAVED-READBACK.json",
+      "bytes": 487874,
+      "sha256": "9059a0133f894c0528ee39c9363c8c14bff775d6df4deb421ed6ee5bf73f0db5"
+    },
+    {
+      "path": "SOURCE-REFS.json",
+      "bytes": 34549,
+      "sha256": "98f33e36a4e3a7f8df1031818d21017b90c936e31606724c89bebe5f42dd9b93"
+    },
+    {
+      "path": "STATUS.json",
+      "bytes": 982,
+      "sha256": "00947d0534f8fae19227f2bb80208865b74f4e679a385e5ba7d65d800d28a657"
+    }
+  ],
+  "previous_candidate_preserved": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r8-permanent-report-draft-20261005-001\\snapshot-002\\INDEX.json",
+    "bytes": 2716,
+    "sha256": "fc8a5ad80c0e2733c816c8e849d8c114836d3892ba74ad2ee26c050372b1c348"
+  },
+  "archive_validation": {
+    "member_count": 566,
+    "source_mapping_count": 1276,
+    "decompressed_bytes_SHA_verified": true,
+    "original_source_after_read_stats_verified": true
+  },
+  "side_effects": {
+    "main_written": false,
+    "git_mutated": false,
+    "game_called": false,
+    "tests_executed": false,
+    "CI_dispatched": false,
+    "old_assets_removed": false
+  }
+}

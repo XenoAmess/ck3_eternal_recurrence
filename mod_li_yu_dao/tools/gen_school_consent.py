@@ -205,7 +205,10 @@ def refresh_terms() -> str:
             lines.append(f"""
 set_variable = {{ name = lyd_c2_check_count value = 0 }}
 {rite} = {{ every_rite_tenet = {{ status = {status} scope:lyd_c2_actor = {{ change_variable = {{ name = lyd_c2_check_count add = 1 }} }} }} }}
+if = {{ limit = {{ has_variable = lyd_c2_check_count }}
 if = {{ limit = {{ var:lyd_c2_check_count != var:lyd_c2_{side}_{status}_total }} set_variable = {{ name = lyd_c2_snapshot_valid value = 0 }} }}
+}}
+else = {{ set_variable = {{ name = lyd_c2_snapshot_valid value = 0 }} }}
 every_in_list = {{
     variable = lyd_c2_{side}_{status}
     save_scope_as = lyd_c2_snapshot_item
@@ -218,7 +221,10 @@ every_in_list = {{
         lines.append(f"""
 set_variable = {{ name = lyd_c2_check_count value = 0 }}
 {representative} = {{ every_character_doctrine = {{ rite_filter = scope:lyd_c2_actor.{rite} scope:lyd_c2_actor = {{ change_variable = {{ name = lyd_c2_check_count add = 1 }} }} }} }}
+if = {{ limit = {{ has_variable = lyd_c2_check_count }}
 if = {{ limit = {{ var:lyd_c2_check_count != var:lyd_c2_{side}_doctrines_total }} set_variable = {{ name = lyd_c2_snapshot_valid value = 0 }} }}
+}}
+else = {{ set_variable = {{ name = lyd_c2_snapshot_valid value = 0 }} }}
 every_in_list = {{
     variable = lyd_c2_{side}_doctrines
     save_scope_as = lyd_c2_snapshot_item
@@ -248,7 +254,10 @@ if = { limit = { var:lyd_c2_kind = 1 }
         lines.append(f"""
         set_variable = {{ name = lyd_c2_check_count value = 0 }}
         every_rite_tenet = {{ status = {status} scope:lyd_c2_target_school = {{ change_variable = {{ name = lyd_c2_check_count add = 1 }} }} }}
+        if = {{ limit = {{ has_variable = lyd_c2_check_count }}
         if = {{ limit = {{ var:lyd_c2_check_count != var:lyd_c2_target_{status}_total }} scope:lyd_c2_actor = {{ set_variable = {{ name = lyd_c2_snapshot_valid value = 0 }} }} }}
+        }}
+        else = {{ scope:lyd_c2_actor = {{ set_variable = {{ name = lyd_c2_snapshot_valid value = 0 }} }} }}
         every_in_list = {{ variable = lyd_c2_target_{status}
             save_scope_as = lyd_c2_snapshot_item
             if = {{ limit = {{ scope:lyd_c2_target_school = {{ NOT = {{ any_rite_tenet = {{ status = {status} this = scope:lyd_c2_snapshot_item }} }} }} }}
@@ -263,9 +272,12 @@ if = { limit = { var:lyd_c2_kind = 1 }
                 scope:lyd_c2_target_school = { change_variable = { name = lyd_c2_check_count add = 1 } }
             }
         }
+        if = { limit = { has_variable = lyd_c2_check_count }
         if = { limit = { var:lyd_c2_check_count != var:lyd_c2_target_doctrines_total }
             scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } }
         }
+        }
+        else = { scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } } }
         every_in_list = { variable = lyd_c2_target_doctrines
             save_scope_as = lyd_c2_snapshot_item
             if = { limit = { scope:lyd_c2_target_school = { NOT = { rite_has_doctrine = scope:lyd_c2_snapshot_item } } }
@@ -293,7 +305,10 @@ set_variable = {{ name = lyd_c2_check_count value = 0 }}
         if = {{ limit = {{ is_ai = no is_alive = yes }} scope:lyd_c2_actor = {{ change_variable = {{ name = lyd_c2_check_players add = 1 }} }} }}
     }}
 }}
+if = {{ limit = {{ has_variable = lyd_c2_check_count }}
 if = {{ limit = {{ var:lyd_c2_check_count != var:lyd_c2_{side}_total }} set_variable = {{ name = lyd_c2_snapshot_valid value = 0 }} }}
+}}
+else = {{ set_variable = {{ name = lyd_c2_snapshot_valid value = 0 }} }}
 every_in_list = {{
     variable = lyd_c2_{side}_electors
     if = {{
@@ -315,7 +330,10 @@ if = { limit = { var:lyd_c2_kind = 1 }
     set_variable = { name = lyd_c2_mandated_receivers value = 0 }
     set_variable = { name = lyd_c2_unorganized_receivers value = 0 }
     var:lyd_c2_target_faith = { every_faith_rite = { scope:lyd_c2_actor = { change_variable = { name = lyd_c2_check_rites add = 1 } } } }
+    if = { limit = { has_variable = lyd_c2_check_rites }
     if = { limit = { var:lyd_c2_check_rites != var:lyd_c2_target_rite_total } set_variable = { name = lyd_c2_snapshot_valid value = 0 } }
+    }
+    else = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } }
     every_in_list = { variable = lyd_c2_target_rites
         save_scope_as = lyd_c2_target_school
         set_variable = { name = lyd_c2_check_count value = 0 }
@@ -333,11 +351,17 @@ if = { limit = { var:lyd_c2_kind = 1 }
                 }
             }
         }
+        if = { limit = { has_variable = lyd_c2_check_count }
+        if = { limit = { has_variable = lyd_c2_check_followers }
         if = { limit = { OR = {
             var:lyd_c2_check_count != var:lyd_c2_target_total
             var:lyd_c2_check_followers != var:lyd_c2_target_followers
             faith != scope:lyd_c2_actor.var:lyd_c2_target_faith
         } } scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } } }
+        }
+        else = { scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } } }
+        }
+        else = { scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } } }
         if = { limit = { NOT = { lyd_c2_dormant_receiving_rite_trigger = yes } }
             scope:lyd_c2_actor = { change_variable = { name = lyd_c2_active_receivers add = 1 } }
             if = { limit = { lyd_c2_receiver_rite_quorum_trigger = { ACTOR = scope:lyd_c2_actor } }
@@ -369,7 +393,10 @@ if = { limit = { var:lyd_c2_kind = 1 }
         } } scope:lyd_c2_actor = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } } }
     }
 }
+if = { limit = { has_variable = lyd_c2_check_players }
 if = { limit = { var:lyd_c2_check_players != var:lyd_c2_player_total } set_variable = { name = lyd_c2_snapshot_valid value = 0 } }
+}
+else = { set_variable = { name = lyd_c2_snapshot_valid value = 0 } }
 every_in_list = {
     variable = lyd_c2_players
     if = {
