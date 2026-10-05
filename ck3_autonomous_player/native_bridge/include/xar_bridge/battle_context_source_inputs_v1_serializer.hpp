@@ -426,6 +426,7 @@ inline void Branch291d7e0(std::string &out,
 #include "xar_bridge/battle_person_provider_bucket_serializer.inc.hpp"
 #include "xar_bridge/battle_person_qualifier_28bc0d0_serializer.inc.hpp"
 #include "xar_bridge/battle_person_list_predicate_2530dd0_serializer.inc.hpp"
+#include "xar_bridge/battle_person_gated_temporary_tail_serializer.inc.hpp"
 
 }  // namespace battle_context_source_inputs_v1_detail
 
@@ -581,6 +582,10 @@ inline std::string SerializeBattleCurrentPersonContextSourceInputsV1(
   if (p.list_predicate_2530dd0) {
     out += ",\"list_predicate_2530dd0\":";
     ListPredicate2530dd0Json(out, *p.list_predicate_2530dd0);
+  }
+  if (p.gated_temporary_tail_291c7a7) {
+    out += ",\"gated_temporary_tail_291c7a7\":";
+    GatedTemporaryTail291c7a7Json(out, *p.gated_temporary_tail_291c7a7);
   }
   out += ",\"branch_291e210\":";
   Branch291e210(out, p.branch_291e210);
