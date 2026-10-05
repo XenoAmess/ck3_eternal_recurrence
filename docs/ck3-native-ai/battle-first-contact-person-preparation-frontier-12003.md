@@ -575,3 +575,83 @@ flowchart TD
 
 三条后台依赖继续source-first推进：291F550/291F940人物剩余helper，291C0D0 model10真实reset/显式起始状态，以及月度初始供给/围城/劫掠预算。阶段baseline、实际changed-stage receiver/operands、完整人物/Entry/fullmonthly/forecast仍未完成；无新paused/live或战争loop信用。CK3启动/连接/SDK/realpipe/UI/Steam/profile/save/cache/runtimeprepare/stage/deploy与新增游戏日0；历史5035/36524、G2 5/8、NW2 2/4、natural0保持。日/周rolling，后台工作未耗尽。
 
+
+
+## Source closure for the remaining two helpers before observation
+
+Adoption time: 2026-10-05T22:12:41+08:00. The source tree and QUERY-PLAN.json were sealed before production implementation. Both helpers are source-closed research; the same-query optional observer is now being implemented. There is no native/consumer qualification yet for these new fields.
+
+2026-10-05 / ISO2026-W41. Research-only source closure before any observer/counter-policy construction. Parent owns canonical topic/report integration. Exact CK3 1.20.0.3 / Steam25652598 / frozen EXE94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6, image base140000000; existing freeze identity reused, no whole scan or rehash.
+
+## Caller association and phase order
+
+Cached291C0D0 sets R13=model, R14=QWORD[model+8]=Character, RSI=model+10. After291F0A0, caller ordered80 and guardedAA0, it calls291F550 at291C457, then291F940 at291C462. Both append to this same model+10 receiver. They are further current-person construction stages; these bodies do not create an Entry, establish a before-stage baseline, or imply a complete forecast. The later caller continues at291C467 into additional158/2922070/2922530/conference/291F260 branches: they remain separate, not covered by these two helpers.
+
+Native .pdata splits291F550 into seven contiguous segments covering[291F550,291F940),1008B, and291F940 into three covering[291F940,291FB09),457B. All normal paths and their local initializer branches were captured; these are one logical function each. Parent/source evidence must not mistake the first short segment for a complete helper.
+
+## 291F550: guarded three families, unit100000
+
+First load actual Culture storage slot5D1E2F0. Nonnull storage demands full DWORD Character+B0, low24 capacity+2C/table+20/stride16 pointer+8, exact selected ID+10; native null/miss selects QWORDslot5D1E2E8. Null storage does not demand Character+B0. Selected DWORD+14 must equal43756C74 (Cult), then selected fullID+10 must not equalFFFFFFFF. Wrong magic or minusone skips the entire helper, before government or family reads. No extra positive-ID guard exists.
+
+1. Government-indexed property at291F62C. Physical government getter28C2E10 is reused from the cached237B .3 body. It loads Character storage5C67568/fallback5C67570 once; validates current Character magic+1C=43686172 and fullID+18!=-1; prefers deathData1D0+88, then current1C0+3F8. If neither component exists, it follows full Character key1B8+C8 (orFFFFFFFF if1B8 null) through the same storage, fullID+18, and loops on that selected Character. Invalid Character, or a null selected government after diagnostic branch, returns actual QWORDgovernment fallback5D1E2A8. No observer call or diagnostic is needed.
+   Government magic+38=4744624F selects signed32 governmentID+10; native PC pointer is QWORD[Culture+670]+sext32(governmentID)*1C0. There is no native length or nonnegative check in this helper. Wrong government magic uses inline current fallback PC5D65890. Guard5D6588C is the native lazy initializer marker; native initializers rejoin at291F620. Read actual current guard/PC and retain0/-1 partial without initializing. Both selections contribute directly (including initialized empty PC), weight100000, receiver=model+10.
+2. Ordered direct property pointers at291F65C. Culture QWORD+90 / signedcount+9C describes stored stride8 pointers. Every occurrence is the PropertyContainer itself, without additional offset/gate; duplicates and order remain. Zero count is actual empty; no unused row reads.
+3. Conditional mapped PC occurrences at291F829. Resolve selected first Rite via Character+B4 storage5D1E2F8/fullID+8 or fallback5C67670; second object via first+4B8 storage5D1E300/fullID+8 or fallback5D1E2E0; then selected Rite via second+98 and the first Rite storage/fullID+8, defaulting to the original Rite fallback5C67670 (rather than a failed previously resolved Rite).
+   Culture QWORD+230 / signedcount+23C stores descriptor pointers. For each occurrence, key is QWORD[descriptor+20]. Admit exactly if selected Rite's QWORD+7A0 / signedcount+7AC contains this entire QWORD. Reused A11F60 baseline and already-captured3F90910 AVX2 compare complete64-bit entries and return first equal/end; no native finder call is necessary.
+   For admitted rows native reads shared inline PC fallback5DC2380/guard5DC2370 initialization state before mapping. Key object magic+38=4744624F permits a scan of the *whole same Culture230 list*, choosing its first descriptor whose key object's fullID+10 equals admitted key object's fullID+10; selected PC is QWORD[first-matching-descriptor+28], including actual null. Wrong magic, or an actual null descriptor fetched from the chosen slot, takes inline fallback5DC2380. The native scanner at291F80F does not independently guard a zero scan-result before its dereference; no-match is not a demonstrated native fallback. Exact pointer membership plus the current row supplies its own candidate in ordinary source state. A readonly unread demanded mapping remains partial rather than emulating an invalid dereference.
+   Stored outer duplicates can select the same first mapped PC repeatedly. Every admitted occurrence merges, even an initialized empty fallback PC, at100000. Membership false skips magic/mapper/guard/PC.
+
+Lazy initialization branches only were captured, not invoked: first default291F8D1 rejoins291F620; mapped fallback291F860 rejoins291F7CE. Inline fallback addresses are not pointer slots.
+
+## 291F940: outer-row interleaving and nested mapped unit requests
+
+Resolve first Rite Character+B4 through5D1E2F8/fullID+8 and fallback5C67670; second via first4B8 through5D1E300/fullID+8 and fallback5D1E2E0; third via second98 through the first Rite store/fullID+8, defaulting to original5C67670. The selected third Rite+750 is a membership context, **not the model+10 recipient**. Its QWORD+50 / signedcount+5C selects accepted keys for nested helper4212920. A business name for the second+98 relationship is not established here.
+
+Independently resolve Character+158 through actual storage5D1DAF0/fullID+10 or fallback5D1DAE8. Resolve its full key+2C through storage5D1DE78/fullID+10 or fallback5D1DE28. Selected object's QWORD+178 / signedcount+184 stores source pointers in stride8 order.
+
+For every outer source occurrence, native does the following in order:
+
+1. Read signed32 source+16C. Nonzero admits source+160 PropertyContainer at291FACD, weight100000 to model+10. Exactly zero skips this direct merge; source16C is the PC key countC. Keep negative nonzero admission even if a consumed PC read then remains partial.
+2. Always pass source+450 list header, selected Rite+750 context and model+10 recipient to4212920 at291FAE0. Header0 / signedcountC stores inline stride30 descriptors. For each inner descriptor, key=QWORD[row+20]; admit exactly if selected Rite+750's50/5C QWORD list contains key. Zero inner count does not demand membership context fields or keys.
+3. Admitted inner descriptor invokes4212800(key, whole source450 header). This cached274B mapper checks key magic38=4744624F; when true chooses the *first row in whole same30-stride list* whose row20 key object's fullID10 equals selected key object's fullID10, then returns QWORD[row28] (including actual null). Wrong magic/no ID match returns inline default PC5DC21B0. Its actual initializer marker is5DC21A4; native checks this marker before magic/scan even if mapping succeeds. Observer reads current marker and PC without initialization.
+4. Each admitted inner row merges returned PC at42129AF, weight100000, model+10. No Q-derived, scalar or variable weight appears in either helper. Duplicate inner key identities still produce separate occurrences selecting the first mapped PC.
+
+**Full contribution order is outer0.direct160 -> outer0.inner0/inner1/... -> outer1.direct160 -> outer1.inner...**, not all direct rows followed by all conditional rows. Pure separate direct-family observations are useful independently; full-stage emission needs this nested order.
+
+4212920 is three contiguous segments[4212920,42129D5),181B. Its membership and mapper are now source-closed, including map default/guard. No script callback, trigger evaluator, heap producer or variable-weight path occurs in this helper.
+
+## Native tree and remaining boundaries
+
+```mermaid
+flowchart TD
+  P["291F0A0 -> direct80 -> guardedAA0"] --> C["291C457 ->291F550; receiver=model+10"]
+  C --> CG["Culture B0 fullID10 / fallback; Cult magic14 and ID10!=-1"]
+  CG -->|false| H["291C462 ->291F940"]
+  CG -->|true| G["Readonly28C2E10 selected government; magic38"]
+  G --> GI["Culture670+signedGovID10*1C0 / actual static5D65890 +guard"]
+  GI --> CP["291F62C unit100000"]
+  CP --> CD["Culture90/9C stored directPCs;291F65C unit100000"]
+  CD --> CR["B4 ->first4B8 ->second98 selected Rite; fallback"]
+  CR --> CM["Culture230 descriptor20 QWORD membership in Rite7A0/7AC"]
+  CM --> CX["admitted: first keyFullID10 mapped descriptor28 /actual5DC2380+guard;291F829 unit"]
+  CM -->|false| H
+  CX --> H
+  H --> RR["B4/4B8/98 selected Rite+750 membership context"]
+  RR --> OO["Character158 registry ->selected2C registry ->outer178/184 list"]
+  OO --> D["outer row:16C!=0 ->PC160 unit100000"]
+  D --> I["same outer row:450 header0/countC; stride30 inner rows"]
+  I --> M["inner20 fullQWORD membership in Rite750+50/5C"]
+  M -->|true| K["4212800: first FullID10 mapped row28 /actual5DC21B0+guard"]
+  K --> W["42129AF unit100000 ->model+10"]
+  M -->|false| N["next inner, then next outer"]
+  W --> N
+  N --> B["return; caller291C467 onwards"]
+  B -. unknown .-> U["Other current-person caller stages and actual Entry association"]
+  A["Absent1C8 recipient of earlier291F0A0"] -. "separate2BFB4C0" .-> T["2BFAC30 current contribution inputs still unknown"]
+  classDef unknown stroke-dasharray: 5 5;
+  class U,T unknown;
+```
+
+Both later helpers have independently valuable direct current source observations and source-closed conditional selection. They do not consume2BFAC30 or require earlier absent1C8 recipient reconstruction. Existing .2 religion-conversion package proves2BFAC30 call placement but delegates to the native complete evaluator rather than publishes its current contribution collection. Its readonly current source reconstruction therefore remains a separate exact .3 leaf; no new reads were spent on it here.
+
+New EXE I/O is2064B =1920 code +144 narrow.pdata, total lane5173B. One274B4212800 body was redundantly captured after a parallel cached-path search found the old body; this extra is counted and preserved, with no wrong RVA/game action. Future captures follow cached-search results before code read. Other cached caller/A11F60/28C2E10/3F90910 source reused. No unwinds, external initializer leaves, whole-file scan/hash, compilation, old tests, runtime or game actions.
