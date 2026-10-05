@@ -31,7 +31,7 @@ def main() -> int:
             raise AssertionError(message)
 
     class Endpoint:
-        pipe_name = "offline-fixture:received-ransom-quote"
+        pipe_name = r"\\.\pipe\xar_pending_ransom_quote_fixture"
         def __init__(self) -> None:
             self.frames = []
             self.on_frame = None
