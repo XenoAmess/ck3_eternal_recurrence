@@ -35,7 +35,7 @@ int RunOppositeEffectEligibilityFixtures(const char *directory) {
       const auto &row = stored.sides[1].rows[1];
       Require(!row.effect_key && row.contribution_raw == -987'654 && row.effect_flags_v1 &&
                   row.effect_flags_v1->flag89_raw ==
-                      (scenario == 2 ? std::optional<std::uint8_t>{} : std::optional<std::uint8_t>{3}),
+                      (scenario == 2 ? std::optional<std::uint8_t>{} : std::optional<std::uint8_t>{std::uint8_t{3}}),
               "key absence must preserve independent observed flags and retained amount");
       if (scenario == 1) Require(stored.sides[0].rows.empty(), "available empty ledger");
       else Require(stored.sides[0].rows[0].effect_flags_v1->flag88_raw == 0 &&
