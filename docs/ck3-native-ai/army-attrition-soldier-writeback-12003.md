@@ -237,3 +237,9 @@ R0046/PID104164/g78/d22e9a1的closed SDK11140，paused raw53264472/native3/publi
 Root已执行470强攻及普通1日，closed SDK17098的新paused raw53264496/native13/public2/queryseq2：主2919/3873，相对已held pre2994净−75；器械7/11、守2912/3000、敌2878/4702不变。四军库存/月变化/attr也与pre消息相同；当前supply/raid整数预算全0、主/守围城预算29、器械0。198DATA全部available、prepared字段present且raw0，两Can许可计数独立不变。
 
 本健康派生未含专用强攻损耗预算或围城B，当前siege预算29不能归因过去−75，也不能当强攻预算；公开2919+7=2926及历史preB3001均不反填当前native B。继续/停止由Root已持独立rich004与强攻原生输入决策，本包只交当前健康实值。原006/旧缓存/SDK/窗口/测试/共享源码/Git与本consumer新增游戏日均0；1真实日及强攻动作归Root，normalSAVE/environment null保留。完整字段：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-post-assault-health-r46-day01/ROOT-DELIVERY.json`。
+
+### 2026-10-05 R46：强攻后十日健康实际变化
+
+closed SDK43501的paused raw53264736/native56/public2/queryseq3四军available。主2304/3873，较已held day1的2919净−615、较pre2994累计−690；器械7/11、守2912/3000、敌2878/4702不变。当前supply/raid预算四军全0、主siege23/守29/器械0；整数预算不作过去减员cause或强攻预算。库存/月变化/attr主290.00001/0/.01、器械300/0/.01、守86.36365/−4.54545/.01、敌95/−5/0。
+
+198DATA available、prepared字段present且raw均0；Can/chunkCan主24/0、器械0/0、守0/0、敌124/0。敌此前chunk69→0与本帧P4893/Combat369098771只并列观察；守P3711/combatnull/siege_active=true/not_gathering，不以旧movement state补健康缺字段。此健康口未发布assault budget/B，whole2311/preB3001均不代当前native B，Root沿独立rich004/source选择继续或停止。本consumer0day/action/SDK/window/tests/shared/Git，原006/旧缓存/fullcomposition0，新querySAVE/environment null；10真实日与whole5017归Root账本。完整字段：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-post-assault-health-r46-ten-days/ROOT-DELIVERY.json`。
