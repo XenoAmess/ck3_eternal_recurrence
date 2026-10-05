@@ -34,8 +34,8 @@ flowchart TD
     M --> N[2BFDAC0: kind2 records first, kind1 records second; keyed assign]
     N --> O[2BFA420 negates kind2 Q64 and assigns map430; chooses actual linked objects by magic+38]
     O --> P[2BFAD50 trait admission, conditional membership multiplier, then wrapper key25D/clamp]
-    D -.-> U[unknown specialized large-key merge internals248AFB0/4215A70]
-    M -.-> V[unknown generic sort callback internals1A0CFF0/1A0D130; comparator is closed]
+    D --> U[248AFB0/4215A70: stable signed-ID ascending insertion and merge]
+    M --> V[1A0CFF0/1A0D130: stable callback insertion and merge]
 ```
 
 The actual selected associated object and fallback/full-ID association are
@@ -131,6 +131,64 @@ records or a buffered `1A0D130` path for larger vectors. Those generic sorting
 internals are not yet read; do not claim their allocation or tie-stability
 details as closed.
 
+### October 6 functional source continuation
+
+The formerly open order seams are now narrowed and closed for their actual
+value semantics. `248AFB0` sorts32-key chunks by signed ID ascending and
+merges with **left selected on equality**. Its `248BA00` merge does the same.
+`4215A70/4216020` trim already ordered ends, merge forward with left equality,
+merge backward with right equality, and partition by paired lower/upper
+bounds before rotation and recursive merge. The plain-pointer rotation
+`C1A6B0` preserves each subrange's order; its unbuffered `86E500` route uses
+three reversals. The specialized key sequence is therefore stable at equal
+signed IDs for larger families as well as the32-key insertion base case.
+
+The record callbacks `1A0CFF0` (joined through `1A0D125`) and `1A0EF70`
+move an earlier row only when the comparator returns true. `1A10BF0`
+selects left when the right-vs-left callback returns false. `1A0F2C0`,
+`1A10D30`, `1A12C70`, and `1A13A70` use the corresponding forward/backward
+equality and lower/upper-bound partition rules; `BADED0` rotates24-byte
+records with per-subrange order preserved. This closes stable ordering by
+priority ascending, Q64 descending, and signed ID descending. It does not
+claim native allocator construction or call native sort code. Normal pure
+sorting can reproduce this value order without an arbitrary32-record gate.
+
+Before implementation, the packet seals a separate `uncached_recipient_inputs`
+leaf for the same current-person query. It applies only when Character1C8 is
+absent and actual associated440 is zero. Present1C8 and nonzero440 are legal
+`not_applicable` skips. Every raw vector carries its actual signed count and
+physical rows; count0 is an actual empty vector, while failed reads stay null.
+The two resolver associations and fallback pointers remain diagnostics of
+the actual selected receivers. No cached430/458 bytes are substituted.
+
+The new dedicated reducer consumes seed, active and removed families in that
+order. It retains seed records, exact reducer true/false, source-priority
+thresholds, swap-last tie-group removal, stable key removal, kind switches,
+seed boost, link assignment, and final materialization in its ledger. The
+derived temporary map joins the closed AD50/key25D/clamp pure path using only
+the nested current `downstream_inputs`. These are physical trait IDs,
+membership bytes/guard, aggregate bytes/selection/guard and actual globals.
+
+The active multiplier at `2BF9E79/7C/80` and seed boost at
+`2BFDF96/99/9D` decompose the **signed maximum** operand: R8 receives max,
+R9 receives min, and division/remainder apply to R8. This differs from the
+shared minimum-operand multiplication helper when a remainder product wraps.
+Use a dedicated maximum-operand Q100000 helper for these two uncached edges;
+leave the previously closed downstream AD50 arithmetic unchanged. The seed
+record is retained before the priority1 append, so this boost also applies to
+the seed's own initial same-kind append, not only later active replacements.
+
+Demand remains conditional: fallback key only for marker!=2; capacity for a
+nonzero-kind reducer candidate; seed boost only for an append with a matching
+seed kind; active multiplier only after the first matching context row;
+object magic and link fallbacks only for a final materialized key; membership
+and its guard only after trait admission; member multiplier only after a
+matching linked object; aggregate inline guard only for inline selection.
+No stage-start baseline, native initialization, native output-cache write or
+actual Entry association is supplied. The dedicated DTO/bindings/collector/
+serializer includes and strict contract are wired by the unified source owner
+in its next package; the current26-wire qualification is independent.
+
 `2BFDAC0` visits kind2 records in vector order before kind1 records. It uses
 `2C00950` to insert or assign a32-byte-bucket keyed record map; the equal-key
 path overwrites kind DWORD+10 and Q64+18. The caller `2BFA420` then negates
@@ -172,6 +230,21 @@ baseline or actual Entry association, performs no native initialization and
 does not authorize a current-final value as an earlier state. No new Python
 case, native build or game interaction was performed for this continuation.
 The earlier cached query will qualify independently in the unified package.
+
+The October6 implementation continuation adds dedicated pure kernel, strict
+contract and native DTO/bindings/collector/serializer includes. Its single new
+Python compound case passed33 assertions in0.35s. The retained first attempt
+was harness RED at collection (missing PYTHONPATH, zero cases); the corrected
+small-operand version passed30 checks, and the actual maximum-operand source
+finding justified the final changed-case run. No old test was rerun.
+The new native fixture hook emits11 current-query production wires, including
+the uncached scalar's manager-range forwarding assertion. It has not yet been
+built or executed here: main-query/contract/helper wiring and native validation
+are the coordinating owner's next package. Current readiness is **static-ready
+pure/contract**, with dedicated native integration pending; no live status is
+claimed. Receipts are `uncached-python-01/02/03/RESULT.json`,
+`UNCACHED-IMPLEMENTATION-SOURCE-PLAN.json`, and
+`UNCACHED-MAX-MULTIPLY-SOURCE-ADDENDUM.json` in the packet.
 
 ## Read receipt
 
