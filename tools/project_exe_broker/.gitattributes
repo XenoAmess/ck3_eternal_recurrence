@@ -1,0 +1,3 @@
+# Preserve source pins and exact historical producer bytes across checkouts.
+** -text whitespace=cr-at-eol
+vendor-shims/win32com-client-init.py whitespace=cr-at-eol,-blank-at-eof

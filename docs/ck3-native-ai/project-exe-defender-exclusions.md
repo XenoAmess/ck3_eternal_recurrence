@@ -133,3 +133,7 @@ ShellExecuteEx 的启动成功只证明进程启动；上面另外要求 child e
 任务 ACK 只表示启动请求。客户端在有限时间内读取固定 `receipts/<UUID>.receipt.json` 的受保护实际字节，核对请求/清单/策略/运行时/安装身份、实际 SYSTEM/Admin token、原文件行及当前 EXE SHA。只有实际 before/after 的三项设置回读证明所有请求路径存在、所有先前路径保留，且 ExclusionExtension/ExclusionProcess 集合未变化，才接收 `verified`。完整绑定的失败或部分变更回执照实保留；错误哈希、过期回执、当前字节改变或互相矛盾的 verified 结果都返回失败。
 
 受保护 worker 回执原 bytes 先 pin 到普通调用方的新 proof attempt，再由原 helper 的 `finally` 按原 bytes 排他复制到 caller receipt，不重新序列化、不覆盖历史回执。客户端失败也保留请求、已取得的原结果和失败 proof。权限安装、实际普通 → SYSTEM 回执和实际设置回读通过之前，本段状态保持“候选，尚未安装”；排除设置成功仍不等于 EXE 运行时可信或发布签核。
+
+## 2026-10-05 04:56 UTC 追加：固定任务与初四项已实际生效
+
+上述候选之后，Root 完成同 UUID 的固定恢复安装。实际 `project-broker-root-resume-a01/installer-receipt.json` 为 1,367,505 字节，SHA `4157fec4c9e66aeaae73b04dee5fcaa6f78f5f1245da188e0c331743096fe9ae`，状态 `installed_initial_outputs_verified`；固定 SYSTEM 任务与首批两份清单中的四个项目 EXE 设置读回已验。普通 token 为第五个新路径取得 SYSTEM 设置回执的免重复 UAC 验收仍待独立实际结果。本追加不改写上文候选时点与旧失败记录。兼容故障、保护源码、精确恢复器与复现边界见 [已安装 broker 专题](project-exe-defender-broker.md)。

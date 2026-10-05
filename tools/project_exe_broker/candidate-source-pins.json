@@ -1,0 +1,100 @@
+{
+  "schema": "xar.broker.finite-repo-source-candidate.v1",
+  "files": [
+    {
+      "path": "tools/project_exe_broker/assemble_fixed_a06.py",
+      "size": 6053,
+      "sha256": "050b69e56f6cd08314073b6aef4fd01d586ee1ed167066bf733caaca28635135"
+    },
+    {
+      "path": "tools/project_exe_broker/broker_bootstrap.py",
+      "size": 1979,
+      "sha256": "36bfe22dc91fbe63e2ec3d5d0266cd57b3e943bb609c46dcae1749b4a9e25237"
+    },
+    {
+      "path": "tools/project_exe_broker/frozen-tests/test_installer_fakes.py",
+      "size": 11806,
+      "sha256": "efeadae82ced9cf9efd05432f579691cc67ccef21c5788aa7d02e0d04ee3fa4b"
+    },
+    {
+      "path": "tools/project_exe_broker/frozen-tests/test_resume_directed_a01.py",
+      "size": 6284,
+      "sha256": "e4e8a44df4e42cdae2050af567727e731946414f34622d67bf7f3a7dd3e0d83e"
+    },
+    {
+      "path": "tools/project_exe_broker/install_project_exe_broker.py",
+      "size": 1951,
+      "sha256": "2f1c88c945cc5b5955ed83c4dfbd41428a48c8c910587b2f45dd1b2e53b2e661"
+    },
+    {
+      "path": "tools/project_exe_broker/installer_core.py",
+      "size": 12874,
+      "sha256": "090063ebf11e0e704a8c4fcb41034de5bd0e7c49a4c4253b053ff3a5ca15f493"
+    },
+    {
+      "path": "tools/project_exe_broker/native_safety.py",
+      "size": 35834,
+      "sha256": "873ec34e49d2549493ffddeb934d4d7d12e7a97de76fecc43c5135c0ee5118e2"
+    },
+    {
+      "path": "tools/project_exe_broker/protected_runtime.py",
+      "size": 1813,
+      "sha256": "885d7ff841f23fe0052afe413ede380f9810bcb5f8db7cd188da326b2dfbbace"
+    },
+    {
+      "path": "tools/project_exe_broker/README.md",
+      "size": 1629,
+      "sha256": "d594e60ae119be50a361ed6f41b1d4c6522d45755675cf526132e46b20b9d14e"
+    },
+    {
+      "path": "tools/project_exe_broker/resume_project_exe_broker.py",
+      "size": 20760,
+      "sha256": "d9ae23c50c3b9eda75a699aec85deb64bc27201e05f691559570b3f899d1ee84"
+    },
+    {
+      "path": "tools/project_exe_broker/source_guard_a05.py",
+      "size": 8300,
+      "sha256": "ae57dc49b97a8859434bcba36e609b1ea40aab83c6a27b01c9e40eac6b9416c4"
+    },
+    {
+      "path": "tools/project_exe_broker/TEST-EVIDENCE.json",
+      "size": 889,
+      "sha256": "f0ac3b0264ac049e1eb921aa1955c28c6a896007ff7fe7e06466d44aab567ce9"
+    },
+    {
+      "path": "tools/project_exe_broker/uninstall_project_exe_broker.py",
+      "size": 1691,
+      "sha256": "662fa280297744b476822fa38426daea585c4d603ae7285723da4ae7b6c048f4"
+    },
+    {
+      "path": "tools/project_exe_broker/vendor-shims/stock-VARIANT-class.py",
+      "size": 608,
+      "sha256": "1da88287ae4fc9f78aecc8388d0a7bb2af53142ed2595bec5945d849979cfc9d"
+    },
+    {
+      "path": "tools/project_exe_broker/vendor-shims/win32com-client-init.py",
+      "size": 1920,
+      "sha256": "e9edd437147e3b2908b86be9cc79a67d229ef65ed6032e91dab950ba90b5410a"
+    },
+    {
+      "path": "tools/project_exe_broker/vendor-shims/win32com-init.py",
+      "size": 223,
+      "sha256": "532c2c2db1958eb7113c5cfc30ee43ba8517eb945b4670ec33ab442af32fef11"
+    },
+    {
+      "path": "tools/project_exe_broker/windows_adapter.py",
+      "size": 22706,
+      "sha256": "88eb97048190b3a0caf89941a77701dfd9c5434f0c5d32e1deda00056bcd9f82"
+    },
+    {
+      "path": "tools/project_exe_broker/worker_core.py",
+      "size": 37209,
+      "sha256": "1c1eeb5351e935645861a141ba0618181b457a1b482637cb7ef7aa313861ec29"
+    }
+  ],
+  "side_effects_actual": false,
+  "capsule_modified": false,
+  "binary_runtime_vendored": false,
+  "assembler_executed": false,
+  "actual_install_status": "pending_Root_receipts"
+}

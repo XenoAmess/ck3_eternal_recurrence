@@ -56,6 +56,7 @@
 - 不扩展为全机 `.exe` 扩展名排除、其他程序或整个工作盘排除。构建工具只能对项目声明的可执行目标登记；第三方解释器、媒体工具、Steam 和 CK3 本体不因本授权纳入。
 - 管理员权限不足、Windows 系统确认取消或设置读回缺失时，如实记录登记或验收未完成；普通 token 的隐藏空数组不能证明未生效。用户授权、调用 ACK 和管理员实际生效读回分别记录。继续执行下文 Python-only 规则。
 - 当前 238 个精确路径的管理员实际回执、COM 空返回/普通 token 隐藏数组纠正、6 个已接入构建入口、161 个旧研究生产器未自动覆盖边界及显式 native UAC 登记方法见 [项目 EXE 永久排除](docs/ck3-native-ai/project-exe-defender-exclusions.md)。后续 hook 只在本机 Git-local `xar.defenderProjectExeExclusions=true` 时启用；非管理员登记需明确报告 admin-required，不能声称已完成全部未来输出登记。
+- 2026-10-05 固定受保护 SYSTEM broker 与首批四项已由实际回执验收；源码、stock `VARIANT` 兼容修复、历史固定恢复与普通调用方后续验收状态见 [broker 专题](docs/ck3-native-ai/project-exe-defender-broker.md)。已安装本机的已知 CMake/MSVC producer 可经既有 helper 走普通请求；Task ACK 仍不证明登记成功，必须接收精确绑定的实际 SYSTEM 设置回执。批量运行时不入库，不由新 clone/CI 自动安装或更改系统设置。
 
 ## PowerShell 禁令
 

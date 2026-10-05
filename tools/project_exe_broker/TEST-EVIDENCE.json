@@ -1,0 +1,11 @@
+{
+  "schema": "xar.broker.source-candidate-test-links.v1",
+  "tests": [
+    "C:\\ck3-war-episode04-research-20261004-a01\\defender-demand-broker-install-candidate-a01\\resume-finite-checks-a01\\01-stderr.bin",
+    "C:\\ck3-war-episode04-research-20261004-a01\\defender-demand-broker-install-candidate-a01\\resume-post-acl-dry-a02\\REPORT.json",
+    "C:\\ck3-war-episode04-research-20261004-a01\\defender-demand-broker-install-candidate-a01\\resume-actual-readonly-probe-a01\\REPORT.json",
+    "C:\\ck3-war-episode04-research-20261004-a01\\defender-demand-broker-install-candidate-a01\\variant-resume-candidate-a01\\actual-memory-com-probe-a02\\REPORT.json",
+    "C:\\ck3-war-episode04-research-20261004-a01\\source-guard-lifecycle-actual-tiny-tree-a01\\REPORT.json"
+  ],
+  "scope": "frozen existing meaningful tests/actual readonly APIs only; not installed/future acceptance"
+}

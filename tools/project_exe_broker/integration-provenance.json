@@ -1,0 +1,294 @@
+{
+  "schema": "xar.project-exe-broker.source-integration.v1",
+  "original_inventory_sha256": "68e6f7345e5e276d1ab0bd7396d15c395e7a1e11c3f19032e287b92fd15bb214",
+  "original_files": 18,
+  "import_byte_verification": "all18 verified before repository edits",
+  "adapted_files": [
+    {
+      "original": {
+        "path": "tools/project_exe_broker/assemble_fixed_a06.py",
+        "size": 6053,
+        "sha256": "050b69e56f6cd08314073b6aef4fd01d586ee1ed167066bf733caaca28635135"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/assemble_fixed_a06.py",
+        "size": 6067,
+        "sha256": "1cf00c6908e134d1847c502ba4d1dc099c30850c8a5ee8ddcdbed5562fe9f64f"
+      },
+      "adapted": true
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/broker_bootstrap.py",
+        "size": 1979,
+        "sha256": "36bfe22dc91fbe63e2ec3d5d0266cd57b3e943bb609c46dcae1749b4a9e25237"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/broker_bootstrap.py",
+        "size": 1979,
+        "sha256": "36bfe22dc91fbe63e2ec3d5d0266cd57b3e943bb609c46dcae1749b4a9e25237"
+      },
+      "adapted": false
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/frozen-tests/test_installer_fakes.py",
+        "size": 11806,
+        "sha256": "efeadae82ced9cf9efd05432f579691cc67ccef21c5788aa7d02e0d04ee3fa4b"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/frozen-tests/test_installer_fakes.py",
+        "size": 11806,
+        "sha256": "efeadae82ced9cf9efd05432f579691cc67ccef21c5788aa7d02e0d04ee3fa4b"
+      },
+      "adapted": false
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/frozen-tests/test_resume_directed_a01.py",
+        "size": 6284,
+        "sha256": "e4e8a44df4e42cdae2050af567727e731946414f34622d67bf7f3a7dd3e0d83e"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/frozen-tests/test_resume_directed_a01.py",
+        "size": 6284,
+        "sha256": "e4e8a44df4e42cdae2050af567727e731946414f34622d67bf7f3a7dd3e0d83e"
+      },
+      "adapted": false
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/install_project_exe_broker.py",
+        "size": 1951,
+        "sha256": "2f1c88c945cc5b5955ed83c4dfbd41428a48c8c910587b2f45dd1b2e53b2e661"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/install_project_exe_broker.py",
+        "size": 2203,
+        "sha256": "124d48273d7ba7490f7bff821df4ad478252305d669f54c8898e904cffdd1c5f"
+      },
+      "adapted": true
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/installer_core.py",
+        "size": 12874,
+        "sha256": "090063ebf11e0e704a8c4fcb41034de5bd0e7c49a4c4253b053ff3a5ca15f493"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/installer_core.py",
+        "size": 12874,
+        "sha256": "090063ebf11e0e704a8c4fcb41034de5bd0e7c49a4c4253b053ff3a5ca15f493"
+      },
+      "adapted": false
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/native_safety.py",
+        "size": 35834,
+        "sha256": "873ec34e49d2549493ffddeb934d4d7d12e7a97de76fecc43c5135c0ee5118e2"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/native_safety.py",
+        "size": 35834,
+        "sha256": "873ec34e49d2549493ffddeb934d4d7d12e7a97de76fecc43c5135c0ee5118e2"
+      },
+      "adapted": false
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/protected_runtime.py",
+        "size": 1813,
+        "sha256": "885d7ff841f23fe0052afe413ede380f9810bcb5f8db7cd188da326b2dfbbace"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/protected_runtime.py",
+        "size": 1813,
+        "sha256": "885d7ff841f23fe0052afe413ede380f9810bcb5f8db7cd188da326b2dfbbace"
+      },
+      "adapted": false
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/README.md",
+        "size": 1629,
+        "sha256": "d594e60ae119be50a361ed6f41b1d4c6522d45755675cf526132e46b20b9d14e"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/README.md",
+        "size": 3094,
+        "sha256": "31bbd626bf5cd6abbba0a6b6b9a68b221b9fac67d8df6be856898eefd5e236cf"
+      },
+      "adapted": true
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/resume_project_exe_broker.py",
+        "size": 20760,
+        "sha256": "d9ae23c50c3b9eda75a699aec85deb64bc27201e05f691559570b3f899d1ee84"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/resume_project_exe_broker.py",
+        "size": 21342,
+        "sha256": "9cf5f739cbabc3d4163aca60dfe96784a6e4a198198a4753de3f09c0e4754e72"
+      },
+      "adapted": true
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/source_guard_a05.py",
+        "size": 8300,
+        "sha256": "ae57dc49b97a8859434bcba36e609b1ea40aab83c6a27b01c9e40eac6b9416c4"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/source_guard_a05.py",
+        "size": 8584,
+        "sha256": "7d0e5d67e05d54965e8d14c6e727170b4cf886be042cd29de11d9c3c90d6c4b6"
+      },
+      "adapted": true
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/TEST-EVIDENCE.json",
+        "size": 889,
+        "sha256": "f0ac3b0264ac049e1eb921aa1955c28c6a896007ff7fe7e06466d44aab567ce9"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/TEST-EVIDENCE.json",
+        "size": 889,
+        "sha256": "f0ac3b0264ac049e1eb921aa1955c28c6a896007ff7fe7e06466d44aab567ce9"
+      },
+      "adapted": false
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/uninstall_project_exe_broker.py",
+        "size": 1691,
+        "sha256": "662fa280297744b476822fa38426daea585c4d603ae7285723da4ae7b6c048f4"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/uninstall_project_exe_broker.py",
+        "size": 1688,
+        "sha256": "321ec5feabc4f8c4659ca3ff9e435a675741be534ee6276076bda252bb8df427"
+      },
+      "adapted": true
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/vendor-shims/stock-VARIANT-class.py",
+        "size": 608,
+        "sha256": "1da88287ae4fc9f78aecc8388d0a7bb2af53142ed2595bec5945d849979cfc9d"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/vendor-shims/stock-VARIANT-class.py",
+        "size": 608,
+        "sha256": "1da88287ae4fc9f78aecc8388d0a7bb2af53142ed2595bec5945d849979cfc9d"
+      },
+      "adapted": false
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/vendor-shims/win32com-client-init.py",
+        "size": 1920,
+        "sha256": "e9edd437147e3b2908b86be9cc79a67d229ef65ed6032e91dab950ba90b5410a"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/vendor-shims/win32com-client-init.py",
+        "size": 1920,
+        "sha256": "e9edd437147e3b2908b86be9cc79a67d229ef65ed6032e91dab950ba90b5410a"
+      },
+      "adapted": false
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/vendor-shims/win32com-init.py",
+        "size": 223,
+        "sha256": "532c2c2db1958eb7113c5cfc30ee43ba8517eb945b4670ec33ab442af32fef11"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/vendor-shims/win32com-init.py",
+        "size": 223,
+        "sha256": "532c2c2db1958eb7113c5cfc30ee43ba8517eb945b4670ec33ab442af32fef11"
+      },
+      "adapted": false
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/windows_adapter.py",
+        "size": 22706,
+        "sha256": "88eb97048190b3a0caf89941a77701dfd9c5434f0c5d32e1deda00056bcd9f82"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/windows_adapter.py",
+        "size": 22706,
+        "sha256": "88eb97048190b3a0caf89941a77701dfd9c5434f0c5d32e1deda00056bcd9f82"
+      },
+      "adapted": false
+    },
+    {
+      "original": {
+        "path": "tools/project_exe_broker/worker_core.py",
+        "size": 37209,
+        "sha256": "1c1eeb5351e935645861a141ba0618181b457a1b482637cb7ef7aa313861ec29"
+      },
+      "repository": {
+        "path": "tools/project_exe_broker/worker_core.py",
+        "size": 37219,
+        "sha256": "4453eb8b1bb8ebf1008a7463ac2f68b120ce1bc6c201daf3826a81f09dda7c23"
+      },
+      "adapted": true
+    }
+  ],
+  "preserved_original_entries": [
+    {
+      "path": "tools/project_exe_broker/frozen-source/resume_project_exe_broker.py",
+      "size": 20760,
+      "sha256": "d9ae23c50c3b9eda75a699aec85deb64bc27201e05f691559570b3f899d1ee84"
+    },
+    {
+      "path": "tools/project_exe_broker/frozen-source/install_project_exe_broker.py",
+      "size": 1951,
+      "sha256": "2f1c88c945cc5b5955ed83c4dfbd41428a48c8c910587b2f45dd1b2e53b2e661"
+    },
+    {
+      "path": "tools/project_exe_broker/frozen-source/uninstall_project_exe_broker.py",
+      "size": 1691,
+      "sha256": "662fa280297744b476822fa38426daea585c4d603ae7285723da4ae7b6c048f4"
+    }
+  ],
+  "adaptation_scope": [
+    "CLI help defers isolated packaged runtime/COM/DLL setup; install read-only accepts approved package",
+    "repository resume read-only selects exact retained capsule and checks actual sourceentry there; actual continuation requires frozen capsule entry",
+    "assembler uses byte-preserved original frozen-source resume entry, not adapted outer CLI",
+    "sourceguard algorithm and fixed capsule/inventory untouched; main entry only prints help/context usage",
+    "worker blocked-name literals use the existing Python-only spelling convention; BLOCKED_NAMES exactly equals frozen worker values",
+    "relative path copies of the original10+10 fake cases and one CLI entry test; original frozen-tests remain"
+  ],
+  "actual_root_result": {
+    "path": "C:/ck3-war-episode04-research-20261004-a01/project-broker-root-resume-a01/installer-receipt.json",
+    "size": 1367505,
+    "sha256": "4157fec4c9e66aeaae73b04dee5fcaa6f78f5f1245da188e0c331743096fe9ae",
+    "status": "installed_initial_outputs_verified",
+    "settings_status": "verified",
+    "initial_manifests": 2,
+    "initial_executables": 4
+  },
+  "bulk_runtime_in_git": false,
+  "ordinary_future_acceptance": "pending separate actual Root result at source integration",
+  "privileged_operations_in_this_integration": false,
+  "frozen_installed_runtime_modified": false,
+  "open_kaishek": "not-applicable: this integration is Python/Win32 source and data contracts; no CK3 ABI or game operation",
+  "local_checks": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\broker-source-integration-checks-a01\\REPORT.json",
+      "size": 2401,
+      "sha256": "65e484487828ac566fdb6cbbd391eb0257a518d40e50fdddd8a009736efd30ad"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\broker-source-integration-checks-a02\\REPORT.json",
+      "size": 2209,
+      "sha256": "9c6910e1a48829ef5c3e5310727e26e6ac60107ff689f089ab44414e860da2af"
+    }
+  ],
+  "local_result": "21 repository tests passed; equivalent blocked names confirmed; corrected Python-only passed; exact ordinary a06 assembly reproduced approved bundle/authority/source inventory"
+}
