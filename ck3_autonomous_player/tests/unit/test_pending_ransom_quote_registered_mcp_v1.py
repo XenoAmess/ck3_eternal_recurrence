@@ -40,6 +40,8 @@ def main() -> int:
         def publish(self, packet: dict) -> None:
             self.on_frame(copy.deepcopy(packet))
         def send(self, request: dict) -> None:
+            if request.get("type") == "ping":
+                return
             check(request["type"] == "execute_step" and request["step"] == step,
                   "only the existing readonly query is dispatched")
             check(request["pending_interaction_id"] == 1946157063,
