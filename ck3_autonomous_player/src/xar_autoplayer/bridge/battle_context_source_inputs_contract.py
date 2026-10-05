@@ -627,7 +627,8 @@ def normalize_current_context_source_inputs(
     if isinstance(value, dict) and "tail_direct_291c5b7_291cc49" in value:
         fields.add("tail_direct_291c5b7_291cc49")
     for optional in ("tail_prefix_2753860_2922530", "middle_helpers_291f260_291fb10",
-                     "trait_stage_291d460", "absent_recipient_inputs", "helper_2922070"):
+                     "trait_stage_291d460", "absent_recipient_inputs", "helper_2922070",
+                     "conference_24b1d00"):
         if isinstance(value, dict) and optional in value:
             fields.add(optional)
     raw = _dict(value, field, fields)
@@ -712,6 +713,12 @@ def normalize_current_context_source_inputs(
         if helper is not None and helper["character_id"] != normalized["character_id"]:
             raise ValueError(field + ".helper_2922070 character disagrees with source actor")
         normalized["helper_2922070"] = helper
+    if "conference_24b1d00" in raw:
+        from .battle_person_conference_24b1d00_contract import normalize_conference_24b1d00
+        conference = normalize_conference_24b1d00(raw["conference_24b1d00"], field + ".conference_24b1d00")
+        if conference is not None and conference["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".conference_24b1d00 character disagrees with source actor")
+        normalized["conference_24b1d00"] = conference
     return normalized
 
 
