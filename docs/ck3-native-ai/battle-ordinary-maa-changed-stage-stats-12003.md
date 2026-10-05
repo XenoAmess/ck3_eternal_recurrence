@@ -3,9 +3,9 @@
 Frozen CK3 1.20.0.3, Steam build 25652598, EXE SHA256
 94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6.
 This package separates the Regiment getter's selected Character and MAA paths
-from person preparation and the six-field final-cache setter. Its first bounded
-primitive evaluates ordinary damage at an explicitly named supplied context.
-The other four ordinary values and complete MAA stage inputs remain work in
+from person preparation and the six-field final-cache setter. All five ordinary
+getter formulas are closed and usable at an explicitly named supplied context.
+The MAA baseline construction and linked Character additions remain work in
 progress; current observed tuples are not changed-stage predictions.
 
 The source-first plan, Mermaid and query plan were sealed before new source
@@ -172,3 +172,81 @@ remain pending. Game operations and added game days are zero.
 ## Ordinary six-stat production qualification (2026-10-06T01:22:10+08:00)
 
 Exact `3fb869c751d9050caffa790716a332ca71238c1a` fullDLL/new ordinary target builds GREEN; first ordinary CTest GREEN0.09s. All7 new real serializer wires pass production strict normalizer → source-derived six-stat adapter → typed FinalEntryStatInput. SERIALIZER-PROJECTION.json and literal production_regiment_serializer.cpp are metadata, excluded from wire count. The first consumer attempt used request index2 as a ProvinceID; the strict production normalizer rejected the actual generation-qualified ID mismatch. That harness RED is preserved. Only the failed direct case was reread after using source_target_province_id/current initialization ProvinceID; the six unexecuted wires were consumed once. No native rebuild, model change, old initial3/damage/six synthetic repeat. NEW-ORDINARY-WIRE-CONSUMER-OCT6.json pins7wire and4production-file hashes. Ordinary current/explicit-person-stage projection is static-ready; MAA source/pure arithmetic and full Entry are separate remaining increments.
+
+## MAA closed arithmetic and actual remaining operands
+
+The complete body `[30C4360,30C50AD)` uses actual CRegiment.type+118,
+selected Character from +12C/+130, extra source+120 and supplied Province.
+30C3C50 starts from the type's max_size DWORD+270 and Q64 siege+278,
+damage+280, toughness+288, pursuit+290 and screen+298. It adds culture and
+government callbacks, applies Character aggregate/class modifiers and +120
+modifiers, then conditionally applies the selector-mode factor. A frozen final
+getter tuple cannot be used as this baseline because these steps would repeat.
+
+30C2860 selects a class row of stride58 from MaaRules+EF0/count+EFC using
+type.class+260. Its six additive U16 keys are row+28..32 and multiplier keys
+row+34..3E. Actual absent class row skips these keys. FFFF is real sentinel zero.
+Generic keys, in the native stat order, are:
+
+| Stat | Generic add | Generic multipliers |
+|---|---|---|
+| max_size | none | none |
+| siege | 1BF | 1C0, 1B2 |
+| damage | 1B7 | 1B8, 1B3 |
+| toughness | 1B9 | 1BA, 1B4 |
+| pursuit | 1BB | 1BC, 1B5 |
+| screen | 1BD | 1BE, 1B6 |
+
+The caller initializes six adds to zero and six factors to Q. Class and generic
+aggregate values are added with signed64 wrap. 2647B60/leaf2647CA0 then apply
+these scratch operands to the six-field cache. max_size first multiplies its
+signed32 value by Q, adds its Q64 scratch add, performs the source-established
+maximum-operand fixed multiplication, divides by Q again toward zero and
+stores low32. The other five fields use one fixed multiplication after their
+add. There is no floor at this application step.
+
+30C4360 applies the accolade aggregate with the same context/apply pair, then
+adds actual six-field vectors in this order: type terrain30BDC80, guarded
+definition620 map30BDD20, Province class30BDDC0, linked Character terrain
+2B91EA0, guarded linked definition2B92160, linked Province2B924C0. max_size
+additions wrap32, the other five wrap64. The definition+620 validGDbo guard
+selects both definition terms together. Final damage and toughness alone are
+signed-floored to Q; max_size, siege, pursuit and screen retain zero/negatives.
+An actual absent guarded definition term differs from an unread required term.
+
+```mermaid
+flowchart TD
+  T["Actual CReg.type+118 six bases"] --> B["30C3C50 baseline"]
+  C["Selected Character aggregate + actual class row"] --> M["30C2860 six adds/factors"]
+  M --> A["2647B60/2647CA0 native apply"]
+  B --> A
+  B -.-> CB["2551090/2551290 culture/government callbacks"]
+  B -.-> EX["30C2F80 extra source+120"]
+  B -.-> SF["2B9CBC0/30C3670 selector-mode factor"]
+  A --> AC["Accolade aggregate context/apply"]
+  AC --> E["Six environment vectors in native order"]
+  E -.-> LC["2B91EA0/2B92160/2B924C0 linked Character vector sources"]
+  E --> F["Damage/toughness >=Q; practical final-cache input"]
+```
+
+Source bodies, the no-pdata leaf windows and jump-table bytes are frozen in the
+external packet. `MAA-PRIMITIVE-PLAN.json` and its Mermaid were sealed before
+the bounded arithmetic model; `MAA-MINIMAL-QUERY-PLAN.json` lists the exact same
+MCP input fields and remaining callees. Closed arithmetic may consume explicitly
+supplied named-stage operands. It cannot claim complete getter construction or
+first-contact readiness until the dashed dependencies and their observation
+sources are supplied. No person preparation process is duplicated.
+
+`battle_maa_regiment_stats_12003.py` exposes typed scratch/apply/end-stage
+results and `maa_six_stats_to_final_stat_input_12003`, preserving the existing
+men_at_arms bucket, occurrence identity and final-side call site. Missing
+required vectors stay partial; genuine empty aggregate and absent class row
+produce zero adds and Q factors. The one new focused Python case passed 1/1
+GREEN once in 0.005 seconds on Oct6, using the integrated final-cache consumer.
+It covers loaded class keys/FFFF, native max_size double division, signed
+negative truncation, large fixed multiplication, low32 max wrap, ordered adds,
+the paired definition guard, final damage/toughness floor and complete/partial
+consumer inputs. Receipt: `focused-maa-arithmetic-once/RESULT.json`. No earlier
+case, native compilation or game operation was repeated. This bounded arithmetic
+is static-ready; complete MAA source construction and first-contact readiness
+remain partial, with the dashed actual dependencies continuing next.
