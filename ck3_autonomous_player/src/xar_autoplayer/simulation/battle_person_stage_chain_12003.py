@@ -413,7 +413,8 @@ def continue_person_stage_chain_tail_12003(
         "prior_chain_ledger": previous.source_ledger, "requested_tail_bound": through_stage,
         "ordered_tail_stages": tuple(ledger_rows), "tail_aggregate_updates": tuple(updates),
         "future_tail_missing_inputs": tuple(future_missing),
-        "first_contiguous_observation_dependency": "2922070",
+        "first_contiguous_observation_dependency": next(
+            (row["stage"] for row in ledger_rows if not row["requests_ready"]), None),
         "next_native_source_leaf": "24B1D00", "all_tail_source_stream_ready": False,
         "current_final_context_used_as_default": False, "unknown_stages_assumed_empty": False,
         "full_person_preparation_ready": False, "full_entry_ready": False, "game_operations": 0}

@@ -211,3 +211,66 @@ This new case did not rerun the previously successful pre467 case or any old
 case. Native builds, fresh EXE reads and game operations remained zero. It is
 **static-ready for the independently complete275 bound and sparse output
 consumption**, not complete tail/person preparation/Entry or live evidence.
+
+On 2026-10-06 the native owner's dedicated helper2922070 source packet closed
+the remaining sort adapters with 4330 narrowly read bytes. This chain lane
+reuses that packet and reads no EXE bytes. The actual Character comparator
+passes `Character+10` to the getter's `+8`, yielding unsigned full DWORD18;
+equal keys are stable and only adjacent equal Character pointers are removed.
+The final existing-first comparator passes `source+8`, yielding unsigned full
+DWORD10. Its equal keys remain stable and its source pointers are not deduped.
+This corrects the older source packet's comparator argument without changing
+its archived receipt.
+
+The source ledger is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-tail/helper-2922070/SOURCE-TREE.md`,
+with its `QUERY-PLAN.json`. Whole government/land/subject false gates permit a
+known skip. Admitted helpers require complete DFS, Character filter/order,
+membership, full-ID output mapping and each demanded BA0 row. Type280 and
+definitionmagic38 precede the native signed index clamp and actual inline BA0
+PC. Each admitted occurrence requests Q100000 from the actual model+10
+receiver, including an initialized empty PC. Missing demanded input remains a
+gap instead of an empty helper.
+
+The corresponding real contract, shared normalizer wiring and lazy prefix API
+forwarder are committed as `24b70e4bd61c8446bcfe0008574b2be4afdb77cb`.
+This source update precedes the new qualification; no new case has passed at
+this point. The existing dynamic slot can now consume those real inputs.
+The next distinct case requests through2922530, with an exact successful
+frontier `post2922530_pre291C4E2`. Conference24B1D00 at291C548 remains the next
+source gap.
+
+```mermaid
+flowchart TD
+  P[explicit post291F940 / pre291C467] --> A[2753860 actual source]
+  A --> B[2922070 actual gate and complete ordered BA0 sources]
+  B --> C[2922530 D60 / F20 / 10E0 conditional call slots]
+  C --> R[post2922530 / pre291C4E2 bounded context]
+  R -.-> D[unknown conference24B1D00 admission / contribution]
+  D --> E[291F260 independent actual-weight inputs]
+```
+
+The new through2922530 integration is now **GREEN 1/1 once in 0.010s**, on
+2026-10-06 at00:41 Asia/Shanghai, receipt
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-stage-chain/2922070-attempt-01.json`.
+It consumes the genuine production normalizer and the `24b70e4b` contracts,
+using a distinct source-shaped synthetic frame. Complete singleton self
+collection and membership preserve the signed full generation DWORD
+`-2147483639`. No sort-key read is manufactured for the singleton. An admitted
+BA0 contribution then joins the three actual2922530 call slots, including an
+initialized empty PC at native selected index-1. That request stays visible,
+while the existing kernel copies no aggregate/weighted rows from its empty PC.
+
+Explicit prior prowess2,275 contribution3,BA0 contribution7,2530 contributions
+empty/+2/-1 and base6 give `(6,6,6,6,6,19)` at the independently complete
+`post2922530_pre291C4E2` bound. A demanded BA0 PC missing in the same case
+preserves `post2753860_pre291C4D2` and `(6,6,6,6,6,11)`, while all three2530
+requests remain independent. The dependency ledger now reflects actual
+readiness instead of always reporting2922070 after that leaf closes.
+
+No earlier GREEN case, old case, native target or game operation ran. This
+qualifies the bounded pure chain and six-skill projection as **static-ready**.
+It does not qualify the native2922070 collector, the full tail, full person
+preparation, full Entry or live execution. The next source/input connection is
+the actual conference24B1D00 stage at291C548; its native owner is preparing the
+separate source ledger and optional leaf.
