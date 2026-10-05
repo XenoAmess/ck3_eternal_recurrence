@@ -461,6 +461,7 @@ def continue_person_stage_chain_tail_12003(
     provider192_module = "battle_person_provider192_and2920850_contract"
     following_module = "battle_person_following_2920b50_contract"
     classifier_module = "battle_person_following_2bca620_contract"
+    government_land_module = "battle_person_following_312a950_contract"
     stages = (
         ("2753860", "post2753860_pre291C4D2", prefix_module,
          "emit_helper_2753860_requests_from_current_source_inputs_12003", None),
@@ -494,6 +495,8 @@ def continue_person_stage_chain_tail_12003(
          "emit_following_2920b50_requests_from_current_source_inputs_12003", None),
         ("following_2bca620", "post2BCA620_pre291CCD7", classifier_module,
          "emit_following_2bca620_requests_from_current_source_inputs_12003", None),
+        ("following_government_land_312a950", "postGovernmentLand312A950_pre291CD92", government_land_module,
+         "emit_following_312a950_requests_from_current_source_inputs_12003", None),
         ("remaining_later_preparation", "remaining_caller_unclosed", None, None, None),
     )
     names = tuple(item[0] for item in stages)
@@ -550,6 +553,7 @@ def continue_person_stage_chain_tail_12003(
         following_family_ledger = []
         following_frontier = None
         classifier_detail = None
+        government_land_detail = None
         qualifier_definition_ledger = []
         list_row_ledger = []
         try:
@@ -645,6 +649,20 @@ def continue_person_stage_chain_tail_12003(
                         reason = input_value.get("reason") if isinstance(input_value, Mapping) else None
                         if reason:
                             missing.append(input_name + ":" + reason)
+        if name == "following_government_land_312a950" and source_inputs is not None:
+            leaf = source_inputs.get(name)
+            if isinstance(leaf, Mapping) and leaf.get("character_id") == previous.character_full_id:
+                government_land_detail = {key: deepcopy(leaf.get(key)) for key in (
+                    "stage_selection", "government_source", "character_state_present",
+                    "first_land_source", "land_resolution", "mode3_classifier")}
+                provider = leaf.get("provider_selection")
+                government_land_detail["provider_selection"] = (None if not isinstance(provider, Mapping)
+                    else deepcopy({key: value for key, value in provider.items() if key != "pc"}))
+                if not ready:
+                    for input_name, input_value in government_land_detail.items():
+                        reason = input_value.get("reason") if isinstance(input_value, Mapping) else None
+                        if reason:
+                            missing.append(input_name + ":" + reason)
         validated = []
         for request_index, request in enumerate(requests):
             request_gaps = []
@@ -711,6 +729,7 @@ def continue_person_stage_chain_tail_12003(
             "provider192_family_stages": tuple(provider192_family_ledger),
             "following_2920b50_family_stages": tuple(following_family_ledger),
             "following_2bca620_observation": classifier_detail,
+            "following_312a950_observation": government_land_detail,
             "qualifier_definition_stages": tuple(qualifier_definition_ledger),
             "list_predicate_row_stages": tuple(list_row_ledger)})
         if required:
@@ -724,8 +743,8 @@ def continue_person_stage_chain_tail_12003(
         "future_tail_missing_inputs": tuple(future_missing),
         "first_contiguous_observation_dependency": next(
             (row["stage"] for row in ledger_rows if not row["requests_ready"]), None),
-        "next_native_source_leaf": "291CCD7_bit29_land_source_312A950", "all_tail_source_stream_ready": False,
-        "next_native_source_leaf_status": "source_research_pending",
+        "next_native_source_leaf": "291CD98_2920D60", "all_tail_source_stream_ready": False,
+        "next_native_source_leaf_status": "source_closed_minimum_contract_pending",
         "provider_291c5b2_operand_scope": "held_current_character_1b0_2f8",
         "provider_291c5b2_return_edges": "all selection branches rejoin291C5B7",
         "qualifier_28bc0d0_operand_scope": "held_current_character_1b0_scratch_object_relationships",
@@ -749,6 +768,9 @@ def continue_person_stage_chain_tail_12003(
         "following_2bca620_operand_scope": "held_current_mode0_balance_and_actual_selected_provider_PC",
         "following_2bca620_negative_balance_implemented": False,
         "following_2bca620_cached_income_substituted": False,
+        "following_312a950_operand_scope": "held_current_government_bit29_and_living_first_first_Land",
+        "following_312a950_negative_mode3_income_implemented": False,
+        "following_312a950_gold_income_substituted": False,
         "source_operand_scope": "held_current_same_query_inputs",
         "conditional_on_observed_source_values": True,
         "291f260_weight_source_scope": "held_current_evaluated_values",

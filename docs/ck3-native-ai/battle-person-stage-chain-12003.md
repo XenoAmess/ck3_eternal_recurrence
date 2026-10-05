@@ -1188,3 +1188,47 @@ planned. External `FOLLOWING312A950-CHAIN-SOURCE-PLAN.json` pins the source
 and input order. This research increment leaves qualified preCCD7 readiness
 unchanged and runs no case/build/game action. Full preparation/Entry remains
 false.
+
+## Genuine government/first-Land known-zero stage connected
+
+Source3dd7656c and final schema d18d76ed precede genuine producer/shared
+normalizer `a08dae8791e017bb426f8ee40650f187a265a255`. This consumer uses
+its actual whole emitter through
+`through_stage="following_government_land_312a950"`. Available known-zero
+selection advances to `postGovernmentLand312A950_pre291CD92` without a
+source request or weighted row. The ledger retains stage selection, selected
+government, first-Land resolution and any demanded mode3/provider metadata.
+Missing groups preserve their actual reason and the last verified context.
+
+```mermaid
+flowchart TD
+  A[Verified post2BCA620_pre291CCD7 context] --> G[Actual government flags40 bit29]
+  G -->|false| Z[Actual known-zero emitter]
+  G -->|true| C{Actual Character1B0 present?}
+  C -->|false| Z
+  C -->|true| L[Living-first first-Land ID and exact resolution]
+  L -->|invalid Land or nonnegative balance318| Z
+  L -. resolution unavailable .-> U[Retain preCCD7 and actual missing reason]
+  L -->|negative valid Land| I[Actual mode3 provider presence retained]
+  I -. actual2BCA580 income unobserved .-> U
+  Z --> F[postGovernmentLand312A950_pre291CD92]
+  F -. next bounded contract pending .-> N[2920D60 at291CD98]
+```
+
+The single new production-normalizer -> chain -> six-skill case
+`test_battle_person_government_land_stage_chain_12003.py` is GREEN on its
+first execution at2026-10-06 05:46:10CST (1/1,0.074s), external
+`following312a950-attempt-01.json`. Its held frame selects living government
+and living first-Land consistently with the preceding source frame. Valid
+nonnegative Land, false government bit and invalid Land all advance to the
+new bounded stage while preserving aggregate8707450/weighted74 and skills
+`[6,6,6,6,6,93]`. Land registry failure and negative valid Land stop at
+preCCD7 with those same independently projectable values. The negative path
+retains actual loaded provider and precise `mode3_income_2bca580`; gold
+income is not substituted. Inputs and explicit2Q prior remain unchanged.
+
+This is static-ready conditional pure assembly, not a fresh rebuild or full
+person/Entry result. The tuple/result API is unchanged. No prior/sibling case,
+native test/build, binary read or game action ran. Native producer qualification
+remains separate. Next minimum input work is the already sealed2920D60
+selection/rule43/produced-vector seam; it is not inferred empty.
