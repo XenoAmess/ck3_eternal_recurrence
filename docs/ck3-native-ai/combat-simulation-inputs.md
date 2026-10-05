@@ -2069,3 +2069,11 @@ Evidence/compile handoff:
 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round03/battle-terrain/ROOT-DELIVERY.json`.
 No CK3 launch, attach, query, UI, Steam interaction, stop or new paused sample
 occurred. New normal/saved days and live credit are zero.
+
+## 实际战场geography后台整合验收（2026-10-05T19:48:26+08:00）
+
+Root集中离线验收已于2026-10-05完成，整合源码 `4733655173e65be99c9ffaafbe2d9275940df4d6`。`xar_ck3_bridge` 与五个新增focused native目标在Release、`/WX`、jobs4、低优先级下编译GREEN；五项CTest一次5/5 GREEN。外置 [构建与测试冻结](Z:/ck3_mod_rewrite_process_assets/g2-background-20261005/OFFLINE-FREEZE.json) 保留原始attempt/测试/producer pins。两次真实RED分别为occurrence缺少快照比较与geography fixture缺少phase-character链接，已最小修复；旧attempt不覆盖。
+
+本次是默认配置的离线bridge/fixture资格，G2 capability flags未从v73运行配置采用，宗教private query仍OFF；不是可直接部署的v74，也未进行runtime prepare/stage/attach。未来实机须采用实际所需flags并另冻候选。用户独占CK3期间game/SDK/attach/query/pipe/UI/Steam/profile操作均0；没有新paused artifact、live资格或游戏日。
+
+`xar_ck3_12003_actual_battle_geography` 通过后，三份production序列化原字节通过Root exact源码的Python normalizer与GameplayBridgeService一次3/3 GREEN：foreign合法width0/kind0/holdingfalse，terrain unavailable但lifecycle ready，以及owned signed width−123456/kind2/holdingtrue与transition顶层镜像。回执 [compiled-consumer replay](Z:/ck3_mod_rewrite_process_assets/g2-background-20261005/battle-terrain-consumer-replay/ROOT-DELIVERY.json) 保留producer SHA与脚本。Root接入production control serializer、fixture宏和现成phase_character.cpp，解决真实未接线/链接问题，未扩查询权限。当前geography observer及consumer为static-ready；retained字段依旧只描述当前combat，不补未来constructor provenance、完整战斗模拟或win odds。

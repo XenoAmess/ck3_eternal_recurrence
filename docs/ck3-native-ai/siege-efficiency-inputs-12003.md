@@ -425,3 +425,11 @@ flowchart LR
 
 - 新增 Python 定向验证仅运行一次：`tests/unit/test_siege_membership_contract.py` 的 **3 tests GREEN**，覆盖 ordinary objective、province-local-siege 与 rich occupation 三条 normalizer 消费路径，以及 legacy key 缺席、null/empty/false、重复成员和 slot 0。外置回执 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/siege-engine-arrival/IMPLEMENTED-PYTHON-TEST-RESULT.json`。
 - 新 native target `xar_ck3_12003_siege_membership_test` 已提供生产 Province reader 与 occupation serializer 的 owned-memory fixture，包含独立军、AL 非 1 的 true、原生 false、raw 条件排除、重复 occurrences、qualified 空列表及不可读军团；由 Root 统一编译运行，本 lane 没有编译或执行。**当前为 implemented research，Python 合同已验证；native static-ready/fixture-live/production-live 尚未授予**。未来获准实机后仍须以 fresh 同帧成员和 K/M/D 实读确认器械到场及实际贡献，历史 470/3711 实证资格不改写。
+
+## 后台整合后的成员观测资格（2026-10-05T19:48:26+08:00）
+
+Root集中离线验收已于2026-10-05完成，整合源码 `4733655173e65be99c9ffaafbe2d9275940df4d6`。`xar_ck3_bridge` 与五个新增focused native目标在Release、`/WX`、jobs4、低优先级下编译GREEN；五项CTest一次5/5 GREEN。外置 [构建与测试冻结](Z:/ck3_mod_rewrite_process_assets/g2-background-20261005/OFFLINE-FREEZE.json) 保留原始attempt/测试/producer pins。两次真实RED分别为occurrence缺少快照比较与geography fixture缺少phase-character链接，已最小修复；旧attempt不覆盖。
+
+本次是默认配置的离线bridge/fixture资格，G2 capability flags未从v73运行配置采用，宗教private query仍OFF；不是可直接部署的v74，也未进行runtime prepare/stage/attach。未来实机须采用实际所需flags并另冻候选。用户独占CK3期间game/SDK/attach/query/pipe/UI/Steam/profile操作均0；没有新paused artifact、live资格或游戏日。
+
+`xar_ck3_12003_siege_membership_test` 已真实编译并一次GREEN，生产Province reader与occupation serializer保留独立军、generation/fullref、原生资格与stored duplicates；先前lane的3条Python消费测试不重跑。Root为新增occurrence DTO补default equality，使真实Snapshot向量比较可编译，未改变资格或成员语义。当前成员身份observer升为static-ready；实际器械到场、同帧K/M/D贡献及arrival resident-list writer仍按原边界待验，不能按库存或merge证明参围。

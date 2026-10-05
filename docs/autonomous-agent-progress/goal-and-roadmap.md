@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体：终极目标、当前能力与完整路线图
 
+## 后台接手已完成八包离线交付（2026-10-05T19:48:26+08:00）
+
+用户当前自行使用CK3，本轮游戏/SDK/attach/query/UI/Steam操作0、新自动游戏日0。八包已接入生产路径并完成一次相称验证：完整路线ETA、实际参围成员、补员/损耗数值consumer、pre1640接战输入、当前战场geography、盟友拒绝diagnostics、普通holy hire。生产bridge及五native目标编译、5/5CTest与必要compiled-byte consumer均GREEN，资格为有限static-ready；final setter/post-A/B新增source研究已入canonical，完整loss/Entry/forecast仍partial。两处真实编译RED及最小修复保全。
+
+详细源码/结果/回执与未完成项见 [后台接手施工](../handover/2026-10-05-g2-background-successor.md)。默认离线构建没有采用v73运行flags、没有deploy；下次实机须另冻正确配置并重新读真实状态。日账保持5035/36524、resume1882、Oct5+377、G2 5/8、NW2 2/4、自然0，最新自动存档h9052/raw53265168。3711攻占、War117结算和长期战役未完成；旧恢复游戏授权仅代表历史。
+
 ## 2026-10-05T02:11:29+08:00 Oct5滚动：R35 plan恢复，4672日未增
 
 当前4672/36524、恢复1519、Oct5+14、Oct4冻结633，G2 5/8、NW2/4、自然0，零新日。R35/PID110044/managed21223、native+Py g67冻结091bb268aae3e533daeb853c1f8f34aa736ca62a已实际cold GREEN；锁normalh7811/raw53256456/96643154B/SHA `be877d06ebff37a7fd10fe612aa986eb28d526121e602679a9a98b13402ce980`/env3866。all4strict64 GREEN77.133568s、exactCI37221568910 SUCCESS只属构建/静态资格。SDK30243 closed exit1，原4Sway/plan011/army013 GREEN，plan恢复production-live primitive；015 death配方遗漏两个必需可空参数为Harness RED，未调用native，非capability RED。army GREEN不替代新FULLDATA/E字段资格，sole decode仍待；combined source已编译部署，不自动授specific leaf live。历史R34/g66 bef2的14 whole/calendar/bounded保存日/336h、wholeh7805及failed15后h7807保存保留；failed15 typed-query错误0h/无lifeadvance、根因仍未查明，Python b2e4fe4e错误后缀分支未触发，不授诊断修复live。R34@h7763/raw53256120 health恢复/clock3rows/rawrecall仅该历史query primitive，不回填末帧null；472 work24615916/40000000/ETA102尚未占领/未攻占。P0继续普通战争OODA和实际保存，按sole解码/真实paused观测补齐必要字段；测试不替代游玩。

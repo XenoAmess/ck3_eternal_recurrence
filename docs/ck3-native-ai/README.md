@@ -1,5 +1,11 @@
 # CK3 原生 AI 决策树索引
 
+## 后台接手已完成八包离线交付（2026-10-05T19:48:26+08:00）
+
+用户当前自行使用CK3，本轮游戏/SDK/attach/query/UI/Steam操作0、新自动游戏日0。八包已接入生产路径并完成一次相称验证：完整路线ETA、实际参围成员、补员/损耗数值consumer、pre1640接战输入、当前战场geography、盟友拒绝diagnostics、普通holy hire。生产bridge及五native目标编译、5/5CTest与必要compiled-byte consumer均GREEN，资格为有限static-ready；final setter/post-A/B新增source研究已入canonical，完整loss/Entry/forecast仍partial。两处真实编译RED及最小修复保全。
+
+详细源码/结果/回执与未完成项见 [后台接手施工](../handover/2026-10-05-g2-background-successor.md)。默认离线构建没有采用v73运行flags、没有deploy；下次实机须另冻正确配置并重新读真实状态。日账保持5035/36524、resume1882、Oct5+377、G2 5/8、NW2 2/4、自然0，最新自动存档h9052/raw53265168。3711攻占、War117结算和长期战役未完成；旧恢复游戏授权仅代表历史。
+
 - [角色技能 trigger 与属性转移读回（1.20.0.3，2026-10-04）](character-skill-trigger-readback-1.20.0.3-2026-10-04.md)：六项普通 getter 的 RTTI／RVA／总技能缓存偏移与 RHS 解析边界；离线研究，基础值上下限及 effect 后缓存刷新仍待对应实机。
 
 ## 2026-10-04：新增战斗源码专题入口

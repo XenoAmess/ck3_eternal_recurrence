@@ -1,5 +1,11 @@
 # CK3 自动游玩智能体进度中心
 
+## 后台接手已完成八包离线交付（2026-10-05T19:48:26+08:00）
+
+用户当前自行使用CK3，本轮游戏/SDK/attach/query/UI/Steam操作0、新自动游戏日0。八包已接入生产路径并完成一次相称验证：完整路线ETA、实际参围成员、补员/损耗数值consumer、pre1640接战输入、当前战场geography、盟友拒绝diagnostics、普通holy hire。生产bridge及五native目标编译、5/5CTest与必要compiled-byte consumer均GREEN，资格为有限static-ready；final setter/post-A/B新增source研究已入canonical，完整loss/Entry/forecast仍partial。两处真实编译RED及最小修复保全。
+
+详细源码/结果/回执与未完成项见 [后台接手施工](../handover/2026-10-05-g2-background-successor.md)。默认离线构建没有采用v73运行flags、没有deploy；下次实机须另冻正确配置并重新读真实状态。日账保持5035/36524、resume1882、Oct5+377、G2 5/8、NW2 2/4、自然0，最新自动存档h9052/raw53265168。3711攻占、War117结算和长期战役未完成；旧恢复游戏授权仅代表历史。
+
 ## 2026-10-05 后台接手：用户使用 CK3，八条离线实现并行
 
 接手用户明确要求暂不启动 CK3，仅做后台工作；当前游戏及界面由用户使用。已从最新 master 建立独立工作树，八条 owner 接入 v73 交接候选，Root 集中离线验证和 Git 交付。源码/静态资格与未来实机资格分开记账，5035 正常保存日和 h9052 冻结不变，新增自动游戏日 0。当前范围、验收与结果见 [后台接手施工](../handover/2026-10-05-g2-background-successor.md)。下方 18:41 允许恢复游戏的指令保留为历史。
