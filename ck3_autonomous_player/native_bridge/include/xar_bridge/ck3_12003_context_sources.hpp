@@ -38,6 +38,10 @@ struct ContextSourceBindingsV1 {
   const void *pre_291e210_second_storage_slot = nullptr;
   const void *pre_291e210_second_fallback_slot = nullptr;
   void *(*provider)() = nullptr;
+  bool post_291d7e0_sources_enabled = false;
+  const void *post_ab_object_fallback_slot = nullptr;
+  const void *post_ab_signed_character_threshold_slot = nullptr;
+  const void *post_ab_static_inline_source_list_header = nullptr;
   const void *lifestyle_fallback_header = nullptr;
   const void *house_extra_fallback_header = nullptr;
   const void *first_storage_slot = nullptr;

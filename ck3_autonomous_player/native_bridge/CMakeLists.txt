@@ -7781,6 +7781,22 @@ if(BUILD_TESTING)
     COMMAND xar_ck3_12003_pre_291e210_1640_test)
 endif()
 
+if(BUILD_TESTING)
+  add_executable(xar_ck3_12003_post_291d7e0_sources_test
+    src/ck3_12003_context_sources.cpp
+    tests/post_291d7e0_sources_12003_test.cpp)
+  target_include_directories(xar_ck3_12003_post_291d7e0_sources_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_post_291d7e0_sources_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_post_291d7e0_sources_test PRIVATE NOMINMAX)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_post_291d7e0_sources_test PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_12003_post_291d7e0_sources_test
+    COMMAND xar_ck3_12003_post_291d7e0_sources_test
+      "${CMAKE_BINARY_DIR}/post_291d7e0_sources_wire.json")
+endif()
+
 
 # Selected-unit total rates: new focused production reader/serializer/MCP cases.
 if(BUILD_TESTING AND WIN32)

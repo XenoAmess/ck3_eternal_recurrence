@@ -172,6 +172,149 @@ game::ContextSourcePre291e2101640V1 Pre291e2101640(
   return out;
 }
 
+template <typename T> T PostReady(T out) {
+  out.ready = true;
+  out.status = "available";
+  return out;
+}
+template <typename T> T PostPartial(T out, const char *reason) {
+  out.status = "partial";
+  out.unavailable_reason = reason;
+  return out;
+}
+
+game::ContextSourcePostGuarded630V1 PostGuarded630(
+    const ContextSourceBindingsV1 &b, const void *character) {
+  game::ContextSourcePostGuarded630V1 out{};
+  const auto carrier = Read<const void *>(b, character, 0x1B0);
+  if (!carrier) return PostPartial(out, "carrier_1b0_read_unavailable");
+  out.carrier_1b0_present = *carrier != nullptr;
+  const void *selected = nullptr;
+  if (*carrier) {
+    const auto carrier280 = Read<const void *>(b, *carrier, 0x280);
+    if (!carrier280) return PostPartial(out, "carrier280_read_unavailable");
+    out.carrier280_present = *carrier280 != nullptr;
+    if (*carrier280) {
+      out.selection = "carrier280_qword8";
+      const auto object = Read<const void *>(b, *carrier280, 8);
+      if (!object) return PostPartial(out, "carrier280_selected_object_read_unavailable");
+      selected = *object;
+    }
+  }
+  if (!*carrier || out.carrier280_present == false) {
+    out.selection = "native_fallback5D1E308";
+    const auto fallback = Read<const void *>(b, b.post_ab_object_fallback_slot);
+    if (!fallback) return PostPartial(out, "guarded630_fallback_read_unavailable");
+    selected = *fallback;
+  }
+  // A null selected object is a demanded read failure, never a skipped guard.
+  out.selected_field38_raw = Read<std::int32_t>(b, selected, 0x38);
+  if (!out.selected_field38_raw)
+    return PostPartial(out, "selected_field38_read_unavailable");
+  if (*out.selected_field38_raw != 0x4744624F) {
+    out.admitted = false;
+    return PostReady(out);
+  }
+  out.character68_signed = Read<std::int16_t>(b, character, 0x68);
+  if (!out.character68_signed) return PostPartial(out, "character68_read_unavailable");
+  out.threshold_signed = Read<std::int32_t>(b, b.post_ab_signed_character_threshold_slot);
+  if (!out.threshold_signed) return PostPartial(out, "threshold_read_unavailable");
+  out.admitted = static_cast<std::int32_t>(*out.character68_signed) >= *out.threshold_signed;
+  if (!*out.admitted) return PostReady(out);
+  out.property_block = Properties(b, Offset(selected, 0x630));
+  if (!PropertiesReady(*out.property_block))
+    return PostPartial(out, "guarded630_consumed_properties_unavailable");
+  return PostReady(out);
+}
+
+game::ContextSourcePostCarrier40V1 PostCarrier40(
+    const ContextSourceBindingsV1 &b, const void *character) {
+  game::ContextSourcePostCarrier40V1 out{};
+  // This family has its own current carrier observation. No preceding writer
+  // is executed, and no changed-stage identity is inferred from this query.
+  const auto carrier = Read<const void *>(b, character, 0x1B0);
+  if (!carrier) return PostPartial(out, "carrier_1b0_read_unavailable");
+  out.carrier_1b0_present = *carrier != nullptr;
+  if (!*carrier) {
+    out.admitted = false;
+    return PostReady(out);
+  }
+  const auto carrier288 = Read<const void *>(b, *carrier, 0x288);
+  if (!carrier288) return PostPartial(out, "carrier288_read_unavailable");
+  out.carrier288_present = *carrier288 != nullptr;
+  out.admitted = *carrier288 != nullptr;
+  if (!*out.admitted) return PostReady(out);
+  const auto selected = Read<const void *>(b, *carrier288, 0x18);
+  if (!selected) return PostPartial(out, "carrier288_selected_object_read_unavailable");
+  out.property_block = Properties(b, Offset(*selected, 0x40));
+  if (!PropertiesReady(*out.property_block))
+    return PostPartial(out, "carrier40_consumed_properties_unavailable");
+  return PostReady(out);
+}
+
+game::ContextSourcePostOrderedD8V1 PostOrderedD8(
+    const ContextSourceBindingsV1 &b, const void *character) {
+  game::ContextSourcePostOrderedD8V1 out{};
+  const auto carrier = Read<const void *>(b, character, 0x1C0);
+  if (!carrier) return PostPartial(out, "carrier_1c0_read_unavailable");
+  out.carrier_1c0_present = *carrier != nullptr;
+  out.header_selection = *carrier ? "carrier_1c0_plus200" : "inline_static54E7270";
+  const void *header = *carrier ? Offset(*carrier, 0x200)
+                               : b.post_ab_static_inline_source_list_header;
+  // 28B6200 selects an INLINE header, not a pointer stored in the static slot.
+  // Native caller reads pointer0 before countC, including on an empty list.
+  const auto data = Read<const void *>(b, header);
+  if (!data) return PostPartial(out, "ordered_d8_array_pointer_read_unavailable");
+  out.source_array_present = *data != nullptr;
+  out.source_count_raw = Read<std::int32_t>(b, header, 0xC);
+  if (!out.source_count_raw) return PostPartial(out, "ordered_d8_count_read_unavailable");
+  if (*out.source_count_raw < 0) return PostPartial(out, "ordered_d8_negative_count");
+  if (*out.source_count_raw == 0) {
+    out.occurrences.emplace();
+    return PostReady(out);
+  }
+  if (!*data) return PostPartial(out, "ordered_d8_native_array_null");
+  out.occurrences.emplace();
+  std::vector<const void *> identities;
+  bool complete = true;
+  for (std::int32_t i = 0; i < *out.source_count_raw; ++i) {
+    game::ContextSourcePostD8OccurrenceV1 row{};
+    row.source_index = i;
+    const auto source = Read<const void *>(b, *data, static_cast<std::size_t>(i) * 8);
+    if (!source || !*source) {
+      row.unavailable_reason = source ? "ordered_d8_native_source_null"
+                                      : "ordered_d8_source_pointer_read_unavailable";
+      complete = false;
+    } else {
+      auto found = std::find(identities.begin(), identities.end(), *source);
+      if (found == identities.end()) {
+        identities.push_back(*source);
+        found = identities.end() - 1;
+      }
+      row.source_identity = "post" + std::to_string(found - identities.begin());
+      row.property_block = Properties(b, Offset(*source, 0xD8));
+      if (!PropertiesReady(*row.property_block)) {
+        row.unavailable_reason = "ordered_d8_consumed_properties_unavailable";
+        complete = false;
+      }
+    }
+    out.occurrences->push_back(std::move(row));
+  }
+  return complete ? PostReady(out) : PostPartial(out, "ordered_d8_occurrences_partial");
+}
+
+game::ContextSourcePost291d7e0V1 Post291d7e0(
+    const ContextSourceBindingsV1 &b, const void *character,
+    std::int32_t character_id) {
+  game::ContextSourcePost291d7e0V1 out{};
+  out.character_id = character_id;
+  out.guarded630 = PostGuarded630(b, character);
+  out.carrier40 = PostCarrier40(b, character);
+  out.ordered_d8 = PostOrderedD8(b, character);
+  return out.guarded630.ready && out.carrier40.ready && out.ordered_d8.ready
+      ? PostReady(out) : PostPartial(out, "post_291d7e0_sources_partial");
+}
+
 struct Resolved {
   game::ContextSourceResolutionV1 observation;
   const void *object = nullptr;
@@ -1009,6 +1152,10 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   b.pre_291e210_second_storage_slot = reinterpret_cast<const void *>(base + 0x5D1E380);
   b.pre_291e210_second_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E378);
   b.provider = reinterpret_cast<void *(*)()>(base + 0x8FD4E0);
+  b.post_291d7e0_sources_enabled = true;
+  b.post_ab_object_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E308);
+  b.post_ab_signed_character_threshold_slot = reinterpret_cast<const void *>(base + 0x5C6A19C);
+  b.post_ab_static_inline_source_list_header = reinterpret_cast<const void *>(base + 0x54E7270);
   b.lifestyle_fallback_header = reinterpret_cast<const void *>(base + 0x54E7288);
   b.house_extra_fallback_header = reinterpret_cast<const void *>(base + 0x54E56B0);
   b.first_storage_slot = reinterpret_cast<const void *>(base + 0x5D1DAF0);
@@ -1051,9 +1198,13 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.pre_291e210_1640 = Pre291e2101640(b, character, character_id);
   out.branch_291e210 = BranchA(b, character);
   out.branch_291d7e0 = BranchB(b, character);
+  if (b.post_291d7e0_sources_enabled)
+    out.post_291d7e0_sources = Post291d7e0(b, character, character_id);
   out.ready = out.branch_291e210->ready && out.branch_291d7e0->ready;
   if (out.pre_291e210_1640)
     out.ready = out.ready && out.pre_291e210_1640->ready;
+  if (out.post_291d7e0_sources)
+    out.ready = out.ready && out.post_291d7e0_sources->ready;
   out.status = out.ready ? "available" : "partial";
   if (!out.ready) out.reason = "context_source_reads_unavailable";
   return out;

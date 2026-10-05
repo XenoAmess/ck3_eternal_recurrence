@@ -359,6 +359,90 @@ inline void Branch291d7e0(std::string &out,
 
 }  // namespace battle_context_source_inputs_v1_detail
 
+namespace battle_context_source_inputs_v1_detail {
+template <typename T>
+inline void PostAvailability(std::string &out, const T &p) {
+  out += "{\"status\":";
+  String(out, p.status);
+  out += ",\"ready\":";
+  out += p.ready ? "true" : "false";
+}
+inline void PostGuarded630(std::string &out, const game::ContextSourcePostGuarded630V1 &p) {
+  PostAvailability(out, p);
+  out += ",\"carrier_1b0_present\":";
+  Boolean(out, p.carrier_1b0_present);
+  out += ",\"carrier280_present\":";
+  Boolean(out, p.carrier280_present);
+  out += ",\"selection\":";
+  Identity(out, p.selection);
+  out += ",\"selected_field38_raw\":";
+  Number(out, p.selected_field38_raw);
+  out += ",\"character68_signed\":";
+  Number(out, p.character68_signed);
+  out += ",\"threshold_signed\":";
+  Number(out, p.threshold_signed);
+  out += ",\"admitted\":";
+  Boolean(out, p.admitted);
+  out += ",\"property_block\":";
+  Properties(out, p.property_block);
+  out += ",\"unavailable_reason\":";
+  Reason(out, p.unavailable_reason);
+  out += '}';
+}
+inline void PostCarrier40(std::string &out, const game::ContextSourcePostCarrier40V1 &p) {
+  PostAvailability(out, p);
+  out += ",\"carrier_1b0_present\":";
+  Boolean(out, p.carrier_1b0_present);
+  out += ",\"carrier288_present\":";
+  Boolean(out, p.carrier288_present);
+  out += ",\"admitted\":";
+  Boolean(out, p.admitted);
+  out += ",\"property_block\":";
+  Properties(out, p.property_block);
+  out += ",\"unavailable_reason\":";
+  Reason(out, p.unavailable_reason);
+  out += '}';
+}
+inline void PostOrderedD8(std::string &out, const game::ContextSourcePostOrderedD8V1 &p) {
+  PostAvailability(out, p);
+  out += ",\"carrier_1c0_present\":";
+  Boolean(out, p.carrier_1c0_present);
+  out += ",\"header_selection\":";
+  Identity(out, p.header_selection);
+  out += ",\"source_array_present\":";
+  Boolean(out, p.source_array_present);
+  out += ",\"source_count_raw\":";
+  Number(out, p.source_count_raw);
+  out += ",\"occurrences\":";
+  Rows(out, p.occurrences, [](std::string &wire, const game::ContextSourcePostD8OccurrenceV1 &row) {
+    wire += "{\"source_index\":" + std::to_string(row.source_index);
+    wire += ",\"source_identity\":";
+    Identity(wire, row.source_identity);
+    wire += ",\"property_block\":";
+    Properties(wire, row.property_block);
+    wire += ",\"unavailable_reason\":";
+    Reason(wire, row.unavailable_reason);
+    wire += '}';
+  });
+  out += ",\"unavailable_reason\":";
+  Reason(out, p.unavailable_reason);
+  out += '}';
+}
+inline void Post291d7e0(std::string &out, const game::ContextSourcePost291d7e0V1 &p) {
+  PostAvailability(out, p);
+  out += ",\"character_id\":" + std::to_string(p.character_id);
+  out += ",\"guarded630\":";
+  PostGuarded630(out, p.guarded630);
+  out += ",\"carrier40\":";
+  PostCarrier40(out, p.carrier40);
+  out += ",\"ordered_d8\":";
+  PostOrderedD8(out, p.ordered_d8);
+  out += ",\"unavailable_reason\":";
+  Reason(out, p.unavailable_reason);
+  out += '}';
+}
+} // namespace battle_context_source_inputs_v1_detail
+
 // Same-frame current source operands; this is not a prepared context postimage.
 inline std::string SerializeBattleCurrentPersonContextSourceInputsV1(
     const game::BattleCurrentPersonContextSourceInputsSnapshotV1 &p) {
@@ -376,6 +460,10 @@ inline std::string SerializeBattleCurrentPersonContextSourceInputsV1(
   Branch291e210(out, p.branch_291e210);
   out += ",\"branch_291d7e0\":";
   Branch291d7e0(out, p.branch_291d7e0);
+  if (p.post_291d7e0_sources) {
+    out += ",\"post_291d7e0_sources\":";
+    Post291d7e0(out, *p.post_291d7e0_sources);
+  }
   out += ",\"reason\":";
   Reason(out, p.reason);
   out += '}';

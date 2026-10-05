@@ -474,6 +474,137 @@ def _b_consumed_ready(branch: dict[str, object]) -> bool:
     return True
 
 
+def _post_availability(raw: dict[str, object], field: str) -> tuple[str, bool, str | None]:
+    return _availability({"status": raw["status"], "ready": raw["ready"],
+                          "reason": raw["unavailable_reason"]}, field)
+
+
+def _post_guarded630(value: object, field: str) -> dict[str, object]:
+    raw = _dict(value, field, {
+        "status", "ready", "carrier_1b0_present", "carrier280_present", "selection",
+        "selected_field38_raw", "character68_signed", "threshold_signed",
+        "admitted", "property_block", "unavailable_reason",
+    })
+    status, ready, reason = _post_availability(raw, field)
+    normalized = {
+        "status": status, "ready": ready, "unavailable_reason": reason,
+        "selection": _string(raw["selection"], field + ".selection", optional=True),
+        "selected_field38_raw": _number(raw["selected_field38_raw"], field + ".selected_field38_raw", 32),
+        "character68_signed": _number(raw["character68_signed"], field + ".character68_signed", 16),
+        "threshold_signed": _number(raw["threshold_signed"], field + ".threshold_signed", 32),
+        "property_block": _properties(raw["property_block"], field + ".property_block"),
+    }
+    for key in ("carrier_1b0_present", "carrier280_present", "admitted"):
+        normalized[key] = _boolean(raw[key], field + "." + key, optional=True)
+    carrier, nested = normalized["carrier_1b0_present"], normalized["carrier280_present"]
+    expected_selection = ("native_fallback5D1E308" if carrier is False or (carrier is True and nested is False)
+                          else "carrier280_qword8" if carrier is True and nested is True else None)
+    if normalized["selection"] != expected_selection:
+        raise ValueError(field + ".selection disagrees with current pointer guards")
+    magic, signed, threshold = (normalized["selected_field38_raw"],
+                                normalized["character68_signed"], normalized["threshold_signed"])
+    admitted = None if magic is None else (False if magic != 0x4744624F else
+               signed >= threshold if signed is not None and threshold is not None else None)
+    if normalized["admitted"] != admitted:
+        raise ValueError(field + ".admitted disagrees with native magic/signed comparison")
+    if magic is not None and magic != 0x4744624F and (signed is not None or threshold is not None):
+        raise ValueError(field + " wrong magic contains undemanded signed operands")
+    if admitted is not True and normalized["property_block"] is not None:
+        raise ValueError(field + " property block requires true admission")
+    consumed = (expected_selection is not None and admitted is not None
+                and (not admitted or _properties_ready(normalized["property_block"])))
+    if ready != consumed:
+        raise ValueError(field + " availability disagrees with demanded operands")
+    return normalized
+
+
+def _post_carrier40(value: object, field: str) -> dict[str, object]:
+    raw = _dict(value, field, {
+        "status", "ready", "carrier_1b0_present", "carrier288_present",
+        "admitted", "property_block", "unavailable_reason",
+    })
+    status, ready, reason = _post_availability(raw, field)
+    normalized = {"status": status, "ready": ready, "unavailable_reason": reason,
+                  "property_block": _properties(raw["property_block"], field + ".property_block")}
+    for key in ("carrier_1b0_present", "carrier288_present", "admitted"):
+        normalized[key] = _boolean(raw[key], field + "." + key, optional=True)
+    carrier, nested = normalized["carrier_1b0_present"], normalized["carrier288_present"]
+    admitted = False if carrier is False else nested if carrier is True else None
+    if normalized["admitted"] != admitted:
+        raise ValueError(field + ".admitted disagrees with native pointer guards")
+    if carrier is False and nested is not None:
+        raise ValueError(field + " null carrier contains undemanded +288 operand")
+    if admitted is not True and normalized["property_block"] is not None:
+        raise ValueError(field + " property block requires true admission")
+    consumed = admitted is not None and (not admitted or _properties_ready(normalized["property_block"]))
+    if ready != consumed:
+        raise ValueError(field + " availability disagrees with demanded operands")
+    return normalized
+
+
+def _post_ordered_d8(value: object, field: str) -> dict[str, object]:
+    raw = _dict(value, field, {
+        "status", "ready", "carrier_1c0_present", "header_selection",
+        "source_array_present", "source_count_raw", "occurrences", "unavailable_reason",
+    })
+    status, ready, reason = _post_availability(raw, field)
+    carrier = _boolean(raw["carrier_1c0_present"], field + ".carrier_1c0_present", optional=True)
+    selected = _string(raw["header_selection"], field + ".header_selection", optional=True)
+    expected = None if carrier is None else "carrier_1c0_plus200" if carrier else "inline_static54E7270"
+    if selected != expected:
+        raise ValueError(field + ".header_selection disagrees with current carrier")
+    count = _number(raw["source_count_raw"], field + ".source_count_raw", 32)
+    array_present = _boolean(raw["source_array_present"], field + ".source_array_present", optional=True)
+    rows = raw["occurrences"]
+    if rows is not None:
+        if not isinstance(rows, list):
+            raise ValueError(field + ".occurrences must be a list or null")
+        copied = []
+        for i, row in enumerate(rows):
+            name = f"{field}.occurrences[{i}]"
+            row = _dict(row, name, {"source_index", "source_identity", "property_block", "unavailable_reason"})
+            index = _integer(row["source_index"], name + ".source_index", 32)
+            if index != i:
+                raise ValueError(name + ".source_index disagrees with stored occurrence order")
+            copied.append({
+                "source_index": index,
+                "source_identity": _string(row["source_identity"], name + ".source_identity", optional=True),
+                "property_block": _properties(row["property_block"], name + ".property_block"),
+                "unavailable_reason": _string(row["unavailable_reason"], name + ".unavailable_reason", optional=True),
+            })
+        rows = copied
+    consumed = (carrier is not None and array_present is not None
+                and count is not None and count >= 0 and rows is not None and len(rows) == count
+                and (count == 0 or array_present is True)
+                and all(row["source_identity"] is not None and _properties_ready(row["property_block"]) for row in rows))
+    if ready != consumed:
+        raise ValueError(field + " availability disagrees with stored source occurrences")
+    return {
+        "status": status, "ready": ready, "carrier_1c0_present": carrier,
+        "header_selection": selected, "source_array_present": array_present,
+        "source_count_raw": count, "occurrences": rows, "unavailable_reason": reason,
+    }
+
+
+def _post_291d7e0_sources(value: object, field: str) -> dict[str, object] | None:
+    if value is None:
+        return None
+    raw = _dict(value, field, {
+        "status", "ready", "character_id", "guarded630", "carrier40", "ordered_d8", "unavailable_reason",
+    })
+    status, ready, reason = _post_availability(raw, field)
+    normalized = {
+        "status": status, "ready": ready, "unavailable_reason": reason,
+        "character_id": _integer(raw["character_id"], field + ".character_id", 32),
+        "guarded630": _post_guarded630(raw["guarded630"], field + ".guarded630"),
+        "carrier40": _post_carrier40(raw["carrier40"], field + ".carrier40"),
+        "ordered_d8": _post_ordered_d8(raw["ordered_d8"], field + ".ordered_d8"),
+    }
+    if ready != all(normalized[key]["ready"] for key in ("guarded630", "carrier40", "ordered_d8")):
+        raise ValueError(field + " availability disagrees with independent current source leaves")
+    return normalized
+
+
 def normalize_current_context_source_inputs(
     value: object, field: str = "current_context_source_inputs",
 ) -> dict[str, object] | None:
@@ -485,6 +616,8 @@ def normalize_current_context_source_inputs(
         fields.add("branch_291d7e0")
     if isinstance(value, dict) and "pre_291e210_1640" in value:
         fields.add("pre_291e210_1640")
+    if isinstance(value, dict) and "post_291d7e0_sources" in value:
+        fields.add("post_291d7e0_sources")
     raw = _dict(value, field, fields)
     status, ready, reason = _availability(raw, field)
     normalized = {
@@ -501,6 +634,11 @@ def normalize_current_context_source_inputs(
         if pre is not None and pre["character_id"] != normalized["character_id"]:
             raise ValueError(field + ".pre_291e210_1640 character disagrees with source actor")
         normalized["pre_291e210_1640"] = pre
+    if "post_291d7e0_sources" in raw:
+        post = _post_291d7e0_sources(raw["post_291d7e0_sources"], field + ".post_291d7e0_sources")
+        if post is not None and post["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".post_291d7e0_sources character disagrees with source actor")
+        normalized["post_291d7e0_sources"] = post
     return normalized
 
 
@@ -527,6 +665,37 @@ def emit_pre_291e210_1640_requests_from_current_source_inputs_12003(
         row_count=1, definition_identity="provider1640",
         base_property_block=value["property_block"], weight_q64=100000,
     ),)
+
+
+def emit_post_291d7e0_requests_from_current_source_inputs_12003(
+    normalized_section: dict[str, object] | None,
+) -> tuple[NativeWeightedContributionRequest12003, ...]:
+    """Emit guarded630, carrier40, then every orderedD8 occurrence after B.
+
+    Empty blocks and duplicate occurrences remain separate unit requests. No
+    stage baseline, current-final append, model rebuild or Entry is inferred.
+    """
+    from ..simulation.battle_context_preparation_branch_291e210_12003 import (
+        NativeWeightedContributionRequest12003,
+    )
+
+    value = None if normalized_section is None else normalized_section.get("post_291d7e0_sources")
+    branch = _post_291d7e0_sources(value, "post_291d7e0_sources")
+    if branch is None or not branch["ready"]:
+        raise ValueError("Required native input unavailable: post_291d7e0_sources")
+    requests = []
+    for ordinal, name in ((1, "guarded630"), (2, "carrier40")):
+        if branch[name]["admitted"]:
+            requests.append(NativeWeightedContributionRequest12003(
+                ordinal, "post_291d7e0_" + name, 0, 1,
+                "post_291d7e0_" + name, value[name]["property_block"], 100000,
+            ))
+    for row in value["ordered_d8"]["occurrences"]:
+        requests.append(NativeWeightedContributionRequest12003(
+            3, "post_291d7e0_ordered_d8", row["source_index"], 1,
+            row["source_identity"], row["property_block"], 100000,
+        ))
+    return tuple(requests)
 
 
 def emit_291e210_requests_from_current_source_inputs_12003(

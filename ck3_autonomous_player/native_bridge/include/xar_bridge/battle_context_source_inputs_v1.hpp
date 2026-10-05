@@ -188,6 +188,63 @@ struct ContextSourcePre291e2101640V1 {
   friend bool operator==(const ContextSourcePre291e2101640V1 &,
                          const ContextSourcePre291e2101640V1 &) = default;
 };
+struct ContextSourcePostGuarded630V1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::optional<bool> carrier_1b0_present;
+  std::optional<bool> carrier280_present;
+  std::optional<std::string> selection;
+  std::optional<std::int32_t> selected_field38_raw;
+  std::optional<std::int16_t> character68_signed;
+  std::optional<std::int32_t> threshold_signed;
+  std::optional<bool> admitted;
+  std::optional<ContextSourcePropertiesV1> property_block;
+  std::string unavailable_reason;
+  friend bool operator==(const ContextSourcePostGuarded630V1 &,
+                         const ContextSourcePostGuarded630V1 &) = default;
+};
+struct ContextSourcePostCarrier40V1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::optional<bool> carrier_1b0_present;
+  std::optional<bool> carrier288_present;
+  std::optional<bool> admitted;
+  std::optional<ContextSourcePropertiesV1> property_block;
+  std::string unavailable_reason;
+  friend bool operator==(const ContextSourcePostCarrier40V1 &,
+                         const ContextSourcePostCarrier40V1 &) = default;
+};
+struct ContextSourcePostD8OccurrenceV1 {
+  std::int32_t source_index = 0;
+  std::optional<std::string> source_identity;
+  std::optional<ContextSourcePropertiesV1> property_block;
+  std::string unavailable_reason;
+  friend bool operator==(const ContextSourcePostD8OccurrenceV1 &,
+                         const ContextSourcePostD8OccurrenceV1 &) = default;
+};
+struct ContextSourcePostOrderedD8V1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::optional<bool> carrier_1c0_present;
+  std::optional<std::string> header_selection;
+  std::optional<bool> source_array_present;
+  std::optional<std::int32_t> source_count_raw;
+  std::optional<std::vector<ContextSourcePostD8OccurrenceV1>> occurrences;
+  std::string unavailable_reason;
+  friend bool operator==(const ContextSourcePostOrderedD8V1 &,
+                         const ContextSourcePostOrderedD8V1 &) = default;
+};
+struct ContextSourcePost291d7e0V1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::int32_t character_id = -1;
+  ContextSourcePostGuarded630V1 guarded630;
+  ContextSourcePostCarrier40V1 carrier40;
+  ContextSourcePostOrderedD8V1 ordered_d8;
+  std::string unavailable_reason;
+  friend bool operator==(const ContextSourcePost291d7e0V1 &,
+                         const ContextSourcePost291d7e0V1 &) = default;
+};
 struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
   std::string status = "unavailable";
   bool ready = false;
@@ -195,6 +252,7 @@ struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
   std::optional<ContextSourcePre291e2101640V1> pre_291e210_1640;
   std::optional<ContextSource291e210V1> branch_291e210;
   std::optional<ContextSource291d7e0V1> branch_291d7e0;
+  std::optional<ContextSourcePost291d7e0V1> post_291d7e0_sources;
   std::string reason;
   friend bool operator==(const BattleCurrentPersonContextSourceInputsSnapshotV1 &,
                          const BattleCurrentPersonContextSourceInputsSnapshotV1 &) = default;
