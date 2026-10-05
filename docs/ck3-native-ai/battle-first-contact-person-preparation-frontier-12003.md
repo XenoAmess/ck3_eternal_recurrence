@@ -763,3 +763,15 @@ attempt, not new research credit. Total fresh EXE I/O260B. Whole EXE scans/hashe
 native builds, old tests, game/process/query/SDK/pipe/UI/Steam operations:zero.
 CLI `check --plan` failed before source capture due to a wrong argument; the
 correct positional plan check passed. This harness failure remains in receipt.
+
+
+### 显式人物阶段基线与前缀连接交付
+
+实际采用时间：2026-10-05T22:28:23+08:00。source e68ef8922a535ea188d80654e0f09a309755c295→Root497319d0已合入，source账本/Mermaid先封存并同步frontier。既有materialized prefix保留completed-empty-reset API，新增明确post_291C010_pre_prefix logical baseline；支持weighted0但aggregate非空的实际保留分支，依原生base/common/actual-selected→291D1D0 selected/groups顺序复用共享fold，返回pre291C204和post291D1D0/pre291C209两个有界context。必要23033BC空目标非unit-Q scale已闭合；firstcopy重复keys/FFFF与nonempty merge的FFFF skip分开。不自动将current-final当historical prior或声称cleanup实际执行。
+
+唯一新增production normalizer→assembler→既有six-skill kernel integration一次1/1 GREEN，结果保留aggregate为[9,6,6,6,8,9]、显式新reset清空为[9,6,6,6,8,7]；首group2Q空目标、大数分解与prowess raw80006→cap120已覆盖，缺失baseline和错误current-final stage仍partial，原当前prowess8与输入不变。旧tests、native builds和游戏操作0。本包资格为有界logical stage static-ready，不是完整人物/Entry、native parity、physical allocator/storage、历史stage观测或live。
+
+交付及日周fields保存在第二批actual-entry-context/person-stage-baseline/ROOT-DELIVERY.json、OCT5-W41-FIELDS.json；focused-attempt-01/RESULT.json保留实际测试。新必要EXE code231B、一次可避免的cleanup重复读取29B按实际历史保留计成本而不给新研究信用，总260B；wrong plan CLI和Windows wildcard harness失败已保留纠正，没有capability RED。完整专题：[explicit person stage baseline](battle-person-stage-baseline-12003.md)。下一实际连接是post291D1D0→preA1640/A/D460/B/DED0/DCE0和已闭后缀，各helper输出逐stage续fold，未知与合法空分开。
+
+两条原生observer包继续施工：291F550/291F940 ordered source与monthly post-updater budget，source均已闭合并同步native专题，尚不抢记其native/consumer GREEN。前一census提交74f60838的官方CI37322176165/37322176711已SUCCESS，11个新增native tests和60份新真实fixture consumer资格仍保持，未重复运行。各包完成即普通commit/push；后台入口没有耗尽。CK3/SDK/realpipe/UI/Steam/profile/save/cache/runtime prepare/stage/deploy与新增游戏日0，游戏留给用户，历史5035/36524、G2 5/8、NW2 2/4、natural0保持；日报/周报rolling不倒填午夜收口。
+

@@ -1,5 +1,10 @@
 # CK3 自动游玩智能体进度中心
 
+## 显式人物阶段基线继续交付（2026-10-05T22:28:23+08:00）
+
+postreset logical baseline→provider prefix→291D1D0已接通，production normalizer/assembler/six-skill新integration1/1 GREEN；支持保留aggregate而不伪造current-final历史prior。native/consumer上一census资格继续复用（11newtests、60新wire），完整Entry/fullmonthly/live仍未完。两later helper和monthly预算observer正在后台施工，source已闭合。详见[阶段基线专题](../ck3-native-ai/battle-person-stage-baseline-12003.md)与[后台交接](../handover/2026-10-05-g2-background-successor.md)。新增游戏日0，CK3与现场由用户使用。
+
+
 ## 当前七组census后台交付（2026-10-05T22:06:41+08:00）
 
 当前raw Title census/model-owner关联已完成整DLL与newnative/consumer资格；第二轮11项新增原生测试通过、60份生产fixture字节消费GREEN。首个双采样fixture RED原样保留并最小修复，仅重跑此新增失败目标。人物后段helper、显式stage baseline及monthly预算三个实际依赖继续施工；完整人物/Entry/真实整月/live仍未完。详情：[后台续行交接](../handover/2026-10-05-g2-background-successor.md)。5035历史保存日、新自动游戏日0；游戏与现场继续由用户使用。

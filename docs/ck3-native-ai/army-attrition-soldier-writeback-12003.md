@@ -604,3 +604,8 @@ flowchart TD
   O -. pending provider .-> M
   V[Actual poststage / fullmonthly live] -. unobserved .-> W
 ```
+
+
+### A0 large-product implementation distinction
+
+The sealed24E5103..5139 source divides MAX(base,multiplier) by100000 and multiplies the remainder byMIN. The trait-context helper divides the other operand. Sharing the Q unit does not make the two overflow models identical; the monthly budget kernel implements its own source-defined MAX/MIN sequence. No existing trait helper is changed or retested. This implementation correction uses already captured A0 source, without new EXE reads or a modifier-tree audit.
