@@ -52,6 +52,21 @@ class EntrySixStatCache12003:
 
 
 @dataclass(frozen=True, slots=True)
+class InitialEntryStatResult12003:
+    native_carmy_id: int | None
+    regiment_id: int | None
+    initialization_province_id: int | None
+    requested_target_province_id: int
+    stat_cache: EntrySixStatCache12003 | None
+    ready: bool
+    missing_inputs: tuple[str, ...]
+    ledger: Mapping[str, object]
+    native_write_performed: bool = False
+    full_initialization_ready: bool = False
+    actual_game_days_advanced: int = 0
+
+
+@dataclass(frozen=True, slots=True)
 class KnightStatStageInputs12003:
     linked_character_full_id: int | None
     linked_prowess_points: int | None
@@ -134,6 +149,63 @@ def _context(value):
 def _skill(points, index):
     value = points[index] if isinstance(points, (tuple, list)) and index < len(points) else None
     return native_wrap32_12003(value) if type(value) is int else None
+
+
+def initial_entry_stats_from_combat_regiment_12003(
+    army: Mapping[str, object], regiment: Mapping[str, object], *,
+    requested_target_province_id: int,
+    source_provenance: Mapping[str, object] | None = None,
+) -> InitialEntryStatResult12003:
+    """Select the existing or optional initial getter tuple at Army Province.
+
+    Equal Province reuses effective_stats and does not demand the optional
+    leaf. Unequal Province uses initialization_context_stats exclusively.
+    These are frozen-current inputs to a caller-conditioned initial stage,
+    never a post-effect final tuple or a claim of actual Army admission.
+    """
+    missing = []
+    initial_province = army.get("current_province_id")
+    if type(initial_province) is not int:
+        missing.append("army.current_province_id")
+        branch, leaf_name, raw = "missing_initial_province", None, None
+    elif initial_province == requested_target_province_id:
+        branch, leaf_name = "equal_province_existing_tuple", "effective_stats"
+        raw = regiment.get(leaf_name)
+    else:
+        branch, leaf_name = "different_province_initial_tuple", "initialization_context_stats"
+        raw = regiment.get(leaf_name)
+    raw = raw if isinstance(raw, Mapping) else {}
+    if raw.get("status") != "available":
+        missing.append((leaf_name or "initialization_context_stats") + ".available")
+    if not missing and raw.get("source_target_province_id") != initial_province:
+        missing.append(leaf_name + ".source_target_province_id")
+    if not missing and raw.get("scale") != Q_12003:
+        missing.append(leaf_name + ".scale")
+    names = ("max_size", "siege_value_raw", "damage_raw",
+             "toughness_raw", "pursuit_raw", "screen_raw")
+    values = tuple(raw.get(name) for name in names)
+    if not missing:
+        missing.extend(leaf_name + "." + name for name, value in zip(names, values)
+                       if type(value) is not int)
+    army_id, regiment_id = army.get("native_carmy_id"), regiment.get("regiment_id")
+    if type(army_id) is not int:
+        missing.append("army.native_carmy_id")
+    if type(regiment_id) is not int:
+        missing.append("regiment.regiment_id")
+    ready = not missing
+    return InitialEntryStatResult12003(
+        army_id, regiment_id, initial_province, requested_target_province_id,
+        EntrySixStatCache12003(*values) if ready else None, ready, tuple(missing),
+        {"source": "264DE30->24E0EB0->2653D20/26552C0->2657AC0",
+         "branch": branch, "selected_leaf": leaf_name,
+         "read_stage": "frozen_current_getter_inputs",
+         "model_stage": "caller_conditional_initial_entry_cache",
+         "source_initial_province_id": initial_province,
+         "requested_target_province_id": requested_target_province_id,
+         "observation": deepcopy(raw), "external_source": deepcopy(source_provenance),
+         "target_tuple_reused_for_different_province": False,
+         "posteffect_tuple_used_as_initial": False,
+         "admission_predicted": False})
 
 
 def person_stage_from_chain_projection_12003(
