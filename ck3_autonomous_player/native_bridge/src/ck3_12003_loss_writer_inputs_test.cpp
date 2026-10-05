@@ -71,7 +71,7 @@ int main() {
             "production reader publishes false admission as a knownvalue");
     Require(row.records.size() == 1 && row.records[0].chunk_army_regiment_id == kArRg &&
                 row.records[0].current_soldiers == 20 && row.records[0].maximum_soldiers == 25,
-            "complete DATA publishes its exact non−1 setter association");
+            "complete DATA publishes its exact non-1 setter association");
     xar::game::ArmyStrengthSnapshot strength{};
     strength.available = true;
     strength.regiment_replenishment_records_v1 = std::vector{row};
