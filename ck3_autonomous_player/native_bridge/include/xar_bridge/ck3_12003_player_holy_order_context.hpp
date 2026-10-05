@@ -21,6 +21,7 @@ using Cost = std::int64_t *(*)(void *, std::int64_t *, void *);
 using CanAfford = bool (*)(const std::int64_t *, void *, void *);
 using ReasonDestroy = void (*)(void *);
 using CurrentSoldiers = std::int32_t (*)(void *);
+using LifecyclePredicate = bool (*)(void *);
 
 struct Bindings {
   bool enabled = false;
@@ -35,6 +36,8 @@ struct Bindings {
   CurrentSoldiers current_soldiers = nullptr;
   // Independent religious-war subgate, not release or service persistence.
   CanHire current_war_eligibility = nullptr;
+  LifecyclePredicate release_eligible = nullptr;
+  LifecyclePredicate associated_regiment_in_combat = nullptr;
 };
 
 struct TroopStrength {
@@ -52,6 +55,15 @@ struct WarEligibility {
   std::optional<std::string> reason_literal;
 };
 
+struct ServiceLifecycle {
+  bool available = false;
+  std::string unavailable_reason = "native_service_lifecycle_binding_unavailable";
+  bool applies_to_player = false;
+  std::optional<bool> release_eligible;
+  std::optional<bool> associated_regiment_in_combat;
+  std::optional<bool> release_check_queued;
+};
+
 struct MilitaryTerms {
   bool available = false;
   std::string unavailable_reason = "not_sampled";
@@ -67,6 +79,7 @@ struct MilitaryTerms {
   // Independent from final hire/affordability availability.
   TroopStrength troop_strength;
   WarEligibility current_war_eligibility;
+  ServiceLifecycle service_lifecycle;
 };
 struct Row {
   std::uint32_t holy_order_id = UINT32_MAX;

@@ -161,6 +161,56 @@ void ReadMilitaryTerms(const Bindings &b, void *order, void *player,
       terms.can_afford_reasons_available;
   if (terms.available) terms.unavailable_reason.clear();
 }
+struct ReleaseQueue {
+  bool available = false;
+  std::vector<std::uint32_t> ids;
+};
+ReleaseQueue ReadReleaseQueue(const Bindings &b, void *registry) {
+  ReleaseQueue queue;
+  if (b.release_eligible == nullptr || b.associated_regiment_in_combat == nullptr)
+    return queue;
+  // Constructor2A86200 stores registry at manager+28 in global5D1DF10.
+  const auto *manager = reinterpret_cast<const void *>(
+      reinterpret_cast<std::uintptr_t>(registry) - 0x28);
+  const void *ids = nullptr;
+  std::int32_t count = -1;
+  if (!Read(manager, 0x24A8, ids) || !Read(manager, 0x24B4, count) ||
+      count < 0 || (count != 0 && ids == nullptr)) return queue;
+  queue.ids.reserve(static_cast<std::size_t>(count));
+  for (std::int32_t i = 0; i < count; ++i) {
+    std::uint32_t id = UINT32_MAX;
+    if (!Read(ids, static_cast<std::size_t>(i) * sizeof(id), id)) return queue;
+    queue.ids.push_back(id);
+  }
+  queue.available = true;
+  return queue;
+}
+void ReadServiceLifecycle(const Bindings &b, void *order, const Row &row,
+    std::int32_t actor, const ReleaseQueue &queue, ServiceLifecycle &service) {
+  service.applies_to_player = row.employer_id == static_cast<std::uint32_t>(actor);
+  if (!service.applies_to_player) {
+    service.available = true;
+    service.unavailable_reason.clear();
+    return;
+  }
+  if (b.release_eligible == nullptr || b.associated_regiment_in_combat == nullptr)
+    return;
+  service.unavailable_reason = "native_service_lifecycle_evaluation_unavailable";
+  bool eligible = false, combat = false;
+  if (Call(b.release_eligible, eligible, order)) service.release_eligible = eligible;
+  //261D5F0 receives the vector at order+88, not the order object itself.
+  if (Call(b.associated_regiment_in_combat, combat,
+           static_cast<void *>(static_cast<std::byte *>(order) + 0x88)))
+    service.associated_regiment_in_combat = combat;
+  if (queue.available) {
+    bool queued = false;
+    for (const auto id : queue.ids) if (id == row.holy_order_id) { queued = true; break; }
+    service.release_check_queued = queued;
+  } else service.unavailable_reason = "native_release_check_queue_unavailable";
+  service.available = service.release_eligible.has_value() &&
+      service.associated_regiment_in_combat.has_value() && service.release_check_queued.has_value();
+  if (service.available) service.unavailable_reason.clear();
+}
 void Quote(std::ostream &out, std::string_view text) {
   constexpr char hex[] = "0123456789abcdef";
   out << '"';
@@ -212,6 +262,16 @@ void TermsJson(std::ostream &out, const MilitaryTerms &terms) {
   out << ",\"qualifies\":"; Optional(out, terms.current_war_eligibility.qualifies);
   out << ",\"reasons_available\":" << terms.current_war_eligibility.reasons_available
       << ",\"reason_literal\":"; Optional(out, terms.current_war_eligibility.reason_literal);
+  const auto &service = terms.service_lifecycle;
+  out << "},\"service_lifecycle\":{\"available\":" << service.available
+      << ",\"unavailable_reason\":";
+  if (service.available) out << "null";
+  else Quote(out, service.unavailable_reason);
+  out << ",\"applies_to_player\":" << service.applies_to_player
+      << ",\"release_eligible\":"; Optional(out, service.release_eligible);
+  out << ",\"associated_regiment_in_combat\":";
+  Optional(out, service.associated_regiment_in_combat);
+  out << ",\"release_check_queued\":"; Optional(out, service.release_check_queued);
   out << "}}";
 }
 } // namespace
@@ -230,6 +290,8 @@ Bindings BindPlayerHolyOrderImage12003(std::uintptr_t base, std::string_view sha
   b.reason_destroy = reinterpret_cast<ReasonDestroy>(base + 0x856050);
   b.current_soldiers = reinterpret_cast<CurrentSoldiers>(base + 0x261AD10);
   b.current_war_eligibility = reinterpret_cast<CanHire>(base + 0x261C120);
+  b.release_eligible = reinterpret_cast<LifecyclePredicate>(base + 0x261A1D0);
+  b.associated_regiment_in_combat = reinterpret_cast<LifecyclePredicate>(base + 0x261D5F0);
   return b;
 }
 
@@ -263,6 +325,7 @@ bool ReadPlayerHolyOrderContext12003(const Bindings &b, void *player,
     return false;
   }
   try {
+    const auto release_queue = ReadReleaseQueue(b, manager);
     // +2C is a slot range bound, not an active-object count. Hole slots are
     // expected: inspect every entry and copy each real organisation once.
     for (std::int32_t i = 0; i < range_bound; ++i) {
@@ -280,6 +343,8 @@ bool ReadPlayerHolyOrderContext12003(const Bindings &b, void *player,
       if (row.is_military) {
         row.military_terms.emplace();
         ReadMilitaryTerms(b, order, player, *row.military_terms);
+        ReadServiceLifecycle(b, order, row, actor, release_queue,
+                             row.military_terms->service_lifecycle);
       }
       out.rows.push_back(std::move(row));
     }

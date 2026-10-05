@@ -1,4 +1,4 @@
-"""Read native holy-order identity, hire terms and independent current war input."""
+"""Read native holy-order hire terms, current war input and service lifecycle."""
 
 from __future__ import annotations
 
@@ -132,6 +132,26 @@ def normalize_player_holy_order_context_v1(
                     or (not sampled and literal is not None)
                     or (war["available"] and not sampled)):
                 raise ValueError("native holy-order war subgate reason is malformed")
+        if "service_lifecycle" in terms:
+            service = terms["service_lifecycle"]
+            if (not isinstance(service, Mapping)
+                    or type(service.get("available")) is not bool
+                    or type(service.get("applies_to_player")) is not bool
+                    or service["applies_to_player"] !=
+                    (row.get("employer_id") == value["played_character_id"])):
+                raise ValueError("native holy-order service lifecycle scope is malformed")
+            fields = ("release_eligible", "associated_regiment_in_combat", "release_check_queued")
+            if any(service.get(key) is not None and type(service[key]) is not bool for key in fields):
+                raise ValueError("native holy-order service lifecycle predicate is malformed")
+            if service["available"]:
+                if (service.get("unavailable_reason") is not None
+                        or (service["applies_to_player"] and
+                            any(type(service.get(key)) is not bool for key in fields))):
+                    raise ValueError("available native holy-order service lifecycle is incomplete")
+            elif not isinstance(service.get("unavailable_reason"), str) or not service["unavailable_reason"]:
+                raise ValueError("unavailable native holy-order service lifecycle lost its reason")
+            if not service["applies_to_player"] and any(service.get(key) is not None for key in fields):
+                raise ValueError("inapplicable native holy-order service lifecycle contains player predicates")
     return dict(value)
 
 
