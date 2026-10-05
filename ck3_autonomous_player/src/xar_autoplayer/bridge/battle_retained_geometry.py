@@ -167,4 +167,6 @@ def retained_constructor_geometry_fields(
             evaluate_actual_current_dynamic_advantage(inputs) if inputs is not None else None
         )
         fields["current_dynamic_advantage_v1"] = current_diagnostic
+    from .battle_current_dynamic_components_fields import current_dynamic_component_fields
+    fields.update(current_dynamic_component_fields(snapshot, diagnostic["source"], bool(exact_build and actual)))
     return fields

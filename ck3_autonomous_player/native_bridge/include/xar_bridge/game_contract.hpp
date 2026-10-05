@@ -897,6 +897,28 @@ struct BattleCurrentDynamicAdvantageV1 {
                          const BattleCurrentDynamicAdvantageV1 &) = default;
 };
 
+struct BattleCurrentDynamicComponentSideV1 {
+  std::int32_t side_index = 0;
+  std::int32_t current_roll_points = 0;
+  std::int32_t selected_character_id_raw = -1;
+  std::optional<std::int32_t> resolved_character_id_raw;
+  std::optional<bool> used_native_fallback;
+  std::string selection_unavailable_reason;
+  std::optional<std::int32_t> relation_kind_raw;
+  std::string relation_unavailable_reason;
+  std::optional<std::int64_t> commander_dynamic_raw;
+  std::string commander_unavailable_reason;
+  std::optional<std::int64_t> side_aggregate_dynamic_raw;
+  std::string side_aggregate_unavailable_reason;
+  friend bool operator==(const BattleCurrentDynamicComponentSideV1 &,
+                         const BattleCurrentDynamicComponentSideV1 &) = default;
+};
+struct BattleCurrentDynamicComponentsV1 {
+  std::array<BattleCurrentDynamicComponentSideV1, 2> sides;
+  friend bool operator==(const BattleCurrentDynamicComponentsV1 &,
+                         const BattleCurrentDynamicComponentsV1 &) = default;
+};
+
 // Current actual Combat geography; the outer battle query supplies identity and
 // frame. Retained constructor fields do not reconstruct a historical entry.
 struct BattleActualGeographyInputsV1 {
@@ -907,6 +929,7 @@ struct BattleActualGeographyInputsV1 {
   std::optional<BattleCurrentRuleContextV1> current_rule_context_v1;
   std::optional<BattleStoredAdvantageSourcesV1> stored_advantage_sources_v1;
   std::optional<BattleCurrentDynamicAdvantageV1> current_dynamic_advantage_v1;
+  std::optional<BattleCurrentDynamicComponentsV1> current_dynamic_components_v1;
 
   friend bool operator==(const BattleActualGeographyInputsV1 &,
                          const BattleActualGeographyInputsV1 &) = default;

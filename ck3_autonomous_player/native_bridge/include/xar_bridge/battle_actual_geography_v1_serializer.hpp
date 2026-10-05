@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/battle_current_dynamic_components_serializer.hpp"
 
 #include <string>
 #include <string_view>
@@ -166,6 +167,10 @@ inline std::string SerializeBattleActualGeographyV1(
       out += '}';
     }
     out += "]}";
+  }
+  if (inputs.current_dynamic_components_v1) {
+    out += ",\"current_dynamic_components_v1\":";
+    out += SerializeCurrentDynamicComponentsV1(*inputs.current_dynamic_components_v1);
   }
   out += '}';
   return out;
