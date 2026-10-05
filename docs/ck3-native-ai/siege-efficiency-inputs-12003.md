@@ -234,3 +234,24 @@ flowchart TD
 Z:/g71 / cd0acf19a68cdbc42ce20deed226e53e9e7b8c84 ???? MAA finalquote/CanCreate MCP????????????? GUI ???/receiver ????? exact .3 ?? binding?finalquote ? permission/Create ? lane ?? new span??? locator ???owner/unraised collection ? CommanderObserver?mercenary-company ?????????? owner/current type/size ? final quote ? permission ???????????????????? stock buy cost ???????
 
 ?? source/pins/????Mermaid ??? native????? `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-engine-catalog-current/` ? SOURCE-INPUT-LEDGER.json?TREE.md?stock-catalog/ROOT-DELIVERY.json?query-construction/????? research/source catalog ready???????????????????????????? SDK/??/??/?????0?Root???????????
+
+## 2026-10-05 correction: Horde command identity is not ordinary MAA permission
+
+The recruitment-domain interpretation in source-catalog commit `5c94c668` is superseded by new exact .3 RTTI evidence. Primary vtable `476A8F8` and secondary `476A8C8` resolve through TypeDescriptor `5A104E0` to `.?AVCUpgradeHordeRegimentCommand@@`. Therefore `1339020 -> 2970210`, its local kind1 input, selector `2B9D6A0` and that command's executor are the Horde-upgrade domain; the View `F4==0` branch cannot be called ordinary MAA creation from its mode value alone.
+
+The stock nine-type catalog, script culture/innovation gates, Type registry/key observations and ten-resource raw-cost ABI remain independently proved. `30BD020` remains its source-bound producer with the observed reuse condition; its quote cannot be relabelled a normal recruitment price without closing the real caller domain. Neither this validator's false result nor its fixture true result proves Robert's regular MAA permission.
+
+The proposed 13-path reader/wire package has two genuinely GREEN static projection cases but represents the wrong command domain for ordinary purchase. Root's only integration attempt failed at the adapter-header BOM patch context and made zero mutations; no observer build, SDK query or Create action was executed. Preserve those static cases and the apply-check RED rather than granting ordinary CanCreate or purchase readiness. The port must be corrected from the regular command source contract before adoption.
+
+```mermaid
+flowchart TD
+    V[MenAtArmsTypeView mode] --> H[F4 equals zero]
+    H --> U[CUpgradeHordeRegimentCommand RTTI proved]
+    U --> C[2970210 Horde validator]
+    U --> Q[Source-bound 30BD020 quote context]
+    V --> A[Alternate 296F9F0 caller chain]
+    A -. source construction in progress .-> R[Actual regular class constructor validator and final quote]
+    R -. next corrected reader .-> P[Robert ordinary permission and price paused readback unknown]
+```
+
+A/C source lanes now own the alternate constructor/class and executor/price closure. The concrete next source entry is the alternate `296F9F0` chain, followed by its real command and quote producer; no policy is designed from the wrong-domain values. Source metadata and correction receipts are retained at `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-engine-catalog-current/normal-create-action-source/` and `domain-correction/`.
