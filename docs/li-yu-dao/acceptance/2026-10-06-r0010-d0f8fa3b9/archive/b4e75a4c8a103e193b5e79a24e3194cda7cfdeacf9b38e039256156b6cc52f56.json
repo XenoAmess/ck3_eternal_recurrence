@@ -1,0 +1,317 @@
+{
+  "schema": "lyd.r10.small-addendum-source-refs.v1",
+  "previous_ledger_index": {
+    "path": "r10-incremental-evidence-ledger-through150-20261006-001/INDEX.json",
+    "bytes": 1067,
+    "sha256": "20e4434c8e1cad1789600e0fc9882a4a7fd51527d0374a4a88c33e23e2ee9230",
+    "stat_unchanged_during_read": true
+  },
+  "files": [
+    {
+      "path": "r10-actual-fifth-consumption-release-lineage-independent-review-20261006-001/INDEX.json",
+      "bytes": 411,
+      "sha256": "d9cff47fb7c4539a0ecd9a107fe1f508c3889497b725880555816fd0ce6afb60",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-fifth-consumption-release-lineage-independent-review-20261006-001/REPORT.json",
+      "bytes": 28189,
+      "sha256": "99e8a8cddda666b85824107fa968fde0c642b784598853c7ca7ae125e0985e33",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-fifth-consumption-release-lineage-independent-review-20261006-001/review_r10_actual_fifth_emit_release_lineage.py",
+      "bytes": 21881,
+      "sha256": "b900543858f7f3795a63f34779ed1da0974ba515b9c9a4e67de68d32de93e14a",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/COMPLETE-RITE-FAITH-AST-DIFF.json",
+      "bytes": 644906,
+      "sha256": "910eba9a825f056d1a5912aa281c4fcfac389e8740f46577c07f6628bd429122",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/CONTROL-EVIDENCE.json",
+      "bytes": 40458,
+      "sha256": "3db387873d8cbd59b909bac2f3eb9bef9fc9029745975c8a4eed8b34e64a0ac2",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/FINALIZER-PREWRITE-FAILURE-002.json",
+      "bytes": 477,
+      "sha256": "a55997c6a1347f02e91096ddf9640287d20bbd7bd3dd3df40752dccc7f24f01f",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/FINALIZER-PREWRITE-FAILURE.json",
+      "bytes": 646,
+      "sha256": "fade7ada019f74d6e6c660ab69c46c937e069187ce3eb0ed2e129ce24125f985",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/FINALIZER-REUSE.json",
+      "bytes": 5929,
+      "sha256": "bf8496079ec6b4d3b0113d6b84565019cd11908194d229765dce4eddae3811d7",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/INDEX.json",
+      "bytes": 7464,
+      "sha256": "a3e63dbca5853d8181d31ac94e48e008e836f79c207c216d30d3612cc2981dc0",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/INSPECTION.json",
+      "bytes": 6625,
+      "sha256": "e263ae9f77e744e26868a7334dffda4cf4198cd71d8f9547aa844a9e0e1b8eec",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/PREPARATION.json",
+      "bytes": 1956,
+      "sha256": "6d61b594e74a7bca68d90a8fdf9e72136d783c513f346fbdd68a5cefa5afd49a",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/REPORT-zh.md",
+      "bytes": 1463,
+      "sha256": "0ccd4f3e74e598aa5611157b384207825f0fcfef174992c7d1bc80e8e7bed7d2",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/REPORT.json",
+      "bytes": 6189,
+      "sha256": "1c4d9886460b9aaa15bfcdfdfd806e389cc4d3025f43d72c2007b1a0979d26ac",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/REQUEST.actual.json",
+      "bytes": 1879,
+      "sha256": "37fd8bf714cc65f1916fb50e17f11d8f34f88e809edd390148eead5069ad32f8",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/SOURCE-SEMANTICS.json",
+      "bytes": 1794,
+      "sha256": "948a518f63d945f6d7d0d5fa995fbc208ab6c54b0d76cd8ef5de7d5d3841c9d7",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/TYPED-FACTS.json",
+      "bytes": 515687,
+      "sha256": "02c83d64da99e65d0a8c54e0c1ff80c16b16f2ccba6e011e58f9d806155ef5bb",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/REPORT.json",
+      "bytes": 72873,
+      "sha256": "be6c8601275fa48031f199a6b1770f8324ae19ec8c60e8d66aa8561e11d29c61",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/STATE.json",
+      "bytes": 709520,
+      "sha256": "c994dc827ee0313f95ac524a6c94ab830828c7f12363b2fe78dc103482023ab3",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/actor-31254.excerpt.txt",
+      "bytes": 20440,
+      "sha256": "249afa34270eed1a7c7e39452611b269815130863c7be6a5235efdc82bc4314f",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/character-65865.excerpt.txt",
+      "bytes": 1961,
+      "sha256": "4be5e3f776e050d55e88792d33e3adf212d841b038e5c198ba4772078bf7fc55",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/character-65866.excerpt.txt",
+      "bytes": 2385,
+      "sha256": "1b6462e1a986bb2492e7c4c71673723690ae1f7fe576ee9a2ea800105bdf1448",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/faith-104.excerpt.txt",
+      "bytes": 4759,
+      "sha256": "27167a8e1fe7196402a0a688c45591fc898ae284092606403ad6b0269bb6df3c",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/faith-106.excerpt.txt",
+      "bytes": 4872,
+      "sha256": "d5fd14c74002bcb796635479447ca8d75e1a9edeb5fae6b4d8f978920501a493",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/faith-32.excerpt.txt",
+      "bytes": 1955,
+      "sha256": "b481404a15d4a05a7185077f44e111d55a01550b85904fe7db437c189446e9fb",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/metadata.excerpt.txt",
+      "bytes": 32457,
+      "sha256": "a397b0b42873a26824d507efa9b94d330ad85e330f52cbf02f05f8b6923dbb8b",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/played-character.excerpt.txt",
+      "bytes": 287,
+      "sha256": "f9f82598a6ef39d8a1a3c805701fdacd4cc9f442821b4cc852e4a13b30f80962",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/rite-150.excerpt.txt",
+      "bytes": 4782,
+      "sha256": "80daccc116669fe8bc4818292f79bf8e753e61ae6fdf498ea29b29fd1b9766bb",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/rite-159.excerpt.txt",
+      "bytes": 8725,
+      "sha256": "c098e4329dec0a64ee0525072cf71349ecd8fadc02587bd55f38405861e409a2",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/rite-169.excerpt.txt",
+      "bytes": 4982,
+      "sha256": "2c9550fe0bfe05ff4735c7a188990ef98d6bc3a137355160610d7be2428487b9",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/title-2230.excerpt.txt",
+      "bytes": 665,
+      "sha256": "fab3e58a2a3f55a1d76da559ec486f0eba19f0669737e1d0acb2f3fe312da261",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/title-2231.excerpt.txt",
+      "bytes": 861,
+      "sha256": "5ad0f12b726d36920948c75545dc70fdbd4934872fe452a8cd48dd53bb455fa3",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/title-2232.excerpt.txt",
+      "bytes": 274,
+      "sha256": "bc0fa0f7c13f2fe59c3dee28f3d28bdc5812a18578f1b5712b01c05940ce4823",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/title-2235.excerpt.txt",
+      "bytes": 410,
+      "sha256": "d556ea8eab1a3ba82b557cdd9ad5a9c629b91ff6dca0fb1fb19352d6c0e68f36",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/title-2262.excerpt.txt",
+      "bytes": 595,
+      "sha256": "b60ecde293edc63050a4cca64bf542ba3293538782cd40c1e2cfec90ed2a3bef",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/title-2263.excerpt.txt",
+      "bytes": 250,
+      "sha256": "3f5670f07356dbd7ec18a487c334445a7836ecf6fee3ed1a198ebf551501016f",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/actual-save-001/title-2264.excerpt.txt",
+      "bytes": 410,
+      "sha256": "4a909ce428dcb85d64c49c53d74bfb0ef6a38be59409e08b2ed31ba75bfa05f6",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/baseline-pair-diff-001/REPORT.json",
+      "bytes": 36271,
+      "sha256": "8c0baecec06c3690a29574a55743f64ae425d52d5d8fe1d3674a9940bcd5c9eb",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/collect_controls.py",
+      "bytes": 2914,
+      "sha256": "68698d7ffed18905ab9b6f51e6cb6080290612429312ef1c8df2a13c33e9eff2",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/compare_complete_rites.py",
+      "bytes": 3979,
+      "sha256": "f705d4f6bd357641edaa490d8fcb69422e4e2e72e8c62f806e569dab0e72a067",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/finalize_cancel.py",
+      "bytes": 16331,
+      "sha256": "e3cf2b4cfe759082a220dc20bf731939408bf1316fe1d82270e790922f1a0a0b",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/inspect_new.py",
+      "bytes": 1950,
+      "sha256": "2f89b0a488ed8942d7784672e28f55d3652934ede2e9bcf81bd1fcba45df71a2",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/pair-diff-001/REPORT.json",
+      "bytes": 33036,
+      "sha256": "cae5cfd7a884de50c4578d6752104d27b47b3b0f7d752cc48093ffa184d84aa1",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/prepare_finalizer.py",
+      "bytes": 7238,
+      "sha256": "492653348f1a8b6555088b4116ca38816c2a2f3cfe2ccf2264a7e0c48fa45402",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/prepare_finalizer_v2.py",
+      "bytes": 1061,
+      "sha256": "090b727e090f4985484c0c41c7263effb1d361a1a2a99a65f2022632c7622507",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/prepare_finalizer_v3.py",
+      "bytes": 1468,
+      "sha256": "2593677b324a18e0c0c4aaa249f766bd1240ac52e3990e0a1fd8cbe5d7782f23",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/prepare_request.py",
+      "bytes": 2328,
+      "sha256": "18dfcb07657a99cb215e1ba8eba88ecdfc3b74b0893d8b506feb249d3555ad44",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/reader/dependencies/bounded_save_parser.py",
+      "bytes": 1999,
+      "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/reader/dependencies/save_fields.py",
+      "bytes": 2236,
+      "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-actual-sixth-post-cancel-readback-20261006-001/reader/read_actual_checkpoint.py",
+      "bytes": 13860,
+      "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-incremental-evidence-ledger-through150-20261006-001/INDEX.json",
+      "bytes": 1067,
+      "sha256": "20e4434c8e1cad1789600e0fc9882a4a7fd51527d0374a4a88c33e23e2ee9230",
+      "stat_unchanged_during_read": true
+    },
+    {
+      "path": "r10-incremental-evidence-ledger-through150-20261006-001/LEDGER-SUMMARY.json",
+      "bytes": 17134,
+      "sha256": "068cdfcb8842e79afe400ac4462149cfde31cdd32fdb11e724720f3f0dfe42fc",
+      "stat_unchanged_during_read": true
+    }
+  ]
+}

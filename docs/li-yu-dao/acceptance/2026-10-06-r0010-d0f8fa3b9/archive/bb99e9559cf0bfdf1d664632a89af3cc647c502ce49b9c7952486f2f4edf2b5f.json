@@ -1,0 +1,982 @@
+{
+  "files": [
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\character_interactions\\lyd_c2_consent_interactions.txt",
+      "relative_path": "common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 986,
+      "sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\character_interactions\\lyd_c3_teacher_interactions.txt",
+      "relative_path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 4931,
+      "sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\character_interactions\\lyd_i3b_nomination_interactions.txt",
+      "relative_path": "common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "bytes": 954,
+      "sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\character_interactions\\lyd_interactions.txt",
+      "relative_path": "common/character_interactions/lyd_interactions.txt",
+      "bytes": 127,
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\decisions\\lyd_c2_consent_decisions.txt",
+      "relative_path": "common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 2408,
+      "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\decisions\\lyd_c3_leadership_decisions.txt",
+      "relative_path": "common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 8528,
+      "sha256": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\decisions\\lyd_decisions.txt",
+      "relative_path": "common/decisions/lyd_decisions.txt",
+      "bytes": 1774,
+      "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\decisions\\lyd_i3b_institution_decisions.txt",
+      "relative_path": "common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 4599,
+      "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\on_action\\lyd_c3_lifecycle_on_actions.txt",
+      "relative_path": "common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 544,
+      "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\religion\\faith_types\\lyd_faiths.txt",
+      "relative_path": "common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 424,
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\religion\\rite_types\\lyd_rites.txt",
+      "relative_path": "common/religion/rite_types/lyd_rites.txt",
+      "bytes": 13028,
+      "sha256": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\religion\\tenet_types\\lyd_tenets.txt",
+      "relative_path": "common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 19451,
+      "sha256": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\script_values\\lyd_c2_consent_values.txt",
+      "relative_path": "common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 533,
+      "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\script_values\\lyd_i3b_institution_values.txt",
+      "relative_path": "common/script_values/lyd_i3b_institution_values.txt",
+      "bytes": 205,
+      "sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c2_close_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_c2_close_effects.txt",
+      "bytes": 3384,
+      "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c2_commit_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_c2_commit_effects.txt",
+      "bytes": 5885,
+      "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c2_head_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_c2_head_effects.txt",
+      "bytes": 1352,
+      "sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c2_response_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_c2_response_effects.txt",
+      "bytes": 1369,
+      "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c2_setup_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_c2_setup_effects.txt",
+      "bytes": 12698,
+      "sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c2_snapshot_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "bytes": 22655,
+      "sha256": "69cf863ee19bea6aa6058974af0cb15b688e8e6900b8f436f2eefa3f2d64bc73"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c2_vote_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_c2_vote_effects.txt",
+      "bytes": 5368,
+      "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c3_challenger_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+      "bytes": 9550,
+      "sha256": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c3_council_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_c3_council_effects.txt",
+      "bytes": 9687,
+      "sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c3_head_factory.txt",
+      "relative_path": "common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 1993,
+      "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+      "bytes": 5360,
+      "sha256": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c3_migration_hooks.txt",
+      "relative_path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "bytes": 1366,
+      "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_entry_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_entry_effects.txt",
+      "bytes": 3415,
+      "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_i3b_commit_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 4751,
+      "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_i3b_response_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 4939,
+      "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_i3b_setup_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 6448,
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_i3b_terms_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 3842,
+      "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_10_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_10_effects.txt",
+      "bytes": 3002,
+      "sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_11_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_11_effects.txt",
+      "bytes": 2887,
+      "sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_12_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_12_effects.txt",
+      "bytes": 2948,
+      "sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_13_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_13_effects.txt",
+      "bytes": 3035,
+      "sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_14_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_14_effects.txt",
+      "bytes": 1526,
+      "sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_1_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_1_effects.txt",
+      "bytes": 2798,
+      "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_2_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_2_effects.txt",
+      "bytes": 2703,
+      "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_3_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_3_effects.txt",
+      "bytes": 2756,
+      "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_4_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_4_effects.txt",
+      "bytes": 2990,
+      "sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_5_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_5_effects.txt",
+      "bytes": 2901,
+      "sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_6_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_6_effects.txt",
+      "bytes": 2926,
+      "sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_7_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_7_effects.txt",
+      "bytes": 2972,
+      "sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_8_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_8_effects.txt",
+      "bytes": 2912,
+      "sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_practice_9_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_practice_9_effects.txt",
+      "bytes": 2983,
+      "sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_school_2_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_school_2_effects.txt",
+      "bytes": 3902,
+      "sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_school_3_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_school_3_effects.txt",
+      "bytes": 3877,
+      "sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_school_4_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_school_4_effects.txt",
+      "bytes": 3982,
+      "sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_school_5_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_school_5_effects.txt",
+      "bytes": 1968,
+      "sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_school_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_school_effects.txt",
+      "bytes": 3872,
+      "sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+      "relative_path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "bytes": 16511,
+      "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt",
+      "relative_path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "bytes": 8361,
+      "sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_triggers\\lyd_i3b_institution_triggers.txt",
+      "relative_path": "common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 11379,
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_triggers\\lyd_player_triggers.txt",
+      "relative_path": "common/scripted_triggers/lyd_player_triggers.txt",
+      "bytes": 2885,
+      "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\descriptor.mod",
+      "relative_path": "descriptor.mod",
+      "bytes": 139,
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\events\\lyd_c2_consent_events.txt",
+      "relative_path": "events/lyd_c2_consent_events.txt",
+      "bytes": 6638,
+      "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\events\\lyd_c3_leadership_events.txt",
+      "relative_path": "events/lyd_c3_leadership_events.txt",
+      "bytes": 3260,
+      "sha256": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\events\\lyd_events.txt",
+      "relative_path": "events/lyd_events.txt",
+      "bytes": 50504,
+      "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\events\\lyd_i3b_institution_events.txt",
+      "relative_path": "events/lyd_i3b_institution_events.txt",
+      "bytes": 5666,
+      "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\history\\faiths\\lyd_faith_history.txt",
+      "relative_path": "history/faiths/lyd_faith_history.txt",
+      "bytes": 1171,
+      "sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\localization\\english\\lyd_c2_consent_l_english.yml",
+      "relative_path": "localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 13439,
+      "sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\localization\\english\\lyd_c3_leadership_l_english.yml",
+      "relative_path": "localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 11285,
+      "sha256": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\localization\\english\\lyd_content_l_english.yml",
+      "relative_path": "localization/english/lyd_content_l_english.yml",
+      "bytes": 66904,
+      "sha256": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\localization\\english\\lyd_i3b_institution_l_english.yml",
+      "relative_path": "localization/english/lyd_i3b_institution_l_english.yml",
+      "bytes": 11134,
+      "sha256": "7fb7976bef47c74c456ad0237e90e0d0f5f0510b0605168e53c89f1e3798a2f2"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\localization\\english\\lyd_runtime_l_english.yml",
+      "relative_path": "localization/english/lyd_runtime_l_english.yml",
+      "bytes": 4461,
+      "sha256": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml",
+      "relative_path": "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 11744,
+      "sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml",
+      "relative_path": "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 10389,
+      "sha256": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\localization\\simp_chinese\\lyd_content_l_simp_chinese.yml",
+      "relative_path": "localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 52952,
+      "sha256": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\localization\\simp_chinese\\lyd_i3b_institution_l_simp_chinese.yml",
+      "relative_path": "localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 9819,
+      "sha256": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439"
+    },
+    {
+      "family": "production",
+      "mount": "production",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\localization\\simp_chinese\\lyd_runtime_l_simp_chinese.yml",
+      "relative_path": "localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 3707,
+      "sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca"
+    },
+    {
+      "family": "fixture",
+      "mount": "entry",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\entry\\common\\decisions\\lyd_r3_fixture_decisions.txt",
+      "relative_path": "common/decisions/lyd_r3_fixture_decisions.txt",
+      "bytes": 794,
+      "sha256": "d2f0324b39c47b3a4950c0f8959501e0e4b09868ba7df48f34f14b4b3e0fc289"
+    },
+    {
+      "family": "fixture",
+      "mount": "entry",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\entry\\common\\scripted_effects\\lyd_r3_fixture_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_r3_fixture_effects.txt",
+      "bytes": 768,
+      "sha256": "5a79a925992d3a55586e5558d5c6300d608986467259b3f9b1ec17c8f08096da"
+    },
+    {
+      "family": "fixture",
+      "mount": "entry",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\entry\\common\\scripted_triggers\\lyd_r3_fixture_triggers.txt",
+      "relative_path": "common/scripted_triggers/lyd_r3_fixture_triggers.txt",
+      "bytes": 415,
+      "sha256": "bc0f586a245377fb1d2660651f04ce2c16f85fcc113250f323da4fd7fbbb5bda"
+    },
+    {
+      "family": "fixture",
+      "mount": "entry",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\entry\\descriptor.mod",
+      "relative_path": "descriptor.mod",
+      "bytes": 123,
+      "sha256": "56257504a8f873e43a20ab5c3096c9607647e205d28db17f4c3b13cb54f94a8f"
+    },
+    {
+      "family": "fixture",
+      "mount": "entry",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\entry\\events\\lyd_r3_fixture_events.txt",
+      "relative_path": "events/lyd_r3_fixture_events.txt",
+      "bytes": 707,
+      "sha256": "0f5cae24b3d938cc9ece2af2a8a889dbf42d8b234d41cdc94c6c16adc7f05a9b"
+    },
+    {
+      "family": "fixture",
+      "mount": "entry",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\entry\\localization\\english\\lyd_r3_fixture_l_english.yml",
+      "relative_path": "localization/english/lyd_r3_fixture_l_english.yml",
+      "bytes": 1729,
+      "sha256": "25dbd64ed8d61ba7f6f474e1e3cd9abf8d7e3e944ebc2db865d324bba4504e44"
+    },
+    {
+      "family": "fixture",
+      "mount": "entry",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\entry\\localization\\simp_chinese\\lyd_r3_fixture_l_simp_chinese.yml",
+      "relative_path": "localization/simp_chinese/lyd_r3_fixture_l_simp_chinese.yml",
+      "bytes": 1554,
+      "sha256": "007ef993fbb92d8b5c94855a1de601a90e355ea3967128a0ddac3b6554e23252"
+    },
+    {
+      "family": "fixture",
+      "mount": "observer",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\observer\\common\\decisions\\lyd_r4_fixture_decisions.txt",
+      "relative_path": "common/decisions/lyd_r4_fixture_decisions.txt",
+      "bytes": 3442,
+      "sha256": "32988ae762939ed77bb5dc03fd3581aff725f3e2fb697af51cc0eeb6f600f48f"
+    },
+    {
+      "family": "fixture",
+      "mount": "observer",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\observer\\common\\script_values\\lyd_r4_fixture_values.txt",
+      "relative_path": "common/script_values/lyd_r4_fixture_values.txt",
+      "bytes": 160,
+      "sha256": "0dd22e38634f020c1a69a1fc1ebfe645fed9bb2011cb68ea1e32d39694073c33"
+    },
+    {
+      "family": "fixture",
+      "mount": "observer",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\observer\\common\\scripted_effects\\lyd_r4_fixture_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_r4_fixture_effects.txt",
+      "bytes": 13017,
+      "sha256": "b64d3635d9ad0f2deb2085acede380d2b27df00bd983ebbe069a1a6a5a602b9b"
+    },
+    {
+      "family": "fixture",
+      "mount": "observer",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\observer\\common\\scripted_triggers\\lyd_r4_fixture_triggers.txt",
+      "relative_path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+      "bytes": 8208,
+      "sha256": "a45bd6552d45314603a213ad0a4fd68de1c67fcfec62a6411d14a9fe7b2acad8"
+    },
+    {
+      "family": "fixture",
+      "mount": "observer",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\observer\\descriptor.mod",
+      "relative_path": "descriptor.mod",
+      "bytes": 123,
+      "sha256": "2b7f18a5ae3a30f68ad52de4013b85af507faf619e536e4225de30d698bf62a4"
+    },
+    {
+      "family": "fixture",
+      "mount": "observer",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\observer\\events\\lyd_r4_fixture_events.txt",
+      "relative_path": "events/lyd_r4_fixture_events.txt",
+      "bytes": 1532,
+      "sha256": "9433428c0af3548061bfe9f6efe4fe8f2c3da0986fdfdb2ca44b48a0ca560c42"
+    },
+    {
+      "family": "fixture",
+      "mount": "observer",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\observer\\localization\\english\\lyd_r4_fixture_l_english.yml",
+      "relative_path": "localization/english/lyd_r4_fixture_l_english.yml",
+      "bytes": 7826,
+      "sha256": "799b64d1c65322f82d06a3238d278295101af39c867ff6ab50d9b6a0ca27f1d6"
+    },
+    {
+      "family": "fixture",
+      "mount": "observer",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\observer\\localization\\simp_chinese\\lyd_r4_fixture_l_simp_chinese.yml",
+      "relative_path": "localization/simp_chinese/lyd_r4_fixture_l_simp_chinese.yml",
+      "bytes": 7016,
+      "sha256": "1b6963753219910c3e5515ef12f7eda20b15948e5ed69cc555bc90b4ed2dffd0"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\decisions\\lyd_im_decisions.txt",
+      "relative_path": "common/decisions/lyd_im_decisions.txt",
+      "bytes": 622,
+      "sha256": "6a823c3409d9a1e0cd2bca88b3e0cd332b420a5abcc4a5a1602d3209a492c5b7"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_dispatch_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_dispatch_effects.txt",
+      "bytes": 23432,
+      "sha256": "93df65d9edcc9b40b0a0f434fbd1c21a1ce6775dd4f10272f1d5e5db544577cf"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_10_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_10_effects.txt",
+      "bytes": 13139,
+      "sha256": "b0f2d7d2049b30a275a93e38673d20fa04f4903db526ed791f953aaa3eec315d"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_11_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_11_effects.txt",
+      "bytes": 13139,
+      "sha256": "700130dd3da366b54884fedeeb79267ecd02f07902ab1a5a68da6f757a178dc7"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_12_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_12_effects.txt",
+      "bytes": 13155,
+      "sha256": "bb9831e6f2727ed5ac0852cf273caed1b7bb6a8defb1180e8843bd463a0afd2f"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_13_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_13_effects.txt",
+      "bytes": 13333,
+      "sha256": "c2a9f8d6af81c8154bdf1516403383bb7c7cc0b7222d775e9f5bfbd36acb7eff"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_14_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_14_effects.txt",
+      "bytes": 13291,
+      "sha256": "d195df047afab2e04c39fc61c44cfe452ac696db11410b2c1028ce334df14626"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_15_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_15_effects.txt",
+      "bytes": 13259,
+      "sha256": "9e955328f6b3f3e56659b03eae1f6eb283b924268a0a13eab8b9c3bbc3b4e70c"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_16_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_16_effects.txt",
+      "bytes": 13227,
+      "sha256": "cbbf63dec72b93ad25730612404c7c770c0236c75435e9bf57d143ad16007b4d"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_17_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_17_effects.txt",
+      "bytes": 13163,
+      "sha256": "ad705a3e20ee56d30aa09f3b843ce390c2cc5879e5db0aefbea51ac640253d35"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_18_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_18_effects.txt",
+      "bytes": 13227,
+      "sha256": "4e988df9a32a4f6a1c47648e3ccea1a35317f6fab61260395b3c1cf8a2d099bf"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_1_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_1_effects.txt",
+      "bytes": 13067,
+      "sha256": "3c200d40cdcf78ae28764c129214190413d8e0c9745276d20fb54ee7e867e8f1"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_2_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_2_effects.txt",
+      "bytes": 13131,
+      "sha256": "b33c79a048455503004c7dca04e82ba97e90d4db6af539db7ac0c2cfa108ae49"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_3_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_3_effects.txt",
+      "bytes": 13123,
+      "sha256": "f92cc590a4e249f06e195f6f0b214c2ac9aabe70f91e53311ff3ba1218c04392"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_4_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_4_effects.txt",
+      "bytes": 13139,
+      "sha256": "2f1a0daff6def15388e4c66c7d15b1b2f0664919400686ef8926da6e5ddadf17"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_5_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_5_effects.txt",
+      "bytes": 13187,
+      "sha256": "7274cf60669fd3b3cd63593388137359bf7c6c0438f2e37fd601654cc839a378"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_6_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_6_effects.txt",
+      "bytes": 13139,
+      "sha256": "f09c4b20c2122d0148e4458dad6bde2c83dd47eda21a7a4b71c728398b96097c"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_7_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_7_effects.txt",
+      "bytes": 13059,
+      "sha256": "c0c4fee59886cf771183d743578f4cf63c4201580d1bdc5f16c15b5b40693a65"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_8_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_8_effects.txt",
+      "bytes": 13267,
+      "sha256": "43486446a75e944a844032f707ced316f6cc7496629f1ec68c573b2e657dde1d"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_9_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_im_prepare_9_effects.txt",
+      "bytes": 13171,
+      "sha256": "389fd1addcc83e4cdae5a56d3c8ef8f44d036c2895776edf9830622d16185de6"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_triggers\\lyd_im_triggers.txt",
+      "relative_path": "common/scripted_triggers/lyd_im_triggers.txt",
+      "bytes": 780,
+      "sha256": "4b5fcb680ad33d6f3403a4717610b742aab1eb5c0b83249be75c6382127d0f2d"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\descriptor.mod",
+      "relative_path": "descriptor.mod",
+      "bytes": 128,
+      "sha256": "30daa9a5d0865374862e7670a5c5a926ef5c9ac956c60b76ab28a9ec98824e35"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\events\\lyd_im_cases_1.txt",
+      "relative_path": "events/lyd_im_cases_1.txt",
+      "bytes": 23516,
+      "sha256": "a41be8b7d5dd303d4ad86e3f55a221ce8beb1d8135b32f21337c05702c46ba15"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\events\\lyd_im_cases_2.txt",
+      "relative_path": "events/lyd_im_cases_2.txt",
+      "bytes": 23590,
+      "sha256": "d59fd9b983f033c3730766cb81bb25a68f4b604e50383fd9e3d121a598fee81a"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\events\\lyd_im_cases_3.txt",
+      "relative_path": "events/lyd_im_cases_3.txt",
+      "bytes": 23598,
+      "sha256": "22a88b61d0377e85d11f0f0aa3910cf0fbb11832cef558ab1fd90d0baba8d683"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\events\\lyd_im_cases_4.txt",
+      "relative_path": "events/lyd_im_cases_4.txt",
+      "bytes": 23582,
+      "sha256": "b35f0620c4d1b384b41e6260e5384371832b31a0b6e931327dc2d97743764ade"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\events\\lyd_im_cases_5.txt",
+      "relative_path": "events/lyd_im_cases_5.txt",
+      "bytes": 23784,
+      "sha256": "4cd7481af5a7a9036f6ce123ebe33f482bea82fe3a904fe88a640222706276e9"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\events\\lyd_im_cases_6.txt",
+      "relative_path": "events/lyd_im_cases_6.txt",
+      "bytes": 23730,
+      "sha256": "28e4a9f089a5156c25618d0c4ca2c84d7b7f4a16b9c9d9f04389396f98027488"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\events\\lyd_im_menu_events.txt",
+      "relative_path": "events/lyd_im_menu_events.txt",
+      "bytes": 448,
+      "sha256": "f23d30314f5eec2fa288b0d5211413697ce3eac260a7d1ab66f3eaa4860bbab1"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\localization\\english\\lyd_im_l_english.yml",
+      "relative_path": "localization/english/lyd_im_l_english.yml",
+      "bytes": 58252,
+      "sha256": "196ca53b76a5691e3b66e8ec61fe6c970bac9cadd85188fc6ef763ffe251863a"
+    },
+    {
+      "family": "fixture",
+      "mount": "i4_single_event",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\localization\\simp_chinese\\lyd_im_l_simp_chinese.yml",
+      "relative_path": "localization/simp_chinese/lyd_im_l_simp_chinese.yml",
+      "bytes": 54911,
+      "sha256": "9028a59a7f0001f7c8e446f3d502ec36e9da2c75b98bba38f0db9101ff05acba"
+    },
+    {
+      "family": "fixture",
+      "mount": "charter",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\charter\\common\\decisions\\lyd_cp_decisions.txt",
+      "relative_path": "common/decisions/lyd_cp_decisions.txt",
+      "bytes": 1627,
+      "sha256": "e16fd91c0ad3b1aed6940aaf527def226ec5b6fa7bf726d01a05f232f0155a4b"
+    },
+    {
+      "family": "fixture",
+      "mount": "charter",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\charter\\common\\scripted_effects\\lyd_cp_effects.txt",
+      "relative_path": "common/scripted_effects/lyd_cp_effects.txt",
+      "bytes": 1799,
+      "sha256": "b148aeda930d29b53ec251f2a3506f46a8418462995d7f96a95abafd1910c9ac"
+    },
+    {
+      "family": "fixture",
+      "mount": "charter",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\charter\\common\\scripted_triggers\\lyd_cp_triggers.txt",
+      "relative_path": "common/scripted_triggers/lyd_cp_triggers.txt",
+      "bytes": 7526,
+      "sha256": "9bace9e9493dc3d19ff14b7a361022adafb7f336a0020a423e3e5594e5855a31"
+    },
+    {
+      "family": "fixture",
+      "mount": "charter",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\charter\\descriptor.mod",
+      "relative_path": "descriptor.mod",
+      "bytes": 129,
+      "sha256": "66b9c4bc79babd063280d61af6586c5c7d455bb3b532d352632dbfeb346911d2"
+    },
+    {
+      "family": "fixture",
+      "mount": "charter",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\charter\\localization\\english\\lyd_cp_l_english.yml",
+      "relative_path": "localization/english/lyd_cp_l_english.yml",
+      "bytes": 1699,
+      "sha256": "4df977dd74a12c1276fa59385f6fbc9313842b680f31e98a558c775055fc1ee4"
+    },
+    {
+      "family": "fixture",
+      "mount": "charter",
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\charter\\localization\\simp_chinese\\lyd_cp_l_simp_chinese.yml",
+      "relative_path": "localization/simp_chinese/lyd_cp_l_simp_chinese.yml",
+      "bytes": 1526,
+      "sha256": "a017a58c78928eb7d8937e78d9618aeb3176d659967068ef21d99fc59b88c261"
+    }
+  ],
+  "production_count": 70,
+  "fixture_count": 52
+}

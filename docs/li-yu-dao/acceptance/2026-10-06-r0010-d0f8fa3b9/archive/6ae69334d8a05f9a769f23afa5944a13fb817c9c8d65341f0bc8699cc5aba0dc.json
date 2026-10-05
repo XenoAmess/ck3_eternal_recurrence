@@ -1,0 +1,724 @@
+{
+  "schema": "lyd.r10.actual-host-release-next-intent-lineage-independent-review.v1",
+  "status": "ACTUAL_ROOT_RELEASE_PERMIT_CONSUMED_NEW_ORDINAL1_LINEAGE_MATCH",
+  "recorded_utc": "2026-10-05T13:13:16.214701+00:00",
+  "scope": "Actual immutable host release/permit-consumption/claim packet/SDK lineage and reused sealed round8 save AST; no live calls or save reparse.",
+  "actual_root_host_release": true,
+  "actual_permit_consumed": true,
+  "immutable_parent_preserved": true,
+  "actual_release_request": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-first-consumption-host-request-001\\RELEASE-REQUEST.actual.json",
+    "bytes": 1229,
+    "sha256": "7e3778ab904a74414b725be51a0b30e5954ad5cd26e3be3fc2fa137303680027"
+  },
+  "actual_release_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-first-consumption-release-invocation-001\\RESULT.json",
+    "bytes": 638,
+    "sha256": "675b923cab432cb663da734be303608dc3d332be142a078994642316c3a92266"
+  },
+  "parent_claim": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.json",
+    "bytes": 1210,
+    "sha256": "3fae018f1468983c59bb0cf6a8d32704cb6f791d6b25cae69451a82960b495ce"
+  },
+  "permit": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.release.json",
+    "bytes": 1736,
+    "sha256": "6c7fd772f928041d1d616b77e9d5c00d27441ef6e52e1f030c14fe5b60b77c84"
+  },
+  "permit_consumed": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.release.consumed.json",
+    "bytes": 1237,
+    "sha256": "35287deac29f81d36d3d6978ba16253bac4ae954a4beba9ebd5852f179cea0ea"
+  },
+  "new_claim": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000001.claim.json",
+    "bytes": 1938,
+    "sha256": "7c2d0d36486fc2ec6c0d44fb24319affdce818feb3edb59d6878921e3d00c021"
+  },
+  "new_intent_lineage": {
+    "permit_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.release.json",
+    "permit_sha256": "6c7fd772f928041d1d616b77e9d5c00d27441ef6e52e1f030c14fe5b60b77c84",
+    "next_intent_id": "r10-proposal-002-after-consumed-0771f580-20261005",
+    "parent_claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.json",
+    "parent_claim_sha256": "3fae018f1468983c59bb0cf6a8d32704cb6f791d6b25cae69451a82960b495ce"
+  },
+  "action_identity": {
+    "game_pid": 13436,
+    "actor_id": 31254,
+    "process_create_time": 1791196395.7422996,
+    "interaction_key": "lyd_c2_propose_join_interaction",
+    "recipient_id": 65866,
+    "action": "initiate_ordinary"
+  },
+  "new_request_id": "ordinary-interaction-a50373f260354f6f83c8052eaf837c7f",
+  "claim_ordinal_before": 0,
+  "claim_ordinal_after": 1,
+  "actual_connection_generation": 1,
+  "new_intent_frame": {
+    "public_revision": 18,
+    "native_revision": 17,
+    "snapshot_id": "native:17",
+    "date_raw": 53144712
+  },
+  "packet": {
+    "type": "execute_step",
+    "protocol_version": 1,
+    "request_id": "ordinary-interaction-a50373f260354f6f83c8052eaf837c7f",
+    "step": "initiate-character-interaction-ordinary-v1",
+    "expected_revision": 17,
+    "interaction_key": "lyd_c2_propose_join_interaction",
+    "recipient_id": 65866,
+    "expected_player_character_id": 31254,
+    "expected_game_pid": 13436,
+    "expected_connection_generation": 1
+  },
+  "native_and_SDK_initiation_status": "pending",
+  "actual_saved_round_delta": {
+    "serial": [
+      7,
+      8
+    ],
+    "callback_nonce": [
+      7,
+      8
+    ]
+  },
+  "actual_completed_history": {
+    "joins": 1,
+    "detaches": 2
+  },
+  "actual_wallet_delta": {
+    "gold": "0",
+    "piety": "0",
+    "prestige": "0"
+  },
+  "new_final_JOIN_credit": false,
+  "full_cycle_credit": false,
+  "sdk_ACK_business_credit": false,
+  "permit_business_credit": false,
+  "save_AST_readback_reused": {
+    "index": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\INDEX.json",
+      "bytes": 6038,
+      "sha256": "1f0bf6713c4290bcff506dfe7f9e434835e3e469262f1369feaaaed81708de52"
+    },
+    "report": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\REPORT.json",
+      "bytes": 3748,
+      "sha256": "4846d30c937881b47820c5682a276b170eee4f62a29ee007eeb274a4ec10f2df"
+    },
+    "facts": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\PROPOSAL-OPENED-FACTS.json",
+      "bytes": 294261,
+      "sha256": "d43ee38000ecceced01626dba772f434dee76659ecae1c17cdc3bdda84fc5855"
+    },
+    "checked_payload_count": 36,
+    "save_AST_reparsed_by_this_review": false
+  },
+  "source_contracts": [
+    {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ordinary_interaction_host_release.py",
+      "source_sha256": "f567bff41d03b6c59d195df8ff62ecab1a523962de3217d397c5264d1ed2d89b",
+      "function": "consume_next_intent_permit",
+      "line": 204,
+      "end_line": 241,
+      "AST_sha256": "a9ac054e89f894c858a56336ac90aa1b267e2e066190301d12014b9b677f646c"
+    },
+    {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ordinary_interaction_contract.py",
+      "source_sha256": "e0a96aa39626df166270d3d5467a8e4d57cec77d7577cebcced03983feba5fa3",
+      "function": "create_once_claim",
+      "line": 321,
+      "end_line": 365,
+      "AST_sha256": "683f8a760413b2fbc6bdbc173c43eaf5dce5d7be20a4a82aa24736bcfe78fb96"
+    },
+    {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ordinary_interaction_contract.py",
+      "source_sha256": "e0a96aa39626df166270d3d5467a8e4d57cec77d7577cebcced03983feba5fa3",
+      "function": "claim_identity",
+      "line": 299,
+      "end_line": 318,
+      "AST_sha256": "b99fff72231a61b3423f8968c4af8e34b7c02e5975440c0d63ca0a51e4b19ab4"
+    }
+  ],
+  "source_interpretation": "Frozen consume_next_intent_permit x-writes the consumed sidecar before new claim/send; create_once_claim returns contiguous ordinal1 with exact immutable parent/permit lineage. Actual files/packet/SDK match this path. No epoch, generation or identity field changed.",
+  "previous_emit004_44_checks_repeated": false,
+  "prior_review_expectation_rejection": {
+    "ref": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-first-release-lineage-independent-review-20261005-001\\FAILURE.json",
+      "bytes": 10852,
+      "sha256": "59049f96602b537dc2160d41974ba53ccce6b395bb65147fb21c755fcf0c7236"
+    },
+    "reason": "Reviewer001 expected no sealing sidecar. Actual SEALED.json matches REPORT/INDEX/facts/count; reviewed explicitly here. No host/product rejection."
+  },
+  "reviewer_operations": {
+    "game": 0,
+    "MCP": 0,
+    "native": 0,
+    "pipe": 0,
+    "Client": 0,
+    "bus": 0,
+    "main": 0,
+    "Git": 0,
+    "bind": 0,
+    "emit": 0,
+    "registry_write": 0,
+    "host_release": 0,
+    "save_AST_parse": 0
+  },
+  "checks_count": 224,
+  "checks": [
+    "actual SHA RELEASE-REQUEST.actual.json",
+    "ROOT actual closed release request",
+    "actual ROOT wrapper schema",
+    "actual host module ref schema",
+    "actual host module exact bytes/SHA",
+    "frozen host f567 unchanged",
+    "actual SHA 8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.json",
+    "immutable old claim prior SHA preserved",
+    "old UNKNOWN claim unchanged; no fabricated ACK or lineage",
+    "immutable old .packet.bin prior SHA preserved",
+    "immutable old .native-result.json prior SHA preserved",
+    "immutable old .receipt.json prior SHA preserved",
+    "existing emit004 manifest ref schema",
+    "existing emit004 manifest exact bytes/SHA",
+    "release uses actual reviewed emitted004 manifest",
+    "ROOT actual registry ref schema",
+    "ROOT actual registry exact bytes/SHA",
+    "actual closed registry",
+    "registry actual schema",
+    "actual verifier registry row",
+    "frozen verifier entrypoint",
+    "existing ROOT bound003 INDEX ref schema",
+    "existing ROOT bound003 INDEX exact bytes/SHA",
+    "registry binds real bound003; no new provider binding",
+    "actual SHA release-argv.json",
+    "actual SHA RESULT.json",
+    "actual ROOT invoked exact captured release argv",
+    "actual ROOT host release exit0",
+    "invocation exact structured argv source",
+    "actual stdout/stderr exact recorded SHA",
+    "actual release stderr empty",
+    "host release reports one intent, no game command/business credit",
+    "actual SHA 8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.release.json",
+    "actual closed permit",
+    "permit schema",
+    "permit exact immutable parent path/SHA/request",
+    "permit exact manifest/registry/bundle refs",
+    "permit exact verifier/operator/new intent",
+    "actual release stdout exact permit",
+    "actual permit no JOIN business credit",
+    "permit actual time within ROOT host invocation",
+    "actual SHA 0041-r10-0042-new-intent-ready-query.sdk-result.json",
+    "0041-r10-0042-new-intent-ready-query.sdk-result.json actual SDK complete",
+    "0041-r10-0042-new-intent-ready-query.sdk-result.json structured/text equality",
+    "actual SHA 0042-r10-0043-new-join-proposal.sdk-result.json",
+    "0042-r10-0043-new-join-proposal.sdk-result.json actual SDK complete",
+    "0042-r10-0043-new-join-proposal.sdk-result.json structured/text equality",
+    "actual SHA 0039-r10-0040-before-new-intent-save.sdk-result.json",
+    "0039-r10-0040-before-new-intent-save.sdk-result.json actual SDK complete",
+    "0039-r10-0040-before-new-intent-save.sdk-result.json structured/text equality",
+    "new claim located by actual SDK42; expected contained claim directory",
+    "actual SHA 8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000001.claim.json",
+    "actual closed new claim",
+    "new immutable UNKNOWN claim; no ACK rewritten into claim",
+    "six identity closed",
+    "same full six identity; no episode/PID/recipient bypass",
+    "new ordinal1 follows original ordinal0",
+    "actual stable identity filename hash and contiguous ordinals",
+    "same host provenance/session/episode; no epoch unlock",
+    "actual distinct new request UUID",
+    "actual SHA 8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.release.consumed.json",
+    "actual closed permit consumption",
+    "actual consumption schema",
+    "consumed receipt exact released permit",
+    "consumed one permit for actual new request/intent",
+    "consumption unchanged six identity and no business credit",
+    "same actual connection generation1; no reconnect unlock",
+    "consumed exact new claim binding",
+    "actual new claim closed lineage",
+    "new claim exact consumed permit/immutable parent lineage",
+    "fresh query41 actual before39 frame public18/native17",
+    "actual date/PID/full actor frame binding",
+    "actual fresh41 full recipient/key and all ordinary ready gates",
+    "actual new-intent frame no event/incoming and paused",
+    "actual six effective roles",
+    "actual SDKs same pinned profile/session/pipe",
+    "actual fresh query occurs after release and before new send",
+    "actual new packet exact SHA/u32 length",
+    "actual new packet exact closed10 native17/player/PID/gen/fullrecipient/request",
+    "actual SHA 8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000001.claim.native-result.json",
+    "actual native initiation ACK pending, no postcondition business success",
+    "SDK42 preserves actual native initiation receipt",
+    "actual SHA 8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000001.claim.receipt.json",
+    "actual host pending receipt exact SDK result; no invented success",
+    "new SDK pending credit remains false",
+    "driver originalafter retained separately from later wrapper frame",
+    "actual SHA INDEX.json",
+    "reused sealed second-open INDEX schema",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/actor-31254.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/character-65865.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/character-65866.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/faith-104.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/faith-106.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/faith-32.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/metadata.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/played-character.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/REPORT.json",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/rite-150.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/rite-159.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/rite-169.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/STATE.json",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/title-2230.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/title-2231.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/title-2232.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/title-2235.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/title-2262.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/title-2263.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA actual-save-001/title-2264.excerpt.txt",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA collect_control_evidence.py",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA collect_lineage.py",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA CONTROL-EVIDENCE.json",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA finalize_second_open.py",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA inspect_second_open.py",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA LINEAGE-EVIDENCE.json",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA pair-diff-001/REPORT.json",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA PREPARATION.json",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA prepare_request.py",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA PROPOSAL-OPENED-FACTS.json",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA reader/dependencies/bounded_save_parser.py",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA reader/dependencies/save_fields.py",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA reader/read_actual_checkpoint.py",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA REPORT-zh.md",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA REPORT.json",
+    "second-open indexed payload row",
+    "second-open index contained and unique",
+    "second-open indexed bytes/SHA REQUEST.actual.json",
+    "sealed second-open36 payload exact coverage plus explicit known sealing sidecar",
+    "actual SHA SEALED.json",
+    "actual known SEALED sidecar schema",
+    "SEALED exact indexed payload count",
+    "SEALED exact REPORT path",
+    "SEALED exact REPORT ref schema",
+    "SEALED exact REPORT exact bytes/SHA",
+    "SEALED exact INDEX path",
+    "SEALED exact INDEX ref schema",
+    "SEALED exact INDEX exact bytes/SHA",
+    "SEALED exact typed_facts path",
+    "SEALED exact typed_facts ref schema",
+    "SEALED exact typed_facts exact bytes/SHA",
+    "prior reviewer sidecar expectation rejection preserved",
+    "actual SHA REPORT.json",
+    "actual SHA PROPOSAL-OPENED-FACTS.json",
+    "reused actual AST report bounded opened round8, not final JOIN",
+    "actual independent round8 report exact HEAD/new UUID/ordinal/sixidentity",
+    "actual saved lyd_c2_callback_nonce positive typed7-to8",
+    "actual saved lyd_c2_serial positive typed7-to8",
+    "actual saved wallet0/historyJOIN1DETACH2/reset4; no new JOIN credit",
+    "actual AST facts reuse exact original new query/send SDK references",
+    "sealed AST scope honest; no repeated old save parse by independent lineage review",
+    "canonical contract source exact e0",
+    "consume_next_intent_permit actual source function",
+    "create_once_claim actual source function",
+    "claim_identity actual source function",
+    "previous44 emit review sealed refs reused, checks not repeated"
+  ],
+  "references": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-first-consumption-host-request-001\\RELEASE-REQUEST.actual.json",
+      "bytes": 1229,
+      "sha256": "7e3778ab904a74414b725be51a0b30e5954ad5cd26e3be3fc2fa137303680027"
+    },
+    {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ordinary_interaction_host_release.py",
+      "bytes": 16460,
+      "sha256": "f567bff41d03b6c59d195df8ff62ecab1a523962de3217d397c5264d1ed2d89b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.json",
+      "bytes": 1210,
+      "sha256": "3fae018f1468983c59bb0cf6a8d32704cb6f791d6b25cae69451a82960b495ce"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.packet.bin",
+      "bytes": 362,
+      "sha256": "1eda105a6c7511a0d9d18ab552140e2d9ee8147c39d2abec6bb3e0e1e0732460"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.native-result.json",
+      "bytes": 4010,
+      "sha256": "b114530f95018bbb6617282faf5888547f6a2776f1e2f701b257f86549e05277"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.receipt.json",
+      "bytes": 4681,
+      "sha256": "623431eaae7e851c1f544f30fd893c0e3ca420901dd845a573f59465bea35e79"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-first-proposal-emitted-evidence-20261005-004\\CONSUMPTION-MANIFEST.json",
+      "bytes": 1785,
+      "sha256": "5f0ec75c2eaa9dbe3da15f691a49c291594b7f7de388035da5f5becad55f24a7"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-first-consumption-host-request-001\\REGISTRY.json",
+      "bytes": 426,
+      "sha256": "1f8070ee4fef62720d5fad27d55bd6c9f83601f12210456cc8036e80100d4490"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-first-proposal-bound-verifier-20261005-003\\INDEX.json",
+      "bytes": 577,
+      "sha256": "b6bd15f678df586b06403de8c05db692ef5fdf35583638347e853fc0e757ee68"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-first-consumption-host-request-001\\release-argv.json",
+      "bytes": 364,
+      "sha256": "a425459d717a848255dc07a307b6c8ce5e876ccc36bd61c85bfb56ed614b714c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-first-consumption-release-invocation-001\\argv.json",
+      "bytes": 345,
+      "sha256": "f9dbaf3146cdf267cb4227bd87b719f1c86804f2a7737d3abd6c3ea07b4950be"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-first-consumption-release-invocation-001\\RESULT.json",
+      "bytes": 638,
+      "sha256": "675b923cab432cb663da734be303608dc3d332be142a078994642316c3a92266"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-first-consumption-release-invocation-001\\stdout.txt",
+      "bytes": 445,
+      "sha256": "b4407252cc5693b881a8b6ba994454deb4b785b5900096f8590bc355c7654a59"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-first-consumption-release-invocation-001\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.release.json",
+      "bytes": 1736,
+      "sha256": "6c7fd772f928041d1d616b77e9d5c00d27441ef6e52e1f030c14fe5b60b77c84"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0041-r10-0042-new-intent-ready-query.sdk-result.json",
+      "bytes": 7619,
+      "sha256": "25f1988bddbaa71ea475df2abdd8fd278218b70c536a08e474cd3f737e8a6496"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0042-r10-0043-new-join-proposal.sdk-result.json",
+      "bytes": 904921,
+      "sha256": "7ca0c41afd76f00b7254d74aadf1fb1ec64ba21556034ed491f0abe5e71fada6"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0039-r10-0040-before-new-intent-save.sdk-result.json",
+      "bytes": 1790265,
+      "sha256": "bd42ed433479028fe1970d0d8afa7a7ddd4dea67f0eec21117f3c60112653d22"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000001.claim.json",
+      "bytes": 1938,
+      "sha256": "7c2d0d36486fc2ec6c0d44fb24319affdce818feb3edb59d6878921e3d00c021"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.release.consumed.json",
+      "bytes": 1237,
+      "sha256": "35287deac29f81d36d3d6978ba16253bac4ae954a4beba9ebd5852f179cea0ea"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000001.claim.packet.bin",
+      "bytes": 363,
+      "sha256": "909aaa95148773b05c67649cf53e1c98debd4bbcef817d9e65704d0335350ee7"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000001.claim.native-result.json",
+      "bytes": 4013,
+      "sha256": "754e1da18c03e60d44981313375f1eef1c0516e63d9c19e89047582c492a78c0"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000001.claim.receipt.json",
+      "bytes": 4690,
+      "sha256": "939bbcb4175e98351e80d18e96c7c3d5237fbca14c3fa90fdc94ad539e3100af"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\INDEX.json",
+      "bytes": 6038,
+      "sha256": "1f0bf6713c4290bcff506dfe7f9e434835e3e469262f1369feaaaed81708de52"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\actor-31254.excerpt.txt",
+      "bytes": 20048,
+      "sha256": "8a361197f8b557bab47be01b12b5aa029267938f11c696212322d8687ab9c2c1"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\character-65865.excerpt.txt",
+      "bytes": 1958,
+      "sha256": "c65b13fd17e58441feeeda26f09837d731dd62df45ee86926e687e3fabfa0467"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\character-65866.excerpt.txt",
+      "bytes": 2403,
+      "sha256": "676d509aa125e01b7794c5fc912ea0b5a1d49669bc1310e4e659daebc221935f"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\faith-104.excerpt.txt",
+      "bytes": 4759,
+      "sha256": "27167a8e1fe7196402a0a688c45591fc898ae284092606403ad6b0269bb6df3c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\faith-106.excerpt.txt",
+      "bytes": 4872,
+      "sha256": "d5fd14c74002bcb796635479447ca8d75e1a9edeb5fae6b4d8f978920501a493"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\faith-32.excerpt.txt",
+      "bytes": 1955,
+      "sha256": "b481404a15d4a05a7185077f44e111d55a01550b85904fe7db437c189446e9fb"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\metadata.excerpt.txt",
+      "bytes": 32457,
+      "sha256": "633e06f82a1cd3d55dd453059b80d0106b1bbb2eb0310f7f74ed7b2876219e9c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\played-character.excerpt.txt",
+      "bytes": 287,
+      "sha256": "f9f82598a6ef39d8a1a3c805701fdacd4cc9f442821b4cc852e4a13b30f80962"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\REPORT.json",
+      "bytes": 72894,
+      "sha256": "0a3c2a1153a2852772aebdcd160a8aee9352f47b1638dc3c5f07356c88b315fe"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\rite-150.excerpt.txt",
+      "bytes": 4782,
+      "sha256": "80daccc116669fe8bc4818292f79bf8e753e61ae6fdf498ea29b29fd1b9766bb"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\rite-159.excerpt.txt",
+      "bytes": 8866,
+      "sha256": "31ab905d792a5c107e96bbe0f2f38d32353f6376d086190e68298d1672c2484d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\rite-169.excerpt.txt",
+      "bytes": 5099,
+      "sha256": "a1e45b65078926db648206e9a7bfe5c2d2b8fe43a3514fa0b8a280d9c8132c07"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\STATE.json",
+      "bytes": 705438,
+      "sha256": "4a8b4db4d6395190b590b9a6d6a696ffbd3fb602b5755364117125451c586799"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\title-2230.excerpt.txt",
+      "bytes": 665,
+      "sha256": "fab3e58a2a3f55a1d76da559ec486f0eba19f0669737e1d0acb2f3fe312da261"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\title-2231.excerpt.txt",
+      "bytes": 861,
+      "sha256": "5ad0f12b726d36920948c75545dc70fdbd4934872fe452a8cd48dd53bb455fa3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\title-2232.excerpt.txt",
+      "bytes": 274,
+      "sha256": "bc0fa0f7c13f2fe59c3dee28f3d28bdc5812a18578f1b5712b01c05940ce4823"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\title-2235.excerpt.txt",
+      "bytes": 410,
+      "sha256": "d556ea8eab1a3ba82b557cdd9ad5a9c629b91ff6dca0fb1fb19352d6c0e68f36"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\title-2262.excerpt.txt",
+      "bytes": 595,
+      "sha256": "b60ecde293edc63050a4cca64bf542ba3293538782cd40c1e2cfec90ed2a3bef"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\title-2263.excerpt.txt",
+      "bytes": 250,
+      "sha256": "3f5670f07356dbd7ec18a487c334445a7836ecf6fee3ed1a198ebf551501016f"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\actual-save-001\\title-2264.excerpt.txt",
+      "bytes": 410,
+      "sha256": "4a909ce428dcb85d64c49c53d74bfb0ef6a38be59409e08b2ed31ba75bfa05f6"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\collect_control_evidence.py",
+      "bytes": 2075,
+      "sha256": "37a1b98d38ae241f79ad530b44091b7efa24b9b45e0ec45ce4486767d57134c5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\collect_lineage.py",
+      "bytes": 2273,
+      "sha256": "0780ef5adbdc1e150796291422471324345ab1a207e53cb60a84e84b3111a862"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\CONTROL-EVIDENCE.json",
+      "bytes": 34266,
+      "sha256": "245712667aaf31ae0bb05d4e41c8afb10664f110e5a370558208679d752f7f1c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\finalize_second_open.py",
+      "bytes": 14400,
+      "sha256": "11144283cd1092f1126cd4e2d7778451edcadc6916e84e68e2771328210215bc"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\inspect_second_open.py",
+      "bytes": 1541,
+      "sha256": "1b6cde269683eddaf7121aa86b9718e0b61a066c3fabd2806c2d3136108af205"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\LINEAGE-EVIDENCE.json",
+      "bytes": 7022,
+      "sha256": "8ae0fb6804345322edd726b688377f07d062a4a149920b5fcdf09bb2673f29ac"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\pair-diff-001\\REPORT.json",
+      "bytes": 34062,
+      "sha256": "86b962804a2354fcd9bf1b2f1ce3e3327f79eb231aa8068b8d66074241cb54bd"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\PREPARATION.json",
+      "bytes": 1673,
+      "sha256": "1d6a78ee82f8f02a7ce749b6035eb4f7b506d5040d0988da28d9ca2e8d3391b8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\prepare_request.py",
+      "bytes": 2078,
+      "sha256": "b464bdc6ddcc92db8a28cc000a6f5a508dbb036bfd06d5971e400733820bc414"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\PROPOSAL-OPENED-FACTS.json",
+      "bytes": 294261,
+      "sha256": "d43ee38000ecceced01626dba772f434dee76659ecae1c17cdc3bdda84fc5855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\reader\\dependencies\\bounded_save_parser.py",
+      "bytes": 1999,
+      "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\reader\\dependencies\\save_fields.py",
+      "bytes": 2236,
+      "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\reader\\read_actual_checkpoint.py",
+      "bytes": 13860,
+      "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\REPORT-zh.md",
+      "bytes": 1417,
+      "sha256": "634a0a4e5b3bd8472513ed441dd48e3a1c5cc48c56ba58d1d2e2b3011045d1ec"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\REPORT.json",
+      "bytes": 3748,
+      "sha256": "4846d30c937881b47820c5682a276b170eee4f62a29ee007eeb274a4ec10f2df"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\REQUEST.actual.json",
+      "bytes": 1873,
+      "sha256": "208b7200065693dc24bbabf9fe18dca708eb22fe47d7ad60e98df8011dbbf560"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\SEALED.json",
+      "bytes": 752,
+      "sha256": "c03e2e181ef522ad59e4f814652d6c604e396bd4d630ae66eee45a62eb284573"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-first-release-lineage-independent-review-20261005-001\\FAILURE.json",
+      "bytes": 10852,
+      "sha256": "59049f96602b537dc2160d41974ba53ccce6b395bb65147fb21c755fcf0c7236"
+    },
+    {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ordinary_interaction_contract.py",
+      "bytes": 23762,
+      "sha256": "e0a96aa39626df166270d3d5467a8e4d57cec77d7577cebcced03983feba5fa3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-first-consumption004-independent-review-20261005-002\\INDEX.json",
+      "bytes": 401,
+      "sha256": "49da23f7b82b6cc6f47272efd5f5652faa3b0143f99a74f2c17aaf9828bcb8a3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-first-consumption004-independent-review-20261005-002\\REPORT.json",
+      "bytes": 7715,
+      "sha256": "3a8164ae966d6ca167d4be3873442600113e3a3b62300b984ca08a4062cf450a"
+    }
+  ]
+}

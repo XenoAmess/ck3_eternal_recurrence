@@ -1,0 +1,233 @@
+from pathlib import Path
+from datetime import datetime, timezone
+import hashlib
+import json
+
+BASE = Path('C:/workspace/ck3_lyd_runtime_20261004')
+OUT = BASE / 'r10-test-report-draft-20261005-001'
+HEAD = 'd0f8fa3b9d444828759443aa018bfd7ad31b398d'
+RUN = BASE / 'live-attempt-010'
+RELATIVE_REFS = [
+    'r10-root-head-export-20261005-001/REPORT.json',
+    'r10-full-runtime-independent-review-20261005-001/review-package-002/INDEX.json',
+    'r10-static-sdk-metadata-20261005-001/RESULT.json',
+    'r10-static-sdk-metadata-20261005-001/ACTUAL-profile-all-tools.json',
+    'r10-fixture-source-rebind-20261005-001/REPORT.json',
+    'r10-fixture-source-rebind-20261005-001/fixtures-package/STATIC-CONTEXT.json',
+    'r10-fixture-source-rebind-20261005-001/fixtures-package/MOUNT-MANIFEST.json',
+    'r10-source007-qualified-delivery-20261005-001/REPORT.json',
+    'r10-source007-qualified-delivery-20261005-001/INDEX.json',
+    'r10-actual-release-build-20261005-001/RESULT.json',
+    'r10-actual-release-build-20261005-001/INDEX.json',
+    'r10-release-defender-receipt-addendum-20261005-001/ADDENDUM.json',
+    'r10-root-fixture-cold-request-20261005-002/REQUEST.actual.json',
+    'r10-root-cold-check-only-20261005-001/RESULT.json',
+    'r10-root-cold-check-only-20261005-001/stdout.bin',
+    'r10-root-cold-check-only-20261005-002/RESULT.json',
+    'r10-root-cold-check-only-20261005-002/PRIOR-ARGV-REJECTION.json',
+    'live-attempt-010/COLD-MATERIALIZED.json',
+    'live-attempt-010/INPUTS.json',
+    'live-attempt-010/source-clean-readback.json',
+    'live-attempt-010/run-allocation-001/LAUNCH-COMMAND.json',
+    'live-attempt-010/run-allocation-001/LAUNCH-RESULT.json',
+    'live-attempt-010/run-allocation-001/launch-stderr.bin',
+    'live-attempt-010/root-launch-002/RESULT.json',
+    'live-attempt-010/root-launch-003/RESULT.json',
+    'live-attempt-010/launch.json',
+    'live-attempt-010/root-launch-003/process-readback.json',
+    'r10-steam-offline-fresh-frame-20261005-003/offline-review.json',
+    'live-attempt-010/root-profile-freezer-invocation-001/RESULT.json',
+    'live-attempt-010/root-profile-freezer-invocation-001/stdout.txt',
+    'live-attempt-010/root-profile-request-002/native-profile-fresh-001/native-profile.json',
+    'live-attempt-010/root-profile-request-002/native-profile-fresh-001/guard-profile.json',
+    'r10-log-and-save-readback-preparation-20261005-001/partial-log-review-001/REPORT.json',
+    'r10-log-and-save-readback-preparation-20261005-001/partial-log-review-001/INDEX.json',
+    'r10-practice-fixture-compatibility-review-20261005-001/REPORT-zh.md',
+    'r10-repeated-join-flow-20261005-001/INDEX.json',
+    'root-r10-keeper-preparation-20261005-001/SOURCE-BINDING.json',
+    'root-r10-keeper-preparation-20261005-001/KEEPER-PROCESS.json',
+    'ci-d0f8fa3b9-20261005-001/REPORT.json',
+    'ci-d0f8fa3b9-20261005-001/INDEX.json',
+    'ci-d0f8fa3b9-20261005-001/failure-focused-010/INDEX.json',
+    'c3-ci-docs-neutral-name-candidate-20261005-001/ROOT-APPLY-INPUTS.json',
+    'c3-ci-docs-neutral-name-candidate-20261005-001/INDEX.json',
+]
+
+
+def sha(data):
+    return hashlib.sha256(data).hexdigest()
+
+
+def write_new(path, data):
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open('xb') as stream:
+        stream.write(data)
+
+
+def dump_new(path, value):
+    write_new(path, (json.dumps(value, ensure_ascii=False, indent=2) + '\n').encode('utf-8'))
+
+
+def read_json(relative):
+    return json.loads((BASE / relative).read_bytes().decode('utf-8-sig'))
+
+
+if OUT.exists():
+    raise SystemExit('Refusing to overwrite an existing report revision')
+refs = []
+for relative in RELATIVE_REFS:
+    path = BASE / relative
+    before = path.stat()
+    data = path.read_bytes()
+    after = path.stat()
+    assert (before.st_size, before.st_mtime_ns) == (after.st_size, after.st_mtime_ns), relative
+    refs.append({'path': relative, 'bytes': len(data), 'sha256': sha(data),
+                 'stat_unchanged_during_read': True})
+ref_by_path = {row['path']: row for row in refs}
+materialized = read_json('live-attempt-010/COLD-MATERIALIZED.json')
+launch = read_json('live-attempt-010/root-launch-003/RESULT.json')
+profile = read_json('live-attempt-010/root-profile-request-002/native-profile-fresh-001/native-profile.json')
+profile_stdout = json.loads((RUN / 'root-profile-freezer-invocation-001/stdout.txt').read_bytes().decode('utf-8-sig'))
+source_clean = read_json('live-attempt-010/source-clean-readback.json')
+assert launch['source_revision'] == HEAD
+assert launch['pid'] == 13436 and launch['process_create_time'] == 1791196395.7422996
+assert profile_stdout['observation']['hwnd'] == 16385582
+assert source_clean['before'] == source_clean['after'] and source_clean['after']['status'] == ''
+assert len(profile) == 9 and 'normal_exit_source_inventory' not in profile
+assert materialized['baseline']['sha256'] == '2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539'
+matrix = [
+    {'area': 'preflight', 'status': 'ACTUAL_FRESH_OFFLINE_REVIEW_AND_CHECK_ONLY_PASS_WITH_OLD_REFUSALS_RETAINED',
+     'business_status': 'NOT_RUN'},
+    {'area': 'source', 'status': 'ACTUAL_CLEAN_D0F8_EXPORT_70_PRODUCTION_SOURCE_REVIEW_PASS', 'business_status': 'NOT_RUN'},
+    {'area': 'build', 'status': 'COMPILATION_PASS_OUTER_BUILD_RED_DEFENDER_ADD_FAILED', 'business_status': 'NOT_RUN'},
+    {'area': 'livebaseline', 'status': 'ACTUAL_ONE_GAME_CREATED_ORIGINAL9_PROFILE_FROZEN',
+     'actual_checkpoint': None, 'actual_sdk_result': None, 'independent_business_readback': None},
+    {'area': 'formalrepeat', 'status': 'NOT_RUN', 'JOIN1': None, 'DETACH': None, 'JOIN2': None,
+     'claim_consumption_credit': False, 'release_permit_credit': False, 'fullcycle_credit': False},
+    {'area': 'I3b', 'status': 'NOT_RUN', 'formal_common32_result': None, 'formal_detached_result': None,
+     'actual_HoR_postcondition': None, 'created_head_title': None},
+    {'area': 'C3', 'status': 'NOT_RUN', 'actual_challenger_collection': None,
+     'withdraw_reregister': None, 'two_challenger_isolation': None, 'death_followership': None},
+    {'area': 'practice', 'status': 'NOT_RUN', 'actual_XP_delta': None,
+     'actual_stress_delta': None, 'natural_cooldown_credit': False},
+    {'area': 'I4', 'status': 'STATIC_FIXTURE_READY_NATIVE_NOT_RUN', 'actual_engine_cases': 0},
+    {'area': 'reload', 'status': 'LAUNCH_LOADSAVE_ARG_OBSERVED_BUSINESS_READBACK_NOT_RUN',
+     'actual_loaded_graph': None, 'postbusiness_cold_reload': None},
+    {'area': 'normalexit', 'status': 'NOT_RUN', 'request_receipt': None, 'original_handle_exit': None,
+     'client_close': None, 'keeper_stop_final': None, 'lease_release': None,
+     'source_freeze_release': None, 'lifecycle_closed': False},
+]
+OUT.mkdir()
+dump_new(OUT / 'SOURCE-REFS.json', {'schema': 'lyd.r10.report.actual-source-refs.v1', 'files': refs})
+dump_new(OUT / 'REPORT.json', {
+    'schema': 'lyd.r10.actual-progress-report-draft.v1',
+    'status': 'IN_PROGRESS_NOT_GREEN_BUSINESS_READBACK_PENDING',
+    'revision': 1,
+    'utc': datetime.now(timezone.utc).isoformat(),
+    'source_revision': HEAD,
+    'live_run': 'live-attempt-010',
+    'pid': 13436,
+    'process_create_time': 1791196395.7422996,
+    'hwnd': 16385582,
+    'game_version': '1.20.0.3',
+    'build_id': '25652598',
+    'executable_sha256': '94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6',
+    'launch_utc': launch['utc'],
+    'source_clean_materialization_observed': True,
+    'source_freeze_current_status': 'ROOT_DECLARED_ACTIVE_FIXED_D0F8_POLICY',
+    'source_freeze_release': None,
+    'profile_original_field_count': 9,
+    'normal_exit_inventory_in_original_profile': False,
+    'native_profile_sha256': ref_by_path['live-attempt-010/root-profile-request-002/native-profile-fresh-001/native-profile.json']['sha256'],
+    'guard_profile_sha256': ref_by_path['live-attempt-010/root-profile-request-002/native-profile-fresh-001/guard-profile.json']['sha256'],
+    'profile_freezer_exit_code': 0,
+    'dll': profile['dll'],
+    'injector': profile['injector'],
+    'input_save': materialized['baseline'],
+    'input_save_is_R10_business_readback': False,
+    'matrix': matrix,
+    'compilation_pass': True,
+    'outer_build_exit_code': 1,
+    'defender_error_stage': 'Add-invocation',
+    'defender_calls': 1,
+    'defender_effectiveness_verified': False,
+    'ci_d0f8': {'lyd': 'SUCCESS_159_TESTS_STATIC70_REPRO', 'general': 'FAILURE_TWO_DOCS_REFERENCES',
+                 'overall': 'NOT_GREEN'},
+    'partial_logs': {'scope': 'CAPTURED_PREFIX_ONLY', 'error_events': 578,
+                     'exact_signature_count': 289, 'family': 'I4_FIXTURE_UNUSED_VARIABLE',
+                     'whole_final_credit': False, 'business_credit': False},
+    'draft_author_operations': {'main_write': 0, 'git_calls': 0, 'game_calls': 0,
+                                'pipe_calls': 0, 'bus_mutations': 0, 'tests_or_ci_rerun': 0},
+    'append_policy': 'Every future ROOT actual native/checkpoint/closure fact requires a new report revision; this revision stays immutable',
+})
+TEXT = '''# R10 实机验收进度草稿 001（2026-10-05）
+
+当前状态为 **IN_PROGRESS／NOT_GREEN**。已有实际源码、构建、预检、创建进程及原九字段 profile 冻结回执；独立 observer 尚未收到 R10 actual baseline checkpoint／SDK，业务读回为 NULL。ROOT 当前声明运行中，本稿没有重新探测进程或调用游戏接口，也没有写出 closed、完整通过或最终 whole-log 结论。
+
+本稿只新增外置文件。`SOURCE-REFS.json` 保存本次只读核实的全部引用路径、bytes、SHA-256，`REPORT.json` 保存进度矩阵；后续 ROOT 实际操作及独立读回应形成新的 revision，原失败、原草稿及原 source pin 不覆盖。所有相对路径以 `C:/workspace/ck3_lyd_runtime_20261004` 为根。
+
+## 冻结来源与真实创建
+
+正式 HEAD 为 `d0f8fa3b9d444828759443aa018bfd7ad31b398d`，tree `2b3ae04e724482d8bee753433e98c4e9f8da6896`，product tree `b1ec3878f2508504a42eed13f8c141a330b1e9de`，native tree `789eab5ae1c3015fe210de508fdd730a13bbb8db`。ROOT 导出及 cold materialization 的既有 source-clean 回执分别核到前后同 HEAD／tree 和空 status；本稿只读取这些实际回执，没有执行 Git。ROOT 固定 d0f8 的源码政策门禁仍按运行中状态保留，没有物理 lock flag 或已解除事实可由本稿制造。
+
+stock 为 CK3 1.20.0.3／Steam build 25652598，EXE SHA `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`。正式 production staging 为 70 文件，manifest SHA `8fff14a823c50d2461660676ec3238439027d1a46af5281e5db95af7c9bd945c`，ZIP SHA `50a346a86172b7f4773da627b705b04478ce6554a116dda4226aa3c0f1d8a3eb`。独立 source review002 核全部 70 runtime 和 42 非测试工具输入，相对 R9 clean544 为 18 项 runtime 变化、52 项不变，结论是 SOURCE_ONLY。
+
+cold mount 为 production70、entry7、observer8、I4-single-event31、charter6。实际复制 R9 0058 输入保存 91,530,739 字节，SHA `2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539`，复制前后原件统计与 hash 保持。它是 R10 的加载输入，不能充当 R10 新 baseline 图或新业务 after。charter primitive fixture 不替代正式 I3b 同意链。
+
+`root-launch-003/RESULT.json` 实际记录 10:33:14Z 创建唯一 CK3 PID **13436**，creation **1791196395.7422996**，受管 HWND **16385582**，userdir 为 `live-attempt-010/userdir`，命令含 `-loadsave=lyd_r10_resume_0058`。创建回执为 `GAME_CREATED_REQUIRES_NATIVE_LOAD_READBACK`，当次 native_injected=false、input_sent=false；不能把它解释为 actual loaded map／角色／宗教图已验。
+
+10:47:09Z—10:47:13Z 的实际 profile freezer exit 0，状态 `PROFILE_FROZEN_READ_ONLY`，原九字段 native profile SHA `ebbb3c2d41f25f998551efc479d88fad04ccbdecce7a9c2553b2b5e8057d5f07`，guard SHA `f87f22269f1924aa9e032c8cfe24e35d16bb5567ade0a1c1b0629fc81ab7d961`。它绑定实际 PID／creation／HWND、焦点与新鲜 lease。原 profile 没有 `normal_exit_source_inventory`；后续退出若需要扩展，应另存实际新 profile 和独立证据，不能追改这个原九字段文件。metadata21 是官方 SDK 2.0.0 的实际工具元数据；此静态获取业务 callbacks=0／game calls=0，不等于本局已有 live SDK 会话或业务结果。
+
+## 验收矩阵
+
+| 项目 | 已发生的实际结果 | 此 revision 的业务信用／待填 |
+| --- | --- | --- |
+| preflight | fresh Steam offline003 已由 ROOT 实际审图；新像素／时钟及窗口位移回执绑定。cold check-only002 exit0，明确未创建010、未 materialize、game calls0 | 预检事实成立；旧 appmanifest／argv 拒绝保留，不等于实机业务通过 |
+| source | actual clean d0f8 导出、70 production、完整 runtime 独立审阅、source007 delivery 33 SOURCE_ONLY 条件匹配；fixture static53／I4产品矩阵144为静态 | SOURCE_ONLY；新游戏应用后的图仍 NULL |
+| build | Release DLL／注入器编译通过；一次 Defender Add 登记失败，外层 exit1 | `COMPILATION_PASS` 与 `ACTUAL_RELEASE_BUILD_RED` 同时保留；排除生效 false，不能称构建整包 GREEN |
+| livebaseline | launch003 唯一实际创建13436；原9 profile 实际冻结 exit0 | actual R10 checkpoint、SDK、暂停日期、actor／Faith／Rite／HoR／保护图均 NULL；独立业务 NOT_RUN |
+| formalrepeat | source007 verifier／binder／emitter与正式操作模板准备，未保存本局消费证明 | JOIN1／DETACH／JOIN2／重复整合分裂完整循环 NOT_RUN；claim consumption、release permit 信用均 false |
+| I3b | common32／owned动态Faith正式授权及 guard 已源码实现、有限 AST 检查通过 | 本局完整提名→接受→各派2/3→各存活人类同意→签署→实施 NOT_RUN；实际宗主 title／HoR postcondition NULL |
+| C3 | 实际 stock 准入路径解除常量关闭，teacher 不等于 HoR，真实原语来源已审 | 正式 challenger 登记／撤回／再登记／双 challenger 隔离／death／followership NOT_RUN，actual collection NULL |
+| practice | 14 条依赖原 bytes，五学校及三负例 fixture 兼容范围已审；费用／XP／压力仅是脚本基数 | 本局正式修习、自然冷却、实际 XP／stress／钱包及保护图差额 NOT_RUN／NULL；不能以 source 期望签过 |
+| I4 | 144 项 product-only 预期及单事件 fixture、static context 已准备 | actual engine cases0／NOT_RUN；fixture error 已单列，不作为正常业务信用 |
+| reload | cold launch argv 含实际加载 key，输入保存复制保全 | 本局实际加载图读回 NULL；业务后保存→关闭→冷载及 reconciliation NOT_RUN |
+| normalexit | 原生退出与 observer 工具的源码／构建准备存在 | 本局 request、原 HANDLE exit、client close、keeper FINAL、CAS release、source policy release 均 NULL／NOT_RUN；lifecycle_closed=false |
+
+正式 repeat 不以新连接、新 native revision、ACK／pending、自动接受、脚本结果变量或 request 成功作为消费证明。必须绑定同一 actual process 的 before／after 保存、SDK／native sidecar、同帧 fresh query、精确 claim／packet，以及独立 frozen verifier 的实际闭合 facts，再分别保存 host release 与下一独立意图。R9 的 JOIN／DETACH、UNKNOWN claim 和未执行 JOIN2 不转移到 R10。
+
+I3b 的 36 项是本模组允许的 Rite 集合，不要求动态 Faith 拥有全部 36 项；detached 仍须发起者等于 actual current main HoR。教师、政治提名和 scholar representative 不造原生 HoR。未标记第三方跨 Faith office／sponsor 的通用覆盖仍未证。正式源路径启用不代表 native title creation、callback 后果、保护图或死亡／重载已通过。
+
+practice 的 R9 加载输入中 actor31254 是朱子 Rite169／Faith106 的 actual HoR，仅能在新读回资格下验同校 R20。跨校使用独立 no-head 冷基线并重新绑定；不清理主局 head 来制造资格。显式 seed 冷却或资源重置必须单列 fixture，不能赋予自然180日或五年冷却信用。脚本 XP 基数、stress getter 调整值和最终实际保存差额分别记录，未知值保持 NULL。
+
+## 原始失败与不同层次的结果
+
+- 实际编译生成 DLL 5,846,528 字节，SHA `dc4e4d12a4078e8b3fe38b855071e158675300167341694205ee9db875d54792`；注入器39,936字节，SHA `4c4b302ede99ae7e9c0e8b259ae902406a720e4525cd96e7e351eb27abc0dd2d`。inner MSVC receipt SHA `d79121aae70aed156bb49b786bbe4c1a5e474b475250bf67f1296240364be6ca`。整体 build exit1 的具体原因为针对新注入器的一次 `MSFT_MpPreference.Add` 设置调用失败，error_stage=`Add-invocation`、return值不可用、effectiveness未证。原中文“读取失败”已由独立 addendum澄清，原 bytes不改；没有重试构建或系统设置信用。
+- cold check-only001因实际 appmanifest bytes与冻结输入不符而拒绝：exit1、game calls0、未 materialize。002使用更新请求后通过；另有错误 CLI request SHA 的 prior refusal，只保存实际可得字段，不构造缺失 raw stdout。
+- launch001实际 exit1：`--task-bus-sha256` 使用大写 SHA，而 helper要求小写格式，在创建游戏前抛出 `Actual final source bus SHA required`。原命令、stderr和结果位于 `run-allocation-001`；没有不存在的 root-launch001业务回执或进程成功事实。
+- launch002实际 RED／exit1：`Release target receipt differs from actual native input: dll`。后继003修正 receipt target path归一化；002记录 game_create_attempted=false、game_started=false、native_injected=false，预检未 fork游戏。失败保留，不将其归为 DLL 编译失败或游戏 crash。
+- launch003实际创建游戏及 freezer成功属于新回执，不覆盖001／002。原新profile冻结操作自身 input_sent=false／game_started=false／bridge_injected=false，不制造另一次游戏创建或 DLL 已注入事实。
+
+## 当前日志与正式 CI
+
+已有16文件冷载日志前缀快照的 error.log 为138,556字节，SHA `2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a`。独立完整签名分类共578条、289个签名，全部精确匹配 I4 fixture 的 `jomini_effect.cpp:1146` unused-variable诊断；该字节前缀内其他错误签名为空，doctrine-preview dereference、invalid-reference、retirement／head-title候选为0。状态仍为 **PARTIAL_PREFIX_OBSERVATION_NO_COMPLETE_GREEN**：不能证明尚未发生的预览／退休业务，不把当前前缀写成全局最终日志无错。以后日志另建快照，最终 whole case仍NULL。
+
+exact d0f8礼与道 CI run37293381416／job111708826451实际success，159个单测、static70 runtime／902 keys／70 events及70文件可复现构建通过，C2 preview62 cases／5 mutants为SOURCE_L0。通用 run37293381666／job111708827682在Python-only规则第43步失败，exact daily339／weekly245历史禁用 shell 名称两项 violation、exit1；整体 CI未绿。negative fixture预期输出不混作这次失败。
+
+两文档最小中性称谓候选已冻结在 `c3-ci-docs-neutral-name-candidate-20261005-001`：INDEX `926de542632a022d065e4cef804a159941c8e1db8485c2db910f7d9643c05384`。其beforeSHA与CIcollector只读 exact d0f8两原件匹配；尚未合入当前冻结源，也未复跑CI。ROOT应在R10真正闭合后核beforeSHA并合回，再保存新正式CI，不提前称通用成功。
+
+本稿的后继revision必须逐项填写实际 baseline／业务 before-after／独立读回／完整日志及正常退出引用。未发生的项目继续NOT_RUN／NULL；成功的源码或生命周期单项不自动赋予完整业务GREEN。
+'''
+write_new(OUT / 'REPORT.md', TEXT.encode('utf-8'))
+write_new(OUT / 'source' / Path(__file__).name, Path(__file__).read_bytes())
+files = []
+for path in sorted(OUT.rglob('*')):
+    if path.is_file():
+        data = path.read_bytes()
+        files.append({'path': path.relative_to(OUT).as_posix(), 'bytes': len(data), 'sha256': sha(data)})
+dump_new(OUT / 'INDEX.json', {'schema': 'lyd.r10.external-report-draft-index.v1', 'files': files})
+print(json.dumps({'status': 'R10_REPORT_DRAFT_001_SEALED_NOT_GREEN', 'path': str(OUT),
+                  'reference_count': len(refs), 'indexed_files': len(files),
+                  'report_md_sha256': sha((OUT / 'REPORT.md').read_bytes()),
+                  'report_json_sha256': sha((OUT / 'REPORT.json').read_bytes()),
+                  'index_sha256': sha((OUT / 'INDEX.json').read_bytes())}, ensure_ascii=False))

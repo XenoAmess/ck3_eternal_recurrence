@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 79,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0080-third-withdraw.request.json",
+  "request_sha256": "a7d44a066d6a9a067f4365cb8e1df3fd6effe2ebafe35bef9961336d953d2c92",
+  "started_at_utc": "2026-10-05T13:34:27.448995+00:00"
+}

@@ -1,0 +1,11 @@
+{
+  "status": "INVOCATION_COMPLETED",
+  "exit_code": 0,
+  "stdout_sha256": "a42e5572b1138b1e9eb223a8a509b3d29e591e1714d9c7a64b27193f286a980a",
+  "stderr_sha256": "68af393c6113152bb46b3ef013e0ff7d99d39400629f76cb2f39cb339e3721d2",
+  "schema": "lyd.r10.root-structured-argv-invocation.v1",
+  "argv_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_player_control_actual_tests_20261006_001.argv.json",
+  "argv_source_sha256": "bb768c49a465eeb4af860bf3e2d83378dd1ec56f15c1c8d5dca50b91fecf53ea",
+  "started_utc": "2026-10-05T19:06:00.827281+00:00",
+  "completed_utc": "2026-10-05T19:06:09.166373+00:00"
+}

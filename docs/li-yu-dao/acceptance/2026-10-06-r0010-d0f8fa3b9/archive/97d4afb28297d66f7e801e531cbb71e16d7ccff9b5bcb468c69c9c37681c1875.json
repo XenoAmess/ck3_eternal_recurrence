@@ -1,0 +1,2113 @@
+{
+  "schema": "lyd.r10.actual-save-pair-observation-diff.v1",
+  "status": "ACTUAL_PAIR_DIFF_EXPECTATIONS_UNASSESSED",
+  "before": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-post-cancel-readback-20261006-001\\actual-save-001\\REPORT.json",
+    "bytes": 72885,
+    "sha256": "18fd92e1969b6fe85718e60b7095978d5240ee5fe67255ea6eea6873848114c0"
+  },
+  "after": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\actual-save-001\\REPORT.json",
+    "bytes": 73106,
+    "sha256": "9715acfffe6baf21d09e6acf1e40c574889d8330b12c3112e1df597f8de0d82c"
+  },
+  "before_phase": "actual-R10-seventh-post-explicit-cancel-after-ACK-result-undetermined",
+  "after_phase": "actual-R10-eighth-JOIN-final-confirm-and-ACK-post-business-result",
+  "actual_actor_id": 31254,
+  "source_head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "saved_date_before": "1066.10.1",
+  "saved_date_after": "1066.10.1",
+  "same_saved_date": true,
+  "native_date_raw_and_nonce_receipt_binding": null,
+  "wallet_actual_Decimal_delta": {
+    "gold": "-300",
+    "piety": "-1500",
+    "prestige": "0"
+  },
+  "saved_stress_actual_Decimal_delta": null,
+  "saved_XP_actual_Decimal_delta": "0",
+  "stress_XP_expected": null,
+  "actor_roles_before": {
+    "current_rite": "169",
+    "current_faith": "106",
+    "current_HoR": "31254",
+    "current_HoF": "4294967295",
+    "current_faith_main": "169"
+  },
+  "actor_roles_after": {
+    "current_rite": "169",
+    "current_faith": "104",
+    "current_HoR": "31254",
+    "current_HoF": "4294967295",
+    "current_faith_main": "159"
+  },
+  "nonce_serial_quorum_and_round_variables_changed": {
+    "lyd_c2_affected_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_affected_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_affected_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_callback_nonce": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_callback_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_callback_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_elector_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_elector_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_elector_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_player_nonce": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_player_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_source_yes": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "200000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "200000"
+          }
+        ],
+        "number": "2",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "200000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_target_yes": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_vote_nonce": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_vote_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_vote_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_vote_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_vote_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_vote_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "all_actor_LYD_variables_changed": {
+    "lyd_c2_affected_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_affected_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_affected_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_callback_nonce": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_callback_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_callback_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_completed_joins": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_completed_joins"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "200000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "200000"
+          }
+        ],
+        "number": "2",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_completed_joins"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "200000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_elector_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_elector_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_elector_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_mandated_receivers": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_mandated_receivers"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_mandated_receivers"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_player_nonce": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_player_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_result": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "300000"
+          }
+        ],
+        "number": "3",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_result"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_result"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_source_signed": {
+      "before": null,
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_signed"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_source_yes": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "200000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "200000"
+          }
+        ],
+        "number": "2",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "200000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_target_requested": {
+      "before": null,
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_requested"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_target_signed": {
+      "before": null,
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_signed"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_target_yes": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_vote_nonce": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_vote_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_vote_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_vote_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1300000"
+          }
+        ],
+        "number": "13",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_vote_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "1400000"
+          }
+        ],
+        "number": "14",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_vote_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "1400000"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "all_actor_LYD_lists_changed": {},
+  "cooldown_before": {
+    "lyd_school_cooldown": {
+      "present": true,
+      "tick": "349",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_school_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "349"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_study_cooldown": null
+  },
+  "cooldown_after": {
+    "lyd_school_cooldown": {
+      "present": true,
+      "tick": "349",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_school_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "349"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_study_cooldown": null
+  },
+  "political7": {
+    "2230": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2231": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2232": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2235": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2262": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2263": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2264": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    }
+  },
+  "domain_ids_before": [
+    "2230",
+    "2231",
+    "2262",
+    "2232",
+    "2263",
+    "2235",
+    "2264"
+  ],
+  "domain_ids_after": [
+    "2230",
+    "2231",
+    "2262",
+    "2232",
+    "2263",
+    "2235",
+    "2264"
+  ],
+  "actor_landed_full_branch_equal": true,
+  "selected_character_protection": {
+    "31254": {
+      "before_present": true,
+      "after_present": true,
+      "protected_top_equal": true,
+      "protected_alive_equal": true,
+      "current_rite_before": "169",
+      "current_rite_after": "169"
+    },
+    "65865": {
+      "before_present": true,
+      "after_present": true,
+      "protected_top_equal": true,
+      "protected_alive_equal": true,
+      "current_rite_before": "169",
+      "current_rite_after": "169"
+    },
+    "65866": {
+      "before_present": true,
+      "after_present": true,
+      "protected_top_equal": true,
+      "protected_alive_equal": true,
+      "current_rite_before": "159",
+      "current_rite_after": "159"
+    }
+  },
+  "related_Faith_Rite_changes": {
+    "faiths": [
+      {
+        "id": "106",
+        "before_present": true,
+        "after_present": true,
+        "before_AST_sha256": "c7cb917e5c498e26abb35022846f68fe7e2d55018221db1a35a5c90e55e67d32",
+        "after_AST_sha256": "d661f44faaba71e788865d6659ae35e35d60417ba93390d0afac000b31cd4e02",
+        "heads_before": {
+          "head_of_rite": null,
+          "religious_head": "4294967295",
+          "religious_head_title": null
+        },
+        "heads_after": {
+          "head_of_rite": null,
+          "religious_head": "4294967295",
+          "religious_head_title": null
+        },
+        "tenet_doctrine_rows_equal": true
+      }
+    ],
+    "rites": [
+      {
+        "id": "159",
+        "before_present": true,
+        "after_present": true,
+        "before_AST_sha256": "164ee3b7b895c8a97051465ecf11d7b696425f17e11dd07d8bb0c8005f32f9ea",
+        "after_AST_sha256": "666eede6c0d953eb69ad3934d3b6069d9384cf7676156051c8629350baeffb0e",
+        "heads_before": {
+          "head_of_rite": "4294967295",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "heads_after": {
+          "head_of_rite": "4294967295",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "tenet_doctrine_rows_equal": true
+      },
+      {
+        "id": "169",
+        "before_present": true,
+        "after_present": true,
+        "before_AST_sha256": "a68938109f777e31f2bea788cc34dcf19facc58ed2c3bc7c4ca94c88a700f0df",
+        "after_AST_sha256": "bad5daa4c40a8dd7251cb11464f31903f1bb212785634507f25434e5a6f8c4c4",
+        "heads_before": {
+          "head_of_rite": "31254",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "heads_after": {
+          "head_of_rite": "31254",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "tenet_doctrine_rows_equal": true
+      },
+      {
+        "id": "187",
+        "before_present": false,
+        "after_present": true,
+        "before_AST_sha256": null,
+        "after_AST_sha256": "a34d98434bc9edae3e53eca4b9ec7d380f520682db44fd7d877a60d85c0fdf44",
+        "heads_before": null,
+        "heads_after": {
+          "head_of_rite": "4294967295",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "tenet_doctrine_rows_equal": null
+      }
+    ]
+  },
+  "all_Faith_main_links_changed": {
+    "106": {
+      "before": "169",
+      "after": "187"
+    }
+  },
+  "all_Rite_parent_links_changed": {
+    "169": {
+      "before": "106",
+      "after": "104"
+    },
+    "187": {
+      "before": null,
+      "after": "106"
+    }
+  },
+  "faith_full_raw_hash_equal": false,
+  "rite_full_raw_hash_equal": false,
+  "fee_expected_from_actual_source_option_effect": null,
+  "fee_or_nonce_business_proof": "Requires ROOT supplied actual selected branch + same-frame SDK/native source/date/nonce evidence; this tool only reports exact saved diffs",
+  "no_game_MCP_pipe_desktop_bus_Git_main": true,
+  "business_PASS": false
+}

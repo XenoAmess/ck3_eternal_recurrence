@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0200-reset-actual-result-ack.request.json",
+  "request_id": "r10-0200-reset-actual-result-ack",
+  "sha256": "3149dd7033fea0a40b73c034eb7e9a674d1a33b610d05ea53bab27760fb89452",
+  "contacted_game": false
+}

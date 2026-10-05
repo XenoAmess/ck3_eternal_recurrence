@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0239-detach-second-result-query.request.json",
+  "request_id": "r10-0239-detach-second-result-query",
+  "sha256": "28f67cfc2aeafcc6ac34ef7524875518b775d5eb3193bccd7f19632a7c1fb5db",
+  "contacted_game": false
+}

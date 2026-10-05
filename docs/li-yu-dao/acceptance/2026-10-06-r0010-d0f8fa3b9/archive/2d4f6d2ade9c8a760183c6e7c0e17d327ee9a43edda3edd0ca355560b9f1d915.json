@@ -1,0 +1,82 @@
+{
+  "records": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-open-join-readback-20261006-001\\prepare_request.py",
+        "bytes": 2254,
+        "sha256": "339a5fe66883ac6f109b8a29372e720fab247a4f7c14e0d7b1e53131aa0d7925"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\prepare_request.py",
+        "bytes": 2256,
+        "sha256": "8d8b23c685faba12e35f9373d0da8774f70635e312184c42175048ed1f6372e6"
+      },
+      "parameter_changes": {
+        "r10-actual-sixth-post-cancel-readback-20261006-001": "r10-actual-seventh-post-cancel-readback-20261006-001",
+        "0153-seventh-open-save": "0171-eighth-open-save",
+        "91541371": "91542565",
+        "a984d4f1d5e4365c2d1812c21c7a3ef4adc5ec8f98afaee989b61e91ab96bb2a": "04b22b41900f89b73f75d1295b12d4acd8021dd7081eab0bfdae9f813062c487",
+        "0153-": "0171-",
+        "6235331": "6933331",
+        "1346a75473b2ee7a2b0e7b8a94d23e8286eaff41892bac5b35acadda562b8532": "54c200e59829320a26f01f69b9727bf2c3e6e370e13d589525e9a5c482cd969b",
+        "seventh-open": "eighth-open",
+        "SDK153": "SDK171",
+        "seventh-formal": "eighth-formal",
+        "after-sixth-cancellation": "after-seventh-cancellation",
+        "sixth_cancel_before149": "seventh_cancel_before167"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-open-join-readback-20261006-001\\collect_controls.py",
+        "bytes": 4233,
+        "sha256": "ce8980cc43772e61581974df9d4dc10d7f276b0c36e8dbc47097611b8123b905"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\collect_controls.py",
+        "bytes": 4296,
+        "sha256": "cf0fb2b692bac2349734902fdfe8f85c59ad10f396d3b84338c88667fed70a8e"
+      },
+      "parameter_changes": {
+        "seventh-player-options": "eighth-player-options",
+        "2f10fcafa46b99d6fab71adeb4a5ad8b1ae3571c50c89ff745465c75c5977604": "c3c294d740e1532649a3388d646bda1c5f658cbc1fb60aee5bf6934def177b6b",
+        "==154": "==172",
+        "typed154": "typed172",
+        "0151-": "0169-",
+        "0152-": "0170-",
+        "0154-": "0172-",
+        "21721efc900d1b41b2c01664daeb5b0c9d1e6771f581c01a159704193b1ea40c": "2af6ac611ba6f593cfefb69310b81c8f4660a78b2e5dc82f6e920d99b3980930",
+        "4d8956229d7f369a1884e0c6a9bdbe92c44522a80741d861f62418b67f630c71": "38252c3e782ed63afb33630a200c7565d7412652b3288199a4e0d0fe91ac4b96",
+        "Fresh151": "Fresh169",
+        "Initiate152": "Initiate170",
+        "Typed154": "Typed172",
+        "claim['claim_ordinal']==6": "claim['claim_ordinal']==7",
+        "parent['claim_ordinal']==5": "parent['claim_ordinal']==6",
+        "ordinal6": "ordinal7",
+        "parent_ordinal5": "parent_ordinal6",
+        "ordinary-interaction-ce6f9c27e43f4d1c9057fb7746fcb815": "ordinary-interaction-cf364b502ddb47e58fb8ccbf5832a44f",
+        "before149_frame70_native69": "before167_frame79_native78",
+        "claim['binding']['revision']==70": "claim['binding']['revision']==79",
+        "claim['binding']['native_revision']==69": "claim['binding']['native_revision']==78",
+        "seventh-lineage": "eighth-lineage",
+        "seventh-open": "eighth-open",
+        "save153": "save171"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-open-join-readback-20261006-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      },
+      "parameter_changes": {}
+    }
+  ],
+  "old_save_reparsed": false,
+  "old_package_writes": false
+}

@@ -1,0 +1,133 @@
+{
+  "schema": "lyd.actual-source-tests.v1",
+  "scope": "Offline source tests and file observations; no DLL or game credit",
+  "original_failed_attempts_preserved": true,
+  "files": [
+    {
+      "path": "root-player-control-main-unit-tests-20261006-001/argv.json",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-001\\argv.json",
+      "bytes": 240,
+      "sha256": "76ba187ef8dc32fbafd0e4efb762fdd89542b4edc37bbb99511a18b449f53841"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-001/RESULT.json",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-001\\RESULT.json",
+      "bytes": 617,
+      "sha256": "2add5365e06cfbb6b1c8881150d31bd4bfe98fe07ccbc94cb4f8f72ee5ffc490"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-001/stdout.txt",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-001\\stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-001/stderr.txt",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-001\\stderr.txt",
+      "bytes": 15735,
+      "sha256": "73ae08e911af5013ba86ed8f160402b6e383b17b388c6b935298f222e847dc30"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-002/argv.json",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-002\\argv.json",
+      "bytes": 240,
+      "sha256": "76ba187ef8dc32fbafd0e4efb762fdd89542b4edc37bbb99511a18b449f53841"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-002/RESULT.json",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-002\\RESULT.json",
+      "bytes": 617,
+      "sha256": "959387742883d6ff016ec78a047e086c1368ff1d71a1dd78c067990bf4e6f72a"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-002/stdout.txt",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-002\\stdout.txt",
+      "bytes": 108,
+      "sha256": "8c4f364516309affaf2b4eb22b287fefc666f28c4503d3f5178fe8d05daa1217"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-002/stderr.txt",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-002\\stderr.txt",
+      "bytes": 26506,
+      "sha256": "f10e91f60ee1072fe70ccfae1058a2722d2860e765c88c0beda15cd315a5174c"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-003/argv.json",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-003\\argv.json",
+      "bytes": 240,
+      "sha256": "76ba187ef8dc32fbafd0e4efb762fdd89542b4edc37bbb99511a18b449f53841"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-003/RESULT.json",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-003\\RESULT.json",
+      "bytes": 617,
+      "sha256": "80dd8d7e18dc5cfa8904f11f60ad0809d521840bff60a144201bfad1df143360"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-003/stdout.txt",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-003\\stdout.txt",
+      "bytes": 108,
+      "sha256": "11cf8b3c4fbcae0322e17837c252a5561a1052a32861f227f9992741f2b45b0d"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-003/stderr.txt",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-003\\stderr.txt",
+      "bytes": 14508,
+      "sha256": "f4c8281382b05fe91d2b409af6430231728e9329b991185f3cb91f3ca46f0804"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-004/argv.json",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-004\\argv.json",
+      "bytes": 240,
+      "sha256": "76ba187ef8dc32fbafd0e4efb762fdd89542b4edc37bbb99511a18b449f53841"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-004/RESULT.json",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-004\\RESULT.json",
+      "bytes": 617,
+      "sha256": "6a1ab9d94ea1bc501f9c0d3d10d6b908a9501569bc5776816555f31dc5a732c7"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-004/stdout.txt",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-004\\stdout.txt",
+      "bytes": 108,
+      "sha256": "a42e5572b1138b1e9eb223a8a509b3d29e591e1714d9c7a64b27193f286a980a"
+    },
+    {
+      "path": "root-player-control-main-unit-tests-20261006-004/stderr.txt",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-main-unit-tests-20261006-004\\stderr.txt",
+      "bytes": 144,
+      "sha256": "68af393c6113152bb46b3ef013e0ff7d99d39400629f76cb2f39cb339e3721d2"
+    },
+    {
+      "path": "root-player-control-new-long-path-tests-20261006-001/argv.json",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-new-long-path-tests-20261006-001\\argv.json",
+      "bytes": 252,
+      "sha256": "a6f9788c692ad7a890aa16f4126ad64cd2a39b8fb5201fab790cab24d4794194"
+    },
+    {
+      "path": "root-player-control-new-long-path-tests-20261006-001/RESULT.json",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-new-long-path-tests-20261006-001\\RESULT.json",
+      "bytes": 624,
+      "sha256": "e8155edf1a51dd0e190b3c19fba51200b0bbf49c039491dbf47914a239226cd4"
+    },
+    {
+      "path": "root-player-control-new-long-path-tests-20261006-001/stdout.txt",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-new-long-path-tests-20261006-001\\stdout.txt",
+      "bytes": 206,
+      "sha256": "efdf192a08f3a2ab564a729db705b875cd2c955d788fa86d9db812758e2479c5"
+    },
+    {
+      "path": "root-player-control-new-long-path-tests-20261006-001/stderr.txt",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-player-control-new-long-path-tests-20261006-001\\stderr.txt",
+      "bytes": 105,
+      "sha256": "19b1b0a5d0b3ce5a7f4292ffa3421cf4be3eb8f3c2ae7cf6b872677fb9eb5807"
+    },
+    {
+      "path": "root-cache-gap-long-path-readback-20261006-001.json",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-cache-gap-long-path-readback-20261006-001.json",
+      "bytes": 7834,
+      "sha256": "47a9269f0db01dc085aff7b4f51b87ceee952b6fccd46d964e8f078b5cfd0312"
+    }
+  ]
+}

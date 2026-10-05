@@ -1,0 +1,186 @@
+﻿# GENERATED FILE: edit tools/leadership_templates and run tools/gen_runtime.py.
+lyd_c3_player_actor_trigger = {
+    is_ai = no
+    is_alive = yes
+    is_adult = yes
+    is_landed = yes
+    NOT = { has_trait = incapable }
+    religion = religion:confucianism_religion
+    has_character_flag = lyd_enabled
+    lyd_member_rite_trigger = yes
+}
+# Character ROOT. A runtime permission, not an offline/native acceptance receipt.
+# The legitimate office must already exist; creating a challenger never appoints
+# its holder to that office. No fixture flag or primitive-only receipt admits it.
+lyd_c3_native_challenger_admitted_trigger = {
+    lyd_c3_player_actor_trigger = yes
+    lyd_c3_native_challenger_eligible_trigger = yes
+    NOT = { has_variable = lyd_c3_active }
+    NOT = { has_variable = lyd_c3_claim_title }
+    faith = {
+        NOT = { any_faith_rite = { OR = { has_variable = lyd_c2_proposal_owner has_variable = lyd_c3_proposal_owner has_variable = lyd_i3b_owner } } }
+    }
+}
+lyd_c3_native_challenger_eligible_trigger = {
+    exists = faith.religious_head
+    exists = faith.religious_head_title
+    trigger_if = { limit = { exists = faith.religious_head exists = faith.religious_head_title exists = faith.religious_head_title.holder }
+        faith.religious_head = { is_alive = yes faith = root.faith }
+        faith.religious_head_title = { holder = root.faith.religious_head }
+        this != faith.religious_head
+    }
+    trigger_else = { always = no }
+    # Stock Character/Faith collection queries: preserve existing foreign roles.
+    pam_is_antipope_trigger = no
+    pam_is_antipope_sponsor_trigger = no
+    highest_held_title_tier >= tier_duchy
+    exists = capital_county
+    faith = { OR = { has_doctrine_parameter = temporal_head_of_faith has_doctrine_parameter = spiritual_head_of_faith } }
+    rite = { NOT = { rite_has_parameter = no_head_of_faith } rite_has_allowed_gender_for_clergy = root }
+}
+lyd_c3_claim_current_trigger = {
+    is_alive = yes is_adult = yes
+    has_character_flag = lyd_c3_claimant
+    has_variable = lyd_c3_claim_faith
+    has_variable = lyd_c3_claim_rite
+    faith = var:lyd_c3_claim_faith
+    rite = var:lyd_c3_claim_rite
+}
+# Faith ROOT. Foreign title bindings are read, never transferred or destroyed.
+lyd_c3_owned_current_head_trigger = {
+    exists = religious_head_title
+    trigger_if = { limit = { exists = religious_head_title }
+        religious_head_title = {
+            trigger_if = { limit = { has_variable = lyd_c2_owned_head_title has_variable = lyd_c2_owner_faith }
+                var:lyd_c2_owned_head_title = 1
+                var:lyd_c2_owner_faith = prev
+            }
+            trigger_else = { always = no }
+        }
+    }
+    trigger_else = { always = no }
+}
+# Character ROOT; ACTOR is an absolute character reference (root in decisions,
+# saved actor in response events). No saved scope is assumed by UI evaluation.
+lyd_c3_round_current_trigger = {
+    lyd_c3_player_actor_trigger = yes
+    has_variable = lyd_c3_active
+    faith = var:lyd_c3_round_faith
+    rite = var:lyd_c3_round_main
+    faith.main_rite = var:lyd_c3_round_main
+    faith = { has_doctrine_parameter = temporal_head_of_faith }
+    lyd_c3_claim_current_trigger = yes
+    # Native temporary trigger scopes; no prev.prev global-link chains.
+    $ACTOR$ = { save_temporary_scope_as = lyd_c3_checked_actor }
+    scope:lyd_c3_checked_actor.var:lyd_c3_round_faith = { save_temporary_scope_as = lyd_c3_checked_faith }
+    trigger_if = {
+        limit = { has_variable = lyd_c3_round_head }
+        exists = faith.religious_head
+        trigger_if = { limit = { exists = faith.religious_head }
+            faith.religious_head = var:lyd_c3_round_head
+            var:lyd_c3_round_head = { is_alive = yes faith = $ACTOR$.var:lyd_c3_round_faith }
+        }
+        trigger_else = { always = no }
+    }
+    trigger_else = { NOT = { exists = faith.religious_head } }
+    trigger_if = {
+        limit = { has_variable = lyd_c3_round_title }
+        exists = faith.religious_head_title
+        trigger_if = { limit = { exists = faith.religious_head_title }
+            faith.religious_head_title = var:lyd_c3_round_title
+        }
+        trigger_else = { always = no }
+    }
+    trigger_else = { NOT = { exists = faith.religious_head_title } }
+    NOT = { any_in_list = {
+        variable = lyd_c3_rites
+        save_temporary_scope_as = lyd_c3_checked_rite
+        NOT = {
+            faith = $ACTOR$.var:lyd_c3_round_faith
+            var:lyd_c3_proposal_owner = $ACTOR$
+            var:lyd_c3_lock_serial = $ACTOR$.var:lyd_c3_serial
+            NOT = { has_variable = lyd_c2_proposal_owner }
+            NOT = { has_variable = lyd_i3b_owner }
+            OR = {
+                AND = {
+                    var:lyd_c3_delegate_required = 1
+                    exists = head_of_rite
+                    trigger_if = { limit = { has_variable = lyd_c3_delegate exists = head_of_rite }
+                        head_of_rite = var:lyd_c3_delegate
+                        var:lyd_c3_delegate = { is_alive = yes is_adult = yes rite = scope:lyd_c3_checked_rite NOT = { has_trait = incapable } }
+                    }
+                    trigger_else = { always = no }
+                }
+                AND = {
+                    var:lyd_c3_delegate_required = 0
+                    rite_counties = 0
+                    scope:lyd_c3_checked_faith = { NOT = { any_faith_character = { is_alive = yes rite = scope:lyd_c3_checked_rite } } }
+                }
+            }
+        }
+    } }
+    # A newly added/removed rite or new player invalidates the old consent roster.
+    var:lyd_c3_round_faith = {
+        NOT = { any_faith_rite = { NOT = { var:lyd_c3_proposal_owner = $ACTOR$ var:lyd_c3_lock_serial = $ACTOR$.var:lyd_c3_serial } } }
+        NOT = { any_faith_character = {
+            is_ai = no is_alive = yes
+            NOT = { var:lyd_c3_affected_owner = $ACTOR$ var:lyd_c3_affected_serial = $ACTOR$.var:lyd_c3_serial }
+        } }
+    }
+    NOT = { any_in_list = {
+        variable = lyd_c3_players
+        NOT = {
+            is_ai = no is_alive = yes
+            faith = $ACTOR$.var:lyd_c3_round_faith
+            rite = var:lyd_c3_affected_rite
+            var:lyd_c3_affected_owner = $ACTOR$
+            var:lyd_c3_affected_serial = $ACTOR$.var:lyd_c3_serial
+        }
+    } }
+}
+lyd_c3_response_context_trigger = {
+    exists = scope:lyd_c3_actor
+    scope:lyd_c3_actor = {
+        lyd_c3_round_current_trigger = { ACTOR = scope:lyd_c3_actor }
+        var:lyd_c3_serial = scope:lyd_c3_event_serial
+    }
+}
+lyd_c3_delegate_context_trigger = {
+    lyd_c3_response_context_trigger = yes
+    exists = scope:lyd_c3_ballot_rite
+    this = scope:lyd_c3_ballot_rite.var:lyd_c3_delegate
+    scope:lyd_c3_ballot_rite = {
+        head_of_rite = prev
+        var:lyd_c3_proposal_owner = scope:lyd_c3_actor
+        var:lyd_c3_lock_serial = scope:lyd_c3_event_serial
+        var:lyd_c3_delegate_yes = 0
+    }
+}
+lyd_c3_player_ballot_context_trigger = {
+    lyd_c3_response_context_trigger = yes
+    is_ai = no is_alive = yes
+    var:lyd_c3_affected_owner = scope:lyd_c3_actor
+    var:lyd_c3_affected_serial = scope:lyd_c3_event_serial
+    NOT = { var:lyd_c3_player_yes = 1 }
+}
+lyd_c3_can_recognize_trigger = {
+    lyd_c3_round_current_trigger = { ACTOR = $ACTOR$ }
+    var:lyd_c3_head_yes = 1
+    NOT = { any_in_list = { variable = lyd_c3_rites var:lyd_c3_delegate_required = 1 NOT = { var:lyd_c3_delegate_yes = 1 } } }
+    NOT = { any_in_list = { variable = lyd_c3_players NOT = { var:lyd_c3_player_yes = 1 } } }
+    OR = { NOT = { exists = faith.religious_head_title } faith = { lyd_c3_owned_current_head_trigger = yes } }
+    rite = { rite_has_allowed_gender_for_clergy = $ACTOR$ }
+}
+lyd_c3_teacher_target_trigger = {
+    is_alive = yes is_adult = yes NOT = { has_trait = incapable }
+    faith = scope:actor.faith
+    learning >= 12
+}
+lyd_c3_rite_represented_trigger = {
+    save_temporary_scope_as = lyd_c3_represented_rite
+    faith = { save_temporary_scope_as = lyd_c3_represented_faith }
+    OR = {
+        AND = { rite_counties = 0 scope:lyd_c3_represented_faith = { NOT = { any_faith_character = { is_alive = yes rite = scope:lyd_c3_represented_rite } } } }
+        AND = { exists = head_of_rite head_of_rite = { is_alive = yes is_adult = yes rite = scope:lyd_c3_represented_rite NOT = { has_trait = incapable } } }
+    }
+}

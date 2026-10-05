@@ -1,0 +1,37 @@
+{
+  "prior_snapshot_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-log-checkpoint108-readonly-review-20261005-001\\raw\\error.log",
+  "prior_INDEX_sha256": "6604b1765aa1b82f699542167ba72992a8ac9b0fbc79a7e228d4bb248645a0c7",
+  "prior_raw": {
+    "path": "raw/error.log",
+    "bytes": 138556,
+    "sha256": "2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a"
+  },
+  "current_raw": {
+    "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\userdir\\logs\\error.log",
+    "exists_at_check": true,
+    "copy_path": "raw/error.log",
+    "bytes": 138556,
+    "sha256": "2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a",
+    "capture_started_utc": "2026-10-05T18:07:35.956398+00:00",
+    "capture_finished_utc": "2026-10-05T18:07:35.956978+00:00",
+    "read_count": 1,
+    "source_stat_before": {
+      "bytes": 138556,
+      "mtime_ns": 1791196569276622200,
+      "ctime_ns": 1791196397128635800
+    },
+    "source_stat_after": {
+      "bytes": 138556,
+      "mtime_ns": 1791196569276622200,
+      "ctime_ns": 1791196397128635800
+    },
+    "source_stat_unchanged_during_read": true,
+    "captured_ends_with_linebreak": true
+  },
+  "same_exact_length_and_sha256": true,
+  "method": "Compare newly read current raw bytes/SHA against authenticated prior108 INDEX; old raw body not reread or reused for new capture",
+  "new_error_log_bytes_since108_by_equal_hash": 0,
+  "new_error_log_records_since108_by_equal_hash": 0,
+  "debug108_snapshot_available_for_comparison_in_this_package": false,
+  "no_growth_does_not_establish_complete_runtime_coverage": true
+}

@@ -1,0 +1,14 @@
+{
+  "schema": "ck3-r10-flow-focused-offline-tests-v1",
+  "tests_run": 12,
+  "failures": 0,
+  "errors": 0,
+  "scope": "source-binding/immutable-reference negative controls only",
+  "synthetic_metadata_only": true,
+  "actual_R10_source_ready": null,
+  "actual_consumption_verified": false,
+  "binder_executed": false,
+  "registry_enabled": false,
+  "host_release_called": false,
+  "MCP_calls": 0
+}

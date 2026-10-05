@@ -1,0 +1,10 @@
+--- R9/events/lyd_i3b_institution_events.txt
++++ CURRENT/events/lyd_i3b_institution_events.txt
+@@ -17,6 +17,7 @@
+         if = { limit = { var:lyd_i3b_result_code = 4 } custom_tooltip = lyd_i3b_result_rites_failed_tt }
+         if = { limit = { var:lyd_i3b_result_code = 5 } custom_tooltip = lyd_i3b_result_political_failed_tt }
+         if = { limit = { var:lyd_i3b_result_code = 6 } custom_tooltip = lyd_i3b_result_unclassified_tt }
++        if = { limit = { var:lyd_i3b_result_code = 7 } custom_tooltip = lyd_i3b_result_native_hor_failed_tt }
+     }
+ }
+ lyd.439 = { type = character_event hidden = yes immediate = { hidden_effect = {

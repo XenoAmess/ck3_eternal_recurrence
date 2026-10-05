@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "C:/Program Files/Git/cmd/git.exe",
+    "show",
+    "d0f8fa3b9d444828759443aa018bfd7ad31b398d:docs/autonomous-agent-progress/weekly/2026-W41.md"
+  ],
+  "at_utc": "2026-10-05T10:11:21.035402+00:00",
+  "finished_at_utc": "2026-10-05T10:11:21.084808+00:00",
+  "exit_code": 0,
+  "stdout_bytes": 70222,
+  "stdout_sha256": "017333fca0356c65db3c5615cb8d7a0826e259fb3629ce8b8a3678d3caa3fd12",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "read_only_Git_object": true
+}

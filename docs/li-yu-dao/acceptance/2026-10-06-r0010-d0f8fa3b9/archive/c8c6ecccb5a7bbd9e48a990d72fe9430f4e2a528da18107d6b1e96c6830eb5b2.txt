@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0254-normal-exit-observer.request.json",
+  "request_id": "r10-0254-normal-exit-observer",
+  "sha256": "cb5eb617f637ee104e901d4a1f5a572289765b7cdafbcaa6337ea87b95b46469",
+  "contacted_game": false
+}

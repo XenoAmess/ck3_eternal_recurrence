@@ -1,0 +1,14 @@
+{
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "steam_offline_confirmed": true,
+  "image": "steam-moved.png",
+  "image_sha256": "136a704d5abc84d7f8830f74312a1fb09a4252fd4933a5e5a4f2e59edd553715",
+  "fresh_frame_receipt": "steam-frame-freshness.json",
+  "fresh_frame_sha256": "8d72396b3292bd870a85c19fa5ce3ac612e0ed7356cd4e0c6d9204ba5d9995c8",
+  "reviewed_at_utc": "2026-10-05T10:33:14.606565+00:00",
+  "reviewer": "ROOT actual view_image inspection",
+  "visible_evidence": "ROOT directly viewed this new1920x1080 image: Steam bottom bar 离线模式; current desktop clock18:32 /2026-10-05. Window movement changed pixels and clock glyphs changed from actual18:18 reference.",
+  "evidence_scope": "Reviewed fresh pixels for the managed R10 cold launch within the launch helper age limit.",
+  "gameplay_ocr_or_input_used": false,
+  "supersedes_review": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-steam-offline-fresh-frame-20261005-002\\offline-review.json"
+}

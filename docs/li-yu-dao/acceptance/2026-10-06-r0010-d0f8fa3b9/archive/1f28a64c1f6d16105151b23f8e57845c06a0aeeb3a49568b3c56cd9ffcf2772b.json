@@ -1,0 +1,71 @@
+{
+  "_meta": {
+    "io.modelcontextprotocol/serverInfo": {
+      "name": "CK3 frozen native profile",
+      "version": ""
+    }
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"schema\": \"ck3.native-profile-receipt.v1\",\n  \"session_id\": \"53bd96329c5541f7a403c5cecf61d8ba\",\n  \"profile_sha256\": \"2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6\",\n  \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_profile_53bd96329c5541f7a403c5cecf61d8ba\",\n  \"recorded_at_utc\": \"2026-10-05T16:42:18.201089+00:00\",\n  \"status\": \"native_decision_query_observed\",\n  \"result\": {\n    \"schema\": \"ck3-ingame-decision-item-v1\",\n    \"step\": \"query-ingame-decision-item-v1\",\n    \"read_only\": true,\n    \"game_version\": \"1.20.0.3\",\n    \"executable_sha256\": \"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\",\n    \"native_revision\": 74,\n    \"connection_generation\": 1,\n    \"game_pid\": 13436,\n    \"played_character_id\": 31254,\n    \"date_raw\": 53144712,\n    \"group_count\": 6,\n    \"row_count\": 35,\n    \"matching_row_count\": 1,\n    \"row_context_reference_key\": 31254,\n    \"detail_actor_reference_key\": -1,\n    \"available\": true,\n    \"owner_thread_verified\": true,\n    \"frame_verified\": true,\n    \"source_abi_pins_verified\": true,\n    \"gui_owner_binding_verified\": true,\n    \"decisions_tree_complete\": true,\n    \"decisions_root_visible\": true,\n    \"row_owner_verified\": true,\n    \"row_scope_reference_available\": true,\n    \"detail_tree_complete\": true,\n    \"detail_root_visible\": false,\n    \"detail_definition_available\": false,\n    \"detail_definition_matches_target\": false,\n    \"detail_actor_binding_verified\": false,\n    \"row_widget_datacontext_verified\": false,\n    \"action_qualified\": false,\n    \"decision_key\": \"lyd_c2_review_proposal_decision\",\n    \"detail_decision_key\": \"\",\n    \"unavailable_reason\": \"\",\n    \"backend_id\": \"native-headless\",\n    \"episode_run_id\": null,\n    \"queried_revision\": 75,\n    \"uses_mouse\": false,\n    \"uses_keyboard\": false,\n    \"uses_ocr\": false\n  },\n  \"business_effects_verified\": false,\n  \"full_product_acceptance_credit\": false,\n  \"receipt_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-010\\\\native-evidence\\\\53bd96329c5541f7a403c5cecf61d8ba\\\\0159-decision-query.json\"\n}",
+      "annotations": null,
+      "_meta": null
+    }
+  ],
+  "structuredContent": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+    "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+    "pipe_name": "\\\\.\\pipe\\xar_profile_53bd96329c5541f7a403c5cecf61d8ba",
+    "recorded_at_utc": "2026-10-05T16:42:18.201089+00:00",
+    "status": "native_decision_query_observed",
+    "result": {
+      "schema": "ck3-ingame-decision-item-v1",
+      "step": "query-ingame-decision-item-v1",
+      "read_only": true,
+      "game_version": "1.20.0.3",
+      "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "native_revision": 74,
+      "connection_generation": 1,
+      "game_pid": 13436,
+      "played_character_id": 31254,
+      "date_raw": 53144712,
+      "group_count": 6,
+      "row_count": 35,
+      "matching_row_count": 1,
+      "row_context_reference_key": 31254,
+      "detail_actor_reference_key": -1,
+      "available": true,
+      "owner_thread_verified": true,
+      "frame_verified": true,
+      "source_abi_pins_verified": true,
+      "gui_owner_binding_verified": true,
+      "decisions_tree_complete": true,
+      "decisions_root_visible": true,
+      "row_owner_verified": true,
+      "row_scope_reference_available": true,
+      "detail_tree_complete": true,
+      "detail_root_visible": false,
+      "detail_definition_available": false,
+      "detail_definition_matches_target": false,
+      "detail_actor_binding_verified": false,
+      "row_widget_datacontext_verified": false,
+      "action_qualified": false,
+      "decision_key": "lyd_c2_review_proposal_decision",
+      "detail_decision_key": "",
+      "unavailable_reason": "",
+      "backend_id": "native-headless",
+      "episode_run_id": null,
+      "queried_revision": 75,
+      "uses_mouse": false,
+      "uses_keyboard": false,
+      "uses_ocr": false
+    },
+    "business_effects_verified": false,
+    "full_product_acceptance_credit": false,
+    "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0159-decision-query.json"
+  },
+  "isError": false,
+  "resultType": "complete"
+}

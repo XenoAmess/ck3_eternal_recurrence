@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 236,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0237-detach-second-precommit-event-query.request.json",
+  "request_sha256": "7367068df75410fd03d1e6bf3ea10b1f4280bc060d1f325eeecf69a35eaea901",
+  "started_at_utc": "2026-10-05T17:55:42.429687+00:00",
+  "request_id": "r10-0237-detach-second-precommit-event-query",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0236-r10-0237-detach-second-precommit-event-query.sdk-result.json",
+  "sdk_result_sha256": "13f6e405fa24c2e193cedb2490562b6e7d5b99f21f3eff652d83e613e1ec1a00",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0235-event-query.json",
+      "copy": "0236-r10-0237-detach-second-precommit-event-query.native-01.json",
+      "sha256": "01f0e805d31dcccdcc520b7989fc2fd473bf35aa71e580d15b47d508ed9de965"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:55:44.374130+00:00"
+}

@@ -1,0 +1,1040 @@
+{
+  "schema": "lyd.i3b.detached-policy-ast.v1",
+  "status": "SOURCE_L0_PASS",
+  "scope": "bounded read-only AST policy, synthetic data; no native effects executed",
+  "runtime_sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+  "matrix": [
+    {
+      "name": "common32 qualified scholar without native HoR",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "detached105 actual native HoR",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "same faith_type does not authorize Faith105 without HoR",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "different native HoR",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "foreign main rite",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "mixed foreign rite",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "mixed foreign rite cannot admit detached actor authority",
+      "entry": "lyd_i3b_actor_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "existing native HoF",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "existing empty HoF title",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "Faith has temporal doctrine despite no-head rites",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "foreign native challenger without LYD metadata",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "holds foreign Faith HoF title",
+      "entry": "lyd_i3b_actor_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "holds stock challenger office from different Faith",
+      "entry": "lyd_i3b_actor_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "holds partial LYD challenger office without actor pointer",
+      "entry": "lyd_i3b_actor_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "holds native challenger office",
+      "entry": "lyd_i3b_actor_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "sponsors native challenger office",
+      "entry": "lyd_i3b_actor_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owns previous LYD challenger title",
+      "entry": "lyd_i3b_actor_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "political claim without office is no mandate and no office veto",
+      "entry": "lyd_i3b_actor_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "common captured route valid",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "detached captured route valid",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "missing captured mode fails closed",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "forged common mode on same-type Faith105",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "forged detached mode on common Faith32",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "actual HoR changes during round",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "captured HoR substituted",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "captured HoR missing",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "new live human outside captured roster",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "member owner changes",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "member serial changes",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "rite serial changes",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "member eligibility changes",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "current ritual county drift",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "C2 foreign proposal lock",
+      "entry": "lyd_i3b_current_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "all detached mandates satisfied",
+      "entry": "lyd_i3b_ready_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "all common mandates satisfied",
+      "entry": "lyd_i3b_ready_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "two thirds below threshold",
+      "entry": "lyd_i3b_ready_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "missing human consent",
+      "entry": "lyd_i3b_ready_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "missing representative signature",
+      "entry": "lyd_i3b_ready_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "old political title transferred",
+      "entry": "lyd_i3b_ready_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "exact callback accepted",
+      "entry": "lyd_i3b_event_context_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "old callback nonce rejected",
+      "entry": "lyd_i3b_event_context_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "old callback serial rejected",
+      "entry": "lyd_i3b_event_context_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "old callback phase rejected",
+      "entry": "lyd_i3b_event_context_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "detached native HoR preserved postcondition",
+      "entry": "lyd_i3b_native_authority_postcondition_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "detached native HoR changed postcondition",
+      "entry": "lyd_i3b_native_authority_postcondition_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "common postcondition does not invent a HoR",
+      "entry": "lyd_i3b_native_authority_postcondition_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached kongmen actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached kongmen different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached mengzi actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached mengzi different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached xunzi actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached xunzi different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached dongzhongshu actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached dongzhongshu different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached guwen actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached guwen different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached zhengxuan actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached zhengxuan different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached wangsu actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached wangsu different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached wangbi actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached wangbi different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached guoxiang actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached guoxiang different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached jingshu actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached jingshu different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached hanyu actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached hanyu different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached liao actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached liao different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached zhoudunyi actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached zhoudunyi different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached chengbrothers actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached chengbrothers different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached zhangzai actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached zhangzai different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached shaoyong actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached shaoyong different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached wanganshi actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached wanganshi different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached sushi actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached sushi different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached huxiang actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached huxiang different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached zhuxi actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached zhuxi different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached lujiuyuan actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached lujiuyuan different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached yongjia actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached yongjia different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached yongkang actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached yongkang different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached wucheng actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached wucheng different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached chenxianzhang actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached chenxianzhang different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached zhanruoshui actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached zhanruoshui different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached wangyangming actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached wangyangming different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached jiangyou actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached jiangyou different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached taizhou actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached taizhou different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached liuzongzhou actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached liuzongzhou different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached donglin actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached donglin different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached wangfuzhi actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached wangfuzhi different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached yanli actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached yanli different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached qianjia actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached qianjia different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached changzhou actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached changzhou different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    },
+    {
+      "name": "owned detached jingshi actual HoR allowed",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": true,
+      "actual": true,
+      "pass": true
+    },
+    {
+      "name": "owned detached jingshi different HoR denied",
+      "entry": "lyd_i3b_can_begin_trigger",
+      "expected": false,
+      "actual": false,
+      "pass": true
+    }
+  ],
+  "source_effect_graph_pass": true,
+  "mutants": [
+    {
+      "mutation": "detached current HoR equality",
+      "detected_by_cases": [
+        "different native HoR",
+        "owned detached kongmen different HoR denied",
+        "owned detached mengzi different HoR denied",
+        "owned detached xunzi different HoR denied",
+        "owned detached dongzhongshu different HoR denied",
+        "owned detached guwen different HoR denied",
+        "owned detached zhengxuan different HoR denied",
+        "owned detached wangsu different HoR denied",
+        "owned detached wangbi different HoR denied",
+        "owned detached guoxiang different HoR denied",
+        "owned detached jingshu different HoR denied",
+        "owned detached hanyu different HoR denied",
+        "owned detached liao different HoR denied",
+        "owned detached zhoudunyi different HoR denied",
+        "owned detached chengbrothers different HoR denied",
+        "owned detached zhangzai different HoR denied",
+        "owned detached shaoyong different HoR denied",
+        "owned detached wanganshi different HoR denied",
+        "owned detached sushi different HoR denied",
+        "owned detached huxiang different HoR denied",
+        "owned detached zhuxi different HoR denied",
+        "owned detached lujiuyuan different HoR denied",
+        "owned detached yongjia different HoR denied",
+        "owned detached yongkang different HoR denied",
+        "owned detached wucheng different HoR denied",
+        "owned detached chenxianzhang different HoR denied",
+        "owned detached zhanruoshui different HoR denied",
+        "owned detached wangyangming different HoR denied",
+        "owned detached jiangyou different HoR denied",
+        "owned detached taizhou different HoR denied",
+        "owned detached liuzongzhou different HoR denied",
+        "owned detached donglin different HoR denied",
+        "owned detached wangfuzhi different HoR denied",
+        "owned detached yanli different HoR denied",
+        "owned detached qianjia different HoR denied",
+        "owned detached changzhou different HoR denied",
+        "owned detached jingshi different HoR denied"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "3fcac837b4517342a476caa1fdd5579aa6fb06714cc8011eda9dd6498fed9a2a"
+    },
+    {
+      "mutation": "all-owned Faith rites",
+      "detected_by_cases": [
+        "mixed foreign rite cannot admit detached actor authority"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "a9a709e823b65baae923902bd32cc1ab28873adfee769f9832020c9edbfc3989"
+    },
+    {
+      "mutation": "held foreign HoF title",
+      "detected_by_cases": [
+        "holds foreign Faith HoF title"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "1d784c0ae99706f2319ff669df48afff8862685a5d027dd13923a0e33a128533"
+    },
+    {
+      "mutation": "held stock challenger office across Faith",
+      "detected_by_cases": [
+        "holds stock challenger office from different Faith"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "153605d64129e17bed13a81dda93d8aed06f99c6769d2e2b9a0646da6f1ac44b"
+    },
+    {
+      "mutation": "held partial LYD challenger office",
+      "detected_by_cases": [
+        "holds partial LYD challenger office without actor pointer"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "5423c3b5cc73814e6139a0896b4c440c2691403773c2ae3fdaf9b45216a565ec"
+    },
+    {
+      "mutation": "native challenge collection",
+      "detected_by_cases": [
+        "foreign native challenger without LYD metadata"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "2552468ae32c81f4acd3a972872ba93eaed4e31893064f932907eae12ae3c50b"
+    },
+    {
+      "mutation": "native holder guard",
+      "detected_by_cases": [
+        "holds native challenger office"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "7f067518483ea7126e7710e834468e7ea151d93fedc8c3f72d8573790490c81d"
+    },
+    {
+      "mutation": "native sponsor guard",
+      "detected_by_cases": [
+        "sponsors native challenger office"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "dda126ea757865bf54bd7fd7696218cea729bef0d15903fb2f11569d31416697"
+    },
+    {
+      "mutation": "owned challenge title guard",
+      "detected_by_cases": [
+        "owns previous LYD challenger title"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "7029ba173df490b9b2ec732acd03566d212d00b8505961558f355565e87893de"
+    },
+    {
+      "mutation": "captured authority at callbacks",
+      "detected_by_cases": [
+        "missing captured mode fails closed",
+        "forged common mode on same-type Faith105",
+        "forged detached mode on common Faith32",
+        "captured HoR substituted",
+        "captured HoR missing"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "381441347e63306c05b8777fdbd394033f4690f97c535b51e560ca2c0b61a701"
+    },
+    {
+      "mutation": "captured HoR exact identity",
+      "detected_by_cases": [
+        "captured HoR substituted"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "750b4caedae9795691d20dc5a6227aa233632feb6d0dae69412e85636b705e44"
+    },
+    {
+      "mutation": "post HoR actual reread",
+      "detected_by_cases": [
+        "detached native HoR changed postcondition"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "b50648c08acf41cf7186363f9347ecbebd49097d6b2efdda43cdb22211e052ec"
+    },
+    {
+      "mutation": "Faith native head absence",
+      "detected_by_cases": [
+        "existing native HoF"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "7c1856b3a4b9cb7edeb4f6b5ded744cb6cbfe2b1b53e17882aa7e012b7c7c270"
+    },
+    {
+      "mutation": "Faith native title absence",
+      "detected_by_cases": [
+        "existing empty HoF title"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "347f72bca02cd44e1e7f5423130be9d7bebb85fd0c3307bfab8fa582f163f65a"
+    },
+    {
+      "mutation": "Faith no-head doctrine",
+      "detected_by_cases": [
+        "Faith has temporal doctrine despite no-head rites"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "8d529b750a7848bc26ac421c88056c5724c260528ef9abfcb3993567d5ede7c7"
+    },
+    {
+      "mutation": "each school quorum",
+      "detected_by_cases": [
+        "two thirds below threshold"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "da7e90d305897554e2d1a3f93f42123cd5708a59f8f38cc14e9095ab648610ec"
+    },
+    {
+      "mutation": "every human consent",
+      "detected_by_cases": [
+        "missing human consent"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "2eb219d0849c5dfee97bc4f11f58aea795933f12710b8087b0225805c3b0ca2d"
+    },
+    {
+      "mutation": "each representative signature",
+      "detected_by_cases": [
+        "missing representative signature"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "f8b007ed5f7ff1fee89eb2baa4c01f3277b977ce9da10ead5b6a662770bb7c0a"
+    },
+    {
+      "mutation": "exact nonce",
+      "detected_by_cases": [
+        "old callback nonce rejected"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "a2123016ba523ec8a37f20cf4e50476e72ccfa1c66fb23fafb7a4822a27f65f5"
+    },
+    {
+      "mutation": "exact serial",
+      "detected_by_cases": [
+        "old callback serial rejected"
+      ],
+      "rejected": true,
+      "mutated_runtime_sha256": "3857720d0d870b24d6b381860f99dfa14a53e6243b2ea072cd489ce8306c9412"
+    }
+  ],
+  "native_positive": "NOT_RUN",
+  "native_creation": "NOT_RUN",
+  "native_save_reload": "NOT_RUN"
+}

@@ -1,0 +1,150 @@
+.......FFFFFFFFFFFFExecuting <Task pending name='Task-2' coro=<ActualSdkReadonlyTests.test_explicit23_requires_readonly_proof_and_keeps_partial_mutation_unclaimed() running at C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_readonly_capability_v1.py:190> wait_for=<Future pending cb=[Task.task_wakeup()] created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\site-packages\anyio\_backends\_asyncio.py:1007> cb=[_run_until_complete_cb() at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\base_events.py:181] created at C:\Users\Administrator\AppData\Local\Programs\Python\Python313\Lib\asyncio\runners.py:101> took 0.141 seconds
+...............................
+======================================================================
+FAIL: test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once (test_player_control_query_failure_cache_v1.QueryFailureCacheGapTests.test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once) (failure='arguments')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 85, in test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once
+    root,directory,driver,signature,durable,history,sent=self.seed(name)
+                                                         ~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 50, in seed
+    self.assertEqual(sum(path.endswith('.claim.json') for path in durable),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once (test_player_control_query_failure_cache_v1.QueryFailureCacheGapTests.test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once) (failure='capability')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 85, in test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once
+    root,directory,driver,signature,durable,history,sent=self.seed(name)
+                                                         ~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 50, in seed
+    self.assertEqual(sum(path.endswith('.claim.json') for path in durable),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once (test_player_control_query_failure_cache_v1.QueryFailureCacheGapTests.test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once) (failure='inventory_reference')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 85, in test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once
+    root,directory,driver,signature,durable,history,sent=self.seed(name)
+                                                         ~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 50, in seed
+    self.assertEqual(sum(path.endswith('.claim.json') for path in durable),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once (test_player_control_query_failure_cache_v1.QueryFailureCacheGapTests.test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once) (failure='source_inventory')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 85, in test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once
+    root,directory,driver,signature,durable,history,sent=self.seed(name)
+                                                         ~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 50, in seed
+    self.assertEqual(sum(path.endswith('.claim.json') for path in durable),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once (test_player_control_query_failure_cache_v1.QueryFailureCacheGapTests.test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once) (failure='revision')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 85, in test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once
+    root,directory,driver,signature,durable,history,sent=self.seed(name)
+                                                         ~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 50, in seed
+    self.assertEqual(sum(path.endswith('.claim.json') for path in durable),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once (test_player_control_query_failure_cache_v1.QueryFailureCacheGapTests.test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once) (failure='paused_frame')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 85, in test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once
+    root,directory,driver,signature,durable,history,sent=self.seed(name)
+                                                         ~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 50, in seed
+    self.assertEqual(sum(path.endswith('.claim.json') for path in durable),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once (test_player_control_query_failure_cache_v1.QueryFailureCacheGapTests.test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once) (failure='process_identity')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 85, in test_driver_argument_and_prepare_refusals_retire_signature_keep_durable_once
+    root,directory,driver,signature,durable,history,sent=self.seed(name)
+                                                         ~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 50, in seed
+    self.assertEqual(sum(path.endswith('.claim.json') for path in durable),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver (test_player_control_query_failure_cache_v1.QueryFailureCacheGapTests.test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver) (failure='arguments')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 113, in test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver
+    root,directory,driver,signature,durable,history,sent=self.seed(name)
+                                                         ~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 50, in seed
+    self.assertEqual(sum(path.endswith('.claim.json') for path in durable),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver (test_player_control_query_failure_cache_v1.QueryFailureCacheGapTests.test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver) (failure='guard')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 113, in test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver
+    root,directory,driver,signature,durable,history,sent=self.seed(name)
+                                                         ~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 50, in seed
+    self.assertEqual(sum(path.endswith('.claim.json') for path in durable),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver (test_player_control_query_failure_cache_v1.QueryFailureCacheGapTests.test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver) (failure='revision')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 113, in test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver
+    root,directory,driver,signature,durable,history,sent=self.seed(name)
+                                                         ~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 50, in seed
+    self.assertEqual(sum(path.endswith('.claim.json') for path in durable),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver (test_player_control_query_failure_cache_v1.QueryFailureCacheGapTests.test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver) (failure='paused_frame')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 113, in test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver
+    root,directory,driver,signature,durable,history,sent=self.seed(name)
+                                                         ~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 50, in seed
+    self.assertEqual(sum(path.endswith('.claim.json') for path in durable),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+======================================================================
+FAIL: test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver (test_player_control_query_failure_cache_v1.QueryFailureCacheGapTests.test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver) (failure='attach')
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 113, in test_profile_argument_guard_frame_and_attach_refusals_retire_signature_before_driver
+    root,directory,driver,signature,durable,history,sent=self.seed(name)
+                                                         ~~~~~~~~~^^^^^^
+  File "C:\workspace\ck3_eternal_recurrence\ck3_autonomous_player\tests\unit\test_player_control_query_failure_cache_v1.py", line 50, in seed
+    self.assertEqual(sum(path.endswith('.claim.json') for path in durable),1)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 0 != 1
+
+----------------------------------------------------------------------
+Ran 40 tests in 5.123s
+
+FAILED (failures=12)

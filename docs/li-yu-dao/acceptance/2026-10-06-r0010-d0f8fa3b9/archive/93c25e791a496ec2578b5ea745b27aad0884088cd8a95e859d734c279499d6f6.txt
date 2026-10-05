@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0150-sixth-post-cancel-save.request.json",
+  "request_id": "r10-0150-sixth-post-cancel-save",
+  "sha256": "76a3c2a944b0f3c997d7a0c037bbe0c09cd2d91860f48011f29b1b5b9ac14b35",
+  "contacted_game": false
+}

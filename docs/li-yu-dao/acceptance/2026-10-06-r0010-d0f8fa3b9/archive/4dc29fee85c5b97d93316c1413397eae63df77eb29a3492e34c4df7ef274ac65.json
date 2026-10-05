@@ -1,0 +1,11 @@
+{
+  "status": "FAIL",
+  "scope": "NEW_ASSEMBLER_ACTUAL_PRESERVED_DATA_ONLY_NO_GAME_OR_BUSINESS_VERIFIER",
+  "results": [
+    {
+      "case": "failure",
+      "traceback": "Traceback (most recent call last):\n  File \"C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-001\\test_actual_replay.py\", line 23, in <module>\n    checked=m.validate(req);results.append({'case':'actual_ordinal4_finish_validate','PASS':True,'ordinal':checked['claim']['claim_ordinal']})\n  File \"C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-001\\assemble_proposal_inputs.py\", line 116, in validate\n    before=checkpoint(request['before_save'],request['before_checkpoint_sdk'],cache,identity,provenance);after=checkpoint(request['after_save'],request['after_checkpoint_sdk'],cache,identity,provenance)\n  File \"C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-001\\assemble_proposal_inputs.py\", line 84, in checkpoint\n    need(frame['diagnostics']['bridge_pid']==identity['game_pid'] and frame['player_character_id']==identity['actor_id'],'checkpoint actual full actor/PID differs')\n                                                                      ~~~~~^^^^^^^^^^^^^^^^^^^^^^^\nKeyError: 'player_character_id'\n"
+    }
+  ],
+  "binder_emitter_release_MCP_calls": 0
+}

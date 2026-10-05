@@ -1,0 +1,1978 @@
+{
+  "APPLIED-REVIEW-PATCH.json": {
+    "bytes": 1361,
+    "sha256": "b0e8c5f329385f33e64b3fbda1158d6cab410ca1c619cfd981b40e524d14360e"
+  },
+  "authored.patch": {
+    "bytes": 32192,
+    "sha256": "459883e250e034fa3aa1b3538da44430b98c12e3de4b19e4acb576c25dbb8176"
+  },
+  "baseline/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/debug-marker-lines.raw.log": {
+    "bytes": 5000,
+    "sha256": "8564747babb9b8b4d46992bfb17412f086acd60604596c401a8d6a5c6f5f2d10"
+  },
+  "baseline/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/error-classification-addendum.json": {
+    "bytes": 14186,
+    "sha256": "2f3a464edf7541aa3b813f5bf39d0400dc6e2fd29d36bea80fbd05f83fe84a48"
+  },
+  "baseline/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/native-primitive-attestation-candidate-v2.json": {
+    "bytes": 96228,
+    "sha256": "50bad54b995723026bd26842f258376c86447547791357f6c5ad809750891b5d"
+  },
+  "baseline/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/character-36445.excerpt.txt": {
+    "bytes": 6255,
+    "sha256": "885419cc4df4e419e36805afab250ce73fa1d6c404a5d2b4ad3925909acdae42"
+  },
+  "baseline/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/faith-108.excerpt.txt": {
+    "bytes": 2451,
+    "sha256": "fc56c5494e2eae9984e2d6f3f79a5482a2cae93a80299f79043d7851394e9baf"
+  },
+  "baseline/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/rite-151.excerpt.txt": {
+    "bytes": 2490,
+    "sha256": "69f5483d4d944da4ebce92c6bddaccd1a74cfdbd9edd01823f9fa006e5904b98"
+  },
+  "baseline/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/three-rounds.summary.json": {
+    "bytes": 6344,
+    "sha256": "a436aec37b9e71e05a47329c69354195ad69deade8711172e16b777d2aa1d1c5"
+  },
+  "baseline/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/title-18417.excerpt.txt": {
+    "bytes": 685,
+    "sha256": "3e3010bfac4739e0b4e6a33f99b641e8662fa2904d581805d77abc42efb49cbb"
+  },
+  "baseline/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_effects/lyd_np_effects.txt": {
+    "bytes": 10380,
+    "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+  },
+  "baseline/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_triggers/lyd_np_triggers.txt": {
+    "bytes": 2777,
+    "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+  },
+  "baseline/mod_li_yu_dao/common/character_interactions/lyd_c2_consent_interactions.txt": {
+    "bytes": 986,
+    "sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300"
+  },
+  "baseline/mod_li_yu_dao/common/character_interactions/lyd_c3_teacher_interactions.txt": {
+    "bytes": 4931,
+    "sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7"
+  },
+  "baseline/mod_li_yu_dao/common/character_interactions/lyd_i3b_nomination_interactions.txt": {
+    "bytes": 954,
+    "sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98"
+  },
+  "baseline/mod_li_yu_dao/common/character_interactions/lyd_interactions.txt": {
+    "bytes": 127,
+    "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+  },
+  "baseline/mod_li_yu_dao/common/decisions/lyd_c2_consent_decisions.txt": {
+    "bytes": 2408,
+    "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549"
+  },
+  "baseline/mod_li_yu_dao/common/decisions/lyd_c3_leadership_decisions.txt": {
+    "bytes": 7598,
+    "sha256": "01049457541c0c13d08d27bb793a204a2810aa826c4eb01e590b4e64dbb58138"
+  },
+  "baseline/mod_li_yu_dao/common/decisions/lyd_decisions.txt": {
+    "bytes": 1774,
+    "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+  },
+  "baseline/mod_li_yu_dao/common/decisions/lyd_i3b_institution_decisions.txt": {
+    "bytes": 4599,
+    "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019"
+  },
+  "baseline/mod_li_yu_dao/common/on_action/lyd_c3_lifecycle_on_actions.txt": {
+    "bytes": 544,
+    "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b"
+  },
+  "baseline/mod_li_yu_dao/common/religion/faith_types/lyd_faiths.txt": {
+    "bytes": 424,
+    "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+  },
+  "baseline/mod_li_yu_dao/common/religion/rite_types/lyd_rites.txt": {
+    "bytes": 13028,
+    "sha256": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17"
+  },
+  "baseline/mod_li_yu_dao/common/religion/tenet_types/lyd_tenets.txt": {
+    "bytes": 19451,
+    "sha256": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e"
+  },
+  "baseline/mod_li_yu_dao/common/script_values/lyd_c2_consent_values.txt": {
+    "bytes": 533,
+    "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae"
+  },
+  "baseline/mod_li_yu_dao/common/script_values/lyd_i3b_institution_values.txt": {
+    "bytes": 205,
+    "sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_c2_close_effects.txt": {
+    "bytes": 3384,
+    "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_c2_commit_effects.txt": {
+    "bytes": 5885,
+    "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_c2_head_effects.txt": {
+    "bytes": 1352,
+    "sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_c2_response_effects.txt": {
+    "bytes": 1369,
+    "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_c2_setup_effects.txt": {
+    "bytes": 12698,
+    "sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_c2_snapshot_effects.txt": {
+    "bytes": 22655,
+    "sha256": "69cf863ee19bea6aa6058974af0cb15b688e8e6900b8f436f2eefa3f2d64bc73"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_c2_vote_effects.txt": {
+    "bytes": 5368,
+    "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_c3_challenger_effects.txt": {
+    "bytes": 6468,
+    "sha256": "af3c5cabc8e6123a5d76aeed59bf0e85db8e9bcf39c85118b0ab85ee746ea89c"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_c3_council_effects.txt": {
+    "bytes": 9687,
+    "sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt": {
+    "bytes": 1993,
+    "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_c3_lifecycle_effects.txt": {
+    "bytes": 5211,
+    "sha256": "94720db16153a862c91172d1a8174a6e91fe734d01353ce2f61132595403f651"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_c3_migration_hooks.txt": {
+    "bytes": 1366,
+    "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt": {
+    "bytes": 3415,
+    "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_i3b_commit_effects.txt": {
+    "bytes": 4096,
+    "sha256": "998c91b9c98c26a6e373efe7cf39661749115df8efa14a10b1af46ce02a93860"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_i3b_response_effects.txt": {
+    "bytes": 4848,
+    "sha256": "f6a78460ac88f14993cb57e2e4ebc53747ad64c19d621bd91c401745cf1923d5"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt": {
+    "bytes": 6065,
+    "sha256": "53b705957fbe0f4aa71a50662e710957687b57f6f9c131e0ddd2b63deb4f954c"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_i3b_terms_effects.txt": {
+    "bytes": 3842,
+    "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_10_effects.txt": {
+    "bytes": 3002,
+    "sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_11_effects.txt": {
+    "bytes": 2887,
+    "sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_12_effects.txt": {
+    "bytes": 2948,
+    "sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_13_effects.txt": {
+    "bytes": 3035,
+    "sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_14_effects.txt": {
+    "bytes": 1526,
+    "sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_1_effects.txt": {
+    "bytes": 2798,
+    "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_2_effects.txt": {
+    "bytes": 2703,
+    "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_3_effects.txt": {
+    "bytes": 2756,
+    "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_4_effects.txt": {
+    "bytes": 2990,
+    "sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_5_effects.txt": {
+    "bytes": 2901,
+    "sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_6_effects.txt": {
+    "bytes": 2926,
+    "sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_7_effects.txt": {
+    "bytes": 2972,
+    "sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_8_effects.txt": {
+    "bytes": 2912,
+    "sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_practice_9_effects.txt": {
+    "bytes": 2983,
+    "sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_school_2_effects.txt": {
+    "bytes": 3902,
+    "sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_school_3_effects.txt": {
+    "bytes": 3877,
+    "sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_school_4_effects.txt": {
+    "bytes": 3982,
+    "sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_school_5_effects.txt": {
+    "bytes": 1968,
+    "sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_effects/lyd_school_effects.txt": {
+    "bytes": 3872,
+    "sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt": {
+    "bytes": 15775,
+    "sha256": "023163b67d97cd39640eaecb18caf19abe8b31a5f9a1189e9d7a1bd85a5ac3fc"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_triggers/lyd_c3_leadership_triggers.txt": {
+    "bytes": 6665,
+    "sha256": "967ca3e59d4d33aa588859192dde991358c1626d077a00b2d6fb204adb7a655a"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt": {
+    "bytes": 7789,
+    "sha256": "f110b0d7fe4b9d66d1232d1a2d846f6a53c20f600f26db327791dfcef58756fc"
+  },
+  "baseline/mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt": {
+    "bytes": 2885,
+    "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e"
+  },
+  "baseline/mod_li_yu_dao/descriptor.mod": {
+    "bytes": 139,
+    "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2"
+  },
+  "baseline/mod_li_yu_dao/docs/acceptance-matrix.md": {
+    "bytes": 11751,
+    "sha256": "03ad8224b300630b6cc51723570bc92fa6a2a9801431c097ef03083f69284c77"
+  },
+  "baseline/mod_li_yu_dao/docs/content-copyedit-2026-10-05.md": {
+    "bytes": 1826,
+    "sha256": "3148bd41b0d90aced96cc0a2282bc81eddbe97d26e693fcf131d80b6ca4f90c3"
+  },
+  "baseline/mod_li_yu_dao/docs/iteration-1-content.md": {
+    "bytes": 16519,
+    "sha256": "478be7674192b48b52d76ecf908a63a2400923227792a309f0c3e0e9bbfa7af3"
+  },
+  "baseline/mod_li_yu_dao/events/lyd_c2_consent_events.txt": {
+    "bytes": 6618,
+    "sha256": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e"
+  },
+  "baseline/mod_li_yu_dao/events/lyd_c3_leadership_events.txt": {
+    "bytes": 2692,
+    "sha256": "be67baa3427719465965917d44e8594c92063a2aa165ee88833c6954ba2fd411"
+  },
+  "baseline/mod_li_yu_dao/events/lyd_events.txt": {
+    "bytes": 50504,
+    "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+  },
+  "baseline/mod_li_yu_dao/events/lyd_i3b_institution_events.txt": {
+    "bytes": 5556,
+    "sha256": "72b6b6348b474fd95e29dfe0fd292cadaed8f541393cbba021fd51fdeb2b5a87"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/decisions/lyd_np_decisions.txt": {
+    "bytes": 1857,
+    "sha256": "06ff98f68af5b7dc4b7d2d0e42e0cefe180b3cdaf0e7cbb48b938965f6d4fef0"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/religion/faith_types/lyd_np_faiths.txt": {
+    "bytes": 644,
+    "sha256": "d349b0c5bd4a6102a32ca1f9762487b33559b6da255ccab9533bd13ad8b7247c"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/religion/rite_types/lyd_np_rites.txt": {
+    "bytes": 848,
+    "sha256": "11aab688d88c6f8cfbdb8464f408b111ecc07e07e884eee13bbf44492ca15230"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/scripted_effects/lyd_np_effects.txt": {
+    "bytes": 10380,
+    "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/scripted_triggers/lyd_np_triggers.txt": {
+    "bytes": 2777,
+    "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/descriptor.mod": {
+    "bytes": 125,
+    "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/events/lyd_np_events.txt": {
+    "bytes": 3743,
+    "sha256": "b9d57ad721c799e551870f39027a26727b207c5fef97f175dd4db0dff81db896"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/localization/english/lyd_np_l_english.yml": {
+    "bytes": 2296,
+    "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/localization/simp_chinese/lyd_np_l_simp_chinese.yml": {
+    "bytes": 1993,
+    "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/candidate2/static-report.json": {
+    "bytes": 4933,
+    "sha256": "a55a3d44a210dc191112b800e01c88353e399a8b56a260d12301370e9c570a6d"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/decisions/lyd_np_decisions.txt": {
+    "bytes": 1770,
+    "sha256": "7a95bec62bcc6533c7fcdef7331b76a359ec4dedac29d5bc99888b2c53757db2"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/religion/faith_types/lyd_np_faiths.txt": {
+    "bytes": 641,
+    "sha256": "bcd46bd4407ae43dcaf84b505a08c2d883c2e52726587e7ae9cd088d88c62870"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/religion/rite_types/lyd_np_rites.txt": {
+    "bytes": 845,
+    "sha256": "ba76cd96f18ba0f75d9932c6e50dcd4067abfd465364731c10e7bcfc211b058c"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/scripted_effects/lyd_np_effects.txt": {
+    "bytes": 8225,
+    "sha256": "4f11d1ae816e349ee2f4c736939819c0964dc1ddcecd75545026ef5eeeae4d70"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/scripted_triggers/lyd_np_triggers.txt": {
+    "bytes": 2790,
+    "sha256": "4c487386b018af6b2a0c918ee5cf89dad908b483eba44b696b47c303fcdaf445"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/descriptor.mod": {
+    "bytes": 125,
+    "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/events/lyd_np_events.txt": {
+    "bytes": 3739,
+    "sha256": "9e2086e8373a11f6dc7c4ff4f9cf342d6d87b60adba45dd68e5797f9452b9457"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/localization/english/lyd_np_l_english.yml": {
+    "bytes": 2296,
+    "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/localization/simp_chinese/lyd_np_l_simp_chinese.yml": {
+    "bytes": 1993,
+    "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/native-source-evidence.json": {
+    "bytes": 2686,
+    "sha256": "9bfbc62b1752a5a639dda8a9cb65ca687457cf0de68d4e5464f7e6dd3dbf10c9"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/README.md": {
+    "bytes": 8421,
+    "sha256": "58010f954ab0f03abc174d5385a844f113099722eea20f57755a1bf651ae39c5"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/static-report.json": {
+    "bytes": 2200,
+    "sha256": "f245f7885ba04516954276b0c215258f1fe0534d4fc8ed4a968939a49cf1723a"
+  },
+  "baseline/mod_li_yu_dao/fixtures/native_cycle/validate_prototype.py": {
+    "bytes": 7179,
+    "sha256": "7e7113af4010890c2ffbc30133921c8b16a0091c003634690151abf6a839af8e"
+  },
+  "baseline/mod_li_yu_dao/history/faiths/lyd_faith_history.txt": {
+    "bytes": 1171,
+    "sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d"
+  },
+  "baseline/mod_li_yu_dao/localization/english/lyd_c2_consent_l_english.yml": {
+    "bytes": 13331,
+    "sha256": "153ff68c54238b1756455376ed33f45afd5721ea74e78c52026365b7996cec99"
+  },
+  "baseline/mod_li_yu_dao/localization/english/lyd_c3_leadership_l_english.yml": {
+    "bytes": 9455,
+    "sha256": "1febd88fc19c08f67e69650f5b4d185f2e5d3c85e118316a68cc3e3084bb3b06"
+  },
+  "baseline/mod_li_yu_dao/localization/english/lyd_content_l_english.yml": {
+    "bytes": 66904,
+    "sha256": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78"
+  },
+  "baseline/mod_li_yu_dao/localization/english/lyd_i3b_institution_l_english.yml": {
+    "bytes": 10220,
+    "sha256": "1a370a05c02c14204df309acb8c162ed9651e622ccd848c3181809f3fb1053ac"
+  },
+  "baseline/mod_li_yu_dao/localization/english/lyd_runtime_l_english.yml": {
+    "bytes": 4461,
+    "sha256": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199"
+  },
+  "baseline/mod_li_yu_dao/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml": {
+    "bytes": 11654,
+    "sha256": "d93e1fe02dc615a4117ace3754a121cd338fe0bb9125c3100939f66ceebb16b4"
+  },
+  "baseline/mod_li_yu_dao/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml": {
+    "bytes": 8684,
+    "sha256": "9cb67ba427950f0b871e1b0a8d00c04dc4fa6bed79b5317056a0f68b28fbfdfc"
+  },
+  "baseline/mod_li_yu_dao/localization/simp_chinese/lyd_content_l_simp_chinese.yml": {
+    "bytes": 52952,
+    "sha256": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f"
+  },
+  "baseline/mod_li_yu_dao/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml": {
+    "bytes": 9138,
+    "sha256": "de0f336c3ccc49b1068bc43f41ec1623c0eda2199b62e6a4df68951525e8e96c"
+  },
+  "baseline/mod_li_yu_dao/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml": {
+    "bytes": 3707,
+    "sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca"
+  },
+  "baseline/mod_li_yu_dao/README.md": {
+    "bytes": 2795,
+    "sha256": "85f48485bf3062c658cb594374f09e01eb92571a004903855daeae7a1a4aaf4f"
+  },
+  "baseline/mod_li_yu_dao/tools/additional_practices.py": {
+    "bytes": 51685,
+    "sha256": "cbae8ccf96a33d893ab2c8084ab09046aa34c46596f41ac7241429d2ca56d583"
+  },
+  "baseline/mod_li_yu_dao/tools/build_release.py": {
+    "bytes": 10701,
+    "sha256": "ba5de21fd7aa16bbbbabd9268142cadca3cee6b546acda19c306316cac233ed4"
+  },
+  "baseline/mod_li_yu_dao/tools/content_data.py": {
+    "bytes": 62030,
+    "sha256": "cb368c771dc4b99a612e560b9bb4ce04992a403c7598f24d9ae3aaeae4bcda73"
+  },
+  "baseline/mod_li_yu_dao/tools/gen_content.py": {
+    "bytes": 8044,
+    "sha256": "bb8a82ac75fb60d9cf25a50843e1d924962dc041c27b05631c1977daea18f342"
+  },
+  "baseline/mod_li_yu_dao/tools/gen_institution.py": {
+    "bytes": 45619,
+    "sha256": "fc603a5c428fca16a5c85a96c4434bcbd50035618405c28dd4bc6d2de0bf267c"
+  },
+  "baseline/mod_li_yu_dao/tools/gen_leadership.py": {
+    "bytes": 2363,
+    "sha256": "f73d77e7d073b1736821e86acda1decda18ba471a7e71f222c964fa0174d28b4"
+  },
+  "baseline/mod_li_yu_dao/tools/gen_runtime.py": {
+    "bytes": 17569,
+    "sha256": "7219ac0cfc6a4c81fe4bcca8df44bde3b4f6b96f327fb5977f811fd6bbec7b26"
+  },
+  "baseline/mod_li_yu_dao/tools/gen_school_consent.py": {
+    "bytes": 42894,
+    "sha256": "c82240f50ab694472a5de8e568685b4a4b91929843725cf1c1d834e138f1828d"
+  },
+  "baseline/mod_li_yu_dao/tools/institution_oracle.py": {
+    "bytes": 5109,
+    "sha256": "82b63c98b96f781caadbb9e48451a4691aae84feba1fb988b5f9618fbee7a3b8"
+  },
+  "baseline/mod_li_yu_dao/tools/leadership_templates/common/character_interactions/lyd_c3_teacher_interactions.txt.in": {
+    "bytes": 4848,
+    "sha256": "693f04af355754f261f0e2d51119c9156a77bc5e1b39e8ff39bafbe2f52e9221"
+  },
+  "baseline/mod_li_yu_dao/tools/leadership_templates/common/decisions/lyd_c3_leadership_decisions.txt.in": {
+    "bytes": 7518,
+    "sha256": "64a8209f51edc3a9d312a22b1b93e58480d9ecbdf55e61d02cda0e914b0c5e15"
+  },
+  "baseline/mod_li_yu_dao/tools/leadership_templates/common/on_action/lyd_c3_lifecycle_on_actions.txt.in": {
+    "bytes": 461,
+    "sha256": "52d629206efa1056ebe5652fa8cf2b038f5410fb4444579be6dab0499461c15c"
+  },
+  "baseline/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_challenger_effects.txt.in": {
+    "bytes": 6385,
+    "sha256": "abb705ba20f271e217beb0d0d0717729f642d7cfbcb0dea417691e95fc0f82f4"
+  },
+  "baseline/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_council_effects.txt.in": {
+    "bytes": 9604,
+    "sha256": "c856d1a2c2b5de3d2f48745f6068d88ba851a52d0af3c402e58b03c7787fe078"
+  },
+  "baseline/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in": {
+    "bytes": 1910,
+    "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+  },
+  "baseline/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in": {
+    "bytes": 5128,
+    "sha256": "96530cdb00cda8c4a4b826fe2b6b7bd2f3e14fa15e2442f577cc45e5c592a6c7"
+  },
+  "baseline/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_migration_hooks.txt.in": {
+    "bytes": 1283,
+    "sha256": "d0e73c511166680c46a3915bf38ee6e84f2b2c6474388294d15ca97fb7d5f086"
+  },
+  "baseline/mod_li_yu_dao/tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in": {
+    "bytes": 6605,
+    "sha256": "d149ad0a96f2ecf1b0e11463fb002b90e462e1ddc015a8481f434e41bc7b4b85"
+  },
+  "baseline/mod_li_yu_dao/tools/leadership_templates/events/lyd_c3_leadership_events.txt.in": {
+    "bytes": 2609,
+    "sha256": "8735cf8e25c6ae6d6786ef26656e044d5b58a39308160d6fa99edfba2462f490"
+  },
+  "baseline/mod_li_yu_dao/tools/leadership_templates/localization/english/lyd_c3_leadership_l_english.yml.in": {
+    "bytes": 9371,
+    "sha256": "d61e841ea39673d611d80e76c98b4f5412070c54ea5da69cf90c25f86df3e5a0"
+  },
+  "baseline/mod_li_yu_dao/tools/leadership_templates/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml.in": {
+    "bytes": 8600,
+    "sha256": "95f1a73143e68a871197ea56f493547bd760140b9137b3a5497f9c8d092763f0"
+  },
+  "baseline/mod_li_yu_dao/tools/native_admission_portable.py": {
+    "bytes": 5188,
+    "sha256": "7da4839c191fb16e8de5a38b6879840e8d1434839fdb8054b065b283858263bc"
+  },
+  "baseline/mod_li_yu_dao/tools/reference/native-primitive-tracked-admission.json": {
+    "bytes": 3582,
+    "sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6"
+  },
+  "baseline/mod_li_yu_dao/tools/run_acceptance.py": {
+    "bytes": 20112,
+    "sha256": "7212a6f39a180a45d6f591983dfbf7c40c998cb500050f5afca1960cc9533d6d"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_callbacks.py": {
+    "bytes": 4148,
+    "sha256": "23583d05e9daf00c6a3d874893a4171d4bf45c2fa464b18317d4223300ad15a2"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_data.py": {
+    "bytes": 2087,
+    "sha256": "156942c061e8c9d0afc3b17b716e4be0ea3fe6988181553dfe5ea44bfec7109c"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_model.py": {
+    "bytes": 23747,
+    "sha256": "5fa5e4ae676ba9901b7612b7f2d7375a85938b8d916f605b131157e4a00d8768"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/common/character_interactions/lyd_c2_consent_interactions.txt": {
+    "bytes": 883,
+    "sha256": "f454a47d5604b4a4000b568daf86d52aca2c4a362f6e59a98796b9f4680bf164"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/common/decisions/lyd_c2_consent_decisions.txt": {
+    "bytes": 2305,
+    "sha256": "90a6fbe4f9a36b7f3dd886e6a629f8dbde799167ec085094fd519b21c9214671"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/common/script_values/lyd_c2_consent_values.txt": {
+    "bytes": 502,
+    "sha256": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_close_effects.txt": {
+    "bytes": 3290,
+    "sha256": "cc223af9e9f11c490399abfb6f7b0fd65d74eae1150aa0b425c7d7ff3954b54b"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt": {
+    "bytes": 5844,
+    "sha256": "49c6d9710d9dc8238110d122aafa909445817a8240baa36f2d48e968053b6d0c"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_head_effects.txt": {
+    "bytes": 1249,
+    "sha256": "0460ae905e49b07f4005d976474872b64112aad51f573552c315ee9312511f91"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_response_effects.txt": {
+    "bytes": 1266,
+    "sha256": "c4a5019ff2cda368f728afacd9c1b7f44eb922e6b8095dd3c68c789089deba3c"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_setup_effects.txt": {
+    "bytes": 10831,
+    "sha256": "6512508d6a3fa1e8b702f26296a56159727a0033f833062a39d2b637b9a064f6"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_snapshot_effects.txt": {
+    "bytes": 1154,
+    "sha256": "2c6964221393059e807d74fdfb484834025a8c868d40570e89800bc9d3e7ba88"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_vote_effects.txt": {
+    "bytes": 5265,
+    "sha256": "0a0c26b1cef18219babf59653d83f68fb60144ee9e6ae7c943376efe7f972398"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt": {
+    "bytes": 1910,
+    "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_migration_hooks.txt": {
+    "bytes": 1346,
+    "sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt": {
+    "bytes": 16121,
+    "sha256": "fdadac524b347074dfc4f5937cb3a8c3627d8056e795059001702c3f2235b510"
+  },
+  "baseline/mod_li_yu_dao/tools/school_consent_templates/events/lyd_c2_consent_events.txt": {
+    "bytes": 6704,
+    "sha256": "87da221474c88fb5235a15238d8fca80ee61f93bece5d5ac579d2308395b2134"
+  },
+  "baseline/mod_li_yu_dao/tools/test_build_release.py": {
+    "bytes": 21655,
+    "sha256": "18eec05254e9a537b97089c237c4886775ed1f0d432ae38a1abbb83d07d75fe4"
+  },
+  "baseline/mod_li_yu_dao/tools/test_content_leadership.py": {
+    "bytes": 30276,
+    "sha256": "4712b3ee307771cc6bb8d44220a035f434cb9a227fac68c740efb8cd90358ba4"
+  },
+  "baseline/mod_li_yu_dao/tools/test_institution_candidate.py": {
+    "bytes": 26655,
+    "sha256": "f5731e9a6e4517583b973414551b217cde1f8bac472d128ef4d0c6f27134d8ff"
+  },
+  "baseline/mod_li_yu_dao/tools/test_run_acceptance.py": {
+    "bytes": 9218,
+    "sha256": "f2896c2a0317c4d8929563782d96f8d1f841b2dee139a0a1d2ee8de751f5981f"
+  },
+  "baseline/mod_li_yu_dao/tools/test_school_consent.py": {
+    "bytes": 80166,
+    "sha256": "95a59b7774bd5d03b0e6ee90b6c598735f7028f0037044cd079a9febb2815d92"
+  },
+  "baseline/mod_li_yu_dao/tools/validate_static.py": {
+    "bytes": 21803,
+    "sha256": "396a1dcf746b5b0337c51e10d1812ddfc5fa22257b4b586286b4496732832072"
+  },
+  "baseline/tools/extract_auto_upgrade_buildings.py": {
+    "bytes": 15976,
+    "sha256": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286"
+  },
+  "BASIS.json": {
+    "bytes": 25933,
+    "sha256": "ee1462cf259aa2948997c2a856e857c05f34b87099cfe5c6ab005ac255c04a46"
+  },
+  "builds/first/mod_li_yu_dao/common/character_interactions/lyd_c2_consent_interactions.txt": {
+    "bytes": 986,
+    "sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300"
+  },
+  "builds/first/mod_li_yu_dao/common/character_interactions/lyd_c3_teacher_interactions.txt": {
+    "bytes": 4931,
+    "sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7"
+  },
+  "builds/first/mod_li_yu_dao/common/character_interactions/lyd_i3b_nomination_interactions.txt": {
+    "bytes": 954,
+    "sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98"
+  },
+  "builds/first/mod_li_yu_dao/common/character_interactions/lyd_interactions.txt": {
+    "bytes": 127,
+    "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+  },
+  "builds/first/mod_li_yu_dao/common/decisions/lyd_c2_consent_decisions.txt": {
+    "bytes": 2408,
+    "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549"
+  },
+  "builds/first/mod_li_yu_dao/common/decisions/lyd_c3_leadership_decisions.txt": {
+    "bytes": 7598,
+    "sha256": "01049457541c0c13d08d27bb793a204a2810aa826c4eb01e590b4e64dbb58138"
+  },
+  "builds/first/mod_li_yu_dao/common/decisions/lyd_decisions.txt": {
+    "bytes": 1774,
+    "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+  },
+  "builds/first/mod_li_yu_dao/common/decisions/lyd_i3b_institution_decisions.txt": {
+    "bytes": 4599,
+    "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019"
+  },
+  "builds/first/mod_li_yu_dao/common/on_action/lyd_c3_lifecycle_on_actions.txt": {
+    "bytes": 544,
+    "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b"
+  },
+  "builds/first/mod_li_yu_dao/common/religion/faith_types/lyd_faiths.txt": {
+    "bytes": 424,
+    "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+  },
+  "builds/first/mod_li_yu_dao/common/religion/rite_types/lyd_rites.txt": {
+    "bytes": 13028,
+    "sha256": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17"
+  },
+  "builds/first/mod_li_yu_dao/common/religion/tenet_types/lyd_tenets.txt": {
+    "bytes": 19451,
+    "sha256": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e"
+  },
+  "builds/first/mod_li_yu_dao/common/script_values/lyd_c2_consent_values.txt": {
+    "bytes": 533,
+    "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae"
+  },
+  "builds/first/mod_li_yu_dao/common/script_values/lyd_i3b_institution_values.txt": {
+    "bytes": 205,
+    "sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_c2_close_effects.txt": {
+    "bytes": 3384,
+    "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_c2_commit_effects.txt": {
+    "bytes": 5885,
+    "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_c2_head_effects.txt": {
+    "bytes": 1352,
+    "sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_c2_response_effects.txt": {
+    "bytes": 1369,
+    "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_c2_setup_effects.txt": {
+    "bytes": 12698,
+    "sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_c2_snapshot_effects.txt": {
+    "bytes": 22655,
+    "sha256": "69cf863ee19bea6aa6058974af0cb15b688e8e6900b8f436f2eefa3f2d64bc73"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_c2_vote_effects.txt": {
+    "bytes": 5368,
+    "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_c3_challenger_effects.txt": {
+    "bytes": 6468,
+    "sha256": "af3c5cabc8e6123a5d76aeed59bf0e85db8e9bcf39c85118b0ab85ee746ea89c"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_c3_council_effects.txt": {
+    "bytes": 9687,
+    "sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt": {
+    "bytes": 1993,
+    "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_c3_lifecycle_effects.txt": {
+    "bytes": 5211,
+    "sha256": "94720db16153a862c91172d1a8174a6e91fe734d01353ce2f61132595403f651"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_c3_migration_hooks.txt": {
+    "bytes": 1366,
+    "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt": {
+    "bytes": 3415,
+    "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_i3b_commit_effects.txt": {
+    "bytes": 4096,
+    "sha256": "998c91b9c98c26a6e373efe7cf39661749115df8efa14a10b1af46ce02a93860"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_i3b_response_effects.txt": {
+    "bytes": 4848,
+    "sha256": "f6a78460ac88f14993cb57e2e4ebc53747ad64c19d621bd91c401745cf1923d5"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt": {
+    "bytes": 6065,
+    "sha256": "53b705957fbe0f4aa71a50662e710957687b57f6f9c131e0ddd2b63deb4f954c"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_i3b_terms_effects.txt": {
+    "bytes": 3842,
+    "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_10_effects.txt": {
+    "bytes": 3002,
+    "sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_11_effects.txt": {
+    "bytes": 2887,
+    "sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_12_effects.txt": {
+    "bytes": 2948,
+    "sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_13_effects.txt": {
+    "bytes": 3035,
+    "sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_14_effects.txt": {
+    "bytes": 1526,
+    "sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_1_effects.txt": {
+    "bytes": 2798,
+    "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_2_effects.txt": {
+    "bytes": 2703,
+    "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_3_effects.txt": {
+    "bytes": 2756,
+    "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_4_effects.txt": {
+    "bytes": 2990,
+    "sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_5_effects.txt": {
+    "bytes": 2901,
+    "sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_6_effects.txt": {
+    "bytes": 2926,
+    "sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_7_effects.txt": {
+    "bytes": 2972,
+    "sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_8_effects.txt": {
+    "bytes": 2912,
+    "sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_practice_9_effects.txt": {
+    "bytes": 2983,
+    "sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_school_2_effects.txt": {
+    "bytes": 3902,
+    "sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_school_3_effects.txt": {
+    "bytes": 3877,
+    "sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_school_4_effects.txt": {
+    "bytes": 3982,
+    "sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_school_5_effects.txt": {
+    "bytes": 1968,
+    "sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_effects/lyd_school_effects.txt": {
+    "bytes": 3872,
+    "sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt": {
+    "bytes": 16511,
+    "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_triggers/lyd_c3_leadership_triggers.txt": {
+    "bytes": 6665,
+    "sha256": "967ca3e59d4d33aa588859192dde991358c1626d077a00b2d6fb204adb7a655a"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt": {
+    "bytes": 7789,
+    "sha256": "f110b0d7fe4b9d66d1232d1a2d846f6a53c20f600f26db327791dfcef58756fc"
+  },
+  "builds/first/mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt": {
+    "bytes": 2885,
+    "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e"
+  },
+  "builds/first/mod_li_yu_dao/descriptor.mod": {
+    "bytes": 139,
+    "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2"
+  },
+  "builds/first/mod_li_yu_dao/events/lyd_c2_consent_events.txt": {
+    "bytes": 6638,
+    "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+  },
+  "builds/first/mod_li_yu_dao/events/lyd_c3_leadership_events.txt": {
+    "bytes": 2692,
+    "sha256": "be67baa3427719465965917d44e8594c92063a2aa165ee88833c6954ba2fd411"
+  },
+  "builds/first/mod_li_yu_dao/events/lyd_events.txt": {
+    "bytes": 50504,
+    "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+  },
+  "builds/first/mod_li_yu_dao/events/lyd_i3b_institution_events.txt": {
+    "bytes": 5556,
+    "sha256": "72b6b6348b474fd95e29dfe0fd292cadaed8f541393cbba021fd51fdeb2b5a87"
+  },
+  "builds/first/mod_li_yu_dao/history/faiths/lyd_faith_history.txt": {
+    "bytes": 1171,
+    "sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d"
+  },
+  "builds/first/mod_li_yu_dao/localization/english/lyd_c2_consent_l_english.yml": {
+    "bytes": 13439,
+    "sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35"
+  },
+  "builds/first/mod_li_yu_dao/localization/english/lyd_c3_leadership_l_english.yml": {
+    "bytes": 9455,
+    "sha256": "1febd88fc19c08f67e69650f5b4d185f2e5d3c85e118316a68cc3e3084bb3b06"
+  },
+  "builds/first/mod_li_yu_dao/localization/english/lyd_content_l_english.yml": {
+    "bytes": 66904,
+    "sha256": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78"
+  },
+  "builds/first/mod_li_yu_dao/localization/english/lyd_i3b_institution_l_english.yml": {
+    "bytes": 10220,
+    "sha256": "1a370a05c02c14204df309acb8c162ed9651e622ccd848c3181809f3fb1053ac"
+  },
+  "builds/first/mod_li_yu_dao/localization/english/lyd_runtime_l_english.yml": {
+    "bytes": 4461,
+    "sha256": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199"
+  },
+  "builds/first/mod_li_yu_dao/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml": {
+    "bytes": 11744,
+    "sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504"
+  },
+  "builds/first/mod_li_yu_dao/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml": {
+    "bytes": 8684,
+    "sha256": "9cb67ba427950f0b871e1b0a8d00c04dc4fa6bed79b5317056a0f68b28fbfdfc"
+  },
+  "builds/first/mod_li_yu_dao/localization/simp_chinese/lyd_content_l_simp_chinese.yml": {
+    "bytes": 52952,
+    "sha256": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f"
+  },
+  "builds/first/mod_li_yu_dao/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml": {
+    "bytes": 9138,
+    "sha256": "de0f336c3ccc49b1068bc43f41ec1623c0eda2199b62e6a4df68951525e8e96c"
+  },
+  "builds/first/mod_li_yu_dao/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml": {
+    "bytes": 3707,
+    "sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca"
+  },
+  "builds/first/mod_li_yu_dao.manifest.json": {
+    "bytes": 12937,
+    "sha256": "7cbf143f8216d170f37cc95fa34ec394e56dd0b309ee14ca241e0d1f43d0ca08"
+  },
+  "builds/first/mod_li_yu_dao.zip": {
+    "bytes": 121281,
+    "sha256": "ad403310511b716d5fd3577d9f26dcc0ac3315e727c447be8a5b88d491607646"
+  },
+  "builds/second/mod_li_yu_dao/common/character_interactions/lyd_c2_consent_interactions.txt": {
+    "bytes": 986,
+    "sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300"
+  },
+  "builds/second/mod_li_yu_dao/common/character_interactions/lyd_c3_teacher_interactions.txt": {
+    "bytes": 4931,
+    "sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7"
+  },
+  "builds/second/mod_li_yu_dao/common/character_interactions/lyd_i3b_nomination_interactions.txt": {
+    "bytes": 954,
+    "sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98"
+  },
+  "builds/second/mod_li_yu_dao/common/character_interactions/lyd_interactions.txt": {
+    "bytes": 127,
+    "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+  },
+  "builds/second/mod_li_yu_dao/common/decisions/lyd_c2_consent_decisions.txt": {
+    "bytes": 2408,
+    "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549"
+  },
+  "builds/second/mod_li_yu_dao/common/decisions/lyd_c3_leadership_decisions.txt": {
+    "bytes": 7598,
+    "sha256": "01049457541c0c13d08d27bb793a204a2810aa826c4eb01e590b4e64dbb58138"
+  },
+  "builds/second/mod_li_yu_dao/common/decisions/lyd_decisions.txt": {
+    "bytes": 1774,
+    "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+  },
+  "builds/second/mod_li_yu_dao/common/decisions/lyd_i3b_institution_decisions.txt": {
+    "bytes": 4599,
+    "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019"
+  },
+  "builds/second/mod_li_yu_dao/common/on_action/lyd_c3_lifecycle_on_actions.txt": {
+    "bytes": 544,
+    "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b"
+  },
+  "builds/second/mod_li_yu_dao/common/religion/faith_types/lyd_faiths.txt": {
+    "bytes": 424,
+    "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+  },
+  "builds/second/mod_li_yu_dao/common/religion/rite_types/lyd_rites.txt": {
+    "bytes": 13028,
+    "sha256": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17"
+  },
+  "builds/second/mod_li_yu_dao/common/religion/tenet_types/lyd_tenets.txt": {
+    "bytes": 19451,
+    "sha256": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e"
+  },
+  "builds/second/mod_li_yu_dao/common/script_values/lyd_c2_consent_values.txt": {
+    "bytes": 533,
+    "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae"
+  },
+  "builds/second/mod_li_yu_dao/common/script_values/lyd_i3b_institution_values.txt": {
+    "bytes": 205,
+    "sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_c2_close_effects.txt": {
+    "bytes": 3384,
+    "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_c2_commit_effects.txt": {
+    "bytes": 5885,
+    "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_c2_head_effects.txt": {
+    "bytes": 1352,
+    "sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_c2_response_effects.txt": {
+    "bytes": 1369,
+    "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_c2_setup_effects.txt": {
+    "bytes": 12698,
+    "sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_c2_snapshot_effects.txt": {
+    "bytes": 22655,
+    "sha256": "69cf863ee19bea6aa6058974af0cb15b688e8e6900b8f436f2eefa3f2d64bc73"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_c2_vote_effects.txt": {
+    "bytes": 5368,
+    "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_c3_challenger_effects.txt": {
+    "bytes": 6468,
+    "sha256": "af3c5cabc8e6123a5d76aeed59bf0e85db8e9bcf39c85118b0ab85ee746ea89c"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_c3_council_effects.txt": {
+    "bytes": 9687,
+    "sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt": {
+    "bytes": 1993,
+    "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_c3_lifecycle_effects.txt": {
+    "bytes": 5211,
+    "sha256": "94720db16153a862c91172d1a8174a6e91fe734d01353ce2f61132595403f651"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_c3_migration_hooks.txt": {
+    "bytes": 1366,
+    "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt": {
+    "bytes": 3415,
+    "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_i3b_commit_effects.txt": {
+    "bytes": 4096,
+    "sha256": "998c91b9c98c26a6e373efe7cf39661749115df8efa14a10b1af46ce02a93860"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_i3b_response_effects.txt": {
+    "bytes": 4848,
+    "sha256": "f6a78460ac88f14993cb57e2e4ebc53747ad64c19d621bd91c401745cf1923d5"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt": {
+    "bytes": 6065,
+    "sha256": "53b705957fbe0f4aa71a50662e710957687b57f6f9c131e0ddd2b63deb4f954c"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_i3b_terms_effects.txt": {
+    "bytes": 3842,
+    "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_10_effects.txt": {
+    "bytes": 3002,
+    "sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_11_effects.txt": {
+    "bytes": 2887,
+    "sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_12_effects.txt": {
+    "bytes": 2948,
+    "sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_13_effects.txt": {
+    "bytes": 3035,
+    "sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_14_effects.txt": {
+    "bytes": 1526,
+    "sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_1_effects.txt": {
+    "bytes": 2798,
+    "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_2_effects.txt": {
+    "bytes": 2703,
+    "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_3_effects.txt": {
+    "bytes": 2756,
+    "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_4_effects.txt": {
+    "bytes": 2990,
+    "sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_5_effects.txt": {
+    "bytes": 2901,
+    "sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_6_effects.txt": {
+    "bytes": 2926,
+    "sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_7_effects.txt": {
+    "bytes": 2972,
+    "sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_8_effects.txt": {
+    "bytes": 2912,
+    "sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_practice_9_effects.txt": {
+    "bytes": 2983,
+    "sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_school_2_effects.txt": {
+    "bytes": 3902,
+    "sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_school_3_effects.txt": {
+    "bytes": 3877,
+    "sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_school_4_effects.txt": {
+    "bytes": 3982,
+    "sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_school_5_effects.txt": {
+    "bytes": 1968,
+    "sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_effects/lyd_school_effects.txt": {
+    "bytes": 3872,
+    "sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt": {
+    "bytes": 16511,
+    "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_triggers/lyd_c3_leadership_triggers.txt": {
+    "bytes": 6665,
+    "sha256": "967ca3e59d4d33aa588859192dde991358c1626d077a00b2d6fb204adb7a655a"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt": {
+    "bytes": 7789,
+    "sha256": "f110b0d7fe4b9d66d1232d1a2d846f6a53c20f600f26db327791dfcef58756fc"
+  },
+  "builds/second/mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt": {
+    "bytes": 2885,
+    "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e"
+  },
+  "builds/second/mod_li_yu_dao/descriptor.mod": {
+    "bytes": 139,
+    "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2"
+  },
+  "builds/second/mod_li_yu_dao/events/lyd_c2_consent_events.txt": {
+    "bytes": 6638,
+    "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+  },
+  "builds/second/mod_li_yu_dao/events/lyd_c3_leadership_events.txt": {
+    "bytes": 2692,
+    "sha256": "be67baa3427719465965917d44e8594c92063a2aa165ee88833c6954ba2fd411"
+  },
+  "builds/second/mod_li_yu_dao/events/lyd_events.txt": {
+    "bytes": 50504,
+    "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+  },
+  "builds/second/mod_li_yu_dao/events/lyd_i3b_institution_events.txt": {
+    "bytes": 5556,
+    "sha256": "72b6b6348b474fd95e29dfe0fd292cadaed8f541393cbba021fd51fdeb2b5a87"
+  },
+  "builds/second/mod_li_yu_dao/history/faiths/lyd_faith_history.txt": {
+    "bytes": 1171,
+    "sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d"
+  },
+  "builds/second/mod_li_yu_dao/localization/english/lyd_c2_consent_l_english.yml": {
+    "bytes": 13439,
+    "sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35"
+  },
+  "builds/second/mod_li_yu_dao/localization/english/lyd_c3_leadership_l_english.yml": {
+    "bytes": 9455,
+    "sha256": "1febd88fc19c08f67e69650f5b4d185f2e5d3c85e118316a68cc3e3084bb3b06"
+  },
+  "builds/second/mod_li_yu_dao/localization/english/lyd_content_l_english.yml": {
+    "bytes": 66904,
+    "sha256": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78"
+  },
+  "builds/second/mod_li_yu_dao/localization/english/lyd_i3b_institution_l_english.yml": {
+    "bytes": 10220,
+    "sha256": "1a370a05c02c14204df309acb8c162ed9651e622ccd848c3181809f3fb1053ac"
+  },
+  "builds/second/mod_li_yu_dao/localization/english/lyd_runtime_l_english.yml": {
+    "bytes": 4461,
+    "sha256": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199"
+  },
+  "builds/second/mod_li_yu_dao/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml": {
+    "bytes": 11744,
+    "sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504"
+  },
+  "builds/second/mod_li_yu_dao/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml": {
+    "bytes": 8684,
+    "sha256": "9cb67ba427950f0b871e1b0a8d00c04dc4fa6bed79b5317056a0f68b28fbfdfc"
+  },
+  "builds/second/mod_li_yu_dao/localization/simp_chinese/lyd_content_l_simp_chinese.yml": {
+    "bytes": 52952,
+    "sha256": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f"
+  },
+  "builds/second/mod_li_yu_dao/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml": {
+    "bytes": 9138,
+    "sha256": "de0f336c3ccc49b1068bc43f41ec1623c0eda2199b62e6a4df68951525e8e96c"
+  },
+  "builds/second/mod_li_yu_dao/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml": {
+    "bytes": 3707,
+    "sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca"
+  },
+  "builds/second/mod_li_yu_dao.manifest.json": {
+    "bytes": 12937,
+    "sha256": "7cbf143f8216d170f37cc95fa34ec394e56dd0b309ee14ca241e0d1f43d0ca08"
+  },
+  "builds/second/mod_li_yu_dao.zip": {
+    "bytes": 121281,
+    "sha256": "ad403310511b716d5fd3577d9f26dcc0ac3315e727c447be8a5b88d491607646"
+  },
+  "checks/build-reproducible.json": {
+    "bytes": 1375,
+    "sha256": "26e5889296b1806166c3bd20207774e0fd8951c7796c874be62663d407ab5c71"
+  },
+  "checks/scope-regression.json": {
+    "bytes": 9831,
+    "sha256": "fa3e0413d99c5be6a9be7572c73ae31b45c75a07d63fc991ed8e8a490e70ba65"
+  },
+  "checks/static.json": {
+    "bytes": 9254,
+    "sha256": "933055349bc83f1b11b728cc8fbf91517259c8e0310cd16c04f2ff1d59b10f77"
+  },
+  "commands/c2-full-regression.json": {
+    "bytes": 557,
+    "sha256": "62857b12392f6a71a4109551268b9e37e9930918005b5eb120d8ea315ee3a1ce"
+  },
+  "commands/c2-full-regression.stderr.log": {
+    "bytes": 16671,
+    "sha256": "cd0d911dc30285b24f4edad6000af06e2e78f290edf010ec40fede01a50f2d88"
+  },
+  "commands/c2-full-regression.stdout.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commands/render-baseline-ready-base.json": {
+    "bytes": 551,
+    "sha256": "06972a15cee56c63f1222be2796c5910172dd97ec8738cb74551b5d990365afe"
+  },
+  "commands/render-baseline-ready-base.stderr.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commands/render-baseline-ready-base.stdout.log": {
+    "bytes": 51,
+    "sha256": "8d9eaaab88e3f3b680343ce4aef9de68622cd09e523f2b2118b8a0075955c858"
+  },
+  "commands/render-source-final.json": {
+    "bytes": 549,
+    "sha256": "4b2339f4185575a18d4eeeb0532e45fdcafbd1902ad204578c130eccbe6e8556"
+  },
+  "commands/render-source-final.stderr.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commands/render-source-final.stdout.log": {
+    "bytes": 51,
+    "sha256": "8d9eaaab88e3f3b680343ce4aef9de68622cd09e523f2b2118b8a0075955c858"
+  },
+  "commands/render-source-ready-base.json": {
+    "bytes": 549,
+    "sha256": "4b2339f4185575a18d4eeeb0532e45fdcafbd1902ad204578c130eccbe6e8556"
+  },
+  "commands/render-source-ready-base.stderr.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commands/render-source-ready-base.stdout.log": {
+    "bytes": 51,
+    "sha256": "8d9eaaab88e3f3b680343ce4aef9de68622cd09e523f2b2118b8a0075955c858"
+  },
+  "commands/runtime-repro-check.json": {
+    "bytes": 564,
+    "sha256": "7b74b999bd7e9368f7eb1834fedb312d7d0efd23b9354617b8be47a2ea7aef1f"
+  },
+  "commands/runtime-repro-check.stderr.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commands/runtime-repro-check.stdout.log": {
+    "bytes": 50,
+    "sha256": "acb08e5fc71ef6894b6e78c9fd013dd7b7825f26a549402bc84aeddad9fbc30c"
+  },
+  "commands/scope-regression.json": {
+    "bytes": 841,
+    "sha256": "4474b34afc46bdecd713477e32df1fc1b5a8fd642d99260cfc67a883f8238de4"
+  },
+  "commands/scope-regression.stderr.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commands/scope-regression.stdout.log": {
+    "bytes": 106,
+    "sha256": "2cde67cac32ba77864f5919c9ab2c90e61cdc99d8cbb26e50522063c0fcd6501"
+  },
+  "commands/static.json": {
+    "bytes": 686,
+    "sha256": "4ced504b7b137468eaa37abff4d1b491050971dc99c8496aa1a00498f751eb3a"
+  },
+  "commands/static.stderr.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "commands/static.stdout.log": {
+    "bytes": 9254,
+    "sha256": "933055349bc83f1b11b728cc8fbf91517259c8e0310cd16c04f2ff1d59b10f77"
+  },
+  "DELTA.json": {
+    "bytes": 10166,
+    "sha256": "fe2c2321f2e967767f5e27c2a22654883238274a5a6390be446d06fde38e5a03"
+  },
+  "evidence/actual-third-prefix-REPORT.json": {
+    "bytes": 73051,
+    "sha256": "a20ad549fbe95ddf23faad4b26c5fd8112fd28c42602348a90facc7086c11913"
+  },
+  "evidence/native-shipped-excerpts.json": {
+    "bytes": 4105,
+    "sha256": "612b0d16f9a4e853c24ffb812cee2670fcdd9d79d228d667e3aa348cabf1dc31"
+  },
+  "evidence/REPORT.json": {
+    "bytes": 17125,
+    "sha256": "19d4ffa4ae869d945dea111f7f1375b17b05b0a77cd469a12b4133e8b2176e62"
+  },
+  "evidence/SUGGESTED-SCOPEFIX.patch": {
+    "bytes": 6913,
+    "sha256": "13a94853669cd53d00c00a1840bea8a8561bf93364da248b912856de3baa1f09"
+  },
+  "main-after.json": {
+    "bytes": 24397,
+    "sha256": "e235c240801ecc1cdb7baaf3a8992db752466ef2ab3e536ddf978fe2c34e4139"
+  },
+  "main-before.json": {
+    "bytes": 24397,
+    "sha256": "e235c240801ecc1cdb7baaf3a8992db752466ef2ab3e536ddf978fe2c34e4139"
+  },
+  "prepare.py": {
+    "bytes": 11771,
+    "sha256": "fc881845e80f126a48f24a0aefb3d5ee3cead8c149417e23f4146554c4a09e94"
+  },
+  "REPORT.json": {
+    "bytes": 1017,
+    "sha256": "a6e3a65c9910a524dced5678e7ca268ddcc0ba5e4ce4eaac0fb2a3934bef8a48"
+  },
+  "REPORT.md": {
+    "bytes": 797,
+    "sha256": "b657bcdfd7de486aed6d5fd4cd7488d5fbc475bd3ac3f6d755b1fd07487b6c6f"
+  },
+  "runtime.patch": {
+    "bytes": 7192,
+    "sha256": "8a293be79864335d75764db76b630015c3564f91572ce106943f5b60ba4d4bdb"
+  },
+  "scope_regression.py": {
+    "bytes": 23956,
+    "sha256": "cab52e503d32b75b4ccd49317c125dc8c06cfadfec90f55c4e9a9758b7319e65"
+  },
+  "source/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/debug-marker-lines.raw.log": {
+    "bytes": 5000,
+    "sha256": "8564747babb9b8b4d46992bfb17412f086acd60604596c401a8d6a5c6f5f2d10"
+  },
+  "source/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/error-classification-addendum.json": {
+    "bytes": 14186,
+    "sha256": "2f3a464edf7541aa3b813f5bf39d0400dc6e2fd29d36bea80fbd05f83fe84a48"
+  },
+  "source/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/native-primitive-attestation-candidate-v2.json": {
+    "bytes": 96228,
+    "sha256": "50bad54b995723026bd26842f258376c86447547791357f6c5ad809750891b5d"
+  },
+  "source/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/character-36445.excerpt.txt": {
+    "bytes": 6255,
+    "sha256": "885419cc4df4e419e36805afab250ce73fa1d6c404a5d2b4ad3925909acdae42"
+  },
+  "source/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/faith-108.excerpt.txt": {
+    "bytes": 2451,
+    "sha256": "fc56c5494e2eae9984e2d6f3f79a5482a2cae93a80299f79043d7851394e9baf"
+  },
+  "source/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/rite-151.excerpt.txt": {
+    "bytes": 2490,
+    "sha256": "69f5483d4d944da4ebce92c6bddaccd1a74cfdbd9edd01823f9fa006e5904b98"
+  },
+  "source/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/three-rounds.summary.json": {
+    "bytes": 6344,
+    "sha256": "a436aec37b9e71e05a47329c69354195ad69deade8711172e16b777d2aa1d1c5"
+  },
+  "source/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/title-18417.excerpt.txt": {
+    "bytes": 685,
+    "sha256": "3e3010bfac4739e0b4e6a33f99b641e8662fa2904d581805d77abc42efb49cbb"
+  },
+  "source/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_effects/lyd_np_effects.txt": {
+    "bytes": 10380,
+    "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+  },
+  "source/docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_triggers/lyd_np_triggers.txt": {
+    "bytes": 2777,
+    "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+  },
+  "source/mod_li_yu_dao/common/character_interactions/lyd_c2_consent_interactions.txt": {
+    "bytes": 986,
+    "sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300"
+  },
+  "source/mod_li_yu_dao/common/character_interactions/lyd_c3_teacher_interactions.txt": {
+    "bytes": 4931,
+    "sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7"
+  },
+  "source/mod_li_yu_dao/common/character_interactions/lyd_i3b_nomination_interactions.txt": {
+    "bytes": 954,
+    "sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98"
+  },
+  "source/mod_li_yu_dao/common/character_interactions/lyd_interactions.txt": {
+    "bytes": 127,
+    "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+  },
+  "source/mod_li_yu_dao/common/decisions/lyd_c2_consent_decisions.txt": {
+    "bytes": 2408,
+    "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549"
+  },
+  "source/mod_li_yu_dao/common/decisions/lyd_c3_leadership_decisions.txt": {
+    "bytes": 7598,
+    "sha256": "01049457541c0c13d08d27bb793a204a2810aa826c4eb01e590b4e64dbb58138"
+  },
+  "source/mod_li_yu_dao/common/decisions/lyd_decisions.txt": {
+    "bytes": 1774,
+    "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+  },
+  "source/mod_li_yu_dao/common/decisions/lyd_i3b_institution_decisions.txt": {
+    "bytes": 4599,
+    "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019"
+  },
+  "source/mod_li_yu_dao/common/on_action/lyd_c3_lifecycle_on_actions.txt": {
+    "bytes": 544,
+    "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b"
+  },
+  "source/mod_li_yu_dao/common/religion/faith_types/lyd_faiths.txt": {
+    "bytes": 424,
+    "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+  },
+  "source/mod_li_yu_dao/common/religion/rite_types/lyd_rites.txt": {
+    "bytes": 13028,
+    "sha256": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17"
+  },
+  "source/mod_li_yu_dao/common/religion/tenet_types/lyd_tenets.txt": {
+    "bytes": 19451,
+    "sha256": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e"
+  },
+  "source/mod_li_yu_dao/common/script_values/lyd_c2_consent_values.txt": {
+    "bytes": 533,
+    "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae"
+  },
+  "source/mod_li_yu_dao/common/script_values/lyd_i3b_institution_values.txt": {
+    "bytes": 205,
+    "sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_c2_close_effects.txt": {
+    "bytes": 3384,
+    "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_c2_commit_effects.txt": {
+    "bytes": 5885,
+    "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_c2_head_effects.txt": {
+    "bytes": 1352,
+    "sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_c2_response_effects.txt": {
+    "bytes": 1369,
+    "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_c2_setup_effects.txt": {
+    "bytes": 12698,
+    "sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_c2_snapshot_effects.txt": {
+    "bytes": 22655,
+    "sha256": "69cf863ee19bea6aa6058974af0cb15b688e8e6900b8f436f2eefa3f2d64bc73"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_c2_vote_effects.txt": {
+    "bytes": 5368,
+    "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_c3_challenger_effects.txt": {
+    "bytes": 6468,
+    "sha256": "af3c5cabc8e6123a5d76aeed59bf0e85db8e9bcf39c85118b0ab85ee746ea89c"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_c3_council_effects.txt": {
+    "bytes": 9687,
+    "sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_c3_head_factory.txt": {
+    "bytes": 1993,
+    "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_c3_lifecycle_effects.txt": {
+    "bytes": 5211,
+    "sha256": "94720db16153a862c91172d1a8174a6e91fe734d01353ce2f61132595403f651"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_c3_migration_hooks.txt": {
+    "bytes": 1366,
+    "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_entry_effects.txt": {
+    "bytes": 3415,
+    "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_i3b_commit_effects.txt": {
+    "bytes": 4096,
+    "sha256": "998c91b9c98c26a6e373efe7cf39661749115df8efa14a10b1af46ce02a93860"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_i3b_response_effects.txt": {
+    "bytes": 4848,
+    "sha256": "f6a78460ac88f14993cb57e2e4ebc53747ad64c19d621bd91c401745cf1923d5"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_i3b_setup_effects.txt": {
+    "bytes": 6065,
+    "sha256": "53b705957fbe0f4aa71a50662e710957687b57f6f9c131e0ddd2b63deb4f954c"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_i3b_terms_effects.txt": {
+    "bytes": 3842,
+    "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_10_effects.txt": {
+    "bytes": 3002,
+    "sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_11_effects.txt": {
+    "bytes": 2887,
+    "sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_12_effects.txt": {
+    "bytes": 2948,
+    "sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_13_effects.txt": {
+    "bytes": 3035,
+    "sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_14_effects.txt": {
+    "bytes": 1526,
+    "sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_1_effects.txt": {
+    "bytes": 2798,
+    "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_2_effects.txt": {
+    "bytes": 2703,
+    "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_3_effects.txt": {
+    "bytes": 2756,
+    "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_4_effects.txt": {
+    "bytes": 2990,
+    "sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_5_effects.txt": {
+    "bytes": 2901,
+    "sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_6_effects.txt": {
+    "bytes": 2926,
+    "sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_7_effects.txt": {
+    "bytes": 2972,
+    "sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_8_effects.txt": {
+    "bytes": 2912,
+    "sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_practice_9_effects.txt": {
+    "bytes": 2983,
+    "sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_school_2_effects.txt": {
+    "bytes": 3902,
+    "sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_school_3_effects.txt": {
+    "bytes": 3877,
+    "sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_school_4_effects.txt": {
+    "bytes": 3982,
+    "sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_school_5_effects.txt": {
+    "bytes": 1968,
+    "sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a"
+  },
+  "source/mod_li_yu_dao/common/scripted_effects/lyd_school_effects.txt": {
+    "bytes": 3872,
+    "sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008"
+  },
+  "source/mod_li_yu_dao/common/scripted_triggers/lyd_c2_consent_triggers.txt": {
+    "bytes": 16511,
+    "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+  },
+  "source/mod_li_yu_dao/common/scripted_triggers/lyd_c3_leadership_triggers.txt": {
+    "bytes": 6665,
+    "sha256": "967ca3e59d4d33aa588859192dde991358c1626d077a00b2d6fb204adb7a655a"
+  },
+  "source/mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt": {
+    "bytes": 7789,
+    "sha256": "f110b0d7fe4b9d66d1232d1a2d846f6a53c20f600f26db327791dfcef58756fc"
+  },
+  "source/mod_li_yu_dao/common/scripted_triggers/lyd_player_triggers.txt": {
+    "bytes": 2885,
+    "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e"
+  },
+  "source/mod_li_yu_dao/descriptor.mod": {
+    "bytes": 139,
+    "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2"
+  },
+  "source/mod_li_yu_dao/docs/acceptance-matrix.md": {
+    "bytes": 11751,
+    "sha256": "03ad8224b300630b6cc51723570bc92fa6a2a9801431c097ef03083f69284c77"
+  },
+  "source/mod_li_yu_dao/docs/content-copyedit-2026-10-05.md": {
+    "bytes": 1826,
+    "sha256": "3148bd41b0d90aced96cc0a2282bc81eddbe97d26e693fcf131d80b6ca4f90c3"
+  },
+  "source/mod_li_yu_dao/docs/iteration-1-content.md": {
+    "bytes": 16519,
+    "sha256": "478be7674192b48b52d76ecf908a63a2400923227792a309f0c3e0e9bbfa7af3"
+  },
+  "source/mod_li_yu_dao/events/lyd_c2_consent_events.txt": {
+    "bytes": 6638,
+    "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+  },
+  "source/mod_li_yu_dao/events/lyd_c3_leadership_events.txt": {
+    "bytes": 2692,
+    "sha256": "be67baa3427719465965917d44e8594c92063a2aa165ee88833c6954ba2fd411"
+  },
+  "source/mod_li_yu_dao/events/lyd_events.txt": {
+    "bytes": 50504,
+    "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+  },
+  "source/mod_li_yu_dao/events/lyd_i3b_institution_events.txt": {
+    "bytes": 5556,
+    "sha256": "72b6b6348b474fd95e29dfe0fd292cadaed8f541393cbba021fd51fdeb2b5a87"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/decisions/lyd_np_decisions.txt": {
+    "bytes": 1857,
+    "sha256": "06ff98f68af5b7dc4b7d2d0e42e0cefe180b3cdaf0e7cbb48b938965f6d4fef0"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/religion/faith_types/lyd_np_faiths.txt": {
+    "bytes": 644,
+    "sha256": "d349b0c5bd4a6102a32ca1f9762487b33559b6da255ccab9533bd13ad8b7247c"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/religion/rite_types/lyd_np_rites.txt": {
+    "bytes": 848,
+    "sha256": "11aab688d88c6f8cfbdb8464f408b111ecc07e07e884eee13bbf44492ca15230"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/scripted_effects/lyd_np_effects.txt": {
+    "bytes": 10380,
+    "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/common/scripted_triggers/lyd_np_triggers.txt": {
+    "bytes": 2777,
+    "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/descriptor.mod": {
+    "bytes": 125,
+    "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/events/lyd_np_events.txt": {
+    "bytes": 3743,
+    "sha256": "b9d57ad721c799e551870f39027a26727b207c5fef97f175dd4db0dff81db896"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/localization/english/lyd_np_l_english.yml": {
+    "bytes": 2296,
+    "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/candidate2/mod_li_yu_dao_native_prototype/localization/simp_chinese/lyd_np_l_simp_chinese.yml": {
+    "bytes": 1993,
+    "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/candidate2/static-report.json": {
+    "bytes": 4933,
+    "sha256": "a55a3d44a210dc191112b800e01c88353e399a8b56a260d12301370e9c570a6d"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/decisions/lyd_np_decisions.txt": {
+    "bytes": 1770,
+    "sha256": "7a95bec62bcc6533c7fcdef7331b76a359ec4dedac29d5bc99888b2c53757db2"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/religion/faith_types/lyd_np_faiths.txt": {
+    "bytes": 641,
+    "sha256": "bcd46bd4407ae43dcaf84b505a08c2d883c2e52726587e7ae9cd088d88c62870"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/religion/rite_types/lyd_np_rites.txt": {
+    "bytes": 845,
+    "sha256": "ba76cd96f18ba0f75d9932c6e50dcd4067abfd465364731c10e7bcfc211b058c"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/scripted_effects/lyd_np_effects.txt": {
+    "bytes": 8225,
+    "sha256": "4f11d1ae816e349ee2f4c736939819c0964dc1ddcecd75545026ef5eeeae4d70"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/common/scripted_triggers/lyd_np_triggers.txt": {
+    "bytes": 2790,
+    "sha256": "4c487386b018af6b2a0c918ee5cf89dad908b483eba44b696b47c303fcdaf445"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/descriptor.mod": {
+    "bytes": 125,
+    "sha256": "b82a694df94b885c0438d55bb3f1d5ed2fdde6b624131633b5ae56cfabe101f1"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/events/lyd_np_events.txt": {
+    "bytes": 3739,
+    "sha256": "9e2086e8373a11f6dc7c4ff4f9cf342d6d87b60adba45dd68e5797f9452b9457"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/localization/english/lyd_np_l_english.yml": {
+    "bytes": 2296,
+    "sha256": "26acb8c79ff2c790a62b8905e725250153141731c14719259a52c02d555ad723"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/mod_li_yu_dao_native_prototype/localization/simp_chinese/lyd_np_l_simp_chinese.yml": {
+    "bytes": 1993,
+    "sha256": "d7d4381c8bb172e4a32041588e43f1838e1bc861902153df3a2d1f10eec2d907"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/native-source-evidence.json": {
+    "bytes": 2686,
+    "sha256": "9bfbc62b1752a5a639dda8a9cb65ca687457cf0de68d4e5464f7e6dd3dbf10c9"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/README.md": {
+    "bytes": 8421,
+    "sha256": "58010f954ab0f03abc174d5385a844f113099722eea20f57755a1bf651ae39c5"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/static-report.json": {
+    "bytes": 2200,
+    "sha256": "f245f7885ba04516954276b0c215258f1fe0534d4fc8ed4a968939a49cf1723a"
+  },
+  "source/mod_li_yu_dao/fixtures/native_cycle/validate_prototype.py": {
+    "bytes": 7179,
+    "sha256": "7e7113af4010890c2ffbc30133921c8b16a0091c003634690151abf6a839af8e"
+  },
+  "source/mod_li_yu_dao/history/faiths/lyd_faith_history.txt": {
+    "bytes": 1171,
+    "sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d"
+  },
+  "source/mod_li_yu_dao/localization/english/lyd_c2_consent_l_english.yml": {
+    "bytes": 13439,
+    "sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35"
+  },
+  "source/mod_li_yu_dao/localization/english/lyd_c3_leadership_l_english.yml": {
+    "bytes": 9455,
+    "sha256": "1febd88fc19c08f67e69650f5b4d185f2e5d3c85e118316a68cc3e3084bb3b06"
+  },
+  "source/mod_li_yu_dao/localization/english/lyd_content_l_english.yml": {
+    "bytes": 66904,
+    "sha256": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78"
+  },
+  "source/mod_li_yu_dao/localization/english/lyd_i3b_institution_l_english.yml": {
+    "bytes": 10220,
+    "sha256": "1a370a05c02c14204df309acb8c162ed9651e622ccd848c3181809f3fb1053ac"
+  },
+  "source/mod_li_yu_dao/localization/english/lyd_runtime_l_english.yml": {
+    "bytes": 4461,
+    "sha256": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199"
+  },
+  "source/mod_li_yu_dao/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml": {
+    "bytes": 11744,
+    "sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504"
+  },
+  "source/mod_li_yu_dao/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml": {
+    "bytes": 8684,
+    "sha256": "9cb67ba427950f0b871e1b0a8d00c04dc4fa6bed79b5317056a0f68b28fbfdfc"
+  },
+  "source/mod_li_yu_dao/localization/simp_chinese/lyd_content_l_simp_chinese.yml": {
+    "bytes": 52952,
+    "sha256": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f"
+  },
+  "source/mod_li_yu_dao/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml": {
+    "bytes": 9138,
+    "sha256": "de0f336c3ccc49b1068bc43f41ec1623c0eda2199b62e6a4df68951525e8e96c"
+  },
+  "source/mod_li_yu_dao/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml": {
+    "bytes": 3707,
+    "sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca"
+  },
+  "source/mod_li_yu_dao/README.md": {
+    "bytes": 2795,
+    "sha256": "85f48485bf3062c658cb594374f09e01eb92571a004903855daeae7a1a4aaf4f"
+  },
+  "source/mod_li_yu_dao/tools/additional_practices.py": {
+    "bytes": 51685,
+    "sha256": "cbae8ccf96a33d893ab2c8084ab09046aa34c46596f41ac7241429d2ca56d583"
+  },
+  "source/mod_li_yu_dao/tools/build_release.py": {
+    "bytes": 10701,
+    "sha256": "ba5de21fd7aa16bbbbabd9268142cadca3cee6b546acda19c306316cac233ed4"
+  },
+  "source/mod_li_yu_dao/tools/content_data.py": {
+    "bytes": 62030,
+    "sha256": "cb368c771dc4b99a612e560b9bb4ce04992a403c7598f24d9ae3aaeae4bcda73"
+  },
+  "source/mod_li_yu_dao/tools/gen_content.py": {
+    "bytes": 8044,
+    "sha256": "bb8a82ac75fb60d9cf25a50843e1d924962dc041c27b05631c1977daea18f342"
+  },
+  "source/mod_li_yu_dao/tools/gen_institution.py": {
+    "bytes": 45619,
+    "sha256": "fc603a5c428fca16a5c85a96c4434bcbd50035618405c28dd4bc6d2de0bf267c"
+  },
+  "source/mod_li_yu_dao/tools/gen_leadership.py": {
+    "bytes": 2363,
+    "sha256": "f73d77e7d073b1736821e86acda1decda18ba471a7e71f222c964fa0174d28b4"
+  },
+  "source/mod_li_yu_dao/tools/gen_runtime.py": {
+    "bytes": 17569,
+    "sha256": "7219ac0cfc6a4c81fe4bcca8df44bde3b4f6b96f327fb5977f811fd6bbec7b26"
+  },
+  "source/mod_li_yu_dao/tools/gen_school_consent.py": {
+    "bytes": 43067,
+    "sha256": "95bb9ea954cf96b19bed842c0f47ff6365d6e0c2e39f1a4ad825656ad3cf7c20"
+  },
+  "source/mod_li_yu_dao/tools/institution_oracle.py": {
+    "bytes": 5109,
+    "sha256": "82b63c98b96f781caadbb9e48451a4691aae84feba1fb988b5f9618fbee7a3b8"
+  },
+  "source/mod_li_yu_dao/tools/leadership_templates/common/character_interactions/lyd_c3_teacher_interactions.txt.in": {
+    "bytes": 4848,
+    "sha256": "693f04af355754f261f0e2d51119c9156a77bc5e1b39e8ff39bafbe2f52e9221"
+  },
+  "source/mod_li_yu_dao/tools/leadership_templates/common/decisions/lyd_c3_leadership_decisions.txt.in": {
+    "bytes": 7518,
+    "sha256": "64a8209f51edc3a9d312a22b1b93e58480d9ecbdf55e61d02cda0e914b0c5e15"
+  },
+  "source/mod_li_yu_dao/tools/leadership_templates/common/on_action/lyd_c3_lifecycle_on_actions.txt.in": {
+    "bytes": 461,
+    "sha256": "52d629206efa1056ebe5652fa8cf2b038f5410fb4444579be6dab0499461c15c"
+  },
+  "source/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_challenger_effects.txt.in": {
+    "bytes": 6385,
+    "sha256": "abb705ba20f271e217beb0d0d0717729f642d7cfbcb0dea417691e95fc0f82f4"
+  },
+  "source/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_council_effects.txt.in": {
+    "bytes": 9604,
+    "sha256": "c856d1a2c2b5de3d2f48745f6068d88ba851a52d0af3c402e58b03c7787fe078"
+  },
+  "source/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in": {
+    "bytes": 1910,
+    "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+  },
+  "source/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in": {
+    "bytes": 5128,
+    "sha256": "96530cdb00cda8c4a4b826fe2b6b7bd2f3e14fa15e2442f577cc45e5c592a6c7"
+  },
+  "source/mod_li_yu_dao/tools/leadership_templates/common/scripted_effects/lyd_c3_migration_hooks.txt.in": {
+    "bytes": 1283,
+    "sha256": "d0e73c511166680c46a3915bf38ee6e84f2b2c6474388294d15ca97fb7d5f086"
+  },
+  "source/mod_li_yu_dao/tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in": {
+    "bytes": 6605,
+    "sha256": "d149ad0a96f2ecf1b0e11463fb002b90e462e1ddc015a8481f434e41bc7b4b85"
+  },
+  "source/mod_li_yu_dao/tools/leadership_templates/events/lyd_c3_leadership_events.txt.in": {
+    "bytes": 2609,
+    "sha256": "8735cf8e25c6ae6d6786ef26656e044d5b58a39308160d6fa99edfba2462f490"
+  },
+  "source/mod_li_yu_dao/tools/leadership_templates/localization/english/lyd_c3_leadership_l_english.yml.in": {
+    "bytes": 9371,
+    "sha256": "d61e841ea39673d611d80e76c98b4f5412070c54ea5da69cf90c25f86df3e5a0"
+  },
+  "source/mod_li_yu_dao/tools/leadership_templates/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml.in": {
+    "bytes": 8600,
+    "sha256": "95f1a73143e68a871197ea56f493547bd760140b9137b3a5497f9c8d092763f0"
+  },
+  "source/mod_li_yu_dao/tools/native_admission_portable.py": {
+    "bytes": 5188,
+    "sha256": "7da4839c191fb16e8de5a38b6879840e8d1434839fdb8054b065b283858263bc"
+  },
+  "source/mod_li_yu_dao/tools/reference/native-primitive-tracked-admission.json": {
+    "bytes": 3582,
+    "sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6"
+  },
+  "source/mod_li_yu_dao/tools/run_acceptance.py": {
+    "bytes": 20112,
+    "sha256": "7212a6f39a180a45d6f591983dfbf7c40c998cb500050f5afca1960cc9533d6d"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_callbacks.py": {
+    "bytes": 4148,
+    "sha256": "23583d05e9daf00c6a3d874893a4171d4bf45c2fa464b18317d4223300ad15a2"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_data.py": {
+    "bytes": 2087,
+    "sha256": "156942c061e8c9d0afc3b17b716e4be0ea3fe6988181553dfe5ea44bfec7109c"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_model.py": {
+    "bytes": 23747,
+    "sha256": "5fa5e4ae676ba9901b7612b7f2d7375a85938b8d916f605b131157e4a00d8768"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/common/character_interactions/lyd_c2_consent_interactions.txt": {
+    "bytes": 883,
+    "sha256": "f454a47d5604b4a4000b568daf86d52aca2c4a362f6e59a98796b9f4680bf164"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/common/decisions/lyd_c2_consent_decisions.txt": {
+    "bytes": 2305,
+    "sha256": "90a6fbe4f9a36b7f3dd886e6a629f8dbde799167ec085094fd519b21c9214671"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/common/script_values/lyd_c2_consent_values.txt": {
+    "bytes": 502,
+    "sha256": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_close_effects.txt": {
+    "bytes": 3290,
+    "sha256": "cc223af9e9f11c490399abfb6f7b0fd65d74eae1150aa0b425c7d7ff3954b54b"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt": {
+    "bytes": 5844,
+    "sha256": "49c6d9710d9dc8238110d122aafa909445817a8240baa36f2d48e968053b6d0c"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_head_effects.txt": {
+    "bytes": 1249,
+    "sha256": "0460ae905e49b07f4005d976474872b64112aad51f573552c315ee9312511f91"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_response_effects.txt": {
+    "bytes": 1266,
+    "sha256": "c4a5019ff2cda368f728afacd9c1b7f44eb922e6b8095dd3c68c789089deba3c"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_setup_effects.txt": {
+    "bytes": 10831,
+    "sha256": "6512508d6a3fa1e8b702f26296a56159727a0033f833062a39d2b637b9a064f6"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_snapshot_effects.txt": {
+    "bytes": 1154,
+    "sha256": "2c6964221393059e807d74fdfb484834025a8c868d40570e89800bc9d3e7ba88"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_vote_effects.txt": {
+    "bytes": 5265,
+    "sha256": "0a0c26b1cef18219babf59653d83f68fb60144ee9e6ae7c943376efe7f972398"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt": {
+    "bytes": 1910,
+    "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c3_migration_hooks.txt": {
+    "bytes": 1346,
+    "sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt": {
+    "bytes": 16874,
+    "sha256": "d5553d1265bb9cdcaf3392784e4ee1752d10af52d228595ca518e6f11ae5cedd"
+  },
+  "source/mod_li_yu_dao/tools/school_consent_templates/events/lyd_c2_consent_events.txt": {
+    "bytes": 6724,
+    "sha256": "3492722777c8aca20f91f8eb304dbcea9a9f5e970f16235c940181eb31ae888c"
+  },
+  "source/mod_li_yu_dao/tools/test_build_release.py": {
+    "bytes": 21655,
+    "sha256": "18eec05254e9a537b97089c237c4886775ed1f0d432ae38a1abbb83d07d75fe4"
+  },
+  "source/mod_li_yu_dao/tools/test_c2_preview_scope.py": {
+    "bytes": 23956,
+    "sha256": "cab52e503d32b75b4ccd49317c125dc8c06cfadfec90f55c4e9a9758b7319e65"
+  },
+  "source/mod_li_yu_dao/tools/test_content_leadership.py": {
+    "bytes": 30276,
+    "sha256": "4712b3ee307771cc6bb8d44220a035f434cb9a227fac68c740efb8cd90358ba4"
+  },
+  "source/mod_li_yu_dao/tools/test_institution_candidate.py": {
+    "bytes": 26655,
+    "sha256": "f5731e9a6e4517583b973414551b217cde1f8bac472d128ef4d0c6f27134d8ff"
+  },
+  "source/mod_li_yu_dao/tools/test_run_acceptance.py": {
+    "bytes": 9218,
+    "sha256": "f2896c2a0317c4d8929563782d96f8d1f841b2dee139a0a1d2ee8de751f5981f"
+  },
+  "source/mod_li_yu_dao/tools/test_school_consent.py": {
+    "bytes": 80460,
+    "sha256": "3a309bf7584a0d5808f44000d8bebbdcae840201b82afd9e5d7683a4abe7be20"
+  },
+  "source/mod_li_yu_dao/tools/validate_static.py": {
+    "bytes": 21803,
+    "sha256": "396a1dcf746b5b0337c51e10d1812ddfc5fa22257b4b586286b4496732832072"
+  },
+  "source/tools/extract_auto_upgrade_buildings.py": {
+    "bytes": 15976,
+    "sha256": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286"
+  }
+}

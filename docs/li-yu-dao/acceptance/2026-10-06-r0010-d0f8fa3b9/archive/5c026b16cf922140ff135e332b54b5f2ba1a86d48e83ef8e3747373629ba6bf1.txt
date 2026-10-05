@@ -1,0 +1,151 @@
+65866={
+	first_name="Radolf"
+	birth=1026.9.9
+	nickname_text=""
+	ethnicity=caucasian_brown_hair
+	culture=73
+	rite=159
+	dynasty_house=12760
+	skill={ 8 10 6 8 20 5 }
+	dna="yazJrE5CTkLAwMDAAHIAcgA/AD8AeAB4AH4AfgB9AH0BhAGEAHkAeQGCAYIAfAB8AZ0BnQGqAaoAbABsAZwBnABsAGwBkAGQAYEBgQB6AHoAeAB4AbIBsgGIAYgAfgB+AYgBiAB0AHQAfAB8AYEBgQGJAYkAewB7AHAAcAA+AD4AAwADAGcAZwHbAdsBGgEaABYAFgEAAQABMwEzAHUAdQKuAq4BFAEUAHcAdwEGAQYBhgGGAXIBcgEcARwAKQApACgAKAEnAScBJgEmAXsBewBeAF4ADQANAA4ADgEbARsBAQEBACkAKQEcARwAKgAqABQAFAErASsAAgACASUBJQAmACYAFwAXAGMAYwEUARQAxQDFAXEBcQEGAQYBJQElAC4ALgEvAS8AIwAjAU0BTQGWAZYDGAMYAawBrAERAREBsAGwBREFEQEMAQwAWgBaAAsACwBGAEYDOgM6AIwAjAAeAB4CAAIAALUAtQFyAXICjAKMCQAJAAVvBW8CtQK1CIoIigSaBJoAtwC3AYQBhAG4AbgB2AHYASQBJAEUARQ="
+
+	mass=-21
+	traits={ 51 58 76 23 }
+	alive_data={
+		variables={
+			data={ {
+					flag=lyd_c2_vote_yes
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_nonce
+					data={
+						type=value
+						identity=1300000
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_serial
+					data={
+						type=value
+						identity=1300000
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_owner
+					data={
+						type=char
+						identity=31254
+					}
+
+				}
+ {
+					flag=lyd_c2_elector_rite
+					data={
+						type=rite
+						identity=159
+					}
+
+				}
+ {
+					flag=lyd_c2_elector_serial
+					data={
+						type=value
+						identity=1300000
+					}
+
+				}
+ {
+					flag=lyd_c2_elector_owner
+					data={
+						type=char
+						identity=31254
+					}
+
+				}
+ {
+					flag=lyd_c2_follower_rite
+					data={
+						type=rite
+						identity=159
+					}
+
+				}
+ {
+					flag=lyd_c2_follower_serial
+					data={
+						type=value
+						identity=1300000
+					}
+
+				}
+ {
+					flag=lyd_c2_follower_owner
+					data={
+						type=char
+						identity=31254
+					}
+
+				}
+ {
+					flag=changed_rite_flag
+					data={
+					}
+
+				}
+ {
+					flag=has_created_a_faith
+					data={
+						type=boolean
+						identity=1
+					}
+
+				}
+ {
+					flag=reformer_legend
+					data={
+					}
+
+				}
+ {
+					flag=lyd_r4_created_jingshu_rep
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.52301
+		health=4.91988
+		piety={
+			currency=51.6
+			accumulated=1001.6
+		}
+		prestige={
+			currency=450.0348
+			accumulated=1000.0348
+		}
+		influence={
+			currency=180
+		}
+		languages={ language_french }
+		activity_data={
+		}
+
+		location={
+			location=2619
+		}
+	}
+
+	court_data={
+		employer=31254
+		knight=yes
+		join_court_date=1066.9.17
+	}
+
+}

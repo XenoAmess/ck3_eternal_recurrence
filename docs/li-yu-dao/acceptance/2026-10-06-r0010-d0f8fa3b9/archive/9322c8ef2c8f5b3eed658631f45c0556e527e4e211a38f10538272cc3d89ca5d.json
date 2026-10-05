@@ -1,0 +1,22 @@
+{
+  "schema": "ck3-r9-root-ordinary-release-request-v1",
+  "host_module": {
+    "path": "C:/lr10s1/ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_interaction_host_release.py",
+    "sha256": "f567bff41d03b6c59d195df8ff62ecab1a523962de3217d397c5264d1ed2d89b"
+  },
+  "claim": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000006.claim.json",
+    "sha256": "27999be4ffebc686a2961528d639886b07712fce5f1578935190448e1f8ded02"
+  },
+  "consumption_manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-seventh-proposal-emitted-evidence-20261006-002\\CONSUMPTION-MANIFEST.json",
+    "sha256": "be6c250b536a41894f2874927f3c5c0d41fc3bc1b57560e8588e5dfd3edd03db"
+  },
+  "registry": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-seventh-consumption-host-request-001\\REGISTRY.json",
+    "sha256": "664d7ed562826b2e3c36c34f2913996d30556976c08fd5c7f00366bf05c5c8cb"
+  },
+  "verifier_id": "lyd-first-join-actual-save-v1",
+  "operator_id": "root-r10-20261005",
+  "next_intent_id": "r10-proposal-008-after-consumed-ce6f-20261006"
+}

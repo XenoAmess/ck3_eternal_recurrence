@@ -1,0 +1,18 @@
+{
+  "result": "PASS_SOURCE_L0",
+  "native": "NOT_RUN",
+  "main_unchanged": true,
+  "basis": "54457b371e947edb86903c2ebd578034f02695db",
+  "review_patch_applied_exact_then_receiver_exists_guard_added": true,
+  "ready4flags_preserved": true,
+  "full_c2_regression": "PASS",
+  "static": "PASS",
+  "reproducible_build": "PASS",
+  "runtime_inventory": 70,
+  "runtime_delta_files": 4,
+  "semantics_report": "checks/scope-regression.json",
+  "build_report": "checks/build-reproducible.json",
+  "known_red": "R9 set_parent_faith_third dynamic localization occurred in commit_join_effect without Building tooltip marker; hidden_effect covers .220 display expansion but no actual runtime correction is claimed.",
+  "protected": "2/3 scholar quorum, all alive human unanimity, signatures, owner/serial/nonce, eligibility, lock, native migration, owned-head retirement and success-only fees remain original.",
+  "scope": "This package authorizes no main application, no cold/native acceptance, and no R9 log reinterpretation."
+}

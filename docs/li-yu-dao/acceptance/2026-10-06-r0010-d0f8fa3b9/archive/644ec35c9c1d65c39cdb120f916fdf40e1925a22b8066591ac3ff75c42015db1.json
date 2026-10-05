@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 235,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0236-detach-second-precommit-save.request.json",
+  "request_sha256": "2020ed0741e28b2a35df298201f56bc7a52aa43a4022fb593d9eb2955c549b75",
+  "started_at_utc": "2026-10-05T17:54:21.512668+00:00",
+  "request_id": "r10-0236-detach-second-precommit-save",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0235-r10-0236-detach-second-precommit-save.sdk-result.json",
+  "sdk_result_sha256": "16462dddb6e1e4f51f3a0fe0bb102ea9b332f32e61a5d4dbe1acf26ef0de3d3d",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0234-checkpoint.json",
+      "copy": "0235-r10-0236-detach-second-precommit-save.native-01.json",
+      "sha256": "c5ed92fbaca87bfedd8c1b19bda1bc798b756dd31ea29c5592e5d5eea04b9d98"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:54:35.114576+00:00"
+}

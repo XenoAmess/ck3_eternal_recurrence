@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r10-0237-detach-second-precommit-event-query",
+  "operation": "call_tool",
+  "name": "ck3_query_profile_event_window_v1",
+  "arguments": {
+    "event_instance_id": 99,
+    "expected_revision": 109
+  }
+}

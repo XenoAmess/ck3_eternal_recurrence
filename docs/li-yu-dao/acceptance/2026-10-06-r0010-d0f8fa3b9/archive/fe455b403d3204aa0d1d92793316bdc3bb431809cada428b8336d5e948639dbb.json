@@ -1,0 +1,51 @@
+{
+  "schema": "lyd.r10.actual-checkpoint-readback-request.v1",
+  "phase": "actual-R10-second-DETACH-precommit-authorization-after-first-withdrawal-not-final-result",
+  "source_binding": {
+    "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+    "cold_source_inventory": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\COLD-SOURCE-INVENTORY.json",
+      "bytes": 31564,
+      "sha256": "2ab18195f08fb5f680f6168732cd1681fa171fd31b50b6777c1e685c297ac260"
+    },
+    "ROOT_PREPARED": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\PREPARED.json",
+      "bytes": 7217,
+      "sha256": "a65e94d9b50afe0688a66cd1af745b4d29cbf6917b23dd52fa42f2f4bcb6c53e"
+    },
+    "native_profile": null,
+    "fresh_SDK_actor_binding": null
+  },
+  "actor_id": 31254,
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0235-detach-second-precommit-save\\checkpoint.ck3",
+    "bytes": 91605363,
+    "sha256": "83bd02e2f340f6f1aa70525a08aa004e6b2dce2326ac2568ea99b0b79183983d"
+  },
+  "supporting_evidence": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0235-r10-0236-detach-second-precommit-save.sdk-result.json",
+      "bytes": 10093591,
+      "sha256": "16462dddb6e1e4f51f3a0fe0bb102ea9b332f32e61a5d4dbe1acf26ef0de3d3d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0235-detach-second-precommit-save\\checkpoint-metadata.json",
+      "bytes": 1434,
+      "sha256": "458329707d29f29b045c2ca1610044350dc8fab414a1d9a80114ae9a3220a6fc"
+    }
+  ],
+  "political_title_ids": [
+    2230,
+    2231,
+    2232,
+    2235,
+    2262,
+    2263,
+    2264
+  ],
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-precommit-readback-20261006-001\\actual-save-001",
+  "watch_character_ids": [
+    65865,
+    65866
+  ]
+}

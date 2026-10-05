@@ -1,0 +1,375 @@
+{
+  "schema": "ck3.native-profile-receipt.v1",
+  "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+  "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+  "pipe_name": "\\\\.\\pipe\\xar_profile_53bd96329c5541f7a403c5cecf61d8ba",
+  "recorded_at_utc": "2026-10-05T13:07:31.514254+00:00",
+  "status": "native_event_query_verified",
+  "result": {
+    "step": "query-current-event-window-context-v1",
+    "accepted": true,
+    "status": "available",
+    "query_sequence": 19,
+    "snapshot_revision": 27,
+    "current_event_window_context": {
+      "schema": "current-event-window-context-v1",
+      "schema_version": 1,
+      "status": "available",
+      "snapshot_revision": 27,
+      "date_raw": 53144712,
+      "current_event_instance_id": 55,
+      "window_match_count": 1,
+      "unavailable_reason": null,
+      "event_definition_key": "lyd_r4_fixture.4",
+      "calculated_event_id": 2200004,
+      "runtime_stats_ordinal": 2183,
+      "root_scope": {
+        "status": "available",
+        "raw_type_index": 4,
+        "type_key": "character",
+        "subtype": 0,
+        "typed_identity": {
+          "status": "available",
+          "kind": "character",
+          "character_id": 31254
+        }
+      },
+      "saved_scopes": [
+        {
+          "name": "puppeteer",
+          "name_identifier": 228,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "character_scope_is_null"
+            }
+          }
+        },
+        {
+          "name": "lyd_r4_actor",
+          "name_identifier": 47447,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 31254
+            }
+          }
+        },
+        {
+          "name": "lyd_r4_current_source_faith",
+          "name_identifier": 47513,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 13,
+            "type_key": "faith",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        },
+        {
+          "name": "lyd_r4_moving_rite",
+          "name_identifier": 47515,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 42,
+            "type_key": "rite",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        },
+        {
+          "name": "lyd_r4_jingshu_rep",
+          "name_identifier": 15460,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 65866
+            }
+          }
+        },
+        {
+          "name": "lyd_r4_source_rep",
+          "name_identifier": 43678,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 65865
+            }
+          }
+        },
+        {
+          "name": "lyd_r4_current_receiving_faith",
+          "name_identifier": 47518,
+          "scope": {
+            "status": "available",
+            "raw_type_index": 13,
+            "type_key": "faith",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "unavailable",
+              "reason": "generic_scope_payload_identity_not_closed"
+            }
+          }
+        }
+      ],
+      "options": [
+        {
+          "rendered_index": 0,
+          "native_option_index": 0,
+          "shown": true,
+          "enabled": true,
+          "fallback": false,
+          "cancel": false,
+          "resolved_name": "保留实际记录，继续正式验收",
+          "unavailable_reason": "",
+          "effect_indicators": {
+            "status": "available",
+            "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+            "complete_effect_set": false,
+            "rows": []
+          },
+          "effect_preview": {
+            "status": "unavailable",
+            "reason": "indicator_subset_has_no_completeness_signal"
+          },
+          "resource_deltas": {
+            "status": "unavailable"
+          },
+          "relationship_deltas": {
+            "status": "unavailable"
+          }
+        }
+      ],
+      "readiness": {
+        "event_definition_identity_ready": true,
+        "root_scope_ready": true,
+        "saved_scopes_ready": true,
+        "option_presentation_ready": true,
+        "effect_indicators_ready": true,
+        "effect_preview_ready": false,
+        "semantic_decision_ready": false
+      },
+      "provenance": {
+        "root": "module+0x5C6A520->+0x10",
+        "idler_vtable_rva": "0x44BC408",
+        "manager_offset": "+0x28",
+        "backend_id": "ck3-1.20.0.3-native-event-window-v1"
+      }
+    },
+    "backend_id": "native-headless",
+    "schema": "current-event-window-context-v1",
+    "schema_version": 1,
+    "date_raw": 53144712,
+    "current_event_instance_id": 55,
+    "window_match_count": 1,
+    "unavailable_reason": null,
+    "event_definition_key": "lyd_r4_fixture.4",
+    "calculated_event_id": 2200004,
+    "runtime_stats_ordinal": 2183,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    "saved_scopes": [
+      {
+        "name": "puppeteer",
+        "name_identifier": 228,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "character_scope_is_null"
+          }
+        }
+      },
+      {
+        "name": "lyd_r4_actor",
+        "name_identifier": 47447,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        }
+      },
+      {
+        "name": "lyd_r4_current_source_faith",
+        "name_identifier": 47513,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 13,
+          "type_key": "faith",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "lyd_r4_moving_rite",
+        "name_identifier": 47515,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 42,
+          "type_key": "rite",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "lyd_r4_jingshu_rep",
+        "name_identifier": 15460,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 65866
+          }
+        }
+      },
+      {
+        "name": "lyd_r4_source_rep",
+        "name_identifier": 43678,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 65865
+          }
+        }
+      },
+      {
+        "name": "lyd_r4_current_receiving_faith",
+        "name_identifier": 47518,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 13,
+          "type_key": "faith",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      }
+    ],
+    "options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "保留实际记录，继续正式验收",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "provenance": {
+      "root": "module+0x5C6A520->+0x10",
+      "idler_vtable_rva": "0x44BC408",
+      "manager_offset": "+0x28",
+      "backend_id": "ck3-1.20.0.3-native-event-window-v1"
+    },
+    "current_event_window_context_ready": true,
+    "current_event_effect_indicators_ready": true,
+    "queried_snapshot_id": "native:27",
+    "queried_revision": 28,
+    "queried_native_revision": 27,
+    "scope": "exact-current-event-window",
+    "source": {
+      "snapshot_id": "native:27",
+      "revision": 28,
+      "native_revision": 27,
+      "date_raw": 53144712,
+      "paused": true,
+      "backend_id": "native-headless"
+    },
+    "binding": {
+      "snapshot_id": "native:27",
+      "revision": 28,
+      "native_revision": 27,
+      "date_raw": 53144712,
+      "expected_revision": 28,
+      "event_instance_id": 55
+    }
+  },
+  "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0060-event-query.json"
+}

@@ -1,0 +1,1 @@
+{"output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-first-proposal-emitted-evidence-20261005-004", "index_sha256": "1e87ab45bc0182e2f83ef6a925d9dae83cf35677d77234d2ea75aab1f0fb3664", "manifest_sha256": "5f0ec75c2eaa9dbe3da15f691a49c291594b7f7de388035da5f5becad55f24a7", "actual_host_release": false}

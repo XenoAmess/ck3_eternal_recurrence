@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 252,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0253-normal-exit-confirm.request.json",
+  "request_sha256": "802d1e9147baead3c9d1f53ff021a2204754dcf5b951cfdab20d3f307041dbc9",
+  "started_at_utc": "2026-10-05T18:03:23.258647+00:00"
+}

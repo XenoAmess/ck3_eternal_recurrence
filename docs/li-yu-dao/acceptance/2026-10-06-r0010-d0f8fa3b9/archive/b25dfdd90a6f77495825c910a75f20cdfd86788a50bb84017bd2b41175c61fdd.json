@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 221,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0222-detach-second-entry-chosen.request.json",
+  "request_sha256": "9c32c78cdf7d33a8f31a2f5701ee2cb8041b4fc5abb7b7233dcb0e81515962cb",
+  "started_at_utc": "2026-10-05T17:51:19.825124+00:00",
+  "request_id": "r10-0222-detach-second-entry-chosen",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0221-r10-0222-detach-second-entry-chosen.sdk-result.json",
+  "sdk_result_sha256": "12339d5f9c4ce7427a1756bd1b7b6ec63ac236a01b9164ed3a5e757e12efea8d",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0220-event-select.json",
+      "copy": "0221-r10-0222-detach-second-entry-chosen.native-01.json",
+      "sha256": "45890fc8221b4b08625aba2d42c12033056a18698cf94b98b1e32e01de090bef"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:51:25.247899+00:00"
+}

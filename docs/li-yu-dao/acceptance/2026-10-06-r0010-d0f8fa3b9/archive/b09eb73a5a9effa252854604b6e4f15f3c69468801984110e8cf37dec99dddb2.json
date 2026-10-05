@@ -1,0 +1,2499 @@
+{
+  "schema": "ck3-ingame-decision-action-independent-verification-v1",
+  "request_id": "decisions-c3a346b03a3b45bdb7e8c23c8db37551",
+  "result": {
+    "schema": "ck3-ingame-decisions-open-v1",
+    "step": "activate-ingame-decisions-v1",
+    "game_version": "1.20.0.3",
+    "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "native_revision": 2,
+    "connection_generation": 1,
+    "game_pid": 13436,
+    "played_character_id": 31254,
+    "date_raw": 53144712,
+    "topbar_widget_count": 287,
+    "after_widget_count": 63,
+    "owner_thread_verified": true,
+    "frame_verified": true,
+    "source_abi_pins_verified": true,
+    "gui_owner_binding_verified": true,
+    "topbar_tree_complete": true,
+    "receiver_qualified": true,
+    "before_visible": false,
+    "dispatch_invoked": true,
+    "native_handled": true,
+    "native_after_read": true,
+    "native_after_visible": false,
+    "native_after_tree_complete": true,
+    "postcondition_verified": true,
+    "verification_pending": false,
+    "target_child_path": "2/0/4/0/0",
+    "status": "verified_visible",
+    "unavailable_reason": "",
+    "backend_id": "native-headless",
+    "later_decisions_tree": {
+      "schema": "ck3-native-gui-window-tree-inspection-v1",
+      "schema_version": 1,
+      "step": "inspect-gui-window-tree-v1",
+      "accepted": true,
+      "status": "available",
+      "scope_root_name": "decisions_view",
+      "root_available": true,
+      "truncated": false,
+      "widget_count": 267,
+      "widgets": [
+        {
+          "runtime_name": "decisions_view",
+          "child_path": "",
+          "depth": 0,
+          "child_count": 1,
+          "vtable_rva": 77048800,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0",
+          "depth": 1,
+          "child_count": 1,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0",
+          "depth": 2,
+          "child_count": 1,
+          "vtable_rva": 76958048,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0",
+          "depth": 3,
+          "child_count": 5,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "header",
+          "child_path": "0/0/0/0",
+          "depth": 4,
+          "child_count": 2,
+          "vtable_rva": 76958048,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "decision_tabs",
+          "child_path": "0/0/0/1",
+          "depth": 4,
+          "child_count": 2,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "decision_scrollarea",
+          "child_path": "0/0/0/2",
+          "depth": 4,
+          "child_count": 3,
+          "vtable_rva": 76996280,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tab_projects",
+          "child_path": "0/0/0/3",
+          "depth": 4,
+          "child_count": 3,
+          "vtable_rva": 76996280,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/4",
+          "depth": 4,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/0/0",
+          "depth": 5,
+          "child_count": 7,
+          "vtable_rva": 77047432,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "header_text",
+          "child_path": "0/0/0/0/1",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "open_decisions_tab",
+          "child_path": "0/0/0/1/0",
+          "depth": 5,
+          "child_count": 1,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "open_great_projects_tab",
+          "child_path": "0/0/0/1/1",
+          "depth": 5,
+          "child_count": 1,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0",
+          "depth": 5,
+          "child_count": 3,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "scrollbar_fade",
+          "child_path": "0/0/0/2/1",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "vertical_scrollbar",
+          "child_path": "0/0/0/2/2",
+          "depth": 5,
+          "child_count": 4,
+          "vtable_rva": 77000944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/0",
+          "depth": 5,
+          "child_count": 3,
+          "vtable_rva": 77056896,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "scrollbar_fade",
+          "child_path": "0/0/0/3/1",
+          "depth": 5,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "vertical_scrollbar",
+          "child_path": "0/0/0/3/2",
+          "depth": 5,
+          "child_count": 4,
+          "vtable_rva": 77000944,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_go_to",
+          "child_path": "0/0/0/0/0/0",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/0/0/1",
+          "depth": 6,
+          "child_count": 2,
+          "vtable_rva": 77034360,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_me",
+          "child_path": "0/0/0/0/0/2",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_back",
+          "child_path": "0/0/0/0/0/3",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_next",
+          "child_path": "0/0/0/0/0/4",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_minimize",
+          "child_path": "0/0/0/0/0/5",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_close",
+          "child_path": "0/0/0/0/0/6",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/1/0/0",
+          "depth": 6,
+          "child_count": 4,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/1/1/0",
+          "depth": 6,
+          "child_count": 4,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "decision_groups_container",
+          "child_path": "0/0/0/2/0/0",
+          "depth": 6,
+          "child_count": 6,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/1",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/2/0/2",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/2/0",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/2/1",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/2/2",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/2/3",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/0/0",
+          "depth": 6,
+          "child_count": 8,
+          "vtable_rva": 77056896,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/0/1",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/3/0/2",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/2/0",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/2/1",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/2/2",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/2/3",
+          "depth": 6,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_pin",
+          "child_path": "0/0/0/0/0/1/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "button_unpin",
+          "child_path": "0/0/0/0/0/1/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/1/0/0/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/1/0/0/1",
+          "depth": 7,
+          "child_count": 1,
+          "vtable_rva": 76958048,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tab_name",
+          "child_path": "0/0/0/1/0/0/2",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/1/0/0/3",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/1/1/0/0",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/1/1/0/1",
+          "depth": 7,
+          "child_count": 1,
+          "vtable_rva": 76958048,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tab_name",
+          "child_path": "0/0/0/1/1/0/2",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/1/1/0/3",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0",
+          "depth": 7,
+          "child_count": 2,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1",
+          "depth": 7,
+          "child_count": 2,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2",
+          "depth": 7,
+          "child_count": 2,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3",
+          "depth": 7,
+          "child_count": 2,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4",
+          "depth": 7,
+          "child_count": 2,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5",
+          "depth": 7,
+          "child_count": 2,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/0/0/0",
+          "depth": 7,
+          "child_count": 1,
+          "vtable_rva": 77056896,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/0/0/1",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/0/0/2",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 77056896,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/0/0/3",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/0/0/4",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 77056896,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/0/0/5",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/0/0/6",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 77056896,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/3/0/0/7",
+          "depth": 7,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tab_icon",
+          "child_path": "0/0/0/1/0/0/1/0",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tab_icon",
+          "child_path": "0/0/0/1/1/0/1/0",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/0",
+          "depth": 8,
+          "child_count": 2,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1",
+          "depth": 8,
+          "child_count": 1,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/0",
+          "depth": 8,
+          "child_count": 2,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1",
+          "depth": 8,
+          "child_count": 1,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/0",
+          "depth": 8,
+          "child_count": 2,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1",
+          "depth": 8,
+          "child_count": 1,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/0",
+          "depth": 8,
+          "child_count": 2,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1",
+          "depth": 8,
+          "child_count": 1,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/0",
+          "depth": 8,
+          "child_count": 2,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1",
+          "depth": 8,
+          "child_count": 1,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/0",
+          "depth": 8,
+          "child_count": 2,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1",
+          "depth": 8,
+          "child_count": 1,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/3/0/0/0/0",
+          "depth": 8,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/0/0",
+          "depth": 9,
+          "child_count": 2,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/0/1",
+          "depth": 9,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "decisions_in_group",
+          "child_path": "0/0/0/2/0/0/0/1/0",
+          "depth": 9,
+          "child_count": 1,
+          "vtable_rva": 77052520,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/0/0",
+          "depth": 9,
+          "child_count": 2,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/0/1",
+          "depth": 9,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "decisions_in_group",
+          "child_path": "0/0/0/2/0/0/1/1/0",
+          "depth": 9,
+          "child_count": 1,
+          "vtable_rva": 77052520,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/0/0",
+          "depth": 9,
+          "child_count": 2,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/0/1",
+          "depth": 9,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "decisions_in_group",
+          "child_path": "0/0/0/2/0/0/2/1/0",
+          "depth": 9,
+          "child_count": 1,
+          "vtable_rva": 77052520,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/0/0",
+          "depth": 9,
+          "child_count": 2,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/0/1",
+          "depth": 9,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "decisions_in_group",
+          "child_path": "0/0/0/2/0/0/3/1/0",
+          "depth": 9,
+          "child_count": 1,
+          "vtable_rva": 77052520,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/0/0",
+          "depth": 9,
+          "child_count": 2,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/0/1",
+          "depth": 9,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "decisions_in_group",
+          "child_path": "0/0/0/2/0/0/4/1/0",
+          "depth": 9,
+          "child_count": 1,
+          "vtable_rva": 77052520,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/0/0",
+          "depth": 9,
+          "child_count": 2,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/0/1",
+          "depth": 9,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "decisions_in_group",
+          "child_path": "0/0/0/2/0/0/5/1/0",
+          "depth": 9,
+          "child_count": 1,
+          "vtable_rva": 77052520,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/0/0/0",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/0/0/1",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0",
+          "depth": 10,
+          "child_count": 2,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/0/0/0",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/0/0/1",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0",
+          "depth": 10,
+          "child_count": 2,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/0/0/0",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/0/0/1",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0",
+          "depth": 10,
+          "child_count": 2,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/0/0/0",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/0/0/1",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0",
+          "depth": 10,
+          "child_count": 2,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/0/0/0",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/0/0/1",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0",
+          "depth": 10,
+          "child_count": 2,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/0/0/0",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/0/0/1",
+          "depth": 10,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0",
+          "depth": 10,
+          "child_count": 2,
+          "vtable_rva": 77056896,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0",
+          "depth": 11,
+          "child_count": 14,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/1",
+          "depth": 11,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0",
+          "depth": 11,
+          "child_count": 14,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/1",
+          "depth": 11,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0",
+          "depth": 11,
+          "child_count": 14,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/1",
+          "depth": 11,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0",
+          "depth": 11,
+          "child_count": 14,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/1",
+          "depth": 11,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0",
+          "depth": 11,
+          "child_count": 14,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/1",
+          "depth": 11,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0",
+          "depth": 11,
+          "child_count": 14,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "expander",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/1",
+          "depth": 11,
+          "child_count": 0,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/0",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/1",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/2",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/3",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/4",
+          "depth": 12,
+          "child_count": 1,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "cram_study_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/5",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "renounce_governorship_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/6",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tgp_japan_assert_regional_dominion_government_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/7",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tgp_japan_become_shogun_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/8",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/9",
+          "depth": 12,
+          "child_count": 2,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/10",
+          "depth": 12,
+          "child_count": 1,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/11",
+          "depth": 12,
+          "child_count": 3,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/12",
+          "depth": 12,
+          "child_count": 2,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/13",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/0",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/1",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/2",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/3",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/4",
+          "depth": 12,
+          "child_count": 1,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "cram_study_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/5",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "renounce_governorship_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/6",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tgp_japan_assert_regional_dominion_government_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/7",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tgp_japan_become_shogun_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/8",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/9",
+          "depth": 12,
+          "child_count": 2,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/10",
+          "depth": 12,
+          "child_count": 1,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/11",
+          "depth": 12,
+          "child_count": 3,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/12",
+          "depth": 12,
+          "child_count": 2,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/13",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/0",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/1",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/2",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/3",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/4",
+          "depth": 12,
+          "child_count": 1,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "cram_study_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/5",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "renounce_governorship_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/6",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tgp_japan_assert_regional_dominion_government_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/7",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tgp_japan_become_shogun_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/8",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/9",
+          "depth": 12,
+          "child_count": 2,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/10",
+          "depth": 12,
+          "child_count": 1,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/11",
+          "depth": 12,
+          "child_count": 3,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/12",
+          "depth": 12,
+          "child_count": 2,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/13",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/0",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/1",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/2",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/3",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/4",
+          "depth": 12,
+          "child_count": 1,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "cram_study_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/5",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "renounce_governorship_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/6",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tgp_japan_assert_regional_dominion_government_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/7",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tgp_japan_become_shogun_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/8",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/9",
+          "depth": 12,
+          "child_count": 2,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/10",
+          "depth": 12,
+          "child_count": 1,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/11",
+          "depth": 12,
+          "child_count": 3,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/12",
+          "depth": 12,
+          "child_count": 2,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/13",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/0",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/1",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/2",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/3",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/4",
+          "depth": 12,
+          "child_count": 1,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "cram_study_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/5",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "renounce_governorship_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/6",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tgp_japan_assert_regional_dominion_government_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/7",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tgp_japan_become_shogun_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/8",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/9",
+          "depth": 12,
+          "child_count": 2,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/10",
+          "depth": 12,
+          "child_count": 1,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/11",
+          "depth": 12,
+          "child_count": 3,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/12",
+          "depth": 12,
+          "child_count": 2,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/13",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/0",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/1",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/2",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/3",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/4",
+          "depth": 12,
+          "child_count": 1,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "cram_study_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/5",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "renounce_governorship_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/6",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tgp_japan_assert_regional_dominion_government_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/7",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "tgp_japan_become_shogun_decision_tutorial_highlight",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/8",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/9",
+          "depth": 12,
+          "child_count": 2,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/10",
+          "depth": 12,
+          "child_count": 1,
+          "vtable_rva": 77048288,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/11",
+          "depth": 12,
+          "child_count": 3,
+          "vtable_rva": 77056264,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/12",
+          "depth": 12,
+          "child_count": 2,
+          "vtable_rva": 76958048,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/13",
+          "depth": 12,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "vignette",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/4/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "illustration",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/9/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/9/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": false
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/10/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "title",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/11/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "title2",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/11/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "not_possible",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/11/2",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/12/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/0/1/0/0/0/12/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "vignette",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/4/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "illustration",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/9/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/9/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": false
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/10/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "title",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/11/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "title2",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/11/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "not_possible",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/11/2",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/12/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/1/1/0/0/0/12/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "vignette",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/4/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "illustration",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/9/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/9/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": false
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/10/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "title",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/11/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "title2",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/11/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "not_possible",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/11/2",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/12/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/2/1/0/0/0/12/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "vignette",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/4/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "illustration",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/9/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/9/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": false
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/10/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "title",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/11/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "title2",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/11/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "not_possible",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/11/2",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/12/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/3/1/0/0/0/12/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "vignette",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/4/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "illustration",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/9/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/9/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": false
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/10/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "title",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/11/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "title2",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/11/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "not_possible",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/11/2",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/12/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/4/1/0/0/0/12/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "vignette",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/4/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "illustration",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/9/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/9/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": false
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/10/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "title",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/11/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": true,
+          "enabled": true
+        },
+        {
+          "runtime_name": "title2",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/11/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77051944,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "not_possible",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/11/2",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 76961464,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/12/0",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        },
+        {
+          "runtime_name": "",
+          "child_path": "0/0/0/2/0/0/5/1/0/0/0/12/1",
+          "depth": 13,
+          "child_count": 0,
+          "vtable_rva": 77049312,
+          "effective_visible": false,
+          "enabled": true
+        }
+      ],
+      "backend_id": "native-headless",
+      "read_only": true,
+      "uses_ocr": false,
+      "uses_keyboard": false,
+      "uses_mouse": false,
+      "window_kind": "decisions",
+      "rendered_text_available": false,
+      "selected_state_available": false,
+      "tooltip_state_available": false,
+      "business_model_available": false
+    },
+    "native_ack": {
+      "schema": "ck3-ingame-decisions-open-v1",
+      "step": "activate-ingame-decisions-v1",
+      "game_version": "1.20.0.3",
+      "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "native_revision": 2,
+      "connection_generation": 1,
+      "game_pid": 13436,
+      "played_character_id": 31254,
+      "date_raw": 53144712,
+      "topbar_widget_count": 287,
+      "after_widget_count": 63,
+      "owner_thread_verified": true,
+      "frame_verified": true,
+      "source_abi_pins_verified": true,
+      "gui_owner_binding_verified": true,
+      "topbar_tree_complete": true,
+      "receiver_qualified": true,
+      "before_visible": false,
+      "dispatch_invoked": true,
+      "native_handled": true,
+      "native_after_read": true,
+      "native_after_visible": false,
+      "native_after_tree_complete": true,
+      "postcondition_verified": false,
+      "verification_pending": true,
+      "target_child_path": "2/0/4/0/0",
+      "status": "acknowledged_verification_pending",
+      "unavailable_reason": "",
+      "backend_id": "native-headless"
+    },
+    "action_request_id": "decisions-c3a346b03a3b45bdb7e8c23c8db37551",
+    "action_claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ingame-decisions-opener-actions\\6cab12c0f9e3a4d984deb490c40b3a6803951d131cbe316bc118081c1b00816a.claim.json",
+    "episode_run_id": null,
+    "queried_revision": 3,
+    "uses_mouse": false,
+    "uses_keyboard": false,
+    "uses_ocr": false
+  }
+}

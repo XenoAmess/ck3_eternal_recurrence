@@ -1,0 +1,180 @@
+{
+  "scope_relative_to_ready_candidate": {
+    "authored": [
+      {
+        "path": "tools/gen_school_consent.py",
+        "before": {
+          "bytes": 42894,
+          "sha256": "c82240f50ab694472a5de8e568685b4a4b91929843725cf1c1d834e138f1828d"
+        },
+        "after": {
+          "bytes": 43067,
+          "sha256": "95bb9ea954cf96b19bed842c0f47ff6365d6e0c2e39f1a4ad825656ad3cf7c20"
+        },
+        "before_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\baseline\\mod_li_yu_dao\\tools\\gen_school_consent.py",
+        "after_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\tools\\gen_school_consent.py"
+      },
+      {
+        "path": "tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+        "before": {
+          "bytes": 16121,
+          "sha256": "fdadac524b347074dfc4f5937cb3a8c3627d8056e795059001702c3f2235b510"
+        },
+        "after": {
+          "bytes": 16874,
+          "sha256": "d5553d1265bb9cdcaf3392784e4ee1752d10af52d228595ca518e6f11ae5cedd"
+        },
+        "before_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\baseline\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "after_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt"
+      },
+      {
+        "path": "tools/school_consent_templates/events/lyd_c2_consent_events.txt",
+        "before": {
+          "bytes": 6704,
+          "sha256": "87da221474c88fb5235a15238d8fca80ee61f93bece5d5ac579d2308395b2134"
+        },
+        "after": {
+          "bytes": 6724,
+          "sha256": "3492722777c8aca20f91f8eb304dbcea9a9f5e970f16235c940181eb31ae888c"
+        },
+        "before_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\baseline\\mod_li_yu_dao\\tools\\school_consent_templates\\events\\lyd_c2_consent_events.txt",
+        "after_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\tools\\school_consent_templates\\events\\lyd_c2_consent_events.txt"
+      },
+      {
+        "path": "tools/test_c2_preview_scope.py",
+        "before": null,
+        "after": {
+          "bytes": 23956,
+          "sha256": "cab52e503d32b75b4ccd49317c125dc8c06cfadfec90f55c4e9a9758b7319e65"
+        },
+        "before_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\baseline\\mod_li_yu_dao\\tools\\test_c2_preview_scope.py",
+        "after_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\tools\\test_c2_preview_scope.py"
+      },
+      {
+        "path": "tools/test_school_consent.py",
+        "before": {
+          "bytes": 80166,
+          "sha256": "95a59b7774bd5d03b0e6ee90b6c598735f7028f0037044cd079a9febb2815d92"
+        },
+        "after": {
+          "bytes": 80460,
+          "sha256": "3a309bf7584a0d5808f44000d8bebbdcae840201b82afd9e5d7683a4abe7be20"
+        },
+        "before_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\baseline\\mod_li_yu_dao\\tools\\test_school_consent.py",
+        "after_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\tools\\test_school_consent.py"
+      }
+    ],
+    "runtime": [
+      {
+        "path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+        "before": {
+          "bytes": 15775,
+          "sha256": "023163b67d97cd39640eaecb18caf19abe8b31a5f9a1189e9d7a1bd85a5ac3fc"
+        },
+        "after": {
+          "bytes": 16511,
+          "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+        },
+        "before_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\baseline\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "after_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt"
+      },
+      {
+        "path": "events/lyd_c2_consent_events.txt",
+        "before": {
+          "bytes": 6618,
+          "sha256": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e"
+        },
+        "after": {
+          "bytes": 6638,
+          "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+        },
+        "before_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\baseline\\mod_li_yu_dao\\events\\lyd_c2_consent_events.txt",
+        "after_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\events\\lyd_c2_consent_events.txt"
+      },
+      {
+        "path": "localization/english/lyd_c2_consent_l_english.yml",
+        "before": {
+          "bytes": 13331,
+          "sha256": "153ff68c54238b1756455376ed33f45afd5721ea74e78c52026365b7996cec99"
+        },
+        "after": {
+          "bytes": 13439,
+          "sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35"
+        },
+        "before_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\baseline\\mod_li_yu_dao\\localization\\english\\lyd_c2_consent_l_english.yml",
+        "after_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\localization\\english\\lyd_c2_consent_l_english.yml"
+      },
+      {
+        "path": "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+        "before": {
+          "bytes": 11654,
+          "sha256": "d93e1fe02dc615a4117ace3754a121cd338fe0bb9125c3100939f66ceebb16b4"
+        },
+        "after": {
+          "bytes": 11744,
+          "sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504"
+        },
+        "before_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\baseline\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml",
+        "after_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml"
+      }
+    ]
+  },
+  "complete_runtime_relative_to_frozen_544": [
+    {
+      "path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "before": {
+        "bytes": 15372,
+        "sha256": "a4f4fe371ddb35b1a194bb1350c6165442347617cca7ec8dd1b360110e6ab18a"
+      },
+      "after": {
+        "bytes": 16511,
+        "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+      },
+      "before_ref": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+      "frozen_before_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-ready-trigger-presence-repair-20261005-001\\baseline\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+      "after_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt"
+    },
+    {
+      "path": "events/lyd_c2_consent_events.txt",
+      "before": {
+        "bytes": 6618,
+        "sha256": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e"
+      },
+      "after": {
+        "bytes": 6638,
+        "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+      },
+      "before_ref": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\events\\lyd_c2_consent_events.txt",
+      "frozen_before_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-ready-trigger-presence-repair-20261005-001\\baseline\\mod_li_yu_dao\\events\\lyd_c2_consent_events.txt",
+      "after_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\events\\lyd_c2_consent_events.txt"
+    },
+    {
+      "path": "localization/english/lyd_c2_consent_l_english.yml",
+      "before": {
+        "bytes": 13331,
+        "sha256": "153ff68c54238b1756455376ed33f45afd5721ea74e78c52026365b7996cec99"
+      },
+      "after": {
+        "bytes": 13439,
+        "sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35"
+      },
+      "before_ref": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\localization\\english\\lyd_c2_consent_l_english.yml",
+      "frozen_before_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-ready-trigger-presence-repair-20261005-001\\baseline\\mod_li_yu_dao\\localization\\english\\lyd_c2_consent_l_english.yml",
+      "after_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\localization\\english\\lyd_c2_consent_l_english.yml"
+    },
+    {
+      "path": "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "before": {
+        "bytes": 11654,
+        "sha256": "d93e1fe02dc615a4117ace3754a121cd338fe0bb9125c3100939f66ceebb16b4"
+      },
+      "after": {
+        "bytes": 11744,
+        "sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504"
+      },
+      "before_ref": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml",
+      "frozen_before_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-ready-trigger-presence-repair-20261005-001\\baseline\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml",
+      "after_ref": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml"
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 237,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0238-detach-second-final-commit.request.json",
+  "request_sha256": "1c67af7da90f8d27e35ed190ef51dd5a5b7367b17a30dc428d59128d6ed582a1",
+  "started_at_utc": "2026-10-05T17:55:45.468233+00:00",
+  "request_id": "r10-0238-detach-second-final-commit",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0237-r10-0238-detach-second-final-commit.sdk-result.json",
+  "sdk_result_sha256": "bed7bb2902ded16361aff994bbe9c6e70532dd25e758c646d7d3a7c9c0f00d89",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0236-event-select.json",
+      "copy": "0237-r10-0238-detach-second-final-commit.native-01.json",
+      "sha256": "d0f25c1fc8596745c861c4ce14da09872384d738e13bf280089c2674a6327015"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:55:51.407284+00:00"
+}

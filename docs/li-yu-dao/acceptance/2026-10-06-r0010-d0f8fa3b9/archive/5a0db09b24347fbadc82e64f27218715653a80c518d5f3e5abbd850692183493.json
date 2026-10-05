@@ -1,0 +1,30 @@
+{
+  "schema": "lyd.r10.external-report-draft-index.v3",
+  "files": [
+    {
+      "path": "REPORT.json",
+      "bytes": 12764,
+      "sha256": "28b61e9d36558214a82fefbc38e3a6e5e0c7bb84d0ea0d7bc525c21fe7d84cf8"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 7233,
+      "sha256": "0061604f53d1f502a9621f8d3b6f1fc912e9afdf867258f9b8f48dfc5f7bca84"
+    },
+    {
+      "path": "SDK1-38-EVIDENCE.json",
+      "bytes": 90873,
+      "sha256": "e50734614ccfc86b8e428194e00be74fdca5fd90394d217ebd41a924ffe48129"
+    },
+    {
+      "path": "source/prepare_r10_report_draft_20261005_003.py",
+      "bytes": 20433,
+      "sha256": "c1d50b401302975ce1875de1ab78ed76ccf6390b82c318363da52b333419e707"
+    },
+    {
+      "path": "SOURCE-REFS.json",
+      "bytes": 76872,
+      "sha256": "4cecfb4cae7d4d0c3d91f59981bd1e886d9bf6cb99ce9f3bd5ab6aea84224206"
+    }
+  ]
+}

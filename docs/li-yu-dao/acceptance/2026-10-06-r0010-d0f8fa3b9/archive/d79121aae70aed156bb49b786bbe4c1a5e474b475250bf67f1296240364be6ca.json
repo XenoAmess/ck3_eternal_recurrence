@@ -1,0 +1,32 @@
+{
+  "schema": "xar.native.msvc-build.v1",
+  "source_dir": "C:\\lr10s1\\ck3_autonomous_player\\native_bridge",
+  "build_dir": "C:\\lydr10-release-20261005-001",
+  "configuration": "Release",
+  "jobs": 64,
+  "targets": [
+    "xar_ck3_bridge",
+    "xar_ck3_bridge_injector"
+  ],
+  "tools": {
+    "vcvars64": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Auxiliary\\Build\\vcvars64.bat",
+    "cmake": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\bin\\cmake.exe",
+    "ninja": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\Ninja\\ninja.exe",
+    "cl": "C:\\Program Files\\Microsoft Visual Studio\\18\\Community\\VC\\Tools\\MSVC\\14.51.36231\\bin\\HostX64\\x64\\cl.exe"
+  },
+  "local_ck3_contacted": false,
+  "temporary_dir": "C:\\lydr10-release-20261005-001\\.msvc-temp",
+  "python_cache": "C:\\lydr10-release-20261005-001\\.python-cache",
+  "configured": true,
+  "built": true,
+  "dependency_prefix_mode": "direct-2052-cp936",
+  "status": "built_defender_registration_failed",
+  "build_succeeded": true,
+  "defender_exclusions": {
+    "status": "settings_failed",
+    "manifest": "C:\\lydr10-release-20261005-001\\defender-exe-exclusions\\20261005T100814Z-1a4d4de0\\manifest.json",
+    "receipt": "C:\\lydr10-release-20261005-001\\defender-exe-exclusions\\20261005T100814Z-1a4d4de0\\receipt.json",
+    "receipt_sha256": "5d2da0b8600d3292dd4db4b1e7c4e9447850a779269cd912c0047368d204e9ea",
+    "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)"
+  }
+}

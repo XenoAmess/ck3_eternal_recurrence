@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 44,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0045-proposal-query.request.json",
+  "request_sha256": "cb9f476fc4b27bd427d1af6a5b38695c171200f1068e3e45a8b13f66e991ca16",
+  "started_at_utc": "2026-10-05T12:33:00.439974+00:00"
+}

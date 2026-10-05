@@ -1,0 +1,51 @@
+{
+  "schema": "lyd.r10.proposal-input-assembler-author.v1",
+  "status": "NEW_DIRECTED_OFFLINE_PASS_NO_RUNTIME_OR_BUSINESS_CREDIT",
+  "files": [
+    {
+      "path": "assemble_proposal_inputs.py",
+      "bytes": 23787,
+      "sha256": "aeecd4f13521f0056934887deb2d2e4173002ba82f8477ae91ca2ee2388a114e"
+    },
+    {
+      "path": "AUTHOR-REPORT.json",
+      "bytes": 1427,
+      "sha256": "c7940ec09111ccc8a275fa93a3d2acb7a46ae4ea97ebb968cc1a11cebfb76105"
+    },
+    {
+      "path": "DELTA.json",
+      "bytes": 1256,
+      "sha256": "be386e27dc810ee15650dab2d357eb96406b17957f9000860b23da21283da547"
+    },
+    {
+      "path": "DIRECTED-RESULT.json",
+      "bytes": 5471,
+      "sha256": "3fa7bfbec2de75cc3667d598299addb340cc79a97d6405459ae25f092fb673af"
+    },
+    {
+      "path": "REQUEST.finish-emit.template.json",
+      "bytes": 570,
+      "sha256": "c9c00d39396032f199e9d1dce8dd9716b64c0d173560a126c11408b99e874594"
+    },
+    {
+      "path": "REQUEST.prepare-bind.template.json",
+      "bytes": 571,
+      "sha256": "ffc616a379c4e7eb3e37c151970647431920fa42d2e926568afa92f9f5602aeb"
+    },
+    {
+      "path": "ROOT-README.md",
+      "bytes": 4448,
+      "sha256": "84e661a5aa94a5f2d6c33241f9f241c632f27339642cc21d533d66cd4dd14fdb"
+    },
+    {
+      "path": "SEAL-ATTEMPT001.failed.json",
+      "bytes": 475,
+      "sha256": "ae5531e02e6b7548d46b7f659654b1f632bf20f84fb6c36feb837e0234b46953"
+    },
+    {
+      "path": "test_directed_metadata.py",
+      "bytes": 6215,
+      "sha256": "b359b528cf6279711ce34bed7a2b05752ba7765d3eb6b003c106b53e4c25b33d"
+    }
+  ]
+}

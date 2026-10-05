@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 158,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0159-seventh-player-options-scholar-query.request.json",
+  "request_sha256": "67f2575645754459cf0b1c5c213b92d4e4d521a02ba874855fd8effa7e294e69",
+  "started_at_utc": "2026-10-05T16:40:59.928888+00:00",
+  "request_id": "r10-0159-seventh-player-options-scholar-query",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0158-r10-0159-seventh-player-options-scholar-query.sdk-result.json",
+  "sdk_result_sha256": "bc827ad809c6380ddaa81af90ea949e71e22ef3170ae2300649a037c59c492ac",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0157-event-query.json",
+      "copy": "0158-r10-0159-seventh-player-options-scholar-query.native-01.json",
+      "sha256": "61f8afd784ac8c15134f1c3900bad7e085bf35d5e4079966c57748e0a9611537"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T16:41:01.611225+00:00"
+}

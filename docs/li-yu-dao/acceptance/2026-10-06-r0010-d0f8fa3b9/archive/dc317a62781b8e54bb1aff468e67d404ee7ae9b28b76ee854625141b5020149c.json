@@ -1,0 +1,40 @@
+{
+  "qualified_original": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-sixth-open-join-readback-20261005-001\\finalize_open.py",
+    "bytes": 14218,
+    "sha256": "8c625d0ccadeb615b2158676bb71a111049f3ed958ee27d92c4cc5405cd834c5"
+  },
+  "parameter_changes": {
+    "r10-actual-fifth-post-cancel-readback-20261005-001": "r10-actual-sixth-post-cancel-readback-20261006-001",
+    "0127-": "0151-",
+    "0128-": "0152-",
+    "0130-": "0154-",
+    "b233c9ed3ece500c5bc68357de621fea8b6c37ba72142dc3ffb302f4bcf940f6": "21721efc900d1b41b2c01664daeb5b0c9d1e6771f581c01a159704193b1ea40c",
+    "fresh127": "fresh151",
+    "send128": "send152",
+    "typed130": "typed154",
+    "event74": "event80",
+    "before125": "before149",
+    "after129": "after153",
+    "metadata129": "metadata153",
+    "save129": "save153",
+    "nonce11_to12": "nonce12_to13",
+    "serial11_to12": "serial12_to13",
+    "round12": "round13",
+    "round11": "round12",
+    "public61_native60": "public72_native71",
+    "samepub59_native58": "samepub70_native69",
+    "after59native58": "after70native69",
+    "snapshot60native59": "snapshot71native70",
+    "pub61native60": "pub72native71",
+    "ordinal5_parent4": "ordinal6_parent5",
+    "Actual sixth-open checks": "Actual seventh-open checks",
+    "actual-sixth-JOIN-proposal-opened-pair-facts": "actual-seventh-JOIN-proposal-opened-pair-facts",
+    "ACTUAL_SIXTH_PROPOSAL_OPENED_ROUND12_TARGET_YES_NOT_PROVEN_NOT_FINAL_JOIN": "ACTUAL_SEVENTH_PROPOSAL_OPENED_ROUND13_NPC_YES_NOT_PROVEN_NOT_FINAL_JOIN",
+    "sixth-open-independent-readback": "seventh-open-independent-readback"
+  },
+  "old_save_reparsed": false,
+  "new_save_AST_reparsed": false,
+  "protected_complete_AST_comparator_original": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-sixth-post-cancel-readback-20261006-001\\compare_complete_rites.py",
+  "main_or_source_mutations": false
+}

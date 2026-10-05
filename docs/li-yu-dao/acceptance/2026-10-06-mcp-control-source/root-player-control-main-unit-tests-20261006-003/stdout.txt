@@ -1,0 +1,1 @@
+LYD_PLAYER_CONTROL_CACHE_GAP_ARTIFACTS=C:\Users\Administrator\AppData\Local\Temp\lyd-pc-cache-gap-a2s5o1_i

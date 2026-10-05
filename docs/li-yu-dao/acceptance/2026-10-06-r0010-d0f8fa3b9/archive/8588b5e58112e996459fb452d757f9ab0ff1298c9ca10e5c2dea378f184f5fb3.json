@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r10-0219-detach-second-open-detail",
+  "operation": "call_tool",
+  "name": "ck3_select_profile_decision_item_v1",
+  "arguments": {
+    "decision_key": "lyd_c2_propose_detach_decision",
+    "expected_revision": 101
+  }
+}

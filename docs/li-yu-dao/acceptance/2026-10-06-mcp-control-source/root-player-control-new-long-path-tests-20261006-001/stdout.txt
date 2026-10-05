@@ -1,0 +1,2 @@
+LYD_PLAYER_CONTROL_LONG_PATH_ARTIFACTS=C:\Users\Administrator\AppData\Local\Temp\lyd-pc-long-ypgf0nek
+LYD_PLAYER_CONTROL_LONG_PATH_ARTIFACTS=C:\Users\Administrator\AppData\Local\Temp\lyd-pc-long-gtvxb4fm

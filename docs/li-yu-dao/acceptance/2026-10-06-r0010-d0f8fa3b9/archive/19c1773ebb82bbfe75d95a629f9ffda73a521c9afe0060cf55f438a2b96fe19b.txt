@@ -1,0 +1,13 @@
+﻿# GENERATED FILE: edit tools/leadership_templates and run tools/gen_runtime.py.
+on_death = { on_actions = { lyd_c3_on_death } }
+lyd_c3_on_death = {
+    trigger = { OR = {
+        has_variable = lyd_c3_active
+        has_variable = lyd_c3_claim_faith
+        has_variable = lyd_c3_personal_teacher
+        has_variable = lyd_c3_office_faith
+        any_in_list = { variable = lyd_c3_students always = yes }
+        any_in_list = { variable = lyd_c3_sponsored_claims always = yes }
+    } }
+    effect = { lyd_c3_death_cleanup_effect = yes }
+}

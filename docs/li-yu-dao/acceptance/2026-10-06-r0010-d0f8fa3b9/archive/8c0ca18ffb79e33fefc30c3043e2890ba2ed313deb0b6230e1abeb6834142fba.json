@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 186,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0187-eighth-final-review-event-query.request.json",
+  "request_sha256": "ff10ae476272ecb1df0bc3eaabf2d8d7643c53346ab231dd8d4c992a81f1021d",
+  "started_at_utc": "2026-10-05T17:01:41.942535+00:00",
+  "request_id": "r10-0187-eighth-final-review-event-query",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0186-r10-0187-eighth-final-review-event-query.sdk-result.json",
+  "sdk_result_sha256": "c7b1103ae9d9bef2290f05354dd3568a7ec217e067947e03d465ebe00ef2e383",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0185-event-query.json",
+      "copy": "0186-r10-0187-eighth-final-review-event-query.native-01.json",
+      "sha256": "e318d0c032d3c3e98dca498f01e3c1d845af0b5d88b5ffb8e5d2c9cc4fe63cf0"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:01:43.934637+00:00"
+}

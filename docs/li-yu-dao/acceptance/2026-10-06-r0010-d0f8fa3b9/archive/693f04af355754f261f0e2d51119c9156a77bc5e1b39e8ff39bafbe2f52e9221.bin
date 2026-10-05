@@ -1,0 +1,138 @@
+lyd_c3_request_teacher_interaction = {
+    category = interaction_category_religion
+    icon = icon_request_priest
+    common_interaction = yes
+    desc = lyd_c3_request_teacher_interaction_desc
+    ai_maybe = no
+    popup_on_receive = yes
+    use_diplomatic_range = yes
+    cooldown_against_recipient = { years = 1 }
+    is_shown = {
+        scope:actor = { lyd_c3_player_actor_trigger = yes }
+        scope:actor != scope:recipient
+        scope:recipient = { is_alive = yes is_adult = yes faith = scope:actor.faith }
+    }
+    is_valid_showing_failures_only = {
+        scope:actor = {
+            custom_description = {
+                text = lyd_c3_actor_ready
+                lyd_c3_player_actor_trigger = yes
+            }
+        }
+        scope:recipient = {
+            custom_description = {
+                text = lyd_c3_teacher_ready
+                lyd_c3_teacher_target_trigger = yes
+            }
+        }
+    }
+    on_send = {
+        custom_tooltip = lyd_c3_teacher_request_sent
+        hidden_effect = {
+            scope:actor = {
+                if = { limit = { lyd_c3_player_actor_trigger = yes } set_variable = { name = lyd_c3_teacher_requested value = scope:recipient } }
+            }
+        }
+    }
+    on_accept = {
+        custom_tooltip = lyd_c3_teacher_request_accepted
+        hidden_effect = {
+            lyd_c3_accept_teacher_effect = yes
+        }
+    }
+    on_decline = {
+        custom_tooltip = lyd_c3_teacher_request_declined
+        hidden_effect = {
+            scope:actor = {
+                if = { limit = { var:lyd_c3_teacher_requested = scope:recipient } remove_variable = lyd_c3_teacher_requested }
+            }
+            debug_log = "LYD_C3_PERSONAL_TEACHER_REFUSED"
+        }
+    }
+    ai_accept = { base = 25 }
+    ai_will_do = { base = 0 }
+}
+lyd_c3_nominate_claim_interaction = {
+    category = interaction_category_religion
+    icon = icon_request_priest
+    common_interaction = yes
+    desc = lyd_c3_nominate_claim_interaction_desc
+    ai_maybe = no
+    popup_on_receive = yes
+    use_diplomatic_range = yes
+    cooldown_against_recipient = { years = 1 }
+    is_shown = {
+        scope:actor = { lyd_c3_player_actor_trigger = yes }
+        scope:actor != scope:recipient
+        scope:recipient = { is_alive = yes is_adult = yes faith = scope:actor.faith NOT = { has_character_flag = lyd_c3_claimant } }
+    }
+    is_valid_showing_failures_only = {
+        scope:actor = {
+            custom_description = {
+                text = lyd_c3_actor_ready
+                lyd_c3_player_actor_trigger = yes
+            }
+        }
+        scope:recipient = {
+            custom_description = {
+                text = lyd_c3_nominee_ready
+                is_alive = yes is_adult = yes faith = scope:actor.faith NOT = { has_trait = incapable } learning >= 12 NOT = { has_character_flag = lyd_c3_claimant }
+            }
+        }
+    }
+    on_send = {
+        custom_tooltip = lyd_c3_nomination_sent
+        hidden_effect = {
+            scope:actor = { if = { limit = { lyd_c3_player_actor_trigger = yes } set_variable = { name = lyd_c3_nominated_claimant value = scope:recipient } } }
+        }
+    }
+    on_accept = {
+        custom_tooltip = lyd_c3_nomination_accepted
+        hidden_effect = {
+            lyd_c3_nomination_accepted_effect = yes
+        }
+    }
+    on_decline = {
+        custom_tooltip = lyd_c3_nomination_declined
+        hidden_effect = {
+            scope:actor = { if = { limit = { var:lyd_c3_nominated_claimant = scope:recipient } remove_variable = lyd_c3_nominated_claimant } }
+            debug_log = "LYD_C3_NPC_POLITICAL_CLAIM_REFUSED"
+        }
+    }
+    ai_accept = { base = 25 }
+    ai_will_do = { base = 0 }
+}
+lyd_c3_request_withdraw_interaction = {
+    category = interaction_category_religion
+    icon = icon_request_priest
+    common_interaction = yes
+    desc = lyd_c3_request_withdraw_interaction_desc
+    ai_maybe = no
+    popup_on_receive = yes
+    use_diplomatic_range = yes
+    is_shown = {
+        scope:actor = { lyd_c3_player_actor_trigger = yes }
+        scope:actor != scope:recipient
+        scope:recipient = { is_alive = yes has_character_flag = lyd_c3_claimant var:lyd_c3_claim_sponsor = scope:actor }
+    }
+    is_valid_showing_failures_only = { scope:actor = {
+            custom_description = {
+                text = lyd_c3_actor_ready
+                lyd_c3_player_actor_trigger = yes
+            }
+        } }
+    on_accept = {
+        custom_tooltip = lyd_c3_withdraw_request_accepted
+        hidden_effect = {
+            lyd_c3_nominated_withdrawal_accepted_effect = yes
+        }
+    }
+    on_decline = {
+        custom_tooltip = lyd_c3_withdraw_request_declined
+        hidden_effect = {
+            debug_log = "LYD_C3_NPC_POLITICAL_WITHDRAWAL_REFUSED"
+        }
+    }
+    ai_accept = { base = 25 }
+    ai_will_do = { base = 0 }
+}

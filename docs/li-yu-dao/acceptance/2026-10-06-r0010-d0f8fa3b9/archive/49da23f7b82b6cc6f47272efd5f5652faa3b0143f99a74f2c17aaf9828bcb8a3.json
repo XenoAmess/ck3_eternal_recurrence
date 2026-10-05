@@ -1,0 +1,15 @@
+{
+  "schema": "lyd.r10.actual-first-consumption-output-review-index.v1",
+  "files": [
+    {
+      "path": "independent_output_review.py",
+      "bytes": 10126,
+      "sha256": "4d0456063ff55dace5a9afef0afb1c0f4004c6fddada2851d0bb75874405919f"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 7715,
+      "sha256": "3a8164ae966d6ca167d4be3873442600113e3a3b62300b984ca08a4062cf450a"
+    }
+  ]
+}

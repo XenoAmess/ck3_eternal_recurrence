@@ -1,0 +1,1059 @@
+{
+  "schema": "lyd.r10.mod-production-author-source-closure-review.v1",
+  "status": "SOURCE_ONLY_REVIEWED",
+  "scope": "Complete mod tools non-test input closure, including generators, templates, data, build/static helpers and reference JSON. Complete runtime70 is separately reviewed. README/docs/fixtures/test bodies and entire native/Python export are outside this production-source scope.",
+  "before_source_root": "C:\\lr9s2\\mod_li_yu_dao",
+  "current_source_root": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao",
+  "source_input_count": 42,
+  "changed_source_input_count": 12,
+  "unchanged_source_input_count": 30,
+  "added_paths": [],
+  "removed_paths": [],
+  "all_rows": [
+    {
+      "path": "tools/additional_practices.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\additional_practices.py",
+        "bytes": 51685,
+        "sha256": "cbae8ccf96a33d893ab2c8084ab09046aa34c46596f41ac7241429d2ca56d583"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\additional_practices.py",
+        "bytes": 51685,
+        "sha256": "cbae8ccf96a33d893ab2c8084ab09046aa34c46596f41ac7241429d2ca56d583"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\additional_practices.py",
+        "bytes": 51685,
+        "sha256": "cbae8ccf96a33d893ab2c8084ab09046aa34c46596f41ac7241429d2ca56d583"
+      }
+    },
+    {
+      "path": "tools/build_release.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\build_release.py",
+        "bytes": 10701,
+        "sha256": "ba5de21fd7aa16bbbbabd9268142cadca3cee6b546acda19c306316cac233ed4"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\build_release.py",
+        "bytes": 10701,
+        "sha256": "ba5de21fd7aa16bbbbabd9268142cadca3cee6b546acda19c306316cac233ed4"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\build_release.py",
+        "bytes": 10701,
+        "sha256": "ba5de21fd7aa16bbbbabd9268142cadca3cee6b546acda19c306316cac233ed4"
+      }
+    },
+    {
+      "path": "tools/content_data.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\content_data.py",
+        "bytes": 62030,
+        "sha256": "cb368c771dc4b99a612e560b9bb4ce04992a403c7598f24d9ae3aaeae4bcda73"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\content_data.py",
+        "bytes": 62030,
+        "sha256": "cb368c771dc4b99a612e560b9bb4ce04992a403c7598f24d9ae3aaeae4bcda73"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\content_data.py",
+        "bytes": 62030,
+        "sha256": "cb368c771dc4b99a612e560b9bb4ce04992a403c7598f24d9ae3aaeae4bcda73"
+      }
+    },
+    {
+      "path": "tools/gen_content.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\gen_content.py",
+        "bytes": 8044,
+        "sha256": "bb8a82ac75fb60d9cf25a50843e1d924962dc041c27b05631c1977daea18f342"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\gen_content.py",
+        "bytes": 8044,
+        "sha256": "bb8a82ac75fb60d9cf25a50843e1d924962dc041c27b05631c1977daea18f342"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_content.py",
+        "bytes": 8044,
+        "sha256": "bb8a82ac75fb60d9cf25a50843e1d924962dc041c27b05631c1977daea18f342"
+      }
+    },
+    {
+      "path": "tools/gen_institution.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\gen_institution.py",
+        "bytes": 45619,
+        "sha256": "fc603a5c428fca16a5c85a96c4434bcbd50035618405c28dd4bc6d2de0bf267c"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\gen_institution.py",
+        "bytes": 52050,
+        "sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_institution.py",
+        "bytes": 52050,
+        "sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3"
+      }
+    },
+    {
+      "path": "tools/gen_leadership.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\gen_leadership.py",
+        "bytes": 2363,
+        "sha256": "f73d77e7d073b1736821e86acda1decda18ba471a7e71f222c964fa0174d28b4"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\gen_leadership.py",
+        "bytes": 2327,
+        "sha256": "785792db2b017baff6fa7629a0865121db3aa3d96e601131461e0a182b2c1820"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_leadership.py",
+        "bytes": 2327,
+        "sha256": "785792db2b017baff6fa7629a0865121db3aa3d96e601131461e0a182b2c1820"
+      }
+    },
+    {
+      "path": "tools/gen_runtime.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\gen_runtime.py",
+        "bytes": 17569,
+        "sha256": "7219ac0cfc6a4c81fe4bcca8df44bde3b4f6b96f327fb5977f811fd6bbec7b26"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\gen_runtime.py",
+        "bytes": 17569,
+        "sha256": "7219ac0cfc6a4c81fe4bcca8df44bde3b4f6b96f327fb5977f811fd6bbec7b26"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_runtime.py",
+        "bytes": 17569,
+        "sha256": "7219ac0cfc6a4c81fe4bcca8df44bde3b4f6b96f327fb5977f811fd6bbec7b26"
+      }
+    },
+    {
+      "path": "tools/gen_school_consent.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\gen_school_consent.py",
+        "bytes": 42894,
+        "sha256": "c82240f50ab694472a5de8e568685b4a4b91929843725cf1c1d834e138f1828d"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\gen_school_consent.py",
+        "bytes": 43067,
+        "sha256": "95bb9ea954cf96b19bed842c0f47ff6365d6e0c2e39f1a4ad825656ad3cf7c20"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_school_consent.py",
+        "bytes": 43067,
+        "sha256": "95bb9ea954cf96b19bed842c0f47ff6365d6e0c2e39f1a4ad825656ad3cf7c20"
+      }
+    },
+    {
+      "path": "tools/institution_oracle.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\institution_oracle.py",
+        "bytes": 5109,
+        "sha256": "82b63c98b96f781caadbb9e48451a4691aae84feba1fb988b5f9618fbee7a3b8"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\institution_oracle.py",
+        "bytes": 5109,
+        "sha256": "82b63c98b96f781caadbb9e48451a4691aae84feba1fb988b5f9618fbee7a3b8"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\institution_oracle.py",
+        "bytes": 5109,
+        "sha256": "82b63c98b96f781caadbb9e48451a4691aae84feba1fb988b5f9618fbee7a3b8"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/common/character_interactions/lyd_c3_teacher_interactions.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\common\\character_interactions\\lyd_c3_teacher_interactions.txt.in",
+        "bytes": 4848,
+        "sha256": "693f04af355754f261f0e2d51119c9156a77bc5e1b39e8ff39bafbe2f52e9221"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\common\\character_interactions\\lyd_c3_teacher_interactions.txt.in",
+        "bytes": 4848,
+        "sha256": "693f04af355754f261f0e2d51119c9156a77bc5e1b39e8ff39bafbe2f52e9221"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\character_interactions\\lyd_c3_teacher_interactions.txt.in",
+        "bytes": 4848,
+        "sha256": "693f04af355754f261f0e2d51119c9156a77bc5e1b39e8ff39bafbe2f52e9221"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/common/decisions/lyd_c3_leadership_decisions.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\common\\decisions\\lyd_c3_leadership_decisions.txt.in",
+        "bytes": 7518,
+        "sha256": "64a8209f51edc3a9d312a22b1b93e58480d9ecbdf55e61d02cda0e914b0c5e15"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\common\\decisions\\lyd_c3_leadership_decisions.txt.in",
+        "bytes": 8448,
+        "sha256": "c6244de226380858ecabe93bae2434ffc0c46bc1706a1760d450057d1e402c0b"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\decisions\\lyd_c3_leadership_decisions.txt.in",
+        "bytes": 8448,
+        "sha256": "c6244de226380858ecabe93bae2434ffc0c46bc1706a1760d450057d1e402c0b"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/common/on_action/lyd_c3_lifecycle_on_actions.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\common\\on_action\\lyd_c3_lifecycle_on_actions.txt.in",
+        "bytes": 461,
+        "sha256": "52d629206efa1056ebe5652fa8cf2b038f5410fb4444579be6dab0499461c15c"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\common\\on_action\\lyd_c3_lifecycle_on_actions.txt.in",
+        "bytes": 461,
+        "sha256": "52d629206efa1056ebe5652fa8cf2b038f5410fb4444579be6dab0499461c15c"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\on_action\\lyd_c3_lifecycle_on_actions.txt.in",
+        "bytes": 461,
+        "sha256": "52d629206efa1056ebe5652fa8cf2b038f5410fb4444579be6dab0499461c15c"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_challenger_effects.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_challenger_effects.txt.in",
+        "bytes": 6385,
+        "sha256": "abb705ba20f271e217beb0d0d0717729f642d7cfbcb0dea417691e95fc0f82f4"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_challenger_effects.txt.in",
+        "bytes": 9470,
+        "sha256": "1d41dddf856a746672af4717685b3758f14038f9fd8311346b915c7a54a2f2af"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_challenger_effects.txt.in",
+        "bytes": 9470,
+        "sha256": "1d41dddf856a746672af4717685b3758f14038f9fd8311346b915c7a54a2f2af"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_council_effects.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_council_effects.txt.in",
+        "bytes": 9604,
+        "sha256": "c856d1a2c2b5de3d2f48745f6068d88ba851a52d0af3c402e58b03c7787fe078"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_council_effects.txt.in",
+        "bytes": 9604,
+        "sha256": "c856d1a2c2b5de3d2f48745f6068d88ba851a52d0af3c402e58b03c7787fe078"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_council_effects.txt.in",
+        "bytes": 9604,
+        "sha256": "c856d1a2c2b5de3d2f48745f6068d88ba851a52d0af3c402e58b03c7787fe078"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_head_factory.txt.in",
+        "bytes": 1910,
+        "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_head_factory.txt.in",
+        "bytes": 1910,
+        "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_head_factory.txt.in",
+        "bytes": 1910,
+        "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt.in",
+        "bytes": 5128,
+        "sha256": "96530cdb00cda8c4a4b826fe2b6b7bd2f3e14fa15e2442f577cc45e5c592a6c7"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt.in",
+        "bytes": 5280,
+        "sha256": "e2865ca4bc82741f369a320b759b7ec8020db6e5fe75b5b36a20f092311e8766"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt.in",
+        "bytes": 5280,
+        "sha256": "e2865ca4bc82741f369a320b759b7ec8020db6e5fe75b5b36a20f092311e8766"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_migration_hooks.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_migration_hooks.txt.in",
+        "bytes": 1283,
+        "sha256": "d0e73c511166680c46a3915bf38ee6e84f2b2c6474388294d15ca97fb7d5f086"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_migration_hooks.txt.in",
+        "bytes": 1283,
+        "sha256": "d0e73c511166680c46a3915bf38ee6e84f2b2c6474388294d15ca97fb7d5f086"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_migration_hooks.txt.in",
+        "bytes": 1283,
+        "sha256": "d0e73c511166680c46a3915bf38ee6e84f2b2c6474388294d15ca97fb7d5f086"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.in",
+        "bytes": 6605,
+        "sha256": "d149ad0a96f2ecf1b0e11463fb002b90e462e1ddc015a8481f434e41bc7b4b85"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.in",
+        "bytes": 8278,
+        "sha256": "bf6ac63911e78468caa926eb5fd5ffb65f0c9819c2d2963cc8c2d9d7844b07ca"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.in",
+        "bytes": 8278,
+        "sha256": "bf6ac63911e78468caa926eb5fd5ffb65f0c9819c2d2963cc8c2d9d7844b07ca"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/events/lyd_c3_leadership_events.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\events\\lyd_c3_leadership_events.txt.in",
+        "bytes": 2609,
+        "sha256": "8735cf8e25c6ae6d6786ef26656e044d5b58a39308160d6fa99edfba2462f490"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\events\\lyd_c3_leadership_events.txt.in",
+        "bytes": 3180,
+        "sha256": "a9fbdeed1ff5c211d30861803cc5a417bbfd772f1316087a9ccb4da2a651787e"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\events\\lyd_c3_leadership_events.txt.in",
+        "bytes": 3180,
+        "sha256": "a9fbdeed1ff5c211d30861803cc5a417bbfd772f1316087a9ccb4da2a651787e"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/localization/english/lyd_c3_leadership_l_english.yml.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\localization\\english\\lyd_c3_leadership_l_english.yml.in",
+        "bytes": 9371,
+        "sha256": "d61e841ea39673d611d80e76c98b4f5412070c54ea5da69cf90c25f86df3e5a0"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\localization\\english\\lyd_c3_leadership_l_english.yml.in",
+        "bytes": 11204,
+        "sha256": "7ded7a78e204060fd4ef7e167dafab662fe170f4dad319d60d4af742ee9ce5b5"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\localization\\english\\lyd_c3_leadership_l_english.yml.in",
+        "bytes": 11204,
+        "sha256": "7ded7a78e204060fd4ef7e167dafab662fe170f4dad319d60d4af742ee9ce5b5"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml.in",
+        "bytes": 8600,
+        "sha256": "95f1a73143e68a871197ea56f493547bd760140b9137b3a5497f9c8d092763f0"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml.in",
+        "bytes": 10308,
+        "sha256": "ab79e52ada64a3ad5bc19d3ce92225541849e62a1b438517a3f1f9e90c02a912"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml.in",
+        "bytes": 10308,
+        "sha256": "ab79e52ada64a3ad5bc19d3ce92225541849e62a1b438517a3f1f9e90c02a912"
+      }
+    },
+    {
+      "path": "tools/native_admission_portable.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\native_admission_portable.py",
+        "bytes": 5188,
+        "sha256": "7da4839c191fb16e8de5a38b6879840e8d1434839fdb8054b065b283858263bc"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\native_admission_portable.py",
+        "bytes": 5188,
+        "sha256": "7da4839c191fb16e8de5a38b6879840e8d1434839fdb8054b065b283858263bc"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\native_admission_portable.py",
+        "bytes": 5188,
+        "sha256": "7da4839c191fb16e8de5a38b6879840e8d1434839fdb8054b065b283858263bc"
+      }
+    },
+    {
+      "path": "tools/reference/native-primitive-tracked-admission.json",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\reference\\native-primitive-tracked-admission.json",
+        "bytes": 3582,
+        "sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\reference\\native-primitive-tracked-admission.json",
+        "bytes": 3582,
+        "sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\reference\\native-primitive-tracked-admission.json",
+        "bytes": 3582,
+        "sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6"
+      }
+    },
+    {
+      "path": "tools/run_acceptance.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\run_acceptance.py",
+        "bytes": 20112,
+        "sha256": "7212a6f39a180a45d6f591983dfbf7c40c998cb500050f5afca1960cc9533d6d"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\run_acceptance.py",
+        "bytes": 20112,
+        "sha256": "7212a6f39a180a45d6f591983dfbf7c40c998cb500050f5afca1960cc9533d6d"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\run_acceptance.py",
+        "bytes": 20112,
+        "sha256": "7212a6f39a180a45d6f591983dfbf7c40c998cb500050f5afca1960cc9533d6d"
+      }
+    },
+    {
+      "path": "tools/school_consent_callbacks.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_callbacks.py",
+        "bytes": 4148,
+        "sha256": "23583d05e9daf00c6a3d874893a4171d4bf45c2fa464b18317d4223300ad15a2"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_callbacks.py",
+        "bytes": 4148,
+        "sha256": "23583d05e9daf00c6a3d874893a4171d4bf45c2fa464b18317d4223300ad15a2"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_callbacks.py",
+        "bytes": 4148,
+        "sha256": "23583d05e9daf00c6a3d874893a4171d4bf45c2fa464b18317d4223300ad15a2"
+      }
+    },
+    {
+      "path": "tools/school_consent_data.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_data.py",
+        "bytes": 2087,
+        "sha256": "156942c061e8c9d0afc3b17b716e4be0ea3fe6988181553dfe5ea44bfec7109c"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_data.py",
+        "bytes": 2087,
+        "sha256": "156942c061e8c9d0afc3b17b716e4be0ea3fe6988181553dfe5ea44bfec7109c"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_data.py",
+        "bytes": 2087,
+        "sha256": "156942c061e8c9d0afc3b17b716e4be0ea3fe6988181553dfe5ea44bfec7109c"
+      }
+    },
+    {
+      "path": "tools/school_consent_model.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_model.py",
+        "bytes": 23747,
+        "sha256": "5fa5e4ae676ba9901b7612b7f2d7375a85938b8d916f605b131157e4a00d8768"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_model.py",
+        "bytes": 23747,
+        "sha256": "5fa5e4ae676ba9901b7612b7f2d7375a85938b8d916f605b131157e4a00d8768"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_model.py",
+        "bytes": 23747,
+        "sha256": "5fa5e4ae676ba9901b7612b7f2d7375a85938b8d916f605b131157e4a00d8768"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\character_interactions\\lyd_c2_consent_interactions.txt",
+        "bytes": 883,
+        "sha256": "f454a47d5604b4a4000b568daf86d52aca2c4a362f6e59a98796b9f4680bf164"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\character_interactions\\lyd_c2_consent_interactions.txt",
+        "bytes": 883,
+        "sha256": "f454a47d5604b4a4000b568daf86d52aca2c4a362f6e59a98796b9f4680bf164"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\character_interactions\\lyd_c2_consent_interactions.txt",
+        "bytes": 883,
+        "sha256": "f454a47d5604b4a4000b568daf86d52aca2c4a362f6e59a98796b9f4680bf164"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/decisions/lyd_c2_consent_decisions.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\decisions\\lyd_c2_consent_decisions.txt",
+        "bytes": 2305,
+        "sha256": "90a6fbe4f9a36b7f3dd886e6a629f8dbde799167ec085094fd519b21c9214671"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\decisions\\lyd_c2_consent_decisions.txt",
+        "bytes": 2305,
+        "sha256": "90a6fbe4f9a36b7f3dd886e6a629f8dbde799167ec085094fd519b21c9214671"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\decisions\\lyd_c2_consent_decisions.txt",
+        "bytes": 2305,
+        "sha256": "90a6fbe4f9a36b7f3dd886e6a629f8dbde799167ec085094fd519b21c9214671"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/script_values/lyd_c2_consent_values.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\script_values\\lyd_c2_consent_values.txt",
+        "bytes": 502,
+        "sha256": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\script_values\\lyd_c2_consent_values.txt",
+        "bytes": 502,
+        "sha256": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\script_values\\lyd_c2_consent_values.txt",
+        "bytes": 502,
+        "sha256": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_close_effects.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_close_effects.txt",
+        "bytes": 3290,
+        "sha256": "cc223af9e9f11c490399abfb6f7b0fd65d74eae1150aa0b425c7d7ff3954b54b"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_close_effects.txt",
+        "bytes": 3290,
+        "sha256": "cc223af9e9f11c490399abfb6f7b0fd65d74eae1150aa0b425c7d7ff3954b54b"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_close_effects.txt",
+        "bytes": 3290,
+        "sha256": "cc223af9e9f11c490399abfb6f7b0fd65d74eae1150aa0b425c7d7ff3954b54b"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_commit_effects.txt",
+        "bytes": 5844,
+        "sha256": "49c6d9710d9dc8238110d122aafa909445817a8240baa36f2d48e968053b6d0c"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_commit_effects.txt",
+        "bytes": 5844,
+        "sha256": "49c6d9710d9dc8238110d122aafa909445817a8240baa36f2d48e968053b6d0c"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_commit_effects.txt",
+        "bytes": 5844,
+        "sha256": "49c6d9710d9dc8238110d122aafa909445817a8240baa36f2d48e968053b6d0c"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_head_effects.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_head_effects.txt",
+        "bytes": 1249,
+        "sha256": "0460ae905e49b07f4005d976474872b64112aad51f573552c315ee9312511f91"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_head_effects.txt",
+        "bytes": 1249,
+        "sha256": "0460ae905e49b07f4005d976474872b64112aad51f573552c315ee9312511f91"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_head_effects.txt",
+        "bytes": 1249,
+        "sha256": "0460ae905e49b07f4005d976474872b64112aad51f573552c315ee9312511f91"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_response_effects.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_response_effects.txt",
+        "bytes": 1266,
+        "sha256": "c4a5019ff2cda368f728afacd9c1b7f44eb922e6b8095dd3c68c789089deba3c"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_response_effects.txt",
+        "bytes": 1266,
+        "sha256": "c4a5019ff2cda368f728afacd9c1b7f44eb922e6b8095dd3c68c789089deba3c"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_response_effects.txt",
+        "bytes": 1266,
+        "sha256": "c4a5019ff2cda368f728afacd9c1b7f44eb922e6b8095dd3c68c789089deba3c"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_setup_effects.txt",
+        "bytes": 10831,
+        "sha256": "6512508d6a3fa1e8b702f26296a56159727a0033f833062a39d2b637b9a064f6"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_setup_effects.txt",
+        "bytes": 10831,
+        "sha256": "6512508d6a3fa1e8b702f26296a56159727a0033f833062a39d2b637b9a064f6"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_setup_effects.txt",
+        "bytes": 10831,
+        "sha256": "6512508d6a3fa1e8b702f26296a56159727a0033f833062a39d2b637b9a064f6"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_snapshot_effects.txt",
+        "bytes": 1154,
+        "sha256": "2c6964221393059e807d74fdfb484834025a8c868d40570e89800bc9d3e7ba88"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_snapshot_effects.txt",
+        "bytes": 1154,
+        "sha256": "2c6964221393059e807d74fdfb484834025a8c868d40570e89800bc9d3e7ba88"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_snapshot_effects.txt",
+        "bytes": 1154,
+        "sha256": "2c6964221393059e807d74fdfb484834025a8c868d40570e89800bc9d3e7ba88"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_vote_effects.txt",
+        "bytes": 5265,
+        "sha256": "0a0c26b1cef18219babf59653d83f68fb60144ee9e6ae7c943376efe7f972398"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_vote_effects.txt",
+        "bytes": 5265,
+        "sha256": "0a0c26b1cef18219babf59653d83f68fb60144ee9e6ae7c943376efe7f972398"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c2_vote_effects.txt",
+        "bytes": 5265,
+        "sha256": "0a0c26b1cef18219babf59653d83f68fb60144ee9e6ae7c943376efe7f972398"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c3_head_factory.txt",
+        "bytes": 1910,
+        "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c3_head_factory.txt",
+        "bytes": 1910,
+        "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c3_head_factory.txt",
+        "bytes": 1910,
+        "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c3_migration_hooks.txt",
+        "bytes": 1346,
+        "sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c3_migration_hooks.txt",
+        "bytes": 1346,
+        "sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_effects\\lyd_c3_migration_hooks.txt",
+        "bytes": 1346,
+        "sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "bytes": 15343,
+        "sha256": "ebcb226c6e5e648518c754ebcf1661876cfc498dce880d656e3567b1d4b5cc35"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "bytes": 16482,
+        "sha256": "2ea24b3e8c945eb6a41b48d30c884d61b154bf69c1c4881305880b2a36e83f77"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "bytes": 16482,
+        "sha256": "2ea24b3e8c945eb6a41b48d30c884d61b154bf69c1c4881305880b2a36e83f77"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/events/lyd_c2_consent_events.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6704,
+        "sha256": "87da221474c88fb5235a15238d8fca80ee61f93bece5d5ac579d2308395b2134"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6724,
+        "sha256": "3492722777c8aca20f91f8eb304dbcea9a9f5e970f16235c940181eb31ae888c"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6724,
+        "sha256": "3492722777c8aca20f91f8eb304dbcea9a9f5e970f16235c940181eb31ae888c"
+      }
+    },
+    {
+      "path": "tools/validate_static.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\validate_static.py",
+        "bytes": 21803,
+        "sha256": "396a1dcf746b5b0337c51e10d1812ddfc5fa22257b4b586286b4496732832072"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\validate_static.py",
+        "bytes": 21803,
+        "sha256": "396a1dcf746b5b0337c51e10d1812ddfc5fa22257b4b586286b4496732832072"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\validate_static.py",
+        "bytes": 21803,
+        "sha256": "396a1dcf746b5b0337c51e10d1812ddfc5fa22257b4b586286b4496732832072"
+      }
+    }
+  ],
+  "source_delta": [
+    {
+      "path": "tools/gen_institution.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\gen_institution.py",
+        "bytes": 45619,
+        "sha256": "fc603a5c428fca16a5c85a96c4434bcbd50035618405c28dd4bc6d2de0bf267c"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\gen_institution.py",
+        "bytes": 52050,
+        "sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_institution.py",
+        "bytes": 52050,
+        "sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3"
+      },
+      "diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\diff\\tools\\gen_institution.py.diff",
+        "bytes": 22957,
+        "sha256": "5126ee0180fab4f0807c9ee7e8b47257d0f7e30d06253bb0c6737efa543aa78f"
+      }
+    },
+    {
+      "path": "tools/gen_leadership.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\gen_leadership.py",
+        "bytes": 2363,
+        "sha256": "f73d77e7d073b1736821e86acda1decda18ba471a7e71f222c964fa0174d28b4"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\gen_leadership.py",
+        "bytes": 2327,
+        "sha256": "785792db2b017baff6fa7629a0865121db3aa3d96e601131461e0a182b2c1820"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_leadership.py",
+        "bytes": 2327,
+        "sha256": "785792db2b017baff6fa7629a0865121db3aa3d96e601131461e0a182b2c1820"
+      },
+      "diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\diff\\tools\\gen_leadership.py.diff",
+        "bytes": 1068,
+        "sha256": "dfeb35f3b784cc22ea4782becf4af15ba17c6c53ceaa0bd2c28745c5711c6a4f"
+      }
+    },
+    {
+      "path": "tools/gen_school_consent.py",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\gen_school_consent.py",
+        "bytes": 42894,
+        "sha256": "c82240f50ab694472a5de8e568685b4a4b91929843725cf1c1d834e138f1828d"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\gen_school_consent.py",
+        "bytes": 43067,
+        "sha256": "95bb9ea954cf96b19bed842c0f47ff6365d6e0c2e39f1a4ad825656ad3cf7c20"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_school_consent.py",
+        "bytes": 43067,
+        "sha256": "95bb9ea954cf96b19bed842c0f47ff6365d6e0c2e39f1a4ad825656ad3cf7c20"
+      },
+      "diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\diff\\tools\\gen_school_consent.py.diff",
+        "bytes": 1545,
+        "sha256": "e8ae6b69ac27bd6ef4797afc8f973730ed97e85515a10936b91b9a5a2d7d8e25"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/common/decisions/lyd_c3_leadership_decisions.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\common\\decisions\\lyd_c3_leadership_decisions.txt.in",
+        "bytes": 7518,
+        "sha256": "64a8209f51edc3a9d312a22b1b93e58480d9ecbdf55e61d02cda0e914b0c5e15"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\common\\decisions\\lyd_c3_leadership_decisions.txt.in",
+        "bytes": 8448,
+        "sha256": "c6244de226380858ecabe93bae2434ffc0c46bc1706a1760d450057d1e402c0b"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\decisions\\lyd_c3_leadership_decisions.txt.in",
+        "bytes": 8448,
+        "sha256": "c6244de226380858ecabe93bae2434ffc0c46bc1706a1760d450057d1e402c0b"
+      },
+      "diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\diff\\tools\\leadership_templates\\common\\decisions\\lyd_c3_leadership_decisions.txt.in.diff",
+        "bytes": 1272,
+        "sha256": "addf2e0cab96a891f9e52f457893b9aefa45cbe4eaec23c1f583fefa1c461b1b"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_challenger_effects.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_challenger_effects.txt.in",
+        "bytes": 6385,
+        "sha256": "abb705ba20f271e217beb0d0d0717729f642d7cfbcb0dea417691e95fc0f82f4"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_challenger_effects.txt.in",
+        "bytes": 9470,
+        "sha256": "1d41dddf856a746672af4717685b3758f14038f9fd8311346b915c7a54a2f2af"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_challenger_effects.txt.in",
+        "bytes": 9470,
+        "sha256": "1d41dddf856a746672af4717685b3758f14038f9fd8311346b915c7a54a2f2af"
+      },
+      "diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\diff\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_challenger_effects.txt.in.diff",
+        "bytes": 8034,
+        "sha256": "ca3391013d0aed1b96c1b07ebaa0351f630db8bcee445d2e678a772e070a4d20"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt.in",
+        "bytes": 5128,
+        "sha256": "96530cdb00cda8c4a4b826fe2b6b7bd2f3e14fa15e2442f577cc45e5c592a6c7"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt.in",
+        "bytes": 5280,
+        "sha256": "e2865ca4bc82741f369a320b759b7ec8020db6e5fe75b5b36a20f092311e8766"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt.in",
+        "bytes": 5280,
+        "sha256": "e2865ca4bc82741f369a320b759b7ec8020db6e5fe75b5b36a20f092311e8766"
+      },
+      "diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\diff\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt.in.diff",
+        "bytes": 783,
+        "sha256": "ff92c3018ff23ff499ccf30a9dc273448947b188713ace0562431203ca239049"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.in",
+        "bytes": 6605,
+        "sha256": "d149ad0a96f2ecf1b0e11463fb002b90e462e1ddc015a8481f434e41bc7b4b85"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.in",
+        "bytes": 8278,
+        "sha256": "bf6ac63911e78468caa926eb5fd5ffb65f0c9819c2d2963cc8c2d9d7844b07ca"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.in",
+        "bytes": 8278,
+        "sha256": "bf6ac63911e78468caa926eb5fd5ffb65f0c9819c2d2963cc8c2d9d7844b07ca"
+      },
+      "diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\diff\\tools\\leadership_templates\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.in.diff",
+        "bytes": 4825,
+        "sha256": "8519c9af21c91afb0fc6477d944170bc259040064adf1e2f0f9194e1c10076ef"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/events/lyd_c3_leadership_events.txt.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\events\\lyd_c3_leadership_events.txt.in",
+        "bytes": 2609,
+        "sha256": "8735cf8e25c6ae6d6786ef26656e044d5b58a39308160d6fa99edfba2462f490"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\events\\lyd_c3_leadership_events.txt.in",
+        "bytes": 3180,
+        "sha256": "a9fbdeed1ff5c211d30861803cc5a417bbfd772f1316087a9ccb4da2a651787e"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\events\\lyd_c3_leadership_events.txt.in",
+        "bytes": 3180,
+        "sha256": "a9fbdeed1ff5c211d30861803cc5a417bbfd772f1316087a9ccb4da2a651787e"
+      },
+      "diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\diff\\tools\\leadership_templates\\events\\lyd_c3_leadership_events.txt.in.diff",
+        "bytes": 776,
+        "sha256": "f4171e64813a2359b8c427359494c9bdfc4682adb1c739c083f53b026aba1ad5"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/localization/english/lyd_c3_leadership_l_english.yml.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\localization\\english\\lyd_c3_leadership_l_english.yml.in",
+        "bytes": 9371,
+        "sha256": "d61e841ea39673d611d80e76c98b4f5412070c54ea5da69cf90c25f86df3e5a0"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\localization\\english\\lyd_c3_leadership_l_english.yml.in",
+        "bytes": 11204,
+        "sha256": "7ded7a78e204060fd4ef7e167dafab662fe170f4dad319d60d4af742ee9ce5b5"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\localization\\english\\lyd_c3_leadership_l_english.yml.in",
+        "bytes": 11204,
+        "sha256": "7ded7a78e204060fd4ef7e167dafab662fe170f4dad319d60d4af742ee9ce5b5"
+      },
+      "diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\diff\\tools\\leadership_templates\\localization\\english\\lyd_c3_leadership_l_english.yml.in.diff",
+        "bytes": 2538,
+        "sha256": "ca6472ac687487faa2be7877b51c1d9525b61400a59d5705573062bf626e5fb0"
+      }
+    },
+    {
+      "path": "tools/leadership_templates/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml.in",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\leadership_templates\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml.in",
+        "bytes": 8600,
+        "sha256": "95f1a73143e68a871197ea56f493547bd760140b9137b3a5497f9c8d092763f0"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\leadership_templates\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml.in",
+        "bytes": 10308,
+        "sha256": "ab79e52ada64a3ad5bc19d3ce92225541849e62a1b438517a3f1f9e90c02a912"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml.in",
+        "bytes": 10308,
+        "sha256": "ab79e52ada64a3ad5bc19d3ce92225541849e62a1b438517a3f1f9e90c02a912"
+      },
+      "diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\diff\\tools\\leadership_templates\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml.in.diff",
+        "bytes": 2374,
+        "sha256": "69111747e1b15a84f5459d745ea825ff4c6ba593e842484e464e1793347b635b"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "bytes": 15343,
+        "sha256": "ebcb226c6e5e648518c754ebcf1661876cfc498dce880d656e3567b1d4b5cc35"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "bytes": 16482,
+        "sha256": "2ea24b3e8c945eb6a41b48d30c884d61b154bf69c1c4881305880b2a36e83f77"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "bytes": 16482,
+        "sha256": "2ea24b3e8c945eb6a41b48d30c884d61b154bf69c1c4881305880b2a36e83f77"
+      },
+      "diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\diff\\tools\\school_consent_templates\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt.diff",
+        "bytes": 6048,
+        "sha256": "feadd9b79e801e1d341070e14c28fd58681e93fd06dd030d5a1096f030a366cd"
+      }
+    },
+    {
+      "path": "tools/school_consent_templates/events/lyd_c2_consent_events.txt",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\before\\tools\\school_consent_templates\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6704,
+        "sha256": "87da221474c88fb5235a15238d8fca80ee61f93bece5d5ac579d2308395b2134"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\after\\tools\\school_consent_templates\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6724,
+        "sha256": "3492722777c8aca20f91f8eb304dbcea9a9f5e970f16235c940181eb31ae888c"
+      },
+      "current_original": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6724,
+        "sha256": "3492722777c8aca20f91f8eb304dbcea9a9f5e970f16235c940181eb31ae888c"
+      },
+      "diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\production-author-inputs-001\\diff\\tools\\school_consent_templates\\events\\lyd_c2_consent_events.txt.diff",
+        "bytes": 524,
+        "sha256": "8c99487774f0d09a32bb4ee4e7c28743a7dd1b4795280c1c71b8cbf4574c84c2"
+      }
+    }
+  ],
+  "changed_source_paths_exactly_match_12_reviewed_C2_C3_I3b_authors": true,
+  "C2_current_template_CRLF_to_LF_only": "392 CRLF lines in source candidate normalize byte-exact to current LF; runtime bytes remain unchanged by normalization.",
+  "source_lineage": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\lineage-002\\COMPLETE-RUNTIME-LINEAGE.json",
+    "bytes": 81309,
+    "sha256": "e1f84ddb4fc9a7f1da12bd44ef864eace2eb7357767dd6acf18c9df7090ff0ad"
+  },
+  "tests_executed": 0,
+  "native": "NOT_RUN",
+  "Git_calls": 0,
+  "main_mutations": 0
+}

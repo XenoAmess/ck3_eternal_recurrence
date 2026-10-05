@@ -1,0 +1,12 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r10-0181-eighth-review-confirm",
+  "operation": "call_tool",
+  "name": "ck3_confirm_profile_decision_outcome_v1",
+  "arguments": {
+    "decision_key": "lyd_c2_review_proposal_decision",
+    "expected_outcome": "event_window",
+    "expected_revision": 84,
+    "expected_event_definition_key": "lyd.220"
+  }
+}

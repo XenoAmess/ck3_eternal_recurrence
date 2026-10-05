@@ -1,0 +1,79 @@
+{
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0235-detach-second-precommit-save\\checkpoint.ck3",
+    "bytes": 91605363,
+    "sha256": "83bd02e2f340f6f1aa70525a08aa004e6b2dce2326ac2568ea99b0b79183983d"
+  },
+  "SDK": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0235-r10-0236-detach-second-precommit-save.sdk-result.json",
+    "bytes": 10093591,
+    "sha256": "16462dddb6e1e4f51f3a0fe0bb102ea9b332f32e61a5d4dbe1acf26ef0de3d3d"
+  },
+  "metadata": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0235-detach-second-precommit-save\\checkpoint-metadata.json",
+    "bytes": 1434,
+    "sha256": "458329707d29f29b045c2ca1610044350dc8fab414a1d9a80114ae9a3220a6fc"
+  },
+  "exact_reader_copies": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-cycle-before-detach-readback-20261006-001\\reader\\read_actual_checkpoint.py",
+        "bytes": 13860,
+        "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-precommit-readback-20261006-001\\reader\\read_actual_checkpoint.py",
+        "bytes": 13860,
+        "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+      },
+      "exact_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-cycle-before-detach-readback-20261006-001\\reader\\dependencies\\bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-precommit-readback-20261006-001\\reader\\dependencies\\bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "exact_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-cycle-before-detach-readback-20261006-001\\reader\\dependencies\\save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-precommit-readback-20261006-001\\reader\\dependencies\\save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "exact_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-cycle-before-detach-readback-20261006-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-precommit-readback-20261006-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      },
+      "exact_equal": true
+    }
+  ],
+  "cached_before200_SEALED": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-cycle-before-detach-readback-20261006-001\\SEALED.json",
+    "bytes": 744,
+    "sha256": "1a360b82eb35d6fe1d45ea4081569531f4b7fc2ee0e16db22519f444b3a4a091"
+  },
+  "actual_new_AST_count_so_far": 0,
+  "old_save_reparsed": false,
+  "final_DETACH_credit": false
+}

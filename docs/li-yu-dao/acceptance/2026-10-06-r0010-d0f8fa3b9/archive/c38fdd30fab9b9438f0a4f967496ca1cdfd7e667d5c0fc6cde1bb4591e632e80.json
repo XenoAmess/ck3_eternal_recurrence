@@ -1,0 +1,13 @@
+{
+  "stage": "external finalizer reuse preparation",
+  "error": "Case-sensitive anchor actual vs Actual in error-message text",
+  "failed_driver": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fifth-open-join-readback-20261005-001\\prepare_finalizer.py",
+    "bytes": 4510,
+    "sha256": "400e3837d039deb4580993ccbecf580ae0ea3e0948e7844e4872e17952f6d0c8"
+  },
+  "new_save_AST_reads_during_failed_driver": 0,
+  "finalizer_or_final_report_written_during_failed_driver": false,
+  "correction": "Capitalized error-message anchor; all evidence and actual AST cache unchanged",
+  "old_package_mutations": false
+}

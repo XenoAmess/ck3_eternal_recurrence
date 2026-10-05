@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 188,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0189-eighth-precommit-event-query.request.json",
+  "request_sha256": "fc79c54b9c8ccf62c5b99d74172ee2fc1347d9826974d3dd9ba0ee5c96914f91",
+  "started_at_utc": "2026-10-05T17:04:33.676386+00:00"
+}

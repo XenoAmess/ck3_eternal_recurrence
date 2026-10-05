@@ -1,0 +1,13 @@
+[
+  "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+  "-B",
+  "-X",
+  "utf8",
+  "-m",
+  "unittest",
+  "discover",
+  "-s",
+  "ck3_autonomous_player/tests/unit",
+  "-p",
+  "test_player_control*.py"
+]

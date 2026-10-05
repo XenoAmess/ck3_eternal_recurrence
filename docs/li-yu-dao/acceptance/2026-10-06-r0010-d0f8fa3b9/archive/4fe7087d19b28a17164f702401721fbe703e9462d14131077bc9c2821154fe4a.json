@@ -1,0 +1,67 @@
+{
+  "schema": "lyd.root.consumer-runner-ended.v2",
+  "status": "ROOT_REVIEWED_ACTUAL_CONSUMER_ENDED_EXIT_CODE_UNOBSERVED",
+  "source_head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "root_screen_task": "ck3-lyd-r0010-20261005",
+  "client_session_id": "e722295ffba04b9f9f3559db2488bdf0",
+  "original_game": {
+    "pid": 13436,
+    "process_create_time": 1791196395.7422996,
+    "process_creation_filetime_100ns": 134356699957422997
+  },
+  "process": {
+    "pid": 19428,
+    "process_create_time": 1791198207.4832103,
+    "exit_code": null,
+    "process_exit_observed": true
+  },
+  "session": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\session.json",
+    "bytes": 1259,
+    "sha256": "ff00c18fd84e630af02dcf9840b0b68d12d53202f4c64bc0f2a4d44e4b87d70a"
+  },
+  "session_closed": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\session-closed.json",
+    "bytes": 13285,
+    "sha256": "9812756ee01b1f117ef3d8e011ffedb20d5df87971a4d50283562d979e71006b"
+  },
+  "close_response": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0254-r10-0255-client-close.response.json",
+    "bytes": 481,
+    "sha256": "c1ba9c3751500ec27d0a112f6d8416ca4967b80d325bfb3708121430b0f12ece"
+  },
+  "profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-profile-with-exit-inventory.json",
+    "bytes": 1150,
+    "sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6"
+  },
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-official-mcp-consumer21-20261005-002\\persistent_native_mcp_queue_21.py",
+    "serve",
+    "--profile",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/native-profile-with-exit-inventory.json",
+    "--queue",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002",
+    "--binding",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-binding-002\\ROOT-BINDING.json",
+    "--binding-sha256",
+    "accb15735d343ab87d842cafcecb32b2944638667806da1b27ed5871fae9d501"
+  ],
+  "all_consumer_processes_ended": true,
+  "ended_at_utc": "2026-10-05T18:14:59.344290+00:00",
+  "original_start": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-mcp-client-start-invocation-002\\RESULT.json",
+    "bytes": 540,
+    "sha256": "53428272eddf3c8a885c511a6695e3e4726626abf3ad084b1630bbf11288562f"
+  },
+  "process_absence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-actual-closed-boundary-20261006-001\\PROCESS-ABSENCE.actual.json",
+    "bytes": 716,
+    "sha256": "a6bf77a21c13f72633c4d0bc10c865724e0010e9957d18c2e6257736e6fec516"
+  },
+  "os_exit_code_observed": false
+}

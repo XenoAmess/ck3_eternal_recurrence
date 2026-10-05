@@ -1,0 +1,51 @@
+{
+  "schema": "lyd.r10.actual-checkpoint-readback-request.v1",
+  "phase": "actual-R10-join-proposal-opened-not-final-result",
+  "source_binding": {
+    "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+    "cold_source_inventory": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\COLD-SOURCE-INVENTORY.json",
+      "bytes": 31564,
+      "sha256": "2ab18195f08fb5f680f6168732cd1681fa171fd31b50b6777c1e685c297ac260"
+    },
+    "ROOT_PREPARED": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\PREPARED.json",
+      "bytes": 7217,
+      "sha256": "a65e94d9b50afe0688a66cd1af745b4d29cbf6917b23dd52fa42f2f4bcb6c53e"
+    },
+    "native_profile": null,
+    "fresh_SDK_actor_binding": null
+  },
+  "actor_id": 31254,
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0016-open-join-proposal-save\\checkpoint.ck3",
+    "bytes": 91534935,
+    "sha256": "ab69bd9da64d01d3d323c3adc43f0c75bbf2e49abf00f77132215b7307d59603"
+  },
+  "supporting_evidence": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0016-r10-0016-open-proposal-save.sdk-result.json",
+      "bytes": 798891,
+      "sha256": "653ff5b6e463bc851a8c1fbf63fc3c601ad769c50a3355a34cf2f2d9bf5559b3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0016-open-join-proposal-save\\checkpoint-metadata.json",
+      "bytes": 1413,
+      "sha256": "099e9f290d5b35c7694b2af8d77a6f0af6002b0bdd8c7f0d3e2d905b32990f14"
+    }
+  ],
+  "political_title_ids": [
+    2230,
+    2231,
+    2232,
+    2235,
+    2262,
+    2263,
+    2264
+  ],
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-open-join-readback-20261005-001\\actual-save-001",
+  "watch_character_ids": [
+    65865,
+    65866
+  ]
+}

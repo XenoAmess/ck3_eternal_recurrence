@@ -1,0 +1,86 @@
+{
+  "schema": "lyd.r10.closed.result-matrix.v1",
+  "overall": "NOT_GREEN_PHASE1_INCOMPLETE",
+  "rows": [
+    {
+      "area": "冻结源与静态L0",
+      "result": "SOURCE_STATIC_PASS",
+      "boundary": "复用d0f8生产70、fixture52与已封159/static/repro；不授实机业务信用"
+    },
+    {
+      "area": "release实际编译",
+      "result": "COMPILE_PASS_OUTER_BUILD_RED",
+      "boundary": "真实编译成功；Defender一次注册失败effectivenessfalse／outerexit1保留"
+    },
+    {
+      "area": "通用CI",
+      "result": "RED_REMEDIATION_CANDIDATE_ONLY",
+      "boundary": "两处历史文档名称最小修正候选外置；本包未应用或复跑CI"
+    },
+    {
+      "area": "launch预检与actual冷启",
+      "result": "ACTUAL_ONE_CREATED_WITH_PRIOR_FAILED_ATTEMPTS",
+      "boundary": "001argcase／002refpathbug／nofork检查与003actualPID13436均保留"
+    },
+    {
+      "area": "正式JOIN nonce14",
+      "result": "ACTUAL_PASS_183CHECKS",
+      "boundary": "171opening、187三签授权、189commit、192保存分别绑定；-300G/-1500P"
+    },
+    {
+      "area": "前七轮JOIN未成功",
+      "result": "REJECTED_OR_CANCELLED_NOT_JOIN",
+      "boundary": "两次签署接收拒绝及五次取消，票identity省略保持NULL、不推随机原因"
+    },
+    {
+      "area": "第一次DETACH withdraw201–216",
+      "result": "NATIVE_TRACE_ONLY_NO_AST_RESULT",
+      "boundary": "没有独立保存，不倒填ASTresult3或结案信用"
+    },
+    {
+      "area": "正式DETACH nonce16",
+      "result": "ACTUAL_PASS_120CHECKS",
+      "boundary": "235授权、237commit、240保存；-200G/-1000P，new107/main169，HoR31254不等于HoF"
+    },
+    {
+      "area": "SDK196fixture与SDK243复位阻止",
+      "result": "ORIGINAL_RED_PRESERVED",
+      "boundary": "196原调用RED但200实际reset；未验证claim使243在派发前阻止，未reset或clearclaim"
+    },
+    {
+      "area": "JOIN→DETACH→第二JOIN完整循环",
+      "result": "NOT_COMPLETE_SECOND_JOIN_NOT_RUN",
+      "boundary": "下次session从actual240继续；本轮不授fullcycle"
+    },
+    {
+      "area": "自然冷却到期／直接禁用观察",
+      "result": "NOT_RUN_QUERY_LIMIT",
+      "boundary": "fixture reset非自然到期；193action_qualified=false为恒值不证明CD拒绝"
+    },
+    {
+      "area": "I3b／C3／修习切人／I4正式矩阵／reload",
+      "result": "NOT_RUN",
+      "boundary": "离线构建、sourceproof、inert helper不替代实际操作"
+    },
+    {
+      "area": "同原HANDLE正常退出",
+      "result": "ACTUAL_EXIT0_TYPED_PASS",
+      "boundary": "245query→246prepareunknown→247fresh→248stage→249continueunknown→250fresh→251query→252confirmonce→253原HANDLEobserver；autosaveverifiedfalse"
+    },
+    {
+      "area": "Client／keeper／lease／source freeze",
+      "result": "ACTUAL_CLOSED_RELEASED_OS_EXIT_CODES_UNKNOWN",
+      "boundary": "254sessionclose+allabsent；keeperSTOPFINAL3160；CAS3161DONEresources[]；freshnoholder；ROOT释放源门禁；两OSexitcodeNULL"
+    },
+    {
+      "area": "退出后error/debug日志",
+      "result": "SNAPSHOT_CLASSIFIED_COVERAGE_UNKNOWN",
+      "boundary": "UTC18:07真实postexit/clientclose捕获；578I4unused+12W保留；cap/truncation/continuouscoverageNULL，无wholeGREEN"
+    },
+    {
+      "area": "Phase1总体",
+      "result": "NOT_GREEN_INCOMPLETE",
+      "boundary": "已完成本轮限定JOIN和DETACH并闭合生命周期；剩余验收未完成"
+    }
+  ]
+}

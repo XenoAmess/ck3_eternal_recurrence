@@ -1,0 +1,312 @@
+{
+  "schema": "lyd.r10.cycle-reset196-original-RED-boundary.v1",
+  "original_SDK": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0196-r10-0197-cycle-fixture-reset-confirm.sdk-result.json",
+    "bytes": 4052199,
+    "sha256": "1f13f06d414716dcc47f7f3fca0e60268be02179e79bb244d3161718f4f8b84b"
+  },
+  "original_request": {
+    "ref": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0196-r10-0197-cycle-fixture-reset-confirm.request.json",
+      "bytes": 327,
+      "sha256": "84071380eeb96d3815924c03a1d420d6d1a66c0a749d40c73847b256aed5db69"
+    },
+    "exact_JSON": {
+      "schema": "ck3.lyd.mcp-request.v1",
+      "request_id": "r10-0197-cycle-fixture-reset-confirm",
+      "operation": "call_tool",
+      "name": "ck3_confirm_profile_decision_outcome_v1",
+      "arguments": {
+        "decision_key": "lyd_r4_reset_decision",
+        "expected_outcome": "decision_closed",
+        "expected_revision": 91
+      }
+    }
+  },
+  "status_exact": "RED",
+  "reason_exact": "BridgeUnavailableError: generic Confirm outcome read crossed its actual frame",
+  "original_receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0195-decision-confirm_outcome.json",
+  "original_receipt_ref": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0195-decision-confirm_outcome.json",
+    "bytes": 1920939,
+    "sha256": "2523f19b5d7fb52afb3df58534164a50f0b6c933b87905285e78947c2821544e"
+  },
+  "196_not_reissued": true,
+  "ROOT_reported_wrong_expected_decision_closed": true,
+  "actual_execution_not_inferred_from_ACK_alone": "Independent197 snapshot/198 typed fixture4/199ACK/200save AST are retained separately",
+  "200_changed_actor_LYD_rows": {
+    "lyd_r4_reset_count": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "500000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "500000"
+          }
+        ],
+        "number": "5",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_count"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "500000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "600000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "600000"
+          }
+        ],
+        "number": "6",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_count"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "600000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_r4_reset_gold_before": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "154300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "154300000"
+          }
+        ],
+        "number": "1543",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_gold_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "154300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "124300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "124300000"
+          }
+        ],
+        "number": "1243",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_gold_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "124300000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_r4_reset_piety_before": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "565000000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "565000000"
+          }
+        ],
+        "number": "5650",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_piety_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "565000000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "415000000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "415000000"
+          }
+        ],
+        "number": "4150",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_piety_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "415000000"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "school_study_CD": {
+    "lyd_school_cooldown": {
+      "present": true,
+      "tick": "349",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_school_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "349"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_study_cooldown": null
+  },
+  "independent197_snapshot_frame": {
+    "revision": 92,
+    "native_revision": 91,
+    "date_raw": 53144712,
+    "paused": true,
+    "active_event": {
+      "source": "native",
+      "instance_id": 89,
+      "option_count": 1,
+      "title": null,
+      "options": [
+        {
+          "index": 0,
+          "option_number": 1,
+          "label": null,
+          "enabled": true
+        }
+      ]
+    },
+    "pending_character_interaction": null
+  }
+}

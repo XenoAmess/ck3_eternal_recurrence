@@ -1,0 +1,1656 @@
+{
+  "schema": "lyd.r10.actual-save-pair-observation-diff.v1",
+  "status": "ACTUAL_PAIR_DIFF_EXPECTATIONS_UNASSESSED",
+  "before": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-third-before-readback-20261005-001\\actual-save-001\\REPORT.json",
+    "bytes": 73064,
+    "sha256": "86b14bcd5dbc2a1343e02d9f5ca6c8e8cf297e99bae58f06bc3025ff1d9e187f"
+  },
+  "after": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-third-open-join-readback-20261005-001\\actual-save-001\\REPORT.json",
+    "bytes": 72390,
+    "sha256": "09b620e73aa21e8190a1ee33495d44941d41ac18cfdbe94121ed632bb857d2b7"
+  },
+  "before_phase": "actual-R10-third-intent-before-after-explicit-reset-not-new-business-result",
+  "after_phase": "actual-R10-third-formal-JOIN-proposal-opened-not-final-result",
+  "actual_actor_id": 31254,
+  "source_head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "saved_date_before": "1066.10.1",
+  "saved_date_after": "1066.10.1",
+  "same_saved_date": true,
+  "native_date_raw_and_nonce_receipt_binding": null,
+  "wallet_actual_Decimal_delta": {
+    "gold": "0",
+    "piety": "0",
+    "prestige": "0"
+  },
+  "saved_stress_actual_Decimal_delta": null,
+  "saved_XP_actual_Decimal_delta": "0",
+  "stress_XP_expected": null,
+  "actor_roles_before": {
+    "current_rite": "169",
+    "current_faith": "106",
+    "current_HoR": "31254",
+    "current_HoF": "4294967295",
+    "current_faith_main": "169"
+  },
+  "actor_roles_after": {
+    "current_rite": "169",
+    "current_faith": "106",
+    "current_HoR": "31254",
+    "current_HoF": "4294967295",
+    "current_faith_main": "169"
+  },
+  "nonce_serial_quorum_and_round_variables_changed": {
+    "lyd_c2_active": {
+      "before": null,
+      "after": {
+        "present": true,
+        "tick": "365",
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_active"
+          },
+          {
+            "key": "tick",
+            "value": "365"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_active_receivers": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_active_receivers"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": null
+    },
+    "lyd_c2_affected_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_affected_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "900000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "900000"
+          }
+        ],
+        "number": "9",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_affected_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "900000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_callback_nonce": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_callback_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "900000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "900000"
+          }
+        ],
+        "number": "9",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_callback_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "900000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_elector_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_elector_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "900000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "900000"
+          }
+        ],
+        "number": "9",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_elector_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "900000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_player_yes": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "900000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "900000"
+          }
+        ],
+        "number": "9",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "900000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_source_yes": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "200000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "200000"
+          }
+        ],
+        "number": "2",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "200000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_target_yes": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "all_actor_LYD_variables_changed": {
+    "lyd_c2_active": {
+      "before": null,
+      "after": {
+        "present": true,
+        "tick": "365",
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_active"
+          },
+          {
+            "key": "tick",
+            "value": "365"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_active_receivers": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_active_receivers"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": null
+    },
+    "lyd_c2_affected_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_affected_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "900000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "900000"
+          }
+        ],
+        "number": "9",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_affected_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "900000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_callback_nonce": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_callback_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "900000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "900000"
+          }
+        ],
+        "number": "9",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_callback_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "900000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_elector_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_elector_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "900000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "900000"
+          }
+        ],
+        "number": "9",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_elector_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "900000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_mandated_receivers": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_mandated_receivers"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": null
+    },
+    "lyd_c2_player_yes": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_result": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "200000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "200000"
+          }
+        ],
+        "number": "2",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_result"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "200000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_result"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_serial": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "800000"
+          }
+        ],
+        "number": "8",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "900000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "900000"
+          }
+        ],
+        "number": "9",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "900000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_snapshot_valid": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_snapshot_valid"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": null
+    },
+    "lyd_c2_source_signed": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_signed"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": null
+    },
+    "lyd_c2_source_yes": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "200000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "200000"
+          }
+        ],
+        "number": "2",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "200000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_target_requested": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_requested"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": null
+    },
+    "lyd_c2_target_yes": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_unorganized_receivers": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_unorganized_receivers"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "after": null
+    }
+  },
+  "all_actor_LYD_lists_changed": {},
+  "cooldown_before": {
+    "lyd_school_cooldown": {
+      "present": true,
+      "tick": "349",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_school_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "349"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_study_cooldown": null
+  },
+  "cooldown_after": {
+    "lyd_school_cooldown": {
+      "present": true,
+      "tick": "349",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_school_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "349"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_study_cooldown": null
+  },
+  "political7": {
+    "2230": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2231": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2232": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2235": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2262": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2263": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2264": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    }
+  },
+  "domain_ids_before": [
+    "2230",
+    "2231",
+    "2262",
+    "2232",
+    "2263",
+    "2235",
+    "2264"
+  ],
+  "domain_ids_after": [
+    "2230",
+    "2231",
+    "2262",
+    "2232",
+    "2263",
+    "2235",
+    "2264"
+  ],
+  "actor_landed_full_branch_equal": true,
+  "selected_character_protection": {
+    "31254": {
+      "before_present": true,
+      "after_present": true,
+      "protected_top_equal": true,
+      "protected_alive_equal": true,
+      "current_rite_before": "169",
+      "current_rite_after": "169"
+    },
+    "65865": {
+      "before_present": true,
+      "after_present": true,
+      "protected_top_equal": true,
+      "protected_alive_equal": true,
+      "current_rite_before": "169",
+      "current_rite_after": "169"
+    },
+    "65866": {
+      "before_present": true,
+      "after_present": true,
+      "protected_top_equal": true,
+      "protected_alive_equal": true,
+      "current_rite_before": "159",
+      "current_rite_after": "159"
+    }
+  },
+  "related_Faith_Rite_changes": {
+    "faiths": [],
+    "rites": [
+      {
+        "id": "159",
+        "before_present": true,
+        "after_present": true,
+        "before_AST_sha256": "b6633b3e9b765baf816caa71410ea2b100bfdffca31c41463a72f7a0f7129f2a",
+        "after_AST_sha256": "c7b234b0763989dc6ef8efb812d17abf3d9293381e761546d45bed7648cca41c",
+        "heads_before": {
+          "head_of_rite": "4294967295",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "heads_after": {
+          "head_of_rite": "4294967295",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "tenet_doctrine_rows_equal": true
+      },
+      {
+        "id": "169",
+        "before_present": true,
+        "after_present": true,
+        "before_AST_sha256": "690c63634829f4dcc5cc90acf8930dd98c1f5e7372358d6ae45f53cb97c077ef",
+        "after_AST_sha256": "f4279925db7c42f35ecb910c8508899dc12f8e8fc5be06166989ac1068c11e82",
+        "heads_before": {
+          "head_of_rite": "31254",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "heads_after": {
+          "head_of_rite": "31254",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "tenet_doctrine_rows_equal": true
+      }
+    ]
+  },
+  "all_Faith_main_links_changed": {},
+  "all_Rite_parent_links_changed": {},
+  "faith_full_raw_hash_equal": true,
+  "rite_full_raw_hash_equal": false,
+  "fee_expected_from_actual_source_option_effect": null,
+  "fee_or_nonce_business_proof": "Requires ROOT supplied actual selected branch + same-frame SDK/native source/date/nonce evidence; this tool only reports exact saved diffs",
+  "no_game_MCP_pipe_desktop_bus_Git_main": true,
+  "business_PASS": false
+}

@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 225,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0226-detach-second-scholar-chosen.request.json",
+  "request_sha256": "767242578294c6a050c6228085b6ad5c8b1065a65d312f2731a032b3dd287ebf",
+  "started_at_utc": "2026-10-05T17:51:41.466746+00:00"
+}

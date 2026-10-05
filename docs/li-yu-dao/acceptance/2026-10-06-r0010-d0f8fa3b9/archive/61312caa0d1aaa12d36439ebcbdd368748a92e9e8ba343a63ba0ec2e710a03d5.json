@@ -1,0 +1,61 @@
+{
+  "schema": "lyd.r10.proposal-input-assembly-request.v1",
+  "phase": "finish_emit",
+  "claim": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000004.claim.json",
+    "sha256": "be8013203068a19192934c6aebf5491f4c8f8b7483e60799a9df3413c48eff22"
+  },
+  "packet": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000004.claim.packet.bin",
+    "sha256": "38266364358e58c0bcf95ba042649b42971f29bddfdcb7180f124d6e50116369"
+  },
+  "native_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000004.claim.native-result.json",
+    "sha256": "57c5fb39376355a73c1ef907b7da8d6149fe949686e7aae9dc1d541b9906d405"
+  },
+  "before_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0107-fourth-post-cancel-save\\checkpoint.ck3",
+    "sha256": "120c11e39e8dfac92c48c0a8e6ea9ba10ad7bffd9891e844eaaf90188ff1809b",
+    "bytes": 91535016
+  },
+  "before_checkpoint_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0107-r10-0108-fourth-post-cancel-save.sdk-result.json",
+    "sha256": "851f1482849edb75975127112c748ec191d9275dcf0982ac4a76b73b40a1eab7"
+  },
+  "after_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0111-fifth-open-save\\checkpoint.ck3",
+    "sha256": "612f1a3ba5263f36332f31a2a937c932668d9000ac5079206d3aef901948db1c",
+    "bytes": 91539192
+  },
+  "after_checkpoint_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0111-r10-0112-fifth-open-save.sdk-result.json",
+    "sha256": "507a563a9b9af53d3cf15d12fa2340cd302bd9b5d0317b2c0957e2a0a3ed9920"
+  },
+  "first_query_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0109-r10-0110-fifth-fresh-query.sdk-result.json",
+    "sha256": "929e9d361ac0c3903fb1822248cf50b5d1a3a13d80d3c901310bc6422e29e62d"
+  },
+  "first_query_frame_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0107-r10-0108-fourth-post-cancel-save.sdk-result.json",
+    "sha256": "851f1482849edb75975127112c748ec191d9275dcf0982ac4a76b73b40a1eab7"
+  },
+  "current_query_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0126-r10-0127-sixth-ready-query.sdk-result.json",
+    "sha256": "a2399724f52c7a1742990111dbe684fbfdd75c890b25be5cde09d1ee50d63edf"
+  },
+  "current_query_frame_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0125-r10-0126-fifth-post-cancel-save.sdk-result.json",
+    "sha256": "7a9768a2e921c36e6625e04d807cb9b7a417a45f9cff9f1771b76e73a67b1b09"
+  },
+  "bound_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-fifth-proposal-bound-verifier-20261005-001\\INDEX.json",
+    "sha256": "50de10880895b5f86cc0e41cd1686d5f3da56709280b9988afa457d860ea43ed"
+  },
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\ALREADY_USED_FOR_OFFLINE_EXAMPLE_DO_NOT_ASSEMBLE",
+  "bound_output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-fifth-proposal-bound-verifier-20261005-001",
+  "flow_output": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\offline-unused-flow",
+  "evidence_output": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\offline-unused-evidence",
+  "operator_id": "root-r10-20261005",
+  "next_intent_id": "r10-proposal-006-after-consumed-9e0a-20261005",
+  "open_readback": null
+}

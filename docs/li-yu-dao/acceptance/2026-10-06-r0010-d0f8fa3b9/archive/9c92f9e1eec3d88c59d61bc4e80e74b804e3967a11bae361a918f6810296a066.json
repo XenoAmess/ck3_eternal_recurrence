@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 18,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0018-first-join-wait.request.json",
+  "request_sha256": "82da73efac49365d42562a43ab02afadb29b370266e669410397e94d2253dbcd",
+  "started_at_utc": "2026-10-05T11:29:27.037424+00:00",
+  "request_id": "r10-0018-first-join-wait",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0018-r10-0018-first-join-wait.sdk-result.json",
+  "sdk_result_sha256": "14ac42967378e3deaea2bf0c22b3e3b80ff0bf586d102fbcb7f0e31415ffe4a2",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0017-event-select.json",
+      "copy": "0018-r10-0018-first-join-wait.native-01.json",
+      "sha256": "7facab323ac87148a44bfe6d05f609c9a271ada5a0f2474fa0de68fa0b85d1e4"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T11:29:30.315582+00:00"
+}

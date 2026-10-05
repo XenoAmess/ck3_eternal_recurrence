@@ -1,0 +1,93 @@
+{
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0240-detach-second-post-save\\checkpoint.ck3",
+    "bytes": 91669783,
+    "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d"
+  },
+  "SDK": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0240-r10-0241-detach-second-post-save.sdk-result.json",
+    "bytes": 10253579,
+    "sha256": "6ff44bbadd20a6d18a81d30939924d632547a261ff1d764413aba12dc3b31d4e"
+  },
+  "metadata": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0240-detach-second-post-save\\checkpoint-metadata.json",
+    "bytes": 1424,
+    "sha256": "c7f2850792ef193a706457c21a9f75698ceff16191f27ddd75df2c80f6bc3fd2"
+  },
+  "qualified_AST_parser_reuse": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-precommit-readback-20261006-001\\reader\\read_actual_checkpoint.py",
+        "bytes": 13860,
+        "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-post-readback-20261006-001\\reader\\read_actual_checkpoint.py",
+        "bytes": 13872,
+        "sha256": "e76c0813a211ac4b0ce93fffb792913cc1c9da271593ba9a0a5f942910837145"
+      },
+      "scope_extension": {
+        "exact_old_line": "    selected_rites={rid};selected_faiths={fid}",
+        "new_line": "    selected_rites={rid,'187'};selected_faiths={fid,'106'}",
+        "purpose": "Retain bounded actual source106/backup187 graph observed in immutable192/200 caches when overwritten actor proposal refs stop selecting them",
+        "not_extra_save_AST_parse": true
+      },
+      "dependency_or_inspector_exact_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-precommit-readback-20261006-001\\reader\\dependencies\\bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-post-readback-20261006-001\\reader\\dependencies\\bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "scope_extension": null,
+      "dependency_or_inspector_exact_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-precommit-readback-20261006-001\\reader\\dependencies\\save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-post-readback-20261006-001\\reader\\dependencies\\save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "scope_extension": null,
+      "dependency_or_inspector_exact_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-precommit-readback-20261006-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-post-readback-20261006-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      },
+      "scope_extension": null,
+      "dependency_or_inspector_exact_equal": true
+    }
+  ],
+  "precommit235_SEALED": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-precommit-readback-20261006-001\\SEALED.json",
+    "bytes": 757,
+    "sha256": "3b3747118acc22331f6ac6a2ed04953086764e3720d88915c751c613626d50d1"
+  },
+  "prior106_187_actual_cached_basis": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-cycle-before-detach-readback-20261006-001\\actual-save-001\\STATE.json",
+    "bytes": 755341,
+    "sha256": "ad4e359b00e5534a3cc77653f9cfc45a7aa36e98bc3f6d7dd40476a20fbd5085"
+  },
+  "actual_new_AST_count_so_far": 0,
+  "old_save_reparsed": false,
+  "final_DETACH_credit_until_readback": false
+}

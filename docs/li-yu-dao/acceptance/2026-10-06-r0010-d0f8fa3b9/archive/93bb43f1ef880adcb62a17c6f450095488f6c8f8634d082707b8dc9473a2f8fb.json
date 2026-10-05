@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r10-0248-after-normal-exit-prepare-snapshot",
+  "operation": "call_tool",
+  "name": "ck3_take_profile_native_snapshot_v1",
+  "arguments": {}
+}

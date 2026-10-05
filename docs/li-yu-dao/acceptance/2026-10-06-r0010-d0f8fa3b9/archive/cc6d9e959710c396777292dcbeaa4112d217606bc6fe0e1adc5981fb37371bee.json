@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 5,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0005-ack-old-result.request.json",
+  "request_sha256": "b4a0959f0c57ae81bde533b21fa0348ff62e307b0ff200b9f1587cc7a636e942",
+  "started_at_utc": "2026-10-05T11:09:23.366332+00:00"
+}

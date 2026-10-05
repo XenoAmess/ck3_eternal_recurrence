@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 180,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0181-eighth-review-confirm.request.json",
+  "request_sha256": "453b97cb5d77ee15da9e028c2f1957a12ab49390e8fd28c60fb20bba37d31403",
+  "started_at_utc": "2026-10-05T16:59:03.705281+00:00"
+}

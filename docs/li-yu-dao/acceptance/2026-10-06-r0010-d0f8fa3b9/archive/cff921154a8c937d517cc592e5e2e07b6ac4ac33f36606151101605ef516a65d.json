@@ -1,0 +1,85 @@
+{
+  "schema": "lyd.r10.checkpoint108.readonly-error-log-capture.v1",
+  "capture_started_utc": "2026-10-05T14:34:29.528630+00:00",
+  "capture_finished_utc": "2026-10-05T14:34:29.529925+00:00",
+  "raw_log": {
+    "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\userdir\\logs\\error.log",
+    "copy_path": "raw/error.log",
+    "bytes": 138556,
+    "sha256": "2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a"
+  },
+  "source_stat_before": {
+    "bytes": 138556,
+    "mtime_ns": 1791196569276622200,
+    "ctime_ns": 1791196397128635800
+  },
+  "source_stat_after": {
+    "bytes": 138556,
+    "mtime_ns": 1791196569276622200,
+    "ctime_ns": 1791196397128635800
+  },
+  "source_stat_unchanged_during_read": true,
+  "captured_ends_with_linebreak": true,
+  "checkpoint": {
+    "SDK_sequence": 108,
+    "request_id": "r10-0109-fifth-ready-query",
+    "SDK_finished_utc": "2026-10-05T14:27:11.350342+00:00",
+    "ROOT_declared_public_revision": 50,
+    "ROOT_declared_native_revision": 49,
+    "ROOT_declared_no_active_event": true,
+    "ROOT_declared_paused": true
+  },
+  "binding_refs": [
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\COLD-SOURCE-INVENTORY.json",
+      "copy_path": "binding/COLD-SOURCE-INVENTORY.json",
+      "bytes": 31564,
+      "sha256": "2ab18195f08fb5f680f6168732cd1681fa171fd31b50b6777c1e685c297ac260"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\COLD-MATERIALIZED.json",
+      "copy_path": "binding/COLD-MATERIALIZED.json",
+      "bytes": 2749,
+      "sha256": "19c8131d46e6ef3d394bc48fdb9ebd5f8a0654dbfad4ebdd85e09c2942f65b1e"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-fixture-source-rebind-20261005-001\\fixtures-package\\MOUNT-MANIFEST.json",
+      "copy_path": "binding/MOUNT-MANIFEST.json",
+      "bytes": 12283,
+      "sha256": "141ceca8872046ef7f0118d3c25a721851de3191744cdf0435c0bfe27d8c3037"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0108-r10-0109-fifth-ready-query.response.json",
+      "copy_path": "binding/0108-r10-0109-fifth-ready-query.response.json",
+      "bytes": 1027,
+      "sha256": "cd03f93990d24c3a33601b001a30ab1907d92166f661a0779967a4df0af657ea"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0108-r10-0109-fifth-ready-query.request.json",
+      "copy_path": "binding/0108-r10-0109-fifth-ready-query.request.json",
+      "bytes": 326,
+      "sha256": "d364283865d10e9eac34bca143b8645f63a2aa8cd7be95814cb7d70b5051f434"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0108-r10-0109-fifth-ready-query.started.json",
+      "copy_path": "binding/0108-r10-0109-fifth-ready-query.started.json",
+      "bytes": 347,
+      "sha256": "c0cefc259aaa6a1fabf70253b5ead47a5b372fb028ab2c75d364eed9c59ad7e6"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0108-r10-0109-fifth-ready-query.sdk-result.json",
+      "copy_path": "binding/0108-r10-0109-fifth-ready-query.sdk-result.json",
+      "bytes": 7623,
+      "sha256": "003cfffc0c8c08f74de82909c93e698239db2991b37f0ceadbeb23c2c7cb4ac7"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0108-r10-0109-fifth-ready-query.native-01.json",
+      "copy_path": "binding/0108-r10-0109-fifth-ready-query.native-01.json",
+      "bytes": 3426,
+      "sha256": "9b2ff7ab1895d1929feddc71035a8c15a2ca9004b7367ebbb81fef9e6fbdcdae"
+    }
+  ],
+  "game_process_pipe_Client_desktop_bus_Git_main_operations": false,
+  "log_write_operations": false,
+  "whole_log_final_or_overall_PASS_credit": false
+}

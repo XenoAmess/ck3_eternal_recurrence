@@ -1,0 +1,19 @@
+{
+  "schema": "ck3-ordinary-interaction-consumption-verifier-bundle-v1",
+  "verifier_id": "lyd-first-join-actual-save-v1",
+  "entrypoint": "verifier.py:verify_consumption",
+  "files": [
+    {
+      "path": "BIND-STATUS.json",
+      "sha256": "96a79c62082d2b6a8b770623d4889fcd5b690250a7fcda12559ca2a70f8839f8"
+    },
+    {
+      "path": "ROOT-BINDING.json",
+      "sha256": "68ffe6dfdf005b4c196eda0ac80e814358f3503661c7d6f74a8e0890ee4533e3"
+    },
+    {
+      "path": "verifier.py",
+      "sha256": "98185fdbb3352a1abd2b85ca2610ec6711a37f4ec43ad48380fa8f6ba0b3180a"
+    }
+  ]
+}

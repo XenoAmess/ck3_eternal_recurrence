@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0167-seventh-cancel-ack.request.json",
+  "request_id": "r10-0167-seventh-cancel-ack",
+  "sha256": "9068ca986a6defd8f059283ec04bf5c19c2596c61cd649ca4c015eace506c294",
+  "contacted_game": false
+}

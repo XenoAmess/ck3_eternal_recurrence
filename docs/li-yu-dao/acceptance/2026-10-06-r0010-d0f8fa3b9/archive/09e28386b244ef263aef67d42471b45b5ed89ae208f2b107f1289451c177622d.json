@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 92,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0093-fourth-player-yes.request.json",
+  "request_sha256": "37263f2bd1f908f8e200251fb59d3e9f240acb1ee32a98de9cfa83ce8838b011",
+  "started_at_utc": "2026-10-05T13:53:51.259551+00:00",
+  "request_id": "r10-0093-fourth-player-yes",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0092-r10-0093-fourth-player-yes.sdk-result.json",
+  "sdk_result_sha256": "2f8a7de7b629c91c99303a522021e48c7a415f4c95ef08ed8a246acecaed619a",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0091-event-select.json",
+      "copy": "0092-r10-0093-fourth-player-yes.native-01.json",
+      "sha256": "8569906dba97f4f29145c4c74e23bc2054bd485ea25b37f5b1f22828bf43fb13"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T13:53:55.468252+00:00"
+}

@@ -1,0 +1,311 @@
+{
+  "actor_C2": {
+    "lyd_c2_callback_nonce": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1400000",
+      "number": "14"
+    },
+    "lyd_c2_serial": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1400000",
+      "number": "14"
+    },
+    "lyd_c2_active": {
+      "present": true,
+      "tick": "365",
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_result": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "number": null
+    },
+    "lyd_c2_source_signed": null,
+    "lyd_c2_target_requested": null,
+    "lyd_c2_target_signed": null,
+    "lyd_c2_source_total": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "200000",
+      "number": "2"
+    },
+    "lyd_c2_source_yes": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_target_total": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_target_yes": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_player_total": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_player_yes": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "number": null
+    },
+    "lyd_c2_completed_joins": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_completed_detaches": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "200000",
+      "number": "2"
+    },
+    "lyd_r4_reset_count": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "500000",
+      "number": "5"
+    }
+  },
+  "tickets": {
+    "31254": {
+      "lyd_c2_vote_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "number": null
+      },
+      "lyd_c2_vote_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "number": "13"
+      },
+      "lyd_c2_vote_nonce": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "number": "13"
+      },
+      "lyd_c2_vote_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "number": "1"
+      },
+      "lyd_c2_player_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "number": null
+      },
+      "lyd_c2_player_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "number": "13"
+      },
+      "lyd_c2_player_nonce": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1300000",
+        "number": "13"
+      }
+    },
+    "65865": {
+      "lyd_c2_vote_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "number": null
+      },
+      "lyd_c2_vote_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "number": "14"
+      },
+      "lyd_c2_vote_nonce": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "number": "14"
+      },
+      "lyd_c2_vote_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "number": "1"
+      },
+      "lyd_c2_player_owner": null,
+      "lyd_c2_player_serial": null,
+      "lyd_c2_player_nonce": null
+    },
+    "65866": {
+      "lyd_c2_vote_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "number": null
+      },
+      "lyd_c2_vote_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "number": "14"
+      },
+      "lyd_c2_vote_nonce": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "number": "14"
+      },
+      "lyd_c2_vote_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "number": "1"
+      },
+      "lyd_c2_player_owner": null,
+      "lyd_c2_player_serial": null,
+      "lyd_c2_player_nonce": null
+    }
+  },
+  "Rites": {
+    "150": {
+      "lyd_c2_proposal_owner": null,
+      "lyd_c2_lock_serial": null,
+      "lyd_c2_proposal_serial": null,
+      "lyd_c2_retry_cooldown": null,
+      "lyd_c2_transition_cooldown": null
+    },
+    "159": {
+      "lyd_c2_proposal_owner": {
+        "present": true,
+        "tick": "365",
+        "type": "char",
+        "identity": "31254",
+        "number": null
+      },
+      "lyd_c2_lock_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "number": "14"
+      },
+      "lyd_c2_proposal_serial": null,
+      "lyd_c2_retry_cooldown": null,
+      "lyd_c2_transition_cooldown": null
+    },
+    "169": {
+      "lyd_c2_proposal_owner": {
+        "present": true,
+        "tick": "365",
+        "type": "char",
+        "identity": "31254",
+        "number": null
+      },
+      "lyd_c2_lock_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "number": "14"
+      },
+      "lyd_c2_proposal_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1400000",
+        "number": "14"
+      },
+      "lyd_c2_retry_cooldown": null,
+      "lyd_c2_transition_cooldown": null
+    }
+  },
+  "summary": {
+    "current_actor_id": 31254,
+    "current_rite": "169",
+    "current_faith": "106",
+    "current_HoR": "31254",
+    "current_HoF": "4294967295",
+    "wallet": {
+      "gold": "1543",
+      "piety": "5650",
+      "prestige": "2200"
+    },
+    "stress_saved": null,
+    "learning_XP_saved": "0"
+  },
+  "saveSDK_frame": {
+    "revision": 81,
+    "native_revision": 80,
+    "date_raw": 53144712,
+    "paused": true,
+    "active_event": {
+      "source": "native",
+      "instance_id": 85,
+      "option_count": 2,
+      "title": null,
+      "options": [
+        {
+          "index": 0,
+          "option_number": 1,
+          "label": null,
+          "enabled": true
+        },
+        {
+          "index": 1,
+          "option_number": 2,
+          "label": null,
+          "enabled": true
+        }
+      ]
+    },
+    "pending_character_interaction": null
+  }
+}

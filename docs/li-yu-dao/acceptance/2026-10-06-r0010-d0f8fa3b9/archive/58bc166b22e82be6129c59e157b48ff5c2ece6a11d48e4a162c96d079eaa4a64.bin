@@ -1,0 +1,11 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r10-cold-setup-author-20261005-001\review-package-002\root_r10_launch_profile.py", line 235, in <module>
+    if __name__=='__main__':raise SystemExit(main())
+                                             ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r10-cold-setup-author-20261005-001\review-package-002\root_r10_launch_profile.py", line 180, in main
+    require(re.fullmatch('[0-9a-f]{64}',args.task_bus_sha256) is not None,'Actual final source bus SHA required')
+    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r10-cold-setup-author-20261005-001\review-package-002\root_r10_launch_profile.py", line 30, in require
+    if not ok:raise RuntimeError(reason)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+RuntimeError: Actual final source bus SHA required

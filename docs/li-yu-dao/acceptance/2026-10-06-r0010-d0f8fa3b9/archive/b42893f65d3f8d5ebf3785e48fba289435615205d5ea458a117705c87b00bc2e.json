@@ -1,0 +1,69 @@
+{
+  "schema": "lyd.r10.preterminal-cut244.readonly-log-capture.v1",
+  "snapshot_kind": "FINITE_CAPTURED_BYTES_NOT_TERMINAL_WHOLE_LOG",
+  "ROOT_parent_reported_context": {
+    "business_cutoff_SDK": 244,
+    "public_revision": 112,
+    "native_revision": 111,
+    "active_event_present": false,
+    "wallet": {
+      "gold": 1043,
+      "piety": 3150,
+      "prestige": 2200
+    },
+    "normal_exit_in_progress_final_cutoff_unknown": true,
+    "actual_state_at_capture_independently_queried": false
+  },
+  "logs": [
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\userdir\\logs\\error.log",
+      "exists_at_check": true,
+      "copy_path": "raw/error.log",
+      "bytes": 138556,
+      "sha256": "2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a",
+      "capture_started_utc": "2026-10-05T18:07:35.956398+00:00",
+      "capture_finished_utc": "2026-10-05T18:07:35.956978+00:00",
+      "read_count": 1,
+      "source_stat_before": {
+        "bytes": 138556,
+        "mtime_ns": 1791196569276622200,
+        "ctime_ns": 1791196397128635800
+      },
+      "source_stat_after": {
+        "bytes": 138556,
+        "mtime_ns": 1791196569276622200,
+        "ctime_ns": 1791196397128635800
+      },
+      "source_stat_unchanged_during_read": true,
+      "captured_ends_with_linebreak": true
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\userdir\\logs\\debug.log",
+      "exists_at_check": true,
+      "copy_path": "raw/debug.log",
+      "bytes": 666846,
+      "sha256": "d8174957720cceaab1c1044c3defbdf1a8300037234f35d3c69141720b4a8460",
+      "capture_started_utc": "2026-10-05T18:07:35.958178+00:00",
+      "capture_finished_utc": "2026-10-05T18:07:35.959050+00:00",
+      "read_count": 1,
+      "source_stat_before": {
+        "bytes": 666846,
+        "mtime_ns": 1791223416218725500,
+        "ctime_ns": 1791196397127630000
+      },
+      "source_stat_after": {
+        "bytes": 666846,
+        "mtime_ns": 1791223416218725500,
+        "ctime_ns": 1791196397127630000
+      },
+      "source_stat_unchanged_during_read": true,
+      "captured_ends_with_linebreak": true
+    }
+  ],
+  "game_MCP_pipe_Client_native_process_handles_desktop_bus_Git_main_operations": false,
+  "live_log_write_operations": false,
+  "old_tests_or_AST_runs": false,
+  "normal_exit_credit": false,
+  "whole_final_log_credit": false,
+  "overall_PASS": false
+}

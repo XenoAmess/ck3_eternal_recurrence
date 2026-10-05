@@ -1,0 +1,22 @@
+{
+  "schema": "ck3-r9-root-ordinary-release-request-v1",
+  "host_module": {
+    "path": null,
+    "sha256": null
+  },
+  "claim": {
+    "path": null,
+    "sha256": null
+  },
+  "consumption_manifest": {
+    "path": null,
+    "sha256": null
+  },
+  "registry": {
+    "path": null,
+    "sha256": null
+  },
+  "verifier_id": "lyd-first-join-actual-save-v1",
+  "operator_id": null,
+  "next_intent_id": null
+}

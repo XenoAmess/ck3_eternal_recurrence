@@ -1,0 +1,46 @@
+{
+  "schema": "lyd.external.evidence.index.v1",
+  "target_commit": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "files": [
+    {
+      "path": "daily.COMMAND.json",
+      "bytes": 545,
+      "sha256": "5a18df5792febc15ec8d96baf78415c3fa33003da883470d2324b758070cfbc8"
+    },
+    {
+      "path": "daily.source.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "daily.source.stdout",
+      "bytes": 87817,
+      "sha256": "6da63ccf0b91cd22124442aa4b06828be40ed836d98099721d8af4906fceefc2"
+    },
+    {
+      "path": "FAILED-STEP-ONLY.raw.txt",
+      "bytes": 1311,
+      "sha256": "ee8708b11e5b1e80131a3e25a2d411adf64d746d8c84e39a5f2f93b40f6a9e87"
+    },
+    {
+      "path": "SUMMARY.raw.json",
+      "bytes": 3351,
+      "sha256": "c5ab3608d2ba0206a2a096cc7ae7541eb2af4b9b69ecefccd5673460bc07ac3e"
+    },
+    {
+      "path": "weekly.COMMAND.json",
+      "bytes": 544,
+      "sha256": "636af9f43578f65246c10775355aac713cddedee24da21e909d10a3956a4a576"
+    },
+    {
+      "path": "weekly.source.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "weekly.source.stdout",
+      "bytes": 70222,
+      "sha256": "017333fca0356c65db3c5615cb8d7a0826e259fb3629ce8b8a3678d3caa3fd12"
+    }
+  ]
+}

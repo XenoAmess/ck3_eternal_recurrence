@@ -1,0 +1,217 @@
+{
+  "qualified_original": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fifth-post-cancel-readback-20261005-001\\finalize_cancel.py",
+    "bytes": 17244,
+    "sha256": "cb664e4e02cda7cdc647626e88537e41586db7912a7e1c15ab172520f75af97f"
+  },
+  "new_external_finalizer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-sixth-post-cancel-readback-20261006-001\\finalize_cancel.py",
+    "bytes": 16331,
+    "sha256": "e3cf2b4cfe759082a220dc20bf731939408bf1316fe1d82270e790922f1a0a0b"
+  },
+  "parameter_changes": [
+    {
+      "old": "r10-actual-fifth-open-join-readback-20261005-001",
+      "new": "r10-actual-sixth-open-join-readback-20261005-001",
+      "occurrences": 1
+    },
+    {
+      "old": "r10-actual-fourth-post-cancel-readback-20261005-001",
+      "new": "r10-actual-fifth-post-cancel-readback-20261005-001",
+      "occurrences": 1
+    },
+    {
+      "removed_not_consumed_prior_control_check": " 'actual_personal114_instance"
+    },
+    {
+      "removed_not_consumed_prior_control_check": " 'actual_personal_yes115_"
+    },
+    {
+      "removed_not_consumed_prior_control_check": " 'actual_scholar116_"
+    },
+    {
+      "removed_not_consumed_prior_control_check": " 'actual_scholar_yes117_"
+    },
+    {
+      "removed_not_consumed_prior_control_check": " 'actual_review120_"
+    },
+    {
+      "old": "'actual_source_target_signatures_and_request_absent':all(av.get(k) is None for k in ['lyd_c2_source_signed','lyd_c2_target_signed','lyd_c2_target_requested'])",
+      "new": "'actual_source_signed1_target_requested_signed_absent':num(av,'lyd_c2_source_signed')=='1' and all(av.get(k) is None for k in ['lyd_c2_target_signed','lyd_c2_target_requested'])",
+      "occurrences": 1
+    },
+    {
+      "old": "'actual_source1of2_player1of1':num(av,'lyd_c2_source_yes')=='1'",
+      "new": "'actual_source2of2_player1of1':num(av,'lyd_c2_source_yes')=='2'",
+      "occurrences": 1
+    },
+    {
+      "exact_quoted_round_literal": {
+        "11": "12"
+      }
+    },
+    {
+      "exact_revision_event_comparisons": {
+        "58": "69",
+        "59": "70",
+        "70": "76",
+        "71": "77"
+      }
+    },
+    {
+      "control_key_already_rebound_in_new_setup": "0121-"
+    },
+    {
+      "control_key_already_rebound_in_new_setup": "0122-"
+    },
+    {
+      "control_key_already_rebound_in_new_setup": "0123-"
+    },
+    {
+      "old": "0124-",
+      "new": "0148-",
+      "occurrences": 1
+    },
+    {
+      "control_key_already_rebound_in_new_setup": "0126-"
+    },
+    {
+      "old": "review121",
+      "new": "review145",
+      "occurrences": 2
+    },
+    {
+      "old": "cancel122",
+      "new": "cancel146",
+      "occurrences": 2
+    },
+    {
+      "old": "result123",
+      "new": "result147",
+      "occurrences": 2
+    },
+    {
+      "old": "ACK124",
+      "new": "ACK148",
+      "occurrences": 2
+    },
+    {
+      "old": "fresh126",
+      "new": "fresh150",
+      "occurrences": 4
+    },
+    {
+      "old": "open111",
+      "new": "open129",
+      "occurrences": 6
+    },
+    {
+      "old": "opened111",
+      "new": "opened129",
+      "occurrences": 7
+    },
+    {
+      "old": "baseline107",
+      "new": "baseline125",
+      "occurrences": 13
+    },
+    {
+      "old": "postCancel125",
+      "new": "postCancel149",
+      "occurrences": 5
+    },
+    {
+      "old": "save125",
+      "new": "save149",
+      "occurrences": 4
+    },
+    {
+      "old": "metadata125",
+      "new": "metadata149",
+      "occurrences": 1
+    },
+    {
+      "old": "public59_native58",
+      "new": "public70_native69",
+      "occurrences": 1
+    },
+    {
+      "old": "frame59_native58",
+      "new": "frame70_native69",
+      "occurrences": 1
+    },
+    {
+      "old": "instance70",
+      "new": "instance76",
+      "occurrences": 2
+    },
+    {
+      "old": "instance71",
+      "new": "instance77",
+      "occurrences": 2
+    },
+    {
+      "old": "round11",
+      "new": "round12",
+      "occurrences": 1
+    },
+    {
+      "old": "ballot11",
+      "new": "ballot12",
+      "occurrences": 1
+    },
+    {
+      "old": "consent11",
+      "new": "consent12",
+      "occurrences": 1
+    },
+    {
+      "old": "serial11",
+      "new": "serial12",
+      "occurrences": 5
+    },
+    {
+      "old": "same-frozen-fifth-cancel",
+      "new": "same-frozen-sixth-cancel",
+      "occurrences": 1
+    },
+    {
+      "old": "actual-fifth-post-explicit-cancel-facts",
+      "new": "actual-sixth-post-explicit-cancel-facts",
+      "occurrences": 1
+    },
+    {
+      "old": "fifth-post-cancel-independent-readback",
+      "new": "sixth-post-cancel-independent-readback",
+      "occurrences": 1
+    },
+    {
+      "old": "ACTUAL_RESULT3_CANCELLED_NO_SIGNATURE_JOIN_TRANSITION_OR_FEE",
+      "new": "ACTUAL_RESULT3_CANCELLED_SOURCE_SIGNED1_NO_TARGET_REQUEST_SIGNATURE_JOIN_OR_FEE",
+      "occurrences": 1
+    },
+    {
+      "old": "'controls_same_profile_session_success':",
+      "new": "'fresh150_actor_alive':q['actor_alive'] is True,'controls_same_profile_session_success':",
+      "occurrences": 1
+    },
+    {
+      "old": "if not all(checks.values()):",
+      "new": "complete=read(HERE/'COMPLETE-RITE-FAITH-AST-DIFF.json')\nchecks.update({'complete_'+k:v for k,v in complete['all_binding_checks'].items()})\nif not all(checks.values()):",
+      "occurrences": 1
+    },
+    {
+      "old": "'political7_full_AST':",
+      "new": "'complete_Rite_Faith_AST_diff':pin(HERE/'COMPLETE-RITE-FAITH-AST-DIFF.json'),'political7_full_AST':",
+      "occurrences": 1
+    },
+    {
+      "old": "'source_semantics':pin(HERE/'SOURCE-SEMANTICS.json'),'human_report':",
+      "new": "'source_semantics':pin(HERE/'SOURCE-SEMANTICS.json'),'complete_Rite_Faith_AST_diff':pin(HERE/'COMPLETE-RITE-FAITH-AST-DIFF.json'),'human_report':",
+      "occurrences": 1
+    }
+  ],
+  "human_report_replaced_with_actual_sixth_cancel_observations": true,
+  "new_save_AST_reparsed": false,
+  "product_or_source_mutations": false
+}

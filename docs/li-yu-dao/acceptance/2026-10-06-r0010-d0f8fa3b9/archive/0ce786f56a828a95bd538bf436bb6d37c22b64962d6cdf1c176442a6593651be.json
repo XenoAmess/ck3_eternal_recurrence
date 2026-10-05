@@ -1,0 +1,7 @@
+{
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_r10_one_explicit_small_call_v3_20261005.py",
+  "source_sha256": "9d60936a20e6582b555b5bf879ae0c6fed0d7c869bdb72aadceedaa5f975ce1c",
+  "target": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_r10_one_explicit_small_call_v4_20261005.py",
+  "target_sha256": "79a011ccaf87a5626a3d42034316cbc558a2f5d649a1381c6897c4fdddd411f8",
+  "change": "Only read-only wait duration 20 to 45 seconds; no replay or game call change."
+}

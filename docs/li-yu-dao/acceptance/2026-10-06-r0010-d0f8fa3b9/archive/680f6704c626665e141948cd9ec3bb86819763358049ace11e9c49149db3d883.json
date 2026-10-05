@@ -1,0 +1,79 @@
+{
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0192-eighth-post-join-save\\checkpoint.ck3",
+    "bytes": 91604449,
+    "sha256": "9534d61d4f426ca8df0f4866695b7234f5ff477c296f084c1868a29424ae06d0"
+  },
+  "original_SDK": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0192-r10-0193-eighth-post-join-save.sdk-result.json",
+    "bytes": 8056003,
+    "sha256": "01d0423c11b77729082189df4a76c3ef4f2ab556238d0511c2a0a2582012863a"
+  },
+  "metadata": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0192-eighth-post-join-save\\checkpoint-metadata.json",
+    "bytes": 1418,
+    "sha256": "e97f80efa5ab76d5f1bdf68a5160ecdc4bf295c9251ace1162950e8a3c5cfe14"
+  },
+  "exact_reader_copies": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-precommit-readback-20261006-001\\reader\\read_actual_checkpoint.py",
+        "bytes": 13860,
+        "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\reader\\read_actual_checkpoint.py",
+        "bytes": 13860,
+        "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+      },
+      "exact_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-precommit-readback-20261006-001\\reader\\dependencies\\bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\reader\\dependencies\\bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "exact_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-precommit-readback-20261006-001\\reader\\dependencies\\save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\reader\\dependencies\\save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "exact_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-precommit-readback-20261006-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      },
+      "exact_equal": true
+    }
+  ],
+  "precommit187_sealed": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-precommit-readback-20261006-001\\SEALED.json",
+    "bytes": 742,
+    "sha256": "fad487326031e680bd8b170ee8ac2c5c35c9230e43535b983ce30c28d18e60f8"
+  },
+  "actual_new_AST_count_so_far": 0,
+  "old_save_reparsed": false,
+  "business_credit_until_actual_readback": false
+}

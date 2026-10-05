@@ -1,0 +1,11 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r10-0067-third-proposal",
+  "operation": "call_tool",
+  "name": "ck3_initiate_profile_character_interaction_ordinary_v1",
+  "arguments": {
+    "interaction_key": "lyd_c2_propose_join_interaction",
+    "recipient_id": 65866,
+    "expected_revision": 30
+  }
+}

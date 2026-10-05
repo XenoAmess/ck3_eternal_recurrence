@@ -1,0 +1,58 @@
+{
+  "result": "READY_FOR_ROOT_IMPORT_SOURCE_ONLY",
+  "inputs": [
+    {
+      "target": "mod_li_yu_dao/tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\source\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.in",
+      "before_exists": true,
+      "before_sha256": "f6cebf21b5d2515c76c417349b9403b94c3977e1a669b18742a5ccd701de3cfc",
+      "after_sha256": "bf6ac63911e78468caa926eb5fd5ffb65f0c9819c2d2963cc8c2d9d7844b07ca",
+      "after_bytes": 8278
+    },
+    {
+      "target": "mod_li_yu_dao/tools/gen_institution.py",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\source\\mod_li_yu_dao\\tools\\gen_institution.py",
+      "before_exists": true,
+      "before_sha256": "1243dc72037a0bdf3fd660f781ee13af232f9bd20828fc930b87033733884f24",
+      "after_sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3",
+      "after_bytes": 52050
+    },
+    {
+      "target": "mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\source\\mod_li_yu_dao\\tools\\test_c3_i3b_preview_scope.py",
+      "before_exists": false,
+      "before_sha256": null,
+      "after_sha256": "69e31ff67440ee846cb2e7457f26b365151214f6a51529e7b43c62038ed8ba8e",
+      "after_bytes": 17345
+    },
+    {
+      "target": "mod_li_yu_dao/common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\source\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt",
+      "before_exists": true,
+      "before_sha256": "4214027c5fbe02413082507a19a05241f3f880b38bfe69e0dff1273031e5407e",
+      "after_sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34",
+      "after_bytes": 8361
+    },
+    {
+      "target": "mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\source\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_i3b_institution_triggers.txt",
+      "before_exists": true,
+      "before_sha256": "7b063867cfd25a76d2209010e7417f220e16f3c63333ef957a380687a08b3c58",
+      "after_sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "after_bytes": 11379
+    }
+  ],
+  "before_authors_bound_to_current_root": true,
+  "generated_changed_paths": [
+    "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+    "common/scripted_triggers/lyd_i3b_institution_triggers.txt"
+  ],
+  "regeneration_check": "PASS_ALL_CURRENT_EXPECTED_RUNTIME_BYTES",
+  "focused_report": "focused-003/REPORT.json",
+  "cases": 50,
+  "guard_removal_mutants": 19,
+  "old_tests_repeated": false,
+  "live": "NOT_RUN",
+  "field_parser_actual_samples": "NOT_RUN",
+  "boundary": "No Git/game/GUI/MCP/pipe/queue/main writes. Existing raw R9 RED evidence remains historical and is not native proof for this C3/I3b candidate."
+}

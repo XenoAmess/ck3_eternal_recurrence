@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r10-0196-cycle-fixture-reset-detail",
+  "operation": "call_tool",
+  "name": "ck3_select_profile_decision_item_v1",
+  "arguments": {
+    "decision_key": "lyd_r4_reset_decision",
+    "expected_revision": 91
+  }
+}

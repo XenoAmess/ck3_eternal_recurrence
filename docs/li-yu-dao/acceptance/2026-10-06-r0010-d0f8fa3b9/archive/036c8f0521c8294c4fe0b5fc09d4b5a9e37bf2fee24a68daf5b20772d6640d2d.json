@@ -1,0 +1,1553 @@
+{
+  "schema": "lyd.r10.independent-source-review-index.v1",
+  "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002",
+  "payload_files": 309,
+  "payload_bytes": 3472394,
+  "files": [
+    {
+      "path": "APPROVED-RUNTIME-DELTA-18.json",
+      "bytes": 8348,
+      "sha256": "901e961f97aae96c4e6c025bde022782e9e752fe36e49ebbc0bacc6acea8c3a7"
+    },
+    {
+      "path": "evidence/final-export/MOD-SOURCE-INVENTORY.json",
+      "bytes": 28251,
+      "sha256": "be549f1c663d37bb1794c4b9906e52ad127f665dd766833c75d769671358878d"
+    },
+    {
+      "path": "evidence/final-export/mod_li_yu_dao.manifest.json",
+      "bytes": 12940,
+      "sha256": "8fff14a823c50d2461660676ec3238439027d1a46af5281e5db95af7c9bd945c"
+    },
+    {
+      "path": "evidence/final-export/REPORT.json",
+      "bytes": 16836,
+      "sha256": "f2b0f6d91a565648ecdb0be8c3aec1d88b67c468bc8a5623aba347f58ee7b0e4"
+    },
+    {
+      "path": "evidence/lineage-002/APPROVED-RUNTIME-DELTA-18.json",
+      "bytes": 8348,
+      "sha256": "f7ccfce2ea93448d8e180cc356e9ee557184763568223594c98678bc92c14d81"
+    },
+    {
+      "path": "evidence/lineage-002/COMPLETE-RUNTIME-LINEAGE.json",
+      "bytes": 81309,
+      "sha256": "e1f84ddb4fc9a7f1da12bd44ef864eace2eb7357767dd6acf18c9df7090ff0ad"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/c2-preview-scopefix-full-candidate-20261005-003/DELTA.json",
+      "bytes": 10166,
+      "sha256": "fe2c2321f2e967767f5e27c2a22654883238274a5a6390be446d06fde38e5a03"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/c2-preview-scopefix-full-candidate-20261005-003/INDEX.json",
+      "bytes": 92863,
+      "sha256": "2cae12ec173758b5c81f8cda98bccf4a3e7777ac35348aee2d1e9357e513edea"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/c2-preview-scopefix-full-candidate-20261005-003/REPORT.json",
+      "bytes": 1017,
+      "sha256": "a6e3a65c9910a524dced5678e7ca268ddcc0ba5e4ce4eaac0fb2a3934bef8a48"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/c3-i3b-current-main-delta-applicability-20261005-001/COMPOSITION-CHECK.json",
+      "bytes": 28641,
+      "sha256": "475a6909fed784fefcfe4441b76115106163f58805ebe3453cc26b0e44d3af4c"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/c3-i3b-current-main-delta-applicability-20261005-001/CURRENT-TARGETBEFORE-SHA.json",
+      "bytes": 14317,
+      "sha256": "eb1014198fc6c2daa393425c72a93c60bc77af8a8f37053092f1c1db3976d0d1"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/c3-i3b-current-main-delta-applicability-20261005-001/INDEX.json",
+      "bytes": 80347,
+      "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/c3-i3b-detached-authority-implementation-20261005-001/INDEX.json",
+      "bytes": 209556,
+      "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/c3-i3b-optional-target-guard-candidate-20261005-001/handoff-001/ROOT-APPLY-INPUTS.json",
+      "bytes": 3317,
+      "sha256": "efbec80d601c2f7452c50e6c1010913caf29251c63d8d72c16a1ac84e5e229b0"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/c3-i3b-optional-target-guard-candidate-20261005-001/INDEX.json",
+      "bytes": 2173,
+      "sha256": "44f0e25545d824e0dd72d13012b698bb73658f80b9b855a51aa3fbd739a4bcfb"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/lyd-c3-native-primitives-independent-review-20261005-001/variant002-source-review-003/REPORT.json",
+      "bytes": 10256,
+      "sha256": "7b867ae81dd29135df7c79e63375b6f9fac0031d65e3eba5cdd2a1f1ec31d3c0"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/lyd-i3b-detached-authority-source-review-20261005-001/review-package-002/INDEX.json",
+      "bytes": 2430,
+      "sha256": "33ed711277972b83c6f3bfbcf9e005a09827ff461fab7954b4d0a300bb305af7"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/lyd-i3b-detached-authority-source-review-20261005-001/review-package-002/REPORT.json",
+      "bytes": 5813,
+      "sha256": "1125be47f436ff8c32f50e13ec95f6fe3dbff77afc7e2f1da81d367b65e8f5e1"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/root-c3-guards-final-l0-20261005-001/policy/preview.json",
+      "bytes": 9830,
+      "sha256": "b4f0a863f63318ecca227048adc2b6858b2f9ed75838650bad6f8ee794cca548"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/root-c3-guards-final-l0-20261005-001/RESULT.json",
+      "bytes": 4922,
+      "sha256": "eed5a1e24caa50f3a7640fe25a318251058657f08daa24a0f87147525618d81c"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/root-c3-i3b-apply-20261005-001/APPLIED.json",
+      "bytes": 18369,
+      "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+    },
+    {
+      "path": "evidence/lineage-002/inputs/root-c3-optional-guards-apply-20261005-001/APPLIED.json",
+      "bytes": 22038,
+      "sha256": "d6abc6ae1e3655963e78dca4acde52896dac4744b943d130ccc3c2237dd2d9e2"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/additional_practices.py",
+      "bytes": 51685,
+      "sha256": "cbae8ccf96a33d893ab2c8084ab09046aa34c46596f41ac7241429d2ca56d583"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/build_release.py",
+      "bytes": 10701,
+      "sha256": "ba5de21fd7aa16bbbbabd9268142cadca3cee6b546acda19c306316cac233ed4"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/content_data.py",
+      "bytes": 62030,
+      "sha256": "cb368c771dc4b99a612e560b9bb4ce04992a403c7598f24d9ae3aaeae4bcda73"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/gen_content.py",
+      "bytes": 8044,
+      "sha256": "bb8a82ac75fb60d9cf25a50843e1d924962dc041c27b05631c1977daea18f342"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/gen_institution.py",
+      "bytes": 52050,
+      "sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/gen_leadership.py",
+      "bytes": 2327,
+      "sha256": "785792db2b017baff6fa7629a0865121db3aa3d96e601131461e0a182b2c1820"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/gen_runtime.py",
+      "bytes": 17569,
+      "sha256": "7219ac0cfc6a4c81fe4bcca8df44bde3b4f6b96f327fb5977f811fd6bbec7b26"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/gen_school_consent.py",
+      "bytes": 43067,
+      "sha256": "95bb9ea954cf96b19bed842c0f47ff6365d6e0c2e39f1a4ad825656ad3cf7c20"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/institution_oracle.py",
+      "bytes": 5109,
+      "sha256": "82b63c98b96f781caadbb9e48451a4691aae84feba1fb988b5f9618fbee7a3b8"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/leadership_templates/common/character_interactions/lyd_c3_teacher_interactions.txt.in",
+      "bytes": 4848,
+      "sha256": "693f04af355754f261f0e2d51119c9156a77bc5e1b39e8ff39bafbe2f52e9221"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/leadership_templates/common/decisions/lyd_c3_leadership_decisions.txt.in",
+      "bytes": 8448,
+      "sha256": "c6244de226380858ecabe93bae2434ffc0c46bc1706a1760d450057d1e402c0b"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/leadership_templates/common/on_action/lyd_c3_lifecycle_on_actions.txt.in",
+      "bytes": 461,
+      "sha256": "52d629206efa1056ebe5652fa8cf2b038f5410fb4444579be6dab0499461c15c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/leadership_templates/common/scripted_effects/lyd_c3_challenger_effects.txt.in",
+      "bytes": 9470,
+      "sha256": "1d41dddf856a746672af4717685b3758f14038f9fd8311346b915c7a54a2f2af"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/leadership_templates/common/scripted_effects/lyd_c3_council_effects.txt.in",
+      "bytes": 9604,
+      "sha256": "c856d1a2c2b5de3d2f48745f6068d88ba851a52d0af3c402e58b03c7787fe078"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+      "bytes": 1910,
+      "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in",
+      "bytes": 5280,
+      "sha256": "e2865ca4bc82741f369a320b759b7ec8020db6e5fe75b5b36a20f092311e8766"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/leadership_templates/common/scripted_effects/lyd_c3_migration_hooks.txt.in",
+      "bytes": 1283,
+      "sha256": "d0e73c511166680c46a3915bf38ee6e84f2b2c6474388294d15ca97fb7d5f086"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in",
+      "bytes": 8278,
+      "sha256": "bf6ac63911e78468caa926eb5fd5ffb65f0c9819c2d2963cc8c2d9d7844b07ca"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/leadership_templates/events/lyd_c3_leadership_events.txt.in",
+      "bytes": 3180,
+      "sha256": "a9fbdeed1ff5c211d30861803cc5a417bbfd772f1316087a9ccb4da2a651787e"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/leadership_templates/localization/english/lyd_c3_leadership_l_english.yml.in",
+      "bytes": 11204,
+      "sha256": "7ded7a78e204060fd4ef7e167dafab662fe170f4dad319d60d4af742ee9ce5b5"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/leadership_templates/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml.in",
+      "bytes": 10308,
+      "sha256": "ab79e52ada64a3ad5bc19d3ce92225541849e62a1b438517a3f1f9e90c02a912"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/native_admission_portable.py",
+      "bytes": 5188,
+      "sha256": "7da4839c191fb16e8de5a38b6879840e8d1434839fdb8054b065b283858263bc"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/reference/native-primitive-tracked-admission.json",
+      "bytes": 3582,
+      "sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/run_acceptance.py",
+      "bytes": 20112,
+      "sha256": "7212a6f39a180a45d6f591983dfbf7c40c998cb500050f5afca1960cc9533d6d"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_callbacks.py",
+      "bytes": 4148,
+      "sha256": "23583d05e9daf00c6a3d874893a4171d4bf45c2fa464b18317d4223300ad15a2"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_data.py",
+      "bytes": 2087,
+      "sha256": "156942c061e8c9d0afc3b17b716e4be0ea3fe6988181553dfe5ea44bfec7109c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_model.py",
+      "bytes": 23747,
+      "sha256": "5fa5e4ae676ba9901b7612b7f2d7375a85938b8d916f605b131157e4a00d8768"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 883,
+      "sha256": "f454a47d5604b4a4000b568daf86d52aca2c4a362f6e59a98796b9f4680bf164"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 2305,
+      "sha256": "90a6fbe4f9a36b7f3dd886e6a629f8dbde799167ec085094fd519b21c9214671"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 502,
+      "sha256": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/common/scripted_effects/lyd_c2_close_effects.txt",
+      "bytes": 3290,
+      "sha256": "cc223af9e9f11c490399abfb6f7b0fd65d74eae1150aa0b425c7d7ff3954b54b"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "bytes": 5844,
+      "sha256": "49c6d9710d9dc8238110d122aafa909445817a8240baa36f2d48e968053b6d0c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/common/scripted_effects/lyd_c2_head_effects.txt",
+      "bytes": 1249,
+      "sha256": "0460ae905e49b07f4005d976474872b64112aad51f573552c315ee9312511f91"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/common/scripted_effects/lyd_c2_response_effects.txt",
+      "bytes": 1266,
+      "sha256": "c4a5019ff2cda368f728afacd9c1b7f44eb922e6b8095dd3c68c789089deba3c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "bytes": 10831,
+      "sha256": "6512508d6a3fa1e8b702f26296a56159727a0033f833062a39d2b637b9a064f6"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "bytes": 1154,
+      "sha256": "2c6964221393059e807d74fdfb484834025a8c868d40570e89800bc9d3e7ba88"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "bytes": 5265,
+      "sha256": "0a0c26b1cef18219babf59653d83f68fb60144ee9e6ae7c943376efe7f972398"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 1910,
+      "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "bytes": 1346,
+      "sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "bytes": 16482,
+      "sha256": "2ea24b3e8c945eb6a41b48d30c884d61b154bf69c1c4881305880b2a36e83f77"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/school_consent_templates/events/lyd_c2_consent_events.txt",
+      "bytes": 6724,
+      "sha256": "3492722777c8aca20f91f8eb304dbcea9a9f5e970f16235c940181eb31ae888c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/after/tools/validate_static.py",
+      "bytes": 21803,
+      "sha256": "396a1dcf746b5b0337c51e10d1812ddfc5fa22257b4b586286b4496732832072"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/additional_practices.py",
+      "bytes": 51685,
+      "sha256": "cbae8ccf96a33d893ab2c8084ab09046aa34c46596f41ac7241429d2ca56d583"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/build_release.py",
+      "bytes": 10701,
+      "sha256": "ba5de21fd7aa16bbbbabd9268142cadca3cee6b546acda19c306316cac233ed4"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/content_data.py",
+      "bytes": 62030,
+      "sha256": "cb368c771dc4b99a612e560b9bb4ce04992a403c7598f24d9ae3aaeae4bcda73"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/gen_content.py",
+      "bytes": 8044,
+      "sha256": "bb8a82ac75fb60d9cf25a50843e1d924962dc041c27b05631c1977daea18f342"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/gen_institution.py",
+      "bytes": 45619,
+      "sha256": "fc603a5c428fca16a5c85a96c4434bcbd50035618405c28dd4bc6d2de0bf267c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/gen_leadership.py",
+      "bytes": 2363,
+      "sha256": "f73d77e7d073b1736821e86acda1decda18ba471a7e71f222c964fa0174d28b4"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/gen_runtime.py",
+      "bytes": 17569,
+      "sha256": "7219ac0cfc6a4c81fe4bcca8df44bde3b4f6b96f327fb5977f811fd6bbec7b26"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/gen_school_consent.py",
+      "bytes": 42894,
+      "sha256": "c82240f50ab694472a5de8e568685b4a4b91929843725cf1c1d834e138f1828d"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/institution_oracle.py",
+      "bytes": 5109,
+      "sha256": "82b63c98b96f781caadbb9e48451a4691aae84feba1fb988b5f9618fbee7a3b8"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/leadership_templates/common/character_interactions/lyd_c3_teacher_interactions.txt.in",
+      "bytes": 4848,
+      "sha256": "693f04af355754f261f0e2d51119c9156a77bc5e1b39e8ff39bafbe2f52e9221"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/leadership_templates/common/decisions/lyd_c3_leadership_decisions.txt.in",
+      "bytes": 7518,
+      "sha256": "64a8209f51edc3a9d312a22b1b93e58480d9ecbdf55e61d02cda0e914b0c5e15"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/leadership_templates/common/on_action/lyd_c3_lifecycle_on_actions.txt.in",
+      "bytes": 461,
+      "sha256": "52d629206efa1056ebe5652fa8cf2b038f5410fb4444579be6dab0499461c15c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/leadership_templates/common/scripted_effects/lyd_c3_challenger_effects.txt.in",
+      "bytes": 6385,
+      "sha256": "abb705ba20f271e217beb0d0d0717729f642d7cfbcb0dea417691e95fc0f82f4"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/leadership_templates/common/scripted_effects/lyd_c3_council_effects.txt.in",
+      "bytes": 9604,
+      "sha256": "c856d1a2c2b5de3d2f48745f6068d88ba851a52d0af3c402e58b03c7787fe078"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+      "bytes": 1910,
+      "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in",
+      "bytes": 5128,
+      "sha256": "96530cdb00cda8c4a4b826fe2b6b7bd2f3e14fa15e2442f577cc45e5c592a6c7"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/leadership_templates/common/scripted_effects/lyd_c3_migration_hooks.txt.in",
+      "bytes": 1283,
+      "sha256": "d0e73c511166680c46a3915bf38ee6e84f2b2c6474388294d15ca97fb7d5f086"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in",
+      "bytes": 6605,
+      "sha256": "d149ad0a96f2ecf1b0e11463fb002b90e462e1ddc015a8481f434e41bc7b4b85"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/leadership_templates/events/lyd_c3_leadership_events.txt.in",
+      "bytes": 2609,
+      "sha256": "8735cf8e25c6ae6d6786ef26656e044d5b58a39308160d6fa99edfba2462f490"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/leadership_templates/localization/english/lyd_c3_leadership_l_english.yml.in",
+      "bytes": 9371,
+      "sha256": "d61e841ea39673d611d80e76c98b4f5412070c54ea5da69cf90c25f86df3e5a0"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/leadership_templates/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml.in",
+      "bytes": 8600,
+      "sha256": "95f1a73143e68a871197ea56f493547bd760140b9137b3a5497f9c8d092763f0"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/native_admission_portable.py",
+      "bytes": 5188,
+      "sha256": "7da4839c191fb16e8de5a38b6879840e8d1434839fdb8054b065b283858263bc"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/reference/native-primitive-tracked-admission.json",
+      "bytes": 3582,
+      "sha256": "558e6c6aee6364abee0d1065f09a35d782765a2ae469a14b62461d19b47d3dd6"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/run_acceptance.py",
+      "bytes": 20112,
+      "sha256": "7212a6f39a180a45d6f591983dfbf7c40c998cb500050f5afca1960cc9533d6d"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_callbacks.py",
+      "bytes": 4148,
+      "sha256": "23583d05e9daf00c6a3d874893a4171d4bf45c2fa464b18317d4223300ad15a2"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_data.py",
+      "bytes": 2087,
+      "sha256": "156942c061e8c9d0afc3b17b716e4be0ea3fe6988181553dfe5ea44bfec7109c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_model.py",
+      "bytes": 23747,
+      "sha256": "5fa5e4ae676ba9901b7612b7f2d7375a85938b8d916f605b131157e4a00d8768"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 883,
+      "sha256": "f454a47d5604b4a4000b568daf86d52aca2c4a362f6e59a98796b9f4680bf164"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 2305,
+      "sha256": "90a6fbe4f9a36b7f3dd886e6a629f8dbde799167ec085094fd519b21c9214671"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 502,
+      "sha256": "c0f01096ec25dbebde4ba0465648977e4b6c50403076875280d939640fea17ea"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/common/scripted_effects/lyd_c2_close_effects.txt",
+      "bytes": 3290,
+      "sha256": "cc223af9e9f11c490399abfb6f7b0fd65d74eae1150aa0b425c7d7ff3954b54b"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "bytes": 5844,
+      "sha256": "49c6d9710d9dc8238110d122aafa909445817a8240baa36f2d48e968053b6d0c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/common/scripted_effects/lyd_c2_head_effects.txt",
+      "bytes": 1249,
+      "sha256": "0460ae905e49b07f4005d976474872b64112aad51f573552c315ee9312511f91"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/common/scripted_effects/lyd_c2_response_effects.txt",
+      "bytes": 1266,
+      "sha256": "c4a5019ff2cda368f728afacd9c1b7f44eb922e6b8095dd3c68c789089deba3c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "bytes": 10831,
+      "sha256": "6512508d6a3fa1e8b702f26296a56159727a0033f833062a39d2b637b9a064f6"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "bytes": 1154,
+      "sha256": "2c6964221393059e807d74fdfb484834025a8c868d40570e89800bc9d3e7ba88"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "bytes": 5265,
+      "sha256": "0a0c26b1cef18219babf59653d83f68fb60144ee9e6ae7c943376efe7f972398"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 1910,
+      "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "bytes": 1346,
+      "sha256": "501b36d0fc72538e3f3361c659458ed693d4f47f03eda02a6db51419e6c20bd5"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "bytes": 15343,
+      "sha256": "ebcb226c6e5e648518c754ebcf1661876cfc498dce880d656e3567b1d4b5cc35"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/school_consent_templates/events/lyd_c2_consent_events.txt",
+      "bytes": 6704,
+      "sha256": "87da221474c88fb5235a15238d8fca80ee61f93bece5d5ac579d2308395b2134"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/before/tools/validate_static.py",
+      "bytes": 21803,
+      "sha256": "396a1dcf746b5b0337c51e10d1812ddfc5fa22257b4b586286b4496732832072"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/diff/tools/gen_institution.py.diff",
+      "bytes": 22957,
+      "sha256": "5126ee0180fab4f0807c9ee7e8b47257d0f7e30d06253bb0c6737efa543aa78f"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/diff/tools/gen_leadership.py.diff",
+      "bytes": 1068,
+      "sha256": "dfeb35f3b784cc22ea4782becf4af15ba17c6c53ceaa0bd2c28745c5711c6a4f"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/diff/tools/gen_school_consent.py.diff",
+      "bytes": 1545,
+      "sha256": "e8ae6b69ac27bd6ef4797afc8f973730ed97e85515a10936b91b9a5a2d7d8e25"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/diff/tools/leadership_templates/common/decisions/lyd_c3_leadership_decisions.txt.in.diff",
+      "bytes": 1272,
+      "sha256": "addf2e0cab96a891f9e52f457893b9aefa45cbe4eaec23c1f583fefa1c461b1b"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/diff/tools/leadership_templates/common/scripted_effects/lyd_c3_challenger_effects.txt.in.diff",
+      "bytes": 8034,
+      "sha256": "ca3391013d0aed1b96c1b07ebaa0351f630db8bcee445d2e678a772e070a4d20"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/diff/tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in.diff",
+      "bytes": 783,
+      "sha256": "ff92c3018ff23ff499ccf30a9dc273448947b188713ace0562431203ca239049"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/diff/tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in.diff",
+      "bytes": 4825,
+      "sha256": "8519c9af21c91afb0fc6477d944170bc259040064adf1e2f0f9194e1c10076ef"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/diff/tools/leadership_templates/events/lyd_c3_leadership_events.txt.in.diff",
+      "bytes": 776,
+      "sha256": "f4171e64813a2359b8c427359494c9bdfc4682adb1c739c083f53b026aba1ad5"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/diff/tools/leadership_templates/localization/english/lyd_c3_leadership_l_english.yml.in.diff",
+      "bytes": 2538,
+      "sha256": "ca6472ac687487faa2be7877b51c1d9525b61400a59d5705573062bf626e5fb0"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/diff/tools/leadership_templates/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml.in.diff",
+      "bytes": 2374,
+      "sha256": "69111747e1b15a84f5459d745ea825ff4c6ba593e842484e464e1793347b635b"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/diff/tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt.diff",
+      "bytes": 6048,
+      "sha256": "feadd9b79e801e1d341070e14c28fd58681e93fd06dd030d5a1096f030a366cd"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/diff/tools/school_consent_templates/events/lyd_c2_consent_events.txt.diff",
+      "bytes": 524,
+      "sha256": "8c99487774f0d09a32bb4ee4e7c28743a7dd1b4795280c1c71b8cbf4574c84c2"
+    },
+    {
+      "path": "evidence/production-author-inputs-001/FULL-MOD-PRODUCTION-SOURCE-REVIEW.json",
+      "bytes": 63312,
+      "sha256": "4d5dabd43ebb490678cd2c8bd8a5e83fd57c11dfdde50e0634938e17db1dd5fd"
+    },
+    {
+      "path": "evidence/ROOT-later-corrected-tests/fixed-tests/01-command.json",
+      "bytes": 506,
+      "sha256": "6756b6f5524bda93eb9941b574b03f71b1b559592b48a46074c2235a357784a5"
+    },
+    {
+      "path": "evidence/ROOT-later-corrected-tests/fixed-tests/01-result.json",
+      "bytes": 576,
+      "sha256": "a359a42fbe34a2590c80e4855b8996e4e1b9cee5519fe83342c8efbdc80ae2d0"
+    },
+    {
+      "path": "evidence/ROOT-later-corrected-tests/fixed-tests/01-stderr.txt",
+      "bytes": 2089,
+      "sha256": "2de4820ff5335265038c184e80810cdb6fe6e3933b6e68e401234a9041bf7ec2"
+    },
+    {
+      "path": "evidence/ROOT-later-corrected-tests/fixed-tests/01-stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/ROOT-later-corrected-tests/fixed-tests/02-command.json",
+      "bytes": 645,
+      "sha256": "c9754b87a0b3d1245e17b4725c845e16d30f157c146c6935f0e18046fd65ab7a"
+    },
+    {
+      "path": "evidence/ROOT-later-corrected-tests/fixed-tests/02-result.json",
+      "bytes": 715,
+      "sha256": "c114d9aef050b287a35f8dc89a3713ff19ab761bad25a3aaf5560b94d8d9e10c"
+    },
+    {
+      "path": "evidence/ROOT-later-corrected-tests/fixed-tests/02-stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "evidence/ROOT-later-corrected-tests/fixed-tests/02-stdout.txt",
+      "bytes": 103,
+      "sha256": "c7dfc66cf8bf75b5abf0d8c2c9142c18143139b70f210175c71ec2f5671530c0"
+    },
+    {
+      "path": "evidence/ROOT-later-corrected-tests/fixed-tests/detached.json",
+      "bytes": 30179,
+      "sha256": "e17995f5a7fc155e53d4b0b5c7a264053c5670ca362128bebe06d300415039d0"
+    },
+    {
+      "path": "evidence/ROOT-later-corrected-tests/RESULT.json",
+      "bytes": 12630,
+      "sha256": "71ea2a7417296b1ab280a961bfec5b0bb16c687eaf5c8d456fac91c4e128126c"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 986,
+      "sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 4931,
+      "sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "bytes": 954,
+      "sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/character_interactions/lyd_interactions.txt",
+      "bytes": 127,
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 2408,
+      "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 8528,
+      "sha256": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/decisions/lyd_decisions.txt",
+      "bytes": 1774,
+      "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 4599,
+      "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 544,
+      "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 424,
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 13028,
+      "sha256": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 19451,
+      "sha256": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 533,
+      "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/script_values/lyd_i3b_institution_values.txt",
+      "bytes": 205,
+      "sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_c2_close_effects.txt",
+      "bytes": 3384,
+      "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "bytes": 5885,
+      "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_c2_head_effects.txt",
+      "bytes": 1352,
+      "sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_c2_response_effects.txt",
+      "bytes": 1369,
+      "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "bytes": 12698,
+      "sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "bytes": 22655,
+      "sha256": "69cf863ee19bea6aa6058974af0cb15b688e8e6900b8f436f2eefa3f2d64bc73"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "bytes": 5368,
+      "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_c3_challenger_effects.txt",
+      "bytes": 9550,
+      "sha256": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_c3_council_effects.txt",
+      "bytes": 9687,
+      "sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 1993,
+      "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+      "bytes": 5360,
+      "sha256": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "bytes": 1366,
+      "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_entry_effects.txt",
+      "bytes": 3415,
+      "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 4751,
+      "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 4939,
+      "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 6448,
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 3842,
+      "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_10_effects.txt",
+      "bytes": 3002,
+      "sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_11_effects.txt",
+      "bytes": 2887,
+      "sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_12_effects.txt",
+      "bytes": 2948,
+      "sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_13_effects.txt",
+      "bytes": 3035,
+      "sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_14_effects.txt",
+      "bytes": 1526,
+      "sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_1_effects.txt",
+      "bytes": 2798,
+      "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_2_effects.txt",
+      "bytes": 2703,
+      "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_3_effects.txt",
+      "bytes": 2756,
+      "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_4_effects.txt",
+      "bytes": 2990,
+      "sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_5_effects.txt",
+      "bytes": 2901,
+      "sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_6_effects.txt",
+      "bytes": 2926,
+      "sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_7_effects.txt",
+      "bytes": 2972,
+      "sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_8_effects.txt",
+      "bytes": 2912,
+      "sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_practice_9_effects.txt",
+      "bytes": 2983,
+      "sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_school_2_effects.txt",
+      "bytes": 3902,
+      "sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_school_3_effects.txt",
+      "bytes": 3877,
+      "sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_school_4_effects.txt",
+      "bytes": 3982,
+      "sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_school_5_effects.txt",
+      "bytes": 1968,
+      "sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_effects/lyd_school_effects.txt",
+      "bytes": 3872,
+      "sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "bytes": 16511,
+      "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "bytes": 8361,
+      "sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 11379,
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e"
+    },
+    {
+      "path": "evidence/snapshot-001/after/common/scripted_triggers/lyd_player_triggers.txt",
+      "bytes": 2885,
+      "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e"
+    },
+    {
+      "path": "evidence/snapshot-001/after/descriptor.mod",
+      "bytes": 139,
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2"
+    },
+    {
+      "path": "evidence/snapshot-001/after/events/lyd_c2_consent_events.txt",
+      "bytes": 6638,
+      "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+    },
+    {
+      "path": "evidence/snapshot-001/after/events/lyd_c3_leadership_events.txt",
+      "bytes": 3260,
+      "sha256": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062"
+    },
+    {
+      "path": "evidence/snapshot-001/after/events/lyd_events.txt",
+      "bytes": 50504,
+      "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+    },
+    {
+      "path": "evidence/snapshot-001/after/events/lyd_i3b_institution_events.txt",
+      "bytes": 5666,
+      "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02"
+    },
+    {
+      "path": "evidence/snapshot-001/after/history/faiths/lyd_faith_history.txt",
+      "bytes": 1171,
+      "sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d"
+    },
+    {
+      "path": "evidence/snapshot-001/after/localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 13439,
+      "sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35"
+    },
+    {
+      "path": "evidence/snapshot-001/after/localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 11285,
+      "sha256": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77"
+    },
+    {
+      "path": "evidence/snapshot-001/after/localization/english/lyd_content_l_english.yml",
+      "bytes": 66904,
+      "sha256": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78"
+    },
+    {
+      "path": "evidence/snapshot-001/after/localization/english/lyd_i3b_institution_l_english.yml",
+      "bytes": 11134,
+      "sha256": "7fb7976bef47c74c456ad0237e90e0d0f5f0510b0605168e53c89f1e3798a2f2"
+    },
+    {
+      "path": "evidence/snapshot-001/after/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 4461,
+      "sha256": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199"
+    },
+    {
+      "path": "evidence/snapshot-001/after/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 11744,
+      "sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504"
+    },
+    {
+      "path": "evidence/snapshot-001/after/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 10389,
+      "sha256": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6"
+    },
+    {
+      "path": "evidence/snapshot-001/after/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 52952,
+      "sha256": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f"
+    },
+    {
+      "path": "evidence/snapshot-001/after/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 9819,
+      "sha256": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439"
+    },
+    {
+      "path": "evidence/snapshot-001/after/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 3707,
+      "sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/character_interactions/lyd_c2_consent_interactions.txt",
+      "bytes": 986,
+      "sha256": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 4931,
+      "sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/character_interactions/lyd_i3b_nomination_interactions.txt",
+      "bytes": 954,
+      "sha256": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/character_interactions/lyd_interactions.txt",
+      "bytes": 127,
+      "sha256": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/decisions/lyd_c2_consent_decisions.txt",
+      "bytes": 2408,
+      "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 7598,
+      "sha256": "01049457541c0c13d08d27bb793a204a2810aa826c4eb01e590b4e64dbb58138"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/decisions/lyd_decisions.txt",
+      "bytes": 1774,
+      "sha256": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 4599,
+      "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 544,
+      "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/religion/faith_types/lyd_faiths.txt",
+      "bytes": 424,
+      "sha256": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/religion/rite_types/lyd_rites.txt",
+      "bytes": 13028,
+      "sha256": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/religion/tenet_types/lyd_tenets.txt",
+      "bytes": 19451,
+      "sha256": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/script_values/lyd_c2_consent_values.txt",
+      "bytes": 533,
+      "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/script_values/lyd_i3b_institution_values.txt",
+      "bytes": 205,
+      "sha256": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_c2_close_effects.txt",
+      "bytes": 3384,
+      "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_c2_commit_effects.txt",
+      "bytes": 5885,
+      "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_c2_head_effects.txt",
+      "bytes": 1352,
+      "sha256": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_c2_response_effects.txt",
+      "bytes": 1369,
+      "sha256": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_c2_setup_effects.txt",
+      "bytes": 12698,
+      "sha256": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "bytes": 22655,
+      "sha256": "69cf863ee19bea6aa6058974af0cb15b688e8e6900b8f436f2eefa3f2d64bc73"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "bytes": 5368,
+      "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_c3_challenger_effects.txt",
+      "bytes": 6468,
+      "sha256": "af3c5cabc8e6123a5d76aeed59bf0e85db8e9bcf39c85118b0ab85ee746ea89c"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_c3_council_effects.txt",
+      "bytes": 9687,
+      "sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 1993,
+      "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+      "bytes": 5211,
+      "sha256": "94720db16153a862c91172d1a8174a6e91fe734d01353ce2f61132595403f651"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "bytes": 1366,
+      "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_entry_effects.txt",
+      "bytes": 3415,
+      "sha256": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 4096,
+      "sha256": "998c91b9c98c26a6e373efe7cf39661749115df8efa14a10b1af46ce02a93860"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 4848,
+      "sha256": "f6a78460ac88f14993cb57e2e4ebc53747ad64c19d621bd91c401745cf1923d5"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 6065,
+      "sha256": "53b705957fbe0f4aa71a50662e710957687b57f6f9c131e0ddd2b63deb4f954c"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 3842,
+      "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_10_effects.txt",
+      "bytes": 3002,
+      "sha256": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_11_effects.txt",
+      "bytes": 2887,
+      "sha256": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_12_effects.txt",
+      "bytes": 2948,
+      "sha256": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_13_effects.txt",
+      "bytes": 3035,
+      "sha256": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_14_effects.txt",
+      "bytes": 1526,
+      "sha256": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_1_effects.txt",
+      "bytes": 2798,
+      "sha256": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_2_effects.txt",
+      "bytes": 2703,
+      "sha256": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_3_effects.txt",
+      "bytes": 2756,
+      "sha256": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_4_effects.txt",
+      "bytes": 2990,
+      "sha256": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_5_effects.txt",
+      "bytes": 2901,
+      "sha256": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_6_effects.txt",
+      "bytes": 2926,
+      "sha256": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_7_effects.txt",
+      "bytes": 2972,
+      "sha256": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_8_effects.txt",
+      "bytes": 2912,
+      "sha256": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_practice_9_effects.txt",
+      "bytes": 2983,
+      "sha256": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_school_2_effects.txt",
+      "bytes": 3902,
+      "sha256": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_school_3_effects.txt",
+      "bytes": 3877,
+      "sha256": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_school_4_effects.txt",
+      "bytes": 3982,
+      "sha256": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_school_5_effects.txt",
+      "bytes": 1968,
+      "sha256": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_effects/lyd_school_effects.txt",
+      "bytes": 3872,
+      "sha256": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "bytes": 15372,
+      "sha256": "a4f4fe371ddb35b1a194bb1350c6165442347617cca7ec8dd1b360110e6ab18a"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "bytes": 6665,
+      "sha256": "967ca3e59d4d33aa588859192dde991358c1626d077a00b2d6fb204adb7a655a"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 7789,
+      "sha256": "f110b0d7fe4b9d66d1232d1a2d846f6a53c20f600f26db327791dfcef58756fc"
+    },
+    {
+      "path": "evidence/snapshot-001/before/common/scripted_triggers/lyd_player_triggers.txt",
+      "bytes": 2885,
+      "sha256": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e"
+    },
+    {
+      "path": "evidence/snapshot-001/before/descriptor.mod",
+      "bytes": 139,
+      "sha256": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2"
+    },
+    {
+      "path": "evidence/snapshot-001/before/events/lyd_c2_consent_events.txt",
+      "bytes": 6618,
+      "sha256": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e"
+    },
+    {
+      "path": "evidence/snapshot-001/before/events/lyd_c3_leadership_events.txt",
+      "bytes": 2692,
+      "sha256": "be67baa3427719465965917d44e8594c92063a2aa165ee88833c6954ba2fd411"
+    },
+    {
+      "path": "evidence/snapshot-001/before/events/lyd_events.txt",
+      "bytes": 50504,
+      "sha256": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24"
+    },
+    {
+      "path": "evidence/snapshot-001/before/events/lyd_i3b_institution_events.txt",
+      "bytes": 5556,
+      "sha256": "72b6b6348b474fd95e29dfe0fd292cadaed8f541393cbba021fd51fdeb2b5a87"
+    },
+    {
+      "path": "evidence/snapshot-001/before/history/faiths/lyd_faith_history.txt",
+      "bytes": 1171,
+      "sha256": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d"
+    },
+    {
+      "path": "evidence/snapshot-001/before/localization/english/lyd_c2_consent_l_english.yml",
+      "bytes": 13331,
+      "sha256": "153ff68c54238b1756455376ed33f45afd5721ea74e78c52026365b7996cec99"
+    },
+    {
+      "path": "evidence/snapshot-001/before/localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 9455,
+      "sha256": "1febd88fc19c08f67e69650f5b4d185f2e5d3c85e118316a68cc3e3084bb3b06"
+    },
+    {
+      "path": "evidence/snapshot-001/before/localization/english/lyd_content_l_english.yml",
+      "bytes": 66904,
+      "sha256": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78"
+    },
+    {
+      "path": "evidence/snapshot-001/before/localization/english/lyd_i3b_institution_l_english.yml",
+      "bytes": 10220,
+      "sha256": "1a370a05c02c14204df309acb8c162ed9651e622ccd848c3181809f3fb1053ac"
+    },
+    {
+      "path": "evidence/snapshot-001/before/localization/english/lyd_runtime_l_english.yml",
+      "bytes": 4461,
+      "sha256": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199"
+    },
+    {
+      "path": "evidence/snapshot-001/before/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "bytes": 11654,
+      "sha256": "d93e1fe02dc615a4117ace3754a121cd338fe0bb9125c3100939f66ceebb16b4"
+    },
+    {
+      "path": "evidence/snapshot-001/before/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 8684,
+      "sha256": "9cb67ba427950f0b871e1b0a8d00c04dc4fa6bed79b5317056a0f68b28fbfdfc"
+    },
+    {
+      "path": "evidence/snapshot-001/before/localization/simp_chinese/lyd_content_l_simp_chinese.yml",
+      "bytes": 52952,
+      "sha256": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f"
+    },
+    {
+      "path": "evidence/snapshot-001/before/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "bytes": 9138,
+      "sha256": "de0f336c3ccc49b1068bc43f41ec1623c0eda2199b62e6a4df68951525e8e96c"
+    },
+    {
+      "path": "evidence/snapshot-001/before/localization/simp_chinese/lyd_runtime_l_simp_chinese.yml",
+      "bytes": 3707,
+      "sha256": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/common/decisions/lyd_c3_leadership_decisions.txt.diff",
+      "bytes": 1212,
+      "sha256": "894f707deb362f4996456afa05ff621b6617a39e952af51e74d3f68851b85be2"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/common/scripted_effects/lyd_c3_challenger_effects.txt.diff",
+      "bytes": 8055,
+      "sha256": "56d92fb48990b1cf3b04a2466109ed9c5a3d57f3b807f7beb1e6fd8f54b5166f"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/common/scripted_effects/lyd_c3_lifecycle_effects.txt.diff",
+      "bytes": 723,
+      "sha256": "eadf6435858b6ec50f4cf699e23186f46de1c17a75c0971c024bdbde9321cd67"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/common/scripted_effects/lyd_i3b_commit_effects.txt.diff",
+      "bytes": 2457,
+      "sha256": "0ec47334f3e21ecb80d465732730d6c9c69a02116215630235a34d3913303bc6"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/common/scripted_effects/lyd_i3b_response_effects.txt.diff",
+      "bytes": 530,
+      "sha256": "721365407283c50e8960ad7fc52483d2d9e76129568c1bad7b3c1e0969343d05"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/common/scripted_effects/lyd_i3b_setup_effects.txt.diff",
+      "bytes": 871,
+      "sha256": "fb9ff26be4e710a48f699ee9339b13b4098ae872673a3cc7d8a5e5dae2192d52"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/common/scripted_triggers/lyd_c2_consent_triggers.txt.diff",
+      "bytes": 5970,
+      "sha256": "2ba959bc4be9d22b028ded5a884454158bc51b994da42bba13f2ed1e3170bd96"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/common/scripted_triggers/lyd_c3_leadership_triggers.txt.diff",
+      "bytes": 4742,
+      "sha256": "8e643323ff0b78d2135a02d7b871495bce4aeb937a78ad325c28a142c8f4d7e9"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/common/scripted_triggers/lyd_i3b_institution_triggers.txt.diff",
+      "bytes": 7196,
+      "sha256": "6188edecfbf12b8b5061d7a5e339c68359535a4239abd42ceea39e768bfe9f0a"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/events/lyd_c2_consent_events.txt.diff",
+      "bytes": 462,
+      "sha256": "9c379ed6df06a7d179afda149d6feaf54f3de08f5086aa7d3e46570a914377d5"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/events/lyd_c3_leadership_events.txt.diff",
+      "bytes": 716,
+      "sha256": "92a7ea446f430b77cd639d97c3e2d65c0edf38911691b6bd6d6bf6903af0d5d6"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/events/lyd_i3b_institution_events.txt.diff",
+      "bytes": 637,
+      "sha256": "ac6cb08caad0979d31ec03e4f05078ea172916f77e06dffd6a8955039b673f9d"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/localization/english/lyd_c2_consent_l_english.yml.diff",
+      "bytes": 1011,
+      "sha256": "8d3eb5c06692229a15866f1f7b219663ff84766f9f3ddc552e48e1aeb88eb9bb"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/localization/english/lyd_c3_leadership_l_english.yml.diff",
+      "bytes": 2478,
+      "sha256": "9f365525d1dffbc4d30cb4be6dde8d57e88d167e57ac19bda57a505a0decf86e"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/localization/english/lyd_i3b_institution_l_english.yml.diff",
+      "bytes": 6753,
+      "sha256": "87ba443ded81d74fb99179c70384044a5705af5fa2d68bb4bcb60e16c431dc24"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml.diff",
+      "bytes": 958,
+      "sha256": "32d87dce7da19e967b44a20ccf6225f76ac6fecd94d1a768361ab95c50ec9003"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml.diff",
+      "bytes": 2314,
+      "sha256": "af651cd51f9423c87430a9a913492771889c7faba0b42f105530d45674fcb0d1"
+    },
+    {
+      "path": "evidence/snapshot-001/diff/localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml.diff",
+      "bytes": 5867,
+      "sha256": "ccefe114d73ba9bbd5cf14653b3393d31f0e43d4d6022c33589d25ad7ac5ceeb"
+    },
+    {
+      "path": "evidence/snapshot-001/RUNTIME-SNAPSHOT.json",
+      "bytes": 132969,
+      "sha256": "1fceefeb2774278d9a467cf6a5b7a69a916c3387014a7837a5ed0d776657cec3"
+    },
+    {
+      "path": "FINAL-EXPORT-READBACK.json",
+      "bytes": 107778,
+      "sha256": "00299f01d32b9e0bbfe4560a60d5ea410d744a98f669d7f90ce0d41ae5429b8c"
+    },
+    {
+      "path": "FULL-SOURCE-REVIEW.json",
+      "bytes": 150718,
+      "sha256": "a5cd092f8d751f76cb622604a26fbf5dfc795b62be31b7064a236310dd54d0ea"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 201079,
+      "sha256": "68effdf5784b65b0a3c47054bc649feba316f0cac835e1f108dedaa153a6ba55"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1354,
+      "sha256": "fb581e0e00c6ee209b5f67eedea99503396545e531486e2123d55db6de56e476"
+    },
+    {
+      "path": "reviewer/discover_current_runtime_inputs.py",
+      "bytes": 934,
+      "sha256": "5fbdea36bd529fb194c4b5896785c05d2932a0a7c3f673d4ff3b4f1430adf9d4"
+    },
+    {
+      "path": "reviewer/inspect_c2_author_newlines.py",
+      "bytes": 1058,
+      "sha256": "9772d3273d5e0f45628c23139b99c7a1f672f017dc0b0f0fa9d955f89ebf5fd2"
+    },
+    {
+      "path": "reviewer/inspect_lineage_shapes.py",
+      "bytes": 1541,
+      "sha256": "38dddaf6c66cbd0f6261ea48ba701bd1a260eed711aac25203c60c6a015f34c6"
+    },
+    {
+      "path": "reviewer/inspect_runtime_logic_diff.py",
+      "bytes": 847,
+      "sha256": "847b7b437e8ee566296f4685e1dd9228088b8ed24e3d4787010ea0a9a05b4490"
+    },
+    {
+      "path": "reviewer/read_actual_export_metadata.py",
+      "bytes": 549,
+      "sha256": "34a099309c1eef1d8633838a176986601b1f2db90f313c99b161fa3d325acbc1"
+    },
+    {
+      "path": "reviewer/read_index_links.py",
+      "bytes": 1308,
+      "sha256": "1e1170de9241ee2f6b300382a3f462e2c0715fd37c63e144189a752396c83f2a"
+    },
+    {
+      "path": "reviewer/read_provenance_inputs.py",
+      "bytes": 1056,
+      "sha256": "63024186f1b48b00febe23a30d701e48c5ee2232041e05adf0519647d249d967"
+    },
+    {
+      "path": "reviewer/read_provenance_schema.py",
+      "bytes": 1517,
+      "sha256": "af7a91946e99b9abf13ae24da63ec3471ebdf6d6ccdcf71361d7cb383d08834e"
+    },
+    {
+      "path": "reviewer/read_review_reports_compact.py",
+      "bytes": 2080,
+      "sha256": "cbeb74449cae8cfff8ca04586acf8f36c1a6bb0515790751fbeed301e765a12b"
+    },
+    {
+      "path": "reviewer/read_runtime_row_schema.py",
+      "bytes": 399,
+      "sha256": "5d8872270bcd05a17d2466e83e7e2bbdeab297cdb71b1990785db8525116370a"
+    },
+    {
+      "path": "reviewer/read_source007_delta_contract.py",
+      "bytes": 1190,
+      "sha256": "006516bc1440ac56a278ab25e6e64679d51efd629cbcd903979d94317e506416"
+    },
+    {
+      "path": "reviewer/review_production_author_closure.py",
+      "bytes": 2999,
+      "sha256": "edfe9c6c44ee97739655b6ff7b049e1d05767223c417a63fa1a91950297a6af7"
+    },
+    {
+      "path": "reviewer/seal_final_export_runtime_review.py",
+      "bytes": 12408,
+      "sha256": "9961ce247d9e3c8689026202b4a5e6852617f9da07640a8e6bdb11aaba8cf0a7"
+    },
+    {
+      "path": "reviewer/seal_final_export_runtime_review_v2.py",
+      "bytes": 1310,
+      "sha256": "f56b43e627e7600222491c7aaa8c48e5e51d8b381c7fe486b3a4528d26328497"
+    },
+    {
+      "path": "reviewer/snapshot_all70_runtime.py",
+      "bytes": 5412,
+      "sha256": "d36158327b44f1f9b2d9b6313e0d46d7283126f2c052aea27b471ae5eff722c9"
+    },
+    {
+      "path": "reviewer/verify_complete_runtime_lineage.py",
+      "bytes": 12685,
+      "sha256": "760711cbc51473d4dbdea7a32a5e7728f9fe6c703040dfebef9cce6abb7157a3"
+    },
+    {
+      "path": "reviewer/verify_complete_runtime_lineage_v2.py",
+      "bytes": 1253,
+      "sha256": "e0aeba513f9b6ace2e142a22d015e5687a6526ba1dbb20631d7808ec4c7238ef"
+    }
+  ]
+}

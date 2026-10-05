@@ -1,0 +1,84 @@
+{
+  "schema": "lyd.r10.seventh-open-independent-readback.v1",
+  "status": "ACTUAL_SEVENTH_PROPOSAL_OPENED_ROUND13_NPC_YES_NOT_PROVEN_NOT_FINAL_JOIN",
+  "typed_facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-open-join-readback-20261006-001\\PROPOSAL-OPENED-FACTS.json",
+    "bytes": 328081,
+    "sha256": "2c15e534c5eec39e0ac56bba274053c27a6b3b31ac7a547fee88687c7be0fcf9"
+  },
+  "pair_diff_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-open-join-readback-20261006-001\\pair-diff-001\\REPORT.json",
+    "bytes": 32578,
+    "sha256": "7b5e8bff30e3dbaba7930e7c47d2ac11915104427dbf9121a5418e825bb1a69b"
+  },
+  "control_lineage_evidence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-open-join-readback-20261006-001\\CONTROL-LINEAGE-EVIDENCE.json",
+    "bytes": 44884,
+    "sha256": "827834723f9da375aa09223424455020167b7e2a590e97390dc517758b0139fd"
+  },
+  "complete_Rite_Faith_AST_diff": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-open-join-readback-20261006-001\\COMPLETE-RITE-FAITH-AST-DIFF.json",
+    "bytes": 329197,
+    "sha256": "bb9c6b49549829f0f081a98824de127afe691cf0bda2ac586f7b204b5cd33fa3"
+  },
+  "human_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-open-join-readback-20261006-001\\REPORT-zh.md",
+    "bytes": 1271,
+    "sha256": "f564c11ffd87bda1c7f4040350ddeae2db7ef5f18ed29025ff5c6b105cd6a31f"
+  },
+  "before_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0149-sixth-post-cancel-save\\checkpoint.ck3",
+    "bytes": 91537192,
+    "sha256": "5ab8d308bd2f3858388f86cc34289683c30cf8efa43515283c001421c40affe1"
+  },
+  "after_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0153-seventh-open-save\\checkpoint.ck3",
+    "bytes": 91541371,
+    "sha256": "a984d4f1d5e4365c2d1812c21c7a3ef4adc5ec8f98afaee989b61e91ab96bb2a"
+  },
+  "all_binding_and_protection_checks": {
+    "saveSDK_success": true,
+    "saveSDK_exact_SHA_bytes": true,
+    "saveSDK_public72_native71": true,
+    "saveSDK_actor31254_date_paused_PID": true,
+    "saveSDK_event80": true,
+    "saveSDK_profile_session": true,
+    "actual_nonce12_to13": true,
+    "actual_serial12_to13": true,
+    "actual_active_absent_to1": true,
+    "actual_no_signatures_target_request": true,
+    "actual_no_new_reset_count5": true,
+    "actual_NPC_current_round13_tickets": true,
+    "actual_old_player_round12_excluded": true,
+    "actual_Rite159169_owner31254_serial10": true,
+    "actual_related_retry_transition_absent": true,
+    "actual_wallet_history_unchanged": true,
+    "actual_XP_unchanged": true,
+    "all_Faithmain_Riteparent_links_unchanged": true,
+    "selected_graph_heads_unchanged": true,
+    "selected_full_tenet_doctrine_rows_unchanged": true,
+    "political7_full_AST_unchanged": true,
+    "actor_landed_full_AST_unchanged": true,
+    "selected_person_full_protection_unchanged": true,
+    "fresh151_exact_SHA_bytes": true,
+    "fresh151_before149_samepub70_native69": true,
+    "fresh151_actor_target_JOIN_ready": true,
+    "send152_pending_businessfalse_after70native69": true,
+    "send152_wrapper_snapshot71native70_event80": true,
+    "typed154_same_save153_pub72native71": true,
+    "typed154_event80_lyd200_root31254": true,
+    "controls_same_profile_session_success": true,
+    "ordinal6_parent5_same6_UUID_permit_exact": true,
+    "complete_before149_full_faith_AST_unchanged": true,
+    "complete_before149_Rite159_C2_rows_removal_exact_coverage": true,
+    "complete_before149_Rite159_full_AST_except_exact_observed_C2_variable_rows_unchanged": true,
+    "complete_before149_Rite159_changed_variables_only_expected_C2_owner_lock_serial": true,
+    "complete_before149_Rite159_all_parsed_lists_unchanged": true,
+    "complete_before149_Rite169_C2_rows_removal_exact_coverage": true,
+    "complete_before149_Rite169_full_AST_except_exact_observed_C2_variable_rows_unchanged": true,
+    "complete_before149_Rite169_changed_variables_only_expected_C2_owner_lock_serial": true,
+    "complete_before149_Rite169_all_parsed_lists_unchanged": true
+  },
+  "actual_AST_parse_count": 1,
+  "final_JOIN_credit": false
+}

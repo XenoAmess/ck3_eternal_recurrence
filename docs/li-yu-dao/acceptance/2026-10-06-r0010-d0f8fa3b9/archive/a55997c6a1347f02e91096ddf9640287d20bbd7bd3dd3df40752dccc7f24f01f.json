@@ -1,0 +1,8 @@
+{
+  "stage": "external finalizer reuse preparation before output",
+  "failed_driver": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-sixth-post-cancel-readback-20261006-001\\prepare_finalizer_v2.py",
+  "error": "Old typed-control keys already removed by replacement of setup block; skip only those already rebound keys",
+  "new_save_AST_reads_during_failed_driver": 0,
+  "finalizer_or_final_report_written_during_failed_driver": false,
+  "old_packages_modified": false
+}

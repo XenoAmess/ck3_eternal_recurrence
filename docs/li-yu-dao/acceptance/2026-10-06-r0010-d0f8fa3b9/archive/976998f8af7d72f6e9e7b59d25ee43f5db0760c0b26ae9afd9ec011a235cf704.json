@@ -1,0 +1,177 @@
+{
+  "qualified_original": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fourth-open-join-readback-20261005-001\\finalize_open.py",
+    "bytes": 13751,
+    "sha256": "8191127ec918478530a89fecffea6c1ed2ab26cf0659529cc3c4df23cbd12e37"
+  },
+  "new_external_finalizer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fifth-open-join-readback-20261005-001\\finalize_open.py",
+    "bytes": 13855,
+    "sha256": "78d41a3ebaaf8c5c03a2615a8a1ffb97520f545d06b6317d188fcbad0e34f132"
+  },
+  "parameter_changes": [
+    {
+      "old": "r10-actual-third-post-cancel-readback-20261005-001",
+      "new": "r10-actual-fourth-post-cancel-readback-20261005-001",
+      "occurrences": 1
+    },
+    {
+      "old": "0086-",
+      "new": "0109-",
+      "occurrences": 4
+    },
+    {
+      "old": "0087-",
+      "new": "0110-",
+      "occurrences": 1
+    },
+    {
+      "old": "0089-",
+      "new": "0112-",
+      "occurrences": 2
+    },
+    {
+      "old": "87e2fdfb02e76bea3755285e6cf4bfcd7ec0588d5652e92bf83e548949e8de20",
+      "new": "929e9d361ac0c3903fb1822248cf50b5d1a3a13d80d3c901310bc6422e29e62d",
+      "occurrences": 1
+    },
+    {
+      "exact_quoted_round_literals": {
+        "9": "10",
+        "10": "11"
+      }
+    },
+    {
+      "exact_revision_event_comparisons": {
+        "38": "49",
+        "39": "50",
+        "40": "51",
+        "41": "52",
+        "63": "69"
+      }
+    },
+    {
+      "old": "before82",
+      "new": "before107",
+      "occurrences": 7
+    },
+    {
+      "old": "after88",
+      "new": "after111",
+      "occurrences": 5
+    },
+    {
+      "old": "metadata88",
+      "new": "metadata111",
+      "occurrences": 1
+    },
+    {
+      "old": "save88",
+      "new": "save111",
+      "occurrences": 2
+    },
+    {
+      "old": "fresh86",
+      "new": "fresh109",
+      "occurrences": 4
+    },
+    {
+      "old": "send87",
+      "new": "send110",
+      "occurrences": 5
+    },
+    {
+      "old": "typed89",
+      "new": "typed112",
+      "occurrences": 4
+    },
+    {
+      "old": "event63",
+      "new": "event69",
+      "occurrences": 6
+    },
+    {
+      "old": "round10",
+      "new": "roundNEW",
+      "occurrences": 4
+    },
+    {
+      "old": "round9",
+      "new": "round10",
+      "occurrences": 2
+    },
+    {
+      "old": "roundNEW",
+      "new": "round11",
+      "occurrences": 4
+    },
+    {
+      "old": "nonce9_to10",
+      "new": "nonce10_to11",
+      "occurrences": 1
+    },
+    {
+      "old": "serial9_to10",
+      "new": "serial10_to11",
+      "occurrences": 1
+    },
+    {
+      "old": "public41_native40",
+      "new": "public52_native51",
+      "occurrences": 1
+    },
+    {
+      "old": "samepub39_native38",
+      "new": "samepub50_native49",
+      "occurrences": 1
+    },
+    {
+      "old": "after39native38",
+      "new": "after50native49",
+      "occurrences": 2
+    },
+    {
+      "old": "snapshot40native39",
+      "new": "snapshot51native50",
+      "occurrences": 2
+    },
+    {
+      "old": "pub41native40",
+      "new": "pub52native51",
+      "occurrences": 2
+    },
+    {
+      "old": "ordinal3_parent2",
+      "new": "ordinal4_parent3",
+      "occurrences": 1
+    },
+    {
+      "old": "Actual fourth-open checks",
+      "new": "Actual fifth-open checks",
+      "occurrences": 1
+    },
+    {
+      "old": "actual-fourth-JOIN-proposal-opened-pair-facts",
+      "new": "actual-fifth-JOIN-proposal-opened-pair-facts",
+      "occurrences": 1
+    },
+    {
+      "old": "ACTUAL_FOURTH_PROPOSAL_OPENED_ROUND10_TARGET_YES_NOT_PROVEN_NOT_FINAL_JOIN",
+      "new": "ACTUAL_FIFTH_PROPOSAL_OPENED_ROUND11_NPC_YES_NOT_PROVEN_NOT_FINAL_JOIN",
+      "occurrences": 1
+    },
+    {
+      "old": "fourth-open-independent-readback",
+      "new": "fifth-open-independent-readback",
+      "occurrences": 1
+    },
+    {
+      "old": "'actual_round_diff':",
+      "new": "'all_actor_C2_variables':{k:v for k,v in av.items() if k.startswith('lyd_c2_')},'actual_round_diff':",
+      "occurrences": 1
+    }
+  ],
+  "human_report_replaced_with_actual_fifth_open_observations": true,
+  "new_save_AST_reparsed": false,
+  "product_or_source_mutations": false
+}

@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 219,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0220-detach-second-open-confirm.request.json",
+  "request_sha256": "8c4701a485407149d65d4d493018030d1d879f9cf071bc8775df090f75f79bc5",
+  "started_at_utc": "2026-10-05T17:50:45.223917+00:00"
+}

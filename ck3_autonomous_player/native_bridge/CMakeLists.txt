@@ -394,6 +394,14 @@ if(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1 AND
   message(FATAL_ERROR "Frontend rules candidate requires existing FEUDAL frontend admission")
 endif()
 
+option(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1
+  "Compile the fixed source-bound owner readonly partial player-control query; all mutations unavailable" OFF)
+if(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1 AND
+    (NOT XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1 OR
+     NOT XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1))
+  message(FATAL_ERROR "Player readonly query requires existing exact-build frontend owner admission")
+endif()
+
 option(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1
   "Admit exact .3 map-only fixed stock normal exit with actual source inventory and independent process observation" OFF)
 if(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1 AND
@@ -2019,6 +2027,56 @@ if(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1
   )
+endif()
+if(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/player_control_request_v1.cpp src/player_control_v1.cpp
+    src/player_control_identity_source_v1.cpp)
+  target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1=1)
+  target_include_directories(xar_ck3_bridge PRIVATE "${CMAKE_CURRENT_BINARY_DIR}/player-control-binding")
+  # The fixed set includes every new provider/router/capability source. These are
+  # configure-time exact bytes, never a caller-supplied runtime source blessing.
+  set(player_control_fixed_paths
+    tools/ck3_native_profile_mcp.py
+    tools/build_player_control_source_inventory_v1.py
+    ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py
+    ck3_autonomous_player/src/xar_autoplayer/bridge/service.py
+    ck3_autonomous_player/src/xar_autoplayer/bridge/player_control_contract_v1.py
+    ck3_autonomous_player/src/xar_autoplayer/bridge/player_control_driver_v1.py
+    ck3_autonomous_player/src/xar_autoplayer/bridge/player_control_source_inventory_v1.py
+    ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_map_driver_v1.py
+    ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_process_observer_v1.py
+    ck3_autonomous_player/src/xar_autoplayer/bridge/ingame_decisions_open_contract.py
+    ck3_autonomous_player/native_bridge/CMakeLists.txt
+    ck3_autonomous_player/native_bridge/include/xar_bridge/player_control_v1.hpp
+    ck3_autonomous_player/native_bridge/src/player_control_request_v1.cpp
+    ck3_autonomous_player/native_bridge/src/player_control_v1.cpp
+    ck3_autonomous_player/native_bridge/include/xar_bridge/player_control_identity_source_v1.hpp
+    ck3_autonomous_player/native_bridge/src/player_control_identity_source_v1.cpp
+    ck3_autonomous_player/native_bridge/src/player_control_identity_pins_v1.inc
+    ck3_autonomous_player/native_bridge/src/bridge.cpp
+    ck3_autonomous_player/native_bridge/include/xar_bridge/frontend_gui_route_v1.hpp
+    ck3_autonomous_player/native_bridge/src/frontend_gui_route_v1.cpp)
+  set(player_control_source_table "#pragma once\nconstexpr std::array<StockFile,20> kImplementation{{\n")
+  foreach(relative IN LISTS player_control_fixed_paths)
+    set(actual "${CMAKE_CURRENT_SOURCE_DIR}/../../${relative}")
+    if(NOT EXISTS "${actual}")
+      message(FATAL_ERROR "Missing fixed player source ${relative}")
+    endif()
+    file(SHA256 "${actual}" actual_sha)
+    file(SIZE "${actual}" actual_size)
+    # CMake already tracks its own canonical list path. Adding its ../../ alias
+    # a second time creates duplicate Ninja regeneration outputs.
+    get_filename_component(actual_canonical "${actual}" REALPATH)
+    if(NOT actual_canonical STREQUAL CMAKE_CURRENT_LIST_FILE)
+      set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS "${actual_canonical}")
+    endif()
+    string(APPEND player_control_source_table "  {\"${relative}\",${actual_size},\"${actual_sha}\"},\n")
+  endforeach()
+  string(APPEND player_control_source_table "}};\n")
+  file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/player-control-binding")
+  file(WRITE "${CMAKE_CURRENT_BINARY_DIR}/player-control-binding/player_control_compiled_sources_v1.inc"
+    "${player_control_source_table}")
 endif()
 if(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1=1)

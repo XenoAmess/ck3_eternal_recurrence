@@ -1,0 +1,24 @@
+﻿# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py.
+lyd_c2_propose_join_interaction = {
+    category = interaction_category_religion
+    common_interaction = yes
+    desc = lyd_c2_propose_join_interaction_desc
+    # Automatic delivery is not approval: all voters and representatives receive
+    # separate affirmative/refusal options after this player opens the round.
+    auto_accept = yes
+    is_shown = {
+        scope:actor = { lyd_c2_actor_trigger = yes }
+        scope:recipient = { is_alive = yes faith != scope:actor.faith faith = { religion = religion:confucianism_religion } }
+    }
+    is_valid_showing_failures_only = {
+        custom_description = {
+            text = lyd_c2_join_requirements_tt
+            lyd_c2_start_join_trigger = yes
+        }
+    }
+    on_auto_accept = {
+        custom_tooltip = lyd_c2_join_open_tt
+        hidden_effect = { lyd_c2_begin_join_effect = yes }
+    }
+    ai_will_do = { base = 0 }
+}

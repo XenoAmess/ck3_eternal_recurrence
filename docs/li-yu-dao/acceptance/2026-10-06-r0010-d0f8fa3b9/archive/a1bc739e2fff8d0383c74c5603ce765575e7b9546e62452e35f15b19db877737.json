@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 182,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0183-eighth-source-sign.request.json",
+  "request_sha256": "07bbbaab6a1fa7f9f8c24510b387d3f4c3610f4bc770e60ce05680b861c67ee0",
+  "started_at_utc": "2026-10-05T16:59:32.017622+00:00",
+  "request_id": "r10-0183-eighth-source-sign",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0182-r10-0183-eighth-source-sign.sdk-result.json",
+  "sdk_result_sha256": "e93a1ba261edc38fc297cd964c4ed36475c71ca37e0af1a09942deefdb932011",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0181-event-select.json",
+      "copy": "0182-r10-0183-eighth-source-sign.native-01.json",
+      "sha256": "6305c8b771aaf4e9d9302be47bec0d673da80e8b26ae993e277cc09c2ac9c0fe"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T16:59:36.849825+00:00"
+}

@@ -1,0 +1,20 @@
+{
+  "started_utc": "2026-10-05T09:58:14.511557+00:00",
+  "ended_utc": "2026-10-05T09:58:17.422814+00:00",
+  "argv": [
+    "C:\\Program Files\\GitHub CLI\\gh.exe",
+    "api",
+    "--method",
+    "GET",
+    "repos/XenoAmess/ck3_eternal_recurrence/actions/jobs/111708826451/logs",
+    "--allow-escape-sequences"
+  ],
+  "exit_code": 0,
+  "stdout_bytes": 63809,
+  "stdout_sha256": "02b7fdf41ce5b490c684b52aafd2528be4349d50276320e3decf0f6f3a9dbb1d",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "parsed_json": false,
+  "child_proxy_environment_preserved": true,
+  "global_or_server_changes": false
+}

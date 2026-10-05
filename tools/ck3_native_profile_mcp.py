@@ -21,6 +21,7 @@ StressBaseAmountV1 = Annotated[int, Field(strict=True, ge=-300, le=300)]
 StressQueryRevisionV1 = Annotated[int, Field(strict=True, ge=0, lt=2**64)]
 OrdinaryInteractionKeyV1 = Annotated[str, Field(strict=True, min_length=1, max_length=128, pattern=r"^[A-Za-z0-9_]+$")]
 OrdinaryRecipientIdV1 = Annotated[int, Field(strict=True, ge=1, le=2**32 - 2)]
+PlayerControlCharacterIdV1 = Annotated[int, Field(strict=True, ge=1, le=2**64 - 2)]
 
 import desktop_semantic_action_mcp as desktop
 
@@ -60,7 +61,7 @@ def load_clock_profile(path: Path) -> dict:
 
 def load_profile(path: Path) -> dict:
     raw_profile = json.loads(path.read_text(encoding="utf-8-sig"))
-    optional_fields = {"normal_exit_source_inventory"} & set(raw_profile)
+    optional_fields = {"normal_exit_source_inventory", "player_control_source_inventory"} & set(raw_profile)
     profile = _load_profile_common(path, {"state_directory", "dll", "injector"} | optional_fields)
     if "normal_exit_source_inventory" in profile:
         reference = desktop.exact_fields(profile["normal_exit_source_inventory"], {"path", "sha256"}, "normal exit source inventory")
@@ -70,6 +71,14 @@ def load_profile(path: Path) -> dict:
                 or not isinstance(reference["sha256"], str)
                 or not re.fullmatch(r"[0-9a-f]{64}", reference["sha256"])):
             raise ValueError("normal exit inventory must identify the fixed userdir file and exact SHA-256")
+    if "player_control_source_inventory" in profile:
+        reference = desktop.exact_fields(profile["player_control_source_inventory"], {"path", "sha256"}, "player control source inventory")
+        fixed_path = (Path(profile["userdir"]) / "player-control-source-inventory-v1.json").resolve()
+        if (not isinstance(reference["path"], str) or not Path(reference["path"]).is_absolute()
+                or Path(reference["path"]).resolve() != fixed_path
+                or not isinstance(reference["sha256"], str)
+                or not re.fullmatch(r"[0-9a-f]{64}", reference["sha256"])):
+            raise ValueError("player control inventory must identify the fixed userdir file and exact SHA-256")
     if not isinstance(profile["state_directory"], str) or not Path(profile["state_directory"]).is_absolute():
         raise ValueError("state_directory must be an absolute target-side path")
     for name, expected in (("dll", "xar_ck3_bridge.dll"), ("injector", "xar_ck3_bridge_injector.exe")):
@@ -369,7 +378,13 @@ class NativeProfileService:
             return self._receipt("snapshot", {"status": "native_snapshot_verified",
                                                "snapshot": snapshot, "observation_after": after})
 
-    def _gameplay_service(self):
+    def _gameplay_service(self, *, allow_player_control_pending: bool = False):
+        if (self.driver is not None and "player_control_source_inventory" in self.profile):
+            from xar_autoplayer.bridge.player_control_driver_v1 import restore_pending_authorization_v1
+            restore_pending_authorization_v1(self.driver, self.profile)
+        if (not allow_player_control_pending
+                and getattr(self.driver, "_player_control_authorization_blocked_v1", False)):
+            raise RuntimeError("stock player control is pending or unknown; only control readback/normal exit remains available")
         if self._attach_result is None or self._attach_result.get("status") not in {
                 "attached_snapshot_verified", "resumed_snapshot_verified"}:
             raise RuntimeError("ordinary gameplay requires a verified profile attachment")
@@ -443,6 +458,93 @@ class NativeProfileService:
                            else "native_ordinary_interaction_not_dispatched"), "result": result,
                 "snapshot": after, "business_effects_verified": False, "full_product_acceptance_credit": False})
 
+    def _player_control_frame(self, expected_revision: int) -> dict:
+        from xar_autoplayer.bridge.player_control_contract_v1 import normalize_query_arguments, snapshot_binding
+        normalize_query_arguments({"expected_revision": expected_revision})
+        self.guard()
+        snapshot = self._snapshot()
+        snapshot_binding(snapshot)
+        if snapshot.get("revision") != expected_revision:
+            raise RuntimeError("player-control query requires the current actual public revision")
+        return snapshot
+
+    def player_control_tools_admission_v1(self) -> dict:
+        """Admit the explicit successor toolset from actual readonly source proof."""
+        from xar_autoplayer.bridge.player_control_contract_v1 import CAPABILITY, snapshot_binding
+        from xar_autoplayer.bridge.player_control_source_inventory_v1 import verify_source_inventory_v1
+        with self._lock:
+            reference = self.profile.get("player_control_source_inventory")
+            if type(reference) is not dict:
+                raise RuntimeError("explicit player-control tools require the fixed source inventory")
+            self._gameplay_service(allow_player_control_pending=True)
+            sources = verify_source_inventory_v1(reference, self.profile)
+            self.guard()
+            snapshot = self._snapshot()
+            snapshot_binding(snapshot)
+            capabilities = self.driver.capabilities().get("bridge_capabilities")
+            hello_capabilities = snapshot.get("diagnostics", {}).get("hello", {}).get("capabilities")
+            if (type(capabilities) is not list or CAPABILITY not in capabilities
+                    or type(hello_capabilities) is not list or CAPABILITY not in hello_capabilities):
+                raise RuntimeError("the actual connected DLL lacks player-control-v1 capability")
+            receipt = self.query_player_control_context(snapshot["revision"])
+            result = receipt["result"]
+            native = result["native_observation"]
+            readonly_proofs = ("exact_build_verified", "owner_verified", "process_identity_verified",
+                               "source_abi_pins_verified", "loaded_source_binding_verified", "frame_verified")
+            if (result["claim_consumed"] is not False or result["native_submission_count"] != 1
+                    or result["source_inventory_sha256"] != sources["source_inventory_sha256"]
+                    or type(native) is not dict or any(native.get(key) is not True for key in readonly_proofs)
+                    or type(native.get("pump_epoch")) is not int or native["pump_epoch"] <= 0):
+                raise RuntimeError("actual owner readonly query has not proved its compiled source inventory binding")
+            self.guard()
+            return self._receipt("player-control-tool-admission", {
+                "status": "actual_readonly_source_admitted", "capability": CAPABILITY,
+                "mcp_toolset_version": "native-profile-23-player-control-v1",
+                "source_inventory_sha256": sources["source_inventory_sha256"],
+                "readonly_query_receipt_path": receipt["receipt_path"],
+                "native_status": native["status"], "switch_stage_admitted": False,
+                "business_effects_verified": False, "full_product_acceptance_credit": False})
+
+    def query_player_control_context(self, expected_revision: int) -> dict:
+        with self._lock:
+            # Retire only ephemeral eligibility before any frame/guard refusal.
+            # Existing durable once claims and reconnect barriers remain intact.
+            if self.driver is not None:
+                self.driver._player_control_contexts = {}
+            before = self._player_control_frame(expected_revision)
+            gameplay = self._gameplay_service(allow_player_control_pending=True)
+            self.driver.player_control_managed_profile = self.profile
+            result = gameplay.query_player_control_context_v1(expected_revision=expected_revision)
+            self.guard()
+            if result["actual_control_verified"]:
+                # Rebuild service-level read caches; driver durable claims survive.
+                self._gameplay = None
+            return self._receipt("player-control-query", {"status": result["status"], "result": result,
+                "snapshot_before": before, "business_effects_verified": False,
+                "full_product_acceptance_credit": False, "mcp_toolset_version": "native-profile-23-player-control-v1"})
+
+    def request_player_control(self, action: str, expected_revision: int,
+                               expected_control_context_signature: str,
+                               candidate_character_id: int | None) -> dict:
+        from xar_autoplayer.bridge.player_control_contract_v1 import normalize_request_arguments
+        normalize_request_arguments({"action": action, "expected_revision": expected_revision,
+            "expected_control_context_signature": expected_control_context_signature,
+            "candidate_character_id": candidate_character_id})
+        with self._lock:
+            before = self._player_control_frame(expected_revision)
+            gameplay = self._gameplay_service(allow_player_control_pending=True)
+            self.driver.player_control_managed_profile = self.profile
+            self.backend.poll(self.profile)
+            self._player_control_frame(expected_revision)
+            result = gameplay.request_player_control_v1(action, expected_revision=expected_revision,
+                expected_control_context_signature=expected_control_context_signature,
+                candidate_character_id=candidate_character_id)
+            self.guard()
+            if result["actual_control_verified"]: self._gameplay = None
+            return self._receipt("player-control-request", {"status": result["status"], "result": result,
+                "snapshot_before": before, "business_effects_verified": False,
+                "full_product_acceptance_credit": False, "mcp_toolset_version": "native-profile-23-player-control-v1"})
+
     def observe_normal_exit(self) -> dict:
         with self._lock:
             if self.driver is None or self._gameplay is None:
@@ -454,12 +556,17 @@ class NativeProfileService:
                 "result": result, "snapshot_after_required": False,
                 "uses_ocr": False, "uses_desktop_input": False, "uses_injection": False})
 
+    def _normal_exit_gameplay_service(self):
+        if "player_control_source_inventory" in self.profile:
+            return self._gameplay_service(allow_player_control_pending=True)
+        return self._gameplay_service()
+
     def query_normal_exit_context(self, expected_revision: int) -> dict:
         from xar_autoplayer.bridge.normal_exit_contract_v1 import normalize_query_arguments
         normalize_query_arguments({"expected_revision": expected_revision})
         with self._lock:
             before = self._bound_frame(expected_revision, paused=True)
-            gameplay = self._gameplay_service()
+            gameplay = self._normal_exit_gameplay_service()
             self.driver.normal_exit_managed_profile = self.profile
             result = gameplay.query_normal_exit_context_v1(expected_revision=expected_revision)
             after = self._bound_frame(expected_revision, paused=True)
@@ -474,7 +581,7 @@ class NativeProfileService:
                                      "expected_exit_context_signature": expected_exit_context_signature})
         with self._lock:
             before = self._bound_frame(expected_revision, paused=True)
-            gameplay = self._gameplay_service()
+            gameplay = self._normal_exit_gameplay_service()
             self.driver.normal_exit_managed_profile = self.profile
             self.backend.poll(self.profile)
             self._bound_frame(expected_revision, paused=True)
@@ -757,7 +864,11 @@ def create_clock_server(service: NativeClockProfileService):
     return server
 
 
-def create_server(service: NativeProfileService):
+def create_server(service: NativeProfileService, *, player_control_tools: bool = False):
+    if type(player_control_tools) is not bool:
+        raise ValueError("player_control_tools must be an explicit boolean")
+    if player_control_tools:
+        service.player_control_tools_admission_v1()
     from mcp.server import MCPServer
     from mcp.types import ToolAnnotations
     server = MCPServer("CK3 frozen native profile")
@@ -856,6 +967,23 @@ def create_server(service: NativeProfileService):
                  "ck3_pause_profile_simulation_v1",
                  "ck3_select_profile_event_option_v1", "ck3_save_profile_checkpoint_v1"):
         _forbid_unknown_tool_arguments_v1(server, name)
+    if player_control_tools:
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+        def ck3_query_profile_player_control_context_v1(expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+            """Read actual stock chooser/controller sources; selection gives no control credit."""
+            return service.query_player_control_context(expected_revision)
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True, idempotentHint=False, openWorldHint=False))
+        def ck3_request_profile_player_control_v1(
+            action: Literal["open_pause_menu", "open_switch", "choose_character", "confirm_control"],
+            expected_revision: NormalExitRevisionV1,
+            expected_control_context_signature: NormalExitSignatureV1,
+            candidate_character_id: PlayerControlCharacterIdV1 | None,
+        ) -> dict[str, object]:
+            """Invoke one fresh admitted stock stage once; unknown delivery cannot be retried."""
+            return service.request_player_control(action, expected_revision, expected_control_context_signature,
+                                                   candidate_character_id)
+        for name in ("ck3_query_profile_player_control_context_v1", "ck3_request_profile_player_control_v1"):
+            _forbid_unknown_tool_arguments_v1(server, name)
     return server
 
 
@@ -863,13 +991,21 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--profile", type=Path, required=True)
     parser.add_argument("--clock-only", action="store_true")
+    parser.add_argument("--player-control-tools", action="store_true",
+                        help="Resume the original attached DLL and admit 23 tools only after actual readonly capability/source proof")
     args = parser.parse_args()
+    if args.clock_only and args.player_control_tools:
+        parser.error("--player-control-tools requires the native gameplay profile")
     if args.clock_only:
         create_clock_server(NativeClockProfileService(load_clock_profile(args.profile))).run(transport="stdio")
         return
     service = NativeProfileService(load_profile(args.profile))
     try:
-        create_server(service).run(transport="stdio")
+        if args.player_control_tools:
+            resumed = service.resume()
+            if resumed.get("status") != "resumed_snapshot_verified":
+                raise RuntimeError("explicit successor tools require successful original-DLL profile resume")
+        create_server(service, player_control_tools=args.player_control_tools).run(transport="stdio")
     finally:
         service.close()
 

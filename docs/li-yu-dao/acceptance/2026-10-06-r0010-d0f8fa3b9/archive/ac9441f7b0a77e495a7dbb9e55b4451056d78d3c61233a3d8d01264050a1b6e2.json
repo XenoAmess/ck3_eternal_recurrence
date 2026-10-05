@@ -1,0 +1,14 @@
+{
+  "type": "execute_step",
+  "protocol_version": 1,
+  "request_id": "normal-exit-query-2e965f9ff3b1462e8be23a0535535ce4",
+  "step": "normal-exit-map-v1",
+  "action": "query_context",
+  "expected_revision": 111,
+  "expected_player_character_id": 31254,
+  "expected_game_pid": 13436,
+  "expected_connection_generation": 1,
+  "expected_process_creation_filetime_100ns": 134356699957422997,
+  "source_inventory_sha256": "18ae748deeb90f6f5900ee16e8402dcdd1a5a0f732d57bade0ea7da670ed6f19",
+  "request_nonce": "normal-exit-query-2e965f9ff3b1462e8be23a0535535ce4"
+}

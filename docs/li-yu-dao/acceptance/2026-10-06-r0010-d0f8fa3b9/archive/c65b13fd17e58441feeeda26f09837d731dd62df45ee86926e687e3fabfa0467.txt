@@ -1,0 +1,114 @@
+65865={
+	first_name="Turquetil"
+	birth=1026.3.10
+	nickname_text=""
+	ethnicity=caucasian_dark_hair
+	culture=73
+	rite=169
+	dynasty_house=12759
+	skill={ 8 3 2 5 20 5 }
+	dna="FPMU8z5TPlOzurO6AZcBlwB8AHwBiAGIAFsAWwGGAYYBgQGBAH0AfQBoAGgBlgGWAZQBlAHOAc4AdgB2AZIBkgGvAa8BhQGFAaYBpgBqAGoBpQGlAYsBiwGGAYYBgwGDAEwATAGKAYoBgQGBAH0AfQF/AX8BpwGnAHIAcgAoACgASgBKAH0AfQB4AHgBDQENAC4ALgADAAMAcABwAAcABwIAAgABFAEUAAUABQEIAQgCAQIBAQIBAgAWABYApACkARkBGQBMAEwBMAEwAQYBBgAPAA8ABAAEAHwAfAHDAcMBSQFJACMAIwFrAWsBGwEbAAUABQEHAQcBLgEuAW8BbwAZABkAFQAVASgBKAEeAR4AEAAQAEwATAEKAQoBKwErAGQAZAAHAAcADgAOAE4ATgEEAQQD4wPjAQUBBQEMAQwA0QDRAcwBzAEOAQ4AFgAWANwA3AC7ALsDIAMgAdEB0QL4AvgCAAIAAs4CzgGJAYkCaAJoChYKFgRvBG8BbgFuBJsEmwSSBJIAlgCWAJIAkgG1AbUBPwE/AXsBewFMAUw="
+
+	mass=10
+	traits={ 78 61 64 23 }
+	alive_data={
+		variables={
+			data={ {
+					flag=changed_rite_flag
+					data={
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_yes
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_nonce
+					data={
+						type=value
+						identity=800000
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_serial
+					data={
+						type=value
+						identity=800000
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_owner
+					data={
+						type=char
+						identity=31254
+					}
+
+				}
+ {
+					flag=lyd_c2_elector_rite
+					data={
+						type=rite
+						identity=169
+					}
+
+				}
+ {
+					flag=lyd_c2_elector_serial
+					data={
+						type=value
+						identity=800000
+					}
+
+				}
+ {
+					flag=lyd_c2_elector_owner
+					data={
+						type=char
+						identity=31254
+					}
+
+				}
+ {
+					flag=lyd_r4_created_source_rep
+					data={
+					}
+
+				}
+ }
+		}
+		fertility=0.5388
+		health=4.74053
+		piety={
+			currency=51.8
+			accumulated=1001.8
+		}
+		prestige={
+			currency=450.0294
+			accumulated=1000.0294
+		}
+		influence={
+			currency=180
+		}
+		languages={ language_french }
+		activity_data={
+		}
+
+		location={
+			location=2619
+		}
+	}
+
+	court_data={
+		employer=31254
+		knight=yes
+		join_court_date=1066.9.17
+	}
+
+}

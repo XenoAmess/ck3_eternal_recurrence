@@ -1,0 +1,10 @@
+--- R9/tools/gen_school_consent.py
++++ CURRENT/tools/gen_school_consent.py
+@@ -36,6 +36,7 @@
+ )
+ 
+ LOC = {
++    'lyd_c2_same_main_doctrines_tt': ('来源与接收共同体主流礼仪的教义相同。', "The source and receiving communions' main rites have the same doctrines."),
+     'lyd_c2_detach_requirements_tt': ('我已入儒门，成年且有领地，能够自由理事，学识至少为15；本派属于本模组学统、不是当前共同体主流，且没有正在议定的归属或领袖议案，也不在归属调整或重议等待期。', "I am an adult, landed initiate of a tradition in this mod, free to act and with at least 15 Learning. My tradition is not the current communion's main rite, has no current affiliation or leadership proposal, and is outside its transition and retry waiting periods."),
+     'lyd_c2_review_requirements_tt': ('我仍具备发起资格，且本轮议案仍对应我的学统、共同体、领袖及接收代表；本派与接收方的本轮归属约定仍有效。人选或归属变化后须重新议定。', 'I remain eligible to initiate, and this proposal still matches my tradition, communion, heads and receiving representative. Its current affiliation arrangements remain valid; changes require a new round.'),
+     'lyd_c2_cancel_requirements_tt': ('我有尚未实施的当前议案；即使已失去发起资格，仍可撤回自己的这一轮议案。', 'I have a current proposal that has not been enacted. I may withdraw my own round even after losing eligibility to initiate.'),

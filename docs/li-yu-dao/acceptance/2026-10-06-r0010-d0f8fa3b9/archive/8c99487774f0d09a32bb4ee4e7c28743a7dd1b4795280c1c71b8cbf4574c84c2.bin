@@ -1,0 +1,11 @@
+--- R9/tools/school_consent_templates/events/lyd_c2_consent_events.txt
++++ CURRENT/tools/school_consent_templates/events/lyd_c2_consent_events.txt
+@@ -73,7 +73,7 @@
+         name = lyd_c2_confirm
+         trigger = { lyd_c2_initiator_event_context_trigger = yes lyd_c2_ready_to_confirm_trigger = { ACTOR = root } }
+         custom_tooltip = lyd_c2_confirm_tt
+-        lyd_c2_event_commit_effect = yes
++        hidden_effect = { lyd_c2_event_commit_effect = yes }
+     }
+     option = {
+         name = lyd_c2_native_pending

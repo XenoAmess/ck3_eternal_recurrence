@@ -1,0 +1,52 @@
+{
+  "schema": "lyd.r10.actual-gate-raw-byte-index.v1",
+  "files": [
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-python-only-after-archive-projection-20261006-001\\argv.json",
+      "stored_relative_path": "supplements/python-only-after-storage-20261006-001/evidence/argv.json",
+      "bytes": 150,
+      "sha256": "2e7e5627f51a7c8acdef8e857e46d708450cbf3a4153f87fdd5e80d76f65cf5f",
+      "storage_mode": "exact_copy"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-python-only-after-archive-projection-20261006-001\\RESULT.json",
+      "stored_relative_path": "supplements/python-only-after-storage-20261006-001/evidence/RESULT.json",
+      "bytes": 615,
+      "sha256": "3792a700eb187a0d857eb62f3e0b8db94802537cba3d66280c0cb9223f35a954",
+      "storage_mode": "exact_copy"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-python-only-after-archive-projection-20261006-001\\stdout.txt",
+      "stored_relative_path": "supplements/python-only-after-storage-20261006-001/evidence/stdout.txt",
+      "bytes": 19,
+      "sha256": "c38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490",
+      "storage_mode": "exact_copy"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-python-only-after-archive-projection-20261006-001\\stderr.txt",
+      "stored_relative_path": "supplements/python-only-after-storage-20261006-001/evidence/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storage_mode": "exact_copy"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_python_only_after_archive_20261006_001.argv.json",
+      "stored_relative_path": "supplements/python-only-after-storage-20261006-001/evidence/argv-source.json",
+      "bytes": 143,
+      "sha256": "b5e7e624b11171971f181189e669397e45c18893d6b49905d4428e6d69447223",
+      "storage_mode": "exact_copy"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-eight-archive-storage-projection-receipt-20261006-001\\RECEIPT.json",
+      "stored_relative_path": "supplements/python-only-after-storage-20261006-001/evidence/projection-receipt.json.gz",
+      "original_bytes": 13628,
+      "original_sha256": "1170aa42ddc4fcab00ff958b44080a5c96933826d499881c47c467c57beea550",
+      "bytes": 2570,
+      "sha256": "f9bf313a39476d0fd60ae3c51a409c7b80da05ce31c1d8e4afc90701e6ba273e",
+      "storage_mode": "gzip",
+      "decoded_bytes": 13628,
+      "decoded_sha256": "1170aa42ddc4fcab00ff958b44080a5c96933826d499881c47c467c57beea550",
+      "lossless_decode_verified": true
+    }
+  ]
+}

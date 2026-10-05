@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 197,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0198-after-reset-error-snapshot.request.json",
+  "request_sha256": "f2d25eab2ad2f32c3862bfffe59ecc77c64befc8882ba12818f56a1c363dd54c",
+  "started_at_utc": "2026-10-05T17:24:53.618440+00:00"
+}

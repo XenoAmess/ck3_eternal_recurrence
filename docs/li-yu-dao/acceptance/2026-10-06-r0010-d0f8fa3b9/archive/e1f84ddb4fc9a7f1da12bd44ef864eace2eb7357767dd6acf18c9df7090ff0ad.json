@@ -1,0 +1,1538 @@
+{
+  "schema": "lyd.r10.complete-runtime-source-lineage.v1",
+  "status": "SOURCE_ONLY_LINEAGE_EXACT",
+  "runtime_delta": [
+    {
+      "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+      "before": {
+        "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+        "size": 7598,
+        "sha256": "01049457541c0c13d08d27bb793a204a2810aa826c4eb01e590b4e64dbb58138"
+      },
+      "after": {
+        "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+        "size": 8528,
+        "sha256": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba"
+      }
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+      "before": {
+        "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+        "size": 6468,
+        "sha256": "af3c5cabc8e6123a5d76aeed59bf0e85db8e9bcf39c85118b0ab85ee746ea89c"
+      },
+      "after": {
+        "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+        "size": 9550,
+        "sha256": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b"
+      }
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+      "before": {
+        "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+        "size": 5211,
+        "sha256": "94720db16153a862c91172d1a8174a6e91fe734d01353ce2f61132595403f651"
+      },
+      "after": {
+        "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+        "size": 5360,
+        "sha256": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88"
+      }
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "before": {
+        "path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+        "size": 4096,
+        "sha256": "998c91b9c98c26a6e373efe7cf39661749115df8efa14a10b1af46ce02a93860"
+      },
+      "after": {
+        "path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+        "size": 4751,
+        "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec"
+      }
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_response_effects.txt",
+      "before": {
+        "path": "common/scripted_effects/lyd_i3b_response_effects.txt",
+        "size": 4848,
+        "sha256": "f6a78460ac88f14993cb57e2e4ebc53747ad64c19d621bd91c401745cf1923d5"
+      },
+      "after": {
+        "path": "common/scripted_effects/lyd_i3b_response_effects.txt",
+        "size": 4939,
+        "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6"
+      }
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "before": {
+        "path": "common/scripted_effects/lyd_i3b_setup_effects.txt",
+        "size": 6065,
+        "sha256": "53b705957fbe0f4aa71a50662e710957687b57f6f9c131e0ddd2b63deb4f954c"
+      },
+      "after": {
+        "path": "common/scripted_effects/lyd_i3b_setup_effects.txt",
+        "size": 6448,
+        "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d"
+      }
+    },
+    {
+      "path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "before": {
+        "path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+        "size": 15372,
+        "sha256": "a4f4fe371ddb35b1a194bb1350c6165442347617cca7ec8dd1b360110e6ab18a"
+      },
+      "after": {
+        "path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+        "size": 16511,
+        "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+      }
+    },
+    {
+      "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "before": {
+        "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+        "size": 6665,
+        "sha256": "967ca3e59d4d33aa588859192dde991358c1626d077a00b2d6fb204adb7a655a"
+      },
+      "after": {
+        "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+        "size": 8361,
+        "sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34"
+      }
+    },
+    {
+      "path": "common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "before": {
+        "path": "common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+        "size": 7789,
+        "sha256": "f110b0d7fe4b9d66d1232d1a2d846f6a53c20f600f26db327791dfcef58756fc"
+      },
+      "after": {
+        "path": "common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+        "size": 11379,
+        "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e"
+      }
+    },
+    {
+      "path": "events/lyd_c2_consent_events.txt",
+      "before": {
+        "path": "events/lyd_c2_consent_events.txt",
+        "size": 6618,
+        "sha256": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e"
+      },
+      "after": {
+        "path": "events/lyd_c2_consent_events.txt",
+        "size": 6638,
+        "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+      }
+    },
+    {
+      "path": "events/lyd_c3_leadership_events.txt",
+      "before": {
+        "path": "events/lyd_c3_leadership_events.txt",
+        "size": 2692,
+        "sha256": "be67baa3427719465965917d44e8594c92063a2aa165ee88833c6954ba2fd411"
+      },
+      "after": {
+        "path": "events/lyd_c3_leadership_events.txt",
+        "size": 3260,
+        "sha256": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062"
+      }
+    },
+    {
+      "path": "events/lyd_i3b_institution_events.txt",
+      "before": {
+        "path": "events/lyd_i3b_institution_events.txt",
+        "size": 5556,
+        "sha256": "72b6b6348b474fd95e29dfe0fd292cadaed8f541393cbba021fd51fdeb2b5a87"
+      },
+      "after": {
+        "path": "events/lyd_i3b_institution_events.txt",
+        "size": 5666,
+        "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02"
+      }
+    },
+    {
+      "path": "localization/english/lyd_c2_consent_l_english.yml",
+      "before": {
+        "path": "localization/english/lyd_c2_consent_l_english.yml",
+        "size": 13331,
+        "sha256": "153ff68c54238b1756455376ed33f45afd5721ea74e78c52026365b7996cec99"
+      },
+      "after": {
+        "path": "localization/english/lyd_c2_consent_l_english.yml",
+        "size": 13439,
+        "sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35"
+      }
+    },
+    {
+      "path": "localization/english/lyd_c3_leadership_l_english.yml",
+      "before": {
+        "path": "localization/english/lyd_c3_leadership_l_english.yml",
+        "size": 9455,
+        "sha256": "1febd88fc19c08f67e69650f5b4d185f2e5d3c85e118316a68cc3e3084bb3b06"
+      },
+      "after": {
+        "path": "localization/english/lyd_c3_leadership_l_english.yml",
+        "size": 11285,
+        "sha256": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77"
+      }
+    },
+    {
+      "path": "localization/english/lyd_i3b_institution_l_english.yml",
+      "before": {
+        "path": "localization/english/lyd_i3b_institution_l_english.yml",
+        "size": 10220,
+        "sha256": "1a370a05c02c14204df309acb8c162ed9651e622ccd848c3181809f3fb1053ac"
+      },
+      "after": {
+        "path": "localization/english/lyd_i3b_institution_l_english.yml",
+        "size": 11134,
+        "sha256": "7fb7976bef47c74c456ad0237e90e0d0f5f0510b0605168e53c89f1e3798a2f2"
+      }
+    },
+    {
+      "path": "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "before": {
+        "path": "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+        "size": 11654,
+        "sha256": "d93e1fe02dc615a4117ace3754a121cd338fe0bb9125c3100939f66ceebb16b4"
+      },
+      "after": {
+        "path": "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+        "size": 11744,
+        "sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504"
+      }
+    },
+    {
+      "path": "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "before": {
+        "path": "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+        "size": 8684,
+        "sha256": "9cb67ba427950f0b871e1b0a8d00c04dc4fa6bed79b5317056a0f68b28fbfdfc"
+      },
+      "after": {
+        "path": "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+        "size": 10389,
+        "sha256": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6"
+      }
+    },
+    {
+      "path": "localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "before": {
+        "path": "localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+        "size": 9138,
+        "sha256": "de0f336c3ccc49b1068bc43f41ec1623c0eda2199b62e6a4df68951525e8e96c"
+      },
+      "after": {
+        "path": "localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+        "size": 9819,
+        "sha256": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439"
+      }
+    }
+  ],
+  "runtime_delta_refs": [
+    {
+      "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+      "category": "C3",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\common\\decisions\\lyd_c3_leadership_decisions.txt",
+        "bytes": 7598,
+        "sha256": "01049457541c0c13d08d27bb793a204a2810aa826c4eb01e590b4e64dbb58138"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\common\\decisions\\lyd_c3_leadership_decisions.txt",
+        "bytes": 8528,
+        "sha256": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\common\\decisions\\lyd_c3_leadership_decisions.txt.diff",
+        "bytes": 1212,
+        "sha256": "894f707deb362f4996456afa05ff621b6617a39e952af51e74d3f68851b85be2"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\common\\decisions\\lyd_c3_leadership_decisions.txt",
+            "bytes": 8528,
+            "sha256": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\REPORT.json",
+            "bytes": 10256,
+            "sha256": "7b867ae81dd29135df7c79e63375b6f9fac0031d65e3eba5cdd2a1f1ec31d3c0"
+          }
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+      "category": "C3",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\common\\scripted_effects\\lyd_c3_challenger_effects.txt",
+        "bytes": 6468,
+        "sha256": "af3c5cabc8e6123a5d76aeed59bf0e85db8e9bcf39c85118b0ab85ee746ea89c"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\common\\scripted_effects\\lyd_c3_challenger_effects.txt",
+        "bytes": 9550,
+        "sha256": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\common\\scripted_effects\\lyd_c3_challenger_effects.txt.diff",
+        "bytes": 8055,
+        "sha256": "56d92fb48990b1cf3b04a2466109ed9c5a3d57f3b807f7beb1e6fd8f54b5166f"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\common\\scripted_effects\\lyd_c3_challenger_effects.txt",
+            "bytes": 9550,
+            "sha256": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\REPORT.json",
+            "bytes": 10256,
+            "sha256": "7b867ae81dd29135df7c79e63375b6f9fac0031d65e3eba5cdd2a1f1ec31d3c0"
+          }
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+      "category": "C3",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt",
+        "bytes": 5211,
+        "sha256": "94720db16153a862c91172d1a8174a6e91fe734d01353ce2f61132595403f651"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt",
+        "bytes": 5360,
+        "sha256": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt.diff",
+        "bytes": 723,
+        "sha256": "eadf6435858b6ec50f4cf699e23186f46de1c17a75c0971c024bdbde9321cd67"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt",
+            "bytes": 5360,
+            "sha256": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\REPORT.json",
+            "bytes": 10256,
+            "sha256": "7b867ae81dd29135df7c79e63375b6f9fac0031d65e3eba5cdd2a1f1ec31d3c0"
+          }
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "category": "I3b",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\common\\scripted_effects\\lyd_i3b_commit_effects.txt",
+        "bytes": 4096,
+        "sha256": "998c91b9c98c26a6e373efe7cf39661749115df8efa14a10b1af46ce02a93860"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\common\\scripted_effects\\lyd_i3b_commit_effects.txt",
+        "bytes": 4751,
+        "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\common\\scripted_effects\\lyd_i3b_commit_effects.txt.diff",
+        "bytes": 2457,
+        "sha256": "0ec47334f3e21ecb80d465732730d6c9c69a02116215630235a34d3913303bc6"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_commit_effects.txt",
+            "bytes": 4751,
+            "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\REPORT.json",
+            "bytes": 5813,
+            "sha256": "1125be47f436ff8c32f50e13ec95f6fe3dbff77afc7e2f1da81d367b65e8f5e1"
+          }
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_response_effects.txt",
+      "category": "I3b",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\common\\scripted_effects\\lyd_i3b_response_effects.txt",
+        "bytes": 4848,
+        "sha256": "f6a78460ac88f14993cb57e2e4ebc53747ad64c19d621bd91c401745cf1923d5"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\common\\scripted_effects\\lyd_i3b_response_effects.txt",
+        "bytes": 4939,
+        "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\common\\scripted_effects\\lyd_i3b_response_effects.txt.diff",
+        "bytes": 530,
+        "sha256": "721365407283c50e8960ad7fc52483d2d9e76129568c1bad7b3c1e0969343d05"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_response_effects.txt",
+            "bytes": 4939,
+            "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\REPORT.json",
+            "bytes": 5813,
+            "sha256": "1125be47f436ff8c32f50e13ec95f6fe3dbff77afc7e2f1da81d367b65e8f5e1"
+          }
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "category": "I3b",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\common\\scripted_effects\\lyd_i3b_setup_effects.txt",
+        "bytes": 6065,
+        "sha256": "53b705957fbe0f4aa71a50662e710957687b57f6f9c131e0ddd2b63deb4f954c"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\common\\scripted_effects\\lyd_i3b_setup_effects.txt",
+        "bytes": 6448,
+        "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\common\\scripted_effects\\lyd_i3b_setup_effects.txt.diff",
+        "bytes": 871,
+        "sha256": "fb9ff26be4e710a48f699ee9339b13b4098ae872673a3cc7d8a5e5dae2192d52"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\common\\scripted_effects\\lyd_i3b_setup_effects.txt",
+            "bytes": 6448,
+            "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\REPORT.json",
+            "bytes": 5813,
+            "sha256": "1125be47f436ff8c32f50e13ec95f6fe3dbff77afc7e2f1da81d367b65e8f5e1"
+          }
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "category": "C2",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "bytes": 15372,
+        "sha256": "a4f4fe371ddb35b1a194bb1350c6165442347617cca7ec8dd1b360110e6ab18a"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "bytes": 16511,
+        "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt.diff",
+        "bytes": 5970,
+        "sha256": "2ba959bc4be9d22b028ded5a884454158bc51b994da42bba13f2ed1e3170bd96"
+      },
+      "source_chain": [
+        {
+          "stage": "C2 candidate003 complete four-path delta from actual544",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\INDEX.json",
+            "bytes": 92863,
+            "sha256": "2cae12ec173758b5c81f8cda98bccf4a3e7777ac35348aee2d1e9357e513edea"
+          },
+          "author_delta": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\DELTA.json",
+            "bytes": 10166,
+            "sha256": "fe2c2321f2e967767f5e27c2a22654883238274a5a6390be446d06fde38e5a03"
+          },
+          "frozen_original": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-ready-trigger-presence-repair-20261005-001\\baseline\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+            "bytes": 15372,
+            "sha256": "a4f4fe371ddb35b1a194bb1350c6165442347617cca7ec8dd1b360110e6ab18a"
+          },
+          "source_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+            "bytes": 16511,
+            "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+          },
+          "ROOT_actual_retention_after_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          }
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "category": "C3",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt",
+        "bytes": 6665,
+        "sha256": "967ca3e59d4d33aa588859192dde991358c1626d077a00b2d6fb204adb7a655a"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt",
+        "bytes": 8361,
+        "sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.diff",
+        "bytes": 4742,
+        "sha256": "8e643323ff0b78d2135a02d7b871495bce4aeb937a78ad325c28a142c8f4d7e9"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt",
+            "bytes": 7426,
+            "sha256": "4214027c5fbe02413082507a19a05241f3f880b38bfe69e0dff1273031e5407e"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\REPORT.json",
+            "bytes": 10256,
+            "sha256": "7b867ae81dd29135df7c79e63375b6f9fac0031d65e3eba5cdd2a1f1ec31d3c0"
+          }
+        },
+        {
+          "stage": "Optional-target guard successor",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\INDEX.json",
+            "bytes": 2173,
+            "sha256": "44f0e25545d824e0dd72d13012b698bb73658f80b9b855a51aa3fbd739a4bcfb"
+          },
+          "handoff": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\handoff-001\\ROOT-APPLY-INPUTS.json",
+            "bytes": 3317,
+            "sha256": "efbec80d601c2f7452c50e6c1010913caf29251c63d8d72c16a1ac84e5e229b0"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-optional-guards-apply-20261005-001\\APPLIED.json",
+            "bytes": 22038,
+            "sha256": "d6abc6ae1e3655963e78dca4acde52896dac4744b943d130ccc3c2237dd2d9e2"
+          },
+          "before_sha256": "4214027c5fbe02413082507a19a05241f3f880b38bfe69e0dff1273031e5407e",
+          "after_source": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\source\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt",
+            "bytes": 8361,
+            "sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34"
+          },
+          "independent_actual_guard50_and_mutants19_receipt": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-guards-final-l0-20261005-001\\policy\\preview.json",
+            "bytes": 9830,
+            "sha256": "b4f0a863f63318ecca227048adc2b6858b2f9ed75838650bad6f8ee794cca548"
+          }
+        }
+      ]
+    },
+    {
+      "path": "common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "category": "I3b",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\common\\scripted_triggers\\lyd_i3b_institution_triggers.txt",
+        "bytes": 7789,
+        "sha256": "f110b0d7fe4b9d66d1232d1a2d846f6a53c20f600f26db327791dfcef58756fc"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\common\\scripted_triggers\\lyd_i3b_institution_triggers.txt",
+        "bytes": 11379,
+        "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\common\\scripted_triggers\\lyd_i3b_institution_triggers.txt.diff",
+        "bytes": 7196,
+        "sha256": "6188edecfbf12b8b5061d7a5e339c68359535a4239abd42ceea39e768bfe9f0a"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_i3b_institution_triggers.txt",
+            "bytes": 10906,
+            "sha256": "7b063867cfd25a76d2209010e7417f220e16f3c63333ef957a380687a08b3c58"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\REPORT.json",
+            "bytes": 5813,
+            "sha256": "1125be47f436ff8c32f50e13ec95f6fe3dbff77afc7e2f1da81d367b65e8f5e1"
+          }
+        },
+        {
+          "stage": "Optional-target guard successor",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\INDEX.json",
+            "bytes": 2173,
+            "sha256": "44f0e25545d824e0dd72d13012b698bb73658f80b9b855a51aa3fbd739a4bcfb"
+          },
+          "handoff": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\handoff-001\\ROOT-APPLY-INPUTS.json",
+            "bytes": 3317,
+            "sha256": "efbec80d601c2f7452c50e6c1010913caf29251c63d8d72c16a1ac84e5e229b0"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-optional-guards-apply-20261005-001\\APPLIED.json",
+            "bytes": 22038,
+            "sha256": "d6abc6ae1e3655963e78dca4acde52896dac4744b943d130ccc3c2237dd2d9e2"
+          },
+          "before_sha256": "7b063867cfd25a76d2209010e7417f220e16f3c63333ef957a380687a08b3c58",
+          "after_source": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\source\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_i3b_institution_triggers.txt",
+            "bytes": 11379,
+            "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e"
+          },
+          "independent_actual_guard50_and_mutants19_receipt": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-guards-final-l0-20261005-001\\policy\\preview.json",
+            "bytes": 9830,
+            "sha256": "b4f0a863f63318ecca227048adc2b6858b2f9ed75838650bad6f8ee794cca548"
+          }
+        }
+      ]
+    },
+    {
+      "path": "events/lyd_c2_consent_events.txt",
+      "category": "C2",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6618,
+        "sha256": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6638,
+        "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\events\\lyd_c2_consent_events.txt.diff",
+        "bytes": 462,
+        "sha256": "9c379ed6df06a7d179afda149d6feaf54f3de08f5086aa7d3e46570a914377d5"
+      },
+      "source_chain": [
+        {
+          "stage": "C2 candidate003 complete four-path delta from actual544",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\INDEX.json",
+            "bytes": 92863,
+            "sha256": "2cae12ec173758b5c81f8cda98bccf4a3e7777ac35348aee2d1e9357e513edea"
+          },
+          "author_delta": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\DELTA.json",
+            "bytes": 10166,
+            "sha256": "fe2c2321f2e967767f5e27c2a22654883238274a5a6390be446d06fde38e5a03"
+          },
+          "frozen_original": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-ready-trigger-presence-repair-20261005-001\\baseline\\mod_li_yu_dao\\events\\lyd_c2_consent_events.txt",
+            "bytes": 6618,
+            "sha256": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e"
+          },
+          "source_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\events\\lyd_c2_consent_events.txt",
+            "bytes": 6638,
+            "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+          },
+          "ROOT_actual_retention_after_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          }
+        }
+      ]
+    },
+    {
+      "path": "events/lyd_c3_leadership_events.txt",
+      "category": "C3",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\events\\lyd_c3_leadership_events.txt",
+        "bytes": 2692,
+        "sha256": "be67baa3427719465965917d44e8594c92063a2aa165ee88833c6954ba2fd411"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\events\\lyd_c3_leadership_events.txt",
+        "bytes": 3260,
+        "sha256": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\events\\lyd_c3_leadership_events.txt.diff",
+        "bytes": 716,
+        "sha256": "92a7ea446f430b77cd639d97c3e2d65c0edf38911691b6bd6d6bf6903af0d5d6"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\events\\lyd_c3_leadership_events.txt",
+            "bytes": 3260,
+            "sha256": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\REPORT.json",
+            "bytes": 10256,
+            "sha256": "7b867ae81dd29135df7c79e63375b6f9fac0031d65e3eba5cdd2a1f1ec31d3c0"
+          }
+        }
+      ]
+    },
+    {
+      "path": "events/lyd_i3b_institution_events.txt",
+      "category": "I3b",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\events\\lyd_i3b_institution_events.txt",
+        "bytes": 5556,
+        "sha256": "72b6b6348b474fd95e29dfe0fd292cadaed8f541393cbba021fd51fdeb2b5a87"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\events\\lyd_i3b_institution_events.txt",
+        "bytes": 5666,
+        "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\events\\lyd_i3b_institution_events.txt.diff",
+        "bytes": 637,
+        "sha256": "ac6cb08caad0979d31ec03e4f05078ea172916f77e06dffd6a8955039b673f9d"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\events\\lyd_i3b_institution_events.txt",
+            "bytes": 5666,
+            "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\REPORT.json",
+            "bytes": 5813,
+            "sha256": "1125be47f436ff8c32f50e13ec95f6fe3dbff77afc7e2f1da81d367b65e8f5e1"
+          }
+        }
+      ]
+    },
+    {
+      "path": "localization/english/lyd_c2_consent_l_english.yml",
+      "category": "C2",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\localization\\english\\lyd_c2_consent_l_english.yml",
+        "bytes": 13331,
+        "sha256": "153ff68c54238b1756455376ed33f45afd5721ea74e78c52026365b7996cec99"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\localization\\english\\lyd_c2_consent_l_english.yml",
+        "bytes": 13439,
+        "sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\localization\\english\\lyd_c2_consent_l_english.yml.diff",
+        "bytes": 1011,
+        "sha256": "8d3eb5c06692229a15866f1f7b219663ff84766f9f3ddc552e48e1aeb88eb9bb"
+      },
+      "source_chain": [
+        {
+          "stage": "C2 candidate003 complete four-path delta from actual544",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\INDEX.json",
+            "bytes": 92863,
+            "sha256": "2cae12ec173758b5c81f8cda98bccf4a3e7777ac35348aee2d1e9357e513edea"
+          },
+          "author_delta": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\DELTA.json",
+            "bytes": 10166,
+            "sha256": "fe2c2321f2e967767f5e27c2a22654883238274a5a6390be446d06fde38e5a03"
+          },
+          "frozen_original": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-ready-trigger-presence-repair-20261005-001\\baseline\\mod_li_yu_dao\\localization\\english\\lyd_c2_consent_l_english.yml",
+            "bytes": 13331,
+            "sha256": "153ff68c54238b1756455376ed33f45afd5721ea74e78c52026365b7996cec99"
+          },
+          "source_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\localization\\english\\lyd_c2_consent_l_english.yml",
+            "bytes": 13439,
+            "sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35"
+          },
+          "ROOT_actual_retention_after_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          }
+        }
+      ]
+    },
+    {
+      "path": "localization/english/lyd_c3_leadership_l_english.yml",
+      "category": "C3",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\localization\\english\\lyd_c3_leadership_l_english.yml",
+        "bytes": 9455,
+        "sha256": "1febd88fc19c08f67e69650f5b4d185f2e5d3c85e118316a68cc3e3084bb3b06"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\localization\\english\\lyd_c3_leadership_l_english.yml",
+        "bytes": 11285,
+        "sha256": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\localization\\english\\lyd_c3_leadership_l_english.yml.diff",
+        "bytes": 2478,
+        "sha256": "9f365525d1dffbc4d30cb4be6dde8d57e88d167e57ac19bda57a505a0decf86e"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\localization\\english\\lyd_c3_leadership_l_english.yml",
+            "bytes": 11285,
+            "sha256": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\REPORT.json",
+            "bytes": 10256,
+            "sha256": "7b867ae81dd29135df7c79e63375b6f9fac0031d65e3eba5cdd2a1f1ec31d3c0"
+          }
+        }
+      ]
+    },
+    {
+      "path": "localization/english/lyd_i3b_institution_l_english.yml",
+      "category": "I3b",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\localization\\english\\lyd_i3b_institution_l_english.yml",
+        "bytes": 10220,
+        "sha256": "1a370a05c02c14204df309acb8c162ed9651e622ccd848c3181809f3fb1053ac"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\localization\\english\\lyd_i3b_institution_l_english.yml",
+        "bytes": 11134,
+        "sha256": "7fb7976bef47c74c456ad0237e90e0d0f5f0510b0605168e53c89f1e3798a2f2"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\localization\\english\\lyd_i3b_institution_l_english.yml.diff",
+        "bytes": 6753,
+        "sha256": "87ba443ded81d74fb99179c70384044a5705af5fa2d68bb4bcb60e16c431dc24"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\localization\\english\\lyd_i3b_institution_l_english.yml",
+            "bytes": 11134,
+            "sha256": "7fb7976bef47c74c456ad0237e90e0d0f5f0510b0605168e53c89f1e3798a2f2"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\REPORT.json",
+            "bytes": 5813,
+            "sha256": "1125be47f436ff8c32f50e13ec95f6fe3dbff77afc7e2f1da81d367b65e8f5e1"
+          }
+        }
+      ]
+    },
+    {
+      "path": "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "category": "C2",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml",
+        "bytes": 11654,
+        "sha256": "d93e1fe02dc615a4117ace3754a121cd338fe0bb9125c3100939f66ceebb16b4"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml",
+        "bytes": 11744,
+        "sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml.diff",
+        "bytes": 958,
+        "sha256": "32d87dce7da19e967b44a20ccf6225f76ac6fecd94d1a768361ab95c50ec9003"
+      },
+      "source_chain": [
+        {
+          "stage": "C2 candidate003 complete four-path delta from actual544",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\INDEX.json",
+            "bytes": 92863,
+            "sha256": "2cae12ec173758b5c81f8cda98bccf4a3e7777ac35348aee2d1e9357e513edea"
+          },
+          "author_delta": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\DELTA.json",
+            "bytes": 10166,
+            "sha256": "fe2c2321f2e967767f5e27c2a22654883238274a5a6390be446d06fde38e5a03"
+          },
+          "frozen_original": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-ready-trigger-presence-repair-20261005-001\\baseline\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml",
+            "bytes": 11654,
+            "sha256": "d93e1fe02dc615a4117ace3754a121cd338fe0bb9125c3100939f66ceebb16b4"
+          },
+          "source_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_c2_consent_l_simp_chinese.yml",
+            "bytes": 11744,
+            "sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504"
+          },
+          "ROOT_actual_retention_after_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          }
+        }
+      ]
+    },
+    {
+      "path": "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "category": "C3",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml",
+        "bytes": 8684,
+        "sha256": "9cb67ba427950f0b871e1b0a8d00c04dc4fa6bed79b5317056a0f68b28fbfdfc"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml",
+        "bytes": 10389,
+        "sha256": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml.diff",
+        "bytes": 2314,
+        "sha256": "af651cd51f9423c87430a9a913492771889c7faba0b42f105530d45674fcb0d1"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml",
+            "bytes": 10389,
+            "sha256": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\REPORT.json",
+            "bytes": 10256,
+            "sha256": "7b867ae81dd29135df7c79e63375b6f9fac0031d65e3eba5cdd2a1f1ec31d3c0"
+          }
+        }
+      ]
+    },
+    {
+      "path": "localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "category": "I3b",
+      "before": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\before\\localization\\simp_chinese\\lyd_i3b_institution_l_simp_chinese.yml",
+        "bytes": 9138,
+        "sha256": "de0f336c3ccc49b1068bc43f41ec1623c0eda2199b62e6a4df68951525e8e96c"
+      },
+      "after": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\after\\localization\\simp_chinese\\lyd_i3b_institution_l_simp_chinese.yml",
+        "bytes": 9819,
+        "sha256": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439"
+      },
+      "complete_diff": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\diff\\localization\\simp_chinese\\lyd_i3b_institution_l_simp_chinese.yml.diff",
+        "bytes": 5867,
+        "sha256": "ccefe114d73ba9bbd5cf14653b3393d31f0e43d4d6022c33589d25ad7ac5ceeb"
+      },
+      "source_chain": [
+        {
+          "stage": "C3/I3b exact 26-target application",
+          "author_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\INDEX.json",
+            "bytes": 209556,
+            "sha256": "d95def5e0be15aad12eef35049f3aa3c8f3b8fed7553bafc4175c010be0bafc5"
+          },
+          "current_applicability_index": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\INDEX.json",
+            "bytes": 80347,
+            "sha256": "2404ddbbc5003d8a8fb3379a32208ac22a729360fd77e29cdd64dc80c463cafc"
+          },
+          "ROOT_application": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+            "bytes": 18369,
+            "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+          },
+          "initial_output": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\localization\\simp_chinese\\lyd_i3b_institution_l_simp_chinese.yml",
+            "bytes": 9819,
+            "sha256": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439"
+          },
+          "independent_review": {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\REPORT.json",
+            "bytes": 5813,
+            "sha256": "1125be47f436ff8c32f50e13ec95f6fe3dbff77afc7e2f1da81d367b65e8f5e1"
+          }
+        }
+      ]
+    }
+  ],
+  "runtime70_snapshot": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\snapshot-001\\RUNTIME-SNAPSHOT.json",
+    "bytes": 132969,
+    "sha256": "1fceefeb2774278d9a467cf6a5b7a69a916c3387014a7837a5ed0d776657cec3"
+  },
+  "all18_source_chains_complete": true,
+  "C2_count": 4,
+  "C3_I3b_initial_generated_count": 14,
+  "guard_generated_successors": 2,
+  "ROOT26_authored12_generated14": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-i3b-apply-20261005-001\\APPLIED.json",
+    "bytes": 18369,
+    "sha256": "721d0767f29c9f834c9139f9f492cf8c7e28a05561f410ba8fc810148ed80098"
+  },
+  "ROOTguard_authored3_generated2": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-optional-guards-apply-20261005-001\\APPLIED.json",
+    "bytes": 22038,
+    "sha256": "d6abc6ae1e3655963e78dca4acde52896dac4744b943d130ccc3c2237dd2d9e2"
+  },
+  "production_authored_current_exact_bound": [
+    {
+      "path": "tools/gen_institution.py",
+      "initial_root26": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\tools\\gen_institution.py",
+        "bytes": 51577,
+        "sha256": "1243dc72037a0bdf3fd660f781ee13af232f9bd20828fc930b87033733884f24"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_institution.py",
+        "bytes": 52050,
+        "sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3"
+      },
+      "guard_successor": {
+        "target": "mod_li_yu_dao/tools/gen_institution.py",
+        "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\source\\mod_li_yu_dao\\tools\\gen_institution.py",
+        "before_exists": true,
+        "before_sha256": "1243dc72037a0bdf3fd660f781ee13af232f9bd20828fc930b87033733884f24",
+        "after_sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3",
+        "after_bytes": 52050
+      }
+    },
+    {
+      "path": "tools/gen_leadership.py",
+      "initial_root26": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\tools\\gen_leadership.py",
+        "bytes": 2327,
+        "sha256": "785792db2b017baff6fa7629a0865121db3aa3d96e601131461e0a182b2c1820"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_leadership.py",
+        "bytes": 2327,
+        "sha256": "785792db2b017baff6fa7629a0865121db3aa3d96e601131461e0a182b2c1820"
+      },
+      "guard_successor": null
+    },
+    {
+      "path": "tools/leadership_templates/common/decisions/lyd_c3_leadership_decisions.txt.in",
+      "initial_root26": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\tools\\leadership_templates\\common\\decisions\\lyd_c3_leadership_decisions.txt.in",
+        "bytes": 8448,
+        "sha256": "c6244de226380858ecabe93bae2434ffc0c46bc1706a1760d450057d1e402c0b"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\decisions\\lyd_c3_leadership_decisions.txt.in",
+        "bytes": 8448,
+        "sha256": "c6244de226380858ecabe93bae2434ffc0c46bc1706a1760d450057d1e402c0b"
+      },
+      "guard_successor": null
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_challenger_effects.txt.in",
+      "initial_root26": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_challenger_effects.txt.in",
+        "bytes": 9470,
+        "sha256": "1d41dddf856a746672af4717685b3758f14038f9fd8311346b915c7a54a2f2af"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_challenger_effects.txt.in",
+        "bytes": 9470,
+        "sha256": "1d41dddf856a746672af4717685b3758f14038f9fd8311346b915c7a54a2f2af"
+      },
+      "guard_successor": null
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in",
+      "initial_root26": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt.in",
+        "bytes": 5280,
+        "sha256": "e2865ca4bc82741f369a320b759b7ec8020db6e5fe75b5b36a20f092311e8766"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt.in",
+        "bytes": 5280,
+        "sha256": "e2865ca4bc82741f369a320b759b7ec8020db6e5fe75b5b36a20f092311e8766"
+      },
+      "guard_successor": null
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in",
+      "initial_root26": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.in",
+        "bytes": 7346,
+        "sha256": "f6cebf21b5d2515c76c417349b9403b94c3977e1a669b18742a5ccd701de3cfc"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.in",
+        "bytes": 8278,
+        "sha256": "bf6ac63911e78468caa926eb5fd5ffb65f0c9819c2d2963cc8c2d9d7844b07ca"
+      },
+      "guard_successor": {
+        "target": "mod_li_yu_dao/tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in",
+        "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\source\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.in",
+        "before_exists": true,
+        "before_sha256": "f6cebf21b5d2515c76c417349b9403b94c3977e1a669b18742a5ccd701de3cfc",
+        "after_sha256": "bf6ac63911e78468caa926eb5fd5ffb65f0c9819c2d2963cc8c2d9d7844b07ca",
+        "after_bytes": 8278
+      }
+    },
+    {
+      "path": "tools/leadership_templates/events/lyd_c3_leadership_events.txt.in",
+      "initial_root26": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\tools\\leadership_templates\\events\\lyd_c3_leadership_events.txt.in",
+        "bytes": 3180,
+        "sha256": "a9fbdeed1ff5c211d30861803cc5a417bbfd772f1316087a9ccb4da2a651787e"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\events\\lyd_c3_leadership_events.txt.in",
+        "bytes": 3180,
+        "sha256": "a9fbdeed1ff5c211d30861803cc5a417bbfd772f1316087a9ccb4da2a651787e"
+      },
+      "guard_successor": null
+    },
+    {
+      "path": "tools/leadership_templates/localization/english/lyd_c3_leadership_l_english.yml.in",
+      "initial_root26": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\tools\\leadership_templates\\localization\\english\\lyd_c3_leadership_l_english.yml.in",
+        "bytes": 11204,
+        "sha256": "7ded7a78e204060fd4ef7e167dafab662fe170f4dad319d60d4af742ee9ce5b5"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\localization\\english\\lyd_c3_leadership_l_english.yml.in",
+        "bytes": 11204,
+        "sha256": "7ded7a78e204060fd4ef7e167dafab662fe170f4dad319d60d4af742ee9ce5b5"
+      },
+      "guard_successor": null
+    },
+    {
+      "path": "tools/leadership_templates/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml.in",
+      "initial_root26": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-current-main-delta-applicability-20261005-001\\delta-current-files\\mod_li_yu_dao\\tools\\leadership_templates\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml.in",
+        "bytes": 10308,
+        "sha256": "ab79e52ada64a3ad5bc19d3ce92225541849e62a1b438517a3f1f9e90c02a912"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\leadership_templates\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml.in",
+        "bytes": 10308,
+        "sha256": "ab79e52ada64a3ad5bc19d3ce92225541849e62a1b438517a3f1f9e90c02a912"
+      },
+      "guard_successor": null
+    },
+    {
+      "path": "tools/gen_school_consent.py",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\tools\\gen_school_consent.py",
+        "bytes": 43067,
+        "sha256": "95bb9ea954cf96b19bed842c0f47ff6365d6e0c2e39f1a4ad825656ad3cf7c20"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\gen_school_consent.py",
+        "bytes": 43067,
+        "sha256": "95bb9ea954cf96b19bed842c0f47ff6365d6e0c2e39f1a4ad825656ad3cf7c20"
+      },
+      "basis": "C2 complete candidate003 production author"
+    },
+    {
+      "path": "tools/school_consent_templates/common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "bytes": 16874,
+        "sha256": "d5553d1265bb9cdcaf3392784e4ee1752d10af52d228595ca518e6f11ae5cedd"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "bytes": 16482,
+        "sha256": "2ea24b3e8c945eb6a41b48d30c884d61b154bf69c1c4881305880b2a36e83f77",
+        "source_difference": "EXACT_CRLF_TO_LF_ONLY_392_LINES_RUNTIME_RAW_BYTES_UNCHANGED"
+      },
+      "basis": "C2 complete candidate003 production author"
+    },
+    {
+      "path": "tools/school_consent_templates/events/lyd_c2_consent_events.txt",
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c2-preview-scopefix-full-candidate-20261005-003\\source\\mod_li_yu_dao\\tools\\school_consent_templates\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6724,
+        "sha256": "3492722777c8aca20f91f8eb304dbcea9a9f5e970f16235c940181eb31ae888c"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\mod_li_yu_dao\\tools\\school_consent_templates\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6724,
+        "sha256": "3492722777c8aca20f91f8eb304dbcea9a9f5e970f16235c940181eb31ae888c"
+      },
+      "basis": "C2 complete candidate003 production author"
+    }
+  ],
+  "C3_independent_source_review": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\REPORT.json",
+    "bytes": 10256,
+    "sha256": "7b867ae81dd29135df7c79e63375b6f9fac0031d65e3eba5cdd2a1f1ec31d3c0"
+  },
+  "C3_reviewed_outputs_actual_refs": [
+    {
+      "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "reviewed_file": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\runtime\\common\\character_interactions\\lyd_c3_teacher_interactions.txt",
+        "bytes": 4931,
+        "sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7"
+      },
+      "later_guard": null
+    },
+    {
+      "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+      "reviewed_file": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\runtime\\common\\decisions\\lyd_c3_leadership_decisions.txt",
+        "bytes": 8528,
+        "sha256": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba"
+      },
+      "later_guard": null
+    },
+    {
+      "path": "common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "reviewed_file": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\runtime\\common\\on_action\\lyd_c3_lifecycle_on_actions.txt",
+        "bytes": 544,
+        "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b"
+      },
+      "later_guard": null
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+      "reviewed_file": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\runtime\\common\\scripted_effects\\lyd_c3_challenger_effects.txt",
+        "bytes": 9550,
+        "sha256": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b"
+      },
+      "later_guard": null
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+      "reviewed_file": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\runtime\\common\\scripted_effects\\lyd_c3_council_effects.txt",
+        "bytes": 9687,
+        "sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff"
+      },
+      "later_guard": null
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_head_factory.txt",
+      "reviewed_file": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\runtime\\common\\scripted_effects\\lyd_c3_head_factory.txt",
+        "bytes": 1993,
+        "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24"
+      },
+      "later_guard": null
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+      "reviewed_file": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\runtime\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt",
+        "bytes": 5360,
+        "sha256": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88"
+      },
+      "later_guard": null
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "reviewed_file": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\runtime\\common\\scripted_effects\\lyd_c3_migration_hooks.txt",
+        "bytes": 1366,
+        "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b"
+      },
+      "later_guard": null
+    },
+    {
+      "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "reviewed_file": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\runtime\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt",
+        "bytes": 7426,
+        "sha256": "4214027c5fbe02413082507a19a05241f3f880b38bfe69e0dff1273031e5407e"
+      },
+      "later_guard": {
+        "target": "mod_li_yu_dao/common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+        "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-optional-target-guard-candidate-20261005-001\\source\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt",
+        "before_exists": true,
+        "before_sha256": "4214027c5fbe02413082507a19a05241f3f880b38bfe69e0dff1273031e5407e",
+        "after_sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34",
+        "after_bytes": 8361
+      }
+    },
+    {
+      "path": "events/lyd_c3_leadership_events.txt",
+      "reviewed_file": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\runtime\\events\\lyd_c3_leadership_events.txt",
+        "bytes": 3260,
+        "sha256": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062"
+      },
+      "later_guard": null
+    },
+    {
+      "path": "localization/english/lyd_c3_leadership_l_english.yml",
+      "reviewed_file": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\runtime\\localization\\english\\lyd_c3_leadership_l_english.yml",
+        "bytes": 11285,
+        "sha256": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77"
+      },
+      "later_guard": null
+    },
+    {
+      "path": "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "reviewed_file": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-c3-native-primitives-independent-review-20261005-001\\variant002-source-review-003\\runtime\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml",
+        "bytes": 10389,
+        "sha256": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6"
+      },
+      "later_guard": null
+    }
+  ],
+  "I3b_independent_source_review_INDEX": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\INDEX.json",
+    "bytes": 2430,
+    "sha256": "33ed711277972b83c6f3bfbcf9e005a09827ff461fab7954b4d0a300bb305af7"
+  },
+  "I3b_independent_source_review_REPORT": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\REPORT.json",
+    "bytes": 5813,
+    "sha256": "1125be47f436ff8c32f50e13ec95f6fe3dbff77afc7e2f1da81d367b65e8f5e1"
+  },
+  "guard50_and19_actual_receipt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-guards-final-l0-20261005-001\\policy\\preview.json",
+    "bytes": 9830,
+    "sha256": "b4f0a863f63318ecca227048adc2b6858b2f9ed75838650bad6f8ee794cca548"
+  },
+  "guard50_and19_not_rerun": true,
+  "ROOT_guard_after_runtime_covered_count": 68,
+  "ROOT_guard_suite_original_global_RED": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-guards-final-l0-20261005-001\\RESULT.json",
+    "bytes": 4922,
+    "sha256": "eed5a1e24caa50f3a7640fe25a318251058657f08daa24a0f87147525618d81c"
+  },
+  "ROOT_guard_suite_scope": "The original overall RESULT stays SOURCE_L0_RED while two historical tests are being adapted. Preview50/19 and product/static each pass independently; no overall GREEN invented.",
+  "test_only_authored_followups": "Original root26/guard test inputs retained as provenance. Two current tests may be adapted; no runtime change and no old tests run here.",
+  "full_source_review_scope": "mod_li_yu_dao production70 plus exact production-author source chains; not ROOT entire native/Python/full-export source review.",
+  "final_Git_export": null,
+  "native": "NOT_RUN",
+  "tests_executed": 0,
+  "main_mutations": 0,
+  "Git_calls": 0
+}

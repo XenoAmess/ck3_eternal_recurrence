@@ -1,0 +1,8 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/bind_verifier.py",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\offline-finish-assembly\\BIND-REQUEST.actual.json"
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "lyd.r10.release.defender-receipt-clarification.v1",
+  "status": "RECEIPT_STAGE_CLARIFIED_ORIGINAL_PACKAGE_UNCHANGED",
+  "references": {
+    "original_index": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-actual-release-build-20261005-001/INDEX.json",
+      "bytes": 3905,
+      "sha256": "9a2e09c1f1edc5470463e40e3961ef7482e20ccbcc1b1faf5a93b788424d63ca"
+    },
+    "original_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-actual-release-build-20261005-001/RESULT.json",
+      "bytes": 14289,
+      "sha256": "5d71601a747c1aaacb41b08679938df5c567879843ecb8dfad7d462bd64ed79f"
+    },
+    "original_chinese_report": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-actual-release-build-20261005-001/REPORT-zh.md",
+      "bytes": 620,
+      "sha256": "76e8c7ff1d4aa4bbbb06e8d4acf1c63fd0a1861ce724c6e0ee44da6d3d80065c"
+    },
+    "actual_defender_receipt": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-actual-release-build-20261005-001/evidence/receipt.json",
+      "bytes": 1649,
+      "sha256": "5d2da0b8600d3292dd4db4b1e7c4e9447850a779269cd912c0047368d204e9ea"
+    },
+    "original_summary": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-actual-release-build-20261005-001/SUMMARY.json",
+      "bytes": 2130,
+      "sha256": "e6bd3086562f917c3437c3ce897b2849da75b26e2723ae09f9057157f62e6cfe"
+    }
+  },
+  "superseded_narrative": "Defender WMI 读取失败",
+  "clarification": "实际排除登记回执明确 error_stage=Add-invocation：针对本次新注入器 EXE 的一次 WMI MSFT_MpPreference.Add 设置调用失败。初始状态探测读取也失败，但不能把登记失败阶段概括为仅读取失败。",
+  "actual_error_stage": "Add-invocation",
+  "actual_calls": [
+    {
+      "path": "C:\\lydr10-release-20261005-001\\xar_ck3_bridge_injector.exe",
+      "method": "Add",
+      "return_value": null,
+      "return_value_available": false,
+      "call_error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+      "call_error_type": "com_error"
+    }
+  ],
+  "actual_verified_requested_paths": [],
+  "exclusion_effectiveness_verified": false,
+  "compilation_pass": true,
+  "outer_status": "ACTUAL_RELEASE_BUILD_RED",
+  "no_original_bytes_changed": true,
+  "additional_build_calls": 0,
+  "additional_defender_calls": 0,
+  "game_calls": 0,
+  "native_pipe_calls": 0
+}

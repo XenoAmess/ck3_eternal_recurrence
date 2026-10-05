@@ -1,0 +1,184 @@
+﻿# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py.
+namespace = lyd
+
+lyd.200 = {
+    type = character_event
+    title = lyd_c2_proposal_t
+    desc = lyd_c2_proposal_desc
+    theme = faith
+    trigger = { lyd_c2_initiator_event_context_trigger = yes }
+    option = { name = lyd_c2_wait }
+    option = { name = lyd_c2_cancel trigger = { lyd_c2_initiator_event_context_trigger = yes } lyd_c2_event_cancel_round_effect = yes }
+}
+lyd.210 = {
+    type = character_event
+    title = lyd_c2_source_ballot_t
+    desc = lyd_c2_source_ballot_desc
+    theme = faith
+    trigger = { lyd_c2_source_ballot_trigger = yes }
+    option = {
+        name = lyd_c2_vote_yes
+        ai_chance = { base = 60 }
+        lyd_c2_source_vote_effect = { YES = 1 }
+    }
+    option = {
+        name = lyd_c2_vote_no
+        ai_chance = { base = 40 }
+        lyd_c2_source_vote_effect = { YES = 0 }
+    }
+}
+lyd.211 = {
+    type = character_event
+    title = lyd_c2_target_ballot_t
+    desc = lyd_c2_target_ballot_desc
+    theme = faith
+    trigger = { lyd_c2_target_ballot_trigger = yes }
+    option = {
+        name = lyd_c2_vote_yes
+        ai_chance = { base = 60 }
+        lyd_c2_target_vote_effect = { YES = 1 }
+    }
+    option = {
+        name = lyd_c2_vote_no
+        ai_chance = { base = 40 }
+        lyd_c2_target_vote_effect = { YES = 0 }
+    }
+}
+lyd.212 = {
+    type = character_event
+    title = lyd_c2_player_consent_t
+    desc = lyd_c2_player_consent_desc
+    theme = faith
+    trigger = { lyd_c2_player_consent_trigger = yes }
+    option = { name = lyd_c2_player_yes lyd_c2_player_yes_effect = yes }
+    option = { name = lyd_c2_player_no lyd_c2_player_no_effect = yes }
+}
+lyd.220 = {
+    type = character_event
+    title = lyd_c2_review_t
+    desc = lyd_c2_review_desc
+    theme = faith
+    trigger = { lyd_c2_initiator_event_context_trigger = yes }
+    option = {
+        name = lyd_c2_sign_source
+        trigger = {
+            lyd_c2_initiator_event_context_trigger = yes
+            lyd_c2_source_mandate_trigger = { ACTOR = root }
+            NOT = { has_variable = lyd_c2_source_signed }
+            var:lyd_c2_snapshot_valid = 1
+        }
+        custom_tooltip = lyd_c2_sign_source_tt
+        lyd_c2_event_sign_source_effect = yes
+    }
+    option = {
+        name = lyd_c2_confirm
+        trigger = { lyd_c2_initiator_event_context_trigger = yes lyd_c2_ready_to_confirm_trigger = { ACTOR = root } }
+        custom_tooltip = lyd_c2_confirm_tt
+        hidden_effect = { lyd_c2_event_commit_effect = yes }
+    }
+    option = {
+        name = lyd_c2_native_pending
+        trigger = { NOT = { lyd_c2_native_admitted_trigger = yes } }
+        custom_tooltip = lyd_c2_native_pending_tt
+    }
+    option = { name = lyd_c2_wait }
+    option = { name = lyd_c2_cancel trigger = { lyd_c2_initiator_event_context_trigger = yes } lyd_c2_event_cancel_round_effect = yes }
+}
+lyd.213 = {
+    type = character_event
+    title = lyd_c2_holder_t
+    desc = lyd_c2_holder_desc
+    theme = faith
+    trigger = { lyd_c2_holder_context_trigger = yes }
+    option = {
+        name = lyd_c2_holder_yes
+        ai_chance = { base = 60 }
+        lyd_c2_holder_endorse_effect = yes
+    }
+    option = {
+        name = lyd_c2_holder_no
+        ai_chance = { base = 40 }
+        lyd_c2_event_holder_reject_effect = yes
+    }
+}
+lyd.221 = {
+    type = character_event
+    title = lyd_c2_receive_t
+    desc = lyd_c2_receive_desc
+    theme = faith
+    trigger = {
+        lyd_c2_ballot_context_trigger = yes
+        this = scope:lyd_c2_actor.var:lyd_c2_target_rep
+        scope:lyd_c2_actor = { var:lyd_c2_source_signed = 1 }
+    }
+    option = {
+        name = lyd_c2_receive_yes
+        trigger = {
+            has_variable = lyd_c2_vote_owner
+            has_variable = lyd_c2_vote_serial
+            has_variable = lyd_c2_vote_nonce
+            var:lyd_c2_vote_owner = scope:lyd_c2_actor
+            var:lyd_c2_vote_serial = scope:lyd_c2_event_serial
+            var:lyd_c2_vote_nonce = scope:lyd_c2_event_nonce
+            var:lyd_c2_vote_yes = 1
+            scope:lyd_c2_actor = { lyd_c2_receiving_mandates_trigger = { ACTOR = scope:lyd_c2_actor } }
+        }
+        ai_chance = { base = 60 }
+        lyd_c2_sign_target_effect = yes
+    }
+    option = {
+        name = lyd_c2_receive_no
+        ai_chance = { base = 40 }
+        lyd_c2_event_target_reject_effect = yes
+    }
+}
+lyd.222 = {
+    type = character_event
+    title = lyd_c2_head_receive_t
+    desc = lyd_c2_head_receive_desc
+    theme = faith
+    trigger = { lyd_c2_ballot_context_trigger = yes this = scope:lyd_c2_actor.var:lyd_c2_target_head }
+    option = { name = lyd_c2_receive_yes ai_chance = { base = 60 } lyd_c2_head_yes_effect = { SIDE = target } }
+    option = { name = lyd_c2_receive_no ai_chance = { base = 40 } lyd_c2_event_head_reject_effect = yes }
+}
+lyd.223 = {
+    type = character_event
+    title = lyd_c2_head_source_t
+    desc = lyd_c2_head_source_desc
+    theme = faith
+    trigger = { lyd_c2_ballot_context_trigger = yes this = scope:lyd_c2_actor.var:lyd_c2_source_head }
+    option = { name = lyd_c2_source_head_recognize ai_chance = { base = 60 } lyd_c2_source_head_reply_effect = { YES = 1 } }
+    option = { name = lyd_c2_source_head_withhold ai_chance = { base = 40 } lyd_c2_source_head_reply_effect = { YES = 0 } }
+}
+lyd.224 = {
+    type = character_event
+    title = lyd_c2_peaceful_t
+    desc = lyd_c2_peaceful_desc
+    theme = faith
+    trigger = {
+        lyd_c2_ballot_context_trigger = yes
+        this = scope:lyd_c2_actor.var:lyd_c2_source_head
+        scope:lyd_c2_actor = { var:lyd_c2_kind = 2 }
+    }
+    option = { name = lyd_c2_peaceful_yes ai_chance = { base = 60 } lyd_c2_peaceful_permission_effect = { YES = 1 } }
+    option = { name = lyd_c2_peaceful_no ai_chance = { base = 40 } lyd_c2_peaceful_permission_effect = { YES = 0 } }
+}
+lyd.228 = {
+    type = character_event
+    title = lyd_c2_result_t
+    desc = {
+        triggered_desc = { trigger = { var:lyd_c2_result = 1 } desc = lyd_c2_success_desc }
+        triggered_desc = { trigger = { var:lyd_c2_result = 2 } desc = lyd_c2_rejected_desc }
+        triggered_desc = { trigger = { var:lyd_c2_result = 3 } desc = lyd_c2_cancelled_desc }
+        triggered_desc = { trigger = { var:lyd_c2_result = 4 } desc = lyd_c2_expired_desc }
+        triggered_desc = { trigger = { var:lyd_c2_result = 5 } desc = lyd_c2_failed_desc }
+    }
+    theme = faith
+    trigger = { is_ai = no has_variable = lyd_c2_result }
+    option = { name = lyd_c2_acknowledge }
+}
+lyd.229 = {
+    type = character_event
+    hidden = yes
+    immediate = { lyd_c2_expire_round_effect = yes }
+}

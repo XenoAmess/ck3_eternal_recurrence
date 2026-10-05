@@ -1,0 +1,26 @@
+2262={
+	key=c_rossano
+	de_facto_liege=2230
+	de_jure_liege=2253
+	de_jure_vassals={ 2263 2264 2265 }
+	holder=31254
+	date=1057.1.1
+	succession_result_type=inheritance_child_line
+	heir={ 40695 40526 39979 40847 41032 37244 38098 36445 36663 36873 31692 34973 40259 35598 36638 32536 38561 39045 39171 39352 }
+	history={ 740.1.1=5905 766.1.1=6909 788.1.1=7194 857.1.1=13434 1057.1.1=31254 }
+	capital=2262
+	coat_of_arms_id=555
+	title_name_data={
+		name="罗萨诺"
+		adj="罗萨诺"
+		title_history_names={ {
+				date=740.1.1
+				name="c_rossano"
+			}
+ }
+	}
+
+	treasury={
+	}
+	nomad_name_type=default
+}

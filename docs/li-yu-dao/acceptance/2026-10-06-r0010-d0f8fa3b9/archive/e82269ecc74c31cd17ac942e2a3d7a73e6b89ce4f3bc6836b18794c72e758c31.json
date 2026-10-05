@@ -1,0 +1,803 @@
+{
+  "actor_C2": {
+    "lyd_r4_reset_count": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "500000",
+      "number": "5"
+    },
+    "lyd_c2_callback_nonce": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1100000",
+      "number": "11"
+    },
+    "lyd_c2_completed_joins": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_completed_detaches": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "200000",
+      "number": "2"
+    },
+    "lyd_c2_serial": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1100000",
+      "number": "11"
+    },
+    "lyd_c2_elector_owner": {
+      "present": true,
+      "tick": null,
+      "type": "char",
+      "identity": "31254",
+      "number": null
+    },
+    "lyd_c2_elector_serial": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1100000",
+      "number": "11"
+    },
+    "lyd_c2_elector_rite": {
+      "present": true,
+      "tick": null,
+      "type": "rite",
+      "identity": "169",
+      "number": null
+    },
+    "lyd_c2_affected_owner": {
+      "present": true,
+      "tick": null,
+      "type": "char",
+      "identity": "31254",
+      "number": null
+    },
+    "lyd_c2_affected_serial": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1100000",
+      "number": "11"
+    },
+    "lyd_c2_affected_rite": {
+      "present": true,
+      "tick": null,
+      "type": "rite",
+      "identity": "169",
+      "number": null
+    },
+    "lyd_c2_source_core_total": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "300000",
+      "number": "3"
+    },
+    "lyd_c2_source_permitted_total": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "number": null
+    },
+    "lyd_c2_source_known_total": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "number": null
+    },
+    "lyd_c2_source_prohibited_total": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "number": null
+    },
+    "lyd_c2_source_doctrines_total": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "2800000",
+      "number": "28"
+    },
+    "lyd_c2_player_owner": {
+      "present": true,
+      "tick": null,
+      "type": "char",
+      "identity": "31254",
+      "number": null
+    },
+    "lyd_c2_player_serial": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1000000",
+      "number": "10"
+    },
+    "lyd_c2_player_nonce": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1000000",
+      "number": "10"
+    },
+    "lyd_c2_vote_owner": {
+      "present": true,
+      "tick": null,
+      "type": "char",
+      "identity": "31254",
+      "number": null
+    },
+    "lyd_c2_vote_serial": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1000000",
+      "number": "10"
+    },
+    "lyd_c2_vote_nonce": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1000000",
+      "number": "10"
+    },
+    "lyd_c2_vote_yes": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_check_count": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "200000",
+      "number": "2"
+    },
+    "lyd_c2_check_players": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_check_rites": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_kind": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_terms_revision": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_result": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "number": null
+    },
+    "lyd_c2_source_faith": {
+      "present": true,
+      "tick": null,
+      "type": "faith",
+      "identity": "106",
+      "number": null
+    },
+    "lyd_c2_source_main": {
+      "present": true,
+      "tick": null,
+      "type": "rite",
+      "identity": "169",
+      "number": null
+    },
+    "lyd_c2_moving_rite": {
+      "present": true,
+      "tick": null,
+      "type": "rite",
+      "identity": "169",
+      "number": null
+    },
+    "lyd_c2_source_singleton": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_source_rite_head": {
+      "present": true,
+      "tick": null,
+      "type": "char",
+      "identity": "31254",
+      "number": null
+    },
+    "lyd_c2_source_total": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "200000",
+      "number": "2"
+    },
+    "lyd_c2_target_total": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_target_rite_total": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_dormant_total": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "number": null
+    },
+    "lyd_c2_source_yes": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "number": null
+    },
+    "lyd_c2_target_yes": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "number": null
+    },
+    "lyd_c2_player_total": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    },
+    "lyd_c2_player_yes": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "number": null
+    },
+    "lyd_c2_target_rep": {
+      "present": true,
+      "tick": null,
+      "type": "char",
+      "identity": "65866",
+      "number": null
+    },
+    "lyd_c2_target_faith": {
+      "present": true,
+      "tick": null,
+      "type": "faith",
+      "identity": "104",
+      "number": null
+    },
+    "lyd_c2_target_main": {
+      "present": true,
+      "tick": null,
+      "type": "rite",
+      "identity": "159",
+      "number": null
+    },
+    "lyd_c2_active": {
+      "present": true,
+      "tick": "365",
+      "type": "value",
+      "identity": "100000",
+      "number": "1"
+    }
+  },
+  "tickets": {
+    "31254": {
+      "lyd_c2_vote_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "number": null
+      },
+      "lyd_c2_vote_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1000000",
+        "number": "10"
+      },
+      "lyd_c2_vote_nonce": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1000000",
+        "number": "10"
+      },
+      "lyd_c2_vote_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "number": "1"
+      },
+      "lyd_c2_player_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "number": null
+      },
+      "lyd_c2_player_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1000000",
+        "number": "10"
+      },
+      "lyd_c2_player_nonce": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1000000",
+        "number": "10"
+      }
+    },
+    "65865": {
+      "lyd_c2_vote_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "number": null
+      },
+      "lyd_c2_vote_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1100000",
+        "number": "11"
+      },
+      "lyd_c2_vote_nonce": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1100000",
+        "number": "11"
+      },
+      "lyd_c2_vote_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "number": null
+      },
+      "lyd_c2_player_owner": null,
+      "lyd_c2_player_serial": null,
+      "lyd_c2_player_nonce": null
+    },
+    "65866": {
+      "lyd_c2_vote_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "number": null
+      },
+      "lyd_c2_vote_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1100000",
+        "number": "11"
+      },
+      "lyd_c2_vote_nonce": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1100000",
+        "number": "11"
+      },
+      "lyd_c2_vote_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "number": null
+      },
+      "lyd_c2_player_owner": null,
+      "lyd_c2_player_serial": null,
+      "lyd_c2_player_nonce": null
+    }
+  },
+  "Rites": {
+    "150": {
+      "lyd_c2_proposal_owner": null,
+      "lyd_c2_lock_serial": null,
+      "lyd_c2_proposal_serial": null,
+      "lyd_c2_retry_cooldown": null,
+      "lyd_c2_transition_cooldown": null
+    },
+    "159": {
+      "lyd_c2_proposal_owner": {
+        "present": true,
+        "tick": "365",
+        "type": "char",
+        "identity": "31254",
+        "number": null
+      },
+      "lyd_c2_lock_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1100000",
+        "number": "11"
+      },
+      "lyd_c2_proposal_serial": null,
+      "lyd_c2_retry_cooldown": null,
+      "lyd_c2_transition_cooldown": null
+    },
+    "169": {
+      "lyd_c2_proposal_owner": {
+        "present": true,
+        "tick": "365",
+        "type": "char",
+        "identity": "31254",
+        "number": null
+      },
+      "lyd_c2_lock_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1100000",
+        "number": "11"
+      },
+      "lyd_c2_proposal_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "1100000",
+        "number": "11"
+      },
+      "lyd_c2_retry_cooldown": null,
+      "lyd_c2_transition_cooldown": null
+    }
+  },
+  "summary": {
+    "current_actor_id": 31254,
+    "current_rite": "169",
+    "current_faith": "106",
+    "current_HoR": "31254",
+    "current_HoF": "4294967295",
+    "wallet": {
+      "gold": "1543",
+      "piety": "5650",
+      "prestige": "2200"
+    },
+    "stress_saved": null,
+    "learning_XP_saved": "0"
+  },
+  "saveSDK_frame": {
+    "revision": 52,
+    "native_revision": 51,
+    "date_raw": 53144712,
+    "paused": true,
+    "active_event": {
+      "source": "native",
+      "instance_id": 69,
+      "option_count": 2,
+      "title": null,
+      "options": [
+        {
+          "index": 0,
+          "option_number": 1,
+          "label": null,
+          "enabled": true
+        },
+        {
+          "index": 1,
+          "option_number": 2,
+          "label": null,
+          "enabled": true
+        }
+      ]
+    },
+    "pending_character_interaction": null
+  },
+  "controls": {
+    "fresh109": {
+      "step": "query-character-interaction-ordinary-v1",
+      "accepted": true,
+      "status": "available",
+      "read_only": true,
+      "query_sequence": 131,
+      "snapshot_revision": 49,
+      "date_raw": 53144712,
+      "game_pid": 13436,
+      "connection_generation": 1,
+      "character_interaction_ordinary_context": {
+        "schema": "ck3-character-interaction-ordinary-context-v1",
+        "status": "available",
+        "source": "native_current_ordinary_interaction_context_1.20.0.3",
+        "read_only": true,
+        "exact_build": "1.20.0.3",
+        "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+        "snapshot_revision": 49,
+        "date_raw": 53144712,
+        "game_pid": 13436,
+        "connection_generation": 1,
+        "player_character_id": 31254,
+        "recipient_id": 65866,
+        "interaction_key": "lyd_c2_propose_join_interaction",
+        "actor_alive": true,
+        "recipient_alive": true,
+        "definition_stable_hash": 382989941,
+        "effective_roles": {
+          "actor_id": 31254,
+          "recipient_id": 65866,
+          "secondary_actor_id": null,
+          "secondary_recipient_id": null,
+          "intermediary_id": null,
+          "sixth_role_id": 31254
+        },
+        "declared_option_count": 0,
+        "selected_option_count": 0,
+        "special_payload_present": false,
+        "shown": true,
+        "can_send": true,
+        "costs_raw": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cost_scale": 100000,
+        "cost_order": [
+          "gold",
+          "prestige",
+          "piety",
+          "renown",
+          "influence",
+          "herd",
+          "treasury",
+          "treasury_or_gold",
+          "merit",
+          "barter_goods"
+        ],
+        "auto_accept": true,
+        "recipient_score_raw": 100000,
+        "intermediary_score_raw": 10000000,
+        "outer_answer_status": 0,
+        "native_context_available": true,
+        "ordinary_context_supported": true,
+        "active_event_present": false,
+        "incoming_interaction_present": false,
+        "source_code_pins_verified": true,
+        "actor_binding_verified": true,
+        "recipient_binding_verified": true,
+        "owner_thread_verified": true,
+        "tls_verified": true,
+        "frame_verified": true,
+        "owner_thread_id": 7960,
+        "owner_pump_epoch": 1471199,
+        "ready_to_initiate": true,
+        "unavailable_reason": null,
+        "unsupported_reason": null,
+        "business_postcondition_verified": false
+      },
+      "backend_id": "native-headless",
+      "queried_snapshot_id": "native:49",
+      "queried_revision": 50,
+      "queried_native_revision": 49,
+      "ordinary_interaction_context_ready": true
+    },
+    "send110_keys": [
+      "step",
+      "accepted",
+      "status",
+      "read_only",
+      "query_sequence",
+      "snapshot_revision",
+      "date_raw",
+      "game_pid",
+      "connection_generation",
+      "character_interaction_ordinary_initiation",
+      "backend_id",
+      "queried_snapshot_id",
+      "queried_revision",
+      "queried_native_revision",
+      "after_snapshot_id",
+      "after_revision",
+      "after_native_revision",
+      "after_control_frame_verified",
+      "action_request_id",
+      "action_claim_path",
+      "business_effects_verified",
+      "full_product_acceptance_credit"
+    ],
+    "send110_result_pending": {
+      "schema": "ck3-character-interaction-ordinary-initiation-v1",
+      "status": "pending",
+      "source": "native_current_ordinary_interaction_command_1.20.0.3",
+      "read_only": false,
+      "exact_build": "1.20.0.3",
+      "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "snapshot_revision": 49,
+      "date_raw": 53144712,
+      "game_pid": 13436,
+      "connection_generation": 1,
+      "player_character_id": 31254,
+      "recipient_id": 65866,
+      "interaction_key": "lyd_c2_propose_join_interaction",
+      "source_code_pins_verified": true,
+      "actor_binding_verified": true,
+      "recipient_binding_verified": true,
+      "owner_thread_verified": true,
+      "tls_verified": true,
+      "frame_verified": true,
+      "owner_thread_id": 7960,
+      "owner_pump_epoch": 1473145,
+      "native_call_completed": true,
+      "dispatch_invoked": true,
+      "native_queue_result": "submitted",
+      "queue_submitted": true,
+      "verification_pending": true,
+      "postcondition_verified": false,
+      "business_postcondition_verified": false,
+      "reason": null,
+      "preflight_context": {
+        "schema": "ck3-character-interaction-ordinary-context-v1",
+        "status": "available",
+        "source": "native_current_ordinary_interaction_context_1.20.0.3",
+        "read_only": true,
+        "exact_build": "1.20.0.3",
+        "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+        "snapshot_revision": 49,
+        "date_raw": 53144712,
+        "game_pid": 13436,
+        "connection_generation": 1,
+        "player_character_id": 31254,
+        "recipient_id": 65866,
+        "interaction_key": "lyd_c2_propose_join_interaction",
+        "actor_alive": true,
+        "recipient_alive": true,
+        "definition_stable_hash": 382989941,
+        "effective_roles": {
+          "actor_id": 31254,
+          "recipient_id": 65866,
+          "secondary_actor_id": null,
+          "secondary_recipient_id": null,
+          "intermediary_id": null,
+          "sixth_role_id": 31254
+        },
+        "declared_option_count": 0,
+        "selected_option_count": 0,
+        "special_payload_present": false,
+        "shown": true,
+        "can_send": true,
+        "costs_raw": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cost_scale": 100000,
+        "cost_order": [
+          "gold",
+          "prestige",
+          "piety",
+          "renown",
+          "influence",
+          "herd",
+          "treasury",
+          "treasury_or_gold",
+          "merit",
+          "barter_goods"
+        ],
+        "auto_accept": true,
+        "recipient_score_raw": 100000,
+        "intermediary_score_raw": 10000000,
+        "outer_answer_status": 0,
+        "native_context_available": true,
+        "ordinary_context_supported": true,
+        "active_event_present": false,
+        "incoming_interaction_present": false,
+        "source_code_pins_verified": true,
+        "actor_binding_verified": true,
+        "recipient_binding_verified": true,
+        "owner_thread_verified": true,
+        "tls_verified": true,
+        "frame_verified": true,
+        "owner_thread_id": 7960,
+        "owner_pump_epoch": 1473145,
+        "ready_to_initiate": true,
+        "unavailable_reason": null,
+        "unsupported_reason": null,
+        "business_postcondition_verified": false
+      }
+    },
+    "send110_revisions": {
+      "after_revision": 50,
+      "after_native_revision": 49,
+      "action_request_id": "ordinary-interaction-9e0a5f40b68f4b6c826dbdcd422f2dd0",
+      "full_product_acceptance_credit": false
+    },
+    "send110_wrapper": {
+      "revision": 51,
+      "native_revision": 50,
+      "date_raw": 53144712,
+      "paused": true,
+      "active_event": {
+        "source": "native",
+        "instance_id": 69,
+        "option_count": 2,
+        "title": null,
+        "options": [
+          {
+            "index": 0,
+            "option_number": 1,
+            "label": null,
+            "enabled": true
+          },
+          {
+            "index": 1,
+            "option_number": 2,
+            "label": null,
+            "enabled": true
+          }
+        ]
+      }
+    },
+    "typed112": {
+      "id": 69,
+      "key": "lyd.200",
+      "native_revision": 51,
+      "public_revision": 52,
+      "date_raw": 53144712
+    }
+  }
+}

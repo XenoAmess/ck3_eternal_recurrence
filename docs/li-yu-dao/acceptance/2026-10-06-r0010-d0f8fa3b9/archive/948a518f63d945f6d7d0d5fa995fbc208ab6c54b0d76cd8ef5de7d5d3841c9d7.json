@@ -1,0 +1,36 @@
+{
+  "schema": "lyd.r10.same-frozen-sixth-cancel-semantics.v1",
+  "source_refs": {
+    "common/scripted_effects/lyd_c2_close_effects.txt": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c2_close_effects.txt",
+        "bytes": 3384,
+        "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+      },
+      "preserved": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-post-source-sign-readback-20261005-001\\frozen-source\\common\\scripted_effects\\lyd_c2_close_effects.txt",
+        "bytes": 3384,
+        "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+      },
+      "cold_inventory_exact_match": true
+    },
+    "events/lyd_c2_consent_events.txt": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6638,
+        "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+      },
+      "preserved": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-post-source-sign-readback-20261005-001\\frozen-source\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6638,
+        "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+      },
+      "cold_inventory_exact_match": true
+    }
+  },
+  "current_exact_refs_match": true,
+  "result3_mapping": "Frozen lyd.228 maps value3 to cancelled_desc; cancel_round writes result3 and release_locks, without retry cooldown",
+  "actual_AI_choice_or_random_draw": null,
+  "NPC_value_identity_omission_policy": "Keep null; do not synthesize YES1 or NO0",
+  "source_or_fixture_changes": false
+}

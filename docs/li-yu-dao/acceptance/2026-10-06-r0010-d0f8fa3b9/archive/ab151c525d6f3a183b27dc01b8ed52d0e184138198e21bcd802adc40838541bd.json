@@ -1,0 +1,80 @@
+{
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0200-cycle-before-detach-save\\checkpoint.ck3",
+    "bytes": 91604322,
+    "sha256": "9c8a8ed09a096f540cf64bee63ee9fd16b31c57923e9fea3e35b806cdb75c610"
+  },
+  "original_SDK": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0200-r10-0201-cycle-before-detach-save.sdk-result.json",
+    "bytes": 8199031,
+    "sha256": "1ff1f902b8ca070243449a74b77e61baa3c1c596dc6a463bbd7053a114b1bddb"
+  },
+  "metadata": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0200-cycle-before-detach-save\\checkpoint-metadata.json",
+    "bytes": 1424,
+    "sha256": "79db65c2d137a0140545417fcb6552664af82e11a3b07c3ec240c8297f544053"
+  },
+  "exact_reader_copies": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\reader\\read_actual_checkpoint.py",
+        "bytes": 13860,
+        "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-cycle-before-detach-readback-20261006-001\\reader\\read_actual_checkpoint.py",
+        "bytes": 13860,
+        "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+      },
+      "exact_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\reader\\dependencies\\bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-cycle-before-detach-readback-20261006-001\\reader\\dependencies\\bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "exact_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\reader\\dependencies\\save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-cycle-before-detach-readback-20261006-001\\reader\\dependencies\\save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "exact_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-cycle-before-detach-readback-20261006-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      },
+      "exact_equal": true
+    }
+  ],
+  "cached_postJOIN192_SEALED": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\SEALED.json",
+    "bytes": 743,
+    "sha256": "a205ac910aeb1426344c1f7046b8f93ac01a30e32d5f62f6fd7d9785956f9c69"
+  },
+  "actual_new_AST_count_so_far": 0,
+  "old_save_reparsed": false,
+  "DETACH_credit": false,
+  "natural_expiry_credit": false
+}

@@ -10672,6 +10672,10 @@ class NativeHeadlessGameplayDriver:
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
             raise ValueError("step must be a non-empty string")
+        if (getattr(self, "_player_control_authorization_blocked_v1", False)
+                and not internal_semantic_snapshot):
+            raise BridgeUnavailableError(
+                "stock player control is pending or unknown; refresh actual control before gameplay")
         if is_date_control_step(step) or is_army_move_control_step(step):
             if self._h3937_date_hold_active():
                 control = "date" if is_date_control_step(step) else "move"
@@ -18406,6 +18410,18 @@ class NativeHeadlessGameplayDriver:
             # The original claim remains unresolved even when normalization or
             # the after read fails. This path never sends a second request.
             raise BridgeUnavailableError(f"ordinary initiation remains unverified: {error}") from error
+
+    def query_player_control_context_v1(self, *, expected_revision: int) -> dict[str, object]:
+        from .player_control_driver_v1 import query_player_control_context_v1
+        return query_player_control_context_v1(self, expected_revision=expected_revision)
+
+    def request_player_control_v1(self, action: str, *, expected_revision: int,
+                                  expected_control_context_signature: str,
+                                  candidate_character_id: int | None) -> dict[str, object]:
+        from .player_control_driver_v1 import request_player_control_v1
+        return request_player_control_v1(self, action, expected_revision=expected_revision,
+            expected_control_context_signature=expected_control_context_signature,
+            candidate_character_id=candidate_character_id)
 
     def observe_normal_exit_v1(self) -> dict[str, object]:
         from .normal_exit_pending_observer_v1 import observe_normal_exit_v1

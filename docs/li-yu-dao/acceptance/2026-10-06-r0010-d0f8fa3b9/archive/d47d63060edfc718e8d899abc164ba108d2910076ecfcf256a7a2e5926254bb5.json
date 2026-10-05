@@ -1,0 +1,15 @@
+{
+  "schema": "lyd.r10.author-failure-index.v1",
+  "files": [
+    {
+      "path": "FAILURE.json",
+      "bytes": 970,
+      "sha256": "81c96e27afdee64d30ad7e74d3c3cfe9575062f376ed6e3157b6057b10c8eb13"
+    },
+    {
+      "path": "prepare_r10_incremental_ledger151_200_20261006_001.py",
+      "bytes": 23525,
+      "sha256": "f5a5ad250a4a7dfdd272581f3a5b99e82007256db1462257689d73c0804702eb"
+    }
+  ]
+}

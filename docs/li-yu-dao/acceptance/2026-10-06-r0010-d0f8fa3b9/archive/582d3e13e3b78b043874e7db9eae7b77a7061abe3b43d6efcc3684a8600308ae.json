@@ -1,0 +1,12 @@
+{
+  "schema": "ck3-ordinary-interaction-root-verifier-registry-v1",
+  "verifiers": {
+    "lyd-first-join-actual-save-v1": {
+      "bundle_index": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-third-proposal-bound-verifier-20261005-001\\INDEX.json",
+        "sha256": "05169d085060443ac695c9aedc91da3d2ecebe013e7352365ba1f3d22230e3d3"
+      },
+      "entrypoint": "verifier.py:verify_consumption"
+    }
+  }
+}

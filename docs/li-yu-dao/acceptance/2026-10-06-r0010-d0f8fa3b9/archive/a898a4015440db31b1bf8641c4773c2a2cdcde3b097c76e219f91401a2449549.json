@@ -1,0 +1,18 @@
+{
+  "argv": [
+    "C:/Program Files/GitHub CLI/gh.exe",
+    "api",
+    "--method",
+    "GET",
+    "repos/XenoAmess/ck3_eternal_recurrence/actions/jobs/111708827682/logs",
+    "--allow-escape-sequences"
+  ],
+  "at_utc": "2026-10-05T10:06:38.268502+00:00",
+  "finished_at_utc": "2026-10-05T10:06:43.689431+00:00",
+  "exit_code": 0,
+  "stdout_bytes": 183153,
+  "stdout_sha256": "197b3c681eb48763e51154b8c0130bee279fe913b976b8a7119b331ad0114324",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "environment": "Inherited current process proxy; no settings changed."
+}

@@ -1,0 +1,7 @@
+# R10归档存储更正后：实际Python-only门禁补充
+
+ROOT实际无损存储projector已成功；指定8份plain历史原件与三旧索引原file保全到外置receipt，main gzip永久保留对应原字节。实际post-projection INDEX为a41f140650d89505078de463d347a469c60a36c66f5ed86eae56a0216d12e117；原first-import INDEX a503e02e1895bdfb9c43af34423b4ecff4b55b2c02c6a55629f022edd699ff62及原ORIGIN／EVIDENCE的三个storage-history gzip链保持不变，逐一引用于REPORT.json。
+
+ROOT随后必要Python-only检查实际UTC 2026-10-05T18:50:56.015713+00:00 → 2026-10-05T18:51:48.300093+00:00，exit0，stdout精确为`PYTHON-ONLY GREEN`（SHAc38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490），stderr为空。原argv／sourceargv／stdout／stderr／RESULT精确字节保留，projector实际receipt无损gzip保留，不把tool-transcript编成raw文件。
+
+此前exec27418原门禁8RED、原receipt中followup=NULL与全部旧失败保留，未修改原文或放松validator。这份GREEN仅授给当前这一次Python-only门禁；R10仍d0源的NOT_GREEN／Phase1未完成，第二JOIN、R11reload、C3／I3b／修习／I4业务不由此通过，通用CI／全部gate未宣GREEN。本作者只新增外置append候选，不写main／Git，不跑gate，不重扫SDK或保存本体。

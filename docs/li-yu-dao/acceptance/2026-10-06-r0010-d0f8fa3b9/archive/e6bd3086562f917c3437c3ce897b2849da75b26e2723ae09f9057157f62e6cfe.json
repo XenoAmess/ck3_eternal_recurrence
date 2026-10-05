@@ -1,0 +1,54 @@
+{
+  "status": "ACTUAL_COMPILATION_PASS_DEFENDER_SETTINGS_FAILED_NATIVE_NOT_RUN",
+  "RESULT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-actual-release-build-20261005-001/RESULT.json",
+    "bytes": 14289,
+    "sha256": "5d71601a747c1aaacb41b08679938df5c567879843ecb8dfad7d462bd64ed79f"
+  },
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "native_tree": "789eab5ae1c3015fe210de508fdd730a13bbb8db",
+  "targets": {
+    "dll": {
+      "path": "C:/lydr10-release-20261005-001/xar_ck3_bridge.dll",
+      "bytes": 5846528,
+      "sha256": "dc4e4d12a4078e8b3fe38b855071e158675300167341694205ee9db875d54792"
+    },
+    "injector": {
+      "path": "C:/lydr10-release-20261005-001/xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "4c4b302ede99ae7e9c0e8b259ae902406a720e4525cd96e7e351eb27abc0dd2d"
+    }
+  },
+  "inner_native_msvc_receipt": {
+    "path": "C:/lydr10-release-20261005-001/native-msvc-result.json",
+    "bytes": 1691,
+    "sha256": "d79121aae70aed156bb49b786bbe4c1a5e474b475250bf67f1296240364be6ca"
+  },
+  "Defender_manifest": {
+    "path": "C:/lydr10-release-20261005-001/defender-exe-exclusions/20261005T100814Z-1a4d4de0/manifest.json",
+    "bytes": 1711,
+    "sha256": "59a9e1823ce5c7a99cba454058bc84d519f01eb5ed15110cab4c63441aabb5e4"
+  },
+  "Defender_receipt": {
+    "path": "C:/lydr10-release-20261005-001/defender-exe-exclusions/20261005T100814Z-1a4d4de0/receipt.json",
+    "bytes": 1649,
+    "sha256": "5d2da0b8600d3292dd4db4b1e7c4e9447850a779269cd912c0047368d204e9ea"
+  },
+  "Defender_error_stage": "Add-invocation",
+  "Defender_calls": [
+    {
+      "path": "C:\\lydr10-release-20261005-001\\xar_ck3_bridge_injector.exe",
+      "method": "Add",
+      "return_value": null,
+      "return_value_available": false,
+      "call_error": "(-2147352567, '\u53d1\u751f\u610f\u5916\u3002', (0, 'SWbemObjectEx', '\u5e38\u89c4\u6545\u969c ', None, 0, -2147217407), None)",
+      "call_error_type": "com_error"
+    }
+  ],
+  "actual_returncode": 1,
+  "compilation_pass": true,
+  "settings_effectiveness": false,
+  "game_calls": 0,
+  "native_pipe_calls": 0,
+  "build_retries": 0
+}

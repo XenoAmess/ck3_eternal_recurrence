@@ -1,0 +1,68 @@
+{
+  "schema": "lyd.native-primitive-tracked-proof-admission.v1",
+  "scope": "native-primitives-only",
+  "baseline_commit": "588492d3dbf473226664220b722a04b66ae54bae",
+  "authorized_by": "/root",
+  "prepared_by": "/root/confucian_definition",
+  "primitives": [
+    "set_parent_faith",
+    "detach_rite_to_new_faith"
+  ],
+  "authorization": "Root requested a portable checked-in SOURCE admission record based on the existing directly observed R0002 three loops and preserved saved-byte verification; no new native acceptance.",
+  "original_save_sha256": "ed90dbe3374e44881fd6bb6f075acde4363fc79ebbae50e82a4fdfdf392482ca",
+  "original_projection_sha256": "79fd1567125594c96f8c086c33eb1550f1236660a2f256d1c50fdff710ffd613",
+  "raw_save_rehashed_in_ci": false,
+  "scope_boundary": "Permanent original proof and supporting excerpt hashes only; new consent/leadership flow NOT_RUN; zero-error acceptance NOT_CLAIMED.",
+  "evidence_refs": [
+    {
+      "role": "attestation",
+      "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/native-primitive-attestation-candidate-v2.json",
+      "sha256": "50bad54b995723026bd26842f258376c86447547791357f6c5ad809750891b5d"
+    },
+    {
+      "role": "saved_graph_summary",
+      "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/three-rounds.summary.json",
+      "sha256": "a436aec37b9e71e05a47329c69354195ad69deade8711172e16b777d2aa1d1c5"
+    },
+    {
+      "role": "markers",
+      "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/debug-marker-lines.raw.log",
+      "sha256": "8564747babb9b8b4d46992bfb17412f086acd60604596c401a8d6a5c6f5f2d10"
+    },
+    {
+      "role": "probe_effects",
+      "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_effects/lyd_np_effects.txt",
+      "sha256": "64307f6d48eb45be4ee92939e95caad4fd0f5cec38d0a8b5c77f216cd098cd2d"
+    },
+    {
+      "role": "probe_triggers",
+      "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/source-r0002/fixture/common/scripted_triggers/lyd_np_triggers.txt",
+      "sha256": "7c1bc919d2ddf3dfc5b59969ea1cb4b795e4a172e8ad1d984acadc048ed25cff"
+    },
+    {
+      "role": "error_classification",
+      "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/primitive/error-classification-addendum.json",
+      "sha256": "2f3a464edf7541aa3b813f5bf39d0400dc6e2fd29d36bea80fbd05f83fe84a48"
+    },
+    {
+      "role": "saved_actor",
+      "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/character-36445.excerpt.txt",
+      "sha256": "885419cc4df4e419e36805afab250ce73fa1d6c404a5d2b4ad3925909acdae42"
+    },
+    {
+      "role": "saved_rite",
+      "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/rite-151.excerpt.txt",
+      "sha256": "69f5483d4d944da4ebce92c6bddaccd1a74cfdbd9edd01823f9fa006e5904b98"
+    },
+    {
+      "role": "saved_faith",
+      "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/faith-108.excerpt.txt",
+      "sha256": "fc56c5494e2eae9984e2d6f3f79a5482a2cae93a80299f79043d7851394e9baf"
+    },
+    {
+      "role": "saved_head",
+      "path": "docs/li-yu-dao/acceptance/2026-10-04-R0002-native-cycles-formal-red/saved-objects/title-18417.excerpt.txt",
+      "sha256": "3e3010bfac4739e0b4e6a33f99b641e8662fa2904d581805d77abc42efb49cbb"
+    }
+  ]
+}

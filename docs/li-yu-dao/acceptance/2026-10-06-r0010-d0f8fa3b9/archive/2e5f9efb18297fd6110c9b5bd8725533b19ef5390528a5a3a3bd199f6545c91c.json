@@ -1,0 +1,19 @@
+{
+  "source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\inspect_delta_v2.py",
+    "bytes": 3639,
+    "sha256": "94d006396dcc95d647c7684c5b76094bf314dabe3b46f7d167ee1b8d2daa23c3"
+  },
+  "new": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-post-readback-20261006-001\\inspect_delta.py",
+    "bytes": 3655,
+    "sha256": "3d572c7fcdab3d05f29a8a337f4c5ac47f7e666b9682f9c1f196158d07412907"
+  },
+  "parameter_changes": {
+    "r10-actual-eighth-precommit-readback-20261006-001": "r10-actual-detach-second-precommit-readback-20261006-001",
+    "before187": "before235",
+    "post-JOIN": "post-DETACH"
+  },
+  "JSON_cache_only": true,
+  "old_save_reparse": false
+}

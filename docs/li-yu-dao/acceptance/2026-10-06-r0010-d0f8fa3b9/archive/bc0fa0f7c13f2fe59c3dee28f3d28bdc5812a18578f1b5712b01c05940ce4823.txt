@@ -1,0 +1,19 @@
+2232={
+	key=b_trani
+	de_facto_liege=2231
+	de_jure_liege=2231
+	holder=31254
+	date=1066.9.15
+	capital_barony=yes
+	duchy_capital_barony=yes
+	capital=2231
+	coat_of_arms_id=10762
+	title_name_data={
+		name="特拉尼"
+	}
+
+	default_coa=no
+	treasury={
+	}
+	nomad_name_type=default
+}

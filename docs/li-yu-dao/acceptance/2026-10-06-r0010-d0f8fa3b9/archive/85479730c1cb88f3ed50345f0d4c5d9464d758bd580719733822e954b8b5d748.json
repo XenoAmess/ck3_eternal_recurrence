@@ -1,0 +1,15 @@
+[
+  "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+  "C:/workspace/ck3_eternal_recurrence/tools/codex_task_bus.py",
+  "--bus-dir",
+  "C:/workspace/.codex-task-bus",
+  "--expected-cli-sha256",
+  "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+  "release-screen-cas",
+  "--task",
+  "ck3-lyd-r0010-20261005",
+  "--expected-sequence",
+  "3160",
+  "--summary",
+  "LYD-R0010-normal-exit-observed-Client-closed"
+]

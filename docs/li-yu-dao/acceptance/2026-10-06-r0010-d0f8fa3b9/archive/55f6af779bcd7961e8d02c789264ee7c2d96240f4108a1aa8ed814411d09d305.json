@@ -1,0 +1,25 @@
+{
+  "schema": "ck3.lyd.persistent-mcp-session.v1",
+  "client_session_id": "e722295ffba04b9f9f3559db2488bdf0",
+  "profile": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-profile-with-exit-inventory.json",
+  "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+  "server": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_native_profile_mcp.py",
+  "server_sha256": "1ab982fc3e46bd6baa507de6c9ca02062811a46991f765a7235b376d98d00fa8",
+  "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "queue": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002",
+  "started_at_utc": "2026-10-05T11:03:32.006792+00:00",
+  "cache": null,
+  "automatic_attach": false,
+  "automatic_retry": false,
+  "binding_file": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-binding-002\\ROOT-BINDING.json",
+  "binding_sha256": "accb15735d343ab87d842cafcecb32b2944638667806da1b27ed5871fae9d501",
+  "epoch_id": "r10-d0f8fa3-20261005-002",
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "target": {
+    "pid": 13436,
+    "process_create_time": 1791196395.7422996
+  },
+  "live_inventory_verified": false,
+  "ready_at_utc": "2026-10-05T11:03:34.005994+00:00",
+  "status": "CLIENT_CONNECTED; bridge NOT_ATTACHED automatically"
+}

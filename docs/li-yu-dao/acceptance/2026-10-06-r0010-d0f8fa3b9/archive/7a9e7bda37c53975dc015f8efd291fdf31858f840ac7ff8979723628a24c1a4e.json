@@ -1,0 +1,18 @@
+{
+  "prior_error_log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-log-and-save-readback-preparation-20261005-001\\partial-logs-001\\raw\\error.log",
+    "bytes": 138556,
+    "sha256": "2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a"
+  },
+  "current_error_log": {
+    "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\userdir\\logs\\error.log",
+    "copy_path": "raw/error.log",
+    "bytes": 138556,
+    "sha256": "2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a"
+  },
+  "exact_equal": true,
+  "old_bytes_are_current_prefix": true,
+  "appended_bytes_since_prior_snapshot": 0,
+  "appended_records_since_prior_snapshot": 0,
+  "no_growth_does_not_establish_no_errors_or_log_cap_absence": true
+}

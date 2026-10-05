@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 11,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0011-reset-event-query.request.json",
+  "request_sha256": "1dcbf67f36fb49f1bf2a8a9d8b539d532e9fe1bd8679eaefb10753080af4e1ff",
+  "started_at_utc": "2026-10-05T11:16:18.090246+00:00",
+  "request_id": "r10-0011-reset-event-query",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0011-r10-0011-reset-event-query.sdk-result.json",
+  "sdk_result_sha256": "8177585ebf4b3d49b12e6e86e67105a5ba37232792752df7bc78e0fa97988196",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0010-event-query.json",
+      "copy": "0011-r10-0011-reset-event-query.native-01.json",
+      "sha256": "4ddffcd3c5256914d9cc04b881bd60bde0035343fa9bbb1ee196b7f2b26ff7b2"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T11:16:19.420607+00:00"
+}

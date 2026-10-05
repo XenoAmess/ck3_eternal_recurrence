@@ -1,0 +1,89 @@
+{
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0187-eighth-precommit-save\\checkpoint.ck3",
+    "bytes": 91540737,
+    "sha256": "5b3af804aa4d713e5115ba34f08bf16defdc5705900835e49f378e9abaa17415"
+  },
+  "SDK": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0187-r10-0188-eighth-precommit-save.sdk-result.json",
+    "bytes": 7887659,
+    "sha256": "278e3ff2ab758a8b94dadf4a5b15a471fdf729845cfc4b774ff970479fe98e1c"
+  },
+  "metadata": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0187-eighth-precommit-save\\checkpoint-metadata.json",
+    "bytes": 1418,
+    "sha256": "93071eedae828d63094b689e9ad1ae0cd1c1a1fd171fd5eedd16ba0738a23f17"
+  },
+  "tool_exact_copies": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\reader\\read_actual_checkpoint.py",
+        "bytes": 13860,
+        "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-precommit-readback-20261006-001\\reader\\read_actual_checkpoint.py",
+        "bytes": 13860,
+        "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+      },
+      "exact_bytes_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\reader\\dependencies\\bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-precommit-readback-20261006-001\\reader\\dependencies\\bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "exact_bytes_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\reader\\dependencies\\save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-precommit-readback-20261006-001\\reader\\dependencies\\save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "exact_bytes_equal": true
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      },
+      "copy": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-precommit-readback-20261006-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      },
+      "exact_bytes_equal": true
+    }
+  ],
+  "cached_before171": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\actual-save-001\\STATE.json",
+    "bytes": 705585,
+    "sha256": "f461cec977011fb559413791215a976242f934b8b39eb11f42bae6c1bd3d544b"
+  },
+  "cached_baseline167": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-post-cancel-readback-20261006-001\\actual-save-001\\STATE.json",
+    "bytes": 706979,
+    "sha256": "dea01928ba9a43d703c526f6c045aea95a25a12f7cd13007a35ebeac6d8d54e6"
+  },
+  "source171_target_ballot_qualification": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\TARGET-RITE-BALLOT-QUALIFICATION.json",
+    "bytes": 11846,
+    "sha256": "6bf77eda03d042720ff10e6b326ab34b1accb54a024e54e3930d0967c1c1f8f5"
+  },
+  "actual_new_AST_count_so_far": 0,
+  "old_save_reparsed": false,
+  "final_JOIN_credit": false
+}

@@ -1,0 +1,55 @@
+﻿# GENERATED FILE: edit tools/gen_institution.py; regenerate through gen_runtime.py.
+lyd_i3b_begin_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious ai_check_interval = 0
+    desc = lyd_i3b_terms_desc selection_tooltip = lyd_i3b_terms_desc confirm_text = lyd_i3b_begin_decision
+    is_shown = { lyd_i3b_actor_trigger = yes NOT = { has_variable = lyd_i3b_active } }
+    is_valid = { custom_description = { text = lyd_i3b_begin_valid_tt subject = root lyd_i3b_can_begin_trigger = yes } }
+    effect = { hidden_effect = { if = { limit = { lyd_i3b_actor_trigger = yes lyd_i3b_can_begin_trigger = yes } lyd_i3b_begin_effect = yes } } }
+    ai_will_do = { base = 0 }
+}
+lyd_i3b_nominate_self_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious ai_check_interval = 0
+    desc = lyd_i3b_terms_desc selection_tooltip = lyd_i3b_terms_desc confirm_text = lyd_i3b_nominate_self_decision
+    is_shown = { lyd_i3b_actor_trigger = yes has_variable = lyd_i3b_active var:lyd_i3b_phase = 1 }
+    is_valid = { custom_description = { text = lyd_i3b_nominate_valid_tt subject = root lyd_i3b_current_trigger = { ACTOR = root } lyd_i3b_elector_trigger = yes var:lyd_i3b_phase = 1 rite = { NOT = { has_variable = lyd_i3b_delegate } var:lyd_i3b_dormant = 0 } } }
+    effect = { hidden_effect = { if = { limit = { lyd_i3b_actor_trigger = yes lyd_i3b_current_trigger = { ACTOR = root } lyd_i3b_elector_trigger = yes var:lyd_i3b_phase = 1 rite = { NOT = { has_variable = lyd_i3b_delegate } var:lyd_i3b_dormant = 0 } } lyd_i3b_nominate_self_effect = yes } } }
+    ai_will_do = { base = 0 }
+}
+lyd_i3b_seal_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious ai_check_interval = 0
+    desc = lyd_i3b_terms_desc selection_tooltip = lyd_i3b_terms_desc confirm_text = lyd_i3b_seal_decision
+    is_shown = { lyd_i3b_actor_trigger = yes has_variable = lyd_i3b_active var:lyd_i3b_phase = 1 }
+    is_valid = { custom_description = { text = lyd_i3b_seal_valid_tt subject = root lyd_i3b_can_seal_trigger = { ACTOR = root } } }
+    effect = { hidden_effect = { if = { limit = { lyd_i3b_actor_trigger = yes lyd_i3b_can_seal_trigger = { ACTOR = root } } lyd_i3b_seal_effect = yes } } }
+    ai_will_do = { base = 0 }
+}
+lyd_i3b_review_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious ai_check_interval = 0
+    desc = lyd_i3b_terms_desc selection_tooltip = lyd_i3b_terms_desc confirm_text = lyd_i3b_review_decision
+    is_shown = { lyd_i3b_actor_trigger = yes has_variable = lyd_i3b_active }
+    is_valid = { custom_description = { text = lyd_i3b_current_valid_tt subject = root lyd_i3b_current_trigger = { ACTOR = root } } }
+    effect = { hidden_effect = { if = { limit = { lyd_i3b_actor_trigger = yes lyd_i3b_current_trigger = { ACTOR = root } } lyd_i3b_bind_event_effect = yes lyd_i3b_request_signatures_effect = yes trigger_event = lyd.430 } } }
+    ai_will_do = { base = 0 }
+}
+lyd_i3b_cancel_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious ai_check_interval = 0
+    desc = lyd_i3b_terms_desc selection_tooltip = lyd_i3b_terms_desc confirm_text = lyd_i3b_cancel_decision
+    is_shown = { lyd_i3b_cancel_actor_trigger = yes }
+    is_valid = { custom_description = { text = lyd_i3b_cancel_valid_tt subject = root lyd_i3b_cancel_actor_trigger = yes } }
+    effect = { hidden_effect = { if = { limit = { lyd_i3b_cancel_actor_trigger = yes lyd_i3b_cancel_actor_trigger = yes } lyd_i3b_close_effect = yes } } }
+    ai_will_do = { base = 0 }
+}
+lyd_i3b_result_review_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious ai_check_interval = 0
+    desc = lyd_i3b_result_review_desc selection_tooltip = lyd_i3b_result_review_desc confirm_text = lyd_i3b_result_review_decision
+    is_shown = { lyd_i3b_result_actor_trigger = yes }
+    is_valid = { custom_description = { text = lyd_i3b_result_valid_tt subject = root lyd_i3b_result_actor_trigger = yes } }
+    effect = { hidden_effect = { if = { limit = { lyd_i3b_result_actor_trigger = yes lyd_i3b_result_actor_trigger = yes } lyd_i3b_show_result_effect = yes } } }
+    ai_will_do = { base = 0 }
+}

@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0202-detach-query.request.json",
+  "request_id": "r10-0202-detach-query",
+  "sha256": "016408989503f8714131378a963739da0ad0b7f9861c8cd4206503e01adf853d",
+  "contacted_game": false
+}

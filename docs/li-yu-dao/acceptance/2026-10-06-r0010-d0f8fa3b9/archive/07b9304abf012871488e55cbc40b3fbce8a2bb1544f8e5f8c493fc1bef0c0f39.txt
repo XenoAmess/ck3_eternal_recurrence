@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0223-detach-second-personal-query.request.json",
+  "request_id": "r10-0223-detach-second-personal-query",
+  "sha256": "b2252434c84a38fb17ee5ff44bd011bf8f2efabf31eb238ce505131b07e0262d",
+  "contacted_game": false
+}

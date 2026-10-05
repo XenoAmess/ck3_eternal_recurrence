@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 242,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0243-after-detach-reset-detail.request.json",
+  "request_sha256": "65d658e7a75e705cc0132f37544056c1b733f383ea854fb6566994cf99999d24",
+  "started_at_utc": "2026-10-05T17:57:37.411413+00:00",
+  "request_id": "r10-0243-after-detach-reset-detail",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0242-r10-0243-after-detach-reset-detail.sdk-result.json",
+  "sdk_result_sha256": "d83dc695245b03bc8e896b1486f546d28513c9aad74dba9fbc5ae511903ee832",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0241-decision-select.json",
+      "copy": "0242-r10-0243-after-detach-reset-detail.native-01.json",
+      "sha256": "61d968c0361f123733360299202518ffdbd93bb8ef47f1df9cfac6fa62d88e4d"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:57:43.135843+00:00"
+}

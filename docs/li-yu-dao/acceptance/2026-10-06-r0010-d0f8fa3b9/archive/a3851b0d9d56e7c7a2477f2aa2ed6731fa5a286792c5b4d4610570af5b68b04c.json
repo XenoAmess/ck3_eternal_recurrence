@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 173,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0174-eighth-player-options-entry-chosen.request.json",
+  "request_sha256": "4bee6bb63a0e2ee81eb127616ba997f40590370969ac1393e6bc3908bdfdd02b",
+  "started_at_utc": "2026-10-05T16:56:45.767642+00:00",
+  "request_id": "r10-0174-eighth-player-options-entry-chosen",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0173-r10-0174-eighth-player-options-entry-chosen.sdk-result.json",
+  "sdk_result_sha256": "8986540ba9095b93204a8edfb6e403c39fdbd2af06ef0226f0f061ca1529f686",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0172-event-select.json",
+      "copy": "0173-r10-0174-eighth-player-options-entry-chosen.native-01.json",
+      "sha256": "f39a365cf86c1ef53562d067e3b4dabaf7592588c57cb42df8ebabe4e857fc14"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T16:56:50.081882+00:00"
+}

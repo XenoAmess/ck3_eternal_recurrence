@@ -1,0 +1,45 @@
+{
+  "schema": "lyd.r10.parameterized-proposal-inputs.v1",
+  "files": [
+    {
+      "path": "AFTER-OBSERVATION.actual.json",
+      "bytes": 1152,
+      "sha256": "a8fa6a36eba58451b04751b33db02c908a6ee53c0f7490b0d67f6307a39855f1"
+    },
+    {
+      "path": "BEFORE-OBSERVATION.actual.json",
+      "bytes": 1633,
+      "sha256": "22e379150400b2634c21a31235eab00b739eef39a1ca5a2a9945b1cb6e1ed9d7"
+    },
+    {
+      "path": "BIND-REQUEST.actual.json",
+      "bytes": 1891,
+      "sha256": "ab530b5bad807d021d62ea183f6ecf59f39b12e3ff78bf8514bef63931a0cb9d"
+    },
+    {
+      "path": "EMIT-REQUEST.actual.json",
+      "bytes": 1232,
+      "sha256": "28639317b96f49dc049b6f96e310fa5f4aa6329ef855243239491b338eec0cad"
+    },
+    {
+      "path": "FLOW-REQUEST.actual.json",
+      "bytes": 6091,
+      "sha256": "c4e184269eb0ea5ecb48da63b3fd2d2a45a660cc865c04b84f6c438f147f7a07"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 7304,
+      "sha256": "85a73820a970001b5ddfb212ace4b6204382df3fee2bee506bb723f00f94ce31"
+    },
+    {
+      "path": "ROOT-BIND-ARGV.json",
+      "bytes": 349,
+      "sha256": "23ee2d0bbdc7d06b73a9a27e3a4565ace865da218395612bb8691121f1365bb9"
+    },
+    {
+      "path": "ROOT-EMIT-ARGV.json",
+      "bytes": 19,
+      "sha256": "4116b504a423739be07d91ecbd8c967f29d354d5ce3663fd2a0ffde794badcab"
+    }
+  ]
+}

@@ -1,0 +1,1225 @@
+{
+  "schema": "lyd.r10.seventh-open-original-control-lineage-evidence.v1",
+  "controls": {
+    "0151-": {
+      "original_SDK": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0151-r10-0152-seventh-fresh-query.sdk-result.json",
+        "bytes": 7623,
+        "sha256": "21721efc900d1b41b2c01664daeb5b0c9d1e6771f581c01a159704193b1ea40c"
+      },
+      "schema": "ck3.native-profile-receipt.v1",
+      "status": "native_ordinary_interaction_observed",
+      "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+      "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+      "isError": false,
+      "result": {
+        "step": "query-character-interaction-ordinary-v1",
+        "accepted": true,
+        "status": "available",
+        "read_only": true,
+        "query_sequence": 183,
+        "snapshot_revision": 69,
+        "date_raw": 53144712,
+        "game_pid": 13436,
+        "connection_generation": 1,
+        "character_interaction_ordinary_context": {
+          "schema": "ck3-character-interaction-ordinary-context-v1",
+          "status": "available",
+          "source": "native_current_ordinary_interaction_context_1.20.0.3",
+          "read_only": true,
+          "exact_build": "1.20.0.3",
+          "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+          "snapshot_revision": 69,
+          "date_raw": 53144712,
+          "game_pid": 13436,
+          "connection_generation": 1,
+          "player_character_id": 31254,
+          "recipient_id": 65866,
+          "interaction_key": "lyd_c2_propose_join_interaction",
+          "actor_alive": true,
+          "recipient_alive": true,
+          "definition_stable_hash": 382989941,
+          "effective_roles": {
+            "actor_id": 31254,
+            "recipient_id": 65866,
+            "secondary_actor_id": null,
+            "secondary_recipient_id": null,
+            "intermediary_id": null,
+            "sixth_role_id": 31254
+          },
+          "declared_option_count": 0,
+          "selected_option_count": 0,
+          "special_payload_present": false,
+          "shown": true,
+          "can_send": true,
+          "costs_raw": [
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "cost_scale": 100000,
+          "cost_order": [
+            "gold",
+            "prestige",
+            "piety",
+            "renown",
+            "influence",
+            "herd",
+            "treasury",
+            "treasury_or_gold",
+            "merit",
+            "barter_goods"
+          ],
+          "auto_accept": true,
+          "recipient_score_raw": 100000,
+          "intermediary_score_raw": 10000000,
+          "outer_answer_status": 0,
+          "native_context_available": true,
+          "ordinary_context_supported": true,
+          "active_event_present": false,
+          "incoming_interaction_present": false,
+          "source_code_pins_verified": true,
+          "actor_binding_verified": true,
+          "recipient_binding_verified": true,
+          "owner_thread_verified": true,
+          "tls_verified": true,
+          "frame_verified": true,
+          "owner_thread_id": 7960,
+          "owner_pump_epoch": 2222965,
+          "ready_to_initiate": true,
+          "unavailable_reason": null,
+          "unsupported_reason": null,
+          "business_postcondition_verified": false
+        },
+        "backend_id": "native-headless",
+        "queried_snapshot_id": "native:69",
+        "queried_revision": 70,
+        "queried_native_revision": 69,
+        "ordinary_interaction_context_ready": true
+      },
+      "snapshot_excerpt": null
+    },
+    "0152-": {
+      "original_SDK": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0152-r10-0153-seventh-new-initiate.sdk-result.json",
+        "bytes": 3123621,
+        "sha256": "4d8956229d7f369a1884e0c6a9bdbe92c44522a80741d861f62418b67f630c71"
+      },
+      "schema": "ck3.native-profile-receipt.v1",
+      "status": "native_ordinary_interaction_pending",
+      "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+      "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+      "isError": false,
+      "result": {
+        "step": "initiate-character-interaction-ordinary-v1",
+        "accepted": true,
+        "status": "pending",
+        "read_only": false,
+        "query_sequence": 185,
+        "snapshot_revision": 69,
+        "date_raw": 53144712,
+        "game_pid": 13436,
+        "connection_generation": 1,
+        "character_interaction_ordinary_initiation": {
+          "schema": "ck3-character-interaction-ordinary-initiation-v1",
+          "status": "pending",
+          "source": "native_current_ordinary_interaction_command_1.20.0.3",
+          "read_only": false,
+          "exact_build": "1.20.0.3",
+          "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+          "snapshot_revision": 69,
+          "date_raw": 53144712,
+          "game_pid": 13436,
+          "connection_generation": 1,
+          "player_character_id": 31254,
+          "recipient_id": 65866,
+          "interaction_key": "lyd_c2_propose_join_interaction",
+          "source_code_pins_verified": true,
+          "actor_binding_verified": true,
+          "recipient_binding_verified": true,
+          "owner_thread_verified": true,
+          "tls_verified": true,
+          "frame_verified": true,
+          "owner_thread_id": 7960,
+          "owner_pump_epoch": 2225109,
+          "native_call_completed": true,
+          "dispatch_invoked": true,
+          "native_queue_result": "submitted",
+          "queue_submitted": true,
+          "verification_pending": true,
+          "postcondition_verified": false,
+          "business_postcondition_verified": false,
+          "reason": null,
+          "preflight_context": {
+            "schema": "ck3-character-interaction-ordinary-context-v1",
+            "status": "available",
+            "source": "native_current_ordinary_interaction_context_1.20.0.3",
+            "read_only": true,
+            "exact_build": "1.20.0.3",
+            "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+            "snapshot_revision": 69,
+            "date_raw": 53144712,
+            "game_pid": 13436,
+            "connection_generation": 1,
+            "player_character_id": 31254,
+            "recipient_id": 65866,
+            "interaction_key": "lyd_c2_propose_join_interaction",
+            "actor_alive": true,
+            "recipient_alive": true,
+            "definition_stable_hash": 382989941,
+            "effective_roles": {
+              "actor_id": 31254,
+              "recipient_id": 65866,
+              "secondary_actor_id": null,
+              "secondary_recipient_id": null,
+              "intermediary_id": null,
+              "sixth_role_id": 31254
+            },
+            "declared_option_count": 0,
+            "selected_option_count": 0,
+            "special_payload_present": false,
+            "shown": true,
+            "can_send": true,
+            "costs_raw": [
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0,
+              0
+            ],
+            "cost_scale": 100000,
+            "cost_order": [
+              "gold",
+              "prestige",
+              "piety",
+              "renown",
+              "influence",
+              "herd",
+              "treasury",
+              "treasury_or_gold",
+              "merit",
+              "barter_goods"
+            ],
+            "auto_accept": true,
+            "recipient_score_raw": 100000,
+            "intermediary_score_raw": 10000000,
+            "outer_answer_status": 0,
+            "native_context_available": true,
+            "ordinary_context_supported": true,
+            "active_event_present": false,
+            "incoming_interaction_present": false,
+            "source_code_pins_verified": true,
+            "actor_binding_verified": true,
+            "recipient_binding_verified": true,
+            "owner_thread_verified": true,
+            "tls_verified": true,
+            "frame_verified": true,
+            "owner_thread_id": 7960,
+            "owner_pump_epoch": 2225109,
+            "ready_to_initiate": true,
+            "unavailable_reason": null,
+            "unsupported_reason": null,
+            "business_postcondition_verified": false
+          }
+        },
+        "backend_id": "native-headless",
+        "queried_snapshot_id": "native:69",
+        "queried_revision": 70,
+        "queried_native_revision": 69,
+        "after_snapshot_id": "native:69",
+        "after_revision": 70,
+        "after_native_revision": 69,
+        "after_control_frame_verified": true,
+        "action_request_id": "ordinary-interaction-ce6f9c27e43f4d1c9057fb7746fcb815",
+        "action_claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000006.claim.json",
+        "business_effects_verified": false,
+        "full_product_acceptance_credit": false
+      },
+      "snapshot_excerpt": {
+        "revision": 71,
+        "native_revision": 70,
+        "date_raw": 53144712,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 80,
+          "option_count": 2,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 1,
+              "option_number": 2,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        }
+      }
+    },
+    "0154-": {
+      "original_SDK": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0154-r10-0155-seventh-player-options-entry-query.sdk-result.json",
+        "bytes": 41713,
+        "sha256": "72c806675ae0f8092e5cc638ebc390302411df0ce6a1cc29151a63f6f0e35b83"
+      },
+      "schema": "ck3.native-profile-receipt.v1",
+      "status": "native_event_query_verified",
+      "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+      "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+      "isError": false,
+      "result": {
+        "step": "query-current-event-window-context-v1",
+        "accepted": true,
+        "status": "available",
+        "query_sequence": 48,
+        "snapshot_revision": 71,
+        "current_event_window_context": {
+          "schema": "current-event-window-context-v1",
+          "schema_version": 1,
+          "status": "available",
+          "snapshot_revision": 71,
+          "date_raw": 53144712,
+          "current_event_instance_id": 80,
+          "window_match_count": 1,
+          "unavailable_reason": null,
+          "event_definition_key": "lyd.200",
+          "calculated_event_id": 2270200,
+          "runtime_stats_ordinal": 2401,
+          "root_scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 31254
+            }
+          },
+          "saved_scopes": [
+            {
+              "name": "actor",
+              "name_identifier": 1,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 4,
+                "type_key": "character",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "available",
+                  "kind": "character",
+                  "character_id": 31254
+                }
+              }
+            },
+            {
+              "name": "recipient",
+              "name_identifier": 3,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 4,
+                "type_key": "character",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "available",
+                  "kind": "character",
+                  "character_id": 65866
+                }
+              }
+            },
+            {
+              "name": "secondary_actor",
+              "name_identifier": 27,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 4,
+                "type_key": "character",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "character_scope_is_null"
+                }
+              }
+            },
+            {
+              "name": "secondary_recipient",
+              "name_identifier": 28,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 4,
+                "type_key": "character",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "character_scope_is_null"
+                }
+              }
+            },
+            {
+              "name": "intermediary",
+              "name_identifier": 225,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 4,
+                "type_key": "character",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "character_scope_is_null"
+                }
+              }
+            },
+            {
+              "name": "puppet_or_actor",
+              "name_identifier": 226,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 4,
+                "type_key": "character",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "available",
+                  "kind": "character",
+                  "character_id": 31254
+                }
+              }
+            },
+            {
+              "name": "is_puppet_action",
+              "name_identifier": 227,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 2,
+                "type_key": "boolean",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            },
+            {
+              "name": "lyd_c2_actor",
+              "name_identifier": 15756,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 4,
+                "type_key": "character",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "available",
+                  "kind": "character",
+                  "character_id": 31254
+                }
+              }
+            },
+            {
+              "name": "lyd_c2_event_school",
+              "name_identifier": 43578,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 42,
+                "type_key": "rite",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            },
+            {
+              "name": "lyd_c2_event_serial",
+              "name_identifier": 15762,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 1,
+                "type_key": "value",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            },
+            {
+              "name": "lyd_c2_event_terms",
+              "name_identifier": 43595,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 1,
+                "type_key": "value",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            },
+            {
+              "name": "lyd_c2_event_nonce",
+              "name_identifier": 15763,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 1,
+                "type_key": "value",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            },
+            {
+              "name": "lyd_c2_target_school",
+              "name_identifier": 47444,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 42,
+                "type_key": "rite",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            },
+            {
+              "name": "lyd_c2_voter",
+              "name_identifier": 47430,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 4,
+                "type_key": "character",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "available",
+                  "kind": "character",
+                  "character_id": 65865
+                }
+              }
+            },
+            {
+              "name": "lyd_c2_snapshot_item",
+              "name_identifier": 47492,
+              "scope": {
+                "status": "available",
+                "raw_type_index": 39,
+                "type_key": "doctrine",
+                "subtype": 0,
+                "typed_identity": {
+                  "status": "unavailable",
+                  "reason": "generic_scope_payload_identity_not_closed"
+                }
+              }
+            }
+          ],
+          "options": [
+            {
+              "rendered_index": 0,
+              "native_option_index": 0,
+              "shown": true,
+              "enabled": true,
+              "fallback": false,
+              "cancel": false,
+              "resolved_name": "先待诸方答复",
+              "unavailable_reason": "",
+              "effect_indicators": {
+                "status": "available",
+                "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+                "complete_effect_set": false,
+                "rows": []
+              },
+              "effect_preview": {
+                "status": "unavailable",
+                "reason": "indicator_subset_has_no_completeness_signal"
+              },
+              "resource_deltas": {
+                "status": "unavailable"
+              },
+              "relationship_deltas": {
+                "status": "unavailable"
+              }
+            },
+            {
+              "rendered_index": 1,
+              "native_option_index": 1,
+              "shown": true,
+              "enabled": true,
+              "fallback": false,
+              "cancel": false,
+              "resolved_name": "撤回本轮议案",
+              "unavailable_reason": "",
+              "effect_indicators": {
+                "status": "available",
+                "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+                "complete_effect_set": false,
+                "rows": []
+              },
+              "effect_preview": {
+                "status": "unavailable",
+                "reason": "indicator_subset_has_no_completeness_signal"
+              },
+              "resource_deltas": {
+                "status": "unavailable"
+              },
+              "relationship_deltas": {
+                "status": "unavailable"
+              }
+            }
+          ],
+          "readiness": {
+            "event_definition_identity_ready": true,
+            "root_scope_ready": true,
+            "saved_scopes_ready": true,
+            "option_presentation_ready": true,
+            "effect_indicators_ready": true,
+            "effect_preview_ready": false,
+            "semantic_decision_ready": false
+          },
+          "provenance": {
+            "root": "module+0x5C6A520->+0x10",
+            "idler_vtable_rva": "0x44BC408",
+            "manager_offset": "+0x28",
+            "backend_id": "ck3-1.20.0.3-native-event-window-v1"
+          }
+        },
+        "backend_id": "native-headless",
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "date_raw": 53144712,
+        "current_event_instance_id": 80,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "lyd.200",
+        "calculated_event_id": 2270200,
+        "runtime_stats_ordinal": 2401,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        },
+        "saved_scopes": [
+          {
+            "name": "actor",
+            "name_identifier": 1,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 31254
+              }
+            }
+          },
+          {
+            "name": "recipient",
+            "name_identifier": 3,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 65866
+              }
+            }
+          },
+          {
+            "name": "secondary_actor",
+            "name_identifier": 27,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "character_scope_is_null"
+              }
+            }
+          },
+          {
+            "name": "secondary_recipient",
+            "name_identifier": 28,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "character_scope_is_null"
+              }
+            }
+          },
+          {
+            "name": "intermediary",
+            "name_identifier": 225,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "character_scope_is_null"
+              }
+            }
+          },
+          {
+            "name": "puppet_or_actor",
+            "name_identifier": 226,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 31254
+              }
+            }
+          },
+          {
+            "name": "is_puppet_action",
+            "name_identifier": 227,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 2,
+              "type_key": "boolean",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "lyd_c2_actor",
+            "name_identifier": 15756,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 31254
+              }
+            }
+          },
+          {
+            "name": "lyd_c2_event_school",
+            "name_identifier": 43578,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 42,
+              "type_key": "rite",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "lyd_c2_event_serial",
+            "name_identifier": 15762,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 1,
+              "type_key": "value",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "lyd_c2_event_terms",
+            "name_identifier": 43595,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 1,
+              "type_key": "value",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "lyd_c2_event_nonce",
+            "name_identifier": 15763,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 1,
+              "type_key": "value",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "lyd_c2_target_school",
+            "name_identifier": 47444,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 42,
+              "type_key": "rite",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          },
+          {
+            "name": "lyd_c2_voter",
+            "name_identifier": 47430,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 4,
+              "type_key": "character",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "available",
+                "kind": "character",
+                "character_id": 65865
+              }
+            }
+          },
+          {
+            "name": "lyd_c2_snapshot_item",
+            "name_identifier": 47492,
+            "scope": {
+              "status": "available",
+              "raw_type_index": 39,
+              "type_key": "doctrine",
+              "subtype": 0,
+              "typed_identity": {
+                "status": "unavailable",
+                "reason": "generic_scope_payload_identity_not_closed"
+              }
+            }
+          }
+        ],
+        "options": [
+          {
+            "rendered_index": 0,
+            "native_option_index": 0,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "先待诸方答复",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          },
+          {
+            "rendered_index": 1,
+            "native_option_index": 1,
+            "shown": true,
+            "enabled": true,
+            "fallback": false,
+            "cancel": false,
+            "resolved_name": "撤回本轮议案",
+            "unavailable_reason": "",
+            "effect_indicators": {
+              "status": "available",
+              "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+              "complete_effect_set": false,
+              "rows": []
+            },
+            "effect_preview": {
+              "status": "unavailable",
+              "reason": "indicator_subset_has_no_completeness_signal"
+            },
+            "resource_deltas": {
+              "status": "unavailable"
+            },
+            "relationship_deltas": {
+              "status": "unavailable"
+            }
+          }
+        ],
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "provenance": {
+          "root": "module+0x5C6A520->+0x10",
+          "idler_vtable_rva": "0x44BC408",
+          "manager_offset": "+0x28",
+          "backend_id": "ck3-1.20.0.3-native-event-window-v1"
+        },
+        "current_event_window_context_ready": true,
+        "current_event_effect_indicators_ready": true,
+        "queried_snapshot_id": "native:71",
+        "queried_revision": 72,
+        "queried_native_revision": 71,
+        "scope": "exact-current-event-window",
+        "source": {
+          "snapshot_id": "native:71",
+          "revision": 72,
+          "native_revision": 71,
+          "date_raw": 53144712,
+          "paused": true,
+          "backend_id": "native-headless"
+        },
+        "binding": {
+          "snapshot_id": "native:71",
+          "revision": 72,
+          "native_revision": 71,
+          "date_raw": 53144712,
+          "expected_revision": 72,
+          "event_instance_id": 80
+        }
+      },
+      "snapshot_excerpt": null
+    }
+  },
+  "current_claim": {
+    "ref": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000006.claim.json",
+      "bytes": 1934,
+      "sha256": "27999be4ffebc686a2961528d639886b07712fce5f1578935190448e1f8ded02"
+    },
+    "exact_JSON": {
+      "schema": "ck3-ordinary-interaction-once-claim-v1",
+      "request_id": "ordinary-interaction-ce6f9c27e43f4d1c9057fb7746fcb815",
+      "binding": {
+        "native_revision": 69,
+        "connection_generation": 1,
+        "game_pid": 13436,
+        "played_character_id": 31254,
+        "date_raw": 53144712,
+        "episode_run_id": null,
+        "revision": 70,
+        "snapshot_id": "native:69",
+        "observed_stress_points": 0,
+        "active_event_present": false,
+        "incoming_interaction_present": false
+      },
+      "action_identity": {
+        "game_pid": 13436,
+        "actor_id": 31254,
+        "process_create_time": 1791196395.7422996,
+        "interaction_key": "lyd_c2_propose_join_interaction",
+        "recipient_id": 65866,
+        "action": "initiate_ordinary"
+      },
+      "claim_ordinal": 6,
+      "host_provenance": {
+        "process_create_time": 1791196395.7422996,
+        "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+        "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+        "pipe_name": "\\\\.\\pipe\\xar_profile_53bd96329c5541f7a403c5cecf61d8ba",
+        "guard_profile_sha256": "f87f22269f1924aa9e032c8cfe24e35d16bb5567ade0a1c1b0629fc81ab7d961"
+      },
+      "new_intent_lineage": {
+        "permit_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.release.json",
+        "permit_sha256": "b5bc8f3fc94c25be5b40014d943685bd6e45d3c0dc0e4e5d8d2f196d2072082a",
+        "next_intent_id": "r10-proposal-007-after-consumed-1d9c-20261006",
+        "parent_claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.json",
+        "parent_claim_sha256": "47c844c0decce779351f2c5b3f2016dc6aae0b0ac6b3b0fc60bcc3b6d2fea0c8"
+      },
+      "status": "claimed_result_unknown_no_retry"
+    }
+  },
+  "parent_claim": {
+    "ref": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.json",
+      "bytes": 1934,
+      "sha256": "47c844c0decce779351f2c5b3f2016dc6aae0b0ac6b3b0fc60bcc3b6d2fea0c8"
+    },
+    "exact_JSON": {
+      "schema": "ck3-ordinary-interaction-once-claim-v1",
+      "request_id": "ordinary-interaction-1d9cf9c7db6e4ea2be6872d6427cf2a4",
+      "binding": {
+        "native_revision": 58,
+        "connection_generation": 1,
+        "game_pid": 13436,
+        "played_character_id": 31254,
+        "date_raw": 53144712,
+        "episode_run_id": null,
+        "revision": 59,
+        "snapshot_id": "native:58",
+        "observed_stress_points": 0,
+        "active_event_present": false,
+        "incoming_interaction_present": false
+      },
+      "action_identity": {
+        "game_pid": 13436,
+        "actor_id": 31254,
+        "process_create_time": 1791196395.7422996,
+        "interaction_key": "lyd_c2_propose_join_interaction",
+        "recipient_id": 65866,
+        "action": "initiate_ordinary"
+      },
+      "claim_ordinal": 5,
+      "host_provenance": {
+        "process_create_time": 1791196395.7422996,
+        "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+        "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+        "pipe_name": "\\\\.\\pipe\\xar_profile_53bd96329c5541f7a403c5cecf61d8ba",
+        "guard_profile_sha256": "f87f22269f1924aa9e032c8cfe24e35d16bb5567ade0a1c1b0629fc81ab7d961"
+      },
+      "new_intent_lineage": {
+        "permit_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000004.claim.release.json",
+        "permit_sha256": "350483fb0032e95b83d99e2321e02186f44d3190c2d2e206490517d88295485a",
+        "next_intent_id": "r10-proposal-006-after-consumed-9e0a-20261005",
+        "parent_claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000004.claim.json",
+        "parent_claim_sha256": "be8013203068a19192934c6aebf5491f4c8f8b7483e60799a9df3413c48eff22"
+      },
+      "status": "claimed_result_unknown_no_retry"
+    }
+  },
+  "permit": {
+    "ref": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.release.json",
+      "bytes": 1732,
+      "sha256": "b5bc8f3fc94c25be5b40014d943685bd6e45d3c0dc0e4e5d8d2f196d2072082a"
+    },
+    "exact_JSON": {
+      "schema": "ck3-ordinary-interaction-next-intent-permit-v1",
+      "claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.json",
+      "claim_sha256": "47c844c0decce779351f2c5b3f2016dc6aae0b0ac6b3b0fc60bcc3b6d2fea0c8",
+      "claim_request_id": "ordinary-interaction-1d9cf9c7db6e4ea2be6872d6427cf2a4",
+      "action_identity": {
+        "game_pid": 13436,
+        "actor_id": 31254,
+        "process_create_time": 1791196395.7422996,
+        "interaction_key": "lyd_c2_propose_join_interaction",
+        "recipient_id": 65866,
+        "action": "initiate_ordinary"
+      },
+      "old_connection_generation": 1,
+      "manifest": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-emitted-evidence-20261006-002\\CONSUMPTION-MANIFEST.json",
+        "sha256": "d1d4cf436cd9b2f4c16cdf8713ec84a27385b70d0d1c5ea5c2359d1299c4b286"
+      },
+      "registry": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-consumption-host-request-001\\REGISTRY.json",
+        "sha256": "9ed7f235124bcda7c40c8e78aa6c606a086c8d3270353014326452c9e25a15a0"
+      },
+      "verifier_id": "lyd-first-join-actual-save-v1",
+      "verifier_bundle": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-bound-verifier-20261006-001\\INDEX.json",
+        "sha256": "73a5baa900687050fa6ad0adab5574d0659344144bbae69c6da5c987e858d725"
+      },
+      "operator_id": "root-r10-20261005",
+      "next_intent_id": "r10-proposal-007-after-consumed-1d9c-20261006",
+      "released_at_utc": "2026-10-05T16:39:00.992179+00:00",
+      "scope": "operator_verified_consumption_for_one_new_intent",
+      "business_acceptance_credit": false
+    }
+  },
+  "lineage_checks": {
+    "ordinal6": true,
+    "parent_ordinal5": true,
+    "same_six_identity": true,
+    "newUUID": true,
+    "differentUUID": true,
+    "before149_frame70_native69": true,
+    "lineage_parent_and_permit_exact_SHA": true
+  },
+  "permit_root_supplied_sha": null,
+  "permit_actual_sha_exactly_verified_against_claim_lineage": true,
+  "root_player_plan": {
+    "ref": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-serial-player-plans\\seventh-player-options\\PLAN.exact.json",
+      "bytes": 647,
+      "sha256": "2f10fcafa46b99d6fab71adeb4a5ad8b1ae3571c50c89ff745465c75c5977604"
+    },
+    "exact_JSON": {
+      "schema": "lyd.r10.root-three-player-choices.v1",
+      "actor_id": 31254,
+      "game_pid": 13436,
+      "date_raw": 53144712,
+      "case_key": "seventh-player-options",
+      "first_request_number": 155,
+      "initial_revision": 72,
+      "initial_event_instance": 80,
+      "wallet": {
+        "gold_raw": 154300000,
+        "piety_raw": 565000000,
+        "prestige_raw": 220000000
+      },
+      "steps": [
+        {
+          "stage": "entry",
+          "definition": "lyd.200",
+          "native_option_index": 0,
+          "resolved_name": "先待诸方答复"
+        },
+        {
+          "stage": "personal",
+          "definition": "lyd.212",
+          "native_option_index": 0,
+          "resolved_name": "我明确同意本轮归属条款"
+        },
+        {
+          "stage": "scholar",
+          "definition": "lyd.210",
+          "native_option_index": 0,
+          "resolved_name": "我授权此人签署本轮条款"
+        }
+      ]
+    }
+  },
+  "root_player_result": {
+    "ref": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-serial-player-plans\\seventh-player-options\\RESULT.json",
+      "bytes": 3391,
+      "sha256": "fb1f04fc3464787bf8b1bbb75f37d0dd3d49a24a84687aea2cb6e5d2c1ba802b"
+    },
+    "exact_JSON": {
+      "status": "THREE_DECLARED_PLAYER_CHOICES_COMPLETED",
+      "plan_sha256": "2f10fcafa46b99d6fab71adeb4a5ad8b1ae3571c50c89ff745465c75c5977604",
+      "actual_revision": 75,
+      "actual_native_revision": 74,
+      "active_event": null,
+      "records": [
+        {
+          "request_id": "r10-0155-seventh-player-options-entry-query",
+          "tool": "ck3_query_profile_event_window_v1",
+          "arguments": {
+            "event_instance_id": 80,
+            "expected_revision": 72
+          },
+          "sdk": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0154-r10-0155-seventh-player-options-entry-query.sdk-result.json",
+          "sdk_sha256": "72c806675ae0f8092e5cc638ebc390302411df0ce6a1cc29151a63f6f0e35b83",
+          "sequence": 154
+        },
+        {
+          "request_id": "r10-0156-seventh-player-options-entry-chosen",
+          "tool": "ck3_select_profile_event_option_v1",
+          "arguments": {
+            "event_instance_id": 80,
+            "option_number": 1,
+            "expected_revision": 72
+          },
+          "sdk": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0155-r10-0156-seventh-player-options-entry-chosen.sdk-result.json",
+          "sdk_sha256": "7bf96a2428cdb34637dc1bc505c6f3be2b0f70af28fb5d7c14f25a75498adbc1",
+          "sequence": 155
+        },
+        {
+          "request_id": "r10-0157-seventh-player-options-personal-query",
+          "tool": "ck3_query_profile_event_window_v1",
+          "arguments": {
+            "event_instance_id": 79,
+            "expected_revision": 73
+          },
+          "sdk": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0156-r10-0157-seventh-player-options-personal-query.sdk-result.json",
+          "sdk_sha256": "3ee079fc318cb00a1df4501569cddb3434c555c275d0ccc112977d2f63412928",
+          "sequence": 156
+        },
+        {
+          "request_id": "r10-0158-seventh-player-options-personal-chosen",
+          "tool": "ck3_select_profile_event_option_v1",
+          "arguments": {
+            "event_instance_id": 79,
+            "option_number": 1,
+            "expected_revision": 73
+          },
+          "sdk": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0157-r10-0158-seventh-player-options-personal-chosen.sdk-result.json",
+          "sdk_sha256": "1b90fb3c54738827f40e47e5d0c95f1f85b2d2dbf49790f6b50aaba6242e45fa",
+          "sequence": 157
+        },
+        {
+          "request_id": "r10-0159-seventh-player-options-scholar-query",
+          "tool": "ck3_query_profile_event_window_v1",
+          "arguments": {
+            "event_instance_id": 78,
+            "expected_revision": 74
+          },
+          "sdk": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0158-r10-0159-seventh-player-options-scholar-query.sdk-result.json",
+          "sdk_sha256": "bc827ad809c6380ddaa81af90ea949e71e22ef3170ae2300649a037c59c492ac",
+          "sequence": 158
+        },
+        {
+          "request_id": "r10-0160-seventh-player-options-scholar-chosen",
+          "tool": "ck3_select_profile_event_option_v1",
+          "arguments": {
+            "event_instance_id": 78,
+            "option_number": 1,
+            "expected_revision": 74
+          },
+          "sdk": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0159-r10-0160-seventh-player-options-scholar-chosen.sdk-result.json",
+          "sdk_sha256": "dd1bd2996fc4a94533d07d4c21855013e7945deec3a501a9a6ddeebcf83aa9eb",
+          "sequence": 159
+        }
+      ],
+      "full_join_credit": false
+    }
+  },
+  "typed154_record_used": {
+    "request_id": "r10-0155-seventh-player-options-entry-query",
+    "tool": "ck3_query_profile_event_window_v1",
+    "arguments": {
+      "event_instance_id": 80,
+      "expected_revision": 72
+    },
+    "sdk": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0154-r10-0155-seventh-player-options-entry-query.sdk-result.json",
+    "sdk_sha256": "72c806675ae0f8092e5cc638ebc390302411df0ce6a1cc29151a63f6f0e35b83",
+    "sequence": 154
+  },
+  "other_five_callbacks_not_used_as_save153_business_result": true,
+  "agent_native_or_claim_permit_operations": false
+}

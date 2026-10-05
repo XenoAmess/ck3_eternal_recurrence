@@ -1,0 +1,122 @@
+{
+  "status": "SOURCE_L0_RED",
+  "utc": "2026-10-05T09:38:28.781204+00:00",
+  "groups": [
+    {
+      "name": "policy",
+      "commands": [
+        {
+          "argv": [
+            "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+            "--report",
+            "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-guards-final-l0-20261005-001\\policy\\preview.json"
+          ],
+          "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+          "started": "2026-10-05T09:37:40.333995+00:00",
+          "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "python": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+          "finished": "2026-10-05T09:37:40.492030+00:00",
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "mod_li_yu_dao/tools/test_content_leadership.py"
+          ],
+          "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+          "started": "2026-10-05T09:37:40.492948+00:00",
+          "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "python": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+          "finished": "2026-10-05T09:37:40.960774+00:00",
+          "exit_code": 1
+        }
+      ],
+      "passed": false
+    },
+    {
+      "name": "product",
+      "commands": [
+        {
+          "argv": [
+            "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "mod_li_yu_dao/tools/gen_runtime.py",
+            "--check"
+          ],
+          "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+          "started": "2026-10-05T09:37:40.334679+00:00",
+          "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "python": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+          "finished": "2026-10-05T09:37:40.587482+00:00",
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "mod_li_yu_dao/tools/validate_static.py",
+            "--report",
+            "C:\\workspace\\ck3_lyd_runtime_20261004\\root-c3-guards-final-l0-20261005-001\\product\\static.json"
+          ],
+          "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+          "started": "2026-10-05T09:37:40.588404+00:00",
+          "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "python": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+          "finished": "2026-10-05T09:37:41.042739+00:00",
+          "exit_code": 0
+        },
+        {
+          "argv": [
+            "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "mod_li_yu_dao/tools/build_release.py",
+            "--check"
+          ],
+          "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+          "started": "2026-10-05T09:37:41.043614+00:00",
+          "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "python": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+          "finished": "2026-10-05T09:37:41.625939+00:00",
+          "exit_code": 0
+        }
+      ],
+      "passed": true
+    },
+    {
+      "name": "python-policy",
+      "commands": [
+        {
+          "argv": [
+            "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+            "-B",
+            "-X",
+            "utf8",
+            "tools/validate_python_only.py"
+          ],
+          "cwd": "C:\\workspace\\ck3_eternal_recurrence",
+          "started": "2026-10-05T09:37:40.335172+00:00",
+          "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+          "python": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+          "finished": "2026-10-05T09:38:28.779647+00:00",
+          "exit_code": 0
+        }
+      ],
+      "passed": true
+    }
+  ],
+  "native": "NOT_RUN",
+  "unchanged_sdk_tests_not_repeated": true
+}

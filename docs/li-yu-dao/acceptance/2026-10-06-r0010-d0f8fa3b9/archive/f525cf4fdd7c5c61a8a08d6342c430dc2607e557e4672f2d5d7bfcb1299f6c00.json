@@ -1,0 +1,12 @@
+{
+  "status": "ACTUAL_BEFORE_INPUT_REFUSAL",
+  "origin": "exec chunk ac5e59",
+  "wrong_sha256_supplied": "e010219ade10435ea2a19aad91f918389f246f8ad4d37d275aa3bfb0357e9f57",
+  "actual_request_sha256": "0999acc54100deff19522b88db59033928318db9367fd88bcfbac6b6c7624142",
+  "cause": "author supplied incorrect CLI SHA before dependency output was used",
+  "error": "Input file bytes do not match freeze: request actual JSON",
+  "Git_read_commands": 0,
+  "010_created": false,
+  "product_or_native_failure": false,
+  "raw_stdout_claimed": false
+}

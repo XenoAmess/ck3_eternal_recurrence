@@ -1,0 +1,92 @@
+{
+  "schema": "lyd.r10.fourth-post-cancel-independent-readback.v1",
+  "status": "ACTUAL_RESULT3_CANCELLED_SOURCE_SIGNED1_NO_TARGET_REQUEST_SIGNATURE_JOIN_OR_FEE",
+  "typed_facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fourth-post-cancel-readback-20261005-001\\TYPED-FACTS.json",
+    "bytes": 520578,
+    "sha256": "b9a1dc2530cd16c54a35d36c2f73a76e45e2e0742e763fe602893ed244760e7e"
+  },
+  "open88_pair_diff_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fourth-post-cancel-readback-20261005-001\\pair-diff-001\\REPORT.json",
+    "bytes": 33026,
+    "sha256": "f3d4bef02384b47a9a28d62760e73ab5719e01d89238bc08baee7bb8b7d6b4ae"
+  },
+  "baseline82_pair_diff_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fourth-post-cancel-readback-20261005-001\\baseline-pair-diff-001\\REPORT.json",
+    "bytes": 36233,
+    "sha256": "c8d75c89fe5924e4035ed79f7ae43275f2729e9d7ca19c04fce349996ee43119"
+  },
+  "control_evidence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fourth-post-cancel-readback-20261005-001\\CONTROL-EVIDENCE.json",
+    "bytes": 40546,
+    "sha256": "31e8d1457fc2c3f4d0485a7e69cf8cc4dd9df197319ad21babf3b229ae64ddad"
+  },
+  "control_supplement": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fourth-post-cancel-readback-20261005-001\\CONTROL-SUPPLEMENT.json",
+    "bytes": 57343,
+    "sha256": "7d02be6c82ce0acbdf112016c8d2b390e44bdd9a45302c0a0077c66e182f2374"
+  },
+  "source_semantics": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fourth-post-cancel-readback-20261005-001\\SOURCE-SEMANTICS.json",
+    "bytes": 2698,
+    "sha256": "a5919d262747982b016ed666f6511d8874472f8ad9182555c6c5a4ae10c738f6"
+  },
+  "human_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fourth-post-cancel-readback-20261005-001\\REPORT-zh.md",
+    "bytes": 1428,
+    "sha256": "0b9c566f3daf6138c7ddeff4173e2d88c0f203be1943cc64f2a4d8aa15dee803"
+  },
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0107-fourth-post-cancel-save\\checkpoint.ck3",
+    "bytes": 91535016,
+    "sha256": "120c11e39e8dfac92c48c0a8e6ea9ba10ad7bffd9891e844eaaf90188ff1809b"
+  },
+  "all_binding_and_protection_checks": {
+    "saveSDK_success": true,
+    "saveSDK_exact_SHA_bytes": true,
+    "saveSDK_public50_native49": true,
+    "saveSDK_actor31254_date_paused_PID": true,
+    "saveSDK_noevent_no_pending": true,
+    "saveSDK_profile_session": true,
+    "actual_result3": true,
+    "actual_active_removed_since88": true,
+    "actual_nonce_serial10_retained": true,
+    "actual_source_signed1_target_requested_signed_absent": true,
+    "actual_fixture_reset5_unchanged_both_cached": true,
+    "actual_player_source_ballot10_yes1": true,
+    "actual_player_consent10": true,
+    "actual_source_quorum2of2_player1of1": true,
+    "actual_target_yes_identity_omitted_total1": true,
+    "actual_NPC_round10_ticket_rows_unchanged_since88": true,
+    "actual_Rite_owner_locks_removed": true,
+    "actual_historical_lockserial10_retained": true,
+    "actual_related_retry_transition_absent": true,
+    "frozen_cancel_source_exact_refs": true,
+    "actual_sign_context98_instance64_lyd220": true,
+    "actual_source_sign99_native0_option1_noevent46_45": true,
+    "actual_review103_instance65_lyd220_only_wait_cancel": true,
+    "actual_cancel104_instance65_native4_option5": true,
+    "actual_result105_instance66_lyd228": true,
+    "actual_ACK106_instance66_native0_then_noevent": true,
+    "controls_same_profile_session_success": true,
+    "open88_all_Faith_main_Rite_parent_links_unchanged": true,
+    "open88_selected_graph_heads_unchanged": true,
+    "open88_selected_full_tenet_doctrine_rows_unchanged": true,
+    "open88_political7_full_AST_unchanged": true,
+    "open88_actor_landed_full_AST_unchanged": true,
+    "open88_selected_person_full_protection_unchanged": true,
+    "open88_wallet_XP_history_unchanged": true,
+    "open88_non_C2_actor_LYD_variables_unchanged": true,
+    "baseline82_all_Faith_main_Rite_parent_links_unchanged": true,
+    "baseline82_selected_graph_heads_unchanged": true,
+    "baseline82_selected_full_tenet_doctrine_rows_unchanged": true,
+    "baseline82_political7_full_AST_unchanged": true,
+    "baseline82_actor_landed_full_AST_unchanged": true,
+    "baseline82_selected_person_full_protection_unchanged": true,
+    "baseline82_wallet_XP_history_unchanged": true,
+    "baseline82_non_C2_actor_LYD_variables_unchanged": true
+  },
+  "actual_AST_parse_count": 1,
+  "old_save_reparsed": false,
+  "final_JOIN_credit": false
+}

@@ -1,0 +1,70 @@
+{
+  "schema": "lyd.r10.actual-post-source-sign-independent-readback.v1",
+  "status": "ACTUAL_RESULT2_REJECTED_NO_JOIN_TRANSITION_OR_FEE",
+  "typed_facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-post-source-sign-readback-20261005-001\\TYPED-FACTS.json",
+    "bytes": 309407,
+    "sha256": "0d07639e2df4924e8f41f2cecca8f739fb83e6359104e72bcffaff3f12df9a06"
+  },
+  "pair_diff_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-post-source-sign-readback-20261005-001\\pair-diff-001\\REPORT.json",
+    "bytes": 34005,
+    "sha256": "9f5fb99e4b90a45aa2139150344aff88100b773dcdf04e1d13f3c4d8718bf1d2"
+  },
+  "reason_evidence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-post-source-sign-readback-20261005-001\\REASON-EVIDENCE.json",
+    "bytes": 49561,
+    "sha256": "1460a98bdd8c19f7d47f4ed3d0b6f21b25efa01e68fbc9acdddf506f8b01eead"
+  },
+  "human_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-post-source-sign-readback-20261005-001\\REPORT-zh.md",
+    "bytes": 1722,
+    "sha256": "6bab8b0e2883dcf9981fa5a6fb47122b480cce0445f06a542e89c28596110358"
+  },
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0031-post-source-sign-save\\checkpoint.ck3",
+    "bytes": 91532053,
+    "sha256": "885393b25bca235361e0d2a242bb2791eaa5d578ef03ed9c849c0849370fc4d4"
+  },
+  "before_opened16_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-open-join-readback-20261005-001\\REPORT.json",
+    "bytes": 2752,
+    "sha256": "f7c9c66d44caf7f761db827933b212b7c54b781451555a7ad412be318c8ffb0c"
+  },
+  "binding_and_protection_checks": {
+    "actual_save_SDK_success": true,
+    "actual_save_SDK_exact_SHA": true,
+    "actual_save_SDK_exact_bytes": true,
+    "SDK_revision_public15_native14": true,
+    "SDK_actor31254": true,
+    "SDK_date53144712_paused_PID13436": true,
+    "SDK_active_event_null": true,
+    "SDK_profile_session_exact": true,
+    "actual_result2": true,
+    "actual_active_removed": true,
+    "actual_nonce_serial7": true,
+    "actual_source_signed1": true,
+    "actual_target_requested1": true,
+    "actual_target_signed_absent": true,
+    "actual_source_yes2_total2": true,
+    "actual_target_yes1_total1": true,
+    "actual_player_yes1_total1": true,
+    "actual_current_player_consent_ticket7": true,
+    "actual_current_player_ballot_ticket7_yes1": true,
+    "both_Rite_owner_locks_released": true,
+    "moving_Rite169_actual_retry1_tick365": true,
+    "history_JOIN1_DETACH2_unchanged": true,
+    "actual_wallet_unchanged": true,
+    "savedXP_unchanged": true,
+    "all_Faith_main_links_unchanged": true,
+    "all_Rite_parent_links_unchanged": true,
+    "actor_landed_full_AST_unchanged": true,
+    "political7_full_AST_unchanged": true,
+    "selected_person_protected_AST_unchanged": true,
+    "selected_graph_heads_unchanged": true,
+    "selected_graph_full_tenet_doctrine_rows_unchanged": true,
+    "frozen_source6_exact_cold_inventory": true
+  },
+  "actual_AST_parse_count": 1,
+  "final_JOIN_credit": false
+}

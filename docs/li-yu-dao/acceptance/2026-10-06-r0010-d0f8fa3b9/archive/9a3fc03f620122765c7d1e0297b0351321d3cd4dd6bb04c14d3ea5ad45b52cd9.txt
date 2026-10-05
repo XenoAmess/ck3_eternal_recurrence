@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0059-reset-query.request.json",
+  "request_id": "r10-0059-reset-query",
+  "sha256": "449b345033af1b5f08abb8c715f163b11c853513a6fde1136e5f0d5883af8022",
+  "contacted_game": false
+}

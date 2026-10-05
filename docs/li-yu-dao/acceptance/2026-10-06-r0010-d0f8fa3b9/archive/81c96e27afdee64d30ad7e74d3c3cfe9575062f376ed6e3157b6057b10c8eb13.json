@@ -1,0 +1,14 @@
+{
+  "schema": "lyd.r10.evidence-author-attempt-failure.v1",
+  "recorded_utc": "2026-10-05T17:55:16.875898+00:00",
+  "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\prepare_r10_incremental_ledger151_200_20261006_001.py",
+  "source_bytes": 23525,
+  "source_sha256": "f5a5ad250a4a7dfdd272581f3a5b99e82007256db1462257689d73c0804702eb",
+  "actual_execution_exit_code": 1,
+  "execution_receipt_basis": "exec_command tool transcript; no separate raw stdout/stderr file exists",
+  "actual_error_excerpt": "KeyError: 'final_JOIN_credit' at source line166; reset200 report correctly uses new_JOIN_or_DETACH_credit instead",
+  "first50_new_SDK_audit_completed_before_schema_failure": true,
+  "boundary": "All SDK151-200 SHA assertions completed; semantic summary adapter then assumed uniform business-credit key across a reset report. No output package or game/main/Git mutation.",
+  "not_a_game_product_failure": true,
+  "old_SDK1_to150_and_save_bodies_not_read": true
+}

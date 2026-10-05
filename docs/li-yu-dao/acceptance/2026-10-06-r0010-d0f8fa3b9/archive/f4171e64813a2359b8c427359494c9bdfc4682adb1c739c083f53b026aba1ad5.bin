@@ -1,0 +1,23 @@
+--- R9/tools/leadership_templates/events/lyd_c3_leadership_events.txt.in
++++ CURRENT/tools/leadership_templates/events/lyd_c3_leadership_events.txt.in
+@@ -57,3 +57,20 @@
+         }
+     }
+ }
++
++lyd.330 = {
++    type = character_event
++    title = lyd_c3_challenger_registered_t
++    desc = lyd_c3_challenger_registered_desc
++    theme = faith
++    trigger = { lyd_c3_player_actor_trigger = yes var:lyd_c3_claim_registration_result = 1 }
++    option = { name = lyd_c3_acknowledge }
++}
++lyd.331 = {
++    type = character_event
++    title = lyd_c3_challenger_incomplete_t
++    desc = lyd_c3_challenger_incomplete_desc
++    theme = faith
++    trigger = { lyd_c3_player_actor_trigger = yes var:lyd_c3_claim_registration_result = -1 }
++    option = { name = lyd_c3_acknowledge }
++}

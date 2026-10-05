@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0086-i3b-begin-query.request.json",
+  "request_id": "r10-0086-i3b-begin-query",
+  "sha256": "b32e4c3c02a1802bee0cc9b4a8ea0c8f6a7d6b1e823af98292bc04e7f3cb6aee",
+  "contacted_game": false
+}

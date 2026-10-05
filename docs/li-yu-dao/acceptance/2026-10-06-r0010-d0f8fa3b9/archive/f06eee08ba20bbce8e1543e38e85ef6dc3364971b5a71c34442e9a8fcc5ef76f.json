@@ -1,0 +1,10 @@
+{
+  "schema": "ck3-normal-exit-observer-close-v1",
+  "reason": "independent_exit_fact_preserved",
+  "fact_receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\normal-exit-map-requests\\790ba723ed5c82668c8a.observe-0cdc3196c0014471.json",
+  "pid": 13436,
+  "creation_filetime_100ns": 134356699957422997,
+  "retained_handle_token": "c3d6cb9a49b45eacdd12e64815c8f49a",
+  "close_error": null,
+  "retry_authorized": false
+}

@@ -1,0 +1,34 @@
+{
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0057-second-post-sign-save\\checkpoint.ck3",
+    "bytes": 91533138,
+    "sha256": "13a87b974d2bc5e4d717f0d1b7877dfb4bcfcbde6781a4235fae902b1d8af6c9"
+  },
+  "original_SDK": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0057-r10-0058-second-post-sign-save.sdk-result.json",
+    "bytes": 2505173,
+    "sha256": "c90e009f3df7dd47502d7fc5140a862fb171901a67875e1025320ba19d658f44"
+  },
+  "metadata": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0057-second-post-sign-save\\checkpoint-metadata.json",
+    "bytes": 1417,
+    "sha256": "af3d8bfd7eb3ac1c88333f6b2fb25e07a6ab43047224cf3f0f78a2666a58c187"
+  },
+  "qualified_reader": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\reader\\read_actual_checkpoint.py",
+    "bytes": 13860,
+    "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+  },
+  "exact_copied_reader": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-post-sign-readback-20261005-001\\reader\\read_actual_checkpoint.py",
+    "bytes": 13860,
+    "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+  },
+  "second_proposal_before43": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-second-open-join-readback-20261005-001\\REPORT.json",
+    "bytes": 3748,
+    "sha256": "4846d30c937881b47820c5682a276b170eee4f62a29ee007eeb274a4ec10f2df"
+  },
+  "actual_new_parse_count_so_far": 0,
+  "final_JOIN_business_credit": false
+}

@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0141-sixth-source-sign.request.json",
+  "request_id": "r10-0141-sixth-source-sign",
+  "sha256": "34968ab3362b54d01afaf9ecb1246dcb2e9668c2c33801016b9d03245965869a",
+  "contacted_game": false
+}

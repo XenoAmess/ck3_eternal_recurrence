@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 193,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0194-after-join-detach-cooldown-query.request.json",
+  "request_sha256": "b813b99c231139d3dfee8f9d168f592f2213dc7ea1740bddac837f0f008cb545",
+  "started_at_utc": "2026-10-05T17:07:11.357249+00:00",
+  "request_id": "r10-0194-after-join-detach-cooldown-query",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0193-r10-0194-after-join-detach-cooldown-query.sdk-result.json",
+  "sdk_result_sha256": "bdfc31c44eed5b329106d3651d64f9491c233318a7be19f423f800b796e81193",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0192-decision-query.json",
+      "copy": "0193-r10-0194-after-join-detach-cooldown-query.native-01.json",
+      "sha256": "535f92bbaacd8012ee4c9335aef6ff99827df1624b3665489e3b96699548833e"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:07:12.881816+00:00"
+}

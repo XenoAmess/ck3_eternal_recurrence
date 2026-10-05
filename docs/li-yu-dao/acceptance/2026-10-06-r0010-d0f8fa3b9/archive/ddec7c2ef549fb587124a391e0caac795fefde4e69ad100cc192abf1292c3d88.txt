@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0249-after-normal-exit-prepare-query.request.json",
+  "request_id": "r10-0249-after-normal-exit-prepare-query",
+  "sha256": "789ee0f685076d9d1b3c3c58aa1b30dd24e9926aa418d0496530c26f986d288a",
+  "contacted_game": false
+}

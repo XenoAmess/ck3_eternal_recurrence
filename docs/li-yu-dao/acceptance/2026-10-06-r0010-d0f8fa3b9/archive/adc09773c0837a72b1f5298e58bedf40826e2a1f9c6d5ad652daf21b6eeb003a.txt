@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0186-eighth-final-review-confirm.request.json",
+  "request_id": "r10-0186-eighth-final-review-confirm",
+  "sha256": "a892485c41c129d888239b879a4cdc216a6cbe56466769706799ee254445c6fd",
+  "contacted_game": false
+}

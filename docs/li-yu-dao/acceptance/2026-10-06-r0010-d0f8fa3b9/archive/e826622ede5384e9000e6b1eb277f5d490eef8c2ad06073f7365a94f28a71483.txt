@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0231-detach-second-source-sign.request.json",
+  "request_id": "r10-0231-detach-second-source-sign",
+  "sha256": "b85fd1755677e5e319c3148fde7f3bb5560971b28ea5d61001e5ad7c8b7c943c",
+  "contacted_game": false
+}

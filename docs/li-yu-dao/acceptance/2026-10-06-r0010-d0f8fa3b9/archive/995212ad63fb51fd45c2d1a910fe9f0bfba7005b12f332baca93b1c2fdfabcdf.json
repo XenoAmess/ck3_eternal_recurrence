@@ -1,0 +1,23 @@
+{
+  "status": "ACTUAL_CHECK_ONLY_RED",
+  "exit_code": 1,
+  "request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-root-fixture-cold-request-20261005-001/REQUEST.actual.json",
+    "bytes": 20990,
+    "sha256": "d8bc7f0c82aa514905b1a5e4bd659e3801923ba16acac7a53a74f07769d27cfd"
+  },
+  "stdout": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-root-cold-check-only-20261005-001/stdout.bin",
+    "bytes": 374,
+    "sha256": "d00239db80fd5e12fd9c3bd6fc80a152dc19dfc6e4e19d45dac01300b94da689"
+  },
+  "stderr": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-root-cold-check-only-20261005-001/stderr.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "attempt010_created": false,
+  "actual_game_calls": 0,
+  "materialize_executed": false,
+  "Defender_registration_credit": false
+}

@@ -1,0 +1,11 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r10-0149-sixth-cancel-ack",
+  "operation": "call_tool",
+  "name": "ck3_select_profile_event_option_v1",
+  "arguments": {
+    "event_instance_id": 77,
+    "option_number": 1,
+    "expected_revision": 68
+  }
+}

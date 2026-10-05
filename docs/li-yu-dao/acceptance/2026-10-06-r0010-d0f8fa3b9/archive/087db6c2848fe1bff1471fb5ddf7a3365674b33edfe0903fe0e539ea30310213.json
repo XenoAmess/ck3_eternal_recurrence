@@ -1,0 +1,521 @@
+{
+  "utc": "2026-10-05T10:05:32.129583+00:00",
+  "cpu_logical": 36,
+  "cpu_physical": 18,
+  "build_retried": false,
+  "processes": [
+    {
+      "name": "cl.exe",
+      "pid": 628,
+      "status": "running",
+      "cpu_user_seconds": 11.421875,
+      "cpu_system_seconds": 1.15625,
+      "rss_bytes": 80605184
+    },
+    {
+      "name": "cl.exe",
+      "pid": 816,
+      "status": "running",
+      "cpu_user_seconds": 16.625,
+      "cpu_system_seconds": 1.421875,
+      "rss_bytes": 109764608
+    },
+    {
+      "name": "cl.exe",
+      "pid": 1064,
+      "status": "running",
+      "cpu_user_seconds": 30.625,
+      "cpu_system_seconds": 1.953125,
+      "rss_bytes": 62095360
+    },
+    {
+      "name": "cl.exe",
+      "pid": 1480,
+      "status": "running",
+      "cpu_user_seconds": 109.828125,
+      "cpu_system_seconds": 31.078125,
+      "rss_bytes": 1751715840
+    },
+    {
+      "name": "cl.exe",
+      "pid": 1640,
+      "status": "running",
+      "cpu_user_seconds": 2.3125,
+      "cpu_system_seconds": 0.71875,
+      "rss_bytes": 30199808
+    },
+    {
+      "name": "cl.exe",
+      "pid": 2384,
+      "status": "running",
+      "cpu_user_seconds": 111.765625,
+      "cpu_system_seconds": 20.484375,
+      "rss_bytes": 1693450240
+    },
+    {
+      "name": "cl.exe",
+      "pid": 2772,
+      "status": "running",
+      "cpu_user_seconds": 18.09375,
+      "cpu_system_seconds": 1.515625,
+      "rss_bytes": 122810368
+    },
+    {
+      "name": "cl.exe",
+      "pid": 4448,
+      "status": "running",
+      "cpu_user_seconds": 13.71875,
+      "cpu_system_seconds": 1.0,
+      "rss_bytes": 95088640
+    },
+    {
+      "name": "cl.exe",
+      "pid": 7272,
+      "status": "running",
+      "cpu_user_seconds": 1.3125,
+      "cpu_system_seconds": 0.578125,
+      "rss_bytes": 19501056
+    },
+    {
+      "name": "cl.exe",
+      "pid": 7944,
+      "status": "running",
+      "cpu_user_seconds": 21.859375,
+      "cpu_system_seconds": 2.09375,
+      "rss_bytes": 116670464
+    },
+    {
+      "name": "cl.exe",
+      "pid": 8968,
+      "status": "running",
+      "cpu_user_seconds": 8.875,
+      "cpu_system_seconds": 0.96875,
+      "rss_bytes": 75010048
+    },
+    {
+      "name": "cl.exe",
+      "pid": 9208,
+      "status": "running",
+      "cpu_user_seconds": 20.03125,
+      "cpu_system_seconds": 1.78125,
+      "rss_bytes": 142704640
+    },
+    {
+      "name": "cl.exe",
+      "pid": 10344,
+      "status": "running",
+      "cpu_user_seconds": 279.078125,
+      "cpu_system_seconds": 10.046875,
+      "rss_bytes": 146800640
+    },
+    {
+      "name": "cl.exe",
+      "pid": 10352,
+      "status": "running",
+      "cpu_user_seconds": 11.859375,
+      "cpu_system_seconds": 1.234375,
+      "rss_bytes": 77844480
+    },
+    {
+      "name": "cl.exe",
+      "pid": 10584,
+      "status": "running",
+      "cpu_user_seconds": 35.71875,
+      "cpu_system_seconds": 2.8125,
+      "rss_bytes": 52576256
+    },
+    {
+      "name": "cl.exe",
+      "pid": 10620,
+      "status": "running",
+      "cpu_user_seconds": 11.734375,
+      "cpu_system_seconds": 1.125,
+      "rss_bytes": 89407488
+    },
+    {
+      "name": "cl.exe",
+      "pid": 10956,
+      "status": "running",
+      "cpu_user_seconds": 4.75,
+      "cpu_system_seconds": 0.671875,
+      "rss_bytes": 53469184
+    },
+    {
+      "name": "cl.exe",
+      "pid": 11024,
+      "status": "running",
+      "cpu_user_seconds": 10.765625,
+      "cpu_system_seconds": 1.03125,
+      "rss_bytes": 78110720
+    },
+    {
+      "name": "cl.exe",
+      "pid": 11652,
+      "status": "running",
+      "cpu_user_seconds": 462.84375,
+      "cpu_system_seconds": 4.53125,
+      "rss_bytes": 163180544
+    },
+    {
+      "name": "cl.exe",
+      "pid": 12012,
+      "status": "running",
+      "cpu_user_seconds": 10.609375,
+      "cpu_system_seconds": 1.1875,
+      "rss_bytes": 77664256
+    },
+    {
+      "name": "cl.exe",
+      "pid": 12112,
+      "status": "running",
+      "cpu_user_seconds": 115.015625,
+      "cpu_system_seconds": 24.953125,
+      "rss_bytes": 1783349248
+    },
+    {
+      "name": "cl.exe",
+      "pid": 12312,
+      "status": "running",
+      "cpu_user_seconds": 7.515625,
+      "cpu_system_seconds": 0.6875,
+      "rss_bytes": 63655936
+    },
+    {
+      "name": "cl.exe",
+      "pid": 12540,
+      "status": "running",
+      "cpu_user_seconds": 29.328125,
+      "cpu_system_seconds": 2.5625,
+      "rss_bytes": 161484800
+    },
+    {
+      "name": "cl.exe",
+      "pid": 12544,
+      "status": "running",
+      "cpu_user_seconds": 16.453125,
+      "cpu_system_seconds": 1.109375,
+      "rss_bytes": 120696832
+    },
+    {
+      "name": "cl.exe",
+      "pid": 12932,
+      "status": "running",
+      "cpu_user_seconds": 4.71875,
+      "cpu_system_seconds": 0.71875,
+      "rss_bytes": 41050112
+    },
+    {
+      "name": "cl.exe",
+      "pid": 12992,
+      "status": "running",
+      "cpu_user_seconds": 23.28125,
+      "cpu_system_seconds": 1.84375,
+      "rss_bytes": 130998272
+    },
+    {
+      "name": "cl.exe",
+      "pid": 13452,
+      "status": "running",
+      "cpu_user_seconds": 14.0625,
+      "cpu_system_seconds": 1.546875,
+      "rss_bytes": 88793088
+    },
+    {
+      "name": "cl.exe",
+      "pid": 14648,
+      "status": "running",
+      "cpu_user_seconds": 15.953125,
+      "cpu_system_seconds": 1.25,
+      "rss_bytes": 111693824
+    },
+    {
+      "name": "cl.exe",
+      "pid": 15232,
+      "status": "running",
+      "cpu_user_seconds": 2.171875,
+      "cpu_system_seconds": 0.46875,
+      "rss_bytes": 29167616
+    },
+    {
+      "name": "cl.exe",
+      "pid": 15240,
+      "status": "running",
+      "cpu_user_seconds": 14.015625,
+      "cpu_system_seconds": 1.265625,
+      "rss_bytes": 92811264
+    },
+    {
+      "name": "cl.exe",
+      "pid": 15388,
+      "status": "running",
+      "cpu_user_seconds": 6.515625,
+      "cpu_system_seconds": 0.984375,
+      "rss_bytes": 57335808
+    },
+    {
+      "name": "cl.exe",
+      "pid": 15460,
+      "status": "running",
+      "cpu_user_seconds": 115.578125,
+      "cpu_system_seconds": 25.421875,
+      "rss_bytes": 1808662528
+    },
+    {
+      "name": "cl.exe",
+      "pid": 15664,
+      "status": "running",
+      "cpu_user_seconds": 35.609375,
+      "cpu_system_seconds": 2.5625,
+      "rss_bytes": 65110016
+    },
+    {
+      "name": "cl.exe",
+      "pid": 15748,
+      "status": "running",
+      "cpu_user_seconds": 16.171875,
+      "cpu_system_seconds": 1.25,
+      "rss_bytes": 112336896
+    },
+    {
+      "name": "cl.exe",
+      "pid": 15900,
+      "status": "running",
+      "cpu_user_seconds": 40.140625,
+      "cpu_system_seconds": 2.71875,
+      "rss_bytes": 54095872
+    },
+    {
+      "name": "cl.exe",
+      "pid": 15904,
+      "status": "running",
+      "cpu_user_seconds": 121.203125,
+      "cpu_system_seconds": 38.875,
+      "rss_bytes": 22261760
+    },
+    {
+      "name": "cl.exe",
+      "pid": 15988,
+      "status": "running",
+      "cpu_user_seconds": 20.46875,
+      "cpu_system_seconds": 1.796875,
+      "rss_bytes": 123195392
+    },
+    {
+      "name": "cl.exe",
+      "pid": 16012,
+      "status": "running",
+      "cpu_user_seconds": 24.53125,
+      "cpu_system_seconds": 2.28125,
+      "rss_bytes": 123699200
+    },
+    {
+      "name": "cl.exe",
+      "pid": 16144,
+      "status": "running",
+      "cpu_user_seconds": 1.890625,
+      "cpu_system_seconds": 0.421875,
+      "rss_bytes": 30203904
+    },
+    {
+      "name": "cl.exe",
+      "pid": 16316,
+      "status": "running",
+      "cpu_user_seconds": 41.65625,
+      "cpu_system_seconds": 2.703125,
+      "rss_bytes": 65904640
+    },
+    {
+      "name": "cl.exe",
+      "pid": 16516,
+      "status": "running",
+      "cpu_user_seconds": 22.765625,
+      "cpu_system_seconds": 2.09375,
+      "rss_bytes": 124129280
+    },
+    {
+      "name": "cl.exe",
+      "pid": 16712,
+      "status": "running",
+      "cpu_user_seconds": 42.203125,
+      "cpu_system_seconds": 2.984375,
+      "rss_bytes": 51101696
+    },
+    {
+      "name": "cl.exe",
+      "pid": 17140,
+      "status": "running",
+      "cpu_user_seconds": 19.8125,
+      "cpu_system_seconds": 1.59375,
+      "rss_bytes": 148701184
+    },
+    {
+      "name": "cmake.exe",
+      "pid": 17540,
+      "status": "running",
+      "cpu_user_seconds": 0.015625,
+      "cpu_system_seconds": 0.015625,
+      "rss_bytes": 1191936
+    },
+    {
+      "name": "cl.exe",
+      "pid": 17680,
+      "status": "running",
+      "cpu_user_seconds": 22.28125,
+      "cpu_system_seconds": 1.828125,
+      "rss_bytes": 119341056
+    },
+    {
+      "name": "cl.exe",
+      "pid": 17920,
+      "status": "running",
+      "cpu_user_seconds": 121.21875,
+      "cpu_system_seconds": 25.265625,
+      "rss_bytes": 2329718784
+    },
+    {
+      "name": "cl.exe",
+      "pid": 18544,
+      "status": "running",
+      "cpu_user_seconds": 33.75,
+      "cpu_system_seconds": 2.09375,
+      "rss_bytes": 60637184
+    },
+    {
+      "name": "cl.exe",
+      "pid": 18584,
+      "status": "running",
+      "cpu_user_seconds": 22.984375,
+      "cpu_system_seconds": 1.953125,
+      "rss_bytes": 127713280
+    },
+    {
+      "name": "cl.exe",
+      "pid": 18636,
+      "status": "running",
+      "cpu_user_seconds": 118.484375,
+      "cpu_system_seconds": 27.546875,
+      "rss_bytes": 2295611392
+    },
+    {
+      "name": "cl.exe",
+      "pid": 18676,
+      "status": "running",
+      "cpu_user_seconds": 23.90625,
+      "cpu_system_seconds": 2.140625,
+      "rss_bytes": 129159168
+    },
+    {
+      "name": "cl.exe",
+      "pid": 19240,
+      "status": "running",
+      "cpu_user_seconds": 24.703125,
+      "cpu_system_seconds": 2.28125,
+      "rss_bytes": 125644800
+    },
+    {
+      "name": "cl.exe",
+      "pid": 19952,
+      "status": "running",
+      "cpu_user_seconds": 41.84375,
+      "cpu_system_seconds": 2.734375,
+      "rss_bytes": 81674240
+    },
+    {
+      "name": "cl.exe",
+      "pid": 20068,
+      "status": "running",
+      "cpu_user_seconds": 2.640625,
+      "cpu_system_seconds": 0.453125,
+      "rss_bytes": 23941120
+    },
+    {
+      "name": "cl.exe",
+      "pid": 20176,
+      "status": "running",
+      "cpu_user_seconds": 8.828125,
+      "cpu_system_seconds": 0.90625,
+      "rss_bytes": 84070400
+    },
+    {
+      "name": "cl.exe",
+      "pid": 20212,
+      "status": "running",
+      "cpu_user_seconds": 22.65625,
+      "cpu_system_seconds": 2.1875,
+      "rss_bytes": 123830272
+    },
+    {
+      "name": "cl.exe",
+      "pid": 20216,
+      "status": "running",
+      "cpu_user_seconds": 17.0,
+      "cpu_system_seconds": 1.359375,
+      "rss_bytes": 116916224
+    },
+    {
+      "name": "cl.exe",
+      "pid": 20352,
+      "status": "running",
+      "cpu_user_seconds": 12.609375,
+      "cpu_system_seconds": 1.0625,
+      "rss_bytes": 89325568
+    },
+    {
+      "name": "cl.exe",
+      "pid": 20428,
+      "status": "running",
+      "cpu_user_seconds": 119.46875,
+      "cpu_system_seconds": 28.625,
+      "rss_bytes": 2019377152
+    }
+  ],
+  "logs": {
+    "msvc-configure.log": {
+      "bytes_so_far": 578,
+      "tail": [
+        "-- The CXX compiler identification is MSVC 19.51.36260.0",
+        "-- Detecting CXX compiler ABI info",
+        "-- Detecting CXX compiler ABI info - done",
+        "-- Check for working CXX compiler: C:/Program Files/Microsoft Visual Studio/18/Community/VC/Tools/MSVC/14.51.36231/bin/HostX64/x64/cl.exe - skipped",
+        "-- Detecting CXX compile features",
+        "-- Detecting CXX compile features - done",
+        "-- Configuring done (1.1s)",
+        "-- Generating done (0.2s)",
+        "CMake Warning:",
+        "  Manually-specified variables were not used by the project:",
+        "",
+        "    CMAKE_C_COMPILER",
+        "",
+        "",
+        "-- Build files have been written to: C:/lydr10-release-20261005-001"
+      ]
+    },
+    "msvc-build.log": {
+      "bytes_so_far": 36124,
+      "tail": [
+        "[320/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\zhongguo_case_snapshot_v1.cpp.obj",
+        "[321/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\title_map_navigation_v1_mailbox.cpp.obj",
+        "[322/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\zhongguo_ai_owned_case_snapshot_v1_serializer.cpp.obj",
+        "[323/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\zhongguo_ai_owned_case_snapshot_v1.cpp.obj",
+        "[324/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\zhongguo_b2_pip_snapshot_v1.cpp.obj",
+        "[325/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\h2743_stock_native_source_adapter_v1.cpp.obj",
+        "[326/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\zhongguo_incident_snapshot_v1_mailbox.cpp.obj",
+        "[327/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\zhongguo_b2_pip_snapshot_v1_serializer.cpp.obj",
+        "[328/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\zhongguo_b2_pip_snapshot_v1_mailbox.cpp.obj",
+        "[329/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\zhongguo_manager_governance_snapshot_v1_mailbox.cpp.obj",
+        "[330/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\zhongguo_b1_cycle_snapshot_v1_serializer.cpp.obj",
+        "[331/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\zhongguo_incident_snapshot_v1_serializer.cpp.obj",
+        "[332/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\zhongguo_scoreboard_production_v1.cpp.obj",
+        "[333/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\ck3_11906.cpp.obj",
+        "[334/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\zhongguo_career_hc_workforce_postcondition_v1_serializer.cpp.obj",
+        "[335/383] Building CXX object CMakeFiles\\xar_ck3_bridge.dir\\src\\zhongguo_projects_metrics_postcondition_v1_serializer.cpp.obj"
+      ]
+    }
+  },
+  "system_cpu_percent_one_second": 100.0,
+  "target_files_exist": {
+    "xar_ck3_bridge.dll": false,
+    "xar_ck3_bridge_injector.exe": false
+  },
+  "read_finished_utc": "2026-10-05T10:06:01.269766+00:00"
+}

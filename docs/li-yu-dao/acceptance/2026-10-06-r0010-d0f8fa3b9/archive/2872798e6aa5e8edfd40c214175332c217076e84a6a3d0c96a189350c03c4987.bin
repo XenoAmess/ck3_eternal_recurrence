@@ -1,0 +1,37 @@
+{"response": "definition-li-yu-dao-static.yml", "exit_code": 0, "stdout_bytes": 4059}
+{"response": "checks", "exit_code": 0, "stdout_bytes": 6221}
+{"response": "runs", "exit_code": 0, "stdout_bytes": 27096}
+{"response": "definition-static-ci.yml", "exit_code": 0, "stdout_bytes": 35829}
+{"response": "commit", "exit_code": 0, "stdout_bytes": 208179}
+{"response": "statuses", "exit_code": 0, "stdout_bytes": 2}
+{"response": "definition-cla.yml", "exit_code": 0, "stdout_bytes": 3992}
+{"response": "run-37293381666-artifacts", "exit_code": 0, "stdout_bytes": 32}
+{"response": "run-37293381416-suite", "exit_code": 0, "stdout_bytes": 8226}
+{"response": "run-37293381416-artifacts", "exit_code": 0, "stdout_bytes": 747}
+{"response": "run-37293381416-jobs", "exit_code": 0, "stdout_bytes": 2461}
+{"response": "run-37293381666-suite", "exit_code": 0, "stdout_bytes": 8223}
+{"response": "run-37293381666-jobs", "exit_code": 0, "stdout_bytes": 12664}
+{"response": "check-111708827682-annotations", "exit_code": 0, "stdout_bytes": 2}
+{"response": "check-111708826451-annotations", "exit_code": 0, "stdout_bytes": 1010}
+{"response": "compare-6df4d3f624ffd686c5f5de64a5a2043d647a296d", "exit_code": 0, "stdout_bytes": 215786}
+{"response": "job-111708826451-logs", "exit_code": 0, "stdout_bytes": 63809}
+{
+  "status": "ACTUAL_READONLY_OBSERVATION",
+  "source_head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "workflow_states": {
+    ".github/workflows/static-ci.yml": {
+      "status": "in_progress",
+      "conclusion": null,
+      "run_id": 37293381666,
+      "attempt": 1
+    },
+    ".github/workflows/li-yu-dao-static.yml": {
+      "status": "completed",
+      "conclusion": "success",
+      "run_id": 37293381416,
+      "attempt": 1
+    }
+  },
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-d0f8fa3b9-20261005-001\\official-observation-001",
+  "runtime_credit": false
+}

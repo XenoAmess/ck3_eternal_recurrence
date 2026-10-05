@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "-C",
+    "C:\\workspace\\ck3_eternal_recurrence",
+    "rev-parse",
+    "HEAD"
+  ],
+  "utc": "2026-10-05T09:56:46.804183+00:00",
+  "exit_code": 0
+}

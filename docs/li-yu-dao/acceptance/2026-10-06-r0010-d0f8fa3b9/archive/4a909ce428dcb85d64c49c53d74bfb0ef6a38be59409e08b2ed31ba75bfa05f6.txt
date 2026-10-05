@@ -1,0 +1,19 @@
+2264={
+	key=b_cotrone
+	de_facto_liege=2262
+	de_jure_liege=2262
+	holder=31254
+	date=1056.5.11
+	succession_result_type=inheritance_child_line
+	heir={ 40695 40526 39979 40847 41032 37244 38098 36445 36663 36873 31692 34973 40259 35598 36638 32536 38561 39045 39171 39352 }
+	capital=2262
+	coat_of_arms_id=11384
+	title_name_data={
+		name="克罗托内"
+	}
+
+	default_coa=no
+	treasury={
+	}
+	nomad_name_type=default
+}

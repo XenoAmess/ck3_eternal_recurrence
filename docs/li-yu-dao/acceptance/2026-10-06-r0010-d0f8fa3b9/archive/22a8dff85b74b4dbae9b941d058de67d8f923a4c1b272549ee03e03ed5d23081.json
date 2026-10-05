@@ -1,0 +1,122 @@
+{
+  "logs": [
+    {
+      "log": "error.log",
+      "physical_lines": 578,
+      "blocks": 578,
+      "invalid_UTF8_observed": false,
+      "severity_counts": {
+        "E": 578
+      },
+      "category_counts": {
+        "FIXTURE_UNUSED_VARIABLE_DIAGNOSTIC": 578
+      },
+      "multiline_block_count": 0,
+      "non_unused_diagnostic_distinct": 0,
+      "cap_marker_candidates": [],
+      "first_block": {
+        "first_line": 1,
+        "last_line": 1,
+        "start_offset": 0,
+        "end_offset": 236,
+        "clocked": true,
+        "clock": "[18:35:16]",
+        "message": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_78_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+        "raw_block_sha256": "aa85c8f331f001ff5972526f365e60676c190a248d32e68072d1e438040d0769",
+        "severity": "E",
+        "category": "FIXTURE_UNUSED_VARIABLE_DIAGNOSTIC"
+      },
+      "last_block": {
+        "first_line": 578,
+        "last_line": 578,
+        "start_offset": 138320,
+        "end_offset": 138556,
+        "clocked": true,
+        "clock": "[18:36:09]",
+        "message": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_80_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+        "raw_block_sha256": "31ccea94579711ec2c20dc7606dc0ebff31f6126414d0887d953f43e0aea8855",
+        "severity": "E",
+        "category": "FIXTURE_UNUSED_VARIABLE_DIAGNOSTIC"
+      }
+    },
+    {
+      "log": "debug.log",
+      "physical_lines": 5950,
+      "blocks": 5816,
+      "invalid_UTF8_observed": false,
+      "severity_counts": {
+        "D": 5800,
+        "I": 4,
+        "W": 12
+      },
+      "category_counts": {
+        "NON_DIAGNOSTIC_LOG_RECORD": 5804,
+        "NON_UNUSED_DIAGNOSTIC_REQUIRES_RECORD_REVIEW": 12
+      },
+      "multiline_block_count": 18,
+      "non_unused_diagnostic_distinct": 4,
+      "cap_marker_candidates": [],
+      "first_block": {
+        "first_line": 1,
+        "last_line": 1,
+        "start_offset": 0,
+        "end_offset": 67,
+        "clocked": true,
+        "clock": "[18:33:17]",
+        "message": "[D][jomini_game_setup.cpp:351]: Log system initialized.",
+        "raw_block_sha256": "02dfb38dcd057c471b6f53a7cd6a6033d1ce54acc47511fae6a93638d0d4cc84",
+        "severity": "D",
+        "category": "NON_DIAGNOSTIC_LOG_RECORD"
+      },
+      "last_block": {
+        "first_line": 5950,
+        "last_line": 5950,
+        "start_offset": 666767,
+        "end_offset": 666846,
+        "clocked": true,
+        "clock": "[02:03:29]",
+        "message": "[D][player.cpp:153]: CJominiPlayers:::DeleteAllPlayers - #1 players",
+        "raw_block_sha256": "0d1bc63fe1d06a6fc6b59936ab9bcd01a688eb9d6efecafb46f2f7ebe37323b6",
+        "severity": "D",
+        "category": "NON_DIAGNOSTIC_LOG_RECORD"
+      }
+    }
+  ],
+  "source_binding_refs": [
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-log-checkpoint108-readonly-review-20261005-001\\INDEX.json",
+      "copy_path": "binding/prior108-INDEX.json",
+      "bytes": 3501,
+      "sha256": "6604b1765aa1b82f699542167ba72992a8ac9b0fbc79a7e228d4bb248645a0c7"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-log-checkpoint108-readonly-review-20261005-001\\FROZEN-SOURCE-VERIFICATION.json",
+      "copy_path": "binding/prior108-FROZEN-SOURCE-VERIFICATION.json",
+      "bytes": 49175,
+      "sha256": "bb99e9559cf0bfdf1d664632a89af3cc647c502ce49b9c7952486f2f4edf2b5f"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-log-checkpoint108-readonly-review-20261005-001\\binding\\COLD-SOURCE-INVENTORY.json",
+      "copy_path": "binding/prior108-COLD-SOURCE-INVENTORY.json",
+      "bytes": 31564,
+      "sha256": "2ab18195f08fb5f680f6168732cd1681fa171fd31b50b6777c1e685c297ac260"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-log-checkpoint108-readonly-review-20261005-001\\binding\\MOUNT-MANIFEST.json",
+      "copy_path": "binding/prior108-MOUNT-MANIFEST.json",
+      "bytes": 12283,
+      "sha256": "141ceca8872046ef7f0118d3c25a721851de3191744cdf0435c0bfe27d8c3037"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-log-checkpoint108-readonly-review-20261005-001\\binding\\production.manifest.json",
+      "copy_path": "binding/prior108-production.manifest.json",
+      "bytes": 12940,
+      "sha256": "8fff14a823c50d2461660676ec3238439027d1a46af5281e5db95af7c9bd945c"
+    }
+  ],
+  "unused_signature_count": 289,
+  "other_diagnostic_count": 12,
+  "other_diagnostic_review_pending": true,
+  "whole_final_log_credit": false,
+  "overall_PASS": false
+}

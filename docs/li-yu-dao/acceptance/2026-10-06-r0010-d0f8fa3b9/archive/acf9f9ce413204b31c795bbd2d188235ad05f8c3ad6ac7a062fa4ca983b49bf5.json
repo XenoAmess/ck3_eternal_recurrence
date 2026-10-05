@@ -1,0 +1,3209 @@
+{
+  "schema": "lyd.r10.actual-checkpoint-bounded-AST-readback.v1",
+  "status": "ACTUAL_SAVED_OBSERVATION_NO_AUTOMATIC_BUSINESS_PASS",
+  "phase": "actual-R10-next-intent-before-after-explicit-retry-reset-not-new-business-result",
+  "source_binding": {
+    "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+    "cold_source_inventory": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\COLD-SOURCE-INVENTORY.json",
+      "bytes": 31564,
+      "sha256": "2ab18195f08fb5f680f6168732cd1681fa171fd31b50b6777c1e685c297ac260"
+    },
+    "ROOT_PREPARED": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\PREPARED.json",
+      "bytes": 7217,
+      "sha256": "a65e94d9b50afe0688a66cd1af745b4d29cbf6917b23dd52fa42f2f4bcb6c53e"
+    },
+    "native_profile": null,
+    "fresh_SDK_actor_binding": null
+  },
+  "actual_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0039-before-new-intent-save\\checkpoint.ck3",
+    "bytes": 91531932,
+    "sha256": "0aac6341204b39048646c81eff068d3d7a9a6cb849388871910673ef15d1bdaa"
+  },
+  "actual_actor_id": 31254,
+  "saved_summary": {
+    "current_actor_id": 31254,
+    "current_rite": "169",
+    "current_faith": "106",
+    "current_HoR": "31254",
+    "current_HoF": "4294967295",
+    "current_faith_main": "169",
+    "current_faith_main_parent": "106",
+    "wallet": {
+      "gold": "1543",
+      "piety": "5650",
+      "prestige": "2200"
+    },
+    "stress_saved": null,
+    "learning_XP_saved": "0",
+    "cooldown": {
+      "lyd_school_cooldown": {
+        "present": true,
+        "tick": "349",
+        "type": null,
+        "identity": null,
+        "entries": [],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_school_cooldown"
+          },
+          {
+            "key": "tick",
+            "value": "349"
+          },
+          {
+            "key": "data",
+            "value": []
+          }
+        ]
+      },
+      "lyd_study_cooldown": null
+    },
+    "round_variables": {
+      "lyd_c2_callback_nonce": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "700000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "700000"
+          }
+        ],
+        "number": "7",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_callback_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "700000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "700000"
+          }
+        ],
+        "number": "7",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_elector_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "31254"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_elector_owner"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_elector_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "700000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "700000"
+          }
+        ],
+        "number": "7",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_elector_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_elector_rite": {
+        "present": true,
+        "tick": null,
+        "type": "rite",
+        "identity": "169",
+        "entries": [
+          {
+            "key": "type",
+            "value": "rite"
+          },
+          {
+            "key": "identity",
+            "value": "169"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_elector_rite"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "rite"
+              },
+              {
+                "key": "identity",
+                "value": "169"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_affected_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "31254"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_affected_owner"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_affected_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "700000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "700000"
+          }
+        ],
+        "number": "7",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_affected_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_affected_rite": {
+        "present": true,
+        "tick": null,
+        "type": "rite",
+        "identity": "169",
+        "entries": [
+          {
+            "key": "type",
+            "value": "rite"
+          },
+          {
+            "key": "identity",
+            "value": "169"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_affected_rite"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "rite"
+              },
+              {
+                "key": "identity",
+                "value": "169"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_core_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "300000"
+          }
+        ],
+        "number": "3",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_core_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "300000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_permitted_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_permitted_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_known_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_known_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_prohibited_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_prohibited_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_doctrines_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "2800000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "2800000"
+          }
+        ],
+        "number": "28",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_doctrines_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "2800000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_player_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "31254"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_owner"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_player_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "700000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "700000"
+          }
+        ],
+        "number": "7",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_player_nonce": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "700000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "700000"
+          }
+        ],
+        "number": "7",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_vote_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "31254"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_vote_owner"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_vote_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "700000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "700000"
+          }
+        ],
+        "number": "7",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_vote_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_vote_nonce": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "700000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "700000"
+          }
+        ],
+        "number": "7",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_vote_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_vote_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_vote_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_check_rites": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_check_rites"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_faith": {
+        "present": true,
+        "tick": null,
+        "type": "faith",
+        "identity": "106",
+        "entries": [
+          {
+            "key": "type",
+            "value": "faith"
+          },
+          {
+            "key": "identity",
+            "value": "106"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_faith"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "faith"
+              },
+              {
+                "key": "identity",
+                "value": "106"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_main": {
+        "present": true,
+        "tick": null,
+        "type": "rite",
+        "identity": "169",
+        "entries": [
+          {
+            "key": "type",
+            "value": "rite"
+          },
+          {
+            "key": "identity",
+            "value": "169"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_main"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "rite"
+              },
+              {
+                "key": "identity",
+                "value": "169"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_moving_rite": {
+        "present": true,
+        "tick": null,
+        "type": "rite",
+        "identity": "169",
+        "entries": [
+          {
+            "key": "type",
+            "value": "rite"
+          },
+          {
+            "key": "identity",
+            "value": "169"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_moving_rite"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "rite"
+              },
+              {
+                "key": "identity",
+                "value": "169"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_rite_head": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "31254"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_rite_head"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "200000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "200000"
+          }
+        ],
+        "number": "2",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "200000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_target_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_target_rite_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_rite_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_dormant_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_dormant_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "200000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "200000"
+          }
+        ],
+        "number": "2",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "200000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_target_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_player_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_player_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_target_faith": {
+        "present": true,
+        "tick": null,
+        "type": "faith",
+        "identity": "104",
+        "entries": [
+          {
+            "key": "type",
+            "value": "faith"
+          },
+          {
+            "key": "identity",
+            "value": "104"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_faith"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "faith"
+              },
+              {
+                "key": "identity",
+                "value": "104"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_target_main": {
+        "present": true,
+        "tick": null,
+        "type": "rite",
+        "identity": "159",
+        "entries": [
+          {
+            "key": "type",
+            "value": "rite"
+          },
+          {
+            "key": "identity",
+            "value": "159"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_main"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "rite"
+              },
+              {
+                "key": "identity",
+                "value": "159"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_active_receivers": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_active_receivers"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "stored_typed_roles": {
+      "lyd_r4_qualification_faith_before": {
+        "present": true,
+        "tick": null,
+        "type": "faith",
+        "identity": "32",
+        "entries": [
+          {
+            "key": "type",
+            "value": "faith"
+          },
+          {
+            "key": "identity",
+            "value": "32"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_qualification_faith_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "faith"
+              },
+              {
+                "key": "identity",
+                "value": "32"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_r4_qualification_rite_before": {
+        "present": true,
+        "tick": null,
+        "type": "rite",
+        "identity": "169",
+        "entries": [
+          {
+            "key": "type",
+            "value": "rite"
+          },
+          {
+            "key": "identity",
+            "value": "169"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_qualification_rite_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "rite"
+              },
+              {
+                "key": "identity",
+                "value": "169"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_r4_initial_source_faith": {
+        "present": true,
+        "tick": null,
+        "type": "faith",
+        "identity": "32",
+        "entries": [
+          {
+            "key": "type",
+            "value": "faith"
+          },
+          {
+            "key": "identity",
+            "value": "32"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_initial_source_faith"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "faith"
+              },
+              {
+                "key": "identity",
+                "value": "32"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_r4_source_rep": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "65865",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "65865"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_source_rep"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "65865"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_r4_jingshu_rep": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "65866",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "65866"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_jingshu_rep"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "65866"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_r4_receiving_faith": {
+        "present": true,
+        "tick": null,
+        "type": "faith",
+        "identity": "104",
+        "entries": [
+          {
+            "key": "type",
+            "value": "faith"
+          },
+          {
+            "key": "identity",
+            "value": "104"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_receiving_faith"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "faith"
+              },
+              {
+                "key": "identity",
+                "value": "104"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_elector_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "31254"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_elector_owner"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_elector_rite": {
+        "present": true,
+        "tick": null,
+        "type": "rite",
+        "identity": "169",
+        "entries": [
+          {
+            "key": "type",
+            "value": "rite"
+          },
+          {
+            "key": "identity",
+            "value": "169"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_elector_rite"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "rite"
+              },
+              {
+                "key": "identity",
+                "value": "169"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_affected_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "31254"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_affected_owner"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_affected_rite": {
+        "present": true,
+        "tick": null,
+        "type": "rite",
+        "identity": "169",
+        "entries": [
+          {
+            "key": "type",
+            "value": "rite"
+          },
+          {
+            "key": "identity",
+            "value": "169"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_affected_rite"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "rite"
+              },
+              {
+                "key": "identity",
+                "value": "169"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_player_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "31254"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_owner"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_vote_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "31254"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_vote_owner"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_faith": {
+        "present": true,
+        "tick": null,
+        "type": "faith",
+        "identity": "106",
+        "entries": [
+          {
+            "key": "type",
+            "value": "faith"
+          },
+          {
+            "key": "identity",
+            "value": "106"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_faith"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "faith"
+              },
+              {
+                "key": "identity",
+                "value": "106"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_main": {
+        "present": true,
+        "tick": null,
+        "type": "rite",
+        "identity": "169",
+        "entries": [
+          {
+            "key": "type",
+            "value": "rite"
+          },
+          {
+            "key": "identity",
+            "value": "169"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_main"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "rite"
+              },
+              {
+                "key": "identity",
+                "value": "169"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_moving_rite": {
+        "present": true,
+        "tick": null,
+        "type": "rite",
+        "identity": "169",
+        "entries": [
+          {
+            "key": "type",
+            "value": "rite"
+          },
+          {
+            "key": "identity",
+            "value": "169"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_moving_rite"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "rite"
+              },
+              {
+                "key": "identity",
+                "value": "169"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_rite_head": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "31254"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_rite_head"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_target_rep": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "65866",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "65866"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_rep"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "65866"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_target_faith": {
+        "present": true,
+        "tick": null,
+        "type": "faith",
+        "identity": "104",
+        "entries": [
+          {
+            "key": "type",
+            "value": "faith"
+          },
+          {
+            "key": "identity",
+            "value": "104"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_faith"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "faith"
+              },
+              {
+                "key": "identity",
+                "value": "104"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_target_main": {
+        "present": true,
+        "tick": null,
+        "type": "rite",
+        "identity": "159",
+        "entries": [
+          {
+            "key": "type",
+            "value": "rite"
+          },
+          {
+            "key": "identity",
+            "value": "159"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_main"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "rite"
+              },
+              {
+                "key": "identity",
+                "value": "159"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "actor_domain_ids": [
+      "2230",
+      "2231",
+      "2262",
+      "2232",
+      "2263",
+      "2235",
+      "2264"
+    ],
+    "political7": {
+      "2230": {
+        "entries": [
+          {
+            "key": "key",
+            "value": "d_apulia"
+          },
+          {
+            "key": "de_jure_liege",
+            "value": "2189"
+          },
+          {
+            "key": "de_jure_vassals",
+            "value": [
+              {
+                "key": null,
+                "value": "2231"
+              },
+              {
+                "key": null,
+                "value": "2236"
+              },
+              {
+                "key": null,
+                "value": "2240"
+              }
+            ]
+          },
+          {
+            "key": "holder",
+            "value": "31254"
+          },
+          {
+            "key": "date",
+            "value": "1057.1.1"
+          },
+          {
+            "key": "succession_result_type",
+            "value": "inheritance_child_line"
+          },
+          {
+            "key": "heir",
+            "value": [
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "37244"
+              },
+              {
+                "key": null,
+                "value": "38098"
+              },
+              {
+                "key": null,
+                "value": "36445"
+              },
+              {
+                "key": null,
+                "value": "36663"
+              },
+              {
+                "key": null,
+                "value": "36873"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "38561"
+              },
+              {
+                "key": null,
+                "value": "39045"
+              },
+              {
+                "key": null,
+                "value": "39171"
+              },
+              {
+                "key": null,
+                "value": "39352"
+              }
+            ]
+          },
+          {
+            "key": "claim",
+            "value": [
+              {
+                "key": null,
+                "value": "36445"
+              },
+              {
+                "key": null,
+                "value": "36663"
+              },
+              {
+                "key": null,
+                "value": "36873"
+              },
+              {
+                "key": null,
+                "value": "38098"
+              },
+              {
+                "key": null,
+                "value": "38560"
+              },
+              {
+                "key": null,
+                "value": "38902"
+              }
+            ]
+          },
+          {
+            "key": "history",
+            "value": [
+              {
+                "key": "857.1.1",
+                "value": "13434"
+              },
+              {
+                "key": "871.1.1",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "destroyed"
+                  }
+                ]
+              },
+              {
+                "key": "1042.1.1",
+                "value": "30703"
+              },
+              {
+                "key": "1046.7.1",
+                "value": "30716"
+              },
+              {
+                "key": "1051.8.10",
+                "value": "31279"
+              },
+              {
+                "key": "1057.1.1",
+                "value": "31254"
+              }
+            ]
+          },
+          {
+            "key": "capital",
+            "value": "2231"
+          },
+          {
+            "key": "coat_of_arms_id",
+            "value": "545"
+          },
+          {
+            "key": "title_name_data",
+            "value": [
+              {
+                "key": "name",
+                "value": "\"阿普利亚\""
+              },
+              {
+                "key": "adj",
+                "value": "\"阿普利亚\""
+              },
+              {
+                "key": "title_history_names",
+                "value": [
+                  {
+                    "key": null,
+                    "value": [
+                      {
+                        "key": "date",
+                        "value": "857.1.1"
+                      },
+                      {
+                        "key": "name",
+                        "value": "\"d_apulia\""
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "key": "treasury",
+            "value": []
+          },
+          {
+            "key": "nomad_name_type",
+            "value": "default"
+          }
+        ],
+        "AST_sha256": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b",
+        "holder": "31254",
+        "political_guard_member": true,
+        "actual_actor_domain_member": true
+      },
+      "2231": {
+        "entries": [
+          {
+            "key": "key",
+            "value": "c_apulia"
+          },
+          {
+            "key": "de_facto_liege",
+            "value": "2230"
+          },
+          {
+            "key": "variables",
+            "value": [
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": null,
+                    "value": [
+                      {
+                        "key": "flag",
+                        "value": "brewery_counter_var"
+                      },
+                      {
+                        "key": "data",
+                        "value": [
+                          {
+                            "key": "type",
+                            "value": "value"
+                          },
+                          {
+                            "key": "identity",
+                            "value": "101300000"
+                          }
+                        ]
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "key": "de_jure_liege",
+            "value": "2230"
+          },
+          {
+            "key": "de_jure_vassals",
+            "value": [
+              {
+                "key": null,
+                "value": "2232"
+              },
+              {
+                "key": null,
+                "value": "2233"
+              },
+              {
+                "key": null,
+                "value": "2234"
+              },
+              {
+                "key": null,
+                "value": "2235"
+              }
+            ]
+          },
+          {
+            "key": "holder",
+            "value": "31254"
+          },
+          {
+            "key": "date",
+            "value": "1057.1.1"
+          },
+          {
+            "key": "succession_result_type",
+            "value": "inheritance_child_line"
+          },
+          {
+            "key": "heir",
+            "value": [
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "37244"
+              },
+              {
+                "key": null,
+                "value": "38098"
+              },
+              {
+                "key": null,
+                "value": "36445"
+              },
+              {
+                "key": null,
+                "value": "36663"
+              },
+              {
+                "key": null,
+                "value": "36873"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "38561"
+              },
+              {
+                "key": null,
+                "value": "39045"
+              },
+              {
+                "key": null,
+                "value": "39171"
+              },
+              {
+                "key": null,
+                "value": "39352"
+              }
+            ]
+          },
+          {
+            "key": "claim",
+            "value": [
+              {
+                "key": null,
+                "value": "36445"
+              },
+              {
+                "key": null,
+                "value": "36663"
+              },
+              {
+                "key": null,
+                "value": "36873"
+              },
+              {
+                "key": null,
+                "value": "38098"
+              },
+              {
+                "key": null,
+                "value": "38560"
+              },
+              {
+                "key": null,
+                "value": "38902"
+              }
+            ]
+          },
+          {
+            "key": "history",
+            "value": [
+              {
+                "key": "762.1.1",
+                "value": "7391"
+              },
+              {
+                "key": "807.1.1",
+                "value": "8599"
+              },
+              {
+                "key": "817.1.1",
+                "value": "8080"
+              },
+              {
+                "key": "832.9.1",
+                "value": "9295"
+              },
+              {
+                "key": "839.8.1",
+                "value": "10062"
+              },
+              {
+                "key": "851.6.1",
+                "value": "12221"
+              },
+              {
+                "key": "853.12.1",
+                "value": "12476"
+              },
+              {
+                "key": "1042.1.1",
+                "value": "30703"
+              },
+              {
+                "key": "1046.1.1",
+                "value": "30716"
+              },
+              {
+                "key": "1051.8.10",
+                "value": "31279"
+              },
+              {
+                "key": "1057.1.1",
+                "value": "31254"
+              }
+            ]
+          },
+          {
+            "key": "capital",
+            "value": "2231"
+          },
+          {
+            "key": "coat_of_arms_id",
+            "value": "546"
+          },
+          {
+            "key": "title_name_data",
+            "value": [
+              {
+                "key": "name",
+                "value": "\"阿普利亚\""
+              },
+              {
+                "key": "adj",
+                "value": "\"阿普利亚\""
+              },
+              {
+                "key": "title_history_names",
+                "value": [
+                  {
+                    "key": null,
+                    "value": [
+                      {
+                        "key": "date",
+                        "value": "762.1.1"
+                      },
+                      {
+                        "key": "name",
+                        "value": "\"c_apulia\""
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "key": "treasury",
+            "value": []
+          },
+          {
+            "key": "nomad_name_type",
+            "value": "default"
+          }
+        ],
+        "AST_sha256": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce",
+        "holder": "31254",
+        "political_guard_member": true,
+        "actual_actor_domain_member": true
+      },
+      "2232": {
+        "entries": [
+          {
+            "key": "key",
+            "value": "b_trani"
+          },
+          {
+            "key": "de_facto_liege",
+            "value": "2231"
+          },
+          {
+            "key": "de_jure_liege",
+            "value": "2231"
+          },
+          {
+            "key": "holder",
+            "value": "31254"
+          },
+          {
+            "key": "date",
+            "value": "1066.9.15"
+          },
+          {
+            "key": "capital_barony",
+            "value": "yes"
+          },
+          {
+            "key": "duchy_capital_barony",
+            "value": "yes"
+          },
+          {
+            "key": "capital",
+            "value": "2231"
+          },
+          {
+            "key": "coat_of_arms_id",
+            "value": "10762"
+          },
+          {
+            "key": "title_name_data",
+            "value": [
+              {
+                "key": "name",
+                "value": "\"特拉尼\""
+              }
+            ]
+          },
+          {
+            "key": "default_coa",
+            "value": "no"
+          },
+          {
+            "key": "treasury",
+            "value": []
+          },
+          {
+            "key": "nomad_name_type",
+            "value": "default"
+          }
+        ],
+        "AST_sha256": "7bb8a0c711fd8eec5fb0ce4e0ade73af2cadeb442755a66f5fdfe6d5e71ec8b8",
+        "holder": "31254",
+        "political_guard_member": true,
+        "actual_actor_domain_member": true
+      },
+      "2235": {
+        "entries": [
+          {
+            "key": "key",
+            "value": "b_acerenza"
+          },
+          {
+            "key": "de_facto_liege",
+            "value": "2231"
+          },
+          {
+            "key": "de_jure_liege",
+            "value": "2231"
+          },
+          {
+            "key": "holder",
+            "value": "31254"
+          },
+          {
+            "key": "date",
+            "value": "1042.5.4"
+          },
+          {
+            "key": "succession_result_type",
+            "value": "inheritance_child_line"
+          },
+          {
+            "key": "heir",
+            "value": [
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "37244"
+              },
+              {
+                "key": null,
+                "value": "38098"
+              },
+              {
+                "key": null,
+                "value": "36445"
+              },
+              {
+                "key": null,
+                "value": "36663"
+              },
+              {
+                "key": null,
+                "value": "36873"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "38561"
+              },
+              {
+                "key": null,
+                "value": "39045"
+              },
+              {
+                "key": null,
+                "value": "39171"
+              },
+              {
+                "key": null,
+                "value": "39352"
+              }
+            ]
+          },
+          {
+            "key": "capital",
+            "value": "2231"
+          },
+          {
+            "key": "coat_of_arms_id",
+            "value": "10843"
+          },
+          {
+            "key": "title_name_data",
+            "value": [
+              {
+                "key": "name",
+                "value": "\"阿切伦扎\""
+              }
+            ]
+          },
+          {
+            "key": "default_coa",
+            "value": "no"
+          },
+          {
+            "key": "treasury",
+            "value": []
+          },
+          {
+            "key": "nomad_name_type",
+            "value": "default"
+          }
+        ],
+        "AST_sha256": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de",
+        "holder": "31254",
+        "political_guard_member": true,
+        "actual_actor_domain_member": true
+      },
+      "2262": {
+        "entries": [
+          {
+            "key": "key",
+            "value": "c_rossano"
+          },
+          {
+            "key": "de_facto_liege",
+            "value": "2230"
+          },
+          {
+            "key": "de_jure_liege",
+            "value": "2253"
+          },
+          {
+            "key": "de_jure_vassals",
+            "value": [
+              {
+                "key": null,
+                "value": "2263"
+              },
+              {
+                "key": null,
+                "value": "2264"
+              },
+              {
+                "key": null,
+                "value": "2265"
+              }
+            ]
+          },
+          {
+            "key": "holder",
+            "value": "31254"
+          },
+          {
+            "key": "date",
+            "value": "1057.1.1"
+          },
+          {
+            "key": "succession_result_type",
+            "value": "inheritance_child_line"
+          },
+          {
+            "key": "heir",
+            "value": [
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "37244"
+              },
+              {
+                "key": null,
+                "value": "38098"
+              },
+              {
+                "key": null,
+                "value": "36445"
+              },
+              {
+                "key": null,
+                "value": "36663"
+              },
+              {
+                "key": null,
+                "value": "36873"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "38561"
+              },
+              {
+                "key": null,
+                "value": "39045"
+              },
+              {
+                "key": null,
+                "value": "39171"
+              },
+              {
+                "key": null,
+                "value": "39352"
+              }
+            ]
+          },
+          {
+            "key": "history",
+            "value": [
+              {
+                "key": "740.1.1",
+                "value": "5905"
+              },
+              {
+                "key": "766.1.1",
+                "value": "6909"
+              },
+              {
+                "key": "788.1.1",
+                "value": "7194"
+              },
+              {
+                "key": "857.1.1",
+                "value": "13434"
+              },
+              {
+                "key": "1057.1.1",
+                "value": "31254"
+              }
+            ]
+          },
+          {
+            "key": "capital",
+            "value": "2262"
+          },
+          {
+            "key": "coat_of_arms_id",
+            "value": "555"
+          },
+          {
+            "key": "title_name_data",
+            "value": [
+              {
+                "key": "name",
+                "value": "\"罗萨诺\""
+              },
+              {
+                "key": "adj",
+                "value": "\"罗萨诺\""
+              },
+              {
+                "key": "title_history_names",
+                "value": [
+                  {
+                    "key": null,
+                    "value": [
+                      {
+                        "key": "date",
+                        "value": "740.1.1"
+                      },
+                      {
+                        "key": "name",
+                        "value": "\"c_rossano\""
+                      }
+                    ]
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "key": "treasury",
+            "value": []
+          },
+          {
+            "key": "nomad_name_type",
+            "value": "default"
+          }
+        ],
+        "AST_sha256": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e",
+        "holder": "31254",
+        "political_guard_member": true,
+        "actual_actor_domain_member": true
+      },
+      "2263": {
+        "entries": [
+          {
+            "key": "key",
+            "value": "b_rossano"
+          },
+          {
+            "key": "de_facto_liege",
+            "value": "2262"
+          },
+          {
+            "key": "de_jure_liege",
+            "value": "2262"
+          },
+          {
+            "key": "holder",
+            "value": "31254"
+          },
+          {
+            "key": "date",
+            "value": "1066.9.15"
+          },
+          {
+            "key": "capital_barony",
+            "value": "yes"
+          },
+          {
+            "key": "capital",
+            "value": "2262"
+          },
+          {
+            "key": "coat_of_arms_id",
+            "value": "11367"
+          },
+          {
+            "key": "title_name_data",
+            "value": [
+              {
+                "key": "name",
+                "value": "\"罗萨诺\""
+              }
+            ]
+          },
+          {
+            "key": "default_coa",
+            "value": "no"
+          },
+          {
+            "key": "treasury",
+            "value": []
+          },
+          {
+            "key": "nomad_name_type",
+            "value": "default"
+          }
+        ],
+        "AST_sha256": "e002d509574b8a39685754c7ae045899354b5e0c727ff6048e2f87d5d27383c2",
+        "holder": "31254",
+        "political_guard_member": true,
+        "actual_actor_domain_member": true
+      },
+      "2264": {
+        "entries": [
+          {
+            "key": "key",
+            "value": "b_cotrone"
+          },
+          {
+            "key": "de_facto_liege",
+            "value": "2262"
+          },
+          {
+            "key": "de_jure_liege",
+            "value": "2262"
+          },
+          {
+            "key": "holder",
+            "value": "31254"
+          },
+          {
+            "key": "date",
+            "value": "1056.5.11"
+          },
+          {
+            "key": "succession_result_type",
+            "value": "inheritance_child_line"
+          },
+          {
+            "key": "heir",
+            "value": [
+              {
+                "key": null,
+                "value": "40695"
+              },
+              {
+                "key": null,
+                "value": "40526"
+              },
+              {
+                "key": null,
+                "value": "39979"
+              },
+              {
+                "key": null,
+                "value": "40847"
+              },
+              {
+                "key": null,
+                "value": "41032"
+              },
+              {
+                "key": null,
+                "value": "37244"
+              },
+              {
+                "key": null,
+                "value": "38098"
+              },
+              {
+                "key": null,
+                "value": "36445"
+              },
+              {
+                "key": null,
+                "value": "36663"
+              },
+              {
+                "key": null,
+                "value": "36873"
+              },
+              {
+                "key": null,
+                "value": "31692"
+              },
+              {
+                "key": null,
+                "value": "34973"
+              },
+              {
+                "key": null,
+                "value": "40259"
+              },
+              {
+                "key": null,
+                "value": "35598"
+              },
+              {
+                "key": null,
+                "value": "36638"
+              },
+              {
+                "key": null,
+                "value": "32536"
+              },
+              {
+                "key": null,
+                "value": "38561"
+              },
+              {
+                "key": null,
+                "value": "39045"
+              },
+              {
+                "key": null,
+                "value": "39171"
+              },
+              {
+                "key": null,
+                "value": "39352"
+              }
+            ]
+          },
+          {
+            "key": "capital",
+            "value": "2262"
+          },
+          {
+            "key": "coat_of_arms_id",
+            "value": "11384"
+          },
+          {
+            "key": "title_name_data",
+            "value": [
+              {
+                "key": "name",
+                "value": "\"克罗托内\""
+              }
+            ]
+          },
+          {
+            "key": "default_coa",
+            "value": "no"
+          },
+          {
+            "key": "treasury",
+            "value": []
+          },
+          {
+            "key": "nomad_name_type",
+            "value": "default"
+          }
+        ],
+        "AST_sha256": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9",
+        "holder": "31254",
+        "political_guard_member": true,
+        "actual_actor_domain_member": true
+      }
+    },
+    "actual_saved_native_modifiers": [
+      {
+        "key": "modifier",
+        "value": "guiscard_modifier"
+      },
+      {
+        "key": "expiration_date",
+        "value": "9999.1.1"
+      }
+    ],
+    "stress_or_XP_expected": null
+  },
+  "request": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-new-intent-before-readback-20261005-001\\REQUEST.actual.json",
+    "bytes": 1892,
+    "sha256": "baebe09fe2c28e800ac5a3c6af967ab0e3d2d8d5a74abeefebda3105a14e1ab1"
+  },
+  "supporting_exact_evidence": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0039-r10-0040-before-new-intent-save.sdk-result.json",
+      "bytes": 1790265,
+      "sha256": "bd42ed433479028fe1970d0d8afa7a7ddd4dea67f0eec21117f3c60112653d22"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0039-before-new-intent-save\\checkpoint-metadata.json",
+      "bytes": 1419,
+      "sha256": "575a02fe7b0f97dc498c4017eb7bbe1ad4344b45f60f9a474321442388a749ff"
+    }
+  ],
+  "supporting_native_business_semantics_verified": false,
+  "state": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-new-intent-before-readback-20261005-001\\actual-save-001\\STATE.json",
+    "bytes": 713843,
+    "sha256": "4e871116d850801621c304e9ec43a8777859c6aa21582a55054eb35531a3adb9"
+  },
+  "business_postconditions": "UNASSESSED_REQUIRES_BEFORE_AFTER_OPERATION_SPECIFIC_EXPECTATIONS",
+  "game_pipe_MCP_desktop_bus_Git_main_calls": false
+}

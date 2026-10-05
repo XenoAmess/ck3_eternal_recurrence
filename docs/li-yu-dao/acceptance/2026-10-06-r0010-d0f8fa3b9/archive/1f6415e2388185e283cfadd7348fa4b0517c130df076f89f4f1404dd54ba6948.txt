@@ -1,0 +1,12 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\lyd-r10-official-mcp-consumer21-20261005-002\persistent_native_mcp_queue_21.py", line 265, in <module>
+    raise SystemExit(main())
+                     ~~~~^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\lyd-r10-official-mcp-consumer21-20261005-002\persistent_native_mcp_queue_21.py", line 258, in main
+    print(json.dumps(enqueue(args.queue, args.request), ensure_ascii=False, indent=2))
+                     ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\lyd-r10-official-mcp-consumer21-20261005-002\persistent_native_mcp_queue_21.py", line 87, in enqueue
+    request = validate_request(json.loads(raw.decode("utf-8-sig")))
+  File "C:\workspace\ck3_lyd_runtime_20261004\lyd-r10-official-mcp-consumer21-20261005-002\persistent_native_mcp_queue_21.py", line 75, in validate_request
+    raise ValueError("use one existing closed native tool and a JSON argument object")
+ValueError: use one existing closed native tool and a JSON argument object

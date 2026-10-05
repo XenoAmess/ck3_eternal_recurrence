@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "-C",
+    "C:\\workspace\\ck3_eternal_recurrence",
+    "fetch",
+    "origin"
+  ],
+  "utc": "2026-10-05T09:56:42.699688+00:00",
+  "exit_code": 0
+}

@@ -1,0 +1,123 @@
+{
+  "schema": "lyd.i3b.detached-authority.independent-source-review.v1",
+  "status": "FINITE_SOURCE_SCOPE_PASS_NATIVE_NOT_RUN",
+  "utc": "2026-10-05T07:14:02.019385+00:00",
+  "candidate_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\candidate-003\\mod_li_yu_dao",
+  "candidate_source_manifest": [
+    {
+      "path": "common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 10906,
+      "sha256": "7b063867cfd25a76d2209010e7417f220e16f3c63333ef957a380687a08b3c58"
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "bytes": 4751,
+      "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec"
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_response_effects.txt",
+      "bytes": 4939,
+      "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6"
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "bytes": 6448,
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d"
+    },
+    {
+      "path": "common/scripted_effects/lyd_i3b_terms_effects.txt",
+      "bytes": 3842,
+      "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633"
+    },
+    {
+      "path": "common/decisions/lyd_i3b_institution_decisions.txt",
+      "bytes": 4599,
+      "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019"
+    },
+    {
+      "path": "events/lyd_i3b_institution_events.txt",
+      "bytes": 5666,
+      "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02"
+    },
+    {
+      "path": "tools/gen_institution.py",
+      "bytes": 51577,
+      "sha256": "1243dc72037a0bdf3fd660f781ee13af232f9bd20828fc930b87033733884f24"
+    }
+  ],
+  "checks": [
+    {
+      "name": "detached admission reads actual current main Rite.head_of_rite and requires actor identity",
+      "result": "PASS"
+    },
+    {
+      "name": "captured common/detached modes are separately gated; actor-current context binds actual HoR plus serial and nonce",
+      "result": "PASS"
+    },
+    {
+      "name": "foreign held legit/stock marked/LYD marked offices veto in real Title scope; current-Faith native roles separately veto",
+      "result": "PASS"
+    },
+    {
+      "name": "headless current Faith vetoes actual legitimate title/head and unmarked native challenger collection",
+      "result": "PASS"
+    },
+    {
+      "name": "before-write receipt preserves captured actor HoR; success afterwrite independently reads actual main HoR without fake setter",
+      "result": "PASS"
+    }
+  ],
+  "callback_scope_checks": [
+    {
+      "callback": "lyd_i3b_accept_nomination_effect",
+      "actual_ast_callgraph_reaches_captured_current_authority": true
+    },
+    {
+      "callback": "lyd_i3b_vote_effect",
+      "actual_ast_callgraph_reaches_captured_current_authority": true
+    },
+    {
+      "callback": "lyd_i3b_player_yes_effect",
+      "actual_ast_callgraph_reaches_captured_current_authority": true
+    },
+    {
+      "callback": "lyd_i3b_sign_effect",
+      "actual_ast_callgraph_reaches_captured_current_authority": true
+    },
+    {
+      "callback": "lyd_i3b_request_signatures_effect",
+      "actual_ast_callgraph_reaches_captured_current_authority": true
+    },
+    {
+      "callback": "lyd_i3b_commit_effect",
+      "actual_ast_callgraph_reaches_captured_current_authority": true
+    }
+  ],
+  "author_final_binding": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-detached-authority-implementation-20261005-001\\TARGETBEFORE-SHA-003-FINAL-002.json",
+    "bytes": 12279,
+    "sha256": "f280562c12430bbd275ccda7fb36c826bb47682eb3d3890ce8f537f642bdac5f"
+  },
+  "head_of_faith_trigger_scope": "Actual installed stock pam_antipope_triggers:10 uses any_held_title.is_head_of_faith; current Title scope supported. No claim it includes challenger Title.",
+  "foreign_held_office_fix": "Final successor adds real stock Title pam_title_is_antipope_office_trigger=has_variable pam_antipope_office, plus LYD owned title marker. Those held Title checks do not depend on current Faith.",
+  "foreign_sponsor_character_marker": null,
+  "unproved_foreign_scope_cases": [
+    "Unmarked third-party challenger title held outside actor current Faith",
+    "Sponsor title of another Faith whose current native collection is not enumerated by the two stock helper queries"
+  ],
+  "foreign_scope_boundary": "Current-Faith actual native challenger collection catches even unmarked challengers in that Faith. Held Title marker veto catches stock/PAM and LYD offices independently of current Faith. It does not prove every external native sponsor/office across all Faiths is rejected.",
+  "captured_mode": "0 original common Faith scholar route; 1 detached actual current main Rite.head_of_rite equals actor; phase, serial, nonce, captured main/faith and actual HoR are rechecked before positive nomination/ballot/signature/enactment callbacks.",
+  "postcondition": "Actual main Rite.head_of_rite read compared to prewrite saved actor after enactment; no fabricated setter. Source result class7 on mismatch.",
+  "cleanup_exceptions": "Cancellation, expiration and result receipt display intentionally do not require a still-valid positive authority; they do not nominate, vote or enact. No blanket everycallback authority claim.",
+  "no_further_source_change": "Final source target hashes matched before/after independent read. Initially frozen003 pre-marker source retained separately, final reviewed trigger7b063867 and author1243dc720.",
+  "native_acceptance": "NOT_RUN",
+  "all_author_tests_or_native_rerun": false,
+  "mutations": {
+    "main": false,
+    "candidate": false,
+    "git": false,
+    "game": false,
+    "pipe": false,
+    "bus": false
+  }
+}

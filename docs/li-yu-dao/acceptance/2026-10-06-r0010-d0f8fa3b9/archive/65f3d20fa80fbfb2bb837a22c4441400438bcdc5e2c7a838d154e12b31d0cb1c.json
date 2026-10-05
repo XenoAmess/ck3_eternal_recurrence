@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "-C",
+    "C:\\workspace\\ck3_eternal_recurrence",
+    "rebase",
+    "origin/master"
+  ],
+  "utc": "2026-10-05T09:56:46.178523+00:00"
+}

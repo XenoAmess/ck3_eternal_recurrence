@@ -1,0 +1,417 @@
+name: Official Runner CI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static:
+    runs-on: windows-latest
+    env:
+      GIT_CONFIG_COUNT: "1"
+      GIT_CONFIG_KEY_0: core.longpaths
+      GIT_CONFIG_VALUE_0: "true"
+    # cmd keeps running after failed commands unless each command checks its exit.
+    defaults:
+      run:
+        shell: cmd
+    steps:
+      - name: Require non-C task workspace and temp
+        run: |
+          if /I "%GITHUB_WORKSPACE:~0,2%"=="C:" exit /b 1
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          if /I "%RUNNER_TEMP:~0,2%"=="C:" exit /b 1
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          echo TEMP=%RUNNER_TEMP%>>"%GITHUB_ENV%"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          echo TMP=%RUNNER_TEMP%>>"%GITHUB_ENV%"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          echo PIP_CACHE_DIR=%RUNNER_TEMP%\pip-cache>>"%GITHUB_ENV%"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          echo PYTHONPYCACHEPREFIX=%RUNNER_TEMP%\python-bytecode>>"%GITHUB_ENV%"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          echo XDG_CACHE_HOME=%RUNNER_TEMP%\cache>>"%GITHUB_ENV%"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-python@v6
+        with:
+          python-version: "3.13"
+          cache: pip
+          cache-dependency-path: |
+            tools/requirements-static.txt
+            tools/requirements-promo-toolchain.txt
+      - name: Install task packages outside C
+        run: |
+          python -m venv "%RUNNER_TEMP%\g2-static-venv"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          echo %RUNNER_TEMP%\g2-static-venv\Scripts>>"%GITHUB_PATH%"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Install static dependencies
+        run: python -m pip install -r tools/requirements-static.txt
+      - name: Install released promo toolchain
+        run: |
+          python -m pip install -r tools/requirements-promo-toolchain.txt
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -m xar_promo --version
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -m xar_promo --help >NUL
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_promo_toolchain_loader.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Compile Python tools
+        run: |
+          python -m compileall -q tools
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -m compileall -q mod_zhongguo_style/tools
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test CoA runtime-registry claim boundary
+        run: python tools/test_audit_coa_runtime_registry_boundary.py
+      - name: Test native research planning and evidence rendering
+        run: python tools/test_native_research_plan.py
+      - name: Test protected project EXE broker source without privileged actions
+        run: python -B -X utf8 -m unittest discover -s tools/project_exe_broker/tests -p "test_*.py"
+      - name: Test offline vanilla event research tools
+        run: python -m unittest discover -s tools -p "test_*vanilla_event_research.py"
+      - name: Test native verifier evidence scope without CK3
+        run: python ck3_autonomous_player/native_bridge/research/test_native_verifier_evidence_scope.py
+      - name: Test isolated native army route producer without CK3
+        run: python -X utf8 tools/check_native_army_routes_ci.py --build-dir "%RUNNER_TEMP%\native-army-route-ci"
+      - name: Test strict army route read-status contract
+        run: |
+          python -X utf8 ck3_autonomous_player/tests/unit/test_army_route_read_status_contract.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -O -X utf8 ck3_autonomous_player/tests/unit/test_army_route_read_status_contract.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test public CUnit zero and decision history contracts without CK3
+        env:
+          PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit;${{ github.workspace }}\tools
+          PYTHONDONTWRITEBYTECODE: "1"
+          XAR_HISTORY_GROWTH_TEST_ARTIFACTS: ${{ runner.temp }}\decision-history-growth
+        run: |
+          python -m pip install mcp==2.0.0 pytest==9.1.1
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_public_cunit_core_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_zero_battle_contracts.py ck3_autonomous_player/tests/unit/test_strategy_public_cunit_zero.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -O -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_public_cunit_core_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_zero_battle_contracts.py ck3_autonomous_player/tests/unit/test_strategy_public_cunit_zero.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_ingame_decision_history_growth.py"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Preserve decision history growth evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: decision-history-growth-source-tests
+          path: ${{ runner.temp }}\decision-history-growth
+          if-no-files-found: ignore
+      - name: Test CLA checker
+        run: python tools/test_cla_check.py
+      - name: Test succession GUI projection contract
+        run: python tools/test_gen_no_heir_gui.py
+      - name: Test native courtier metadata compatibility
+        run: python tools/test_gen_courtier_creator.py
+      - name: Test release manifest verification
+        run: python tools/test_build_release.py
+      - name: Test Vivhite release tooling
+        run: python tools/test_build_vivhite_release.py
+      - name: Test independent Vivhite native contracts
+        run: python tools/test_gen_vivhite_courtier.py
+      - name: Test Ox Here release tooling
+        run: python tools/test_build_ox_here_release.py
+      - name: Test Mandala Purge release tooling
+        run: python tools/test_build_remove_mandala_release.py
+      - name: Test Tributary Expansion Directives release tooling
+        run: |
+          python tools/test_build_tributary_expansion_directives_release.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_run_tributary_expansion_directives_acceptance.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_compose_tributary_expansion_directives_workshop_media.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test Celestial Commerce and Corruption release tooling
+        run: |
+          python tools/test_build_celestial_commerce_corruption_release.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_compose_celestial_commerce_corruption_workshop_media.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test Auto Upgrade Buildings release tooling
+        run: python tools/test_build_auto_upgrade_buildings_release.py
+      - name: Test and validate Superman Qiang without CK3
+        run: |
+          python tools/test_independent_mod_release.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_superman_qiang/tools/test_build_release.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_superman_qiang/tools/test_runtime.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_superman_qiang/tools/validate_static.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_superman_qiang/tools/build_release.py --check
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test machine- and mod-scoped CK3 live-run IDs
+        run: python tools/test_ck3_live_run_id.py
+      - name: Test Reclaim the Motherland release tooling
+        run: |
+          python tools/test_reclaim_the_motherland_contract.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_build_reclaim_the_motherland_release.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test ZhongGuo 361 release tooling
+        run: |
+          python tools/test_build_mod_zhongguo_style_release.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_verify_zhongguo_workshop_cache.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test ZhongGuo 361 generators and acceptance contracts
+        run: |
+          python -m unittest discover -s mod_zhongguo_style/tools -p "test_gen_361*.py"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -m unittest discover -s mod_zhongguo_style/tools -p "test_zg361*.py"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/test_scoreboard_snapshot.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/test_phase2_ck3_wiring.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_gen_zhongguo_acceptance_cases.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_zg361_clean_promo_fixture.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_zg361_phase2_seed_fixture.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          REM The normal invocation carries the semantic assertions; -O is an
+          REM import/runtime compatibility smoke for the same seed-only tree.
+          python -O tools/test_zg361_phase2_seed_fixture.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_zg361_phase2_b2_checkpoint_matrix.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -O tools/test_zg361_phase2_b2_checkpoint_matrix.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_zg361_phase2_loader_stage.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -O tools/test_zg361_phase2_loader_stage.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_run_zg361_phase2_seed_capture.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -O tools/test_run_zg361_phase2_seed_capture.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_zg361_phase2_formal_live_session_lineage.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -O tools/test_zg361_phase2_formal_live_session_lineage.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_zg361_phase2_seed_bootstrap.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_kaishek_preflight.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_acceptance_open_kaishek_coverage.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          REM Keep the bootstrap helper's optimized import path covered too;
+          REM semantic assertions remain covered by the normal run above.
+          python -O tools/test_zg361_phase2_seed_bootstrap.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_zhongguo_phase2_promo_producer.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -O tools/test_zhongguo_phase2_promo_producer.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_run_zhongguo_focused_b2.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_run_zhongguo_promo_capture.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/test_run_zhongguo_workshop_acceptance.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test ZhongGuo 361 release localization
+        run: python mod_zhongguo_style/tools/test_prepare_release_localization.py
+      - name: Verify ZhongGuo 361 generated and static content
+        run: |
+          python mod_zhongguo_style/tools/gen_361_mechanisms.py --check
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/gen_361_b1_runtime.py --check
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/gen_scoreboard_snapshot.py --check
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/validate_local.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Verify ZhongGuo 361 release localization audit
+        if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/zhongguo-361-v')
+        run: |
+          python mod_zhongguo_style/tools/prepare_release_localization.py audit --write-report mod_zhongguo_style/docs/release-localization-audit.json
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          git ls-files --error-unmatch mod_zhongguo_style/docs/release-localization-audit.json
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          git diff --exit-code -- mod_zhongguo_style/docs/release-localization-audit.json
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Verify ZhongGuo 361 thumbnail and Workshop media
+        run: |
+          python mod_zhongguo_style/tools/compose_thumbnail.py --check
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/test_compose_workshop_media.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/compose_workshop_media.py --check-tracked
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test and validate ZhongGuo 361 promo project
+        run: |
+          python mod_zhongguo_style/tools/test_promo_video.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/test_python_runbooks.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/test_build_phase2_promo_video.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -O mod_zhongguo_style/tools/test_build_phase2_promo_video.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/test_preflight_phase2_media.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/test_validate_phase2_authoring_claims.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -O mod_zhongguo_style/tools/test_validate_phase2_authoring_claims.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/validate_phase2_authoring_claims.py --validate-only
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/test_prepare_promo_release_manifest.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python mod_zhongguo_style/tools/validate_promo_video.py --manifest mod_zhongguo_style/promo/promo-manifest.json --stage draft
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Test MiniMax localization caller
+        run: python tools/test_translate_localization_minimax.py
+      - name: Test Workshop public readback verifier
+        run: python tools/test_verify_workshop_publication.py
+      - name: Test disposable fixture engine identities
+        run: python tools/test_fixture_engine_prepare.py
+      - name: Test full-agent showcase builder
+        run: python tools/test_build_full_agent_showcase.py
+      - name: Enforce Python-only Windows automation
+        run: |
+          python tools/test_validate_python_only.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/validate_python_only.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Validate generated and static content
+        run: python tools/validate_static.py
+      - name: Validate Vivhite standalone content
+        run: python tools/validate_vivhite_static.py
+      - name: Validate Mandala Purge standalone content
+        run: |
+          python tools/validate_remove_mandala_static.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -m py_compile tools/run_remove_mandala_acceptance.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Validate Tributary Expansion Directives standalone content
+        run: |
+          python tools/validate_tributary_expansion_directives_static.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -m py_compile tools/run_tributary_expansion_directives_acceptance.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -m py_compile tools/compose_tributary_expansion_directives_workshop_media.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Validate Celestial Commerce and Corruption standalone content
+        run: |
+          python tools/validate_celestial_commerce_corruption_static.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -m py_compile tools/run_celestial_commerce_corruption_acceptance.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -m py_compile tools/compose_celestial_commerce_corruption_workshop_media.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Validate Auto Upgrade Buildings standalone content
+        run: |
+          python tools/gen_auto_upgrade_buildings.py --check
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python tools/validate_auto_upgrade_buildings_static.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -m py_compile tools/run_auto_upgrade_buildings_acceptance.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Validate Reclaim the Motherland standalone content
+        run: |
+          python tools/validate_reclaim_the_motherland_static.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -m py_compile tools/run_reclaim_the_motherland_acceptance.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -m py_compile tools/compose_reclaim_the_motherland_workshop_media.py
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Run scoring reference vectors
+        run: python -c "import sys; sys.path.insert(0, 'tools'); import scoring_data; scoring_data.assert_reference_vectors(); print('REFERENCE VECTORS OK')"
+      - name: Verify reproducible release
+        run: python tools/build_release.py --check
+      - name: Verify reproducible Vivhite release
+        run: python tools/build_vivhite_release.py --check
+      - name: Verify reproducible Ox Here release
+        run: python tools/build_ox_here_release.py --check
+      - name: Verify reproducible Mandala Purge release
+        run: python tools/build_remove_mandala_release.py --check
+      - name: Verify reproducible Tributary Expansion Directives release
+        run: python tools/build_tributary_expansion_directives_release.py --check
+      - name: Verify reproducible Celestial Commerce and Corruption release
+        run: python tools/build_celestial_commerce_corruption_release.py --check
+      - name: Verify reproducible Auto Upgrade Buildings release
+        run: python tools/build_auto_upgrade_buildings_release.py --check
+      - name: Verify reproducible Reclaim the Motherland release
+        run: python tools/build_reclaim_the_motherland_release.py --check
+      - name: Verify reproducible ZhongGuo 361 release
+        run: python tools/build_mod_zhongguo_style_release.py --check
+      - name: Build manual release candidate
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_release.py
+      - name: Build manual Vivhite release candidate
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_vivhite_release.py
+      - name: Build manual Ox Here release candidate
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_ox_here_release.py
+      - name: Build manual Mandala Purge release candidate
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_remove_mandala_release.py
+      - name: Build manual Tributary Expansion Directives release candidate
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_tributary_expansion_directives_release.py
+      - name: Build manual Celestial Commerce and Corruption release candidate
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_celestial_commerce_corruption_release.py
+      - name: Build manual Auto Upgrade Buildings release candidate
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_auto_upgrade_buildings_release.py
+      - name: Build manual Reclaim the Motherland release candidate
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_reclaim_the_motherland_release.py
+      - name: Build manual ZhongGuo 361 release candidate
+        if: github.event_name == 'workflow_dispatch' && !startsWith(github.ref, 'refs/tags/v')
+        run: python tools/build_mod_zhongguo_style_release.py
+      - name: Build tagged release candidate
+        if: startsWith(github.ref, 'refs/tags/v') && !startsWith(github.ref, 'refs/tags/vivhite-v')
+        run: python tools/build_release.py --release
+      - name: Build tagged Vivhite release candidate
+        if: startsWith(github.ref, 'refs/tags/vivhite-v')
+        run: python tools/build_vivhite_release.py --release
+      - name: Build tagged Ox Here release candidate
+        if: startsWith(github.ref, 'refs/tags/ox-here-v')
+        run: python tools/build_ox_here_release.py --release
+      - name: Build tagged Mandala Purge release candidate
+        if: startsWith(github.ref, 'refs/tags/remove-mandala-v')
+        run: python tools/build_remove_mandala_release.py --release
+      - name: Build tagged Tributary Expansion Directives release candidate
+        if: startsWith(github.ref, 'refs/tags/tributary-expansion-directives-v')
+        run: python tools/build_tributary_expansion_directives_release.py --release
+      - name: Build tagged Celestial Commerce and Corruption release candidate
+        if: startsWith(github.ref, 'refs/tags/celestial-commerce-corruption-v')
+        run: python tools/build_celestial_commerce_corruption_release.py --release
+      - name: Build tagged Auto Upgrade Buildings release candidate
+        if: startsWith(github.ref, 'refs/tags/auto-upgrade-buildings-v')
+        run: python tools/build_auto_upgrade_buildings_release.py --release
+      - name: Build tagged Reclaim the Motherland release candidate
+        if: startsWith(github.ref, 'refs/tags/reclaim-motherland-v')
+        run: python tools/build_reclaim_the_motherland_release.py --release
+      - name: Build tagged ZhongGuo 361 release candidate
+        if: startsWith(github.ref, 'refs/tags/zhongguo-361-v')
+        run: python tools/build_mod_zhongguo_style_release.py --release
+      - name: Upload release candidate
+        if: github.event_name == 'workflow_dispatch' || startsWith(github.ref, 'refs/tags/v') || startsWith(github.ref, 'refs/tags/ox-here-v') || startsWith(github.ref, 'refs/tags/remove-mandala-v') || startsWith(github.ref, 'refs/tags/tributary-expansion-directives-v') || startsWith(github.ref, 'refs/tags/celestial-commerce-corruption-v') || startsWith(github.ref, 'refs/tags/auto-upgrade-buildings-v') || startsWith(github.ref, 'refs/tags/reclaim-motherland-v') || startsWith(github.ref, 'refs/tags/zhongguo-361-v')
+        uses: actions/upload-artifact@v6
+        with:
+          name: release-candidate-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            dist/*.zip
+            dist/*.manifest.json
+          if-no-files-found: error
+          retention-days: 30

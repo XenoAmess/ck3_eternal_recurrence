@@ -795,6 +795,14 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     return false;
   }
   query->result = {};
+#if defined(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1)
+  if(query->operation==FrontendGuiRouteOperationV1::player_control_readonly) {
+    query->player_control_readonly.ticket=query->ticket;
+    query->player_control_readonly.owner_executor_context=query;
+    return ck3_12003::ExecutePlayerControlReadonlyV1(query->player_control_readonly,
+        *query->mailbox,stamp,query->environment);
+  }
+#endif
   if (query->operation == FrontendGuiRouteOperationV1::inspect_gui_window_tree) {
     return InspectGuiWindowTree(*query);
   }

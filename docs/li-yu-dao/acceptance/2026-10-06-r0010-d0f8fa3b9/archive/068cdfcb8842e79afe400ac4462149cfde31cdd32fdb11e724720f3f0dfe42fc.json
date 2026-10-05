@@ -1,0 +1,431 @@
+{
+  "schema": "lyd.r10.incremental-evidence-ledger-through150.v1",
+  "status": "IN_PROGRESS_NOT_GREEN_INCREMENT_ONLY_NO_FULL_REPORT",
+  "sealed_utc": "2026-10-05T16:37:54.356021+00:00",
+  "SDK_cutoff": 150,
+  "last_request_id": "r10-0151-sixth-final-ready-query",
+  "previous_draft4_index": {
+    "path": "r10-test-report-draft-20261005-004/INDEX.json",
+    "bytes": 1039,
+    "sha256": "d2eae56b94de166b3ed130dcc02c8b2f2a323600d598a2a40f23da0b6bc780f6",
+    "stat_unchanged_during_read": true
+  },
+  "newly_read_SDK_sequences": [
+    56,
+    150
+  ],
+  "new_SDK_count": 95,
+  "new_raw_SDK_bytes": 216832209,
+  "SDK_recorded_count_through_cutoff": 150,
+  "readback_packages": [
+    {
+      "package_index": {
+        "path": "r10-actual-second-post-sign-readback-20261005-001/INDEX.json",
+        "bytes": 5709,
+        "sha256": "823fad359a3394f5538b948a39657b5b416ccbbc79feb26cefd58967a7c67e4c",
+        "stat_unchanged_during_read": true
+      },
+      "report": {
+        "path": "r10-actual-second-post-sign-readback-20261005-001/REPORT.json",
+        "bytes": 3043,
+        "sha256": "9269f77eda6376ee3e8df795fa7c87e1004c3e5413f2d6b02dbdbadb8f5a20b9",
+        "stat_unchanged_during_read": true
+      },
+      "declared_status": "ACTUAL_SECOND_RESULT2_REJECTED_NO_JOIN_TRANSITION_OR_FEE",
+      "nonce": 8,
+      "stage": "REJECTED_RESULT2",
+      "save_SDK_sequence": 57,
+      "binding_and_protection_check_count": 29,
+      "all_declared_checks_true": true,
+      "final_JOIN_credit": false,
+      "AST_reread_or_parser_called_by_ledger": false
+    },
+    {
+      "package_index": {
+        "path": "r10-actual-third-before-readback-20261005-001/INDEX.json",
+        "bytes": 5396,
+        "sha256": "ea1be27380db9f59eacc1e6842cf270887a1940b9ec9a4fdfc766e92f31cc323",
+        "stat_unchanged_during_read": true
+      },
+      "report": {
+        "path": "r10-actual-third-before-readback-20261005-001/REPORT.json",
+        "bytes": 2623,
+        "sha256": "25847b196eaf515305a781324f464c2e50f0f37dd3866523e86ce2ed13e338b9",
+        "stat_unchanged_during_read": true
+      },
+      "declared_status": "ACTUAL_THIRD_BEFORE_READY_AFTER_RESET_NOT_NATURAL_EXPIRY",
+      "nonce": 8,
+      "stage": "EXPLICIT_RESET_BEFORE",
+      "save_SDK_sequence": 63,
+      "binding_and_protection_check_count": 32,
+      "all_declared_checks_true": true,
+      "final_JOIN_credit": false,
+      "AST_reread_or_parser_called_by_ledger": false
+    },
+    {
+      "package_index": {
+        "path": "r10-actual-third-open-join-readback-20261005-001/INDEX.json",
+        "bytes": 5717,
+        "sha256": "98dd1157870b267cf15ef2b28258e3066c335bfc96f91ccb41c9a32ba3d3f258",
+        "stat_unchanged_during_read": true
+      },
+      "report": {
+        "path": "r10-actual-third-open-join-readback-20261005-001/REPORT.json",
+        "bytes": 3323,
+        "sha256": "ad93e67929c20343d4496b35f583364cf51510abee1fe04bb971f286ac770de3",
+        "stat_unchanged_during_read": true
+      },
+      "declared_status": "ACTUAL_THIRD_PROPOSAL_OPENED_ROUND9_BOUND_NPC_YES_NOT_PROVEN_NOT_FINAL_JOIN",
+      "nonce": 9,
+      "stage": "PROPOSAL_OPENED",
+      "save_SDK_sequence": 68,
+      "binding_and_protection_check_count": 35,
+      "all_declared_checks_true": true,
+      "final_JOIN_credit": false,
+      "AST_reread_or_parser_called_by_ledger": false
+    },
+    {
+      "package_index": {
+        "path": "r10-actual-third-post-cancel-readback-20261005-001/INDEX.json",
+        "bytes": 5864,
+        "sha256": "653b4be1efb09e72760bf8381de94345e63291a132511cd7f1dbb9b11fa362c9",
+        "stat_unchanged_during_read": true
+      },
+      "report": {
+        "path": "r10-actual-third-post-cancel-readback-20261005-001/REPORT.json",
+        "bytes": 3265,
+        "sha256": "adf53ed0d4447925e08a98fe63cf51bccb1b1e7705ec71e60dc730cfbe102fac",
+        "stat_unchanged_during_read": true
+      },
+      "declared_status": "ACTUAL_RESULT3_CANCELLED_NO_SIGNATURE_JOIN_TRANSITION_OR_FEE",
+      "nonce": 9,
+      "stage": "CANCELLED_RESULT3",
+      "save_SDK_sequence": 82,
+      "binding_and_protection_check_count": 33,
+      "all_declared_checks_true": true,
+      "final_JOIN_credit": false,
+      "AST_reread_or_parser_called_by_ledger": false
+    },
+    {
+      "package_index": {
+        "path": "r10-actual-fourth-open-join-readback-20261005-001/INDEX.json",
+        "bytes": 5715,
+        "sha256": "3c0811d784761325f41e45b327dd3bc949dd95b95e04075a9e6f6e60deff831f",
+        "stat_unchanged_during_read": true
+      },
+      "report": {
+        "path": "r10-actual-fourth-open-join-readback-20261005-001/REPORT.json",
+        "bytes": 3240,
+        "sha256": "f9b9f8513afe6803dbb197b0fde4bd8d5121dde409995e6093b036dc1c4580da",
+        "stat_unchanged_during_read": true
+      },
+      "declared_status": "ACTUAL_FOURTH_PROPOSAL_OPENED_ROUND10_TARGET_YES_NOT_PROVEN_NOT_FINAL_JOIN",
+      "nonce": 10,
+      "stage": "PROPOSAL_OPENED",
+      "save_SDK_sequence": 88,
+      "binding_and_protection_check_count": 32,
+      "all_declared_checks_true": true,
+      "final_JOIN_credit": false,
+      "AST_reread_or_parser_called_by_ledger": false
+    },
+    {
+      "package_index": {
+        "path": "r10-actual-fourth-post-cancel-readback-20261005-001/INDEX.json",
+        "bytes": 6339,
+        "sha256": "3966d4a212ba2efe1fdce454b0d1c99bec3937529273017e78f5088c8d232fa0",
+        "stat_unchanged_during_read": true
+      },
+      "report": {
+        "path": "r10-actual-fourth-post-cancel-readback-20261005-001/REPORT.json",
+        "bytes": 4633,
+        "sha256": "5daf795b96ca9d87b8a2aa5a28fdbdeed9410de8f7fb8261d79bd5d9608ef304",
+        "stat_unchanged_during_read": true
+      },
+      "declared_status": "ACTUAL_RESULT3_CANCELLED_SOURCE_SIGNED1_NO_TARGET_REQUEST_SIGNATURE_JOIN_OR_FEE",
+      "nonce": 10,
+      "stage": "CANCELLED_RESULT3",
+      "save_SDK_sequence": 107,
+      "binding_and_protection_check_count": 43,
+      "all_declared_checks_true": true,
+      "final_JOIN_credit": false,
+      "AST_reread_or_parser_called_by_ledger": false
+    },
+    {
+      "package_index": {
+        "path": "r10-actual-fifth-open-join-readback-20261005-001/INDEX.json",
+        "bytes": 6498,
+        "sha256": "44c0bf5edc6e03c8cf5e1589ee8854842b12359449e5b9862b0d50ee79a20ba0",
+        "stat_unchanged_during_read": true
+      },
+      "report": {
+        "path": "r10-actual-fifth-open-join-readback-20261005-001/REPORT.json",
+        "bytes": 3243,
+        "sha256": "5537fd873eeaf3913e1910cab34436c46213dd5b6a6bb5e685eebd052c59e32f",
+        "stat_unchanged_during_read": true
+      },
+      "declared_status": "ACTUAL_FIFTH_PROPOSAL_OPENED_ROUND11_NPC_YES_NOT_PROVEN_NOT_FINAL_JOIN",
+      "nonce": 11,
+      "stage": "PROPOSAL_OPENED",
+      "save_SDK_sequence": 111,
+      "binding_and_protection_check_count": 32,
+      "all_declared_checks_true": true,
+      "final_JOIN_credit": false,
+      "AST_reread_or_parser_called_by_ledger": false
+    },
+    {
+      "package_index": {
+        "path": "r10-actual-fifth-post-cancel-readback-20261005-001/INDEX.json",
+        "bytes": 6175,
+        "sha256": "78b4b12f716e3a89905596b1fd82546e5c583f9dc6b4b9aac7ad8a09ec797202",
+        "stat_unchanged_during_read": true
+      },
+      "report": {
+        "path": "r10-actual-fifth-post-cancel-readback-20261005-001/REPORT.json",
+        "bytes": 4687,
+        "sha256": "e9c0ba08bc51bdcdf199f4eb22f2a8e9a039cdf15d53cad53a713ee2af05dde0",
+        "stat_unchanged_during_read": true
+      },
+      "declared_status": "ACTUAL_RESULT3_CANCELLED_NO_SIGNATURE_JOIN_TRANSITION_OR_FEE",
+      "nonce": 11,
+      "stage": "CANCELLED_RESULT3",
+      "save_SDK_sequence": 125,
+      "binding_and_protection_check_count": 48,
+      "all_declared_checks_true": true,
+      "final_JOIN_credit": false,
+      "AST_reread_or_parser_called_by_ledger": false
+    },
+    {
+      "package_index": {
+        "path": "r10-actual-sixth-open-join-readback-20261005-001/INDEX.json",
+        "bytes": 6174,
+        "sha256": "9d725b7c8695f3a037f4061ff8729b4256d56f5d9fb1d308c5837dd10b572ac4",
+        "stat_unchanged_during_read": true
+      },
+      "report": {
+        "path": "r10-actual-sixth-open-join-readback-20261005-001/REPORT.json",
+        "bytes": 3245,
+        "sha256": "b894af44ce920c2b53db745f24f348b1079721f656fe02ebbda7e2161bd1663c",
+        "stat_unchanged_during_read": true
+      },
+      "declared_status": "ACTUAL_SIXTH_PROPOSAL_OPENED_ROUND12_TARGET_YES_NOT_PROVEN_NOT_FINAL_JOIN",
+      "nonce": 12,
+      "stage": "PROPOSAL_OPENED",
+      "save_SDK_sequence": 129,
+      "binding_and_protection_check_count": 32,
+      "all_declared_checks_true": true,
+      "final_JOIN_credit": false,
+      "AST_reread_or_parser_called_by_ledger": false
+    }
+  ],
+  "independent_lineage_packages": [
+    {
+      "index": {
+        "path": "r10-actual-first-release-lineage-independent-review-20261005-002/INDEX.json",
+        "bytes": 418,
+        "sha256": "98fb96035455b111ce2774c81a0285cf2fd4f5f5c094c11055d73ba5b0a82f20",
+        "stat_unchanged_during_read": true
+      },
+      "report": {
+        "path": "r10-actual-first-release-lineage-independent-review-20261005-002/REPORT.json",
+        "bytes": 38006,
+        "sha256": "6ae69334d8a05f9a769f23afa5944a13fb817c9c8d65341f0bc8699cc5aba0dc",
+        "stat_unchanged_during_read": true
+      }
+    },
+    {
+      "index": {
+        "path": "r10-actual-second-consumption-release-lineage-independent-review-20261005-001/INDEX.json",
+        "bytes": 412,
+        "sha256": "5768eaea896731cb879d4d604c6f79a184ed756aceb93c8745d38fec73beea3b",
+        "stat_unchanged_during_read": true
+      },
+      "report": {
+        "path": "r10-actual-second-consumption-release-lineage-independent-review-20261005-001/REPORT.json",
+        "bytes": 23656,
+        "sha256": "b28cac6b015c49a4066c4d4e70fbe9f1977ebc2d66d3c5118252ec5980769c20",
+        "stat_unchanged_during_read": true
+      }
+    },
+    {
+      "index": {
+        "path": "r10-actual-third-consumption-release-lineage-independent-review-20261005-001/INDEX.json",
+        "bytes": 411,
+        "sha256": "dca4616739c4ffb97d6b021a6f4d2da71eafcc75bf6986f37575f348170f9d0b",
+        "stat_unchanged_during_read": true
+      },
+      "report": {
+        "path": "r10-actual-third-consumption-release-lineage-independent-review-20261005-001/REPORT.json",
+        "bytes": 39754,
+        "sha256": "ba88adf7ffbd79800576d391bc6442dd43d222c279374c644c9195afd5610f63",
+        "stat_unchanged_during_read": true
+      }
+    },
+    {
+      "index": {
+        "path": "r10-actual-fourth-consumption-release-lineage-independent-review-20261005-001/INDEX.json",
+        "bytes": 412,
+        "sha256": "ccb5f0c6160af6f6b84c4d547bdd63e0a05397391d810c76e327778eb1935168",
+        "stat_unchanged_during_read": true
+      },
+      "report": {
+        "path": "r10-actual-fourth-consumption-release-lineage-independent-review-20261005-001/REPORT.json",
+        "bytes": 25260,
+        "sha256": "c7865b6563e5f458f6950a0b4c89429f62b1226b932621effd8aba5e7863fc1c",
+        "stat_unchanged_during_read": true
+      }
+    }
+  ],
+  "runtime_current": {
+    "public_revision": 70,
+    "native_revision": 69,
+    "date_raw": 53144712,
+    "PID": 13436,
+    "wallet": {
+      "gold": 1543,
+      "piety": 5650,
+      "prestige": 2200
+    },
+    "ordinary_can_send": true,
+    "ordinary_ready": true,
+    "active_event_present": false,
+    "current_query": {
+      "path": "live-attempt-010/mcp-client-evidence-002/0150-r10-0151-sixth-final-ready-query.sdk-result.json",
+      "bytes": 7623,
+      "sha256": "27fff1d1a7533e83d39b72684a33f43a637c1dbb56110f0d9fe1c8cbfb8534ee",
+      "stat_unchanged_during_read": true
+    }
+  },
+  "fourth_proposal": {
+    "nonce": 10,
+    "terminal_saved_result": 3,
+    "terminal_stage": "CANCELLED",
+    "JOIN_credit": false
+  },
+  "fifth_proposal": {
+    "nonce": 11,
+    "terminal_saved_result": 3,
+    "terminal_stage": "CANCELLED",
+    "JOIN_credit": false
+  },
+  "sixth_proposal": {
+    "nonce": 12,
+    "withdraw_selection_recorded": true,
+    "withdraw_public_option": 5,
+    "withdraw_native_index": 4,
+    "typed_ACK": "lyd.228",
+    "ACK_selection_recorded": true,
+    "actual_post_cancel_save_metadata": {
+      "path": "live-attempt-010/checkpoints/0149-sixth-post-cancel-save/checkpoint-metadata.json",
+      "bytes": 1420,
+      "sha256": "c81c65b7f3a4364d7c49bcf9dc703188a3fa041bce64818268d305cfb77add0d",
+      "stat_unchanged_during_read": true
+    },
+    "actual_save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0149-sixth-post-cancel-save\\checkpoint.ck3",
+      "bytes": 91537192,
+      "sha256": "5ab8d308bd2f3858388f86cc34289683c30cf8efa43515283c001421c40affe1"
+    },
+    "independent_post_cancel_AST_seal": "PENDING",
+    "independent_final_result": null,
+    "JOIN_credit": false
+  },
+  "completed_R10_JOIN_count": 0,
+  "completed_history_joins1_detaches2_are_prior_saved_history": true,
+  "fullcycle_credit": false,
+  "local_wait142": {
+    "ROOT_request": "r10-0143-sixth-final-review-detail",
+    "v3_wait_seconds": 20,
+    "local_result": {
+      "status": "RESPONSE_STILL_PENDING_NO_RETRY",
+      "request_id": "r10-0143-sixth-final-review-detail"
+    },
+    "local_pending_raw": {
+      "path": "live-attempt-010/root-call-stdio/r10-0143-sixth-final-review-detail/1.stdout.bin",
+      "bytes": 99,
+      "sha256": "53990011b9335a0413ae4e38283adf68f107ec9b57372339a244ef030421638f",
+      "stat_unchanged_during_read": true
+    },
+    "local_wrapper_failure": "ROOT_REPORTED_AND_SOURCE_ASSERTION_INFERRED; no separate raw caller exit receipt fabricated",
+    "actual_original_sdk_result": {
+      "path": "live-attempt-010/mcp-client-evidence-002/0142-r10-0143-sixth-final-review-detail.sdk-result.json",
+      "bytes": 5894299,
+      "sha256": "654b00c7336b0c1c7b7806cc74f107f44c907fbb9631cbcce1ee5eacd16d4957",
+      "stat_unchanged_during_read": true
+    },
+    "actual_original_sdk_status": "MCP_RESULT_RECORDED",
+    "actual_started_utc": "2026-10-05T15:19:35.712716+00:00",
+    "actual_finished_utc": "2026-10-05T15:20:09.770032+00:00",
+    "actual_duration_seconds": 34.057316,
+    "same_action_replayed": false,
+    "next_readonly_query143": {
+      "path": "live-attempt-010/mcp-client-evidence-002/0143-r10-0144-sixth-detail-readback.request.json",
+      "bytes": 282,
+      "sha256": "76998036c534bf1fe18a66f20806a9fe36c9ecc38e2bab9fa74cd439335896bb",
+      "stat_unchanged_during_read": true
+    },
+    "later_confirm144": {
+      "path": "live-attempt-010/mcp-client-evidence-002/0144-r10-0145-sixth-final-review-confirm.request.json",
+      "bytes": 382,
+      "sha256": "8e24f23e6e847103e97239e34ff8d70f6f234afa2e1ab16e038773c8e41fd1d9",
+      "stat_unchanged_during_read": true
+    },
+    "orphan0144_original_confirm_arguments": {
+      "path": "live-attempt-010/root-explicit-arguments/0144-sixth-final-review-confirm.json",
+      "bytes": 150,
+      "sha256": "fb591b927973e58b521694a8e56de363ff44661069e65ad69cc230ba17f09273",
+      "stat_unchanged_during_read": true
+    },
+    "orphan0144_confirm_enqueued": false,
+    "v4_source": {
+      "path": "root_r10_one_explicit_small_call_v4_20261005.py",
+      "bytes": 2027,
+      "sha256": "79a011ccaf87a5626a3d42034316cbc558a2f5d649a1381c6897c4fdddd411f8",
+      "stat_unchanged_during_read": true
+    },
+    "v4_readonly_wait_seconds": 45
+  },
+  "helper_source_reviews": {
+    "assembler002_independent_rejection": {
+      "path": "r10-proposal-assembler-independent-review-20261005-001/INDEX.json",
+      "bytes": 394,
+      "sha256": "f3c2ee7d3bd9dbda4aa3ff5099e94030469d4da267b8fca5171100b8c8f54c2f",
+      "stat_unchanged_during_read": true
+    },
+    "assembler002_status": "HELPER_QUERY_METADATA_GATES_INCOMPLETE",
+    "accepted_invalid_metadata_cases": 4,
+    "assembler002_qualified_for_live_proofs": false,
+    "assembler003_index": {
+      "path": "lyd-r10-proposal-input-assembler-20261006-003/INDEX.json",
+      "bytes": 1570,
+      "sha256": "9e1b6d82d36a67a75e9c22e0875d5bf028939c7fd571bcd3db7573adb4784ca7",
+      "stat_unchanged_during_read": true
+    },
+    "assembler003_author_directed_checks": 28,
+    "assembler003_independent_review": "PENDING",
+    "assembler003_live_assemble_execution": false
+  },
+  "latest_log_evidence": {
+    "cutoff": 108,
+    "index": {
+      "path": "r10-log-checkpoint108-readonly-review-20261005-001/INDEX.json",
+      "bytes": 3501,
+      "sha256": "6604b1765aa1b82f699542167ba72992a8ac9b0fbc79a7e228d4bb248645a0c7",
+      "stat_unchanged_during_read": true
+    },
+    "raw_error_log_sha256": "2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a",
+    "whole_final_credit": false,
+    "cap_reached": null,
+    "truncation": null,
+    "continuous_runtime_coverage": null
+  },
+  "normal_exit": "NOT_RUN",
+  "SDK_Client_closed": false,
+  "keeper_FINAL": null,
+  "lease_released": false,
+  "source_freeze_released": false,
+  "no_full_report_rewrite": true,
+  "old_draft_or_failed_attempt_overwrite": false,
+  "new_AST_parses_by_ledger": 0,
+  "old_AST_or_tests_rerun": false,
+  "main_Git_game_native_Client_pipe_bus_mutations": false
+}

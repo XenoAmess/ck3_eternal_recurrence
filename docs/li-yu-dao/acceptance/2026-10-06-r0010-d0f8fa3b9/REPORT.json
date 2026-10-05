@@ -1,0 +1,139 @@
+{
+  "schema": "lyd.r10.final.closed-report-candidate.v1",
+  "status": "R10_CLOSED_NOT_GREEN_PHASE1_INCOMPLETE",
+  "report_utc": "2026-10-05T18:24:03.184650+00:00",
+  "source_HEAD": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "stock_version": "1.20.0.3",
+  "original_pid": 13436,
+  "original_process_creation_filetime_100ns": 134356699957422997,
+  "business_cutoff_SDK": 244,
+  "final_MCP_cutoff_SDK": 253,
+  "client_close_sequence": 254,
+  "new_SDK_sequences": [
+    201,
+    253
+  ],
+  "new_SDK_count": 53,
+  "new_raw_SDK_bytes": 291700771,
+  "prior_SDK1_200_body_scans": 0,
+  "save_body_reads_hashes_or_AST_runs": 0,
+  "business": {
+    "R10_actual_final_JOIN_count": 1,
+    "R10_actual_final_DETACH_count": 1,
+    "campaign_saved_JOINs": 2,
+    "campaign_saved_DETACHs": 3,
+    "wallet_gold": 1043,
+    "wallet_piety": 3150,
+    "wallet_prestige": 2200,
+    "JOIN14": {
+      "save_sequence": 192,
+      "checks": 183,
+      "fee_gold": 300,
+      "fee_piety": 1500,
+      "moving_Rite169_parentFaith": 104,
+      "targetFaith104_mainRite": 159,
+      "oldFaith106_backupMainRite": 187
+    },
+    "DETACH16": {
+      "precommit_sequence": 235,
+      "save_sequence": 240,
+      "checks": 120,
+      "fee_gold": 200,
+      "fee_piety": 1000,
+      "newFaith": 107,
+      "newFaith107_mainRite": 169,
+      "moving_Rite169_parentFaith": 107,
+      "moving_Rite169_HoR": 31254,
+      "newFaith107_HoF": null,
+      "newFaith107_head_title": null,
+      "moving_transition_CD_tick": 1825,
+      "reset_count": 6
+    },
+    "first_DETACH_201_216": {
+      "native_withdraw_trace_preserved": true,
+      "independent_save": null,
+      "AST_result3_credit": false
+    },
+    "formal_second_JOIN": "NOT_RUN",
+    "full_JOIN_DETACH_JOIN_cycle": "NOT_COMPLETE",
+    "natural_five_year_cooldown_expiry": "NOT_RUN"
+  },
+  "failure_boundaries": {
+    "SDK196_original_status": "RED",
+    "SDK196_later_actual_reset200": true,
+    "SDK196_claim_verified": false,
+    "SDK243_original_status": "RED",
+    "SDK243_exact_reason": "BridgeUnavailableError: decision action already claimed with an unresolved result; no retry at any revision",
+    "SDK243_new_reset_dispatched": false,
+    "SDK243_claim_clear_or_overwrite": false,
+    "SDK244_fresh_noevent_public112_native111": true
+  },
+  "lifecycle": {
+    "canonical_ROOT_boundary": {
+      "path": "r10-root-actual-closed-boundary-20261006-001/PREVIOUS-BOUNDARY.actual.json",
+      "bytes": 3360,
+      "sha256": "898fd997fbbaac6bb127a5d8f9f080077baf545b24b990db7d6d4c6811b6000c",
+      "stat_unchanged_during_read": true,
+      "body_read_this_final_assembly": true
+    },
+    "closure": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-actual-closed-boundary-20261006-001\\CLOSURE.actual.json",
+      "bytes": 2014,
+      "sha256": "7f5fe972d0166c29981d5e10a2869ba7844f557faffdb04127997d6cb347af4d"
+    },
+    "original_HANDLE_exit_code": 0,
+    "typed_normal_exit_observed": true,
+    "original_retained_HANDLE_token": "c3d6cb9a49b45eacdd12e64815c8f49a",
+    "observer_native_submission_count": 0,
+    "normal_exit_autosave_verified": false,
+    "client_session_closed": true,
+    "client_OS_exit_code": null,
+    "keeper_STOP_FINAL_thread_exited": true,
+    "keeper_failure": null,
+    "keeper_OS_exit_code": null,
+    "keeper_last_sequence": 3160,
+    "lease_CAS_after_sequence": 3161,
+    "lease_resource_list": [],
+    "fresh_no_holder_list": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-final-after-list-invocation-20261006-001\\stdout.txt",
+      "bytes": 94331,
+      "sha256": "08cab2be1bec39e03276e7ec4ff00ccdb8104443b85badee629ea3ac5faa9610"
+    },
+    "all_processes_absent": true,
+    "source_freeze_released": true,
+    "source_freeze_release": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-actual-closed-boundary-20261006-001\\SOURCE-FREEZE-RELEASE.actual.json",
+      "bytes": 867,
+      "sha256": "664c382cedeb609c1293fa7a009732832aad87dc3182c8005382cd64bfdc55b4"
+    }
+  },
+  "logs": {
+    "package": "r10-log-preterminal-cut244-readonly-review-20261006-001",
+    "directory_name_is_historical_not_capture_phase": true,
+    "capture_phase_correction": "ACTUAL_CAPTURE_POST_GAME_EXIT_AND_POST_CLIENT_SESSION_CLOSE",
+    "capture_UTC": [
+      "2026-10-05T18:07:35.956978+00:00",
+      "2026-10-05T18:07:35.959050+00:00"
+    ],
+    "fixture_unused_records": 578,
+    "production_unused_records": 0,
+    "runtime_effect_trigger_scope_error_records_in_captured_bytes": 0,
+    "actual_other_W_records": 12,
+    "cap_reached": null,
+    "truncation": null,
+    "continuous_late_runtime_log_coverage": null,
+    "whole_log_GREEN": false
+  },
+  "not_run": [
+    "formal secondJOIN",
+    "R11 reloaded persistent evidence",
+    "C3 formal lord/challenger/death/reload",
+    "I3b formal dynamicFaith ritual run",
+    "practice character-switch mutations",
+    "I4 formal144product cases"
+  ],
+  "phase1_overall_complete": false,
+  "overall_PASS": false,
+  "ROOT_only_main_import": true,
+  "main_Git_game_MCP_Client_pipe_lease_bus_mutations_by_author": false
+}

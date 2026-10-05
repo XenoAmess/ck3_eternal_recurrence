@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 219,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0220-detach-second-open-confirm.request.json",
+  "request_sha256": "8c4701a485407149d65d4d493018030d1d879f9cf071bc8775df090f75f79bc5",
+  "started_at_utc": "2026-10-05T17:50:45.223917+00:00",
+  "request_id": "r10-0220-detach-second-open-confirm",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0219-r10-0220-detach-second-open-confirm.sdk-result.json",
+  "sdk_result_sha256": "548887bea3cbdf98f4831d6f4fe6fc5443621764ba88596c6dafd0123ecc93a1",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0218-decision-confirm_outcome.json",
+      "copy": "0219-r10-0220-detach-second-open-confirm.native-01.json",
+      "sha256": "077381bfdcc4bbfd3180f885300c100ca5e757146ccb0b7fab9be71348a79ef0"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:50:50.821612+00:00"
+}

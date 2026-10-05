@@ -1,0 +1,19 @@
+2235={
+	key=b_acerenza
+	de_facto_liege=2231
+	de_jure_liege=2231
+	holder=31254
+	date=1042.5.4
+	succession_result_type=inheritance_child_line
+	heir={ 40526 40695 39979 40847 41032 37244 38098 36445 36663 36873 31692 34973 40259 35598 36638 32536 38561 39045 39171 39352 }
+	capital=2231
+	coat_of_arms_id=10843
+	title_name_data={
+		name="阿切伦扎"
+	}
+
+	default_coa=no
+	treasury={
+	}
+	nomad_name_type=default
+}

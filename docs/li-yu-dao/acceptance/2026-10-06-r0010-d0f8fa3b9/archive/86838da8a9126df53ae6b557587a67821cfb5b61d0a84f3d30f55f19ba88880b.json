@@ -1,0 +1,62 @@
+{
+  "schema": "lyd.r10.next-intent-before-independent-readback.v1",
+  "status": "ACTUAL_BEFORE_NEXT_INTENT_READY_AFTER_EXPLICIT_RESET_NOT_NATURAL_EXPIRY",
+  "typed_facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-new-intent-before-readback-20261005-001\\TYPED-FACTS.json",
+    "bytes": 233208,
+    "sha256": "5d3ec15503a067e5868cd8da25944170fd1a7d20de642da2781a12c4344fce7a"
+  },
+  "reset_pair_diff": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-new-intent-before-readback-20261005-001\\reset-pair-diff-001\\REPORT.json",
+    "bytes": 7208,
+    "sha256": "2159bc8e5219fdb7f210888489cdea65e66e171f40bb25be35f07d690cb926df"
+  },
+  "human_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-new-intent-before-readback-20261005-001\\REPORT-zh.md",
+    "bytes": 1212,
+    "sha256": "5ed7bfd64f07164556cfe11f48d8fa287e9c1f7d2480d3bd85d79cd9e570b487"
+  },
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0039-before-new-intent-save\\checkpoint.ck3",
+    "bytes": 91531932,
+    "sha256": "0aac6341204b39048646c81eff068d3d7a9a6cb849388871910673ef15d1bdaa"
+  },
+  "source_HEAD": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "all_binding_and_protection_checks": {
+    "save_SDK_success": true,
+    "save_SDK_exact_SHA": true,
+    "save_SDK_exact_bytes": true,
+    "save_SDK_actor31254": true,
+    "save_SDK_public18_native17": true,
+    "save_SDK_date_paused_PID": true,
+    "save_SDK_active_event_null": true,
+    "save_SDK_exact_profile_session": true,
+    "actual_fixture_reset3_to4": true,
+    "actual_old_nonce_serial7_retained": true,
+    "actual_old_rejection_result2_retained": true,
+    "actual_current_proposal_inactive": true,
+    "actual_moving_Rite_retry_reset_removed": true,
+    "actual_selected_Rite_retry_and_transition_absent": true,
+    "actual_selected_Rite_proposal_owners_absent": true,
+    "actual_wallet_unchanged": true,
+    "actual_XP_unchanged": true,
+    "actual_history_unchanged": true,
+    "all_Faith_main_links_unchanged": true,
+    "all_Rite_parent_links_unchanged": true,
+    "selected_graph_heads_unchanged": true,
+    "selected_graph_full_tenet_doctrine_rows_unchanged": true,
+    "actor_landed_full_AST_unchanged": true,
+    "political7_full_AST_unchanged": true,
+    "selected_person_protected_AST_unchanged": true,
+    "query40_readonly_success": true,
+    "query40_same_native17_public18": true,
+    "query40_same_actor_recipient_JOIN": true,
+    "query40_same_date_PID_profile_session": true,
+    "query40_shown_canSend_ready_true": true,
+    "query40_no_active_incoming": true,
+    "query40_no_business_credit": true
+  },
+  "actual_save_AST_parse_count": 1,
+  "natural_cooldown_expiry_credit": false,
+  "final_JOIN_credit": false
+}

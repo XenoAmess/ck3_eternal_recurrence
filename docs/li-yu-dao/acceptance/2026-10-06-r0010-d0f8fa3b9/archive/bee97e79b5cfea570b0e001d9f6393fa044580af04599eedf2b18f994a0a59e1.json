@@ -1,0 +1,14 @@
+{
+  "schema": "lyd.r10.evidence-author-attempt-failure.v1",
+  "recorded_utc": "2026-10-05T17:51:12.500376+00:00",
+  "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\prepare_r10_incremental_ledger151_200_20261006_001.py",
+  "source_bytes": 22209,
+  "source_sha256": "add5d84995e9c84cd84b8a527028130b91da5c3e26712eb8b3660a6da0c9b0ff",
+  "actual_execution_exit_code": 1,
+  "execution_receipt_basis": "exec_command tool transcript; no separate raw stdout/stderr file exists",
+  "actual_error_excerpt": "KeyError: 'result' at source line207 native196 = native_values[196]['result']",
+  "boundary": "Read-only SDK and new source hash collection finished before wrong success-envelope assumption for actual failure receipt196; no output package was created and no game/main/Git mutation",
+  "first50_new_SDK_audit_completed_before_schema_failure": true,
+  "not_a_game_product_failure": true,
+  "old_SDK1_to150_and_save_bodies_not_read": true
+}

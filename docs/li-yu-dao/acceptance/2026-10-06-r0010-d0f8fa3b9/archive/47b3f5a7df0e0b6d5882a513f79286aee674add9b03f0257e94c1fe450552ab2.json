@@ -1,0 +1,33 @@
+{
+  "schema": "lyd.r10.root-preserved-checkpoint.v1",
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0171-eighth-open-save\\checkpoint.ck3",
+    "bytes": 91542565,
+    "sha256": "04b22b41900f89b73f75d1295b12d4acd8021dd7081eab0bfdae9f813062c487"
+  },
+  "sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0171-r10-0172-eighth-open-save.sdk-result.json",
+    "sha256": "54c200e59829320a26f01f69b9727bf2c3e6e370e13d589525e9a5c482cd969b"
+  },
+  "original_game_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\userdir\\save games\\xar_checkpoint.ck3",
+  "original_checkpoint": {
+    "status": "saved",
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\userdir\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 91542565,
+    "sha256": "04b22b41900f89b73f75d1295b12d4acd8021dd7081eab0bfdae9f813062c487",
+    "date_raw": 53144712,
+    "overwrite_confirmed": true,
+    "strategy": "native-autosave-command-v1",
+    "episode_projection": "native_campaign",
+    "succession_lifecycle": null,
+    "history_index": 125,
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "actual_public_revision": 81,
+  "actual_native_revision": 80,
+  "paused": true,
+  "game_pid": 13436,
+  "date_raw": 53144712
+}

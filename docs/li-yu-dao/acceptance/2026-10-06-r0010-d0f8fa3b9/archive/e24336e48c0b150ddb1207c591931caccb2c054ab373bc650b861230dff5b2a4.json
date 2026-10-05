@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "-C",
+    "C:\\workspace\\ck3_eternal_recurrence",
+    "diff",
+    "--check"
+  ],
+  "utc": "2026-10-05T09:56:42.568415+00:00"
+}

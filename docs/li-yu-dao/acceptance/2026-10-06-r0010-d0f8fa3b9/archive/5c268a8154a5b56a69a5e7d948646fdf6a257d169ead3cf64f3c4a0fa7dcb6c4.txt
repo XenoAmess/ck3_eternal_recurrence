@@ -1,0 +1,78 @@
+{
+  "schema": "ck3.lyd.fresh-profile-build.v1",
+  "started_at_utc": "2026-10-05T10:47:10.295587+00:00",
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-profile-request-002\\native-profile-request.json",
+  "request_sha256": "aa91a82e1a1a30ba122df1ba799f7de2ab6841f2c36977050574923bebecf643",
+  "side_effects": {
+    "input_sent": false,
+    "game_started": false,
+    "bridge_injected": false
+  },
+  "status": "PROFILE_FROZEN_READ_ONLY",
+  "guard_profile": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-profile-request-002\\native-profile-fresh-001\\guard-profile.json",
+  "guard_sha256": "f87f22269f1924aa9e032c8cfe24e35d16bb5567ade0a1c1b0629fc81ab7d961",
+  "native_profile": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-profile-request-002\\native-profile-fresh-001\\native-profile.json",
+  "native_sha256": "ebbb3c2d41f25f998551efc479d88fad04ccbdecce7a9c2553b2b5e8057d5f07",
+  "observation": {
+    "pid": 13436,
+    "hwnd": 16385582,
+    "window_pid": 13436,
+    "process_create_time": 1791196395.7422996,
+    "executable": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "build_id": "25652598",
+    "app_manifest_sha256": "d5a59757a88e643291872bb66d45435e5d256fedc7953491f18d659999e6bf09",
+    "window_visible": true,
+    "window_title": "Crusader Kings III",
+    "window_class": "SDL_app",
+    "window_rect": [
+      152,
+      59,
+      1768,
+      998
+    ],
+    "focus": {
+      "foreground_hwnd": 16385582,
+      "foreground_pid": 13436,
+      "foreground_thread_id": 7960,
+      "focus_hwnd": 16385582,
+      "title": "Crusader Kings III"
+    },
+    "screen_size": [
+      1920,
+      1080
+    ],
+    "mouse_buttons": {
+      "left": false,
+      "right": false,
+      "middle": false,
+      "x1": false,
+      "x2": false
+    },
+    "steam_offline_flags": [
+      "1"
+    ],
+    "steam_loginusers_sha256": "94e993d04f118c58758fb0d6da7dff581c9a7c91c7d0e8fa823440f74c9b2097",
+    "steam_pid": 3028,
+    "steam_create_time": 1790980012.3969574,
+    "steam_executable": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe",
+    "steam_client_pid": 18100,
+    "steam_client_create_time": 1790980011.1466615,
+    "steam_client_executable": "C:\\Program Files (x86)\\Steam\\steam.exe",
+    "screen_lease_fresh": true,
+    "screen_owners": [
+      "ck3-lyd-r0010-20261005"
+    ],
+    "command_line": [
+      "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "-debug_mode",
+      "-gdpr-compliant",
+      "-userdir=C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/userdir",
+      "-loadsave=lyd_r10_resume_0058"
+    ]
+  },
+  "launcher_settings_sha256": "9cd6ff96f8092f2d21e1491b37e8344aa287faf69850563128ca1b117244a214",
+  "app_manifest_sha256": "d5a59757a88e643291872bb66d45435e5d256fedc7953491f18d659999e6bf09",
+  "gui_actions": "preserved explicit input only; do not run a desktop action server with this native guard",
+  "finished_at_utc": "2026-10-05T10:47:13.199941+00:00"
+}

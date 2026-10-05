@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0172-eighth-open-save.request.json",
+  "request_id": "r10-0172-eighth-open-save",
+  "sha256": "5acb1b5bb0e648bba775876abf71305175297b3a1b56f365b9a50e729c1d8df3",
+  "contacted_game": false
+}

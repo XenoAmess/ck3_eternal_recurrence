@@ -1,0 +1,96 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+lyd_adopt_chenxianzhang_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_chenxianzhang } }
+        set_character_rite = rite:lyd_rite_chenxianzhang
+        if = {
+            limit = { rite = rite:lyd_rite_chenxianzhang faith = rite:lyd_rite_chenxianzhang.faith }
+            add_character_flag = { flag = lyd_school_cooldown days = 365 }
+        }
+        else = { debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
+    }
+}
+
+lyd_adopt_zhanruoshui_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_zhanruoshui } }
+        set_character_rite = rite:lyd_rite_zhanruoshui
+        if = {
+            limit = { rite = rite:lyd_rite_zhanruoshui faith = rite:lyd_rite_zhanruoshui.faith }
+            add_character_flag = { flag = lyd_school_cooldown days = 365 }
+        }
+        else = { debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
+    }
+}
+
+lyd_adopt_wangyangming_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_wangyangming } }
+        set_character_rite = rite:lyd_rite_wangyangming
+        if = {
+            limit = { rite = rite:lyd_rite_wangyangming faith = rite:lyd_rite_wangyangming.faith }
+            add_character_flag = { flag = lyd_school_cooldown days = 365 }
+        }
+        else = { debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
+    }
+}
+
+lyd_adopt_jiangyou_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_jiangyou } }
+        set_character_rite = rite:lyd_rite_jiangyou
+        if = {
+            limit = { rite = rite:lyd_rite_jiangyou faith = rite:lyd_rite_jiangyou.faith }
+            add_character_flag = { flag = lyd_school_cooldown days = 365 }
+        }
+        else = { debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
+    }
+}
+
+lyd_adopt_taizhou_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_taizhou } }
+        set_character_rite = rite:lyd_rite_taizhou
+        if = {
+            limit = { rite = rite:lyd_rite_taizhou faith = rite:lyd_rite_taizhou.faith }
+            add_character_flag = { flag = lyd_school_cooldown days = 365 }
+        }
+        else = { debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
+    }
+}
+
+lyd_adopt_liuzongzhou_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_liuzongzhou } }
+        set_character_rite = rite:lyd_rite_liuzongzhou
+        if = {
+            limit = { rite = rite:lyd_rite_liuzongzhou faith = rite:lyd_rite_liuzongzhou.faith }
+            add_character_flag = { flag = lyd_school_cooldown days = 365 }
+        }
+        else = { debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
+    }
+}
+
+lyd_adopt_donglin_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_donglin } }
+        set_character_rite = rite:lyd_rite_donglin
+        if = {
+            limit = { rite = rite:lyd_rite_donglin faith = rite:lyd_rite_donglin.faith }
+            add_character_flag = { flag = lyd_school_cooldown days = 365 }
+        }
+        else = { debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
+    }
+}
+
+lyd_adopt_wangfuzhi_effect = {
+    if = {
+        limit = { lyd_can_change_school_trigger = yes NOT = { rite = rite:lyd_rite_wangfuzhi } }
+        set_character_rite = rite:lyd_rite_wangfuzhi
+        if = {
+            limit = { rite = rite:lyd_rite_wangfuzhi faith = rite:lyd_rite_wangfuzhi.faith }
+            add_character_flag = { flag = lyd_school_cooldown days = 365 }
+        }
+        else = { debug_log = "LYD_SCHOOL_RITE_POSTCONDITION_FAILED" trigger_event = lyd.2 }
+    }
+}

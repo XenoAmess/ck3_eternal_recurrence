@@ -1,0 +1,11 @@
+{
+  "status": "PREPARATION_RED",
+  "error_type": "ValueError",
+  "error": "Input file bytes do not match freeze: C:\\Program Files (x86)\\Steam\\steamapps\\appmanifest_1158310.acf",
+  "partial_attempt_preserved": false,
+  "prepared_credit": false,
+  "game_launched": false,
+  "consumer_created": false,
+  "native_invoked": false,
+  "git_read_only_commands": []
+}

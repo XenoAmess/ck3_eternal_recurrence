@@ -1,0 +1,46 @@
+{
+  "schema": "lyd.r10.proposal-assembler003.author.v1",
+  "status": "NEW_DIRECTED_METADATA_CHECKS_PASS_PENDING_INDEPENDENT_REVIEW",
+  "source_sha256": "aeecd4f13521f0056934887deb2d2e4173002ba82f8477ae91ca2ee2388a114e",
+  "prior_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\INDEX.json",
+    "bytes": 5320,
+    "sha256": "465a71a42e98e0d6d86107cb1d9bb0f55fdf624f8c6b0e8dfabcd9183267bf46"
+  },
+  "independent_findings": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-proposal-assembler-independent-review-20261005-001\\REPORT.json",
+    "bytes": 5021,
+    "sha256": "8aea24ef27f5a9d33d2895706bc4a700a79eecd52cd8188197d8899b4e729832"
+  },
+  "changed_function_ASTs": [
+    "checkpoint",
+    "query",
+    "validate"
+  ],
+  "added_function_ASTs": [
+    "distinct_output_paths",
+    "frame_identity"
+  ],
+  "unchanged_function_ASTs": [
+    "need",
+    "digest",
+    "jread",
+    "exact",
+    "readref",
+    "plain",
+    "sdk",
+    "output_path",
+    "pointer",
+    "source_baseline",
+    "write",
+    "assemble"
+  ],
+  "focused_checks": 28,
+  "invalid_controls": 24,
+  "source007_or_host_modified": false,
+  "full_validate_or_assemble_calls": 0,
+  "binder_emitter_registry_release_MCP_game_calls": 0,
+  "actual_consumption_or_business_credit": false,
+  "future_request_templates_remain_null": true,
+  "only_source_target": "assemble_proposal_inputs.py"
+}

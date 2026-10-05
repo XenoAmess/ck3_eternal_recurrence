@@ -1,0 +1,45 @@
+{
+  "schema": "ck3.external.immutable-index.v1",
+  "files": [
+    {
+      "path": "before/docs/autonomous-agent-progress/daily/2026-10-05.md",
+      "bytes": 87817,
+      "sha256": "6da63ccf0b91cd22124442aa4b06828be40ed836d98099721d8af4906fceefc2"
+    },
+    {
+      "path": "before/docs/autonomous-agent-progress/weekly/2026-W41.md",
+      "bytes": 70222,
+      "sha256": "017333fca0356c65db3c5615cb8d7a0826e259fb3629ce8b8a3678d3caa3fd12"
+    },
+    {
+      "path": "candidate/docs/autonomous-agent-progress/daily/2026-10-05.md",
+      "bytes": 87822,
+      "sha256": "de709700299168cddfa9f5dee7c071b922d66a1980e54d756303f4bbb4bb4774"
+    },
+    {
+      "path": "candidate/docs/autonomous-agent-progress/weekly/2026-W41.md",
+      "bytes": 70227,
+      "sha256": "51bbd7000e273604bf9009ed69d2d28f97df359f2eb066251faeffd845eecfc0"
+    },
+    {
+      "path": "docs-only.patch",
+      "bytes": 3512,
+      "sha256": "d796aedfbe613b93b7de2826d1ebc508c30d0310c618409926a4fa4450364df2"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1144,
+      "sha256": "b14a12c7ec8c64f1e9b2bfd2fb1de338fa218098c0e60ca083b9f10ce669612e"
+    },
+    {
+      "path": "ROOT-APPLY-INPUTS.json",
+      "bytes": 3206,
+      "sha256": "52ec74f6a40be37e64e1ba9c2745aac2d4cc0eea75e39d04c6dff74bb1108b92"
+    },
+    {
+      "path": "source/prepare_c3_ci_docs_neutral_name_candidate_20261005_001.py",
+      "bytes": 6101,
+      "sha256": "5827f38cf8c3ab357b5084ec6e40b32d7652f6343cb718669f03a678a64953ca"
+    }
+  ]
+}

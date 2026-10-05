@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 232,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0233-detach-second-final-review-detail.request.json",
+  "request_sha256": "166a03ac331c366066a00538d4a97dad68a8d4057fd9ca34bcf058ca2f48d02a",
+  "started_at_utc": "2026-10-05T17:53:26.193493+00:00",
+  "request_id": "r10-0233-detach-second-final-review-detail",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0232-r10-0233-detach-second-final-review-detail.sdk-result.json",
+  "sdk_result_sha256": "fdc9c6ef2cb88997545b534e6f3d19e3db58cbab82edb7810d9a3970018d4e78",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0231-decision-select.json",
+      "copy": "0232-r10-0233-detach-second-final-review-detail.native-01.json",
+      "sha256": "cd2b75ba827442cfbd84583e8795d70fa3d693ac01f198aec417ef966996d8a9"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:53:31.790372+00:00"
+}

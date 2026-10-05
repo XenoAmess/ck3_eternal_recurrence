@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 17,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0017-first-join-event-query.request.json",
+  "request_sha256": "e72c9cd7753bbf70f39aa2a4daac88ee90c57066b4c5d67acc045490ddb5f7a6",
+  "started_at_utc": "2026-10-05T11:27:48.854207+00:00",
+  "request_id": "r10-0017-first-join-event-query",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0017-r10-0017-first-join-event-query.sdk-result.json",
+  "sdk_result_sha256": "3fb79d03da1169852e28103adc42d84175604654b4d1b7313e7b97b1323a1f15",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0016-event-query.json",
+      "copy": "0017-r10-0017-first-join-event-query.native-01.json",
+      "sha256": "67acaa3d37898d931f1a78fcd1431ea791ad67dc78252e92c4c71b8865bec617"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T11:27:50.019653+00:00"
+}

@@ -1,0 +1,11 @@
+{
+  "status": "INVOCATION_COMPLETED",
+  "exit_code": 1,
+  "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "stderr_sha256": "a980f8be38cf60e12f6814565e6efb64d151ee8410b186768fc69d193a50cf43",
+  "schema": "lyd.r10.root-structured-argv-invocation.v1",
+  "argv_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-first-consumption-argv-001\\emit.json",
+  "argv_source_sha256": "c9774012e271a339d5288f63eabff9133c0c92f53af3b36568691306ade5b07e",
+  "started_utc": "2026-10-05T12:20:31.728004+00:00",
+  "completed_utc": "2026-10-05T12:20:31.883647+00:00"
+}

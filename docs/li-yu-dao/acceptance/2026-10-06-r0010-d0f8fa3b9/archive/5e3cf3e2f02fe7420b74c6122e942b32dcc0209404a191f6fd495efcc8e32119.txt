@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0206-detach-first-entry-chosen.request.json",
+  "request_id": "r10-0206-detach-first-entry-chosen",
+  "sha256": "23821d11d26cf38b05582f78863cf33496dfa2189ccf659eebf40f86c858407b",
+  "contacted_game": false
+}

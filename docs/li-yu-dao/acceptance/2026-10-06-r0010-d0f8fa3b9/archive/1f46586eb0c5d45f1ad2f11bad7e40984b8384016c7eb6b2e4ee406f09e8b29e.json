@@ -1,0 +1,10 @@
+{
+  "schema": "lyd.external-reader-request-attempt.v1",
+  "status": "REQUEST_FILE_NOT_FOUND_BEFORE_SAVE_AST_PARSE",
+  "incorrect_request_path": "C:/workspace/ck3_lyd_runtime_20261005-001/REQUEST.actual.json",
+  "correct_request_path": "C:/workspace/ck3_lyd_runtime_20261004/r10-actual-third-post-cancel-readback-20261005-001/REQUEST.actual.json",
+  "observed_error": "FileNotFoundError at read_actual_checkpoint.py main line 30 raw_request=request_path.read_bytes()",
+  "actual_save_AST_parse_count_in_failed_attempt": 0,
+  "save_output_created_by_failed_attempt": false,
+  "history_not_overwritten": true
+}

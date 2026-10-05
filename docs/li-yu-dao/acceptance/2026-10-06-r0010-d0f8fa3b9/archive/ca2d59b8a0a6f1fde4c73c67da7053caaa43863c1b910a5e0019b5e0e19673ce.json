@@ -1,0 +1,26 @@
+{
+  "schema": "lyd.external.evidence.index.v1",
+  "target_commit": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "files": [
+    {
+      "path": "report-01.json",
+      "bytes": 9163,
+      "sha256": "6f397f63886d5e9573f349e9e004e5517b0250cfd5d36e420f9c3fefe494acd3"
+    },
+    {
+      "path": "report-02.json",
+      "bytes": 99,
+      "sha256": "181077cba19c5b18592c15a181699b1d267a1e20393c48b6fcbb5fb305186625"
+    },
+    {
+      "path": "report-03.json",
+      "bytes": 265,
+      "sha256": "28b0165a87d92787cf61c07dbead87cce48340f005f6d8b7032d9818d90ea429"
+    },
+    {
+      "path": "SUMMARY.json",
+      "bytes": 4474,
+      "sha256": "9e83fc08341a0b1dea2c4bc1340d6b10008a5028ef5c6ab4d3d610d3a81dcdb4"
+    }
+  ]
+}

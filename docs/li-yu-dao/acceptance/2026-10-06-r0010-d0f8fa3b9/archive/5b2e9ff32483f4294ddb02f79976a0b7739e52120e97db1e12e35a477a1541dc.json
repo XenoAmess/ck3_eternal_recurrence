@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 189,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0190-eighth-final-commit.request.json",
+  "request_sha256": "06931c8b096722aeba4b89c8227d95e918c39392869da05a21124f261f02c3b6",
+  "started_at_utc": "2026-10-05T17:05:17.438668+00:00",
+  "request_id": "r10-0190-eighth-final-commit",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0189-r10-0190-eighth-final-commit.sdk-result.json",
+  "sdk_result_sha256": "b057797a256ff624bca696a971d7dfbcb59c335cb6b88586cddc45864befa0bf",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0188-event-select.json",
+      "copy": "0189-r10-0190-eighth-final-commit.native-01.json",
+      "sha256": "76336cbdc0732df404c3710c92d68dea6652483c3e7e3dbf8a84241642d848e1"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:05:22.459466+00:00"
+}

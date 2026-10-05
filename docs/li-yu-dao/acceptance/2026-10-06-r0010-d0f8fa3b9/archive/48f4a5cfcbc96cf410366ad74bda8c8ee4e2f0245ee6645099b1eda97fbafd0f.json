@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 163,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0164-seventh-review-event-query.request.json",
+  "request_sha256": "2b210dcaa5cccb59a4dddd6a882fd94bfafe702dbb3465bd8dd620bda77901b3",
+  "started_at_utc": "2026-10-05T16:43:35.114755+00:00",
+  "request_id": "r10-0164-seventh-review-event-query",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0163-r10-0164-seventh-review-event-query.sdk-result.json",
+  "sdk_result_sha256": "b49d1a7cadd9f3c887d635e34f878cc01171ed21b7d25fa9e4783b04e2d56fa0",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0162-event-query.json",
+      "copy": "0163-r10-0164-seventh-review-event-query.native-01.json",
+      "sha256": "48df08bcfd49b991193d6b2ba55e065cfa27e820df241714300f4dd279c0d3e4"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T16:43:36.732431+00:00"
+}

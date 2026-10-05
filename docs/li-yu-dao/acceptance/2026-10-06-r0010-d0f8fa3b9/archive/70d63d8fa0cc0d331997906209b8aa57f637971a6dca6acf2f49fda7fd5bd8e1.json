@@ -1,0 +1,17 @@
+{
+  "schema": "lyd.r10.root-profile-freezer-invocation.v1",
+  "started_utc": "2026-10-05T10:47:09.734831+00:00",
+  "completed_utc": "2026-10-05T10:47:13.281329+00:00",
+  "exit_code": 0,
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\prepare_fresh_native_profile.py",
+    "--request",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-profile-request-002\\native-profile-request.json"
+  ],
+  "stdout_sha256": "5c268a8154a5b56a69a5e7d948646fdf6a257d169ead3cf64f3c4a0fa7dcb6c4",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+}

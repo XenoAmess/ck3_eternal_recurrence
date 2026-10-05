@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "git",
+    "-C",
+    "C:\\workspace\\ck3_eternal_recurrence",
+    "ls-remote",
+    "origin",
+    "refs/heads/master"
+  ],
+  "utc": "2026-10-05T09:56:54.174932+00:00"
+}

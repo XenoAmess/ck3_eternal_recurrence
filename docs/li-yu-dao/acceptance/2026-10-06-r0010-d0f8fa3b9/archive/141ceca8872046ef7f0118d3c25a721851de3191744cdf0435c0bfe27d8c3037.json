@@ -1,0 +1,306 @@
+{
+  "schema": "lyd.r10.final-head-mount-manifest.v1",
+  "production_binding": {
+    "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+    "manifest_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-head-export-20261005-001\\production\\mod_li_yu_dao.manifest.json",
+    "manifest_sha256": "8fff14a823c50d2461660676ec3238439027d1a46af5281e5db95af7c9bd945c",
+    "file_count": 70,
+    "source_inventory": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-root-head-export-20261005-001/MOD-SOURCE-INVENTORY.json",
+      "bytes": 28251,
+      "sha256": "be549f1c663d37bb1794c4b9906e52ad127f665dd766833c75d769671358878d"
+    }
+  },
+  "fixtures": {
+    "entry": {
+      "source_root": "C:/workspace/ck3_lyd_runtime_20261004/r10-fixture-source-rebind-20261005-001/fixtures-package/mount-ready/mod_li_yu_dao_r7_entry_fixture",
+      "files": [
+        {
+          "path": "common/decisions/lyd_r3_fixture_decisions.txt",
+          "bytes": 794,
+          "sha256": "d2f0324b39c47b3a4950c0f8959501e0e4b09868ba7df48f34f14b4b3e0fc289"
+        },
+        {
+          "path": "common/scripted_effects/lyd_r3_fixture_effects.txt",
+          "bytes": 768,
+          "sha256": "5a79a925992d3a55586e5558d5c6300d608986467259b3f9b1ec17c8f08096da"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_r3_fixture_triggers.txt",
+          "bytes": 415,
+          "sha256": "bc0f586a245377fb1d2660651f04ce2c16f85fcc113250f323da4fd7fbbb5bda"
+        },
+        {
+          "path": "descriptor.mod",
+          "bytes": 123,
+          "sha256": "56257504a8f873e43a20ab5c3096c9607647e205d28db17f4c3b13cb54f94a8f"
+        },
+        {
+          "path": "events/lyd_r3_fixture_events.txt",
+          "bytes": 707,
+          "sha256": "0f5cae24b3d938cc9ece2af2a8a889dbf42d8b234d41cdc94c6c16adc7f05a9b"
+        },
+        {
+          "path": "localization/english/lyd_r3_fixture_l_english.yml",
+          "bytes": 1729,
+          "sha256": "25dbd64ed8d61ba7f6f474e1e3cd9abf8d7e3e944ebc2db865d324bba4504e44"
+        },
+        {
+          "path": "localization/simp_chinese/lyd_r3_fixture_l_simp_chinese.yml",
+          "bytes": 1554,
+          "sha256": "007ef993fbb92d8b5c94855a1de601a90e355ea3967128a0ddac3b6554e23252"
+        }
+      ]
+    },
+    "observer": {
+      "source_root": "C:/workspace/ck3_lyd_runtime_20261004/r10-fixture-source-rebind-20261005-001/fixtures-package/mount-ready/mod_li_yu_dao_r7_observer_fixture",
+      "files": [
+        {
+          "path": "common/decisions/lyd_r4_fixture_decisions.txt",
+          "bytes": 3442,
+          "sha256": "32988ae762939ed77bb5dc03fd3581aff725f3e2fb697af51cc0eeb6f600f48f"
+        },
+        {
+          "path": "common/script_values/lyd_r4_fixture_values.txt",
+          "bytes": 160,
+          "sha256": "0dd22e38634f020c1a69a1fc1ebfe645fed9bb2011cb68ea1e32d39694073c33"
+        },
+        {
+          "path": "common/scripted_effects/lyd_r4_fixture_effects.txt",
+          "bytes": 13017,
+          "sha256": "b64d3635d9ad0f2deb2085acede380d2b27df00bd983ebbe069a1a6a5a602b9b"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_r4_fixture_triggers.txt",
+          "bytes": 8208,
+          "sha256": "a45bd6552d45314603a213ad0a4fd68de1c67fcfec62a6411d14a9fe7b2acad8"
+        },
+        {
+          "path": "descriptor.mod",
+          "bytes": 123,
+          "sha256": "2b7f18a5ae3a30f68ad52de4013b85af507faf619e536e4225de30d698bf62a4"
+        },
+        {
+          "path": "events/lyd_r4_fixture_events.txt",
+          "bytes": 1532,
+          "sha256": "9433428c0af3548061bfe9f6efe4fe8f2c3da0986fdfdb2ca44b48a0ca560c42"
+        },
+        {
+          "path": "localization/english/lyd_r4_fixture_l_english.yml",
+          "bytes": 7826,
+          "sha256": "799b64d1c65322f82d06a3238d278295101af39c867ff6ab50d9b6a0ca27f1d6"
+        },
+        {
+          "path": "localization/simp_chinese/lyd_r4_fixture_l_simp_chinese.yml",
+          "bytes": 7016,
+          "sha256": "1b6963753219910c3e5515ef12f7eda20b15948e5ed69cc555bc90b4ed2dffd0"
+        }
+      ]
+    },
+    "i4_single_event": {
+      "source_root": "C:/workspace/ck3_lyd_runtime_20261004/r10-fixture-source-rebind-20261005-001/fixtures-package/mount-ready/mod_li_yu_dao_i4_matrix_fixture",
+      "files": [
+        {
+          "path": "common/decisions/lyd_im_decisions.txt",
+          "bytes": 622,
+          "sha256": "6a823c3409d9a1e0cd2bca88b3e0cd332b420a5abcc4a5a1602d3209a492c5b7"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_dispatch_effects.txt",
+          "bytes": 23432,
+          "sha256": "93df65d9edcc9b40b0a0f434fbd1c21a1ce6775dd4f10272f1d5e5db544577cf"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_10_effects.txt",
+          "bytes": 13139,
+          "sha256": "b0f2d7d2049b30a275a93e38673d20fa04f4903db526ed791f953aaa3eec315d"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_11_effects.txt",
+          "bytes": 13139,
+          "sha256": "700130dd3da366b54884fedeeb79267ecd02f07902ab1a5a68da6f757a178dc7"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_12_effects.txt",
+          "bytes": 13155,
+          "sha256": "bb9831e6f2727ed5ac0852cf273caed1b7bb6a8defb1180e8843bd463a0afd2f"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_13_effects.txt",
+          "bytes": 13333,
+          "sha256": "c2a9f8d6af81c8154bdf1516403383bb7c7cc0b7222d775e9f5bfbd36acb7eff"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_14_effects.txt",
+          "bytes": 13291,
+          "sha256": "d195df047afab2e04c39fc61c44cfe452ac696db11410b2c1028ce334df14626"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_15_effects.txt",
+          "bytes": 13259,
+          "sha256": "9e955328f6b3f3e56659b03eae1f6eb283b924268a0a13eab8b9c3bbc3b4e70c"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_16_effects.txt",
+          "bytes": 13227,
+          "sha256": "cbbf63dec72b93ad25730612404c7c770c0236c75435e9bf57d143ad16007b4d"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_17_effects.txt",
+          "bytes": 13163,
+          "sha256": "ad705a3e20ee56d30aa09f3b843ce390c2cc5879e5db0aefbea51ac640253d35"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_18_effects.txt",
+          "bytes": 13227,
+          "sha256": "4e988df9a32a4f6a1c47648e3ccea1a35317f6fab61260395b3c1cf8a2d099bf"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_1_effects.txt",
+          "bytes": 13067,
+          "sha256": "3c200d40cdcf78ae28764c129214190413d8e0c9745276d20fb54ee7e867e8f1"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_2_effects.txt",
+          "bytes": 13131,
+          "sha256": "b33c79a048455503004c7dca04e82ba97e90d4db6af539db7ac0c2cfa108ae49"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_3_effects.txt",
+          "bytes": 13123,
+          "sha256": "f92cc590a4e249f06e195f6f0b214c2ac9aabe70f91e53311ff3ba1218c04392"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_4_effects.txt",
+          "bytes": 13139,
+          "sha256": "2f1a0daff6def15388e4c66c7d15b1b2f0664919400686ef8926da6e5ddadf17"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_5_effects.txt",
+          "bytes": 13187,
+          "sha256": "7274cf60669fd3b3cd63593388137359bf7c6c0438f2e37fd601654cc839a378"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_6_effects.txt",
+          "bytes": 13139,
+          "sha256": "f09c4b20c2122d0148e4458dad6bde2c83dd47eda21a7a4b71c728398b96097c"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_7_effects.txt",
+          "bytes": 13059,
+          "sha256": "c0c4fee59886cf771183d743578f4cf63c4201580d1bdc5f16c15b5b40693a65"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_8_effects.txt",
+          "bytes": 13267,
+          "sha256": "43486446a75e944a844032f707ced316f6cc7496629f1ec68c573b2e657dde1d"
+        },
+        {
+          "path": "common/scripted_effects/lyd_im_prepare_9_effects.txt",
+          "bytes": 13171,
+          "sha256": "389fd1addcc83e4cdae5a56d3c8ef8f44d036c2895776edf9830622d16185de6"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_im_triggers.txt",
+          "bytes": 780,
+          "sha256": "4b5fcb680ad33d6f3403a4717610b742aab1eb5c0b83249be75c6382127d0f2d"
+        },
+        {
+          "path": "descriptor.mod",
+          "bytes": 128,
+          "sha256": "30daa9a5d0865374862e7670a5c5a926ef5c9ac956c60b76ab28a9ec98824e35"
+        },
+        {
+          "path": "events/lyd_im_cases_1.txt",
+          "bytes": 23516,
+          "sha256": "a41be8b7d5dd303d4ad86e3f55a221ce8beb1d8135b32f21337c05702c46ba15"
+        },
+        {
+          "path": "events/lyd_im_cases_2.txt",
+          "bytes": 23590,
+          "sha256": "d59fd9b983f033c3730766cb81bb25a68f4b604e50383fd9e3d121a598fee81a"
+        },
+        {
+          "path": "events/lyd_im_cases_3.txt",
+          "bytes": 23598,
+          "sha256": "22a88b61d0377e85d11f0f0aa3910cf0fbb11832cef558ab1fd90d0baba8d683"
+        },
+        {
+          "path": "events/lyd_im_cases_4.txt",
+          "bytes": 23582,
+          "sha256": "b35f0620c4d1b384b41e6260e5384371832b31a0b6e931327dc2d97743764ade"
+        },
+        {
+          "path": "events/lyd_im_cases_5.txt",
+          "bytes": 23784,
+          "sha256": "4cd7481af5a7a9036f6ce123ebe33f482bea82fe3a904fe88a640222706276e9"
+        },
+        {
+          "path": "events/lyd_im_cases_6.txt",
+          "bytes": 23730,
+          "sha256": "28e4a9f089a5156c25618d0c4ca2c84d7b7f4a16b9c9d9f04389396f98027488"
+        },
+        {
+          "path": "events/lyd_im_menu_events.txt",
+          "bytes": 448,
+          "sha256": "f23d30314f5eec2fa288b0d5211413697ce3eac260a7d1ab66f3eaa4860bbab1"
+        },
+        {
+          "path": "localization/english/lyd_im_l_english.yml",
+          "bytes": 58252,
+          "sha256": "196ca53b76a5691e3b66e8ec61fe6c970bac9cadd85188fc6ef763ffe251863a"
+        },
+        {
+          "path": "localization/simp_chinese/lyd_im_l_simp_chinese.yml",
+          "bytes": 54911,
+          "sha256": "9028a59a7f0001f7c8e446f3d502ec36e9da2c75b98bba38f0db9101ff05acba"
+        }
+      ]
+    },
+    "charter": {
+      "source_root": "C:/workspace/ck3_lyd_runtime_20261004/r10-fixture-source-rebind-20261005-001/fixtures-package/mount-ready/mod_li_yu_dao_r7_charter_fixture",
+      "files": [
+        {
+          "path": "common/decisions/lyd_cp_decisions.txt",
+          "bytes": 1627,
+          "sha256": "e16fd91c0ad3b1aed6940aaf527def226ec5b6fa7bf726d01a05f232f0155a4b"
+        },
+        {
+          "path": "common/scripted_effects/lyd_cp_effects.txt",
+          "bytes": 1799,
+          "sha256": "b148aeda930d29b53ec251f2a3506f46a8418462995d7f96a95abafd1910c9ac"
+        },
+        {
+          "path": "common/scripted_triggers/lyd_cp_triggers.txt",
+          "bytes": 7526,
+          "sha256": "9bace9e9493dc3d19ff14b7a361022adafb7f336a0020a423e3e5594e5855a31"
+        },
+        {
+          "path": "descriptor.mod",
+          "bytes": 129,
+          "sha256": "66b9c4bc79babd063280d61af6586c5c7d455bb3b532d352632dbfeb346911d2"
+        },
+        {
+          "path": "localization/english/lyd_cp_l_english.yml",
+          "bytes": 1699,
+          "sha256": "4df977dd74a12c1276fa59385f6fbc9313842b680f31e98a558c775055fc1ee4"
+        },
+        {
+          "path": "localization/simp_chinese/lyd_cp_l_simp_chinese.yml",
+          "bytes": 1526,
+          "sha256": "a017a58c78928eb7d8937e78d9618aeb3176d659967068ef21d99fc59b88c261"
+        }
+      ]
+    }
+  },
+  "i4_event_contract": "PRODUCT_ONLY_SINGLE_EVENT",
+  "static_context": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-fixture-source-rebind-20261005-001/fixtures-package/STATIC-CONTEXT.json",
+    "bytes": 41055,
+    "sha256": "1337a556d89eb0b5070f22c0a7ec0400c573d83e8fc72615751c562a835730fb"
+  },
+  "native": "NOT_RUN",
+  "author_bytes_reused": true,
+  "fresh_HEAD_binding": true,
+  "root_screen_task": "ck3-lyd-r0010-20261005"
+}

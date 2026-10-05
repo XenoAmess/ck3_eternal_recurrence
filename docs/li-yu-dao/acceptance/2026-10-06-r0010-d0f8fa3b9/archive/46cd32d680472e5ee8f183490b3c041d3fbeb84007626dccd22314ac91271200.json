@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 82,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0083-third-post-cancel-save.request.json",
+  "request_sha256": "0a666b4f5392454933458db74543fc5b517d200c6743b51a691b455a6023e40c",
+  "started_at_utc": "2026-10-05T13:37:17.759570+00:00",
+  "request_id": "r10-0083-third-post-cancel-save",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0082-r10-0083-third-post-cancel-save.sdk-result.json",
+  "sdk_result_sha256": "03dbc508120e6912322bdb594eabbe576e7cb14f97c2c8b330a203056973f285",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0081-checkpoint.json",
+      "copy": "0082-r10-0083-third-post-cancel-save.native-01.json",
+      "sha256": "3b409f5280cd1f8d11f74955a41cf8ecf3e9c2eab55db486670832cef2352475"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T13:37:32.351169+00:00"
+}

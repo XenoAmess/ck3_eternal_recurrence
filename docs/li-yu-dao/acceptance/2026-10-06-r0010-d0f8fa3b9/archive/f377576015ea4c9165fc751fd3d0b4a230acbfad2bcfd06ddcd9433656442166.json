@@ -1,0 +1,329 @@
+{
+  "schema": "lyd.claim-verifier007.final-qualified-source-delivery.v1",
+  "utc": "2026-10-05T10:33:47.929792+00:00",
+  "status": "ACTUAL_FROZEN_SOURCE_PINS_MATCH",
+  "scope": "SOURCE_ONLY; actual archived source and artifacts, no game or claim execution",
+  "source": {
+    "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+    "tree": "2b3ae04e724482d8bee753433e98c4e9f8da6896",
+    "product_tree": "b1ec3878f2508504a42eed13f8c141a330b1e9de",
+    "native_tree": "789eab5ae1c3015fe210de508fdd730a13bbb8db"
+  },
+  "source_counts": {
+    "full": 6066,
+    "product": 147,
+    "native": 3220,
+    "runtime": 70
+  },
+  "runtime_changed": 18,
+  "runtime_unchanged": 52,
+  "complete_source_differences_vs006": 112,
+  "source_ready_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/INDEX.json",
+    "bytes": 2024,
+    "sha256": "76e84c70beccf22bda5ab202bb6de571f47f210645fe015b9f8f7628354e1ee2"
+  },
+  "source_pin_record": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source007-qualified-inputs-20261005-001/ROOT-SOURCE-PIN-RECORD.actual.json",
+    "bytes": 3229,
+    "sha256": "8784d98ecba357db56811fb2d3c850bc505aae81b076d0cf598cccf0294a770b"
+  },
+  "author_inputs_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source007-qualified-inputs-20261005-001/INDEX.json",
+    "bytes": 1087,
+    "sha256": "14229b46d7f34f1b12faa93463e2c2938ada15d3f1ffc1f159a7d55ed31eb373"
+  },
+  "provider": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/unbound-bundle-011/verifier.py",
+    "bytes": 108152,
+    "sha256": "32ecbedf8cdf3dfaf6995e3f83a9ff29a676c4b802f1fa2705028f71b57b7a61"
+  },
+  "binder": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/bind_verifier.py",
+    "bytes": 7266,
+    "sha256": "5c70a67c98624c24fb770b1dcc81e8187ed3f21734e6e33db2d5f88573081817"
+  },
+  "emitter": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/emit_first_join_evidence.py",
+    "bytes": 5197,
+    "sha256": "dbd43c930650f7c17defbcc7a5341d5f7ecb3c58b6696d367ef5f4cc1a90f0f0"
+  },
+  "source_readback": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/SOURCE-READBACK.json",
+    "bytes": 63841,
+    "sha256": "7a1f4c11dff70f6e16631fb810d6a8569dd7da7121fd78dc9ed511ae5190b125"
+  },
+  "frozen_readonly_files": {
+    "source_ready": 13,
+    "actual_inputs": 7
+  },
+  "checks": [
+    {
+      "condition": "exact package INDEX",
+      "matched": true,
+      "evidence": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/INDEX.json",
+        "bytes": 2024,
+        "sha256": "76e84c70beccf22bda5ab202bb6de571f47f210645fe015b9f8f7628354e1ee2"
+      }
+    },
+    {
+      "condition": "exact payload coverage",
+      "matched": true,
+      "evidence": {
+        "files": 12,
+        "bytes": 190645
+      }
+    },
+    {
+      "condition": "exact package INDEX",
+      "matched": true,
+      "evidence": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r9-lyd-claim-consumption-source-author-20261005-001/actual-source-ready-006-001/INDEX.json",
+        "bytes": 2023,
+        "sha256": "34b38ce57671182a881e890d822dc8e932a66db36bcfec0a46304b3bfc6705a4"
+      }
+    },
+    {
+      "condition": "exact payload coverage",
+      "matched": true,
+      "evidence": {
+        "files": 12,
+        "bytes": 131971
+      }
+    },
+    {
+      "condition": "exact three source pin assignments",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "whole provider AST unchanged except three source pin literals",
+      "matched": true,
+      "evidence": {
+        "functions": 30
+      }
+    },
+    {
+      "condition": "binder byte exact except local unbound provider path",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "emitter original bytes unchanged",
+      "matched": true,
+      "evidence": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/emit_first_join_evidence.py",
+        "bytes": 5197,
+        "sha256": "dbd43c930650f7c17defbcc7a5341d5f7ecb3c58b6696d367ef5f4cc1a90f0f0"
+      }
+    },
+    {
+      "condition": "exact actual source record",
+      "matched": true,
+      "evidence": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source007-qualified-inputs-20261005-001/ROOT-SOURCE-PIN-RECORD.actual.json",
+        "bytes": 3229,
+        "sha256": "8784d98ecba357db56811fb2d3c850bc505aae81b076d0cf598cccf0294a770b"
+      }
+    },
+    {
+      "condition": "source record copied exact into provider bundle",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "provider exact source record reference",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "all source record artifact references hash matched",
+      "matched": true,
+      "evidence": {
+        "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+        "reference_count": 12
+      }
+    },
+    {
+      "condition": "provider summary equals actual source readback bytes interpretation",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "source readiness status and exact source four identities",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "provider actual production 70 rows exact",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "production staged file inventory exact 70",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "runtime paths no additions or removals",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "all 18 runtime differences exact independently approved; remaining 52 exact",
+      "matched": true,
+      "evidence": {
+        "changed": 18,
+        "unchanged": 52
+      }
+    },
+    {
+      "condition": "complete source diff records exact actual 6066 inventory and 112 differences",
+      "matched": true,
+      "evidence": {
+        "actual_source_files": 6066,
+        "source_differences": 112
+      }
+    },
+    {
+      "condition": "source leaf exact: ordinary_contract",
+      "matched": true,
+      "evidence": {
+        "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ordinary_interaction_contract.py",
+        "bytes": 23762,
+        "sha256": "e0a96aa39626df166270d3d5467a8e4d57cec77d7577cebcced03983feba5fa3"
+      }
+    },
+    {
+      "condition": "source leaf exact: generic_host",
+      "matched": true,
+      "evidence": {
+        "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ordinary_interaction_host_release.py",
+        "bytes": 16460,
+        "sha256": "f567bff41d03b6c59d195df8ff62ecab1a523962de3217d397c5264d1ed2d89b"
+      }
+    },
+    {
+      "condition": "source leaf exact: native_launch_parser",
+      "matched": true,
+      "evidence": {
+        "path": "C:\\lr10s1\\ck3_autonomous_player\\native_bridge\\src\\normal_exit_map_source_v1.cpp",
+        "bytes": 19228,
+        "sha256": "7e6ad9dac329838fca84f1b81790f6a5737d4a44475edf61cbdff68868267c2d"
+      }
+    },
+    {
+      "condition": "independent source-only runtime review frozen ref exact",
+      "matched": true,
+      "evidence": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002\\REPORT.json",
+        "bytes": 201079,
+        "sha256": "68effdf5784b65b0a3c47054bc649feba316f0cac835e1f108dedaa153a6ba55"
+      }
+    },
+    {
+      "condition": "outer compilation pass and operational RED both preserved",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "inner built artifacts and failed Defender registration preserved",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "all summary build boundaries agree with actual native result",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "Release target refs copied exact from actual build",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "build source provenance and NOT_RUN boundary actual",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "no actual root context, claim release, game or Git credit",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "status leaves all future actual identity and full cycle unclaimed",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "v3 binder and both observation v2 templates remain unbound",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "v2 before and after observation shapes preserved",
+      "matched": true,
+      "evidence": null
+    },
+    {
+      "condition": "generic host frozen bundle exact entrypoint and payload coverage",
+      "matched": true,
+      "evidence": null
+    }
+  ],
+  "native_build_truth": {
+    "actual_result": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-release-build-20261005-001\\RESULT.json",
+      "bytes": 14289,
+      "sha256": "5d71601a747c1aaacb41b08679938df5c567879843ecb8dfad7d462bd64ed79f"
+    },
+    "overall_status": "ACTUAL_RELEASE_BUILD_RED",
+    "overall_exit_code": 1,
+    "compilation_pass": true,
+    "inner_status": "built_defender_registration_failed",
+    "Defender_status": "settings_failed",
+    "Defender_Add_calls": 1,
+    "Defender_effectiveness_credit": false,
+    "native_business_acceptance": "NOT_RUN",
+    "ROOT_exact_artifact_permission": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-source007-qualified-inputs-20261005-001\\ROOT-TASK-AUTHORIZATION-RECORDED.json",
+      "bytes": 2090,
+      "sha256": "cc484734a47c3b6d451fa04bfd5e4c0ce4bbf35a025b73e3b062628054581e2e"
+    }
+  },
+  "actual_release_targets": {
+    "dll": {
+      "path": "C:/lydr10-release-20261005-001/xar_ck3_bridge.dll",
+      "bytes": 5846528,
+      "sha256": "dc4e4d12a4078e8b3fe38b855071e158675300167341694205ee9db875d54792"
+    },
+    "injector": {
+      "path": "C:/lydr10-release-20261005-001/xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "4c4b302ede99ae7e9c0e8b259ae902406a720e4525cd96e7e351eb27abc0dd2d"
+    }
+  },
+  "actual_root_context": null,
+  "actual_claim": null,
+  "actual_registry_enabled": false,
+  "actual_host_release": "NOT_RUN",
+  "actual_MCP_calls": 0,
+  "actual_game_calls": 0,
+  "native_business_acceptance": "NOT_RUN",
+  "full_cycle_acceptance": false,
+  "ROOT_interface": {
+    "source_ready": {
+      "author_index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/INDEX.json",
+        "sha256": "76e84c70beccf22bda5ab202bb6de571f47f210645fe015b9f8f7628354e1ee2"
+      },
+      "source_record": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source007-qualified-inputs-20261005-001/ROOT-SOURCE-PIN-RECORD.actual.json",
+        "bytes": 3229,
+        "sha256": "8784d98ecba357db56811fb2d3c850bc505aae81b076d0cf598cccf0294a770b"
+      }
+    }
+  }
+}

@@ -1,0 +1,123 @@
+{
+  "schema": "lyd.r10.actual-release-build-index.v1",
+  "status": "ACTUAL_COMPILATION_PASS_DEFENDER_SETTINGS_FAILED_NATIVE_NOT_RUN",
+  "files": [
+    {
+      "path": "DEFENDER-ACTUAL-AFTER.json",
+      "bytes": 2045,
+      "sha256": "43e7e940ceef28e8e9d09ef46ebe4601c0e2b70d8aa388e04d15f90d7fbe90e1"
+    },
+    {
+      "path": "DEFENDER-ACTUAL-BEFORE.json",
+      "bytes": 2045,
+      "sha256": "e6a77f17e89886a418b152707a4fdf8e30a56605f76d3743f18d04e07dda3420"
+    },
+    {
+      "path": "evidence/AUTHORIZED-ONCE-INVOCATION.json",
+      "bytes": 1082,
+      "sha256": "eb0d223ccd837a66c88da0c02af60ed695bfe1cc02904e9a2d9e5e082369341e"
+    },
+    {
+      "path": "evidence/build.ninja",
+      "bytes": 637997,
+      "sha256": "ef05d64611f7a1a7344efbeec9f69822bd2b571a54283509526f7c3b13d97880"
+    },
+    {
+      "path": "evidence/build_exact_release.py",
+      "bytes": 14619,
+      "sha256": "3aa48eae47945da61ee25c52d9661f8c5e93773d62f062b5ef56317e0b7a0656"
+    },
+    {
+      "path": "evidence/CMakeCache.txt",
+      "bytes": 33924,
+      "sha256": "680b5692d61f4c47f4f885bacd875365031fd7e6140d61064f6e2e8f1051bd76"
+    },
+    {
+      "path": "evidence/defender_read_only_probe.py",
+      "bytes": 5796,
+      "sha256": "200a0565fcbc59782b4ff60d1c1b60417c676a8e183ad4f423dbc84b7ea8dd68"
+    },
+    {
+      "path": "evidence/execute_authorized_once.py",
+      "bytes": 1770,
+      "sha256": "22f76c0d9591663af89890e5db1612a06ab2a8b55e944d18fadabb03766f3c5c"
+    },
+    {
+      "path": "evidence/manifest.json",
+      "bytes": 1711,
+      "sha256": "59a9e1823ce5c7a99cba454058bc84d519f01eb5ed15110cab4c63441aabb5e4"
+    },
+    {
+      "path": "evidence/msvc-build.log",
+      "bytes": 41276,
+      "sha256": "22e04585542f030955fb5a0204112fffe018dcda57c0f80d17ee2cd2b9329d65"
+    },
+    {
+      "path": "evidence/msvc-configure.log",
+      "bytes": 578,
+      "sha256": "4713d551e0089ba707f32f809a06ccdd600a17524e831ba5b553e373bedaf0c5"
+    },
+    {
+      "path": "evidence/native-msvc-result.json",
+      "bytes": 1691,
+      "sha256": "d79121aae70aed156bb49b786bbe4c1a5e474b475250bf67f1296240364be6ca"
+    },
+    {
+      "path": "evidence/receipt.json",
+      "bytes": 1649,
+      "sha256": "5d2da0b8600d3292dd4db4b1e7c4e9447850a779269cd912c0047368d204e9ea"
+    },
+    {
+      "path": "evidence/seal_actual_build.py",
+      "bytes": 4336,
+      "sha256": "5b48f0a8792d3655cb2af960d708afe0f3a75305d894b1274026fb6e483ec721"
+    },
+    {
+      "path": "INPUTS.json",
+      "bytes": 5407,
+      "sha256": "c19c37e1d7a8bc7a88dc2f267535634eeb77d71e7e8fa227b36d9b345ccfc281"
+    },
+    {
+      "path": "progress-100601.json",
+      "bytes": 14026,
+      "sha256": "087db6c2848fe1bff1471fb5ddf7a3365674b33edfe0903fe0e539ea30310213"
+    },
+    {
+      "path": "REPORT-zh.md",
+      "bytes": 620,
+      "sha256": "76e8c7ff1d4aa4bbbb06e8d4acf1c63fd0a1861ce724c6e0ee44da6d3d80065c"
+    },
+    {
+      "path": "RESULT.json",
+      "bytes": 14289,
+      "sha256": "5d71601a747c1aaacb41b08679938df5c567879843ecb8dfad7d462bd64ed79f"
+    },
+    {
+      "path": "stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "stdout.bin",
+      "bytes": 45158,
+      "sha256": "daaadc1ee25846b3f092e004e9d623d4f190e115e637eb96ec1d3058f55bb30d"
+    },
+    {
+      "path": "SUMMARY.json",
+      "bytes": 2130,
+      "sha256": "e6bd3086562f917c3437c3ce897b2849da75b26e2723ae09f9057157f62e6cfe"
+    }
+  ],
+  "external_targets_verified": {
+    "dll": {
+      "path": "C:/lydr10-release-20261005-001/xar_ck3_bridge.dll",
+      "bytes": 5846528,
+      "sha256": "dc4e4d12a4078e8b3fe38b855071e158675300167341694205ee9db875d54792"
+    },
+    "injector": {
+      "path": "C:/lydr10-release-20261005-001/xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "4c4b302ede99ae7e9c0e8b259ae902406a720e4525cd96e7e351eb27abc0dd2d"
+    }
+  }
+}

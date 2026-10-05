@@ -1,0 +1,169 @@
+		150={
+			rite_type=lyd_rite_kongmen			faith=32
+			founder=4294967295
+			head_of_rite=4294967295
+			origin_rite=4294967295
+			data={
+				tag="lyd_rite_kongmen"
+				name="孔门经礼"
+				adjective="孔门经礼"
+				adherent="孔门经礼之儒"
+				adherent_plural="孔门经礼诸儒"
+				desc="以孔门的仁、礼与敬为本，学诗习礼，尊圣传道。祭礼的敬与哀须出于内心；贵重礼物不能代替诚意。此名概括经典中的共同传统，不声称古代存在同名独立教会。"
+				color=rgb { 236 190 85 }
+				icon=""
+				texticon=""
+				graphical_faith=""
+				piety_icon_group=""
+				tenet_background_icon=""
+				tenet_heretical_background_icon=""
+				tenet_neutral_background_icon=""
+				tenet_unknown_background_icon=""
+				fervor=50
+				religious_head=4294967295
+				tenets={ {
+						tenet=lyd_tenet_reverent_heaven						status=permitted
+					}
+ {
+						tenet=lyd_tenet_sincerity_solitude						status=permitted
+					}
+ {
+						tenet=lyd_tenet_ritual_music						status=core
+					}
+ {
+						tenet=lyd_tenet_ancestral_reverence						status=permitted
+					}
+ {
+						tenet=lyd_tenet_names_duties						status=permitted
+					}
+ {
+						tenet=lyd_tenet_humaneness_righteousness						status=core
+					}
+ {
+						tenet=lyd_tenet_righteous_remonstrance						status=permitted
+					}
+ {
+						tenet=lyd_tenet_sage_transmission						status=core
+					}
+ {
+						tenet=lyd_tenet_extend_sprouts						status=permitted
+					}
+ {
+						tenet=lyd_tenet_deliberate_cultivation						status=permitted
+					}
+ {
+						tenet=lyd_tenet_righteous_qi						status=permitted
+					}
+ {
+						tenet=lyd_tenet_portent_reflection						status=permitted
+					}
+ {
+						tenet=lyd_tenet_qi_kinship						status=permitted
+					}
+ {
+						tenet=lyd_tenet_investigate_principle						status=permitted
+					}
+ {
+						tenet=lyd_tenet_reverent_attention						status=permitted
+					}
+ {
+						tenet=lyd_tenet_original_heart						status=permitted
+					}
+ {
+						tenet=lyd_tenet_innate_knowing						status=permitted
+					}
+ {
+						tenet=lyd_tenet_knowing_acting						status=permitted
+					}
+ {
+						tenet=lyd_tenet_textual_ritual						status=permitted
+					}
+ {
+						tenet=lyd_tenet_classical_synthesis						status=permitted
+					}
+ {
+						tenet=lyd_tenet_annals_judgment						status=permitted
+					}
+ {
+						tenet=lyd_tenet_constant_heaven						status=permitted
+					}
+ {
+						tenet=lyd_tenet_restore_nature						status=permitted
+					}
+ {
+						tenet=lyd_tenet_ordinary_life						status=permitted
+					}
+ {
+						tenet=lyd_tenet_six_arts						status=permitted
+					}
+ {
+						tenet=lyd_tenet_philological_way						status=permitted
+					}
+ {
+						tenet=lyd_tenet_moral_achievement						status=permitted
+					}
+ {
+						tenet=lyd_tenet_restrain_violence						status=permitted
+					}
+ {
+						tenet=lyd_tenet_subtle_intentions						status=permitted
+					}
+ {
+						tenet=lyd_tenet_responsive_interpretation						status=permitted
+					}
+ {
+						tenet=lyd_tenet_images_numbers						status=permitted
+					}
+ {
+						tenet=lyd_tenet_profound_interpretation						status=permitted
+					}
+ {
+						tenet=lyd_tenet_knowing_acting_support						status=permitted
+					}
+ {
+						tenet=lyd_tenet_ongoing_generation						status=permitted
+					}
+ {
+						tenet=lyd_tenet_quiet_self_attainment						status=permitted
+					}
+ {
+						tenet=lyd_tenet_recognition_everywhere						status=permitted
+					}
+ }
+				tenet=lyd_tenet_ritual_music
+				tenet=lyd_tenet_humaneness_righteousness
+				tenet=lyd_tenet_sage_transmission
+				doctrine=sinitic_hostility_doctrine
+				doctrine=doctrine_concubines
+				doctrine=doctrine_divorce_allowed
+				doctrine=doctrine_bastardry_legitimization
+				doctrine=doctrine_homosexuality_shunned
+				doctrine=doctrine_deviancy_crime
+				doctrine=doctrine_adultery_men_crime
+				doctrine=doctrine_adultery_women_crime
+				doctrine=doctrine_kinslaying_any_dynasty_member_crime
+				doctrine=doctrine_witchcraft_crime
+				doctrine=doctrine_gender_male_dominated
+				doctrine=doctrine_consanguinity_dynastic
+				doctrine=doctrine_pluralism_pluralistic
+				doctrine=doctrine_theocracy_lay_clergy
+				doctrine=doctrine_no_head
+				doctrine=doctrine_clerical_function_taxation
+				doctrine=doctrine_clerical_gender_male_only
+				doctrine=doctrine_clerical_marriage_allowed
+				doctrine=doctrine_clerical_succession_temporal_appointment
+				doctrine=doctrine_pilgrimage_local_rites
+				doctrine=doctrine_family_rites
+				doctrine=doctrine_no_anointment
+				doctrine=doctrine_polytheist
+				doctrine=doctrine_scriptural
+				doctrine=doctrine_monasticism_absent
+				doctrine=doctrine_sacraments_absent
+				doctrine=special_doctrine_is_sinitic_faith
+				doctrine=special_doctrine_immaterial_harmony
+			}
+			convert=yes
+			enabled=yes
+			override_name=no
+			source=historical
+		}

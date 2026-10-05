@@ -1,0 +1,195 @@
+{
+  "schema": "lyd.c3.variant002.independent-source-review.v1",
+  "status": "SOURCE_CONTRACT_PASS_NATIVE_NOT_RUN",
+  "actual_generator_output_exact_files": 12,
+  "changed_runtime_files": [
+    "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+    "localization/english/lyd_c3_leadership_l_english.yml",
+    "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml"
+  ],
+  "only_normalized_lines_added": [
+    "# Stock Character/Faith collection queries: preserve existing foreign roles.",
+    "pam_is_antipope_trigger = no",
+    "pam_is_antipope_sponsor_trigger = no"
+  ],
+  "production_eligibility_direct_guard_checks": "PASS",
+  "two_existing_native_role_mutants": [
+    {
+      "mutation": "pam_is_antipope_trigger_already_registered_admitted",
+      "result": "REJECTED"
+    },
+    {
+      "mutation": "pam_is_antipope_sponsor_trigger_already_registered_admitted",
+      "result": "REJECTED"
+    }
+  ],
+  "predeath_hook_declares_actual_callback": "PASS",
+  "native_engine_or_callback_execution": "NOT_RUN",
+  "source_manifest": [
+    {
+      "path": "tools/gen_leadership.py",
+      "candidate_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-production-implementation-20261005-001\\candidate-002\\mod_li_yu_dao\\tools\\gen_leadership.py",
+      "bytes": 2327,
+      "sha256": "785792db2b017baff6fa7629a0865121db3aa3d96e601131461e0a182b2c1820"
+    },
+    {
+      "path": "tools/leadership_templates/common/character_interactions/lyd_c3_teacher_interactions.txt.in",
+      "candidate_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-production-implementation-20261005-001\\candidate-002\\mod_li_yu_dao\\tools\\leadership_templates\\common\\character_interactions\\lyd_c3_teacher_interactions.txt.in",
+      "bytes": 4848,
+      "sha256": "693f04af355754f261f0e2d51119c9156a77bc5e1b39e8ff39bafbe2f52e9221"
+    },
+    {
+      "path": "tools/leadership_templates/common/decisions/lyd_c3_leadership_decisions.txt.in",
+      "candidate_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-production-implementation-20261005-001\\candidate-002\\mod_li_yu_dao\\tools\\leadership_templates\\common\\decisions\\lyd_c3_leadership_decisions.txt.in",
+      "bytes": 8448,
+      "sha256": "c6244de226380858ecabe93bae2434ffc0c46bc1706a1760d450057d1e402c0b"
+    },
+    {
+      "path": "tools/leadership_templates/common/on_action/lyd_c3_lifecycle_on_actions.txt.in",
+      "candidate_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-production-implementation-20261005-001\\candidate-002\\mod_li_yu_dao\\tools\\leadership_templates\\common\\on_action\\lyd_c3_lifecycle_on_actions.txt.in",
+      "bytes": 461,
+      "sha256": "52d629206efa1056ebe5652fa8cf2b038f5410fb4444579be6dab0499461c15c"
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_challenger_effects.txt.in",
+      "candidate_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-production-implementation-20261005-001\\candidate-002\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_challenger_effects.txt.in",
+      "bytes": 9470,
+      "sha256": "1d41dddf856a746672af4717685b3758f14038f9fd8311346b915c7a54a2f2af"
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_council_effects.txt.in",
+      "candidate_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-production-implementation-20261005-001\\candidate-002\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_council_effects.txt.in",
+      "bytes": 9604,
+      "sha256": "c856d1a2c2b5de3d2f48745f6068d88ba851a52d0af3c402e58b03c7787fe078"
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_head_factory.txt.in",
+      "candidate_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-production-implementation-20261005-001\\candidate-002\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_head_factory.txt.in",
+      "bytes": 1910,
+      "sha256": "055fb1f7c034e79bae1255b9908de383f14f9900616c90e7730063e1dcd4f50c"
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_lifecycle_effects.txt.in",
+      "candidate_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-production-implementation-20261005-001\\candidate-002\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_lifecycle_effects.txt.in",
+      "bytes": 5280,
+      "sha256": "e2865ca4bc82741f369a320b759b7ec8020db6e5fe75b5b36a20f092311e8766"
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_effects/lyd_c3_migration_hooks.txt.in",
+      "candidate_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-production-implementation-20261005-001\\candidate-002\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_effects\\lyd_c3_migration_hooks.txt.in",
+      "bytes": 1283,
+      "sha256": "d0e73c511166680c46a3915bf38ee6e84f2b2c6474388294d15ca97fb7d5f086"
+    },
+    {
+      "path": "tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in",
+      "candidate_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-production-implementation-20261005-001\\candidate-002\\mod_li_yu_dao\\tools\\leadership_templates\\common\\scripted_triggers\\lyd_c3_leadership_triggers.txt.in",
+      "bytes": 7346,
+      "sha256": "f6cebf21b5d2515c76c417349b9403b94c3977e1a669b18742a5ccd701de3cfc"
+    },
+    {
+      "path": "tools/leadership_templates/events/lyd_c3_leadership_events.txt.in",
+      "candidate_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-production-implementation-20261005-001\\candidate-002\\mod_li_yu_dao\\tools\\leadership_templates\\events\\lyd_c3_leadership_events.txt.in",
+      "bytes": 3180,
+      "sha256": "a9fbdeed1ff5c211d30861803cc5a417bbfd772f1316087a9ccb4da2a651787e"
+    },
+    {
+      "path": "tools/leadership_templates/localization/english/lyd_c3_leadership_l_english.yml.in",
+      "candidate_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-production-implementation-20261005-001\\candidate-002\\mod_li_yu_dao\\tools\\leadership_templates\\localization\\english\\lyd_c3_leadership_l_english.yml.in",
+      "bytes": 11204,
+      "sha256": "7ded7a78e204060fd4ef7e167dafab662fe170f4dad319d60d4af742ee9ce5b5"
+    },
+    {
+      "path": "tools/leadership_templates/localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml.in",
+      "candidate_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\c3-i3b-production-implementation-20261005-001\\candidate-002\\mod_li_yu_dao\\tools\\leadership_templates\\localization\\simp_chinese\\lyd_c3_leadership_l_simp_chinese.yml.in",
+      "bytes": 10308,
+      "sha256": "ab79e52ada64a3ad5bc19d3ce92225541849e62a1b438517a3f1f9e90c02a912"
+    }
+  ],
+  "runtime_projection": [
+    {
+      "path": "common/character_interactions/lyd_c3_teacher_interactions.txt",
+      "bytes": 4931,
+      "sha256": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7",
+      "changed_from_reviewed_candidate001": false,
+      "generator_exact": true
+    },
+    {
+      "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+      "bytes": 8528,
+      "sha256": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba",
+      "changed_from_reviewed_candidate001": false,
+      "generator_exact": true
+    },
+    {
+      "path": "common/on_action/lyd_c3_lifecycle_on_actions.txt",
+      "bytes": 544,
+      "sha256": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b",
+      "changed_from_reviewed_candidate001": false,
+      "generator_exact": true
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+      "bytes": 9550,
+      "sha256": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b",
+      "changed_from_reviewed_candidate001": false,
+      "generator_exact": true
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_council_effects.txt",
+      "bytes": 9687,
+      "sha256": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff",
+      "changed_from_reviewed_candidate001": false,
+      "generator_exact": true
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_head_factory.txt",
+      "bytes": 1993,
+      "sha256": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24",
+      "changed_from_reviewed_candidate001": false,
+      "generator_exact": true
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+      "bytes": 5360,
+      "sha256": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88",
+      "changed_from_reviewed_candidate001": false,
+      "generator_exact": true
+    },
+    {
+      "path": "common/scripted_effects/lyd_c3_migration_hooks.txt",
+      "bytes": 1366,
+      "sha256": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b",
+      "changed_from_reviewed_candidate001": false,
+      "generator_exact": true
+    },
+    {
+      "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "bytes": 7426,
+      "sha256": "4214027c5fbe02413082507a19a05241f3f880b38bfe69e0dff1273031e5407e",
+      "changed_from_reviewed_candidate001": true,
+      "generator_exact": true
+    },
+    {
+      "path": "events/lyd_c3_leadership_events.txt",
+      "bytes": 3260,
+      "sha256": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062",
+      "changed_from_reviewed_candidate001": false,
+      "generator_exact": true
+    },
+    {
+      "path": "localization/english/lyd_c3_leadership_l_english.yml",
+      "bytes": 11285,
+      "sha256": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77",
+      "changed_from_reviewed_candidate001": true,
+      "generator_exact": true
+    },
+    {
+      "path": "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "bytes": 10389,
+      "sha256": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6",
+      "changed_from_reviewed_candidate001": true,
+      "generator_exact": true
+    }
+  ],
+  "currentfaith_role_guard_boundary": "Stock helpers inspect current Faith actual challenger title holder and challenger_sponsor.title holder. No crossfaith-wide sweep or foreign title mutation. A follower-only state is not treated as a held/sponsored office."
+}

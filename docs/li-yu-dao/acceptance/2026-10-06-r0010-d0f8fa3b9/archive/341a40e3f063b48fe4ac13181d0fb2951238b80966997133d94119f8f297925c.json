@@ -1,0 +1,30 @@
+{
+  "schema": "lyd.first-join.actual-observation.v2",
+  "reader_version": "lyd-join-save-consumption-verifier-v2",
+  "parser_sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7",
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "production_manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-root-head-export-20261005-001/production/mod_li_yu_dao.manifest.json",
+    "sha256": "8fff14a823c50d2461660676ec3238439027d1a46af5281e5db95af7c9bd945c"
+  },
+  "role": "after",
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0111-fifth-open-save\\checkpoint.ck3",
+    "sha256": "612f1a3ba5263f36332f31a2a937c932668d9000ac5079206d3aef901948db1c",
+    "bytes": 91539192
+  },
+  "checkpoint_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0111-r10-0112-fifth-open-save.sdk-result.json",
+    "sha256": "507a563a9b9af53d3cf15d12fa2340cd302bd9b5d0317b2c0957e2a0a3ed9920"
+  },
+  "fresh_query_sdk": null,
+  "fresh_query_frame_sdk": null,
+  "release_context_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0126-r10-0127-sixth-ready-query.sdk-result.json",
+    "sha256": "a2399724f52c7a1742990111dbe684fbfdd75c890b25be5cde09d1ee50d63edf"
+  },
+  "release_context_frame_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0125-r10-0126-fifth-post-cancel-save.sdk-result.json",
+    "sha256": "7a9768a2e921c36e6625e04d807cb9b7a417a45f9cff9f1771b76e73a67b1b09"
+  }
+}

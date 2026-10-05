@@ -1,0 +1,26 @@
+{
+  "schema": "ck3-ordinary-interaction-independent-consumption-v1",
+  "claim_request_id": "ordinary-interaction-9e0a5f40b68f4b6c826dbdcd422f2dd0",
+  "action_identity": {
+    "game_pid": 13436,
+    "actor_id": 31254,
+    "process_create_time": 1791196395.7422996,
+    "interaction_key": "lyd_c2_propose_join_interaction",
+    "recipient_id": 65866,
+    "action": "initiate_ordinary"
+  },
+  "packet_sha256": "38266364358e58c0bcf95ba042649b42971f29bddfdcb7180f124d6e50116369",
+  "native_result_sha256": "57c5fb39376355a73c1ef907b7da8d6149fe949686e7aae9dc1d541b9906d405",
+  "unknown_sha256": null,
+  "before_artifact_sha256": "08c18f48f922ab09c7b194f52757808ebe236d17d56048b6765b8e9a8dced32a",
+  "after_artifact_sha256": "ce6bae20597efa335388ade9ac51784be6c4a7d5febbf25a2fdc7fbbadc9579c",
+  "consumption": {
+    "kind": "save_round_delta",
+    "field_name": "lyd_c2_callback_nonce",
+    "before_value": 10,
+    "after_value": 11,
+    "actor_id": 31254,
+    "recipient_id": 65866,
+    "interaction_key": "lyd_c2_propose_join_interaction"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 214,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0215-detach-first-withdraw.request.json",
+  "request_sha256": "71e7767ad2fd5f6a7dad33d95accde0019cd298234a89e2face551c7035d992b",
+  "started_at_utc": "2026-10-05T17:49:04.415394+00:00",
+  "request_id": "r10-0215-detach-first-withdraw",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0214-r10-0215-detach-first-withdraw.sdk-result.json",
+  "sdk_result_sha256": "4e4fc8882652832423d2f4daf29de5cf79eea75d16928004586335195a7fdb4d",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0213-event-select.json",
+      "copy": "0214-r10-0215-detach-first-withdraw.native-01.json",
+      "sha256": "c17d8729277ef4a123b29ece8b8c41821dfbb73bf9660bae7b40e34cb199fee3"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:49:09.449910+00:00"
+}

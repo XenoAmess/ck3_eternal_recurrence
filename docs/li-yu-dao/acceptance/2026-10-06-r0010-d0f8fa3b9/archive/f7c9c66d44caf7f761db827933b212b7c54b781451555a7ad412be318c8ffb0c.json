@@ -1,0 +1,68 @@
+{
+  "schema": "lyd.r10.actual-open-JOIN-independent-readback.v1",
+  "status": "ACTUAL_PROPOSAL_OPENED_PAIR_BOUND_NOT_FINAL_JOIN",
+  "typed_facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-open-join-readback-20261005-001\\PROPOSAL-OPENED-FACTS.json",
+    "bytes": 340358,
+    "sha256": "c51bb4b1f97dfd3abd7e3dd73d75c207bb9738895f91b384fe57cefb21daa914"
+  },
+  "pair_diff_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-open-join-readback-20261005-001\\pair-diff-001\\REPORT.json",
+    "bytes": 65268,
+    "sha256": "f055110e2f9ed75977491177ac9e82f729979606de48d5ed9256f358fa2f4f0a"
+  },
+  "human_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-open-join-readback-20261005-001\\REPORT-zh.md",
+    "bytes": 1917,
+    "sha256": "65ecd16a020934f9ef9789a8641231c3c5f861e3c5c717e305e15b29532b8541"
+  },
+  "actual_AST_parse_counts": {
+    "before13": 1,
+    "after16": 1
+  },
+  "save_before": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0013-before-join-save\\checkpoint.ck3",
+    "bytes": 91529730,
+    "sha256": "750e3b7eaa0dbf2d385f647f421b6282cb4bfac5aedf3b8728ddc0652314a498"
+  },
+  "save_after": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0016-open-join-proposal-save\\checkpoint.ck3",
+    "bytes": 91534935,
+    "sha256": "ab69bd9da64d01d3d323c3adc43f0c75bbf2e49abf00f77132215b7307d59603"
+  },
+  "source_HEAD": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "binding_and_protection_checks": {
+    "save_sdk_schema": true,
+    "SDK_success": true,
+    "save_sdk_actor": true,
+    "save_sdk_revision": true,
+    "save_sdk_date_paused": true,
+    "save_sdk_PID": true,
+    "save_sdk_exact_SHA": true,
+    "save_sdk_exact_bytes": true,
+    "SDK_session_profile": true,
+    "save_sdk_active46_two_options": true,
+    "unique_initiation_actor_target": true,
+    "actual_JOIN_interaction": true,
+    "initiation_not_business_verified": true,
+    "event_query_exact46": true,
+    "event_query_root31254": true,
+    "event_query_definition_lyd200": true,
+    "event_query_native7_same_date": true,
+    "event_query_profile_session": true,
+    "actual_nonce6_to7": true,
+    "actual_serial6_to7": true,
+    "active_absent_to1": true,
+    "history_JOIN1_DETACH2_unchanged": true,
+    "wallet_actual_same": true,
+    "savedXP_actual_same": true,
+    "all_Faith_main_links_same": true,
+    "all_Rite_parent_links_same": true,
+    "actor_landed_full_AST_same": true,
+    "political7_full_AST_same": true,
+    "selected_person_protected_full_AST_same": true,
+    "selected_graph_heads_same": true,
+    "selected_graph_full_tenet_doctrine_rows_same": true
+  },
+  "business_final_JOIN_credit": false
+}

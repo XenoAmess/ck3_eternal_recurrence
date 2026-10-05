@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 12,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0012-reset-ack.request.json",
+  "request_sha256": "9c0e9984900a424b05370b584181e5c019b673c28fee184207bea4f20cdd7dfb",
+  "started_at_utc": "2026-10-05T11:21:22.952214+00:00"
+}

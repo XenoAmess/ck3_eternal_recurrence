@@ -1,0 +1,89 @@
+{
+  "schema": "ck3-r10-repeated-join-root-flow-author-report-v1",
+  "status": "SOURCE_BINDING_ENTRY_PREPARED_FUTURE_FACTS_NULL",
+  "source_ready_007_actual": null,
+  "actual_R10_HEAD": null,
+  "actual_R10_PID": null,
+  "actual_R10_FILETIME": null,
+  "actual_first_JOIN_before_after": null,
+  "actual_current_CanSend": null,
+  "candidate": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-repeated-join-flow-20261005-001\\prepare_r10_join_flow.py",
+    "bytes": 22841,
+    "sha256": "bee32b8d751bbae465532edc9ca416c61f15972029fb2172fa1fb08a845a6fa1"
+  },
+  "exact_baseline_pins": {
+    "schema": "ck3-r10-root-flow-baseline-pins-v1",
+    "provider": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-lyd-claim-consumption-source-author-20261005-001\\actual-source-ready-006-001\\unbound-bundle-010\\verifier.py",
+      "sha256": "81132c4a52f377ad0efaaa37c9aad532002748488cf9b515f3a5bc4a2b577b0f"
+    },
+    "binder": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-lyd-claim-consumption-source-author-20261005-001\\actual-source-ready-006-001\\bind_verifier.py",
+      "sha256": "7f70b295ad0f381ea19ae20b41b8296841ebde9b96ce75001e461492dfb0bcc2"
+    },
+    "emitter": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-lyd-claim-consumption-source-author-20261005-001\\actual-source-ready-006-001\\emit_first_join_evidence.py",
+      "sha256": "dbd43c930650f7c17defbcc7a5341d5f7ecb3c58b6696d367ef5f4cc1a90f0f0"
+    },
+    "host_release_wrapper": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r9-join2-host-flow-20261005-001/root_release_once.py",
+      "sha256": "ecb4071baee6dc7a6178230de290f8849afc064f0b228e8b68064f134a4074c1"
+    },
+    "future_reviewed_source_ready": null,
+    "future_actual_HEAD": null,
+    "future_actual_process": null,
+    "six_stable_identity_fields": [
+      "game_pid",
+      "process_create_time",
+      "actor_id",
+      "recipient_id",
+      "interaction_key",
+      "action"
+    ],
+    "FILETIME_role": "additional exact saved-process receipt binding only; no new claim identity or permit release rule"
+  },
+  "source_only_delta": "new ROOT entry around reviewed successor source package; no production or host API delta",
+  "source_gate": "all verifier functions unchanged from006; only record/summary/reviewed runtime rows literals may vary; binder only actual local template path may vary; emitter exact",
+  "process_gate": "same actual PID/process_create_time in profile guard, claim and explicit rawFILETIME process receipt; rawFILETIME is audit only",
+  "once_gate": "six stable identity fields exact; epoch/public revision/reconnect never release UNKNOWN; existing immutable claim and packet retained",
+  "consumer_gate": "first before-after saves with actual SDK SHA binding; first query frame exact; later current actual ready/Shown/CanSend and no event/incoming; registered frozen verifier still proves real consumption",
+  "focused_offline_checks": {
+    "schema": "ck3-r10-flow-focused-offline-tests-v1",
+    "tests_run": 12,
+    "failures": 0,
+    "errors": 0,
+    "scope": "source-binding/immutable-reference negative controls only",
+    "synthetic_metadata_only": true,
+    "actual_R10_source_ready": null,
+    "actual_consumption_verified": false,
+    "binder_executed": false,
+    "registry_enabled": false,
+    "host_release_called": false,
+    "MCP_calls": 0
+  },
+  "focused_source_sha256": "bee32b8d751bbae465532edc9ca416c61f15972029fb2172fa1fb08a845a6fa1",
+  "old_R9_unknown_success_credit": false,
+  "actual_consumption_verified": false,
+  "binder_executed": false,
+  "emitter_executed": false,
+  "registry_enabled": false,
+  "host_release_called": false,
+  "permit_written": false,
+  "MCP_calls": 0,
+  "waiting_ROOT_fields": [
+    "reviewed source-ready007 author INDEX/provider/binder/emitter/record/readback",
+    "new clean HEAD/source/runtime manifest and production root",
+    "new exact Release/profile/guard",
+    "actual PID/create time/rawFILETIME receipt plus explicit field pointers",
+    "same-process first JOIN claim/packet/native-result or unknown sidecar",
+    "immutable first JOIN before-after saves and SDKs",
+    "original query exact frame and later fresh current CanSend exact frame",
+    "fresh bound/flow output paths",
+    "operator_id/next_intent_id"
+  ],
+  "root_CLI_document": "ROOT-OPERATIONS.md",
+  "source_template": "R10-PREPARATION-REQUEST.template.json",
+  "previous_focused_result": "FOCUSED-TEST-RESULT.json preserved from earlier source draft; final source guard run is002",
+  "new_game_source_or_live_acceptance": "NOT_RUN"
+}

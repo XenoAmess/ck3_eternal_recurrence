@@ -1,0 +1,159 @@
+{
+  "method": "Full LYD identifier token matches; these are log references, not automatic evidence of executed business effects or errors",
+  "rows": [
+    {
+      "exact_message_clock_stripped": "[D][jomini_game_setup.cpp:138]: DLC:\nWest Slavic Attire|dlc/dlc016_cp2/dlc016.dlc\nTours and Tournaments|dlc/dlc007_ep2/dlc007.dlc\nNorth African Attire|dlc/dlc012_afr/dlc012.dlc\nRoads to Power|dlc/dlc014_ep3/dlc014.dlc\nLegends of the Dead|dlc/dlc011_ce1/dlc011.dlc\nCelestial Court Attire|dlc/dlc027_cp9/dlc027.dlc\nThe Northern Lords|dlc/dlc003_fp1/dlc003.dlc\nAll Under Heaven|dlc/dlc022_ep4/dlc022.dlc\nGarments of the Holy Roman Empire|dlc/dlc001_preorder/dlc001.dlc\nLegacy of Persia|dlc/dlc010_fp3/dlc010.dlc\nThe Royal Court|dlc/dlc004_ep1/dlc004.dlc\nFashion of the Abbasid Court|dlc/dlc002_sp_day1/dlc002.dlc\nSongs of the Realm|dlc/dlc029_mp1/dlc029.dlc\nHoly Buildings|dlc/dlc024_cp6/dlc024.dlc\nWards and Wardens|dlc/dlc009_bp2/dlc009.dlc\nCoronations|dlc/dlc021_bp4/dlc021.dlc\nEast Asian Wonders|dlc/dlc026_cp8/dlc026.dlc\nThe Fate of Iberia|dlc/dlc005_fp2/dlc005.dlc\nElegance of the Empire|dlc/dlc008_sp2/dlc008.dlc\nNorth Pacific Attire|dlc/dlc025_cp7/dlc025.dlc\nCouture of the Capets|dlc/dlc013_sp3/dlc013.dlc\nHigh Medieval Warfare Attire|dlc/dlc023_cp5/dlc023.dlc\nMedieval Monuments|dlc/dlc017_cp3/dlc017.dlc\nWandering Nobles|dlc/dlc015_bp3/dlc015.dlc\nFriends and Foes|dlc/dlc006_bp1/dlc006.dlc\nKhans of the Steppe|dlc/dlc020_ce2/dlc020.dlc\nSymbols of Authority|dlc/dlc028_sp5/dlc028.dlc\nCrowns of the World|dlc/dlc019_sp4/dlc019.dlc\nArctic Attire|dlc/dlc018_cp4/dlc018.dlc\nBy God Alone|dlc/dlc030_ce3/dlc030.dlc\nMod:\n礼与道 R3 普通玩家入口夹具（仅验收）|mod/lyd_entry.mod|Enabled\n礼与道：儒家礼仪与学统 / Rites and the Way|mod/lyd_production.mod|Enabled\nLi Yu Dao R7 36x3 cultivation matrix fixture|mod/lyd_i4_single_event.mod|Enabled\n礼与道 R4 合礼离析前置夹具（仅验收）|mod/lyd_observer.mod|Enabled\nLi Yu Dao R7 native charter primitive fixture|mod/lyd_charter.mod|Enabled\n",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 28,
+      "last_line": 65
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:666]: >=== NAMESPACE > 'lyd_r4_fixture' is set to #2200000",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 1998,
+      "last_line": 1998
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:619]: Loaded [6] events from 'events/lyd_r4_fixture_events.txt' ",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 1999,
+      "last_line": 1999
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:666]: >=== NAMESPACE > 'lyd_im' is set to #2220000",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2002,
+      "last_line": 2002
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:666]: >=== NAMESPACE > 'lyd_r3_fixture' is set to #2230000",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2003,
+      "last_line": 2003
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:619]: Loaded [1] events from 'events/lyd_im_menu_events.txt' ",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2004,
+      "last_line": 2004
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:619]: Loaded [2] events from 'events/lyd_r3_fixture_events.txt' ",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2007,
+      "last_line": 2007
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:666]: >=== NAMESPACE > 'lyd' is set to #2270000",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2016,
+      "last_line": 2016
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:619]: Loaded [7] events from 'events/lyd_c3_leadership_events.txt' ",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2018,
+      "last_line": 2018
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:619]: Loaded [8] events from 'events/lyd_i3b_institution_events.txt' ",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2019,
+      "last_line": 2019
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:619]: Loaded [12] events from 'events/lyd_c2_consent_events.txt' ",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2022,
+      "last_line": 2022
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:619]: Loaded [24] events from 'events/lyd_im_cases_5.txt' ",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2024,
+      "last_line": 2024
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:619]: Loaded [24] events from 'events/lyd_im_cases_4.txt' ",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2025,
+      "last_line": 2025
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:619]: Loaded [24] events from 'events/lyd_im_cases_6.txt' ",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2026,
+      "last_line": 2026
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:619]: Loaded [24] events from 'events/lyd_im_cases_2.txt' ",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2027,
+      "last_line": 2027
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:619]: Loaded [24] events from 'events/lyd_im_cases_3.txt' ",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2028,
+      "last_line": 2028
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:619]: Loaded [24] events from 'events/lyd_im_cases_1.txt' ",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2030,
+      "last_line": 2030
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_eventmanager.cpp:619]: Loaded [43] events from 'events/lyd_events.txt' ",
+      "count": 1,
+      "log": "debug.log",
+      "first_line": 2038,
+      "last_line": 2038
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 202 (lyd_r4_reset_effect): LYD_R4_EXPLICIT_ACCEPTANCE_COOLDOWN_RESET_NOT_NATURAL_EXPIRY_BEGIN",
+      "count": 4,
+      "log": "debug.log",
+      "first_line": 4021,
+      "last_line": 5619
+    },
+    {
+      "exact_message_clock_stripped": "[D][effectimpl.cpp:642]: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!\nRoot: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!\n\nSaved event targets:\npuppeteer: (no character)\u0015weak （Character-4294967295）\u0015!\nlyd_r4_actor: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!\nlyd_r4_current_source_faith: lyd_common_faith (106)\u0015weak （Faith-106）\u0015!\nlyd_r4_moving_rite: 朱子之学 (Internal ID: 169)\u0015weak （Rite-169）\u0015!\nlyd_r4_jingshu_rep: Radolf 德· 毕戈德 of  (Internal ID 65866)\u0015weak （Character-65866）\u0015!\nlyd_r4_source_rep: Turquetil 克里斯潘 of  (Internal ID 65865)\u0015weak （Character-65865）\u0015!\nlyd_r4_current_receiving_faith: lyd_common_faith (104)\u0015weak （Faith-104）\u0015!\n",
+      "count": 6,
+      "log": "debug.log",
+      "first_line": 4022,
+      "last_line": 4554
+    },
+    {
+      "exact_message_clock_stripped": "[D][jomini_effect_impl.cpp:450]: file: common/scripted_effects/lyd_r4_fixture_effects.txt line: 218 (lyd_r4_reset_effect): LYD_R4_EXPLICIT_COOLDOWN_RESET_POSTCONDITION_TRUE_NOT_NATURAL_EXPIRY",
+      "count": 4,
+      "log": "debug.log",
+      "first_line": 4034,
+      "last_line": 5632
+    },
+    {
+      "exact_message_clock_stripped": "[D][effectimpl.cpp:642]: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!\nRoot: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!\n\nSaved event targets:\npuppeteer: (no character)\u0015weak （Character-4294967295）\u0015!\nlyd_r4_actor: Robert 德· 欧特维尔 of d_apulia (Internal ID: 31254 - Historical ID 1128)\u0015weak （Character-31254）\u0015!\nlyd_r4_current_source_faith: lyd_common_faith (104)\u0015weak （Faith-104）\u0015!\nlyd_r4_moving_rite: 朱子之学 (Internal ID: 169)\u0015weak （Rite-169）\u0015!\nlyd_r4_jingshu_rep: Radolf 德· 毕戈德 of  (Internal ID 65866)\u0015weak （Character-65866）\u0015!\nlyd_r4_source_rep: Turquetil 克里斯潘 of  (Internal ID 65865)\u0015weak （Character-65865）\u0015!\nlyd_r4_current_receiving_faith: lyd_common_faith (104)\u0015weak （Faith-104）\u0015!\n",
+      "count": 2,
+      "log": "debug.log",
+      "first_line": 5620,
+      "last_line": 5644
+    }
+  ]
+}

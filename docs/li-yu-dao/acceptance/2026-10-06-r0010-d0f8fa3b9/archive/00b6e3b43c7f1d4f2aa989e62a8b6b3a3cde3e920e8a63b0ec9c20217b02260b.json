@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 222,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0223-detach-second-personal-query.request.json",
+  "request_sha256": "b2252434c84a38fb17ee5ff44bd011bf8f2efabf31eb238ce505131b07e0262d",
+  "started_at_utc": "2026-10-05T17:51:28.596625+00:00",
+  "request_id": "r10-0223-detach-second-personal-query",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0222-r10-0223-detach-second-personal-query.sdk-result.json",
+  "sdk_result_sha256": "07952ffacdd4f7cf88244727ea09d470de2126839c86046dec82de0012db990a",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0221-event-query.json",
+      "copy": "0222-r10-0223-detach-second-personal-query.native-01.json",
+      "sha256": "e861424302f26f1925a9c1379337f9dbc17434dc46b3ae67837cfdafa2a03f47"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:51:30.740280+00:00"
+}

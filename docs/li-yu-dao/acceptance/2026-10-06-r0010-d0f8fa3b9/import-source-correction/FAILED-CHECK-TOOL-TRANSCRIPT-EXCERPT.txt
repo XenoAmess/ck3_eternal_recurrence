@@ -1,0 +1,7 @@
+Tool transcript excerpt, not a captured raw stdout file.
+2026-10-06 ROOT report import plan metadata/stat preflight:
+Executed import_r10_closed_report_root_only_20261006_001.py --check-plan.
+Actual tool exit_code=1. AssertionError reported 12 FileNotFoundError entries under
+r10-full-runtime-independent-review-20261005-001/review-package-002/evidence/lineage-002/inputs/lyd-i3b-detached-authority-source-review-20261005-001/review-package-002/.
+No main target was created, no raw SDK body was read, no game operation performed.
+Exact missing paths and verified canonical byte/SHA replacements are in CORRECTION.json.

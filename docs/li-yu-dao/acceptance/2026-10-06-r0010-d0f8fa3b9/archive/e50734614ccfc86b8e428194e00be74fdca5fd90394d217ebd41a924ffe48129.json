@@ -1,0 +1,2024 @@
+{
+  "schema": "lyd.r10.actual-sdk-result-ledger.v2",
+  "cutoff": 38,
+  "newly_read_sequences": [
+    26,
+    38
+  ],
+  "inherited_sdk1_through25_index": {
+    "path": "r10-test-report-draft-20261005-002/SDK1-25-EVIDENCE.json",
+    "bytes": 59153,
+    "sha256": "a4a07ff0695ad63fb407be3cf0c703b7ab1f9fc2b1fa124c35a3c6d3f9b96cd9",
+    "stat_unchanged_during_read": true
+  },
+  "new_sdk_raw_bytes": 9598029,
+  "results": [
+    {
+      "sequence": 1,
+      "request_id": "r10-0001-list-tools",
+      "operation": "list_tools",
+      "tool": null,
+      "arguments": null,
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": null,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0001-r10-0001-list-tools.request.json",
+        "bytes": 114,
+        "sha256": "5a68b1215a24f139d33bb2522ed9c65443723c9bdb187b090794f8ad1dcc9dbb",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0001-r10-0001-list-tools.response.json",
+        "bytes": 672,
+        "sha256": "f30aef64e938d779eb46fdb1eb495ef7a262640473f4c2c97aacbd23e1ca2ed9",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0001-r10-0001-list-tools.started.json",
+        "bytes": 338,
+        "sha256": "0666abbaef82e801b59a6b1d81ff2f1abe08c793bc608ea3316b06a41164da24",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0001-r10-0001-list-tools.sdk-result.json",
+        "bytes": 22992,
+        "sha256": "8011fdadd079b20ab93dd456d9cb61224c4b964561d73551153775f085df060d",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [],
+      "started_utc": "2026-10-05T11:03:38.786360+00:00",
+      "finished_utc": "2026-10-05T11:03:38.800523+00:00"
+    },
+    {
+      "sequence": 2,
+      "request_id": "r10-0002-query-profile",
+      "operation": "call_tool",
+      "tool": "ck3_query_native_profile_v1",
+      "arguments": {},
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0002-r10-0002-query-profile.request.json",
+        "bytes": 178,
+        "sha256": "2773514af3892480c78614f66ebad29cab64630a8667ec780356f70f1c090199",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0002-r10-0002-query-profile.response.json",
+        "bytes": 990,
+        "sha256": "30af3487d76c3cda7e7438b1eb86281c88af607cf74876a48548e2908890d3d5",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0002-r10-0002-query-profile.started.json",
+        "bytes": 341,
+        "sha256": "7af229980f17e8771fc0e50ce659d681f31e080437ae69e48fe9142994f7952f",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0002-r10-0002-query-profile.sdk-result.json",
+        "bytes": 5581,
+        "sha256": "8dfe3be8861222df77aedd4fc18cfe3b76755e1525268e93559ac4379506a9d2",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0002-r10-0002-query-profile.native-01.json",
+            "bytes": 2451,
+            "sha256": "c3b25747f4331071afc1ace4d962524123302e61f1110282621b4c812c2b25be",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0001-inspect.json",
+          "status": "profile_bound",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:07:54.071454+00:00",
+      "finished_utc": "2026-10-05T11:07:55.205011+00:00"
+    },
+    {
+      "sequence": 3,
+      "request_id": "r10-0003-attach",
+      "operation": "call_tool",
+      "tool": "ck3_attach_profile_bridge_v1",
+      "arguments": {},
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0003-r10-0003-attach.request.json",
+        "bytes": 172,
+        "sha256": "6e472f71e1956fcdb32c0edb9bfcbc0f05c9fc127e6f5e7fa2a4b8feb4cb1d65",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0003-r10-0003-attach.response.json",
+        "bytes": 961,
+        "sha256": "6ae0f88668782ca846ee7ea54465a4d33f6b7b16f8fc3a63e368fa44859f32d2",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0003-r10-0003-attach.started.json",
+        "bytes": 334,
+        "sha256": "67640d6dc4d17c42bdc768b7569b395c2c35aca94404bbe4f2865dc705e4f257",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0003-r10-0003-attach.sdk-result.json",
+        "bytes": 42113,
+        "sha256": "dc3839f800a024bed6e6005c1b8eb57a48054c5ebcc00caf107166a1fcbbb0e4",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0003-r10-0003-attach.native-01.json",
+            "bytes": 19803,
+            "sha256": "82fd70dac1c1b5f5c1caeb2c7346913ebe3c8e66b2a0be169c61cf35b71e1ef2",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0002-attach.json",
+          "status": "attached_snapshot_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:08:21.789839+00:00",
+      "finished_utc": "2026-10-05T11:08:27.198836+00:00"
+    },
+    {
+      "sequence": 4,
+      "request_id": "r10-0004-event-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 42,
+        "expected_revision": 2
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0004-r10-0004-event-query.request.json",
+        "bytes": 244,
+        "sha256": "30dc7fdfa098b0766ad201bb2c690f355b5011bf647d71b9a2454a550462e9b1",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0004-r10-0004-event-query.response.json",
+        "bytes": 986,
+        "sha256": "4e5dd0cdda876c4140788f180cb35f56ea8f1d0df93625cfaa90c85ada394dfc",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0004-r10-0004-event-query.started.json",
+        "bytes": 339,
+        "sha256": "d8609c02aaa4db8f54dab79d27e11755f1e437f94817e3049caf3b9f9a3507e6",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0004-r10-0004-event-query.sdk-result.json",
+        "bytes": 29627,
+        "sha256": "00487a51a4d94f8b42c61bc12147447c89a9a5beabc0c7ec6660f0dc07c576c8",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0004-r10-0004-event-query.native-01.json",
+            "bytes": 13682,
+            "sha256": "dde122c458e57cb252ecbe84110aab2736bf4dd7de24c6691df6dbd904c7949c",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0003-event-query.json",
+          "status": "native_event_query_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:08:53.779945+00:00",
+      "finished_utc": "2026-10-05T11:08:55.235484+00:00"
+    },
+    {
+      "sequence": 5,
+      "request_id": "r10-0005-ack-old-result",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 42,
+        "option_number": 1,
+        "expected_revision": 2
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0005-r10-0005-ack-old-result.request.json",
+        "bytes": 273,
+        "sha256": "b4a0959f0c57ae81bde533b21fa0348ff62e307b0ff200b9f1587cc7a636e942",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0005-r10-0005-ack-old-result.response.json",
+        "bytes": 999,
+        "sha256": "652ef82c105c2022494c3d2df325c6c2a10e3ee4c0c1696bda4a558bbf8abeb0",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0005-r10-0005-ack-old-result.started.json",
+        "bytes": 342,
+        "sha256": "cc6d9e959710c396777292dcbeaa4112d217606bc6fe0e1adc5981fb37371bee",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0005-r10-0005-ack-old-result.sdk-result.json",
+        "bytes": 132693,
+        "sha256": "92a316a7832fea20e1e4d8f20e699fb2436f28fc5e42f632d541fad623f65dec",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0005-r10-0005-ack-old-result.native-01.json",
+            "bytes": 62697,
+            "sha256": "7a84e21e095b25d18ecb6276bb83b720aa70655e365ed8e2b2321ad7fed1714e",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0004-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:09:23.366332+00:00",
+      "finished_utc": "2026-10-05T11:09:26.203096+00:00"
+    },
+    {
+      "sequence": 6,
+      "request_id": "r10-0006-cooldown-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_character_interaction_ordinary_v1",
+      "arguments": {
+        "interaction_key": "lyd_c2_propose_join_interaction",
+        "recipient_id": 65866,
+        "expected_revision": 3
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0006-r10-0006-cooldown-query.request.json",
+        "bytes": 322,
+        "sha256": "845cb6814e7a7a02fef1c17e6f6d13b9bfffc0fc83eeabd3a998633459b8d7b6",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0006-r10-0006-cooldown-query.response.json",
+        "bytes": 1013,
+        "sha256": "c8294e4d2b52839cf27cf3a3cc9e3633c720484fe744e824923cfb0bb1601da2",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0006-r10-0006-cooldown-query.started.json",
+        "bytes": 342,
+        "sha256": "014b3be8b070cec0300f3b67b8f49c43ef0a707e4ff97ac7b4b6b67f4046bd10",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0006-r10-0006-cooldown-query.sdk-result.json",
+        "bytes": 7611,
+        "sha256": "e9437df1f9c3b6589e695308c7d07d83347d5340a16c8c4e7d2371beb8342138",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0006-r10-0006-cooldown-query.native-01.json",
+            "bytes": 3420,
+            "sha256": "18165f01aca3c252e862ac3da47128c03281a5838e3922ec0dcd372f9b52a857",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0005-ordinary-interaction-query.json",
+          "status": "native_ordinary_interaction_observed",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:10:52.561679+00:00",
+      "finished_utc": "2026-10-05T11:10:53.904796+00:00"
+    },
+    {
+      "sequence": 7,
+      "request_id": "r10-0007-open-decisions",
+      "operation": "call_tool",
+      "tool": "ck3_open_profile_decisions_v1",
+      "arguments": {
+        "expected_revision": 3
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0007-r10-0007-open-decisions.request.json",
+        "bytes": 213,
+        "sha256": "aabfd70d408e170fd7014e458376b0b776a0e0de12f88fc87f4fbf37bbc9d13e",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0007-r10-0007-open-decisions.response.json",
+        "bytes": 1000,
+        "sha256": "82ceb1c97796753041c4369cc0f43c7b301d3416531ecbff062a86241b86ec1a",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0007-r10-0007-open-decisions.started.json",
+        "bytes": 342,
+        "sha256": "f849025a08316fcd123c1536dd20527def1392434787a62ec6c8ca7ed1896cea",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0007-r10-0007-open-decisions.sdk-result.json",
+        "bytes": 477715,
+        "sha256": "37002f9382dfeb1151543ad8e5ff8317df6acf46cf3bb1413e437de7e17a8e2c",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0007-r10-0007-open-decisions.native-01.json",
+            "bytes": 225185,
+            "sha256": "fabb773fc0f3588e88ccd07d446bce7498d1c3c5a3486adced0e82bad7f68681",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0006-decision-open.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:13:50.133789+00:00",
+      "finished_utc": "2026-10-05T11:13:52.851631+00:00"
+    },
+    {
+      "sequence": 8,
+      "request_id": "r10-0008-reset-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_r4_reset_decision",
+        "expected_revision": 3
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0008-r10-0008-reset-query.request.json",
+        "bytes": 261,
+        "sha256": "1851e60799c889e04c7411b92f15938461b87a19d1bf66126fa5b0180f33e458",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0008-r10-0008-reset-query.response.json",
+        "bytes": 989,
+        "sha256": "c3913c233c5c57a2c7d755a700d0beba2dbc2dff4444d5575ce5e9bef402984a",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0008-r10-0008-reset-query.started.json",
+        "bytes": 339,
+        "sha256": "2db259795b25852ad978168f43230848a05b7dc2a72e72b1f045a2c24509e78b",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0008-r10-0008-reset-query.sdk-result.json",
+        "bytes": 4731,
+        "sha256": "51358bf0205a35be10e886bea16f0cc792c2ac837514e13f2abb4a1701891002",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0008-r10-0008-reset-query.native-01.json",
+            "bytes": 2068,
+            "sha256": "40520a47ce9c3f594f400d30f8381aa666b5483c69db9e056aa6ff20500ad973",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0007-decision-query.json",
+          "status": "native_decision_query_observed",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:14:37.745156+00:00",
+      "finished_utc": "2026-10-05T11:14:38.902553+00:00"
+    },
+    {
+      "sequence": 9,
+      "request_id": "r10-0009-reset-select",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_r4_reset_decision",
+        "expected_revision": 3
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0009-r10-0009-reset-select.request.json",
+        "bytes": 263,
+        "sha256": "2ff60db033f082737bd80f2fb607a574d1463584e7444f19d5a6d66cfbe853cf",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0009-r10-0009-reset-select.response.json",
+        "bytes": 994,
+        "sha256": "96b50e18b79dc9e338ae8c8180a548e61c2bf70c46ff963b9d9370f68317cb09",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0009-r10-0009-reset-select.started.json",
+        "bytes": 340,
+        "sha256": "e4d9dc292362d5199de57e72c889b30e41b201c253fb8df824feba2cd551d304",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0009-r10-0009-reset-select.sdk-result.json",
+        "bytes": 554703,
+        "sha256": "6bc7ec7d8027b5287a002731b3670e07564d820322f2c31e4cb063730784e29f",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0009-r10-0009-reset-select.native-01.json",
+            "bytes": 262493,
+            "sha256": "ba96cd5154692c07d322843984f61a774bf724242d53fe2bde553a6ceeac3a9e",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0008-decision-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:15:01.654007+00:00",
+      "finished_utc": "2026-10-05T11:15:04.563533+00:00"
+    },
+    {
+      "sequence": 10,
+      "request_id": "r10-0010-reset-confirm",
+      "operation": "call_tool",
+      "tool": "ck3_confirm_profile_decision_outcome_v1",
+      "arguments": {
+        "decision_key": "lyd_r4_reset_decision",
+        "expected_outcome": "event_window",
+        "expected_event_definition_key": "lyd_r4_fixture.4",
+        "expected_revision": 3
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0010-r10-0010-reset-confirm.request.json",
+        "bytes": 367,
+        "sha256": "2b23ca760933ad0d8b53a271f8df5718edb318962d72234a6f2514313b727769",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0010-r10-0010-reset-confirm.response.json",
+        "bytes": 1008,
+        "sha256": "0a1d425efbda0c94df2f811d07645d7a683d4fd5a877fd325727025a7d18eec0",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0010-r10-0010-reset-confirm.started.json",
+        "bytes": 342,
+        "sha256": "ccf57a9f6103c6ab1d773aa82251c07788bb040e2e0ccaa8010da88055684c75",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0010-r10-0010-reset-confirm.sdk-result.json",
+        "bytes": 711035,
+        "sha256": "8bddd5d15661cf7721827e15f55d76a940a2e2144d9b379a32eb4d3aee16bd9d",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0010-r10-0010-reset-confirm.native-01.json",
+            "bytes": 336878,
+            "sha256": "49cbf010e28bb7699a6515a7b28c9da1e5ba2a8756fd4f550c51639db6e71ab4",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0009-decision-confirm_outcome.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:15:42.739619+00:00",
+      "finished_utc": "2026-10-05T11:15:45.567368+00:00"
+    },
+    {
+      "sequence": 11,
+      "request_id": "r10-0011-reset-event-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 43,
+        "expected_revision": 4
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0011-r10-0011-reset-event-query.request.json",
+        "bytes": 250,
+        "sha256": "1dcbf67f36fb49f1bf2a8a9d8b539d532e9fe1bd8679eaefb10753080af4e1ff",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0011-r10-0011-reset-event-query.response.json",
+        "bytes": 1011,
+        "sha256": "a0eb3d4176a2d8b8bf4e9352452cf8d716f6629054ffab72bb22e5c657deb8cd",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0011-r10-0011-reset-event-query.started.json",
+        "bytes": 346,
+        "sha256": "8c4b19c23e58f52c8723d40fcaef3876036ce79b71c00c0814ec14b6645c7fae",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0011-r10-0011-reset-event-query.sdk-result.json",
+        "bytes": 24575,
+        "sha256": "8177585ebf4b3d49b12e6e86e67105a5ba37232792752df7bc78e0fa97988196",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0011-r10-0011-reset-event-query.native-01.json",
+            "bytes": 11322,
+            "sha256": "4ddffcd3c5256914d9cc04b881bd60bde0035343fa9bbb1ee196b7f2b26ff7b2",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0010-event-query.json",
+          "status": "native_event_query_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:16:18.090246+00:00",
+      "finished_utc": "2026-10-05T11:16:19.420607+00:00"
+    },
+    {
+      "sequence": 12,
+      "request_id": "r10-0012-reset-ack",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 43,
+        "option_number": 1,
+        "expected_revision": 4
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0012-r10-0012-reset-ack.request.json",
+        "bytes": 268,
+        "sha256": "9c0e9984900a424b05370b584181e5c019b673c28fee184207bea4f20cdd7dfb",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0012-r10-0012-reset-ack.response.json",
+        "bytes": 980,
+        "sha256": "146df8528073b106f3dff69c53a506329f2b56072471c148b994f526de6610af",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0012-r10-0012-reset-ack.started.json",
+        "bytes": 338,
+        "sha256": "70091e89fb9848b51126520ba3b2570d6a775ed240965aad698bdfd10b04e835",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0012-r10-0012-reset-ack.sdk-result.json",
+        "bytes": 785009,
+        "sha256": "02e6d3927f3c1a84fefc420194c9f404dbea8c0ef04b23708894cb384eadbcca",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0012-r10-0012-reset-ack.native-01.json",
+            "bytes": 372093,
+            "sha256": "bd1f8b12db36270e4563a8d4eb0fc5d6352b81ce90b596a8da2d820db0e15a04",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0011-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:21:22.952214+00:00",
+      "finished_utc": "2026-10-05T11:21:26.507016+00:00"
+    },
+    {
+      "sequence": 13,
+      "request_id": "r10-0013-before-save",
+      "operation": "call_tool",
+      "tool": "ck3_save_profile_checkpoint_v1",
+      "arguments": {
+        "expected_revision": 5
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0013-r10-0013-before-save.request.json",
+        "bytes": 211,
+        "sha256": "d558c0d1f07eb8089732bf077dc760d5289121b2459fb2b71aa6d9cfee1f14fa",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0013-r10-0013-before-save.response.json",
+        "bytes": 986,
+        "sha256": "0cc52de0403af3ebb4ea2bac0539df46f16a1a42898b18dce5f16d4835a0c91d",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0013-r10-0013-before-save.started.json",
+        "bytes": 340,
+        "sha256": "ebb08af71354e1cf8252d05927694537412d08151debf526700a757027aef7d4",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0013-r10-0013-before-save.sdk-result.json",
+        "bytes": 790941,
+        "sha256": "234792190b191c15723c8b635dbaaf2c85e7e9490a1bd99d28915a396b524626",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0013-r10-0013-before-save.native-01.json",
+            "bytes": 374895,
+            "sha256": "f485e9ea5fc79ab136697d7e0b7e28ba73be4d26d6548e6b2aa60fac8e474812",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0012-checkpoint.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:23:05.041473+00:00",
+      "finished_utc": "2026-10-05T11:23:14.560481+00:00"
+    },
+    {
+      "sequence": 14,
+      "request_id": "r10-0014-join-ready-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_character_interaction_ordinary_v1",
+      "arguments": {
+        "interaction_key": "lyd_c2_propose_join_interaction",
+        "recipient_id": 65866,
+        "expected_revision": 6
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0014-r10-0014-join-ready-query.request.json",
+        "bytes": 324,
+        "sha256": "0de26415d322785dfc67e7e5f47c125c7a09aa57086e2158b15ca9f513b61ba0",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0014-r10-0014-join-ready-query.response.json",
+        "bytes": 1022,
+        "sha256": "02fc53ebdfe06d398009d034f3ee7332ab3b28267f4e3d2d825ac118663e8254",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0014-r10-0014-join-ready-query.started.json",
+        "bytes": 345,
+        "sha256": "4708f5767cf07a1f1af7e407cbb4e8e03d10100084eeffcc264f4f663a60a0b7",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0014-r10-0014-join-ready-query.sdk-result.json",
+        "bytes": 7609,
+        "sha256": "5357a60d8226075d3e386627aabfebb2e3165bd9f7b879cf975d646c36ff1bf8",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0014-r10-0014-join-ready-query.native-01.json",
+            "bytes": 3419,
+            "sha256": "4587d07a3ce02d9c0be11d2b104506d938bacb3495f10702d01afeede89379f0",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0013-ordinary-interaction-query.json",
+          "status": "native_ordinary_interaction_observed",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:25:16.441711+00:00",
+      "finished_utc": "2026-10-05T11:25:17.616617+00:00"
+    },
+    {
+      "sequence": 15,
+      "request_id": "r10-0015-first-join-open",
+      "operation": "call_tool",
+      "tool": "ck3_initiate_profile_character_interaction_ordinary_v1",
+      "arguments": {
+        "interaction_key": "lyd_c2_propose_join_interaction",
+        "recipient_id": 65866,
+        "expected_revision": 6
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0015-r10-0015-first-join-open.request.json",
+        "bytes": 326,
+        "sha256": "942b99186f7f44af87d7b2cfdd7c7ce1663b9a06816d7b1177d1b539a4a1a190",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0015-r10-0015-first-join-open.response.json",
+        "bytes": 1021,
+        "sha256": "25709a2b73da57f911b3c909c96b0f4f324a79794b8d64cbeca7f869c8692eda",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0015-r10-0015-first-join-open.started.json",
+        "bytes": 344,
+        "sha256": "13289d61c3cfce0305c646add226954772218ece481f5db66db725477d702cb1",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0015-r10-0015-first-join-open.sdk-result.json",
+        "bytes": 405385,
+        "sha256": "c720982c005a78f6e9ff9e86b3960998881cb05ffb246b72684c167143a388db",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0015-r10-0015-first-join-open.native-01.json",
+            "bytes": 192055,
+            "sha256": "c43dde6128433f159c415e54026cd73e6fdac21c889da86bfbb10fd34da2ac54",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0014-ordinary-interaction-initiate.json",
+          "status": "native_ordinary_interaction_pending",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:25:43.133499+00:00",
+      "finished_utc": "2026-10-05T11:25:46.170969+00:00"
+    },
+    {
+      "sequence": 16,
+      "request_id": "r10-0016-open-proposal-save",
+      "operation": "call_tool",
+      "tool": "ck3_save_profile_checkpoint_v1",
+      "arguments": {
+        "expected_revision": 7
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0016-r10-0016-open-proposal-save.request.json",
+        "bytes": 218,
+        "sha256": "f51e6a35fb91b633c3f70681a570f42fada8f4d31fc4c24a20c9aff895b683a8",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0016-r10-0016-open-proposal-save.response.json",
+        "bytes": 1014,
+        "sha256": "f9575f24fc3eafe87d5cf19906d37d0e033ca0dcc6d0e8579892cf7d68520be3",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0016-r10-0016-open-proposal-save.started.json",
+        "bytes": 347,
+        "sha256": "fff932bdfd37b8bd05bce32ae36797f58fb7e116ff0b6819ca79f31a60bea68f",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0016-r10-0016-open-proposal-save.sdk-result.json",
+        "bytes": 798891,
+        "sha256": "653ff5b6e463bc851a8c1fbf63fc3c601ad769c50a3355a34cf2f2d9bf5559b3",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0016-r10-0016-open-proposal-save.native-01.json",
+            "bytes": 378611,
+            "sha256": "445337660e6414afcee1566b1af612330f587399884077ce9f5577b6cfd73c42",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0015-checkpoint.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:26:20.878701+00:00",
+      "finished_utc": "2026-10-05T11:26:32.321083+00:00"
+    },
+    {
+      "sequence": 17,
+      "request_id": "r10-0017-first-join-event-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 46,
+        "expected_revision": 8
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0017-r10-0017-first-join-event-query.request.json",
+        "bytes": 255,
+        "sha256": "e72c9cd7753bbf70f39aa2a4daac88ee90c57066b4c5d67acc045490ddb5f7a6",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0017-r10-0017-first-join-event-query.response.json",
+        "bytes": 1031,
+        "sha256": "41ed1b7454382e4fe5fcce65008443f15cb7f04e6d764541ac7413738e9795f9",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0017-r10-0017-first-join-event-query.started.json",
+        "bytes": 351,
+        "sha256": "1a9b847db69feca4b8d43659f301899cd5359c32e66ac3d3e4a66e5e98ec4230",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0017-r10-0017-first-join-event-query.sdk-result.json",
+        "bytes": 41687,
+        "sha256": "3fb79d03da1169852e28103adc42d84175604654b4d1b7313e7b97b1323a1f15",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0017-r10-0017-first-join-event-query.native-01.json",
+            "bytes": 19298,
+            "sha256": "67acaa3d37898d931f1a78fcd1431ea791ad67dc78252e92c4c71b8865bec617",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0016-event-query.json",
+          "status": "native_event_query_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:27:48.854207+00:00",
+      "finished_utc": "2026-10-05T11:27:50.019653+00:00"
+    },
+    {
+      "sequence": 18,
+      "request_id": "r10-0018-first-join-wait",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 46,
+        "option_number": 1,
+        "expected_revision": 8
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0018-r10-0018-first-join-wait.request.json",
+        "bytes": 274,
+        "sha256": "82da73efac49365d42562a43ab02afadb29b370266e669410397e94d2253dbcd",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0018-r10-0018-first-join-wait.response.json",
+        "bytes": 1004,
+        "sha256": "9c92f9e1eec3d88c59d61bc4e80e74b804e3967a11bae361a918f6810296a066",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0018-r10-0018-first-join-wait.started.json",
+        "bytes": 344,
+        "sha256": "9da059673b2bd96fe98e101a4c43ba1a4e5e8c9858c197c8fba2541f58d36ba8",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0018-r10-0018-first-join-wait.sdk-result.json",
+        "bytes": 905375,
+        "sha256": "14ac42967378e3deaea2bf0c22b3e3b80ff0bf586d102fbcb7f0e31415ffe4a2",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0018-r10-0018-first-join-wait.native-01.json",
+            "bytes": 428855,
+            "sha256": "7facab323ac87148a44bfe6d05f609c9a271ada5a0f2474fa0de68fa0b85d1e4",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0017-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:29:27.037424+00:00",
+      "finished_utc": "2026-10-05T11:29:30.315582+00:00"
+    },
+    {
+      "sequence": 19,
+      "request_id": "r10-0019-player-consent-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 45,
+        "expected_revision": 9
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0019-r10-0019-player-consent-query.request.json",
+        "bytes": 253,
+        "sha256": "2a884f3b338c86cdd8a99bcbf4b2d7e226f42cbfeae40aa0c9b0b2db5cc4b11b",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0019-r10-0019-player-consent-query.response.json",
+        "bytes": 1023,
+        "sha256": "4873664a250f81a6708c3da18bd3e29bbd1e5b88c869b384e60d0455cce6b70c",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0019-r10-0019-player-consent-query.started.json",
+        "bytes": 349,
+        "sha256": "d69084eb79eb58d5fbc99f80872f127f9a65fba443b19c78bf01be52824e04ba",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0019-r10-0019-player-consent-query.sdk-result.json",
+        "bytes": 40015,
+        "sha256": "b6fb5ccabedd32b08bd532ba4762e96e32e65dab2f674331999e590bb2136d75",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0019-r10-0019-player-consent-query.native-01.json",
+            "bytes": 18520,
+            "sha256": "239ac6bdf3c2262cd09af8a3ac7520778985fa00431bacd3759159e388971b8a",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0018-event-query.json",
+          "status": "native_event_query_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:29:56.554904+00:00",
+      "finished_utc": "2026-10-05T11:29:58.046112+00:00"
+    },
+    {
+      "sequence": 20,
+      "request_id": "r10-0020-player-consent-yes",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 45,
+        "option_number": 1,
+        "expected_revision": 9
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0020-r10-0020-player-consent-yes.request.json",
+        "bytes": 277,
+        "sha256": "10c8485d5a88eec159c68f2d83b26ce062ca844523209f543eace29b68181d50",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0020-r10-0020-player-consent-yes.response.json",
+        "bytes": 1016,
+        "sha256": "2142e811d8d49ed265c8567cf566cb739cea52db296550193b03e9b31ee3a0e3",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0020-r10-0020-player-consent-yes.started.json",
+        "bytes": 347,
+        "sha256": "b917954e9cad893bc5689c2d6f4f42f21cdf14851dc3ee1da37e882d61054ec7",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0020-r10-0020-player-consent-yes.sdk-result.json",
+        "bytes": 1008329,
+        "sha256": "152d19f946b2ddd25e51388ca1ccac4e64e303ff2c4003179572daf7a0a91ab1",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0020-r10-0020-player-consent-yes.native-01.json",
+            "bytes": 477456,
+            "sha256": "2413a218d90d5d65658014262bb79945fe3a3656bd0ee79dc6461712f5b86e3b",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0019-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:30:37.191426+00:00",
+      "finished_utc": "2026-10-05T11:30:40.679272+00:00"
+    },
+    {
+      "sequence": 21,
+      "request_id": "r10-0021-holder-consent-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 44,
+        "expected_revision": 10
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0021-r10-0021-holder-consent-query.request.json",
+        "bytes": 254,
+        "sha256": "98cbc4835f1553d7569d1ee3632b71614a90c14ec93527717c46db0a9b449b70",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0021-r10-0021-holder-consent-query.response.json",
+        "bytes": 1023,
+        "sha256": "42ceef711dd4dc1ce48f9ecdf5e918912d7a68f059f436bb681948ce6c5529ba",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0021-r10-0021-holder-consent-query.started.json",
+        "bytes": 349,
+        "sha256": "102cc86ae498d2e7077374fd7eec871835308ea92680e33c5a29739d173669f7",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0021-r10-0021-holder-consent-query.sdk-result.json",
+        "bytes": 39999,
+        "sha256": "88edc1c791ed837e04d61100f12ce6bdf2105bceda626503b77ec94f7ae65f28",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0021-r10-0021-holder-consent-query.native-01.json",
+            "bytes": 18512,
+            "sha256": "85a138f08729bf55c2b356098b4f5e3b2207c13892184459feae1c807ecedcf9",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0020-event-query.json",
+          "status": "native_event_query_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:31:28.450707+00:00",
+      "finished_utc": "2026-10-05T11:31:29.946973+00:00"
+    },
+    {
+      "sequence": 22,
+      "request_id": "r10-0022-source-ballot-yes",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 44,
+        "option_number": 1,
+        "expected_revision": 10
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0022-r10-0022-source-ballot-yes.request.json",
+        "bytes": 277,
+        "sha256": "e470945e703bb56445f34124883a4f124e5350e950ba42ba39eabb7ba1623b1d",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0022-r10-0022-source-ballot-yes.response.json",
+        "bytes": 1012,
+        "sha256": "6686e87147f9ca00151c4a1777016430d09d42531db60adc562bad5f347e33d2",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0022-r10-0022-source-ballot-yes.started.json",
+        "bytes": 346,
+        "sha256": "d06efeb5c054142c3844b04308ace48a775dfc2f61754d42d76e0c4585e675f9",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0022-r10-0022-source-ballot-yes.sdk-result.json",
+        "bytes": 1108479,
+        "sha256": "b6403650eaf6d724f4b96be22556e0d537297c8abe9234bb2cc4de2d0f7c65b2",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0022-r10-0022-source-ballot-yes.native-01.json",
+            "bytes": 524754,
+            "sha256": "cbe0e7cb8a6da14aceb881c43306c4e53a2c3d8e9aece81f08391994fcb3e51f",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0021-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:31:57.437410+00:00",
+      "finished_utc": "2026-10-05T11:32:00.785560+00:00"
+    },
+    {
+      "sequence": 23,
+      "request_id": "r10-0023-review-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_review_proposal_decision",
+        "expected_revision": 11
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0023-r10-0023-review-query.request.json",
+        "bytes": 273,
+        "sha256": "c061174fb3c905da36256b76f5d90c0f0eddecf6de7dc7fb06ec7d73a05150df",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0023-r10-0023-review-query.response.json",
+        "bytes": 994,
+        "sha256": "f2d4016377d19915eb8ba447cf53966e3137b6362761f0b83dccddfc5ff6f217",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0023-r10-0023-review-query.started.json",
+        "bytes": 341,
+        "sha256": "1c7779cd467a21ffa7cd3a1bedf9eec98c4dd681153cf75998647619f4e2c1d1",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0023-r10-0023-review-query.sdk-result.json",
+        "bytes": 4755,
+        "sha256": "22150043094ba0304db10ceaf8f7dd64e94970194657fb0ed42a45e6618b96ab",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0023-r10-0023-review-query.native-01.json",
+            "bytes": 2080,
+            "sha256": "03271c01d92256e17e515ad73ab45e3aa0554e09d94884d3131c2d8893b07b1a",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0022-decision-query.json",
+          "status": "native_decision_query_observed",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:32:55.216012+00:00",
+      "finished_utc": "2026-10-05T11:32:56.576358+00:00"
+    },
+    {
+      "sequence": 24,
+      "request_id": "r10-0024-review-select",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_review_proposal_decision",
+        "expected_revision": 11
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0024-r10-0024-review-select.request.json",
+        "bytes": 275,
+        "sha256": "69e6aa2c7331fdf9945bcf7adf36ddc1f5ca14f4413d767bf36beeccbad75555",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0024-r10-0024-review-select.response.json",
+        "bytes": 999,
+        "sha256": "d7a06d7623c20ffd6efe0a1acbc6d4940ddbf28c3c4c90faca46bf430f976228",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0024-r10-0024-review-select.started.json",
+        "bytes": 342,
+        "sha256": "4f7d15be41febebb21b79b109f80547092b311825287d460bcf0123981e0ab03",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0024-r10-0024-review-select.sdk-result.json",
+        "bytes": 1155731,
+        "sha256": "d7107f3e71dcebb19ff71efd034d1da23d13381ecb3b1cb05d5ec77da44a27f1",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0024-r10-0024-review-select.native-01.json",
+            "bytes": 547233,
+            "sha256": "aa1a98a5235e4332e1bc9b99e8dddee841f494326cbe9d45aaebb246ecaba7d9",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0023-decision-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:33:20.225085+00:00",
+      "finished_utc": "2026-10-05T11:33:23.844932+00:00"
+    },
+    {
+      "sequence": 25,
+      "request_id": "r10-0025-review-open",
+      "operation": "call_tool",
+      "tool": "ck3_confirm_profile_decision_outcome_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_review_proposal_decision",
+        "expected_outcome": "event_window",
+        "expected_event_definition_key": "lyd.220",
+        "expected_revision": 11
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0025-r10-0025-review-open.request.json",
+        "bytes": 367,
+        "sha256": "9eb884f3ca0ccc0bf52abe4eab257837c26090be7a8180d82b79b7d05f7c0062",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0025-r10-0025-review-open.response.json",
+        "bytes": 1000,
+        "sha256": "5a3ec09a157fb9808e215fbc621419178111efbec0f10627bd126ceef726c463",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0025-r10-0025-review-open.started.json",
+        "bytes": 340,
+        "sha256": "fcd6af886d6ae99224dba9f90890335e25cf9b626ddcc2e6bfe85168a0ba2042",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0025-r10-0025-review-open.sdk-result.json",
+        "bytes": 1336447,
+        "sha256": "ae3c85a867304dc0f2373a2871e7a343f74f030ee4c5d5a469ab1673cd537483",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0025-r10-0025-review-open.native-01.json",
+            "bytes": 633136,
+            "sha256": "7543dda77a06bcd0e01846cef355b4b54030711104af9c1c14cd8d34a4120a57",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0024-decision-confirm_outcome.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:33:50.136662+00:00",
+      "finished_utc": "2026-10-05T11:33:55.085600+00:00"
+    },
+    {
+      "sequence": 26,
+      "request_id": "r10-0026-review-event-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 47,
+        "expected_revision": 12
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0026-r10-0026-review-event-query.request.json",
+        "bytes": 252,
+        "sha256": "b6ae4f502c9c7c70b35091149fd472f9434d619665f3aa15285614d86c45f6fb",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0026-r10-0026-review-event-query.response.json",
+        "bytes": 1015,
+        "sha256": "deabd3ffc9f95c7ca775d0d17d738ca6a1e676643f999e2f681b68edfc8d7341",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0026-r10-0026-review-event-query.started.json",
+        "bytes": 347,
+        "sha256": "c1e3b909eceffe9eaef42d490c6a6ad90e00bef40bfb7da3d6aad48a2ea01c97",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0026-r10-0026-review-event-query.sdk-result.json",
+        "bytes": 33139,
+        "sha256": "30ae30cd64eaf3b9666a5b3649955df023134a8661fffb51ee8d8aee0a0f9e9e",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0026-r10-0026-review-event-query.native-01.json",
+            "bytes": 15338,
+            "sha256": "fd87a06a0b0b7096d1473457fdb8755ed2ef6c3ed183178f4168acfba5213ddd",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0025-event-query.json",
+          "status": "native_event_query_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:48:28.667907+00:00",
+      "finished_utc": "2026-10-05T11:48:29.889057+00:00"
+    },
+    {
+      "sequence": 27,
+      "request_id": "r10-0027-source-sign",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 47,
+        "option_number": 1,
+        "expected_revision": 12
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0027-r10-0027-source-sign.request.json",
+        "bytes": 271,
+        "sha256": "614797e9666341c8fbc42295225b6a69e390b4cd71f9f2ed81f316378c61982b",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0027-r10-0027-source-sign.response.json",
+        "bytes": 988,
+        "sha256": "3f471c5f7466c76e5c428cb117200ff5f43342986d82b17414350297a4bce450",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0027-r10-0027-source-sign.started.json",
+        "bytes": 340,
+        "sha256": "5e97dccfcb9f664ef49700e0fffaf8e8ab0c0d2313f25a9717961f85ddb28d1b",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0027-r10-0027-source-sign.sdk-result.json",
+        "bytes": 1434363,
+        "sha256": "5d54e0ca5c969c74a52c47a70556578180bccb387b08adb6613d8b4ce23072f0",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0027-r10-0027-source-sign.native-01.json",
+            "bytes": 679721,
+            "sha256": "715031d59ac39ad6e1505b194d41ff32815f2b004615e2c0700fb8d170589634",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0026-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:49:34.776237+00:00",
+      "finished_utc": "2026-10-05T11:49:37.809661+00:00"
+    },
+    {
+      "sequence": 28,
+      "request_id": "r10-0028-sign-ack-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 48,
+        "expected_revision": 13
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0028-r10-0028-sign-ack-query.request.json",
+        "bytes": 248,
+        "sha256": "8e238b2c3ab31ceed536ab6a44a64c2601c5c5e04bfae2739baba476bf6f244d",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0028-r10-0028-sign-ack-query.response.json",
+        "bytes": 999,
+        "sha256": "d6969f09d72f7cfc0385eaa9b5cc9232484ad4cb04d5c3769b3042b9752e5c0e",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0028-r10-0028-sign-ack-query.started.json",
+        "bytes": 343,
+        "sha256": "817f3f08d09e70c46be163a159ff032d0fb9112f3f2a604a3cd601a4b9aeeca3",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0028-r10-0028-sign-ack-query.sdk-result.json",
+        "bytes": 26131,
+        "sha256": "606d71e91367152bc9d96a88e489e737bc95be9a47844406b3d207690a913f4b",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0028-r10-0028-sign-ack-query.native-01.json",
+            "bytes": 12050,
+            "sha256": "706d8c8f9b9573b8ae9c9a513cc0e430454defe4fe3f05b15b04e92d4ebe958c",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0027-event-query.json",
+          "status": "native_event_query_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:50:17.949743+00:00",
+      "finished_utc": "2026-10-05T11:50:19.406214+00:00"
+    },
+    {
+      "sequence": 29,
+      "request_id": "r10-0029-sign-ack-select",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 48,
+        "option_number": 1,
+        "expected_revision": 13
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0029-r10-0029-sign-ack-select.request.json",
+        "bytes": 275,
+        "sha256": "34b8255068adf82d578cee7b7063961a722e59c31e235d3337519f314bf2366f",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0029-r10-0029-sign-ack-select.response.json",
+        "bytes": 1004,
+        "sha256": "a61e42483b7bff624b43ef5244ff1a1c3e59183eabd2006bfdb95fb2dc8bf961",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0029-r10-0029-sign-ack-select.started.json",
+        "bytes": 344,
+        "sha256": "bb149e260945c271f4d3168063d4f1c82c3d3671682af979660b2f7731e76980",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0029-r10-0029-sign-ack-select.sdk-result.json",
+        "bytes": 1500379,
+        "sha256": "6f81bb3395306d5412e60d4bd51241d075bbe54a99da0ad56add26ff163f64a5",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0029-r10-0029-sign-ack-select.native-01.json",
+            "bytes": 710926,
+            "sha256": "dd9d6c3351fb50eaababc3acb7332dbc0c16f644e7aaa8874893bc414b10b77d",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0028-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:50:46.864757+00:00",
+      "finished_utc": "2026-10-05T11:50:49.970707+00:00"
+    },
+    {
+      "sequence": 30,
+      "request_id": "r10-0031-review-again-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_review_proposal_decision",
+        "expected_revision": 14
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0030-r10-0031-review-again-query.request.json",
+        "bytes": 279,
+        "sha256": "2295234b35ac2de87ffa3eefbc33d1c363917d2d46f119c3050fe44fc0038690",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0030-r10-0031-review-again-query.response.json",
+        "bytes": 1018,
+        "sha256": "9cc277d15783afd31af4ba5166617bedaa88143834d489da6ad2124e0a6e4f67",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0030-r10-0031-review-again-query.started.json",
+        "bytes": 347,
+        "sha256": "6f1dd129463ce18255b2b770a63e62ccce8fd02f6c8dae3a093a30234f8c3f3e",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0030-r10-0031-review-again-query.sdk-result.json",
+        "bytes": 4777,
+        "sha256": "4b70b0d406b45903ba418949474525e9b96ad2cf6d46311e52114d65cf876339",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0030-r10-0031-review-again-query.native-01.json",
+            "bytes": 2091,
+            "sha256": "a71fb70d6aad3687bc72b7073501c9bf26bf20a201e50a9373717a4aa605878c",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0029-decision-query.json",
+          "status": "native_decision_query_observed",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:53:01.322208+00:00",
+      "finished_utc": "2026-10-05T11:53:02.536631+00:00"
+    },
+    {
+      "sequence": 31,
+      "request_id": "r10-0032-post-source-sign-save",
+      "operation": "call_tool",
+      "tool": "ck3_save_profile_checkpoint_v1",
+      "arguments": {
+        "expected_revision": 14
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0031-r10-0032-post-source-sign-save.request.json",
+        "bytes": 222,
+        "sha256": "8de7c2723c9fad0233b3aa9edb025a0e7e9218498a9086d7bf279a4358ed8394",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0031-r10-0032-post-source-sign-save.response.json",
+        "bytes": 1026,
+        "sha256": "2ba50362066740e3ffa80f373e1470a272a63427e0bfdf531643bcbe415ce8ca",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0031-r10-0032-post-source-sign-save.started.json",
+        "bytes": 350,
+        "sha256": "750cf12232c355ace031a5e15583b2f64f0e55ca46bb5339548e1c1423617620",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0031-r10-0032-post-source-sign-save.sdk-result.json",
+        "bytes": 1506017,
+        "sha256": "0ae847445f65ec3aac099f5dbbc45272e6809ff13641e37b40e11b1aa3a9259b",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0031-r10-0032-post-source-sign-save.native-01.json",
+            "bytes": 713592,
+            "sha256": "d4b190ce20b6e454d3c5e6d3cc15410551eed392c0861bce6d76140be08ae864",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0030-checkpoint.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T11:53:38.983654+00:00",
+      "finished_utc": "2026-10-05T11:53:54.083153+00:00"
+    },
+    {
+      "sequence": 32,
+      "request_id": "r10-0033-current-join-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_character_interaction_ordinary_v1",
+      "arguments": {
+        "interaction_key": "lyd_c2_propose_join_interaction",
+        "recipient_id": 65866,
+        "expected_revision": 15
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0032-r10-0033-current-join-query.request.json",
+        "bytes": 327,
+        "sha256": "0c4260e9efb31688ddb854a07ea9802dda78116f1cc8352cde2e598157fed5c9",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0032-r10-0033-current-join-query.response.json",
+        "bytes": 1030,
+        "sha256": "c45d860a9e70097183d3da0d3a011567ae5eeec00ef43de113b33484feb66608",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0032-r10-0033-current-join-query.started.json",
+        "bytes": 347,
+        "sha256": "16f33be2aa692d12e7e2628a3f482cabab6cf2a19b65defc8a045f2db77c6507",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0032-r10-0033-current-join-query.sdk-result.json",
+        "bytes": 7625,
+        "sha256": "fa9f7c5b1c6f5d16956e4775653e4a55caac66646aa76281883f95110ef93fae",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0032-r10-0033-current-join-query.native-01.json",
+            "bytes": 3427,
+            "sha256": "2de238f545a12178f669bec6e15ca033c381d8e75391fc09d717c80beeff6744",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0031-ordinary-interaction-query.json",
+          "status": "native_ordinary_interaction_observed",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T12:01:04.918813+00:00",
+      "finished_utc": "2026-10-05T12:01:06.182516+00:00"
+    },
+    {
+      "sequence": 33,
+      "request_id": "r10-0034-reset-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_r4_reset_decision",
+        "expected_revision": 15
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0033-r10-0034-reset-query.request.json",
+        "bytes": 262,
+        "sha256": "b959404326e98d569b704d1dac8e00f098bd7726f8139422c9d81aa1e1a92cc3",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0033-r10-0034-reset-query.response.json",
+        "bytes": 990,
+        "sha256": "f15d9ebc205f8a14decef645ff67583ac848cdc3f12f9545474ddc232e560c24",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0033-r10-0034-reset-query.started.json",
+        "bytes": 340,
+        "sha256": "59f44c3534ae8a40600f70abeca6b9e3a96f2f7b8d05d8b69d5560dc5d9a2ac4",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0033-r10-0034-reset-query.sdk-result.json",
+        "bytes": 4735,
+        "sha256": "00f8e8734ba1cb4aa4aebc1536ee60be09a0060863d6a8f0b577aee6f8ca56ed",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0033-r10-0034-reset-query.native-01.json",
+            "bytes": 2070,
+            "sha256": "31943cfd38ac6f314db2a25ad2c4246c2170c3614389db342823abf437f0bfd1",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0032-decision-query.json",
+          "status": "native_decision_query_observed",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T12:01:39.490380+00:00",
+      "finished_utc": "2026-10-05T12:01:40.813879+00:00"
+    },
+    {
+      "sequence": 34,
+      "request_id": "r10-0035-reset-select",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_r4_reset_decision",
+        "expected_revision": 15
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0034-r10-0035-reset-select.request.json",
+        "bytes": 264,
+        "sha256": "e50a521704f9937c9f445aa99c2b5c9b83e846b5b74bad14fa06463035becee7",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0034-r10-0035-reset-select.response.json",
+        "bytes": 995,
+        "sha256": "6ea245805fa86f903f606da3496b07c9a8c62b456812b6a6185edb0fddf2af2d",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0034-r10-0035-reset-select.started.json",
+        "bytes": 341,
+        "sha256": "b5ece2d43c09b99e9dab58a8335e5d399b8b6eec017dc32e2a935ba944f6342f",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0034-r10-0035-reset-select.sdk-result.json",
+        "bytes": 1553469,
+        "sha256": "c203ebd6d37f393fcd1095d46fda1429401ad69bc909b2f6cff3a2ed01d6f9e0",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0034-r10-0035-reset-select.native-01.json",
+            "bytes": 736132,
+            "sha256": "f3def7c01eab60e324f2484c3fbdc2cc7f7d91dd3f543462b6c8688b791d9d84",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0033-decision-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T12:01:53.222000+00:00",
+      "finished_utc": "2026-10-05T12:01:56.363757+00:00"
+    },
+    {
+      "sequence": 35,
+      "request_id": "r10-0036-reset-confirm",
+      "operation": "call_tool",
+      "tool": "ck3_confirm_profile_decision_outcome_v1",
+      "arguments": {
+        "decision_key": "lyd_r4_reset_decision",
+        "expected_outcome": "event_window",
+        "expected_revision": 15,
+        "expected_event_definition_key": "lyd_r4_fixture.4"
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0035-r10-0036-reset-confirm.request.json",
+        "bytes": 368,
+        "sha256": "40d4453ee3f07896c2feb89179c7b9d85585af245607e960b2fe89b69a4343b1",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0035-r10-0036-reset-confirm.response.json",
+        "bytes": 1008,
+        "sha256": "927710b166958c37c821271532f16a6b0b908907870020ab9401778989d9a18c",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0035-r10-0036-reset-confirm.started.json",
+        "bytes": 342,
+        "sha256": "8a1bc2a9b4723ea134c9309f7193c6646e14c3010943000eb7db35f42a101a95",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0035-r10-0036-reset-confirm.sdk-result.json",
+        "bytes": 1710547,
+        "sha256": "a2663af616e44befce54c871f9653142f08072b46fe95f4b4341803e7e9c4310",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0035-r10-0036-reset-confirm.native-01.json",
+            "bytes": 810868,
+            "sha256": "2a66956835d6b3c9501e96909e18c1ebcfb5f82566836f746cdf8582c6e9aa04",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0034-decision-confirm_outcome.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T12:02:10.787268+00:00",
+      "finished_utc": "2026-10-05T12:02:14.081601+00:00"
+    },
+    {
+      "sequence": 36,
+      "request_id": "r10-0037-reset-ack-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 49,
+        "expected_revision": 16
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0036-r10-0037-reset-ack-query.request.json",
+        "bytes": 249,
+        "sha256": "27f1b99aade27642952eaf1496867c6b03ed8f76e08d4ac789f6c772391dad70",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0036-r10-0037-reset-ack-query.response.json",
+        "bytes": 1003,
+        "sha256": "23ec3e8e66c87dc014bd13bd6629cadd721d085d9a96c9d33741da2c2b8e3d93",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0036-r10-0037-reset-ack-query.started.json",
+        "bytes": 344,
+        "sha256": "c79a1fb43c1ee14a4189128c832022c14161db3c00bb27c863124307a6a96388",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0036-r10-0037-reset-ack-query.sdk-result.json",
+        "bytes": 24601,
+        "sha256": "37af81b890f8c17cdbda8333f7117e7bff4d01e3c5df2b7ad78dc9f1e59b5c02",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0036-r10-0037-reset-ack-query.native-01.json",
+            "bytes": 11335,
+            "sha256": "b803b55515d5a9a44e193bb43a772b31496f40b0760f73911d4c65edc767c813",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0035-event-query.json",
+          "status": "native_event_query_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T12:02:37.234924+00:00",
+      "finished_utc": "2026-10-05T12:02:38.553414+00:00"
+    },
+    {
+      "sequence": 37,
+      "request_id": "r10-0038-reset-ack-select",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 49,
+        "option_number": 1,
+        "expected_revision": 16
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0037-r10-0038-reset-ack-select.request.json",
+        "bytes": 276,
+        "sha256": "06443278611915e9ee059a48ff20284c1638d70389a8fd6fb04823a4d78f8c59",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0037-r10-0038-reset-ack-select.response.json",
+        "bytes": 1008,
+        "sha256": "6ee76b10246b4761377728499d5ff075f5d5aad20c0ab94b53e0a0b4598bc94f",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0037-r10-0038-reset-ack-select.started.json",
+        "bytes": 345,
+        "sha256": "93740e88c48863234bbf90ce621d381e9d881e2cd01b9263d41cf38edef200e4",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0037-r10-0038-reset-ack-select.sdk-result.json",
+        "bytes": 1784627,
+        "sha256": "df28f7fab415b22e85d4056080d61f087eec2d5f6f92a6e814dad29a923519a2",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0037-r10-0038-reset-ack-select.native-01.json",
+            "bytes": 846136,
+            "sha256": "ed2a851d1b7c19b6947092f9fb1a1d9a9f3d4f02e0afea31bd14e2cde0aa166d",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0036-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T12:02:50.882362+00:00",
+      "finished_utc": "2026-10-05T12:02:54.086806+00:00"
+    },
+    {
+      "sequence": 38,
+      "request_id": "r10-0039-current-ready-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_character_interaction_ordinary_v1",
+      "arguments": {
+        "interaction_key": "lyd_c2_propose_join_interaction",
+        "recipient_id": 65866,
+        "expected_revision": 17
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0038-r10-0039-current-ready-query.request.json",
+        "bytes": 328,
+        "sha256": "3f52ffb39e476efed5a6103737c887c2d9491a4f8d80fdc1356f0d05b03ecd0b",
+        "stat_unchanged_during_read": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0038-r10-0039-current-ready-query.response.json",
+        "bytes": 1034,
+        "sha256": "acad2c894eb418ab8ef15dd460fb6d0b900e0b021ae1333d9c5d676193228a5f",
+        "stat_unchanged_during_read": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0038-r10-0039-current-ready-query.started.json",
+        "bytes": 348,
+        "sha256": "8d5a5f5bf9ee10a9bbbb24d25049d2e0a7982f65ee90b76914cf766459226e2c",
+        "stat_unchanged_during_read": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0038-r10-0039-current-ready-query.sdk-result.json",
+        "bytes": 7619,
+        "sha256": "63cea7db1098accddf8efeabd76948d9222aac1059129356b457eca003b3b6e1",
+        "stat_unchanged_during_read": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0038-r10-0039-current-ready-query.native-01.json",
+            "bytes": 3424,
+            "sha256": "ae3a5fcdd1dbd021af341dbbafc373345a0f2472f9a67663991b362bdcc6ef72",
+            "stat_unchanged_during_read": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0037-ordinary-interaction-query.json",
+          "status": "native_ordinary_interaction_observed",
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "started_utc": "2026-10-05T12:03:13.059340+00:00",
+      "finished_utc": "2026-10-05T12:03:14.418434+00:00"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+﻿# GENERATED FILE: edit tools/gen_institution.py; regenerate through gen_runtime.py.
+lyd_i3b_nominate_interaction = {
+    category = interaction_category_religion common_interaction = yes
+    desc = lyd_i3b_terms_desc auto_accept = yes
+    is_shown = { scope:actor = { lyd_i3b_actor_trigger = yes has_variable = lyd_i3b_active var:lyd_i3b_phase = 1 } scope:recipient = { faith = scope:actor.faith lyd_i3b_elector_trigger = yes } }
+    is_valid_showing_failures_only = {
+        scope:actor = { custom_description = { text = lyd_i3b_nomination_actor_valid_tt subject = scope:actor lyd_i3b_current_trigger = { ACTOR = scope:actor } var:lyd_i3b_phase = 1 } }
+        scope:recipient = { custom_description = { text = lyd_i3b_nomination_target_valid_tt subject = scope:recipient lyd_i3b_nomination_target_trigger = { ACTOR = scope:actor } } }
+    }
+    on_auto_accept = { hidden_effect = { lyd_i3b_nominate_effect = yes } }
+    ai_will_do = { base = 0 }
+}

@@ -1,0 +1,1 @@
+ROOT: CK3 original retained HANDLE observed exit code 0; official Client close requested and session-closed preserved; fresh process inspection confirms game and consumers absent. Evidence: r10-after-client-close-process-readback-20261006-001/PROCESS-READBACK.json SHA256 5a8d5445028d6466b554289574825657415bceed7d497dbadbafcfe0f374f589. Stop keeper renewal; retain all receipts.

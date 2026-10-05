@@ -1,0 +1,42 @@
+{
+  "readonly_precheck_argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-repeated-join-flow-20261005-001\\prepare_r10_join_flow.py",
+    "--request",
+    null
+  ],
+  "prepare_references_argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-repeated-join-flow-20261005-001\\prepare_r10_join_flow.py",
+    "--request",
+    null,
+    "--prepare"
+  ],
+  "bind_argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    null,
+    null
+  ],
+  "emit_argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    null,
+    null
+  ],
+  "release_argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:/workspace/ck3_lyd_runtime_20261004/r9-join2-host-flow-20261005-001/root_release_once.py",
+    "--request",
+    null
+  ],
+  "future_refs_materialized": false,
+  "bind_executed": false,
+  "emit_executed": false,
+  "registry_enabled": false,
+  "release_executed": false,
+  "MCP_calls": 0
+}

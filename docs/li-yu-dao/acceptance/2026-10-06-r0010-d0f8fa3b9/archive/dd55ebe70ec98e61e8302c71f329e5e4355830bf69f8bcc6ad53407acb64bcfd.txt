@@ -1,0 +1,1028 @@
+31254={
+	first_name="Robert"
+	birth=1015.1.1
+	nickname=nick_the_fox
+	nickname_text="狐狸"
+	ethnicity=caucasian_ginger
+	culture=73
+	rite=169
+	dynasty_house=174
+	skill={ 4 9 6 6 14 7 }
+	dna="Ce4J7oJ0gnQdsB2wAH4AfgGIAYgAdQB1AYABgAByAHIBhQGFAH0AfQCuAHcBjQGNAHcAdwGVAZUBkAGQAF4AXgBaAFoBpAGkAF4AXgGFAYUB0gHSAGsAawByAHIAdwB3AYoBigB5AHkAcABwAHgAeAGZAZkAPgA+AZMBkwB2AHYBrAGsAZIBkgG4AHoADQANACMAIwEDAQMBEgESACEAIQFlAWUAMgAyACUAJQGcAZwBHgEeABsAGwEQARAAsgBPAXUBdQAWATgAPgA+ASUBJQEMAQwAGAAYABwAHABnAGcBeAF4AAQABAAdAB0BBwEHABIAEgBNAE0BPwE/AVUBVQEcARwAbAEpACoAKgEPAQ8ABAAEAXMAcwEJAQkAKAAoARsBGwEGAQYBLQEtATsBOwAqACoEEAQQAREBEQFwAXAA4QDhAPEA8QEPAQ8AhAEKAA8ADwCpAKkAkgDIAA4ADgAbABsAAAAAAHsAewF3AXUBeQF5ARAHBgnECcQDDQMNBqwGrAHAAcABpABbAIAAgADcAH8BsQGxAQABAAGZAZk="
+
+	mass=7
+	traits={ 69 51 67 19 31 158 }
+	family_data={
+		primary_spouse=36311
+		spouse=36311
+		former_spouses={ 34968 }
+		child={ 38924 39348 39979 40526 40695 40847 41032 }
+	}
+
+	alive_data={
+		variables={
+			data={ {
+					flag=lyd_enabled
+					data={
+					}
+
+				}
+ {
+					flag=lyd_r3_fixture_initialized
+					data={
+					}
+
+				}
+ {
+					flag=ce3_11_servus_servorum_dei_achievement_start
+					data={
+					}
+
+				}
+ {
+					flag=has_scripted_appearance
+					data={
+					}
+
+				}
+ {
+					flag=chancellor_foreign_affairs_opinion_value
+					data={
+						type=value
+						identity=18750
+					}
+
+				}
+ {
+					flag=court_chaplain_religious_relations_opinion_value
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=lyd_r4_learning_before
+					data={
+						type=value
+						identity=400000
+					}
+
+				}
+ {
+					flag=lyd_r4_learning_delta
+					data={
+						type=value
+						identity=1100000
+					}
+
+				}
+ {
+					flag=lyd_r4_qualification_gold_before
+					data={
+						type=value
+						identity=24300000
+					}
+
+				}
+ {
+					flag=lyd_r4_qualification_piety_before
+					data={
+						type=value
+						identity=15000000
+					}
+
+				}
+ {
+					flag=lyd_r4_qualification_faith_before
+					data={
+						type=faith
+						identity=32
+					}
+
+				}
+ {
+					flag=lyd_r4_qualification_rite_before
+					data={
+						type=rite
+						identity=169
+					}
+
+				}
+ {
+					flag=lyd_r4_qualification_attempted
+					data={
+					}
+
+				}
+ {
+					flag=lyd_r4_learning_immediate_after
+					data={
+						type=value
+						identity=400000
+					}
+
+				}
+ {
+					flag=lyd_r4_qualification_gold_immediate_after
+					data={
+						type=value
+						identity=24300000
+					}
+
+				}
+ {
+					flag=lyd_r4_qualification_piety_immediate_after
+					data={
+						type=value
+						identity=15000000
+					}
+
+				}
+ {
+					flag=changed_rite_flag
+					data={
+					}
+
+				}
+ {
+					flag=lyd_r4_learning_after
+					data={
+						type=value
+						identity=1500000
+					}
+
+				}
+ {
+					flag=lyd_r4_initial_source_faith
+					data={
+						type=faith
+						identity=32
+					}
+
+				}
+ {
+					flag=lyd_r4_setup_gold_before
+					data={
+						type=value
+						identity=24300000
+					}
+
+				}
+ {
+					flag=lyd_r4_setup_piety_before
+					data={
+						type=value
+						identity=15000000
+					}
+
+				}
+ {
+					flag=lyd_r4_setup_learning_before
+					data={
+						type=value
+						identity=1500000
+					}
+
+				}
+ {
+					flag=lyd_r4_setup_attempted
+					data={
+					}
+
+				}
+ {
+					flag=lyd_r4_reset_count
+					data={
+						type=value
+						identity=500000
+					}
+
+				}
+ {
+					flag=lyd_r4_source_rep
+					data={
+						type=char
+						identity=65865
+					}
+
+				}
+ {
+					flag=lyd_r4_jingshu_rep
+					data={
+						type=char
+						identity=65866
+					}
+
+				}
+ {
+					flag=lyd_r4_receiving_faith
+					data={
+						type=faith
+						identity=104
+					}
+
+				}
+ {
+					flag=lyd_r4_fixture_initialized
+					data={
+					}
+
+				}
+ {
+					flag=lyd_r4_same_core
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_r4_both_no_head
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_r4_actor_qualified
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_r4_join_funds
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=lyd_r4_distinct_faiths
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_r4_pair_divergence
+					data={
+						type=value
+						identity=300000
+					}
+
+				}
+ {
+					flag=lyd_r4_gold_before
+					data={
+						type=value
+						identity=24300000
+					}
+
+				}
+ {
+					flag=lyd_r4_piety_before
+					data={
+						type=value
+						identity=15000000
+					}
+
+				}
+ {
+					flag=lyd_r4_gold_expected
+					data={
+						type=value
+						identity=224300000
+					}
+
+				}
+ {
+					flag=lyd_r4_piety_expected
+					data={
+						type=value
+						identity=915000000
+					}
+
+				}
+ {
+					flag=lyd_r4_gold_after
+					data={
+						type=value
+						identity=224300000
+					}
+
+				}
+ {
+					flag=lyd_r4_piety_after
+					data={
+						type=value
+						identity=915000000
+					}
+
+				}
+ {
+					flag=lyd_r4_resources_prepared
+					data={
+					}
+
+				}
+ {
+					flag=lyd_c2_callback_nonce
+					data={
+						type=value
+						identity=1000000
+					}
+
+				}
+ {
+					flag=lyd_c2_completed_joins
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_completed_detaches
+					data={
+						type=value
+						identity=200000
+					}
+
+				}
+ {
+					flag=lyd_c2_serial
+					data={
+						type=value
+						identity=1000000
+					}
+
+				}
+ {
+					flag=lyd_c2_elector_owner
+					data={
+						type=char
+						identity=31254
+					}
+
+				}
+ {
+					flag=lyd_c2_elector_serial
+					data={
+						type=value
+						identity=1000000
+					}
+
+				}
+ {
+					flag=lyd_c2_elector_rite
+					data={
+						type=rite
+						identity=169
+					}
+
+				}
+ {
+					flag=lyd_c2_affected_owner
+					data={
+						type=char
+						identity=31254
+					}
+
+				}
+ {
+					flag=lyd_c2_affected_serial
+					data={
+						type=value
+						identity=1000000
+					}
+
+				}
+ {
+					flag=lyd_c2_affected_rite
+					data={
+						type=rite
+						identity=169
+					}
+
+				}
+ {
+					flag=lyd_c2_source_core_total
+					data={
+						type=value
+						identity=300000
+					}
+
+				}
+ {
+					flag=lyd_c2_source_permitted_total
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=lyd_c2_source_known_total
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=lyd_c2_source_prohibited_total
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=lyd_c2_source_doctrines_total
+					data={
+						type=value
+						identity=2800000
+					}
+
+				}
+ {
+					flag=lyd_c2_player_owner
+					data={
+						type=char
+						identity=31254
+					}
+
+				}
+ {
+					flag=lyd_c2_player_serial
+					data={
+						type=value
+						identity=900000
+					}
+
+				}
+ {
+					flag=lyd_c2_player_nonce
+					data={
+						type=value
+						identity=900000
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_owner
+					data={
+						type=char
+						identity=31254
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_serial
+					data={
+						type=value
+						identity=900000
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_nonce
+					data={
+						type=value
+						identity=900000
+					}
+
+				}
+ {
+					flag=lyd_c2_vote_yes
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_check_count
+					data={
+						type=value
+						identity=200000
+					}
+
+				}
+ {
+					flag=lyd_c2_check_players
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=reformer_legend
+					data={
+					}
+
+				}
+ {
+					flag=has_created_a_faith
+					data={
+						type=boolean
+						identity=1
+					}
+
+				}
+ {
+					flag=achievement_its_not_a_cult_flag
+					data={
+					}
+
+				}
+ {
+					flag=lyd_r4_reset_gold_before
+					data={
+						type=value
+						identity=154300000
+					}
+
+				}
+ {
+					flag=lyd_r4_reset_piety_before
+					data={
+						type=value
+						identity=565000000
+					}
+
+				}
+ {
+					flag=lyd_c2_check_rites
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_kind
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_terms_revision
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_result
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=lyd_c2_source_faith
+					data={
+						type=faith
+						identity=106
+					}
+
+				}
+ {
+					flag=lyd_c2_source_main
+					data={
+						type=rite
+						identity=169
+					}
+
+				}
+ {
+					flag=lyd_c2_moving_rite
+					data={
+						type=rite
+						identity=169
+					}
+
+				}
+ {
+					flag=lyd_c2_source_singleton
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_source_rite_head
+					data={
+						type=char
+						identity=31254
+					}
+
+				}
+ {
+					flag=lyd_c2_source_total
+					data={
+						type=value
+						identity=200000
+					}
+
+				}
+ {
+					flag=lyd_c2_target_total
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_target_rite_total
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_dormant_total
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=lyd_c2_source_yes
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_target_yes
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=lyd_c2_player_total
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_c2_player_yes
+					data={
+						type=value
+					}
+
+				}
+ {
+					flag=lyd_c2_target_rep
+					data={
+						type=char
+						identity=65866
+					}
+
+				}
+ {
+					flag=lyd_c2_target_faith
+					data={
+						type=faith
+						identity=104
+					}
+
+				}
+ {
+					flag=lyd_c2_target_main
+					data={
+						type=rite
+						identity=159
+					}
+
+				}
+ {
+					flag=faith_conversion_recently_converted
+					tick=1825
+					data={
+					}
+
+				}
+ {
+					flag=lyd_c2_active
+					tick=365
+					data={
+						type=value
+						identity=100000
+					}
+
+				}
+ {
+					flag=lyd_school_cooldown
+					tick=349
+					data={
+					}
+
+				}
+ }
+			list={ {
+					name="lyd_c2_target_rites"
+					item={
+						type=rite
+						identity=159
+					}
+
+					duration={ 1 }
+				}
+ {
+					name="lyd_c2_target_followers"
+					item={
+						type=char
+						identity=65866
+					}
+
+					duration={ 1 }
+				}
+ {
+					name="lyd_c2_target_electors"
+					item={
+						type=char
+						identity=65866
+					}
+
+					duration={ 1 }
+				}
+ {
+					name="lyd_c2_source_electors"
+					item={
+						type=char
+						identity=31254
+					}
+
+					item={
+						type=char
+						identity=65865
+					}
+
+					duration={ 2 }
+				}
+ {
+					name="lyd_c2_players"
+					item={
+						type=char
+						identity=31254
+					}
+
+					duration={ 1 }
+				}
+ {
+					name="lyd_c2_source_core"
+					item={
+						type=tenet
+						key=lyd_tenet_ancestral_reverence					}
+
+					item={
+						type=tenet
+						key=lyd_tenet_investigate_principle					}
+
+					item={
+						type=tenet
+						key=lyd_tenet_reverent_attention					}
+
+					duration={ 3 }
+				}
+ {
+					name="lyd_c2_source_doctrines"
+					item={
+						type=doctrine
+						key=sinitic_hostility_doctrine					}
+
+					item={
+						type=doctrine
+						key=doctrine_concubines					}
+
+					item={
+						type=doctrine
+						key=doctrine_divorce_allowed					}
+
+					item={
+						type=doctrine
+						key=doctrine_bastardry_legitimization					}
+
+					item={
+						type=doctrine
+						key=doctrine_homosexuality_shunned					}
+
+					item={
+						type=doctrine
+						key=doctrine_deviancy_crime					}
+
+					item={
+						type=doctrine
+						key=doctrine_adultery_men_crime					}
+
+					item={
+						type=doctrine
+						key=doctrine_adultery_women_crime					}
+
+					item={
+						type=doctrine
+						key=doctrine_kinslaying_any_dynasty_member_crime					}
+
+					item={
+						type=doctrine
+						key=doctrine_witchcraft_crime					}
+
+					item={
+						type=doctrine
+						key=doctrine_gender_male_dominated					}
+
+					item={
+						type=doctrine
+						key=doctrine_consanguinity_dynastic					}
+
+					item={
+						type=doctrine
+						key=doctrine_pluralism_pluralistic					}
+
+					item={
+						type=doctrine
+						key=doctrine_theocracy_lay_clergy					}
+
+					item={
+						type=doctrine
+						key=doctrine_no_head					}
+
+					item={
+						type=doctrine
+						key=doctrine_clerical_function_taxation					}
+
+					item={
+						type=doctrine
+						key=doctrine_clerical_gender_male_only					}
+
+					item={
+						type=doctrine
+						key=doctrine_clerical_marriage_allowed					}
+
+					item={
+						type=doctrine
+						key=doctrine_clerical_succession_temporal_appointment					}
+
+					item={
+						type=doctrine
+						key=doctrine_pilgrimage_local_rites					}
+
+					item={
+						type=doctrine
+						key=doctrine_family_rites					}
+
+					item={
+						type=doctrine
+						key=doctrine_no_anointment					}
+
+					item={
+						type=doctrine
+						key=doctrine_polytheist					}
+
+					item={
+						type=doctrine
+						key=doctrine_scriptural					}
+
+					item={
+						type=doctrine
+						key=doctrine_monasticism_absent					}
+
+					item={
+						type=doctrine
+						key=doctrine_sacraments_absent					}
+
+					item={
+						type=doctrine
+						key=special_doctrine_is_sinitic_faith					}
+
+					item={
+						type=doctrine
+						key=special_doctrine_immaterial_harmony					}
+
+					duration={ 28 }
+				}
+ }
+		}
+		income=6.01662
+		modifier={
+			modifier=guiscard_modifier			expiration_date=9999.1.1
+		}
+
+		fertility=0.5
+		health=4.1616
+		gold={
+			value=1543
+		}
+		piety={
+			currency=5650
+			accumulated=10000
+		}
+		prestige={
+			currency=2200
+			accumulated=5000
+		}
+		influence={
+			currency=240
+		}
+		pretender={ 2250 }
+		claim={ {
+				title=7219
+			}
+ }
+		lifestyle_xp={
+			diplomacy_lifestyle=0
+			martial_lifestyle=0
+			stewardship_lifestyle=0
+			intrigue_lifestyle=0
+			learning_lifestyle=0
+			wanderer_lifestyle=0
+		}
+		perk={ bellum_justum_perk parthian_tactics_perk envelopment_perk organized_retreat_perk hit_and_run_perk engineered_for_destruction_perk living_off_the_land_perk sappers_perk strategist_perk stalwart_leader_perk chivalric_dominance_perk never_back_down_perk kingsguard_perk meritocracy_perk large_levies_perk soon_forgiven_perk toe_the_line_perk }
+		languages={ language_french language_italian }
+		activity_data={
+		}
+
+		location={
+			location=2619
+		}
+		memories={ 16777230 }
+	}
+
+	court_data={
+	}
+
+	landed_data={
+		domain={ 2230 2231 2262 2232 2263 2235 2264 }
+		vassal_contracts={ 8663 8691 8809 8812 9402 16786427 16786415 }
+		became_ruler_date=1066.9.15
+		laws={ crown_authority_0 confederate_partition_succession_law male_preference_law top_liege_redirected_to_border_wars_law }
+		current_strength=1205
+		strength=1205
+		strength_without_hires=1205
+		power=40820
+		max_power=40820
+		levy=891
+		succession_result_type=inheritance_child_line
+		succession={ 40526 40695 39979 40847 41032 37244 38098 36445 36663 36873 31692 34973 40259 35598 36638 32536 38561 39045 39171 39352 39527 33234 37702 33542 34232 32236 38560 38902 31538 35899 40507 40843 41028 36329 36847 41495 37064 33028 38782 39032 39309 39932 40694 41235 41288 }
+		domain_limit=6
+		vassal_limit=20
+		vassals_towards_limit=5
+		government=feudal_government
+		realm_capital=2232
+		council={ 7870 7871 7872 7873 7874 7875 }
+		diplo_centers={ 1938 2418 1895 2283 1711 2539 1826 2461 1796 2160 1866 2381 }
+		legend_seeds={ {
+				type=holy
+				chronicle=new_faith_legend
+				properties={ 					"reformer"={
+						type=char
+						identity=31254
+					}
+ 					"faith"={
+						type=faith
+						identity=105
+					}
+ 					"religion"={
+						type=religion
+						identity=9
+					}
+ 					"reason"={
+						type=flag
+						flag="new_faith"
+					}
+ }
+				quality=famed
+			}
+ }
+		barter_goods={
+		}
+	}
+
+	playable_data={
+		knights={ 35899 34973 45464 36445 32236 65865 33946 45458 34975 65866 34232 37244 37702 58477 }
+		diarchy_successor=34232
+		was_player=yes
+		legitimacy=324
+		legitimacy_type=duke_legitimacy
+		tenets={ tenet_apostolic_succession }
+		current_spiritual_fulfillment=-40
+		known_doctrines={ abrahamic_hostility_doctrine doctrine_monogamy doctrine_polygamy doctrine_divorce_approval doctrine_divorce_disallowed doctrine_divorce_allowed doctrine_bastardry_legitimization doctrine_bastardry_none doctrine_bastardry_all doctrine_homosexuality_shunned doctrine_homosexuality_crime doctrine_homosexuality_accepted doctrine_deviancy_crime doctrine_deviancy_shunned doctrine_adultery_men_shunned doctrine_adultery_men_crime doctrine_adultery_men_accepted doctrine_adultery_women_crime doctrine_adultery_women_shunned doctrine_kinslaying_close_kin_crime doctrine_kinslaying_extended_family_crime doctrine_kinslaying_shunned doctrine_witchcraft_crime doctrine_witchcraft_shunned doctrine_gender_male_dominated doctrine_gender_equal doctrine_consanguinity_aunt_nephew_and_uncle_niece doctrine_consanguinity_cousins doctrine_consanguinity_unrestricted doctrine_pluralism_righteous doctrine_pluralism_fundamentalist doctrine_pluralism_pluralistic doctrine_theocracy_temporal doctrine_theocracy_lay_clergy doctrine_spiritual_head doctrine_clerical_function_taxation doctrine_clerical_gender_male_only doctrine_clerical_gender_either doctrine_clerical_marriage_disallowed doctrine_clerical_marriage_allowed doctrine_clerical_succession_spiritual_fixed_appointment doctrine_pilgrimage_encouraged doctrine_pilgrimage_forbidden doctrine_pilgrimage_local_rites doctrine_funeral_stoic doctrine_imperial_anointment doctrine_monotheist doctrine_scriptural doctrine_monasticism_accepted doctrine_monasticism_encouraged doctrine_monasticism_absent doctrine_sacraments_central special_doctrine_is_christian_faith special_doctrine_ecumenical_christian special_doctrine_has_clerical_electors special_doctrine_is_western_christian_faith doctrine_kinslaying_any_dynasty_member_crime doctrine_clerical_function_alms_and_pacification doctrine_funeral_bewailment doctrine_anointment_permitted special_doctrine_pope_blessing doctrine_deviancy_accepted doctrine_clerical_succession_conditional sinitic_hostility_doctrine doctrine_concubines doctrine_consanguinity_dynastic doctrine_consanguinity_restricted doctrine_no_head doctrine_clerical_succession_temporal_appointment doctrine_pilgrimage_mandatory doctrine_family_rites doctrine_no_anointment doctrine_polytheist doctrine_monasticism_forbidden doctrine_sacraments_absent special_doctrine_is_sinitic_faith special_doctrine_immaterial_harmony }
+		known_tenets={ tenet_peace_of_god tenet_dulia tenet_apostolic_succession tenet_confession tenet_original_sin tenet_divine_liturgy tenet_anachoresis tenet_communal_identity tenet_communion tenet_vows_of_poverty tenet_adaptive tenet_transubstantiation tenet_ora_et_labora tenet_hyperdulia tenet_simony tenet_monophysitism tenet_acts_of_apostles tenet_purgatory tenet_be_fruitful_and_multiply tenet_celestial_hierarchy tenet_miles_christi tenet_philanthropia tenet_adoptionism tenet_love_thy_neighbour tenet_miaphysitism tenet_hesychasm tenet_mortification_of_the_flesh tenet_aniconism tenet_gnosticism tenet_pentarchy tenet_esotericism tenet_legalism tenet_literalism tenet_religious_legal_pronouncements tenet_asceticism tenet_ritual_celebrations tenet_sanctity_of_nature tenet_natural_primitivism tenet_polyamory tenet_reincarnation tenet_dharmic_pacifism tenet_inner_journey tenet_sinitic_syncretism tenet_pure_land tenet_no_mind tenet_pursuit_of_knowledge tenet_benevolent_governance tenet_filial_piety tenet_harmonious_society lyd_tenet_reverent_heaven lyd_tenet_sincerity_solitude lyd_tenet_ritual_music lyd_tenet_ancestral_reverence lyd_tenet_names_duties lyd_tenet_humaneness_righteousness lyd_tenet_righteous_remonstrance lyd_tenet_sage_transmission lyd_tenet_extend_sprouts lyd_tenet_deliberate_cultivation lyd_tenet_righteous_qi lyd_tenet_portent_reflection lyd_tenet_qi_kinship lyd_tenet_investigate_principle lyd_tenet_reverent_attention lyd_tenet_original_heart lyd_tenet_innate_knowing lyd_tenet_knowing_acting lyd_tenet_textual_ritual lyd_tenet_classical_synthesis lyd_tenet_annals_judgment lyd_tenet_constant_heaven lyd_tenet_restore_nature lyd_tenet_ordinary_life lyd_tenet_six_arts lyd_tenet_philological_way lyd_tenet_moral_achievement lyd_tenet_restrain_violence lyd_tenet_subtle_intentions lyd_tenet_responsive_interpretation lyd_tenet_images_numbers lyd_tenet_profound_interpretation lyd_tenet_knowing_acting_support lyd_tenet_ongoing_generation lyd_tenet_quiet_self_attainment lyd_tenet_recognition_everywhere }
+	}
+
+}

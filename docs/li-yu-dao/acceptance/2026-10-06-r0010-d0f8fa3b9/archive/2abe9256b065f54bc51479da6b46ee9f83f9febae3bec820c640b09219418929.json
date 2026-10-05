@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 237,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0238-detach-second-final-commit.request.json",
+  "request_sha256": "1c67af7da90f8d27e35ed190ef51dd5a5b7367b17a30dc428d59128d6ed582a1",
+  "started_at_utc": "2026-10-05T17:55:45.468233+00:00"
+}

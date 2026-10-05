@@ -1,0 +1,10 @@
+[master b7b1dc83a] Enable Confucian institutional and challenger authority revalidation
+ 37 files changed, 17426 insertions(+), 135 deletions(-)
+ create mode 100644 docs/handover/2026-10-05-ck3-lyd-local-permanent-runtime-authorization.md
+ create mode 100644 docs/li-yu-dao/acceptance/2026-10-05-c3-i3b-runtime-source-l0/INDEX.json
+ create mode 100644 docs/li-yu-dao/acceptance/2026-10-05-c3-i3b-runtime-source-l0/RAW-MAPPINGS.json
+ create mode 100644 docs/li-yu-dao/acceptance/2026-10-05-c3-i3b-runtime-source-l0/REPORT.md
+ create mode 100644 docs/li-yu-dao/acceptance/2026-10-05-c3-i3b-runtime-source-l0/RESULT.json
+ create mode 100644 docs/li-yu-dao/acceptance/2026-10-05-c3-i3b-runtime-source-l0/source-evidence.tar.gz
+ create mode 100644 mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py
+ create mode 100644 mod_li_yu_dao/tools/test_institution_detached.py

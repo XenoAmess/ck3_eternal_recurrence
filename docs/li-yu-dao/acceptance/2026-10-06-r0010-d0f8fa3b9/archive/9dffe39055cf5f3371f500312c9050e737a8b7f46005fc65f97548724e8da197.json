@@ -1,0 +1,235 @@
+{
+  "schema": "lyd.external-evidence-index.v1",
+  "files": [
+    {
+      "path": "actual-save-001/actor-31254.excerpt.txt",
+      "bytes": 20056,
+      "sha256": "d48c94fa123ac84ea42e18664813c52a94d1d2312cc170971fe72ff3c6210f04"
+    },
+    {
+      "path": "actual-save-001/character-65865.excerpt.txt",
+      "bytes": 1961,
+      "sha256": "9fe1c2780a078a838304064a88833ee058d4f0afc745c73603246847b4f0048a"
+    },
+    {
+      "path": "actual-save-001/character-65866.excerpt.txt",
+      "bytes": 2407,
+      "sha256": "b60e79ac0e4d3203cccec953059f0ad0e82a92ec82e864d6c0d36188ca2ecc2f"
+    },
+    {
+      "path": "actual-save-001/faith-104.excerpt.txt",
+      "bytes": 4759,
+      "sha256": "27167a8e1fe7196402a0a688c45591fc898ae284092606403ad6b0269bb6df3c"
+    },
+    {
+      "path": "actual-save-001/faith-106.excerpt.txt",
+      "bytes": 4872,
+      "sha256": "d5fd14c74002bcb796635479447ca8d75e1a9edeb5fae6b4d8f978920501a493"
+    },
+    {
+      "path": "actual-save-001/faith-32.excerpt.txt",
+      "bytes": 1955,
+      "sha256": "b481404a15d4a05a7185077f44e111d55a01550b85904fe7db437c189446e9fb"
+    },
+    {
+      "path": "actual-save-001/metadata.excerpt.txt",
+      "bytes": 32457,
+      "sha256": "a397b0b42873a26824d507efa9b94d330ad85e330f52cbf02f05f8b6923dbb8b"
+    },
+    {
+      "path": "actual-save-001/played-character.excerpt.txt",
+      "bytes": 287,
+      "sha256": "f9f82598a6ef39d8a1a3c805701fdacd4cc9f442821b4cc852e4a13b30f80962"
+    },
+    {
+      "path": "actual-save-001/REPORT.json",
+      "bytes": 72948,
+      "sha256": "ba9a06a00d4d74f576e51f14a2abc1fa26aabe8ab8af73a533075c6cec21abbd"
+    },
+    {
+      "path": "actual-save-001/rite-150.excerpt.txt",
+      "bytes": 4782,
+      "sha256": "80daccc116669fe8bc4818292f79bf8e753e61ae6fdf498ea29b29fd1b9766bb"
+    },
+    {
+      "path": "actual-save-001/rite-159.excerpt.txt",
+      "bytes": 8867,
+      "sha256": "d5ee92f7cf4f59ab00df287518cd87b36aa9a1777fcb873d556de1528783420e"
+    },
+    {
+      "path": "actual-save-001/rite-169.excerpt.txt",
+      "bytes": 5101,
+      "sha256": "61ac7b66f5807abb72a9c410edd4252baa8e2668729669efb105d6df8d798d14"
+    },
+    {
+      "path": "actual-save-001/STATE.json",
+      "bytes": 705585,
+      "sha256": "f461cec977011fb559413791215a976242f934b8b39eb11f42bae6c1bd3d544b"
+    },
+    {
+      "path": "actual-save-001/title-2230.excerpt.txt",
+      "bytes": 665,
+      "sha256": "fab3e58a2a3f55a1d76da559ec486f0eba19f0669737e1d0acb2f3fe312da261"
+    },
+    {
+      "path": "actual-save-001/title-2231.excerpt.txt",
+      "bytes": 861,
+      "sha256": "5ad0f12b726d36920948c75545dc70fdbd4934872fe452a8cd48dd53bb455fa3"
+    },
+    {
+      "path": "actual-save-001/title-2232.excerpt.txt",
+      "bytes": 274,
+      "sha256": "bc0fa0f7c13f2fe59c3dee28f3d28bdc5812a18578f1b5712b01c05940ce4823"
+    },
+    {
+      "path": "actual-save-001/title-2235.excerpt.txt",
+      "bytes": 410,
+      "sha256": "d556ea8eab1a3ba82b557cdd9ad5a9c629b91ff6dca0fb1fb19352d6c0e68f36"
+    },
+    {
+      "path": "actual-save-001/title-2262.excerpt.txt",
+      "bytes": 595,
+      "sha256": "b60ecde293edc63050a4cca64bf542ba3293538782cd40c1e2cfec90ed2a3bef"
+    },
+    {
+      "path": "actual-save-001/title-2263.excerpt.txt",
+      "bytes": 250,
+      "sha256": "3f5670f07356dbd7ec18a487c334445a7836ecf6fee3ed1a198ebf551501016f"
+    },
+    {
+      "path": "actual-save-001/title-2264.excerpt.txt",
+      "bytes": 410,
+      "sha256": "4a909ce428dcb85d64c49c53d74bfb0ef6a38be59409e08b2ed31ba75bfa05f6"
+    },
+    {
+      "path": "collect_controls.py",
+      "bytes": 4296,
+      "sha256": "cf0fb2b692bac2349734902fdfe8f85c59ad10f396d3b84338c88667fed70a8e"
+    },
+    {
+      "path": "compare_complete_rites.py",
+      "bytes": 3883,
+      "sha256": "e059813c3beb9d8b38f46c2bc6837b9888c32125797f4c1c60691d1e2c893d66"
+    },
+    {
+      "path": "COMPLETE-RITE-FAITH-AST-DIFF.json",
+      "bytes": 331397,
+      "sha256": "29814c7894304636d4224aa1690972dcd594ca05405c07fee316ebbeea06322c"
+    },
+    {
+      "path": "COMPLETE-RITE-FAITH-AST-DIFF.qualified-001.json",
+      "bytes": 332273,
+      "sha256": "9554ab81e068ff261f79b7b64f41c70b592ecbb0787580793de8e97edc42a382"
+    },
+    {
+      "path": "CONTROL-LINEAGE-EVIDENCE.json",
+      "bytes": 44931,
+      "sha256": "c2874a1609114e6d9fbf75177288247f85d8daad98d63e6b83cd01e7856c12f4"
+    },
+    {
+      "path": "finalize_open.py",
+      "bytes": 14946,
+      "sha256": "ffa06a5f9fdb0b8df04b9f4a6fe09eb814252a18ebe592ceb1150ee2e81f0cde"
+    },
+    {
+      "path": "finalize_open_v2.py",
+      "bytes": 15615,
+      "sha256": "36eb1886038ea03b5bac5bf661a5426f0138978b8655841edb3397d969b9adb7"
+    },
+    {
+      "path": "FINALIZER-REUSE.json",
+      "bytes": 2009,
+      "sha256": "fcdb0fd89e86b9a7c9394a9e7c844599c90d6ed504621b89bdce78fe689960f2"
+    },
+    {
+      "path": "inspect_new.py",
+      "bytes": 1861,
+      "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+    },
+    {
+      "path": "inspect_target_rite_ballot.py",
+      "bytes": 596,
+      "sha256": "bed8ed563b8f5e4334aacc3092a575bcf13ac9c19899aa5a9dbe3197352c68b0"
+    },
+    {
+      "path": "INSPECTION.json",
+      "bytes": 6968,
+      "sha256": "f2f1724d0276ca9db5dfc47025f9700e58e21ab0d1ce5b158178dd51f585323c"
+    },
+    {
+      "path": "pair-diff-001/REPORT.json",
+      "bytes": 31733,
+      "sha256": "477d157064dd1b7f5bf97984ecaaf36ea1b77faea40f4319ce9d40563cb86d07"
+    },
+    {
+      "path": "PREPARATION.json",
+      "bytes": 1692,
+      "sha256": "b19f3b8b0656c572dd36bcb5e87bda8474c9f43c64e0bbf5e6cb81469e90aa27"
+    },
+    {
+      "path": "prepare_finalizer.py",
+      "bytes": 5441,
+      "sha256": "0cf9cf6bab59eb156f32f8a996dfd3892585c51c27519bcda8330d28c7cb9ce6"
+    },
+    {
+      "path": "prepare_request.py",
+      "bytes": 2256,
+      "sha256": "8d8b23c685faba12e35f9373d0da8774f70635e312184c42175048ed1f6372e6"
+    },
+    {
+      "path": "prepare_tools.py",
+      "bytes": 3614,
+      "sha256": "25102f8927193372179179b60d521dcd144ec7ebca7de633f83497b9065eb275"
+    },
+    {
+      "path": "PROPOSAL-OPENED-FACTS.json",
+      "bytes": 329662,
+      "sha256": "727d68702938d7dbd2a8a8a81cc8da583e8cd2bae982ff2f26dd5d43368cc882"
+    },
+    {
+      "path": "qualify_target_rite_ballot.py",
+      "bytes": 6192,
+      "sha256": "b9db88bce30eeb824895b5e17a8baf3d730bd6af38065327b92630a829cd2c89"
+    },
+    {
+      "path": "reader/dependencies/bounded_save_parser.py",
+      "bytes": 1999,
+      "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+    },
+    {
+      "path": "reader/dependencies/save_fields.py",
+      "bytes": 2236,
+      "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+    },
+    {
+      "path": "reader/read_actual_checkpoint.py",
+      "bytes": 13860,
+      "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+    },
+    {
+      "path": "REPORT-zh.md",
+      "bytes": 1424,
+      "sha256": "c90e75e8f54db4b3942db9190a9754c1764335a755c589792f3f90f62cfb5ef1"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 5214,
+      "sha256": "c09cbfd74a63cc893ce716e3b6719b4e35a4d12b0b13f98f64b009e5ca11085d"
+    },
+    {
+      "path": "REQUEST.actual.json",
+      "bytes": 1895,
+      "sha256": "9b6c0e1605e304eecf74e57273c4d7beacd095ffff5c81d61f2fdb7160552802"
+    },
+    {
+      "path": "TARGET-RITE-BALLOT-QUALIFICATION.json",
+      "bytes": 11846,
+      "sha256": "6bf77eda03d042720ff10e6b326ab34b1accb54a024e54e3930d0967c1c1f8f5"
+    },
+    {
+      "path": "TOOL-REUSE.json",
+      "bytes": 4012,
+      "sha256": "2d4f6d2ade9c8a760183c6e7c0e17d327ee9a43edda3edd0ca355560b9f1d915"
+    }
+  ]
+}

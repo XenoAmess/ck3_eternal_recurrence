@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 230,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0231-detach-second-source-sign.request.json",
+  "request_sha256": "b85fd1755677e5e319c3148fde7f3bb5560971b28ea5d61001e5ad7c8b7c943c",
+  "started_at_utc": "2026-10-05T17:53:00.477837+00:00"
+}

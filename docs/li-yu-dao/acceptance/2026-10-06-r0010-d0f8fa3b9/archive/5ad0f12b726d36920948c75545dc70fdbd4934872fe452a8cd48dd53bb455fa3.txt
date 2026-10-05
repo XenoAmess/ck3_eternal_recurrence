@@ -1,0 +1,38 @@
+2231={
+	key=c_apulia
+	de_facto_liege=2230
+	variables={
+		data={ {
+				flag=brewery_counter_var
+				data={
+					type=value
+					identity=101300000
+				}
+
+			}
+ }
+	}
+	de_jure_liege=2230
+	de_jure_vassals={ 2232 2233 2234 2235 }
+	holder=31254
+	date=1057.1.1
+	succession_result_type=inheritance_child_line
+	heir={ 40526 40695 39979 40847 41032 37244 38098 36445 36663 36873 31692 34973 40259 35598 36638 32536 38561 39045 39171 39352 }
+	claim={ 36445 36663 36873 38098 38560 38902 }
+	history={ 762.1.1=7391 807.1.1=8599 817.1.1=8080 832.9.1=9295 839.8.1=10062 851.6.1=12221 853.12.1=12476 1042.1.1=30703 1046.1.1=30716 1051.8.10=31279 1057.1.1=31254 }
+	capital=2231
+	coat_of_arms_id=546
+	title_name_data={
+		name="阿普利亚"
+		adj="阿普利亚"
+		title_history_names={ {
+				date=762.1.1
+				name="c_apulia"
+			}
+ }
+	}
+
+	treasury={
+	}
+	nomad_name_type=default
+}

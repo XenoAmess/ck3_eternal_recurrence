@@ -1,0 +1,100 @@
+{
+  "schema": "ck3-normal-exit-context-result-v1",
+  "status": "context_observed",
+  "public_revision": 112,
+  "native_observation": {
+    "schema": "ck3-normal-exit-map-v1",
+    "step": "normal-exit-map-v1",
+    "action": "query_context",
+    "status": "context_observed",
+    "native_revision": 111,
+    "connection_generation": 1,
+    "game_pid": 13436,
+    "played_character_id": 31254,
+    "process_creation_filetime_100ns": 134356699957422997,
+    "pump_epoch": 2800133,
+    "exact_build_verified": true,
+    "owner_verified": true,
+    "process_identity_verified": true,
+    "source_abi_pins_verified": true,
+    "stock_files_verified": true,
+    "loaded_source_binding_verified": true,
+    "frame_verified": true,
+    "context_signature_verified": false,
+    "confirmation_visible": false,
+    "orderly_exit_verified": false,
+    "autosave_verified": false,
+    "exit_context_signature": "b4c03741589821028df6659c233e41b594a27c3a46a5c60105c4434af6042582",
+    "reason": "fresh_backend_context_observed",
+    "stage_consumed": [
+      true,
+      false,
+      false
+    ],
+    "targets": [
+      {
+        "read_complete": true,
+        "root_exists": true,
+        "root_visible": false,
+        "target_exists": true,
+        "target_visible": false,
+        "target_enabled": true,
+        "unique_target": true,
+        "dispatch_admitted": false,
+        "target_vtable_rva": 76961464
+      },
+      {
+        "read_complete": true,
+        "root_exists": true,
+        "root_visible": true,
+        "target_exists": true,
+        "target_visible": true,
+        "target_enabled": true,
+        "unique_target": true,
+        "dispatch_admitted": true,
+        "target_vtable_rva": 76961464
+      },
+      {
+        "read_complete": true,
+        "root_exists": true,
+        "root_visible": false,
+        "target_exists": true,
+        "target_visible": false,
+        "target_enabled": true,
+        "unique_target": true,
+        "dispatch_admitted": false,
+        "target_vtable_rva": 76961464
+      }
+    ],
+    "dispatches": [
+      {
+        "claim_latched": false,
+        "dispatch_invoked": false,
+        "native_handled": false,
+        "post_read_complete": false,
+        "postcondition_observed": false
+      },
+      {
+        "claim_latched": false,
+        "dispatch_invoked": false,
+        "native_handled": false,
+        "post_read_complete": false,
+        "postcondition_observed": false
+      },
+      {
+        "claim_latched": false,
+        "dispatch_invoked": false,
+        "native_handled": false,
+        "post_read_complete": false,
+        "postcondition_observed": false
+      }
+    ]
+  },
+  "exit_context_signature": "b4c03741589821028df6659c233e41b594a27c3a46a5c60105c4434af6042582",
+  "source_inventory_sha256": "18ae748deeb90f6f5900ee16e8402dcdd1a5a0f732d57bade0ea7da670ed6f19",
+  "process_creation_filetime_100ns": 134356699957422997,
+  "claim_consumed": false,
+  "retry_authorized": false,
+  "orderly_exit_verified": false,
+  "autosave_verified": false
+}

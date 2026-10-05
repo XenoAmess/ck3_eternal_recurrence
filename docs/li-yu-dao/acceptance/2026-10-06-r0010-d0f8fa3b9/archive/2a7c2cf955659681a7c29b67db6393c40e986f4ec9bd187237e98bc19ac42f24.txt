@@ -1,0 +1,1552 @@
+﻿# GENERATED FILE: edit tools/gen_runtime.py and run it again.
+namespace = lyd
+
+lyd.1 = {
+    type = character_event
+    title = lyd_welcome_t
+    desc = lyd_welcome_desc
+    theme = faith
+    trigger = { lyd_can_use_school_trigger = yes }
+    option = { name = lyd_welcome_continue }
+}
+lyd.2 = {
+    type = character_event
+    title = lyd_admission_failed_t
+    desc = lyd_admission_failed_desc
+    theme = faith
+    trigger = { lyd_is_player_trigger = yes }
+    option = { name = lyd_cancel }
+}
+
+lyd.10 = {
+    type = character_event
+    title = lyd_choose_school_t
+    desc = lyd_choose_school_desc
+    theme = faith
+    trigger = { lyd_can_change_school_trigger = yes }
+
+    option = {
+        name = lyd_adopt_kongmen
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_kongmen } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_kongmen_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_mengzi
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_mengzi } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_mengzi_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_xunzi
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_xunzi } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_xunzi_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_zhengxuan
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhengxuan } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_zhengxuan_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_wangsu
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wangsu } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_wangsu_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_jingshu
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_jingshu } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_jingshu_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_zhuxi
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhuxi } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_zhuxi_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_lujiuyuan
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_lujiuyuan } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_lujiuyuan_effect = yes
+    }
+
+    option = {
+        name = lyd_choose_school_next_page
+        trigger = { lyd_can_change_school_display_trigger = yes }
+        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.11 }
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.11 = {
+    type = character_event
+    title = lyd_choose_school_t
+    desc = lyd_choose_school_desc
+    theme = faith
+    trigger = { lyd_can_change_school_trigger = yes }
+
+    option = {
+        name = lyd_adopt_dongzhongshu
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_dongzhongshu } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_dongzhongshu_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_guwen
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_guwen } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_guwen_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_wangbi
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wangbi } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_wangbi_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_guoxiang
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_guoxiang } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_guoxiang_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_hanyu
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_hanyu } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_hanyu_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_liao
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_liao } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_liao_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_zhoudunyi
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhoudunyi } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_zhoudunyi_effect = yes
+    }
+
+    option = {
+        name = lyd_choose_school_previous_page
+        trigger = { lyd_can_change_school_display_trigger = yes }
+        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.10 }
+    }
+
+    option = {
+        name = lyd_choose_school_next_page
+        trigger = { lyd_can_change_school_display_trigger = yes }
+        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.12 }
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.12 = {
+    type = character_event
+    title = lyd_choose_school_t
+    desc = lyd_choose_school_desc
+    theme = faith
+    trigger = { lyd_can_change_school_trigger = yes }
+
+    option = {
+        name = lyd_adopt_chengbrothers
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_chengbrothers } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_chengbrothers_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_zhangzai
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhangzai } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_zhangzai_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_shaoyong
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_shaoyong } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_shaoyong_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_wanganshi
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wanganshi } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_wanganshi_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_sushi
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_sushi } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_sushi_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_huxiang
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_huxiang } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_huxiang_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_yongjia
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_yongjia } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_yongjia_effect = yes
+    }
+
+    option = {
+        name = lyd_choose_school_previous_page
+        trigger = { lyd_can_change_school_display_trigger = yes }
+        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.11 }
+    }
+
+    option = {
+        name = lyd_choose_school_next_page
+        trigger = { lyd_can_change_school_display_trigger = yes }
+        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.13 }
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.13 = {
+    type = character_event
+    title = lyd_choose_school_t
+    desc = lyd_choose_school_desc
+    theme = faith
+    trigger = { lyd_can_change_school_trigger = yes }
+
+    option = {
+        name = lyd_adopt_yongkang
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_yongkang } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_yongkang_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_wucheng
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wucheng } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_wucheng_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_chenxianzhang
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_chenxianzhang } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_chenxianzhang_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_zhanruoshui
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_zhanruoshui } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_zhanruoshui_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_wangyangming
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wangyangming } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_wangyangming_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_jiangyou
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_jiangyou } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_jiangyou_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_taizhou
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_taizhou } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_taizhou_effect = yes
+    }
+
+    option = {
+        name = lyd_choose_school_previous_page
+        trigger = { lyd_can_change_school_display_trigger = yes }
+        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.12 }
+    }
+
+    option = {
+        name = lyd_choose_school_next_page
+        trigger = { lyd_can_change_school_display_trigger = yes }
+        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.14 }
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.14 = {
+    type = character_event
+    title = lyd_choose_school_t
+    desc = lyd_choose_school_desc
+    theme = faith
+    trigger = { lyd_can_change_school_trigger = yes }
+
+    option = {
+        name = lyd_adopt_liuzongzhou
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_liuzongzhou } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_liuzongzhou_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_donglin
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_donglin } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_donglin_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_wangfuzhi
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_wangfuzhi } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_wangfuzhi_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_yanli
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_yanli } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_yanli_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_qianjia
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_qianjia } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_qianjia_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_changzhou
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_changzhou } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_changzhou_effect = yes
+    }
+
+    option = {
+        name = lyd_adopt_jingshi
+        trigger = { lyd_can_change_school_display_trigger = yes NOT = { rite = rite:lyd_rite_jingshi } }
+        custom_tooltip = lyd_adopt_school_tt
+        lyd_adopt_jingshi_effect = yes
+    }
+
+    option = {
+        name = lyd_choose_school_previous_page
+        trigger = { lyd_can_change_school_display_trigger = yes }
+        if = { limit = { lyd_can_change_school_trigger = yes } trigger_event = lyd.13 }
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.100 = {
+    type = character_event
+    title = lyd_practice_kongmen_t
+    desc = lyd_practice_kongmen_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_kongmen }
+
+    option = {
+        name = lyd_practice_kongmen_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_kongmen_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_kongmen_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_kongmen_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_kongmen_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_kongmen_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_kongmen_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 40 }
+        custom_tooltip = lyd_practice_kongmen_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_kongmen_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.101 = {
+    type = character_event
+    title = lyd_practice_mengzi_t
+    desc = lyd_practice_mengzi_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_mengzi }
+
+    option = {
+        name = lyd_practice_mengzi_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 20 }
+        custom_tooltip = lyd_practice_mengzi_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_mengzi_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_mengzi_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_mengzi_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_mengzi_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_mengzi_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_mengzi_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_mengzi_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.102 = {
+    type = character_event
+    title = lyd_practice_xunzi_t
+    desc = lyd_practice_xunzi_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_xunzi }
+
+    option = {
+        name = lyd_practice_xunzi_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_xunzi_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_xunzi_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_xunzi_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_xunzi_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_xunzi_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_xunzi_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_xunzi_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_xunzi_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.103 = {
+    type = character_event
+    title = lyd_practice_zhengxuan_t
+    desc = lyd_practice_zhengxuan_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_zhengxuan }
+
+    option = {
+        name = lyd_practice_zhengxuan_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_zhengxuan_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhengxuan_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_zhengxuan_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_zhengxuan_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhengxuan_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_zhengxuan_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 30 }
+        custom_tooltip = lyd_practice_zhengxuan_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhengxuan_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.104 = {
+    type = character_event
+    title = lyd_practice_wangsu_t
+    desc = lyd_practice_wangsu_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_wangsu }
+
+    option = {
+        name = lyd_practice_wangsu_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_wangsu_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wangsu_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_wangsu_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_wangsu_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wangsu_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_wangsu_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_wangsu_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wangsu_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.105 = {
+    type = character_event
+    title = lyd_practice_jingshu_t
+    desc = lyd_practice_jingshu_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_jingshu }
+
+    option = {
+        name = lyd_practice_jingshu_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_jingshu_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_jingshu_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_jingshu_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 20 }
+        custom_tooltip = lyd_practice_jingshu_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_jingshu_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_jingshu_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 35 }
+        custom_tooltip = lyd_practice_jingshu_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_jingshu_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.106 = {
+    type = character_event
+    title = lyd_practice_zhuxi_t
+    desc = lyd_practice_zhuxi_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_zhuxi }
+
+    option = {
+        name = lyd_practice_zhuxi_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_zhuxi_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhuxi_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_zhuxi_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_zhuxi_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhuxi_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_zhuxi_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 35 }
+        custom_tooltip = lyd_practice_zhuxi_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhuxi_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.107 = {
+    type = character_event
+    title = lyd_practice_lujiuyuan_t
+    desc = lyd_practice_lujiuyuan_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_lujiuyuan }
+
+    option = {
+        name = lyd_practice_lujiuyuan_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_lujiuyuan_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_lujiuyuan_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_lujiuyuan_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_lujiuyuan_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_lujiuyuan_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_lujiuyuan_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_lujiuyuan_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_lujiuyuan_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.108 = {
+    type = character_event
+    title = lyd_practice_dongzhongshu_t
+    desc = lyd_practice_dongzhongshu_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_dongzhongshu }
+
+    option = {
+        name = lyd_practice_dongzhongshu_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_dongzhongshu_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_dongzhongshu_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_dongzhongshu_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 20 }
+        custom_tooltip = lyd_practice_dongzhongshu_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_dongzhongshu_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_dongzhongshu_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_dongzhongshu_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_dongzhongshu_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.109 = {
+    type = character_event
+    title = lyd_practice_guwen_t
+    desc = lyd_practice_guwen_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_guwen }
+
+    option = {
+        name = lyd_practice_guwen_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_guwen_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_guwen_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_guwen_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_guwen_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_guwen_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_guwen_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 35 }
+        custom_tooltip = lyd_practice_guwen_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_guwen_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.110 = {
+    type = character_event
+    title = lyd_practice_wangbi_t
+    desc = lyd_practice_wangbi_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_wangbi }
+
+    option = {
+        name = lyd_practice_wangbi_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_wangbi_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wangbi_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_wangbi_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_wangbi_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wangbi_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_wangbi_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 30 }
+        custom_tooltip = lyd_practice_wangbi_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wangbi_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.111 = {
+    type = character_event
+    title = lyd_practice_guoxiang_t
+    desc = lyd_practice_guoxiang_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_guoxiang }
+
+    option = {
+        name = lyd_practice_guoxiang_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 20 }
+        custom_tooltip = lyd_practice_guoxiang_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_guoxiang_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_guoxiang_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_guoxiang_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_guoxiang_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_guoxiang_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_guoxiang_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_guoxiang_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.112 = {
+    type = character_event
+    title = lyd_practice_hanyu_t
+    desc = lyd_practice_hanyu_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_hanyu }
+
+    option = {
+        name = lyd_practice_hanyu_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_hanyu_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_hanyu_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_hanyu_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_hanyu_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_hanyu_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_hanyu_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_hanyu_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_hanyu_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.113 = {
+    type = character_event
+    title = lyd_practice_liao_t
+    desc = lyd_practice_liao_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_liao }
+
+    option = {
+        name = lyd_practice_liao_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_liao_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_liao_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_liao_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_liao_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_liao_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_liao_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_liao_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_liao_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.114 = {
+    type = character_event
+    title = lyd_practice_zhoudunyi_t
+    desc = lyd_practice_zhoudunyi_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_zhoudunyi }
+
+    option = {
+        name = lyd_practice_zhoudunyi_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_zhoudunyi_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhoudunyi_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_zhoudunyi_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_zhoudunyi_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhoudunyi_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_zhoudunyi_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_zhoudunyi_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhoudunyi_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.115 = {
+    type = character_event
+    title = lyd_practice_chengbrothers_t
+    desc = lyd_practice_chengbrothers_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_chengbrothers }
+
+    option = {
+        name = lyd_practice_chengbrothers_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_chengbrothers_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_chengbrothers_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_chengbrothers_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_chengbrothers_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_chengbrothers_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_chengbrothers_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_chengbrothers_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_chengbrothers_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.116 = {
+    type = character_event
+    title = lyd_practice_zhangzai_t
+    desc = lyd_practice_zhangzai_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_zhangzai }
+
+    option = {
+        name = lyd_practice_zhangzai_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_zhangzai_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhangzai_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_zhangzai_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 30 }
+        custom_tooltip = lyd_practice_zhangzai_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhangzai_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_zhangzai_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_zhangzai_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhangzai_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.117 = {
+    type = character_event
+    title = lyd_practice_shaoyong_t
+    desc = lyd_practice_shaoyong_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_shaoyong }
+
+    option = {
+        name = lyd_practice_shaoyong_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_shaoyong_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_shaoyong_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_shaoyong_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 20 }
+        custom_tooltip = lyd_practice_shaoyong_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_shaoyong_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_shaoyong_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_shaoyong_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_shaoyong_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.118 = {
+    type = character_event
+    title = lyd_practice_wanganshi_t
+    desc = lyd_practice_wanganshi_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_wanganshi }
+
+    option = {
+        name = lyd_practice_wanganshi_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_wanganshi_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wanganshi_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_wanganshi_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_wanganshi_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wanganshi_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_wanganshi_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_wanganshi_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wanganshi_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.119 = {
+    type = character_event
+    title = lyd_practice_sushi_t
+    desc = lyd_practice_sushi_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_sushi }
+
+    option = {
+        name = lyd_practice_sushi_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_sushi_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_sushi_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_sushi_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_sushi_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_sushi_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_sushi_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_sushi_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_sushi_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.120 = {
+    type = character_event
+    title = lyd_practice_huxiang_t
+    desc = lyd_practice_huxiang_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_huxiang }
+
+    option = {
+        name = lyd_practice_huxiang_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_huxiang_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_huxiang_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_huxiang_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_huxiang_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_huxiang_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_huxiang_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_huxiang_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_huxiang_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.121 = {
+    type = character_event
+    title = lyd_practice_yongjia_t
+    desc = lyd_practice_yongjia_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_yongjia }
+
+    option = {
+        name = lyd_practice_yongjia_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_yongjia_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_yongjia_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_yongjia_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 30 }
+        custom_tooltip = lyd_practice_yongjia_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_yongjia_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_yongjia_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_yongjia_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_yongjia_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.122 = {
+    type = character_event
+    title = lyd_practice_yongkang_t
+    desc = lyd_practice_yongkang_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_yongkang }
+
+    option = {
+        name = lyd_practice_yongkang_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_yongkang_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_yongkang_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_yongkang_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 30 }
+        custom_tooltip = lyd_practice_yongkang_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_yongkang_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_yongkang_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 20 }
+        custom_tooltip = lyd_practice_yongkang_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_yongkang_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.123 = {
+    type = character_event
+    title = lyd_practice_wucheng_t
+    desc = lyd_practice_wucheng_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_wucheng }
+
+    option = {
+        name = lyd_practice_wucheng_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_wucheng_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wucheng_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_wucheng_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_wucheng_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wucheng_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_wucheng_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_wucheng_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wucheng_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.124 = {
+    type = character_event
+    title = lyd_practice_chenxianzhang_t
+    desc = lyd_practice_chenxianzhang_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_chenxianzhang }
+
+    option = {
+        name = lyd_practice_chenxianzhang_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_chenxianzhang_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_chenxianzhang_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_chenxianzhang_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 20 }
+        custom_tooltip = lyd_practice_chenxianzhang_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_chenxianzhang_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_chenxianzhang_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_chenxianzhang_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_chenxianzhang_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.125 = {
+    type = character_event
+    title = lyd_practice_zhanruoshui_t
+    desc = lyd_practice_zhanruoshui_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_zhanruoshui }
+
+    option = {
+        name = lyd_practice_zhanruoshui_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_zhanruoshui_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhanruoshui_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_zhanruoshui_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 20 }
+        custom_tooltip = lyd_practice_zhanruoshui_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhanruoshui_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_zhanruoshui_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_zhanruoshui_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_zhanruoshui_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.126 = {
+    type = character_event
+    title = lyd_practice_wangyangming_t
+    desc = lyd_practice_wangyangming_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_wangyangming }
+
+    option = {
+        name = lyd_practice_wangyangming_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 30 }
+        custom_tooltip = lyd_practice_wangyangming_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wangyangming_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_wangyangming_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_wangyangming_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wangyangming_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_wangyangming_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_wangyangming_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wangyangming_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.127 = {
+    type = character_event
+    title = lyd_practice_jiangyou_t
+    desc = lyd_practice_jiangyou_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_jiangyou }
+
+    option = {
+        name = lyd_practice_jiangyou_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_jiangyou_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_jiangyou_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_jiangyou_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_jiangyou_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_jiangyou_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_jiangyou_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_jiangyou_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_jiangyou_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.128 = {
+    type = character_event
+    title = lyd_practice_taizhou_t
+    desc = lyd_practice_taizhou_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_taizhou }
+
+    option = {
+        name = lyd_practice_taizhou_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_taizhou_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_taizhou_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_taizhou_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_taizhou_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_taizhou_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_taizhou_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_taizhou_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_taizhou_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.129 = {
+    type = character_event
+    title = lyd_practice_liuzongzhou_t
+    desc = lyd_practice_liuzongzhou_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_liuzongzhou }
+
+    option = {
+        name = lyd_practice_liuzongzhou_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_liuzongzhou_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_liuzongzhou_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_liuzongzhou_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_liuzongzhou_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_liuzongzhou_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_liuzongzhou_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 20 }
+        custom_tooltip = lyd_practice_liuzongzhou_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_liuzongzhou_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.130 = {
+    type = character_event
+    title = lyd_practice_donglin_t
+    desc = lyd_practice_donglin_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_donglin }
+
+    option = {
+        name = lyd_practice_donglin_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_donglin_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_donglin_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_donglin_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 30 }
+        custom_tooltip = lyd_practice_donglin_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_donglin_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_donglin_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_donglin_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_donglin_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.131 = {
+    type = character_event
+    title = lyd_practice_wangfuzhi_t
+    desc = lyd_practice_wangfuzhi_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_wangfuzhi }
+
+    option = {
+        name = lyd_practice_wangfuzhi_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_wangfuzhi_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wangfuzhi_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_wangfuzhi_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_wangfuzhi_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wangfuzhi_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_wangfuzhi_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 0 }
+        custom_tooltip = lyd_practice_wangfuzhi_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_wangfuzhi_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.132 = {
+    type = character_event
+    title = lyd_practice_yanli_t
+    desc = lyd_practice_yanli_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_yanli }
+
+    option = {
+        name = lyd_practice_yanli_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 30 }
+        custom_tooltip = lyd_practice_yanli_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_yanli_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_yanli_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 20 }
+        custom_tooltip = lyd_practice_yanli_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_yanli_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_yanli_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_yanli_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_yanli_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.133 = {
+    type = character_event
+    title = lyd_practice_qianjia_t
+    desc = lyd_practice_qianjia_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_qianjia }
+
+    option = {
+        name = lyd_practice_qianjia_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_qianjia_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_qianjia_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_qianjia_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 30 }
+        custom_tooltip = lyd_practice_qianjia_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_qianjia_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_qianjia_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_qianjia_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_qianjia_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.134 = {
+    type = character_event
+    title = lyd_practice_changzhou_t
+    desc = lyd_practice_changzhou_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_changzhou }
+
+    option = {
+        name = lyd_practice_changzhou_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_changzhou_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_changzhou_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_changzhou_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 25 }
+        custom_tooltip = lyd_practice_changzhou_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_changzhou_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_changzhou_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 5 }
+        custom_tooltip = lyd_practice_changzhou_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_changzhou_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}
+
+lyd.135 = {
+    type = character_event
+    title = lyd_practice_jingshi_t
+    desc = lyd_practice_jingshi_desc
+    theme = faith
+    trigger = { lyd_can_study_trigger = yes rite = rite:lyd_rite_jingshi }
+
+    option = {
+        name = lyd_practice_jingshi_a
+        trigger = { lyd_can_study_display_trigger = yes gold >= 15 }
+        custom_tooltip = lyd_practice_jingshi_a_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_jingshi_a_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_jingshi_b
+        trigger = { lyd_can_study_display_trigger = yes gold >= 35 }
+        custom_tooltip = lyd_practice_jingshi_b_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_jingshi_b_effect = yes
+    }
+
+    option = {
+        name = lyd_practice_jingshi_c
+        trigger = { lyd_can_study_display_trigger = yes gold >= 10 }
+        custom_tooltip = lyd_practice_jingshi_c_tt
+        custom_tooltip = lyd_study_cooldown_tt
+        lyd_practice_jingshi_c_effect = yes
+    }
+    option = { name = lyd_cancel }
+}

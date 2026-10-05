@@ -1,0 +1,35 @@
+{
+  "schema": "lyd.r10.incremental-ledger-index.v1",
+  "files": [
+    {
+      "path": "LEDGER-SUMMARY.json",
+      "bytes": 17134,
+      "sha256": "068cdfcb8842e79afe400ac4462149cfde31cdd32fdb11e724720f3f0dfe42fc"
+    },
+    {
+      "path": "NOTES-zh.md",
+      "bytes": 3635,
+      "sha256": "c7d683abaf15ad7bafeac7aaebe987c1e65b75873ae8109cbcacba2b2ae0856b"
+    },
+    {
+      "path": "SDK1-150-EVIDENCE.json",
+      "bytes": 363577,
+      "sha256": "c8fcf3a543d2b8857177ae183b44687ab2c93cf7093f3fd05b2c5b273973f034"
+    },
+    {
+      "path": "source/inspect_r10_incremental_ledger150_20261006_001.py",
+      "bytes": 3091,
+      "sha256": "71503e5adedcefde2017eb25cc6a692ae288c5ec9a4442e3e7bf4ec7eeafea22"
+    },
+    {
+      "path": "source/prepare_r10_incremental_ledger150_20261006_001.py",
+      "bytes": 22040,
+      "sha256": "f4bd293002cb6c763fcb53d89610a1ec1827ac4d7a70586b05b1dd231a53c87e"
+    },
+    {
+      "path": "SOURCE-REFS.json",
+      "bytes": 677731,
+      "sha256": "4d9b9818886a7f095f4cc2d1a3d10b2494d1b3b8eca71291e5e7dd7e97444e02"
+    }
+  ]
+}

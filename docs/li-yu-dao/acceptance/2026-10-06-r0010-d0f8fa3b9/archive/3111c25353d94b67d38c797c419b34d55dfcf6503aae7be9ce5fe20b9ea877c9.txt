@@ -1,0 +1,7 @@
+{
+  "permit_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000006.claim.release.json",
+  "permit_sha256": "abcaa729aca5bfcdee96ccc61c88d473bc4af5ef758394d11faa493f7fae0b06",
+  "game_command_sent": false,
+  "business_acceptance_credit": false,
+  "scope": "one_independent_next_intent_only"
+}

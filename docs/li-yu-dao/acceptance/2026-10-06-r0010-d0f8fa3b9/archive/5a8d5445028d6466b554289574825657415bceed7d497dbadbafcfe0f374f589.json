@@ -1,0 +1,32 @@
+{
+  "schema": "lyd.r10.root-process-absence.v1",
+  "at_utc": "2026-10-05T18:06:27.314208+00:00",
+  "processes": [
+    {
+      "pid": 13436,
+      "pid_exists": false,
+      "handle_opened": true,
+      "exit_code": 0,
+      "wait_result": 0,
+      "creation_filetime_100ns": 134356699957422997,
+      "query_handle_closed": true
+    },
+    {
+      "pid": 19428,
+      "pid_exists": false,
+      "handle_opened": false,
+      "exit_code": null,
+      "open_error": 87
+    }
+  ],
+  "matching_consumers": [],
+  "keepers": [
+    {
+      "pid": 16248,
+      "create_time": 1791195045.737458
+    }
+  ],
+  "game_and_client_absent": true,
+  "all_consumer_processes_ended": true,
+  "process_control_used": false
+}

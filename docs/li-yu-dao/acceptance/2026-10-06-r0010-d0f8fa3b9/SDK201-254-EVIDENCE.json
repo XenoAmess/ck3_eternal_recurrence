@@ -1,0 +1,3425 @@
+{
+  "schema": "lyd.r10.terminal.incremental-sdk201-254.v1",
+  "MCP_range": [
+    201,
+    253
+  ],
+  "close_marker_sequence": 254,
+  "results": [
+    {
+      "sequence": 201,
+      "request_id": "r10-0202-detach-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_propose_detach_decision",
+        "expected_revision": 94
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0201-r10-0202-detach-query.request.json",
+        "bytes": 272,
+        "sha256": "016408989503f8714131378a963739da0ad0b7f9861c8cd4206503e01adf853d",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0201-r10-0202-detach-query.response.json",
+        "bytes": 995,
+        "sha256": "d036cc8ad9e89894bc5de60ca2255cbb9eb5fec4de926019723ca310b6c56e6b",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0201-r10-0202-detach-query.started.json",
+        "bytes": 342,
+        "sha256": "3e23b409bd9e3dfc8d3fb18631934111624ed409460ba21c7e62f5a270699cb9",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0201-r10-0202-detach-query.sdk-result.json",
+        "bytes": 4753,
+        "sha256": "4ceb38546a3e55cc0b1ac201f07734a22cc6a0791027880a4ab535f6d237cb17",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0201-r10-0202-detach-query.native-01.json",
+            "bytes": 2079,
+            "sha256": "9356328f0ad53ee9e6312b90786915e851cedd31254ac7b841e2d7ea7f34e487",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0200-decision-query.json",
+          "status": "native_decision_query_observed",
+          "reason": null,
+          "result_status": null,
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:44:36.543495+00:00",
+      "finished_utc": "2026-10-05T17:44:38.004417+00:00"
+    },
+    {
+      "sequence": 202,
+      "request_id": "r10-0203-detach-detail",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_propose_detach_decision",
+        "expected_revision": 94
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0202-r10-0203-detach-detail.request.json",
+        "bytes": 274,
+        "sha256": "3b6938d7485c209b0660d0b035f7865cf3d0fe7d50e608dfd6a3b546b55a65bb",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0202-r10-0203-detach-detail.response.json",
+        "bytes": 1000,
+        "sha256": "05227915d5fde73e49230330cc9fae6df49d53cbf614af6d0cfb6409fa839b90",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0202-r10-0203-detach-detail.started.json",
+        "bytes": 343,
+        "sha256": "a023c96bd173278ee6d8943b1447bc7ed366cdd8307a11a73a60d3e7e13e52ad",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0202-r10-0203-detach-detail.sdk-result.json",
+        "bytes": 8246847,
+        "sha256": "900a7ef9d638210fd2d76a7ba70d1acfb2d61519cffb441fdfeb9da8594070ae",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0202-r10-0203-detach-detail.native-01.json",
+            "bytes": 3909515,
+            "sha256": "bcf7a4daa135a135dd5a0901df36a1bb2e8da1681868ffb7f6924d2c5548b2d8",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0201-decision-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "verified_selected_detail",
+          "postcondition_verified": true,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:45:01.266352+00:00",
+      "finished_utc": "2026-10-05T17:45:06.262275+00:00"
+    },
+    {
+      "sequence": 203,
+      "request_id": "r10-0204-detach-confirm",
+      "operation": "call_tool",
+      "tool": "ck3_confirm_profile_decision_outcome_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_propose_detach_decision",
+        "expected_outcome": "event_window",
+        "expected_revision": 94,
+        "expected_event_definition_key": "lyd.200"
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0203-r10-0204-detach-confirm.request.json",
+        "bytes": 369,
+        "sha256": "889196fb1fca388813fe14bf4e4b1602145de36e0f891de08d0f09d6f21e6fa8",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0203-r10-0204-detach-confirm.response.json",
+        "bytes": 1013,
+        "sha256": "5d2582c621e26328469482a7dff98fbbbad3c3e271595559c453e966bc75644f",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0203-r10-0204-detach-confirm.started.json",
+        "bytes": 344,
+        "sha256": "6bc6e0912685302099c587e0aba9d3127ecfc95085dc2d584b39861b2d975533",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0203-r10-0204-detach-confirm.sdk-result.json",
+        "bytes": 8416653,
+        "sha256": "93fecaca9405e15cac2f8a0345c89ea0aca024ad07f2ecc1b32e86cf3ff58859",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0203-r10-0204-detach-confirm.native-01.json",
+            "bytes": 3990261,
+            "sha256": "531c5a5aa2ea6d6f42cb332a6d0b8b06349dceb8ed9ba2e39ce1dda2200e03c8",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0202-decision-confirm_outcome.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "observed_current_event_window",
+          "postcondition_verified": true,
+          "business_effects_verified": false,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:45:20.810614+00:00",
+      "finished_utc": "2026-10-05T17:45:28.290027+00:00"
+    },
+    {
+      "sequence": 204,
+      "request_id": "r10-0205-detach-first-entry-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 92,
+        "expected_revision": 95
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0204-r10-0205-detach-first-entry-query.request.json",
+        "bytes": 258,
+        "sha256": "4383c5cdeb8d2935bd4529aeb8a5dfd6376ddede6d49a71acfb215e7d6724940",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0204-r10-0205-detach-first-entry-query.response.json",
+        "bytes": 1040,
+        "sha256": "4fedff8abb5bb4b23495e047ed7219be5ba298c2af4c6bf93e8c19045becb119",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0204-r10-0205-detach-first-entry-query.started.json",
+        "bytes": 354,
+        "sha256": "ea3e0c6df56715700da700439c4f2c9fb60e45a2835728dea151d107ce89697e",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0204-r10-0205-detach-first-entry-query.sdk-result.json",
+        "bytes": 29609,
+        "sha256": "b12457ea76817875943fc6978fe245f9b3e6a5a26698237504b1d4a75f42c676",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0204-r10-0205-detach-first-entry-query.native-01.json",
+            "bytes": 13677,
+            "sha256": "3240b413548dbca7d19cbc3725cc73429a607e4ddf0f9e245e9e8637b903e3f5",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0203-event-query.json",
+          "status": "native_event_query_verified",
+          "reason": null,
+          "result_status": "available",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:45:58.620081+00:00",
+      "finished_utc": "2026-10-05T17:46:00.496563+00:00"
+    },
+    {
+      "sequence": 205,
+      "request_id": "r10-0206-detach-first-entry-chosen",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 92,
+        "option_number": 1,
+        "expected_revision": 95
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0205-r10-0206-detach-first-entry-chosen.request.json",
+        "bytes": 285,
+        "sha256": "23821d11d26cf38b05582f78863cf33496dfa2189ccf659eebf40f86c858407b",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0205-r10-0206-detach-first-entry-chosen.response.json",
+        "bytes": 1045,
+        "sha256": "aa767e04683f3f49f7bd968a6ead8607c51cb25c8cee62c7b0518085a4cd8eca",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0205-r10-0206-detach-first-entry-chosen.started.json",
+        "bytes": 355,
+        "sha256": "ddbe7cbe8fe9a87cc4b24ab67dfbcbbfb29f2e1819aea2cac16217f03bcedeb1",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0205-r10-0206-detach-first-entry-chosen.sdk-result.json",
+        "bytes": 8506413,
+        "sha256": "0cd216a0085cf35f6112608ddab8aa0a27785620cb41b70ed018888d3c4dba6e",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0205-r10-0206-detach-first-entry-chosen.native-01.json",
+            "bytes": 4032946,
+            "sha256": "321231fbcfece1b943feaac27e9a3600486bd25239ceb943d6497be7989560ff",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0204-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "submitted",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:46:01.588000+00:00",
+      "finished_utc": "2026-10-05T17:46:06.488031+00:00"
+    },
+    {
+      "sequence": 206,
+      "request_id": "r10-0207-detach-first-personal-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 91,
+        "expected_revision": 96
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0206-r10-0207-detach-first-personal-query.request.json",
+        "bytes": 261,
+        "sha256": "20c2577eee769a0bb26d8ec2a2ca15c715e9a26f9e06c9a63290f5cc9c8a7bb5",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0206-r10-0207-detach-first-personal-query.response.json",
+        "bytes": 1052,
+        "sha256": "d37693724aa74f84499010daf3257c7a5713a6d940a5eea78bb57e9abb0cd911",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0206-r10-0207-detach-first-personal-query.started.json",
+        "bytes": 357,
+        "sha256": "769059c8364e70c18e8f4b146584e5b64f2f358be1e43216a8c5ab41040217b2",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0206-r10-0207-detach-first-personal-query.sdk-result.json",
+        "bytes": 27937,
+        "sha256": "2b14140524e950f6a9fe9e73caaed3a38c68e7c180ad9d05b254bb2581f928ea",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0206-r10-0207-detach-first-personal-query.native-01.json",
+            "bytes": 12899,
+            "sha256": "a90c5c0b860e34ecb6e2b55b61b066d59db36fc7fa3512f3fbda8560795337a1",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0205-event-query.json",
+          "status": "native_event_query_verified",
+          "reason": null,
+          "result_status": "available",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:46:07.789538+00:00",
+      "finished_utc": "2026-10-05T17:46:09.741206+00:00"
+    },
+    {
+      "sequence": 207,
+      "request_id": "r10-0208-detach-first-personal-chosen",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 91,
+        "option_number": 1,
+        "expected_revision": 96
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0207-r10-0208-detach-first-personal-chosen.request.json",
+        "bytes": 288,
+        "sha256": "159872388e427dcd2b07a33522b7cc1a8ca9091da6679885283c223e347f30a5",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0207-r10-0208-detach-first-personal-chosen.response.json",
+        "bytes": 1057,
+        "sha256": "f865c8b698d9281377287ac0d46ab5788712c478eb536fc78e9fd30277120559",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0207-r10-0208-detach-first-personal-chosen.started.json",
+        "bytes": 358,
+        "sha256": "016d51e351c0ba45d0ed0be0f1ec3fc849117abaeceb4ab93c52f4c2f9f72a8e",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0207-r10-0208-detach-first-personal-chosen.sdk-result.json",
+        "bytes": 8580357,
+        "sha256": "f443f932fdebf102e4503f601dbb78091bf82aaf426813e2e04bc25310bef100",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0207-r10-0208-detach-first-personal-chosen.native-01.json",
+            "bytes": 4067878,
+            "sha256": "4fdc4f70687bf5bc4d6aef781cfcb472fa56b43e56dc93a2867f3d187b933805",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0206-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "submitted",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:46:10.827678+00:00",
+      "finished_utc": "2026-10-05T17:46:15.665699+00:00"
+    },
+    {
+      "sequence": 208,
+      "request_id": "r10-0209-detach-first-scholar-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 90,
+        "expected_revision": 97
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0208-r10-0209-detach-first-scholar-query.request.json",
+        "bytes": 260,
+        "sha256": "a19633756ab8a624c9ba0f7b331307f870a0f6568ea345b47c10d21e9a8d30cd",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0208-r10-0209-detach-first-scholar-query.response.json",
+        "bytes": 1048,
+        "sha256": "c0207aaafe94851e307da337a6ecba386729860852ea55657afac726317a75a2",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0208-r10-0209-detach-first-scholar-query.started.json",
+        "bytes": 356,
+        "sha256": "44eadbbd2a19ef733512c338e96003f367c2dba137b1e2ca74d9fe5e76cc40e7",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0208-r10-0209-detach-first-scholar-query.sdk-result.json",
+        "bytes": 27913,
+        "sha256": "3b7a0477dd5daea8675efbc7bd4fbc228bf9f041fb81bebf2d925d3bb2eec420",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0208-r10-0209-detach-first-scholar-query.native-01.json",
+            "bytes": 12887,
+            "sha256": "62076c10ead1011cdc6828f18d481b4eec5d17cb885c1800ca0e139337d38c53",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0207-event-query.json",
+          "status": "native_event_query_verified",
+          "reason": null,
+          "result_status": "available",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:46:16.983209+00:00",
+      "finished_utc": "2026-10-05T17:46:18.884281+00:00"
+    },
+    {
+      "sequence": 209,
+      "request_id": "r10-0210-detach-first-scholar-chosen",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 90,
+        "option_number": 1,
+        "expected_revision": 97
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0209-r10-0210-detach-first-scholar-chosen.request.json",
+        "bytes": 287,
+        "sha256": "86daf4ab176a70add8e822458c692ce33b4ef71205c8eb7fdb5c6e7b8fee52b9",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0209-r10-0210-detach-first-scholar-chosen.response.json",
+        "bytes": 1053,
+        "sha256": "b08b98aff563e6ff7eeb3a03887798936120872da26f3f031ab9ef3fafda4c90",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0209-r10-0210-detach-first-scholar-chosen.started.json",
+        "bytes": 357,
+        "sha256": "69f8f80b984c40231b2215ff3129132e6df657d46d187c389dbf73bd1ea44dfc",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0209-r10-0210-detach-first-scholar-chosen.sdk-result.json",
+        "bytes": 8651477,
+        "sha256": "2a6828f879f9616a94fe519b60accb1ae209952d2948030a4ce09ced4ba65e7d",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0209-r10-0210-detach-first-scholar-chosen.native-01.json",
+            "bytes": 4101497,
+            "sha256": "490fb8cf209452546e854ce16119b92ad5432d3c99a275d91cf671484c702090",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0208-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "submitted",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:46:19.974221+00:00",
+      "finished_utc": "2026-10-05T17:46:24.881730+00:00"
+    },
+    {
+      "sequence": 210,
+      "request_id": "r10-0211-detach-review-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_review_proposal_decision",
+        "expected_revision": 98
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0210-r10-0211-detach-review-query.request.json",
+        "bytes": 280,
+        "sha256": "1ee0a7a25b482877dca8c715ebe7fcf140cb9c725855e528ad7de341f1fc0f9b",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0210-r10-0211-detach-review-query.response.json",
+        "bytes": 1023,
+        "sha256": "450b3702dacaf55c04fa54e4c2e488485eef70c892c6d68017205849628cbd29",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0210-r10-0211-detach-review-query.started.json",
+        "bytes": 349,
+        "sha256": "1d212a6c64142b036007626d10d0c9bbe3639d56e8a9b5a76daa7bcfa208a82c",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0210-r10-0211-detach-review-query.sdk-result.json",
+        "bytes": 4755,
+        "sha256": "99e1347e049068c4278ab2904fc9db4e0ccbf691ff6b61f8540233e983805d48",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0210-r10-0211-detach-review-query.native-01.json",
+            "bytes": 2080,
+            "sha256": "03681adee14285c35bba33fd6252a4ba7b2b181b19b16dce32011fa61470b3b2",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0209-decision-query.json",
+          "status": "native_decision_query_observed",
+          "reason": null,
+          "result_status": null,
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:47:31.275550+00:00",
+      "finished_utc": "2026-10-05T17:47:32.850187+00:00"
+    },
+    {
+      "sequence": 211,
+      "request_id": "r10-0212-detach-review-detail",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_review_proposal_decision",
+        "expected_revision": 98
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0211-r10-0212-detach-review-detail.request.json",
+        "bytes": 282,
+        "sha256": "dc09b63a925e435b77c7fbcd2079a0d3d851344ec52cba8fb16bb0648576bdda",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0211-r10-0212-detach-review-detail.response.json",
+        "bytes": 1028,
+        "sha256": "539e4bf5426b4eeec674eb39262e9f6b8e89fb4279cfc77f97f3d6a05bc6a52b",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0211-r10-0212-detach-review-detail.started.json",
+        "bytes": 350,
+        "sha256": "a92c85ed123896b1fe3615b761098e3036b0c5b19c1e63cd14a4be61f9652dac",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0211-r10-0212-detach-review-detail.sdk-result.json",
+        "bytes": 8698727,
+        "sha256": "6e334b01a4fe6575551753ef6483cb96a0c85de00a10e3563a5e85181d47fa60",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0211-r10-0212-detach-review-detail.native-01.json",
+            "bytes": 4123975,
+            "sha256": "31c76e3934ff474dd549d03009924433bebc7212a6ada1e1c6e834b193409caa",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0210-decision-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "verified_selected_detail",
+          "postcondition_verified": true,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:47:33.952753+00:00",
+      "finished_utc": "2026-10-05T17:47:39.085620+00:00"
+    },
+    {
+      "sequence": 212,
+      "request_id": "r10-0213-detach-review-confirm",
+      "operation": "call_tool",
+      "tool": "ck3_confirm_profile_decision_outcome_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_review_proposal_decision",
+        "expected_outcome": "event_window",
+        "expected_revision": 98,
+        "expected_event_definition_key": "lyd.220"
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0212-r10-0213-detach-review-confirm.request.json",
+        "bytes": 377,
+        "sha256": "45d3e78b6d5c667be3d961bfe7e334a58a64de40f199532d651549ef41c80cbe",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0212-r10-0213-detach-review-confirm.response.json",
+        "bytes": 1041,
+        "sha256": "f493d59c26f16df104f4d0234f8d10ac25cb831f3e2fca1d2dca2959ffa44791",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0212-r10-0213-detach-review-confirm.started.json",
+        "bytes": 351,
+        "sha256": "5dd77d9db3cf5dfb9b4216083e3eda1fd312c7676554bff77fe1bce6ac136888",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0212-r10-0213-detach-review-confirm.sdk-result.json",
+        "bytes": 8867317,
+        "sha256": "c1b78b9a9ffbb81a0d5c39d8cf66c78f012c489cf8fd6aaeb496dbca9af066d6",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0212-r10-0213-detach-review-confirm.native-01.json",
+            "bytes": 4204147,
+            "sha256": "916e7ce670eda677d96a101010b49b6bddbe543ebbbd0b6c1562818bad6c8369",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0211-decision-confirm_outcome.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "observed_current_event_window",
+          "postcondition_verified": true,
+          "business_effects_verified": false,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:47:48.408637+00:00",
+      "finished_utc": "2026-10-05T17:47:53.697092+00:00"
+    },
+    {
+      "sequence": 213,
+      "request_id": "r10-0214-detach-review-event-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 93,
+        "expected_revision": 99
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0213-r10-0214-detach-review-event-query.request.json",
+        "bytes": 259,
+        "sha256": "aaa864d7db0346a676132c89ab48c8d06d60763272498121014d7c76c10a0f98",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0213-r10-0214-detach-review-event-query.response.json",
+        "bytes": 1044,
+        "sha256": "94968dfbcadf8b58665a0db5ea3efc2a77fccf5029fbca0d9be202b32f231b7f",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0213-r10-0214-detach-review-event-query.started.json",
+        "bytes": 355,
+        "sha256": "43c12730348c253393fde3c00ceb418a94501da361b31ab55e84f30d4e207a35",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0213-r10-0214-detach-review-event-query.sdk-result.json",
+        "bytes": 27849,
+        "sha256": "17236e1170c9ffe81f20b3a97954dd5ca8f5de90160bc34d70b61d437d4a1aaf",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0213-r10-0214-detach-review-event-query.native-01.json",
+            "bytes": 12859,
+            "sha256": "63b973b6bd99583e747c8a16d9f5bff926cdd8077a426a16519f0c1850e1b9f5",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0212-event-query.json",
+          "status": "native_event_query_verified",
+          "reason": null,
+          "result_status": "available",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:48:12.106095+00:00",
+      "finished_utc": "2026-10-05T17:48:14.146418+00:00"
+    },
+    {
+      "sequence": 214,
+      "request_id": "r10-0215-detach-first-withdraw",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 93,
+        "option_number": 5,
+        "expected_revision": 99
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0214-r10-0215-detach-first-withdraw.request.json",
+        "bytes": 281,
+        "sha256": "71e7767ad2fd5f6a7dad33d95accde0019cd298234a89e2face551c7035d992b",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0214-r10-0215-detach-first-withdraw.response.json",
+        "bytes": 1029,
+        "sha256": "0ecee735bf742048d8ed7dd5c3be022dd09b4af9c29a0eb0410a51e81379aa51",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0214-r10-0215-detach-first-withdraw.started.json",
+        "bytes": 351,
+        "sha256": "5319f217655bf5dc122dff1d3d2dbfed199f33eafb25205ea69d124f9248de51",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0214-r10-0215-detach-first-withdraw.sdk-result.json",
+        "bytes": 8951791,
+        "sha256": "4e4fc8882652832423d2f4daf29de5cf79eea75d16928004586335195a7fdb4d",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0214-r10-0215-detach-first-withdraw.native-01.json",
+            "bytes": 4244343,
+            "sha256": "c17d8729277ef4a123b29ece8b8c41821dfbb73bf9660bae7b40e34cb199fee3",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0213-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "submitted",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:49:04.415394+00:00",
+      "finished_utc": "2026-10-05T17:49:09.449910+00:00"
+    },
+    {
+      "sequence": 215,
+      "request_id": "r10-0216-detach-first-result-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 94,
+        "expected_revision": 100
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0215-r10-0216-detach-first-result-query.request.json",
+        "bytes": 260,
+        "sha256": "be55a579206b688f1a84ab994cc63cf633c7d337c83925b7f6222c99e4963d11",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0215-r10-0216-detach-first-result-query.response.json",
+        "bytes": 1044,
+        "sha256": "37256c3b186381dc6c63ef6c0bc3083bfecd7849111c2f7c088d5fbed09ba3e7",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0215-r10-0216-detach-first-result-query.started.json",
+        "bytes": 355,
+        "sha256": "1788e364873a6dc2377e388b52be557ebaaf3bf7146eb7acd3c505e25ff92d18",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0215-r10-0216-detach-first-result-query.sdk-result.json",
+        "bytes": 24377,
+        "sha256": "a394431540479f943e77e8ed1f5cad289809b48d4b2aa1f0bae650d118f348e5",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0215-r10-0216-detach-first-result-query.native-01.json",
+            "bytes": 11231,
+            "sha256": "bd5ce58ec95ca3c76bf9fa6ae28565fdf1e66fd55ae44a02546c0c35c767b467",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0214-event-query.json",
+          "status": "native_event_query_verified",
+          "reason": null,
+          "result_status": "available",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:49:32.797508+00:00",
+      "finished_utc": "2026-10-05T17:49:34.645482+00:00"
+    },
+    {
+      "sequence": 216,
+      "request_id": "r10-0217-detach-first-result-ack",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 94,
+        "option_number": 1,
+        "expected_revision": 100
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0216-r10-0217-detach-first-result-ack.request.json",
+        "bytes": 284,
+        "sha256": "5bd80721493603d665691ec9fe3922d325f765df42cf49283bce08dc4a36e637",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0216-r10-0217-detach-first-result-ack.response.json",
+        "bytes": 1037,
+        "sha256": "34c59e364c6fdc97c563b094e11d7582072e6e1115bc98d27a88159f6a1a3ad7",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0216-r10-0217-detach-first-result-ack.started.json",
+        "bytes": 353,
+        "sha256": "1570f6798efd23b11d6dbc6fcd965c782491ff993e5735cee0ce1f179d236423",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0216-r10-0217-detach-first-result-ack.sdk-result.json",
+        "bytes": 9013645,
+        "sha256": "6abc5dc30e90c126c23444ab2cae5d0dc8c655b23f0de2a48046731b8bb58ace",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0216-r10-0217-detach-first-result-ack.native-01.json",
+            "bytes": 4273583,
+            "sha256": "89db7686d34adc25cc909b7f47c78d69cb90073f20c731105bb082cb2a058e09",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0215-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "submitted",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:49:35.510300+00:00",
+      "finished_utc": "2026-10-05T17:49:40.984412+00:00"
+    },
+    {
+      "sequence": 217,
+      "request_id": "r10-0218-detach-second-open-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_propose_detach_decision",
+        "expected_revision": 101
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0217-r10-0218-detach-second-open-query.request.json",
+        "bytes": 285,
+        "sha256": "f1ca1c74ff3f2390fc28c464da5a1301a334b5a36237dd7bab06497dc090ba1d",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0217-r10-0218-detach-second-open-query.response.json",
+        "bytes": 1043,
+        "sha256": "02acdb80685a581ba8caf2bdcddd77bc581ebe426d41b384db79f88095448f54",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0217-r10-0218-detach-second-open-query.started.json",
+        "bytes": 354,
+        "sha256": "685bd66f78f3a4516ae08848098119dd34d7874174d29066e15ef24cf5e24376",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0217-r10-0218-detach-second-open-query.sdk-result.json",
+        "bytes": 4757,
+        "sha256": "2dce5d87360d5dacafcbd11e60518d28d113cb8dbb38011ee0a70950d0dcc718",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0217-r10-0218-detach-second-open-query.native-01.json",
+            "bytes": 2081,
+            "sha256": "cb62dcc3dbbadb165f1cc6168651ed38c779386c86fe449f7d17f85f969699aa",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0216-decision-query.json",
+          "status": "native_decision_query_observed",
+          "reason": null,
+          "result_status": null,
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:50:36.715372+00:00",
+      "finished_utc": "2026-10-05T17:50:38.084003+00:00"
+    },
+    {
+      "sequence": 218,
+      "request_id": "r10-0219-detach-second-open-detail",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_propose_detach_decision",
+        "expected_revision": 101
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0218-r10-0219-detach-second-open-detail.request.json",
+        "bytes": 287,
+        "sha256": "8588b5e58112e996459fb452d757f9ab0ff1298c9ca10e5c2dea378f184f5fb3",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0218-r10-0219-detach-second-open-detail.response.json",
+        "bytes": 1048,
+        "sha256": "dac942f80032d92c3ff80f3088236d54e39af4e4bec50a83ecc5033a1850f187",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0218-r10-0219-detach-second-open-detail.started.json",
+        "bytes": 355,
+        "sha256": "df098d7a397be42063fd8d4045f78094f640ff13656f64835e9d51162ae1ea31",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0218-r10-0219-detach-second-open-detail.sdk-result.json",
+        "bytes": 9061175,
+        "sha256": "e067688a8d3dd418bfc44e4a90b5dcdcfb179b71966748fc4533113d80d1e994",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0218-r10-0219-detach-second-open-detail.native-01.json",
+            "bytes": 4296191,
+            "sha256": "5b0dd922d3c0112283c553574526741432b18bf4b807cae100af3cd4f7787484",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0217-decision-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "verified_selected_detail",
+          "postcondition_verified": true,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:50:38.962978+00:00",
+      "finished_utc": "2026-10-05T17:50:43.906071+00:00"
+    },
+    {
+      "sequence": 219,
+      "request_id": "r10-0220-detach-second-open-confirm",
+      "operation": "call_tool",
+      "tool": "ck3_confirm_profile_decision_outcome_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_propose_detach_decision",
+        "expected_revision": 101,
+        "expected_outcome": "event_window",
+        "expected_event_definition_key": "lyd.200"
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0219-r10-0220-detach-second-open-confirm.request.json",
+        "bytes": 382,
+        "sha256": "8c4701a485407149d65d4d493018030d1d879f9cf071bc8775df090f75f79bc5",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0219-r10-0220-detach-second-open-confirm.response.json",
+        "bytes": 1061,
+        "sha256": "9c37753ec5717e073255c2c56084895c681464e679f27970691f9b6f9288b39c",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0219-r10-0220-detach-second-open-confirm.started.json",
+        "bytes": 356,
+        "sha256": "4346bdc43d821936287c9874688c8950c7cdfa762b65b77a8ce709adc4592157",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0219-r10-0220-detach-second-open-confirm.sdk-result.json",
+        "bytes": 9231033,
+        "sha256": "548887bea3cbdf98f4831d6f4fe6fc5443621764ba88596c6dafd0123ecc93a1",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0219-r10-0220-detach-second-open-confirm.native-01.json",
+            "bytes": 4376963,
+            "sha256": "077381bfdcc4bbfd3180f885300c100ca5e757146ccb0b7fab9be71348a79ef0",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0218-decision-confirm_outcome.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "observed_current_event_window",
+          "postcondition_verified": true,
+          "business_effects_verified": false,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:50:45.223917+00:00",
+      "finished_utc": "2026-10-05T17:50:50.821612+00:00"
+    },
+    {
+      "sequence": 220,
+      "request_id": "r10-0221-detach-second-entry-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 97,
+        "expected_revision": 102
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0220-r10-0221-detach-second-entry-query.request.json",
+        "bytes": 260,
+        "sha256": "eb56a2a8bdedcf5b0d83c387ab9d67754c30abd82e6c8caae64a1b74b57dd649",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0220-r10-0221-detach-second-entry-query.response.json",
+        "bytes": 1044,
+        "sha256": "2a00c63c1ab72ec0e23f87d3c3d2fefc939161bf47903117d36ae332f84966b5",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0220-r10-0221-detach-second-entry-query.started.json",
+        "bytes": 355,
+        "sha256": "6dbd882b31e0eb5f2959396ac20b98e389bc7e0ed590e0418567931b007a99d1",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0220-r10-0221-detach-second-entry-query.sdk-result.json",
+        "bytes": 29633,
+        "sha256": "403c3f7460915e4d5657a997eed01c6457f240b1cde568e37452e2caf158c5bb",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0220-r10-0221-detach-second-entry-query.native-01.json",
+            "bytes": 13689,
+            "sha256": "40bd300da22a432d259abd0d0a191d4b5db74048d1c62156b1a094bb5509e6c2",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0219-event-query.json",
+          "status": "native_event_query_verified",
+          "reason": null,
+          "result_status": "available",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:51:17.104228+00:00",
+      "finished_utc": "2026-10-05T17:51:18.944703+00:00"
+    },
+    {
+      "sequence": 221,
+      "request_id": "r10-0222-detach-second-entry-chosen",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 97,
+        "option_number": 1,
+        "expected_revision": 102
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0221-r10-0222-detach-second-entry-chosen.request.json",
+        "bytes": 287,
+        "sha256": "9c32c78cdf7d33a8f31a2f5701ee2cb8041b4fc5abb7b7233dcb0e81515962cb",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0221-r10-0222-detach-second-entry-chosen.response.json",
+        "bytes": 1049,
+        "sha256": "b25dfdd90a6f77495825c910a75f20cdfd86788a50bb84017bd2b41175c61fdd",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0221-r10-0222-detach-second-entry-chosen.started.json",
+        "bytes": 356,
+        "sha256": "fc9ee6dbc28a23bb4e3afc6e06df528aaf159893538a42245f8a7415fb26bd62",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0221-r10-0222-detach-second-entry-chosen.sdk-result.json",
+        "bytes": 9320837,
+        "sha256": "12339d5f9c4ce7427a1756bd1b7b6ec63ac236a01b9164ed3a5e757e12efea8d",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0221-r10-0222-detach-second-entry-chosen.native-01.json",
+            "bytes": 4419670,
+            "sha256": "45890fc8221b4b08625aba2d42c12033056a18698cf94b98b1e32e01de090bef",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0220-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "submitted",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:51:19.825124+00:00",
+      "finished_utc": "2026-10-05T17:51:25.247899+00:00"
+    },
+    {
+      "sequence": 222,
+      "request_id": "r10-0223-detach-second-personal-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 96,
+        "expected_revision": 103
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0222-r10-0223-detach-second-personal-query.request.json",
+        "bytes": 263,
+        "sha256": "b2252434c84a38fb17ee5ff44bd011bf8f2efabf31eb238ce505131b07e0262d",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0222-r10-0223-detach-second-personal-query.response.json",
+        "bytes": 1056,
+        "sha256": "00b6e3b43c7f1d4f2aa989e62a8b6b3a3cde3e920e8a63b0ec9c20217b02260b",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0222-r10-0223-detach-second-personal-query.started.json",
+        "bytes": 358,
+        "sha256": "0116ade6d74eea1484b7a15b2587096aa3fd694632a9c0d789bc2e3765342cc3",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0222-r10-0223-detach-second-personal-query.sdk-result.json",
+        "bytes": 27961,
+        "sha256": "07952ffacdd4f7cf88244727ea09d470de2126839c86046dec82de0012db990a",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0222-r10-0223-detach-second-personal-query.native-01.json",
+            "bytes": 12911,
+            "sha256": "e861424302f26f1925a9c1379337f9dbc17434dc46b3ae67837cfdafa2a03f47",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0221-event-query.json",
+          "status": "native_event_query_verified",
+          "reason": null,
+          "result_status": "available",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:51:28.596625+00:00",
+      "finished_utc": "2026-10-05T17:51:30.740280+00:00"
+    },
+    {
+      "sequence": 223,
+      "request_id": "r10-0224-detach-second-personal-chosen",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 96,
+        "option_number": 1,
+        "expected_revision": 103
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0223-r10-0224-detach-second-personal-chosen.request.json",
+        "bytes": 290,
+        "sha256": "ec12656ad4edf09735cf03438daa2739e21072ff143c21ca10e1e638d89f5c6d",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0223-r10-0224-detach-second-personal-chosen.response.json",
+        "bytes": 1061,
+        "sha256": "1a52f07d1bdcaeb9cd63d3c1ff533624dc12894bccfb25c680865fa67d03adcb",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0223-r10-0224-detach-second-personal-chosen.started.json",
+        "bytes": 359,
+        "sha256": "6aae7a585353e76aff9a5ab431a5cafa8d211efa95a3a51e3406f122fbd2b382",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0223-r10-0224-detach-second-personal-chosen.sdk-result.json",
+        "bytes": 9394825,
+        "sha256": "079bf43bf659c7ce25c38a6d9298d18033d92428916715ab2c91222ef69b53bd",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0223-r10-0224-detach-second-personal-chosen.native-01.json",
+            "bytes": 4454624,
+            "sha256": "2a484178c95d1f60156ae402c0b0cbfea60a669400d4c25f00c320385e3c5431",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0222-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "submitted",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:51:31.843450+00:00",
+      "finished_utc": "2026-10-05T17:51:37.002405+00:00"
+    },
+    {
+      "sequence": 224,
+      "request_id": "r10-0225-detach-second-scholar-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 95,
+        "expected_revision": 104
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0224-r10-0225-detach-second-scholar-query.request.json",
+        "bytes": 262,
+        "sha256": "f91561aa35e0247242574d07f819e5a1852778d5d726cf4d27c86676d1bfc651",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0224-r10-0225-detach-second-scholar-query.response.json",
+        "bytes": 1052,
+        "sha256": "8fa72032e2cb8290ec28ad617885ca45deb9ef15c4f8a0062a17bb75240f2a2b",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0224-r10-0225-detach-second-scholar-query.started.json",
+        "bytes": 357,
+        "sha256": "aca50faa58d4814d542c7a570b8e7319eca75115977cfeffe86d1902a67dd25f",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0224-r10-0225-detach-second-scholar-query.sdk-result.json",
+        "bytes": 27937,
+        "sha256": "9681249b21e150516966cbbeaf38f17f964ee5ef0baeec33c802fbc656b15b16",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0224-r10-0225-detach-second-scholar-query.native-01.json",
+            "bytes": 12899,
+            "sha256": "0e5cdd82d1a442c611ede00bd4c3611b7d631107ad2a53952d2f85fe06985eff",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0223-event-query.json",
+          "status": "native_event_query_verified",
+          "reason": null,
+          "result_status": "available",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:51:38.515414+00:00",
+      "finished_utc": "2026-10-05T17:51:40.373897+00:00"
+    },
+    {
+      "sequence": 225,
+      "request_id": "r10-0226-detach-second-scholar-chosen",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 95,
+        "option_number": 1,
+        "expected_revision": 104
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0225-r10-0226-detach-second-scholar-chosen.request.json",
+        "bytes": 289,
+        "sha256": "767242578294c6a050c6228085b6ad5c8b1065a65d312f2731a032b3dd287ebf",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0225-r10-0226-detach-second-scholar-chosen.response.json",
+        "bytes": 1057,
+        "sha256": "e356edc8d978127f74d0c144f0433833c66a94d71404b4a8deaab180a081c429",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0225-r10-0226-detach-second-scholar-chosen.started.json",
+        "bytes": 358,
+        "sha256": "b36c00743401e92639cb1afddb0966000a3b187a064d872dca24f34a09cfc854",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0225-r10-0226-detach-second-scholar-chosen.sdk-result.json",
+        "bytes": 9465989,
+        "sha256": "79cc0a3f0e558f0d30eeb43475289cc76085afb83b16e7f78b1ffde7c01ba459",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0225-r10-0226-detach-second-scholar-chosen.native-01.json",
+            "bytes": 4488265,
+            "sha256": "1e60f66db0fe8e93fc2eae52de27e95f96a7b4fc8edf07bf5903aba2f7af3ce3",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0224-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "submitted",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:51:41.466746+00:00",
+      "finished_utc": "2026-10-05T17:51:46.689590+00:00"
+    },
+    {
+      "sequence": 226,
+      "request_id": "r10-0227-detach-second-review-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_review_proposal_decision",
+        "expected_revision": 105
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0226-r10-0227-detach-second-review-query.request.json",
+        "bytes": 288,
+        "sha256": "ec5075a570d23822c3c145030565527d2fc5aee81ab528137b73b09e29d2e79d",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0226-r10-0227-detach-second-review-query.response.json",
+        "bytes": 1051,
+        "sha256": "362fa3dbf7326c31fd20a73e078109d8523f040ce88e1bcad2b9d476b4ee35e6",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0226-r10-0227-detach-second-review-query.started.json",
+        "bytes": 356,
+        "sha256": "1956582c37d9e59b345cf7a653a9c972d2289f39f852b93bf62c1f4d0d942a73",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0226-r10-0227-detach-second-review-query.sdk-result.json",
+        "bytes": 4759,
+        "sha256": "edde4e633a41f1af76dd54d1ae225af56af0db90352e75c9fd5f9deec8b5b0b1",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0226-r10-0227-detach-second-review-query.native-01.json",
+            "bytes": 2082,
+            "sha256": "64a7e128cd6e8cd11e614d76ca10e3c4cc7f1ca878f966b085ca70c9514b914a",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0225-decision-query.json",
+          "status": "native_decision_query_observed",
+          "reason": null,
+          "result_status": null,
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:52:07.973659+00:00",
+      "finished_utc": "2026-10-05T17:52:09.488012+00:00"
+    },
+    {
+      "sequence": 227,
+      "request_id": "r10-0228-detach-second-review-detail",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_review_proposal_decision",
+        "expected_revision": 105
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0227-r10-0228-detach-second-review-detail.request.json",
+        "bytes": 290,
+        "sha256": "e3e7d886cbf74c7744cd4132ee661184c8d092a77367028364cbc3f4772db7a1",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0227-r10-0228-detach-second-review-detail.response.json",
+        "bytes": 1056,
+        "sha256": "8a782f5dcc1274f5d47228275b4176f21b37893cf3259fae8835ce2f7db40c80",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0227-r10-0228-detach-second-review-detail.started.json",
+        "bytes": 357,
+        "sha256": "3d76cb043fd0de7f54703d408546b8a4ffd136d3290696e2229f852ae234823c",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0227-r10-0228-detach-second-review-detail.sdk-result.json",
+        "bytes": 9513275,
+        "sha256": "daa3661b0c78c653f963033f9ab421e562ca9696325440b51a0b85f205e3589c",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0227-r10-0228-detach-second-review-detail.native-01.json",
+            "bytes": 4510761,
+            "sha256": "d6801331ced31a0f8b9d19dc8bb0ba7042e27aec0114beaf9922e89895875dbe",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0226-decision-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "verified_selected_detail",
+          "postcondition_verified": true,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:52:10.361404+00:00",
+      "finished_utc": "2026-10-05T17:52:15.801569+00:00"
+    },
+    {
+      "sequence": 228,
+      "request_id": "r10-0229-detach-second-review-confirm",
+      "operation": "call_tool",
+      "tool": "ck3_confirm_profile_decision_outcome_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_review_proposal_decision",
+        "expected_revision": 105,
+        "expected_outcome": "event_window",
+        "expected_event_definition_key": "lyd.220"
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0228-r10-0229-detach-second-review-confirm.request.json",
+        "bytes": 385,
+        "sha256": "048d817f44f18bdd4445f3799ad90fbfa91c9dec44ebbb82b6abdbefa74c3533",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0228-r10-0229-detach-second-review-confirm.response.json",
+        "bytes": 1069,
+        "sha256": "3bb5b5e97fca1400de4a370fe0ecf3f37c7a8dc1e79c57ff6029139a460d6364",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0228-r10-0229-detach-second-review-confirm.started.json",
+        "bytes": 358,
+        "sha256": "7fcd65237d034f861543b7a4dac149eb594e22ee84db7e333bc42065e6b9a2a1",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0228-r10-0229-detach-second-review-confirm.sdk-result.json",
+        "bytes": 9690013,
+        "sha256": "f06bc78cc9579dff64d198ec559782ee5907fffc1c4105b7442f6d6921d67487",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0228-r10-0229-detach-second-review-confirm.native-01.json",
+            "bytes": 4594791,
+            "sha256": "d811c71132356914b99a1f456116dd81906da1a31ad198a12aa8cc80d22c9872",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0227-decision-confirm_outcome.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "observed_current_event_window",
+          "postcondition_verified": true,
+          "business_effects_verified": false,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:52:17.331125+00:00",
+      "finished_utc": "2026-10-05T17:52:22.890352+00:00"
+    },
+    {
+      "sequence": 229,
+      "request_id": "r10-0230-detach-second-event-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 98,
+        "expected_revision": 106
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0229-r10-0230-detach-second-event-query.request.json",
+        "bytes": 260,
+        "sha256": "737254e891ef7aa0d531e3ebd701e7a867b54796b93777dbb690b128a3303343",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0229-r10-0230-detach-second-event-query.response.json",
+        "bytes": 1044,
+        "sha256": "952f8c59a69d58448d17188bf116077139c16bf44ef19801d6da0891cc5cdd83",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0229-r10-0230-detach-second-event-query.started.json",
+        "bytes": 355,
+        "sha256": "1841fb0666937e6c669e679bf14346d37c42e1cb6c0eb47439db9f2d54e10c7b",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0229-r10-0230-detach-second-event-query.sdk-result.json",
+        "bytes": 31401,
+        "sha256": "336e888fa3b69a40ccc06f1344a030c16c0dc11b89f99e84a345585f64fe7b1c",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0229-r10-0230-detach-second-event-query.native-01.json",
+            "bytes": 14527,
+            "sha256": "650c518339a0ba40ea7c7ebb953817ad0a6257dea566a1793532c0c38a8ef05e",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0228-event-query.json",
+          "status": "native_event_query_verified",
+          "reason": null,
+          "result_status": "available",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:52:46.367663+00:00",
+      "finished_utc": "2026-10-05T17:52:48.335580+00:00"
+    },
+    {
+      "sequence": 230,
+      "request_id": "r10-0231-detach-second-source-sign",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 98,
+        "option_number": 1,
+        "expected_revision": 106
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0230-r10-0231-detach-second-source-sign.request.json",
+        "bytes": 286,
+        "sha256": "b85fd1755677e5e319c3148fde7f3bb5560971b28ea5d61001e5ad7c8b7c943c",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0230-r10-0231-detach-second-source-sign.response.json",
+        "bytes": 1045,
+        "sha256": "34ccf087ca1ffa0218c000a9e7c9a318cda05e78f523907b3abc2214f4b5d99c",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0230-r10-0231-detach-second-source-sign.started.json",
+        "bytes": 355,
+        "sha256": "2ec957043e3f98c045447b24f207045be467bef55d6e1868be80a5eac63cac27",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0230-r10-0231-detach-second-source-sign.sdk-result.json",
+        "bytes": 9781585,
+        "sha256": "8b56c10233c65ff939af4e8db8bef44ff5147040b9b56446ce90f9eaf85d5e04",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0230-r10-0231-detach-second-source-sign.native-01.json",
+            "bytes": 4638389,
+            "sha256": "81ba97b948c9c293c299d6e09885b7c893dbe91e7f74b298cd14c2d40c338244",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0229-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "submitted",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:53:00.477837+00:00",
+      "finished_utc": "2026-10-05T17:53:05.712379+00:00"
+    },
+    {
+      "sequence": 231,
+      "request_id": "r10-0232-detach-second-final-review-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_review_proposal_decision",
+        "expected_revision": 107
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0231-r10-0232-detach-second-final-review-query.request.json",
+        "bytes": 294,
+        "sha256": "ac3afc3eebd4d94cfab7a4f06ebaa2e25baa58dfecaa593d25e438b728d9c4e5",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0231-r10-0232-detach-second-final-review-query.response.json",
+        "bytes": 1075,
+        "sha256": "0c2c3c9f457d0e5a6d34dccee2bae7fb16f0d4490c7a61ec611e4e26d7914577",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0231-r10-0232-detach-second-final-review-query.started.json",
+        "bytes": 362,
+        "sha256": "e67f47d5dbb15f425fcbf82a470c79f887eec1f129cc6c5ac1685dd36cbaccfb",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0231-r10-0232-detach-second-final-review-query.sdk-result.json",
+        "bytes": 4759,
+        "sha256": "b6a52f723d41f99a11af19601f403c085cd5ef7f634eb90bd787d5b568e11bed",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0231-r10-0232-detach-second-final-review-query.native-01.json",
+            "bytes": 2082,
+            "sha256": "577ff9201299808c6b74a7eeb3644afca07b1cda7e202826f77bb4e9ce2e9ebe",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0230-decision-query.json",
+          "status": "native_decision_query_observed",
+          "reason": null,
+          "result_status": null,
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:53:23.765986+00:00",
+      "finished_utc": "2026-10-05T17:53:25.319456+00:00"
+    },
+    {
+      "sequence": 232,
+      "request_id": "r10-0233-detach-second-final-review-detail",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_review_proposal_decision",
+        "expected_revision": 107
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0232-r10-0233-detach-second-final-review-detail.request.json",
+        "bytes": 296,
+        "sha256": "166a03ac331c366066a00538d4a97dad68a8d4057fd9ca34bcf058ca2f48d02a",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0232-r10-0233-detach-second-final-review-detail.response.json",
+        "bytes": 1080,
+        "sha256": "e65a023359a6e9ae66e5b4617eae717ed3eebffb46454d0a1359c0270066f88e",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0232-r10-0233-detach-second-final-review-detail.started.json",
+        "bytes": 363,
+        "sha256": "fe887bd26785b6b2acc21454755d0007d81ec3efca11a8b55e9ab598d1345aef",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0232-r10-0233-detach-second-final-review-detail.sdk-result.json",
+        "bytes": 9828031,
+        "sha256": "fdc9c6ef2cb88997545b534e6f3d19e3db58cbab82edb7810d9a3970018d4e78",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0232-r10-0233-detach-second-final-review-detail.native-01.json",
+            "bytes": 4660495,
+            "sha256": "cd2b75ba827442cfbd84583e8795d70fa3d693ac01f198aec417ef966996d8a9",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0231-decision-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "verified_selected_detail",
+          "postcondition_verified": true,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:53:26.193493+00:00",
+      "finished_utc": "2026-10-05T17:53:31.790372+00:00"
+    },
+    {
+      "sequence": 233,
+      "request_id": "r10-0234-detach-second-final-review-confirm",
+      "operation": "call_tool",
+      "tool": "ck3_confirm_profile_decision_outcome_v1",
+      "arguments": {
+        "decision_key": "lyd_c2_review_proposal_decision",
+        "expected_revision": 107,
+        "expected_outcome": "event_window",
+        "expected_event_definition_key": "lyd.220"
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0233-r10-0234-detach-second-final-review-confirm.request.json",
+        "bytes": 391,
+        "sha256": "f69df94c83e10cfe43f335a99b7dfb950a6cd05a933c32bcd09cc5769e931af6",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0233-r10-0234-detach-second-final-review-confirm.response.json",
+        "bytes": 1093,
+        "sha256": "19a996bc9839b8966ddfe8462246ae0b88c22122ae652e6c28be702f11c048c7",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0233-r10-0234-detach-second-final-review-confirm.started.json",
+        "bytes": 364,
+        "sha256": "06f70e962ef097ea4b94ba03f64c6771fb17b7cbdc42e76ef25086cf34ab7fc4",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0233-r10-0234-detach-second-final-review-confirm.sdk-result.json",
+        "bytes": 10004793,
+        "sha256": "23cd353d40e40b85c809dd286abdef0b8da6b51ecda081185b41f8bbac2cc4cd",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0233-r10-0234-detach-second-final-review-confirm.native-01.json",
+            "bytes": 4744537,
+            "sha256": "f2f71d682f551838b23778a1cf0a601d11fd1feb404b048e73cde89a5af818a0",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0232-decision-confirm_outcome.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "observed_current_event_window",
+          "postcondition_verified": true,
+          "business_effects_verified": false,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:53:32.854877+00:00",
+      "finished_utc": "2026-10-05T17:53:39.001735+00:00"
+    },
+    {
+      "sequence": 234,
+      "request_id": "r10-0235-detach-second-final-event-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 99,
+        "expected_revision": 108
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0234-r10-0235-detach-second-final-event-query.request.json",
+        "bytes": 266,
+        "sha256": "646f8294be2a56e0693cecbbcf765d429c169e1133be5631f12fb4c2fe490d31",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0234-r10-0235-detach-second-final-event-query.response.json",
+        "bytes": 1068,
+        "sha256": "200310be3ac2ccc45089a3ebd6d8f018da4c32df6b29d545cbda609b36b72902",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0234-r10-0235-detach-second-final-event-query.started.json",
+        "bytes": 361,
+        "sha256": "79c5e10ef7f64ee267ec210dc539e6690d985599226858edbf2f17a6a712eb8c",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0234-r10-0235-detach-second-final-event-query.sdk-result.json",
+        "bytes": 31413,
+        "sha256": "30d3c34ca0520b5cd2634ea3570b4544be45b4f0ebfc6624b3b569af350c540f",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0234-r10-0235-detach-second-final-event-query.native-01.json",
+            "bytes": 14533,
+            "sha256": "66f8ccb411f032521ff39b372925822ae9044123549dae0ed6d132b461445837",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0233-event-query.json",
+          "status": "native_event_query_verified",
+          "reason": null,
+          "result_status": "available",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:54:03.339282+00:00",
+      "finished_utc": "2026-10-05T17:54:05.445572+00:00"
+    },
+    {
+      "sequence": 235,
+      "request_id": "r10-0236-detach-second-precommit-save",
+      "operation": "call_tool",
+      "tool": "ck3_save_profile_checkpoint_v1",
+      "arguments": {
+        "expected_revision": 108
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0235-r10-0236-detach-second-precommit-save.request.json",
+        "bytes": 230,
+        "sha256": "2020ed0741e28b2a35df298201f56bc7a52aa43a4022fb593d9eb2955c549b75",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0235-r10-0236-detach-second-precommit-save.response.json",
+        "bytes": 1055,
+        "sha256": "644ec35c9c1d65c39cdb120f916fdf40e1925a22b8066591ac3ff75c42015db1",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0235-r10-0236-detach-second-precommit-save.started.json",
+        "bytes": 358,
+        "sha256": "1d71094e961a882449459bc9be6d1d3040a677f6d32e9a0918cd235d0d8f3399",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0235-r10-0236-detach-second-precommit-save.sdk-result.json",
+        "bytes": 10093591,
+        "sha256": "16462dddb6e1e4f51f3a0fe0bb102ea9b332f32e61a5d4dbe1acf26ef0de3d3d",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0235-r10-0236-detach-second-precommit-save.native-01.json",
+            "bytes": 4786803,
+            "sha256": "c5ed92fbaca87bfedd8c1b19bda1bc798b756dd31ea29c5592e5d5eea04b9d98",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0234-checkpoint.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "submitted",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:54:21.512668+00:00",
+      "finished_utc": "2026-10-05T17:54:35.114576+00:00"
+    },
+    {
+      "sequence": 236,
+      "request_id": "r10-0237-detach-second-precommit-event-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 99,
+        "expected_revision": 109
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0236-r10-0237-detach-second-precommit-event-query.request.json",
+        "bytes": 270,
+        "sha256": "7367068df75410fd03d1e6bf3ea10b1f4280bc060d1f325eeecf69a35eaea901",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0236-r10-0237-detach-second-precommit-event-query.response.json",
+        "bytes": 1084,
+        "sha256": "a64429db1ead229814296e81ccac27bfd1ceb412a8bd9da490815f4b38f81dff",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0236-r10-0237-detach-second-precommit-event-query.started.json",
+        "bytes": 365,
+        "sha256": "31c0d6c024102e76a48bc3cce1f21dd3152726480354d1b5b54e5779efa40b77",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0236-r10-0237-detach-second-precommit-event-query.sdk-result.json",
+        "bytes": 31413,
+        "sha256": "13f6e405fa24c2e193cedb2490562b6e7d5b99f21f3eff652d83e613e1ec1a00",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0236-r10-0237-detach-second-precommit-event-query.native-01.json",
+            "bytes": 14533,
+            "sha256": "01f0e805d31dcccdcc520b7989fc2fd473bf35aa71e580d15b47d508ed9de965",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0235-event-query.json",
+          "status": "native_event_query_verified",
+          "reason": null,
+          "result_status": "available",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:55:42.429687+00:00",
+      "finished_utc": "2026-10-05T17:55:44.374130+00:00"
+    },
+    {
+      "sequence": 237,
+      "request_id": "r10-0238-detach-second-final-commit",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 99,
+        "option_number": 2,
+        "expected_revision": 109
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0237-r10-0238-detach-second-final-commit.request.json",
+        "bytes": 287,
+        "sha256": "1c67af7da90f8d27e35ed190ef51dd5a5b7367b17a30dc428d59128d6ed582a1",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0237-r10-0238-detach-second-final-commit.response.json",
+        "bytes": 1049,
+        "sha256": "b3598646109dd8313fc59463ffbb902b7bd662bde1a1711b59378df68ed5ffa4",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0237-r10-0238-detach-second-final-commit.started.json",
+        "bytes": 356,
+        "sha256": "2abe9256b065f54bc51479da6b46ee9f83f9febae3bec820c640b09219418929",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0237-r10-0238-detach-second-final-commit.sdk-result.json",
+        "bytes": 10173467,
+        "sha256": "bed7bb2902ded16361aff994bbe9c6e70532dd25e758c646d7d3a7c9c0f00d89",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0237-r10-0238-detach-second-final-commit.native-01.json",
+            "bytes": 4824547,
+            "sha256": "d0f25c1fc8596745c861c4ce14da09872384d738e13bf280089c2674a6327015",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0236-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "submitted",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:55:45.468233+00:00",
+      "finished_utc": "2026-10-05T17:55:51.407284+00:00"
+    },
+    {
+      "sequence": 238,
+      "request_id": "r10-0239-detach-second-result-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_event_window_v1",
+      "arguments": {
+        "event_instance_id": 100,
+        "expected_revision": 110
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0238-r10-0239-detach-second-result-query.request.json",
+        "bytes": 262,
+        "sha256": "28f67cfc2aeafcc6ac34ef7524875518b775d5eb3193bccd7f19632a7c1fb5db",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0238-r10-0239-detach-second-result-query.response.json",
+        "bytes": 1048,
+        "sha256": "1ea45deeab059208b3647d281be496de7e2cea67f2e67d08eb404c8c38bbc39b",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0238-r10-0239-detach-second-result-query.started.json",
+        "bytes": 356,
+        "sha256": "6c860a57659e5eaf61970ee9ce243b262862b958606193b4446a164f187e6d78",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0238-r10-0239-detach-second-result-query.sdk-result.json",
+        "bytes": 29683,
+        "sha256": "cd94337e9d1f374c892658f5b91affe20eee35c1c45fd09901074ebddacb3b79",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0238-r10-0239-detach-second-result-query.native-01.json",
+            "bytes": 13710,
+            "sha256": "62b565a799a181b7eaac8365958e4875fe8425d0813a0e4b705f226c881758eb",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0237-event-query.json",
+          "status": "native_event_query_verified",
+          "reason": null,
+          "result_status": "available",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:56:13.720860+00:00",
+      "finished_utc": "2026-10-05T17:56:15.540545+00:00"
+    },
+    {
+      "sequence": 239,
+      "request_id": "r10-0240-detach-second-result-ack",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_event_option_v1",
+      "arguments": {
+        "event_instance_id": 100,
+        "option_number": 1,
+        "expected_revision": 110
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0239-r10-0240-detach-second-result-ack.request.json",
+        "bytes": 286,
+        "sha256": "3b2fcfea0e3060609818f0c6b7a4643a0c36fe8f563cd31a5ea6651df0864498",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0239-r10-0240-detach-second-result-ack.response.json",
+        "bytes": 1041,
+        "sha256": "95e866efcf6247e3b0f441e14cbab145a0dd66afcada60516bc3029bcfb6b374",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0239-r10-0240-detach-second-result-ack.started.json",
+        "bytes": 354,
+        "sha256": "5f1af5b451168426ed000bc2bd41a577604cf61fcad2f96835449431a872cd04",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0239-r10-0240-detach-second-result-ack.sdk-result.json",
+        "bytes": 10247933,
+        "sha256": "63cbbe397ae83f7ee0c2996b537ef307e40a6fe1154b248890534b4714471518",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0239-r10-0240-detach-second-result-ack.native-01.json",
+            "bytes": 4859745,
+            "sha256": "7318f2c28d0d608ba93b336bf80e363565a5110112a547a38ab45a3bb7c19d41",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0238-event-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "submitted",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:56:16.627498+00:00",
+      "finished_utc": "2026-10-05T17:56:22.427199+00:00"
+    },
+    {
+      "sequence": 240,
+      "request_id": "r10-0241-detach-second-post-save",
+      "operation": "call_tool",
+      "tool": "ck3_save_profile_checkpoint_v1",
+      "arguments": {
+        "expected_revision": 111
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0240-r10-0241-detach-second-post-save.request.json",
+        "bytes": 225,
+        "sha256": "0ed34b78ce65255da910fab589cbfdbed78a2b0a9195cf468138123244230513",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0240-r10-0241-detach-second-post-save.response.json",
+        "bytes": 1035,
+        "sha256": "d893822b73c4fdbbee015b6ee7b9005bb1c695568f943b97857a38e02778bc53",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0240-r10-0241-detach-second-post-save.started.json",
+        "bytes": 353,
+        "sha256": "b08ed5a4cbba37223c675bcf448c787f116f360ae2c7995449016d5699dc46c1",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0240-r10-0241-detach-second-post-save.sdk-result.json",
+        "bytes": 10253579,
+        "sha256": "6ff44bbadd20a6d18a81d30939924d632547a261ff1d764413aba12dc3b31d4e",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0240-r10-0241-detach-second-post-save.native-01.json",
+            "bytes": 4862415,
+            "sha256": "4cd9e177f26761059acbbfb495862163436c30b8983ba99a8c231e7066eea354",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0239-checkpoint.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "submitted",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:56:33.510373+00:00",
+      "finished_utc": "2026-10-05T17:56:49.006754+00:00"
+    },
+    {
+      "sequence": 241,
+      "request_id": "r10-0242-after-detach-reset-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_r4_reset_decision",
+        "expected_revision": 112
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0241-r10-0242-after-detach-reset-query.request.json",
+        "bytes": 276,
+        "sha256": "2cb92bc7cdcce036ec1122cd7a1cd5cf707ffb72d22792b422db0935c834bbca",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0241-r10-0242-after-detach-reset-query.response.json",
+        "bytes": 1043,
+        "sha256": "874bd973f14d213108b14febcdd78964f269762e82951564328d8fcbb1f31164",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0241-r10-0242-after-detach-reset-query.started.json",
+        "bytes": 354,
+        "sha256": "fbc9f18a4d61290e5b72894cfc81527747c439dfe283cf62d72aba88bdfcde42",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0241-r10-0242-after-detach-reset-query.sdk-result.json",
+        "bytes": 4739,
+        "sha256": "66e960fcd4d2bbd9c77acf365e115facc041182e64670032ee8935e2645baf12",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0241-r10-0242-after-detach-reset-query.native-01.json",
+            "bytes": 2072,
+            "sha256": "c2eb7950829ae5c735ba5f75bf8fd664376a80a4d5212e3fb269ba5030a00cf2",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0240-decision-query.json",
+          "status": "native_decision_query_observed",
+          "reason": null,
+          "result_status": null,
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:57:34.749354+00:00",
+      "finished_utc": "2026-10-05T17:57:36.325099+00:00"
+    },
+    {
+      "sequence": 242,
+      "request_id": "r10-0243-after-detach-reset-detail",
+      "operation": "call_tool",
+      "tool": "ck3_select_profile_decision_item_v1",
+      "arguments": {
+        "decision_key": "lyd_r4_reset_decision",
+        "expected_revision": 112
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0242-r10-0243-after-detach-reset-detail.request.json",
+        "bytes": 278,
+        "sha256": "65d658e7a75e705cc0132f37544056c1b733f383ea854fb6566994cf99999d24",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0242-r10-0243-after-detach-reset-detail.response.json",
+        "bytes": 1048,
+        "sha256": "bfc7d1814f91f68f395a21a0d2f233e18d747d2ff8a7550ddde139897181add2",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0242-r10-0243-after-detach-reset-detail.started.json",
+        "bytes": 355,
+        "sha256": "69096af00f41dfc4209ba2ba51ec3bd50be6f08dcd59f73cf7683d0cc68cf926",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0242-r10-0243-after-detach-reset-detail.sdk-result.json",
+        "bytes": 10301071,
+        "sha256": "d83dc695245b03bc8e896b1486f546d28513c9aad74dba9fbc5ae511903ee832",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0242-r10-0243-after-detach-reset-detail.native-01.json",
+            "bytes": 4884975,
+            "sha256": "61d968c0361f123733360299202518ffdbd93bb8ef47f1df9cfac6fa62d88e4d",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0241-decision-select.json",
+          "status": "native_gameplay_postcondition_verified",
+          "reason": null,
+          "result_status": "verified_selected_detail",
+          "postcondition_verified": true,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:57:37.411413+00:00",
+      "finished_utc": "2026-10-05T17:57:43.135843+00:00"
+    },
+    {
+      "sequence": 243,
+      "request_id": "r10-0244-after-detach-reset-confirm",
+      "operation": "call_tool",
+      "tool": "ck3_confirm_profile_decision_outcome_v1",
+      "arguments": {
+        "decision_key": "lyd_r4_reset_decision",
+        "expected_revision": 112,
+        "expected_outcome": "event_window",
+        "expected_event_definition_key": "lyd_r4_fixture.4"
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0243-r10-0244-after-detach-reset-confirm.request.json",
+        "bytes": 382,
+        "sha256": "d6cc31f1646391ee69b30b9bbe51c6ff175c5c17305ffc64e36eb9628bd007f3",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0243-r10-0244-after-detach-reset-confirm.response.json",
+        "bytes": 1061,
+        "sha256": "7eefe81f11dff43541aa6cdfe78240072b290855f1bf089b79dfad2dedd64e5c",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0243-r10-0244-after-detach-reset-confirm.started.json",
+        "bytes": 356,
+        "sha256": "4c104e75cb72166130c3457997de59cd53f105171639a3be45e36acf25e8295d",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0243-r10-0244-after-detach-reset-confirm.sdk-result.json",
+        "bytes": 5151065,
+        "sha256": "356691422b79776defe19cd621abde02f9e3515d55b8fbcae559ec3fe63beb2c",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0243-r10-0244-after-detach-reset-confirm.native-01.json",
+            "bytes": 2442713,
+            "sha256": "4f97418cb8d1eaf49e5c883f0c7fbb5ad8674086987e0131f6bad8810b6dde18",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0242-decision-confirm_outcome.json",
+          "status": "RED",
+          "reason": "BridgeUnavailableError: decision action already claimed with an unresolved result; no retry at any revision",
+          "result_status": null,
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T17:57:44.447207+00:00",
+      "finished_utc": "2026-10-05T17:57:46.896431+00:00"
+    },
+    {
+      "sequence": 244,
+      "request_id": "r10-0245-after-rejected-reset-snapshot",
+      "operation": "call_tool",
+      "tool": "ck3_take_profile_native_snapshot_v1",
+      "arguments": {},
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0244-r10-0245-after-rejected-reset-snapshot.request.json",
+        "bytes": 202,
+        "sha256": "53294113c2e51046c404d73c7d83270039ffde4a1106bf6a011cb376d767652e",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0244-r10-0245-after-rejected-reset-snapshot.response.json",
+        "bytes": 1057,
+        "sha256": "19dda583a259081d68c875c95d64364c374c33905e1b3fb0f34329996e9e9df1",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0244-r10-0245-after-rejected-reset-snapshot.started.json",
+        "bytes": 359,
+        "sha256": "20aa410277c63a4cfa9d9a04c86e544e25d595b18576eaff55f4bdf37674b137",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0244-r10-0245-after-rejected-reset-snapshot.sdk-result.json",
+        "bytes": 5154931,
+        "sha256": "16d5c393506fb9a405aa95f254b3e0418ddebbf665979ebd96efe4a334150563",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0244-r10-0245-after-rejected-reset-snapshot.native-01.json",
+            "bytes": 2444514,
+            "sha256": "b719a24c5b0206d099ea53d2a9e537cddedf8d7b7d2e539585ba0b114bfd8b19",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0243-snapshot.json",
+          "status": "native_snapshot_verified",
+          "reason": null,
+          "result_status": null,
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T18:00:38.894272+00:00",
+      "finished_utc": "2026-10-05T18:00:40.851002+00:00"
+    },
+    {
+      "sequence": 245,
+      "request_id": "r10-0246-normal-exit-context-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_normal_exit_context_v1",
+      "arguments": {
+        "expected_revision": 112
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0245-r10-0246-normal-exit-context-query.request.json",
+        "bytes": 229,
+        "sha256": "577e6ad973212430031988013de63ae29c1386d39ec9c0a8c3f4b05a1e3f14e1",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0245-r10-0246-normal-exit-context-query.response.json",
+        "bytes": 1050,
+        "sha256": "c7859a8192aac063bd7db79d3e153ce5ab64d432789fb74175b10465767f86e9",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0245-r10-0246-normal-exit-context-query.started.json",
+        "bytes": 355,
+        "sha256": "beebafc0a1867cae53f3fa9b9973aeb373cfb76393141e117f3a913d3b762352",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0245-r10-0246-normal-exit-context-query.sdk-result.json",
+        "bytes": 10307397,
+        "sha256": "f89382f511ce91e97fb4bbdbfaa556849826834abff9648b7f3940fce36c5170",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0245-r10-0246-normal-exit-context-query.native-01.json",
+            "bytes": 4888072,
+            "sha256": "d4c7f67d57110bf494a3ea1b213f5be8ef6539b84366e23b3d9671335ac8592d",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0244-normal-exit-query.json",
+          "status": "context_observed",
+          "reason": null,
+          "result_status": "context_observed",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T18:01:16.418319+00:00",
+      "finished_utc": "2026-10-05T18:01:23.083117+00:00"
+    },
+    {
+      "sequence": 246,
+      "request_id": "r10-0247-normal-exit-prepare",
+      "operation": "call_tool",
+      "tool": "ck3_request_normal_exit_v1",
+      "arguments": {
+        "action": "prepare_confirmation",
+        "expected_revision": 112,
+        "expected_exit_context_signature": "8343b994056acfb0f6aa066d80ddc8297064f8fced886c1971210500e3b939e9"
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0246-r10-0247-normal-exit-prepare.request.json",
+        "bytes": 364,
+        "sha256": "0911e4f979a50c02fd17dd24fb839f329468280cd31ae65b39ce0c0baa9083fe",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0246-r10-0247-normal-exit-prepare.response.json",
+        "bytes": 1041,
+        "sha256": "c20a67b76d1e95895227a5770edddd4aa307d0e5879d11ae10ae2f06aec3fa9d",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0246-r10-0247-normal-exit-prepare.started.json",
+        "bytes": 349,
+        "sha256": "dc5078f847891a1af01d2453e883f63647973e57a2a058ccb65c140009022798",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0246-r10-0247-normal-exit-prepare.sdk-result.json",
+        "bytes": 5159227,
+        "sha256": "a5cd260b441fc1a0cacaaacb23c31ae6b370deec86844edf821df6766309c76f",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0246-r10-0247-normal-exit-prepare.native-01.json",
+            "bytes": 2446572,
+            "sha256": "ccc6351c494725db1783f49f0fc871e3c817905cd8f92da61051865857259729",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0245-normal-exit-prepare_confirmation.json",
+          "status": "dispatch_unknown_claimed",
+          "reason": null,
+          "result_status": "dispatch_unknown_claimed",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T18:01:43.959632+00:00",
+      "finished_utc": "2026-10-05T18:01:47.418513+00:00"
+    },
+    {
+      "sequence": 247,
+      "request_id": "r10-0248-after-normal-exit-prepare-snapshot",
+      "operation": "call_tool",
+      "tool": "ck3_take_profile_native_snapshot_v1",
+      "arguments": {},
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0247-r10-0248-after-normal-exit-prepare-snapshot.request.json",
+        "bytes": 207,
+        "sha256": "93bb43f1ef880adcb62a17c6f450095488f6c8f8634d082707b8dc9473a2f8fb",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0247-r10-0248-after-normal-exit-prepare-snapshot.response.json",
+        "bytes": 1077,
+        "sha256": "073c1a47d2c988477e066a81dc47e958eb22fa02716b1f6995767367a9ed2136",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0247-r10-0248-after-normal-exit-prepare-snapshot.started.json",
+        "bytes": 364,
+        "sha256": "9833fe5597c598c1cecc47e15ddb1b0864eef389b2930cb97ad0abc108424af7",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0247-r10-0248-after-normal-exit-prepare-snapshot.sdk-result.json",
+        "bytes": 5154931,
+        "sha256": "5d5bbfc7821e8d8b2d75c28e91380f623edf00d7b5f6cfe06001f71513a599d9",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0247-r10-0248-after-normal-exit-prepare-snapshot.native-01.json",
+            "bytes": 2444514,
+            "sha256": "eaf5f9aae7307c23beff3136aecc60b403a572caffe3309bbf3fd6702758f0f6",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0246-snapshot.json",
+          "status": "native_snapshot_verified",
+          "reason": null,
+          "result_status": null,
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T18:02:01.497729+00:00",
+      "finished_utc": "2026-10-05T18:02:03.477238+00:00"
+    },
+    {
+      "sequence": 248,
+      "request_id": "r10-0249-after-normal-exit-prepare-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_normal_exit_context_v1",
+      "arguments": {
+        "expected_revision": 112
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0248-r10-0249-after-normal-exit-prepare-query.request.json",
+        "bytes": 235,
+        "sha256": "789ee0f685076d9d1b3c3c58aa1b30dd24e9926aa418d0496530c26f986d288a",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0248-r10-0249-after-normal-exit-prepare-query.response.json",
+        "bytes": 1074,
+        "sha256": "01d9ca1112e9e92dbc716be1f35878775a5317e710eb8f1070d867b93bdc41a0",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0248-r10-0249-after-normal-exit-prepare-query.started.json",
+        "bytes": 361,
+        "sha256": "26bd0a021a240233392be2b14ce46c3056e1f6dcc19c40f40fcb6d30c3758041",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0248-r10-0249-after-normal-exit-prepare-query.sdk-result.json",
+        "bytes": 10307395,
+        "sha256": "308a354007e2ac510fdfa4a6032a2c6bb343b9373c95829e39291360299424fe",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0248-r10-0249-after-normal-exit-prepare-query.native-01.json",
+            "bytes": 4888071,
+            "sha256": "153728a89e7af3421bc3b0b59f20ab480b4a4b972d109b923417d061e1312510",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0247-normal-exit-query.json",
+          "status": "context_observed",
+          "reason": null,
+          "result_status": "context_observed",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T18:02:04.564109+00:00",
+      "finished_utc": "2026-10-05T18:02:09.480911+00:00"
+    },
+    {
+      "sequence": 249,
+      "request_id": "r10-0250-normal-exit-continue",
+      "operation": "call_tool",
+      "tool": "ck3_request_normal_exit_v1",
+      "arguments": {
+        "action": "continue_preparation",
+        "expected_revision": 112,
+        "expected_exit_context_signature": "b4c03741589821028df6659c233e41b594a27c3a46a5c60105c4434af6042582"
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0249-r10-0250-normal-exit-continue.request.json",
+        "bytes": 365,
+        "sha256": "1f4c27d3b07640fe84b40a54308325ef568ed06b9c6b47abe5e744b093a74ed3",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0249-r10-0250-normal-exit-continue.response.json",
+        "bytes": 1045,
+        "sha256": "a51b974aa4773ca91a6dcfaa77babf1e3ad032b665f7e20abb7a208e2de21bdc",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0249-r10-0250-normal-exit-continue.started.json",
+        "bytes": 350,
+        "sha256": "a84cbc6fd3f5960475134a41ffd0d90626548de1299e8f8db8cf1742f8dc221c",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0249-r10-0250-normal-exit-continue.sdk-result.json",
+        "bytes": 5159225,
+        "sha256": "95591ebd1b59f24776417c5ad74912d8de066a81dffaef9648781449ff884ef0",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0249-r10-0250-normal-exit-continue.native-01.json",
+            "bytes": 2446571,
+            "sha256": "750f0e43b721579ae95262f97137fffb69bf85904e5397ee2bf749aaa6dabb8c",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0248-normal-exit-continue_preparation.json",
+          "status": "dispatch_unknown_claimed",
+          "reason": null,
+          "result_status": "dispatch_unknown_claimed",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T18:02:23.569381+00:00",
+      "finished_utc": "2026-10-05T18:02:27.201001+00:00"
+    },
+    {
+      "sequence": 250,
+      "request_id": "r10-0251-after-normal-exit-continue-snapshot",
+      "operation": "call_tool",
+      "tool": "ck3_take_profile_native_snapshot_v1",
+      "arguments": {},
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0250-r10-0251-after-normal-exit-continue-snapshot.request.json",
+        "bytes": 208,
+        "sha256": "eeac9daca15030ce1b9aba891510dccf0fac6b413af132b50994b3c602d2a3b7",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0250-r10-0251-after-normal-exit-continue-snapshot.response.json",
+        "bytes": 1081,
+        "sha256": "649e866844c22f4e3bd0cbc22dc78a186291e63dad0d41a834358b879a2ab86c",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0250-r10-0251-after-normal-exit-continue-snapshot.started.json",
+        "bytes": 365,
+        "sha256": "73b7b08a349bb421b46045d871e8f8202aaec8735fe60173c8c406ac46cea085",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0250-r10-0251-after-normal-exit-continue-snapshot.sdk-result.json",
+        "bytes": 5154931,
+        "sha256": "69325931f3542498e0f44da7e975e90baffe7aec9fdc59def2689121253141fc",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0250-r10-0251-after-normal-exit-continue-snapshot.native-01.json",
+            "bytes": 2444514,
+            "sha256": "7507b7e6e649bd757e15bfd1d5ca8343c28bf71cfba0b3e127d33a4a7e904c32",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0249-snapshot.json",
+          "status": "native_snapshot_verified",
+          "reason": null,
+          "result_status": null,
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T18:02:58.799801+00:00",
+      "finished_utc": "2026-10-05T18:03:01.024410+00:00"
+    },
+    {
+      "sequence": 251,
+      "request_id": "r10-0252-after-normal-exit-continue-query",
+      "operation": "call_tool",
+      "tool": "ck3_query_normal_exit_context_v1",
+      "arguments": {
+        "expected_revision": 112
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0251-r10-0252-after-normal-exit-continue-query.request.json",
+        "bytes": 236,
+        "sha256": "1f80a73c7645cd3136c58092d284da264cc5392744ba28f6ec7446d2b8fe85d2",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0251-r10-0252-after-normal-exit-continue-query.response.json",
+        "bytes": 1078,
+        "sha256": "85333d335e618738e1aed5c45eeaa2c9005735b1fdfa1201ca02919643a82e5e",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0251-r10-0252-after-normal-exit-continue-query.started.json",
+        "bytes": 362,
+        "sha256": "8c21d982aba7ea23622369dcbaf477a4ff6fb31664fa144c14d9f294d430d091",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0251-r10-0252-after-normal-exit-continue-query.sdk-result.json",
+        "bytes": 10307385,
+        "sha256": "db4f036a2ad15dc21f2cb48d18d545e5452545ec1241bf86f7f7a02d42640c8e",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0251-r10-0252-after-normal-exit-continue-query.native-01.json",
+            "bytes": 4888066,
+            "sha256": "189bb825c8c8d9e5787cc85bd3b1fd23a0448b2bcf9d023c6b20357135ff4e81",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0250-normal-exit-query.json",
+          "status": "context_observed",
+          "reason": null,
+          "result_status": "context_observed",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T18:03:02.123635+00:00",
+      "finished_utc": "2026-10-05T18:03:07.000529+00:00"
+    },
+    {
+      "sequence": 252,
+      "request_id": "r10-0253-normal-exit-confirm",
+      "operation": "call_tool",
+      "tool": "ck3_request_normal_exit_v1",
+      "arguments": {
+        "action": "confirm_desktop",
+        "expected_revision": 112,
+        "expected_exit_context_signature": "d9a212d69e1ea9e6bbf112ce1f17be917beef28941c4b2d0325a85115ecf052a"
+      },
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0252-r10-0253-normal-exit-confirm.request.json",
+        "bytes": 359,
+        "sha256": "802d1e9147baead3c9d1f53ff021a2204754dcf5b951cfdab20d3f307041dbc9",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0252-r10-0253-normal-exit-confirm.response.json",
+        "bytes": 1036,
+        "sha256": "b7ff68cb4ff6f4aa5a9b00c323b798f4407b38e44393ee8b7e03a98a3cbf5a22",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0252-r10-0253-normal-exit-confirm.started.json",
+        "bytes": 349,
+        "sha256": "0bc3c531b7a87081ec28bf97374360bc98eb393935588a494d661f88f45f8f4b",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0252-r10-0253-normal-exit-confirm.sdk-result.json",
+        "bytes": 5161387,
+        "sha256": "539fd0e707eaf7bca8095a832dfb965e218a59e7ef6d9fb8f9ce3af55c3252a2",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0252-r10-0253-normal-exit-confirm.native-01.json",
+            "bytes": 2447596,
+            "sha256": "b0f3e95fe566a71e4aba45b66da5d321d49560fd7adc0e8a811f4900d4220379",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0251-normal-exit-confirm_desktop.json",
+          "status": "dispatch_pending",
+          "reason": null,
+          "result_status": "dispatch_pending",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T18:03:23.258647+00:00",
+      "finished_utc": "2026-10-05T18:03:32.544605+00:00"
+    },
+    {
+      "sequence": 253,
+      "request_id": "r10-0254-normal-exit-observer",
+      "operation": "call_tool",
+      "tool": "ck3_observe_profile_normal_exit_v1",
+      "arguments": {},
+      "response_status": "MCP_RESULT_RECORDED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": false,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0253-r10-0254-normal-exit-observer.request.json",
+        "bytes": 192,
+        "sha256": "cb5eb617f637ee104e901d4a1f5a572289765b7cdafbcaa6337ea87b95b46469",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0253-r10-0254-normal-exit-observer.response.json",
+        "bytes": 1326,
+        "sha256": "2670a4b84996a467c67a4f3b30d98dcbe948c040d4ddef008b11bf4493814dc6",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0253-r10-0254-normal-exit-observer.started.json",
+        "bytes": 350,
+        "sha256": "3c3f4e94d84078e75d3c8e95ddaff496840d57d2694d9f7de458a0b49151e0c1",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0253-r10-0254-normal-exit-observer.sdk-result.json",
+        "bytes": 12825,
+        "sha256": "ab8dbda5ce73fff92a7dedeb459e382672b0e7e75433f287092a63a688ce22b5",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "native_receipts": [
+        {
+          "ref": {
+            "path": "live-attempt-010/mcp-client-evidence-002/0253-r10-0254-normal-exit-observer.native-01.json",
+            "bytes": 5911,
+            "sha256": "d42a27e63cb4b7807eb05730df1c2a8cd277e90d23e6c85308eeb67596db2ca9",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0252-normal-exit-observe.json",
+          "status": "process_exit_observed_zero",
+          "reason": null,
+          "result_status": "process_exit_observed_zero",
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+          "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba"
+        },
+        {
+          "ref": {
+            "path": "live-attempt-010/native-state/native-session/normal-exit-map-requests/790ba723ed5c82668c8a.observe-0cdc3196c0014471.json",
+            "bytes": 4630,
+            "sha256": "0cc24667893f270908e0d4c5b00d79ba3be257386fa61e922ea8325174a13e74",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          },
+          "original_native_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\normal-exit-map-requests\\790ba723ed5c82668c8a.observe-0cdc3196c0014471.json",
+          "status": "process_exit_observed_zero",
+          "reason": null,
+          "result_status": null,
+          "postcondition_verified": null,
+          "business_effects_verified": null,
+          "profile_sha256": null,
+          "native_session_id": null
+        }
+      ],
+      "response_NOT_COPIED_original_receipts": [
+        {
+          "response_declared_status": "NOT_COPIED",
+          "response_reason": "outside native evidence directory or missing",
+          "actually_preserved_original": {
+            "path": "live-attempt-010/native-state/native-session/normal-exit-map-requests/790ba723ed5c82668c8a.observe-0cdc3196c0014471.json",
+            "bytes": 4630,
+            "sha256": "0cc24667893f270908e0d4c5b00d79ba3be257386fa61e922ea8325174a13e74",
+            "stat_unchanged_during_read": true,
+            "body_read_this_final_assembly": true
+          }
+        }
+      ],
+      "started_utc": "2026-10-05T18:04:09.605392+00:00",
+      "finished_utc": "2026-10-05T18:04:09.651934+00:00"
+    },
+    {
+      "sequence": 254,
+      "request_id": "r10-0255-client-close",
+      "operation": "close",
+      "tool": null,
+      "arguments": null,
+      "response_status": "CLIENT_CLOSE_REQUESTED",
+      "response_is_error": null,
+      "SDK_explicit_error_flag": null,
+      "request": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0254-r10-0255-client-close.request.json",
+        "bytes": 111,
+        "sha256": "faec3e3ec2d3cc6aec867430b3001166bf3691d9f7410d22b7c84d993788d28e",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "response": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0254-r10-0255-client-close.response.json",
+        "bytes": 481,
+        "sha256": "c1ba9c3751500ec27d0a112f6d8416ca4967b80d325bfb3708121430b0f12ece",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "started": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0254-r10-0255-client-close.started.json",
+        "bytes": 342,
+        "sha256": "4e27d62aebd04c87dec1ad06350a09f3257931e374e3d2db3193b9a20d4e8aca",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "sdk": null,
+      "native_receipts": [],
+      "response_NOT_COPIED_original_receipts": [],
+      "started_utc": "2026-10-05T18:04:23.948607+00:00",
+      "finished_utc": "2026-10-05T18:04:23.949094+00:00"
+    }
+  ],
+  "new_raw_SDK_bytes": 291700771,
+  "old_SDK1_200_raw_body_scans": 0
+}

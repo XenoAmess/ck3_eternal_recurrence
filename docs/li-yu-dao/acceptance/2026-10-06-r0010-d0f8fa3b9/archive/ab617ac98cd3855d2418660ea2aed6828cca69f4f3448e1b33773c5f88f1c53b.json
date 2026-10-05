@@ -1,0 +1,172 @@
+{
+  "qualified_original": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fourth-open-join-readback-20261005-001\\finalize_open.py",
+    "bytes": 13751,
+    "sha256": "8191127ec918478530a89fecffea6c1ed2ab26cf0659529cc3c4df23cbd12e37"
+  },
+  "new_external_finalizer": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-sixth-open-join-readback-20261005-001\\finalize_open.py",
+    "bytes": 14218,
+    "sha256": "8c625d0ccadeb615b2158676bb71a111049f3ed958ee27d92c4cc5405cd834c5"
+  },
+  "parameter_changes": [
+    {
+      "old": "r10-actual-third-post-cancel-readback-20261005-001",
+      "new": "r10-actual-fifth-post-cancel-readback-20261005-001",
+      "occurrences": 1
+    },
+    {
+      "old": "0086-",
+      "new": "0127-",
+      "occurrences": 4
+    },
+    {
+      "old": "0087-",
+      "new": "0128-",
+      "occurrences": 1
+    },
+    {
+      "old": "0089-",
+      "new": "0130-",
+      "occurrences": 2
+    },
+    {
+      "old": "87e2fdfb02e76bea3755285e6cf4bfcd7ec0588d5652e92bf83e548949e8de20",
+      "new": "b233c9ed3ece500c5bc68357de621fea8b6c37ba72142dc3ffb302f4bcf940f6",
+      "occurrences": 1
+    },
+    {
+      "exact_quoted_round_literals": {
+        "9": "11",
+        "10": "12"
+      }
+    },
+    {
+      "exact_revision_event_comparisons": {
+        "38": "58",
+        "39": "59",
+        "40": "60",
+        "41": "61",
+        "63": "74"
+      }
+    },
+    {
+      "old": "before82",
+      "new": "before125",
+      "occurrences": 7
+    },
+    {
+      "old": "after88",
+      "new": "after129",
+      "occurrences": 5
+    },
+    {
+      "old": "metadata88",
+      "new": "metadata129",
+      "occurrences": 1
+    },
+    {
+      "old": "save88",
+      "new": "save129",
+      "occurrences": 2
+    },
+    {
+      "old": "fresh86",
+      "new": "fresh127",
+      "occurrences": 4
+    },
+    {
+      "old": "send87",
+      "new": "send128",
+      "occurrences": 5
+    },
+    {
+      "old": "typed89",
+      "new": "typed130",
+      "occurrences": 4
+    },
+    {
+      "old": "event63",
+      "new": "event74",
+      "occurrences": 6
+    },
+    {
+      "old": "round10",
+      "new": "round12",
+      "occurrences": 4
+    },
+    {
+      "old": "round9",
+      "new": "round11",
+      "occurrences": 2
+    },
+    {
+      "old": "nonce9_to10",
+      "new": "nonce11_to12",
+      "occurrences": 1
+    },
+    {
+      "old": "serial9_to10",
+      "new": "serial11_to12",
+      "occurrences": 1
+    },
+    {
+      "old": "public41_native40",
+      "new": "public61_native60",
+      "occurrences": 1
+    },
+    {
+      "old": "samepub39_native38",
+      "new": "samepub59_native58",
+      "occurrences": 1
+    },
+    {
+      "old": "after39native38",
+      "new": "after59native58",
+      "occurrences": 2
+    },
+    {
+      "old": "snapshot40native39",
+      "new": "snapshot60native59",
+      "occurrences": 2
+    },
+    {
+      "old": "pub41native40",
+      "new": "pub61native60",
+      "occurrences": 2
+    },
+    {
+      "old": "ordinal3_parent2",
+      "new": "ordinal5_parent4",
+      "occurrences": 1
+    },
+    {
+      "old": "Actual fourth-open checks",
+      "new": "Actual sixth-open checks",
+      "occurrences": 1
+    },
+    {
+      "old": "actual-fourth-JOIN-proposal-opened-pair-facts",
+      "new": "actual-sixth-JOIN-proposal-opened-pair-facts",
+      "occurrences": 1
+    },
+    {
+      "old": "ACTUAL_FOURTH_PROPOSAL_OPENED_ROUND10_TARGET_YES_NOT_PROVEN_NOT_FINAL_JOIN",
+      "new": "ACTUAL_SIXTH_PROPOSAL_OPENED_ROUND12_TARGET_YES_NOT_PROVEN_NOT_FINAL_JOIN",
+      "occurrences": 1
+    },
+    {
+      "old": "fourth-open-independent-readback",
+      "new": "sixth-open-independent-readback",
+      "occurrences": 1
+    },
+    {
+      "old": "'actual_round_diff':",
+      "new": "'root_plan_result_refs':{'plan':controls['root_player_plan']['ref'],'result':controls['root_player_result']['ref'],'typed130_record_used':controls['typed130_record_used'],'other_five_callbacks_not_used_as_save129_business_result':True},'all_actor_C2_variables':{k:v for k,v in av.items() if k.startswith('lyd_c2_')},'actual_round_diff':",
+      "occurrences": 1
+    }
+  ],
+  "human_report_replaced_with_actual_sixth_open_observations": true,
+  "new_save_AST_reparsed": false,
+  "product_or_source_mutations": false
+}

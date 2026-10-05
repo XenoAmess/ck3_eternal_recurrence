@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 63,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0064-third-before-save.request.json",
+  "request_sha256": "4c867923d23b33302bc7b7b42f3e7b674be1e209ac16f0b3d4158720575f784f",
+  "started_at_utc": "2026-10-05T13:08:31.166503+00:00",
+  "request_id": "r10-0064-third-before-save",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0063-r10-0064-third-before-save.sdk-result.json",
+  "sdk_result_sha256": "b8b719acb4f27d436e08adafc1eb828e68cca2b778fc504007831d140b49e058",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0062-checkpoint.json",
+      "copy": "0063-r10-0064-third-before-save.native-01.json",
+      "sha256": "746d6a2d9ea9aedd26a9c6aa99b0d6de1de6c97f95f5ede813c2837ee3a2fe8d"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T13:08:42.397340+00:00"
+}

@@ -1,0 +1,161 @@
+{
+  "scope": "Read-only saved offline fixture file state; no test or native call",
+  "rows": [
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\lyd-pc-cache-gap-v58yjy1i\\fixtures\\driver-arguments\\player-control-requests-v1\\process-a9c28c9123a0fad5860ac38b7dc5e7658f7db923c6089298125c001a7dc94583\\aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.flow.json",
+      "path_chars": 268,
+      "plain_exists": false,
+      "extended_exists": true,
+      "plain_stat_error": {
+        "type": "FileNotFoundError",
+        "winerror": 3,
+        "errno": 2
+      },
+      "extended_stat_bytes": 481,
+      "flow_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\lyd-pc-cache-gap-v58yjy1i\\fixtures\\driver-capability\\player-control-requests-v1\\process-a9c28c9123a0fad5860ac38b7dc5e7658f7db923c6089298125c001a7dc94583\\aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.flow.json",
+      "path_chars": 269,
+      "plain_exists": false,
+      "extended_exists": true,
+      "plain_stat_error": {
+        "type": "FileNotFoundError",
+        "winerror": 3,
+        "errno": 2
+      },
+      "extended_stat_bytes": 481,
+      "flow_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\lyd-pc-cache-gap-v58yjy1i\\fixtures\\driver-inventory_reference\\player-control-requests-v1\\process-a9c28c9123a0fad5860ac38b7dc5e7658f7db923c6089298125c001a7dc94583\\aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.flow.json",
+      "path_chars": 278,
+      "plain_exists": false,
+      "extended_exists": true,
+      "plain_stat_error": {
+        "type": "FileNotFoundError",
+        "winerror": 3,
+        "errno": 2
+      },
+      "extended_stat_bytes": 481,
+      "flow_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\lyd-pc-cache-gap-v58yjy1i\\fixtures\\driver-paused_frame\\player-control-requests-v1\\process-a9c28c9123a0fad5860ac38b7dc5e7658f7db923c6089298125c001a7dc94583\\aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.flow.json",
+      "path_chars": 271,
+      "plain_exists": false,
+      "extended_exists": true,
+      "plain_stat_error": {
+        "type": "FileNotFoundError",
+        "winerror": 3,
+        "errno": 2
+      },
+      "extended_stat_bytes": 481,
+      "flow_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\lyd-pc-cache-gap-v58yjy1i\\fixtures\\driver-process_identity\\player-control-requests-v1\\process-a9c28c9123a0fad5860ac38b7dc5e7658f7db923c6089298125c001a7dc94583\\aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.flow.json",
+      "path_chars": 275,
+      "plain_exists": false,
+      "extended_exists": true,
+      "plain_stat_error": {
+        "type": "FileNotFoundError",
+        "winerror": 3,
+        "errno": 2
+      },
+      "extended_stat_bytes": 481,
+      "flow_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\lyd-pc-cache-gap-v58yjy1i\\fixtures\\driver-revision\\player-control-requests-v1\\process-a9c28c9123a0fad5860ac38b7dc5e7658f7db923c6089298125c001a7dc94583\\aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.flow.json",
+      "path_chars": 267,
+      "plain_exists": false,
+      "extended_exists": true,
+      "plain_stat_error": {
+        "type": "FileNotFoundError",
+        "winerror": 3,
+        "errno": 2
+      },
+      "extended_stat_bytes": 481,
+      "flow_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\lyd-pc-cache-gap-v58yjy1i\\fixtures\\driver-source_inventory\\player-control-requests-v1\\process-a9c28c9123a0fad5860ac38b7dc5e7658f7db923c6089298125c001a7dc94583\\aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.flow.json",
+      "path_chars": 275,
+      "plain_exists": false,
+      "extended_exists": true,
+      "plain_stat_error": {
+        "type": "FileNotFoundError",
+        "winerror": 3,
+        "errno": 2
+      },
+      "extended_stat_bytes": 481,
+      "flow_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\lyd-pc-cache-gap-v58yjy1i\\fixtures\\profile-arguments\\player-control-requests-v1\\process-a9c28c9123a0fad5860ac38b7dc5e7658f7db923c6089298125c001a7dc94583\\aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.flow.json",
+      "path_chars": 269,
+      "plain_exists": false,
+      "extended_exists": true,
+      "plain_stat_error": {
+        "type": "FileNotFoundError",
+        "winerror": 3,
+        "errno": 2
+      },
+      "extended_stat_bytes": 481,
+      "flow_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\lyd-pc-cache-gap-v58yjy1i\\fixtures\\profile-attach\\player-control-requests-v1\\process-a9c28c9123a0fad5860ac38b7dc5e7658f7db923c6089298125c001a7dc94583\\aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.flow.json",
+      "path_chars": 266,
+      "plain_exists": false,
+      "extended_exists": true,
+      "plain_stat_error": {
+        "type": "FileNotFoundError",
+        "winerror": 3,
+        "errno": 2
+      },
+      "extended_stat_bytes": 481,
+      "flow_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\lyd-pc-cache-gap-v58yjy1i\\fixtures\\profile-guard\\player-control-requests-v1\\process-a9c28c9123a0fad5860ac38b7dc5e7658f7db923c6089298125c001a7dc94583\\aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.flow.json",
+      "path_chars": 265,
+      "plain_exists": false,
+      "extended_exists": true,
+      "plain_stat_error": {
+        "type": "FileNotFoundError",
+        "winerror": 3,
+        "errno": 2
+      },
+      "extended_stat_bytes": 481,
+      "flow_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\lyd-pc-cache-gap-v58yjy1i\\fixtures\\profile-paused_frame\\player-control-requests-v1\\process-a9c28c9123a0fad5860ac38b7dc5e7658f7db923c6089298125c001a7dc94583\\aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.flow.json",
+      "path_chars": 272,
+      "plain_exists": false,
+      "extended_exists": true,
+      "plain_stat_error": {
+        "type": "FileNotFoundError",
+        "winerror": 3,
+        "errno": 2
+      },
+      "extended_stat_bytes": 481,
+      "flow_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "path": "C:\\Users\\Administrator\\AppData\\Local\\Temp\\lyd-pc-cache-gap-v58yjy1i\\fixtures\\profile-revision\\player-control-requests-v1\\process-a9c28c9123a0fad5860ac38b7dc5e7658f7db923c6089298125c001a7dc94583\\aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa.flow.json",
+      "path_chars": 268,
+      "plain_exists": false,
+      "extended_exists": true,
+      "plain_stat_error": {
+        "type": "FileNotFoundError",
+        "winerror": 3,
+        "errno": 2
+      },
+      "extended_stat_bytes": 481,
+      "flow_id": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    }
+  ]
+}

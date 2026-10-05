@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0214-detach-review-event-query.request.json",
+  "request_id": "r10-0214-detach-review-event-query",
+  "sha256": "aaa864d7db0346a676132c89ab48c8d06d60763272498121014d7c76c10a0f98",
+  "contacted_game": false
+}

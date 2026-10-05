@@ -1,0 +1,115 @@
+{
+  "schema": "lyd.r10.append-only-log-phase-correction.v1",
+  "unchanged_original_package": "r10-log-preterminal-cut244-readonly-review-20261006-001",
+  "unchanged_original_index_sha256": "255ebf66babbe0f559e7328ba7fe09199ccb34ca5a340f91ff65073ef92285aa",
+  "reason": "The old filename and parent-reported capture context were prepared while terminal receipts were unavailable. Actual finalized SDK253/254 timestamps precede the single actual18:07 capture.",
+  "actual_game_exit_observed_SDK253_finished_utc": "2026-10-05T18:04:09.651934+00:00",
+  "actual_client_close254_finished_utc": "2026-10-05T18:04:23.949094+00:00",
+  "actual_log_capture": [
+    {
+      "log": "error.log",
+      "raw": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\userdir\\logs\\error.log",
+        "exists_at_check": true,
+        "copy_path": "raw/error.log",
+        "bytes": 138556,
+        "sha256": "2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a",
+        "capture_started_utc": "2026-10-05T18:07:35.956398+00:00",
+        "capture_finished_utc": "2026-10-05T18:07:35.956978+00:00",
+        "read_count": 1,
+        "source_stat_before": {
+          "bytes": 138556,
+          "mtime_ns": 1791196569276622200,
+          "ctime_ns": 1791196397128635800
+        },
+        "source_stat_after": {
+          "bytes": 138556,
+          "mtime_ns": 1791196569276622200,
+          "ctime_ns": 1791196397128635800
+        },
+        "source_stat_unchanged_during_read": true,
+        "captured_ends_with_linebreak": true
+      },
+      "physical_lines": 578,
+      "clock_delimited_record_blocks": 578,
+      "severity_counts": {
+        "E": 578
+      },
+      "multiline_blocks": 0,
+      "raw_blocks_partition_exact_bytes": true,
+      "UTF8_strict_decoding_success": true,
+      "all_records_clocked": true,
+      "tail": {
+        "first_line": 578,
+        "last_line": 578,
+        "start_offset": 138320,
+        "end_offset": 138556,
+        "clocked": true,
+        "clock": "[18:36:09]",
+        "message": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_80_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+        "raw_block_sha256": "31ccea94579711ec2c20dc7606dc0ebff31f6126414d0887d953f43e0aea8855",
+        "severity": "E",
+        "category": "FIXTURE_UNUSED_VARIABLE_DIAGNOSTIC"
+      },
+      "capture_ends_with_linebreak": true,
+      "tail_closed_by_observed_next_clocked_record": false,
+      "log_clock_timezone_and_absolute_datetime_not_independently_verified": true
+    },
+    {
+      "log": "debug.log",
+      "raw": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\userdir\\logs\\debug.log",
+        "exists_at_check": true,
+        "copy_path": "raw/debug.log",
+        "bytes": 666846,
+        "sha256": "d8174957720cceaab1c1044c3defbdf1a8300037234f35d3c69141720b4a8460",
+        "capture_started_utc": "2026-10-05T18:07:35.958178+00:00",
+        "capture_finished_utc": "2026-10-05T18:07:35.959050+00:00",
+        "read_count": 1,
+        "source_stat_before": {
+          "bytes": 666846,
+          "mtime_ns": 1791223416218725500,
+          "ctime_ns": 1791196397127630000
+        },
+        "source_stat_after": {
+          "bytes": 666846,
+          "mtime_ns": 1791223416218725500,
+          "ctime_ns": 1791196397127630000
+        },
+        "source_stat_unchanged_during_read": true,
+        "captured_ends_with_linebreak": true
+      },
+      "physical_lines": 5950,
+      "clock_delimited_record_blocks": 5816,
+      "severity_counts": {
+        "D": 5800,
+        "I": 4,
+        "W": 12
+      },
+      "multiline_blocks": 18,
+      "raw_blocks_partition_exact_bytes": true,
+      "UTF8_strict_decoding_success": true,
+      "all_records_clocked": true,
+      "tail": {
+        "first_line": 5950,
+        "last_line": 5950,
+        "start_offset": 666767,
+        "end_offset": 666846,
+        "clocked": true,
+        "clock": "[02:03:29]",
+        "message": "[D][player.cpp:153]: CJominiPlayers:::DeleteAllPlayers - #1 players",
+        "raw_block_sha256": "0d1bc63fe1d06a6fc6b59936ab9bcd01a688eb9d6efecafb46f2f7ebe37323b6",
+        "severity": "D",
+        "category": "NON_DIAGNOSTIC_LOG_RECORD"
+      },
+      "capture_ends_with_linebreak": true,
+      "tail_closed_by_observed_next_clocked_record": false,
+      "log_clock_timezone_and_absolute_datetime_not_independently_verified": true
+    }
+  ],
+  "corrected_phase": "POST_ACTUAL_GAME_EXIT_AND_POST_CLIENT_SESSION_CLOSE",
+  "business_cut244_is_data_scope_not_capture_phase": true,
+  "old_package_renamed_rewritten_or_live_logs_reread": false,
+  "normal_exit_credit_based_on_logs": false,
+  "whole_log_GREEN_credit": false
+}

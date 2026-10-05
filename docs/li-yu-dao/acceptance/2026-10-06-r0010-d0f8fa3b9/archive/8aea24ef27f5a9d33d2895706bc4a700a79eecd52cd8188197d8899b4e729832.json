@@ -1,0 +1,131 @@
+{
+  "schema": "lyd.r10.assembler-static-inert-independent-review.v1",
+  "status": "HELPER_QUERY_METADATA_GATES_INCOMPLETE",
+  "recorded_utc": "2026-10-05T15:21:20.568186+00:00",
+  "source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\assemble_proposal_inputs.py",
+    "bytes": 21869,
+    "sha256": "30437a1dd88a86d99a685323c4b1a635d08b697394ebb895291e8643dff76b55"
+  },
+  "author_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\INDEX.json",
+    "bytes": 5320,
+    "sha256": "465a71a42e98e0d6d86107cb1d9bb0f55fdf624f8c6b0e8dfabcd9183267bf46"
+  },
+  "indexed_payload_count": 30,
+  "scope": "New helper source/immutable inventory and query AST only; no full validate/assemble, saved raw hash or save AST parser.",
+  "actual_query_ast": {
+    "function": "query",
+    "line": 86,
+    "end_line": 101,
+    "sha256": "9b32a9aae432a755f2e9468b2166b1601db335afb20cf874f19b9ed6ba90a70a"
+  },
+  "inert_cases": [
+    {
+      "case": "actual_preserved_metadata_positive",
+      "accepted": true,
+      "required_rejection": false,
+      "rejected_reason": null,
+      "metadata_only": true
+    },
+    {
+      "case": "external_frame_foreign_profile_session",
+      "accepted": true,
+      "required_rejection": true,
+      "rejected_reason": null,
+      "metadata_only": true
+    },
+    {
+      "case": "external_frame_wrong_full_actor",
+      "accepted": true,
+      "required_rejection": true,
+      "rejected_reason": null,
+      "metadata_only": true
+    },
+    {
+      "case": "external_frame_actor_dead",
+      "accepted": true,
+      "required_rejection": true,
+      "rejected_reason": null,
+      "metadata_only": true
+    },
+    {
+      "case": "context_actor_and_recipient_dead",
+      "accepted": true,
+      "required_rejection": true,
+      "rejected_reason": null,
+      "metadata_only": true
+    },
+    {
+      "case": "context_not_ready_rejected_control",
+      "accepted": false,
+      "required_rejection": true,
+      "rejected_reason": "actual query guard absent: ready_to_initiate",
+      "metadata_only": true
+    }
+  ],
+  "accepted_invalid_metadata_case_count": 4,
+  "findings": [
+    {
+      "kind": "EXTERNAL_FRAME_PROVENANCE_NOT_CHECKED",
+      "line": 89,
+      "evidence_case": "external_frame_foreign_profile_session",
+      "detail": "query() reads external same-frame SDK but only checks query receipt profile/session/pipe at line100."
+    },
+    {
+      "kind": "CURRENT_FRAME_ACTOR_NOT_CHECKED",
+      "line": 90,
+      "evidence_cases": [
+        "external_frame_wrong_full_actor",
+        "external_frame_actor_dead"
+      ],
+      "detail": "query() does not require positive played_character.character_id/alive from the chosen same frame."
+    },
+    {
+      "kind": "NATIVE_CONTEXT_ALIVE_FLAGS_NOT_REQUIRED",
+      "line": 93,
+      "evidence_case": "context_actor_and_recipient_dead",
+      "detail": "positive guards omit actor_alive/recipient_alive, so contradictory dead context metadata is accepted."
+    },
+    {
+      "kind": "OUTPUT_TARGET_ALIAS_NOT_REJECTED_STATIC",
+      "line": 129,
+      "detail": "Each target is fresh individually; distinct assembly/flow/evidence paths are not required. This can create argv whose output is already occupied by its input assembly."
+    }
+  ],
+  "boundary": "These are helper metadata eligibility gaps. Actual source007 provider has not been executed or changed; no real claim, permit or business verification failure is inferred.",
+  "qualified_for_ROOT_reuse": false,
+  "suggested_minimal_append": "Check external same-frame SDK provenance and positive frame actor/alive/ctx alive; reject output target aliases. Preserve author002 and prior actorKeyError history; no verifier schema/API change.",
+  "author_source_has_no_runtime_invocation": true,
+  "saved3_and_plain2_static_shapes_present": true,
+  "source_record_literal_static_gate_present": true,
+  "before_query_and_after_release_context_separation_present": true,
+  "credit_flags_false": true,
+  "query_and_frame_refs": {
+    "query": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0126-r10-0127-sixth-ready-query.sdk-result.json",
+      "sha256": "a2399724f52c7a1742990111dbe684fbfdd75c890b25be5cde09d1ee50d63edf"
+    },
+    "frame": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0125-r10-0126-fifth-post-cancel-save.sdk-result.json",
+      "sha256": "7a9768a2e921c36e6625e04d807cb9b7a417a45f9cff9f1771b76e73a67b1b09"
+    }
+  },
+  "reviewer_operations": {
+    "full_validate": 0,
+    "assemble": 0,
+    "provider": 0,
+    "binder": 0,
+    "emitter": 0,
+    "registry": 0,
+    "release": 0,
+    "MCP": 0,
+    "game": 0,
+    "native": 0,
+    "pipe": 0,
+    "Git": 0,
+    "main": 0,
+    "save_AST": 0,
+    "old_tests": 0
+  }
+}

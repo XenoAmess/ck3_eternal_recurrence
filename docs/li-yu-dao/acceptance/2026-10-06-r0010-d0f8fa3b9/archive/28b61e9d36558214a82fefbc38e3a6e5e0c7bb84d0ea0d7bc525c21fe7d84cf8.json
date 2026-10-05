@@ -1,0 +1,342 @@
+{
+  "schema": "lyd.r10.actual-progress-report-draft.v1",
+  "status": "IN_PROGRESS_NOT_GREEN_SAVED_SIGNATURE_REJECTION_FIRST_JOIN_FALSE",
+  "revision": 3,
+  "utc": "2026-10-05T12:15:33.993179+00:00",
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "live_run": "live-attempt-010",
+  "pid": 13436,
+  "process_create_time": 1791196395.7422996,
+  "hwnd": 16385582,
+  "game_version": "1.20.0.3",
+  "build_id": "25652598",
+  "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "launch_utc": "2026-10-05T10:33:14.721856+00:00",
+  "source_clean_materialization_observed": true,
+  "source_freeze_current_status": "ROOT_DECLARED_ACTIVE_FIXED_D0F8_POLICY",
+  "source_freeze_release": null,
+  "profile_original_field_count": 9,
+  "normal_exit_inventory_in_original_profile": false,
+  "native_profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+  "guard_profile_sha256": "f87f22269f1924aa9e032c8cfe24e35d16bb5567ade0a1c1b0629fc81ab7d961",
+  "profile_freezer_exit_code": 0,
+  "dll": {
+    "path": "C:\\lydr10-release-20261005-001\\xar_ck3_bridge.dll",
+    "sha256": "dc4e4d12a4078e8b3fe38b855071e158675300167341694205ee9db875d54792"
+  },
+  "injector": {
+    "path": "C:\\lydr10-release-20261005-001\\xar_ck3_bridge_injector.exe",
+    "sha256": "4c4b302ede99ae7e9c0e8b259ae902406a720e4525cd96e7e351eb27abc0dd2d"
+  },
+  "input_save": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/userdir/save games/lyd_r10_resume_0058.ck3",
+    "bytes": 91530739,
+    "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539",
+    "source_before": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/checkpoints/0058-post-detach-save/checkpoint.ck3",
+      "bytes": 91530739,
+      "mtime_ns": 1791183170247908300
+    },
+    "source_after": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/checkpoints/0058-post-detach-save/checkpoint.ck3",
+      "bytes": 91530739,
+      "mtime_ns": 1791183170247908300
+    },
+    "copied_source_sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539"
+  },
+  "input_save_is_R10_business_readback": false,
+  "matrix": [
+    {
+      "area": "preflight",
+      "status": "ACTUAL_FRESH_OFFLINE_REVIEW_AND_CHECK_ONLY_PASS_WITH_OLD_REFUSALS_RETAINED",
+      "business_status": "NOT_RUN"
+    },
+    {
+      "area": "source",
+      "status": "ACTUAL_CLEAN_D0F8_EXPORT_70_PRODUCTION_SOURCE_REVIEW_PASS",
+      "business_status": "NOT_RUN"
+    },
+    {
+      "area": "build",
+      "status": "COMPILATION_PASS_OUTER_BUILD_RED_DEFENDER_ADD_FAILED",
+      "business_status": "NOT_RUN"
+    },
+    {
+      "area": "livebaseline",
+      "status": "ACTUAL_SDK_CONNECTED_ATTACHED_BEFORE13_AND_OPEN16_INDEPENDENT_READBACK",
+      "actual_checkpoint": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0013-before-join-save\\checkpoint.ck3",
+        "bytes": 91529730,
+        "sha256": "750e3b7eaa0dbf2d385f647f421b6282cb4bfac5aedf3b8728ddc0652314a498"
+      },
+      "actual_sdk_result": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0013-r10-0013-before-save.sdk-result.json",
+        "bytes": 790941,
+        "sha256": "234792190b191c15723c8b635dbaaf2c85e7e9490a1bd99d28915a396b524626",
+        "stat_unchanged_during_read": true
+      },
+      "independent_business_readback": "PROPOSAL_OPENED_PAIR13_TO16",
+      "actual_post_source_sign_checkpoint": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0031-post-source-sign-save\\checkpoint.ck3",
+        "bytes": 91532053,
+        "sha256": "885393b25bca235361e0d2a242bb2791eaa5d578ef03ed9c849c0849370fc4d4"
+      }
+    },
+    {
+      "area": "formalrepeat",
+      "status": "FIRST_JOIN_SIGNATURE_REJECTION_SAVED_RESULT2_RESET_DONE_READY38_NO_NEW_PROPOSAL",
+      "JOIN1": {
+        "proposal_opened": true,
+        "source_signature_operation_recorded": true,
+        "final_result": "SIGNATURE_REJECTED_RESULT2",
+        "final_credit": false
+      },
+      "DETACH": null,
+      "JOIN2": null,
+      "claim_consumption_credit": false,
+      "release_permit_credit": false,
+      "fullcycle_credit": false
+    },
+    {
+      "area": "I3b",
+      "status": "NOT_RUN",
+      "formal_common32_result": null,
+      "formal_detached_result": null,
+      "actual_HoR_postcondition": null,
+      "created_head_title": null
+    },
+    {
+      "area": "C3",
+      "status": "NOT_RUN",
+      "actual_challenger_collection": null,
+      "withdraw_reregister": null,
+      "two_challenger_isolation": null,
+      "death_followership": null
+    },
+    {
+      "area": "practice",
+      "status": "NOT_RUN",
+      "actual_XP_delta": null,
+      "actual_stress_delta": null,
+      "natural_cooldown_credit": false
+    },
+    {
+      "area": "I4",
+      "status": "STATIC_FIXTURE_READY_NATIVE_NOT_RUN",
+      "actual_engine_cases": 0
+    },
+    {
+      "area": "reload",
+      "status": "ACTUAL_LOADED_INPUT_AND_POST_FIXTURE_BEFORE13_GRAPH_READBACK_BUSINESS_RELOAD_NOT_RUN",
+      "actual_loaded_graph": "BEFORE13_SAVE_AND_MATCHED_SDK; explicit reset fixture occurred before13",
+      "postbusiness_cold_reload": null
+    },
+    {
+      "area": "normalexit",
+      "status": "NOT_RUN",
+      "request_receipt": null,
+      "original_handle_exit": null,
+      "client_close": null,
+      "keeper_stop_final": null,
+      "lease_release": null,
+      "source_freeze_release": null,
+      "lifecycle_closed": false,
+      "profile_exit_inventory_prepared": true,
+      "FILETIME_read_only_handle_closed": true,
+      "FILETIME_is_original_retained_exit_handle": false
+    }
+  ],
+  "compilation_pass": true,
+  "outer_build_exit_code": 1,
+  "defender_error_stage": "Add-invocation",
+  "defender_calls": 1,
+  "defender_effectiveness_verified": false,
+  "ci_d0f8": {
+    "lyd": "SUCCESS_159_TESTS_STATIC70_REPRO",
+    "general": "FAILURE_TWO_DOCS_REFERENCES",
+    "overall": "NOT_GREEN"
+  },
+  "partial_logs": {
+    "scope": "CAPTURED_PREFIX_ONLY",
+    "error_events": 578,
+    "exact_signature_count": 289,
+    "family": "I4_FIXTURE_UNUSED_VARIABLE",
+    "whole_final_credit": false,
+    "business_credit": false
+  },
+  "draft_author_operations": {
+    "main_write": 0,
+    "git_calls": 0,
+    "game_calls": 0,
+    "pipe_calls": 0,
+    "bus_mutations": 0,
+    "tests_or_ci_rerun": 0
+  },
+  "append_policy": "Every future ROOT actual native/checkpoint/closure fact requires a new report revision; this revision stays immutable",
+  "evidence_cutoff": "ROOT-authorized actual SDK sequences1-through38; only26-through38 newly read",
+  "previous_report_index_sha256": "c1f4011b10a3a709b7e79c02935cbe792635f525bbd72414039f6652311e6406",
+  "active_derived_profile_field_count": 10,
+  "normal_exit_inventory_in_active_derived_profile": true,
+  "normal_exit_source_inventory_sha256": "18ae748deeb90f6f5900ee16e8402dcdd1a5a0f732d57bade0ea7da670ed6f19",
+  "client_pid": 19428,
+  "client_epoch": "r10-d0f8fa3-20261005-002",
+  "client_session_id": "e722295ffba04b9f9f3559db2488bdf0",
+  "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+  "SDK_count_through_cutoff": 38,
+  "SDK_result_recorded_count": 38,
+  "sdk_total_raw_bytes": 20040057,
+  "actual_before_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0013-before-join-save\\checkpoint.ck3",
+    "bytes": 91529730,
+    "sha256": "750e3b7eaa0dbf2d385f647f421b6282cb4bfac5aedf3b8728ddc0652314a498"
+  },
+  "actual_open_proposal_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0016-open-join-proposal-save\\checkpoint.ck3",
+    "bytes": 91534935,
+    "sha256": "ab69bd9da64d01d3d323c3adc43f0c75bbf2e49abf00f77132215b7307d59603"
+  },
+  "actual_proposal_opened_report": {
+    "path": "r10-actual-open-join-readback-20261005-001/REPORT.json",
+    "bytes": 2752,
+    "sha256": "f7c9c66d44caf7f761db827933b212b7c54b781451555a7ad412be318c8ffb0c",
+    "stat_unchanged_during_read": true
+  },
+  "proposal_nonce_serial_before": 6,
+  "proposal_nonce_serial_after": 7,
+  "proposal_opened_business_credit": true,
+  "business_final_JOIN_credit": false,
+  "event_selection_facts": [
+    {
+      "sequence": 20,
+      "status": "native_gameplay_postcondition_verified",
+      "event_selection": {
+        "status": "event_instance_advanced",
+        "postcondition_verified": true,
+        "old_event_instance_id": 45,
+        "new_event_instance_id": 44,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "starting_revision": 9,
+        "ending_revision": 10
+      }
+    },
+    {
+      "sequence": 22,
+      "status": "native_gameplay_postcondition_verified",
+      "event_selection": {
+        "status": "event_instance_advanced",
+        "postcondition_verified": true,
+        "old_event_instance_id": 44,
+        "new_event_instance_id": null,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "starting_revision": 10,
+        "ending_revision": 11
+      }
+    }
+  ],
+  "review_opened": {
+    "event_instance_id": 47,
+    "event_definition_key": "lyd.220",
+    "public_revision": 12,
+    "native_revision": 11,
+    "native_handled": true,
+    "native_ack_postcondition_verified": false,
+    "final_saved_JOIN_result": null
+  },
+  "sdk_new26_through38_raw_bytes": 9598029,
+  "process_creation_FILETIME": {
+    "schema": "lyd.r10.actual-process-creation-filetime.v1",
+    "recorded_at_utc": "2026-10-05T11:51:35.474927+00:00",
+    "status": "ACTUAL_GET_PROCESS_TIMES_READ",
+    "pid": 13436,
+    "process_create_time": 1791196395.7422996,
+    "creation_filetime_100ns": 134356699957422997,
+    "access": 4096,
+    "handle_closed": true,
+    "source": {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_process_observer_v1.py",
+      "sha256": "ed6e041ed0555807cd7956cb73c0d978a5b39945a9b69beb6a9724796bd8dd70"
+    },
+    "actual_apis": [
+      "OpenProcess",
+      "GetProcessId",
+      "GetProcessTimes",
+      "CloseHandle"
+    ],
+    "uses_gameplay_api": false,
+    "uses_ocr": false,
+    "uses_desktop_input": false,
+    "normal_exit_original_handle_retained": false
+  },
+  "process_FILETIME_receipt": {
+    "path": "live-attempt-010/root-process-filetime-001/PROCESS-IDENTITY.actual.json",
+    "bytes": 790,
+    "sha256": "d0f9120cec25365426bb20074f27780d857837af5c8dff982c8b469e9d31347e",
+    "stat_unchanged_during_read": true
+  },
+  "normal_exit_retained_handle_credit_from_FILETIME": false,
+  "actual_post_source_sign_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0031-post-source-sign-save\\checkpoint.ck3",
+    "bytes": 91532053,
+    "sha256": "885393b25bca235361e0d2a242bb2791eaa5d578ef03ed9c849c0849370fc4d4"
+  },
+  "source_signature_rejection_report": {
+    "path": "r10-actual-post-source-sign-readback-20261005-001/REPORT.json",
+    "bytes": 3091,
+    "sha256": "d6639a0ba10bc7608328340b7153e653bf519687521b5db872178e3e0f10c4c1",
+    "stat_unchanged_during_read": true
+  },
+  "negative_saved_facts": {
+    "result": 2,
+    "source_signed": 1,
+    "target_requested": 1,
+    "target_signed": null,
+    "target_signed_presence": "ABSENT",
+    "source_total": 2,
+    "source_yes": 2,
+    "target_total": 1,
+    "target_yes": 1,
+    "player_total": 1,
+    "player_yes": 1,
+    "actor_vote_and_player_nonce": 7,
+    "active_presence": "ABSENT",
+    "Rite169_retry_cooldown": {
+      "value": 1,
+      "tick": 365
+    },
+    "historical_lock_serial7_retained": true,
+    "Rite169_owner_lock_released": true,
+    "Rite159_owner_lock_released": true,
+    "Faith_Rite_affiliations_changed": false,
+    "wallet_changed": false,
+    "stage": "SIGNATURE_ACCEPTANCE_REJECTION",
+    "route_proof": "FROZEN_SOURCE_PLUS_SAVE_INFERENCE",
+    "target_ballot_rejection_claim": false,
+    "AI_option_execution_trace": null,
+    "specific_random_branch": null
+  },
+  "first_JOIN_terminal_business_outcome": "REJECTED_AT_SIGNATURE_STAGE_SAVED_RESULT2",
+  "later_fresh_query38": {
+    "request_id": "r10-0039-current-ready-query",
+    "sequence": 38,
+    "public_revision": 17,
+    "native_revision": 16,
+    "date_raw": 53144712,
+    "shown": true,
+    "can_send": true,
+    "ready_to_initiate": true,
+    "active_event_present": false,
+    "incoming_interaction_present": false,
+    "new_proposal_initiated_credit": false,
+    "host_consumption_or_release_credit": false
+  },
+  "prequeue_bad_request": {
+    "request_id": "r10-0030-review-again-query",
+    "wrong_tool": "ck3_query_profile_decision_v1",
+    "enqueue_validation_exit_code": 1,
+    "SDK_sequence": null,
+    "entered_queue": false,
+    "actual_sequence30_request_id": "r10-0031-review-again-query"
+  }
+}

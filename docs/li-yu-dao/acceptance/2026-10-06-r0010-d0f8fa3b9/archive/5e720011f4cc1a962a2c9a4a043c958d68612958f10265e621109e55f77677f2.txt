@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0193-eighth-post-join-save.request.json",
+  "request_id": "r10-0193-eighth-post-join-save",
+  "sha256": "26d0803a31cb1b45d5fbfa01fe8d62a6836f5f25fa9b130bc2345213d315285b",
+  "contacted_game": false
+}

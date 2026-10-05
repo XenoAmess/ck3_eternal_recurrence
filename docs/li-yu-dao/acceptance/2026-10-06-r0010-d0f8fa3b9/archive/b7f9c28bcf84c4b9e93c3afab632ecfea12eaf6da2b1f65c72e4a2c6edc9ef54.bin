@@ -1,0 +1,217 @@
+{
+  "isError": false,
+  "status": "native_event_query_verified",
+  "sdk_bytes": 40041,
+  "event_definition_key": "lyd.212",
+  "event_instance_id": 62,
+  "date_raw": 53144712,
+  "root_scope": {
+    "status": "available",
+    "raw_type_index": 4,
+    "type_key": "character",
+    "subtype": 0,
+    "typed_identity": {
+      "status": "available",
+      "kind": "character",
+      "character_id": 31254
+    }
+  },
+  "options": [
+    {
+      "rendered_index": 0,
+      "native_option_index": 0,
+      "shown": true,
+      "enabled": true,
+      "fallback": false,
+      "cancel": false,
+      "resolved_name": "我明确同意本轮归属条款",
+      "unavailable_reason": "",
+      "effect_indicators": {
+        "status": "available",
+        "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+        "complete_effect_set": false,
+        "rows": []
+      },
+      "effect_preview": {
+        "status": "unavailable",
+        "reason": "indicator_subset_has_no_completeness_signal"
+      },
+      "resource_deltas": {
+        "status": "unavailable"
+      },
+      "relationship_deltas": {
+        "status": "unavailable"
+      }
+    },
+    {
+      "rendered_index": 1,
+      "native_option_index": 1,
+      "shown": true,
+      "enabled": true,
+      "fallback": false,
+      "cancel": false,
+      "resolved_name": "我拒绝，本轮不得实施",
+      "unavailable_reason": "",
+      "effect_indicators": {
+        "status": "available",
+        "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+        "complete_effect_set": false,
+        "rows": []
+      },
+      "effect_preview": {
+        "status": "unavailable",
+        "reason": "indicator_subset_has_no_completeness_signal"
+      },
+      "resource_deltas": {
+        "status": "unavailable"
+      },
+      "relationship_deltas": {
+        "status": "unavailable"
+      }
+    }
+  ],
+  "readiness": {
+    "event_definition_identity_ready": true,
+    "root_scope_ready": true,
+    "saved_scopes_ready": true,
+    "option_presentation_ready": true,
+    "effect_indicators_ready": true,
+    "effect_preview_ready": false,
+    "semantic_decision_ready": false
+  },
+  "binding": {
+    "snapshot_id": "native:41",
+    "revision": 42,
+    "native_revision": 41,
+    "date_raw": 53144712,
+    "expected_revision": 42,
+    "event_instance_id": 62
+  },
+  "source": {
+    "snapshot_id": "native:41",
+    "revision": 42,
+    "native_revision": 41,
+    "date_raw": 53144712,
+    "paused": true,
+    "backend_id": "native-headless"
+  },
+  "saved_scope_identities": [
+    {
+      "name": "actor",
+      "type": "character",
+      "identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    {
+      "name": "recipient",
+      "type": "character",
+      "identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 65866
+      }
+    },
+    {
+      "name": "secondary_actor",
+      "type": "character",
+      "identity": {
+        "status": "unavailable",
+        "reason": "character_scope_is_null"
+      }
+    },
+    {
+      "name": "secondary_recipient",
+      "type": "character",
+      "identity": {
+        "status": "unavailable",
+        "reason": "character_scope_is_null"
+      }
+    },
+    {
+      "name": "intermediary",
+      "type": "character",
+      "identity": {
+        "status": "unavailable",
+        "reason": "character_scope_is_null"
+      }
+    },
+    {
+      "name": "puppet_or_actor",
+      "type": "character",
+      "identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    {
+      "name": "is_puppet_action",
+      "type": "boolean",
+      "identity": {
+        "status": "unavailable",
+        "reason": "generic_scope_payload_identity_not_closed"
+      }
+    },
+    {
+      "name": "lyd_c2_actor",
+      "type": "character",
+      "identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    },
+    {
+      "name": "lyd_c2_event_school",
+      "type": "rite",
+      "identity": {
+        "status": "unavailable",
+        "reason": "generic_scope_payload_identity_not_closed"
+      }
+    },
+    {
+      "name": "lyd_c2_event_serial",
+      "type": "value",
+      "identity": {
+        "status": "unavailable",
+        "reason": "generic_scope_payload_identity_not_closed"
+      }
+    },
+    {
+      "name": "lyd_c2_event_terms",
+      "type": "value",
+      "identity": {
+        "status": "unavailable",
+        "reason": "generic_scope_payload_identity_not_closed"
+      }
+    },
+    {
+      "name": "lyd_c2_event_nonce",
+      "type": "value",
+      "identity": {
+        "status": "unavailable",
+        "reason": "generic_scope_payload_identity_not_closed"
+      }
+    },
+    {
+      "name": "lyd_c2_target_school",
+      "type": "rite",
+      "identity": {
+        "status": "unavailable",
+        "reason": "generic_scope_payload_identity_not_closed"
+      }
+    },
+    {
+      "name": "lyd_c2_voter",
+      "type": "character",
+      "identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 31254
+      }
+    }
+  ]
+}

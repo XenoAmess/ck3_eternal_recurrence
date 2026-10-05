@@ -1,0 +1,131 @@
+{
+  "schema": "lyd.r10.preterminal-cut244.readonly-log-review-index.v1",
+  "status": "FINITE_CURRENT_SNAPSHOTS_CLASSIFIED_NOT_GREEN_NOT_TERMINAL_WHOLE",
+  "files": [
+    {
+      "path": "ALL-SEVERITY-ERROR-KEYWORD-REVIEW-CANDIDATES.json",
+      "bytes": 10847,
+      "sha256": "a700df0e01aabe498a1423052b28817cfc8dbedeea75e023e742ec469e8e815f"
+    },
+    {
+      "path": "binding/prior108-COLD-SOURCE-INVENTORY.json",
+      "bytes": 31564,
+      "sha256": "2ab18195f08fb5f680f6168732cd1681fa171fd31b50b6777c1e685c297ac260"
+    },
+    {
+      "path": "binding/prior108-FROZEN-SOURCE-VERIFICATION.json",
+      "bytes": 49175,
+      "sha256": "bb99e9559cf0bfdf1d664632a89af3cc647c502ce49b9c7952486f2f4edf2b5f"
+    },
+    {
+      "path": "binding/prior108-INDEX.json",
+      "bytes": 3501,
+      "sha256": "6604b1765aa1b82f699542167ba72992a8ac9b0fbc79a7e228d4bb248645a0c7"
+    },
+    {
+      "path": "binding/prior108-MOUNT-MANIFEST.json",
+      "bytes": 12283,
+      "sha256": "141ceca8872046ef7f0118d3c25a721851de3191744cdf0435c0bfe27d8c3037"
+    },
+    {
+      "path": "binding/prior108-production.manifest.json",
+      "bytes": 12940,
+      "sha256": "8fff14a823c50d2461660676ec3238439027d1a46af5281e5db95af7c9bd945c"
+    },
+    {
+      "path": "BLOCKS-debug.log.json",
+      "bytes": 2678780,
+      "sha256": "b4fc272dc4e92201945d60eba387bc281056cd17a5b88895f7f4515e5ee0dc13"
+    },
+    {
+      "path": "BLOCKS-error.log.json",
+      "bytes": 341754,
+      "sha256": "2d0099e2f992be07e44280356c76331a87005d96c0c31d928bfa6cd1c4a86642"
+    },
+    {
+      "path": "CAPTURE.json",
+      "bytes": 2431,
+      "sha256": "b42893f65d3f8d5ebf3785e48fba289435615205d5ea458a117705c87b00bc2e"
+    },
+    {
+      "path": "COMPARISON-TO108.json",
+      "bytes": 1610,
+      "sha256": "680a56371100de0d60ffb0b9467b7f2af0420b6ac856c4594f0931c68b8d2609"
+    },
+    {
+      "path": "EXACT-UNUSED-VARIABLE-DIAGNOSTICS.json",
+      "bytes": 625240,
+      "sha256": "28c5f9498a9a68defaf91c676232dd4514ce88c3f14410d2b417c1f5737e64e4"
+    },
+    {
+      "path": "FROZEN-SOURCE-VERIFICATION.json",
+      "bytes": 70893,
+      "sha256": "2beaece5c8fce5bc057f97bd6afaeb4ea50c243d4c93707c2c6c457b0ce8fffc"
+    },
+    {
+      "path": "LYD-NON-UNUSED-LOG-SIGNATURES.json",
+      "bytes": 9097,
+      "sha256": "34a0ef33043109d8703a876d0d9a992d34fb375976f256e3dbc757908ec4c898"
+    },
+    {
+      "path": "NON-UNUSED-DIAGNOSTICS-UNREVIEWED.json",
+      "bytes": 6667,
+      "sha256": "76aab973f59da9816224235393579f8d4739b72c14f0cbe98d123f7e904ec5b6"
+    },
+    {
+      "path": "PRELIMINARY-ANALYSIS.json",
+      "bytes": 4830,
+      "sha256": "22a8dff85b74b4dbae9b941d058de67d8f923a4c1b272549ee03e03ed5d23081"
+    },
+    {
+      "path": "raw/debug.log",
+      "bytes": 666846,
+      "sha256": "d8174957720cceaab1c1044c3defbdf1a8300037234f35d3c69141720b4a8460"
+    },
+    {
+      "path": "raw/error.log",
+      "bytes": 138556,
+      "sha256": "2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a"
+    },
+    {
+      "path": "REPORT-zh.md",
+      "bytes": 4396,
+      "sha256": "6c3e9a264828488ab92f3622a921e720c235aba24560261e86c0405f075946e4"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 182606,
+      "sha256": "0256631da13cb9c37833bf023d7ae50ee8deaf8cfe4a70da2b793b751b7c9978"
+    },
+    {
+      "path": "REVIEWED-ALL-SEVERITY-KEYWORD-CANDIDATES.json",
+      "bytes": 17258,
+      "sha256": "a8b160d9af89c7a7e0dbfb42b80bb18149469c6a596f31e3f730392ff6a9f3c3"
+    },
+    {
+      "path": "REVIEWED-NON-UNUSED-DIAGNOSTICS.json",
+      "bytes": 13030,
+      "sha256": "f034d9b678ef7b01445e9b049547ef7bb3721339138c628e7a05755651ea0c37"
+    },
+    {
+      "path": "source/analyze_r10_logs_preterminal_cut244_readonly_20261006_001.py",
+      "bytes": 10042,
+      "sha256": "fc9a7d72c1326835d9b09409ec62854965eb1e025ffc4191c6ff0a45ed08d1b3"
+    },
+    {
+      "path": "source/capture_r10_logs_preterminal_cut244_readonly_20261006_001.py",
+      "bytes": 2974,
+      "sha256": "b40cc6dadf103a9dde6704afb96b1e5599403f6a9b2b50dc0aaa46ff61932538"
+    },
+    {
+      "path": "source/review_r10_logs_preterminal_cut244_readonly_20261006_001.py",
+      "bytes": 2631,
+      "sha256": "95d5ed8347a403413e297be6ca65cef2aaebe0570999fe561fbf5293780f2965"
+    },
+    {
+      "path": "source/seal_r10_logs_preterminal_cut244_readonly_20261006_001.py",
+      "bytes": 17290,
+      "sha256": "ca1a83d040756dde6d657f6b96b8e27c4e468d7f5f352a271786c79808e3e383"
+    }
+  ]
+}

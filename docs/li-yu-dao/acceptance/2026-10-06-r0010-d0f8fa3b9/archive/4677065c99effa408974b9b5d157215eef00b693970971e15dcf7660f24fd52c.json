@@ -1,0 +1,16 @@
+{
+  "target_commit": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "repository": "XenoAmess/ck3_eternal_recurrence",
+  "started_utc": "2026-10-05T09:58:09.686900+00:00",
+  "parameter_bytes_sha256": "158f28ef2f0ce494aea3daedcdece2fdc0384a40ffaa14fd92f689091052a5d3",
+  "collector_bytes_sha256": "d79e59f8768b12a11a55b7cd8ad513a5031bb1f41213b29b7d1555b534a16962",
+  "GH": {
+    "path": "C:\\Program Files\\GitHub CLI\\gh.exe",
+    "bytes": 42755384,
+    "sha256": "df05089117a23889b3f6ea08d7644849afe7b6025647a09f33b45c71f1418f75"
+  },
+  "proxy_environment_preserved": true,
+  "previous_CI_reused": false,
+  "one_observation_only": true,
+  "runtime_credit": false
+}

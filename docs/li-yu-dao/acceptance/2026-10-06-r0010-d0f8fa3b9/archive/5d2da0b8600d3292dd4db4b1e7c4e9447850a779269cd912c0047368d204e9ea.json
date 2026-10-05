@@ -1,0 +1,43 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "status": "settings_failed",
+  "method": "WMI MSFT_MpPreference.Add ExclusionPath only",
+  "namespace": "root\\Microsoft\\Windows\\Defender",
+  "before": [],
+  "after": [],
+  "calls": [
+    {
+      "path": "C:\\lydr10-release-20261005-001\\xar_ck3_bridge_injector.exe",
+      "method": "Add",
+      "return_value": null,
+      "return_value_available": false,
+      "call_error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+      "call_error_type": "com_error"
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\lydr10-release-20261005-001\\xar_ck3_bridge_injector.exe",
+      "size": 39936,
+      "sha256": "4c4b302ede99ae7e9c0e8b259ae902406a720e4525cd96e7e351eb27abc0dd2d",
+      "target": "xar_ck3_bridge_injector",
+      "target_id": "xar_ck3_bridge_injector::@6890427a1f51a3e7e1df"
+    }
+  ],
+  "settings_success_is_runtime_trust": false,
+  "exclusion_types_written": [
+    "ExclusionPath exact files"
+  ],
+  "manifest_sha256": "ddd33c0af614d9cd5932e20e7578d4f135a51cf4cc94b2a06a2aa006734c2f0f",
+  "admin_token": true,
+  "readback_visibility": "same administrative token and WMI client for before/after",
+  "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+  "error_type": "com_error",
+  "error_stage": "Add-invocation",
+  "verified_requested_paths": [],
+  "missing_requested_paths": [
+    "C:\\lydr10-release-20261005-001\\xar_ck3_bridge_injector.exe"
+  ],
+  "observed_prior_settings_preserved": true,
+  "partial_mutation": false
+}

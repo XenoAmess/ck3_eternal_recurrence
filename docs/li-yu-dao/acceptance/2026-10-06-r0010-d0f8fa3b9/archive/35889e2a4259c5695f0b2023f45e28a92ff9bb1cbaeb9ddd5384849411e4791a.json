@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r10-0051-review-query",
+  "operation": "call_tool",
+  "name": "ck3_query_profile_decision_item_v1",
+  "arguments": {
+    "decision_key": "lyd_c2_review_proposal_decision",
+    "expected_revision": 23
+  }
+}

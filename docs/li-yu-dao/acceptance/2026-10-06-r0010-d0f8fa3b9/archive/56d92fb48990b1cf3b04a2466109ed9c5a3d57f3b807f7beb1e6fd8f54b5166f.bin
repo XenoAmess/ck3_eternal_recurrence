@@ -1,0 +1,139 @@
+--- R9/common/scripted_effects/lyd_c3_challenger_effects.txt
++++ CURRENT/common/scripted_effects/lyd_c3_challenger_effects.txt
+@@ -1,38 +1,103 @@
+ # GENERATED FILE: edit tools/leadership_templates and run tools/gen_runtime.py.
+-# Character ROOT. Declaration is a political claim; the native legitimate HoF binding is not changed.
+-# If a native head already exists, register a separately owned challenger office using the real 1.20 API.
++# Character ROOT. These are lineage claims, never an appointment to the legitimate HoF.
+ lyd_c3_declare_claim_effect = {
+     if = {
+-        limit = { lyd_c3_player_actor_trigger = yes NOT = { has_variable = lyd_c3_claim_title } NOT = { has_character_flag = lyd_c3_claimant } }
++        limit = { lyd_c3_player_actor_trigger = yes NOT = { has_variable = lyd_c3_active } NOT = { has_variable = lyd_c3_claim_title } NOT = { has_character_flag = lyd_c3_claimant } }
+         set_variable = { name = lyd_c3_claim_faith value = faith }
+         set_variable = { name = lyd_c3_claim_rite value = rite }
+         add_character_flag = lyd_c3_claimant
+         if = {
+-            limit = { lyd_c3_native_challenger_admitted_trigger = yes lyd_c3_native_challenger_eligible_trigger = yes }
+-            save_scope_as = lyd_c3_claimant
+-            faith = { save_scope_as = my_faith save_scope_as = lyd_c3_claim_faith }
+-            rite = { save_scope_as = lyd_c3_claim_rite }
+-            create_dynamic_title = { tier = duchy name = lyd_c3_claim_title_name adj = lyd_c3_claim_title_adj }
+-            scope:new_title = {
+-                set_variable = { name = lyd_c3_owned_claim_title value = 1 }
+-                set_variable = { name = lyd_c3_owner_faith value = scope:lyd_c3_claim_faith }
+-                set_variable = { name = lyd_c3_owner_rite value = scope:lyd_c3_claim_rite }
+-                set_landless_title = yes
+-                set_destroy_if_invalid_heir = yes
+-                set_no_automatic_claims = yes
+-                set_definitive_form = yes
+-                set_can_be_named_after_dynasty = no
+-                set_capital_county = scope:lyd_c3_claimant.capital_county
+-            }
+-            create_title_and_vassal_change = { type = created save_scope_as = lyd_c3_claim_change add_claim_on_loss = no }
+-            scope:new_title = { change_title_holder = { holder = scope:lyd_c3_claimant change = scope:lyd_c3_claim_change } }
+-            resolve_title_and_vassal_change = scope:lyd_c3_claim_change
+-            scope:new_title = { generate_coa = religious_title sponsor_new_religious_head_challenger = scope:new_title }
+-            set_variable = { name = lyd_c3_claim_title value = scope:new_title }
+-            debug_log = "LYD_C3_NATIVE_CHALLENGER_REGISTERED"
++            limit = { lyd_c3_native_challenger_admitted_trigger = yes }
++            lyd_c3_register_native_claim_effect = yes
+         }
+         else = { debug_log = "LYD_C3_POLITICAL_CLAIM_WITHOUT_NATIVE_OFFICE" }
+     }
++}
++# Read the actual Faith challenger collection, not a previous script success flag.
++# This helper changes only claimant metadata. It grants no title or native role.
++lyd_c3_read_native_claim_registration_effect = {
++    save_scope_as = lyd_c3_claim_reader
++    set_variable = { name = lyd_c3_claim_registration_result value = -1 }
++    if = {
++        limit = {
++            lyd_c3_claim_current_trigger = yes
++            has_variable = lyd_c3_claim_title
++            var:lyd_c3_claim_title = {
++                var:lyd_c3_owned_claim_title = 1
++                var:lyd_c3_owner_faith = scope:lyd_c3_claim_reader.faith
++                var:lyd_c3_owner_rite = scope:lyd_c3_claim_reader.rite
++                holder = scope:lyd_c3_claim_reader
++                trigger_if = {
++                    limit = { exists = scope:lyd_c3_claim_reader.faith.religious_head_title }
++                    NOT = { this = scope:lyd_c3_claim_reader.faith.religious_head_title }
++                }
++            }
++        }
++        var:lyd_c3_claim_title = { save_scope_as = lyd_c3_claim_read_title }
++        faith = {
++            every_religious_head_challenger = {
++                limit = { this = scope:lyd_c3_claim_read_title }
++                scope:lyd_c3_claim_reader = { set_variable = { name = lyd_c3_claim_registration_result value = 1 } }
++            }
++        }
++    }
++}
++# Native basis: pam_antipope_effects.txt:195-208; self-sponsorship is Title -> Title.
++# Keep an exact office pointer even on a partial failure so withdrawal can use
++# its existing ownership/native-HoF guards. Do not roll back unrelated state.
++lyd_c3_register_native_claim_effect = {
++    if = {
++        limit = { lyd_c3_claim_current_trigger = yes lyd_c3_native_challenger_admitted_trigger = yes }
++        save_scope_as = lyd_c3_claimant
++        faith = { save_scope_as = my_faith save_scope_as = lyd_c3_claim_faith }
++        rite = { save_scope_as = lyd_c3_claim_rite }
++        faith.religious_head = { save_scope_as = lyd_c3_claim_incumbent }
++        faith.religious_head_title = { save_scope_as = lyd_c3_claim_incumbent_title }
++        primary_title = { save_scope_as = lyd_c3_claim_original_primary }
++        capital_county = { save_scope_as = lyd_c3_claim_original_capital }
++        create_dynamic_title = { tier = duchy name = lyd_c3_claim_title_name adj = lyd_c3_claim_title_adj }
++        scope:new_title = {
++            save_scope_as = lyd_c3_new_claim_title
++            set_variable = { name = lyd_c3_owned_claim_title value = 1 }
++            set_variable = { name = lyd_c3_owner_faith value = scope:lyd_c3_claim_faith }
++            set_variable = { name = lyd_c3_owner_rite value = scope:lyd_c3_claim_rite }
++            set_landless_title = yes
++            set_destroy_if_invalid_heir = yes
++            set_no_automatic_claims = yes
++            set_definitive_form = yes
++            set_can_be_named_after_dynasty = no
++            set_capital_county = scope:lyd_c3_claim_original_capital
++        }
++        create_title_and_vassal_change = { type = created save_scope_as = lyd_c3_claim_change add_claim_on_loss = no }
++        scope:lyd_c3_new_claim_title = { change_title_holder = { holder = scope:lyd_c3_claimant change = scope:lyd_c3_claim_change } }
++        resolve_title_and_vassal_change = scope:lyd_c3_claim_change
++        set_variable = { name = lyd_c3_claim_title value = scope:lyd_c3_new_claim_title }
++        scope:lyd_c3_new_claim_title = {
++            generate_coa = religious_title
++            sponsor_new_religious_head_challenger = scope:lyd_c3_new_claim_title
++        }
++        lyd_c3_read_native_claim_registration_effect = yes
++        if = {
++            limit = {
++                var:lyd_c3_claim_registration_result = 1
++                faith = scope:lyd_c3_claim_faith
++                rite = scope:lyd_c3_claim_rite
++                faith.religious_head = scope:lyd_c3_claim_incumbent
++                faith.religious_head_title = scope:lyd_c3_claim_incumbent_title
++                scope:lyd_c3_claim_incumbent_title = { holder = scope:lyd_c3_claim_incumbent }
++                primary_title = scope:lyd_c3_claim_original_primary
++                capital_county = scope:lyd_c3_claim_original_capital
++            }
++            debug_log = "LYD_C3_NATIVE_CHALLENGER_POSTCONDITION_PASS"
++            trigger_event = lyd.330
++        }
++        else = {
++            set_variable = { name = lyd_c3_claim_registration_result value = -1 }
++            debug_log = "LYD_C3_NATIVE_CHALLENGER_POSTCONDITION_FAIL"
++            trigger_event = lyd.331
++        }
++    }
++    else = { debug_log = "LYD_C3_NATIVE_CHALLENGER_PREREQUISITE_REJECTED" }
+ }
+ # Character ROOT. Remove only its exact owned challenger office; never touch a foreign title or the real HoF.
+ lyd_c3_withdraw_claim_effect = {
+@@ -64,6 +129,7 @@
+         }
+     }
+     remove_variable = lyd_c3_claim_title
++    remove_variable = lyd_c3_claim_registration_result
+     remove_variable = lyd_c3_claim_faith
+     remove_variable = lyd_c3_claim_rite
+     remove_variable = lyd_c3_claim_sponsor

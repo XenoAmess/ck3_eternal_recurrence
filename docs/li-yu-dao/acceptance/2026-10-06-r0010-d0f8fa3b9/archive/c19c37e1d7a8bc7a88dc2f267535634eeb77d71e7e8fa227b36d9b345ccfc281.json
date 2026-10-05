@@ -1,0 +1,140 @@
+{
+  "schema": "lyd.r10.head-bound-native-release-inputs.v1",
+  "utc": "2026-10-05T09:59:35.840007+00:00",
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\run_native_msvc.py",
+    "--source-dir",
+    "C:\\lr10s1\\ck3_autonomous_player\\native_bridge",
+    "--build-dir",
+    "C:\\lydr10-release-20261005-001",
+    "--configuration",
+    "Release",
+    "--jobs",
+    "64",
+    "--target",
+    "xar_ck3_bridge",
+    "xar_ck3_bridge_injector",
+    "--defender-external-candidate",
+    "R10 exact clean HEAD d0f8fa3b9d444828759443aa018bfd7ad31b398d; native tree 789eab5ae1c3015fe210de508fdd730a13bbb8db",
+    "--cmake-define",
+    "BUILD_TESTING=OFF",
+    "--cmake-define",
+    "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=ON",
+    "--cmake-define",
+    "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1=ON",
+    "--cmake-define",
+    "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1=ON",
+    "--cmake-define",
+    "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1=ON",
+    "--cmake-define",
+    "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1=ON",
+    "--cmake-define",
+    "XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1=ON",
+    "--cmake-define",
+    "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=ON",
+    "--cmake-define",
+    "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1=ON",
+    "--configure",
+    "--build"
+  ],
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "native_tree": "789eab5ae1c3015fe210de508fdd730a13bbb8db",
+  "source_before": {
+    "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+    "native_tree": "789eab5ae1c3015fe210de508fdd730a13bbb8db",
+    "status": ""
+  },
+  "native_source_inventory": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-root-head-export-20261005-001/NATIVE-SOURCE-INVENTORY.json",
+    "bytes": 604263,
+    "sha256": "f47ca0c6fb7ac42ec0bae2ba1ccf63e2ce5bfafe5636b2aae7f79d2d48324bdb"
+  },
+  "source_inventory_before": {
+    "files": 3220,
+    "inventory_exact": true
+  },
+  "export_report": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-root-head-export-20261005-001/REPORT.json",
+    "bytes": 16836,
+    "sha256": "f2b0f6d91a565648ecdb0be8c3aec1d88b67c468bc8a5623aba347f58ee7b0e4"
+  },
+  "wrapper": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-exact-release-builder-20261005-001/build_exact_release.py",
+    "bytes": 14619,
+    "sha256": "3aa48eae47945da61ee25c52d9661f8c5e93773d62f062b5ef56317e0b7a0656"
+  },
+  "defender_probe": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-exact-release-builder-20261005-001/defender_read_only_probe.py",
+    "bytes": 5796,
+    "sha256": "200a0565fcbc59782b4ff60d1c1b60417c676a8e183ad4f423dbc84b7ea8dd68"
+  },
+  "canonical_helper_export_exact_bindings": [
+    {
+      "relative_path": "tools/run_native_msvc.py",
+      "canonical": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/run_native_msvc.py",
+        "bytes": 12782,
+        "sha256": "3b2cbff2a4e725dfd0b92ba5bce839d798e2bc85b6a06209f2b4dc73c868eace"
+      },
+      "exported": {
+        "path": "C:/lr10s1/tools/run_native_msvc.py",
+        "bytes": 12782,
+        "sha256": "3b2cbff2a4e725dfd0b92ba5bce839d798e2bc85b6a06209f2b4dc73c868eace"
+      }
+    },
+    {
+      "relative_path": "tools/register_project_exe_exclusions.py",
+      "canonical": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/register_project_exe_exclusions.py",
+        "bytes": 26813,
+        "sha256": "a750bb69c738f930050aa1f939fdaa70805d415a7de5ab48a2e6bb08884645e8"
+      },
+      "exported": {
+        "path": "C:/lr10s1/tools/register_project_exe_exclusions.py",
+        "bytes": 26813,
+        "sha256": "a750bb69c738f930050aa1f939fdaa70805d415a7de5ab48a2e6bb08884645e8"
+      }
+    },
+    {
+      "relative_path": "tools/project_exe_exclusion_broker_client.py",
+      "canonical": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/project_exe_exclusion_broker_client.py",
+        "bytes": 31474,
+        "sha256": "7dfb82495e51fa589eecd877a717cddcbffb2c9b3fc91a3bf2b0665e8f939fa8"
+      },
+      "exported": {
+        "path": "C:/lr10s1/tools/project_exe_exclusion_broker_client.py",
+        "bytes": 31474,
+        "sha256": "7dfb82495e51fa589eecd877a717cddcbffb2c9b3fc91a3bf2b0665e8f939fa8"
+      }
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/tools/build_fresh.py",
+      "canonical": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/tools/build_fresh.py",
+        "bytes": 15140,
+        "sha256": "70fe1d0d5870168b43cd9eedfbb3c3a0387300313dc9c0654788e2bcd0c4e4af"
+      },
+      "exported": {
+        "path": "C:/lr10s1/ck3_autonomous_player/native_bridge/tools/build_fresh.py",
+        "bytes": 15140,
+        "sha256": "70fe1d0d5870168b43cd9eedfbb3c3a0387300313dc9c0654788e2bcd0c4e4af"
+      }
+    }
+  ],
+  "configuration": "Release",
+  "jobs": 64,
+  "targets": [
+    "xar_ck3_bridge",
+    "xar_ck3_bridge_injector"
+  ],
+  "actual_tests_requested": false,
+  "actual_build_authorized": true,
+  "game_calls": 0,
+  "native_pipe_calls": 0,
+  "Defender_policy": "Use actual current Git-local opt-in and new helper. Preserve actual before/after settings receipt or its failure. No service enablement, broker install or fallback old entry."
+}

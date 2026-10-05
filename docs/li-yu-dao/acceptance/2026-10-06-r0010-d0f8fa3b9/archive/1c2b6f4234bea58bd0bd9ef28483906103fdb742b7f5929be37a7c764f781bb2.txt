@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0093-fourth-player-yes.request.json",
+  "request_id": "r10-0093-fourth-player-yes",
+  "sha256": "37263f2bd1f908f8e200251fb59d3e9f240acb1ee32a98de9cfa83ce8838b011",
+  "contacted_game": false
+}

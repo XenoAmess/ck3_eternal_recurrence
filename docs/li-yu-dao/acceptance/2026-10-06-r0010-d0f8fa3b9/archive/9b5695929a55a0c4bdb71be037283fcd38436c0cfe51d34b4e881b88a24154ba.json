@@ -1,0 +1,30 @@
+{
+  "schema": "lyd.r10.partial-cold-log-independent-signature-review.v1",
+  "status": "PARTIAL_PREFIX_OBSERVATION_NO_COMPLETE_GREEN",
+  "snapshot_REPORT": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-log-and-save-readback-preparation-20261005-001\\partial-logs-001\\REPORT.json",
+    "sha256": "f05e5297e82ba449f72aa38b447cd256659888715a76063193a11aa94cc9eb4e"
+  },
+  "error_log_raw": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-log-and-save-readback-preparation-20261005-001\\partial-logs-001\\raw\\error.log",
+    "bytes": 138556,
+    "sha256": "2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a"
+  },
+  "error_event_groups": 578,
+  "error_exact_distinct_signatures": 289,
+  "exact_unused_variable_diagnostics_total": 578,
+  "unused_variable_exact_signatures": 289,
+  "unused_variable_family_totals": {
+    "I4-fixture-lyd_im": 578
+  },
+  "other_error_signatures": [],
+  "candidate_category_event_totals": {
+    "LYD_REFERENCED": 600
+  },
+  "doctrine_preview_dereference_candidate_count": 0,
+  "retirement_or_head_title_error_candidate_count": 0,
+  "all_invalid_reference_candidate_count": 0,
+  "inspection_boundary": "Exact current captured bytes; all578 error groups have exact known unused-variable diagnostic signature if other_error_signatures empty; absence of candidates is limited to this prefix and classifier. No future/complete-log or business credit.",
+  "business_operations": "NOT_RUN",
+  "actual_game_or_pipe_called": false
+}

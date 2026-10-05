@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 207,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0208-detach-first-personal-chosen.request.json",
+  "request_sha256": "159872388e427dcd2b07a33522b7cc1a8ca9091da6679885283c223e347f30a5",
+  "started_at_utc": "2026-10-05T17:46:10.827678+00:00",
+  "request_id": "r10-0208-detach-first-personal-chosen",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0207-r10-0208-detach-first-personal-chosen.sdk-result.json",
+  "sdk_result_sha256": "f443f932fdebf102e4503f601dbb78091bf82aaf426813e2e04bc25310bef100",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0206-event-select.json",
+      "copy": "0207-r10-0208-detach-first-personal-chosen.native-01.json",
+      "sha256": "4fdc4f70687bf5bc4d6aef781cfcb472fa56b43e56dc93a2867f3d187b933805"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:46:15.665699+00:00"
+}

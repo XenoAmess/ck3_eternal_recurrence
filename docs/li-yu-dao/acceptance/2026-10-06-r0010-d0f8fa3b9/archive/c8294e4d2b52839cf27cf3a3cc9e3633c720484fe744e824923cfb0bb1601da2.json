@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 6,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0006-cooldown-query.request.json",
+  "request_sha256": "845cb6814e7a7a02fef1c17e6f6d13b9bfffc0fc83eeabd3a998633459b8d7b6",
+  "started_at_utc": "2026-10-05T11:10:52.561679+00:00",
+  "request_id": "r10-0006-cooldown-query",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0006-r10-0006-cooldown-query.sdk-result.json",
+  "sdk_result_sha256": "e9437df1f9c3b6589e695308c7d07d83347d5340a16c8c4e7d2371beb8342138",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0005-ordinary-interaction-query.json",
+      "copy": "0006-r10-0006-cooldown-query.native-01.json",
+      "sha256": "18165f01aca3c252e862ac3da47128c03281a5838e3922ec0dcd372f9b52a857"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T11:10:53.904796+00:00"
+}

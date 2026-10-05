@@ -1,0 +1,20 @@
+{
+  "schema": "lyd.first-join.evidence-emission-request.v1",
+  "bound_verifier_index": {
+    "path": null,
+    "sha256": null
+  },
+  "claim": {
+    "path": null,
+    "sha256": null
+  },
+  "before_artifact": {
+    "path": null,
+    "sha256": null
+  },
+  "after_artifact": {
+    "path": null,
+    "sha256": null
+  },
+  "output": null
+}

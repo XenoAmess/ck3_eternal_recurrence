@@ -1,0 +1,115 @@
+{
+  "schema": "lyd.r10.append-only-import-source-correction.v1",
+  "at_utc": "2026-10-05T18:28:27.564153+00:00",
+  "candidate_unchanged_INDEX": "b50384a6aaa3a6edb14ae41a48cabb103b7de53613f98ba0c8c2f8890617f429",
+  "actual_first_check_plan_exit_code": 1,
+  "first_failed_check_was_stat_only": true,
+  "reason": "12 borrowed input INDEX paths describe nested source copies without file bodies. Every corresponding actual canonical source was read once and exact SHA/bytes verified.",
+  "corrections": [
+    {
+      "declared_nested_source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002\\evidence\\lineage-002\\inputs\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\tools\\gen_institution.py",
+      "declared_nested_source_absent": true,
+      "actual_canonical_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\tools\\gen_institution.py",
+      "bytes": 51577,
+      "sha256": "1243dc72037a0bdf3fd660f781ee13af232f9bd20828fc930b87033733884f24",
+      "actual_source_exact_byte_SHA_verified": true
+    },
+    {
+      "declared_nested_source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002\\evidence\\lineage-002\\inputs\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\executed-review-source.py",
+      "declared_nested_source_absent": true,
+      "actual_canonical_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\executed-review-source.py",
+      "bytes": 11497,
+      "sha256": "2eb5dcf73176acb0401f7f5cb75656cfae5edacf75654e5e174462dedd761ade",
+      "actual_source_exact_byte_SHA_verified": true
+    },
+    {
+      "declared_nested_source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002\\evidence\\lineage-002\\inputs\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\common\\scripted_triggers\\lyd_i3b_institution_triggers.txt",
+      "declared_nested_source_absent": true,
+      "actual_canonical_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\common\\scripted_triggers\\lyd_i3b_institution_triggers.txt",
+      "bytes": 10906,
+      "sha256": "7b063867cfd25a76d2209010e7417f220e16f3c63333ef957a380687a08b3c58",
+      "actual_source_exact_byte_SHA_verified": true
+    },
+    {
+      "declared_nested_source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002\\evidence\\lineage-002\\inputs\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\events\\lyd_i3b_institution_events.txt",
+      "declared_nested_source_absent": true,
+      "actual_canonical_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\events\\lyd_i3b_institution_events.txt",
+      "bytes": 5666,
+      "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+      "actual_source_exact_byte_SHA_verified": true
+    },
+    {
+      "declared_nested_source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002\\evidence\\lineage-002\\inputs\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\NATIVE-TITLE-GUARD-SOURCE-PROOF.json",
+      "declared_nested_source_absent": true,
+      "actual_canonical_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\NATIVE-TITLE-GUARD-SOURCE-PROOF.json",
+      "bytes": 8537,
+      "sha256": "abedabaef4aede06fed38e3608cf36e112bd5a33f315176ac7e3e256216bc731",
+      "actual_source_exact_byte_SHA_verified": true
+    },
+    {
+      "declared_nested_source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002\\evidence\\lineage-002\\inputs\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\finish_review_002.py",
+      "declared_nested_source_absent": true,
+      "actual_canonical_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\finish_review_002.py",
+      "bytes": 1304,
+      "sha256": "c57f539289d505be57a0961afd74c28f0db1810b3d8da3cb041a45c2b60d2d5f",
+      "actual_source_exact_byte_SHA_verified": true
+    },
+    {
+      "declared_nested_source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002\\evidence\\lineage-002\\inputs\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\common\\scripted_effects\\lyd_i3b_response_effects.txt",
+      "declared_nested_source_absent": true,
+      "actual_canonical_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\common\\scripted_effects\\lyd_i3b_response_effects.txt",
+      "bytes": 4939,
+      "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6",
+      "actual_source_exact_byte_SHA_verified": true
+    },
+    {
+      "declared_nested_source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002\\evidence\\lineage-002\\inputs\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\common\\scripted_effects\\lyd_i3b_setup_effects.txt",
+      "declared_nested_source_absent": true,
+      "actual_canonical_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\common\\scripted_effects\\lyd_i3b_setup_effects.txt",
+      "bytes": 6448,
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+      "actual_source_exact_byte_SHA_verified": true
+    },
+    {
+      "declared_nested_source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002\\evidence\\lineage-002\\inputs\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\common\\decisions\\lyd_i3b_institution_decisions.txt",
+      "declared_nested_source_absent": true,
+      "actual_canonical_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\common\\decisions\\lyd_i3b_institution_decisions.txt",
+      "bytes": 4599,
+      "sha256": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019",
+      "actual_source_exact_byte_SHA_verified": true
+    },
+    {
+      "declared_nested_source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002\\evidence\\lineage-002\\inputs\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\common\\scripted_effects\\lyd_i3b_commit_effects.txt",
+      "declared_nested_source_absent": true,
+      "actual_canonical_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\common\\scripted_effects\\lyd_i3b_commit_effects.txt",
+      "bytes": 4751,
+      "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec",
+      "actual_source_exact_byte_SHA_verified": true
+    },
+    {
+      "declared_nested_source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002\\evidence\\lineage-002\\inputs\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\common\\scripted_effects\\lyd_i3b_terms_effects.txt",
+      "declared_nested_source_absent": true,
+      "actual_canonical_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\source\\common\\scripted_effects\\lyd_i3b_terms_effects.txt",
+      "bytes": 3842,
+      "sha256": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633",
+      "actual_source_exact_byte_SHA_verified": true
+    },
+    {
+      "declared_nested_source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-full-runtime-independent-review-20261005-001\\review-package-002\\evidence\\lineage-002\\inputs\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\parser\\extract_auto_upgrade_buildings.py",
+      "declared_nested_source_absent": true,
+      "actual_canonical_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-i3b-detached-authority-source-review-20261005-001\\review-package-002\\parser\\extract_auto_upgrade_buildings.py",
+      "bytes": 15976,
+      "sha256": "f37063db3e2322dbad713f5b58fa75287970f462402e94c0efea54ea154d8286",
+      "actual_source_exact_byte_SHA_verified": true
+    }
+  ],
+  "new_plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-terminal-import-plan-correction-20261006-001\\IMPORT-PLAN.v2.json",
+    "bytes": 2970667,
+    "sha256": "ebbe92559187086b6719af31f330b50ef759a7f251a468ec6275ea788a0054da"
+  },
+  "old_SDK_raw_body_reads": 0,
+  "save_body_reads": 0,
+  "old_package_or_candidate_rewrites": false,
+  "game_or_main_operations": false
+}

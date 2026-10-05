@@ -1,0 +1,41 @@
+{
+  "schema": "ck3-ordinary-interaction-once-claim-v1",
+  "request_id": "ordinary-interaction-1d9cf9c7db6e4ea2be6872d6427cf2a4",
+  "binding": {
+    "native_revision": 58,
+    "connection_generation": 1,
+    "game_pid": 13436,
+    "played_character_id": 31254,
+    "date_raw": 53144712,
+    "episode_run_id": null,
+    "revision": 59,
+    "snapshot_id": "native:58",
+    "observed_stress_points": 0,
+    "active_event_present": false,
+    "incoming_interaction_present": false
+  },
+  "action_identity": {
+    "game_pid": 13436,
+    "actor_id": 31254,
+    "process_create_time": 1791196395.7422996,
+    "interaction_key": "lyd_c2_propose_join_interaction",
+    "recipient_id": 65866,
+    "action": "initiate_ordinary"
+  },
+  "claim_ordinal": 5,
+  "host_provenance": {
+    "process_create_time": 1791196395.7422996,
+    "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+    "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+    "pipe_name": "\\\\.\\pipe\\xar_profile_53bd96329c5541f7a403c5cecf61d8ba",
+    "guard_profile_sha256": "f87f22269f1924aa9e032c8cfe24e35d16bb5567ade0a1c1b0629fc81ab7d961"
+  },
+  "new_intent_lineage": {
+    "permit_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000004.claim.release.json",
+    "permit_sha256": "350483fb0032e95b83d99e2321e02186f44d3190c2d2e206490517d88295485a",
+    "next_intent_id": "r10-proposal-006-after-consumed-9e0a-20261005",
+    "parent_claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000004.claim.json",
+    "parent_claim_sha256": "be8013203068a19192934c6aebf5491f4c8f8b7483e60799a9df3413c48eff22"
+  },
+  "status": "claimed_result_unknown_no_retry"
+}

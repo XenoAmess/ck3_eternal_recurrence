@@ -1,0 +1,15 @@
+{
+  "schema": "lyd.external-evidence-index.v1",
+  "files": [
+    {
+      "path": "REPORT.json",
+      "bytes": 39754,
+      "sha256": "ba88adf7ffbd79800576d391bc6442dd43d222c279374c644c9195afd5610f63"
+    },
+    {
+      "path": "review_r10_actual_third_emit_release_lineage.py",
+      "bytes": 27615,
+      "sha256": "65bfe9732af8afb00d11f373484d521093ee535504281f4313125b3e61f9b1f7"
+    }
+  ]
+}

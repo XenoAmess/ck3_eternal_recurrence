@@ -1,0 +1,11 @@
+import json
+from pathlib import Path
+HERE=Path(__file__).resolve().parent
+def read(p):return json.loads(Path(p).read_text(encoding='utf-8-sig'))
+def row(v):return None if v is None else {k:v.get(k) for k in ['present','tick','type','identity','number']}
+a=read(HERE/'actual-save-001/STATE.json');av=a['all_actor_LYD_variables'];controls=read(HERE/'CONTROL-LINEAGE-EVIDENCE.json')['controls'];req=read(HERE/'REQUEST.actual.json');sdk=read(req['supporting_evidence'][0]['path'])['structuredContent'];f=sdk['snapshot_after']
+facts={'actor_C2':{k:row(v) for k,v in av.items() if k.startswith('lyd_c2_') or k=='lyd_r4_reset_count'},'tickets':{cid:{k:row(v['variables'].get(k)) for k in ['lyd_c2_vote_owner','lyd_c2_vote_serial','lyd_c2_vote_nonce','lyd_c2_vote_yes','lyd_c2_player_owner','lyd_c2_player_serial','lyd_c2_player_nonce']} for cid,v in a['character_roles'].items()},'Rites':{cid:{k:row(v['variables'].get(k)) for k in ['lyd_c2_proposal_owner','lyd_c2_lock_serial','lyd_c2_proposal_serial','lyd_c2_retry_cooldown','lyd_c2_transition_cooldown']} for cid,v in a['source_target_related_graphs']['rites'].items()},'summary':{k:v for k,v in a['summary'].items() if k in ['wallet','stress_saved','learning_XP_saved','current_actor_id','current_rite','current_faith','current_HoR','current_HoF']},'saveSDK_frame':{k:f.get(k) for k in ['revision','native_revision','date_raw','paused','active_event','pending_character_interaction']}}
+q=controls['0109-']['result'];send=controls['0110-']['result'];ev=controls['0112-']['result']['current_event_window_context']
+facts['controls']={'fresh109':q,'send110_keys':list(send),'send110_result_pending':send.get('character_interaction_ordinary_initiation'),'send110_revisions':{k:send.get(k) for k in ['after_revision','after_native_revision','action_request_id','full_product_acceptance_credit']},'send110_wrapper':controls['0110-']['snapshot_excerpt'],'typed112':{'id':ev['current_event_instance_id'],'key':ev['event_definition_key'],'native_revision':ev['snapshot_revision'],'public_revision':controls['0112-']['result']['queried_revision'],'date_raw':ev['date_raw']}}
+with (HERE/'INSPECTION.json').open('x',encoding='utf-8',newline='\n') as out:json.dump(facts,out,ensure_ascii=False,indent=2);out.write('\n')
+print(json.dumps(facts,ensure_ascii=False,indent=2))

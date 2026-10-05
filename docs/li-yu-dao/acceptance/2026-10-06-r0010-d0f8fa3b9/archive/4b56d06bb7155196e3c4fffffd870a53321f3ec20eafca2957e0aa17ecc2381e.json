@@ -1,0 +1,437 @@
+{
+  "schema": "lyd.r10.actual-save-pair-observation-diff.v1",
+  "status": "ACTUAL_PAIR_DIFF_EXPECTATIONS_UNASSESSED",
+  "before": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\actual-save-001\\REPORT.json",
+    "bytes": 73106,
+    "sha256": "9715acfffe6baf21d09e6acf1e40c574889d8330b12c3112e1df597f8de0d82c"
+  },
+  "after": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-cycle-before-detach-readback-20261006-001\\actual-save-001\\REPORT.json",
+    "bytes": 73138,
+    "sha256": "6edf09fe19694e1d5967f505476e9adc70dedad5c422e9a79287e2904209a371"
+  },
+  "before_phase": "actual-R10-eighth-JOIN-final-confirm-and-ACK-post-business-result",
+  "after_phase": "actual-R10-cycle-before-DETACH-explicit-fixture-reset-not-natural-expiry-or-DETACH",
+  "actual_actor_id": 31254,
+  "source_head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "saved_date_before": "1066.10.1",
+  "saved_date_after": "1066.10.1",
+  "same_saved_date": true,
+  "native_date_raw_and_nonce_receipt_binding": null,
+  "wallet_actual_Decimal_delta": {
+    "gold": "0",
+    "piety": "0",
+    "prestige": "0"
+  },
+  "saved_stress_actual_Decimal_delta": null,
+  "saved_XP_actual_Decimal_delta": "0",
+  "stress_XP_expected": null,
+  "actor_roles_before": {
+    "current_rite": "169",
+    "current_faith": "104",
+    "current_HoR": "31254",
+    "current_HoF": "4294967295",
+    "current_faith_main": "159"
+  },
+  "actor_roles_after": {
+    "current_rite": "169",
+    "current_faith": "104",
+    "current_HoR": "31254",
+    "current_HoF": "4294967295",
+    "current_faith_main": "159"
+  },
+  "nonce_serial_quorum_and_round_variables_changed": {},
+  "all_actor_LYD_variables_changed": {
+    "lyd_r4_reset_count": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "500000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "500000"
+          }
+        ],
+        "number": "5",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_count"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "500000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "600000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "600000"
+          }
+        ],
+        "number": "6",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_count"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "600000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_r4_reset_gold_before": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "154300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "154300000"
+          }
+        ],
+        "number": "1543",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_gold_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "154300000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "124300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "124300000"
+          }
+        ],
+        "number": "1243",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_gold_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "124300000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_r4_reset_piety_before": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "565000000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "565000000"
+          }
+        ],
+        "number": "5650",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_piety_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "565000000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "415000000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "415000000"
+          }
+        ],
+        "number": "4150",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_r4_reset_piety_before"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "415000000"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "all_actor_LYD_lists_changed": {},
+  "cooldown_before": {
+    "lyd_school_cooldown": {
+      "present": true,
+      "tick": "349",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_school_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "349"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_study_cooldown": null
+  },
+  "cooldown_after": {
+    "lyd_school_cooldown": {
+      "present": true,
+      "tick": "349",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_school_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "349"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_study_cooldown": null
+  },
+  "political7": {
+    "2230": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2231": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2232": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2235": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2262": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2263": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2264": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    }
+  },
+  "domain_ids_before": [
+    "2230",
+    "2231",
+    "2262",
+    "2232",
+    "2263",
+    "2235",
+    "2264"
+  ],
+  "domain_ids_after": [
+    "2230",
+    "2231",
+    "2262",
+    "2232",
+    "2263",
+    "2235",
+    "2264"
+  ],
+  "actor_landed_full_branch_equal": true,
+  "selected_character_protection": {
+    "31254": {
+      "before_present": true,
+      "after_present": true,
+      "protected_top_equal": true,
+      "protected_alive_equal": true,
+      "current_rite_before": "169",
+      "current_rite_after": "169"
+    },
+    "65865": {
+      "before_present": true,
+      "after_present": true,
+      "protected_top_equal": true,
+      "protected_alive_equal": true,
+      "current_rite_before": "169",
+      "current_rite_after": "169"
+    },
+    "65866": {
+      "before_present": true,
+      "after_present": true,
+      "protected_top_equal": true,
+      "protected_alive_equal": true,
+      "current_rite_before": "159",
+      "current_rite_after": "159"
+    }
+  },
+  "related_Faith_Rite_changes": {
+    "faiths": [],
+    "rites": [
+      {
+        "id": "169",
+        "before_present": true,
+        "after_present": true,
+        "before_AST_sha256": "bad5daa4c40a8dd7251cb11464f31903f1bb212785634507f25434e5a6f8c4c4",
+        "after_AST_sha256": "0f7492c95d028ee27fc6d0349730c5c2beb30279816558f749b3e9f1ee4eb069",
+        "heads_before": {
+          "head_of_rite": "31254",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "heads_after": {
+          "head_of_rite": "31254",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "tenet_doctrine_rows_equal": true
+      }
+    ]
+  },
+  "all_Faith_main_links_changed": {},
+  "all_Rite_parent_links_changed": {},
+  "faith_full_raw_hash_equal": true,
+  "rite_full_raw_hash_equal": false,
+  "fee_expected_from_actual_source_option_effect": null,
+  "fee_or_nonce_business_proof": "Requires ROOT supplied actual selected branch + same-frame SDK/native source/date/nonce evidence; this tool only reports exact saved diffs",
+  "no_game_MCP_pipe_desktop_bus_Git_main": true,
+  "business_PASS": false
+}

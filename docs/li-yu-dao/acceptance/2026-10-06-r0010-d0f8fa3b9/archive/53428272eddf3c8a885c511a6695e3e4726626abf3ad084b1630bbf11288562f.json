@@ -1,0 +1,11 @@
+{
+  "status": "BACKGROUND_CLIENT_CREATED_NOT_READY_PROOF",
+  "pid": 19428,
+  "process_create_time": 1791198207.4832103,
+  "exit_code": null,
+  "schema": "lyd.r10.root-structured-argv-invocation.v1",
+  "argv_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-consumer-binding-request-002\\serve-cli.json",
+  "argv_source_sha256": "c9e13ac7c2f0e68b3cf60ec34c710504990f5fdbffa9cc5266a54920bf5f39a6",
+  "started_utc": "2026-10-05T11:03:27.482281+00:00",
+  "completed_utc": "2026-10-05T11:03:27.484383+00:00"
+}

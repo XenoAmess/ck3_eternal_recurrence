@@ -1,0 +1,185 @@
+{
+  "schema": "lyd.external-evidence-index.v1",
+  "files": [
+    {
+      "path": "actual-save-001/actor-31254.excerpt.txt",
+      "bytes": 20048,
+      "sha256": "8a361197f8b557bab47be01b12b5aa029267938f11c696212322d8687ab9c2c1"
+    },
+    {
+      "path": "actual-save-001/character-65865.excerpt.txt",
+      "bytes": 1958,
+      "sha256": "c65b13fd17e58441feeeda26f09837d731dd62df45ee86926e687e3fabfa0467"
+    },
+    {
+      "path": "actual-save-001/character-65866.excerpt.txt",
+      "bytes": 2403,
+      "sha256": "676d509aa125e01b7794c5fc912ea0b5a1d49669bc1310e4e659daebc221935f"
+    },
+    {
+      "path": "actual-save-001/faith-104.excerpt.txt",
+      "bytes": 4759,
+      "sha256": "27167a8e1fe7196402a0a688c45591fc898ae284092606403ad6b0269bb6df3c"
+    },
+    {
+      "path": "actual-save-001/faith-106.excerpt.txt",
+      "bytes": 4872,
+      "sha256": "d5fd14c74002bcb796635479447ca8d75e1a9edeb5fae6b4d8f978920501a493"
+    },
+    {
+      "path": "actual-save-001/faith-32.excerpt.txt",
+      "bytes": 1955,
+      "sha256": "b481404a15d4a05a7185077f44e111d55a01550b85904fe7db437c189446e9fb"
+    },
+    {
+      "path": "actual-save-001/metadata.excerpt.txt",
+      "bytes": 32457,
+      "sha256": "633e06f82a1cd3d55dd453059b80d0106b1bbb2eb0310f7f74ed7b2876219e9c"
+    },
+    {
+      "path": "actual-save-001/played-character.excerpt.txt",
+      "bytes": 287,
+      "sha256": "f9f82598a6ef39d8a1a3c805701fdacd4cc9f442821b4cc852e4a13b30f80962"
+    },
+    {
+      "path": "actual-save-001/REPORT.json",
+      "bytes": 72894,
+      "sha256": "0a3c2a1153a2852772aebdcd160a8aee9352f47b1638dc3c5f07356c88b315fe"
+    },
+    {
+      "path": "actual-save-001/rite-150.excerpt.txt",
+      "bytes": 4782,
+      "sha256": "80daccc116669fe8bc4818292f79bf8e753e61ae6fdf498ea29b29fd1b9766bb"
+    },
+    {
+      "path": "actual-save-001/rite-159.excerpt.txt",
+      "bytes": 8866,
+      "sha256": "31ab905d792a5c107e96bbe0f2f38d32353f6376d086190e68298d1672c2484d"
+    },
+    {
+      "path": "actual-save-001/rite-169.excerpt.txt",
+      "bytes": 5099,
+      "sha256": "a1e45b65078926db648206e9a7bfe5c2d2b8fe43a3514fa0b8a280d9c8132c07"
+    },
+    {
+      "path": "actual-save-001/STATE.json",
+      "bytes": 705438,
+      "sha256": "4a8b4db4d6395190b590b9a6d6a696ffbd3fb602b5755364117125451c586799"
+    },
+    {
+      "path": "actual-save-001/title-2230.excerpt.txt",
+      "bytes": 665,
+      "sha256": "fab3e58a2a3f55a1d76da559ec486f0eba19f0669737e1d0acb2f3fe312da261"
+    },
+    {
+      "path": "actual-save-001/title-2231.excerpt.txt",
+      "bytes": 861,
+      "sha256": "5ad0f12b726d36920948c75545dc70fdbd4934872fe452a8cd48dd53bb455fa3"
+    },
+    {
+      "path": "actual-save-001/title-2232.excerpt.txt",
+      "bytes": 274,
+      "sha256": "bc0fa0f7c13f2fe59c3dee28f3d28bdc5812a18578f1b5712b01c05940ce4823"
+    },
+    {
+      "path": "actual-save-001/title-2235.excerpt.txt",
+      "bytes": 410,
+      "sha256": "d556ea8eab1a3ba82b557cdd9ad5a9c629b91ff6dca0fb1fb19352d6c0e68f36"
+    },
+    {
+      "path": "actual-save-001/title-2262.excerpt.txt",
+      "bytes": 595,
+      "sha256": "b60ecde293edc63050a4cca64bf542ba3293538782cd40c1e2cfec90ed2a3bef"
+    },
+    {
+      "path": "actual-save-001/title-2263.excerpt.txt",
+      "bytes": 250,
+      "sha256": "3f5670f07356dbd7ec18a487c334445a7836ecf6fee3ed1a198ebf551501016f"
+    },
+    {
+      "path": "actual-save-001/title-2264.excerpt.txt",
+      "bytes": 410,
+      "sha256": "4a909ce428dcb85d64c49c53d74bfb0ef6a38be59409e08b2ed31ba75bfa05f6"
+    },
+    {
+      "path": "collect_control_evidence.py",
+      "bytes": 2075,
+      "sha256": "37a1b98d38ae241f79ad530b44091b7efa24b9b45e0ec45ce4486767d57134c5"
+    },
+    {
+      "path": "collect_lineage.py",
+      "bytes": 2273,
+      "sha256": "0780ef5adbdc1e150796291422471324345ab1a207e53cb60a84e84b3111a862"
+    },
+    {
+      "path": "CONTROL-EVIDENCE.json",
+      "bytes": 34266,
+      "sha256": "245712667aaf31ae0bb05d4e41c8afb10664f110e5a370558208679d752f7f1c"
+    },
+    {
+      "path": "finalize_second_open.py",
+      "bytes": 14400,
+      "sha256": "11144283cd1092f1126cd4e2d7778451edcadc6916e84e68e2771328210215bc"
+    },
+    {
+      "path": "inspect_second_open.py",
+      "bytes": 1541,
+      "sha256": "1b6cde269683eddaf7121aa86b9718e0b61a066c3fabd2806c2d3136108af205"
+    },
+    {
+      "path": "LINEAGE-EVIDENCE.json",
+      "bytes": 7022,
+      "sha256": "8ae0fb6804345322edd726b688377f07d062a4a149920b5fcdf09bb2673f29ac"
+    },
+    {
+      "path": "pair-diff-001/REPORT.json",
+      "bytes": 34062,
+      "sha256": "86b962804a2354fcd9bf1b2f1ce3e3327f79eb231aa8068b8d66074241cb54bd"
+    },
+    {
+      "path": "PREPARATION.json",
+      "bytes": 1673,
+      "sha256": "1d6a78ee82f8f02a7ce749b6035eb4f7b506d5040d0988da28d9ca2e8d3391b8"
+    },
+    {
+      "path": "prepare_request.py",
+      "bytes": 2078,
+      "sha256": "b464bdc6ddcc92db8a28cc000a6f5a508dbb036bfd06d5971e400733820bc414"
+    },
+    {
+      "path": "PROPOSAL-OPENED-FACTS.json",
+      "bytes": 294261,
+      "sha256": "d43ee38000ecceced01626dba772f434dee76659ecae1c17cdc3bdda84fc5855"
+    },
+    {
+      "path": "reader/dependencies/bounded_save_parser.py",
+      "bytes": 1999,
+      "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+    },
+    {
+      "path": "reader/dependencies/save_fields.py",
+      "bytes": 2236,
+      "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+    },
+    {
+      "path": "reader/read_actual_checkpoint.py",
+      "bytes": 13860,
+      "sha256": "d5574ed512f6cb32249539154901ffb84479c7f9c725ce0cf4b30f2d4cef8d82"
+    },
+    {
+      "path": "REPORT-zh.md",
+      "bytes": 1417,
+      "sha256": "634a0a4e5b3bd8472513ed441dd48e3a1c5cc48c56ba58d1d2e2b3011045d1ec"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 3748,
+      "sha256": "4846d30c937881b47820c5682a276b170eee4f62a29ee007eeb274a4ec10f2df"
+    },
+    {
+      "path": "REQUEST.actual.json",
+      "bytes": 1873,
+      "sha256": "208b7200065693dc24bbabf9fe18dca708eb22fe47d7ad60e98df8011dbbf560"
+    }
+  ]
+}

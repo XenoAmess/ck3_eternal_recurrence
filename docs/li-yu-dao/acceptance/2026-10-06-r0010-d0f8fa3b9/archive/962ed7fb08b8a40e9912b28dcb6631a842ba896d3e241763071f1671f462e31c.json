@@ -1,0 +1,23 @@
+{
+  "started_utc": "2026-10-05T09:58:13.284051+00:00",
+  "ended_utc": "2026-10-05T09:58:14.509294+00:00",
+  "argv": [
+    "C:\\Program Files\\GitHub CLI\\gh.exe",
+    "api",
+    "--method",
+    "GET",
+    "repos/XenoAmess/ck3_eternal_recurrence/check-runs/111708826451/annotations?per_page=100",
+    "-H",
+    "Accept: application/vnd.github+json",
+    "-H",
+    "X-GitHub-Api-Version: 2022-11-28"
+  ],
+  "exit_code": 0,
+  "stdout_bytes": 1010,
+  "stdout_sha256": "baf3213098b7d1a0699c100d8e16762b27a9d86f35460061654f1a8ceea54849",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "parsed_json": true,
+  "child_proxy_environment_preserved": true,
+  "global_or_server_changes": false
+}

@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0209-detach-first-scholar-query.request.json",
+  "request_id": "r10-0209-detach-first-scholar-query",
+  "sha256": "a19633756ab8a624c9ba0f7b331307f870a0f6568ea345b47c10d21e9a8d30cd",
+  "contacted_game": false
+}

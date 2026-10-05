@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r10-0216-detach-first-result-query",
+  "operation": "call_tool",
+  "name": "ck3_query_profile_event_window_v1",
+  "arguments": {
+    "event_instance_id": 94,
+    "expected_revision": 100
+  }
+}

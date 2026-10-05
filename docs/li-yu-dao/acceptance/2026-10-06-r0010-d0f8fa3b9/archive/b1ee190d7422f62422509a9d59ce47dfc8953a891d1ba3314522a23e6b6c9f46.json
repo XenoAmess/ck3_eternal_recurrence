@@ -1,0 +1,15 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\screen_lease_entry_r0010.py",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0010"
+  ],
+  "pid": 16248,
+  "utc": "2026-10-05T10:10:45.738140+00:00",
+  "launched": true,
+  "game_launched": false
+}

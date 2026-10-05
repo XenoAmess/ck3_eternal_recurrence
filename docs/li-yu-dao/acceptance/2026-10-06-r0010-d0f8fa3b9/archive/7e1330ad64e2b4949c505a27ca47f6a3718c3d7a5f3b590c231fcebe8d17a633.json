@@ -1,0 +1,11 @@
+{
+  "status": "INVOCATION_COMPLETED",
+  "exit_code": 0,
+  "stdout_sha256": "58ca071c16d2b1351c45b1ed2e605d71f2a218fbd5d24654903c89e04e383242",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "schema": "lyd.r10.root-structured-argv-invocation.v1",
+  "argv_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-consumer-binding-request-002\\prepare-cli.json",
+  "argv_source_sha256": "ef4f617db16a4fe5017566cbb688d4edf29ffe2e724ac476301f090555373af8",
+  "started_utc": "2026-10-05T11:03:12.221386+00:00",
+  "completed_utc": "2026-10-05T11:03:15.200020+00:00"
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 230,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0231-detach-second-source-sign.request.json",
+  "request_sha256": "b85fd1755677e5e319c3148fde7f3bb5560971b28ea5d61001e5ad7c8b7c943c",
+  "started_at_utc": "2026-10-05T17:53:00.477837+00:00",
+  "request_id": "r10-0231-detach-second-source-sign",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0230-r10-0231-detach-second-source-sign.sdk-result.json",
+  "sdk_result_sha256": "8b56c10233c65ff939af4e8db8bef44ff5147040b9b56446ce90f9eaf85d5e04",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0229-event-select.json",
+      "copy": "0230-r10-0231-detach-second-source-sign.native-01.json",
+      "sha256": "81ba97b948c9c293c299d6e09885b7c893dbe91e7f74b298cd14c2d40c338244"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:53:05.712379+00:00"
+}

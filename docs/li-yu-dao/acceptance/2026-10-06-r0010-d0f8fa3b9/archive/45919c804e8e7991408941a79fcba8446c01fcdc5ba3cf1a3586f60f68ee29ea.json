@@ -1,0 +1,29 @@
+{
+  "schema": "lyd.r10.root-live-guard-review.v1",
+  "status": "ROOT_REVIEWED_ACTUAL_LIVE_BINDING",
+  "source_head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "root_screen_task": "ck3-lyd-r0010-20261005",
+  "process_id": 13436,
+  "process_create_time": 1791196395.7422996,
+  "window_hwnd": 16385582,
+  "profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-profile-request-002\\native-profile-fresh-001\\native-profile.json",
+    "bytes": 930,
+    "sha256": "ebbb3c2d41f25f998551efc479d88fad04ccbdecce7a9c2553b2b5e8057d5f07"
+  },
+  "fresh_steam_offline_review": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-steam-offline-fresh-frame-20261005-003\\steam-frame-freshness.json",
+    "bytes": 1598,
+    "sha256": "8d72396b3292bd870a85c19fa5ce3ac612e0ed7356cd4e0c6d9204ba5d9995c8"
+  },
+  "fresh_sole_owner_receipt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-profile-request-002\\fresh-screen-owner-list.json",
+    "bytes": 90121,
+    "sha256": "cc24cdd6ee0e7713cc087325329d910005d237e58b9868c91130981beb464965"
+  },
+  "launch_receipt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\launch.json",
+    "bytes": 831,
+    "sha256": "0c248eeb9c0318eeb89ee1e230599baa63d6e49c0cf2b840f8095180878fba0c"
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema": "lyd.r10.small-actual-evidence-addendum-index.v1",
+  "files": [
+    {
+      "path": "ADDENDUM.json",
+      "bytes": 8247,
+      "sha256": "2e0322b57d96619662f10307a22f106812d7e826d4a6b2df1d888aa40254aa95"
+    },
+    {
+      "path": "NEW-SOURCE-REFS.json",
+      "bytes": 13477,
+      "sha256": "b4e75a4c8a103e193b5e79a24e3194cda7cfdeacf9b38e039256156b6cc52f56"
+    },
+    {
+      "path": "NOTES-zh.md",
+      "bytes": 1521,
+      "sha256": "051473a9b9dc0adf21a74e790ba4b72f62f94651eb607285078a3bf309b76046"
+    },
+    {
+      "path": "source/prepare_r10_ledger150_actual149_addendum_20261006_001.py",
+      "bytes": 9044,
+      "sha256": "e48b81f68699cefd76afb3ddacdc9178bd09e8229403237d095d5cb6b4ae4644"
+    }
+  ]
+}

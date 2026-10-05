@@ -1,0 +1,12 @@
+[
+  "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "-B",
+  "-X",
+  "utf8",
+  "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-official-mcp-consumer21-20261005-002\\persistent_native_mcp_queue_21.py",
+  "enqueue",
+  "--queue",
+  "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002",
+  "--request",
+  "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-explicit-mcp-requests\\r10-0146-sixth-final-options\\request.json"
+]

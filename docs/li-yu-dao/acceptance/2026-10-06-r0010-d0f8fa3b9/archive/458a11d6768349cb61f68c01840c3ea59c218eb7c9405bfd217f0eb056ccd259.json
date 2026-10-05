@@ -1,0 +1,25 @@
+{
+  "at_utc": "2026-10-05T10:10:46.160095+00:00",
+  "sequence": 2989,
+  "owner": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d"
+    },
+    "last_sequence": 2989,
+    "next_step": "Fresh offline and isolated native R10 campaign",
+    "pid": 10032,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [
+      "ck3-screen:acquired"
+    ],
+    "schema": "codex.task_bus.v1",
+    "state": "running",
+    "summary": "LYD R0010 exact d0f8 screen owner; cold MCP acceptance",
+    "task_id": "ck3-lyd-r0010-20261005",
+    "updated_at_utc": "2026-10-05T10:10:45.553306+00:00",
+    "age_seconds": 0,
+    "stale": false
+  }
+}

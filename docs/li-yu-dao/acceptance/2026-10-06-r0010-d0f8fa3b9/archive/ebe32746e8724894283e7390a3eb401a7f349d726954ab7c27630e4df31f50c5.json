@@ -1,0 +1,10 @@
+{
+  "schema": "lyd.r10.collection-cache-index.v1",
+  "files": [
+    {
+      "path": "COLLECTION.json",
+      "bytes": 9615507,
+      "sha256": "b0d5cf5c5f5b3bc62d279f0d07949014f1c62ddd19b4e7d096599ce082dd8abd"
+    }
+  ]
+}

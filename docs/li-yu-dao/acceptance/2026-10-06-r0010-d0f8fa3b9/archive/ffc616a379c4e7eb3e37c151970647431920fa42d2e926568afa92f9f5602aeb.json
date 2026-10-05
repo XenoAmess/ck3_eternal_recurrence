@@ -1,0 +1,23 @@
+{
+  "schema": "lyd.r10.proposal-input-assembly-request.v1",
+  "phase": "prepare_bind",
+  "claim": null,
+  "packet": null,
+  "native_result": null,
+  "before_save": null,
+  "before_checkpoint_sdk": null,
+  "after_save": null,
+  "after_checkpoint_sdk": null,
+  "first_query_sdk": null,
+  "first_query_frame_sdk": null,
+  "current_query_sdk": null,
+  "current_query_frame_sdk": null,
+  "bound_index": null,
+  "output": null,
+  "bound_output": null,
+  "flow_output": null,
+  "evidence_output": null,
+  "operator_id": null,
+  "next_intent_id": null,
+  "open_readback": null
+}

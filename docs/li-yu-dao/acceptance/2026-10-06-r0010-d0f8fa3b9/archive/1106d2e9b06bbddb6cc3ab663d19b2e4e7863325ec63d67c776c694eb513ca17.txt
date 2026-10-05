@@ -1,0 +1,580 @@
+﻿# GENERATED FILE — edit tools/content_data.py and rerun tools/gen_content.py.
+# CK3 1.20.0.3; additive 36-rite free-chronology types. No vanilla IDs are overridden.
+# Free chronology prototype. Native creation/conversion requires live verification.
+# convert=yes permits actual admission; product actions remain guarded player entries.
+
+# R01: The Kongmen Tradition; kind=reconstructed; era=pre_qin
+lyd_rite_kongmen = {
+	name = lyd_rite_kongmen
+	desc = lyd_rite_kongmen_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_ritual_music
+		lyd_tenet_humaneness_righteousness
+		lyd_tenet_sage_transmission
+	}
+}
+
+# R02: The Learning of Mengzi; kind=historical; era=pre_qin
+lyd_rite_mengzi = {
+	name = lyd_rite_mengzi
+	desc = lyd_rite_mengzi_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 210 174 76 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_extend_sprouts
+		lyd_tenet_righteous_qi
+		lyd_tenet_humaneness_righteousness
+	}
+}
+
+# R03: The Learning of Xunzi; kind=historical; era=pre_qin
+lyd_rite_xunzi = {
+	name = lyd_rite_xunzi
+	desc = lyd_rite_xunzi_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 189 143 67 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_deliberate_cultivation
+		lyd_tenet_ritual_music
+		lyd_tenet_constant_heaven
+	}
+}
+
+# R04: Dong's Gongyang Tradition; kind=historical; era=han
+lyd_rite_dongzhongshu = {
+	name = lyd_rite_dongzhongshu
+	desc = lyd_rite_dongzhongshu_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_annals_judgment
+		lyd_tenet_portent_reflection
+		lyd_tenet_reverent_heaven
+	}
+}
+
+# R05: Old Text Learning; kind=historical; era=han
+lyd_rite_guwen = {
+	name = lyd_rite_guwen
+	desc = lyd_rite_guwen_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_textual_ritual
+		lyd_tenet_classical_synthesis
+		lyd_tenet_sage_transmission
+	}
+}
+
+# R06: Zheng Xuan's Ritual Learning; kind=historical; era=eastern_han
+lyd_rite_zhengxuan = {
+	name = lyd_rite_zhengxuan
+	desc = lyd_rite_zhengxuan_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 224 178 110 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_textual_ritual
+		lyd_tenet_reverent_heaven
+		lyd_tenet_ancestral_reverence
+	}
+}
+
+# R07: Wang Su's Ritual Learning; kind=historical; era=cao_wei
+lyd_rite_wangsu = {
+	name = lyd_rite_wangsu
+	desc = lyd_rite_wangsu_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 182 153 107 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_textual_ritual
+		lyd_tenet_ancestral_reverence
+		lyd_tenet_classical_synthesis
+	}
+}
+
+# R08: Wang Bi's Classical Interpretation; kind=cross_tradition; era=wei_jin
+lyd_rite_wangbi = {
+	name = lyd_rite_wangbi
+	desc = lyd_rite_wangbi_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_profound_interpretation
+		lyd_tenet_classical_synthesis
+		lyd_tenet_ritual_music
+	}
+}
+
+# R09: Guo Xiang's Classical Interpretation; kind=cross_tradition; era=western_jin
+lyd_rite_guoxiang = {
+	name = lyd_rite_guoxiang
+	desc = lyd_rite_guoxiang_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_profound_interpretation
+		lyd_tenet_ritual_music
+		lyd_tenet_humaneness_righteousness
+	}
+}
+
+# R10: The Classical Commentaries; kind=historical; era=sui_tang
+lyd_rite_jingshu = {
+	name = lyd_rite_jingshu
+	desc = lyd_rite_jingshu_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 229 204 137 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_classical_synthesis
+		lyd_tenet_textual_ritual
+		lyd_tenet_sage_transmission
+	}
+}
+
+# R11: Han Yu's Recovery of the Way; kind=historical; era=late_tang
+lyd_rite_hanyu = {
+	name = lyd_rite_hanyu
+	desc = lyd_rite_hanyu_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_humaneness_righteousness
+		lyd_tenet_sage_transmission
+		lyd_tenet_righteous_remonstrance
+	}
+}
+
+# R12: Li Ao's Restoration of Human Nature; kind=historical; era=late_tang
+lyd_rite_liao = {
+	name = lyd_rite_liao
+	desc = lyd_rite_liao_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_restore_nature
+		lyd_tenet_sincerity_solitude
+		lyd_tenet_sage_transmission
+	}
+}
+
+# R13: Zhou Dunyi's Learning; kind=historical; era=northern_song
+lyd_rite_zhoudunyi = {
+	name = lyd_rite_zhoudunyi
+	desc = lyd_rite_zhoudunyi_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_ongoing_generation
+		lyd_tenet_sincerity_solitude
+		lyd_tenet_reverent_attention
+	}
+}
+
+# R14: The Cheng Brothers' Learning; kind=historical; era=northern_song
+lyd_rite_chengbrothers = {
+	name = lyd_rite_chengbrothers
+	desc = lyd_rite_chengbrothers_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_reverent_attention
+		lyd_tenet_investigate_principle
+		lyd_tenet_humaneness_righteousness
+	}
+}
+
+# R15: Zhang Zai's Guan Learning; kind=historical; era=northern_song
+lyd_rite_zhangzai = {
+	name = lyd_rite_zhangzai
+	desc = lyd_rite_zhangzai_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_qi_kinship
+		lyd_tenet_ritual_music
+		lyd_tenet_righteous_remonstrance
+	}
+}
+
+# R16: Shao Yong's Image and Number Learning; kind=historical; era=northern_song
+lyd_rite_shaoyong = {
+	name = lyd_rite_shaoyong
+	desc = lyd_rite_shaoyong_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_images_numbers
+		lyd_tenet_classical_synthesis
+		lyd_tenet_reverent_heaven
+	}
+}
+
+# R17: Wang Anshi's New Learning; kind=historical; era=northern_song
+lyd_rite_wanganshi = {
+	name = lyd_rite_wanganshi
+	desc = lyd_rite_wanganshi_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_responsive_interpretation
+		lyd_tenet_classical_synthesis
+		lyd_tenet_humaneness_righteousness
+	}
+}
+
+# R18: The Su Family's Learning; kind=historical; era=northern_song
+lyd_rite_sushi = {
+	name = lyd_rite_sushi
+	desc = lyd_rite_sushi_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_classical_synthesis
+		lyd_tenet_humaneness_righteousness
+		lyd_tenet_ritual_music
+	}
+}
+
+# R19: Huxiang Learning; kind=historical; era=southern_song
+lyd_rite_huxiang = {
+	name = lyd_rite_huxiang
+	desc = lyd_rite_huxiang_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_humaneness_righteousness
+		lyd_tenet_reverent_attention
+		lyd_tenet_sincerity_solitude
+	}
+}
+
+# R20: Zhu Xi's Learning; kind=historical; era=southern_song
+lyd_rite_zhuxi = {
+	name = lyd_rite_zhuxi
+	desc = lyd_rite_zhuxi_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 150 211 198 }
+	icon = daoxue
+	tenets = {
+		lyd_tenet_investigate_principle
+		lyd_tenet_reverent_attention
+		lyd_tenet_ancestral_reverence
+	}
+}
+
+# R21: Lu Jiuyuan's Learning; kind=historical; era=southern_song
+lyd_rite_lujiuyuan = {
+	name = lyd_rite_lujiuyuan
+	desc = lyd_rite_lujiuyuan_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 113 185 180 }
+	icon = daoxue
+	tenets = {
+		lyd_tenet_original_heart
+		lyd_tenet_sincerity_solitude
+		lyd_tenet_humaneness_righteousness
+	}
+}
+
+# R22: Yongjia Learning; kind=historical; era=southern_song
+lyd_rite_yongjia = {
+	name = lyd_rite_yongjia
+	desc = lyd_rite_yongjia_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_moral_achievement
+		lyd_tenet_humaneness_righteousness
+		lyd_tenet_textual_ritual
+	}
+}
+
+# R23: Yongkang Learning; kind=historical; era=southern_song
+lyd_rite_yongkang = {
+	name = lyd_rite_yongkang
+	desc = lyd_rite_yongkang_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_moral_achievement
+		lyd_tenet_righteous_qi
+		lyd_tenet_righteous_remonstrance
+	}
+}
+
+# R24: Wu Cheng's Synthesis; kind=historical; era=yuan
+lyd_rite_wucheng = {
+	name = lyd_rite_wucheng
+	desc = lyd_rite_wucheng_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_classical_synthesis
+		lyd_tenet_investigate_principle
+		lyd_tenet_original_heart
+	}
+}
+
+# R25: Chen Xianzhang's Learning; kind=historical; era=late_fifteenth_century
+lyd_rite_chenxianzhang = {
+	name = lyd_rite_chenxianzhang
+	desc = lyd_rite_chenxianzhang_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_quiet_self_attainment
+		lyd_tenet_sincerity_solitude
+		lyd_tenet_sage_transmission
+	}
+}
+
+# R26: Zhan Ruoshui's Learning; kind=historical; era=sixteenth_century
+lyd_rite_zhanruoshui = {
+	name = lyd_rite_zhanruoshui
+	desc = lyd_rite_zhanruoshui_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_recognition_everywhere
+		lyd_tenet_reverent_attention
+		lyd_tenet_classical_synthesis
+	}
+}
+
+# R27: Wang Yangming's Learning; kind=historical; era=sixteenth_century
+lyd_rite_wangyangming = {
+	name = lyd_rite_wangyangming
+	desc = lyd_rite_wangyangming_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_innate_knowing
+		lyd_tenet_knowing_acting
+		lyd_tenet_humaneness_righteousness
+	}
+}
+
+# R28: The Jiangyou Wang School; kind=historical; era=sixteenth_century
+lyd_rite_jiangyou = {
+	name = lyd_rite_jiangyou
+	desc = lyd_rite_jiangyou_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_innate_knowing
+		lyd_tenet_sincerity_solitude
+		lyd_tenet_reverent_attention
+	}
+}
+
+# R29: Taizhou Learning; kind=historical; era=sixteenth_seventeenth_centuries
+lyd_rite_taizhou = {
+	name = lyd_rite_taizhou
+	desc = lyd_rite_taizhou_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_ordinary_life
+		lyd_tenet_innate_knowing
+		lyd_tenet_sage_transmission
+	}
+}
+
+# R30: Liu Zongzhou's Learning; kind=historical; era=late_ming
+lyd_rite_liuzongzhou = {
+	name = lyd_rite_liuzongzhou
+	desc = lyd_rite_liuzongzhou_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_sincerity_solitude
+		lyd_tenet_subtle_intentions
+		lyd_tenet_reverent_attention
+	}
+}
+
+# R31: Donglin Learning; kind=historical; era=late_ming
+lyd_rite_donglin = {
+	name = lyd_rite_donglin
+	desc = lyd_rite_donglin_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_righteous_remonstrance
+		lyd_tenet_humaneness_righteousness
+		lyd_tenet_reverent_attention
+	}
+}
+
+# R32: Wang Fuzhi's Qi Learning; kind=historical; era=ming_qing_transition
+lyd_rite_wangfuzhi = {
+	name = lyd_rite_wangfuzhi
+	desc = lyd_rite_wangfuzhi_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_ongoing_generation
+		lyd_tenet_knowing_acting_support
+		lyd_tenet_ancestral_reverence
+	}
+}
+
+# R33: Yan-Li Practical Learning; kind=historical; era=early_qing
+lyd_rite_yanli = {
+	name = lyd_rite_yanli
+	desc = lyd_rite_yanli_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_six_arts
+		lyd_tenet_ritual_music
+		lyd_tenet_humaneness_righteousness
+	}
+}
+
+# R34: Qianjia Classical Learning; kind=historical; era=eighteenth_century
+lyd_rite_qianjia = {
+	name = lyd_rite_qianjia
+	desc = lyd_rite_qianjia_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_philological_way
+		lyd_tenet_textual_ritual
+		lyd_tenet_classical_synthesis
+	}
+}
+
+# R35: Changzhou New Text Learning; kind=historical; era=late_eighteenth_nineteenth_centuries
+lyd_rite_changzhou = {
+	name = lyd_rite_changzhou
+	desc = lyd_rite_changzhou_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_annals_judgment
+		lyd_tenet_responsive_interpretation
+		lyd_tenet_philological_way
+	}
+}
+
+# R36: Practical Learning for the World; kind=synthesis; era=ming_qing
+lyd_rite_jingshi = {
+	name = lyd_rite_jingshi
+	desc = lyd_rite_jingshi_desc
+	faith = lyd_common_faith
+	create = yes
+	convert = yes
+	color = { 236 190 85 }
+	icon = jingxue
+	tenets = {
+		lyd_tenet_humaneness_righteousness
+		lyd_tenet_righteous_remonstrance
+		lyd_tenet_moral_achievement
+	}
+}

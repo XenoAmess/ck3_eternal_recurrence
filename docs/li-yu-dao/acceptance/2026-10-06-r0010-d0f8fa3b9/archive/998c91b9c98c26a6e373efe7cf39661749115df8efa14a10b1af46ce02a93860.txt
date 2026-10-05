@@ -1,0 +1,66 @@
+﻿# GENERATED FILE: edit tools/gen_institution.py; regenerate through gen_runtime.py.
+# Only this effect changes native doctrine; pending proposals never call it.
+lyd_i3b_commit_effect = {
+    if = { limit = {
+        lyd_i3b_actor_trigger = yes
+        lyd_i3b_event_context_trigger = yes
+        this = scope:lyd_i3b_actor
+        lyd_i3b_ready_trigger = { ACTOR = scope:lyd_i3b_actor }
+        lyd_i3b_native_admitted_trigger = yes
+    }
+        # Serial and nonce bind the result event to this exact attempted round.
+        set_variable = { name = lyd_i3b_result_serial value = var:lyd_i3b_serial }
+        set_variable = { name = lyd_i3b_result_nonce value = var:lyd_i3b_nonce }
+        set_variable = { name = lyd_i3b_result_code value = 0 }
+        remove_variable = lyd_i3b_result_head_title
+        # Every currently captured rite, including dormant templates, is a signed term.
+        var:lyd_i3b_faith = { remove_doctrine = doctrine_no_head add_doctrine = doctrine_temporal_head }
+        every_in_list = { variable = lyd_i3b_rites
+            if = { limit = { rite_has_doctrine = doctrine_no_head } change_rite_doctrine = doctrine_temporal_head }
+        }
+        set_variable = { name = lyd_c3_head_creation_authorized value = 1 }
+        lyd_c3_create_owned_temporal_head_effect = yes
+        remove_variable = lyd_c3_head_creation_authorized
+        if = { limit = {
+            faith = var:lyd_i3b_faith rite = var:lyd_i3b_main faith.main_rite = var:lyd_i3b_main
+            faith.religious_head = this faith = { lyd_c3_owned_current_head_trigger = yes }
+            NOT = { any_in_list = { variable = lyd_i3b_rites NOT = { rite_has_doctrine = doctrine_temporal_head faith = scope:lyd_i3b_actor.var:lyd_i3b_faith } } }
+            NOT = { any_in_list = { variable = lyd_i3b_political_titles NOT = { holder = scope:lyd_i3b_actor } } }
+        }
+            faith = { set_variable = { name = lyd_c3_recognized_leader value = scope:lyd_i3b_actor } }
+            set_variable = { name = lyd_c3_office_faith value = faith }
+            set_variable = { name = lyd_i3b_result_code value = 1 }
+            set_variable = { name = lyd_i3b_result_head_title value = faith.religious_head_title }
+            debug_log = "LYD_I3B_NATIVE_POSTCONDITION_PASS"
+        }
+        else = {
+            # First failed class, retaining the real partial native state.
+            if = { limit = { NOT = { faith = var:lyd_i3b_faith rite = var:lyd_i3b_main faith.main_rite = var:lyd_i3b_main } }
+                set_variable = { name = lyd_i3b_result_code value = 2 }
+            }
+            else_if = { limit = { NOT = { faith.religious_head = this faith = { lyd_c3_owned_current_head_trigger = yes } } }
+                set_variable = { name = lyd_i3b_result_code value = 3 }
+            }
+            else_if = { limit = { any_in_list = { variable = lyd_i3b_rites NOT = { rite_has_doctrine = doctrine_temporal_head faith = scope:lyd_i3b_actor.var:lyd_i3b_faith } } }
+                set_variable = { name = lyd_i3b_result_code value = 4 }
+            }
+            else_if = { limit = { any_in_list = { variable = lyd_i3b_political_titles NOT = { holder = scope:lyd_i3b_actor } } }
+                set_variable = { name = lyd_i3b_result_code value = 5 }
+            }
+            else = { set_variable = { name = lyd_i3b_result_code value = 6 } }
+            debug_log = "LYD_I3B_NATIVE_POSTCONDITION_FAIL" debug_log_scopes = yes
+        }
+        # Preserve real partial native state; no fake rollback, success charge or political reassignment.
+        lyd_i3b_close_effect = yes
+        lyd_i3b_show_result_effect = yes
+    }
+}
+lyd_i3b_show_result_effect = {
+    if = { limit = { lyd_i3b_result_actor_trigger = yes }
+        save_scope_as = lyd_i3b_actor
+        save_scope_value_as = { name = lyd_i3b_result_event_serial value = var:lyd_i3b_result_serial }
+        save_scope_value_as = { name = lyd_i3b_result_event_nonce value = var:lyd_i3b_result_nonce }
+        if = { limit = { var:lyd_i3b_result_code = 1 } trigger_event = lyd.431 }
+        else = { trigger_event = lyd.432 }
+    }
+}

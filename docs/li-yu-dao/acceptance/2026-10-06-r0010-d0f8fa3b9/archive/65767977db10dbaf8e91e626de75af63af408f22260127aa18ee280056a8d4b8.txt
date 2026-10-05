@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0190-eighth-final-commit.request.json",
+  "request_id": "r10-0190-eighth-final-commit",
+  "sha256": "06931c8b096722aeba4b89c8227d95e918c39392869da05a21124f261f02c3b6",
+  "contacted_game": false
+}

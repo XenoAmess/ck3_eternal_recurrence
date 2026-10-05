@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0248-after-normal-exit-prepare-snapshot.request.json",
+  "request_id": "r10-0248-after-normal-exit-prepare-snapshot",
+  "sha256": "93bb43f1ef880adcb62a17c6f450095488f6c8f8634d082707b8dc9473a2f8fb",
+  "contacted_game": false
+}

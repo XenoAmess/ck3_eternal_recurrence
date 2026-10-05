@@ -1,0 +1,33 @@
+{
+  "schema": "ck3-ordinary-interaction-consumption-manifest-v1",
+  "claim_request_id": "ordinary-interaction-a50373f260354f6f83c8052eaf837c7f",
+  "action_identity": {
+    "game_pid": 13436,
+    "actor_id": 31254,
+    "process_create_time": 1791196395.7422996,
+    "interaction_key": "lyd_c2_propose_join_interaction",
+    "recipient_id": 65866,
+    "action": "initiate_ordinary"
+  },
+  "packet": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000001.claim.packet.bin",
+    "sha256": "909aaa95148773b05c67649cf53e1c98debd4bbcef817d9e65704d0335350ee7"
+  },
+  "native_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000001.claim.native-result.json",
+    "sha256": "754e1da18c03e60d44981313375f1eef1c0516e63d9c19e89047582c492a78c0"
+  },
+  "unknown": null,
+  "before_artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-second-proposal-proof-inputs-20261005-002\\BEFORE-OBSERVATION.actual.json",
+    "sha256": "269eddcb900a4d7a96181b0930acae51203b0ae6c4b8478e7edf6983eb03e9f1"
+  },
+  "after_artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-second-proposal-proof-inputs-20261005-002\\AFTER-OBSERVATION.actual.json",
+    "sha256": "68635f73037765082ce56dc045b7899e49ec2a9e7505ab47acc90b82f2811f50"
+  },
+  "independent_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-second-proposal-emitted-evidence-20261005-002\\INDEPENDENT-FACTS.json",
+    "sha256": "18e7d81eb3addb0163a8178ec1628f95dd91ecab001e22aadcc0924e69c5e7df"
+  }
+}

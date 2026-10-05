@@ -1,0 +1,340 @@
+{
+  "common/scripted_triggers/pam_antipope_triggers.txt": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_triggers\\pam_antipope_triggers.txt",
+    "bytes": 7948,
+    "sha256": "6457fd56e3ba27e1ca5a9cd7913322c1502806505d62c360da5b13d6acec038a",
+    "ranges": [
+      {
+        "start": 1,
+        "end": 38,
+        "lines": [
+          {
+            "line": 1,
+            "text": "# Any theocratic vassal of $LIEGE$'s faith, no matter the rite"
+          },
+          {
+            "line": 2,
+            "text": "pam_valid_antipope_clergy_vassal_trigger = {"
+          },
+          {
+            "line": 3,
+            "text": "\tsave_temporary_scope_as = antipope_temp"
+          },
+          {
+            "line": 4,
+            "text": "\tis_clergy = yes"
+          },
+          {
+            "line": 5,
+            "text": "\tcustom_tooltip = {"
+          },
+          {
+            "line": 6,
+            "text": "\t\ttext = pam_antipope_clerical_gender_tt"
+          },
+          {
+            "line": 7,
+            "text": "\t\t$LIEGE$.rite = { rite_has_allowed_gender_for_clergy = scope:antipope_temp }"
+          },
+          {
+            "line": 8,
+            "text": "\t}"
+          },
+          {
+            "line": 9,
+            "text": "\tfaith = $LIEGE$.faith"
+          },
+          {
+            "line": 10,
+            "text": "\tNOT = { any_held_title = { is_head_of_faith = yes } }"
+          },
+          {
+            "line": 11,
+            "text": "\tpam_is_antipope_trigger = no"
+          },
+          {
+            "line": 12,
+            "text": "}"
+          },
+          {
+            "line": 13,
+            "text": ""
+          },
+          {
+            "line": 14,
+            "text": "# Holds one of their faith's antipope titles"
+          },
+          {
+            "line": 15,
+            "text": "pam_is_antipope_trigger = {"
+          },
+          {
+            "line": 16,
+            "text": "\tsave_temporary_scope_as = pam_antipope_holder_check"
+          },
+          {
+            "line": 17,
+            "text": "\tfaith = {"
+          },
+          {
+            "line": 18,
+            "text": "\t\tany_religious_head_challenger = {"
+          },
+          {
+            "line": 19,
+            "text": "\t\t\tholder ?= scope:pam_antipope_holder_check"
+          },
+          {
+            "line": 20,
+            "text": "\t\t}"
+          },
+          {
+            "line": 21,
+            "text": "\t}"
+          },
+          {
+            "line": 22,
+            "text": "}"
+          },
+          {
+            "line": 23,
+            "text": ""
+          },
+          {
+            "line": 24,
+            "text": "pam_title_is_antipope_office_trigger = {"
+          },
+          {
+            "line": 25,
+            "text": "\thas_variable = pam_antipope_office"
+          },
+          {
+            "line": 26,
+            "text": "}"
+          },
+          {
+            "line": 27,
+            "text": ""
+          },
+          {
+            "line": 28,
+            "text": "# Holds the sponsor title behind one of their faith's antipopes. A self-declared antipope sponsors themselves"
+          },
+          {
+            "line": 29,
+            "text": "pam_is_antipope_sponsor_trigger = {"
+          },
+          {
+            "line": 30,
+            "text": "\tsave_temporary_scope_as = pam_antipope_sponsor_check"
+          },
+          {
+            "line": 31,
+            "text": "\tfaith = {"
+          },
+          {
+            "line": 32,
+            "text": "\t\tany_religious_head_challenger = {"
+          },
+          {
+            "line": 33,
+            "text": "\t\t\tchallenger_sponsor ?= {"
+          },
+          {
+            "line": 34,
+            "text": "\t\t\t\tholder ?= scope:pam_antipope_sponsor_check"
+          },
+          {
+            "line": 35,
+            "text": "\t\t\t}"
+          },
+          {
+            "line": 36,
+            "text": "\t\t}"
+          },
+          {
+            "line": 37,
+            "text": "\t}"
+          },
+          {
+            "line": 38,
+            "text": "}"
+          }
+        ]
+      }
+    ]
+  },
+  "common/scripted_effects/pam_antipope_effects.txt": {
+    "path": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\game\\common\\scripted_effects\\pam_antipope_effects.txt",
+    "bytes": 24354,
+    "sha256": "c74caedc55a76f3d7158ecb586a33473a2c80d65b79f77f336e5fced7c3713f0",
+    "ranges": [
+      {
+        "start": 124,
+        "end": 134,
+        "lines": [
+          {
+            "line": 124,
+            "text": "\t\t\t\t\t\t}"
+          },
+          {
+            "line": 125,
+            "text": "\t\t\t\t\t}"
+          },
+          {
+            "line": 126,
+            "text": "\t\t\t\t}"
+          },
+          {
+            "line": 127,
+            "text": "\t\t\t}"
+          },
+          {
+            "line": 128,
+            "text": "\t\t\tscope:new_title = {"
+          },
+          {
+            "line": 129,
+            "text": "\t\t\t\tsave_scope_as = pam_antipope_title"
+          },
+          {
+            "line": 130,
+            "text": "\t\t\t\t# Faith challenger list is dropped by code if the rite detaches into its own faith"
+          },
+          {
+            "line": 131,
+            "text": "\t\t\t\tset_variable = { name = pam_antipope_office }"
+          },
+          {
+            "line": 132,
+            "text": "\t\t\t\tset_destroy_if_invalid_heir = yes"
+          },
+          {
+            "line": 133,
+            "text": "\t\t\t\tset_no_automatic_claims = yes"
+          },
+          {
+            "line": 134,
+            "text": "\t\t\t\tset_definitive_form = yes"
+          }
+        ]
+      },
+      {
+        "start": 238,
+        "end": 246,
+        "lines": [
+          {
+            "line": 238,
+            "text": "\t\t\t\tadd_manual_participant = prev"
+          },
+          {
+            "line": 239,
+            "text": "\t\t\t}"
+          },
+          {
+            "line": 240,
+            "text": "\t\t}"
+          },
+          {
+            "line": 241,
+            "text": "\t}"
+          },
+          {
+            "line": 242,
+            "text": "\t# Flavourization flag"
+          },
+          {
+            "line": 243,
+            "text": "\tscope:antipope = {"
+          },
+          {
+            "line": 244,
+            "text": "\t\tadd_character_flag = antipope_flag"
+          },
+          {
+            "line": 245,
+            "text": "\t\thidden_effect_new_object = {"
+          },
+          {
+            "line": 246,
+            "text": "\t\t\tpam_family_becomes_prelate_effect = {"
+          }
+        ]
+      },
+      {
+        "start": 282,
+        "end": 298,
+        "lines": [
+          {
+            "line": 282,
+            "text": "\t\t\t}"
+          },
+          {
+            "line": 283,
+            "text": "\t\t}"
+          },
+          {
+            "line": 284,
+            "text": "\t}"
+          },
+          {
+            "line": 285,
+            "text": "\t# On rite-detach, code unregisters the challenger before any script runs"
+          },
+          {
+            "line": 286,
+            "text": "\t# The marked office title is then all that is left of it"
+          },
+          {
+            "line": 287,
+            "text": "\tevery_held_title = {"
+          },
+          {
+            "line": 288,
+            "text": "\t\tlimit = { has_variable = pam_antipope_office }"
+          },
+          {
+            "line": 289,
+            "text": "\t\tsave_temporary_scope_as = pam_title_to_destroy"
+          },
+          {
+            "line": 290,
+            "text": "\t\tscope:pam_removed_antipope = {"
+          },
+          {
+            "line": 291,
+            "text": "\t\t\tclear_puppet_status = yes"
+          },
+          {
+            "line": 292,
+            "text": "\t\t\tremove_puppet_modifiers_effect = yes"
+          },
+          {
+            "line": 293,
+            "text": "\t\t\tdestroy_title = scope:pam_title_to_destroy"
+          },
+          {
+            "line": 294,
+            "text": "\t\t}"
+          },
+          {
+            "line": 295,
+            "text": "\t}"
+          },
+          {
+            "line": 296,
+            "text": "\tremove_character_flag = antipope_flag"
+          },
+          {
+            "line": 297,
+            "text": "}"
+          },
+          {
+            "line": 298,
+            "text": ""
+          }
+        ]
+      }
+    ]
+  }
+}

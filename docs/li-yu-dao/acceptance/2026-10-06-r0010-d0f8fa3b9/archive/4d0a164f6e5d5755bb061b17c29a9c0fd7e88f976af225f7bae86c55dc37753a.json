@@ -1,0 +1,391 @@
+{
+  "status": "INDEPENDENT_STATIC_REVIEW_REFUSED",
+  "reason": "fresh004 emitter output; no failed output reuse",
+  "conditions_before_refusal": [
+    {
+      "condition": "actual004 indexed package pin",
+      "matched": true
+    },
+    {
+      "condition": "indexed004 payload: AFTER-OBSERVATION.actual.json",
+      "matched": true
+    },
+    {
+      "condition": "indexed004 payload: author_assembly.py",
+      "matched": true
+    },
+    {
+      "condition": "indexed004 payload: BEFORE-OBSERVATION.actual.json",
+      "matched": true
+    },
+    {
+      "condition": "indexed004 payload: DELTA.json",
+      "matched": true
+    },
+    {
+      "condition": "indexed004 payload: EMIT-REQUEST.actual.json",
+      "matched": true
+    },
+    {
+      "condition": "indexed004 payload: PRODUCTION-READONLY-REF-SLICE.py",
+      "matched": true
+    },
+    {
+      "condition": "indexed004 payload: READONLY-REF-SHAPE-CHECKS.json",
+      "matched": true
+    },
+    {
+      "condition": "indexed004 payload: REPORT.json",
+      "matched": true
+    },
+    {
+      "condition": "indexed004 payload: ROOT-EMIT-ARGV.json",
+      "matched": true
+    },
+    {
+      "condition": "indexed004 payload: ROOT-OPERATIONS.md",
+      "matched": true
+    },
+    {
+      "condition": "exact004 inventory coverage",
+      "matched": true
+    },
+    {
+      "condition": "whole007 AST has unique saved=True observation.save entrance",
+      "matched": true
+    },
+    {
+      "condition": "unchanged original source007 provider",
+      "matched": true
+    },
+    {
+      "condition": "unchanged closed outer observation fields",
+      "matched": true
+    },
+    {
+      "condition": "only true save.bytes added, entire rest equals003",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: checkpoint.ck3",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "actual saved byte size integer",
+      "matched": true
+    },
+    {
+      "condition": "actual immutable checkpoint extension and readonly",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: mod_li_yu_dao.manifest.json",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: 0013-r10-0013-before-save.sdk-result.json",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: 0014-r10-0014-join-ready-query.sdk-result.json",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: 0013-r10-0013-before-save.sdk-result.json",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "actual saved SDK success preserved",
+      "matched": true
+    },
+    {
+      "condition": "full saved tool status/strategy gate",
+      "matched": true
+    },
+    {
+      "condition": "full checkpoint SHA/size/date/submission/materialization gates",
+      "matched": true
+    },
+    {
+      "condition": "unchanged closed outer observation fields",
+      "matched": true
+    },
+    {
+      "condition": "only true save.bytes added, entire rest equals003",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: checkpoint.ck3",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "actual saved byte size integer",
+      "matched": true
+    },
+    {
+      "condition": "actual immutable checkpoint extension and readonly",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: mod_li_yu_dao.manifest.json",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: 0016-r10-0016-open-proposal-save.sdk-result.json",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: 0040-r10-0041-current-ready-query.sdk-result.json",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: 0039-r10-0040-before-new-intent-save.sdk-result.json",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "actual saved SDK success preserved",
+      "matched": true
+    },
+    {
+      "condition": "full saved tool status/strategy gate",
+      "matched": true
+    },
+    {
+      "condition": "full checkpoint SHA/size/date/submission/materialization gates",
+      "matched": true
+    },
+    {
+      "condition": "unchanged closed emitter request schema",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: INDEX.json",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: 8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.json",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: BEFORE-OBSERVATION.actual.json",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "frozen saved/plain reference exact shape",
+      "matched": true
+    },
+    {
+      "condition": "real absolute referenced file",
+      "matched": true
+    },
+    {
+      "condition": "actual referenced SHA matches: AFTER-OBSERVATION.actual.json",
+      "matched": true
+    },
+    {
+      "condition": "mutable live save excluded",
+      "matched": true
+    },
+    {
+      "condition": "actual bound003 retained; no rebind",
+      "matched": true
+    },
+    {
+      "condition": "actual existing bound bundle schema/entrypoint",
+      "matched": true
+    },
+    {
+      "condition": "actual bound generic-host index row shape",
+      "matched": true
+    },
+    {
+      "condition": "actual bound payload hash exact",
+      "matched": true
+    },
+    {
+      "condition": "actual bound generic-host index row shape",
+      "matched": true
+    },
+    {
+      "condition": "actual bound payload hash exact",
+      "matched": true
+    },
+    {
+      "condition": "actual bound generic-host index row shape",
+      "matched": true
+    },
+    {
+      "condition": "actual bound payload hash exact",
+      "matched": true
+    },
+    {
+      "condition": "actual bound provenance exact to003 BIND request",
+      "matched": true
+    },
+    {
+      "condition": "emitter uses new004 observations, original13/16 saves retained",
+      "matched": true
+    },
+    {
+      "condition": "original first claim unchanged",
+      "matched": true
+    }
+  ],
+  "executions": 0
+}

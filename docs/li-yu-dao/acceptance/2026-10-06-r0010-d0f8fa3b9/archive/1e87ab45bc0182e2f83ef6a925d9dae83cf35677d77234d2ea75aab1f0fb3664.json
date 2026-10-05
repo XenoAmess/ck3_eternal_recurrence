@@ -1,0 +1,30 @@
+{
+  "schema": "lyd.first-join.emitted-proof-index.v1",
+  "files": [
+    {
+      "path": "CONSUMPTION-MANIFEST.json",
+      "bytes": 1785,
+      "sha256": "5f0ec75c2eaa9dbe3da15f691a49c291594b7f7de388035da5f5becad55f24a7"
+    },
+    {
+      "path": "EMISSION-REQUEST.raw.json",
+      "bytes": 1188,
+      "sha256": "57d663c8a0d4147651d99a4589ddf0abc46f3c301856a86bbd0544e08ae1ac77"
+    },
+    {
+      "path": "EMISSION-STATUS.json",
+      "bytes": 800,
+      "sha256": "24ede86484147fc043f15c29d4949e75075f5982398dc782cc481ca48062f1bb"
+    },
+    {
+      "path": "INDEPENDENT-FACTS.json",
+      "bytes": 1038,
+      "sha256": "0916ef9e22162d3bbf904ac0bdf436542ac7e438c493804a52600f3b462763c3"
+    },
+    {
+      "path": "PRODUCT-DETAIL.json",
+      "bytes": 3277,
+      "sha256": "a4135ed97d7323c78a74455a22795d08bb3ffed75703e65130b7c5c6ea2e1d3e"
+    }
+  ]
+}

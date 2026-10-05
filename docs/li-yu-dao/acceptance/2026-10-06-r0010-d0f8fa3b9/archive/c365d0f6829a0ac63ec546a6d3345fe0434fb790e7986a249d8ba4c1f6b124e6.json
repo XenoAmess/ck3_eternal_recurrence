@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 197,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0198-after-reset-error-snapshot.request.json",
+  "request_sha256": "f2d25eab2ad2f32c3862bfffe59ecc77c64befc8882ba12818f56a1c363dd54c",
+  "started_at_utc": "2026-10-05T17:24:53.618440+00:00",
+  "request_id": "r10-0198-after-reset-error-snapshot",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0197-r10-0198-after-reset-error-snapshot.sdk-result.json",
+  "sdk_result_sha256": "e650f3ff367b301a57218118bef696abbba6f5f1b157140746e984a886cd2e2a",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0196-snapshot.json",
+      "copy": "0197-r10-0198-after-reset-error-snapshot.native-01.json",
+      "sha256": "4fcb68989b63e3f4ce65840f7f24a85dda0a21a4e484f225706d02ef8f9aa068"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:24:55.488823+00:00"
+}

@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0068-third-post-dispatch-snapshot.request.json",
+  "request_id": "r10-0068-third-post-dispatch-snapshot",
+  "sha256": "e495e987bec16273d479429361763742eff79afbfa9cbdad7130b18bed91d782",
+  "contacted_game": false
+}

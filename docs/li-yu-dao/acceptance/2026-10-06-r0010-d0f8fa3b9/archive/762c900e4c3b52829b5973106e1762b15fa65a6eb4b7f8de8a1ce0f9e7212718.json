@@ -1,0 +1,11 @@
+{
+  "status": "INVOCATION_COMPLETED",
+  "exit_code": 0,
+  "stdout_sha256": "feced361b45505a6621a63e8c90ca824f9b8b306a89d72dd0f642e9ac1166b6e",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "schema": "lyd.r10.root-structured-argv-invocation.v1",
+  "argv_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-second-proposal-proof-inputs-20261005-002\\ROOT-EMIT-ARGV.json",
+  "argv_source_sha256": "4b19adfac261602b1f042911bd4877a7e597e6a4173f860c43c494c02bf0cc98",
+  "started_utc": "2026-10-05T13:17:28.718876+00:00",
+  "completed_utc": "2026-10-05T13:17:57.892537+00:00"
+}

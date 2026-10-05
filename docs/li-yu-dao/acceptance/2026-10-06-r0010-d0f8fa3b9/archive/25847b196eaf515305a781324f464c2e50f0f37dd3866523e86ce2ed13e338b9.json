@@ -1,0 +1,61 @@
+{
+  "schema": "lyd.r10.third-before-independent-readback.v1",
+  "status": "ACTUAL_THIRD_BEFORE_READY_AFTER_RESET_NOT_NATURAL_EXPIRY",
+  "typed_facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-third-before-readback-20261005-001\\TYPED-FACTS.json",
+    "bytes": 267892,
+    "sha256": "bc17b75f05fc77a118498e422611022d3c7baa5dc281a7b890189cb4b72ece36"
+  },
+  "reset_pair_diff": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-third-before-readback-20261005-001\\reset-pair-diff-001\\REPORT.json",
+    "bytes": 7198,
+    "sha256": "14d5b5a6d70061812d924672eab6dd3c2c9e659d7db7746ec2584200326e65e9"
+  },
+  "human_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-third-before-readback-20261005-001\\REPORT-zh.md",
+    "bytes": 1006,
+    "sha256": "1b2a4a1e22cbb15f3f12d1011280a121f15dc673ccb28cce4f37062cf35dd57d"
+  },
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0063-third-before-save\\checkpoint.ck3",
+    "bytes": 91533017,
+    "sha256": "40cc2bb630b1255217f09c727aa506572d1d3ab2af4aaf1ca13248306fe07b08"
+  },
+  "all_binding_and_protection_checks": {
+    "save_SDK_success": true,
+    "save_SDK_exact_SHA": true,
+    "save_SDK_exact_bytes": true,
+    "save_SDK_actor31254": true,
+    "save_SDK_public30_native29": true,
+    "save_SDK_date_paused_PID": true,
+    "save_SDK_active_null": true,
+    "save_SDK_profile_session": true,
+    "actual_reset4_to5": true,
+    "actual_old_nonce_serial8_preserved": true,
+    "actual_old_result2_preserved": true,
+    "actual_current_active_absent": true,
+    "actual_moving169_retry_removed": true,
+    "actual_selected_Rite_retry_transition_absent": true,
+    "actual_selected_owner_locks_absent": true,
+    "actual_wallet_unchanged": true,
+    "actual_savedXP_unchanged": true,
+    "actual_history_unchanged": true,
+    "all_Faith_main_Rite_parent_links_unchanged": true,
+    "selected_graph_heads_unchanged": true,
+    "selected_graph_full_tenet_doctrine_rows_unchanged": true,
+    "political7_full_AST_unchanged": true,
+    "actor_landed_full_AST_unchanged": true,
+    "selected_person_full_protection_unchanged": true,
+    "fresh64_exact_bytes_SHA": true,
+    "fresh64_success_readonly": true,
+    "fresh64_same_native29_public30": true,
+    "fresh64_same_actor_target_JOIN": true,
+    "fresh64_date_PID_profile_session_match": true,
+    "fresh64_canSend_ready": true,
+    "fresh64_no_active_incoming": true,
+    "fresh64_no_business_credit": true
+  },
+  "actual_AST_parse_count": 1,
+  "natural_cooldown_expiry_credit": false,
+  "final_JOIN_credit": false
+}

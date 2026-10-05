@@ -1,0 +1,94 @@
+{
+  "type": "command_result",
+  "protocol_version": 1,
+  "request_id": "normal-exit-continue_preparation-4ec5ca0ffa7e46d9b65f72eb9f4a5ba6",
+  "ok": true,
+  "result": {
+    "schema": "ck3-normal-exit-map-v1",
+    "step": "normal-exit-map-v1",
+    "action": "continue_preparation",
+    "status": "dispatch_unknown_claimed",
+    "native_revision": 111,
+    "connection_generation": 1,
+    "game_pid": 13436,
+    "played_character_id": 31254,
+    "process_creation_filetime_100ns": 134356699957422997,
+    "pump_epoch": 2802445,
+    "exact_build_verified": true,
+    "owner_verified": true,
+    "process_identity_verified": true,
+    "source_abi_pins_verified": true,
+    "stock_files_verified": true,
+    "loaded_source_binding_verified": true,
+    "frame_verified": true,
+    "context_signature_verified": true,
+    "confirmation_visible": false,
+    "orderly_exit_verified": false,
+    "autosave_verified": false,
+    "exit_context_signature": "b4c03741589821028df6659c233e41b594a27c3a46a5c60105c4434af6042582",
+    "reason": "opening_callback_postcondition_not_yet_observed_no_retry",
+    "stage_consumed": [
+      true,
+      true,
+      false
+    ],
+    "targets": [
+      {
+        "read_complete": true,
+        "root_exists": true,
+        "root_visible": false,
+        "target_exists": true,
+        "target_visible": false,
+        "target_enabled": true,
+        "unique_target": true,
+        "dispatch_admitted": false,
+        "target_vtable_rva": 76961464
+      },
+      {
+        "read_complete": true,
+        "root_exists": true,
+        "root_visible": true,
+        "target_exists": true,
+        "target_visible": true,
+        "target_enabled": true,
+        "unique_target": true,
+        "dispatch_admitted": true,
+        "target_vtable_rva": 76961464
+      },
+      {
+        "read_complete": true,
+        "root_exists": true,
+        "root_visible": false,
+        "target_exists": true,
+        "target_visible": false,
+        "target_enabled": true,
+        "unique_target": true,
+        "dispatch_admitted": false,
+        "target_vtable_rva": 76961464
+      }
+    ],
+    "dispatches": [
+      {
+        "claim_latched": false,
+        "dispatch_invoked": false,
+        "native_handled": false,
+        "post_read_complete": false,
+        "postcondition_observed": false
+      },
+      {
+        "claim_latched": true,
+        "dispatch_invoked": true,
+        "native_handled": true,
+        "post_read_complete": true,
+        "postcondition_observed": false
+      },
+      {
+        "claim_latched": false,
+        "dispatch_invoked": false,
+        "native_handled": false,
+        "post_read_complete": false,
+        "postcondition_observed": false
+      }
+    ]
+  }
+}

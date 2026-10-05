@@ -1,0 +1,63 @@
+{
+  "result": "READY_FOR_ROOT_IMPORT_SOURCE_ONLY",
+  "cases": 50,
+  "mutants": 19,
+  "artifacts": [
+    {
+      "path": "authored.patch",
+      "bytes": 5522,
+      "sha256": "c1454a745a710964f729da7881c6f3fe4b3857ace6ba0203e4ee9c777c439542"
+    },
+    {
+      "path": "INPUTS.json",
+      "bytes": 3278,
+      "sha256": "79d3f5a2e49778e67149396e47af466f8759f897a2cd571c57275e396a55c415"
+    },
+    {
+      "path": "ATTEMPT-HISTORY.json",
+      "bytes": 1422,
+      "sha256": "4525c5a99b63385f1e92f67e511be95fd4f4c97d3608027707e8c02183dd8b6d"
+    },
+    {
+      "path": "official-stock-guard-excerpts.json",
+      "bytes": 2104,
+      "sha256": "993e7169556e1f23d9171e970cd80df65606e9a0c546af5a6a30a7147e25a458"
+    },
+    {
+      "path": "focused-003/REPORT.json",
+      "bytes": 9830,
+      "sha256": "b4f0a863f63318ecca227048adc2b6858b2f9ed75838650bad6f8ee794cca548"
+    },
+    {
+      "path": "handoff-001/ROOT-APPLY-INPUTS.json",
+      "bytes": 3317,
+      "sha256": "efbec80d601c2f7452c50e6c1010913caf29251c63d8d72c16a1ac84e5e229b0"
+    },
+    {
+      "path": "source/mod_li_yu_dao/tools/leadership_templates/common/scripted_triggers/lyd_c3_leadership_triggers.txt.in",
+      "bytes": 8278,
+      "sha256": "bf6ac63911e78468caa926eb5fd5ffb65f0c9819c2d2963cc8c2d9d7844b07ca"
+    },
+    {
+      "path": "source/mod_li_yu_dao/tools/gen_institution.py",
+      "bytes": 52050,
+      "sha256": "f7801b0b9ef58c0ba126918fc0d1b4a0a2a568e0f12106f2a098fa3e818e5aa3"
+    },
+    {
+      "path": "source/mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py",
+      "bytes": 17345,
+      "sha256": "69e31ff67440ee846cb2e7457f26b365151214f6a51529e7b43c62038ed8ba8e"
+    },
+    {
+      "path": "source/mod_li_yu_dao/common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "bytes": 8361,
+      "sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34"
+    },
+    {
+      "path": "source/mod_li_yu_dao/common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "bytes": 11379,
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e"
+    }
+  ],
+  "live": "NOT_RUN"
+}

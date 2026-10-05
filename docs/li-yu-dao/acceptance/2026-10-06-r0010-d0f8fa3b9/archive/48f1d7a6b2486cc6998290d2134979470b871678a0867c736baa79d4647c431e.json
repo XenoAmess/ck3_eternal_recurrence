@@ -1,0 +1,10 @@
+{
+  "argv": [
+    "git",
+    "-C",
+    "C:\\workspace\\ck3_eternal_recurrence",
+    "status",
+    "--porcelain"
+  ],
+  "utc": "2026-10-05T09:56:46.832761+00:00"
+}

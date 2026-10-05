@@ -1,0 +1,568 @@
+﻿2026-10-05T09:57:04.8898457Z Current runner version: '2.337.0'
+2026-10-05T09:57:04.8925042Z ##[group]Runner Image Provisioner
+2026-10-05T09:57:04.8926093Z Hosted Compute Agent
+2026-10-05T09:57:04.8926728Z Version: 20260901.588
+2026-10-05T09:57:04.8927458Z Commit: f88ec8081b781fac6c440065ac7ff9e710ce3d0b
+2026-10-05T09:57:04.8928306Z Build Date: 2026-09-01T19:56:44Z
+2026-10-05T09:57:04.8929288Z Worker ID: {ac38f00a-00e5-4ac2-9143-d087c33f8076}
+2026-10-05T09:57:04.8930159Z Azure Region: westus
+2026-10-05T09:57:04.8930758Z ##[endgroup]
+2026-10-05T09:57:04.8932535Z ##[group]Operating System
+2026-10-05T09:57:04.8933311Z Ubuntu
+2026-10-05T09:57:04.8933873Z 24.04.5
+2026-10-05T09:57:04.8934467Z LTS
+2026-10-05T09:57:04.8935028Z ##[endgroup]
+2026-10-05T09:57:04.8935620Z ##[group]Runner Image
+2026-10-05T09:57:04.8936335Z Image: ubuntu-24.04
+2026-10-05T09:57:04.8936922Z Version: 20260927.320.1
+2026-10-05T09:57:04.8938283Z Included Software: https://github.com/actions/runner-images/blob/ubuntu24/20260927.320/images/ubuntu/Ubuntu2404-Readme.md
+2026-10-05T09:57:04.8940354Z Image Release: https://github.com/actions/runner-images/releases/tag/ubuntu24%2F20260927.320
+2026-10-05T09:57:04.8941449Z ##[endgroup]
+2026-10-05T09:57:04.8942544Z ##[group]GITHUB_TOKEN Permissions
+2026-10-05T09:57:04.8944859Z Contents: read
+2026-10-05T09:57:04.8945525Z Metadata: read
+2026-10-05T09:57:04.8946550Z ##[endgroup]
+2026-10-05T09:57:04.8948766Z Secret source: Actions
+2026-10-05T09:57:04.8950137Z Cache mode: write
+2026-10-05T09:57:04.8950914Z Prepare workflow directory
+2026-10-05T09:57:04.9324926Z Prepare all required actions
+2026-10-05T09:57:04.9401239Z Getting action download info
+2026-10-05T09:57:05.3324020Z Download action repository 'actions/checkout@v4' (SHA:11d5960a326750d5838078e36cf38b85af677262)
+2026-10-05T09:57:05.4651612Z Download action repository 'actions/setup-python@v5' (SHA:a26af69be951a213d495a4c3e4e4022e16d87065)
+2026-10-05T09:57:05.5459966Z Download action repository 'actions/upload-artifact@v4' (SHA:ea165f8d65b6e75b540449e92b4886f43607fa02)
+2026-10-05T09:57:05.7736201Z Complete job name: static
+2026-10-05T09:57:05.8555796Z ##[group]Run actions/checkout@v4
+2026-10-05T09:57:05.8556721Z with:
+2026-10-05T09:57:05.8557263Z   repository: XenoAmess/ck3_eternal_recurrence
+2026-10-05T09:57:05.8561880Z   token: ***
+2026-10-05T09:57:05.8562366Z   ssh-strict: true
+2026-10-05T09:57:05.8562883Z   ssh-user: git
+2026-10-05T09:57:05.8563360Z   persist-credentials: true
+2026-10-05T09:57:05.8563902Z   clean: true
+2026-10-05T09:57:05.8564386Z   sparse-checkout-cone-mode: true
+2026-10-05T09:57:05.8564949Z   fetch-depth: 1
+2026-10-05T09:57:05.8565410Z   fetch-tags: false
+2026-10-05T09:57:05.8565880Z   show-progress: true
+2026-10-05T09:57:05.8566341Z   lfs: false
+2026-10-05T09:57:05.8566781Z   submodules: false
+2026-10-05T09:57:05.8567271Z   set-safe-directory: true
+2026-10-05T09:57:05.8567802Z   allow-unsafe-pr-checkout: false
+2026-10-05T09:57:05.8568791Z ##[endgroup]
+2026-10-05T09:57:05.9658425Z Syncing repository: XenoAmess/ck3_eternal_recurrence
+2026-10-05T09:57:05.9661694Z ##[group]Getting Git version info
+2026-10-05T09:57:05.9663022Z Working directory is '/home/runner/work/ck3_eternal_recurrence/ck3_eternal_recurrence'
+2026-10-05T09:57:05.9664499Z [command]/usr/bin/git version
+2026-10-05T09:57:05.9818420Z git version 2.55.0
+2026-10-05T09:57:05.9852414Z ##[endgroup]
+2026-10-05T09:57:05.9870810Z Temporarily overriding HOME='/home/runner/work/_temp/ef338d22-44db-4d5a-b842-596a536bc846' before making global git config changes
+2026-10-05T09:57:05.9873666Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-05T09:57:05.9877630Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ck3_eternal_recurrence/ck3_eternal_recurrence
+2026-10-05T09:57:05.9933910Z Deleting the contents of '/home/runner/work/ck3_eternal_recurrence/ck3_eternal_recurrence'
+2026-10-05T09:57:05.9938696Z ##[group]Initializing the repository
+2026-10-05T09:57:05.9943356Z [command]/usr/bin/git init /home/runner/work/ck3_eternal_recurrence/ck3_eternal_recurrence
+2026-10-05T09:57:06.0084768Z hint: Using 'master' as the name for the initial branch. This default branch name
+2026-10-05T09:57:06.0086810Z hint: will change to "main" in Git 3.0. To configure the initial branch name
+2026-10-05T09:57:06.0088582Z hint: to use in all of your new repositories, which will suppress this warning,
+2026-10-05T09:57:06.0091397Z hint: call:
+2026-10-05T09:57:06.0092591Z hint:
+2026-10-05T09:57:06.0093837Z hint: 	git config --global init.defaultBranch <name>
+2026-10-05T09:57:06.0094984Z hint:
+2026-10-05T09:57:06.0096144Z hint: Names commonly chosen instead of 'master' are 'main', 'trunk' and
+2026-10-05T09:57:06.0097916Z hint: 'development'. The just-created branch can be renamed via this command:
+2026-10-05T09:57:06.0099585Z hint:
+2026-10-05T09:57:06.0100430Z hint: 	git branch -m <name>
+2026-10-05T09:57:06.0101357Z hint:
+2026-10-05T09:57:06.0102504Z hint: Disable this message with "git config set advice.defaultBranchName false"
+2026-10-05T09:57:06.0104496Z Initialized empty Git repository in /home/runner/work/ck3_eternal_recurrence/ck3_eternal_recurrence/.git/
+2026-10-05T09:57:06.0106712Z [command]/usr/bin/git remote add origin https://github.com/XenoAmess/ck3_eternal_recurrence
+2026-10-05T09:57:06.0158796Z ##[endgroup]
+2026-10-05T09:57:06.0159814Z ##[group]Disabling automatic garbage collection
+2026-10-05T09:57:06.0162907Z [command]/usr/bin/git config --local gc.auto 0
+2026-10-05T09:57:06.0194054Z ##[endgroup]
+2026-10-05T09:57:06.0194841Z ##[group]Setting up auth
+2026-10-05T09:57:06.0200945Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T09:57:06.0232271Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-05T09:57:06.0605635Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T09:57:06.0641833Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-05T09:57:06.0867766Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-05T09:57:06.0899837Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-05T09:57:06.1130272Z [command]/usr/bin/git config --local http.https://github.com/.extraheader AUTHORIZATION: basic ***
+2026-10-05T09:57:06.1168546Z ##[endgroup]
+2026-10-05T09:57:06.1169824Z ##[group]Fetching the repository
+2026-10-05T09:57:06.1178157Z [command]/usr/bin/git -c protocol.version=2 fetch --no-tags --prune --no-recurse-submodules --depth=1 origin +d0f8fa3b9d444828759443aa018bfd7ad31b398d:refs/remotes/origin/master
+2026-10-05T09:57:37.8233616Z From https://github.com/XenoAmess/ck3_eternal_recurrence
+2026-10-05T09:57:37.8234602Z  * [new ref]           d0f8fa3b9d444828759443aa018bfd7ad31b398d -> origin/master
+2026-10-05T09:57:37.8238221Z ##[endgroup]
+2026-10-05T09:57:37.8238742Z ##[group]Determining the checkout info
+2026-10-05T09:57:37.8241963Z ##[endgroup]
+2026-10-05T09:57:37.8249076Z [command]/usr/bin/git sparse-checkout disable
+2026-10-05T09:57:37.8302054Z [command]/usr/bin/git config --local --unset-all extensions.worktreeConfig
+2026-10-05T09:57:37.8329857Z ##[group]Checking out the ref
+2026-10-05T09:57:37.8335445Z [command]/usr/bin/git checkout --progress --force -B master refs/remotes/origin/master
+2026-10-05T09:57:38.8877683Z Updating files:  25% (7631/30103)
+2026-10-05T09:57:38.9243859Z Updating files:  26% (7827/30103)
+2026-10-05T09:57:38.9520889Z Updating files:  27% (8128/30103)
+2026-10-05T09:57:38.9843121Z Updating files:  28% (8429/30103)
+2026-10-05T09:57:39.1054067Z Updating files:  29% (8730/30103)
+2026-10-05T09:57:39.2193735Z Updating files:  30% (9031/30103)
+2026-10-05T09:57:39.3132147Z Updating files:  31% (9332/30103)
+2026-10-05T09:57:39.4114381Z Updating files:  32% (9633/30103)
+2026-10-05T09:57:39.5423834Z Updating files:  33% (9934/30103)
+2026-10-05T09:57:39.6437036Z Updating files:  34% (10236/30103)
+2026-10-05T09:57:39.7374475Z Updating files:  35% (10537/30103)
+2026-10-05T09:57:39.7707977Z Updating files:  36% (10838/30103)
+2026-10-05T09:57:39.7990848Z Updating files:  37% (11139/30103)
+2026-10-05T09:57:39.8435848Z Updating files:  38% (11440/30103)
+2026-10-05T09:57:39.8685971Z Updating files:  39% (11741/30103)
+2026-10-05T09:57:39.8719925Z Updating files:  39% (11980/30103)
+2026-10-05T09:57:39.8884539Z Updating files:  40% (12042/30103)
+2026-10-05T09:57:39.9144915Z Updating files:  41% (12343/30103)
+2026-10-05T09:57:39.9314356Z Updating files:  42% (12644/30103)
+2026-10-05T09:57:39.9466898Z Updating files:  43% (12945/30103)
+2026-10-05T09:57:39.9681083Z Updating files:  44% (13246/30103)
+2026-10-05T09:57:40.0114214Z Updating files:  45% (13547/30103)
+2026-10-05T09:57:40.1905710Z Updating files:  46% (13848/30103)
+2026-10-05T09:57:40.2472959Z Updating files:  47% (14149/30103)
+2026-10-05T09:57:40.4837623Z Updating files:  48% (14450/30103)
+2026-10-05T09:57:40.6448043Z Updating files:  49% (14751/30103)
+2026-10-05T09:57:40.7359870Z Updating files:  50% (15052/30103)
+2026-10-05T09:57:40.8288407Z Updating files:  51% (15353/30103)
+2026-10-05T09:57:40.8534634Z Updating files:  52% (15654/30103)
+2026-10-05T09:57:40.8694206Z Updating files:  53% (15955/30103)
+2026-10-05T09:57:40.8805766Z Updating files:  53% (16124/30103)
+2026-10-05T09:57:40.8980838Z Updating files:  54% (16256/30103)
+2026-10-05T09:57:40.9250785Z Updating files:  55% (16557/30103)
+2026-10-05T09:57:40.9690210Z Updating files:  56% (16858/30103)
+2026-10-05T09:57:41.0523992Z Updating files:  57% (17159/30103)
+2026-10-05T09:57:41.0940673Z Updating files:  58% (17460/30103)
+2026-10-05T09:57:41.2203332Z Updating files:  59% (17761/30103)
+2026-10-05T09:57:41.2998370Z Updating files:  60% (18062/30103)
+2026-10-05T09:57:41.3254700Z Updating files:  61% (18363/30103)
+2026-10-05T09:57:41.3717467Z Updating files:  62% (18664/30103)
+2026-10-05T09:57:41.4080312Z Updating files:  63% (18965/30103)
+2026-10-05T09:57:41.4311423Z Updating files:  64% (19266/30103)
+2026-10-05T09:57:41.4926521Z Updating files:  65% (19567/30103)
+2026-10-05T09:57:41.5215495Z Updating files:  66% (19868/30103)
+2026-10-05T09:57:41.5567983Z Updating files:  67% (20170/30103)
+2026-10-05T09:57:41.5794913Z Updating files:  68% (20471/30103)
+2026-10-05T09:57:41.6002620Z Updating files:  69% (20772/30103)
+2026-10-05T09:57:41.6192420Z Updating files:  70% (21073/30103)
+2026-10-05T09:57:41.6384218Z Updating files:  71% (21374/30103)
+2026-10-05T09:57:41.6528385Z Updating files:  72% (21675/30103)
+2026-10-05T09:57:41.6670303Z Updating files:  73% (21976/30103)
+2026-10-05T09:57:41.6811912Z Updating files:  74% (22277/30103)
+2026-10-05T09:57:41.6957074Z Updating files:  75% (22578/30103)
+2026-10-05T09:57:41.7261037Z Updating files:  76% (22879/30103)
+2026-10-05T09:57:41.7684965Z Updating files:  77% (23180/30103)
+2026-10-05T09:57:41.8289395Z Updating files:  78% (23481/30103)
+2026-10-05T09:57:41.8510965Z Updating files:  79% (23782/30103)
+2026-10-05T09:57:41.8690579Z Updating files:  80% (24083/30103)
+2026-10-05T09:57:41.8920292Z Updating files:  80% (24186/30103)
+2026-10-05T09:57:41.9139444Z Updating files:  81% (24384/30103)
+2026-10-05T09:57:41.9334634Z Updating files:  82% (24685/30103)
+2026-10-05T09:57:41.9565905Z Updating files:  83% (24986/30103)
+2026-10-05T09:57:41.9741685Z Updating files:  84% (25287/30103)
+2026-10-05T09:57:41.9879047Z Updating files:  85% (25588/30103)
+2026-10-05T09:57:42.0021314Z Updating files:  86% (25889/30103)
+2026-10-05T09:57:42.0164774Z Updating files:  87% (26190/30103)
+2026-10-05T09:57:42.0426997Z Updating files:  88% (26491/30103)
+2026-10-05T09:57:42.0580607Z Updating files:  89% (26792/30103)
+2026-10-05T09:57:42.1811792Z Updating files:  90% (27093/30103)
+2026-10-05T09:57:42.2628659Z Updating files:  91% (27394/30103)
+2026-10-05T09:57:42.2988457Z Updating files:  92% (27695/30103)
+2026-10-05T09:57:42.3439456Z Updating files:  93% (27996/30103)
+2026-10-05T09:57:42.3819938Z Updating files:  94% (28297/30103)
+2026-10-05T09:57:42.4098547Z Updating files:  95% (28598/30103)
+2026-10-05T09:57:42.4636831Z Updating files:  96% (28899/30103)
+2026-10-05T09:57:42.4919628Z Updating files:  97% (29200/30103)
+2026-10-05T09:57:42.5228330Z Updating files:  98% (29501/30103)
+2026-10-05T09:57:42.5803130Z Updating files:  99% (29802/30103)
+2026-10-05T09:57:42.5803969Z Updating files: 100% (30103/30103)
+2026-10-05T09:57:42.5804500Z Updating files: 100% (30103/30103), done.
+2026-10-05T09:57:42.6968971Z Reset branch 'master'
+2026-10-05T09:57:42.6971224Z branch 'master' set up to track 'origin/master'.
+2026-10-05T09:57:42.7158068Z ##[endgroup]
+2026-10-05T09:57:42.7211109Z [command]/usr/bin/git log -1 --format=%H
+2026-10-05T09:57:42.7234721Z d0f8fa3b9d444828759443aa018bfd7ad31b398d
+2026-10-05T09:57:42.7565181Z ##[group]Run actions/setup-python@v5
+2026-10-05T09:57:42.7565492Z with:
+2026-10-05T09:57:42.7565699Z   python-version: 3.13
+2026-10-05T09:57:42.7565955Z   check-latest: false
+2026-10-05T09:57:42.7568659Z   token: ***
+2026-10-05T09:57:42.7569314Z   update-environment: true
+2026-10-05T09:57:42.7569589Z   allow-prereleases: false
+2026-10-05T09:57:42.7569830Z   freethreaded: false
+2026-10-05T09:57:42.7570045Z ##[endgroup]
+2026-10-05T09:57:42.8913206Z ##[group]Installed versions
+2026-10-05T09:57:42.9026838Z (node:2314) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-05T09:57:42.9028016Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-05T09:57:42.9028710Z Successfully set up CPython (3.13.15)
+2026-10-05T09:57:42.9029831Z ##[endgroup]
+2026-10-05T09:57:42.9150399Z ##[group]Run python mod_li_yu_dao/tools/gen_content.py --check
+2026-10-05T09:57:42.9150923Z [36;1mpython mod_li_yu_dao/tools/gen_content.py --check[0m
+2026-10-05T09:57:42.9151330Z [36;1mpython mod_li_yu_dao/tools/gen_runtime.py --check[0m
+2026-10-05T09:57:42.9465591Z shell: /usr/bin/bash -e {0}
+2026-10-05T09:57:42.9465971Z env:
+2026-10-05T09:57:42.9466365Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.15/x64
+2026-10-05T09:57:42.9467011Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.15/x64/lib/pkgconfig
+2026-10-05T09:57:42.9467632Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.15/x64
+2026-10-05T09:57:42.9468178Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.15/x64
+2026-10-05T09:57:42.9468731Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.15/x64
+2026-10-05T09:57:42.9469494Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.15/x64/lib
+2026-10-05T09:57:42.9469961Z ##[endgroup]
+2026-10-05T09:57:43.0735537Z {"catalogue_rites": 36, "catalogue_tenets": 36, "emitted_rites": 36, "emitted_tenets": 36, "practice_inputs": 36, "parent_faith": "lyd_common_faith", "parent_religion": "confucianism_religion", "main_rite_id": "lyd_rite_kongmen", "chronology_mode": "free", "live_acceptance": "not performed by content generator", "mode": "check", "files": ["common/religion/rite_types/lyd_rites.txt", "common/religion/tenet_types/lyd_tenets.txt", "localization/simp_chinese/lyd_content_l_simp_chinese.yml", "localization/english/lyd_content_l_english.yml"]}
+2026-10-05T09:57:43.1597227Z Runtime verified: 36 schools, 36 practice events
+2026-10-05T09:57:43.1711337Z ##[group]Run python mod_li_yu_dao/tools/validate_static.py --report /tmp/lyd-static.json
+2026-10-05T09:57:43.1712000Z [36;1mpython mod_li_yu_dao/tools/validate_static.py --report /tmp/lyd-static.json[0m
+2026-10-05T09:57:43.1712496Z [36;1mpython mod_li_yu_dao/tools/test_build_release.py[0m
+2026-10-05T09:57:43.1712886Z [36;1mpython mod_li_yu_dao/tools/test_run_acceptance.py[0m
+2026-10-05T09:57:43.1713271Z [36;1mpython mod_li_yu_dao/tools/test_school_consent.py[0m
+2026-10-05T09:57:43.1713793Z [36;1mpython mod_li_yu_dao/tools/test_c2_preview_scope.py --report /tmp/lyd-c2-preview-scope.json[0m
+2026-10-05T09:57:43.1714332Z [36;1mpython mod_li_yu_dao/tools/test_content_leadership.py[0m
+2026-10-05T09:57:43.1714738Z [36;1mpython mod_li_yu_dao/tools/test_institution_candidate.py[0m
+2026-10-05T09:57:43.1715323Z [36;1mpython mod_li_yu_dao/tools/test_institution_detached.py[0m
+2026-10-05T09:57:43.1715908Z [36;1mpython mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py --report /tmp/lyd-c3-i3b-preview-scope.json[0m
+2026-10-05T09:57:43.1716462Z [36;1mpython mod_li_yu_dao/tools/build_release.py --check[0m
+2026-10-05T09:57:43.1779196Z shell: /usr/bin/bash -e {0}
+2026-10-05T09:57:43.1779454Z env:
+2026-10-05T09:57:43.1779739Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.15/x64
+2026-10-05T09:57:43.1780178Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.15/x64/lib/pkgconfig
+2026-10-05T09:57:43.1780627Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.15/x64
+2026-10-05T09:57:43.1781021Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.15/x64
+2026-10-05T09:57:43.1781410Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.15/x64
+2026-10-05T09:57:43.1781807Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.15/x64/lib
+2026-10-05T09:57:43.1782151Z ##[endgroup]
+2026-10-05T09:57:43.3926746Z {
+2026-10-05T09:57:43.3927447Z   "result": "GREEN",
+2026-10-05T09:57:43.3928069Z   "layer": "L0-static",
+2026-10-05T09:57:43.3928538Z   "errors": [],
+2026-10-05T09:57:43.3929153Z   "runtime_file_count": 70,
+2026-10-05T09:57:43.3929786Z   "runtime_sha256": {
+2026-10-05T09:57:43.3930815Z     "common/character_interactions/lyd_c2_consent_interactions.txt": "fcfa7662701e48d83ddf9ac6eef007952d55c6cec50ffa04805cef0bea572300",
+2026-10-05T09:57:43.3932567Z     "common/character_interactions/lyd_c3_teacher_interactions.txt": "3b850035d9f6f506c4d7c3f839c2ccf1894f753a445a90bde93b0242fc2645f7",
+2026-10-05T09:57:43.3934220Z     "common/character_interactions/lyd_i3b_nomination_interactions.txt": "410ebb1a28542f160a9b45a49c017d15dacc39c375c4d358616301c577c2bb98",
+2026-10-05T09:57:43.3935551Z     "common/character_interactions/lyd_interactions.txt": "dd6287ded00bef768aa7698d6350394b9f2840c5fb37f7d2381269f41300b5ba",
+2026-10-05T09:57:43.3936752Z     "common/decisions/lyd_c2_consent_decisions.txt": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549",
+2026-10-05T09:57:43.3937970Z     "common/decisions/lyd_c3_leadership_decisions.txt": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba",
+2026-10-05T09:57:43.3939232Z     "common/decisions/lyd_decisions.txt": "66bc7c5f6f2967081ec0c4bbdd06fa9e92f73a6bcfe407641405ab89209c642e",
+2026-10-05T09:57:43.3940388Z     "common/decisions/lyd_i3b_institution_decisions.txt": "d5195d67d80d28171d3b805d0bd4dc94b4bdd85598341f598e37877a75f19019",
+2026-10-05T09:57:43.3941595Z     "common/on_action/lyd_c3_lifecycle_on_actions.txt": "19c1773ebb82bbfe75d95a629f9ffda73a521c9afe0060cf55f438a2b96fe19b",
+2026-10-05T09:57:43.3942776Z     "common/religion/faith_types/lyd_faiths.txt": "094e3bbbe2c0139c5c736785018e4cd2ef6a18265321d2ae1f744dfa7d4a7525",
+2026-10-05T09:57:43.3943923Z     "common/religion/rite_types/lyd_rites.txt": "1106d2e9b06bbddb6cc3ab663d19b2e4e7863325ec63d67c776c694eb513ca17",
+2026-10-05T09:57:43.3944880Z     "common/religion/tenet_types/lyd_tenets.txt": "1a2b4a4f4729b2ac475c1c2a70a3734525ecd31ae50861b002adcf1003a2920e",
+2026-10-05T09:57:43.3946116Z     "common/script_values/lyd_c2_consent_values.txt": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae",
+2026-10-05T09:57:43.3947045Z     "common/script_values/lyd_i3b_institution_values.txt": "61df8e591ac291644b103279d69665ed35f68c4f3aa63e286576583c8fae0156",
+2026-10-05T09:57:43.3947971Z     "common/scripted_effects/lyd_c2_close_effects.txt": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01",
+2026-10-05T09:57:43.3949007Z     "common/scripted_effects/lyd_c2_commit_effects.txt": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6",
+2026-10-05T09:57:43.3949933Z     "common/scripted_effects/lyd_c2_head_effects.txt": "cd1f2b8a9adb9816db16924fb20f6d6d559db479d1fe35f22b06bef611f0228b",
+2026-10-05T09:57:43.3950912Z     "common/scripted_effects/lyd_c2_response_effects.txt": "1a97eed607f9a709779a19ea4f8381d27192575beba72b88ddfcbe316ed32c47",
+2026-10-05T09:57:43.3952034Z     "common/scripted_effects/lyd_c2_setup_effects.txt": "4cc2141e73c2a7dae383ca875b3542e6f05065830fc4a8f51d33807fe9182a21",
+2026-10-05T09:57:43.3952969Z     "common/scripted_effects/lyd_c2_snapshot_effects.txt": "69cf863ee19bea6aa6058974af0cb15b688e8e6900b8f436f2eefa3f2d64bc73",
+2026-10-05T09:57:43.3953903Z     "common/scripted_effects/lyd_c2_vote_effects.txt": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704",
+2026-10-05T09:57:43.3954783Z     "common/scripted_effects/lyd_c3_challenger_effects.txt": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b",
+2026-10-05T09:57:43.3955610Z     "common/scripted_effects/lyd_c3_council_effects.txt": "6e1a686065911cce27270cafa7c1ac3d86b69b14eca2a5e5c6e87b435b7a01ff",
+2026-10-05T09:57:43.3956404Z     "common/scripted_effects/lyd_c3_head_factory.txt": "2ecd65a93ac84d5ab571acd17e36acb69c74979ec3f2f97f897932b0d21d1e24",
+2026-10-05T09:57:43.3957217Z     "common/scripted_effects/lyd_c3_lifecycle_effects.txt": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88",
+2026-10-05T09:57:43.3958034Z     "common/scripted_effects/lyd_c3_migration_hooks.txt": "a13cec21b7e113e1d89a3a8228e760e30aa607704f65ae3db848208e22cac75b",
+2026-10-05T09:57:43.3958993Z     "common/scripted_effects/lyd_entry_effects.txt": "c90dbf266ac45b38fa1e62acfeb7027afc3eb666997b95bdf03e0a4738c1227e",
+2026-10-05T09:57:43.3959809Z     "common/scripted_effects/lyd_i3b_commit_effects.txt": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec",
+2026-10-05T09:57:43.3960635Z     "common/scripted_effects/lyd_i3b_response_effects.txt": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6",
+2026-10-05T09:57:43.3961449Z     "common/scripted_effects/lyd_i3b_setup_effects.txt": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+2026-10-05T09:57:43.3962249Z     "common/scripted_effects/lyd_i3b_terms_effects.txt": "e7d688e2b183fc9cec86c1df5646f463e6ac2b84c7132eb9a3009f42eab29633",
+2026-10-05T09:57:43.3963047Z     "common/scripted_effects/lyd_practice_10_effects.txt": "3ca648c00476c6360777685f95892ba881b370028aac6421f27dc327ddd6d873",
+2026-10-05T09:57:43.3963858Z     "common/scripted_effects/lyd_practice_11_effects.txt": "bbb2ffc2af52aa54b3753147e6adab8f3d3fa191cc32072094a354a4b145c7f1",
+2026-10-05T09:57:43.3964664Z     "common/scripted_effects/lyd_practice_12_effects.txt": "4a11f39e7ad438971f9197eea0250a82dcfa5320ab5308157c6aec33a1178949",
+2026-10-05T09:57:43.3965467Z     "common/scripted_effects/lyd_practice_13_effects.txt": "f20eab97c7fa78b98e986d427627b37578faff2fea17b0ddfad9c879b0f4d68c",
+2026-10-05T09:57:43.3966869Z     "common/scripted_effects/lyd_practice_14_effects.txt": "dba733183cc1c66355a44b6ce78e8f3d91ef35b0464ae7da6127dc8ebf7bbf92",
+2026-10-05T09:57:43.3967699Z     "common/scripted_effects/lyd_practice_1_effects.txt": "5699236f0e3eceedd56aa41bbbd0d3758730a5c594871cc09ae38a779cef4de7",
+2026-10-05T09:57:43.3968531Z     "common/scripted_effects/lyd_practice_2_effects.txt": "9a6d6cc954afe24a79098ba7b623bf0ba0d10ffe119ad850a9db91e362e61879",
+2026-10-05T09:57:43.3969535Z     "common/scripted_effects/lyd_practice_3_effects.txt": "e82537a3d7bce82ea231baa7b5311ea628916e5cd3df7421a0fdffca92ee9131",
+2026-10-05T09:57:43.3970523Z     "common/scripted_effects/lyd_practice_4_effects.txt": "c4e215a15a98159b9f49d94937a0e81a7c1a5366e2fbe03b091f1962f27f1d52",
+2026-10-05T09:57:43.3971346Z     "common/scripted_effects/lyd_practice_5_effects.txt": "fcb35efef5e5e766befbd3caa5ad8dc7faf5baea3f1852254759ece65dd4fd38",
+2026-10-05T09:57:43.3972164Z     "common/scripted_effects/lyd_practice_6_effects.txt": "731324e20ebd99a8f20e2a1a97473b091d497ac37f33fdefad1a1c0810fb8ee9",
+2026-10-05T09:57:43.3972963Z     "common/scripted_effects/lyd_practice_7_effects.txt": "b5e27005dbea499d63716ba9956996ecd2948dade6d46833ad1df3596079de8f",
+2026-10-05T09:57:43.3973772Z     "common/scripted_effects/lyd_practice_8_effects.txt": "e6c9ad63b57f81e9ff57f0cc146859d2c9b281225f859ffefe101aad9c0a80bf",
+2026-10-05T09:57:43.3974579Z     "common/scripted_effects/lyd_practice_9_effects.txt": "f24b7fcff5d34c21e2186b498a4ef0e7dfcb810ee5bb8ff5321ac8d2cafd2cb0",
+2026-10-05T09:57:43.3975552Z     "common/scripted_effects/lyd_school_2_effects.txt": "7d730f4fd8e01d9664b44dd8df607c56df1850425b0cc04ab834d891cc127491",
+2026-10-05T09:57:43.3976341Z     "common/scripted_effects/lyd_school_3_effects.txt": "88230a78a2d27285b11a805c6762e78f2d3c2b472d1f61c862fd9117f0705eab",
+2026-10-05T09:57:43.3977124Z     "common/scripted_effects/lyd_school_4_effects.txt": "e2c098a86e9f39fcec43bffc74b57f0573c60e59faf5db7edf872b197f253234",
+2026-10-05T09:57:43.3977909Z     "common/scripted_effects/lyd_school_5_effects.txt": "24395a459573ef5f9ad0e066a88fb9d5e7895e04f5527e88103f1f5ab0a9414a",
+2026-10-05T09:57:43.3978702Z     "common/scripted_effects/lyd_school_effects.txt": "d9b1456c4a5e7610807ae7e61f4bbfdc8b432968d776befcbd32abd5e6dc6008",
+2026-10-05T09:57:43.3979634Z     "common/scripted_triggers/lyd_c2_consent_triggers.txt": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3",
+2026-10-05T09:57:43.3980478Z     "common/scripted_triggers/lyd_c3_leadership_triggers.txt": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34",
+2026-10-05T09:57:43.3981395Z     "common/scripted_triggers/lyd_i3b_institution_triggers.txt": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+2026-10-05T09:57:43.3982233Z     "common/scripted_triggers/lyd_player_triggers.txt": "8c5cc31aef3e5c5462a880f42a742fbe566e25aafb5cc66d6605876dc4feed1e",
+2026-10-05T09:57:43.3982927Z     "descriptor.mod": "aa20f3f6c745fcd89067b64121b50e9fd1b229c65db3087c5f9001b94365b7e2",
+2026-10-05T09:57:43.3983565Z     "events/lyd_c2_consent_events.txt": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284",
+2026-10-05T09:57:43.3984251Z     "events/lyd_c3_leadership_events.txt": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062",
+2026-10-05T09:57:43.3984905Z     "events/lyd_events.txt": "2a7c2cf955659681a7c29b67db6393c40e986f4ec9bd187237e98bc19ac42f24",
+2026-10-05T09:57:43.3985576Z     "events/lyd_i3b_institution_events.txt": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+2026-10-05T09:57:43.3986339Z     "history/faiths/lyd_faith_history.txt": "d3f44db69e11ad49f4707e3433df6c4c542073bc245042578ded3c30940df19d",
+2026-10-05T09:57:43.3987223Z     "localization/english/lyd_c2_consent_l_english.yml": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35",
+2026-10-05T09:57:43.3988042Z     "localization/english/lyd_c3_leadership_l_english.yml": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77",
+2026-10-05T09:57:43.3988969Z     "localization/english/lyd_content_l_english.yml": "287498e26ddd657db91d1fded99ca671628ef2409f7f56aa86110cabd63d4a78",
+2026-10-05T09:57:43.3989783Z     "localization/english/lyd_i3b_institution_l_english.yml": "7fb7976bef47c74c456ad0237e90e0d0f5f0510b0605168e53c89f1e3798a2f2",
+2026-10-05T09:57:43.3990584Z     "localization/english/lyd_runtime_l_english.yml": "f2959daa69931f05633bb5c2280b36a2789858b0977360301388efe0794e0199",
+2026-10-05T09:57:43.3991401Z     "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504",
+2026-10-05T09:57:43.3992471Z     "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6",
+2026-10-05T09:57:43.3993365Z     "localization/simp_chinese/lyd_content_l_simp_chinese.yml": "4e93e04d6c894eb549f807bbde9ea1f13a0d43cac202ca30efbcf18221db799f",
+2026-10-05T09:57:43.3994259Z     "localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439",
+2026-10-05T09:57:43.3995132Z     "localization/simp_chinese/lyd_runtime_l_simp_chinese.yml": "cdfe4417a8dbd32e04c69a025c5adce08741c22526c4e647069169018c6a6fca"
+2026-10-05T09:57:43.3995673Z   },
+2026-10-05T09:57:43.3995874Z   "localization_key_count": 902,
+2026-10-05T09:57:43.3996121Z   "event_count": 70,
+2026-10-05T09:57:43.3996385Z   "parser": "repository Clausewitz structural AST",
+2026-10-05T09:57:43.3996833Z   "live": "NOT_RUN",
+2026-10-05T09:57:43.3997036Z   "not_proven": [
+2026-10-05T09:57:43.3997258Z     "native scope/effect semantics",
+2026-10-05T09:57:43.3997521Z     "faith/rite migration",
+2026-10-05T09:57:43.3997764Z     "authorization consent",
+2026-10-05T09:57:43.3997998Z     "NPC chain state",
+2026-10-05T09:57:43.3998204Z     "DLC/UI",
+2026-10-05T09:57:43.3998403Z     "save reload",
+2026-10-05T09:57:43.3998615Z     "installed-game identity"
+2026-10-05T09:57:43.3998965Z   ]
+2026-10-05T09:57:43.3999149Z }
+2026-10-05T09:57:43.9201593Z ...........
+2026-10-05T09:57:43.9202029Z ----------------------------------------------------------------------
+2026-10-05T09:57:43.9202547Z Ran 11 tests in 0.397s
+2026-10-05T09:57:43.9202751Z 
+2026-10-05T09:57:43.9202873Z OK
+2026-10-05T09:57:44.1896140Z ......
+2026-10-05T09:57:44.1896683Z ----------------------------------------------------------------------
+2026-10-05T09:57:44.1897228Z Ran 6 tests in 0.024s
+2026-10-05T09:57:44.1897480Z 
+2026-10-05T09:57:44.1897591Z OK
+2026-10-05T09:57:44.3213430Z test_initiator_still_requires_land_and_npc_elector_qualification_is_unchanged (__main__.AllAffectedHumanPlayerTests.test_initiator_still_requires_land_and_npc_elector_qualification_is_unchanged) ... ok
+2026-10-05T09:57:44.3220282Z test_landless_player_is_in_detach_electorate_and_cannot_be_bypassed (__main__.AllAffectedHumanPlayerTests.test_landless_player_is_in_detach_electorate_and_cannot_be_bypassed) ... ok
+2026-10-05T09:57:44.3225412Z test_receiving_landless_player_nonresponse_blocks_join_until_explicit_consent (__main__.AllAffectedHumanPlayerTests.test_receiving_landless_player_nonresponse_blocks_join_until_explicit_consent) ... ok
+2026-10-05T09:57:44.3230110Z test_receiving_landless_player_refusal_closes_round_without_migration_or_cost (__main__.AllAffectedHumanPlayerTests.test_receiving_landless_player_refusal_closes_round_without_migration_or_cost) ... ok
+2026-10-05T09:57:44.3234851Z test_source_landless_player_nonresponse_blocks_join_until_explicit_consent (__main__.AllAffectedHumanPlayerTests.test_source_landless_player_nonresponse_blocks_join_until_explicit_consent) ... ok
+2026-10-05T09:57:44.3239477Z test_source_landless_player_refusal_closes_round_without_migration_or_cost (__main__.AllAffectedHumanPlayerTests.test_source_landless_player_refusal_closes_round_without_migration_or_cost) ... ok
+2026-10-05T09:57:44.3254337Z test_actor_nonce_prevents_cross_school_serial_collision (__main__.EventCallbackNonceTests.test_actor_nonce_prevents_cross_school_serial_collision) ... ok
+2026-10-05T09:57:44.3294923Z test_all_ballot_signature_and_player_callbacks_reject_prior_generation (__main__.EventCallbackNonceTests.test_all_ballot_signature_and_player_callbacks_reject_prior_generation) ... ok
+2026-10-05T09:57:44.3299964Z test_current_cancel_and_direct_current_decision_need_no_old_context (__main__.EventCallbackNonceTests.test_current_cancel_and_direct_current_decision_need_no_old_context) ... ok
+2026-10-05T09:57:44.3305207Z test_current_departing_head_refusal_preserves_authorized_round (__main__.EventCallbackNonceTests.test_current_departing_head_refusal_preserves_authorized_round) ... ok
+2026-10-05T09:57:44.3311729Z test_current_round_sign_and_confirm_complete_real_model_migration (__main__.EventCallbackNonceTests.test_current_round_sign_and_confirm_complete_real_model_migration) ... ok
+2026-10-05T09:57:44.3330576Z test_old_source_head_and_peaceful_responses_do_not_mutate_later_round (__main__.EventCallbackNonceTests.test_old_source_head_and_peaceful_responses_do_not_mutate_later_round) ... ok
+2026-10-05T09:57:44.3343555Z test_old_terms_same_generation_cannot_cancel_sign_or_commit (__main__.EventCallbackNonceTests.test_old_terms_same_generation_cannot_cancel_sign_or_commit) ... ok
+2026-10-05T09:57:44.3350957Z test_old_timeout_cannot_expire_new_round_and_current_timeout_can (__main__.EventCallbackNonceTests.test_old_timeout_cannot_expire_new_round_and_current_timeout_can) ... ok
+2026-10-05T09:57:44.3359252Z test_stale_head_refusal_cannot_reject_new_round_but_current_refusal_can (__main__.EventCallbackNonceTests.test_stale_head_refusal_cannot_reject_new_round_but_current_refusal_can) ... ok
+2026-10-05T09:57:44.3366370Z test_stale_holder_refusal_cannot_reject_new_round_but_current_refusal_can (__main__.EventCallbackNonceTests.test_stale_holder_refusal_cannot_reject_new_round_but_current_refusal_can) ... ok
+2026-10-05T09:57:44.3373921Z test_stale_prior_round_confirm_cannot_commit_current_authorized_round (__main__.EventCallbackNonceTests.test_stale_prior_round_confirm_cannot_commit_current_authorized_round) ... ok
+2026-10-05T09:57:44.3381595Z test_stale_receiving_refusal_cannot_reject_new_signed_round (__main__.EventCallbackNonceTests.test_stale_receiving_refusal_cannot_reject_new_signed_round) ... ok
+2026-10-05T09:57:44.3389093Z test_stale_source_sign_cannot_sign_current_unsigned_round (__main__.EventCallbackNonceTests.test_stale_source_sign_cannot_sign_current_unsigned_round) ... ok
+2026-10-05T09:57:44.3402323Z test_stale_term_dialog_and_review_cancel_cannot_close_new_round (__main__.EventCallbackNonceTests.test_stale_term_dialog_and_review_cancel_cannot_close_new_round) ... ok
+2026-10-05T09:57:44.3422314Z test_valid_context_does_not_authorize_another_character_to_commit_cancel_or_sign (__main__.EventCallbackNonceTests.test_valid_context_does_not_authorize_another_character_to_commit_cancel_or_sign) ... ok
+2026-10-05T09:57:44.3640360Z test_actor_popup_guards_option_and_effect_while_direct_cancel_is_current (__main__.GeneratedGraphTests.test_actor_popup_guards_option_and_effect_while_direct_cancel_is_current) ... ok
+2026-10-05T09:57:44.3888415Z test_actual_bounded_binding_opens_only_primitive_gate_and_keeps_flow_unverified (__main__.GeneratedGraphTests.test_actual_bounded_binding_opens_only_primitive_gate_and_keeps_flow_unverified) ... ok
+2026-10-05T09:57:44.4095067Z test_all_affected_human_consent_paths_include_landless_players (__main__.GeneratedGraphTests.test_all_affected_human_consent_paths_include_landless_players) ... ok
+2026-10-05T09:57:44.4302695Z test_ballot_auth_does_not_depend_on_optional_null_comparisons (__main__.GeneratedGraphTests.test_ballot_auth_does_not_depend_on_optional_null_comparisons) ... ok
+2026-10-05T09:57:44.4512284Z test_bilingual_keys_and_placeholders_match (__main__.GeneratedGraphTests.test_bilingual_keys_and_placeholders_match) ... ok
+2026-10-05T09:57:44.4730480Z test_default_native_admission_is_closed (__main__.GeneratedGraphTests.test_default_native_admission_is_closed) ... ok
+2026-10-05T09:57:44.4943290Z test_divergence_arguments_use_saved_rite_scopes_and_never_macro_variable_paths (__main__.GeneratedGraphTests.test_divergence_arguments_use_saved_rite_scopes_and_never_macro_variable_paths) ... ok
+2026-10-05T09:57:44.5148274Z test_dynamic_faith_actor_and_other_authority_locks_are_preserved (__main__.GeneratedGraphTests.test_dynamic_faith_actor_and_other_authority_locks_are_preserved) ... ok
+2026-10-05T09:57:44.5361110Z test_effective_main_doctrine_comparator_checks_both_difference_directions (__main__.GeneratedGraphTests.test_effective_main_doctrine_comparator_checks_both_difference_directions) ... ok
+2026-10-05T09:57:44.5579994Z test_every_event_has_player_entry_path (__main__.GeneratedGraphTests.test_every_event_has_player_entry_path) ... ok
+2026-10-05T09:57:44.5792321Z test_every_mutating_event_option_uses_effect_that_revalidates_context (__main__.GeneratedGraphTests.test_every_mutating_event_option_uses_effect_that_revalidates_context) ... ok
+2026-10-05T09:57:44.6019092Z test_generated_bom_structure_and_determinism (__main__.GeneratedGraphTests.test_generated_bom_structure_and_determinism) ... ok
+2026-10-05T09:57:44.6354362Z test_hash_binding_can_admit_a_synthetic_unit_receipt_without_claiming_flow_live (__main__.GeneratedGraphTests.test_hash_binding_can_admit_a_synthetic_unit_receipt_without_claiming_flow_live) ... ok
+2026-10-05T09:57:44.6565856Z test_malformed_admission_cannot_silently_open_gate (__main__.GeneratedGraphTests.test_malformed_admission_cannot_silently_open_gate) ... ok
+2026-10-05T09:57:44.6797712Z test_native_calls_exist_only_in_guarded_commit_helpers (__main__.GeneratedGraphTests.test_native_calls_exist_only_in_guarded_commit_helpers) ... ok
+2026-10-05T09:57:44.7011247Z test_no_once_flag_defines_or_unrelated_property_mutations (__main__.GeneratedGraphTests.test_no_once_flag_defines_or_unrelated_property_mutations) ... ok
+2026-10-05T09:57:44.7217603Z test_npc_electorate_policy_is_unchanged (__main__.GeneratedGraphTests.test_npc_electorate_policy_is_unchanged) ... ok
+2026-10-05T09:57:44.7423586Z test_old_callbacks_carry_serial_and_terms_and_new_round_clears_votes (__main__.GeneratedGraphTests.test_old_callbacks_carry_serial_and_terms_and_new_round_clears_votes) ... ok
+2026-10-05T09:57:44.7632633Z test_other_checkout_products_cannot_be_generation_targets (__main__.GeneratedGraphTests.test_other_checkout_products_cannot_be_generation_targets) ... ok
+2026-10-05T09:57:44.7933900Z test_output_reproducibility_and_mismatch_detection (__main__.GeneratedGraphTests.test_output_reproducibility_and_mismatch_detection) ... ok
+2026-10-05T09:57:44.8143300Z test_owned_retirement_is_guarded_before_migration_and_never_uses_empty_faith_guess (__main__.GeneratedGraphTests.test_owned_retirement_is_guarded_before_migration_and_never_uses_empty_faith_guess) ... ok
+2026-10-05T09:57:44.8354157Z test_persistent_nonce_and_school_are_bound_before_every_popup (__main__.GeneratedGraphTests.test_persistent_nonce_and_school_are_bound_before_every_popup) ... ok
+2026-10-05T09:57:44.8565849Z test_portable_proof_changed_hash_fails_closed (__main__.GeneratedGraphTests.test_portable_proof_changed_hash_fails_closed) ... ok
+2026-10-05T09:57:44.8780157Z test_portable_proof_missing_file_never_uses_archived_external_fallback (__main__.GeneratedGraphTests.test_portable_proof_missing_file_never_uses_archived_external_fallback) ... ok
+2026-10-05T09:57:44.8992755Z test_portable_proof_refuses_absolute_and_escaping_paths (__main__.GeneratedGraphTests.test_portable_proof_refuses_absolute_and_escaping_paths) ... ok
+2026-10-05T09:57:44.9270323Z test_portable_proof_works_in_relocated_checkout_with_no_raw_save_or_game (__main__.GeneratedGraphTests.test_portable_proof_works_in_relocated_checkout_with_no_raw_save_or_game) ... ok
+2026-10-05T09:57:44.9751814Z test_read_only_generated_check_can_target_a_checkout_without_writing (__main__.GeneratedGraphTests.test_read_only_generated_check_can_target_a_checkout_without_writing) ... ok
+2026-10-05T09:57:44.9956231Z test_receiving_mandate_is_per_rite_and_dormancy_never_awards_votes (__main__.GeneratedGraphTests.test_receiving_mandate_is_per_rite_and_dormancy_never_awards_votes) ... ok
+2026-10-05T09:57:45.0162728Z test_same_core_and_head_rules_remain_explicit (__main__.GeneratedGraphTests.test_same_core_and_head_rules_remain_explicit) ... ok
+2026-10-05T09:57:45.0376851Z test_saved_scope_is_not_smuggled_into_trigger_or_random_selector (__main__.GeneratedGraphTests.test_saved_scope_is_not_smuggled_into_trigger_or_random_selector) ... ok
+2026-10-05T09:57:45.0583021Z test_saved_vote_and_player_records_do_not_block_a_colliding_new_rite_serial (__main__.GeneratedGraphTests.test_saved_vote_and_player_records_do_not_block_a_colliding_new_rite_serial) ... ok
+2026-10-05T09:57:45.0792020Z test_shared_factory_guard_never_adds_unrelated_realm_law (__main__.GeneratedGraphTests.test_shared_factory_guard_never_adds_unrelated_realm_law) ... ok
+2026-10-05T09:57:45.1013527Z test_shared_migration_hooks_clear_only_role_metadata_without_c2_lock_mutation (__main__.GeneratedGraphTests.test_shared_migration_hooks_clear_only_role_metadata_without_c2_lock_mutation) ... ok
+2026-10-05T09:57:45.1218112Z test_signatures_require_a_vote_record_from_the_current_actor_nonce (__main__.GeneratedGraphTests.test_signatures_require_a_vote_record_from_the_current_actor_nonce) ... ok
+2026-10-05T09:57:45.1223823Z test_head_title_reassignment_invalidates_snapshot (__main__.HeadRetirementRevisionTests.test_head_title_reassignment_invalidates_snapshot) ... ok
+2026-10-05T09:57:45.1227342Z test_missing_receiving_consent_still_blocks_title_retirement (__main__.HeadRetirementRevisionTests.test_missing_receiving_consent_still_blocks_title_retirement) ... ok
+2026-10-05T09:57:45.1232128Z test_multi_rite_source_cannot_retire_shared_head (__main__.HeadRetirementRevisionTests.test_multi_rite_source_cannot_retire_shared_head) ... ok
+2026-10-05T09:57:45.1236940Z test_source_release_refusal_does_not_veto_authorized_owned_title_retirement (__main__.HeadRetirementRevisionTests.test_source_release_refusal_does_not_veto_authorized_owned_title_retirement) ... ok
+2026-10-05T09:57:45.1251348Z test_three_temporal_cycles_create_fresh_owned_titles_and_retire_exact_old_one (__main__.HeadRetirementRevisionTests.test_three_temporal_cycles_create_fresh_owned_titles_and_retire_exact_old_one) ... ok
+2026-10-05T09:57:45.1255210Z test_unowned_title_cannot_be_retired_even_after_mandates (__main__.HeadRetirementRevisionTests.test_unowned_title_cannot_be_retired_even_after_mandates) ... ok
+2026-10-05T09:57:45.1259852Z test_active_zero_scholar_rite_needs_real_holder_or_teacher (__main__.ProposalTests.test_active_zero_scholar_rite_needs_real_holder_or_teacher) ... ok
+2026-10-05T09:57:45.1261539Z test_affected_player_refusal_closes_round (__main__.ProposalTests.test_affected_player_refusal_closes_round) ... ok
+2026-10-05T09:57:45.1263746Z test_another_source_cannot_share_a_locked_receiving_council (__main__.ProposalTests.test_another_source_cannot_share_a_locked_receiving_council) ... ok
+2026-10-05T09:57:45.1267243Z test_ballots_authorize_a_specific_nominee_not_any_scholar (__main__.ProposalTests.test_ballots_authorize_a_specific_nominee_not_any_scholar) ... ok
+2026-10-05T09:57:45.1271428Z test_cooldown_follows_school_when_sponsor_changes (__main__.ProposalTests.test_cooldown_follows_school_when_sponsor_changes) ... ok
+2026-10-05T09:57:45.1274989Z test_costs_rechecked_at_commit (__main__.ProposalTests.test_costs_rechecked_at_commit) ... ok
+2026-10-05T09:57:45.1278643Z test_county_without_characters_is_active_and_not_dormant (__main__.ProposalTests.test_county_without_characters_is_active_and_not_dormant) ... ok
+2026-10-05T09:57:45.1280639Z test_current_main_or_sole_rite_cannot_detach (__main__.ProposalTests.test_current_main_or_sole_rite_cannot_detach) ... ok
+2026-10-05T09:57:45.1284824Z test_detach_head_provisioning_not_silently_added (__main__.ProposalTests.test_detach_head_provisioning_not_silently_added) ... ok
+2026-10-05T09:57:45.1289328Z test_different_core_doctrines_cannot_be_bought_away (__main__.ProposalTests.test_different_core_doctrines_cannot_be_bought_away) ... ok
+2026-10-05T09:57:45.1293562Z test_different_school_core_tenets_do_not_block_equal_main_doctrine_sets (__main__.ProposalTests.test_different_school_core_tenets_do_not_block_equal_main_doctrine_sets) ... ok
+2026-10-05T09:57:45.1297066Z test_doctrine_change_after_consent_invalidates (__main__.ProposalTests.test_doctrine_change_after_consent_invalidates) ... ok
+2026-10-05T09:57:45.1298496Z test_duplicate_ballot_rejected (__main__.ProposalTests.test_duplicate_ballot_rejected) ... ok
+2026-10-05T09:57:45.1315646Z test_eight_active_receiver_rites_each_need_their_own_quorum (__main__.ProposalTests.test_eight_active_receiver_rites_each_need_their_own_quorum) ... ok
+2026-10-05T09:57:45.1320093Z test_expired_authorization_cannot_be_reused (__main__.ProposalTests.test_expired_authorization_cannot_be_reused) ... ok
+2026-10-05T09:57:45.1323716Z test_head_change_invalidates_even_matching_faith (__main__.ProposalTests.test_head_change_invalidates_even_matching_faith) ... ok
+2026-10-05T09:57:45.1327951Z test_low_learning_player_still_must_consent (__main__.ProposalTests.test_low_learning_player_still_must_consent) ... ok
+2026-10-05T09:57:45.1332731Z test_missing_native_acceptance_blocks_commit_without_mutation (__main__.ProposalTests.test_missing_native_acceptance_blocks_commit_without_mutation) ... ok
+2026-10-05T09:57:45.1334671Z test_multi_rite_source_main_requires_separate_succession (__main__.ProposalTests.test_multi_rite_source_main_requires_separate_succession) ... ok
+2026-10-05T09:57:45.1336733Z test_new_affected_player_invalidates_snapshot (__main__.ProposalTests.test_new_affected_player_invalidates_snapshot) ... ok
+2026-10-05T09:57:45.1341255Z test_new_followers_in_dormant_rite_invalidate_the_round (__main__.ProposalTests.test_new_followers_in_dormant_rite_invalidate_the_round) ... ok
+2026-10-05T09:57:45.1342666Z test_no_npc_initiation (__main__.ProposalTests.test_no_npc_initiation) ... ok
+2026-10-05T09:57:45.1345232Z test_nomination_is_not_receiving_consent (__main__.ProposalTests.test_nomination_is_not_receiving_consent) ... ok
+2026-10-05T09:57:45.1350485Z test_old_head_refusal_does_not_veto_authorized_autonomy (__main__.ProposalTests.test_old_head_refusal_does_not_veto_authorized_autonomy) ... ok
+2026-10-05T09:57:45.1354033Z test_owner_death_invalidates_pending_signatures (__main__.ProposalTests.test_owner_death_invalidates_pending_signatures) ... ok
+2026-10-05T09:57:45.1361785Z test_pair_divergence_missing_or_at_threshold_blocks (__main__.ProposalTests.test_pair_divergence_missing_or_at_threshold_blocks) ... ok
+2026-10-05T09:57:45.1366500Z test_real_holder_endorsement_still_requires_all_players (__main__.ProposalTests.test_real_holder_endorsement_still_requires_all_players) ... ok
+2026-10-05T09:57:45.1370833Z test_receiver_low_learning_player_is_affected (__main__.ProposalTests.test_receiver_low_learning_player_is_affected) ... ok
+2026-10-05T09:57:45.1375066Z test_receiver_member_changes_rite_with_same_totals_invalidates (__main__.ProposalTests.test_receiver_member_changes_rite_with_same_totals_invalidates) ... ok
+2026-10-05T09:57:45.1379150Z test_receiver_own_affiliation_cooldown_does_not_veto_another_school (__main__.ProposalTests.test_receiver_own_affiliation_cooldown_does_not_veto_another_school) ... ok
+2026-10-05T09:57:45.1383027Z test_receiving_rite_addition_invalidates_and_locks_are_released (__main__.ProposalTests.test_receiving_rite_addition_invalidates_and_locks_are_released) ... ok
+2026-10-05T09:57:45.1384832Z test_rejection_has_finite_retry_then_new_round (__main__.ProposalTests.test_rejection_has_finite_retry_then_new_round) ... ok
+2026-10-05T09:57:45.1386824Z test_representative_must_have_voted_yes (__main__.ProposalTests.test_representative_must_have_voted_yes) ... ok
+2026-10-05T09:57:45.1391143Z test_same_count_replacement_elector_invalidates_snapshot (__main__.ProposalTests.test_same_count_replacement_elector_invalidates_snapshot) ... ok
+2026-10-05T09:57:45.1395048Z test_same_main_doctrine_set_ignores_order_but_not_actual_membership (__main__.ProposalTests.test_same_main_doctrine_set_ignores_order_but_not_actual_membership) ... ok
+2026-10-05T09:57:45.1400135Z test_seven_empty_templates_do_not_manufacture_votes_or_veto (__main__.ProposalTests.test_seven_empty_templates_do_not_manufacture_votes_or_veto) ... ok
+2026-10-05T09:57:45.1401827Z test_terms_revision_not_interchangeable (__main__.ProposalTests.test_terms_revision_not_interchangeable) ... ok
+2026-10-05T09:57:45.1412834Z test_three_complete_cycles_use_current_dynamic_faith (__main__.ProposalTests.test_three_complete_cycles_use_current_dynamic_faith) ... ok
+2026-10-05T09:57:45.1417054Z test_two_different_heads_remain_incompatible_despite_consent (__main__.ProposalTests.test_two_different_heads_remain_incompatible_despite_consent) ... ok
+2026-10-05T09:57:45.1419160Z test_two_thirds_integer_boundary (__main__.ProposalTests.test_two_thirds_integer_boundary) ... ok
+2026-10-05T09:57:45.1420304Z test_under_quorum_cannot_sign (__main__.ProposalTests.test_under_quorum_cannot_sign) ... ok
+2026-10-05T09:57:45.1480999Z test_callback_refusal_preserves_state_and_counters (__main__.TooltipPresenceRegressionTests.test_callback_refusal_preserves_state_and_counters) ... ok
+2026-10-05T09:57:45.1482895Z test_fresh_vote_tooltip_skips_unset_yes_read (__main__.TooltipPresenceRegressionTests.test_fresh_vote_tooltip_skips_unset_yes_read) ... ok
+2026-10-05T09:57:45.1484745Z test_real_yes_and_no_preserve_exact_counter_scope_and_amount (__main__.TooltipPresenceRegressionTests.test_real_yes_and_no_preserve_exact_counter_scope_and_amount) ... ok
+2026-10-05T09:57:45.1486952Z test_start_gate_rejects_every_missing_postwrite_field_without_reading_it (__main__.TooltipPresenceRegressionTests.test_start_gate_rejects_every_missing_postwrite_field_without_reading_it) ... ok
+2026-10-05T09:57:45.1488398Z 
+2026-10-05T09:57:45.1488650Z ----------------------------------------------------------------------
+2026-10-05T09:57:45.1489801Z Ran 106 tests in 0.828s
+2026-10-05T09:57:45.1490054Z 
+2026-10-05T09:57:45.1490176Z OK
+2026-10-05T09:57:45.2584997Z {
+2026-10-05T09:57:45.2585811Z   "result": "PASS_SOURCE_L0",
+2026-10-05T09:57:45.2586235Z   "case_count": 62,
+2026-10-05T09:57:45.2586573Z   "mutation_count": 5,
+2026-10-05T09:57:45.2586914Z   "native": "NOT_RUN"
+2026-10-05T09:57:45.2587228Z }
+2026-10-05T09:57:45.4585530Z test_c3_trigger_bindings_preserve_player_gate_and_follower_identity (__main__.ContentLeadershipIntegrationTests.test_c3_trigger_bindings_preserve_player_gate_and_follower_identity) ... ok
+2026-10-05T09:57:45.4653374Z test_catalogue_is_reachable_through_state_free_chooser_pages (__main__.ContentLeadershipIntegrationTests.test_catalogue_is_reachable_through_state_free_chooser_pages) ... ok
+2026-10-05T09:57:45.4655905Z test_council_callback_revalidates_serial_and_all_affected_players (__main__.ContentLeadershipIntegrationTests.test_council_callback_revalidates_serial_and_all_affected_players) ... ok
+2026-10-05T09:57:45.4688455Z test_every_selected_rite_dispatches_to_its_own_affordable_guarded_practice (__main__.ContentLeadershipIntegrationTests.test_every_selected_rite_dispatches_to_its_own_affordable_guarded_practice) ... ok
+2026-10-05T09:57:45.4694612Z test_legacy_event_ids_and_base_practice_rewards_are_preserved (__main__.ContentLeadershipIntegrationTests.test_legacy_event_ids_and_base_practice_rewards_are_preserved) ... ok
+2026-10-05T09:57:45.4697416Z test_migration_cleanup_runs_before_the_native_setter (__main__.ContentLeadershipIntegrationTests.test_migration_cleanup_runs_before_the_native_setter) ... ok
+2026-10-05T09:57:45.4731990Z test_native_challenger_requires_native_office_and_personal_teaching_does_not_fake_hor (__main__.ContentLeadershipIntegrationTests.test_native_challenger_requires_native_office_and_personal_teaching_does_not_fake_hor) ... ok
+2026-10-05T09:57:45.4735649Z test_owned_title_retirement_never_selects_other_held_titles (__main__.ContentLeadershipIntegrationTests.test_owned_title_retirement_never_selects_other_held_titles) ... ok
+2026-10-05T09:57:45.4750760Z test_personal_adoption_never_migrates_a_shared_rite_or_faith (__main__.ContentLeadershipIntegrationTests.test_personal_adoption_never_migrates_a_shared_rite_or_faith) ... ok
+2026-10-05T09:57:45.4757813Z test_player_initiation_and_recipient_consent_are_separate (__main__.ContentLeadershipIntegrationTests.test_player_initiation_and_recipient_consent_are_separate) ... ok
+2026-10-05T09:57:45.4891393Z test_shared_factory_has_one_formal_generator_owner (__main__.ContentLeadershipIntegrationTests.test_shared_factory_has_one_formal_generator_owner) ... ok
+2026-10-05T09:57:45.4892646Z 
+2026-10-05T09:57:45.4892937Z ----------------------------------------------------------------------
+2026-10-05T09:57:45.4893559Z Ran 11 tests in 0.125s
+2026-10-05T09:57:45.4893773Z 
+2026-10-05T09:57:45.4893898Z OK
+2026-10-05T09:57:45.7207597Z test_additive_ast_localization_and_event_references_are_complete (__main__.ActualScriptTests.test_additive_ast_localization_and_event_references_are_complete) ... ok
+2026-10-05T09:57:45.7214426Z test_all_entry_mutations_are_hidden_and_visible_preview_is_read_only (__main__.ActualScriptTests.test_all_entry_mutations_are_hidden_and_visible_preview_is_read_only) ... ok
+2026-10-05T09:57:45.7216757Z test_cross_flow_locks_and_full_roster_changes_block_confirmation (__main__.ActualScriptTests.test_cross_flow_locks_and_full_roster_changes_block_confirmation) ... ok
+2026-10-05T09:57:45.7219217Z test_display_and_seal_execution_share_the_real_preconditions (__main__.ActualScriptTests.test_display_and_seal_execution_share_the_real_preconditions) ... ok
+2026-10-05T09:57:45.7221255Z test_expiry_cleanup_retains_ownership_and_fresh_round_resets_signature_delivery (__main__.ActualScriptTests.test_expiry_cleanup_retains_ownership_and_fresh_round_resets_signature_delivery) ... ok
+2026-10-05T09:57:45.7224317Z test_nomination_delivery_does_not_vote_sign_or_enact (__main__.ActualScriptTests.test_nomination_delivery_does_not_vote_sign_or_enact) ... ok
+2026-10-05T09:57:45.7226264Z test_npc_ballot_root_does_not_become_the_signature_owner (__main__.ActualScriptTests.test_npc_ballot_root_does_not_become_the_signature_owner) ... ok
+2026-10-05T09:57:45.7230932Z test_only_commit_can_change_doctrine_and_requires_all_guards_first (__main__.ActualScriptTests.test_only_commit_can_change_doctrine_and_requires_all_guards_first) ... ok
+2026-10-05T09:57:45.7236288Z test_partial_native_failure_preserves_typed_receipt_and_has_visible_result (__main__.ActualScriptTests.test_partial_native_failure_preserves_typed_receipt_and_has_visible_result) ... ok
+2026-10-05T09:57:45.7238902Z test_separate_school_quorum_and_all_players_are_executable_requirements (__main__.ActualScriptTests.test_separate_school_quorum_and_all_players_are_executable_requirements) ... ok
+2026-10-05T09:57:45.7240849Z test_stale_callbacks_cannot_rebind_identity_or_create_duplicate_yes (__main__.ActualScriptTests.test_stale_callbacks_cannot_rebind_identity_or_create_duplicate_yes) ... ok
+2026-10-05T09:57:45.7270514Z test_whole_decision_execution_hides_transitive_internal_conditions (__main__.ActualScriptTests.test_whole_decision_execution_hides_transitive_internal_conditions) ... ok
+2026-10-05T09:57:45.7272379Z test_withdrawal_is_minimal_and_cleanup_matches_exact_owner_and_serial (__main__.ActualScriptTests.test_withdrawal_is_minimal_and_cleanup_matches_exact_owner_and_serial) ... ok
+2026-10-05T09:57:45.7533286Z test_complete_runtime_composition_has_one_factory_owner_and_institution_extension (__main__.IntegrationOwnershipTests.test_complete_runtime_composition_has_one_factory_owner_and_institution_extension) ... ok
+2026-10-05T09:57:45.7578028Z test_l0_and_official_workflow_include_authorization_checks_and_state_closed_scope (__main__.IntegrationOwnershipTests.test_l0_and_official_workflow_include_authorization_checks_and_state_closed_scope) ... ok
+2026-10-05T09:57:45.7580511Z test_active_zero_elector_is_not_a_dormant_yes_vote (__main__.PolicyTests.test_active_zero_elector_is_not_a_dormant_yes_vote) ... ok
+2026-10-05T09:57:45.7586911Z test_cleanup_rejects_foreign_dead_ai_and_previous_round_tokens (__main__.PolicyTests.test_cleanup_rejects_foreign_dead_ai_and_previous_round_tokens) ... ok
+2026-10-05T09:57:45.7589351Z test_emperor_sponsor_cannot_replace_other_human_consent (__main__.PolicyTests.test_emperor_sponsor_cannot_replace_other_human_consent) ... ok
+2026-10-05T09:57:45.7591218Z test_expiry_cancel_and_seal_nonce_prevent_old_callbacks (__main__.PolicyTests.test_expiry_cancel_and_seal_nonce_prevent_old_callbacks) ... ok
+2026-10-05T09:57:45.7601576Z test_foreign_new_rite_new_human_and_nominee_drift_stop_enactment (__main__.PolicyTests.test_foreign_new_rite_new_human_and_nominee_drift_stop_enactment) ... ok
+2026-10-05T09:57:45.7603298Z test_global_majority_cannot_replace_each_schools_two_thirds (__main__.PolicyTests.test_global_majority_cannot_replace_each_schools_two_thirds) ... ok
+2026-10-05T09:57:45.7605244Z test_headless_scholarly_nominees_need_no_native_rite_head (__main__.PolicyTests.test_headless_scholarly_nominees_need_no_native_rite_head) ... ok
+2026-10-05T09:57:45.7607394Z test_identity_and_eligibility_drift_blocks_enactment_but_owner_can_withdraw (__main__.PolicyTests.test_identity_and_eligibility_drift_blocks_enactment_but_owner_can_withdraw) ... ok
+2026-10-05T09:57:45.7610824Z test_missing_representative_seal_is_state_free_and_nonce_advances_once (__main__.PolicyTests.test_missing_representative_seal_is_state_free_and_nonce_advances_once) ... ok
+2026-10-05T09:57:45.7613475Z test_refusal_and_duplicate_choices_never_create_a_plan (__main__.PolicyTests.test_refusal_and_duplicate_choices_never_create_a_plan) ... ok
+2026-10-05T09:57:45.7614247Z 
+2026-10-05T09:57:45.7614429Z ----------------------------------------------------------------------
+2026-10-05T09:57:45.7615043Z Ran 25 tests in 0.141s
+2026-10-05T09:57:45.7615211Z 
+2026-10-05T09:57:45.7615305Z OK
+2026-10-05T09:57:49.6641038Z {"status": "SOURCE_L0_PASS", "policy_cases": 118, "source_mutants_rejected": 20, "native": "NOT_RUN"}
+2026-10-05T09:57:49.7534762Z {
+2026-10-05T09:57:49.7535315Z   "result": "PASS_SOURCE_ONLY",
+2026-10-05T09:57:49.7535776Z   "cases": 50,
+2026-10-05T09:57:49.7536087Z   "mutants": 19,
+2026-10-05T09:57:49.7536632Z   "script_tree_preservation": "PASS_EXACT_AST_AFTER_STRIPPING_DECLARED_GUARDS",
+2026-10-05T09:57:49.7537278Z   "live": "NOT_RUN"
+2026-10-05T09:57:49.7537597Z }
+2026-10-05T09:57:49.9122141Z {
+2026-10-05T09:57:49.9122728Z   "result": "GREEN",
+2026-10-05T09:57:49.9123381Z   "layer": "L0-packaging",
+2026-10-05T09:57:49.9124029Z   "live": "NOT_RUN",
+2026-10-05T09:57:49.9124607Z   "file_count": 70,
+2026-10-05T09:57:49.9125650Z   "manifest_sha256": "8fff14a823c50d2461660676ec3238439027d1a46af5281e5db95af7c9bd945c",
+2026-10-05T09:57:49.9127303Z   "zip_sha256": "50a346a86172b7f4773da627b705b04478ce6554a116dda4226aa3c0f1d8a3eb"
+2026-10-05T09:57:49.9127956Z }
+2026-10-05T09:57:49.9434477Z ##[group]Run actions/upload-artifact@v4
+2026-10-05T09:57:49.9434795Z with:
+2026-10-05T09:57:49.9435012Z   name: li-yu-dao-static-report
+2026-10-05T09:57:49.9435486Z   path: /tmp/lyd-static.json
+/tmp/lyd-c2-preview-scope.json
+/tmp/lyd-c3-i3b-preview-scope.json
+
+2026-10-05T09:57:49.9435985Z   if-no-files-found: ignore
+2026-10-05T09:57:49.9436264Z   compression-level: 6
+2026-10-05T09:57:49.9436487Z   overwrite: false
+2026-10-05T09:57:49.9436710Z   include-hidden-files: false
+2026-10-05T09:57:49.9436951Z env:
+2026-10-05T09:57:49.9437216Z   pythonLocation: /opt/hostedtoolcache/Python/3.13.15/x64
+2026-10-05T09:57:49.9437664Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.13.15/x64/lib/pkgconfig
+2026-10-05T09:57:49.9438113Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.15/x64
+2026-10-05T09:57:49.9438495Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.15/x64
+2026-10-05T09:57:49.9439202Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.13.15/x64
+2026-10-05T09:57:49.9439756Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.13.15/x64/lib
+2026-10-05T09:57:49.9440086Z ##[endgroup]
+2026-10-05T09:57:50.1142480Z (node:2340) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-05T09:57:50.1143396Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-05T09:57:50.1230176Z Multiple search paths detected. Calculating the least common ancestor of all paths
+2026-10-05T09:57:50.1231481Z The least common ancestor is /tmp. This will be the root directory of the artifact
+2026-10-05T09:57:50.1232016Z With the provided path, there will be 3 files uploaded
+2026-10-05T09:57:50.1232547Z Artifact name is valid!
+2026-10-05T09:57:50.1232835Z Root directory input is valid!
+2026-10-05T09:57:50.5178668Z Beginning upload of artifact content to blob storage
+2026-10-05T09:57:50.5414975Z (node:2340) [DEP0169] DeprecationWarning: `url.parse()` behavior is not standardized and prone to errors that have security implications. Use the WHATWG URL API instead. CVEs are not issued for `url.parse()` vulnerabilities.
+2026-10-05T09:57:50.8179556Z Uploaded bytes 5929
+2026-10-05T09:57:50.9070105Z Finished uploading artifact content to blob storage!
+2026-10-05T09:57:50.9071606Z SHA256 digest of uploaded artifact zip is 4fe73247c803d38e1eefcd2cce388a919ac0baddcfa7eea0ae24e3997c8e727b
+2026-10-05T09:57:50.9072898Z Finalizing artifact upload
+2026-10-05T09:57:51.1577479Z Artifact li-yu-dao-static-report.zip successfully finalized. Artifact ID 11336618964
+2026-10-05T09:57:51.1580316Z Artifact li-yu-dao-static-report has been successfully uploaded! Final size is 5929 bytes. Artifact ID is 11336618964
+2026-10-05T09:57:51.1586525Z Artifact download URL: https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37293381416/artifacts/11336618964
+2026-10-05T09:57:51.1763954Z Post job cleanup.
+2026-10-05T09:57:51.2980208Z (node:2352) [DEP0040] DeprecationWarning: The `punycode` module is deprecated. Please use a userland alternative instead.
+2026-10-05T09:57:51.2981768Z (Use `node --trace-deprecation ...` to show where the warning was created)
+2026-10-05T09:57:51.3133092Z Post job cleanup.
+2026-10-05T09:57:51.3997629Z [command]/usr/bin/git version
+2026-10-05T09:57:51.4042045Z git version 2.55.0
+2026-10-05T09:57:51.4085437Z Temporarily overriding HOME='/home/runner/work/_temp/2c0c2ede-511e-448e-a2c6-0267659df083' before making global git config changes
+2026-10-05T09:57:51.4086997Z Adding repository directory to the temporary git global config as a safe directory
+2026-10-05T09:57:51.4093843Z [command]/usr/bin/git config --global --add safe.directory /home/runner/work/ck3_eternal_recurrence/ck3_eternal_recurrence
+2026-10-05T09:57:51.4137053Z [command]/usr/bin/git config --local --name-only --get-regexp core\.sshCommand
+2026-10-05T09:57:51.4186119Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'core\.sshCommand' && git config --local --unset-all 'core.sshCommand' || :"
+2026-10-05T09:57:51.4482992Z [command]/usr/bin/git config --local --name-only --get-regexp http\.https\:\/\/github\.com\/\.extraheader
+2026-10-05T09:57:51.4511386Z http.https://github.com/.extraheader
+2026-10-05T09:57:51.4526273Z [command]/usr/bin/git config --local --unset-all http.https://github.com/.extraheader
+2026-10-05T09:57:51.4567392Z [command]/usr/bin/git submodule foreach --recursive sh -c "git config --local --name-only --get-regexp 'http\.https\:\/\/github\.com\/\.extraheader' && git config --local --unset-all 'http.https://github.com/.extraheader' || :"
+2026-10-05T09:57:51.4862381Z [command]/usr/bin/git config --local --name-only --get-regexp ^includeIf\.gitdir:
+2026-10-05T09:57:51.4905781Z [command]/usr/bin/git submodule foreach --recursive git config --local --show-origin --name-only --get-regexp remote.origin.url
+2026-10-05T09:57:51.5324024Z Cleaning up orphan processes
+2026-10-05T09:57:51.5646496Z ##[warning]Node.js 20 is deprecated. The following actions target Node.js 20 but are being forced to run on Node.js 24: actions/checkout@v4, actions/setup-python@v5, actions/upload-artifact@v4. For more information see: https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/

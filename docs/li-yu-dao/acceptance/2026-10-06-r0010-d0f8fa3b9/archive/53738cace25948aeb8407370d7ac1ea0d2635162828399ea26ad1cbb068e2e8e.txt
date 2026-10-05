@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0069-third-open-save.request.json",
+  "request_id": "r10-0069-third-open-save",
+  "sha256": "bc4d91e22261430ac9df0b2d4edf6a2be395d62d44b2ca4d17a6807dbb41b82f",
+  "contacted_game": false
+}

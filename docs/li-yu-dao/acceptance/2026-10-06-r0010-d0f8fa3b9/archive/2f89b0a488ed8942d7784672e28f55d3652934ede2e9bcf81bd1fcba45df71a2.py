@@ -1,0 +1,9 @@
+import json
+from pathlib import Path
+HERE=Path(__file__).resolve().parent
+def read(p):return json.loads(Path(p).read_text(encoding='utf-8-sig'))
+def row(v):return None if v is None else {k:v.get(k) for k in ['present','tick','type','identity','number']}
+a=read(HERE/'actual-save-001/STATE.json');av=a['all_actor_LYD_variables'];req=read(HERE/'REQUEST.actual.json');sdk=read(req['supporting_evidence'][0]['path'])['structuredContent'];f=sdk['snapshot_after'];keys=['lyd_c2_callback_nonce','lyd_c2_serial','lyd_c2_active','lyd_c2_result','lyd_c2_source_signed','lyd_c2_target_requested','lyd_c2_target_signed','lyd_c2_source_total','lyd_c2_source_yes','lyd_c2_target_total','lyd_c2_target_yes','lyd_c2_player_total','lyd_c2_player_yes','lyd_c2_completed_joins','lyd_c2_completed_detaches','lyd_r4_reset_count']
+facts={'actor_C2':{k:row(av.get(k)) for k in keys},'tickets':{cid:{k:row(v['variables'].get(k)) for k in ['lyd_c2_vote_owner','lyd_c2_vote_serial','lyd_c2_vote_nonce','lyd_c2_vote_yes','lyd_c2_player_owner','lyd_c2_player_serial','lyd_c2_player_nonce']} for cid,v in a['character_roles'].items()},'Rites':{cid:{k:row(v['variables'].get(k)) for k in ['lyd_c2_proposal_owner','lyd_c2_lock_serial','lyd_c2_proposal_serial','lyd_c2_retry_cooldown','lyd_c2_transition_cooldown']} for cid,v in a['source_target_related_graphs']['rites'].items()},'summary':{k:v for k,v in a['summary'].items() if k in ['wallet','stress_saved','learning_XP_saved','current_actor_id','current_rite','current_faith','current_HoR','current_HoF']},'saveSDK_frame':{k:f.get(k) for k in ['revision','native_revision','date_raw','paused','active_event','pending_character_interaction']},'Rite169_entries_shape':a['source_target_related_graphs']['rites']['169']['entries'][:4]}
+with (HERE/'INSPECTION.json').open('x',encoding='utf-8',newline='\n') as out:json.dump(facts,out,ensure_ascii=False,indent=2);out.write('\n')
+print(json.dumps(facts,ensure_ascii=False,indent=2))

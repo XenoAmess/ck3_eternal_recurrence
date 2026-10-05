@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 195,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0196-cycle-fixture-reset-detail.request.json",
+  "request_sha256": "15ed6d3deb4be56ed9aab9cb50c44bb8956f6248e07dec053d9aa355bc226834",
+  "started_at_utc": "2026-10-05T17:23:17.256866+00:00",
+  "request_id": "r10-0196-cycle-fixture-reset-detail",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0195-r10-0196-cycle-fixture-reset-detail.sdk-result.json",
+  "sdk_result_sha256": "dd8c3b75bb47180dd1d6873b379d33544d5ccb5eb7704047fa77a035df11ed02",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0194-decision-select.json",
+      "copy": "0195-r10-0196-cycle-fixture-reset-detail.native-01.json",
+      "sha256": "4f78c83b75ce4e7ec1edca54459dace94c89c685621493cdc76f0dcf7e260fbf"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:23:22.156242+00:00"
+}

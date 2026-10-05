@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 187,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0188-eighth-precommit-save.request.json",
+  "request_sha256": "8ab612e8c3991fb14981e189e0af180b439cc65948a576cd02216b87ac12da8e",
+  "started_at_utc": "2026-10-05T17:02:22.831396+00:00",
+  "request_id": "r10-0188-eighth-precommit-save",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0187-r10-0188-eighth-precommit-save.sdk-result.json",
+  "sdk_result_sha256": "278e3ff2ab758a8b94dadf4a5b15a471fdf729845cfc4b774ff970479fe98e1c",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0186-checkpoint.json",
+      "copy": "0187-r10-0188-eighth-precommit-save.native-01.json",
+      "sha256": "18082bf9aab30fad5a7eae786b5545658cd74f005880ae4d36094938b20b148f"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T17:02:32.925699+00:00"
+}

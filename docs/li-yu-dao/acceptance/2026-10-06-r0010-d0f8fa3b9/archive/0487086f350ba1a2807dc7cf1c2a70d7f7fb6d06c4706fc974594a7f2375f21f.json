@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r10-0148-sixth-cancel-ack-query",
+  "operation": "call_tool",
+  "name": "ck3_query_profile_event_window_v1",
+  "arguments": {
+    "event_instance_id": 77,
+    "expected_revision": 68
+  }
+}

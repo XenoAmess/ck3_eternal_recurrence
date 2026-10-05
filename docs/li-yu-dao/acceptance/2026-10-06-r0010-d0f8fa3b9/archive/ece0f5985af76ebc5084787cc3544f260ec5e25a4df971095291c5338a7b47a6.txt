@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0160-seventh-player-options-scholar-chosen.request.json",
+  "request_id": "r10-0160-seventh-player-options-scholar-chosen",
+  "sha256": "019b86d756ab7b34b07978fd8155a1aa3ec7df4d942acbe70fe75520ca2a988c",
+  "contacted_game": false
+}

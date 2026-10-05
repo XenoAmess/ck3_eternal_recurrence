@@ -1,0 +1,99 @@
+{
+  "schema": "lyd.r10.eighth-open-independent-readback.v1",
+  "status": "ACTUAL_EIGHTH_PROPOSAL_OPENED_ROUND14_NPC_YES1_PROVEN_NOT_FINAL_JOIN",
+  "typed_facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\PROPOSAL-OPENED-FACTS.json",
+    "bytes": 329662,
+    "sha256": "727d68702938d7dbd2a8a8a81cc8da583e8cd2bae982ff2f26dd5d43368cc882"
+  },
+  "pair_diff_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\pair-diff-001\\REPORT.json",
+    "bytes": 31733,
+    "sha256": "477d157064dd1b7f5bf97984ecaaf36ea1b77faea40f4319ce9d40563cb86d07"
+  },
+  "control_lineage_evidence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\CONTROL-LINEAGE-EVIDENCE.json",
+    "bytes": 44931,
+    "sha256": "c2874a1609114e6d9fbf75177288247f85d8daad98d63e6b83cd01e7856c12f4"
+  },
+  "complete_Rite_Faith_AST_diff": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\COMPLETE-RITE-FAITH-AST-DIFF.json",
+    "bytes": 331397,
+    "sha256": "29814c7894304636d4224aa1690972dcd594ca05405c07fee316ebbeea06322c"
+  },
+  "qualified_complete_Rite_Faith_AST_diff": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\COMPLETE-RITE-FAITH-AST-DIFF.qualified-001.json",
+    "bytes": 332273,
+    "sha256": "9554ab81e068ff261f79b7b64f41c70b592ecbb0787580793de8e97edc42a382"
+  },
+  "target_Rite_ballot_qualification": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\TARGET-RITE-BALLOT-QUALIFICATION.json",
+    "bytes": 11846,
+    "sha256": "6bf77eda03d042720ff10e6b326ab34b1accb54a024e54e3930d0967c1c1f8f5"
+  },
+  "original_complete_AST_owner_only_check_preserved_false": true,
+  "human_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\REPORT-zh.md",
+    "bytes": 1424,
+    "sha256": "c90e75e8f54db4b3942db9190a9754c1764335a755c589792f3f90f62cfb5ef1"
+  },
+  "before_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0167-seventh-post-cancel-save\\checkpoint.ck3",
+    "bytes": 91538159,
+    "sha256": "4aa783a16d446f8d9a7e1e1e622eaf77e39400ebe814ae40f4841fa5e2a7b3e9"
+  },
+  "after_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0171-eighth-open-save\\checkpoint.ck3",
+    "bytes": 91542565,
+    "sha256": "04b22b41900f89b73f75d1295b12d4acd8021dd7081eab0bfdae9f813062c487"
+  },
+  "all_binding_and_protection_checks": {
+    "saveSDK_success": true,
+    "saveSDK_exact_SHA_bytes": true,
+    "saveSDK_public81_native80": true,
+    "saveSDK_actor31254_date_paused_PID": true,
+    "saveSDK_event85": true,
+    "saveSDK_profile_session": true,
+    "actual_nonce13_to14": true,
+    "actual_serial13_to14": true,
+    "actual_active_absent_to1": true,
+    "actual_no_signatures_target_request": true,
+    "actual_no_new_reset_count5": true,
+    "actual_NPC_current_round14_tickets": true,
+    "actual_old_player_round13_excluded": true,
+    "actual_Rite159169_owner31254_serial10": true,
+    "actual_related_retry_transition_absent": true,
+    "actual_wallet_history_unchanged": true,
+    "actual_XP_unchanged": true,
+    "all_Faithmain_Riteparent_links_unchanged": true,
+    "selected_graph_heads_unchanged": true,
+    "selected_full_tenet_doctrine_rows_unchanged": true,
+    "political7_full_AST_unchanged": true,
+    "actor_landed_full_AST_unchanged": true,
+    "selected_person_full_protection_unchanged": true,
+    "fresh169_exact_SHA_bytes": true,
+    "fresh169_before167_samepub79_native78": true,
+    "fresh169_actor_target_JOIN_ready": true,
+    "send170_pending_businessfalse_after79native78": true,
+    "send170_wrapper_snapshot80native79_event85": true,
+    "typed172_same_save171_pub81native80": true,
+    "typed172_event85_lyd200_root31254": true,
+    "controls_same_profile_session_success": true,
+    "ordinal7_parent6_same6_UUID_permit_exact": true,
+    "actual_NPC_current14_YES1_both": true,
+    "actual_open_quorum_source1of2_target1of1_player_yes_omitted": true,
+    "complete_before167_full_faith_AST_unchanged": true,
+    "complete_before167_Rite159_C2_rows_removal_exact_coverage": true,
+    "complete_before167_Rite159_full_AST_except_exact_observed_C2_variable_rows_unchanged": true,
+    "complete_before167_Rite159_all_parsed_lists_unchanged": true,
+    "complete_before167_Rite169_C2_rows_removal_exact_coverage": true,
+    "complete_before167_Rite169_full_AST_except_exact_observed_C2_variable_rows_unchanged": true,
+    "complete_before167_Rite169_changed_variables_only_expected_C2_owner_lock_serial": true,
+    "complete_before167_Rite169_all_parsed_lists_unchanged": true,
+    "complete_before167_Rite159_changed_variables_only_C2_owner_lock_and_qualified_target_ballot": true,
+    "complete_before167_Rite159_target_ballot_current14YES1_bound_to_formal_source": true,
+    "complete_before167_omitted_prior_target_ballot_not_converted_to_zero": true
+  },
+  "actual_AST_parse_count": 1,
+  "final_JOIN_credit": false
+}

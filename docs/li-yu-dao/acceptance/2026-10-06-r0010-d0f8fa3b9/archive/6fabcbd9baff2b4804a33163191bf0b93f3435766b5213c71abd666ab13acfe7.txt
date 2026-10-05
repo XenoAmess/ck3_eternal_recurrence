@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0215-detach-first-withdraw.request.json",
+  "request_id": "r10-0215-detach-first-withdraw",
+  "sha256": "71e7767ad2fd5f6a7dad33d95accde0019cd298234a89e2face551c7035d992b",
+  "contacted_game": false
+}

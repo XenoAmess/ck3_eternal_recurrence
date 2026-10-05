@@ -1,0 +1,484 @@
+{
+  "schema": "lyd.r10.eighth-current-target-ballot-counter-qualification.v1",
+  "original_failed_complete_AST_diff": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-open-join-readback-20261006-001\\COMPLETE-RITE-FAITH-AST-DIFF.json",
+    "bytes": 331397,
+    "sha256": "29814c7894304636d4224aa1690972dcd594ca05405c07fee316ebbeea06322c"
+  },
+  "original_check_preserved_false": "before167_Rite159_changed_variables_only_expected_C2_owner_lock_serial",
+  "exact_actual_Rite159_target_yes_row_diff": {
+    "before": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": null,
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_target_yes"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            }
+          ]
+        }
+      ]
+    },
+    "after": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "100000"
+        }
+      ],
+      "number": "1",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_target_yes"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "source_refs": {
+    "original": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c2_vote_effects.txt",
+      "bytes": 5368,
+      "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+    },
+    "preserved": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-post-source-sign-readback-20261005-001\\frozen-source\\common\\scripted_effects\\lyd_c2_vote_effects.txt",
+      "bytes": 5368,
+      "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+    },
+    "cold_inventory_exact_match": true
+  },
+  "exact_target_vote_source_block": "lyd_c2_target_vote_effect = {\n    if = {\n        limit = { lyd_c2_target_ballot_trigger = yes }\n        set_variable = { name = lyd_c2_vote_owner value = scope:lyd_c2_actor }\n        set_variable = { name = lyd_c2_vote_serial value = scope:lyd_c2_event_serial }\n        set_variable = { name = lyd_c2_vote_nonce value = scope:lyd_c2_event_nonce }\n        set_variable = { name = lyd_c2_vote_yes value = $YES$ }\n        # Same post-write presence gate for receiving-school ballots.\n        if = { limit = { has_variable = lyd_c2_vote_yes }\n            if = {\n                limit = { var:lyd_c2_vote_yes = 1 }\n                rite = { change_variable = { name = lyd_c2_target_yes add = 1 } }\n                scope:lyd_c2_actor = {\n                    change_variable = { name = lyd_c2_target_yes add = 1 }\n                    lyd_c2_request_target_consent_effect = yes\n                }\n            }\n        }\n    }\n}\n",
+  "actual_current_target_NPC_ticket": {
+    "lyd_c2_vote_yes": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "100000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "100000"
+        }
+      ],
+      "number": "1",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_vote_yes"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_c2_vote_nonce": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1400000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "1400000"
+        }
+      ],
+      "number": "14",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_vote_nonce"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "1400000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_c2_vote_serial": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1400000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "1400000"
+        }
+      ],
+      "number": "14",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_vote_serial"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "1400000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_c2_vote_owner": {
+      "present": true,
+      "tick": null,
+      "type": "char",
+      "identity": "31254",
+      "entries": [
+        {
+          "key": "type",
+          "value": "char"
+        },
+        {
+          "key": "identity",
+          "value": "31254"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_vote_owner"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "char"
+            },
+            {
+              "key": "identity",
+              "value": "31254"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_c2_elector_rite": {
+      "present": true,
+      "tick": null,
+      "type": "rite",
+      "identity": "159",
+      "entries": [
+        {
+          "key": "type",
+          "value": "rite"
+        },
+        {
+          "key": "identity",
+          "value": "159"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_elector_rite"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "rite"
+            },
+            {
+              "key": "identity",
+              "value": "159"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_c2_elector_serial": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1400000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "1400000"
+        }
+      ],
+      "number": "14",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_elector_serial"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "1400000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_c2_elector_owner": {
+      "present": true,
+      "tick": null,
+      "type": "char",
+      "identity": "31254",
+      "entries": [
+        {
+          "key": "type",
+          "value": "char"
+        },
+        {
+          "key": "identity",
+          "value": "31254"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_elector_owner"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "char"
+            },
+            {
+              "key": "identity",
+              "value": "31254"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_c2_follower_rite": {
+      "present": true,
+      "tick": null,
+      "type": "rite",
+      "identity": "159",
+      "entries": [
+        {
+          "key": "type",
+          "value": "rite"
+        },
+        {
+          "key": "identity",
+          "value": "159"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_follower_rite"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "rite"
+            },
+            {
+              "key": "identity",
+              "value": "159"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_c2_follower_serial": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "1400000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "1400000"
+        }
+      ],
+      "number": "14",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_follower_serial"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "1400000"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_c2_follower_owner": {
+      "present": true,
+      "tick": null,
+      "type": "char",
+      "identity": "31254",
+      "entries": [
+        {
+          "key": "type",
+          "value": "char"
+        },
+        {
+          "key": "identity",
+          "value": "31254"
+        }
+      ],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_c2_follower_owner"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "char"
+            },
+            {
+              "key": "identity",
+              "value": "31254"
+            }
+          ]
+        }
+      ]
+    },
+    "lyd_r4_created_jingshu_rep": {
+      "present": true,
+      "tick": null,
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_created_jingshu_rep"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    }
+  },
+  "checks": {
+    "frozen_original_and_preserved_bytes_SHA_exact": true,
+    "frozen_source_cold_inventory_match": true,
+    "exact_target_vote_handler_writes_Rite_target_yes": true,
+    "actual_before_Rite159_value_identity_omitted_not_zero": true,
+    "actual_after_Rite159_target_yes1_Q100000": true,
+    "actual_current_Rite159_NPC65866_ticket14_yes1": true,
+    "actual_actor_target_yes1_currentnonce14": true,
+    "actual_changed_Rite159_variables_exact_C2_owner_serial_target_ballot": true,
+    "complete_Rite159_nonC2_AST_unchanged": true
+  },
+  "before_omitted_not_calibrated_to_zero": true,
+  "delta_from_before_omitted_not_claimed": null,
+  "actual_AI_random_draw_or_option": null,
+  "receiving_signature_or_final_JOIN_credit": false,
+  "interpretation": "The extra changed field is the receiving Rite ballot counter covered by the frozen formal target-vote handler and actual current14 YES1 ticket; all non-C2 AST remains equal. This establishes compatibility with the formal ballot effect, without inventing an AI choice trace."
+}

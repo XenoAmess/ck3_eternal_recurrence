@@ -1,0 +1,25 @@
+{
+  "schema": "lyd.claim-verifier007.final-qualified-delivery-index.v1",
+  "files": [
+    {
+      "path": "REPORT.json",
+      "bytes": 11117,
+      "sha256": "f377576015ea4c9165fc751fd3d0b4a230acbfad2bcfd06ddcd9433656442166"
+    },
+    {
+      "path": "ROOT-OPERATIONS.md",
+      "bytes": 989,
+      "sha256": "c6c063bc6e017ce069dded9775deb3474546e27d4d16208ab90a9c6b99a4260a"
+    },
+    {
+      "path": "SOURCE_READY.actual.refs.json",
+      "bytes": 465,
+      "sha256": "fd01eb8dadd7e9ba2c806d1f31f3d43b4e17010c090f005f518e48a586931231"
+    },
+    {
+      "path": "verify_source007_delivery.py",
+      "bytes": 16365,
+      "sha256": "4abf02ed98fa4b68481200d7c3f14402f51d2d261e17ea2ce7a9084df2220307"
+    }
+  ]
+}

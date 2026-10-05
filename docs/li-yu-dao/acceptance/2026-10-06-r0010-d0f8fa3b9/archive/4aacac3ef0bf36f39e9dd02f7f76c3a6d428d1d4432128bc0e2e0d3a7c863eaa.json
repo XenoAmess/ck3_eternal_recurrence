@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 196,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0197-cycle-fixture-reset-confirm.request.json",
+  "request_sha256": "84071380eeb96d3815924c03a1d420d6d1a66c0a749d40c73847b256aed5db69",
+  "started_at_utc": "2026-10-05T17:23:23.459331+00:00"
+}

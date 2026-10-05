@@ -1,0 +1,77 @@
+{
+  "status": "EXTERNAL_PARAMETERIZED_REQUEST_ASSEMBLER_FOCUSED_PASS",
+  "scope": "ACTUAL_PRESERVED_INPUT_BYTES_AND_FILE_ASSEMBLY_ONLY",
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "source_ready": {
+    "author_index": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/INDEX.json",
+      "sha256": "76e84c70beccf22bda5ab202bb6de571f47f210645fe015b9f8f7628354e1ee2"
+    },
+    "provider": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/unbound-bundle-011/verifier.py",
+      "sha256": "32ecbedf8cdf3dfaf6995e3f83a9ff29a676c4b802f1fa2705028f71b57b7a61"
+    },
+    "binder": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/bind_verifier.py",
+      "sha256": "5c70a67c98624c24fb770b1dcc81e8187ed3f21734e6e33db2d5f88573081817"
+    },
+    "emitter": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/emit_first_join_evidence.py",
+      "sha256": "dbd43c930650f7c17defbcc7a5341d5f7ecb3c58b6696d367ef5f4cc1a90f0f0"
+    },
+    "source_record": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-source007-qualified-inputs-20261005-001\\ROOT-SOURCE-PIN-RECORD.actual.json",
+      "bytes": 3229,
+      "sha256": "8784d98ecba357db56811fb2d3c850bc505aae81b076d0cf598cccf0294a770b"
+    },
+    "source_readback": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/SOURCE-READBACK.json",
+      "sha256": "7a1f4c11dff70f6e16631fb810d6a8569dd7da7121fd78dc9ed511ae5190b125"
+    }
+  },
+  "same_six_identity_derived_from_actual_claim": true,
+  "caller_identity_or_revision_not_accepted": true,
+  "actual_first_query_bound_per_claim": true,
+  "future_templates_null": true,
+  "source_record_literal_preserved": true,
+  "reference_keysets": {
+    "plain": [
+      "path",
+      "sha256"
+    ],
+    "saved": [
+      "path",
+      "sha256",
+      "bytes"
+    ]
+  },
+  "focused_checks": 15,
+  "negative_controls": 10,
+  "provider_binder_emitter_release_calls": 0,
+  "MCP_game_calls": 0,
+  "actual_consumption_or_JOIN_credit": false,
+  "prior_failure_preserved": true,
+  "source_before_delta": {
+    "scope": "READONLY_SNAPSHOT_ACTOR_FIELD_ACTUAL_PLAYED_CHARACTER",
+    "prior_attempt": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-001",
+    "original_failure": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-001\\FOCUSED-RESULT.json",
+    "targets": [
+      {
+        "path": "assemble_proposal_inputs.py",
+        "before_bytes": 21745,
+        "before_sha256": "67c89bd6bd9abe53d39d33e4796283a9fe55d514424b19d40b308d51427412bb",
+        "after_bytes": 21869,
+        "after_sha256": "30437a1dd88a86d99a685323c4b1a635d08b697394ebb895291e8643dff76b55"
+      },
+      {
+        "path": "test_actual_replay.py",
+        "before_bytes": 5150,
+        "before_sha256": "daede125516687e4dbdcb839f45f7b642c73ccfbfca07651ccbb6891010ac801",
+        "after_bytes": 5150,
+        "after_sha256": "daede125516687e4dbdcb839f45f7b642c73ccfbfca07651ccbb6891010ac801"
+      }
+    ],
+    "runtime_calls": 0
+  },
+  "assembler_sha256": "30437a1dd88a86d99a685323c4b1a635d08b697394ebb895291e8643dff76b55"
+}

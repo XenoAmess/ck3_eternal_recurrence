@@ -1,0 +1,7 @@
+# R10历史归档存储追加更正
+
+ROOT必要Python-only门禁实际exec27418返回exit1，共8条，来源仅为本次新归档中历史原件的禁用shell引用；不计游戏业务RED。原门禁失败及原导入INDEX／ORIGIN／EVIDENCE完整字节永久保留，不修改原文、不放松validator。
+
+本候选只将指定8份plain archive改为无损gzip；原bytes／SHA与gzip还原bytes／SHA逐件精确相等。ROOT执行器在确认当前原件与三索引SHA匹配后，把原main plain copies移到新外置receipt，保留canonical原source；gzip永留main，对应storedmode／bytes／SHA映射与INDEX更新。其余原SDK／保存／AST不重扫。
+
+原导入INDEX完整SHA：a503e02e1895bdfb9c43af34423b4ecff4b55b2c02c6a55629f022edd699ff62。三个原索引另有storage-history/original-import-* gzip原字节历史链与外置原件。实际应用只由ARCHIVE-STORAGE-APPLIED.json及外置ROOT receipt证明；此说明本身不伪造已执行或后续门禁PASS。R10业务与NOT_GREEN边界不变。

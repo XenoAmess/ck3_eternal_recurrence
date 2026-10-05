@@ -1,0 +1,3295 @@
+{
+  "schema": "lyd.r10.actual-progress-report-draft.v1",
+  "status": "IN_PROGRESS_NOT_GREEN_SECOND_PROPOSAL_OPENED_SIGNATURE_ACK_FINAL_SAVE_PENDING",
+  "revision": 4,
+  "utc": "2026-10-05T13:06:17.087353+00:00",
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "live_run": "live-attempt-010",
+  "pid": 13436,
+  "process_create_time": 1791196395.7422996,
+  "hwnd": 16385582,
+  "game_version": "1.20.0.3",
+  "build_id": "25652598",
+  "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "launch_utc": "2026-10-05T10:33:14.721856+00:00",
+  "source_clean_materialization_observed": true,
+  "source_freeze_current_status": "ROOT_DECLARED_ACTIVE_FIXED_D0F8_POLICY",
+  "source_freeze_release": null,
+  "profile_original_field_count": 9,
+  "normal_exit_inventory_in_original_profile": false,
+  "native_profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+  "guard_profile_sha256": "f87f22269f1924aa9e032c8cfe24e35d16bb5567ade0a1c1b0629fc81ab7d961",
+  "profile_freezer_exit_code": 0,
+  "dll": {
+    "path": "C:\\lydr10-release-20261005-001\\xar_ck3_bridge.dll",
+    "sha256": "dc4e4d12a4078e8b3fe38b855071e158675300167341694205ee9db875d54792"
+  },
+  "injector": {
+    "path": "C:\\lydr10-release-20261005-001\\xar_ck3_bridge_injector.exe",
+    "sha256": "4c4b302ede99ae7e9c0e8b259ae902406a720e4525cd96e7e351eb27abc0dd2d"
+  },
+  "input_save": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/userdir/save games/lyd_r10_resume_0058.ck3",
+    "bytes": 91530739,
+    "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539",
+    "source_before": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/checkpoints/0058-post-detach-save/checkpoint.ck3",
+      "bytes": 91530739,
+      "mtime_ns": 1791183170247908300
+    },
+    "source_after": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/checkpoints/0058-post-detach-save/checkpoint.ck3",
+      "bytes": 91530739,
+      "mtime_ns": 1791183170247908300
+    },
+    "copied_source_sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539"
+  },
+  "input_save_is_R10_business_readback": false,
+  "matrix": [
+    {
+      "area": "preflight",
+      "status": "ACTUAL_FRESH_OFFLINE_REVIEW_AND_CHECK_ONLY_PASS_WITH_OLD_REFUSALS_RETAINED",
+      "business_status": "NOT_RUN"
+    },
+    {
+      "area": "source",
+      "status": "ACTUAL_CLEAN_D0F8_EXPORT_70_PRODUCTION_SOURCE_REVIEW_PASS",
+      "business_status": "NOT_RUN"
+    },
+    {
+      "area": "build",
+      "status": "COMPILATION_PASS_OUTER_BUILD_RED_DEFENDER_ADD_FAILED",
+      "business_status": "NOT_RUN"
+    },
+    {
+      "area": "livebaseline",
+      "status": "ACTUAL_SDK_CONNECTED_ATTACHED_BEFORE13_AND_OPEN16_INDEPENDENT_READBACK",
+      "actual_checkpoint": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0013-before-join-save\\checkpoint.ck3",
+        "bytes": 91529730,
+        "sha256": "750e3b7eaa0dbf2d385f647f421b6282cb4bfac5aedf3b8728ddc0652314a498"
+      },
+      "actual_sdk_result": {
+        "path": "live-attempt-010/mcp-client-evidence-002/0013-r10-0013-before-save.sdk-result.json",
+        "bytes": 790941,
+        "sha256": "234792190b191c15723c8b635dbaaf2c85e7e9490a1bd99d28915a396b524626",
+        "stat_unchanged_during_read": true
+      },
+      "independent_business_readback": "PROPOSAL_OPENED_PAIR13_TO16",
+      "actual_post_source_sign_checkpoint": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0031-post-source-sign-save\\checkpoint.ck3",
+        "bytes": 91532053,
+        "sha256": "885393b25bca235361e0d2a242bb2791eaa5d578ef03ed9c849c0849370fc4d4"
+      },
+      "new_before39_checkpoint": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0039-before-new-intent-save\\checkpoint.ck3",
+        "bytes": 91531932,
+        "sha256": "0aac6341204b39048646c81eff068d3d7a9a6cb849388871910673ef15d1bdaa"
+      },
+      "second_open43_checkpoint": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0043-new-proposal-open-save\\checkpoint.ck3",
+        "bytes": 91536022,
+        "sha256": "bfa49f033f3296b4561be7ca78e3c3b9bc3186741044d87af07e50b9cf1d3391"
+      }
+    },
+    {
+      "area": "formalrepeat",
+      "status": "SECOND_PROPOSAL_OPENED_ROUND8_YES_AND_SIGNATURE_ACK55_FINAL_SAVE_PENDING",
+      "JOIN1": {
+        "proposal_opened": true,
+        "source_signature_operation_recorded": true,
+        "final_result": "SIGNATURE_REJECTED_RESULT2",
+        "final_credit": false
+      },
+      "DETACH": null,
+      "JOIN2": null,
+      "claim_consumption_credit": false,
+      "release_permit_credit": false,
+      "fullcycle_credit": false,
+      "second_proposal": {
+        "proposal_opened": true,
+        "independent_saved43_checks": 37,
+        "player_YES_callback_recorded": true,
+        "source_ballot_YES_callback_recorded": true,
+        "source_signature_callback_recorded": true,
+        "last_typed_event": "lyd.228",
+        "final_saved_result": null,
+        "final_credit": false
+      }
+    },
+    {
+      "area": "I3b",
+      "status": "NOT_RUN",
+      "formal_common32_result": null,
+      "formal_detached_result": null,
+      "actual_HoR_postcondition": null,
+      "created_head_title": null
+    },
+    {
+      "area": "C3",
+      "status": "NOT_RUN",
+      "actual_challenger_collection": null,
+      "withdraw_reregister": null,
+      "two_challenger_isolation": null,
+      "death_followership": null
+    },
+    {
+      "area": "practice",
+      "status": "NOT_RUN",
+      "actual_XP_delta": null,
+      "actual_stress_delta": null,
+      "natural_cooldown_credit": false
+    },
+    {
+      "area": "I4",
+      "status": "STATIC_FIXTURE_READY_NATIVE_NOT_RUN",
+      "actual_engine_cases": 0
+    },
+    {
+      "area": "reload",
+      "status": "ACTUAL_LOADED_INPUT_AND_POST_FIXTURE_BEFORE13_GRAPH_READBACK_BUSINESS_RELOAD_NOT_RUN",
+      "actual_loaded_graph": "BEFORE13_SAVE_AND_MATCHED_SDK; explicit reset fixture occurred before13",
+      "postbusiness_cold_reload": null,
+      "new_actual_readbacks": [
+        "EXPLICIT_RESET_BEFORE39",
+        "SECOND_PROPOSAL_OPEN43"
+      ]
+    },
+    {
+      "area": "normalexit",
+      "status": "NOT_RUN",
+      "request_receipt": null,
+      "original_handle_exit": null,
+      "client_close": null,
+      "keeper_stop_final": null,
+      "lease_release": null,
+      "source_freeze_release": null,
+      "lifecycle_closed": false,
+      "profile_exit_inventory_prepared": true,
+      "FILETIME_read_only_handle_closed": true,
+      "FILETIME_is_original_retained_exit_handle": false
+    }
+  ],
+  "compilation_pass": true,
+  "outer_build_exit_code": 1,
+  "defender_error_stage": "Add-invocation",
+  "defender_calls": 1,
+  "defender_effectiveness_verified": false,
+  "ci_d0f8": {
+    "lyd": "SUCCESS_159_TESTS_STATIC70_REPRO",
+    "general": "FAILURE_TWO_DOCS_REFERENCES",
+    "overall": "NOT_GREEN"
+  },
+  "partial_logs": {
+    "scope": "CAPTURED_PREFIX_ONLY",
+    "error_events": 578,
+    "exact_signature_count": 289,
+    "family": "I4_FIXTURE_UNUSED_VARIABLE",
+    "whole_final_credit": false,
+    "business_credit": false
+  },
+  "draft_author_operations": {
+    "main_write": 0,
+    "git_calls": 0,
+    "game_calls": 0,
+    "pipe_calls": 0,
+    "bus_mutations": 0,
+    "tests_or_ci_rerun": 0
+  },
+  "append_policy": "Every future ROOT actual native/checkpoint/closure fact requires a new report revision; this revision stays immutable",
+  "evidence_cutoff": "ROOT-authorized actual SDK sequences1-through55; only39-through55 newly read; last actual request r10-0056",
+  "previous_report_index_sha256": "5a0db09b24347fbadc82e64f27218715653a80c518d5f3e5abbd850692183493",
+  "active_derived_profile_field_count": 10,
+  "normal_exit_inventory_in_active_derived_profile": true,
+  "normal_exit_source_inventory_sha256": "18ae748deeb90f6f5900ee16e8402dcdd1a5a0f732d57bade0ea7da670ed6f19",
+  "client_pid": 19428,
+  "client_epoch": "r10-d0f8fa3-20261005-002",
+  "client_session_id": "e722295ffba04b9f9f3559db2488bdf0",
+  "native_session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+  "SDK_count_through_cutoff": 55,
+  "SDK_result_recorded_count": 55,
+  "sdk_total_raw_bytes": 37677758,
+  "actual_before_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0013-before-join-save\\checkpoint.ck3",
+    "bytes": 91529730,
+    "sha256": "750e3b7eaa0dbf2d385f647f421b6282cb4bfac5aedf3b8728ddc0652314a498"
+  },
+  "actual_open_proposal_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0016-open-join-proposal-save\\checkpoint.ck3",
+    "bytes": 91534935,
+    "sha256": "ab69bd9da64d01d3d323c3adc43f0c75bbf2e49abf00f77132215b7307d59603"
+  },
+  "actual_proposal_opened_report": {
+    "path": "r10-actual-open-join-readback-20261005-001/REPORT.json",
+    "bytes": 2752,
+    "sha256": "f7c9c66d44caf7f761db827933b212b7c54b781451555a7ad412be318c8ffb0c",
+    "stat_unchanged_during_read": true
+  },
+  "proposal_nonce_serial_before": 6,
+  "proposal_nonce_serial_after": 7,
+  "proposal_opened_business_credit": true,
+  "business_final_JOIN_credit": false,
+  "event_selection_facts": [
+    {
+      "sequence": 20,
+      "status": "native_gameplay_postcondition_verified",
+      "event_selection": {
+        "status": "event_instance_advanced",
+        "postcondition_verified": true,
+        "old_event_instance_id": 45,
+        "new_event_instance_id": 44,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "starting_revision": 9,
+        "ending_revision": 10
+      }
+    },
+    {
+      "sequence": 22,
+      "status": "native_gameplay_postcondition_verified",
+      "event_selection": {
+        "status": "event_instance_advanced",
+        "postcondition_verified": true,
+        "old_event_instance_id": 44,
+        "new_event_instance_id": null,
+        "selected_option_number": 1,
+        "selected_native_option_index": 0,
+        "starting_revision": 10,
+        "ending_revision": 11
+      }
+    }
+  ],
+  "review_opened": {
+    "event_instance_id": 47,
+    "event_definition_key": "lyd.220",
+    "public_revision": 12,
+    "native_revision": 11,
+    "native_handled": true,
+    "native_ack_postcondition_verified": false,
+    "final_saved_JOIN_result": null
+  },
+  "sdk_new26_through38_raw_bytes": 9598029,
+  "process_creation_FILETIME": {
+    "schema": "lyd.r10.actual-process-creation-filetime.v1",
+    "recorded_at_utc": "2026-10-05T11:51:35.474927+00:00",
+    "status": "ACTUAL_GET_PROCESS_TIMES_READ",
+    "pid": 13436,
+    "process_create_time": 1791196395.7422996,
+    "creation_filetime_100ns": 134356699957422997,
+    "access": 4096,
+    "handle_closed": true,
+    "source": {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_process_observer_v1.py",
+      "sha256": "ed6e041ed0555807cd7956cb73c0d978a5b39945a9b69beb6a9724796bd8dd70"
+    },
+    "actual_apis": [
+      "OpenProcess",
+      "GetProcessId",
+      "GetProcessTimes",
+      "CloseHandle"
+    ],
+    "uses_gameplay_api": false,
+    "uses_ocr": false,
+    "uses_desktop_input": false,
+    "normal_exit_original_handle_retained": false
+  },
+  "process_FILETIME_receipt": {
+    "path": "live-attempt-010/root-process-filetime-001/PROCESS-IDENTITY.actual.json",
+    "bytes": 790,
+    "sha256": "d0f9120cec25365426bb20074f27780d857837af5c8dff982c8b469e9d31347e",
+    "stat_unchanged_during_read": true
+  },
+  "normal_exit_retained_handle_credit_from_FILETIME": false,
+  "actual_post_source_sign_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0031-post-source-sign-save\\checkpoint.ck3",
+    "bytes": 91532053,
+    "sha256": "885393b25bca235361e0d2a242bb2791eaa5d578ef03ed9c849c0849370fc4d4"
+  },
+  "source_signature_rejection_report": {
+    "path": "r10-actual-post-source-sign-readback-20261005-001/REPORT.json",
+    "bytes": 3091,
+    "sha256": "d6639a0ba10bc7608328340b7153e653bf519687521b5db872178e3e0f10c4c1",
+    "stat_unchanged_during_read": true
+  },
+  "negative_saved_facts": {
+    "result": 2,
+    "source_signed": 1,
+    "target_requested": 1,
+    "target_signed": null,
+    "target_signed_presence": "ABSENT",
+    "source_total": 2,
+    "source_yes": 2,
+    "target_total": 1,
+    "target_yes": 1,
+    "player_total": 1,
+    "player_yes": 1,
+    "actor_vote_and_player_nonce": 7,
+    "active_presence": "ABSENT",
+    "Rite169_retry_cooldown": {
+      "value": 1,
+      "tick": 365
+    },
+    "historical_lock_serial7_retained": true,
+    "Rite169_owner_lock_released": true,
+    "Rite159_owner_lock_released": true,
+    "Faith_Rite_affiliations_changed": false,
+    "wallet_changed": false,
+    "stage": "SIGNATURE_ACCEPTANCE_REJECTION",
+    "route_proof": "FROZEN_SOURCE_PLUS_SAVE_INFERENCE",
+    "target_ballot_rejection_claim": false,
+    "AI_option_execution_trace": null,
+    "specific_random_branch": null
+  },
+  "first_JOIN_terminal_business_outcome": "REJECTED_AT_SIGNATURE_STAGE_SAVED_RESULT2",
+  "later_fresh_query38": {
+    "request_id": "r10-0039-current-ready-query",
+    "sequence": 38,
+    "public_revision": 17,
+    "native_revision": 16,
+    "date_raw": 53144712,
+    "shown": true,
+    "can_send": true,
+    "ready_to_initiate": true,
+    "active_event_present": false,
+    "incoming_interaction_present": false,
+    "new_proposal_initiated_credit": false,
+    "host_consumption_or_release_credit": false
+  },
+  "prequeue_bad_request": {
+    "request_id": "r10-0030-review-again-query",
+    "wrong_tool": "ck3_query_profile_decision_v1",
+    "enqueue_validation_exit_code": 1,
+    "SDK_sequence": null,
+    "entered_queue": false,
+    "actual_sequence30_request_id": "r10-0031-review-again-query"
+  },
+  "sdk_new39_through55_raw_bytes": 17637701,
+  "next_intent_before39_report": {
+    "path": "r10-actual-new-intent-before-readback-20261005-001/REPORT.json",
+    "bytes": 2785,
+    "sha256": "86838da8a9126df53ae6b557587a67821cfb5b61d0a84f3d30f55f19ba88880b",
+    "stat_unchanged_during_read": true
+  },
+  "next_intent_before39_index": {
+    "path": "r10-actual-new-intent-before-readback-20261005-001/INDEX.json",
+    "bytes": 5395,
+    "sha256": "8cc515f683a9e8162d0f6368d4cded3a3fa1cb587ef58e5bade0123dbcc28c56",
+    "stat_unchanged_during_read": true
+  },
+  "second_proposal_open43_report": {
+    "path": "r10-actual-second-open-join-readback-20261005-001/REPORT.json",
+    "bytes": 3748,
+    "sha256": "4846d30c937881b47820c5682a276b170eee4f62a29ee007eeb274a4ec10f2df",
+    "stat_unchanged_during_read": true
+  },
+  "second_proposal_open43_index": {
+    "path": "r10-actual-second-open-join-readback-20261005-001/INDEX.json",
+    "bytes": 6038,
+    "sha256": "1f0bf6713c4290bcff506dfe7f9e434835e3e469262f1369feaaaed81708de52",
+    "stat_unchanged_during_read": true
+  },
+  "second_proposal_typed_facts": {
+    "path": "r10-actual-second-open-join-readback-20261005-001/PROPOSAL-OPENED-FACTS.json",
+    "bytes": 294261,
+    "sha256": "d43ee38000ecceced01626dba772f434dee76659ecae1c17cdc3bdda84fc5855",
+    "stat_unchanged_during_read": true
+  },
+  "second_proposal_fields_at_saved43": {
+    "actual_actionUUID": "ordinary-interaction-a50373f260354f6f83c8052eaf837c7f",
+    "actual_claim_ordinal": 1,
+    "first_ordinal0_claim_preserved": true,
+    "actual_round_change": {
+      "lyd_c2_callback_nonce": {
+        "before": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "700000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "700000"
+            }
+          ],
+          "number": "7",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_callback_nonce"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "700000"
+                }
+              ]
+            }
+          ]
+        },
+        "after": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "800000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "800000"
+            }
+          ],
+          "number": "8",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_callback_nonce"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "800000"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "lyd_c2_serial": {
+        "before": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "700000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "700000"
+            }
+          ],
+          "number": "7",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_serial"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "700000"
+                }
+              ]
+            }
+          ]
+        },
+        "after": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "800000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "800000"
+            }
+          ],
+          "number": "8",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_serial"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "800000"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "lyd_c2_active": {
+        "before": null,
+        "after": {
+          "present": true,
+          "tick": "365",
+          "type": "value",
+          "identity": "100000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ],
+          "number": "1",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_active"
+            },
+            {
+              "key": "tick",
+              "value": "365"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "100000"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "lyd_c2_result": {
+        "before": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "200000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "200000"
+            }
+          ],
+          "number": "2",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_result"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "200000"
+                }
+              ]
+            }
+          ]
+        },
+        "after": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": null,
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            }
+          ],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_result"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                }
+              ]
+            }
+          ]
+        }
+      },
+      "lyd_c2_source_signed": {
+        "before": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "100000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ],
+          "number": "1",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_source_signed"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "100000"
+                }
+              ]
+            }
+          ]
+        },
+        "after": null
+      },
+      "lyd_c2_target_requested": {
+        "before": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "100000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "100000"
+            }
+          ],
+          "number": "1",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_target_requested"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "100000"
+                }
+              ]
+            }
+          ]
+        },
+        "after": null
+      },
+      "lyd_c2_target_signed": {
+        "before": null,
+        "after": null
+      }
+    },
+    "actual_quorum_rows": {
+      "lyd_c2_source_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "200000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "200000"
+          }
+        ],
+        "number": "2",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "200000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_source_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_target_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_target_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_target_rite_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_target_rite_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_player_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_player_yes": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_yes"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_dormant_total": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_dormant_total"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "actual_actor_C2_lists": {
+      "lyd_c2_target_rites": {
+        "present": true,
+        "items": [
+          {
+            "type": "rite",
+            "identity": "159",
+            "entries": [
+              {
+                "key": "type",
+                "value": "rite"
+              },
+              {
+                "key": "identity",
+                "value": "159"
+              }
+            ]
+          }
+        ],
+        "duration_entries": [
+          {
+            "key": null,
+            "value": "1"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "name",
+            "value": "\"lyd_c2_target_rites\""
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "rite"
+              },
+              {
+                "key": "identity",
+                "value": "159"
+              }
+            ]
+          },
+          {
+            "key": "duration",
+            "value": [
+              {
+                "key": null,
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_target_followers": {
+        "present": true,
+        "items": [
+          {
+            "type": "char",
+            "identity": "65866",
+            "entries": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "65866"
+              }
+            ]
+          }
+        ],
+        "duration_entries": [
+          {
+            "key": null,
+            "value": "1"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "name",
+            "value": "\"lyd_c2_target_followers\""
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "65866"
+              }
+            ]
+          },
+          {
+            "key": "duration",
+            "value": [
+              {
+                "key": null,
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_target_electors": {
+        "present": true,
+        "items": [
+          {
+            "type": "char",
+            "identity": "65866",
+            "entries": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "65866"
+              }
+            ]
+          }
+        ],
+        "duration_entries": [
+          {
+            "key": null,
+            "value": "1"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "name",
+            "value": "\"lyd_c2_target_electors\""
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "65866"
+              }
+            ]
+          },
+          {
+            "key": "duration",
+            "value": [
+              {
+                "key": null,
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_electors": {
+        "present": true,
+        "items": [
+          {
+            "type": "char",
+            "identity": "31254",
+            "entries": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          },
+          {
+            "type": "char",
+            "identity": "65865",
+            "entries": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "65865"
+              }
+            ]
+          }
+        ],
+        "duration_entries": [
+          {
+            "key": null,
+            "value": "2"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "name",
+            "value": "\"lyd_c2_source_electors\""
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "65865"
+              }
+            ]
+          },
+          {
+            "key": "duration",
+            "value": [
+              {
+                "key": null,
+                "value": "2"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_players": {
+        "present": true,
+        "items": [
+          {
+            "type": "char",
+            "identity": "31254",
+            "entries": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          }
+        ],
+        "duration_entries": [
+          {
+            "key": null,
+            "value": "1"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "name",
+            "value": "\"lyd_c2_players\""
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          },
+          {
+            "key": "duration",
+            "value": [
+              {
+                "key": null,
+                "value": "1"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_core": {
+        "present": true,
+        "items": [
+          {
+            "type": "tenet",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "tenet"
+              },
+              {
+                "key": "key",
+                "value": "lyd_tenet_ancestral_reverence"
+              }
+            ]
+          },
+          {
+            "type": "tenet",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "tenet"
+              },
+              {
+                "key": "key",
+                "value": "lyd_tenet_investigate_principle"
+              }
+            ]
+          },
+          {
+            "type": "tenet",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "tenet"
+              },
+              {
+                "key": "key",
+                "value": "lyd_tenet_reverent_attention"
+              }
+            ]
+          }
+        ],
+        "duration_entries": [
+          {
+            "key": null,
+            "value": "3"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "name",
+            "value": "\"lyd_c2_source_core\""
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "tenet"
+              },
+              {
+                "key": "key",
+                "value": "lyd_tenet_ancestral_reverence"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "tenet"
+              },
+              {
+                "key": "key",
+                "value": "lyd_tenet_investigate_principle"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "tenet"
+              },
+              {
+                "key": "key",
+                "value": "lyd_tenet_reverent_attention"
+              }
+            ]
+          },
+          {
+            "key": "duration",
+            "value": [
+              {
+                "key": null,
+                "value": "3"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_source_doctrines": {
+        "present": true,
+        "items": [
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "sinitic_hostility_doctrine"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_concubines"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_divorce_allowed"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_bastardry_legitimization"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_homosexuality_shunned"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_deviancy_crime"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_adultery_men_crime"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_adultery_women_crime"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_kinslaying_any_dynasty_member_crime"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_witchcraft_crime"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_gender_male_dominated"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_consanguinity_dynastic"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_pluralism_pluralistic"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_theocracy_lay_clergy"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_no_head"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_clerical_function_taxation"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_clerical_gender_male_only"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_clerical_marriage_allowed"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_clerical_succession_temporal_appointment"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_pilgrimage_local_rites"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_family_rites"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_no_anointment"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_polytheist"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_scriptural"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_monasticism_absent"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_sacraments_absent"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "special_doctrine_is_sinitic_faith"
+              }
+            ]
+          },
+          {
+            "type": "doctrine",
+            "identity": null,
+            "entries": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "special_doctrine_immaterial_harmony"
+              }
+            ]
+          }
+        ],
+        "duration_entries": [
+          {
+            "key": null,
+            "value": "28"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "name",
+            "value": "\"lyd_c2_source_doctrines\""
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "sinitic_hostility_doctrine"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_concubines"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_divorce_allowed"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_bastardry_legitimization"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_homosexuality_shunned"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_deviancy_crime"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_adultery_men_crime"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_adultery_women_crime"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_kinslaying_any_dynasty_member_crime"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_witchcraft_crime"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_gender_male_dominated"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_consanguinity_dynastic"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_pluralism_pluralistic"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_theocracy_lay_clergy"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_no_head"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_clerical_function_taxation"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_clerical_gender_male_only"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_clerical_marriage_allowed"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_clerical_succession_temporal_appointment"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_pilgrimage_local_rites"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_family_rites"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_no_anointment"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_polytheist"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_scriptural"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_monasticism_absent"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "doctrine_sacraments_absent"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "special_doctrine_is_sinitic_faith"
+              }
+            ]
+          },
+          {
+            "key": "item",
+            "value": [
+              {
+                "key": "type",
+                "value": "doctrine"
+              },
+              {
+                "key": "key",
+                "value": "special_doctrine_immaterial_harmony"
+              }
+            ]
+          },
+          {
+            "key": "duration",
+            "value": [
+              {
+                "key": null,
+                "value": "28"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "actual_tickets": {
+      "31254": {
+        "actual_rite": "169",
+        "actual_vote_rows": {
+          "lyd_c2_vote_owner": {
+            "present": true,
+            "tick": null,
+            "type": "char",
+            "identity": "31254",
+            "entries": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ],
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_c2_vote_owner"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "char"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "31254"
+                  }
+                ]
+              }
+            ]
+          },
+          "lyd_c2_vote_serial": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "700000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ],
+            "number": "7",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_c2_vote_serial"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "700000"
+                  }
+                ]
+              }
+            ]
+          },
+          "lyd_c2_vote_nonce": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "700000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ],
+            "number": "7",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_c2_vote_nonce"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "700000"
+                  }
+                ]
+              }
+            ]
+          },
+          "lyd_c2_vote_yes": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_c2_vote_yes"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "stored_numeric_yes": "1",
+        "current_round8_matches": false
+      },
+      "65865": {
+        "actual_rite": "169",
+        "actual_vote_rows": {
+          "lyd_c2_vote_owner": {
+            "present": true,
+            "tick": null,
+            "type": "char",
+            "identity": "31254",
+            "entries": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ],
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_c2_vote_owner"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "char"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "31254"
+                  }
+                ]
+              }
+            ]
+          },
+          "lyd_c2_vote_serial": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "800000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ],
+            "number": "8",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_c2_vote_serial"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "800000"
+                  }
+                ]
+              }
+            ]
+          },
+          "lyd_c2_vote_nonce": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "800000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ],
+            "number": "8",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_c2_vote_nonce"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "800000"
+                  }
+                ]
+              }
+            ]
+          },
+          "lyd_c2_vote_yes": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_c2_vote_yes"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "stored_numeric_yes": "1",
+        "current_round8_matches": true
+      },
+      "65866": {
+        "actual_rite": "159",
+        "actual_vote_rows": {
+          "lyd_c2_vote_owner": {
+            "present": true,
+            "tick": null,
+            "type": "char",
+            "identity": "31254",
+            "entries": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ],
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_c2_vote_owner"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "char"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "31254"
+                  }
+                ]
+              }
+            ]
+          },
+          "lyd_c2_vote_serial": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "800000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ],
+            "number": "8",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_c2_vote_serial"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "800000"
+                  }
+                ]
+              }
+            ]
+          },
+          "lyd_c2_vote_nonce": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "800000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "800000"
+              }
+            ],
+            "number": "8",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_c2_vote_nonce"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "800000"
+                  }
+                ]
+              }
+            ]
+          },
+          "lyd_c2_vote_yes": {
+            "present": true,
+            "tick": null,
+            "type": "value",
+            "identity": "100000",
+            "entries": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ],
+            "number": "1",
+            "scale": 100000,
+            "row_entries": [
+              {
+                "key": "flag",
+                "value": "lyd_c2_vote_yes"
+              },
+              {
+                "key": "data",
+                "value": [
+                  {
+                    "key": "type",
+                    "value": "value"
+                  },
+                  {
+                    "key": "identity",
+                    "value": "100000"
+                  }
+                ]
+              }
+            ]
+          }
+        },
+        "stored_numeric_yes": "1",
+        "current_round8_matches": true
+      }
+    },
+    "actual_player_consent_rows": {
+      "lyd_c2_player_owner": {
+        "present": true,
+        "tick": null,
+        "type": "char",
+        "identity": "31254",
+        "entries": [
+          {
+            "key": "type",
+            "value": "char"
+          },
+          {
+            "key": "identity",
+            "value": "31254"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_owner"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "char"
+              },
+              {
+                "key": "identity",
+                "value": "31254"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_player_serial": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "700000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "700000"
+          }
+        ],
+        "number": "7",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_serial"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_player_nonce": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "700000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "700000"
+          }
+        ],
+        "number": "7",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_player_nonce"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "700000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "old_player_round7_ballot_or_consent_not_round8_credit": true,
+    "saved_type_value_identity_omission_kept_null_not_zero": true,
+    "actual_Rite_locks_cooldowns": {
+      "150": {
+        "lyd_c2_proposal_owner": null,
+        "lyd_c2_lock_serial": null,
+        "lyd_c2_proposal_serial": null,
+        "lyd_c2_retry_cooldown": null,
+        "lyd_c2_transition_cooldown": null
+      },
+      "159": {
+        "lyd_c2_proposal_owner": {
+          "present": true,
+          "tick": "365",
+          "type": "char",
+          "identity": "31254",
+          "entries": [
+            {
+              "key": "type",
+              "value": "char"
+            },
+            {
+              "key": "identity",
+              "value": "31254"
+            }
+          ],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_proposal_owner"
+            },
+            {
+              "key": "tick",
+              "value": "365"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "char"
+                },
+                {
+                  "key": "identity",
+                  "value": "31254"
+                }
+              ]
+            }
+          ]
+        },
+        "lyd_c2_lock_serial": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "800000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "800000"
+            }
+          ],
+          "number": "8",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_lock_serial"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "800000"
+                }
+              ]
+            }
+          ]
+        },
+        "lyd_c2_proposal_serial": null,
+        "lyd_c2_retry_cooldown": null,
+        "lyd_c2_transition_cooldown": null
+      },
+      "169": {
+        "lyd_c2_proposal_owner": {
+          "present": true,
+          "tick": "365",
+          "type": "char",
+          "identity": "31254",
+          "entries": [
+            {
+              "key": "type",
+              "value": "char"
+            },
+            {
+              "key": "identity",
+              "value": "31254"
+            }
+          ],
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_proposal_owner"
+            },
+            {
+              "key": "tick",
+              "value": "365"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "char"
+                },
+                {
+                  "key": "identity",
+                  "value": "31254"
+                }
+              ]
+            }
+          ]
+        },
+        "lyd_c2_lock_serial": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "800000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "800000"
+            }
+          ],
+          "number": "8",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_lock_serial"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "800000"
+                }
+              ]
+            }
+          ]
+        },
+        "lyd_c2_proposal_serial": {
+          "present": true,
+          "tick": null,
+          "type": "value",
+          "identity": "800000",
+          "entries": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "800000"
+            }
+          ],
+          "number": "8",
+          "scale": 100000,
+          "row_entries": [
+            {
+              "key": "flag",
+              "value": "lyd_c2_proposal_serial"
+            },
+            {
+              "key": "data",
+              "value": [
+                {
+                  "key": "type",
+                  "value": "value"
+                },
+                {
+                  "key": "identity",
+                  "value": "800000"
+                }
+              ]
+            }
+          ]
+        },
+        "lyd_c2_retry_cooldown": null,
+        "lyd_c2_transition_cooldown": null
+      }
+    },
+    "saved_current_roles": {
+      "current_actor_id": 31254,
+      "current_rite": "169",
+      "current_faith": "106",
+      "current_HoR": "31254",
+      "current_HoF": "4294967295",
+      "current_faith_main": "169",
+      "current_faith_main_parent": "106"
+    },
+    "actual_wallet": {
+      "gold": "1543",
+      "piety": "5650",
+      "prestige": "2200"
+    },
+    "actual_wallet_Decimal_delta": {
+      "gold": "0",
+      "piety": "0",
+      "prestige": "0"
+    },
+    "actual_history": {
+      "lyd_c2_completed_joins": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_completed_joins"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "lyd_c2_completed_detaches": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "200000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "200000"
+          }
+        ],
+        "number": "2",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_completed_detaches"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "200000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "fixture_reset_count": {
+      "present": true,
+      "tick": null,
+      "type": "value",
+      "identity": "400000",
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "400000"
+        }
+      ],
+      "number": "4",
+      "scale": 100000,
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_r4_reset_count"
+        },
+        {
+          "key": "data",
+          "value": [
+            {
+              "key": "type",
+              "value": "value"
+            },
+            {
+              "key": "identity",
+              "value": "400000"
+            }
+          ]
+        }
+      ]
+    },
+    "actual_saved_stress": null,
+    "expected_actual_stress": null
+  },
+  "actual_emit004_index": {
+    "path": "r10-first-proposal-emitted-evidence-20261005-004/INDEX.json",
+    "bytes": 858,
+    "sha256": "1e87ab45bc0182e2f83ef6a925d9dae83cf35677d77234d2ea75aab1f0fb3664",
+    "stat_unchanged_during_read": true
+  },
+  "actual_emit004_independent_review": {
+    "path": "r10-first-consumption004-independent-review-20261005-002/INDEX.json",
+    "bytes": 401,
+    "sha256": "49da23f7b82b6cc6f47272efd5f5652faa3b0143f99a74f2c17aaf9828bcb8a3",
+    "stat_unchanged_during_read": true
+  },
+  "actual_emit_and_release_invocations": {
+    "root-first-consumption-emit-invocation-001": [
+      {
+        "path": "live-attempt-010/root-first-consumption-emit-invocation-001/argv.json",
+        "bytes": 301,
+        "sha256": "a8594eab724ef8b85545bb76aae1201d6fa0830fcd5ef25402b5d0df9046126e",
+        "stat_unchanged_during_read": true
+      },
+      {
+        "path": "live-attempt-010/root-first-consumption-emit-invocation-001/RESULT.json",
+        "bytes": 622,
+        "sha256": "0f3aa0972a427c8921e4b6e4cb4934e2404478ba083923c56e2c86c2e0d25dee",
+        "stat_unchanged_during_read": true
+      },
+      {
+        "path": "live-attempt-010/root-first-consumption-emit-invocation-001/stderr.txt",
+        "bytes": 1946,
+        "sha256": "a980f8be38cf60e12f6814565e6efb64d151ee8410b186768fc69d193a50cf43",
+        "stat_unchanged_during_read": true
+      },
+      {
+        "path": "live-attempt-010/root-first-consumption-emit-invocation-001/stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stat_unchanged_during_read": true
+      }
+    ],
+    "root-first-consumption-emit-invocation-002": [
+      {
+        "path": "live-attempt-010/root-first-consumption-emit-invocation-002/argv.json",
+        "bytes": 318,
+        "sha256": "134436977a80b98ecff5a342533937195f61f3772e998f07c9af91e9dafdcdfd",
+        "stat_unchanged_during_read": true
+      },
+      {
+        "path": "live-attempt-010/root-first-consumption-emit-invocation-002/RESULT.json",
+        "bytes": 623,
+        "sha256": "91a714e0bc720da287729a895eb929e96d62a51be3c07956da6dacc4381ec5c4",
+        "stat_unchanged_during_read": true
+      },
+      {
+        "path": "live-attempt-010/root-first-consumption-emit-invocation-002/stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stat_unchanged_during_read": true
+      },
+      {
+        "path": "live-attempt-010/root-first-consumption-emit-invocation-002/stdout.txt",
+        "bytes": 306,
+        "sha256": "c95482d491a0f540206df5f911b6897363eeb8aab8c14d974b354379fa5849a5",
+        "stat_unchanged_during_read": true
+      }
+    ],
+    "root-first-consumption-release-invocation-001": [
+      {
+        "path": "live-attempt-010/root-first-consumption-release-invocation-001/argv.json",
+        "bytes": 345,
+        "sha256": "f9dbaf3146cdf267cb4227bd87b719f1c86804f2a7737d3abd6c3ea07b4950be",
+        "stat_unchanged_during_read": true
+      },
+      {
+        "path": "live-attempt-010/root-first-consumption-release-invocation-001/RESULT.json",
+        "bytes": 638,
+        "sha256": "675b923cab432cb663da734be303608dc3d332be142a078994642316c3a92266",
+        "stat_unchanged_during_read": true
+      },
+      {
+        "path": "live-attempt-010/root-first-consumption-release-invocation-001/stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stat_unchanged_during_read": true
+      },
+      {
+        "path": "live-attempt-010/root-first-consumption-release-invocation-001/stdout.txt",
+        "bytes": 445,
+        "sha256": "b4407252cc5693b881a8b6ba994454deb4b785b5900096f8590bc355c7654a59",
+        "stat_unchanged_during_read": true
+      }
+    ],
+    "root-first-consumption-host-request-001": [
+      {
+        "path": "live-attempt-010/root-first-consumption-host-request-001/REGISTRY.json",
+        "bytes": 426,
+        "sha256": "1f8070ee4fef62720d5fad27d55bd6c9f83601f12210456cc8036e80100d4490",
+        "stat_unchanged_during_read": true
+      },
+      {
+        "path": "live-attempt-010/root-first-consumption-host-request-001/release-argv.json",
+        "bytes": 364,
+        "sha256": "a425459d717a848255dc07a307b6c8ce5e876ccc36bd61c85bfb56ed614b714c",
+        "stat_unchanged_during_read": true
+      },
+      {
+        "path": "live-attempt-010/root-first-consumption-host-request-001/RELEASE-REQUEST.actual.json",
+        "bytes": 1229,
+        "sha256": "7e3778ab904a74414b725be51a0b30e5954ad5cd26e3be3fc2fa137303680027",
+        "stat_unchanged_during_read": true
+      }
+    ]
+  },
+  "actual_host_release": {
+    "completed": true,
+    "permit": {
+      "path": "live-attempt-010/native-state/native-session/ordinary-interaction-actions/8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.release.json",
+      "bytes": 1736,
+      "sha256": "6c7fd772f928041d1d616b77e9d5c00d27441ef6e52e1f030c14fe5b60b77c84",
+      "stat_unchanged_during_read": true
+    },
+    "consumption_receipt": {
+      "path": "live-attempt-010/native-state/native-session/ordinary-interaction-actions/8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.release.consumed.json",
+      "bytes": 1237,
+      "sha256": "35287deac29f81d36d3d6978ba16253bac4ae954a4beba9ebd5852f179cea0ea",
+      "stat_unchanged_during_read": true
+    },
+    "new_ordinal1_action": {
+      "path": "live-attempt-010/native-state/native-session/ordinary-interaction-actions/8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000001.claim.json",
+      "bytes": 1938,
+      "sha256": "7c2d0d36486fc2ec6c0d44fb24319affdce818feb3edb59d6878921e3d00c021",
+      "stat_unchanged_during_read": true
+    },
+    "new_action_UUID": "ordinary-interaction-a50373f260354f6f83c8052eaf837c7f",
+    "consumed_by_SDK_sequence": 42,
+    "old_ordinal0_claim": {
+      "path": "live-attempt-010/native-state/native-session/ordinary-interaction-actions/8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.json",
+      "bytes": 1210,
+      "sha256": "3fae018f1468983c59bb0cf6a8d32704cb6f791d6b25cae69451a82960b495ce",
+      "stat_unchanged_during_read": true
+    },
+    "old_claim_status_retained": "claimed_result_unknown_no_retry",
+    "new_claim_status": "claimed_result_unknown_no_retry",
+    "game_command_sent_by_release": false,
+    "JOIN_business_acceptance_credit": false
+  },
+  "last_actual_event_query55": {
+    "sequence": 55,
+    "request_id": "r10-0056-receiving-sign-result-query",
+    "event_instance_id": 54,
+    "event_definition_key": "lyd.228",
+    "public_revision": 25,
+    "native_revision": 24,
+    "date_raw": 53144712,
+    "event_query_receipt": {
+      "path": "live-attempt-010/mcp-client-evidence-002/0055-r10-0056-receiving-sign-result-query.native-01.json",
+      "bytes": 12051,
+      "sha256": "201b14d861e8b2994e82eae9b05d1ed43a47ff5a478e17164a77ec5aabc689a2",
+      "stat_unchanged_during_read": true
+    },
+    "second_signature_final_saved_result": null,
+    "final_rejection_reason": null,
+    "AI_option_execution_trace": null,
+    "specific_random_branch": null,
+    "JOIN_success_inferred_from_ACK": false
+  },
+  "second_proposal_final_saved_outcome": null,
+  "second_proposal_final_JOIN_credit": false,
+  "R10_all_lifecycle_closed": false,
+  "current_whole_log_final_credit": false
+}

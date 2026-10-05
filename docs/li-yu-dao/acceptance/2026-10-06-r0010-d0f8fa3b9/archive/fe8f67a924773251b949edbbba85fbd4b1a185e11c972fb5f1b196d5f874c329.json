@@ -1,0 +1,14 @@
+{
+  "previous": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen_lease_entry_r0009.py",
+    "bytes": 7345,
+    "sha256": "e42cdef43469d14158d49352dfea184c4cf8b2229b7b1e3ff053e4996c1f36c9"
+  },
+  "current": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen_lease_entry_r0010.py",
+    "bytes": 7345,
+    "sha256": "83a2409da35a9cc9e1db8d594dd664aa3d279917d6780398d1597dd6f2088d27"
+  },
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "changes": "Only exact HEAD and R0010 task/output aliases; keeper logic unchanged."
+}

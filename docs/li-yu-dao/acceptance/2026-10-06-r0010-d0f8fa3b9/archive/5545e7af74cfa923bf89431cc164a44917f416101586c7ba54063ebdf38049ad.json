@@ -1,0 +1,50 @@
+{
+  "schema": "lyd.r10.seventh-external-tool-parameter-reuse.v1",
+  "records": [
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-sixth-open-join-readback-20261005-001\\prepare_request.py",
+        "bytes": 2246,
+        "sha256": "9d1ef82229f7987ef5a7220cd3c437b2ddd97d7948b7a287ae34afc27b2b1ced"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-open-join-readback-20261006-001\\prepare_request.py",
+        "bytes": 2254,
+        "sha256": "339a5fe66883ac6f109b8a29372e720fab247a4f7c14e0d7b1e53131aa0d7925"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-sixth-open-join-readback-20261005-001\\collect_controls.py",
+        "bytes": 4128,
+        "sha256": "1cdf69b9e3e03a903fd2dc0fa6c2276a9975ee450f97c91d61f8a571b5d12368"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-open-join-readback-20261006-001\\collect_controls.py",
+        "bytes": 4233,
+        "sha256": "ce8980cc43772e61581974df9d4dc10d7f276b0c36e8dbc47097611b8123b905"
+      }
+    },
+    {
+      "source": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-sixth-open-join-readback-20261005-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      },
+      "new": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-open-join-readback-20261006-001\\inspect_new.py",
+        "bytes": 1861,
+        "sha256": "e0f5536446d6b2683cf5c721a264afc098719ea9137ede01c06fd40e88f1107d"
+      }
+    }
+  ],
+  "parameter_mapping_driver": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-seventh-open-join-readback-20261006-001\\prepare_tools.py",
+    "bytes": 3691,
+    "sha256": "dda9bd0ac13087d5f39a9274a08228edbc52575bb03a884765e83970a7ccc7ae"
+  },
+  "preparation_failure": "Empty replacement mapping matched empty regex while copying inspector; prepare_request and collector had already been created. Copied inspector bytes directly without rerunning writer.",
+  "new_save_AST_parse_attempts_before_this_resume": 0,
+  "old_save_reparsed": false,
+  "old_package_writes": false
+}

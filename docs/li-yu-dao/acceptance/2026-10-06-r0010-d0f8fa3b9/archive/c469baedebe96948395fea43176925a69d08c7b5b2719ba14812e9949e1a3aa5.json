@@ -1,0 +1,225 @@
+{
+  "schema": "lyd.r10.checkpoint108.current-error-log-readonly-review.v1",
+  "status": "CURRENT_SNAPSHOT_CLASSIFIED_ONLY_NOT_GREEN_NOT_WHOLEFINAL",
+  "report_utc": "2026-10-05T14:38:43.699404+00:00",
+  "capture_started_utc": "2026-10-05T14:34:29.528630+00:00",
+  "capture_finished_utc": "2026-10-05T14:34:29.529925+00:00",
+  "source_HEAD": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "frozen_source_manifest": {
+    "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-head-export-20261005-001\\production\\mod_li_yu_dao.manifest.json",
+    "copy_path": "binding/production.manifest.json",
+    "bytes": 12940,
+    "sha256": "8fff14a823c50d2461660676ec3238439027d1a46af5281e5db95af7c9bd945c"
+  },
+  "frozen_production_files": 70,
+  "frozen_fixture_files": 52,
+  "actual_source_byte_hash_verification": "ALL122_MATCH_COLD_MATERIALIZED_INVENTORY",
+  "actual_checkpoint108_context": {
+    "SDK_request": "r10-0109-fifth-ready-query",
+    "public_revision": 50,
+    "native_revision": 49,
+    "date_raw": 53144712,
+    "game_pid": 13436,
+    "active_event_present": false,
+    "incoming_interaction_present": false,
+    "ROOT_declared_paused": true,
+    "no_live_game_query_by_reviewer": true
+  },
+  "raw_error_log": {
+    "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\userdir\\logs\\error.log",
+    "copy_path": "raw/error.log",
+    "bytes": 138556,
+    "sha256": "2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a"
+  },
+  "source_stat_before": {
+    "bytes": 138556,
+    "mtime_ns": 1791196569276622200,
+    "ctime_ns": 1791196397128635800
+  },
+  "source_stat_after": {
+    "bytes": 138556,
+    "mtime_ns": 1791196569276622200,
+    "ctime_ns": 1791196397128635800
+  },
+  "source_stat_unchanged_during_read": true,
+  "physical_lines": 578,
+  "clock_delimited_record_blocks": 578,
+  "exact_distinct_signatures": 289,
+  "counts": {
+    "FIXTURE_UNUSED_VARIABLE_DIAGNOSTIC": 578,
+    "PRODUCTION_UNUSED_VARIABLE_DIAGNOSTIC": 0,
+    "SHARED_PRODUCTION_FIXTURE_UNUSED_VARIABLE_NAME_AMBIGUOUS_ORIGIN": 0,
+    "UNBOUND_UNUSED_VARIABLE_DIAGNOSTIC": 0,
+    "RUNTIME_EFFECT_ERROR": 0,
+    "RUNTIME_TRIGGER_ERROR": 0,
+    "RUNTIME_SCOPE_OR_REFERENCE_ERROR": 0,
+    "UNCLASSIFIED_NON_UNUSED_DIAGNOSTIC": 0
+  },
+  "fixture_unused_variable_distinct": 289,
+  "fixture_unused_origin": "ALL289_VARIABLE_NAMES_OCCUR_ONLY_IN_HASHED_I4_SINGLE_EVENT_FIXTURE_FILES",
+  "complete_record_review": {
+    "each_record_one_physical_line": true,
+    "all_records_clocked": true,
+    "raw_blocks_partition_captured_bytes_without_loss": true,
+    "all578_messages_exact_full_unused_diagnostic": true,
+    "capture_ends_with_linebreak": true,
+    "last_record_syntactically_complete_exact_diagnostic": true,
+    "last_record_closed_by_observed_next_clocked_record": false,
+    "record_counts_include_exact_complete_tail_diagnostic": true
+  },
+  "cap_and_truncation": {
+    "explicit_limit_or_truncation_markers": [],
+    "explicit_limit_or_truncation_marker_count": 0,
+    "observed_total_error_records": 578,
+    "cap_value": null,
+    "cap_reached": null,
+    "whole_log_truncated": null,
+    "continuous_runtime_logging_coverage_after_initial_prefix": null,
+    "unterminated_tail_line_observed": false,
+    "reason": "No explicit cap marker or torn tail was observed; the file is unchanged since initial prefix. This does not establish a cap, absence of a cap, flush completeness, or complete later runtime coverage."
+  },
+  "increment": {
+    "prior_error_log": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-log-and-save-readback-preparation-20261005-001\\partial-logs-001\\raw\\error.log",
+      "bytes": 138556,
+      "sha256": "2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a"
+    },
+    "current_error_log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\userdir\\logs\\error.log",
+      "copy_path": "raw/error.log",
+      "bytes": 138556,
+      "sha256": "2da1ee0f6bb1469b250707790d0abd221d1b32f0e395ae221988cb3e1e59ed1a"
+    },
+    "exact_equal": true,
+    "old_bytes_are_current_prefix": true,
+    "appended_bytes_since_prior_snapshot": 0,
+    "appended_records_since_prior_snapshot": 0,
+    "no_growth_does_not_establish_no_errors_or_log_cap_absence": true
+  },
+  "examples": [
+    {
+      "exact_message_clock_stripped": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_adopted' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+      "count": 2,
+      "raw_log_occurrences": [
+        {
+          "first_line": 36,
+          "last_line": 36,
+          "start_offset": 8374,
+          "end_offset": 8604,
+          "clock": "[18:35:16]",
+          "raw_block_sha256": "198193f2a8dbc1dacdb159d9398429e93eaeefb3f51305a9a31a8fa7f6a9f44f"
+        },
+        {
+          "first_line": 325,
+          "last_line": 325,
+          "start_offset": 77652,
+          "end_offset": 77882,
+          "clock": "[18:36:09]",
+          "raw_block_sha256": "f96cad2909602b51cba7f280ea662a6116786377b1565eccc7d74f6758702d8d"
+        }
+      ],
+      "source_token_occurrences": [
+        {
+          "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_10_effects.txt",
+          "family": "fixture",
+          "mount": "i4_single_event",
+          "relative_path": "common/scripted_effects/lyd_im_prepare_10_effects.txt",
+          "source_sha256": "b0f2d7d2049b30a275a93e38673d20fa04f4903db526ed791f953aaa3eec315d",
+          "line": 5,
+          "exact_source_line": "        set_variable = { name = lyd_im_adopted value = 0 }"
+        },
+        {
+          "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_10_effects.txt",
+          "family": "fixture",
+          "mount": "i4_single_event",
+          "relative_path": "common/scripted_effects/lyd_im_prepare_10_effects.txt",
+          "source_sha256": "b0f2d7d2049b30a275a93e38673d20fa04f4903db526ed791f953aaa3eec315d",
+          "line": 13,
+          "exact_source_line": "                set_variable = { name = lyd_im_adopted value = 1 }"
+        },
+        {
+          "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_10_effects.txt",
+          "family": "fixture",
+          "mount": "i4_single_event",
+          "relative_path": "common/scripted_effects/lyd_im_prepare_10_effects.txt",
+          "source_sha256": "b0f2d7d2049b30a275a93e38673d20fa04f4903db526ed791f953aaa3eec315d",
+          "line": 31,
+          "exact_source_line": "        set_variable = { name = lyd_im_adopted value = 0 }"
+        }
+      ]
+    },
+    {
+      "exact_message_clock_stripped": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_100_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+      "count": 2,
+      "raw_log_occurrences": [
+        {
+          "first_line": 142,
+          "last_line": 142,
+          "start_offset": 33794,
+          "end_offset": 34038,
+          "clock": "[18:35:16]",
+          "raw_block_sha256": "d84dfc1d946f1e7630b0342c321ee8a9a8b74994f10fdaf16e7d0203c07c1e04"
+        },
+        {
+          "first_line": 431,
+          "last_line": 431,
+          "start_offset": 103072,
+          "end_offset": 103316,
+          "clock": "[18:36:09]",
+          "raw_block_sha256": "6f9e81005ed150699236630fce0f8348875db3ff04f6594d8dc47b4fe1b3da71"
+        }
+      ],
+      "source_token_occurrences": [
+        {
+          "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\events\\lyd_im_cases_5.txt",
+          "family": "fixture",
+          "mount": "i4_single_event",
+          "relative_path": "events/lyd_im_cases_5.txt",
+          "source_sha256": "4cd7481af5a7a9036f6ce123ebe33f482bea82fe3a904fe88a640222706276e9",
+          "line": 51,
+          "exact_source_line": "            add_character_flag = lyd_im_case_100_acknowledged"
+        }
+      ]
+    },
+    {
+      "exact_message_clock_stripped": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_100_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count",
+      "count": 2,
+      "raw_log_occurrences": [
+        {
+          "first_line": 236,
+          "last_line": 236,
+          "start_offset": 56365,
+          "end_offset": 56602,
+          "clock": "[18:35:16]",
+          "raw_block_sha256": "7b4e46d89b8ca33ab391a3a8d23a8ffa2750d8baf18fc32229c00e33cd3ef489"
+        },
+        {
+          "first_line": 525,
+          "last_line": 525,
+          "start_offset": 125643,
+          "end_offset": 125880,
+          "clock": "[18:36:09]",
+          "raw_block_sha256": "8d7c3ebeb91872b4f9d3f4ed3e05de7c637109c0a3870d57b858f17b52fcaf6b"
+        }
+      ],
+      "source_token_occurrences": [
+        {
+          "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\i4_single_event\\common\\scripted_effects\\lyd_im_prepare_13_effects.txt",
+          "family": "fixture",
+          "mount": "i4_single_event",
+          "relative_path": "common/scripted_effects/lyd_im_prepare_13_effects.txt",
+          "source_sha256": "c2a9f8d6af81c8154bdf1516403383bb7c7cc0b7222d775e9f5bfbd36acb7eff",
+          "line": 96,
+          "exact_source_line": "            add_character_flag = lyd_im_case_100_armed"
+        }
+      ]
+    }
+  ],
+  "JOIN_or_product_acceptance_credit": false,
+  "normal_exit_credit": false,
+  "whole_final_log_credit": false,
+  "overall_PASS": false,
+  "game_process_pipe_Client_desktop_bus_Git_main_mutations": false,
+  "log_write_operations": false,
+  "old_test_or_AST_reruns": false
+}

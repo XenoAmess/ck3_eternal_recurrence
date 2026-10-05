@@ -1,0 +1,1 @@
+{"bundle": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-second-proposal-bound-verifier-20261005-001", "index_sha256": "8945dca159d69dbc8cbb5a6ff849ab4503c5487f2cb20278430b1d2e08090813", "status": "BOUND_PROVIDER_READY_NO_RELEASE"}

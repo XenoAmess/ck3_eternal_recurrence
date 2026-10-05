@@ -1,0 +1,5 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r10-0255-client-close",
+  "operation": "close"
+}

@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 207,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0208-detach-first-personal-chosen.request.json",
+  "request_sha256": "159872388e427dcd2b07a33522b7cc1a8ca9091da6679885283c223e347f30a5",
+  "started_at_utc": "2026-10-05T17:46:10.827678+00:00"
+}

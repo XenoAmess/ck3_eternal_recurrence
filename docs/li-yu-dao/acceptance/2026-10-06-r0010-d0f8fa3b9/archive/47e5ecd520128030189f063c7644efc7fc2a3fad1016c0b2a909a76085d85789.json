@@ -1,0 +1,94 @@
+{
+  "schema": "lyd.first-join.actual-product-detail.v1",
+  "conditions": {
+    "source_faith": "106",
+    "target_faith": "104",
+    "moving_rite": "169",
+    "target_main": "159",
+    "target_rep": "65866",
+    "serial_nonce_before": [
+      8,
+      8
+    ],
+    "serial_nonce_after": [
+      9,
+      9
+    ],
+    "actual_source_roles": [
+      "31254",
+      "65865"
+    ],
+    "actual_target_roles": [
+      "65866"
+    ],
+    "actual_human_roles": [
+      "31254"
+    ],
+    "wallet_delta": [
+      "0",
+      "0",
+      "0"
+    ],
+    "completed_history_unchanged": true,
+    "NPC_vote_choice_required": false,
+    "join_business_acceptance_credit": false,
+    "scope": "actual request opened one proposal; only consumption credit, no join success",
+    "current_release_context_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0084-r10-0085-fourth-ready-query.sdk-result.json",
+      "sha256": "945765c3f2b22ba3d06ba78d33549058980a58480ec98f00fdf09029eb9d0586"
+    },
+    "current_release_context_frame_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0082-r10-0083-third-post-cancel-save.sdk-result.json",
+      "sha256": "03dbc508120e6912322bdb594eabbe576e7cb14f97c2c8b330a203056973f285"
+    },
+    "pre_send_query_frame_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0063-r10-0064-third-before-save.sdk-result.json",
+      "sha256": "b8b719acb4f27d436e08adafc1eb828e68cca2b778fc504007831d140b49e058"
+    },
+    "actual_release_context": {
+      "revision": 39,
+      "native_revision": 38,
+      "snapshot_id": "native:38",
+      "date_raw": 53144712
+    },
+    "pre_send_final_effective_roles": {
+      "actor_id": 31254,
+      "recipient_id": 65866,
+      "secondary_actor_id": null,
+      "secondary_recipient_id": null,
+      "intermediary_id": null,
+      "sixth_role_id": 31254
+    },
+    "release_final_effective_roles": {
+      "actor_id": 31254,
+      "recipient_id": 65866,
+      "secondary_actor_id": null,
+      "secondary_recipient_id": null,
+      "intermediary_id": null,
+      "sixth_role_id": 31254
+    },
+    "release_connection_generation": 1,
+    "next_send_boundary": "Release-time ready evidence only; host next permit does not pin this exact next revision. A new native query/exactframe is mandatory.",
+    "consumption_mode": "PROPOSAL_OPENED"
+  },
+  "before_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0063-third-before-save\\checkpoint.ck3",
+    "sha256": "40cc2bb630b1255217f09c727aa506572d1d3ab2af4aaf1ca13248306fe07b08",
+    "bytes": 91533017
+  },
+  "after_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0068-third-open-save\\checkpoint.ck3",
+    "sha256": "c7d84400a24c922e6ce902a563c9294d80123394f86bc3862ccf31743234ff99",
+    "bytes": 91536994
+  },
+  "actual_native_revisions": [
+    29,
+    29,
+    31
+  ],
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "parser_sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7",
+  "reader_version": "lyd-join-save-consumption-verifier-v2",
+  "native_ACK_credit": false,
+  "actual_release": false
+}

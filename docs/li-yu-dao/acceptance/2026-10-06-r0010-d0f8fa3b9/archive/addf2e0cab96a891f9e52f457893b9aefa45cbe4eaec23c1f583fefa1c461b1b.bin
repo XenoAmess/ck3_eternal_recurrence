@@ -1,0 +1,29 @@
+--- R9/tools/leadership_templates/common/decisions/lyd_c3_leadership_decisions.txt.in
++++ CURRENT/tools/leadership_templates/common/decisions/lyd_c3_leadership_decisions.txt.in
+@@ -17,6 +17,26 @@
+         hidden_effect = {
+             lyd_c3_declare_claim_effect = yes
+         }
++    }
++    ai_will_do = { base = 0 }
++}
++lyd_c3_register_challenger_decision = {
++    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
++    decision_group_type = religious
++    ai_check_interval = 0
++    desc = lyd_c3_register_challenger_decision_desc
++    selection_tooltip = lyd_c3_register_challenger_decision_tooltip
++    confirm_text = lyd_c3_register_challenger_decision_confirm
++    is_shown = { lyd_c3_player_actor_trigger = yes lyd_c3_claim_current_trigger = yes NOT = { has_variable = lyd_c3_claim_title } }
++    is_valid = {
++        custom_description = {
++            text = lyd_c3_native_challenger_ready
++            lyd_c3_native_challenger_admitted_trigger = yes
++        }
++    }
++    effect = {
++        custom_tooltip = lyd_c3_register_challenger_result
++        hidden_effect = { if = { limit = { lyd_c3_player_actor_trigger = yes } lyd_c3_register_native_claim_effect = yes } }
+     }
+     ai_will_do = { base = 0 }
+ }

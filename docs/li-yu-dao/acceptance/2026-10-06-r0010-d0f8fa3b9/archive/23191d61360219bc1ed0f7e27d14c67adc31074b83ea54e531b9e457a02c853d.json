@@ -1,0 +1,7 @@
+[
+  "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+  "-B",
+  "C:/workspace/ck3_lyd_runtime_20261004/r9-join2-host-flow-20261005-001/root_release_once.py",
+  "--request",
+  "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-third-consumption-host-request-001\\RELEASE-REQUEST.actual.json"
+]

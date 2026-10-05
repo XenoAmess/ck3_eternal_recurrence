@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "r10-0242-after-detach-reset-query",
+  "operation": "call_tool",
+  "name": "ck3_query_profile_decision_item_v1",
+  "arguments": {
+    "decision_key": "lyd_r4_reset_decision",
+    "expected_revision": 112
+  }
+}

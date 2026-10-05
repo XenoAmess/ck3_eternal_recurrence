@@ -1,0 +1,10 @@
+--- R9/common/scripted_effects/lyd_c3_lifecycle_effects.txt
++++ CURRENT/common/scripted_effects/lyd_c3_lifecycle_effects.txt
+@@ -85,6 +85,7 @@
+             limit = { has_variable = lyd_c3_personal_teacher NOT = { var:lyd_c3_personal_teacher = { is_alive = yes faith = prev.faith } } }
+             lyd_c3_leave_teacher_effect = yes
+         }
++        if = { limit = { lyd_c3_claim_current_trigger = yes has_variable = lyd_c3_claim_title } lyd_c3_read_native_claim_registration_effect = yes }
+         faith = { lyd_c3_reconcile_faith_roles_effect = yes }
+         var:lyd_c3_office_faith ?= { lyd_c3_reconcile_faith_roles_effect = yes }
+         # Only a dead or expired owner is stale. Live pending rounds are untouched.

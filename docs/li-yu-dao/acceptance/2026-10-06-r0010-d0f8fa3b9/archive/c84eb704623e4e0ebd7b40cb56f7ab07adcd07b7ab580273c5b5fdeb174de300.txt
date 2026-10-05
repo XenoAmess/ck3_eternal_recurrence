@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0173-eighth-player-options-entry-query.request.json",
+  "request_id": "r10-0173-eighth-player-options-entry-query",
+  "sha256": "2c89312e06299fdd6586ca20ddee77d768f045ff405c7970cea08f33b960232b",
+  "contacted_game": false
+}

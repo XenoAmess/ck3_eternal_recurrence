@@ -1,0 +1,16 @@
+{
+  "failed_original_script": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\inspect_delta.py",
+    "bytes": 3563,
+    "sha256": "95e3abf999349a676c02d5224f0484fb4701fc863ba683d3696b7823280b5643"
+  },
+  "failure": "TypeError ordering None and string top AST keys in JSON-only inspector, before output write",
+  "replacement_script": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-eighth-post-join-readback-20261006-001\\inspect_delta_v2.py",
+    "bytes": 3639,
+    "sha256": "94d006396dcc95d647c7684c5b76094bf314dabe3b46f7d167ee1b8d2daa23c3"
+  },
+  "fix": "Preserve complete duplicate-key AST groups, handle null keys explicitly",
+  "actual_save_AST_parse_count_unchanged": 1,
+  "old_saves_reparsed": false
+}

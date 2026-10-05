@@ -1,0 +1,117 @@
+# Complete authorization is rechecked before the first irreversible operation.
+lyd_c2_event_commit_effect = {
+    if = {
+        limit = { lyd_c2_initiator_event_context_trigger = yes }
+        lyd_c2_commit_effect = yes
+    }
+}
+lyd_c2_commit_effect = {
+    if = {
+        limit = { is_ai = no lyd_c2_current_proposal_trigger = { ACTOR = root } }
+        save_scope_as = lyd_c2_actor
+        lyd_c2_refresh_snapshot_effect = yes
+        if = {
+            limit = { lyd_c2_ready_to_confirm_trigger = { ACTOR = scope:lyd_c2_actor } }
+            if = { limit = { var:lyd_c2_kind = 1 } lyd_c2_commit_join_effect = yes }
+            else = { lyd_c2_commit_detach_effect = yes }
+        }
+    }
+}
+lyd_c2_commit_join_effect = {
+    if = {
+        limit = { is_ai = no lyd_c2_ready_to_confirm_trigger = { ACTOR = scope:lyd_c2_actor } var:lyd_c2_kind = 1 }
+        # Quoted argument syntax cannot interpolate an ACTOR variable path.
+        # Bind the actual captured receiving main Rite before any mutation.
+        var:lyd_c2_target_main = { save_scope_as = lyd_c2_native_target_main }
+        # PRE-change singleton snapshot; migration may create a backup main rite.
+        lyd_c2_retire_source_head_effect = yes
+        if = { limit = { lyd_c2_retirement_postcondition_trigger = { ACTOR = scope:lyd_c2_actor } }
+            var:lyd_c2_moving_rite = {
+                lyd_c3_before_rite_migration_effect = yes
+                lyd_c3_cleanup_rite_claim_offices_effect = yes
+                set_parent_faith = { target = scope:lyd_c2_actor.var:lyd_c2_target_faith main = no include_derived = no }
+            }
+            if = {
+                limit = {
+                    var:lyd_c2_moving_rite = {
+                        faith = scope:lyd_c2_actor.var:lyd_c2_target_faith
+                        this != faith.main_rite
+                        "divergence(scope:lyd_c2_native_target_main)" < 100
+                    }
+                    var:lyd_c2_target_faith = { main_rite = scope:lyd_c2_actor.var:lyd_c2_target_main }
+                    lyd_c2_retirement_postcondition_trigger = { ACTOR = scope:lyd_c2_actor }
+                    trigger_if = { limit = { has_variable = lyd_c2_target_head }
+                        var:lyd_c2_target_faith.religious_head = var:lyd_c2_target_head
+                    }
+                }
+                var:lyd_c2_moving_rite = { set_variable = { name = lyd_c2_transition_cooldown value = 1 days = @TRANSITION_DAYS@ } }
+                remove_short_term_gold = @JOIN_GOLD@
+                add_piety = -@JOIN_PIETY@
+                set_variable = { name = lyd_c2_result value = 1 }
+                change_variable = { name = lyd_c2_completed_joins add = 1 }
+                lyd_c2_reconcile_after_transition_effect = yes
+                lyd_c2_release_locks_effect = yes
+                trigger_event = lyd.228
+            }
+            else = { lyd_c2_native_failure_effect = yes }
+        }
+        else = { lyd_c2_native_failure_effect = yes }
+    }
+}
+lyd_c2_commit_detach_effect = {
+    if = {
+        limit = { is_ai = no lyd_c2_ready_to_confirm_trigger = { ACTOR = scope:lyd_c2_actor } var:lyd_c2_kind = 2 }
+        # Character-scoped invocation plus saved returned Faith, as in R0002.
+        var:lyd_c2_moving_rite = {
+            lyd_c3_before_rite_migration_effect = yes
+            lyd_c3_cleanup_rite_claim_offices_effect = yes
+        }
+        detach_rite_to_new_faith = { target = var:lyd_c2_moving_rite save_scope_as = lyd_c2_new_faith }
+        lyd_c2_create_owned_temporal_head_effect = yes
+        if = {
+            limit = {
+                exists = scope:lyd_c2_new_faith
+                faith = scope:lyd_c2_new_faith
+                var:lyd_c2_moving_rite = { faith = scope:lyd_c2_new_faith this = faith.main_rite }
+                var:lyd_c2_source_faith = { main_rite = scope:lyd_c2_actor.var:lyd_c2_source_main }
+                OR = {
+                    AND = { rite = { rite_has_doctrine = doctrine_no_head } faith = { NOT = { exists = religious_head_title } } }
+                    AND = {
+                        rite = { rite_has_doctrine = doctrine_temporal_head }
+                        faith.religious_head = scope:lyd_c2_actor
+                        faith.religious_head_title = { has_variable = lyd_c2_owned_head_title var:lyd_c2_owner_faith = scope:lyd_c2_new_faith }
+                    }
+                }
+            }
+            var:lyd_c2_moving_rite = { set_variable = { name = lyd_c2_transition_cooldown value = 1 days = @TRANSITION_DAYS@ } }
+            remove_short_term_gold = @DETACH_GOLD@
+            add_piety = -@DETACH_PIETY@
+            set_variable = { name = lyd_c2_result value = 1 }
+            change_variable = { name = lyd_c2_completed_detaches add = 1 }
+            lyd_c2_reconcile_after_transition_effect = yes
+            lyd_c2_release_locks_effect = yes
+            trigger_event = lyd.228
+        }
+        else = { lyd_c2_native_failure_effect = yes }
+    }
+}
+lyd_c2_native_failure_effect = {
+    # Preserve actual partial state and record failure; never fabricate rollback.
+    set_variable = { name = lyd_c2_result value = 5 }
+    debug_log = "LYD_C2_NATIVE_POSTCONDITION_FAILED"
+    debug_log_scopes = yes
+    lyd_c2_reconcile_after_transition_effect = yes
+    lyd_c2_release_locks_effect = yes
+    trigger_event = lyd.228
+}
+lyd_c2_reconcile_after_transition_effect = {
+    if = { limit = { exists = var:lyd_c2_source_faith }
+        var:lyd_c2_source_faith = { lyd_c3_reconcile_faith_roles_effect = yes }
+    }
+    if = { limit = { has_variable = lyd_c2_target_faith exists = var:lyd_c2_target_faith }
+        var:lyd_c2_target_faith = { lyd_c3_reconcile_faith_roles_effect = yes }
+    }
+    if = { limit = { exists = scope:lyd_c2_new_faith }
+        scope:lyd_c2_new_faith = { lyd_c3_reconcile_faith_roles_effect = yes }
+    }
+}

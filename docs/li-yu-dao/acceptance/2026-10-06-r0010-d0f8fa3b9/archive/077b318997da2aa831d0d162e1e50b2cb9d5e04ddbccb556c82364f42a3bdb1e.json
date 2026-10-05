@@ -1,0 +1,15 @@
+{
+  "schema": "lyd.r10.root-launch-profile-helper.v1",
+  "utc": "2026-10-05T10:27:36.649980+00:00",
+  "mode": "launch",
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "game_create_attempted": false,
+  "game_started": false,
+  "native_injected": false,
+  "bus_mutation": false,
+  "input_sent": false,
+  "status": "RED",
+  "error_type": "ValueError",
+  "error": "Release target receipt differs from actual native input: dll",
+  "retry_authorization": false
+}

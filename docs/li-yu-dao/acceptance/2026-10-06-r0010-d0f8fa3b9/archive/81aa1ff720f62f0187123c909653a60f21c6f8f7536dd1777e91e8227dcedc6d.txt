@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0102-fourth-review-detail.request.json",
+  "request_id": "r10-0102-fourth-review-detail",
+  "sha256": "1f75f399dc5e71d0d7bdf091e2e8bb90092d0a8afa8ce083867412778f577724",
+  "contacted_game": false
+}

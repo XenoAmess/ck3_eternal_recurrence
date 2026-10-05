@@ -1,0 +1,19 @@
+{
+  "argv": [
+    "C:/Program Files/GitHub CLI/gh.exe",
+    "api",
+    "--method",
+    "GET",
+    "repos/XenoAmess/ck3_eternal_recurrence/check-runs/111708827682/annotations?per_page=100",
+    "-H",
+    "Accept: application/vnd.github+json"
+  ],
+  "at_utc": "2026-10-05T10:06:30.631333+00:00",
+  "finished_at_utc": "2026-10-05T10:06:39.397156+00:00",
+  "exit_code": 0,
+  "stdout_bytes": 841,
+  "stdout_sha256": "0637adc21d6916aedc18e1f60cc6d41a1f8f5128fb22225fd0ba41f2b2e62ea6",
+  "stderr_bytes": 0,
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "environment": "Inherited current process proxy; no settings changed."
+}

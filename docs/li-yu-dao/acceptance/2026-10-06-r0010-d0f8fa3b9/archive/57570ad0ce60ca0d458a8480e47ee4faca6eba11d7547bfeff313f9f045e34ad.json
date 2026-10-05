@@ -1,0 +1,2103 @@
+{
+  "public_tools": {
+    "source": {
+      "path": "C:\\lr10s1\\tools\\ck3_native_profile_mcp.py",
+      "bytes": 56256,
+      "sha256": "1ab982fc3e46bd6baa507de6c9ca02062811a46991f765a7235b376d98d00fa8"
+    },
+    "ranges": [
+      {
+        "first": 517,
+        "last": 524,
+        "lines": [
+          {
+            "line": 517,
+            "text": "    def query_decision(self, decision_key: str, expected_revision: int) -> dict:"
+          },
+          {
+            "line": 518,
+            "text": "        with self._lock:"
+          },
+          {
+            "line": 519,
+            "text": "            self._bound_frame(expected_revision, paused=True)"
+          },
+          {
+            "line": 520,
+            "text": "            result = self._gameplay_service().query_ingame_decision_item_v1("
+          },
+          {
+            "line": 521,
+            "text": "                decision_key, expected_revision=expected_revision)"
+          },
+          {
+            "line": 522,
+            "text": "            self._bound_frame(expected_revision, paused=True)"
+          },
+          {
+            "line": 523,
+            "text": "            return self._receipt(\"decision-query\", {\"status\": \"native_decision_query_observed\", \"result\": result,"
+          },
+          {
+            "line": 524,
+            "text": "                \"business_effects_verified\": False, \"full_product_acceptance_credit\": False})"
+          }
+        ]
+      },
+      {
+        "first": 749,
+        "last": 760,
+        "lines": [
+          {
+            "line": 749,
+            "text": "def create_clock_server(service: NativeClockProfileService):"
+          },
+          {
+            "line": 750,
+            "text": "    from mcp.server import MCPServer"
+          },
+          {
+            "line": 751,
+            "text": "    from mcp.types import ToolAnnotations"
+          },
+          {
+            "line": 752,
+            "text": "    server = MCPServer(\"CK3 frozen native clock\")"
+          },
+          {
+            "line": 753,
+            "text": "    @server.tool(annotations=ToolAnnotations(readOnlyHint=True))"
+          },
+          {
+            "line": 754,
+            "text": "    def ck3_read_profile_native_clock_v1() -> dict[str, object]:"
+          },
+          {
+            "line": 755,
+            "text": "        return service.clock()"
+          },
+          {
+            "line": 756,
+            "text": "    _forbid_unknown_tool_arguments_v1(server, \"ck3_read_profile_native_clock_v1\")"
+          },
+          {
+            "line": 757,
+            "text": "    return server"
+          },
+          {
+            "line": 758,
+            "text": ""
+          },
+          {
+            "line": 759,
+            "text": ""
+          },
+          {
+            "line": 760,
+            "text": "def create_server(service: NativeProfileService):"
+          }
+        ]
+      },
+      {
+        "first": 829,
+        "last": 859,
+        "lines": [
+          {
+            "line": 829,
+            "text": "    @server.tool(annotations=ToolAnnotations(readOnlyHint=True))"
+          },
+          {
+            "line": 830,
+            "text": "    def ck3_query_profile_decision_item_v1(decision_key: str, expected_revision: int) -> dict[str, object]:"
+          },
+          {
+            "line": 831,
+            "text": "        return service.query_decision(decision_key, expected_revision)"
+          },
+          {
+            "line": 832,
+            "text": "    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, idempotentHint=False))"
+          },
+          {
+            "line": 833,
+            "text": "    def ck3_open_profile_decisions_v1(expected_revision: int) -> dict[str, object]:"
+          },
+          {
+            "line": 834,
+            "text": "        return service.decision_action(\"open\", expected_revision)"
+          },
+          {
+            "line": 835,
+            "text": "    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, idempotentHint=False))"
+          },
+          {
+            "line": 836,
+            "text": "    def ck3_select_profile_decision_item_v1(decision_key: str, expected_revision: int) -> dict[str, object]:"
+          },
+          {
+            "line": 837,
+            "text": "        return service.decision_action(\"select\", expected_revision, decision_key=decision_key)"
+          },
+          {
+            "line": 838,
+            "text": "    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, idempotentHint=False))"
+          },
+          {
+            "line": 839,
+            "text": "    def ck3_confirm_profile_decision_outcome_v1("
+          },
+          {
+            "line": 840,
+            "text": "        decision_key: str, expected_outcome: Literal[\"event_window\", \"decision_closed\"],"
+          },
+          {
+            "line": 841,
+            "text": "        expected_revision: int, expected_event_definition_key: str | None = None,"
+          },
+          {
+            "line": 842,
+            "text": "    ) -> dict[str, object]:"
+          },
+          {
+            "line": 843,
+            "text": "        return service.decision_action(\"confirm_outcome\", expected_revision, decision_key=decision_key,"
+          },
+          {
+            "line": 844,
+            "text": "            expected_outcome=expected_outcome, expected_event_definition_key=expected_event_definition_key)"
+          },
+          {
+            "line": 845,
+            "text": "    for name in (\"ck3_query_profile_character_interaction_ordinary_v1\","
+          },
+          {
+            "line": 846,
+            "text": "                  \"ck3_initiate_profile_character_interaction_ordinary_v1\","
+          },
+          {
+            "line": 847,
+            "text": "                  \"ck3_observe_profile_normal_exit_v1\","
+          },
+          {
+            "line": 848,
+            "text": "                  \"ck3_query_normal_exit_context_v1\", \"ck3_request_normal_exit_v1\","
+          },
+          {
+            "line": 849,
+            "text": "                  \"ck3_query_profile_current_actor_stress_adjustment_v1\","
+          },
+          {
+            "line": 850,
+            "text": "                 \"ck3_query_profile_decision_item_v1\", \"ck3_open_profile_decisions_v1\","
+          },
+          {
+            "line": 851,
+            "text": "                 \"ck3_select_profile_decision_item_v1\", \"ck3_confirm_profile_decision_outcome_v1\","
+          },
+          {
+            "line": 852,
+            "text": "                 \"ck3_query_native_profile_v1\", \"ck3_attach_profile_bridge_v1\", \"ck3_resume_profile_bridge_v1\", \"ck3_take_profile_native_snapshot_v1\","
+          },
+          {
+            "line": 853,
+            "text": "                 \"ck3_query_profile_event_window_v1\", \"ck3_set_profile_simulation_v1\","
+          },
+          {
+            "line": 854,
+            "text": "                 \"ck3_query_profile_pending_interaction_v1\","
+          },
+          {
+            "line": 855,
+            "text": "                 \"ck3_reply_profile_pending_interaction_v1\","
+          },
+          {
+            "line": 856,
+            "text": "                 \"ck3_pause_profile_simulation_v1\","
+          },
+          {
+            "line": 857,
+            "text": "                 \"ck3_select_profile_event_option_v1\", \"ck3_save_profile_checkpoint_v1\"):"
+          },
+          {
+            "line": 858,
+            "text": "        _forbid_unknown_tool_arguments_v1(server, name)"
+          },
+          {
+            "line": 859,
+            "text": "    return server"
+          }
+        ]
+      }
+    ]
+  },
+  "driver": {
+    "source": {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1382391,
+      "sha256": "b24025f67ec745308754cefd4f182bf3c63356b7a3aa2d5e06d305b34627c751"
+    },
+    "ranges": [
+      {
+        "first": 6380,
+        "last": 6389,
+        "lines": [
+          {
+            "line": 6380,
+            "text": "    def select_ingame_decision_item_v1(self, decision_key: str, *, expected_revision: int | None = None) -> dict[str, object]:"
+          },
+          {
+            "line": 6381,
+            "text": "        \"\"\"Invoke the exact source OnSelect once on the unique actual model row.\"\"\""
+          },
+          {
+            "line": 6382,
+            "text": "        return self._decision_item_action_v1(decision_key, action=\"select\", expected_revision=expected_revision)"
+          },
+          {
+            "line": 6383,
+            "text": ""
+          },
+          {
+            "line": 6384,
+            "text": "    def confirm_ingame_decision_item_v1(self, decision_key: str, expected_window_kind: str, *, expected_revision: int | None = None) -> dict[str, object]:"
+          },
+          {
+            "line": 6385,
+            "text": "        \"\"\"Invoke the selected detail's fixed Confirm once, then read the actual inner modal.\"\"\""
+          },
+          {
+            "line": 6386,
+            "text": "        if expected_window_kind != \"vivhite_courtier\":"
+          },
+          {
+            "line": 6387,
+            "text": "            raise ValueError(\"unsupported fixed expected inner-modal census scope\")"
+          },
+          {
+            "line": 6388,
+            "text": "        return self._decision_item_action_v1(decision_key, action=\"confirm\", expected_revision=expected_revision,"
+          },
+          {
+            "line": 6389,
+            "text": "                                             expected_window_kind=expected_window_kind)"
+          }
+        ]
+      },
+      {
+        "first": 6907,
+        "last": 6938,
+        "lines": [
+          {
+            "line": 6907,
+            "text": "    def query_ingame_decision_item_v1(self, decision_key: str, *, expected_revision: int | None = None) -> dict[str, object]:"
+          },
+          {
+            "line": 6908,
+            "text": "        \"\"\"Read actual .3 model key/owner and selected detail identity without action credit.\"\"\""
+          },
+          {
+            "line": 6909,
+            "text": "        from .ingame_decision_item_contract import STEP, CAPABILITY, validate_decision_key, normalize_decision_item"
+          },
+          {
+            "line": 6910,
+            "text": "        from .ingame_decisions_open_contract import opening_binding"
+          },
+          {
+            "line": 6911,
+            "text": "        validate_decision_key(decision_key)"
+          },
+          {
+            "line": 6912,
+            "text": "        starting = self.take_snapshot()"
+          },
+          {
+            "line": 6913,
+            "text": "        try:"
+          },
+          {
+            "line": 6914,
+            "text": "            binding = opening_binding(starting)"
+          },
+          {
+            "line": 6915,
+            "text": "        except ValueError as error:"
+          },
+          {
+            "line": 6916,
+            "text": "            raise BridgeUnavailableError(str(error)) from error"
+          },
+          {
+            "line": 6917,
+            "text": "        revision = int(starting[\"revision\"])"
+          },
+          {
+            "line": 6918,
+            "text": "        if expected_revision is not None:"
+          },
+          {
+            "line": 6919,
+            "text": "            _validate_revision(expected_revision, \"expected_revision\")"
+          },
+          {
+            "line": 6920,
+            "text": "            if expected_revision != revision:"
+          },
+          {
+            "line": 6921,
+            "text": "                raise PreSubmissionRevisionMismatchError(\"keyed decision query public revision changed\")"
+          },
+          {
+            "line": 6922,
+            "text": "        raw = self._execute_primitive_step("
+          },
+          {
+            "line": 6923,
+            "text": "            STEP, expected_revision=revision, required_capability=CAPABILITY,"
+          },
+          {
+            "line": 6924,
+            "text": "            request_fields={\"decision_key\": decision_key,"
+          },
+          {
+            "line": 6925,
+            "text": "                            \"expected_player_character_id\": binding[\"played_character_id\"],"
+          },
+          {
+            "line": 6926,
+            "text": "                            \"expected_game_pid\": binding[\"game_pid\"],"
+          },
+          {
+            "line": 6927,
+            "text": "                            \"expected_connection_generation\": binding[\"connection_generation\"]},"
+          },
+          {
+            "line": 6928,
+            "text": "        )"
+          },
+          {
+            "line": 6929,
+            "text": "        try:"
+          },
+          {
+            "line": 6930,
+            "text": "            result = normalize_decision_item(raw, binding, decision_key)"
+          },
+          {
+            "line": 6931,
+            "text": "            ending = self.take_snapshot()"
+          },
+          {
+            "line": 6932,
+            "text": "            if opening_binding(ending) != binding or not _same_paused_native_frame(starting, ending):"
+          },
+          {
+            "line": 6933,
+            "text": "                raise ValueError(\"keyed decision query crossed its episode/frame\")"
+          },
+          {
+            "line": 6934,
+            "text": "        except ValueError as error:"
+          },
+          {
+            "line": 6935,
+            "text": "            raise BridgeUnavailableError(str(error)) from error"
+          },
+          {
+            "line": 6936,
+            "text": "        result.update({\"episode_run_id\": binding[\"episode_run_id\"], \"queried_revision\": revision,"
+          },
+          {
+            "line": 6937,
+            "text": "                       \"uses_mouse\": False, \"uses_keyboard\": False, \"uses_ocr\": False})"
+          },
+          {
+            "line": 6938,
+            "text": "        return result"
+          }
+        ]
+      }
+    ]
+  },
+  "query_contract": {
+    "source": {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_item_contract.py",
+      "bytes": 3636,
+      "sha256": "79a24b14d6d7462f6eca24011eb090628e7cc2f1bc5852f1741db98c478903ec"
+    },
+    "ranges": [
+      {
+        "first": 1,
+        "last": 60,
+        "lines": [
+          {
+            "line": 1,
+            "text": "\"\"\"Read actual exact .3 decision model identity without projecting UI action qualification.\"\"\""
+          },
+          {
+            "line": 2,
+            "text": "from .ingame_decisions_open_contract import EXE_SHA256"
+          },
+          {
+            "line": 3,
+            "text": ""
+          },
+          {
+            "line": 4,
+            "text": "STEP = \"query-ingame-decision-item-v1\""
+          },
+          {
+            "line": 5,
+            "text": "CAPABILITY = \"game.command.query-ingame-decision-item-v1\""
+          },
+          {
+            "line": 6,
+            "text": ""
+          },
+          {
+            "line": 7,
+            "text": ""
+          },
+          {
+            "line": 8,
+            "text": "def validate_decision_key(key: object) -> str:"
+          },
+          {
+            "line": 9,
+            "text": "    if not isinstance(key, str) or not key or len(key) > 192 or not all("
+          },
+          {
+            "line": 10,
+            "text": "        \"a\" <= c <= \"z\" or \"A\" <= c <= \"Z\" or \"0\" <= c <= \"9\" or c == \"_\" for c in key"
+          },
+          {
+            "line": 11,
+            "text": "    ):"
+          },
+          {
+            "line": 12,
+            "text": "        raise ValueError(\"invalid semantic decision key\")"
+          },
+          {
+            "line": 13,
+            "text": "    return key"
+          },
+          {
+            "line": 14,
+            "text": ""
+          },
+          {
+            "line": 15,
+            "text": ""
+          },
+          {
+            "line": 16,
+            "text": "def normalize_decision_item(raw: object, binding: dict[str, object], requested_key: str) -> dict[str, object]:"
+          },
+          {
+            "line": 17,
+            "text": "    validate_decision_key(requested_key)"
+          },
+          {
+            "line": 18,
+            "text": "    if (not isinstance(raw, dict) or raw.get(\"schema\") != \"ck3-ingame-decision-item-v1\""
+          },
+          {
+            "line": 19,
+            "text": "            or raw.get(\"step\") != STEP or raw.get(\"read_only\") is not True"
+          },
+          {
+            "line": 20,
+            "text": "            or raw.get(\"game_version\") != \"1.20.0.3\""
+          },
+          {
+            "line": 21,
+            "text": "            or str(raw.get(\"executable_sha256\", \"\")).lower() != EXE_SHA256"
+          },
+          {
+            "line": 22,
+            "text": "            or type(raw.get(\"available\")) is not bool):"
+          },
+          {
+            "line": 23,
+            "text": "        raise ValueError(\"malformed exact .3 keyed decision observation\")"
+          },
+          {
+            "line": 24,
+            "text": "    if raw.get(\"row_widget_datacontext_verified\") is not False or raw.get(\"action_qualified\") is not False:"
+          },
+          {
+            "line": 25,
+            "text": "        raise ValueError(\"model observation cannot qualify a widget action\")"
+          },
+          {
+            "line": 26,
+            "text": "    if not raw[\"available\"]:"
+          },
+          {
+            "line": 27,
+            "text": "        if not isinstance(raw.get(\"unavailable_reason\"), str) or not raw[\"unavailable_reason\"]:"
+          },
+          {
+            "line": 28,
+            "text": "            raise ValueError(\"unavailable keyed model lacks reason\")"
+          },
+          {
+            "line": 29,
+            "text": "        return dict(raw)"
+          },
+          {
+            "line": 30,
+            "text": "    for key in (\"native_revision\", \"connection_generation\", \"game_pid\", \"played_character_id\", \"date_raw\"):"
+          },
+          {
+            "line": 31,
+            "text": "        value = raw.get(key)"
+          },
+          {
+            "line": 32,
+            "text": "        if type(value) is not int or value != binding[key]:"
+          },
+          {
+            "line": 33,
+            "text": "            raise ValueError(f\"keyed model changed {key}\")"
+          },
+          {
+            "line": 34,
+            "text": "    for key in (\"owner_thread_verified\", \"frame_verified\", \"source_abi_pins_verified\", \"gui_owner_binding_verified\","
+          },
+          {
+            "line": 35,
+            "text": "                \"decisions_tree_complete\", \"decisions_root_visible\", \"row_owner_verified\"):"
+          },
+          {
+            "line": 36,
+            "text": "        if raw.get(key) is not True:"
+          },
+          {
+            "line": 37,
+            "text": "            raise ValueError(f\"keyed model proof unavailable: {key}\")"
+          },
+          {
+            "line": 38,
+            "text": "    for key, bound in ((\"group_count\", 64), (\"row_count\", 2048)):"
+          },
+          {
+            "line": 39,
+            "text": "        if type(raw.get(key)) is not int or not 0 <= raw[key] <= bound:"
+          },
+          {
+            "line": 40,
+            "text": "            raise ValueError(f\"keyed model has invalid {key}\")"
+          },
+          {
+            "line": 41,
+            "text": "    if type(raw.get(\"matching_row_count\")) is not int or raw[\"matching_row_count\"] != 1:"
+          },
+          {
+            "line": 42,
+            "text": "        raise ValueError(\"requested actual model row is not unique\")"
+          },
+          {
+            "line": 43,
+            "text": "    if raw.get(\"decision_key\") != requested_key:"
+          },
+          {
+            "line": 44,
+            "text": "        raise ValueError(\"actual model definition key does not match request\")"
+          },
+          {
+            "line": 45,
+            "text": "    if type(raw.get(\"row_context_reference_key\")) is not int or not 0 <= raw[\"row_context_reference_key\"] <= 0xFFFFFFFF:"
+          },
+          {
+            "line": 46,
+            "text": "        raise ValueError(\"invalid observed context reference key\")"
+          },
+          {
+            "line": 47,
+            "text": "    for key in (\"row_scope_reference_available\", \"detail_tree_complete\", \"detail_root_visible\","
+          },
+          {
+            "line": 48,
+            "text": "                \"detail_definition_available\", \"detail_definition_matches_target\"):"
+          },
+          {
+            "line": 49,
+            "text": "        if type(raw.get(key)) is not bool:"
+          },
+          {
+            "line": 50,
+            "text": "            raise ValueError(f\"keyed model lacks actual {key}\")"
+          },
+          {
+            "line": 51,
+            "text": "    current = raw.get(\"detail_decision_key\")"
+          },
+          {
+            "line": 52,
+            "text": "    if raw[\"detail_definition_available\"]:"
+          },
+          {
+            "line": 53,
+            "text": "        validate_decision_key(current)"
+          },
+          {
+            "line": 54,
+            "text": "    elif current != \"\":"
+          },
+          {
+            "line": 55,
+            "text": "        raise ValueError(\"absent detail definition contains a key\")"
+          },
+          {
+            "line": 56,
+            "text": "    if raw[\"detail_definition_matches_target\"] != (raw[\"detail_definition_available\"] and current == requested_key):"
+          },
+          {
+            "line": 57,
+            "text": "        raise ValueError(\"actual selected definition comparison is inconsistent\")"
+          },
+          {
+            "line": 58,
+            "text": "    if raw[\"detail_root_visible\"] and not raw[\"detail_tree_complete\"]:"
+          },
+          {
+            "line": 59,
+            "text": "        raise ValueError(\"actual visible detail root census is incomplete\")"
+          },
+          {
+            "line": 60,
+            "text": "    return dict(raw)"
+          }
+        ]
+      }
+    ]
+  },
+  "action_contract": {
+    "source": {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_item_action_contract.py",
+      "bytes": 5856,
+      "sha256": "4d37320c979f7b1bf9bbeaba1ae9cd0d19bd41f81e9ac477d13229d2a616dd87"
+    },
+    "ranges": [
+      {
+        "first": 11,
+        "last": 63,
+        "lines": [
+          {
+            "line": 11,
+            "text": "def normalize_decision_action(raw: object, binding: dict[str, object], decision_key: str, action: str) -> dict[str, object]:"
+          },
+          {
+            "line": 12,
+            "text": "    step = SELECT_STEP if action == 'select' else CONFIRM_STEP if action == 'confirm' else None"
+          },
+          {
+            "line": 13,
+            "text": "    if (step is None or not isinstance(raw, dict) or raw.get('schema') != 'ck3-ingame-decision-item-action-v1'"
+          },
+          {
+            "line": 14,
+            "text": "            or raw.get('step') != step or raw.get('action') != action or raw.get('game_version') != '1.20.0.3'"
+          },
+          {
+            "line": 15,
+            "text": "            or str(raw.get('executable_sha256', '')).lower() != EXE_SHA256 or raw.get('decision_key') != decision_key):"
+          },
+          {
+            "line": 16,
+            "text": "        raise ValueError('malformed exact .3 decision action acknowledgement')"
+          },
+          {
+            "line": 17,
+            "text": "    for key in ('native_revision', 'connection_generation', 'game_pid', 'played_character_id', 'date_raw'):"
+          },
+          {
+            "line": 18,
+            "text": "        if type(raw.get(key)) is not int or raw[key] != binding[key]:"
+          },
+          {
+            "line": 19,
+            "text": "            raise ValueError(f'decision action changed {key}')"
+          },
+          {
+            "line": 20,
+            "text": "    for key in ('owner_thread_verified', 'source_abi_pins_verified', 'action_abi_pins_verified',"
+          },
+          {
+            "line": 21,
+            "text": "                'receiver_qualified', 'gui_owner_binding_verified', 'frame_verified'):"
+          },
+          {
+            "line": 22,
+            "text": "        if raw.get(key) is not True:"
+          },
+          {
+            "line": 23,
+            "text": "            raise ValueError(f'decision action lacks actual {key}')"
+          },
+          {
+            "line": 24,
+            "text": "    before = normalize_decision_item(raw.get('before_actual_model'), binding, decision_key)"
+          },
+          {
+            "line": 25,
+            "text": "    if before.get('available') is not True:"
+          },
+          {
+            "line": 26,
+            "text": "        raise ValueError('decision action lacks actual before model qualification')"
+          },
+          {
+            "line": 27,
+            "text": "    for key in ('dispatch_invoked', 'native_call_completed', 'before_already_selected', 'native_handled',"
+          },
+          {
+            "line": 28,
+            "text": "                'native_after_read', 'selected_after_verified', 'inner_modal_visible', 'inner_modal_tree_complete',"
+          },
+          {
+            "line": 29,
+            "text": "                'postcondition_verified', 'verification_pending', 'detail_actor_binding_verified', 'no_blocking_modal_verified'):"
+          },
+          {
+            "line": 30,
+            "text": "        if type(raw.get(key)) is not bool:"
+          },
+          {
+            "line": 31,
+            "text": "            raise ValueError(f'decision action lacks actual boolean {key}')"
+          },
+          {
+            "line": 32,
+            "text": "    if raw.get('unavailable_reason') or raw.get('status') not in ('observed_postcondition', 'acknowledged_verification_pending'):"
+          },
+          {
+            "line": 33,
+            "text": "        raise ValueError('native decision action rejected or completion is unknown; no retry')"
+          },
+          {
+            "line": 34,
+            "text": "    if action == 'select':"
+          },
+          {
+            "line": 35,
+            "text": "        if raw['no_blocking_modal_verified'] is not True:"
+          },
+          {
+            "line": 36,
+            "text": "            raise ValueError('source OnSelect is blocked by a modal')"
+          },
+          {
+            "line": 37,
+            "text": "        if raw['before_already_selected']:"
+          },
+          {
+            "line": 38,
+            "text": "            if raw['dispatch_invoked'] or raw['native_call_completed']:"
+          },
+          {
+            "line": 39,
+            "text": "                raise ValueError('already-selected source handler must not toggle Hide')"
+          },
+          {
+            "line": 40,
+            "text": "            if before.get('detail_definition_matches_target') is not True:"
+          },
+          {
+            "line": 41,
+            "text": "                raise ValueError('already-selected acknowledgement lacks actual definition identity')"
+          },
+          {
+            "line": 42,
+            "text": "        elif not raw['dispatch_invoked'] or not raw['native_call_completed']:"
+          },
+          {
+            "line": 43,
+            "text": "            raise ValueError('source OnSelect invocation did not complete; no retry')"
+          },
+          {
+            "line": 44,
+            "text": "    else:"
+          },
+          {
+            "line": 45,
+            "text": "        if (not raw['dispatch_invoked'] or raw['before_already_selected']"
+          },
+          {
+            "line": 46,
+            "text": "                or raw['detail_actor_binding_verified'] is not True"
+          },
+          {
+            "line": 47,
+            "text": "                or before.get('detail_root_visible') is not True"
+          },
+          {
+            "line": 48,
+            "text": "                or before.get('detail_tree_complete') is not True"
+          },
+          {
+            "line": 49,
+            "text": "                or before.get('detail_definition_matches_target') is not True"
+          },
+          {
+            "line": 50,
+            "text": "                or before.get('detail_actor_binding_verified') is not True"
+          },
+          {
+            "line": 51,
+            "text": "                or type(before.get('detail_actor_reference_key')) is not int"
+          },
+          {
+            "line": 52,
+            "text": "                or before['detail_actor_reference_key'] != binding['played_character_id']):"
+          },
+          {
+            "line": 53,
+            "text": "            raise ValueError('fixed Confirm lacks actual selected detail/actor/dispatch proof')"
+          },
+          {
+            "line": 54,
+            "text": "    return dict(raw)"
+          },
+          {
+            "line": 55,
+            "text": ""
+          },
+          {
+            "line": 56,
+            "text": ""
+          },
+          {
+            "line": 57,
+            "text": "def actual_selected_detail(raw: object, binding: dict[str, object], decision_key: str) -> bool:"
+          },
+          {
+            "line": 58,
+            "text": "    result = normalize_decision_item(raw, binding, decision_key)"
+          },
+          {
+            "line": 59,
+            "text": "    return (result.get('available') is True and result.get('detail_root_visible') is True"
+          },
+          {
+            "line": 60,
+            "text": "            and result.get('detail_tree_complete') is True and result.get('detail_definition_matches_target') is True"
+          },
+          {
+            "line": 61,
+            "text": "            and result.get('detail_actor_binding_verified') is True"
+          },
+          {
+            "line": 62,
+            "text": "            and type(result.get('detail_actor_reference_key')) is int"
+          },
+          {
+            "line": 63,
+            "text": "            and result['detail_actor_reference_key'] == binding['played_character_id'])"
+          }
+        ]
+      }
+    ]
+  },
+  "native_header": {
+    "source": {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_decision_item_v1.hpp",
+      "bytes": 4298,
+      "sha256": "b2d823a8510a99d049762b773ba1bdb21785ffe44e839ceaa6ca3e23f299f51f"
+    },
+    "ranges": [
+      {
+        "first": 9,
+        "last": 56,
+        "lines": [
+          {
+            "line": 9,
+            "text": "inline constexpr std::string_view kIngameDecisionItemQueryV1Step = \"query-ingame-decision-item-v1\";"
+          },
+          {
+            "line": 10,
+            "text": "inline constexpr std::string_view kIngameDecisionItemQueryV1Capability = \"game.command.query-ingame-decision-item-v1\";"
+          },
+          {
+            "line": 11,
+            "text": "inline constexpr std::string_view kIngameDecisionItemSelectV1Step = \"select-ingame-decision-item-v1\";"
+          },
+          {
+            "line": 12,
+            "text": "inline constexpr std::string_view kIngameDecisionItemSelectV1Capability = \"game.command.select-ingame-decision-item-v1\";"
+          },
+          {
+            "line": 13,
+            "text": "inline constexpr std::string_view kIngameDecisionItemConfirmV1Step = \"confirm-ingame-decision-item-v1\";"
+          },
+          {
+            "line": 14,
+            "text": "inline constexpr std::string_view kIngameDecisionItemConfirmV1Capability = \"game.command.confirm-ingame-decision-item-v1\";"
+          },
+          {
+            "line": 15,
+            "text": "inline constexpr std::string_view kIngameDecisionOutcomeConfirmV1Step = \"confirm-ingame-decision-outcome-v1\";"
+          },
+          {
+            "line": 16,
+            "text": "inline constexpr std::string_view kIngameDecisionOutcomeConfirmV1Capability = \"game.command.confirm-ingame-decision-outcome-v1\";"
+          },
+          {
+            "line": 17,
+            "text": "struct IngameDecisionItemResultV1 {"
+          },
+          {
+            "line": 18,
+            "text": "  std::uint64_t native_revision=0, connection_generation=0;"
+          },
+          {
+            "line": 19,
+            "text": "  std::uint32_t game_pid=0, row_context_reference_key=0;"
+          },
+          {
+            "line": 20,
+            "text": "  std::int32_t played_character_id=-1, date_raw=0;"
+          },
+          {
+            "line": 21,
+            "text": "  std::int32_t detail_actor_reference_key=-1;"
+          },
+          {
+            "line": 22,
+            "text": "  std::size_t group_count=0, row_count=0, matching_row_count=0;"
+          },
+          {
+            "line": 23,
+            "text": "  bool available=false, owner_thread_verified=false, frame_verified=false;"
+          },
+          {
+            "line": 24,
+            "text": "  bool source_abi_pins_verified=false, gui_owner_binding_verified=false;"
+          },
+          {
+            "line": 25,
+            "text": "  bool decisions_tree_complete=false, decisions_root_visible=false;"
+          },
+          {
+            "line": 26,
+            "text": "  bool row_owner_verified=false, row_scope_reference_available=false;"
+          },
+          {
+            "line": 27,
+            "text": "  bool detail_tree_complete=false, detail_root_visible=false;"
+          },
+          {
+            "line": 28,
+            "text": "  bool detail_definition_available=false, detail_definition_matches_target=false;"
+          },
+          {
+            "line": 29,
+            "text": "  bool detail_actor_binding_verified=false;"
+          },
+          {
+            "line": 30,
+            "text": "  std::string decision_key, detail_decision_key, unavailable_reason;"
+          },
+          {
+            "line": 31,
+            "text": "  // Failure-only diagnostics: never used as ownership, frame or action proof."
+          },
+          {
+            "line": 32,
+            "text": "  std::string model_read_pass, model_failed_stage;"
+          },
+          {
+            "line": 33,
+            "text": "  std::uintptr_t model_observed_pointer=0, model_expected_pointer=0;"
+          },
+          {
+            "line": 34,
+            "text": "};"
+          },
+          {
+            "line": 35,
+            "text": "struct IngameDecisionItemContextV1 {"
+          },
+          {
+            "line": 36,
+            "text": "  const game::GameAdapter *game=nullptr;"
+          },
+          {
+            "line": 37,
+            "text": "  game::Snapshot expected_snapshot{};"
+          },
+          {
+            "line": 38,
+            "text": "  std::uint64_t native_revision=0, connection_generation=0;"
+          },
+          {
+            "line": 39,
+            "text": "  std::string requested_key;"
+          },
+          {
+            "line": 40,
+            "text": "  IngameDecisionItemResultV1 result{};"
+          },
+          {
+            "line": 41,
+            "text": "};"
+          },
+          {
+            "line": 42,
+            "text": "bool ExecuteIngameDecisionItemQueryV1(IngameDecisionItemContextV1 &,"
+          },
+          {
+            "line": 43,
+            "text": "    MainThreadQueryMailboxV1 &, const MainThreadExecutionStampV1 &,"
+          },
+          {
+            "line": 44,
+            "text": "    const ZhongguoScoreboardNativeEnvironmentV1 &) noexcept;"
+          },
+          {
+            "line": 45,
+            "text": "std::string SerializeIngameDecisionItemV1(const IngameDecisionItemResultV1 &);"
+          },
+          {
+            "line": 46,
+            "text": "enum class IngameDecisionItemActionKindV1 { select, confirm, confirm_outcome };"
+          },
+          {
+            "line": 47,
+            "text": "struct IngameDecisionItemActionResultV1 {"
+          },
+          {
+            "line": 48,
+            "text": "  IngameDecisionItemResultV1 before{},after{};"
+          },
+          {
+            "line": 49,
+            "text": "  IngameDecisionItemActionKindV1 action=IngameDecisionItemActionKindV1::select;"
+          },
+          {
+            "line": 50,
+            "text": "  bool receiver_qualified=false,detail_actor_binding_verified=false,no_blocking_modal_verified=false,action_abi_pins_verified=false;"
+          },
+          {
+            "line": 51,
+            "text": "  bool before_already_selected=false,dispatch_invoked=false,native_call_completed=false,native_handled=false;"
+          },
+          {
+            "line": 52,
+            "text": "  bool gui_owner_binding_verified=false,frame_verified=false,native_after_read=false;"
+          },
+          {
+            "line": 53,
+            "text": "  bool selected_after_verified=false,inner_modal_visible=false,inner_modal_tree_complete=false;"
+          },
+          {
+            "line": 54,
+            "text": "  bool postcondition_verified=false;"
+          },
+          {
+            "line": 55,
+            "text": "  std::string target_child_path,status=\"unavailable\",unavailable_reason;"
+          },
+          {
+            "line": 56,
+            "text": "  std::string expected_outcome,expected_event_definition_key;"
+          }
+        ]
+      }
+    ]
+  },
+  "native_reader": {
+    "source": {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\native_bridge\\src\\ingame_decision_item_v1.cpp",
+      "bytes": 51070,
+      "sha256": "6762b3c89d4c17c66f7e7e310d26ea94458f073da71ae88a5070b19fc7c00f9e"
+    },
+    "ranges": [
+      {
+        "first": 150,
+        "last": 167,
+        "lines": [
+          {
+            "line": 150,
+            "text": "  for(std::size_t n=0;n<p.groups.count;++n){"
+          },
+          {
+            "line": 151,
+            "text": "    const void *group=At(p.groups.data,n*0x20),*definition=nullptr;Vector rows{};"
+          },
+          {
+            "line": 152,
+            "text": "    if(!Read(group,0,definition))return ModelFailure(d,\"group_definition_read\");"
+          },
+          {
+            "line": 153,
+            "text": "    if(!definition)return ModelFailure(d,\"group_definition_null\");"
+          },
+          {
+            "line": 154,
+            "text": "    if(!VectorAt(group,8,kMaximumRows,rows))return ModelFailure(d,\"group_rows_vector_guard\");"
+          },
+          {
+            "line": 155,
+            "text": "    if(p.rows.size()+rows.count>kMaximumRows)return ModelFailure(d,\"total_rows_bound\");"
+          },
+          {
+            "line": 156,
+            "text": "    p.group_definitions.push_back(definition);p.row_vectors.push_back(rows);"
+          },
+          {
+            "line": 157,
+            "text": "    for(std::size_t i=0;i<rows.count;++i){"
+          },
+          {
+            "line": 158,
+            "text": "      const void *row=At(rows.data,i*0x20);Item item{};item.address=row;"
+          },
+          {
+            "line": 159,
+            "text": "      if(!Read(row,0,item.definition))return ModelFailure(d,\"row_definition_read\");"
+          },
+          {
+            "line": 160,
+            "text": "      if(!Read(row,8,item.scope_reference))return ModelFailure(d,\"row_scope_reference_read\");"
+          },
+          {
+            "line": 161,
+            "text": "      if(!Read(row,0x10,item.context_reference_key))return ModelFailure(d,\"row_context_reference_read\");"
+          },
+          {
+            "line": 162,
+            "text": "      if(!Read(row,0x18,item.owner))return ModelFailure(d,\"row_owner_read\");"
+          },
+          {
+            "line": 163,
+            "text": "      if(item.owner!=p.list)return ModelFailure(d,\"row_owner_binding\",item.owner,p.list);"
+          },
+          {
+            "line": 164,
+            "text": "      if(!DefinitionKey(item.definition,base,item.key))return ModelTypeFailure(d,\"row_definition_key_guard\",item.definition,base+0x48BD140);"
+          },
+          {
+            "line": 165,
+            "text": "      p.rows.push_back(std::move(item));"
+          },
+          {
+            "line": 166,
+            "text": "    }"
+          },
+          {
+            "line": 167,
+            "text": "  }"
+          }
+        ]
+      },
+      {
+        "first": 278,
+        "last": 305,
+        "lines": [
+          {
+            "line": 278,
+            "text": "bool ConfirmReceiver(const ZhongguoScoreboardNativeEnvironmentV1 &env,"
+          },
+          {
+            "line": 279,
+            "text": "    ZhongguoScoreboardActionDispatchEnvironmentV1 &dispatch,const Pass &model,void *context,"
+          },
+          {
+            "line": 280,
+            "text": "    void *&target,void *&vtable,std::string &target_path) {"
+          },
+          {
+            "line": 281,
+            "text": "  void *root=nullptr;NamedGuiTreeInspectionV1 tree{};bool visible=false;"
+          },
+          {
+            "line": 282,
+            "text": "  if(!Census(env,\"decisiondetail_view\",root,tree,visible)||!root||!visible||root!=model.detail_root)return false;"
+          },
+          {
+            "line": 283,
+            "text": "  const auto *cost=NamedRow(tree,\"cost\"),*back=NamedRow(tree,\"back\"),*highlight=NamedRow(tree,\"cram_study_start_tutorial_highlight\");"
+          },
+          {
+            "line": 284,
+            "text": "  if(!cost||!back||!highlight)return false;"
+          },
+          {
+            "line": 285,
+            "text": "  std::string footer,regular_branch,custom_branch;std::uint32_t cost_index=0,back_index=0,highlight_index=0;"
+          },
+          {
+            "line": 286,
+            "text": "  if(!ParentPath(cost->child_path,footer,cost_index)||cost_index!=0||"
+          },
+          {
+            "line": 287,
+            "text": "     !ParentPath(back->child_path,custom_branch,back_index)||back_index!=0||"
+          },
+          {
+            "line": 288,
+            "text": "     !ParentPath(highlight->child_path,regular_branch,highlight_index)||highlight_index!=2)return false;"
+          },
+          {
+            "line": 289,
+            "text": "  const auto *footer_row=TreeRow(tree,footer),*regular=TreeRow(tree,regular_branch),*custom=TreeRow(tree,custom_branch);"
+          },
+          {
+            "line": 290,
+            "text": "  if(!footer_row||footer_row->child_count!=7||!regular||regular->child_count!=3||!custom||custom->child_count!=2)return false;"
+          },
+          {
+            "line": 291,
+            "text": "  std::string parent;std::uint32_t index=0;"
+          },
+          {
+            "line": 292,
+            "text": "  if(!ParentPath(regular_branch,parent,index)||parent!=footer||index!=2||"
+          },
+          {
+            "line": 293,
+            "text": "     !ParentPath(custom_branch,parent,index)||parent!=footer||index!=3)return false;"
+          },
+          {
+            "line": 294,
+            "text": "  // Stock .3 source has exactly these two confirm instances. Their anonymous child indices"
+          },
+          {
+            "line": 295,
+            "text": "  // are derived from named sibling anchors and the complete actual parent layout, not a list row guess."
+          },
+          {
+            "line": 296,
+            "text": "  target=nullptr;vtable=nullptr;std::size_t matches=0;"
+          },
+          {
+            "line": 297,
+            "text": "  for(const auto &branch:{regular_branch,custom_branch}){"
+          },
+          {
+            "line": 298,
+            "text": "    const auto path=branch+\"/1\";const auto *button=TreeRow(tree,path);"
+          },
+          {
+            "line": 299,
+            "text": "    if(!button||!button->runtime_name.empty())return false;"
+          },
+          {
+            "line": 300,
+            "text": "    if(!button->effective_visible||!button->enabled)continue;"
+          },
+          {
+            "line": 301,
+            "text": "    void *candidate=nullptr,*candidate_vtable=nullptr;"
+          },
+          {
+            "line": 302,
+            "text": "    if(!QualifiedPath(env,tree,\"decisiondetail_view\",root,context,path,candidate,candidate_vtable)||"
+          },
+          {
+            "line": 303,
+            "text": "       !InspectFixedGuiWidgetDispatchAdmissionV1(dispatch,candidate,candidate_vtable))return false;"
+          },
+          {
+            "line": 304,
+            "text": "    ++matches;target=candidate;vtable=candidate_vtable;target_path=path;"
+          },
+          {
+            "line": 305,
+            "text": "  }return matches==1;"
+          }
+        ]
+      },
+      {
+        "first": 326,
+        "last": 406,
+        "lines": [
+          {
+            "line": 326,
+            "text": "bool ExecuteIngameDecisionItemQueryV1(IngameDecisionItemContextV1 &query,"
+          },
+          {
+            "line": 327,
+            "text": "    MainThreadQueryMailboxV1 &mailbox,const MainThreadExecutionStampV1 &stamp,"
+          },
+          {
+            "line": 328,
+            "text": "    const ZhongguoScoreboardNativeEnvironmentV1 &env) noexcept {"
+          },
+          {
+            "line": 329,
+            "text": "  auto &out=query.result;out={};out.native_revision=query.native_revision;out.connection_generation=query.connection_generation;out.game_pid=GetCurrentProcessId();"
+          },
+          {
+            "line": 330,
+            "text": "  try {"
+          },
+          {
+            "line": 331,
+            "text": "    const auto reject=[&](const char *reason){out.available=false;out.unavailable_reason=reason;return true;};"
+          },
+          {
+            "line": 332,
+            "text": "    if(!query.game||query.game->descriptor().game_version!=\"1.20.0.3\"||"
+          },
+          {
+            "line": 333,
+            "text": "       query.game->descriptor().executable_sha256!=\"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\"||"
+          },
+          {
+            "line": 334,
+            "text": "       !query.native_revision||!query.connection_generation||!KeySyntax(query.requested_key)||"
+          },
+          {
+            "line": 335,
+            "text": "       !env.exact_build_admitted||env.offline_fixture_function_overrides||env.gui_abi_revision!=GuiAbiRevisionV1::crozier12003)"
+          },
+          {
+            "line": 336,
+            "text": "      return reject(\"exact_12003_keyed_query_unavailable\");"
+          },
+          {
+            "line": 337,
+            "text": "    if(!IsIngameUiPausedOwnerStampV1(mailbox,stamp,GetCurrentThreadId()))return reject(\"paused_application_owner_unverified\");"
+          },
+          {
+            "line": 338,
+            "text": "    out.owner_thread_verified=true;game::Snapshot before{};"
+          },
+          {
+            "line": 339,
+            "text": "    if(!game::ReadSnapshot(*query.game,before)||before!=query.expected_snapshot||!before.paused||!before.map_ready||"
+          },
+          {
+            "line": 340,
+            "text": "       !before.has_played_character||!before.played_character_alive||before.played_character_id<=0||before.date_raw!=stamp.date_raw)"
+          },
+          {
+            "line": 341,
+            "text": "      return reject(\"fresh_alive_paused_frame_unverified\");"
+          },
+          {
+            "line": 342,
+            "text": "    out.played_character_id=before.played_character_id;out.date_raw=before.date_raw;"
+          },
+          {
+            "line": 343,
+            "text": "    // Check the loaded exact .3 root resolver and two actual leaf property entrypoints before traversing."
+          },
+          {
+            "line": 344,
+            "text": "    if(!CodePins(env))return reject(\"loaded_12003_keyed_reader_pins_changed\");"
+          },
+          {
+            "line": 345,
+            "text": "    out.source_abi_pins_verified=true;"
+          },
+          {
+            "line": 346,
+            "text": "    ZhongguoScoreboardAccessV1 access{};void *context=nullptr,*owner=nullptr;"
+          },
+          {
+            "line": 347,
+            "text": "    if(!ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,context,owner))return reject(\"gui_owner_unavailable\");"
+          },
+          {
+            "line": 348,
+            "text": "    void *root=nullptr;"
+          },
+          {
+            "line": 349,
+            "text": "    if(!Root(env,\"decisions_view\",root,out.decisions_root_visible,out.decisions_tree_complete)||!root||!out.decisions_root_visible)"
+          },
+          {
+            "line": 350,
+            "text": "      return reject(\"actual_decisions_root_hidden_or_census_incomplete\");"
+          },
+          {
+            "line": 351,
+            "text": "    Pass first{},second{};"
+          },
+          {
+            "line": 352,
+            "text": "    out.model_read_pass=\"first\";"
+          },
+          {
+            "line": 353,
+            "text": "    if(!ModelPass(env,root,first,reinterpret_cast<const void *>(stamp.jomini_state),&out))return reject(\"actual_keyed_decision_model_or_owner_unstable\");"
+          },
+          {
+            "line": 354,
+            "text": "    out.model_read_pass=\"second\";"
+          },
+          {
+            "line": 355,
+            "text": "    if(!ModelPass(env,root,second,reinterpret_cast<const void *>(stamp.jomini_state),&out))return reject(\"actual_keyed_decision_model_or_owner_unstable\");"
+          },
+          {
+            "line": 356,
+            "text": "    if(first!=second){out.model_read_pass=\"first_second_compare\";ModelFailure(&out,\"stable_model_compare\");"
+          },
+          {
+            "line": 357,
+            "text": "      return reject(\"actual_keyed_decision_model_or_owner_unstable\");}"
+          },
+          {
+            "line": 358,
+            "text": "    out.group_count=first.groups.count;out.row_count=first.rows.size();out.row_owner_verified=true;"
+          },
+          {
+            "line": 359,
+            "text": "    for(const auto &row:first.rows)if(row.key==query.requested_key){"
+          },
+          {
+            "line": 360,
+            "text": "      ++out.matching_row_count;out.decision_key=row.key;"
+          },
+          {
+            "line": 361,
+            "text": "      out.row_context_reference_key=row.context_reference_key;out.row_scope_reference_available=row.scope_reference!=nullptr;"
+          },
+          {
+            "line": 362,
+            "text": "      out.detail_definition_matches_target=first.selected_definition==row.definition;"
+          },
+          {
+            "line": 363,
+            "text": "    }"
+          },
+          {
+            "line": 364,
+            "text": "    if(out.matching_row_count!=1)return reject(out.matching_row_count?\"requested_decision_key_ambiguous\":\"requested_decision_key_not_in_actual_rows\");"
+          },
+          {
+            "line": 365,
+            "text": "    out.detail_definition_available=first.selected_definition&&!first.selected_definition_is_null_object;out.detail_decision_key=first.selected_key;"
+          },
+          {
+            "line": 366,
+            "text": "    out.detail_actor_reference_key=first.detail_actor_reference_key;"
+          },
+          {
+            "line": 367,
+            "text": "    out.detail_actor_binding_verified=out.detail_definition_available&&first.detail_actor_reference_key==before.played_character_id;"
+          },
+          {
+            "line": 368,
+            "text": "    void *detail_root=nullptr;"
+          },
+          {
+            "line": 369,
+            "text": "    if(!Root(env,\"decisiondetail_view\",detail_root,out.detail_root_visible,out.detail_tree_complete)||"
+          },
+          {
+            "line": 370,
+            "text": "       (detail_root&&detail_root!=first.detail_root))return reject(\"actual_detail_root_or_census_unverified\");"
+          },
+          {
+            "line": 371,
+            "text": "    void *last_context=nullptr,*last_owner=nullptr;game::Snapshot after{};Pass last{};"
+          },
+          {
+            "line": 372,
+            "text": "    out.gui_owner_binding_verified=ResolveZhongguoScoreboardNativeGuiContextAndOwnerV1(env,access,last_context,last_owner)&&last_context==context&&last_owner==owner;"
+          },
+          {
+            "line": 373,
+            "text": "    out.frame_verified=game::ReadSnapshot(*query.game,after)&&after==before;"
+          },
+          {
+            "line": 374,
+            "text": "    if(!out.gui_owner_binding_verified||!out.frame_verified)return reject(\"keyed_query_completion_binding_changed\");"
+          },
+          {
+            "line": 375,
+            "text": "    out.model_read_pass=\"completion\";"
+          },
+          {
+            "line": 376,
+            "text": "    if(!ModelPass(env,root,last,reinterpret_cast<const void *>(stamp.jomini_state),&out))return reject(\"keyed_query_completion_binding_changed\");"
+          },
+          {
+            "line": 377,
+            "text": "    if(last!=first){out.model_read_pass=\"first_completion_compare\";ModelFailure(&out,\"stable_model_compare\");"
+          },
+          {
+            "line": 378,
+            "text": "      return reject(\"keyed_query_completion_binding_changed\");}"
+          },
+          {
+            "line": 379,
+            "text": "    out.available=true;return true;"
+          },
+          {
+            "line": 380,
+            "text": "  }catch(...){out.available=false;out.unavailable_reason=\"native_keyed_reader_exception\";return true;}"
+          },
+          {
+            "line": 381,
+            "text": "}"
+          },
+          {
+            "line": 382,
+            "text": ""
+          },
+          {
+            "line": 383,
+            "text": "std::string SerializeIngameDecisionItemV1(const IngameDecisionItemResultV1 &v) {"
+          },
+          {
+            "line": 384,
+            "text": "  std::string s=\"{\\\"schema\\\":\\\"ck3-ingame-decision-item-v1\\\",\\\"step\\\":\\\"query-ingame-decision-item-v1\\\",\\\"read_only\\\":true,\\\"game_version\\\":\\\"1.20.0.3\\\",\\\"executable_sha256\\\":\\\"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\\\"\";"
+          },
+          {
+            "line": 385,
+            "text": "  const auto number=[&](const char *key,auto n){s+=\",\\\"\";s+=key;s+=\"\\\":\";s+=std::to_string(n);};"
+          },
+          {
+            "line": 386,
+            "text": "  const auto boolean=[&](const char *key,bool b){s+=\",\\\"\";s+=key;s+=\"\\\":\";s+=b?\"true\":\"false\";};"
+          },
+          {
+            "line": 387,
+            "text": "  const auto text=[&](const char *key,const std::string &value){s+=\",\\\"\";s+=key;s+=\"\\\":\\\"\";s+=value;s+='\"';};"
+          },
+          {
+            "line": 388,
+            "text": "  number(\"native_revision\",v.native_revision);number(\"connection_generation\",v.connection_generation);number(\"game_pid\",v.game_pid);"
+          },
+          {
+            "line": 389,
+            "text": "  number(\"played_character_id\",v.played_character_id);number(\"date_raw\",v.date_raw);number(\"group_count\",v.group_count);"
+          },
+          {
+            "line": 390,
+            "text": "  number(\"row_count\",v.row_count);number(\"matching_row_count\",v.matching_row_count);number(\"row_context_reference_key\",v.row_context_reference_key);"
+          },
+          {
+            "line": 391,
+            "text": "  number(\"detail_actor_reference_key\",v.detail_actor_reference_key);"
+          },
+          {
+            "line": 392,
+            "text": "  boolean(\"available\",v.available);boolean(\"owner_thread_verified\",v.owner_thread_verified);boolean(\"frame_verified\",v.frame_verified);"
+          },
+          {
+            "line": 393,
+            "text": "  boolean(\"source_abi_pins_verified\",v.source_abi_pins_verified);boolean(\"gui_owner_binding_verified\",v.gui_owner_binding_verified);"
+          },
+          {
+            "line": 394,
+            "text": "  boolean(\"decisions_tree_complete\",v.decisions_tree_complete);boolean(\"decisions_root_visible\",v.decisions_root_visible);"
+          },
+          {
+            "line": 395,
+            "text": "  boolean(\"row_owner_verified\",v.row_owner_verified);boolean(\"row_scope_reference_available\",v.row_scope_reference_available);"
+          },
+          {
+            "line": 396,
+            "text": "  boolean(\"detail_tree_complete\",v.detail_tree_complete);boolean(\"detail_root_visible\",v.detail_root_visible);"
+          },
+          {
+            "line": 397,
+            "text": "  boolean(\"detail_definition_available\",v.detail_definition_available);boolean(\"detail_definition_matches_target\",v.detail_definition_matches_target);"
+          },
+          {
+            "line": 398,
+            "text": "  boolean(\"detail_actor_binding_verified\",v.detail_actor_binding_verified);"
+          },
+          {
+            "line": 399,
+            "text": "  // Scope/context scalar is observed but deliberately not cast to player identity or action qualification."
+          },
+          {
+            "line": 400,
+            "text": "  boolean(\"row_widget_datacontext_verified\",false);boolean(\"action_qualified\",false);"
+          },
+          {
+            "line": 401,
+            "text": "  if(!v.model_failed_stage.empty()){"
+          },
+          {
+            "line": 402,
+            "text": "    text(\"model_read_pass\",v.model_read_pass);text(\"model_failed_stage\",v.model_failed_stage);"
+          },
+          {
+            "line": 403,
+            "text": "    number(\"model_observed_pointer\",v.model_observed_pointer);number(\"model_expected_pointer\",v.model_expected_pointer);"
+          },
+          {
+            "line": 404,
+            "text": "  }"
+          },
+          {
+            "line": 405,
+            "text": "  text(\"decision_key\",v.decision_key);text(\"detail_decision_key\",v.detail_decision_key);text(\"unavailable_reason\",v.unavailable_reason);return s+'}';"
+          },
+          {
+            "line": 406,
+            "text": "}"
+          }
+        ]
+      },
+      {
+        "first": 433,
+        "last": 456,
+        "lines": [
+          {
+            "line": 433,
+            "text": "    if(query.action==IngameDecisionItemActionKindV1::select){"
+          },
+          {
+            "line": 434,
+            "text": "      // A source OnSelect on an already-selected visible definition toggles Hide."
+          },
+          {
+            "line": 435,
+            "text": "      // Preserve that source behavior by doing no action for any same-definition state;"
+          },
+          {
+            "line": 436,
+            "text": "      // only subsequent independent actual visible detail proof can count as success."
+          },
+          {
+            "line": 437,
+            "text": "      out.before_already_selected=first.selected_definition==target_row->definition;"
+          },
+          {
+            "line": 438,
+            "text": "      if(!NoVisibleModals(context))return reject(\"source_select_blocked_by_visible_modal\");"
+          },
+          {
+            "line": 439,
+            "text": "      out.no_blocking_modal_verified=true;out.receiver_qualified=true;"
+          },
+          {
+            "line": 440,
+            "text": "    }else{"
+          },
+          {
+            "line": 441,
+            "text": "      if(!outcome&&query.expected_window_kind!=\"vivhite_courtier\")return reject(\"fixed_expected_modal_scope_unavailable\");"
+          },
+          {
+            "line": 442,
+            "text": "      if(first.selected_definition!=target_row->definition||!out.before.detail_root_visible||"
+          },
+          {
+            "line": 443,
+            "text": "          !out.before.detail_tree_complete||first.detail_actor_reference_key!=out.before.played_character_id)"
+          },
+          {
+            "line": 444,
+            "text": "        return reject(\"actual_selected_detail_definition_actor_or_visibility_unqualified\");"
+          },
+          {
+            "line": 445,
+            "text": "      out.detail_actor_binding_verified=true;"
+          },
+          {
+            "line": 446,
+            "text": "      if(outcome){"
+          },
+          {
+            "line": 447,
+            "text": "        if(!NoVisibleModals(context))return reject(\"source_outcome_confirm_blocked_by_visible_modal\");"
+          },
+          {
+            "line": 448,
+            "text": "        out.no_blocking_modal_verified=true;"
+          },
+          {
+            "line": 449,
+            "text": "      }else{"
+          },
+          {
+            "line": 450,
+            "text": "        bool modal_before=false,modal_complete=false;"
+          },
+          {
+            "line": 451,
+            "text": "        if(!InnerPanel(env,context,query.expected_window_kind,modal_before,modal_complete)||!modal_complete||modal_before)"
+          },
+          {
+            "line": 452,
+            "text": "          return reject(\"actual_expected_inner_modal_before_not_closed_or_incomplete\");"
+          },
+          {
+            "line": 453,
+            "text": "      }"
+          },
+          {
+            "line": 454,
+            "text": "      if(!ConfirmReceiver(env,dispatch,first,context,target,vtable,out.target_child_path))return reject(\"fixed_visible_confirm_receiver_unqualified\");"
+          },
+          {
+            "line": 455,
+            "text": "      out.receiver_qualified=true;"
+          },
+          {
+            "line": 456,
+            "text": "    }"
+          }
+        ]
+      }
+    ]
+  },
+  "detach_decision": {
+    "source": {
+      "path": "C:\\lr10s1\\mod_li_yu_dao\\common\\decisions\\lyd_c2_consent_decisions.txt",
+      "bytes": 2408,
+      "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549"
+    },
+    "ranges": [
+      {
+        "first": 1,
+        "last": 21,
+        "lines": [
+          {
+            "line": 1,
+            "text": "# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py."
+          },
+          {
+            "line": 2,
+            "text": "lyd_c2_propose_detach_decision = {"
+          },
+          {
+            "line": 3,
+            "text": "    picture = { reference = \"gfx/interface/illustrations/decisions/decision_personal_religious.dds\" }"
+          },
+          {
+            "line": 4,
+            "text": "    decision_group_type = religious"
+          },
+          {
+            "line": 5,
+            "text": "    ai_check_interval = 0"
+          },
+          {
+            "line": 6,
+            "text": "    desc = lyd_c2_propose_detach_decision_desc"
+          },
+          {
+            "line": 7,
+            "text": "    selection_tooltip = lyd_c2_propose_detach_decision_tooltip"
+          },
+          {
+            "line": 8,
+            "text": "    confirm_text = lyd_c2_propose_detach_decision_confirm"
+          },
+          {
+            "line": 9,
+            "text": "    is_shown = { lyd_c2_actor_trigger = yes NOT = { rite = faith.main_rite } }"
+          },
+          {
+            "line": 10,
+            "text": "    is_valid = {"
+          },
+          {
+            "line": 11,
+            "text": "        custom_description = {"
+          },
+          {
+            "line": 12,
+            "text": "            text = lyd_c2_detach_requirements_tt"
+          },
+          {
+            "line": 13,
+            "text": "            lyd_c2_start_detach_trigger = yes"
+          },
+          {
+            "line": 14,
+            "text": "        }"
+          },
+          {
+            "line": 15,
+            "text": "    }"
+          },
+          {
+            "line": 16,
+            "text": "    effect = {"
+          },
+          {
+            "line": 17,
+            "text": "        custom_tooltip = lyd_c2_detach_open_tt"
+          },
+          {
+            "line": 18,
+            "text": "        hidden_effect = { lyd_c2_begin_detach_effect = yes }"
+          },
+          {
+            "line": 19,
+            "text": "    }"
+          },
+          {
+            "line": 20,
+            "text": "    ai_will_do = { base = 0 }"
+          },
+          {
+            "line": 21,
+            "text": "}"
+          }
+        ]
+      }
+    ]
+  },
+  "detach_triggers": {
+    "source": {
+      "path": "C:\\lr10s1\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+      "bytes": 16511,
+      "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+    },
+    "ranges": [
+      {
+        "first": 1,
+        "last": 36,
+        "lines": [
+          {
+            "line": 1,
+            "text": "# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py."
+          },
+          {
+            "line": 2,
+            "text": "# Character-root eligibility. NPCs only answer a player-owned, serial-bound event."
+          },
+          {
+            "line": 3,
+            "text": "lyd_c2_actor_trigger = {"
+          },
+          {
+            "line": 4,
+            "text": "    is_ai = no"
+          },
+          {
+            "line": 5,
+            "text": "    is_alive = yes"
+          },
+          {
+            "line": 6,
+            "text": "    is_adult = yes"
+          },
+          {
+            "line": 7,
+            "text": "    is_landed = yes"
+          },
+          {
+            "line": 8,
+            "text": "    has_character_flag = lyd_enabled"
+          },
+          {
+            "line": 9,
+            "text": "    faith = { religion = religion:confucianism_religion }"
+          },
+          {
+            "line": 10,
+            "text": "    is_imprisoned = no"
+          },
+          {
+            "line": 11,
+            "text": "    NOT = { has_trait = incapable }"
+          },
+          {
+            "line": 12,
+            "text": "    learning >= 15"
+          },
+          {
+            "line": 13,
+            "text": "    lyd_member_rite_trigger = yes"
+          },
+          {
+            "line": 14,
+            "text": "}"
+          },
+          {
+            "line": 15,
+            "text": "lyd_c2_elector_trigger = {"
+          },
+          {
+            "line": 16,
+            "text": "    is_alive = yes"
+          },
+          {
+            "line": 17,
+            "text": "    is_adult = yes"
+          },
+          {
+            "line": 18,
+            "text": "    is_imprisoned = no"
+          },
+          {
+            "line": 19,
+            "text": "    NOT = { has_trait = incapable }"
+          },
+          {
+            "line": 20,
+            "text": "    learning >= 15"
+          },
+          {
+            "line": 21,
+            "text": "}"
+          },
+          {
+            "line": 22,
+            "text": "# Rite scope. The owner expires; serial and transition history never gate once-only."
+          },
+          {
+            "line": 23,
+            "text": "lyd_c2_school_free_trigger = {"
+          },
+          {
+            "line": 24,
+            "text": "    NOT = { has_variable = lyd_c2_proposal_owner }"
+          },
+          {
+            "line": 25,
+            "text": "    NOT = { has_variable = lyd_c3_proposal_owner }"
+          },
+          {
+            "line": 26,
+            "text": "    NOT = { has_variable = lyd_i3b_owner }"
+          },
+          {
+            "line": 27,
+            "text": "    NOT = { has_variable = lyd_c2_transition_cooldown }"
+          },
+          {
+            "line": 28,
+            "text": "    NOT = { has_variable = lyd_c2_retry_cooldown }"
+          },
+          {
+            "line": 29,
+            "text": "}"
+          },
+          {
+            "line": 30,
+            "text": "# Reception changes the incoming rite's affiliation, not this rite's. Its own"
+          },
+          {
+            "line": 31,
+            "text": "# transition/retry cooldown cannot veto unrelated incoming schools."
+          },
+          {
+            "line": 32,
+            "text": "lyd_c2_receiver_free_trigger = {"
+          },
+          {
+            "line": 33,
+            "text": "    NOT = { has_variable = lyd_c2_proposal_owner }"
+          },
+          {
+            "line": 34,
+            "text": "    NOT = { has_variable = lyd_c3_proposal_owner }"
+          },
+          {
+            "line": 35,
+            "text": "    NOT = { has_variable = lyd_i3b_owner }"
+          },
+          {
+            "line": 36,
+            "text": "}"
+          }
+        ]
+      },
+      {
+        "first": 60,
+        "last": 65,
+        "lines": [
+          {
+            "line": 60,
+            "text": "lyd_c2_start_detach_trigger = {"
+          },
+          {
+            "line": 61,
+            "text": "    lyd_c2_actor_trigger = yes"
+          },
+          {
+            "line": 62,
+            "text": "    NOT = { has_variable = lyd_c2_active }"
+          },
+          {
+            "line": 63,
+            "text": "    NOT = { rite = faith.main_rite }"
+          },
+          {
+            "line": 64,
+            "text": "    rite = { lyd_c2_school_free_trigger = yes }"
+          },
+          {
+            "line": 65,
+            "text": "}"
+          }
+        ]
+      }
+    ]
+  },
+  "root_outer_host_request_builder": {
+    "source": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_prepare_reviewed_consumption_host_request_20261005.py",
+      "bytes": 4099,
+      "sha256": "8b733dd3bc9048b2cad2cf4a7337a70b861841289083c7caf0ad1fcb157efb67"
+    },
+    "ranges": [
+      {
+        "first": 28,
+        "last": 40,
+        "lines": [
+          {
+            "line": 28,
+            "text": "assert facts['claim_request_id']==claim['request_id']==manifest['claim_request_id']"
+          },
+          {
+            "line": 29,
+            "text": "assert facts['action_identity']==claim['action_identity']==manifest['action_identity']"
+          },
+          {
+            "line": 30,
+            "text": "assert a.after_value==a.before_value+1"
+          },
+          {
+            "line": 31,
+            "text": "assert facts['consumption']==dict(kind='save_round_delta',field_name='lyd_c2_callback_nonce',before_value=a.before_value,after_value=a.after_value,actor_id=31254,recipient_id=65866,interaction_key='lyd_c2_propose_join_interaction')"
+          },
+          {
+            "line": 32,
+            "text": "conditions=details['conditions']"
+          },
+          {
+            "line": 33,
+            "text": "assert conditions['consumption_mode']=='PROPOSAL_OPENED'"
+          },
+          {
+            "line": 34,
+            "text": "assert conditions['join_business_acceptance_credit'] is False"
+          },
+          {
+            "line": 35,
+            "text": "assert conditions['wallet_delta']==['0','0','0'] and conditions['completed_history_unchanged'] is True"
+          },
+          {
+            "line": 36,
+            "text": "assert a.current_public==a.current_native+1"
+          },
+          {
+            "line": 37,
+            "text": "assert conditions['actual_release_context']==dict(revision=a.current_public,native_revision=a.current_native,snapshot_id='native:'+str(a.current_native),date_raw=53144712)"
+          },
+          {
+            "line": 38,
+            "text": "assert flow['host_module']['sha256']=='f567bff41d03b6c59d195df8ff62ecab1a523962de3217d397c5264d1ed2d89b'"
+          },
+          {
+            "line": 39,
+            "text": "checked(flow['host_module']['path'],flow['host_module']['sha256']) if Path(flow['host_module']['path']).suffix=='.json' else None"
+          },
+          {
+            "line": 40,
+            "text": "assert sha(flow['host_module']['path'])==flow['host_module']['sha256']"
+          }
+        ]
+      }
+    ]
+  }
+}

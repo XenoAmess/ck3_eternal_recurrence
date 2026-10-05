@@ -1,0 +1,22 @@
+{
+  "scope": "READONLY_SNAPSHOT_ACTOR_FIELD_ACTUAL_PLAYED_CHARACTER",
+  "prior_attempt": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-001",
+  "original_failure": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-001\\FOCUSED-RESULT.json",
+  "targets": [
+    {
+      "path": "assemble_proposal_inputs.py",
+      "before_bytes": 21745,
+      "before_sha256": "67c89bd6bd9abe53d39d33e4796283a9fe55d514424b19d40b308d51427412bb",
+      "after_bytes": 21869,
+      "after_sha256": "30437a1dd88a86d99a685323c4b1a635d08b697394ebb895291e8643dff76b55"
+    },
+    {
+      "path": "test_actual_replay.py",
+      "before_bytes": 5150,
+      "before_sha256": "daede125516687e4dbdcb839f45f7b642c73ccfbfca07651ccbb6891010ac801",
+      "after_bytes": 5150,
+      "after_sha256": "daede125516687e4dbdcb839f45f7b642c73ccfbfca07651ccbb6891010ac801"
+    }
+  ],
+  "runtime_calls": 0
+}

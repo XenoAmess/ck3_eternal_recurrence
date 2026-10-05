@@ -1,0 +1,1673 @@
+{
+  "schema": "lyd.r10.actual-negative-round-reason-source-evidence.v1",
+  "source_inventory": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\COLD-SOURCE-INVENTORY.json",
+    "bytes": 31564,
+    "sha256": "2ab18195f08fb5f680f6168732cd1681fa171fd31b50b6777c1e685c297ac260"
+  },
+  "source_files": {
+    "common/scripted_effects/lyd_c2_close_effects.txt": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c2_close_effects.txt",
+        "bytes": 3384,
+        "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+      },
+      "preserved": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-post-source-sign-readback-20261005-001\\frozen-source\\common\\scripted_effects\\lyd_c2_close_effects.txt",
+        "bytes": 3384,
+        "sha256": "7c30cac442831db919761b3f494a8f4858161e43ae09314de9e3c488f590ae01"
+      },
+      "cold_inventory_exact_match": true
+    },
+    "common/scripted_effects/lyd_c2_vote_effects.txt": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c2_vote_effects.txt",
+        "bytes": 5368,
+        "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+      },
+      "preserved": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-post-source-sign-readback-20261005-001\\frozen-source\\common\\scripted_effects\\lyd_c2_vote_effects.txt",
+        "bytes": 5368,
+        "sha256": "f78261ec7cb4bb3a1de58070e6c43dbb685c17e93e6e7dae4bd8fd044d67a704"
+      },
+      "cold_inventory_exact_match": true
+    },
+    "common/scripted_effects/lyd_c2_commit_effects.txt": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_effects\\lyd_c2_commit_effects.txt",
+        "bytes": 5885,
+        "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6"
+      },
+      "preserved": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-post-source-sign-readback-20261005-001\\frozen-source\\common\\scripted_effects\\lyd_c2_commit_effects.txt",
+        "bytes": 5885,
+        "sha256": "79d1c4b6ff7fcbff40357252e2d18808993b1d53158bcc47e0681776a06909c6"
+      },
+      "cold_inventory_exact_match": true
+    },
+    "common/scripted_triggers/lyd_c2_consent_triggers.txt": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "bytes": 16511,
+        "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+      },
+      "preserved": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-post-source-sign-readback-20261005-001\\frozen-source\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+        "bytes": 16511,
+        "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+      },
+      "cold_inventory_exact_match": true
+    },
+    "common/script_values/lyd_c2_consent_values.txt": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\common\\script_values\\lyd_c2_consent_values.txt",
+        "bytes": 533,
+        "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae"
+      },
+      "preserved": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-post-source-sign-readback-20261005-001\\frozen-source\\common\\script_values\\lyd_c2_consent_values.txt",
+        "bytes": 533,
+        "sha256": "9bcf4e339655e15604922ab4c2f660d6c94bc06c3b450f64c961ea847f06deae"
+      },
+      "cold_inventory_exact_match": true
+    },
+    "events/lyd_c2_consent_events.txt": {
+      "original": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\production\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6638,
+        "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+      },
+      "preserved": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-post-source-sign-readback-20261005-001\\frozen-source\\events\\lyd_c2_consent_events.txt",
+        "bytes": 6638,
+        "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284"
+      },
+      "cold_inventory_exact_match": true
+    }
+  },
+  "original_receipts": {
+    "0020-r10-0020-player-consent-yes": {
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0020-r10-0020-player-consent-yes.sdk-result.json",
+        "bytes": 1008329,
+        "sha256": "152d19f946b2ddd25e51388ca1ccac4e64e303ff2c4003179572daf7a0a91ab1"
+      },
+      "schema": "ck3.native-profile-receipt.v1",
+      "status": "native_gameplay_postcondition_verified",
+      "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+      "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+      "result_excerpt": {
+        "step": "select-event-option-1",
+        "accepted": true,
+        "status": "submitted",
+        "backend_id": "native-headless",
+        "progress_status": "postcondition",
+        "event_selection": {
+          "status": "event_instance_advanced",
+          "postcondition_verified": true,
+          "old_event_instance_id": 45,
+          "new_event_instance_id": 44,
+          "selected_option_number": 1,
+          "selected_native_option_index": 0,
+          "starting_snapshot_id": "native:8",
+          "starting_revision": 9,
+          "ending_snapshot_id": "native:9",
+          "ending_revision": 10,
+          "episode_run_id": null,
+          "connection_generation": 1,
+          "bridge_pid": 13436,
+          "starting_played_character_stress": {
+            "status": "available",
+            "character_id": 31254,
+            "stress_points": 0,
+            "unavailable_reason": null
+          },
+          "ending_played_character_stress": {
+            "status": "available",
+            "character_id": 31254,
+            "stress_points": 0,
+            "unavailable_reason": null
+          },
+          "starting_played_character_gold": {
+            "status": "available",
+            "character_id": 31254,
+            "gold_raw": 154300000,
+            "scale": 100000,
+            "unavailable_reason": null
+          },
+          "ending_played_character_gold": {
+            "status": "available",
+            "character_id": 31254,
+            "gold_raw": 154300000,
+            "scale": 100000,
+            "unavailable_reason": null
+          },
+          "starting_played_character_prestige": {
+            "status": "available",
+            "character_id": 31254,
+            "prestige_raw": 220000000,
+            "scale": 100000,
+            "unavailable_reason": null
+          },
+          "ending_played_character_prestige": {
+            "status": "available",
+            "character_id": 31254,
+            "prestige_raw": 220000000,
+            "scale": 100000,
+            "unavailable_reason": null
+          }
+        },
+        "active_event": {
+          "source": "native",
+          "instance_id": 44,
+          "option_count": 2,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            },
+            {
+              "index": 1,
+              "option_number": 2,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "paused": true,
+        "snapshot_id": "native:9",
+        "revision": 10,
+        "event_instance_id": 45,
+        "option_number": 1,
+        "option_index": 0
+      }
+    },
+    "0022-r10-0022-source-ballot-yes": {
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0022-r10-0022-source-ballot-yes.sdk-result.json",
+        "bytes": 1108479,
+        "sha256": "b6403650eaf6d724f4b96be22556e0d537297c8abe9234bb2cc4de2d0f7c65b2"
+      },
+      "schema": "ck3.native-profile-receipt.v1",
+      "status": "native_gameplay_postcondition_verified",
+      "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+      "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+      "result_excerpt": {
+        "step": "select-event-option-1",
+        "accepted": true,
+        "status": "submitted",
+        "backend_id": "native-headless",
+        "progress_status": "postcondition",
+        "event_selection": {
+          "status": "event_instance_advanced",
+          "postcondition_verified": true,
+          "old_event_instance_id": 44,
+          "new_event_instance_id": null,
+          "selected_option_number": 1,
+          "selected_native_option_index": 0,
+          "starting_snapshot_id": "native:9",
+          "starting_revision": 10,
+          "ending_snapshot_id": "native:10",
+          "ending_revision": 11,
+          "episode_run_id": null,
+          "connection_generation": 1,
+          "bridge_pid": 13436,
+          "starting_played_character_stress": {
+            "status": "available",
+            "character_id": 31254,
+            "stress_points": 0,
+            "unavailable_reason": null
+          },
+          "ending_played_character_stress": {
+            "status": "available",
+            "character_id": 31254,
+            "stress_points": 0,
+            "unavailable_reason": null
+          },
+          "starting_played_character_gold": {
+            "status": "available",
+            "character_id": 31254,
+            "gold_raw": 154300000,
+            "scale": 100000,
+            "unavailable_reason": null
+          },
+          "ending_played_character_gold": {
+            "status": "available",
+            "character_id": 31254,
+            "gold_raw": 154300000,
+            "scale": 100000,
+            "unavailable_reason": null
+          },
+          "starting_played_character_prestige": {
+            "status": "available",
+            "character_id": 31254,
+            "prestige_raw": 220000000,
+            "scale": 100000,
+            "unavailable_reason": null
+          },
+          "ending_played_character_prestige": {
+            "status": "available",
+            "character_id": 31254,
+            "prestige_raw": 220000000,
+            "scale": 100000,
+            "unavailable_reason": null
+          }
+        },
+        "active_event": null,
+        "paused": true,
+        "snapshot_id": "native:10",
+        "revision": 11,
+        "event_instance_id": 44,
+        "option_number": 1,
+        "option_index": 0
+      }
+    },
+    "0026-r10-0026-review-event-query": {
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0026-r10-0026-review-event-query.sdk-result.json",
+        "bytes": 33139,
+        "sha256": "30ae30cd64eaf3b9666a5b3649955df023134a8661fffb51ee8d8aee0a0f9e9e"
+      },
+      "schema": "ck3.native-profile-receipt.v1",
+      "status": "native_event_query_verified",
+      "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+      "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+      "result_excerpt": {
+        "step": "query-current-event-window-context-v1",
+        "accepted": true,
+        "status": "available",
+        "query_sequence": 8,
+        "snapshot_revision": 11,
+        "backend_id": "native-headless",
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "date_raw": 53144712,
+        "current_event_instance_id": 47,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "lyd.220",
+        "calculated_event_id": 2270220,
+        "runtime_stats_ordinal": 2406,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        },
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "current_event_window_context_ready": true,
+        "current_event_effect_indicators_ready": true,
+        "queried_snapshot_id": "native:11",
+        "queried_revision": 12,
+        "queried_native_revision": 11,
+        "scope": "exact-current-event-window",
+        "current_event_window_context": {
+          "status": "available",
+          "snapshot_revision": 11,
+          "date_raw": 53144712,
+          "current_event_instance_id": 47,
+          "event_definition_key": "lyd.220",
+          "root_scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 31254
+            }
+          },
+          "options": [
+            {
+              "rendered_index": 0,
+              "native_option_index": 0,
+              "shown": true,
+              "enabled": true,
+              "fallback": false,
+              "cancel": false,
+              "resolved_name": "依本派授权，签署此议",
+              "unavailable_reason": "",
+              "effect_indicators": {
+                "status": "available",
+                "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+                "complete_effect_set": false,
+                "rows": []
+              },
+              "effect_preview": {
+                "status": "unavailable",
+                "reason": "indicator_subset_has_no_completeness_signal"
+              },
+              "resource_deltas": {
+                "status": "unavailable"
+              },
+              "relationship_deltas": {
+                "status": "unavailable"
+              }
+            },
+            {
+              "rendered_index": 1,
+              "native_option_index": 3,
+              "shown": true,
+              "enabled": true,
+              "fallback": false,
+              "cancel": false,
+              "resolved_name": "先待诸方答复",
+              "unavailable_reason": "",
+              "effect_indicators": {
+                "status": "available",
+                "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+                "complete_effect_set": false,
+                "rows": []
+              },
+              "effect_preview": {
+                "status": "unavailable",
+                "reason": "indicator_subset_has_no_completeness_signal"
+              },
+              "resource_deltas": {
+                "status": "unavailable"
+              },
+              "relationship_deltas": {
+                "status": "unavailable"
+              }
+            },
+            {
+              "rendered_index": 2,
+              "native_option_index": 4,
+              "shown": true,
+              "enabled": true,
+              "fallback": false,
+              "cancel": false,
+              "resolved_name": "撤回本轮议案",
+              "unavailable_reason": "",
+              "effect_indicators": {
+                "status": "available",
+                "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+                "complete_effect_set": false,
+                "rows": []
+              },
+              "effect_preview": {
+                "status": "unavailable",
+                "reason": "indicator_subset_has_no_completeness_signal"
+              },
+              "resource_deltas": {
+                "status": "unavailable"
+              },
+              "relationship_deltas": {
+                "status": "unavailable"
+              }
+            }
+          ],
+          "readiness": {
+            "event_definition_identity_ready": true,
+            "root_scope_ready": true,
+            "saved_scopes_ready": true,
+            "option_presentation_ready": true,
+            "effect_indicators_ready": true,
+            "effect_preview_ready": false,
+            "semantic_decision_ready": false
+          }
+        }
+      }
+    },
+    "0027-r10-0027-source-sign": {
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0027-r10-0027-source-sign.sdk-result.json",
+        "bytes": 1434363,
+        "sha256": "5d54e0ca5c969c74a52c47a70556578180bccb387b08adb6613d8b4ce23072f0"
+      },
+      "schema": "ck3.native-profile-receipt.v1",
+      "status": "native_gameplay_postcondition_verified",
+      "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+      "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+      "result_excerpt": {
+        "step": "select-event-option-1",
+        "accepted": true,
+        "status": "submitted",
+        "backend_id": "native-headless",
+        "progress_status": "postcondition",
+        "event_selection": {
+          "status": "event_instance_advanced",
+          "postcondition_verified": true,
+          "old_event_instance_id": 47,
+          "new_event_instance_id": 48,
+          "selected_option_number": 1,
+          "selected_native_option_index": 0,
+          "starting_snapshot_id": "native:11",
+          "starting_revision": 12,
+          "ending_snapshot_id": "native:12",
+          "ending_revision": 13,
+          "episode_run_id": null,
+          "connection_generation": 1,
+          "bridge_pid": 13436,
+          "starting_played_character_stress": {
+            "status": "available",
+            "character_id": 31254,
+            "stress_points": 0,
+            "unavailable_reason": null
+          },
+          "ending_played_character_stress": {
+            "status": "available",
+            "character_id": 31254,
+            "stress_points": 0,
+            "unavailable_reason": null
+          },
+          "starting_played_character_gold": {
+            "status": "available",
+            "character_id": 31254,
+            "gold_raw": 154300000,
+            "scale": 100000,
+            "unavailable_reason": null
+          },
+          "ending_played_character_gold": {
+            "status": "available",
+            "character_id": 31254,
+            "gold_raw": 154300000,
+            "scale": 100000,
+            "unavailable_reason": null
+          },
+          "starting_played_character_prestige": {
+            "status": "available",
+            "character_id": 31254,
+            "prestige_raw": 220000000,
+            "scale": 100000,
+            "unavailable_reason": null
+          },
+          "ending_played_character_prestige": {
+            "status": "available",
+            "character_id": 31254,
+            "prestige_raw": 220000000,
+            "scale": 100000,
+            "unavailable_reason": null
+          }
+        },
+        "active_event": {
+          "source": "native",
+          "instance_id": 48,
+          "option_count": 1,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "paused": true,
+        "snapshot_id": "native:12",
+        "revision": 13,
+        "event_instance_id": 47,
+        "option_number": 1,
+        "option_index": 0
+      }
+    },
+    "0028-r10-0028-sign-ack-query": {
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0028-r10-0028-sign-ack-query.sdk-result.json",
+        "bytes": 26131,
+        "sha256": "606d71e91367152bc9d96a88e489e737bc95be9a47844406b3d207690a913f4b"
+      },
+      "schema": "ck3.native-profile-receipt.v1",
+      "status": "native_event_query_verified",
+      "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+      "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+      "result_excerpt": {
+        "step": "query-current-event-window-context-v1",
+        "accepted": true,
+        "status": "available",
+        "query_sequence": 9,
+        "snapshot_revision": 12,
+        "backend_id": "native-headless",
+        "schema": "current-event-window-context-v1",
+        "schema_version": 1,
+        "date_raw": 53144712,
+        "current_event_instance_id": 48,
+        "window_match_count": 1,
+        "unavailable_reason": null,
+        "event_definition_key": "lyd.228",
+        "calculated_event_id": 2270228,
+        "runtime_stats_ordinal": 2411,
+        "root_scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 31254
+          }
+        },
+        "readiness": {
+          "event_definition_identity_ready": true,
+          "root_scope_ready": true,
+          "saved_scopes_ready": true,
+          "option_presentation_ready": true,
+          "effect_indicators_ready": true,
+          "effect_preview_ready": false,
+          "semantic_decision_ready": false
+        },
+        "current_event_window_context_ready": true,
+        "current_event_effect_indicators_ready": true,
+        "queried_snapshot_id": "native:12",
+        "queried_revision": 13,
+        "queried_native_revision": 12,
+        "scope": "exact-current-event-window",
+        "current_event_window_context": {
+          "status": "available",
+          "snapshot_revision": 12,
+          "date_raw": 53144712,
+          "current_event_instance_id": 48,
+          "event_definition_key": "lyd.228",
+          "root_scope": {
+            "status": "available",
+            "raw_type_index": 4,
+            "type_key": "character",
+            "subtype": 0,
+            "typed_identity": {
+              "status": "available",
+              "kind": "character",
+              "character_id": 31254
+            }
+          },
+          "options": [
+            {
+              "rendered_index": 0,
+              "native_option_index": 0,
+              "shown": true,
+              "enabled": true,
+              "fallback": false,
+              "cancel": false,
+              "resolved_name": "记下本轮经过",
+              "unavailable_reason": "",
+              "effect_indicators": {
+                "status": "available",
+                "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+                "complete_effect_set": false,
+                "rows": []
+              },
+              "effect_preview": {
+                "status": "unavailable",
+                "reason": "indicator_subset_has_no_completeness_signal"
+              },
+              "resource_deltas": {
+                "status": "unavailable"
+              },
+              "relationship_deltas": {
+                "status": "unavailable"
+              }
+            }
+          ],
+          "readiness": {
+            "event_definition_identity_ready": true,
+            "root_scope_ready": true,
+            "saved_scopes_ready": true,
+            "option_presentation_ready": true,
+            "effect_indicators_ready": true,
+            "effect_preview_ready": false,
+            "semantic_decision_ready": false
+          }
+        }
+      }
+    },
+    "0029-r10-0029-sign-ack-select": {
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0029-r10-0029-sign-ack-select.sdk-result.json",
+        "bytes": 1500379,
+        "sha256": "6f81bb3395306d5412e60d4bd51241d075bbe54a99da0ad56add26ff163f64a5"
+      },
+      "schema": "ck3.native-profile-receipt.v1",
+      "status": "native_gameplay_postcondition_verified",
+      "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+      "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+      "result_excerpt": {
+        "step": "select-event-option-1",
+        "accepted": true,
+        "status": "submitted",
+        "backend_id": "native-headless",
+        "progress_status": "postcondition",
+        "event_selection": {
+          "status": "event_instance_advanced",
+          "postcondition_verified": true,
+          "old_event_instance_id": 48,
+          "new_event_instance_id": null,
+          "selected_option_number": 1,
+          "selected_native_option_index": 0,
+          "starting_snapshot_id": "native:12",
+          "starting_revision": 13,
+          "ending_snapshot_id": "native:13",
+          "ending_revision": 14,
+          "episode_run_id": null,
+          "connection_generation": 1,
+          "bridge_pid": 13436,
+          "starting_played_character_stress": {
+            "status": "available",
+            "character_id": 31254,
+            "stress_points": 0,
+            "unavailable_reason": null
+          },
+          "ending_played_character_stress": {
+            "status": "available",
+            "character_id": 31254,
+            "stress_points": 0,
+            "unavailable_reason": null
+          },
+          "starting_played_character_gold": {
+            "status": "available",
+            "character_id": 31254,
+            "gold_raw": 154300000,
+            "scale": 100000,
+            "unavailable_reason": null
+          },
+          "ending_played_character_gold": {
+            "status": "available",
+            "character_id": 31254,
+            "gold_raw": 154300000,
+            "scale": 100000,
+            "unavailable_reason": null
+          },
+          "starting_played_character_prestige": {
+            "status": "available",
+            "character_id": 31254,
+            "prestige_raw": 220000000,
+            "scale": 100000,
+            "unavailable_reason": null
+          },
+          "ending_played_character_prestige": {
+            "status": "available",
+            "character_id": 31254,
+            "prestige_raw": 220000000,
+            "scale": 100000,
+            "unavailable_reason": null
+          }
+        },
+        "active_event": null,
+        "paused": true,
+        "snapshot_id": "native:13",
+        "revision": 14,
+        "event_instance_id": 48,
+        "option_number": 1,
+        "option_index": 0
+      }
+    }
+  },
+  "source_only_excerpts": {
+    "common/scripted_effects/lyd_c2_close_effects.txt": [
+      {
+        "line": 17,
+        "text": "    }"
+      },
+      {
+        "line": 18,
+        "text": "    remove_variable = lyd_c2_active"
+      },
+      {
+        "line": 19,
+        "text": "}"
+      },
+      {
+        "line": 20,
+        "text": "lyd_c2_reject_round_effect = {"
+      },
+      {
+        "line": 21,
+        "text": "    if = {"
+      },
+      {
+        "line": 22,
+        "text": "        limit = { lyd_c2_current_proposal_trigger = { ACTOR = scope:lyd_c2_actor } }"
+      },
+      {
+        "line": 23,
+        "text": "        var:lyd_c2_moving_rite = { set_variable = { name = lyd_c2_retry_cooldown value = 1 days = 365 } }"
+      },
+      {
+        "line": 24,
+        "text": "        set_variable = { name = lyd_c2_result value = 2 }"
+      },
+      {
+        "line": 25,
+        "text": "        lyd_c2_release_locks_effect = yes"
+      },
+      {
+        "line": 26,
+        "text": "        trigger_event = lyd.228"
+      },
+      {
+        "line": 27,
+        "text": "    }"
+      },
+      {
+        "line": 28,
+        "text": "}"
+      },
+      {
+        "line": 29,
+        "text": "lyd_c2_cancel_round_effect = {"
+      },
+      {
+        "line": 42,
+        "text": "        lyd_c2_cancel_round_effect = yes"
+      },
+      {
+        "line": 43,
+        "text": "    }"
+      },
+      {
+        "line": 44,
+        "text": "}"
+      },
+      {
+        "line": 45,
+        "text": "lyd_c2_event_holder_reject_effect = {"
+      },
+      {
+        "line": 46,
+        "text": "    if = {"
+      },
+      {
+        "line": 47,
+        "text": "        limit = { lyd_c2_holder_context_trigger = yes }"
+      },
+      {
+        "line": 48,
+        "text": "        scope:lyd_c2_actor = { lyd_c2_reject_round_effect = yes }"
+      },
+      {
+        "line": 49,
+        "text": "    }"
+      },
+      {
+        "line": 50,
+        "text": "}"
+      },
+      {
+        "line": 51,
+        "text": "lyd_c2_event_target_reject_effect = {"
+      },
+      {
+        "line": 52,
+        "text": "    if = {"
+      },
+      {
+        "line": 53,
+        "text": "        limit = {"
+      },
+      {
+        "line": 54,
+        "text": "            lyd_c2_ballot_context_trigger = yes"
+      },
+      {
+        "line": 55,
+        "text": "            this = scope:lyd_c2_actor.var:lyd_c2_target_rep"
+      },
+      {
+        "line": 56,
+        "text": "            scope:lyd_c2_actor = { var:lyd_c2_source_signed = 1 }"
+      },
+      {
+        "line": 57,
+        "text": "        }"
+      },
+      {
+        "line": 58,
+        "text": "        scope:lyd_c2_actor = { lyd_c2_reject_round_effect = yes }"
+      },
+      {
+        "line": 59,
+        "text": "    }"
+      },
+      {
+        "line": 60,
+        "text": "}"
+      },
+      {
+        "line": 61,
+        "text": "lyd_c2_event_head_reject_effect = {"
+      },
+      {
+        "line": 62,
+        "text": "    if = {"
+      },
+      {
+        "line": 63,
+        "text": "        limit = {"
+      },
+      {
+        "line": 64,
+        "text": "            lyd_c2_ballot_context_trigger = yes"
+      },
+      {
+        "line": 65,
+        "text": "            this = scope:lyd_c2_actor.var:lyd_c2_target_head"
+      },
+      {
+        "line": 66,
+        "text": "        }"
+      },
+      {
+        "line": 67,
+        "text": "        scope:lyd_c2_actor = { lyd_c2_reject_round_effect = yes }"
+      },
+      {
+        "line": 68,
+        "text": "    }"
+      },
+      {
+        "line": 69,
+        "text": "}"
+      },
+      {
+        "line": 70,
+        "text": "lyd_c2_expire_round_effect = {"
+      },
+      {
+        "line": 71,
+        "text": "    if = {"
+      },
+      {
+        "line": 72,
+        "text": "        # Expiry may clean an otherwise invalid snapshot; do not use the"
+      }
+    ],
+    "common/scripted_effects/lyd_c2_vote_effects.txt": [
+      {
+        "line": 49,
+        "text": "lyd_c2_player_no_effect = {"
+      },
+      {
+        "line": 50,
+        "text": "    if = {"
+      },
+      {
+        "line": 51,
+        "text": "        limit = { lyd_c2_player_consent_trigger = yes }"
+      },
+      {
+        "line": 52,
+        "text": "        scope:lyd_c2_actor = { lyd_c2_reject_round_effect = yes }"
+      },
+      {
+        "line": 53,
+        "text": "    }"
+      },
+      {
+        "line": 54,
+        "text": "}"
+      },
+      {
+        "line": 55,
+        "text": "lyd_c2_sign_source_effect = {"
+      },
+      {
+        "line": 56,
+        "text": "    if = {"
+      },
+      {
+        "line": 57,
+        "text": "        limit = { lyd_c2_source_mandate_trigger = { ACTOR = scope:lyd_c2_actor } }"
+      },
+      {
+        "line": 58,
+        "text": "        set_variable = { name = lyd_c2_source_signed value = 1 }"
+      },
+      {
+        "line": 59,
+        "text": "        if = {"
+      },
+      {
+        "line": 60,
+        "text": "            limit = { has_variable = lyd_c2_source_head var:lyd_c2_source_head = this }"
+      },
+      {
+        "line": 61,
+        "text": "            set_variable = { name = lyd_c2_source_head_yes value = 1 }"
+      },
+      {
+        "line": 62,
+        "text": "        }"
+      },
+      {
+        "line": 63,
+        "text": "        if = {"
+      },
+      {
+        "line": 85,
+        "text": "lyd_c2_request_target_consent_effect = {"
+      },
+      {
+        "line": 86,
+        "text": "    # A round is unsigned until the source representative actually signs."
+      },
+      {
+        "line": 87,
+        "text": "    # Keep this as an outer branch: sibling conditions need not short-circuit."
+      },
+      {
+        "line": 88,
+        "text": "    if = { limit = { has_variable = lyd_c2_source_signed }"
+      },
+      {
+        "line": 89,
+        "text": "    if = {"
+      },
+      {
+        "line": 90,
+        "text": "        limit = {"
+      },
+      {
+        "line": 91,
+        "text": "            lyd_c2_current_proposal_trigger = { ACTOR = scope:lyd_c2_actor }"
+      },
+      {
+        "line": 92,
+        "text": "            var:lyd_c2_kind = 1"
+      },
+      {
+        "line": 93,
+        "text": "            var:lyd_c2_source_signed = 1"
+      },
+      {
+        "line": 94,
+        "text": "            lyd_c2_receiving_mandates_trigger = { ACTOR = scope:lyd_c2_actor }"
+      },
+      {
+        "line": 95,
+        "text": "            NOT = { has_variable = lyd_c2_target_requested }"
+      },
+      {
+        "line": 96,
+        "text": "        }"
+      },
+      {
+        "line": 97,
+        "text": "        set_variable = { name = lyd_c2_target_requested value = 1 }"
+      },
+      {
+        "line": 98,
+        "text": "        var:lyd_c2_target_rep = { trigger_event = lyd.221 }"
+      },
+      {
+        "line": 99,
+        "text": "    }"
+      },
+      {
+        "line": 100,
+        "text": "    }"
+      },
+      {
+        "line": 101,
+        "text": "}"
+      },
+      {
+        "line": 102,
+        "text": "lyd_c2_sign_target_effect = {"
+      },
+      {
+        "line": 103,
+        "text": "    if = {"
+      },
+      {
+        "line": 114,
+        "text": "            scope:lyd_c2_actor = { lyd_c2_receiving_mandates_trigger = { ACTOR = scope:lyd_c2_actor } }"
+      },
+      {
+        "line": 115,
+        "text": "        }"
+      },
+      {
+        "line": 116,
+        "text": "        scope:lyd_c2_actor = {"
+      },
+      {
+        "line": 117,
+        "text": "            set_variable = { name = lyd_c2_target_signed value = 1 }"
+      },
+      {
+        "line": 118,
+        "text": "            if = { limit = { exists = var:lyd_c2_target_head } var:lyd_c2_target_head = { trigger_event = lyd.222 } }"
+      },
+      {
+        "line": 119,
+        "text": "        }"
+      },
+      {
+        "line": 120,
+        "text": "    }"
+      },
+      {
+        "line": 121,
+        "text": "}"
+      }
+    ],
+    "common/scripted_effects/lyd_c2_commit_effects.txt": [],
+    "common/scripted_triggers/lyd_c2_consent_triggers.txt": [
+      {
+        "line": 25,
+        "text": "    NOT = { has_variable = lyd_c3_proposal_owner }"
+      },
+      {
+        "line": 26,
+        "text": "    NOT = { has_variable = lyd_i3b_owner }"
+      },
+      {
+        "line": 27,
+        "text": "    NOT = { has_variable = lyd_c2_transition_cooldown }"
+      },
+      {
+        "line": 28,
+        "text": "    NOT = { has_variable = lyd_c2_retry_cooldown }"
+      },
+      {
+        "line": 29,
+        "text": "}"
+      },
+      {
+        "line": 30,
+        "text": "# Reception changes the incoming rite's affiliation, not this rite's. Its own"
+      },
+      {
+        "line": 31,
+        "text": "# transition/retry cooldown cannot veto unrelated incoming schools."
+      },
+      {
+        "line": 32,
+        "text": "lyd_c2_receiver_free_trigger = {"
+      },
+      {
+        "line": 33,
+        "text": "    NOT = { has_variable = lyd_c2_proposal_owner }"
+      },
+      {
+        "line": 324,
+        "text": "    var:lyd_c2_proposal_owner = $ACTOR$"
+      },
+      {
+        "line": 325,
+        "text": "    var:lyd_c2_lock_serial = $ACTOR$.var:lyd_c2_serial"
+      },
+      {
+        "line": 326,
+        "text": "    OR = {"
+      },
+      {
+        "line": 327,
+        "text": "        AND = { var:lyd_c2_target_total > 0 lyd_c2_target_quorum_value >= 0 }"
+      },
+      {
+        "line": 328,
+        "text": "        AND = {"
+      },
+      {
+        "line": 329,
+        "text": "            var:lyd_c2_target_total = 0"
+      },
+      {
+        "line": 330,
+        "text": "            NOT = { lyd_c2_dormant_receiving_rite_trigger = yes }"
+      },
+      {
+        "line": 331,
+        "text": "            exists = head_of_rite"
+      },
+      {
+        "line": 332,
+        "text": "            trigger_if = { limit = { has_variable = lyd_c2_endorser exists = head_of_rite }"
+      },
+      {
+        "line": 353,
+        "text": "lyd_c2_source_mandate_trigger = {"
+      },
+      {
+        "line": 354,
+        "text": "    lyd_c2_current_proposal_trigger = { ACTOR = $ACTOR$ }"
+      },
+      {
+        "line": 355,
+        "text": "    var:lyd_c2_source_total > 0"
+      },
+      {
+        "line": 356,
+        "text": "    lyd_c2_source_quorum_value >= 0"
+      },
+      {
+        "line": 357,
+        "text": "    var:lyd_c2_player_yes = var:lyd_c2_player_total"
+      },
+      {
+        "line": 358,
+        "text": "    has_variable = lyd_c2_vote_owner"
+      },
+      {
+        "line": 359,
+        "text": "    has_variable = lyd_c2_vote_serial"
+      },
+      {
+        "line": 360,
+        "text": "    has_variable = lyd_c2_vote_nonce"
+      },
+      {
+        "line": 361,
+        "text": "    var:lyd_c2_vote_owner = this"
+      },
+      {
+        "line": 365,
+        "text": "}"
+      },
+      {
+        "line": 366,
+        "text": "lyd_c2_ready_to_confirm_trigger = {"
+      },
+      {
+        "line": 367,
+        "text": "    lyd_c2_source_mandate_trigger = { ACTOR = $ACTOR$ }"
+      },
+      {
+        "line": 368,
+        "text": "    trigger_if = { limit = { has_variable = lyd_c2_source_signed } var:lyd_c2_source_signed = 1 }"
+      },
+      {
+        "line": 369,
+        "text": "    trigger_else = { always = no }"
+      },
+      {
+        "line": 370,
+        "text": "    trigger_if = { limit = { has_variable = lyd_c2_snapshot_valid } var:lyd_c2_snapshot_valid = 1 }"
+      },
+      {
+        "line": 371,
+        "text": "    trigger_else = { always = no }"
+      },
+      {
+        "line": 372,
+        "text": "    lyd_c2_native_admitted_trigger = yes"
+      },
+      {
+        "line": 373,
+        "text": "    trigger_if = {"
+      },
+      {
+        "line": 374,
+        "text": "        limit = { var:lyd_c2_kind = 1 }"
+      },
+      {
+        "line": 375,
+        "text": "        lyd_c2_receiving_mandates_trigger = { ACTOR = $ACTOR$ }"
+      },
+      {
+        "line": 376,
+        "text": "        trigger_if = { limit = { has_variable = lyd_c2_target_signed } var:lyd_c2_target_signed = 1 }"
+      },
+      {
+        "line": 377,
+        "text": "    trigger_else = { always = no }"
+      },
+      {
+        "line": 378,
+        "text": "        lyd_c2_native_join_rules_trigger = { ACTOR = $ACTOR$ }"
+      },
+      {
+        "line": 379,
+        "text": "        trigger_if = { limit = { has_variable = lyd_c2_target_head } trigger_if = { limit = { has_variable = lyd_c2_target_head_yes } var:lyd_c2_target_head_yes = 1 }"
+      },
+      {
+        "line": 380,
+        "text": "    trigger_else = { always = no } }"
+      },
+      {
+        "line": 381,
+        "text": "        gold >= 300"
+      }
+    ],
+    "common/script_values/lyd_c2_consent_values.txt": [
+      {
+        "line": 1,
+        "text": "# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py."
+      },
+      {
+        "line": 2,
+        "text": "# Source: initiating Character scope. Target: each receiving Rite scope."
+      },
+      {
+        "line": 3,
+        "text": "# Integer comparisons avoid rounding a 2/3 mandate downward."
+      },
+      {
+        "line": 4,
+        "text": "lyd_c2_source_quorum_value = {"
+      },
+      {
+        "line": 5,
+        "text": "    value = var:lyd_c2_source_yes"
+      },
+      {
+        "line": 6,
+        "text": "    multiply = 3"
+      },
+      {
+        "line": 7,
+        "text": "    subtract = { value = var:lyd_c2_source_total multiply = 2 }"
+      },
+      {
+        "line": 8,
+        "text": "}"
+      },
+      {
+        "line": 9,
+        "text": "lyd_c2_target_quorum_value = {"
+      },
+      {
+        "line": 10,
+        "text": "    value = var:lyd_c2_target_yes"
+      },
+      {
+        "line": 11,
+        "text": "    multiply = 3"
+      },
+      {
+        "line": 12,
+        "text": "    subtract = { value = var:lyd_c2_target_total multiply = 2 }"
+      },
+      {
+        "line": 13,
+        "text": "}"
+      }
+    ],
+    "events/lyd_c2_consent_events.txt": [
+      {
+        "line": 23,
+        "text": "    }"
+      },
+      {
+        "line": 24,
+        "text": "    option = {"
+      },
+      {
+        "line": 25,
+        "text": "        name = lyd_c2_vote_no"
+      },
+      {
+        "line": 26,
+        "text": "        ai_chance = { base = 40 }"
+      },
+      {
+        "line": 27,
+        "text": "        lyd_c2_source_vote_effect = { YES = 0 }"
+      },
+      {
+        "line": 28,
+        "text": "    }"
+      },
+      {
+        "line": 29,
+        "text": "}"
+      },
+      {
+        "line": 30,
+        "text": "lyd.211 = {"
+      },
+      {
+        "line": 31,
+        "text": "    type = character_event"
+      },
+      {
+        "line": 40,
+        "text": "    }"
+      },
+      {
+        "line": 41,
+        "text": "    option = {"
+      },
+      {
+        "line": 42,
+        "text": "        name = lyd_c2_vote_no"
+      },
+      {
+        "line": 43,
+        "text": "        ai_chance = { base = 40 }"
+      },
+      {
+        "line": 44,
+        "text": "        lyd_c2_target_vote_effect = { YES = 0 }"
+      },
+      {
+        "line": 45,
+        "text": "    }"
+      },
+      {
+        "line": 46,
+        "text": "}"
+      },
+      {
+        "line": 47,
+        "text": "lyd.212 = {"
+      },
+      {
+        "line": 48,
+        "text": "    type = character_event"
+      },
+      {
+        "line": 64,
+        "text": "        trigger = {"
+      },
+      {
+        "line": 65,
+        "text": "            lyd_c2_initiator_event_context_trigger = yes"
+      },
+      {
+        "line": 66,
+        "text": "            lyd_c2_source_mandate_trigger = { ACTOR = root }"
+      },
+      {
+        "line": 67,
+        "text": "            NOT = { has_variable = lyd_c2_source_signed }"
+      },
+      {
+        "line": 68,
+        "text": "            var:lyd_c2_snapshot_valid = 1"
+      },
+      {
+        "line": 69,
+        "text": "        }"
+      },
+      {
+        "line": 70,
+        "text": "        custom_tooltip = lyd_c2_sign_source_tt"
+      },
+      {
+        "line": 71,
+        "text": "        lyd_c2_event_sign_source_effect = yes"
+      },
+      {
+        "line": 72,
+        "text": "    }"
+      },
+      {
+        "line": 97,
+        "text": "    }"
+      },
+      {
+        "line": 98,
+        "text": "    option = {"
+      },
+      {
+        "line": 99,
+        "text": "        name = lyd_c2_holder_no"
+      },
+      {
+        "line": 100,
+        "text": "        ai_chance = { base = 40 }"
+      },
+      {
+        "line": 101,
+        "text": "        lyd_c2_event_holder_reject_effect = yes"
+      },
+      {
+        "line": 102,
+        "text": "    }"
+      },
+      {
+        "line": 103,
+        "text": "}"
+      },
+      {
+        "line": 104,
+        "text": "lyd.221 = {"
+      },
+      {
+        "line": 105,
+        "text": "    type = character_event"
+      },
+      {
+        "line": 106,
+        "text": "    title = lyd_c2_receive_t"
+      },
+      {
+        "line": 107,
+        "text": "    desc = lyd_c2_receive_desc"
+      },
+      {
+        "line": 108,
+        "text": "    theme = faith"
+      },
+      {
+        "line": 109,
+        "text": "    trigger = {"
+      },
+      {
+        "line": 110,
+        "text": "        lyd_c2_ballot_context_trigger = yes"
+      },
+      {
+        "line": 111,
+        "text": "        this = scope:lyd_c2_actor.var:lyd_c2_target_rep"
+      },
+      {
+        "line": 112,
+        "text": "        scope:lyd_c2_actor = { var:lyd_c2_source_signed = 1 }"
+      },
+      {
+        "line": 113,
+        "text": "    }"
+      },
+      {
+        "line": 114,
+        "text": "    option = {"
+      },
+      {
+        "line": 115,
+        "text": "        name = lyd_c2_receive_yes"
+      },
+      {
+        "line": 116,
+        "text": "        trigger = {"
+      },
+      {
+        "line": 117,
+        "text": "            has_variable = lyd_c2_vote_owner"
+      },
+      {
+        "line": 128,
+        "text": "    }"
+      },
+      {
+        "line": 129,
+        "text": "    option = {"
+      },
+      {
+        "line": 130,
+        "text": "        name = lyd_c2_receive_no"
+      },
+      {
+        "line": 131,
+        "text": "        ai_chance = { base = 40 }"
+      },
+      {
+        "line": 132,
+        "text": "        lyd_c2_event_target_reject_effect = yes"
+      },
+      {
+        "line": 133,
+        "text": "    }"
+      },
+      {
+        "line": 134,
+        "text": "}"
+      },
+      {
+        "line": 135,
+        "text": "lyd.222 = {"
+      },
+      {
+        "line": 136,
+        "text": "    type = character_event"
+      },
+      {
+        "line": 137,
+        "text": "    title = lyd_c2_head_receive_t"
+      },
+      {
+        "line": 139,
+        "text": "    theme = faith"
+      },
+      {
+        "line": 140,
+        "text": "    trigger = { lyd_c2_ballot_context_trigger = yes this = scope:lyd_c2_actor.var:lyd_c2_target_head }"
+      },
+      {
+        "line": 141,
+        "text": "    option = { name = lyd_c2_receive_yes ai_chance = { base = 60 } lyd_c2_head_yes_effect = { SIDE = target } }"
+      },
+      {
+        "line": 142,
+        "text": "    option = { name = lyd_c2_receive_no ai_chance = { base = 40 } lyd_c2_event_head_reject_effect = yes }"
+      },
+      {
+        "line": 143,
+        "text": "}"
+      },
+      {
+        "line": 144,
+        "text": "lyd.223 = {"
+      },
+      {
+        "line": 145,
+        "text": "    type = character_event"
+      },
+      {
+        "line": 146,
+        "text": "    title = lyd_c2_head_source_t"
+      },
+      {
+        "line": 147,
+        "text": "    desc = lyd_c2_head_source_desc"
+      },
+      {
+        "line": 148,
+        "text": "    theme = faith"
+      },
+      {
+        "line": 149,
+        "text": "    trigger = { lyd_c2_ballot_context_trigger = yes this = scope:lyd_c2_actor.var:lyd_c2_source_head }"
+      },
+      {
+        "line": 150,
+        "text": "    option = { name = lyd_c2_source_head_recognize ai_chance = { base = 60 } lyd_c2_source_head_reply_effect = { YES = 1 } }"
+      },
+      {
+        "line": 151,
+        "text": "    option = { name = lyd_c2_source_head_withhold ai_chance = { base = 40 } lyd_c2_source_head_reply_effect = { YES = 0 } }"
+      },
+      {
+        "line": 152,
+        "text": "}"
+      },
+      {
+        "line": 153,
+        "text": "lyd.224 = {"
+      },
+      {
+        "line": 154,
+        "text": "    type = character_event"
+      },
+      {
+        "line": 155,
+        "text": "    title = lyd_c2_peaceful_t"
+      },
+      {
+        "line": 156,
+        "text": "    desc = lyd_c2_peaceful_desc"
+      },
+      {
+        "line": 161,
+        "text": "        scope:lyd_c2_actor = { var:lyd_c2_kind = 2 }"
+      },
+      {
+        "line": 162,
+        "text": "    }"
+      },
+      {
+        "line": 163,
+        "text": "    option = { name = lyd_c2_peaceful_yes ai_chance = { base = 60 } lyd_c2_peaceful_permission_effect = { YES = 1 } }"
+      },
+      {
+        "line": 164,
+        "text": "    option = { name = lyd_c2_peaceful_no ai_chance = { base = 40 } lyd_c2_peaceful_permission_effect = { YES = 0 } }"
+      },
+      {
+        "line": 165,
+        "text": "}"
+      },
+      {
+        "line": 166,
+        "text": "lyd.228 = {"
+      },
+      {
+        "line": 167,
+        "text": "    type = character_event"
+      },
+      {
+        "line": 168,
+        "text": "    title = lyd_c2_result_t"
+      },
+      {
+        "line": 169,
+        "text": "    desc = {"
+      },
+      {
+        "line": 170,
+        "text": "        triggered_desc = { trigger = { var:lyd_c2_result = 1 } desc = lyd_c2_success_desc }"
+      },
+      {
+        "line": 171,
+        "text": "        triggered_desc = { trigger = { var:lyd_c2_result = 2 } desc = lyd_c2_rejected_desc }"
+      },
+      {
+        "line": 172,
+        "text": "        triggered_desc = { trigger = { var:lyd_c2_result = 3 } desc = lyd_c2_cancelled_desc }"
+      },
+      {
+        "line": 173,
+        "text": "        triggered_desc = { trigger = { var:lyd_c2_result = 4 } desc = lyd_c2_expired_desc }"
+      },
+      {
+        "line": 174,
+        "text": "        triggered_desc = { trigger = { var:lyd_c2_result = 5 } desc = lyd_c2_failed_desc }"
+      },
+      {
+        "line": 175,
+        "text": "    }"
+      },
+      {
+        "line": 176,
+        "text": "    theme = faith"
+      }
+    ]
+  },
+  "interpretation_boundary": {
+    "result2_mapping": "Rejected, sourced from frozen lyd.228 desc switch and reject_round effect",
+    "receiver_ballot_and_receiver_signature_are_separate": "Stored target vote_yes1 at serial/nonce7 does not imply target_signed",
+    "retry_cooldown_scope": "moving Rite169; actor cooldown lookup alone is insufficient",
+    "random_draw_or_actual_AI_option_trace_recorded": false,
+    "exact_engine_random_cause": null,
+    "final_JOIN_credit": false
+  }
+}

@@ -1,0 +1,6 @@
+remote: Bypassed rule violations for refs/heads/master:        
+remote: 
+remote: - Required status check "CLA / signed" is expected.        
+remote: 
+To https://github.com/XenoAmess/ck3_eternal_recurrence.git
+   6df4d3f62..d0f8fa3b9  master -> master

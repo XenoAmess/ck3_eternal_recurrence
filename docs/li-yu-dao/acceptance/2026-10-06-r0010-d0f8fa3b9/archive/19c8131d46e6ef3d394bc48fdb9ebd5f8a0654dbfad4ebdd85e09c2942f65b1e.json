@@ -1,0 +1,71 @@
+{
+  "schema": "lyd.r10.cold-materialized-only.v1",
+  "utc": "2026-10-05T10:25:26.516452+00:00",
+  "status": "COLD_MATERIALIZED_NOT_ATTACHABLE",
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "input_request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-root-fixture-cold-request-20261005-002/REQUEST.actual.json",
+    "bytes": 20990,
+    "sha256": "0999acc54100deff19522b88db59033928318db9367fd88bcfbac6b6c7624142"
+  },
+  "inputs": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/INPUTS.json",
+    "bytes": 64759,
+    "sha256": "8f5ef78cb15c140effb1d546131faf6ef5299df0bc5d04d411c7ad46b4f39dcb"
+  },
+  "source_clean_before_and_after": true,
+  "userdir": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/userdir",
+  "baseline": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/userdir/save games/lyd_r10_resume_0058.ck3",
+    "bytes": 91530739,
+    "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539",
+    "source_before": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/checkpoints/0058-post-detach-save/checkpoint.ck3",
+      "bytes": 91530739,
+      "mtime_ns": 1791183170247908300
+    },
+    "source_after": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/checkpoints/0058-post-detach-save/checkpoint.ck3",
+      "bytes": 91530739,
+      "mtime_ns": 1791183170247908300
+    },
+    "copied_source_sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539"
+  },
+  "enabled_mods": [
+    "mod/lyd_production.mod",
+    "mod/lyd_entry.mod",
+    "mod/lyd_observer.mod",
+    "mod/lyd_i4_single_event.mod",
+    "mod/lyd_charter.mod"
+  ],
+  "mount_counts": {
+    "production": 70,
+    "entry": 7,
+    "observer": 8,
+    "i4_single_event": 31,
+    "charter": 6
+  },
+  "cold_inventory": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/COLD-SOURCE-INVENTORY.json",
+    "bytes": 31564,
+    "sha256": "2ab18195f08fb5f680f6168732cd1681fa171fd31b50b6777c1e685c297ac260"
+  },
+  "launch_argv": [
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "-debug_mode",
+    "-gdpr-compliant",
+    "-userdir=C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/userdir",
+    "-loadsave=lyd_r10_resume_0058"
+  ],
+  "guard_status": "ROOT_ACTUAL_POSTLAUNCH_PID_CREATE_HWND_SOURCE_REVIEW_REQUIRED",
+  "normal_exit_inventory": "WAITING_ACTUAL_PROFILE_PROJECTION",
+  "runtime_status": "NOT_RUN_BY_HELPER",
+  "real_documents_written": false,
+  "tracked_written": false,
+  "game_launched": false,
+  "screen_task_registered": false,
+  "lease_started": false,
+  "consumer_created": false,
+  "native_injected": false,
+  "prepared": false
+}

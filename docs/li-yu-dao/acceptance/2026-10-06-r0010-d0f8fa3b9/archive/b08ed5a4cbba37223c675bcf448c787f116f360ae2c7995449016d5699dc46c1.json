@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 240,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0241-detach-second-post-save.request.json",
+  "request_sha256": "0ed34b78ce65255da910fab589cbfdbed78a2b0a9195cf468138123244230513",
+  "started_at_utc": "2026-10-05T17:56:33.510373+00:00"
+}

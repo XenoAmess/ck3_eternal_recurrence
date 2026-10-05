@@ -1,0 +1,236 @@
+[
+  {
+    "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+    "before": {
+      "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+      "sha256": "01049457541c0c13d08d27bb793a204a2810aa826c4eb01e590b4e64dbb58138",
+      "size": 7598
+    },
+    "after": {
+      "path": "common/decisions/lyd_c3_leadership_decisions.txt",
+      "sha256": "26ecc7d082c5065645e27fee263e70474f450aa4331258b05a5a2373b5bde6ba",
+      "size": 8528
+    }
+  },
+  {
+    "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+    "before": {
+      "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+      "sha256": "af3c5cabc8e6123a5d76aeed59bf0e85db8e9bcf39c85118b0ab85ee746ea89c",
+      "size": 6468
+    },
+    "after": {
+      "path": "common/scripted_effects/lyd_c3_challenger_effects.txt",
+      "sha256": "614bf8e687ea4b8ecb122ec6de4f776d9ef449ed8a54dceff1e9b356b11cb15b",
+      "size": 9550
+    }
+  },
+  {
+    "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+    "before": {
+      "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+      "sha256": "94720db16153a862c91172d1a8174a6e91fe734d01353ce2f61132595403f651",
+      "size": 5211
+    },
+    "after": {
+      "path": "common/scripted_effects/lyd_c3_lifecycle_effects.txt",
+      "sha256": "2f24596786693f6e60a32b7007d8d54b2620cdfade681896876823554591ce88",
+      "size": 5360
+    }
+  },
+  {
+    "path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+    "before": {
+      "path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "sha256": "998c91b9c98c26a6e373efe7cf39661749115df8efa14a10b1af46ce02a93860",
+      "size": 4096
+    },
+    "after": {
+      "path": "common/scripted_effects/lyd_i3b_commit_effects.txt",
+      "sha256": "deb4229267593e88f3ed21a8b1b4611ae2e30f9ad6e3ee18d4119f37e58362ec",
+      "size": 4751
+    }
+  },
+  {
+    "path": "common/scripted_effects/lyd_i3b_response_effects.txt",
+    "before": {
+      "path": "common/scripted_effects/lyd_i3b_response_effects.txt",
+      "sha256": "f6a78460ac88f14993cb57e2e4ebc53747ad64c19d621bd91c401745cf1923d5",
+      "size": 4848
+    },
+    "after": {
+      "path": "common/scripted_effects/lyd_i3b_response_effects.txt",
+      "sha256": "cb5e9f9cc16cd6d12ffabf191e34490769bd1f6cc320dfdf0e0e3dde003b11e6",
+      "size": 4939
+    }
+  },
+  {
+    "path": "common/scripted_effects/lyd_i3b_setup_effects.txt",
+    "before": {
+      "path": "common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "sha256": "53b705957fbe0f4aa71a50662e710957687b57f6f9c131e0ddd2b63deb4f954c",
+      "size": 6065
+    },
+    "after": {
+      "path": "common/scripted_effects/lyd_i3b_setup_effects.txt",
+      "sha256": "d11797a887879a13ac882bfe63b29320d2a143aa7cff53c003ef527fb433055d",
+      "size": 6448
+    }
+  },
+  {
+    "path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+    "before": {
+      "path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "sha256": "a4f4fe371ddb35b1a194bb1350c6165442347617cca7ec8dd1b360110e6ab18a",
+      "size": 15372
+    },
+    "after": {
+      "path": "common/scripted_triggers/lyd_c2_consent_triggers.txt",
+      "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3",
+      "size": 16511
+    }
+  },
+  {
+    "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+    "before": {
+      "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "sha256": "967ca3e59d4d33aa588859192dde991358c1626d077a00b2d6fb204adb7a655a",
+      "size": 6665
+    },
+    "after": {
+      "path": "common/scripted_triggers/lyd_c3_leadership_triggers.txt",
+      "sha256": "de5f8313d09b31f43e93fbb49f5d0e83ab7e9d56f01ea19fdffe17d5af1b1c34",
+      "size": 8361
+    }
+  },
+  {
+    "path": "common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+    "before": {
+      "path": "common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "f110b0d7fe4b9d66d1232d1a2d846f6a53c20f600f26db327791dfcef58756fc",
+      "size": 7789
+    },
+    "after": {
+      "path": "common/scripted_triggers/lyd_i3b_institution_triggers.txt",
+      "sha256": "9b68035c844c9804e0ac80adc8b08a1d663bbfe97da0ab0ea7234879f5b8ff3e",
+      "size": 11379
+    }
+  },
+  {
+    "path": "events/lyd_c2_consent_events.txt",
+    "before": {
+      "path": "events/lyd_c2_consent_events.txt",
+      "sha256": "aeb4ea2062ad58b6c537df2812a965bf85ea7ee525ffce48c6659e7ffb98616e",
+      "size": 6618
+    },
+    "after": {
+      "path": "events/lyd_c2_consent_events.txt",
+      "sha256": "f1843116ea2562d6ddc39fd6068134ef8da634772a720db14f47162dc47b7284",
+      "size": 6638
+    }
+  },
+  {
+    "path": "events/lyd_c3_leadership_events.txt",
+    "before": {
+      "path": "events/lyd_c3_leadership_events.txt",
+      "sha256": "be67baa3427719465965917d44e8594c92063a2aa165ee88833c6954ba2fd411",
+      "size": 2692
+    },
+    "after": {
+      "path": "events/lyd_c3_leadership_events.txt",
+      "sha256": "6020f6e1f76c9663a8fdc7e627c802f82e6af2cd0498074a1b130da310f1b062",
+      "size": 3260
+    }
+  },
+  {
+    "path": "events/lyd_i3b_institution_events.txt",
+    "before": {
+      "path": "events/lyd_i3b_institution_events.txt",
+      "sha256": "72b6b6348b474fd95e29dfe0fd292cadaed8f541393cbba021fd51fdeb2b5a87",
+      "size": 5556
+    },
+    "after": {
+      "path": "events/lyd_i3b_institution_events.txt",
+      "sha256": "906c9b689418157bf29bac201c8ca5a2cf1ba99b6802da896caf64ae61213e02",
+      "size": 5666
+    }
+  },
+  {
+    "path": "localization/english/lyd_c2_consent_l_english.yml",
+    "before": {
+      "path": "localization/english/lyd_c2_consent_l_english.yml",
+      "sha256": "153ff68c54238b1756455376ed33f45afd5721ea74e78c52026365b7996cec99",
+      "size": 13331
+    },
+    "after": {
+      "path": "localization/english/lyd_c2_consent_l_english.yml",
+      "sha256": "4c1be606b3bb24324c1f6552a234b0e8fc109cd6aef7db529bcf88d427b15d35",
+      "size": 13439
+    }
+  },
+  {
+    "path": "localization/english/lyd_c3_leadership_l_english.yml",
+    "before": {
+      "path": "localization/english/lyd_c3_leadership_l_english.yml",
+      "sha256": "1febd88fc19c08f67e69650f5b4d185f2e5d3c85e118316a68cc3e3084bb3b06",
+      "size": 9455
+    },
+    "after": {
+      "path": "localization/english/lyd_c3_leadership_l_english.yml",
+      "sha256": "bc292b3251cd606acbbc031ab9626845efe929f9be9c01a3521d41a934bdce77",
+      "size": 11285
+    }
+  },
+  {
+    "path": "localization/english/lyd_i3b_institution_l_english.yml",
+    "before": {
+      "path": "localization/english/lyd_i3b_institution_l_english.yml",
+      "sha256": "1a370a05c02c14204df309acb8c162ed9651e622ccd848c3181809f3fb1053ac",
+      "size": 10220
+    },
+    "after": {
+      "path": "localization/english/lyd_i3b_institution_l_english.yml",
+      "sha256": "7fb7976bef47c74c456ad0237e90e0d0f5f0510b0605168e53c89f1e3798a2f2",
+      "size": 11134
+    }
+  },
+  {
+    "path": "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+    "before": {
+      "path": "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "sha256": "d93e1fe02dc615a4117ace3754a121cd338fe0bb9125c3100939f66ceebb16b4",
+      "size": 11654
+    },
+    "after": {
+      "path": "localization/simp_chinese/lyd_c2_consent_l_simp_chinese.yml",
+      "sha256": "a14b163909579be11559dda1b7b076103593a5e3c35063bc18db51cb2f9db504",
+      "size": 11744
+    }
+  },
+  {
+    "path": "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+    "before": {
+      "path": "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "sha256": "9cb67ba427950f0b871e1b0a8d00c04dc4fa6bed79b5317056a0f68b28fbfdfc",
+      "size": 8684
+    },
+    "after": {
+      "path": "localization/simp_chinese/lyd_c3_leadership_l_simp_chinese.yml",
+      "sha256": "c9b7a294c4113fe1df1b3065a58db9fdd2cd87e0f548cda8cabbefad05b54ea6",
+      "size": 10389
+    }
+  },
+  {
+    "path": "localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+    "before": {
+      "path": "localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "sha256": "de0f336c3ccc49b1068bc43f41ec1623c0eda2199b62e6a4df68951525e8e96c",
+      "size": 9138
+    },
+    "after": {
+      "path": "localization/simp_chinese/lyd_i3b_institution_l_simp_chinese.yml",
+      "sha256": "9bfa7f430d16ab6c42ea61a698a9e57ca4b05cad72d65f49c47f0a1fc02a7439",
+      "size": 9819
+    }
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "schema": "lyd.r10.external-report-draft-index.v1",
+  "files": [
+    {
+      "path": "REPORT.json",
+      "bytes": 5169,
+      "sha256": "d27f5708e35ab3f4e8852d38f65f5d414c8163d90ca56bb72c1908f133778d09"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 10656,
+      "sha256": "3af7c95c987a50928847283b6906d28126d8849d990fb36046608d379cc85bcc"
+    },
+    {
+      "path": "source/prepare_r10_report_draft_20261005_001.py",
+      "bytes": 20552,
+      "sha256": "be3ab83cf4af0f314dae02d8d81bab809cff6e75ec29371e29dfc91e24f6b210"
+    },
+    {
+      "path": "SOURCE-REFS.json",
+      "bytes": 10119,
+      "sha256": "78fb5bb7b5a4fd7f6c48e13879a945f074bee9e1a025bfa7d5ec266febfcf7c3"
+    }
+  ]
+}

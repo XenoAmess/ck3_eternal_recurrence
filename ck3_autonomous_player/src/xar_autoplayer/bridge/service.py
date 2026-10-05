@@ -11506,6 +11506,37 @@ class GameplayBridgeService:
         later = after_control_binding(before, after, binding)
         return normalize_public_initiation(result, binding, interaction_key, recipient_id, later)
 
+    def query_player_control_context_v1(self, *, expected_revision: int) -> dict[str, object]:
+        from .player_control_contract_v1 import normalize_query_arguments, normalize_public_result
+        self.driver._player_control_contexts = {}
+        normalize_query_arguments({"expected_revision": expected_revision})
+        method = getattr(self.driver, "query_player_control_context_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks stock player-control query")
+        result = method(expected_revision=expected_revision)
+        if result.get("actual_control_verified") is True:
+            self._last_war_family_observation = None
+            self._last_war_lifestyle_observation = None
+        return normalize_public_result(result, action="query_context", expected_revision=expected_revision)
+
+    def request_player_control_v1(self, action: str, *, expected_revision: int,
+                                  expected_control_context_signature: str,
+                                  candidate_character_id: int | None) -> dict[str, object]:
+        from .player_control_contract_v1 import normalize_request_arguments, normalize_public_result
+        normalize_request_arguments({"action": action, "expected_revision": expected_revision,
+            "expected_control_context_signature": expected_control_context_signature,
+            "candidate_character_id": candidate_character_id})
+        method = getattr(self.driver, "request_player_control_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks stock player-control action")
+        result = method(action, expected_revision=expected_revision,
+            expected_control_context_signature=expected_control_context_signature,
+            candidate_character_id=candidate_character_id)
+        if result.get("actual_control_verified") is True:
+            self._last_war_family_observation = None
+            self._last_war_lifestyle_observation = None
+        return normalize_public_result(result, action=action, expected_revision=expected_revision)
+
     def observe_normal_exit_v1(self) -> dict[str, object]:
         from .normal_exit_contract_v1 import normalize_public_exit_observation_result
         method = getattr(self.driver, "observe_normal_exit_v1", None)

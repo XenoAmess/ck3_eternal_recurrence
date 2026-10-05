@@ -1,0 +1,61 @@
+﻿# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py.
+lyd_c2_propose_detach_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious
+    ai_check_interval = 0
+    desc = lyd_c2_propose_detach_decision_desc
+    selection_tooltip = lyd_c2_propose_detach_decision_tooltip
+    confirm_text = lyd_c2_propose_detach_decision_confirm
+    is_shown = { lyd_c2_actor_trigger = yes NOT = { rite = faith.main_rite } }
+    is_valid = {
+        custom_description = {
+            text = lyd_c2_detach_requirements_tt
+            lyd_c2_start_detach_trigger = yes
+        }
+    }
+    effect = {
+        custom_tooltip = lyd_c2_detach_open_tt
+        hidden_effect = { lyd_c2_begin_detach_effect = yes }
+    }
+    ai_will_do = { base = 0 }
+}
+lyd_c2_review_proposal_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious
+    ai_check_interval = 0
+    desc = lyd_c2_review_proposal_decision_desc
+    selection_tooltip = lyd_c2_review_proposal_decision_tooltip
+    confirm_text = lyd_c2_review_proposal_decision_confirm
+    is_shown = { lyd_c2_actor_trigger = yes has_variable = lyd_c2_active }
+    is_valid = {
+        custom_description = {
+            text = lyd_c2_review_requirements_tt
+            lyd_c2_current_proposal_trigger = { ACTOR = root }
+        }
+    }
+    effect = {
+        custom_tooltip = lyd_c2_review_open_tt
+        hidden_effect = { lyd_c2_open_review_effect = yes }
+    }
+    ai_will_do = { base = 0 }
+}
+lyd_c2_cancel_proposal_decision = {
+    picture = { reference = "gfx/interface/illustrations/decisions/decision_personal_religious.dds" }
+    decision_group_type = religious
+    ai_check_interval = 0
+    desc = lyd_c2_cancel_proposal_decision_desc
+    selection_tooltip = lyd_c2_cancel_proposal_decision_tooltip
+    confirm_text = lyd_c2_cancel_proposal_decision_confirm
+    is_shown = { is_ai = no has_variable = lyd_c2_active }
+    is_valid = {
+        custom_description = {
+            text = lyd_c2_cancel_requirements_tt
+            is_ai = no has_variable = lyd_c2_active
+        }
+    }
+    effect = {
+        custom_tooltip = lyd_c2_cancel_round_tt
+        hidden_effect = { lyd_c2_cancel_round_effect = yes }
+    }
+    ai_will_do = { base = 0 }
+}

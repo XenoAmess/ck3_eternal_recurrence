@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0064-third-before-save.request.json",
+  "request_id": "r10-0064-third-before-save",
+  "sha256": "4c867923d23b33302bc7b7b42f3e7b674be1e209ac16f0b3d4158720575f784f",
+  "contacted_game": false
+}

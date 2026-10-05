@@ -1,0 +1,154 @@
+{
+  "schema": "lyd.r10.explicit-fixture-reset-source-semantics.v1",
+  "original": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\content\\observer\\common\\scripted_effects\\lyd_r4_fixture_effects.txt",
+    "bytes": 13017,
+    "sha256": "b64d3635d9ad0f2deb2085acede380d2b27df00bd983ebbe069a1a6a5a602b9b"
+  },
+  "preserved": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-cycle-before-detach-readback-20261006-001\\frozen-source\\lyd_r4_fixture_effects.txt",
+    "bytes": 13017,
+    "sha256": "b64d3635d9ad0f2deb2085acede380d2b27df00bd983ebbe069a1a6a5a602b9b"
+  },
+  "inventory": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\COLD-SOURCE-INVENTORY.json",
+    "bytes": 31564,
+    "sha256": "2ab18195f08fb5f680f6168732cd1681fa171fd31b50b6777c1e685c297ac260"
+  },
+  "inventory_exact_expected_SHA": "b64d3635d9ad0f2deb2085acede380d2b27df00bd983ebbe069a1a6a5a602b9b",
+  "reset_effect_exact_source_lines": [
+    {
+      "line": 196,
+      "text": "lyd_r4_reset_effect = {"
+    },
+    {
+      "line": 197,
+      "text": "    if = {"
+    },
+    {
+      "line": 198,
+      "text": "        limit = { lyd_r4_reset_trigger = yes }"
+    },
+    {
+      "line": 199,
+      "text": "        lyd_r4_bind_actual_scopes_effect = yes"
+    },
+    {
+      "line": 200,
+      "text": "        set_variable = { name = lyd_r4_reset_gold_before value = gold }"
+    },
+    {
+      "line": 201,
+      "text": "        set_variable = { name = lyd_r4_reset_piety_before value = piety }"
+    },
+    {
+      "line": 202,
+      "text": "        debug_log = \"LYD_R4_EXPLICIT_ACCEPTANCE_COOLDOWN_RESET_NOT_NATURAL_EXPIRY_BEGIN\""
+    },
+    {
+      "line": 203,
+      "text": "        debug_log_scopes = yes"
+    },
+    {
+      "line": 204,
+      "text": "        # Only this fixture's moving production rite; no proposal serials, consent or results."
+    },
+    {
+      "line": 205,
+      "text": "        rite:lyd_rite_zhuxi = {"
+    },
+    {
+      "line": 206,
+      "text": "            remove_variable = lyd_c2_transition_cooldown"
+    },
+    {
+      "line": 207,
+      "text": "            remove_variable = lyd_c2_retry_cooldown"
+    },
+    {
+      "line": 208,
+      "text": "        }"
+    },
+    {
+      "line": 209,
+      "text": "        if = {"
+    },
+    {
+      "line": 210,
+      "text": "            limit = {"
+    },
+    {
+      "line": 211,
+      "text": "                rite:lyd_rite_zhuxi = {"
+    },
+    {
+      "line": 212,
+      "text": "                    NOT = { has_variable = lyd_c2_transition_cooldown }"
+    },
+    {
+      "line": 213,
+      "text": "                    NOT = { has_variable = lyd_c2_retry_cooldown }"
+    },
+    {
+      "line": 214,
+      "text": "                }"
+    },
+    {
+      "line": 215,
+      "text": "                gold = var:lyd_r4_reset_gold_before piety = var:lyd_r4_reset_piety_before"
+    },
+    {
+      "line": 216,
+      "text": "            }"
+    },
+    {
+      "line": 217,
+      "text": "            change_variable = { name = lyd_r4_reset_count add = 1 }"
+    },
+    {
+      "line": 218,
+      "text": "            debug_log = \"LYD_R4_EXPLICIT_COOLDOWN_RESET_POSTCONDITION_TRUE_NOT_NATURAL_EXPIRY\""
+    },
+    {
+      "line": 219,
+      "text": "            debug_log_scopes = yes"
+    },
+    {
+      "line": 220,
+      "text": "            trigger_event = lyd_r4_fixture.4"
+    },
+    {
+      "line": 221,
+      "text": "        }"
+    },
+    {
+      "line": 222,
+      "text": "        else = {"
+    },
+    {
+      "line": 223,
+      "text": "            debug_log = \"LYD_R4_COOLDOWN_RESET_POSTCONDITION_FAILED\""
+    },
+    {
+      "line": 224,
+      "text": "            debug_log_scopes = yes"
+    },
+    {
+      "line": 225,
+      "text": "            trigger_event = lyd_r4_fixture.2"
+    },
+    {
+      "line": 226,
+      "text": "        }"
+    },
+    {
+      "line": 227,
+      "text": "    }"
+    },
+    {
+      "line": 228,
+      "text": "}"
+    }
+  ],
+  "fixture_only": "Explicitly removes moving Zhuxi transition/retry variables, checks wallet unchanged, increments reset count and emits fixture.4. Does not signify natural expiry or another JOIN/DETACH."
+}

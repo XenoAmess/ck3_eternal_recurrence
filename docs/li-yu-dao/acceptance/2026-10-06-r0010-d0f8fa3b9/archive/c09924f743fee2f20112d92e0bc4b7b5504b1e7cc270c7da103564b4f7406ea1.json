@@ -1,0 +1,49 @@
+{
+  "status": "ACTUAL_OFFICIAL_CLIENT_METADATA_AND_FRESH_CODE_INVENTORY",
+  "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "sdk_version": "2.0.0",
+  "tool_count": 21,
+  "tool_names": [
+    "ck3_query_native_profile_v1",
+    "ck3_attach_profile_bridge_v1",
+    "ck3_resume_profile_bridge_v1",
+    "ck3_take_profile_native_snapshot_v1",
+    "ck3_query_profile_character_interaction_ordinary_v1",
+    "ck3_initiate_profile_character_interaction_ordinary_v1",
+    "ck3_observe_profile_normal_exit_v1",
+    "ck3_query_normal_exit_context_v1",
+    "ck3_request_normal_exit_v1",
+    "ck3_query_profile_current_actor_stress_adjustment_v1",
+    "ck3_query_profile_event_window_v1",
+    "ck3_query_profile_pending_interaction_v1",
+    "ck3_reply_profile_pending_interaction_v1",
+    "ck3_set_profile_simulation_v1",
+    "ck3_pause_profile_simulation_v1",
+    "ck3_select_profile_event_option_v1",
+    "ck3_save_profile_checkpoint_v1",
+    "ck3_query_profile_decision_item_v1",
+    "ck3_open_profile_decisions_v1",
+    "ck3_select_profile_decision_item_v1",
+    "ck3_confirm_profile_decision_outcome_v1"
+  ],
+  "metadata": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-static-sdk-metadata-20261005-001/ACTUAL-profile-all-tools.json",
+    "bytes": 20312,
+    "sha256": "1ab8945cf322da4800edd7c5baa4a50a7e8972d6d6c7c93cd6b7e4d64649f098"
+  },
+  "source_inventory": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-static-sdk-metadata-20261005-001/SOURCE-INVENTORY.actual.json",
+    "bytes": 577259,
+    "sha256": "e37372ef0b6528fb84a55f34ce03cafd20329064ef0ba03521ee1bd589b4d8d1"
+  },
+  "source_file_count": 2875,
+  "actual_export_report": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-root-head-export-20261005-001/REPORT.json",
+    "bytes": 16836,
+    "sha256": "f2b0f6d91a565648ecdb0be8c3aec1d88b67c468bc8a5623aba347f58ee7b0e4"
+  },
+  "business_callbacks": 0,
+  "game_calls": 0,
+  "actual_game_client_started": false,
+  "runtime_acceptance": "NOT_RUN"
+}

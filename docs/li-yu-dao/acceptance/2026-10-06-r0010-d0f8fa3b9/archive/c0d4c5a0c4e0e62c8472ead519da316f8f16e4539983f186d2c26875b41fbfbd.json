@@ -1,0 +1,24 @@
+{
+  "schema": "ck3-ingame-decision-item-once-claim-v1",
+  "request_id": "decision-select-c9f4b2d17d144ea9884ea46eb887beba",
+  "binding": {
+    "native_revision": 93,
+    "connection_generation": 1,
+    "game_pid": 13436,
+    "played_character_id": 31254,
+    "date_raw": 53144712,
+    "episode_run_id": null
+  },
+  "action_identity": {
+    "game_pid": 13436,
+    "actor_id": 31254,
+    "episode_run_id": null,
+    "decision_key": "lyd_c2_propose_detach_decision",
+    "action": "select",
+    "public_revision": 94
+  },
+  "decision_key": "lyd_c2_propose_detach_decision",
+  "action": "select",
+  "expected_window_kind": null,
+  "status": "claimed_result_unknown_no_retry"
+}

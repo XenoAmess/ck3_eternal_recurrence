@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 164,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0165-seventh-withdraw.request.json",
+  "request_sha256": "62c41d4a3cc3e9635f7d6d95400860e2049493ac6d18efdd476e572d1ec1e7f9",
+  "started_at_utc": "2026-10-05T16:44:23.653170+00:00",
+  "request_id": "r10-0165-seventh-withdraw",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0164-r10-0165-seventh-withdraw.sdk-result.json",
+  "sdk_result_sha256": "a5a0f132d7ad48ef2aa89d8c53c19314eac6dc777406c5960cbc44d9f4463e0d",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0163-event-select.json",
+      "copy": "0164-r10-0165-seventh-withdraw.native-01.json",
+      "sha256": "7d96e59e5201c3908a4f2a1ddd934a8f91158ea9cd32e76fee93e63cbb06c799"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T16:44:28.084231+00:00"
+}

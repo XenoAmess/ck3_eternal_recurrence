@@ -1,0 +1,11 @@
+{
+  "author_index": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/INDEX.json",
+    "sha256": "76e84c70beccf22bda5ab202bb6de571f47f210645fe015b9f8f7628354e1ee2"
+  },
+  "source_record": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source007-qualified-inputs-20261005-001/ROOT-SOURCE-PIN-RECORD.actual.json",
+    "bytes": 3229,
+    "sha256": "8784d98ecba357db56811fb2d3c850bc505aae81b076d0cf598cccf0294a770b"
+  }
+}

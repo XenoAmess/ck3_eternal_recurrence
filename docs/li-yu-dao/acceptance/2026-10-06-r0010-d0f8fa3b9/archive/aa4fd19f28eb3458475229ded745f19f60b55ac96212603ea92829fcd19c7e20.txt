@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0095-fourth-source-yes.request.json",
+  "request_id": "r10-0095-fourth-source-yes",
+  "sha256": "7e98c71a2b5e109f69c12f9f141a063a61164519cd2336d900ede325e50ce9f0",
+  "contacted_game": false
+}

@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0063-reset-ack.request.json",
+  "request_id": "r10-0063-reset-ack",
+  "sha256": "e8432b3fcb53369dd6748fcf36a3c9d085345b72778ebe9fbe9bebaa645e509a",
+  "contacted_game": false
+}

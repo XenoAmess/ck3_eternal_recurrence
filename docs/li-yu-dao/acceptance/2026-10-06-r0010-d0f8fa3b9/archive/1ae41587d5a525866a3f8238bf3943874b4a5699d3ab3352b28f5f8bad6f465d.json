@@ -1,0 +1,493 @@
+{
+  "schema": "lyd.r10.actual-save-pair-observation-diff.v1",
+  "status": "ACTUAL_PAIR_DIFF_EXPECTATIONS_UNASSESSED",
+  "before": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-precommit-readback-20261006-001\\actual-save-001\\REPORT.json",
+    "bytes": 68781,
+    "sha256": "43bf3f8740b923f38955636335d1d97a2c2889e6efc8b132d77307b891dfc4d9"
+  },
+  "after": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-post-readback-20261006-001\\actual-save-001\\REPORT.json",
+    "bytes": 67891,
+    "sha256": "03849d5dcb946fa2559b594774a8c22c48749ec6073d1d67a310243797160668"
+  },
+  "before_phase": "actual-R10-second-DETACH-precommit-authorization-after-first-withdrawal-not-final-result",
+  "after_phase": "actual-R10-second-DETACH-final-confirm-and-ACK-post-result-bounded-prior106-187-graphs-retained",
+  "actual_actor_id": 31254,
+  "source_head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "saved_date_before": "1066.10.1",
+  "saved_date_after": "1066.10.1",
+  "same_saved_date": true,
+  "native_date_raw_and_nonce_receipt_binding": null,
+  "wallet_actual_Decimal_delta": {
+    "gold": "-200",
+    "piety": "-1000",
+    "prestige": "0"
+  },
+  "saved_stress_actual_Decimal_delta": null,
+  "saved_XP_actual_Decimal_delta": "0",
+  "stress_XP_expected": null,
+  "actor_roles_before": {
+    "current_rite": "169",
+    "current_faith": "104",
+    "current_HoR": "31254",
+    "current_HoF": "4294967295",
+    "current_faith_main": "159"
+  },
+  "actor_roles_after": {
+    "current_rite": "169",
+    "current_faith": "107",
+    "current_HoR": "31254",
+    "current_HoF": "4294967295",
+    "current_faith_main": "169"
+  },
+  "nonce_serial_quorum_and_round_variables_changed": {
+    "lyd_c2_active": {
+      "before": {
+        "present": true,
+        "tick": "365",
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_active"
+          },
+          {
+            "key": "tick",
+            "value": "365"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": null
+    }
+  },
+  "all_actor_LYD_variables_changed": {
+    "lyd_c2_active": {
+      "before": {
+        "present": true,
+        "tick": "365",
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_active"
+          },
+          {
+            "key": "tick",
+            "value": "365"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": null
+    },
+    "lyd_c2_completed_detaches": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "200000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "200000"
+          }
+        ],
+        "number": "2",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_completed_detaches"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "200000"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "300000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "300000"
+          }
+        ],
+        "number": "3",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_completed_detaches"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "300000"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "lyd_c2_result": {
+      "before": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": null,
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          }
+        ],
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_result"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              }
+            ]
+          }
+        ]
+      },
+      "after": {
+        "present": true,
+        "tick": null,
+        "type": "value",
+        "identity": "100000",
+        "entries": [
+          {
+            "key": "type",
+            "value": "value"
+          },
+          {
+            "key": "identity",
+            "value": "100000"
+          }
+        ],
+        "number": "1",
+        "scale": 100000,
+        "row_entries": [
+          {
+            "key": "flag",
+            "value": "lyd_c2_result"
+          },
+          {
+            "key": "data",
+            "value": [
+              {
+                "key": "type",
+                "value": "value"
+              },
+              {
+                "key": "identity",
+                "value": "100000"
+              }
+            ]
+          }
+        ]
+      }
+    }
+  },
+  "all_actor_LYD_lists_changed": {},
+  "cooldown_before": {
+    "lyd_school_cooldown": {
+      "present": true,
+      "tick": "349",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_school_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "349"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_study_cooldown": null
+  },
+  "cooldown_after": {
+    "lyd_school_cooldown": {
+      "present": true,
+      "tick": "349",
+      "type": null,
+      "identity": null,
+      "entries": [],
+      "row_entries": [
+        {
+          "key": "flag",
+          "value": "lyd_school_cooldown"
+        },
+        {
+          "key": "tick",
+          "value": "349"
+        },
+        {
+          "key": "data",
+          "value": []
+        }
+      ]
+    },
+    "lyd_study_cooldown": null
+  },
+  "political7": {
+    "2230": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2231": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2232": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2235": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2262": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2263": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    },
+    "2264": {
+      "before_holder": "31254",
+      "after_holder": "31254",
+      "AST_equal": true
+    }
+  },
+  "domain_ids_before": [
+    "2230",
+    "2231",
+    "2262",
+    "2232",
+    "2263",
+    "2235",
+    "2264"
+  ],
+  "domain_ids_after": [
+    "2230",
+    "2231",
+    "2262",
+    "2232",
+    "2263",
+    "2235",
+    "2264"
+  ],
+  "actor_landed_full_branch_equal": true,
+  "selected_character_protection": {
+    "31254": {
+      "before_present": true,
+      "after_present": true,
+      "protected_top_equal": true,
+      "protected_alive_equal": true,
+      "current_rite_before": "169",
+      "current_rite_after": "169"
+    },
+    "65865": {
+      "before_present": true,
+      "after_present": true,
+      "protected_top_equal": true,
+      "protected_alive_equal": true,
+      "current_rite_before": "169",
+      "current_rite_after": "169"
+    },
+    "65866": {
+      "before_present": true,
+      "after_present": true,
+      "protected_top_equal": true,
+      "protected_alive_equal": true,
+      "current_rite_before": "159",
+      "current_rite_after": "159"
+    }
+  },
+  "related_Faith_Rite_changes": {
+    "faiths": [
+      {
+        "id": "106",
+        "before_present": false,
+        "after_present": true,
+        "before_AST_sha256": null,
+        "after_AST_sha256": "d661f44faaba71e788865d6659ae35e35d60417ba93390d0afac000b31cd4e02",
+        "heads_before": null,
+        "heads_after": {
+          "head_of_rite": null,
+          "religious_head": "4294967295",
+          "religious_head_title": null
+        },
+        "tenet_doctrine_rows_equal": null
+      },
+      {
+        "id": "107",
+        "before_present": false,
+        "after_present": true,
+        "before_AST_sha256": null,
+        "after_AST_sha256": "958a07c9b65ede861b4c735d0a588412e87a92042d72bbc299ca9682852acd4f",
+        "heads_before": null,
+        "heads_after": {
+          "head_of_rite": null,
+          "religious_head": "4294967295",
+          "religious_head_title": null
+        },
+        "tenet_doctrine_rows_equal": null
+      }
+    ],
+    "rites": [
+      {
+        "id": "169",
+        "before_present": true,
+        "after_present": true,
+        "before_AST_sha256": "2e996e629d6fb5d61f5b19356a3c6aa623a1ee6563deea5335a7bea08bf796e7",
+        "after_AST_sha256": "19b3a5f1ea1a7dd194ca6f56376d779d78567f931330f3ad1fb79f4d74cf3ed9",
+        "heads_before": {
+          "head_of_rite": "31254",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "heads_after": {
+          "head_of_rite": "31254",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "tenet_doctrine_rows_equal": true
+      },
+      {
+        "id": "187",
+        "before_present": false,
+        "after_present": true,
+        "before_AST_sha256": null,
+        "after_AST_sha256": "a34d98434bc9edae3e53eca4b9ec7d380f520682db44fd7d877a60d85c0fdf44",
+        "heads_before": null,
+        "heads_after": {
+          "head_of_rite": "4294967295",
+          "religious_head": null,
+          "religious_head_title": null
+        },
+        "tenet_doctrine_rows_equal": null
+      }
+    ]
+  },
+  "all_Faith_main_links_changed": {
+    "107": {
+      "before": null,
+      "after": "169"
+    }
+  },
+  "all_Rite_parent_links_changed": {
+    "169": {
+      "before": "104",
+      "after": "107"
+    }
+  },
+  "faith_full_raw_hash_equal": false,
+  "rite_full_raw_hash_equal": false,
+  "fee_expected_from_actual_source_option_effect": null,
+  "fee_or_nonce_business_proof": "Requires ROOT supplied actual selected branch + same-frame SDK/native source/date/nonce evidence; this tool only reports exact saved diffs",
+  "no_game_MCP_pipe_desktop_bus_Git_main": true,
+  "business_PASS": false
+}

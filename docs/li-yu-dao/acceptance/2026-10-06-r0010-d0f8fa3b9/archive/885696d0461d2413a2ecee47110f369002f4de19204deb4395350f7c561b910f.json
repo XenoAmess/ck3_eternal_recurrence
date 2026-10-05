@@ -1,0 +1,10 @@
+{
+  "schema": "lyd.r10.checkpoint108.non-unused-record-review.v1",
+  "runtime_effect_error_count": 0,
+  "runtime_trigger_error_count": 0,
+  "runtime_scope_or_reference_error_count": 0,
+  "unclassified_non_unused_record_count": 0,
+  "records": [],
+  "review_method": "Every captured block was first tested against the full exact unused diagnostic; all unmatched blocks retained before categorization",
+  "absence_boundary": "Captured error.log bytes only; no inference that every game operation was logged"
+}

@@ -1,0 +1,110 @@
+{
+  "schema": "lyd.r10.actual-python-only-after-storage-supplement.v1",
+  "status": "ACTUAL_REQUIRED_PYTHON_ONLY_GATE_GREEN_AFTER_LOSSLESS_STORAGE_PROJECTION",
+  "prepared_utc": "2026-10-05T18:55:53.080528+00:00",
+  "gate_started_utc": "2026-10-05T18:50:56.015713+00:00",
+  "gate_completed_utc": "2026-10-05T18:51:48.300093+00:00",
+  "gate_actual_exit_code": 0,
+  "stdout_exact_result": "PYTHON-ONLY GREEN",
+  "stderr_bytes": 0,
+  "actual_argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "tools/validate_python_only.py"
+  ],
+  "actual_input_refs": [
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-python-only-after-archive-projection-20261006-001\\argv.json",
+      "stored_relative_path": "supplements/python-only-after-storage-20261006-001/evidence/argv.json",
+      "bytes": 150,
+      "sha256": "2e7e5627f51a7c8acdef8e857e46d708450cbf3a4153f87fdd5e80d76f65cf5f",
+      "storage_mode": "exact_copy"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-python-only-after-archive-projection-20261006-001\\RESULT.json",
+      "stored_relative_path": "supplements/python-only-after-storage-20261006-001/evidence/RESULT.json",
+      "bytes": 615,
+      "sha256": "3792a700eb187a0d857eb62f3e0b8db94802537cba3d66280c0cb9223f35a954",
+      "storage_mode": "exact_copy"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-python-only-after-archive-projection-20261006-001\\stdout.txt",
+      "stored_relative_path": "supplements/python-only-after-storage-20261006-001/evidence/stdout.txt",
+      "bytes": 19,
+      "sha256": "c38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490",
+      "storage_mode": "exact_copy"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-python-only-after-archive-projection-20261006-001\\stderr.txt",
+      "stored_relative_path": "supplements/python-only-after-storage-20261006-001/evidence/stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "storage_mode": "exact_copy"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_python_only_after_archive_20261006_001.argv.json",
+      "stored_relative_path": "supplements/python-only-after-storage-20261006-001/evidence/argv-source.json",
+      "bytes": 143,
+      "sha256": "b5e7e624b11171971f181189e669397e45c18893d6b49905d4428e6d69447223",
+      "storage_mode": "exact_copy"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-eight-archive-storage-projection-receipt-20261006-001\\RECEIPT.json",
+      "stored_relative_path": "supplements/python-only-after-storage-20261006-001/evidence/projection-receipt.json.gz",
+      "original_bytes": 13628,
+      "original_sha256": "1170aa42ddc4fcab00ff958b44080a5c96933826d499881c47c467c57beea550",
+      "bytes": 2570,
+      "sha256": "f9bf313a39476d0fd60ae3c51a409c7b80da05ce31c1d8e4afc90701e6ba273e",
+      "storage_mode": "gzip",
+      "decoded_bytes": 13628,
+      "decoded_sha256": "1170aa42ddc4fcab00ff958b44080a5c96933826d499881c47c467c57beea550",
+      "lossless_decode_verified": true
+    }
+  ],
+  "actual_storage_projection_receipt_sha256": "1170aa42ddc4fcab00ff958b44080a5c96933826d499881c47c467c57beea550",
+  "current_post_projection_main_INDEX_sha256": "a41f140650d89505078de463d347a469c60a36c66f5ed86eae56a0216d12e117",
+  "original_first_import_INDEX_sha256": "a503e02e1895bdfb9c43af34423b4ecff4b55b2c02c6a55629f022edd699ff62",
+  "three_existing_original_history_indices": [
+    {
+      "path": "storage-history/original-import-INDEX.json.a503e02e1895bdfb9c43af34423b4ecff4b55b2c02c6a55629f022edd699ff62.gz",
+      "original_bytes": 821703,
+      "original_sha256": "a503e02e1895bdfb9c43af34423b4ecff4b55b2c02c6a55629f022edd699ff62",
+      "stored_bytes": 200769,
+      "stored_sha256": "36dc4b7a0e1ecedf5f7b692274aeb38ffd190bcea13063bb603c1d4ca076ebbf",
+      "verification_basis": "ROOT actual lossless projection receipt plus current main INDEX exact metadata; history bodies not rescanned"
+    },
+    {
+      "path": "storage-history/original-import-ORIGIN-MAP.json.26d072985f562aaa0e4fcd5327802dbabcddbd05412a19648f3520f5d687fc8e.gz",
+      "original_bytes": 3521209,
+      "original_sha256": "26d072985f562aaa0e4fcd5327802dbabcddbd05412a19648f3520f5d687fc8e",
+      "stored_bytes": 315846,
+      "stored_sha256": "120fcddb9b6dba9257ee2bebed8beb2df4816e441e14b38069be9b64b582c202",
+      "verification_basis": "ROOT actual lossless projection receipt plus current main INDEX exact metadata; history bodies not rescanned"
+    },
+    {
+      "path": "storage-history/original-import-EVIDENCE-INDEX.json.00d682d69a0184dbcddec3c13f6c26eb6bd9db1080284195faf87d9c8230c622.gz",
+      "original_bytes": 4083058,
+      "original_sha256": "00d682d69a0184dbcddec3c13f6c26eb6bd9db1080284195faf87d9c8230c622",
+      "stored_bytes": 407368,
+      "stored_sha256": "382797a65d789ba01245669de5219064a62bd75aef71da88b899e330011e6655",
+      "verification_basis": "ROOT actual lossless projection receipt plus current main INDEX exact metadata; history bodies not rescanned"
+    }
+  ],
+  "original_gate_8_RED_retained": {
+    "execution_sequence": "exec27418",
+    "exit_code": 1,
+    "RED_count": 8
+  },
+  "original_receipt_followup_gate_field_retained_NULL": null,
+  "original_documents_receipts_or_failures_rewritten": false,
+  "validator_relaxed": false,
+  "all_other_SDK_or_save_body_reads": 0,
+  "R10_actual_game_source_HEAD": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "R10_business_overall": "NOT_GREEN_PHASE1_INCOMPLETE",
+  "second_JOIN_R11_reload_C3_I3b_practice_I4_credit": false,
+  "general_CI_or_all_gate_GREEN_claim": false,
+  "gate_scope": "Only this actual required Python-only invocation on ROOT current main after storage correction; not an R10 game/business or future-build credit",
+  "author_main_Git_game_or_gate_execution": false
+}

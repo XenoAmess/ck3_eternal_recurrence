@@ -1,0 +1,22 @@
+Traceback (most recent call last):
+  File "C:\workspace\ck3_lyd_runtime_20261004\r10-source-ready-007-20261005-001\emit_first_join_evidence.py", line 85, in <module>
+    emit(sys.argv[1])
+    ~~~~^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r10-source-ready-007-20261005-001\emit_first_join_evidence.py", line 59, in emit
+    facts=namespace["verify_consumption"](claim=claim,manifest=manifest,artifacts=artifacts)
+  File "C:\workspace\ck3_lyd_runtime_20261004\r10-first-proposal-bound-verifier-20261005-003\verifier.py", line 728, in verify_consumption
+    return _verify(claim=claim,manifest=manifest,artifacts=artifacts,cfg=PINNED_ROOT_BINDING)
+  File "C:\workspace\ck3_lyd_runtime_20261004\r10-first-proposal-bound-verifier-20261005-003\verifier.py", line 671, in _verify
+    be,b,bf,qr = observation(artifacts["before_artifact"],"before",cfg,cache)
+                 ~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r10-first-proposal-bound-verifier-20261005-003\verifier.py", line 325, in observation
+    save = refbytes(env["save"],cache,saved=True)
+  File "C:\workspace\ck3_lyd_runtime_20261004\r10-first-proposal-bound-verifier-20261005-003\verifier.py", line 101, in refbytes
+    exact(ref, ("path","sha256") if not saved else ("path","sha256","bytes"), "artifact ref")
+    ~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r10-first-proposal-bound-verifier-20261005-003\verifier.py", line 80, in exact
+    need(type(obj) is dict and set(obj) == set(keys), label + " is not closed")
+    ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\workspace\ck3_lyd_runtime_20261004\r10-first-proposal-bound-verifier-20261005-003\verifier.py", line 77, in need
+    raise ValueError(message)
+ValueError: artifact ref is not closed

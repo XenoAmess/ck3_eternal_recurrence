@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 37,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0038-reset-ack-select.request.json",
+  "request_sha256": "06443278611915e9ee059a48ff20284c1638d70389a8fd6fb04823a4d78f8c59",
+  "started_at_utc": "2026-10-05T12:02:50.882362+00:00",
+  "request_id": "r10-0038-reset-ack-select",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0037-r10-0038-reset-ack-select.sdk-result.json",
+  "sdk_result_sha256": "df28f7fab415b22e85d4056080d61f087eec2d5f6f92a6e814dad29a923519a2",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0036-event-select.json",
+      "copy": "0037-r10-0038-reset-ack-select.native-01.json",
+      "sha256": "ed2a851d1b7c19b6947092f9fb1a1d9a9f3d4f02e0afea31bd14e2cde0aa166d"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T12:02:54.086806+00:00"
+}

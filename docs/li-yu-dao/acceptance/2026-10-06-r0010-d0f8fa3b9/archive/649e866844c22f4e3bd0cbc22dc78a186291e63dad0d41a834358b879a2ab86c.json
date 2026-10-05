@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 250,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0251-after-normal-exit-continue-snapshot.request.json",
+  "request_sha256": "eeac9daca15030ce1b9aba891510dccf0fac6b413af132b50994b3c602d2a3b7",
+  "started_at_utc": "2026-10-05T18:02:58.799801+00:00",
+  "request_id": "r10-0251-after-normal-exit-continue-snapshot",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0250-r10-0251-after-normal-exit-continue-snapshot.sdk-result.json",
+  "sdk_result_sha256": "69325931f3542498e0f44da7e975e90baffe7aec9fdc59def2689121253141fc",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0249-snapshot.json",
+      "copy": "0250-r10-0251-after-normal-exit-continue-snapshot.native-01.json",
+      "sha256": "7507b7e6e649bd757e15bfd1d5ca8343c28bf71cfba0b3e127d33a4a7e904c32"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T18:03:01.024410+00:00"
+}

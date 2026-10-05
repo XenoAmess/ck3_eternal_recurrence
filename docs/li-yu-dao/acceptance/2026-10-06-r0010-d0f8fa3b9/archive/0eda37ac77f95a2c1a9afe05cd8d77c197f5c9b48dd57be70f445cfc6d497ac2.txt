@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0088-fourth-proposal.request.json",
+  "request_id": "r10-0088-fourth-proposal",
+  "sha256": "d689c9e17f2046a6359693fb320ed3b4039d90106b3e8becf6339cf38f080d44",
+  "contacted_game": false
+}

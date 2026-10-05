@@ -1,0 +1,2 @@
+﻿# GENERATED FILE: edit tools/gen_institution.py; regenerate through gen_runtime.py.
+lyd_i3b_quorum_value = { value = var:lyd_i3b_yes multiply = 3 subtract = { value = var:lyd_i3b_total multiply = 2 } }

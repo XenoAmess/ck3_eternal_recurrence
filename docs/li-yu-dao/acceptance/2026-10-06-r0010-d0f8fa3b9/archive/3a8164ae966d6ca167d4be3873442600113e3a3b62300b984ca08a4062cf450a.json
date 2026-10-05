@@ -1,0 +1,238 @@
+{
+  "schema": "lyd.r10.actual-first-consumption-output-independent-review.v1",
+  "utc": "2026-10-05T12:32:31.393897+00:00",
+  "status": "ACTUAL_ROOT_EMITTED_PROPOSAL_CONSUMPTION_OUTPUT_MATCH",
+  "actual_ROOT_execution": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/root-first-consumption-emit-invocation-002/RESULT.json",
+    "bytes": 623,
+    "sha256": "91a714e0bc720da287729a895eb929e96d62a51be3c07956da6dacc4381ec5c4"
+  },
+  "actual_output_INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-first-proposal-emitted-evidence-20261005-004/INDEX.json",
+    "bytes": 858,
+    "sha256": "1e87ab45bc0182e2f83ef6a925d9dae83cf35677d77234d2ea75aab1f0fb3664"
+  },
+  "actual_consumption_manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-first-proposal-emitted-evidence-20261005-004/CONSUMPTION-MANIFEST.json",
+    "bytes": 1785,
+    "sha256": "5f0ec75c2eaa9dbe3da15f691a49c291594b7f7de388035da5f5becad55f24a7"
+  },
+  "actual_independent_facts": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-first-proposal-emitted-evidence-20261005-004/INDEPENDENT-FACTS.json",
+    "bytes": 1038,
+    "sha256": "0916ef9e22162d3bbf904ac0bdf436542ac7e438c493804a52600f3b462763c3"
+  },
+  "actual_product_detail": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-first-proposal-emitted-evidence-20261005-004/PRODUCT-DETAIL.json",
+    "bytes": 3277,
+    "sha256": "a4135ed97d7323c78a74455a22795d08bb3ffed75703e65130b7c5c6ea2e1d3e"
+  },
+  "actual_saved_consumption_nonce": [
+    6,
+    7
+  ],
+  "source_mode": "PROPOSAL_OPENED",
+  "original_action_identity": {
+    "game_pid": 13436,
+    "actor_id": 31254,
+    "process_create_time": 1791196395.7422996,
+    "interaction_key": "lyd_c2_propose_join_interaction",
+    "recipient_id": 65866,
+    "action": "initiate_ordinary"
+  },
+  "checks": [
+    {
+      "condition": "actual emitted output INDEX exact",
+      "matched": true
+    },
+    {
+      "condition": "actual indexed emitted payload: CONSUMPTION-MANIFEST.json",
+      "matched": true
+    },
+    {
+      "condition": "actual indexed emitted payload: EMISSION-REQUEST.raw.json",
+      "matched": true
+    },
+    {
+      "condition": "actual indexed emitted payload: EMISSION-STATUS.json",
+      "matched": true
+    },
+    {
+      "condition": "actual indexed emitted payload: INDEPENDENT-FACTS.json",
+      "matched": true
+    },
+    {
+      "condition": "actual indexed emitted payload: PRODUCT-DETAIL.json",
+      "matched": true
+    },
+    {
+      "condition": "exact emitted inventory coverage",
+      "matched": true
+    },
+    {
+      "condition": "original004 emission request exact raw copy",
+      "matched": true
+    },
+    {
+      "condition": "ROOT actual emitter invocation exit0",
+      "matched": true
+    },
+    {
+      "condition": "actual emitter stdio hashes exact",
+      "matched": true
+    },
+    {
+      "condition": "actual executed argv exact author004 frozen argv",
+      "matched": true
+    },
+    {
+      "condition": "actual consumed manifest exact root pin",
+      "matched": true
+    },
+    {
+      "condition": "closed generic consumption manifest",
+      "matched": true
+    },
+    {
+      "condition": "actual support hash: 8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.json",
+      "matched": true
+    },
+    {
+      "condition": "actual manifest/facts original six identity and request exact",
+      "matched": true
+    },
+    {
+      "condition": "full scoped stable identity actual",
+      "matched": true
+    },
+    {
+      "condition": "actual support hash: 8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.packet.bin",
+      "matched": true
+    },
+    {
+      "condition": "facts exact artifact SHA: packet",
+      "matched": true
+    },
+    {
+      "condition": "actual support hash: 8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.native-result.json",
+      "matched": true
+    },
+    {
+      "condition": "facts exact artifact SHA: native_result",
+      "matched": true
+    },
+    {
+      "condition": "actual support hash: BEFORE-OBSERVATION.actual.json",
+      "matched": true
+    },
+    {
+      "condition": "facts exact artifact SHA: before_artifact",
+      "matched": true
+    },
+    {
+      "condition": "actual support hash: AFTER-OBSERVATION.actual.json",
+      "matched": true
+    },
+    {
+      "condition": "facts exact artifact SHA: after_artifact",
+      "matched": true
+    },
+    {
+      "condition": "no fabricated unknown or receipt",
+      "matched": true
+    },
+    {
+      "condition": "actual support hash: INDEPENDENT-FACTS.json",
+      "matched": true
+    },
+    {
+      "condition": "independent report actual emitted facts binding",
+      "matched": true
+    },
+    {
+      "condition": "closed provider typed facts schema",
+      "matched": true
+    },
+    {
+      "condition": "actual frozen provider consumption nonce6->7 with full recipient",
+      "matched": true
+    },
+    {
+      "condition": "actual dynamic opened-proposal serial/nonce result",
+      "matched": true
+    },
+    {
+      "condition": "actual typed graph identities retained",
+      "matched": true
+    },
+    {
+      "condition": "actual positive saved role lists",
+      "matched": true
+    },
+    {
+      "condition": "opening resource and completed history unchanged",
+      "matched": true
+    },
+    {
+      "condition": "consumption proof has no forced NPC or JOIN business credit",
+      "matched": true
+    },
+    {
+      "condition": "real13/16 saves exact corrected three-field references",
+      "matched": true
+    },
+    {
+      "condition": "actual source/parser producer frozen",
+      "matched": true
+    },
+    {
+      "condition": "real current40/frame39 release evidence exact",
+      "matched": true
+    },
+    {
+      "condition": "actual support hash: 0040-r10-0041-current-ready-query.sdk-result.json",
+      "matched": true
+    },
+    {
+      "condition": "actual support hash: 0039-r10-0040-before-new-intent-save.sdk-result.json",
+      "matched": true
+    },
+    {
+      "condition": "actual support hash: 0013-r10-0013-before-save.sdk-result.json",
+      "matched": true
+    },
+    {
+      "condition": "bound provider process/profile/session exact original claim",
+      "matched": true
+    },
+    {
+      "condition": "actual emitted status retains pending host release and business-credit boundaries",
+      "matched": true
+    },
+    {
+      "condition": "old original once claim remains unchanged UNKNOWN",
+      "matched": true
+    },
+    {
+      "condition": "first readonly review refusal preserved; concurrent real emitter explains exists",
+      "matched": true
+    }
+  ],
+  "actual_ROOT_emitter_executed": true,
+  "actual_emitter_executed_by_reviewer": false,
+  "actual_verifier_consumption_report_present": true,
+  "reviewer_save_AST_parse_count": 0,
+  "JOIN_business_credit": false,
+  "full_cycle_credit": false,
+  "registry_or_release_state": "emission artifact records false; future ROOT host actions are outside this reviewed artifact",
+  "actual_registry_writes_by_reviewer": 0,
+  "actual_host_release_calls_by_reviewer": 0,
+  "actual_MCP_calls_by_reviewer": 0,
+  "actual_game_calls_by_reviewer": 0,
+  "first_review_refusal_preserved": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-first-consumption004-independent-review-20261005-001/FAILURE.json",
+    "bytes": 9669,
+    "sha256": "4d0a164f6e5d5755bb061b17c29a9c0fd7e88f976af225f7bae86c55dc37753a"
+  },
+  "first_review_refusal_boundary": "The static fresh-output absence check encountered ROOT's concurrent actual successful004 emission; this is not a product failure and no emission was repeated by the reviewer."
+}

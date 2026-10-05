@@ -1,0 +1,172 @@
+{
+  "status": "PASS",
+  "scope": "NEW_ACTUAL_QUERY_FRAME_METADATA_GATES_AND_DISTINCT_PATHS_ONLY",
+  "source_sha256": "aeecd4f13521f0056934887deb2d2e4173002ba82f8477ae91ca2ee2388a114e",
+  "actual_preserved_input_refs": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0126-r10-0127-sixth-ready-query.sdk-result.json",
+      "sha256": "a2399724f52c7a1742990111dbe684fbfdd75c890b25be5cde09d1ee50d63edf",
+      "bytes": 7623
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0125-r10-0126-fifth-post-cancel-save.sdk-result.json",
+      "sha256": "7a9768a2e921c36e6625e04d807cb9b7a417a45f9cff9f1771b76e73a67b1b09",
+      "bytes": 5206437
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000004.claim.json",
+      "sha256": "be8013203068a19192934c6aebf5491f4c8f8b7483e60799a9df3413c48eff22",
+      "bytes": 1934
+    }
+  ],
+  "actual_functions": [
+    "query",
+    "frame_identity",
+    "distinct_output_paths",
+    "output_path"
+  ],
+  "seam": "SDK raw reads replaced with deep-copied preserved structured metadata; core validation functions actual candidate",
+  "results": [
+    {
+      "case": "actual_preserved_external_frame_positive",
+      "PASS": true
+    },
+    {
+      "case": "actual_metadata_own_frame_shape_positive",
+      "PASS": true
+    },
+    {
+      "case": "foreign_frame_profile_sha256",
+      "PASS": true,
+      "rejected_reason": "same-frame SDK actual provenance differs: profile_sha256"
+    },
+    {
+      "case": "foreign_frame_session_id",
+      "PASS": true,
+      "rejected_reason": "same-frame SDK actual provenance differs: session_id"
+    },
+    {
+      "case": "foreign_frame_pipe_name",
+      "PASS": true,
+      "rejected_reason": "same-frame SDK actual provenance differs: pipe_name"
+    },
+    {
+      "case": "wrong_full_frame_actor",
+      "PASS": true,
+      "rejected_reason": "actual frame full actor/source/alive differs"
+    },
+    {
+      "case": "frame_actor_dead",
+      "PASS": true,
+      "rejected_reason": "actual frame full actor/source/alive differs"
+    },
+    {
+      "case": "frame_actor_bool_fullID",
+      "PASS": true,
+      "rejected_reason": "actual frame full actor/source/alive differs"
+    },
+    {
+      "case": "frame_actor_non_native",
+      "PASS": true,
+      "rejected_reason": "actual frame full actor/source/alive differs"
+    },
+    {
+      "case": "context_actor_dead",
+      "PASS": true,
+      "rejected_reason": "actual query guard absent: actor_alive"
+    },
+    {
+      "case": "context_recipient_dead",
+      "PASS": true,
+      "rejected_reason": "actual query guard absent: recipient_alive"
+    },
+    {
+      "case": "frame_non_native_source",
+      "PASS": true,
+      "rejected_reason": "actual frame native source/backend/format differs"
+    },
+    {
+      "case": "frame_wrong_backend",
+      "PASS": true,
+      "rejected_reason": "actual frame native source/backend/format differs"
+    },
+    {
+      "case": "frame_bool_format",
+      "PASS": true,
+      "rejected_reason": "actual frame native source/backend/format differs"
+    },
+    {
+      "case": "context_non_native_source",
+      "PASS": true,
+      "rejected_reason": "actual ordinary context source differs"
+    },
+    {
+      "case": "frame_disconnected",
+      "PASS": true,
+      "rejected_reason": "actual frame connected pipe differs"
+    },
+    {
+      "case": "frame_wrong_pipe",
+      "PASS": true,
+      "rejected_reason": "actual frame connected pipe differs"
+    },
+    {
+      "case": "frame_bool_generation",
+      "PASS": true,
+      "rejected_reason": "actual frame PID/generation differs"
+    },
+    {
+      "case": "frame_active_event",
+      "PASS": true,
+      "rejected_reason": "actual ready frame has event/incoming"
+    },
+    {
+      "case": "frame_pending_incoming",
+      "PASS": true,
+      "rejected_reason": "actual ready frame has event/incoming"
+    },
+    {
+      "case": "frame_bool_date",
+      "PASS": true,
+      "rejected_reason": "actual frame integer stamp differs: date_raw"
+    },
+    {
+      "case": "context_not_ready_control",
+      "PASS": true,
+      "rejected_reason": "actual query guard absent: ready_to_initiate"
+    },
+    {
+      "case": "fresh_distinct_outputs_positive",
+      "PASS": true
+    },
+    {
+      "case": "finished_bound_separate_from_fresh_outputs_positive",
+      "PASS": true
+    },
+    {
+      "case": "assembly_flow_alias",
+      "PASS": true,
+      "rejected_reason": "assembly, flow, evidence, and bound outputs must be distinct actual paths"
+    },
+    {
+      "case": "flow_evidence_alias",
+      "PASS": true,
+      "rejected_reason": "assembly, flow, evidence, and bound outputs must be distinct actual paths"
+    },
+    {
+      "case": "assembly_bound_alias",
+      "PASS": true,
+      "rejected_reason": "assembly, flow, evidence, and bound outputs must be distinct actual paths"
+    },
+    {
+      "case": "canonical_alias",
+      "PASS": true,
+      "rejected_reason": "assembly, flow, evidence, and bound outputs must be distinct actual paths"
+    }
+  ],
+  "old_tests_run": 0,
+  "full_validate_or_assemble_calls": 0,
+  "save_AST_or_raw_save_hash_reads": 0,
+  "provider_binder_emitter_host_MCP_game_calls": 0,
+  "actual_business_or_consumption_credit": false
+}

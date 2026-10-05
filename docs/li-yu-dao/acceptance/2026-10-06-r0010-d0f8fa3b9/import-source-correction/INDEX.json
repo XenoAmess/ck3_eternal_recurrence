@@ -1,0 +1,40 @@
+{
+  "schema": "lyd.r10.import-source-correction-index.v1",
+  "files": [
+    {
+      "path": "CORRECTION.json",
+      "bytes": 9545,
+      "sha256": "666993a33814b71bbdd4dc5af26da9019c4a88751bc8ab0404e0d15625b3b1e8"
+    },
+    {
+      "path": "FAILED-CHECK-TOOL-TRANSCRIPT-EXCERPT.txt",
+      "bytes": 618,
+      "sha256": "6b5adc25be12d462853ad251d7695397c9382393707178015c6fa11552b05301"
+    },
+    {
+      "path": "failed-importer-source-001.py",
+      "bytes": 12695,
+      "sha256": "d7366b9852a90c7611bc7ebce664a0a6e64d831a8cfc6c05b8c73077dd11a3f6"
+    },
+    {
+      "path": "IMPORT-PLAN.v2.json",
+      "bytes": 2970667,
+      "sha256": "ebbe92559187086b6719af31f330b50ef759a7f251a468ec6275ea788a0054da"
+    },
+    {
+      "path": "NOTES-zh.md",
+      "bytes": 846,
+      "sha256": "b84ae954baeefbff74dbb0bb2a33ca08575e954fcb516c136b4d08718a43fafc"
+    },
+    {
+      "path": "ORIGIN-MAP.plan.actual-source-correction.json",
+      "bytes": 2638599,
+      "sha256": "a4046182aa8baa9660b31b347e00f7051956271aa3d41efba7e2476c59a9d38e"
+    },
+    {
+      "path": "source/correct_r10_terminal_import_sources_20261006_001.py",
+      "bytes": 6346,
+      "sha256": "613c3407b920609f7b97b1cf84be29d11a18bbe6ed8b4d927465be674adfd264"
+    }
+  ]
+}

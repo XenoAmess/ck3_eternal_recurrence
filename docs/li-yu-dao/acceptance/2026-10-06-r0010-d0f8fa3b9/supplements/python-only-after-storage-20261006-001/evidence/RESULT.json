@@ -1,0 +1,11 @@
+{
+  "status": "INVOCATION_COMPLETED",
+  "exit_code": 0,
+  "stdout_sha256": "c38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490",
+  "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+  "schema": "lyd.r10.root-structured-argv-invocation.v1",
+  "argv_source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_python_only_after_archive_20261006_001.argv.json",
+  "argv_source_sha256": "b5e7e624b11171971f181189e669397e45c18893d6b49905d4428e6d69447223",
+  "started_utc": "2026-10-05T18:50:56.015713+00:00",
+  "completed_utc": "2026-10-05T18:51:48.300093+00:00"
+}

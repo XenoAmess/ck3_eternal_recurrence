@@ -1,0 +1,121 @@
+﻿# GENERATED FILE: edit mod_li_yu_dao/tools/school_consent_templates or tools/gen_school_consent.py.
+# Character root is a voter, not the initiator. The saved proposal scope and serial
+# must match before touching the initiating actor's counters.
+lyd_c2_source_vote_effect = {
+    if = {
+        limit = { lyd_c2_source_ballot_trigger = yes }
+        set_variable = { name = lyd_c2_vote_owner value = scope:lyd_c2_actor }
+        set_variable = { name = lyd_c2_vote_serial value = scope:lyd_c2_event_serial }
+        set_variable = { name = lyd_c2_vote_nonce value = scope:lyd_c2_event_nonce }
+        set_variable = { name = lyd_c2_vote_yes value = $YES$ }
+        # Preview does not set vote_yes; real execution has just stored it.
+        if = { limit = { has_variable = lyd_c2_vote_yes }
+            if = { limit = { var:lyd_c2_vote_yes = 1 } scope:lyd_c2_actor = { change_variable = { name = lyd_c2_source_yes add = 1 } } }
+        }
+    }
+}
+lyd_c2_target_vote_effect = {
+    if = {
+        limit = { lyd_c2_target_ballot_trigger = yes }
+        set_variable = { name = lyd_c2_vote_owner value = scope:lyd_c2_actor }
+        set_variable = { name = lyd_c2_vote_serial value = scope:lyd_c2_event_serial }
+        set_variable = { name = lyd_c2_vote_nonce value = scope:lyd_c2_event_nonce }
+        set_variable = { name = lyd_c2_vote_yes value = $YES$ }
+        # Same post-write presence gate for receiving-school ballots.
+        if = { limit = { has_variable = lyd_c2_vote_yes }
+            if = {
+                limit = { var:lyd_c2_vote_yes = 1 }
+                rite = { change_variable = { name = lyd_c2_target_yes add = 1 } }
+                scope:lyd_c2_actor = {
+                    change_variable = { name = lyd_c2_target_yes add = 1 }
+                    lyd_c2_request_target_consent_effect = yes
+                }
+            }
+        }
+    }
+}
+lyd_c2_player_yes_effect = {
+    if = {
+        limit = { lyd_c2_player_consent_trigger = yes }
+        set_variable = { name = lyd_c2_player_owner value = scope:lyd_c2_actor }
+        set_variable = { name = lyd_c2_player_serial value = scope:lyd_c2_event_serial }
+        set_variable = { name = lyd_c2_player_nonce value = scope:lyd_c2_event_nonce }
+        scope:lyd_c2_actor = {
+            change_variable = { name = lyd_c2_player_yes add = 1 }
+            if = { limit = { var:lyd_c2_kind = 1 } lyd_c2_request_target_consent_effect = yes }
+        }
+    }
+}
+lyd_c2_player_no_effect = {
+    if = {
+        limit = { lyd_c2_player_consent_trigger = yes }
+        scope:lyd_c2_actor = { lyd_c2_reject_round_effect = yes }
+    }
+}
+lyd_c2_sign_source_effect = {
+    if = {
+        limit = { lyd_c2_source_mandate_trigger = { ACTOR = scope:lyd_c2_actor } }
+        set_variable = { name = lyd_c2_source_signed value = 1 }
+        if = {
+            limit = { has_variable = lyd_c2_source_head var:lyd_c2_source_head = this }
+            set_variable = { name = lyd_c2_source_head_yes value = 1 }
+        }
+        if = {
+            limit = { var:lyd_c2_kind = 1 }
+            lyd_c2_request_target_consent_effect = yes
+            if = {
+                limit = { exists = var:lyd_c2_source_head NOT = { var:lyd_c2_source_head = this } }
+                var:lyd_c2_source_head = { trigger_event = lyd.223 }
+            }
+        }
+        else_if = {
+            limit = { exists = var:lyd_c2_source_head }
+            var:lyd_c2_source_head = { trigger_event = lyd.224 }
+        }
+    }
+}
+# Event-only wrapper: validate the original popup before the current helper can
+# sign or send follow-up events. Never refresh/rebind the saved nonce here.
+lyd_c2_event_sign_source_effect = {
+    if = {
+        limit = { lyd_c2_initiator_event_context_trigger = yes }
+        lyd_c2_sign_source_effect = yes
+    }
+}
+lyd_c2_request_target_consent_effect = {
+    # A round is unsigned until the source representative actually signs.
+    # Keep this as an outer branch: sibling conditions need not short-circuit.
+    if = { limit = { has_variable = lyd_c2_source_signed }
+    if = {
+        limit = {
+            lyd_c2_current_proposal_trigger = { ACTOR = scope:lyd_c2_actor }
+            var:lyd_c2_kind = 1
+            var:lyd_c2_source_signed = 1
+            lyd_c2_receiving_mandates_trigger = { ACTOR = scope:lyd_c2_actor }
+            NOT = { has_variable = lyd_c2_target_requested }
+        }
+        set_variable = { name = lyd_c2_target_requested value = 1 }
+        var:lyd_c2_target_rep = { trigger_event = lyd.221 }
+    }
+    }
+}
+lyd_c2_sign_target_effect = {
+    if = {
+        limit = {
+            lyd_c2_ballot_context_trigger = yes
+            this = scope:lyd_c2_actor.var:lyd_c2_target_rep
+            has_variable = lyd_c2_vote_owner
+            has_variable = lyd_c2_vote_serial
+            has_variable = lyd_c2_vote_nonce
+            var:lyd_c2_vote_owner = scope:lyd_c2_actor
+            var:lyd_c2_vote_serial = scope:lyd_c2_event_serial
+            var:lyd_c2_vote_nonce = scope:lyd_c2_event_nonce
+            var:lyd_c2_vote_yes = 1
+            scope:lyd_c2_actor = { lyd_c2_receiving_mandates_trigger = { ACTOR = scope:lyd_c2_actor } }
+        }
+        scope:lyd_c2_actor = {
+            set_variable = { name = lyd_c2_target_signed value = 1 }
+            if = { limit = { exists = var:lyd_c2_target_head } var:lyd_c2_target_head = { trigger_event = lyd.222 } }
+        }
+    }
+}

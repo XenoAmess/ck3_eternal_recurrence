@@ -1,0 +1,16 @@
+{
+  "schema": "lyd.first-join.evidence-emission-status.v1",
+  "status": "FROZEN_SAVE_CONSUMPTION_FACTS_READY_FOR_ROOT_REVIEW",
+  "claim": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000002.claim.json",
+    "sha256": "1b2becdcfc4423afaa2a3e5ab8c550cd929425d1034abc23af2fdd0f4cd640c7"
+  },
+  "frozen_provider_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-third-proposal-bound-verifier-20261005-001\\INDEX.json",
+    "sha256": "05169d085060443ac695c9aedc91da3d2ecebe013e7352365ba1f3d22230e3d3"
+  },
+  "actual_host_release": false,
+  "registry_enabled": false,
+  "native_ACK_credit": false,
+  "full_C2_cycle_credit": false
+}

@@ -1,0 +1,13 @@
+{
+  "schema": "ck3-normal-exit-once-claim-v1",
+  "identity": {
+    "game_pid": 13436,
+    "creation_filetime_100ns": 134356699957422997,
+    "action": "prepare_confirmation"
+  },
+  "request_id": "normal-exit-prepare_confirmation-ce31cb7b97a84ea78f7f64ac23bd8399",
+  "status": "claimed_result_unknown_no_retry",
+  "exit_context_signature": "8343b994056acfb0f6aa066d80ddc8297064f8fced886c1971210500e3b939e9",
+  "source_inventory_sha256": "18ae748deeb90f6f5900ee16e8402dcdd1a5a0f732d57bade0ea7da670ed6f19",
+  "process_preconfirm_pin": null
+}

@@ -1,0 +1,1736 @@
+[
+  {
+    "variable_name": "lyd_im_adopted",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_adopted' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_100_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_100_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_100_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_100_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_101_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_101_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_101_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_101_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_102_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_102_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_102_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_102_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_103_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_103_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_103_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_103_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_104_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_104_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_104_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_104_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_105_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_105_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_105_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_105_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_106_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_106_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_106_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_106_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_107_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_107_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_107_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_107_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_108_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_108_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_108_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_108_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_109_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_109_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_109_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_109_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_10_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_10_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_10_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_10_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_110_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_110_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_110_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_110_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_111_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_111_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_111_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_111_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_112_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_112_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_112_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_112_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_113_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_113_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_113_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_113_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_114_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_114_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_114_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_114_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_115_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_115_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_115_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_115_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_116_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_116_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_116_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_116_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_117_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_117_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_117_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_117_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_118_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_118_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_118_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_118_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_119_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_119_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_119_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_119_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_11_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_11_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_11_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_11_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_120_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_120_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_120_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_120_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_121_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_121_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_121_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_121_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_122_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_122_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_122_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_122_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_123_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_123_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_123_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_123_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_124_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_124_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_124_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_124_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_125_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_125_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_125_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_125_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_126_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_126_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_126_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_126_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_127_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_127_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_127_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_127_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_128_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_128_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_128_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_128_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_129_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_129_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_129_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_129_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_12_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_12_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_12_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_12_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_130_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_130_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_130_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_130_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_131_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_131_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_131_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_131_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_132_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_132_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_132_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_132_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_133_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_133_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_133_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_133_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_134_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_134_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_134_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_134_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_135_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_135_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_135_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_135_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_136_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_136_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_136_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_136_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_137_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_137_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_137_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_137_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_138_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_138_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_138_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_138_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_139_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_139_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_139_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_139_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_13_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_13_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_13_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_13_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_140_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_140_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_140_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_140_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_141_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_141_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_141_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_141_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_142_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_142_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_142_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_142_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_143_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_143_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_143_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_143_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_144_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_144_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_144_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_144_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_14_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_14_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_14_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_14_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_15_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_15_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_15_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_15_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_16_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_16_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_16_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_16_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_17_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_17_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_17_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_17_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_18_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_18_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_18_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_18_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_19_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_19_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_19_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_19_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_1_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_1_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_1_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_1_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_20_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_20_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_20_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_20_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_21_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_21_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_21_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_21_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_22_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_22_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_22_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_22_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_23_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_23_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_23_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_23_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_24_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_24_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_24_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_24_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_25_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_25_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_25_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_25_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_26_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_26_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_26_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_26_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_27_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_27_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_27_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_27_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_28_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_28_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_28_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_28_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_29_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_29_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_29_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_29_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_2_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_2_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_2_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_2_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_30_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_30_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_30_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_30_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_31_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_31_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_31_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_31_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_32_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_32_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_32_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_32_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_33_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_33_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_33_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_33_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_34_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_34_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_34_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_34_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_35_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_35_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_35_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_35_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_36_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_36_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_36_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_36_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_37_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_37_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_37_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_37_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_38_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_38_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_38_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_38_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_39_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_39_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_39_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_39_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_3_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_3_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_3_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_3_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_40_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_40_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_40_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_40_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_41_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_41_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_41_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_41_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_42_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_42_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_42_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_42_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_43_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_43_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_43_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_43_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_44_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_44_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_44_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_44_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_45_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_45_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_45_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_45_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_46_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_46_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_46_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_46_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_47_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_47_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_47_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_47_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_48_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_48_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_48_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_48_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_49_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_49_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_49_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_49_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_4_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_4_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_4_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_4_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_50_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_50_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_50_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_50_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_51_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_51_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_51_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_51_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_52_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_52_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_52_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_52_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_53_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_53_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_53_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_53_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_54_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_54_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_54_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_54_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_55_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_55_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_55_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_55_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_56_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_56_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_56_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_56_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_57_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_57_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_57_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_57_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_58_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_58_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_58_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_58_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_59_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_59_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_59_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_59_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_5_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_5_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_5_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_5_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_60_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_60_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_60_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_60_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_61_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_61_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_61_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_61_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_62_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_62_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_62_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_62_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_63_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_63_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_63_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_63_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_64_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_64_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_64_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_64_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_65_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_65_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_65_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_65_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_66_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_66_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_66_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_66_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_67_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_67_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_67_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_67_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_68_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_68_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_68_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_68_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_69_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_69_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_69_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_69_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_6_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_6_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_6_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_6_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_70_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_70_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_70_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_70_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_71_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_71_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_71_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_71_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_72_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_72_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_72_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_72_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_73_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_73_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_73_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_73_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_74_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_74_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_74_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_74_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_75_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_75_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_75_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_75_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_76_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_76_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_76_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_76_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_77_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_77_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_77_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_77_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_78_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_78_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_78_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_78_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_79_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_79_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_79_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_79_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_7_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_7_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_7_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_7_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_80_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_80_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_80_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_80_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_81_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_81_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_81_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_81_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_82_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_82_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_82_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_82_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_83_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_83_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_83_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_83_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_84_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_84_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_84_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_84_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_85_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_85_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_85_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_85_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_86_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_86_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_86_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_86_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_87_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_87_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_87_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_87_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_88_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_88_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_88_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_88_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_89_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_89_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_89_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_89_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_8_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_8_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_8_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_8_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_90_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_90_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_90_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_90_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_91_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_91_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_91_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_91_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_92_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_92_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_92_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_92_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_93_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_93_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_93_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_93_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_94_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_94_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_94_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_94_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_95_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_95_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_95_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_95_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_96_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_96_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_96_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_96_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_97_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_97_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_97_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_97_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_98_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_98_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_98_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_98_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_99_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_99_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_99_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_99_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_9_acknowledged",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_9_acknowledged' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  },
+  {
+    "variable_name": "lyd_im_case_9_armed",
+    "family": "I4-fixture-lyd_im",
+    "count": 2,
+    "message_signature": "[E][jomini_effect.cpp:1146]: Variable 'lyd_im_case_9_armed' is set but is never used. Note that use in localization doesn't count due to technical limitations. Use in unused scripted triggers and effects also does not count"
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "schema": "lyd.external-evidence-index.v1",
+  "files": [
+    {
+      "path": "REPORT.json",
+      "bytes": 11006,
+      "sha256": "272db028b53d71b498b40d2c6547a1cc93872cb9b85df15670fcd626d102f568"
+    },
+    {
+      "path": "SDK193.actual.json",
+      "bytes": 4753,
+      "sha256": "bdfc31c44eed5b329106d3651d64f9491c233318a7be19f423f800b796e81193"
+    },
+    {
+      "path": "SOURCE-EXCERPTS.json",
+      "bytes": 72746,
+      "sha256": "57570ad0ce60ca0d458a8480e47ee4faca6eba11d7547bfeff313f9f045e34ad"
+    },
+    {
+      "path": "review_boundary.py",
+      "bytes": 12094,
+      "sha256": "c5f43f0adf242186248c449db30310c76e249289706b02630f76a37ff0ad980b"
+    }
+  ]
+}

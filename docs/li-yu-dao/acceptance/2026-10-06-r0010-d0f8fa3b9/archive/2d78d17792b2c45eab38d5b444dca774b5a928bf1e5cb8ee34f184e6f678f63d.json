@@ -1,0 +1,18 @@
+{
+  "REPORT": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-open-join-readback-20261005-001\\REPORT.json",
+    "bytes": 2752,
+    "sha256": "f7c9c66d44caf7f761db827933b212b7c54b781451555a7ad412be318c8ffb0c"
+  },
+  "INDEX": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-open-join-readback-20261005-001\\INDEX.json",
+    "bytes": 5722,
+    "sha256": "2c2b114dd5064fa80e4abefdb3776963a3fd13f25e2694900480aebdbf97636d"
+  },
+  "typed_facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-open-join-readback-20261005-001\\PROPOSAL-OPENED-FACTS.json",
+    "bytes": 340358,
+    "sha256": "c51bb4b1f97dfd3abd7e3dd73d75c207bb9738895f91b384fe57cefb21daa914"
+  },
+  "files": 34
+}

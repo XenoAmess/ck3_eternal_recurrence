@@ -1,0 +1,46 @@
+{
+  "schema": "lyd.root.closed-lifecycle.v3",
+  "source_head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "original_pid": 13436,
+  "process_creation_filetime_100ns": 134356699957422997,
+  "process_exit_observed": true,
+  "exit_code": 0,
+  "typed_normal_exit_observed": true,
+  "client_exit_code": null,
+  "keeper_exit_code": null,
+  "client_ended": true,
+  "keeper_ended": true,
+  "os_client_exit_code_observed": false,
+  "os_keeper_exit_code_observed": false,
+  "original_handle_observation": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-actual-closed-boundary-20261006-001\\ORIGINAL-HANDLE-OBSERVATION.actual.json",
+    "bytes": 5116,
+    "sha256": "eb69a6b90a3f59298931b603649447133f76a6efe49a49a43a9d3324560252c4"
+  },
+  "process_absence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-actual-closed-boundary-20261006-001\\PROCESS-ABSENCE.actual.json",
+    "bytes": 716,
+    "sha256": "a6bf77a21c13f72633c4d0bc10c865724e0010e9957d18c2e6257736e6fec516"
+  },
+  "consumer_runner": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-actual-closed-boundary-20261006-001\\CONSUMER-RUNNER-ENDED.actual.json",
+    "bytes": 2979,
+    "sha256": "4fe7087d19b28a17164f702401721fbe703e9462d14131077bc9c2821154fe4a"
+  },
+  "keeper_final": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0010\\FINAL.json",
+    "bytes": 384,
+    "sha256": "0f34e84b4dad3098a708c1c5b92d66b59ff45f6373ca35c739ed5898fad2c11f"
+  },
+  "release_receipt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-final-screen-release-invocation-20261006-001\\stdout.txt",
+    "bytes": 1180,
+    "sha256": "42727ded21a238a71e29dd9ceade5f899524bcfbb19001fd85401c16066baec0"
+  },
+  "after_list": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-final-after-list-invocation-20261006-001\\stdout.txt",
+    "bytes": 94331,
+    "sha256": "08cab2be1bec39e03276e7ec4ff00ccdb8104443b85badee629ea3ac5faa9610"
+  },
+  "at_utc": "2026-10-05T18:14:59.344290+00:00"
+}

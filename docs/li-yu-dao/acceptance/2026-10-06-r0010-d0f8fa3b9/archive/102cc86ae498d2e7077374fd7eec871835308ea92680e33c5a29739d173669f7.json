@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 21,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0021-holder-consent-query.request.json",
+  "request_sha256": "98cbc4835f1553d7569d1ee3632b71614a90c14ec93527717c46db0a9b449b70",
+  "started_at_utc": "2026-10-05T11:31:28.450707+00:00"
+}

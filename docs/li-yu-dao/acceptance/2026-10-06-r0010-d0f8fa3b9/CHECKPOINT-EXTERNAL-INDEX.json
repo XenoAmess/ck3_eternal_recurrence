@@ -1,0 +1,313 @@
+{
+  "schema": "lyd.r10.external-save-body-index.v1",
+  "all_save_bodies_external_not_committed": true,
+  "save_body_verification_reused_only": true,
+  "files": [
+    {
+      "SDK_sequence": 13,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0013-before-join-save\\checkpoint.ck3",
+      "bytes": 91529730,
+      "sha256": "750e3b7eaa0dbf2d385f647f421b6282cb4bfac5aedf3b8728ddc0652314a498",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0013-before-join-save/checkpoint-metadata.json",
+        "bytes": 1400,
+        "sha256": "00d20d076905e900eeeeb9498baaef637dc5b96ffb126077d6a884d9f4c060fc",
+        "stat_unchanged_during_read": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 16,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0016-open-join-proposal-save\\checkpoint.ck3",
+      "bytes": 91534935,
+      "sha256": "ab69bd9da64d01d3d323c3adc43f0c75bbf2e49abf00f77132215b7307d59603",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0016-open-join-proposal-save/checkpoint-metadata.json",
+        "bytes": 1413,
+        "sha256": "099e9f290d5b35c7694b2af8d77a6f0af6002b0bdd8c7f0d3e2d905b32990f14",
+        "stat_unchanged_during_read": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 31,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0031-post-source-sign-save\\checkpoint.ck3",
+      "bytes": 91532053,
+      "sha256": "885393b25bca235361e0d2a242bb2791eaa5d578ef03ed9c849c0849370fc4d4",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0031-post-source-sign-save/checkpoint-metadata.json",
+        "bytes": 1417,
+        "sha256": "4f5cd573cb085536f69310a066031b47db00f081e04f2f36c6144581931fdadb",
+        "stat_unchanged_during_read": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 39,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0039-before-new-intent-save\\checkpoint.ck3",
+      "bytes": 91531932,
+      "sha256": "0aac6341204b39048646c81eff068d3d7a9a6cb849388871910673ef15d1bdaa",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0039-before-new-intent-save/checkpoint-metadata.json",
+        "bytes": 1419,
+        "sha256": "575a02fe7b0f97dc498c4017eb7bbe1ad4344b45f60f9a474321442388a749ff",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 43,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0043-new-proposal-open-save\\checkpoint.ck3",
+      "bytes": 91536022,
+      "sha256": "bfa49f033f3296b4561be7ca78e3c3b9bc3186741044d87af07e50b9cf1d3391",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0043-new-proposal-open-save/checkpoint-metadata.json",
+        "bytes": 1419,
+        "sha256": "046649dfba648cda97d6ae4b02e9a944b436c14c33ad45540bc960e7411c884b",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 57,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0057-second-post-sign-save\\checkpoint.ck3",
+      "bytes": 91533138,
+      "sha256": "13a87b974d2bc5e4d717f0d1b7877dfb4bcfcbde6781a4235fae902b1d8af6c9",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0057-second-post-sign-save/checkpoint-metadata.json",
+        "bytes": 1417,
+        "sha256": "af3d8bfd7eb3ac1c88333f6b2fb25e07a6ab43047224cf3f0f78a2666a58c187",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 63,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0063-third-before-save\\checkpoint.ck3",
+      "bytes": 91533017,
+      "sha256": "40cc2bb630b1255217f09c727aa506572d1d3ab2af4aaf1ca13248306fe07b08",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0063-third-before-save/checkpoint-metadata.json",
+        "bytes": 1409,
+        "sha256": "fa96682d17e731e713a883280f9fcca22e22098c090a5c06178c6f1c2e2c8d50",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 68,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0068-third-open-save\\checkpoint.ck3",
+      "bytes": 91536994,
+      "sha256": "c7d84400a24c922e6ce902a563c9294d80123394f86bc3862ccf31743234ff99",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0068-third-open-save/checkpoint-metadata.json",
+        "bytes": 1405,
+        "sha256": "165d0ea44f55965e9206d7ba864066816ce73f6fbff3fa5793f42df3ef83c6ec",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 82,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0082-third-post-cancel-save\\checkpoint.ck3",
+      "bytes": 91533790,
+      "sha256": "d4dbf44188328d2094da1ccdbdf5944f82ba48f6e911f954f4becc145457175d",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0082-third-post-cancel-save/checkpoint-metadata.json",
+        "bytes": 1419,
+        "sha256": "e320d71070f742502085077311b3a43bf27369388e782499742152682215dc70",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 88,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0088-fourth-open-save\\checkpoint.ck3",
+      "bytes": 91538147,
+      "sha256": "8615285b73caa1e34364e2a78a351a8f9c2f813d6587a8c7a926f4fe12b3df53",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0088-fourth-open-save/checkpoint-metadata.json",
+        "bytes": 1407,
+        "sha256": "72a54727a75621f4f621fbe17fc1c06be76ac5f162b0367b2d8c5ff3dc1c7103",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 107,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0107-fourth-post-cancel-save\\checkpoint.ck3",
+      "bytes": 91535016,
+      "sha256": "120c11e39e8dfac92c48c0a8e6ea9ba10ad7bffd9891e844eaaf90188ff1809b",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0107-fourth-post-cancel-save/checkpoint-metadata.json",
+        "bytes": 1421,
+        "sha256": "dd7e5b70d9c6a13cb1c2f1f8cd7530b06c3a4f9e4288f3770da3ed2177dddcf4",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 111,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0111-fifth-open-save\\checkpoint.ck3",
+      "bytes": 91539192,
+      "sha256": "612f1a3ba5263f36332f31a2a937c932668d9000ac5079206d3aef901948db1c",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0111-fifth-open-save/checkpoint-metadata.json",
+        "bytes": 1405,
+        "sha256": "0b369dc0c70e57ce66a8522afcdde6c80af8a15f4c945fb09e82253c3ce24d31",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 125,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0125-fifth-post-cancel-save\\checkpoint.ck3",
+      "bytes": 91535983,
+      "sha256": "55b352c47d89ee41ef86479026627f84ebcb35736848daa4e70178bb06a74db2",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0125-fifth-post-cancel-save/checkpoint-metadata.json",
+        "bytes": 1419,
+        "sha256": "59963c050e0019dae3cef40b64f384d6e58ddde41265fb99c7e942b7aef23b4e",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 129,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0129-sixth-open-save\\checkpoint.ck3",
+      "bytes": 91540327,
+      "sha256": "d331ba00e9865964a5e6319c00ae3da356070a54315437b43e73441be12ead76",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0129-sixth-open-save/checkpoint-metadata.json",
+        "bytes": 1405,
+        "sha256": "9c132b4aa76622704152328f8e8c0495cdd6818426c9f18b5c29b243f6d3bb8a",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 149,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0149-sixth-post-cancel-save\\checkpoint.ck3",
+      "bytes": 91537192,
+      "sha256": "5ab8d308bd2f3858388f86cc34289683c30cf8efa43515283c001421c40affe1",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0149-sixth-post-cancel-save/checkpoint-metadata.json",
+        "bytes": 1420,
+        "sha256": "c81c65b7f3a4364d7c49bcf9dc703188a3fa041bce64818268d305cfb77add0d",
+        "stat_unchanged_during_read": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 153,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0153-seventh-open-save\\checkpoint.ck3",
+      "bytes": 91541371,
+      "sha256": "a984d4f1d5e4365c2d1812c21c7a3ef4adc5ec8f98afaee989b61e91ab96bb2a",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0153-seventh-open-save/checkpoint-metadata.json",
+        "bytes": 1410,
+        "sha256": "1174f533c48cbfb25493e2b0e6e23f8f18a3e8f58d68f254b8826240df4464b9",
+        "stat_unchanged_during_read": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 167,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0167-seventh-post-cancel-save\\checkpoint.ck3",
+      "bytes": 91538159,
+      "sha256": "4aa783a16d446f8d9a7e1e1e622eaf77e39400ebe814ae40f4841fa5e2a7b3e9",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0167-seventh-post-cancel-save/checkpoint-metadata.json",
+        "bytes": 1424,
+        "sha256": "48a49464b1999a1beef50e19cd6584eef771c4a4c0057442293cbb67c45ee3f4",
+        "stat_unchanged_during_read": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 171,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0171-eighth-open-save\\checkpoint.ck3",
+      "bytes": 91542565,
+      "sha256": "04b22b41900f89b73f75d1295b12d4acd8021dd7081eab0bfdae9f813062c487",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0171-eighth-open-save/checkpoint-metadata.json",
+        "bytes": 1408,
+        "sha256": "47b3f5a7df0e0b6d5882a513f79286aee674add9b03f0257e94c1fe450552ab2",
+        "stat_unchanged_during_read": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 187,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0187-eighth-precommit-save\\checkpoint.ck3",
+      "bytes": 91540737,
+      "sha256": "5b3af804aa4d713e5115ba34f08bf16defdc5705900835e49f378e9abaa17415",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0187-eighth-precommit-save/checkpoint-metadata.json",
+        "bytes": 1418,
+        "sha256": "93071eedae828d63094b689e9ad1ae0cd1c1a1fd171fd5eedd16ba0738a23f17",
+        "stat_unchanged_during_read": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 192,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0192-eighth-post-join-save\\checkpoint.ck3",
+      "bytes": 91604449,
+      "sha256": "9534d61d4f426ca8df0f4866695b7234f5ff477c296f084c1868a29424ae06d0",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0192-eighth-post-join-save/checkpoint-metadata.json",
+        "bytes": 1418,
+        "sha256": "e97f80efa5ab76d5f1bdf68a5160ecdc4bf295c9251ace1162950e8a3c5cfe14",
+        "stat_unchanged_during_read": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 200,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0200-cycle-before-detach-save\\checkpoint.ck3",
+      "bytes": 91604322,
+      "sha256": "9c8a8ed09a096f540cf64bee63ee9fd16b31c57923e9fea3e35b806cdb75c610",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0200-cycle-before-detach-save/checkpoint-metadata.json",
+        "bytes": 1424,
+        "sha256": "79db65c2d137a0140545417fcb6552664af82e11a3b07c3ec240c8297f544053",
+        "stat_unchanged_during_read": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 235,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0235-detach-second-precommit-save\\checkpoint.ck3",
+      "bytes": 91605363,
+      "sha256": "83bd02e2f340f6f1aa70525a08aa004e6b2dce2326ac2568ea99b0b79183983d",
+      "metadata": {
+        "path": "live-attempt-010/checkpoints/0235-detach-second-precommit-save/checkpoint-metadata.json",
+        "bytes": 1434,
+        "sha256": "458329707d29f29b045c2ca1610044350dc8fab414a1d9a80114ae9a3220a6fc",
+        "stat_unchanged_during_read": true,
+        "body_read_this_final_assembly": true
+      },
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    },
+    {
+      "SDK_sequence": 240,
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0240-detach-second-post-save\\checkpoint.ck3",
+      "bytes": 91669783,
+      "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+      "binding_report": "r10-actual-detach-second-post-readback-20261006-001/REPORT.json",
+      "body_read_hashed_parsed_or_copied_by_report_author": false
+    }
+  ]
+}

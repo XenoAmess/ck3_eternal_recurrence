@@ -1,0 +1,31 @@
+{
+  "schema": "ck3-ordinary-interaction-permit-consumption-v1",
+  "permit_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000006.claim.release.json",
+  "permit_sha256": "abcaa729aca5bfcdee96ccc61c88d473bc4af5ef758394d11faa493f7fae0b06",
+  "new_request_id": "ordinary-interaction-cf364b502ddb47e58fb8ccbf5832a44f",
+  "next_intent_id": "r10-proposal-008-after-consumed-ce6f-20261006",
+  "old_connection_generation": 1,
+  "new_connection_generation": 1,
+  "new_binding": {
+    "native_revision": 78,
+    "connection_generation": 1,
+    "game_pid": 13436,
+    "played_character_id": 31254,
+    "date_raw": 53144712,
+    "episode_run_id": null,
+    "revision": 79,
+    "snapshot_id": "native:78",
+    "observed_stress_points": 0,
+    "active_event_present": false,
+    "incoming_interaction_present": false
+  },
+  "action_identity": {
+    "game_pid": 13436,
+    "actor_id": 31254,
+    "process_create_time": 1791196395.7422996,
+    "interaction_key": "lyd_c2_propose_join_interaction",
+    "recipient_id": 65866,
+    "action": "initiate_ordinary"
+  },
+  "business_acceptance_credit": false
+}

@@ -1,0 +1,109 @@
+{
+  "schema": "ck3-r10-repeated-join-flow-preparation-v2",
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "source_ready": {
+    "author_index": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/INDEX.json",
+      "sha256": "76e84c70beccf22bda5ab202bb6de571f47f210645fe015b9f8f7628354e1ee2"
+    },
+    "provider": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/unbound-bundle-011/verifier.py",
+      "sha256": "32ecbedf8cdf3dfaf6995e3f83a9ff29a676c4b802f1fa2705028f71b57b7a61"
+    },
+    "binder": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/bind_verifier.py",
+      "sha256": "5c70a67c98624c24fb770b1dcc81e8187ed3f21734e6e33db2d5f88573081817"
+    },
+    "emitter": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/emit_first_join_evidence.py",
+      "sha256": "dbd43c930650f7c17defbcc7a5341d5f7ecb3c58b6696d367ef5f4cc1a90f0f0"
+    },
+    "source_record": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-source007-qualified-inputs-20261005-001\\ROOT-SOURCE-PIN-RECORD.actual.json",
+      "bytes": 3229,
+      "sha256": "8784d98ecba357db56811fb2d3c850bc505aae81b076d0cf598cccf0294a770b"
+    },
+    "source_readback": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-source-ready-007-20261005-001/SOURCE-READBACK.json",
+      "sha256": "7a1f4c11dff70f6e16631fb810d6a8569dd7da7121fd78dc9ed511ae5190b125"
+    }
+  },
+  "production_manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-root-head-export-20261005-001/production/mod_li_yu_dao.manifest.json",
+    "sha256": "8fff14a823c50d2461660676ec3238439027d1a46af5281e5db95af7c9bd945c"
+  },
+  "production_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-head-export-20261005-001\\production\\mod_li_yu_dao",
+  "native_profile": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/native-profile-with-exit-inventory.json",
+    "sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6"
+  },
+  "ordinary_contract": {
+    "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ordinary_interaction_contract.py",
+    "sha256": "e0a96aa39626df166270d3d5467a8e4d57cec77d7577cebcced03983feba5fa3"
+  },
+  "host_module": {
+    "path": "C:/lr10s1/ck3_autonomous_player/src/xar_autoplayer/bridge/ordinary_interaction_host_release.py",
+    "sha256": "f567bff41d03b6c59d195df8ff62ecab1a523962de3217d397c5264d1ed2d89b"
+  },
+  "process_identity": {
+    "game_pid": 13436,
+    "process_create_time": 1791196395.7422996,
+    "process_create_filetime": 134356699957422997,
+    "receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-process-filetime-001\\PROCESS-IDENTITY.actual.json",
+      "sha256": "d0f9120cec25365426bb20074f27780d857837af5c8dff982c8b469e9d31347e"
+    },
+    "receipt_fields": {
+      "game_pid": "/pid",
+      "process_create_time": "/process_create_time",
+      "process_create_filetime": "/creation_filetime_100ns"
+    }
+  },
+  "claim": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000004.claim.json",
+    "sha256": "be8013203068a19192934c6aebf5491f4c8f8b7483e60799a9df3413c48eff22"
+  },
+  "packet": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000004.claim.packet.bin",
+    "sha256": "38266364358e58c0bcf95ba042649b42971f29bddfdcb7180f124d6e50116369"
+  },
+  "native_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000004.claim.native-result.json",
+    "sha256": "57c5fb39376355a73c1ef907b7da8d6149fe949686e7aae9dc1d541b9906d405"
+  },
+  "unknown": null,
+  "before_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0107-fourth-post-cancel-save\\checkpoint.ck3",
+    "sha256": "120c11e39e8dfac92c48c0a8e6ea9ba10ad7bffd9891e844eaaf90188ff1809b"
+  },
+  "before_checkpoint_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0107-r10-0108-fourth-post-cancel-save.sdk-result.json",
+    "sha256": "851f1482849edb75975127112c748ec191d9275dcf0982ac4a76b73b40a1eab7"
+  },
+  "after_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0111-fifth-open-save\\checkpoint.ck3",
+    "sha256": "612f1a3ba5263f36332f31a2a937c932668d9000ac5079206d3aef901948db1c"
+  },
+  "after_checkpoint_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0111-r10-0112-fifth-open-save.sdk-result.json",
+    "sha256": "507a563a9b9af53d3cf15d12fa2340cd302bd9b5d0317b2c0957e2a0a3ed9920"
+  },
+  "first_query_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0109-r10-0110-fifth-fresh-query.sdk-result.json",
+    "sha256": "929e9d361ac0c3903fb1822248cf50b5d1a3a13d80d3c901310bc6422e29e62d"
+  },
+  "first_query_frame_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0107-r10-0108-fourth-post-cancel-save.sdk-result.json",
+    "sha256": "851f1482849edb75975127112c748ec191d9275dcf0982ac4a76b73b40a1eab7"
+  },
+  "current_query_sdk": {
+    "path": null,
+    "sha256": null
+  },
+  "current_query_frame_sdk": null,
+  "bound_output": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\offline-never-created-bound",
+  "flow_output": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\offline-unused-flow",
+  "operator_id": "root-r10-20261005",
+  "next_intent_id": null,
+  "consumption_mode": "PROPOSAL_OPENED"
+}

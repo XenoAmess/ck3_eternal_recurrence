@@ -1,0 +1,5 @@
+# R10导入源路径追加勘误
+
+原candidate及IMPORT-PLAN001不改，第一次check-plan实际exit1原失败保留。12个borrowed INDEX的嵌套source路径没有file body；这只是INDEX所列路径，不能伪称这些nested copies存在。对应canonical原source包12件均真实读一次并匹配原sealed bytes／SHA，v2计划以实际canonical路径导入相同字节，ORIGIN-map保留原声明路径、absent事实及真实来源。未重扫SDK1–200或保存／AST／测试。
+
+ROOT报告主线fetch+rebase后为3b4bbcadcbadf05474dadfc388dfabe3eb26af44；R10实际游戏源与验收始终绑定d0f8，不授新HEAD实机信用。旧CI neutral-docs候选的beforeSHA因remote更新已失效，不能wholefile overlay；ROOT须按新文件必要定位最小修改，通用CI尚未复验GREEN。此说明与原冻结结果分列。

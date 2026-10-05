@@ -1,0 +1,247 @@
+{
+  "schema": "lyd.r10-decision-cooldown-query-boundary-independent-review.v1",
+  "status": "ACTUAL_SDK193_ROW_OBSERVATION_VALIDITY_NOT_EXPOSED",
+  "recorded_at_utc": "2026-10-05T17:32:23.873605+00:00",
+  "source_authority": {
+    "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+    "export_root": "C:\\lr10s1",
+    "basis": "ROOT-frozen exact export and per-file immutable bytes; no Git invocation"
+  },
+  "source_inputs": {
+    "public_tools": {
+      "path": "C:\\lr10s1\\tools\\ck3_native_profile_mcp.py",
+      "bytes": 56256,
+      "sha256": "1ab982fc3e46bd6baa507de6c9ca02062811a46991f765a7235b376d98d00fa8"
+    },
+    "driver": {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+      "bytes": 1382391,
+      "sha256": "b24025f67ec745308754cefd4f182bf3c63356b7a3aa2d5e06d305b34627c751"
+    },
+    "query_contract": {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_item_contract.py",
+      "bytes": 3636,
+      "sha256": "79a24b14d6d7462f6eca24011eb090628e7cc2f1bc5852f1741db98c478903ec"
+    },
+    "action_contract": {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ingame_decision_item_action_contract.py",
+      "bytes": 5856,
+      "sha256": "4d37320c979f7b1bf9bbeaba1ae9cd0d19bd41f81e9ac477d13229d2a616dd87"
+    },
+    "native_header": {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ingame_decision_item_v1.hpp",
+      "bytes": 4298,
+      "sha256": "b2d823a8510a99d049762b773ba1bdb21785ffe44e839ceaa6ca3e23f299f51f"
+    },
+    "native_reader": {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\native_bridge\\src\\ingame_decision_item_v1.cpp",
+      "bytes": 51070,
+      "sha256": "6762b3c89d4c17c66f7e7e310d26ea94458f073da71ae88a5070b19fc7c00f9e"
+    },
+    "detach_decision": {
+      "path": "C:\\lr10s1\\mod_li_yu_dao\\common\\decisions\\lyd_c2_consent_decisions.txt",
+      "bytes": 2408,
+      "sha256": "92d7098453c13ea968e2c1979fc324492b6a2a0e6a734f645585aec7a7cec549"
+    },
+    "detach_triggers": {
+      "path": "C:\\lr10s1\\mod_li_yu_dao\\common\\scripted_triggers\\lyd_c2_consent_triggers.txt",
+      "bytes": 16511,
+      "sha256": "43138d5aced84baec5f381752c4bd0a4f416b231ea9a06d812807b361ec4bda3"
+    },
+    "root_outer_host_request_builder": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_prepare_reviewed_consumption_host_request_20261005.py",
+      "bytes": 4099,
+      "sha256": "8b733dd3bc9048b2cad2cf4a7337a70b861841289083c7caf0ad1fcb157efb67"
+    }
+  },
+  "observed_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0193-r10-0194-after-join-detach-cooldown-query.sdk-result.json",
+    "bytes": 4753,
+    "sha256": "bdfc31c44eed5b329106d3651d64f9491c233318a7be19f423f800b796e81193"
+  },
+  "observed_receipt": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+    "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+    "pipe_name": "\\\\.\\pipe\\xar_profile_53bd96329c5541f7a403c5cecf61d8ba",
+    "recorded_at_utc": "2026-10-05T17:07:12.858486+00:00",
+    "status": "native_decision_query_observed",
+    "result": {
+      "schema": "ck3-ingame-decision-item-v1",
+      "step": "query-ingame-decision-item-v1",
+      "read_only": true,
+      "game_version": "1.20.0.3",
+      "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "native_revision": 90,
+      "connection_generation": 1,
+      "game_pid": 13436,
+      "played_character_id": 31254,
+      "date_raw": 53144712,
+      "group_count": 6,
+      "row_count": 34,
+      "matching_row_count": 1,
+      "row_context_reference_key": 31254,
+      "detail_actor_reference_key": -1,
+      "available": true,
+      "owner_thread_verified": true,
+      "frame_verified": true,
+      "source_abi_pins_verified": true,
+      "gui_owner_binding_verified": true,
+      "decisions_tree_complete": true,
+      "decisions_root_visible": true,
+      "row_owner_verified": true,
+      "row_scope_reference_available": true,
+      "detail_tree_complete": true,
+      "detail_root_visible": false,
+      "detail_definition_available": false,
+      "detail_definition_matches_target": false,
+      "detail_actor_binding_verified": false,
+      "row_widget_datacontext_verified": false,
+      "action_qualified": false,
+      "decision_key": "lyd_c2_propose_detach_decision",
+      "detail_decision_key": "",
+      "unavailable_reason": "",
+      "backend_id": "native-headless",
+      "episode_run_id": null,
+      "queried_revision": 91,
+      "uses_mouse": false,
+      "uses_keyboard": false,
+      "uses_ocr": false
+    },
+    "business_effects_verified": false,
+    "full_product_acceptance_credit": false,
+    "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0192-decision-query.json"
+  },
+  "public_surface": {
+    "profile_server_tool_count": 21,
+    "profile_server_tools": [
+      "ck3_query_native_profile_v1",
+      "ck3_attach_profile_bridge_v1",
+      "ck3_resume_profile_bridge_v1",
+      "ck3_take_profile_native_snapshot_v1",
+      "ck3_query_profile_character_interaction_ordinary_v1",
+      "ck3_initiate_profile_character_interaction_ordinary_v1",
+      "ck3_observe_profile_normal_exit_v1",
+      "ck3_query_normal_exit_context_v1",
+      "ck3_request_normal_exit_v1",
+      "ck3_query_profile_current_actor_stress_adjustment_v1",
+      "ck3_query_profile_event_window_v1",
+      "ck3_query_profile_pending_interaction_v1",
+      "ck3_reply_profile_pending_interaction_v1",
+      "ck3_set_profile_simulation_v1",
+      "ck3_pause_profile_simulation_v1",
+      "ck3_select_profile_event_option_v1",
+      "ck3_save_profile_checkpoint_v1",
+      "ck3_query_profile_decision_item_v1",
+      "ck3_open_profile_decisions_v1",
+      "ck3_select_profile_decision_item_v1",
+      "ck3_confirm_profile_decision_outcome_v1"
+    ],
+    "separate_clock_server_tools": [
+      "ck3_read_profile_native_clock_v1"
+    ]
+  },
+  "findings": [
+    {
+      "id": "available",
+      "conclusion": "Native query available=true means exact-build, fresh paused actor/frame, GUI root/tree/owner and stable unique keyed decision model row observation succeeded. It does not expose product is_valid, requirement satisfaction, or button enabled.",
+      "source": "native_reader",
+      "lines": [
+        326,
+        379
+      ]
+    },
+    {
+      "id": "action_qualified",
+      "conclusion": "The native serializer always writes action_qualified=false and row_widget_datacontext_verified=false; Python normalization requires both false. These are deliberate query credit boundaries, not computed refusal flags. Selecting the detail does not change that meaning.",
+      "source": "native_reader/query_contract",
+      "lines": [
+        400,
+        24,
+        25
+      ]
+    },
+    {
+      "id": "detail",
+      "conclusion": "Selected detail fields report definition identity, actor binding, tree completeness and visibility only. SDK193 has no selected visible detail. A selected detail query still has no enabled/is_valid field.",
+      "source": "native_reader/action_contract",
+      "lines": [
+        365,
+        370,
+        57,
+        63
+      ]
+    },
+    {
+      "id": "confirm",
+      "conclusion": "Internal ConfirmReceiver checks enabled plus visible, tree shape, context and dispatch identity on a mutation path. The public confirm_outcome tool can dispatch a business action; it is not a read-only validity query. fixed_visible_confirm_receiver_unqualified is broad and cannot uniquely attribute cooldown.",
+      "source": "native_reader/public_tools",
+      "lines": [
+        278,
+        305,
+        454,
+        839,
+        844
+      ]
+    },
+    {
+      "id": "product_condition",
+      "conclusion": "DETACH is_shown lacks cooldown checks. is_valid calls lyd_c2_start_detach_trigger, which calls actor rite lyd_c2_school_free_trigger. Presence of lyd_c2_transition_cooldown OR lyd_c2_retry_cooldown on the actual actor rite makes that necessary gate false. Other conditions must not be inferred true from row presence.",
+      "source": "detach_decision/detach_triggers",
+      "lines": [
+        9,
+        13,
+        23,
+        29,
+        60,
+        65
+      ]
+    },
+    {
+      "id": "outer_date",
+      "conclusion": "The separately read ROOT host-request builder line37 fixes actual_release_context.date_raw=53144712. This is an outer request-builder bound, distinct from the relative-date provider/assembler rules examined previously. A later-day workflow needs an explicitly reviewed successor builder; no change or execution occurs here.",
+      "source": "root_outer_host_request_builder",
+      "lines": [
+        37
+      ]
+    }
+  ],
+  "cooldown_acceptance": {
+    "sdk193_actual_row_observation": true,
+    "sdk193_direct_enabled_observation": false,
+    "sdk193_direct_is_valid_observation": false,
+    "sdk193_direct_cooldown_rejection_credit": false,
+    "saved_actor_rite169_cooldown_presence": "PENDING_SEPARATE_POST192_AST_READBACK; no save read in this review",
+    "sufficient_source_state_evidence": "Bind actual source/head and immutable saved actor->rite identity plus cooldown variable presence; combine with the exact necessary trigger chain to infer eligibility=false. Label this source/state eligibility inference, not an observed MCP disabled button.",
+    "missing_live_dimension": "An actual disabled confirm/requirements display or a future separately implemented read-only eligibility observation is needed to claim direct native/UI cooldown refusal. No such new entry point is advertised here.",
+    "current_public_decision_query_supports_readonly_enabled_or_is_valid": false,
+    "confirm_as_readonly_probe_allowed": false
+  },
+  "prior_report_scope_preserved": {
+    "report": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-future-join-consumption-contract-review-20261006-001\\REPORT.json",
+      "bytes": 8367,
+      "sha256": "9fba88e82ef1d2cdf49c4af9fb2fbcf973667e42de5da585e415b6212759d108"
+    },
+    "immutable_bytes_still_exact": true,
+    "correction": "This append adds the ROOT outer builder, which was outside that earlier source review scope."
+  },
+  "actual_flags": {
+    "game_actions": 0,
+    "mcp_calls": 0,
+    "process_reads": 0,
+    "pipe_calls": 0,
+    "git_calls": 0,
+    "main_writes": 0,
+    "registry_writes": 0,
+    "host_release_calls": 0,
+    "provider_binder_emitter_calls": 0,
+    "save_ast_reads": 0,
+    "old_tests_rerun": 0,
+    "candidate_function_execution": 0,
+    "future_gate_pass": false,
+    "business_acceptance_credit": false,
+    "full_cycle_acceptance_credit": false
+  },
+  "method": "Static exact source/hash/AST registration inspection plus one existing 4753-byte SDK JSON. Source assertions are report integrity checks, not a runtime test suite."
+}

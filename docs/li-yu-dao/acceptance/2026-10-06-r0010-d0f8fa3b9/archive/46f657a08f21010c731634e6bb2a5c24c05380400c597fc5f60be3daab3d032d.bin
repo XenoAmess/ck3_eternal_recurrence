@@ -1,0 +1,17 @@
+test_caller_release_boolean_rejected (__main__.Guards.test_caller_release_boolean_rejected) ... ok
+test_changed_key_or_prebound_process_rejected (__main__.Guards.test_changed_key_or_prebound_process_rejected) ... ok
+test_duplicate_json_rejected (__main__.Guards.test_duplicate_json_rejected) ... ok
+test_episode_is_not_a_seventh_stable_identity (__main__.Guards.test_episode_is_not_a_seventh_stable_identity) ... ok
+test_epoch_unlock_function_cannot_replace_actual_consumption (__main__.Guards.test_epoch_unlock_function_cannot_replace_actual_consumption) ... ok
+test_filetime_bool_missing_and_wrong_actual_receipt_rejected (__main__.Guards.test_filetime_bool_missing_and_wrong_actual_receipt_rejected) ... ok
+test_future_inputs_remain_null (__main__.Guards.test_future_inputs_remain_null) ... ok
+test_immutable_reference_sha_mismatch (__main__.Guards.test_immutable_reference_sha_mismatch) ... ok
+test_old_r9_head_cannot_qualify_new_source (__main__.Guards.test_old_r9_head_cannot_qualify_new_source) ... ok
+test_original_consumption_functions_are_the_ast_baseline (__main__.Guards.test_original_consumption_functions_are_the_ast_baseline) ... ok
+test_removing_fresh_cansend_changes_protected_function (__main__.Guards.test_removing_fresh_cansend_changes_protected_function) ... ok
+test_unknown_sdk_and_nonfinite_process_never_success (__main__.Guards.test_unknown_sdk_and_nonfinite_process_never_success) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.522s
+
+OK

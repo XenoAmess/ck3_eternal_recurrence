@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0192-eighth-result-ack.request.json",
+  "request_id": "r10-0192-eighth-result-ack",
+  "sha256": "3dfcb70959cc0e3bcb2e964ac812d04d81e6ed51fe6997b2c1e26a1f13d8eb7d",
+  "contacted_game": false
+}

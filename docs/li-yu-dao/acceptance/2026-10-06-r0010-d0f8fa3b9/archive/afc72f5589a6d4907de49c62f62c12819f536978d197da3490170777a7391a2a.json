@@ -1,0 +1,51 @@
+{
+  "schema": "lyd.r10.actual-checkpoint-readback-request.v1",
+  "phase": "actual-R10-second-DETACH-final-confirm-and-ACK-post-result-bounded-prior106-187-graphs-retained",
+  "source_binding": {
+    "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+    "cold_source_inventory": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\COLD-SOURCE-INVENTORY.json",
+      "bytes": 31564,
+      "sha256": "2ab18195f08fb5f680f6168732cd1681fa171fd31b50b6777c1e685c297ac260"
+    },
+    "ROOT_PREPARED": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\PREPARED.json",
+      "bytes": 7217,
+      "sha256": "a65e94d9b50afe0688a66cd1af745b4d29cbf6917b23dd52fa42f2f4bcb6c53e"
+    },
+    "native_profile": null,
+    "fresh_SDK_actor_binding": null
+  },
+  "actor_id": 31254,
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0240-detach-second-post-save\\checkpoint.ck3",
+    "bytes": 91669783,
+    "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d"
+  },
+  "supporting_evidence": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0240-r10-0241-detach-second-post-save.sdk-result.json",
+      "bytes": 10253579,
+      "sha256": "6ff44bbadd20a6d18a81d30939924d632547a261ff1d764413aba12dc3b31d4e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0240-detach-second-post-save\\checkpoint-metadata.json",
+      "bytes": 1424,
+      "sha256": "c7f2850792ef193a706457c21a9f75698ceff16191f27ddd75df2c80f6bc3fd2"
+    }
+  ],
+  "political_title_ids": [
+    2230,
+    2231,
+    2232,
+    2235,
+    2262,
+    2263,
+    2264
+  ],
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-detach-second-post-readback-20261006-001\\actual-save-001",
+  "watch_character_ids": [
+    65865,
+    65866
+  ]
+}

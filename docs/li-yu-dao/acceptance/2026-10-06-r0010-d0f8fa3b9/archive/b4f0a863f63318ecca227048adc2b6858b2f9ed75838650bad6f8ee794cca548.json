@@ -1,0 +1,405 @@
+{
+  "result": "PASS_SOURCE_ONLY",
+  "script_tree_preservation": "PASS_EXACT_AST_AFTER_STRIPPING_DECLARED_GUARDS",
+  "cases": [
+    {
+      "name": "native_eligible_existing_office",
+      "accepted": true,
+      "expected": true,
+      "undefined_reads": 0
+    },
+    {
+      "name": "native_missing_head",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "native_missing_title",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "native_missing_title_holder",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "native_dead_head",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "native_foreign_head_faith",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "native_holder_drift",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "native_existing_antipope",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "native_existing_sponsor",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "native_low_rank",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "native_no_capital",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "native_no_head_parameter",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "native_disallowed_clergy",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "owned_matching_title",
+      "accepted": true,
+      "expected": true,
+      "undefined_reads": 0
+    },
+    {
+      "name": "owned_no_title",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "owned_foreign_no_metadata",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "owned_owner_missing",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "owned_marker_missing",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "owned_marker_zero",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "owned_wrong_faith",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "delegate_existing_head",
+      "accepted": true,
+      "expected": true,
+      "undefined_reads": 0
+    },
+    {
+      "name": "delegate_required_missing",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "delegate_current_head_missing",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "delegate_holder_drift",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "delegate_dead",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "delegate_minor",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "delegate_incapable",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "delegate_wrong_rite",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "dormant_no_delegate_or_head",
+      "accepted": true,
+      "expected": true,
+      "undefined_reads": 0
+    },
+    {
+      "name": "dormant_county_drift",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "round_existing_head",
+      "accepted": true,
+      "expected": true,
+      "undefined_reads": 0
+    },
+    {
+      "name": "round_current_head_disappeared",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "round_head_drift",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "round_existing_title",
+      "accepted": true,
+      "expected": true,
+      "undefined_reads": 0
+    },
+    {
+      "name": "round_current_title_disappeared",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "detached_actual_hor",
+      "accepted": true,
+      "expected": true,
+      "undefined_reads": 0
+    },
+    {
+      "name": "detached_hor_missing",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "detached_wrong_hor",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "detached_wrong_main",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "captured_common_mode_without_hor",
+      "accepted": true,
+      "expected": true,
+      "undefined_reads": 0
+    },
+    {
+      "name": "captured_detached_same_hor",
+      "accepted": true,
+      "expected": true,
+      "undefined_reads": 0
+    },
+    {
+      "name": "captured_detached_missing_target",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "captured_detached_current_hor_missing",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "captured_detached_target_drift",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "captured_mode0_wrong_faith",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "post_common_mode_without_hor",
+      "accepted": true,
+      "expected": true,
+      "undefined_reads": 0
+    },
+    {
+      "name": "post_detached_same_hor",
+      "accepted": true,
+      "expected": true,
+      "undefined_reads": 0
+    },
+    {
+      "name": "post_detached_missing_target",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "post_detached_current_hor_missing",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    },
+    {
+      "name": "post_detached_hor_drift",
+      "accepted": false,
+      "expected": false,
+      "undefined_reads": 0
+    }
+  ],
+  "guard_removal_mutants": [
+    {
+      "name": "native_missing_head",
+      "without_guards": "UndefinedRead",
+      "path": "faith.religious_head"
+    },
+    {
+      "name": "native_missing_title",
+      "without_guards": "UndefinedRead",
+      "path": "faith.religious_head_title"
+    },
+    {
+      "name": "native_missing_title_holder",
+      "without_guards": "UndefinedRead",
+      "path": "holder"
+    },
+    {
+      "name": "owned_no_title",
+      "without_guards": "UndefinedRead",
+      "path": "religious_head_title"
+    },
+    {
+      "name": "owned_foreign_no_metadata",
+      "without_guards": "UndefinedRead",
+      "path": "var:lyd_c2_owned_head_title"
+    },
+    {
+      "name": "owned_owner_missing",
+      "without_guards": "UndefinedRead",
+      "path": "var:lyd_c2_owner_faith"
+    },
+    {
+      "name": "owned_marker_missing",
+      "without_guards": "UndefinedRead",
+      "path": "var:lyd_c2_owned_head_title"
+    },
+    {
+      "name": "delegate_required_missing",
+      "without_guards": "UndefinedRead",
+      "path": "var:lyd_c3_delegate"
+    },
+    {
+      "name": "delegate_current_head_missing",
+      "without_guards": "UndefinedRead",
+      "path": "head_of_rite"
+    },
+    {
+      "name": "dormant_no_delegate_or_head",
+      "without_guards": "UndefinedRead",
+      "path": "head_of_rite"
+    },
+    {
+      "name": "round_current_head_disappeared",
+      "without_guards": "UndefinedRead",
+      "path": "faith.religious_head"
+    },
+    {
+      "name": "round_current_title_disappeared",
+      "without_guards": "UndefinedRead",
+      "path": "faith.religious_head_title"
+    },
+    {
+      "name": "detached_hor_missing",
+      "without_guards": "UndefinedRead",
+      "path": "rite.head_of_rite"
+    },
+    {
+      "name": "captured_common_mode_without_hor",
+      "without_guards": "UndefinedRead",
+      "path": "var:lyd_i3b_required_native_hor"
+    },
+    {
+      "name": "captured_detached_missing_target",
+      "without_guards": "UndefinedRead",
+      "path": "var:lyd_i3b_required_native_hor"
+    },
+    {
+      "name": "captured_detached_current_hor_missing",
+      "without_guards": "UndefinedRead",
+      "path": "var:lyd_i3b_main.head_of_rite"
+    },
+    {
+      "name": "post_common_mode_without_hor",
+      "without_guards": "UndefinedRead",
+      "path": "var:lyd_i3b_result_native_hor"
+    },
+    {
+      "name": "post_detached_missing_target",
+      "without_guards": "UndefinedRead",
+      "path": "var:lyd_i3b_result_native_hor"
+    },
+    {
+      "name": "post_detached_current_hor_missing",
+      "without_guards": "UndefinedRead",
+      "path": "var:lyd_i3b_main.head_of_rite"
+    }
+  ],
+  "live": "NOT_RUN",
+  "boundary": "Focused test double evaluation. No old C2/11/118 tests run; no CK3 renderer or field proof."
+}

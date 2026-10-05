@@ -1,0 +1,24 @@
+{
+  "schema": "lyd.received.collector-failures.v1",
+  "scope": "Collector failures only; no CI rerun, product test or game execution.",
+  "network_attempts": [
+    {
+      "directory": "general-observation-003",
+      "records": "commands/*.json",
+      "actual_result": "Three GET subprocesses timed out at 55 seconds, empty stdout/stderr. Recorded exit code is null, not a GH or CI exit code."
+    },
+    {
+      "directory": "commit-files-004",
+      "records": "COMMAND.json",
+      "actual_result": "Paginated commit GET subprocess timed out. Original partial/empty bytes preserved; complete file-list credit is not asserted."
+    }
+  ],
+  "local_attempts": [
+    {
+      "script": "focus_failure_and_retry_files_009.py",
+      "observed_exit_code": 1,
+      "actual_exception": "StopIteration at exact group-string search; no existing evidence rewritten; corrected create-only helper focus_exact_010.py succeeded."
+    }
+  ],
+  "successful_followup": "general-observation-006 completed readonly terminal collection; independent connector-fallback-007 agrees on the exact general failure."
+}

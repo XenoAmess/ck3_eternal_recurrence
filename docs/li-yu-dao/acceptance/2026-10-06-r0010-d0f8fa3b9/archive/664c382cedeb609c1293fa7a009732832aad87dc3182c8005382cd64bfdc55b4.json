@@ -1,0 +1,18 @@
+{
+  "schema": "lyd.root.source-freeze-release.v3",
+  "source_freeze_released": true,
+  "frozen_head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "actual_closure": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-actual-closed-boundary-20261006-001\\CLOSURE.actual.json",
+    "bytes": 2014,
+    "sha256": "7f5fe972d0166c29981d5e10a2869ba7844f557faffdb04127997d6cb347af4d"
+  },
+  "process_absence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-actual-closed-boundary-20261006-001\\PROCESS-ABSENCE.actual.json",
+    "bytes": 716,
+    "sha256": "a6bf77a21c13f72633c4d0bc10c865724e0010e9957d18c2e6257736e6fec516"
+  },
+  "screen_release_sequence": 3161,
+  "authority": "ROOT source owner after original game exit, all consumers and keeper ended, CAS release and fresh no-holder list",
+  "at_utc": "2026-10-05T18:14:59.344290+00:00"
+}

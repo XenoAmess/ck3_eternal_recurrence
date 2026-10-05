@@ -1,0 +1,12 @@
+{
+  "argv": [
+    "git",
+    "-C",
+    "C:\\workspace\\ck3_eternal_recurrence",
+    "ls-files",
+    "--others",
+    "--exclude-standard"
+  ],
+  "utc": "2026-10-05T09:56:42.147778+00:00",
+  "exit_code": 0
+}

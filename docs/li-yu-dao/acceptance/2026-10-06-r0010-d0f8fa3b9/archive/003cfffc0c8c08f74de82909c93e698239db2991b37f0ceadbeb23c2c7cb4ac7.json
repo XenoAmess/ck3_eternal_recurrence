@@ -1,0 +1,121 @@
+{
+  "_meta": {
+    "io.modelcontextprotocol/serverInfo": {
+      "name": "CK3 frozen native profile",
+      "version": ""
+    }
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"schema\": \"ck3.native-profile-receipt.v1\",\n  \"session_id\": \"53bd96329c5541f7a403c5cecf61d8ba\",\n  \"profile_sha256\": \"2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6\",\n  \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_profile_53bd96329c5541f7a403c5cecf61d8ba\",\n  \"recorded_at_utc\": \"2026-10-05T14:27:11.326078+00:00\",\n  \"status\": \"native_ordinary_interaction_observed\",\n  \"result\": {\n    \"step\": \"query-character-interaction-ordinary-v1\",\n    \"accepted\": true,\n    \"status\": \"available\",\n    \"read_only\": true,\n    \"query_sequence\": 130,\n    \"snapshot_revision\": 49,\n    \"date_raw\": 53144712,\n    \"game_pid\": 13436,\n    \"connection_generation\": 1,\n    \"character_interaction_ordinary_context\": {\n      \"schema\": \"ck3-character-interaction-ordinary-context-v1\",\n      \"status\": \"available\",\n      \"source\": \"native_current_ordinary_interaction_context_1.20.0.3\",\n      \"read_only\": true,\n      \"exact_build\": \"1.20.0.3\",\n      \"executable_sha256\": \"94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6\",\n      \"snapshot_revision\": 49,\n      \"date_raw\": 53144712,\n      \"game_pid\": 13436,\n      \"connection_generation\": 1,\n      \"player_character_id\": 31254,\n      \"recipient_id\": 65866,\n      \"interaction_key\": \"lyd_c2_propose_join_interaction\",\n      \"actor_alive\": true,\n      \"recipient_alive\": true,\n      \"definition_stable_hash\": 382989941,\n      \"effective_roles\": {\n        \"actor_id\": 31254,\n        \"recipient_id\": 65866,\n        \"secondary_actor_id\": null,\n        \"secondary_recipient_id\": null,\n        \"intermediary_id\": null,\n        \"sixth_role_id\": 31254\n      },\n      \"declared_option_count\": 0,\n      \"selected_option_count\": 0,\n      \"special_payload_present\": false,\n      \"shown\": true,\n      \"can_send\": true,\n      \"costs_raw\": [\n        0,\n        0,\n        0,\n        0,\n        0,\n        0,\n        0,\n        0,\n        0,\n        0\n      ],\n      \"cost_scale\": 100000,\n      \"cost_order\": [\n        \"gold\",\n        \"prestige\",\n        \"piety\",\n        \"renown\",\n        \"influence\",\n        \"herd\",\n        \"treasury\",\n        \"treasury_or_gold\",\n        \"merit\",\n        \"barter_goods\"\n      ],\n      \"auto_accept\": true,\n      \"recipient_score_raw\": 100000,\n      \"intermediary_score_raw\": 10000000,\n      \"outer_answer_status\": 0,\n      \"native_context_available\": true,\n      \"ordinary_context_supported\": true,\n      \"active_event_present\": false,\n      \"incoming_interaction_present\": false,\n      \"source_code_pins_verified\": true,\n      \"actor_binding_verified\": true,\n      \"recipient_binding_verified\": true,\n      \"owner_thread_verified\": true,\n      \"tls_verified\": true,\n      \"frame_verified\": true,\n      \"owner_thread_id\": 7960,\n      \"owner_pump_epoch\": 1375969,\n      \"ready_to_initiate\": true,\n      \"unavailable_reason\": null,\n      \"unsupported_reason\": null,\n      \"business_postcondition_verified\": false\n    },\n    \"backend_id\": \"native-headless\",\n    \"queried_snapshot_id\": \"native:49\",\n    \"queried_revision\": 50,\n    \"queried_native_revision\": 49,\n    \"ordinary_interaction_context_ready\": true\n  },\n  \"business_effects_verified\": false,\n  \"full_product_acceptance_credit\": false,\n  \"receipt_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-010\\\\native-evidence\\\\53bd96329c5541f7a403c5cecf61d8ba\\\\0107-ordinary-interaction-query.json\"\n}",
+      "annotations": null,
+      "_meta": null
+    }
+  ],
+  "structuredContent": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "session_id": "53bd96329c5541f7a403c5cecf61d8ba",
+    "profile_sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6",
+    "pipe_name": "\\\\.\\pipe\\xar_profile_53bd96329c5541f7a403c5cecf61d8ba",
+    "recorded_at_utc": "2026-10-05T14:27:11.326078+00:00",
+    "status": "native_ordinary_interaction_observed",
+    "result": {
+      "step": "query-character-interaction-ordinary-v1",
+      "accepted": true,
+      "status": "available",
+      "read_only": true,
+      "query_sequence": 130,
+      "snapshot_revision": 49,
+      "date_raw": 53144712,
+      "game_pid": 13436,
+      "connection_generation": 1,
+      "character_interaction_ordinary_context": {
+        "schema": "ck3-character-interaction-ordinary-context-v1",
+        "status": "available",
+        "source": "native_current_ordinary_interaction_context_1.20.0.3",
+        "read_only": true,
+        "exact_build": "1.20.0.3",
+        "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+        "snapshot_revision": 49,
+        "date_raw": 53144712,
+        "game_pid": 13436,
+        "connection_generation": 1,
+        "player_character_id": 31254,
+        "recipient_id": 65866,
+        "interaction_key": "lyd_c2_propose_join_interaction",
+        "actor_alive": true,
+        "recipient_alive": true,
+        "definition_stable_hash": 382989941,
+        "effective_roles": {
+          "actor_id": 31254,
+          "recipient_id": 65866,
+          "secondary_actor_id": null,
+          "secondary_recipient_id": null,
+          "intermediary_id": null,
+          "sixth_role_id": 31254
+        },
+        "declared_option_count": 0,
+        "selected_option_count": 0,
+        "special_payload_present": false,
+        "shown": true,
+        "can_send": true,
+        "costs_raw": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "cost_scale": 100000,
+        "cost_order": [
+          "gold",
+          "prestige",
+          "piety",
+          "renown",
+          "influence",
+          "herd",
+          "treasury",
+          "treasury_or_gold",
+          "merit",
+          "barter_goods"
+        ],
+        "auto_accept": true,
+        "recipient_score_raw": 100000,
+        "intermediary_score_raw": 10000000,
+        "outer_answer_status": 0,
+        "native_context_available": true,
+        "ordinary_context_supported": true,
+        "active_event_present": false,
+        "incoming_interaction_present": false,
+        "source_code_pins_verified": true,
+        "actor_binding_verified": true,
+        "recipient_binding_verified": true,
+        "owner_thread_verified": true,
+        "tls_verified": true,
+        "frame_verified": true,
+        "owner_thread_id": 7960,
+        "owner_pump_epoch": 1375969,
+        "ready_to_initiate": true,
+        "unavailable_reason": null,
+        "unsupported_reason": null,
+        "business_postcondition_verified": false
+      },
+      "backend_id": "native-headless",
+      "queried_snapshot_id": "native:49",
+      "queried_revision": 50,
+      "queried_native_revision": 49,
+      "ordinary_interaction_context_ready": true
+    },
+    "business_effects_verified": false,
+    "full_product_acceptance_credit": false,
+    "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0107-ordinary-interaction-query.json"
+  },
+  "isError": false,
+  "resultType": "complete"
+}

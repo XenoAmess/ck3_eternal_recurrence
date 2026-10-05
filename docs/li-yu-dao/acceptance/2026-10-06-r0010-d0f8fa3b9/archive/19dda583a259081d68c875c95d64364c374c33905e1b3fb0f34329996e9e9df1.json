@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 244,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0245-after-rejected-reset-snapshot.request.json",
+  "request_sha256": "53294113c2e51046c404d73c7d83270039ffde4a1106bf6a011cb376d767652e",
+  "started_at_utc": "2026-10-05T18:00:38.894272+00:00",
+  "request_id": "r10-0245-after-rejected-reset-snapshot",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0244-r10-0245-after-rejected-reset-snapshot.sdk-result.json",
+  "sdk_result_sha256": "16d5c393506fb9a405aa95f254b3e0418ddebbf665979ebd96efe4a334150563",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0243-snapshot.json",
+      "copy": "0244-r10-0245-after-rejected-reset-snapshot.native-01.json",
+      "sha256": "b719a24c5b0206d099ea53d2a9e537cddedf8d7b7d2e539585ba0b114bfd8b19"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T18:00:40.851002+00:00"
+}

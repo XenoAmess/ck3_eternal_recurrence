@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 19,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0019-player-consent-query.request.json",
+  "request_sha256": "2a884f3b338c86cdd8a99bcbf4b2d7e226f42cbfeae40aa0c9b0b2db5cc4b11b",
+  "started_at_utc": "2026-10-05T11:29:56.554904+00:00",
+  "request_id": "r10-0019-player-consent-query",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0019-r10-0019-player-consent-query.sdk-result.json",
+  "sdk_result_sha256": "b6fb5ccabedd32b08bd532ba4762e96e32e65dab2f674331999e590bb2136d75",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0018-event-query.json",
+      "copy": "0019-r10-0019-player-consent-query.native-01.json",
+      "sha256": "239ac6bdf3c2262cd09af8a3ac7520778985fa00431bacd3759159e388971b8a"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T11:29:58.046112+00:00"
+}

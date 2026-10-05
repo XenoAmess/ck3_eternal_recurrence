@@ -1,0 +1,80 @@
+{
+  "schema": "ck3-r10-repeated-join-flow-author-index-v1",
+  "files": [
+    {
+      "path": "BASELINE-PINS.json",
+      "bytes": 1444,
+      "sha256": "01279553175fa251c53da75311241561d5e2d45deb2afccfc31708cfb4bd2983"
+    },
+    {
+      "path": "EMIT-REQUEST.template.json",
+      "bytes": 334,
+      "sha256": "088e786fd2b8454d919ceaccdb2a3f4e5957331e1e5f0586baee1518fe7b9b3b"
+    },
+    {
+      "path": "focused-002.stderr",
+      "bytes": 1530,
+      "sha256": "46f657a08f21010c731634e6bb2a5c24c05380400c597fc5f60be3daab3d032d"
+    },
+    {
+      "path": "focused-002.stdout",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "FOCUSED-TEST-RESULT-002.json",
+      "bytes": 396,
+      "sha256": "63e4c028d33ad710e89ff2f27aaf2badf11990c911c7ee0af50c822e12a94177"
+    },
+    {
+      "path": "FOCUSED-TEST-RESULT.json",
+      "bytes": 396,
+      "sha256": "63e4c028d33ad710e89ff2f27aaf2badf11990c911c7ee0af50c822e12a94177"
+    },
+    {
+      "path": "offline-sdk-red.fixture.json",
+      "bytes": 93,
+      "sha256": "6ccbbda29341b93d314187bfce5901dd66cc27be58ae650c6f29fcffece1d32e"
+    },
+    {
+      "path": "prepare_r10_join_flow.py",
+      "bytes": 22841,
+      "sha256": "bee32b8d751bbae465532edc9ca416c61f15972029fb2172fa1fb08a845a6fa1"
+    },
+    {
+      "path": "R10-PREPARATION-REQUEST.template.json",
+      "bytes": 1855,
+      "sha256": "1ede9056dd59c993e6d5ecadf9664a98d1db3bb1dd6f57618773acab367e800c"
+    },
+    {
+      "path": "REPORT.json",
+      "bytes": 4574,
+      "sha256": "cc1cd9d0d9a9bfde02e2c8a3e0dcef6eaca58d0d2091e04fc819ee134325cf75"
+    },
+    {
+      "path": "ROOT-CLI.template.json",
+      "bytes": 1214,
+      "sha256": "3ab9aee87d84330d39ac94a61f3526ef7d788222714e89b0e38638d220f67c49"
+    },
+    {
+      "path": "ROOT-OPERATIONS.md",
+      "bytes": 5412,
+      "sha256": "284f92875b9508815c6aa5513da922ac2e95f6890cce1bb6ae1bae78a1a10c93"
+    },
+    {
+      "path": "ROOT-REGISTRY.template.json",
+      "bytes": 267,
+      "sha256": "4466ca75565eea4489ce41887f4cf39e43f22178d834a031819cbbf2cfc73795"
+    },
+    {
+      "path": "ROOT-RELEASE-REQUEST.template.json",
+      "bytes": 401,
+      "sha256": "c37a2b6a0752889af88e82cf543617c30a42f46f4a6cbfa59a045476112a4d0e"
+    },
+    {
+      "path": "test_r10_join_flow.py",
+      "bytes": 5992,
+      "sha256": "3ebb894e358fe59b048a0051bcf3224d4f91bfbb5e24861e92baea873d0e03dc"
+    }
+  ]
+}

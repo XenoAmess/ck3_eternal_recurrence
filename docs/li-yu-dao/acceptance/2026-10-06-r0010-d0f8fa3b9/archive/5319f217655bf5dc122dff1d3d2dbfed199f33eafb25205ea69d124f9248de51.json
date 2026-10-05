@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 214,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0215-detach-first-withdraw.request.json",
+  "request_sha256": "71e7767ad2fd5f6a7dad33d95accde0019cd298234a89e2face551c7035d992b",
+  "started_at_utc": "2026-10-05T17:49:04.415394+00:00"
+}

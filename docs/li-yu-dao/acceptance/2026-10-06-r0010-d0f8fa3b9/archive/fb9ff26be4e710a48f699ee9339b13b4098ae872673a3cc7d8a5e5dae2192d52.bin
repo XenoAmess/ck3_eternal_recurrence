@@ -1,0 +1,17 @@
+--- R9/common/scripted_effects/lyd_i3b_setup_effects.txt
++++ CURRENT/common/scripted_effects/lyd_i3b_setup_effects.txt
+@@ -16,6 +16,14 @@
+         set_variable = { name = lyd_i3b_phase value = 1 }
+         set_variable = { name = lyd_i3b_faith value = faith }
+         set_variable = { name = lyd_i3b_main value = faith.main_rite }
++        remove_variable = lyd_i3b_required_native_hor
++        if = { limit = { faith = faith:lyd_common_faith }
++            set_variable = { name = lyd_i3b_authority_mode value = 0 }
++        }
++        else = {
++            set_variable = { name = lyd_i3b_authority_mode value = 1 }
++            set_variable = { name = lyd_i3b_required_native_hor value = rite.head_of_rite }
++        }
+         clear_variable_list = lyd_i3b_rites
+         clear_variable_list = lyd_i3b_members
+         clear_variable_list = lyd_i3b_political_titles

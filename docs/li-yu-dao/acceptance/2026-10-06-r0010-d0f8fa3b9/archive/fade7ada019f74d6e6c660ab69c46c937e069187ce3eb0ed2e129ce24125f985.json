@@ -1,0 +1,13 @@
+{
+  "failed_driver": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-sixth-post-cancel-readback-20261006-001\\prepare_finalizer.py",
+    "bytes": 7238,
+    "sha256": "492653348f1a8b6555088b4116ca38816c2a2f3cfe2ccf2264a7e0c48fa45402"
+  },
+  "stage": "external finalizer reuse preparation before output",
+  "error": "Personal check prefix also matched the facts row; tightened to exact instance check prefix",
+  "new_save_AST_reads_during_failed_driver": 0,
+  "finalizer_or_final_report_written_during_failed_driver": false,
+  "following_missing_finalizer_command_also_no_AST_or_output": true,
+  "old_packages_modified": false
+}

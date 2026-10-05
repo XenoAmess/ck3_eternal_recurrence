@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 105,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0106-fourth-cancel-result.request.json",
+  "request_sha256": "82d2917878828a688f514e9fe3116d2fb299d9e143f608820ed91d2ad6e98bf3",
+  "started_at_utc": "2026-10-05T14:25:18.045282+00:00"
+}

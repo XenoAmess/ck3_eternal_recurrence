@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 181,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0182-eighth-review-event-query.request.json",
+  "request_sha256": "7cac47a1a6cde10384b531c072faf62634d0e750df3e471c7c89056a7ffa947c",
+  "started_at_utc": "2026-10-05T16:59:10.236801+00:00",
+  "request_id": "r10-0182-eighth-review-event-query",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0181-r10-0182-eighth-review-event-query.sdk-result.json",
+  "sdk_result_sha256": "6ffb51eca0f28a640f3b59c5c62dd6fcc5150893d27b6fa9316a7ed879a35c0a",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0180-event-query.json",
+      "copy": "0181-r10-0182-eighth-review-event-query.native-01.json",
+      "sha256": "0f29237efdf5f498d79ac1965281b86a2f02f73f38825ed44d4a35cd6c925060"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T16:59:12.101446+00:00"
+}

@@ -1,0 +1,33 @@
+{
+  "schema": "ck3-ordinary-interaction-next-intent-permit-v1",
+  "claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000000.claim.json",
+  "claim_sha256": "3fae018f1468983c59bb0cf6a8d32704cb6f791d6b25cae69451a82960b495ce",
+  "claim_request_id": "ordinary-interaction-0771f580b861428398ec6ec493944c23",
+  "action_identity": {
+    "game_pid": 13436,
+    "actor_id": 31254,
+    "process_create_time": 1791196395.7422996,
+    "interaction_key": "lyd_c2_propose_join_interaction",
+    "recipient_id": 65866,
+    "action": "initiate_ordinary"
+  },
+  "old_connection_generation": 1,
+  "manifest": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-first-proposal-emitted-evidence-20261005-004\\CONSUMPTION-MANIFEST.json",
+    "sha256": "5f0ec75c2eaa9dbe3da15f691a49c291594b7f7de388035da5f5becad55f24a7"
+  },
+  "registry": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-first-consumption-host-request-001\\REGISTRY.json",
+    "sha256": "1f8070ee4fef62720d5fad27d55bd6c9f83601f12210456cc8036e80100d4490"
+  },
+  "verifier_id": "lyd-first-join-actual-save-v1",
+  "verifier_bundle": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-first-proposal-bound-verifier-20261005-003\\INDEX.json",
+    "sha256": "b6bd15f678df586b06403de8c05db692ef5fdf35583638347e853fc0e757ee68"
+  },
+  "operator_id": "root-r10-20261005",
+  "next_intent_id": "r10-proposal-002-after-consumed-0771f580-20261005",
+  "released_at_utc": "2026-10-05T12:30:35.611264+00:00",
+  "scope": "operator_verified_consumption_for_one_new_intent",
+  "business_acceptance_credit": false
+}

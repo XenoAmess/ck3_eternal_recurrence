@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0066-third-fresh-ready-query.request.json",
+  "request_id": "r10-0066-third-fresh-ready-query",
+  "sha256": "eab335bd52143d75b02b97376e8d44c306ecd8bc247542b58afb2244fdfee3d5",
+  "contacted_game": false
+}

@@ -1,0 +1,51 @@
+{
+  "schema": "lyd.r10.actual-checkpoint-readback-request.v1",
+  "phase": "actual-R10-sixth-formal-JOIN-proposal-opened-after-fifth-cancellation-no-new-reset-not-final-result",
+  "source_binding": {
+    "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+    "cold_source_inventory": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\COLD-SOURCE-INVENTORY.json",
+      "bytes": 31564,
+      "sha256": "2ab18195f08fb5f680f6168732cd1681fa171fd31b50b6777c1e685c297ac260"
+    },
+    "ROOT_PREPARED": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\PREPARED.json",
+      "bytes": 7217,
+      "sha256": "a65e94d9b50afe0688a66cd1af745b4d29cbf6917b23dd52fa42f2f4bcb6c53e"
+    },
+    "native_profile": null,
+    "fresh_SDK_actor_binding": null
+  },
+  "actor_id": 31254,
+  "save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0129-sixth-open-save\\checkpoint.ck3",
+    "bytes": 91540327,
+    "sha256": "d331ba00e9865964a5e6319c00ae3da356070a54315437b43e73441be12ead76"
+  },
+  "supporting_evidence": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0129-r10-0130-sixth-open-save.sdk-result.json",
+      "bytes": 5214109,
+      "sha256": "840ed3bc19bfffda90be0e647d5f701e868bcd4017fba44dbe812200a8361331"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\checkpoints\\0129-sixth-open-save\\checkpoint-metadata.json",
+      "bytes": 1405,
+      "sha256": "9c132b4aa76622704152328f8e8c0495cdd6818426c9f18b5c29b243f6d3bb8a"
+    }
+  ],
+  "political_title_ids": [
+    2230,
+    2231,
+    2232,
+    2235,
+    2262,
+    2263,
+    2264
+  ],
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-sixth-open-join-readback-20261005-001\\actual-save-001",
+  "watch_character_ids": [
+    65865,
+    65866
+  ]
+}

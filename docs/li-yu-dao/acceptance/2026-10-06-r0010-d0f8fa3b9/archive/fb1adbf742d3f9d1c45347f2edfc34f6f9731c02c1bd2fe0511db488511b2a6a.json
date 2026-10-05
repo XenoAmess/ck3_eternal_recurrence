@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 99,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0100-fourth-source-sign.request.json",
+  "request_sha256": "6e600ffdddaa006201a3f08792cc4e70937d56160440eaa3ec8200069c83a863",
+  "started_at_utc": "2026-10-05T13:58:15.296123+00:00"
+}

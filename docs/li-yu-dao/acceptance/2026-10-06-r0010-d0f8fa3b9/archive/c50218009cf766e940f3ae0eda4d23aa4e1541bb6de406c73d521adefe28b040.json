@@ -1,0 +1,20 @@
+{
+  "schema": "lyd.first-join.evidence-emission-request.v1",
+  "bound_verifier_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-second-proposal-bound-verifier-20261005-001\\INDEX.json",
+    "sha256": "8945dca159d69dbc8cbb5a6ff849ab4503c5487f2cb20278430b1d2e08090813"
+  },
+  "claim": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000001.claim.json",
+    "sha256": "7c2d0d36486fc2ec6c0d44fb24319affdce818feb3edb59d6878921e3d00c021"
+  },
+  "before_artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-second-proposal-proof-inputs-20261005-002\\BEFORE-OBSERVATION.actual.json",
+    "sha256": "269eddcb900a4d7a96181b0930acae51203b0ae6c4b8478e7edf6983eb03e9f1"
+  },
+  "after_artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-second-proposal-proof-inputs-20261005-002\\AFTER-OBSERVATION.actual.json",
+    "sha256": "68635f73037765082ce56dc045b7899e49ec2a9e7505ab47acc90b82f2811f50"
+  },
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-second-proposal-emitted-evidence-20261005-002"
+}

@@ -8,6 +8,9 @@
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
 #include "xar_bridge/ingame_decisions_opener_v1.hpp"
 #include "xar_bridge/normal_exit_map_v1.hpp"
+#if defined(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1)
+#include "xar_bridge/player_control_identity_source_v1.hpp"
+#endif
 #include "xar_bridge/ingame_decision_item_v1.hpp"
 #include "xar_bridge/white_player_business_variables_v1.hpp"
 #include "xar_bridge/white_rendered_text_v1.hpp"
@@ -240,6 +243,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   aub_policy_options = 34, // query and source OnSelect share one fixed private operation.
   action_white_control = 35,
   normal_exit_map = 38, // Fixed map-only normal-exit provider; no new mailbox slot.
+  player_control_readonly = 39, // Fixed source-bound partial query; mutations unavailable.
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -296,6 +300,9 @@ struct FrontendGuiRouteMailboxContextV1 {
   WhiteControlActionContextV1 white_control_action{};
 #if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
   ck3_12003::NormalExitMapContextV1 normal_exit_map{};
+#endif
+#if defined(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1)
+  ck3_12003::PlayerControlReadonlyContextV1 player_control_readonly{};
 #endif
 };
 

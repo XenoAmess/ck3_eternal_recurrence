@@ -1,0 +1,423 @@
+{
+  "prior_review_expectation_failure_preserved": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-sixth-consumption-release-lineage-independent-review-20261006-001\\FAILURE.json",
+    "bytes": 7795,
+    "sha256": "7565cbc4788e99c10874148a596278bb18d4ee6bdb360630fb58ddea90bc6bec"
+  },
+  "prior_failure_boundary": "Reviewer adaptation mistakenly renamed fixed sixth_role_id; no product/SDK failure. Original attempt001 unchanged.",
+  "schema": "lyd.r10.actual-sixth-release-ordinal6-independent-review.v1",
+  "status": "ACTUAL_SIXTH_EMIT_RELEASE_PERMIT_CONSUMED_ORDINAL6_LINEAGE_MATCH",
+  "recorded_utc": "2026-10-05T16:57:42.074435+00:00",
+  "checks_count": 116,
+  "checks": [
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-emitted-evidence-20261006-002\\INDEX.json",
+    "new sixth emit closed INDEX row",
+    "new sixth emit contained unique row",
+    "new sixth emit exact indexed CONSUMPTION-MANIFEST.json",
+    "new sixth emit closed INDEX row",
+    "new sixth emit contained unique row",
+    "new sixth emit exact indexed EMISSION-REQUEST.raw.json",
+    "new sixth emit closed INDEX row",
+    "new sixth emit contained unique row",
+    "new sixth emit exact indexed EMISSION-STATUS.json",
+    "new sixth emit closed INDEX row",
+    "new sixth emit contained unique row",
+    "new sixth emit exact indexed INDEPENDENT-FACTS.json",
+    "new sixth emit closed INDEX row",
+    "new sixth emit contained unique row",
+    "new sixth emit exact indexed PRODUCT-DETAIL.json",
+    "new sixth emit complete five payload coverage",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-emitted-evidence-20261006-002\\CONSUMPTION-MANIFEST.json",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-emitted-evidence-20261006-002\\INDEPENDENT-FACTS.json",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-emitted-evidence-20261006-002\\PRODUCT-DETAIL.json",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-emitted-evidence-20261006-002\\EMISSION-REQUEST.raw.json",
+    "new sixth emitted facts exact keys",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.json",
+    "ordinal5 immutable UNKNOWN parent preserved",
+    "sixth facts bind actual1d9c ordinal5 sixidentity",
+    "sixth consumption saved nonce11-to12 only",
+    "sixth manifest packet closed ref",
+    "sixth manifest packet exact bytes/SHA",
+    "sixth facts exact packet",
+    "sixth manifest native_result closed ref",
+    "sixth manifest native_result exact bytes/SHA",
+    "sixth facts exact native_result",
+    "sixth manifest before_artifact closed ref",
+    "sixth manifest before_artifact exact bytes/SHA",
+    "sixth facts exact before_artifact",
+    "sixth manifest after_artifact closed ref",
+    "sixth manifest after_artifact exact bytes/SHA",
+    "sixth facts exact after_artifact",
+    "genuine native pending receipt; no fabricated ACK",
+    "manifest exact facts report",
+    "original sixth saved exact3 reference",
+    "original sixth saved exact3 reference",
+    "actual original125-to129 save refs; no149 substitution",
+    "sixth saved11-to12 wallet0/history unchanged",
+    "actual sixth dynamic graph and positive full roles",
+    "sixth emission historical proposal-only flags preserved",
+    "sixth source/parser actual pins",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-proposal-emit-invocation-001\\RESULT.json",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-proof-inputs-20261006-002\\ROOT-EMIT-ARGV.json",
+    "actual ROOT exit0/exact argv root-sixth-proposal-emit-invocation-001",
+    "actual ROOT stdio exact root-sixth-proposal-emit-invocation-001",
+    "sixth actual emit stdout exact; emission-time no-release flag",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-consumption-host-request-001\\RELEASE-REQUEST.actual.json",
+    "sixth ROOT actual closed host request",
+    "sixth release parent/manifest exact",
+    "actual frozen host closed ref",
+    "actual frozen host exact bytes/SHA",
+    "frozen f567 host unchanged",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-consumption-host-request-001\\REGISTRY.json",
+    "actual ROOT registry closed ref",
+    "actual ROOT registry exact bytes/SHA",
+    "request registry exact",
+    "sixth registry actual bound verifier",
+    "actual existing bound sixth INDEX closed ref",
+    "actual existing bound sixth INDEX exact bytes/SHA",
+    "sixth bound INDEX exact no rebind",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-consumption-release-invocation-001\\RESULT.json",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-consumption-host-request-001\\release-argv.json",
+    "actual ROOT exit0/exact argv root-sixth-consumption-release-invocation-001",
+    "actual ROOT stdio exact root-sixth-consumption-release-invocation-001",
+    "ROOT actual host release no game/business credit",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.release.json",
+    "sixth permit closed schema",
+    "sixth permit actual immutable ordinal5 parent",
+    "sixth permit exact proof/registry/bundle/ROOT intent",
+    "sixth permit actual one seventh intent/no JOIN credit",
+    "actual sixth permit time within invocation",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0151-r10-0152-seventh-fresh-query.sdk-result.json",
+    "actual SDK complete 0151-r10-0152-seventh-fresh-query.sdk-result.json",
+    "SDK structured/text exact 0151-r10-0152-seventh-fresh-query.sdk-result.json",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0152-r10-0153-seventh-new-initiate.sdk-result.json",
+    "actual SDK complete 0152-r10-0153-seventh-new-initiate.sdk-result.json",
+    "SDK structured/text exact 0152-r10-0153-seventh-new-initiate.sdk-result.json",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0150-r10-0151-sixth-final-ready-query.sdk-result.json",
+    "actual SDK complete 0150-r10-0151-sixth-final-ready-query.sdk-result.json",
+    "SDK structured/text exact 0150-r10-0151-sixth-final-ready-query.sdk-result.json",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0149-r10-0150-sixth-post-cancel-save.sdk-result.json",
+    "actual SDK complete 0149-r10-0150-sixth-post-cancel-save.sdk-result.json",
+    "SDK structured/text exact 0149-r10-0150-sixth-post-cancel-save.sdk-result.json",
+    "actual SDK152 discovered new claim contained",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000006.claim.json",
+    "ordinal6 exact sixidentity keys",
+    "ordinal6 same process/provenance; original UNKNOWN claims unchanged",
+    "actual distinct seventh UUID",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.release.consumed.json",
+    "sixth permit actually consumed for seventh ordinal6",
+    "consumed exact seventh binding/sixidentity/gen1 no business credit",
+    "seventh actual ordinal6 immutable ordinal5/permit parent chain",
+    "first151/frame149 exact public70/native69",
+    "later release150/frame149 separate from first query127",
+    "actual seventh before date/paused/no event/incoming",
+    "seventh fresh151 actual positive full IDs/ready gates",
+    "six native roles exact",
+    "actual new SDK profile/session/pipe exact",
+    "sixth release precedes actual seventh fresh query/send",
+    "seventh actual packet hash/u32 length",
+    "seventh compact closed10 packet exact native69",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000006.claim.native-result.json",
+    "seventh actual native/SDK pending only",
+    "pinned actual SHA C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000006.claim.receipt.json",
+    "seventh actual receipt no business credit",
+    "driver70/69 retained apart from wrapper71/70 event80",
+    "seventh dispatch wallet unchanged played_character_gold",
+    "seventh dispatch wallet unchanged played_character_piety",
+    "seventh dispatch wallet unchanged played_character_prestige",
+    "earlier lineage summary immutable refs only; no earlier parent files rescan"
+  ],
+  "actual_ROOT_sixth_emit": true,
+  "actual_ROOT_sixth_release": true,
+  "actual_sixth_permit_consumed": true,
+  "released_request_consumption": {
+    "claim_ordinal": 5,
+    "request_id": "ordinary-interaction-1d9cf9c7db6e4ea2be6872d6427cf2a4",
+    "save_pair": "125-to129",
+    "serial_nonce_delta": [
+      11,
+      12
+    ],
+    "wallet_delta": [
+      "0",
+      "0",
+      "0"
+    ],
+    "completed_history_unchanged": true
+  },
+  "new_seventh_request": {
+    "claim_ordinal": 6,
+    "request_id": "ordinary-interaction-ce6f9c27e43f4d1c9057fb7746fcb815",
+    "native_status": "pending",
+    "driver_after": [
+      70,
+      69
+    ],
+    "wrapper_snapshot": [
+      71,
+      70
+    ],
+    "active_event_instance": 80
+  },
+  "new_seventh_saved_serial_nonce": null,
+  "seventh_saved_opening_AST_not_consumed_by_this_review": true,
+  "seventh_request_consumption_credit": false,
+  "six_action_identity": {
+    "game_pid": 13436,
+    "actor_id": 31254,
+    "process_create_time": 1791196395.7422996,
+    "interaction_key": "lyd_c2_propose_join_interaction",
+    "recipient_id": 65866,
+    "action": "initiate_ordinary"
+  },
+  "new_binding": {
+    "native_revision": 69,
+    "connection_generation": 1,
+    "game_pid": 13436,
+    "played_character_id": 31254,
+    "date_raw": 53144712,
+    "episode_run_id": null,
+    "revision": 70,
+    "snapshot_id": "native:69",
+    "observed_stress_points": 0,
+    "active_event_present": false,
+    "incoming_interaction_present": false
+  },
+  "new_parent_lineage": {
+    "permit_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.release.json",
+    "permit_sha256": "b5bc8f3fc94c25be5b40014d943685bd6e45d3c0dc0e4e5d8d2f196d2072082a",
+    "next_intent_id": "r10-proposal-007-after-consumed-1d9c-20261006",
+    "parent_claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.json",
+    "parent_claim_sha256": "47c844c0decce779351f2c5b3f2016dc6aae0b0ac6b3b0fc60bcc3b6d2fea0c8"
+  },
+  "actual_native_packet": {
+    "type": "execute_step",
+    "protocol_version": 1,
+    "request_id": "ordinary-interaction-ce6f9c27e43f4d1c9057fb7746fcb815",
+    "step": "initiate-character-interaction-ordinary-v1",
+    "expected_revision": 69,
+    "interaction_key": "lyd_c2_propose_join_interaction",
+    "recipient_id": 65866,
+    "expected_player_character_id": 31254,
+    "expected_game_pid": 13436,
+    "expected_connection_generation": 1
+  },
+  "immediate_ordinal5_parent_preserved": true,
+  "earlier_parent_preservation_reused_only_from_frozen_summary": true,
+  "old_parent_or_permit_files_rescanned": false,
+  "ROOT_release_truth_separate_from_emission_historical_flags": true,
+  "new_final_JOIN_credit": false,
+  "full_cycle_credit": false,
+  "ACK_business_credit": false,
+  "permit_business_credit": false,
+  "old_whole_payload_revalidation": false,
+  "earlier_cases_tests_or_source_functions_rerun": false,
+  "save_AST_reparsed": false,
+  "reviewer_operations": {
+    "bind": 0,
+    "emit": 0,
+    "registry_write": 0,
+    "host_release": 0,
+    "game": 0,
+    "native": 0,
+    "MCP": 0,
+    "pipe": 0,
+    "Client": 0,
+    "bus": 0,
+    "Git": 0,
+    "main": 0,
+    "save_AST_parse": 0
+  },
+  "references": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-emitted-evidence-20261006-002\\INDEX.json",
+      "bytes": 858,
+      "sha256": "05e6c52c366832e67d5e780f068ed904bdd401fa340d8efb186efa1486e24f5b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-emitted-evidence-20261006-002\\CONSUMPTION-MANIFEST.json",
+      "bytes": 1793,
+      "sha256": "d1d4cf436cd9b2f4c16cdf8713ec84a27385b70d0d1c5ea5c2359d1299c4b286"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-emitted-evidence-20261006-002\\EMISSION-REQUEST.raw.json",
+      "bytes": 1196,
+      "sha256": "d99bae5083404b20c4bd7e0c0c146c0ff5afe8afcdd63530025f0df12f81a848"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-emitted-evidence-20261006-002\\EMISSION-STATUS.json",
+      "bytes": 800,
+      "sha256": "20bfbe369d57fbe8a5d59e02909c87da2c357bb8876e87f5f3614930b7da4f4c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-emitted-evidence-20261006-002\\INDEPENDENT-FACTS.json",
+      "bytes": 1040,
+      "sha256": "877c2895fe6d42c719e4f6766a071986cdd390dcd556aa495bcd86ad787a51ed"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-emitted-evidence-20261006-002\\PRODUCT-DETAIL.json",
+      "bytes": 3314,
+      "sha256": "bee80f695969967d85669856ae60a2771e941b00dec51f54afa2d45cb98e30d3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.json",
+      "bytes": 1934,
+      "sha256": "47c844c0decce779351f2c5b3f2016dc6aae0b0ac6b3b0fc60bcc3b6d2fea0c8"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.packet.bin",
+      "bytes": 363,
+      "sha256": "04b7d5fe01cf4e763e5f7aea29b32090e9e5ac8e39d718b0ec106504b6daf7a7"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.native-result.json",
+      "bytes": 4016,
+      "sha256": "bcf26907299ec49da07e14da0cb1cb04c193ebd852708c678ace4023a8e98b2d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-proof-inputs-20261006-002\\BEFORE-OBSERVATION.actual.json",
+      "bytes": 1630,
+      "sha256": "eb02ac377c90be1f50f31bc03d0227d7b3b0967bac2f9d7a7493f8745407960e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-proof-inputs-20261006-002\\AFTER-OBSERVATION.actual.json",
+      "bytes": 1621,
+      "sha256": "01fb77c7fea442857bf6a4e304bb92bc51d41dbf50d97c85c86b3638b6eba5b6"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-proposal-emit-invocation-001\\RESULT.json",
+      "bytes": 627,
+      "sha256": "318109df13888fb5b76af5827d9a223963c7fa45220630b542d0a5d11be65858"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-proposal-emit-invocation-001\\argv.json",
+      "bytes": 318,
+      "sha256": "2fa476ce37cba65e1e927123b060817ac0d3cef3d082776f8f72e66d5e2381d4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-proof-inputs-20261006-002\\ROOT-EMIT-ARGV.json",
+      "bytes": 336,
+      "sha256": "7688e3bf456cf2b05a0418314e80955c52dfc5c507b35ea4622b2f43ae0a5869"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-proposal-emit-invocation-001\\stdout.txt",
+      "bytes": 306,
+      "sha256": "c429cc6e295d0eb412863603d42e6e48eacbe54811924a3047f2664d9eab8ff9"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-proposal-emit-invocation-001\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-consumption-host-request-001\\RELEASE-REQUEST.actual.json",
+      "bytes": 1225,
+      "sha256": "56ff6a0017b758f03f77af56c3006d1c6dd13d84c9b3f97f5fa9f44a9b31392e"
+    },
+    {
+      "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ordinary_interaction_host_release.py",
+      "bytes": 16460,
+      "sha256": "f567bff41d03b6c59d195df8ff62ecab1a523962de3217d397c5264d1ed2d89b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-consumption-host-request-001\\REGISTRY.json",
+      "bytes": 426,
+      "sha256": "9ed7f235124bcda7c40c8e78aa6c606a086c8d3270353014326452c9e25a15a0"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-sixth-proposal-bound-verifier-20261006-001\\INDEX.json",
+      "bytes": 577,
+      "sha256": "73a5baa900687050fa6ad0adab5574d0659344144bbae69c6da5c987e858d725"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-consumption-release-invocation-001\\RESULT.json",
+      "bytes": 638,
+      "sha256": "d7f97c8ca0e2b2f8e5448f2001e01f6ccbd93ac26d2222bcc19f2e70d42c5e40"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-consumption-release-invocation-001\\argv.json",
+      "bytes": 341,
+      "sha256": "1d5ced8cb8c8bd36b8c2f1f4f44e85ef146b74d1700a2abb5a3633a613068dc4"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-consumption-host-request-001\\release-argv.json",
+      "bytes": 360,
+      "sha256": "3393d8af7c247fb2cbfbac7356b8576721d25baa0516de9582015817dcca0679"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-consumption-release-invocation-001\\stdout.txt",
+      "bytes": 445,
+      "sha256": "e851d062a7425ea883be7d1a605b75c9bbaa3da2c26b9fee5e9af8616a73432f"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\root-sixth-consumption-release-invocation-001\\stderr.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.release.json",
+      "bytes": 1732,
+      "sha256": "b5bc8f3fc94c25be5b40014d943685bd6e45d3c0dc0e4e5d8d2f196d2072082a"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0151-r10-0152-seventh-fresh-query.sdk-result.json",
+      "bytes": 7623,
+      "sha256": "21721efc900d1b41b2c01664daeb5b0c9d1e6771f581c01a159704193b1ea40c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0152-r10-0153-seventh-new-initiate.sdk-result.json",
+      "bytes": 3123621,
+      "sha256": "4d8956229d7f369a1884e0c6a9bdbe92c44522a80741d861f62418b67f630c71"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0150-r10-0151-sixth-final-ready-query.sdk-result.json",
+      "bytes": 7623,
+      "sha256": "27fff1d1a7533e83d39b72684a33f43a637c1dbb56110f0d9fe1c8cbfb8534ee"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0149-r10-0150-sixth-post-cancel-save.sdk-result.json",
+      "bytes": 6227651,
+      "sha256": "182bf0eb58d07269ab5f7c9946a40d976a02fdb6fe57ada671ae5c5dfdb6fea1"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000006.claim.json",
+      "bytes": 1934,
+      "sha256": "27999be4ffebc686a2961528d639886b07712fce5f1578935190448e1f8ded02"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000005.claim.release.consumed.json",
+      "bytes": 1233,
+      "sha256": "8bb774876e184adc346fd9a6684ec7b9d23146cac6665d0bdd8f8eea696987bb"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000006.claim.packet.bin",
+      "bytes": 363,
+      "sha256": "9a466b607be252ec02f23e6dcfebde8328c919c31d8bac50e24f037aceef7323"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000006.claim.native-result.json",
+      "bytes": 4016,
+      "sha256": "0d5d723406297f0c7bcf1c97105f5f1ba9653489b531b9e247366b8aabd6a2f3"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-state\\native-session\\ordinary-interaction-actions\\8bfa5f050fb5b9b7f74d683c7a08ed76fdfbdce007bf582f6e3f5cba2be13a13.00000006.claim.receipt.json",
+      "bytes": 4693,
+      "sha256": "e50cd19d331f6e99d49c82b189b79e2209e7e1653a7c389965f366bf81a53c75"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fifth-consumption-release-lineage-independent-review-20261006-001\\REPORT.json",
+      "bytes": 28189,
+      "sha256": "99e8a8cddda666b85824107fa968fde0c642b784598853c7ca7ae125e0985e33"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-fifth-consumption-release-lineage-independent-review-20261006-001\\INDEX.json",
+      "bytes": 411,
+      "sha256": "d9cff47fb7c4539a0ecd9a107fe1f508c3889497b725880555816fd0ce6afb60"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-actual-sixth-consumption-release-lineage-independent-review-20261006-001\\FAILURE.json",
+      "bytes": 7795,
+      "sha256": "7565cbc4788e99c10874148a596278bb18d4ee6bdb360630fb58ddea90bc6bec"
+    }
+  ]
+}

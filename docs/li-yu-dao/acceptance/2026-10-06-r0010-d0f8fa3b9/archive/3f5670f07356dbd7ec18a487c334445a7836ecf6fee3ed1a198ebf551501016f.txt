@@ -1,0 +1,18 @@
+2263={
+	key=b_rossano
+	de_facto_liege=2262
+	de_jure_liege=2262
+	holder=31254
+	date=1066.9.15
+	capital_barony=yes
+	capital=2262
+	coat_of_arms_id=11367
+	title_name_data={
+		name="罗萨诺"
+	}
+
+	default_coa=no
+	treasury={
+	}
+	nomad_name_type=default
+}

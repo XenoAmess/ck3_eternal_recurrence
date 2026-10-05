@@ -1,0 +1,20 @@
+{
+  "schema": "ck3-normal-exit-once-claim-v1",
+  "identity": {
+    "game_pid": 13436,
+    "creation_filetime_100ns": 134356699957422997,
+    "action": "confirm_desktop"
+  },
+  "request_id": "normal-exit-confirm_desktop-03c4e93256064fb496c12ff9a73c1b37",
+  "status": "claimed_result_unknown_no_retry",
+  "exit_context_signature": "d9a212d69e1ea9e6bbf112ce1f17be917beef28941c4b2d0325a85115ecf052a",
+  "source_inventory_sha256": "18ae748deeb90f6f5900ee16e8402dcdd1a5a0f732d57bade0ea7da670ed6f19",
+  "process_preconfirm_pin": {
+    "pid": 13436,
+    "creation_filetime_100ns": 134356699957422997,
+    "retained_handle_token": "c3d6cb9a49b45eacdd12e64815c8f49a",
+    "wait_result": 258,
+    "verified_monotonic_ns": 693894341769500,
+    "observation_clock_domain": "driver_monotonic_v1"
+  }
+}

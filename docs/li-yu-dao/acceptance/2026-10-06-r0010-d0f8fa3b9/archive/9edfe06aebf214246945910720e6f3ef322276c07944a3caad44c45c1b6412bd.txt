@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0116-fifth-personal-yes.request.json",
+  "request_id": "r10-0116-fifth-personal-yes",
+  "sha256": "ea8deafd79083dfd521cfbb9710696e9efc19156101c4ddd3fdf4d73eda743d9",
+  "contacted_game": false
+}

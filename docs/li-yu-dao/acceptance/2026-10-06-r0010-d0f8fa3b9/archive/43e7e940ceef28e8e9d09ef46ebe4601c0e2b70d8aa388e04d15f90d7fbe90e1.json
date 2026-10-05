@@ -1,0 +1,70 @@
+{
+  "schema": "xar.actual-defender-read-only-probe.v1",
+  "utc": "2026-10-05T10:08:19.907389+00:00",
+  "repo": "C:/workspace/ck3_eternal_recurrence",
+  "settings_writes": 0,
+  "TaskRun_calls": 0,
+  "source_helpers": [
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/tools/run_native_msvc.py",
+      "bytes": 12782,
+      "sha256": "3b2cbff2a4e725dfd0b92ba5bce839d798e2bc85b6a06209f2b4dc73c868eace"
+    },
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/tools/register_project_exe_exclusions.py",
+      "bytes": 26813,
+      "sha256": "a750bb69c738f930050aa1f939fdaa70805d415a7de5ab48a2e6bb08884645e8"
+    },
+    {
+      "path": "C:/workspace/ck3_eternal_recurrence/tools/project_exe_exclusion_broker_client.py",
+      "bytes": 31474,
+      "sha256": "7dfb82495e51fa589eecd877a717cddcbffb2c9b3fc91a3bf2b0665e8f939fa8"
+    }
+  ],
+  "CI_environment_present": false,
+  "admin_token": true,
+  "actual_git_local_opt_in": {
+    "argv": [
+      "git",
+      "--no-optional-locks",
+      "-C",
+      "C:\\workspace\\ck3_eternal_recurrence",
+      "config",
+      "--local",
+      "--bool",
+      "--get",
+      "xar.defenderProjectExeExclusions"
+    ],
+    "returncode": 0,
+    "stdout": "true",
+    "stderr": ""
+  },
+  "actual_WinDefend": {
+    "status": {
+      "ServiceType": 16,
+      "CurrentState": 1,
+      "ControlsAccepted": 0,
+      "Win32ExitCode": 1077,
+      "ServiceSpecificExitCode": 0,
+      "CheckPoint": 0,
+      "WaitHint": 0,
+      "ProcessId": 0,
+      "ServiceFlags": 0
+    },
+    "start_type": 4,
+    "disabled_start_type": true,
+    "running": false
+  },
+  "actual_Defender_WMI_status": {
+    "available": false,
+    "error_type": "com_error",
+    "error": "(-2147352567, '发生意外。', (0, 'SWbemObjectSet', '常规故障 ', None, 0, -2147217407), None)"
+  },
+  "actual_fixed_broker_task": {
+    "available": false,
+    "error_type": "com_error",
+    "error": "(-2147352567, '发生意外。', (0, None, None, None, 0, -2147024894), None)",
+    "TaskRun_calls": 0,
+    "setting_success_credit": false
+  }
+}

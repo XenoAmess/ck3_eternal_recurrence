@@ -1,0 +1,6 @@
+{
+  "queued": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0226-detach-second-scholar-chosen.request.json",
+  "request_id": "r10-0226-detach-second-scholar-chosen",
+  "sha256": "767242578294c6a050c6228085b6ad5c8b1065a65d312f2731a032b3dd287ebf",
+  "contacted_game": false
+}

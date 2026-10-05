@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 61,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0062-reset-event-query.request.json",
+  "request_sha256": "624f0dd4ae5e4d1cb2ed54b3d13d61b7c710a7bb2d688f022555ea5301da2328",
+  "started_at_utc": "2026-10-05T13:07:30.027396+00:00"
+}

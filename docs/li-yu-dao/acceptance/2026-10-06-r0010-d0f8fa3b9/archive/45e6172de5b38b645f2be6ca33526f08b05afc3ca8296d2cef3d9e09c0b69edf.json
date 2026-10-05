@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 125,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0126-fifth-post-cancel-save.request.json",
+  "request_sha256": "33867858c8f621113d3a9e641029616d5c9f85d4b6b86339786e411ae81db028",
+  "started_at_utc": "2026-10-05T14:50:13.750545+00:00"
+}

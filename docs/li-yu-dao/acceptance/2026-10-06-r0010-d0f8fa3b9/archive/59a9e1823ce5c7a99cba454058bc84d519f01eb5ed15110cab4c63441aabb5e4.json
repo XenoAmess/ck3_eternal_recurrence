@@ -1,0 +1,38 @@
+{
+  "schema": "xar.project-exe-exclusions.v1",
+  "repo": "C:\\workspace\\ck3_eternal_recurrence",
+  "source_dir": "C:\\lr10s1\\ck3_autonomous_player\\native_bridge",
+  "build_dir": "C:\\lydr10-release-20261005-001",
+  "configuration": "Release",
+  "requested_targets": [
+    "xar_ck3_bridge",
+    "xar_ck3_bridge_injector"
+  ],
+  "external_candidate": "R10 exact clean HEAD d0f8fa3b9d444828759443aa018bfd7ad31b398d; native tree 789eab5ae1c3015fe210de508fdd730a13bbb8db",
+  "cmake_index": {
+    "path": "C:\\lydr10-release-20261005-001\\.cmake\\api\\v1\\reply\\index-2026-10-05T09-59-39-0017.json",
+    "sha256": "e05839d42673d52ab208645bf1dc8c761681aa112e3f066583ff6894ec666018"
+  },
+  "cmake_codemodel": {
+    "path": "C:\\lydr10-release-20261005-001\\.cmake\\api\\v1\\reply\\codemodel-v2-e05adda1a18c4e388e76.json",
+    "sha256": "fa041f8e8116c368d15223514a9a7edd075ebb8238e4b0932dcbf14239140dda"
+  },
+  "target_provenance": [
+    {
+      "path": "C:\\lydr10-release-20261005-001\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-4e7a834a8db31fabebfd.json",
+      "sha256": "9b64ed2ee701c212041ac23e2ee90bdbeb9dac9f9ad8739e5533e480fc88c8f4",
+      "target": "xar_ck3_bridge_injector",
+      "target_id": "xar_ck3_bridge_injector::@6890427a1f51a3e7e1df",
+      "source": "C:\\lr10s1\\ck3_autonomous_player\\native_bridge"
+    }
+  ],
+  "files": [
+    {
+      "path": "C:\\lydr10-release-20261005-001\\xar_ck3_bridge_injector.exe",
+      "size": 39936,
+      "sha256": "4c4b302ede99ae7e9c0e8b259ae902406a720e4525cd96e7e351eb27abc0dd2d",
+      "target": "xar_ck3_bridge_injector",
+      "target_id": "xar_ck3_bridge_injector::@6890427a1f51a3e7e1df"
+    }
+  ]
+}

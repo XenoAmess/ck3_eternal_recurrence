@@ -1,0 +1,29 @@
+2230={
+	key=d_apulia
+	de_jure_liege=2189
+	de_jure_vassals={ 2231 2236 2240 }
+	holder=31254
+	date=1057.1.1
+	succession_result_type=inheritance_child_line
+	heir={ 40526 40695 39979 40847 41032 37244 38098 36445 36663 36873 31692 34973 40259 35598 36638 32536 38561 39045 39171 39352 }
+	claim={ 36445 36663 36873 38098 38560 38902 }
+	history={ 857.1.1=13434 871.1.1={
+			type=destroyed
+		}
+ 1042.1.1=30703 1046.7.1=30716 1051.8.10=31279 1057.1.1=31254 }
+	capital=2231
+	coat_of_arms_id=545
+	title_name_data={
+		name="阿普利亚"
+		adj="阿普利亚"
+		title_history_names={ {
+				date=857.1.1
+				name="d_apulia"
+			}
+ }
+	}
+
+	treasury={
+	}
+	nomad_name_type=default
+}

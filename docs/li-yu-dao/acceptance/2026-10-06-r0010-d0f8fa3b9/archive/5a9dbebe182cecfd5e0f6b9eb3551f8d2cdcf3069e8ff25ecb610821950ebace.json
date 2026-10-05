@@ -1,0 +1,94 @@
+{
+  "status": "PASS",
+  "scope": "NEW_ASSEMBLER_ACTUAL_PRESERVED_DATA_ONLY_NO_GAME_OR_BUSINESS_VERIFIER",
+  "results": [
+    {
+      "case": "actual_ordinal4_finish_validate",
+      "PASS": true,
+      "ordinal": 4
+    },
+    {
+      "case": "actual_ordinal4_prepare_bind_validate",
+      "PASS": true
+    },
+    {
+      "case": "unknown_auto_select",
+      "PASS": true,
+      "rejected_reason": "closed parameterized ROOT request differs"
+    },
+    {
+      "case": "saved_bool_bytes",
+      "PASS": true,
+      "rejected_reason": "actual immutable saved size differs"
+    },
+    {
+      "case": "wrong_bound_SHA",
+      "PASS": true,
+      "rejected_reason": "immutable SHA differs: C:\\workspace\\ck3_lyd_runtime_20261004\\r10-fifth-proposal-bound-verifier-20261005-001\\INDEX.json"
+    },
+    {
+      "case": "stale_current_first_query",
+      "PASS": true,
+      "rejected_reason": "actual later current predates opened save"
+    },
+    {
+      "case": "wrong_current_frame",
+      "PASS": true,
+      "rejected_reason": "actual query exact public/native frame differs"
+    },
+    {
+      "case": "wrong_prior_packet",
+      "PASS": true,
+      "rejected_reason": "actual packet/native sidecar path differs"
+    },
+    {
+      "case": "wrong_prior_first_query",
+      "PASS": true,
+      "rejected_reason": "first actual query differs from current claim"
+    },
+    {
+      "case": "reuse_request_as_next_intent",
+      "PASS": true,
+      "rejected_reason": "next independent intent reuses prior request/intent"
+    },
+    {
+      "case": "live_runtime_write_target",
+      "PASS": true,
+      "rejected_reason": "helper cannot write within live runtime"
+    },
+    {
+      "case": "missing_finish_current",
+      "PASS": true,
+      "rejected_reason": "actual later release current/frame missing"
+    },
+    {
+      "case": "prepare_bind_actual_offline_file_assembly",
+      "PASS": true,
+      "result": {
+        "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\offline-bind-assembly",
+        "index": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\offline-bind-assembly\\INDEX.json",
+          "sha256": "b144caf598f2f31c7f765470179819c8e59b67915d097a936ec780d2b777580a"
+        },
+        "runtime_executed": false
+      }
+    },
+    {
+      "case": "finish_emit_actual_offline_file_assembly",
+      "PASS": true,
+      "result": {
+        "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\offline-finish-assembly",
+        "index": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\offline-finish-assembly\\INDEX.json",
+          "sha256": "6284c1877162c451e76bff5a98769fc5f170c1b5d3eaa6049e0258d3b911e292"
+        },
+        "runtime_executed": false
+      }
+    },
+    {
+      "case": "actual_emission_and_observation_fields_match_manual_fifth",
+      "PASS": true
+    }
+  ],
+  "binder_emitter_release_MCP_calls": 0
+}

@@ -1,0 +1,306 @@
+{
+  "schema": "lyd.external.push.source.binding.v1",
+  "CI_target": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "mappings": [
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/01-command.json",
+      "destination": "root-push-source-001/01-command.json",
+      "bytes": 171,
+      "sha256": "aa8a26d6bc07fd580878e96d829970fec9a7d50d40320054bff67e52c7eb38b7"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/01-result.json",
+      "destination": "root-push-source-001/01-result.json",
+      "bytes": 190,
+      "sha256": "3e6d1c4e9af2328e916a1390ef2831ef5c0eda835cdc93d390f6355700c8c2e7"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/01-stderr.bin",
+      "destination": "root-push-source-001/01-stderr.bin",
+      "bytes": 142,
+      "sha256": "5538895466fc1668aa1796468b0a128106b42252b3756d0df1957ecd706c84f4"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/01-stdout.bin",
+      "destination": "root-push-source-001/01-stdout.bin",
+      "bytes": 1865,
+      "sha256": "eda692ad854ec568fc096866d048822b75aec153fe9ddbd55f2b7f868bdc3e97"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/02-command.json",
+      "destination": "root-push-source-001/02-command.json",
+      "bytes": 199,
+      "sha256": "f3e81b92d3932bd3ba761b4fb4c7e7acbcd035850ffef78e2987148ab3b67358"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/02-result.json",
+      "destination": "root-push-source-001/02-result.json",
+      "bytes": 218,
+      "sha256": "d0518942158c80c8b8c2e0c9a25f60ffc798b6900263cb0f37818f205d77a5d7"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/02-stderr.bin",
+      "destination": "root-push-source-001/02-stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/02-stdout.bin",
+      "destination": "root-push-source-001/02-stdout.bin",
+      "bytes": 556,
+      "sha256": "d209998e66e02a50f4f538ce6b7415000282a65cc753cdb0690634a0b6e6eb9e"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/03-command.json",
+      "destination": "root-push-source-001/03-command.json",
+      "bytes": 167,
+      "sha256": "e24336e48c0b150ddb1207c591931caccb2c054ab373bc650b861230dff5b2a4"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/03-result.json",
+      "destination": "root-push-source-001/03-result.json",
+      "bytes": 186,
+      "sha256": "f0aaf0b84027a89442895d8033e45fd6dce4450f8070f089ee6116bde597f506"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/03-stderr.bin",
+      "destination": "root-push-source-001/03-stderr.bin",
+      "bytes": 142,
+      "sha256": "5538895466fc1668aa1796468b0a128106b42252b3756d0df1957ecd706c84f4"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/03-stdout.bin",
+      "destination": "root-push-source-001/03-stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/04-command.json",
+      "destination": "root-push-source-001/04-command.json",
+      "bytes": 167,
+      "sha256": "22b5f48753a9e05c1d3b29485e2b37cda531f59bd0f412c98129cf4aaf0eb00f"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/04-result.json",
+      "destination": "root-push-source-001/04-result.json",
+      "bytes": 186,
+      "sha256": "e8895806d499f44e064dca103220f349b60b6a2b81c4901cf1450956baafd865"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/04-stderr.bin",
+      "destination": "root-push-source-001/04-stderr.bin",
+      "bytes": 110,
+      "sha256": "81a17e90b15d3aabc3f753a91d8b152fcda8e227c0df04e522d1d85ce64e1652"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/04-stdout.bin",
+      "destination": "root-push-source-001/04-stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/05-command.json",
+      "destination": "root-push-source-001/05-command.json",
+      "bytes": 2878,
+      "sha256": "0dfd6578c6245ce5b53f2415aae30b3324811c112e53913e352a8afa12fa2186"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/05-result.json",
+      "destination": "root-push-source-001/05-result.json",
+      "bytes": 2897,
+      "sha256": "f37e86866c2c942ac42d2d64dbc6fe77cddde86fdf3145ad6b9675d573886861"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/05-stderr.bin",
+      "destination": "root-push-source-001/05-stderr.bin",
+      "bytes": 142,
+      "sha256": "5538895466fc1668aa1796468b0a128106b42252b3756d0df1957ecd706c84f4"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/05-stdout.bin",
+      "destination": "root-push-source-001/05-stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/06-command.json",
+      "destination": "root-push-source-001/06-command.json",
+      "bytes": 184,
+      "sha256": "b3844c815fe54b5cc2db3473d70d3d2e9f7785848652aed1fc2f7c9f85a46b2d"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/06-result.json",
+      "destination": "root-push-source-001/06-result.json",
+      "bytes": 203,
+      "sha256": "a41a6d5465e4d34e6db68ef89bacdd0b48db2ce31020fbe6b17f3451a990a90d"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/06-stderr.bin",
+      "destination": "root-push-source-001/06-stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/06-stdout.bin",
+      "destination": "root-push-source-001/06-stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/07-command.json",
+      "destination": "root-push-source-001/07-command.json",
+      "bytes": 266,
+      "sha256": "8df99dce4a4c7deab725e78bc9bad7c334507a1870b804d9114988ad0868c1bb"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/07-result.json",
+      "destination": "root-push-source-001/07-result.json",
+      "bytes": 285,
+      "sha256": "9dcc68dce4337e64f91eabb153fb384dffa9619e0f7df59b50e7f13b48a66fd2"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/07-stderr.bin",
+      "destination": "root-push-source-001/07-stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/07-stdout.bin",
+      "destination": "root-push-source-001/07-stdout.bin",
+      "bytes": 861,
+      "sha256": "c53ea920d6171c5afe66e7e0747d3fa5872081664dcb8b0ad86ad94fb3696ebe"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/08-command.json",
+      "destination": "root-push-source-001/08-command.json",
+      "bytes": 175,
+      "sha256": "65f3d20fa80fbfb2bb837a22c4441400438bcdc5e2c7a838d154e12b31d0cb1c"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/08-result.json",
+      "destination": "root-push-source-001/08-result.json",
+      "bytes": 194,
+      "sha256": "122f7809b667b23eedbcc3d9162453c80af5d0cb5abd1b371ee108d0723c6fc5"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/08-stderr.bin",
+      "destination": "root-push-source-001/08-stderr.bin",
+      "bytes": 67,
+      "sha256": "7f77bec6cde10cdd3426e23629b4032015fea2af464aab888f14b34b91fd33ad"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/08-stdout.bin",
+      "destination": "root-push-source-001/08-stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/09-command.json",
+      "destination": "root-push-source-001/09-command.json",
+      "bytes": 169,
+      "sha256": "51dda14585c9423c753e47eb762dfc783091093d54e751340857f2eae80fa088"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/09-result.json",
+      "destination": "root-push-source-001/09-result.json",
+      "bytes": 188,
+      "sha256": "a8df7a6e12bd27958fa104365dd76396583d26d3d52a2e146d51358798c18936"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/09-stderr.bin",
+      "destination": "root-push-source-001/09-stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/09-stdout.bin",
+      "destination": "root-push-source-001/09-stdout.bin",
+      "bytes": 41,
+      "sha256": "34bf9c0e7aeefbcc800f46d3cf4d13afeba9581f94daffc8c780d2a09e68db4c"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/10-command.json",
+      "destination": "root-push-source-001/10-command.json",
+      "bytes": 173,
+      "sha256": "48f1d7a6b2486cc6998290d2134979470b871678a0867c736baa79d4647c431e"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/10-result.json",
+      "destination": "root-push-source-001/10-result.json",
+      "bytes": 192,
+      "sha256": "e8b693cec3d2e7d1104b43771e5e7ba3b148e84443c141a91f8098bf35c323aa"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/10-stderr.bin",
+      "destination": "root-push-source-001/10-stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/10-stdout.bin",
+      "destination": "root-push-source-001/10-stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/11-command.json",
+      "destination": "root-push-source-001/11-command.json",
+      "bytes": 181,
+      "sha256": "d859695f8f314e7de2b102c7bae01486487dd8b0fc5947912290bd077e8ba440"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/11-result.json",
+      "destination": "root-push-source-001/11-result.json",
+      "bytes": 200,
+      "sha256": "71c2db3ef0e6802c584afa15880c2870bcdcb1be50c4a17b7f22010d2f33c97a"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/11-stderr.bin",
+      "destination": "root-push-source-001/11-stderr.bin",
+      "bytes": 251,
+      "sha256": "52321403f146a9aba1b6cc9470e3ba0732657b30bb924f8bc58449c4f987c76e"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/11-stdout.bin",
+      "destination": "root-push-source-001/11-stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/12-command.json",
+      "destination": "root-push-source-001/12-command.json",
+      "bytes": 197,
+      "sha256": "12ac457714cd0f32db15bcc4e5aeca3a07cd6743af038fb1fe30f48bde612b30"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/12-result.json",
+      "destination": "root-push-source-001/12-result.json",
+      "bytes": 216,
+      "sha256": "a015c32623abc7e770df757bebcfe8e233860e00b4c598b8a4f3a41709d6d66d"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/12-stderr.bin",
+      "destination": "root-push-source-001/12-stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/12-stdout.bin",
+      "destination": "root-push-source-001/12-stdout.bin",
+      "bytes": 59,
+      "sha256": "a42d75c9218556e579fef6765b18edf695167f5c99345e5a3bc8007619f2ee76"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/commit-message.txt",
+      "destination": "root-push-source-001/commit-message.txt",
+      "bytes": 365,
+      "sha256": "23ed0b01b9ea4f25170eb975c3d9d948fc603041d03f07af454b904b8f0ea3e9"
+    },
+    {
+      "source": "C:/workspace/ck3_lyd_runtime_20261004/root-c3-commit-push-20261005-001/RESULT.json",
+      "destination": "root-push-source-001/RESULT.json",
+      "bytes": 293,
+      "sha256": "4bf5399bb9a78a942fc70f6e55efd8e728e9da6fa250990029965063f32505d6"
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "schema": "lyd.r10.actual-process-creation-filetime.v1",
+  "recorded_at_utc": "2026-10-05T11:51:35.474927+00:00",
+  "status": "ACTUAL_GET_PROCESS_TIMES_READ",
+  "pid": 13436,
+  "process_create_time": 1791196395.7422996,
+  "creation_filetime_100ns": 134356699957422997,
+  "access": 4096,
+  "handle_closed": true,
+  "source": {
+    "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_process_observer_v1.py",
+    "sha256": "ed6e041ed0555807cd7956cb73c0d978a5b39945a9b69beb6a9724796bd8dd70"
+  },
+  "actual_apis": [
+    "OpenProcess",
+    "GetProcessId",
+    "GetProcessTimes",
+    "CloseHandle"
+  ],
+  "uses_gameplay_api": false,
+  "uses_ocr": false,
+  "uses_desktop_input": false,
+  "normal_exit_original_handle_retained": false
+}

@@ -1,0 +1,81 @@
+{
+  "schema": "lyd.r10.fixture-source-rebind.v1",
+  "status": "ACTUAL_SOURCE_FIXTURES_METADATA_BOUND_NATIVE_PENDING",
+  "source": {
+    "head": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+    "tree": "2b3ae04e724482d8bee753433e98c4e9f8da6896",
+    "product_tree": "b1ec3878f2508504a42eed13f8c141a330b1e9de",
+    "native_tree": "789eab5ae1c3015fe210de508fdd730a13bbb8db",
+    "inventory": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-root-head-export-20261005-001/MOD-SOURCE-INVENTORY.json",
+      "bytes": 28251,
+      "sha256": "be549f1c663d37bb1794c4b9906e52ad127f665dd766833c75d769671358878d"
+    }
+  },
+  "production": {
+    "staging": "C:/workspace/ck3_lyd_runtime_20261004/r10-root-head-export-20261005-001/production/mod_li_yu_dao",
+    "manifest": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-head-export-20261005-001\\production\\mod_li_yu_dao.manifest.json",
+      "bytes": 12940,
+      "sha256": "8fff14a823c50d2461660676ec3238439027d1a46af5281e5db95af7c9bd945c"
+    },
+    "archive": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-head-export-20261005-001\\production\\mod_li_yu_dao.zip",
+      "bytes": 124781,
+      "sha256": "50a346a86172b7f4773da627b705b04478ce6554a116dda4226aa3c0f1d8a3eb"
+    }
+  },
+  "metadata21": {
+    "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+    "tool_count": 21,
+    "receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-static-sdk-metadata-20261005-001\\ACTUAL-profile-all-tools.json",
+      "bytes": 20312,
+      "sha256": "1ab8945cf322da4800edd7c5baa4a50a7e8972d6d6c7c93cd6b7e4d64649f098"
+    }
+  },
+  "actual_export_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-head-export-20261005-001\\REPORT.json",
+    "bytes": 16836,
+    "sha256": "f2b0f6d91a565648ecdb0be8c3aec1d88b67c468bc8a5623aba347f58ee7b0e4"
+  },
+  "prior_r9_request": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-root-fixture-cold-request-20261005-001\\REQUEST.actual.json",
+    "bytes": 19902,
+    "sha256": "decc863c5a8c094857f13cc01962989742ed0648436d3a06c567c1b49bfc5fe6"
+  },
+  "new_fixture_package_index": {
+    "root": "C:/workspace/ck3_lyd_runtime_20261004/r10-fixture-source-rebind-20261005-001/fixtures-package",
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-fixture-source-rebind-20261005-001/fixtures-package/INDEX.json",
+    "bytes": 12203,
+    "sha256": "49f20cf0bd63149641104f6da01696cbf069f2aaa8ae8927659dd2291e262093"
+  },
+  "MOUNT": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-fixture-source-rebind-20261005-001/fixtures-package/MOUNT-MANIFEST.json",
+    "bytes": 12283,
+    "sha256": "141ceca8872046ef7f0118d3c25a721851de3191744cdf0435c0bfe27d8c3037"
+  },
+  "static_context": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-fixture-source-rebind-20261005-001/fixtures-package/STATIC-CONTEXT.json",
+    "bytes": 41055,
+    "sha256": "1337a556d89eb0b5070f22c0a7ec0400c573d83e8fc72615751c562a835730fb"
+  },
+  "static_fact_count": 53,
+  "fixture_counts": {
+    "entry": 7,
+    "observer": 8,
+    "i4_single_event": 31,
+    "charter": 6
+  },
+  "request": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-fixture-source-rebind-20261005-001/REQUEST.partial.json",
+    "bytes": 20547,
+    "sha256": "ce18e27c24feecac409c27043fd98723089caee2094cf45a7b7326489f044343"
+  },
+  "native_build": null,
+  "010_created": false,
+  "save_copied": false,
+  "Git_invoked": false,
+  "game_calls": 0,
+  "business_acceptance": "NOT_RUN"
+}

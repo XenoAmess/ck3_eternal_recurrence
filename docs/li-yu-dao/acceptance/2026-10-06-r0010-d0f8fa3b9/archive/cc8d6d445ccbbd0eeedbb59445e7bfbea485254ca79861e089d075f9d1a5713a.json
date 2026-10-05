@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 147,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0148-sixth-cancel-ack-query.request.json",
+  "request_sha256": "0487086f350ba1a2807dc7cf1c2a70d7f7fb6d06c4706fc974594a7f2375f21f",
+  "started_at_utc": "2026-10-05T16:23:35.025746+00:00",
+  "request_id": "r10-0148-sixth-cancel-ack-query",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0147-r10-0148-sixth-cancel-ack-query.sdk-result.json",
+  "sdk_result_sha256": "750c399c25872ac0b724aedd7c7b5bdca21baa41be3d6d8ffc232b89ee928c26",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\native-evidence\\53bd96329c5541f7a403c5cecf61d8ba\\0146-event-query.json",
+      "copy": "0147-r10-0148-sixth-cancel-ack-query.native-01.json",
+      "sha256": "116511b0855e9f310f7f5c485e4581f50d020ceac29e71d258bac30b3af9c362"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T16:23:36.824377+00:00"
+}

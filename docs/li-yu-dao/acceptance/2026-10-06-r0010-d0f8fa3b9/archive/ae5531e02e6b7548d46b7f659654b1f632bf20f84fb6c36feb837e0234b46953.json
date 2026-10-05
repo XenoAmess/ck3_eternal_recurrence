@@ -1,0 +1,10 @@
+{
+  "status": "AUTHOR_SEAL_ASSERTION_FAILED",
+  "scope": "Packaging-only author assertion expected22 request fields; actual unchanged closed schema has21.",
+  "exception": "AssertionError: assert len(baseline)==22",
+  "helper_source_changed": false,
+  "directed_tests_status": "PASS28",
+  "index_created": false,
+  "binder_emitter_registry_release_MCP_game_calls": 0,
+  "correction": "Compare exact before/after fieldsets and actual21 count. Preserve this author failure."
+}

@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 19,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-queue-002\\r10-0019-player-consent-query.request.json",
+  "request_sha256": "2a884f3b338c86cdd8a99bcbf4b2d7e226f42cbfeae40aa0c9b0b2db5cc4b11b",
+  "started_at_utc": "2026-10-05T11:29:56.554904+00:00"
+}

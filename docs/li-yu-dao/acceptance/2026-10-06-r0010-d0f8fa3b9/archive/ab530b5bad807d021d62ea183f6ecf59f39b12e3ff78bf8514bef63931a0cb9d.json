@@ -1,0 +1,32 @@
+{
+  "schema": "lyd.first-join.verifier-bind-request.v3",
+  "source_revision": "d0f8fa3b9d444828759443aa018bfd7ad31b398d",
+  "production_manifest": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r10-root-head-export-20261005-001/production/mod_li_yu_dao.manifest.json",
+    "sha256": "8fff14a823c50d2461660676ec3238439027d1a46af5281e5db95af7c9bd945c"
+  },
+  "production_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-root-head-export-20261005-001\\production\\mod_li_yu_dao",
+  "native_profile": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/native-profile-with-exit-inventory.json",
+    "sha256": "2f7140598909b5f34484ab74941ead7e26c32ad416aca0ebfcabc71b93573db6"
+  },
+  "fresh_query_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0109-r10-0110-fifth-fresh-query.sdk-result.json",
+    "sha256": "929e9d361ac0c3903fb1822248cf50b5d1a3a13d80d3c901310bc6422e29e62d"
+  },
+  "fresh_query_frame_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-010\\mcp-client-evidence-002\\0107-r10-0108-fourth-post-cancel-save.sdk-result.json",
+    "sha256": "851f1482849edb75975127112c748ec191d9275dcf0982ac4a76b73b40a1eab7"
+  },
+  "ordinary_contract": {
+    "path": "C:\\lr10s1\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\ordinary_interaction_contract.py",
+    "sha256": "e0a96aa39626df166270d3d5467a8e4d57cec77d7577cebcced03983feba5fa3"
+  },
+  "source_pin_record": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r10-source007-qualified-inputs-20261005-001\\ROOT-SOURCE-PIN-RECORD.actual.json",
+    "bytes": 3229,
+    "sha256": "8784d98ecba357db56811fb2d3c850bc505aae81b076d0cf598cccf0294a770b"
+  },
+  "consumption_mode": "PROPOSAL_OPENED",
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r10-proposal-input-assembler-20261005-002\\offline-never-created-bound"
+}
