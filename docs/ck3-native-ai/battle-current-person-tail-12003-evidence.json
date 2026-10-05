@@ -1,0 +1,43 @@
+{
+  "schema": "g2-person-tail-source-initial/v1",
+  "utc": "2026-10-05T15:23:02.983011+00:00",
+  "recorded_exact_version": "1.20.0.3",
+  "steam_build": "25652598",
+  "recorded_exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "cached_sources": [
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-native-input-primitive-v79/context-source/region-0291C0D0.asm",
+      "bytes": 34826,
+      "sha256": "ce5e41d2eee099443b82fac8d7822f7f09b0a13a3ff6c5de38fa762028a7be76"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-future-context-branch-v82/source-lane/region-028C2E10.asm",
+      "bytes": 2321,
+      "sha256": "91357f336552e616800a60899df5bc418f8ad048af4300f4f627f9ba407887da"
+    }
+  ],
+  "source_tree": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-tail/SOURCE-TREE-INITIAL.md",
+    "bytes": 6834,
+    "sha256": "cf1b840f6115c50090ebce73ff72fe5f79a6c958f761f262a9b1ff2c9e90acf3"
+  },
+  "query_plan": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-tail/QUERY-PLAN-INITIAL.json",
+    "bytes": 2623,
+    "sha256": "d9a0d936d32d97e2b03999d5f4fcab68c819582a33b9c54c312f941089ae07d6"
+  },
+  "rip_operands": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-tail/CALLER-RIP-OPERANDS.json",
+    "bytes": 4243,
+    "sha256": "bc244619c0504313f39635e5fd3b461b5d44e343b8a7943ae52846566e97542f"
+  },
+  "new_exe_io_bytes": 0,
+  "later_independent_source_lanes": [
+    "tail-prefix-helper-source",
+    "tail-middle-helper-source"
+  ],
+  "game_sdk_pipe_ui_steam_runtime_activity": 0,
+  "whole_exe_scan_or_hash": false,
+  "implementation_started": false,
+  "readiness": "source-closed two independent sparse tail families; other tail dependencies explicit research"
+}
