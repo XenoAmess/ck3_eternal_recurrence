@@ -250,3 +250,26 @@ consumer inputs. Receipt: `focused-maa-arithmetic-once/RESULT.json`. No earlier
 case, native compilation or game operation was repeated. This bounded arithmetic
 is static-ready; complete MAA source construction and first-contact readiness
 remain partial, with the dashed actual dependencies continuing next.
+
+## Ordinary source observer qualification, Oct6
+
+Root source `3fb869c751d9050caffa790716a332ca71238c1a` passed the central
+native build in 8.016 seconds, then the three new targets passed their first
+CTest 3/3 in 0.39 seconds. Only the seven newly emitted ordinary wires were
+consumed through Root's production strict normalizer, all five exact source
+getters plus max0, and the practical final-cache input. Qualification is GREEN
+7/7 at Oct6 01:17 Shanghai, preserving direct/nested/fallback identity,
+unavailable context/base, actual empty zero and independent target readiness.
+`SERIALIZER-PROJECTION.json` and the generated literal serializer source are
+build metadata and were excluded. Receipt:
+`ordinary-maa-stat-inputs/NEW-ORDINARY-WIRE-CONSUMER-OCT6.json` binds all seven
+wire hashes and the actual production consumer file hashes.
+
+The first consumer attempt incorrectly supplied request Province index2 to
+the normalizer instead of the actual serialized target ProvinceID; it stopped
+on the first direct wire. This harness RED is retained in
+`NEW-ORDINARY-CONSUMER-ATTEMPT-01-RED.json`. Root authorized the necessary
+correction. The direct wire was read twice across those attempts, the other
+six once; no earlier passed case or wire was repeated and no native rebuild
+was needed. This is synthetic production path qualification and static-ready
+ordinary observation/calculation, with no live or complete Entry credit.
