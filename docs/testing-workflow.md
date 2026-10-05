@@ -3003,3 +3003,10 @@ flowchart LR
 当前readiness分开记录：existing typed-error输出为production-live primitive；生产缓存复现为offline fixture-live；campaign修复为strict-build GREEN/static-ready，R36部署后的fresh plan真实恢复尚待。R35 sourceg67最近normal SAVEh7873、Root stop21223 exit0及新env前缀feaaa只是Root提供的交接事实，不能替代新plan验证。未新增SDK/正常日/原叶复读/shared/Git/schema/WAL/gate。
 
 证据：实际错误 `.../army-supply-attrition/r34-plan-turn-typed-error-ingress/r35-actual-failed-plan01/ROOT-ACTUAL-DELIVERY.json`，SHA-256 `0d396ce5d46174fb91db9a316a573843a833f1ed28d6369ad02f6004e3e6493a`；修复候选同目录下 `campaign-completion-candidate/ROOT-DELIVERY.json`，SHA-256 `de8e7950e8d7634986e0054983613ef0f4f147251094da2b92959a24833bcec2`；唯一新复现 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/r35-actual-failed-plan01/case-parent-r35/link-corrected-once/ROOT-DELIVERY.json`，SHA-256 `f11fd70884baa4f37b4fd2c56f707e2ddb1bfde5cbce5bcbd5a6c1cb8531bf73`。
+
+
+## 2026-10-05 新 native fixture 的 MSVC 编码实证
+
+纯离线 `/WX` 构建新增 loss-writer fixture 时，UTF-8 无 BOM 注释在本机 CP936 下触发 C4819/C2220；添加 UTF-8 BOM 后，narrow diagnostic 中的 Unicode minus 又触发 C4566/C2220。最小修复是 fixture 使用 UTF-8 BOM、该 narrow diagnostic 使用 ASCII minus，第三 attempt GREEN。生产 reader/公式未改，未调整 compiler flags 或系统编码。三个原始日志保留在 `Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/native-loss-0{1,2,3}.log`；这是该新增 fixture 的具体构建故障，不据此重复扫描或改写旧文件。
+
+CTest 的 target 名可能不同于 `add_test(NAME ...)`。本次 supply 名误含 `_test` 时组合过滤器仍因 writer 匹配而返回 GREEN，但仅执行1/1；实际日志确认遗漏后，只补跑正确 `xar_ck3_12003_supply_loss_eligibility` 一次。报告以实际执行名和数量为准，不将整体 exit0 当作每个传入名字都已执行。

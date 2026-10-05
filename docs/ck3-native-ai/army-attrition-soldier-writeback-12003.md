@@ -348,3 +348,38 @@ flowchart TD
 一个focused Python新case在`-B -O`下GREEN；初次缺src import path为harness RED并保留。新增native focused target`xar_ck3_12003_loss_writer_inputs_test`待Root集中编译/执行，本owner没有构建。native实现/当前MCP新增字段仍属候选，真实paused读回待后续用户许可；Python同输入projection为static-ready。真实post-supply/post-preferred阶段DATA仍缺，整月链的applied_loss_ready继续false，没有新增游戏/SDK/UI/Steam/live信用。
 
 外置交付：`Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/loss-writer-inputs/ROOT-DELIVERY.json`，包括源树、read/test receipt、commit和日/周字段。canonical/report/Git发布由Root整合。
+
+
+### 2026-10-05 第二轮后台：供给资格与 DATA writer 的同输入 consumer 整合
+
+依赖已提交的逐 ArRg `2A956D0` 资格与 `2634880`/associated DATA writer 观察，本包只修改既有 `army_loss_allocation_projection.py` 与一份新 integration test；没有修改 native 字段/fixture、构建 native、运行既有 C/D tests 或触碰 CK3/pipe/进程/Steam/窗口/运行现场。
+
+`loss_allocation_requests_v1` 中新增 `same_input_conditional_chunk_writeback_v1`：明确 `projection_kind=conditional_initial_preferred_chunk_writeback`，phase、status、`same_input_chunk_writeback_ready`、ordered per-request projection、missing inputs 与 `actual_loss=false / actual_post_stage_current=null`。它复用来源已闭合的 `project_observed_writer_chunk_changes`，显示**条件性的** physical chunk/current 变化和实际观察的 writer-skip 分支，不把派生结果写回 original observation。
+
+只允许两个拥有当前 DATA 的 initial pass：正 supply budget 的 `supply_preferred`；supply budget0 时的 `siege_raid_preferred`。它们的 q=0 选中行、native writer skip 和 associated setter 结果均可独立报告。residual、正供给后的 siege/raid preferred 不使用早期 DATA；同输入派生结果也不作为实际 post-stage current，完整月度 `applied_loss_ready=false` 与 `applied_soldier_loss=null` 原样保留。初始 conditional projection 可 ready，同时完整 request sequence 因 post-supply/residual 缺口仍 partial；这两层不能混写为实际减员能力。
+
+```mermaid
+flowchart TD
+  A[current normalized strengths + observed writer admission + associated DATA] --> B{readonly supply budget positive}
+  B -->|yes| S[initial supply preferred writer requests]
+  B -->|no| W[initial siege/raid preferred writer requests]
+  S --> C[same-input conditional associated chunk projection]
+  W --> C
+  C --> R[conditional readiness / physical chunk changes / actual false]
+  P[post-preferred residual and post-supply later stage] -. requires actual own-stage input .-> U[not replayed from initial DATA]
+```
+
+一份必要的新 integration case GREEN（1 invocation）：真实生产 `GameplayBridgeService.query_army_strengths` 通过纯内存 subclass 消费同时含 C/D native schema 的 rows；覆盖正 supply initial preferred、supply0 initial siege preferred、native writer skip、stored request order、nonzero residual 的拒绝跨阶段复用，以及 conditional ready/全链 actual unready 的独立字段。没有 native endpoint。已有独立 C/D focused tests 未重跑；`git diff --check` GREEN。命令/输出/receipt、commit 与报告字段保存在 `Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/supply-eligibility/conditional-integration/`。
+
+consumer 整合为 **static-ready Python same-input conditional replay**；native provider 编译/fixture 由 Root 的独占后台构建另记，真实 paused/live 仍未验收。下一具体 gap 为 native raised refresh 与真实后续 allocation-stage current，不能将 physical chunk sum 或本帧预算当作真实军团后态/最终整月减员。`open_kaishek` not-applicable（native integer/associated chunk replay，无受支持的 Paradox language runtime 子集），新增游戏日、SDK、真实游戏/窗口/Steam/pipe/现场操作均0。
+
+
+### Root C/D 离线验收
+
+实际收口时间：2026-10-05T21:00:25+08:00。C/D 新增生产 reader 与完整 bridge 在 v73 capability flags 下完成纯离线 MSVC /WX 构建；没有 runtime prepare/stage/deploy。原生 source 为 `9b270104`，`native-loss-03.json` 记录增量构建 GREEN（5.65 秒），不是 clean/full build 时长。两个新增 native fixture 各实际执行一次 GREEN：`xar_ck3_12003_loss_writer_inputs`（0.13 秒）与 `xar_ck3_12003_supply_loss_eligibility`（0.10 秒）。首份 CTest 命令把 supply target 名误当 test 名，实际仅运行 writer 1/1；随后仅补跑遗漏的 supply test 1/1，没有重跑 writer。两实际日志分别为 `native-loss-ctest-01.log`、`native-supply-ctest-01.log`。
+
+保留两个真实 build RED：`native-loss-01` 的新 fixture UTF-8 在 CP936 下产生 C4819→C2220；`native-loss-02` 的 narrow diagnostic Unicode minus 产生 C4566→C2220。Root 只补 fixture UTF-8 BOM、将该诊断改为 ASCII minus（`61cbc345`、`9b270104`），没有改 production 运算、放宽 /WX 或更改系统编码；第三 attempt GREEN。原始失败日志和回执不覆盖。
+
+依赖整合源 `352ebd69` → Root `f0c4aa69`，一次新增生产 service 的 C+D 内存 integration case GREEN（1.69 秒进程）。现有 loss request 已返回 `same_input_conditional_chunk_writeback_v1`，只回放当前 initial supply preferred，或 supply budget=0 的 initial siege/raid preferred；residual 与 post-supply 后段不借用旧 DATA。条件 physical chunk 结果与真正 post-stage/current/整月扣兵分列，`actual_loss=false`、`actual_post_stage_current=null`、原 `applied_loss_ready=false` 保持。专题及 Mermaid 已同步，不增加完整月度/live 信用。
+
+证据根：`Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/`，C/D source 与 conditional-integration ROOT-DELIVERY 各自保留。Readiness 为 static-ready（生产路径 fake-memory fixture 与同输入条件运算），非新 paused/live。新 CK3 启动、连接、SDK/真实 pipe、窗口/Steam、profile/save/cache/runtime 操作与游戏日均0；历史5035天不变。人物后缀、actual knight context、holy-order 查询及后续 scratch 仍在推进，不能据此声称后台工作耗尽。
