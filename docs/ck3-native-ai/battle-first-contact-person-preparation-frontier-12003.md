@@ -655,3 +655,111 @@ flowchart TD
 Both later helpers have independently valuable direct current source observations and source-closed conditional selection. They do not consume2BFAC30 or require earlier absent1C8 recipient reconstruction. Existing .2 religion-conversion package proves2BFAC30 call placement but delegates to the native complete evaluator rather than publishes its current contribution collection. Its readonly current source reconstruction therefore remains a separate exact .3 leaf; no new reads were spent on it here.
 
 New EXE I/O is2064B =1920 code +144 narrow.pdata, total lane5173B. One274B4212800 body was redundantly captured after a parallel cached-path search found the old body; this extra is counted and preserved, with no wrong RVA/game action. Future captures follow cached-search results before code read. Other cached caller/A11F60/28C2E10/3F90910 source reused. No unwinds, external initializer leaves, whole-file scan/hash, compilation, old tests, runtime or game actions.
+
+
+## Explicit person preparation stage baseline source closure
+
+Adoption time: 2026-10-05T22:18:13+08:00. Source ledger, Mermaid and PLAN.json were sealed before the bounded assembler implementation. The existing completed-empty-reset interface remains; the explicit retained-baseline connection is being implemented and has no new validation claim yet.
+
+The useful interface is a **logical post-reset context explicitly labeled
+`post_291C010_pre_prefix`**, followed by the existing provider prefix and then
+the actual291D1D0 requests. It does not identify an old snapshot as that stage.
+Frozen EXE SHA256:94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6.
+
+```mermaid
+flowchart TD
+  E[291C0D0 incoming model; owner already model8] --> R[291C0F7 calls291C010]
+  R --> W{DWORD model1C !=0}
+  W -->|yes including signed negative| Z[Clear model1C /84 /EC]
+  W -->|zero| K[Preserve independent aggregate counts and arrays]
+  Z --> C[2922950 model248 owned pointer cleanup]
+  K --> C
+  C -. actual nonnull children unread .-> U[9F24F0 and allocator virtual10 physical lifecycle]
+  C --> A[Allocator cursors reset; model2F4 pending byte0]
+  A --> S[Explicit logical postreset baseline model10]
+  S --> B[291C119 provider1530 block40 at Q100000]
+  B --> M[291C150 provider1A48 ordered common blocks40 at Q]
+  M --> T[291C1F0 actual selected18F8 or19A0 ordered blocks40 at Q]
+  T --> P[Exact pre291C204 context]
+  P --> D[291C204 calls291D1D0]
+  D --> G[Selected branch then positive group0..6 with weight count*Q]
+  G --> X[Exact bounded post291D1D0 context before291C209]
+  X -. additional contributions .-> L[preA1640 /A /D460 /B /DED0 /DCE0 /later suffix]
+  L -. complete changed context and first contact .-> F[Full Entry /forecast unknown]
+  G --> N{2438850 source key count0?}
+  N -->|yes| SK[No weighted row or aggregate fold]
+  N -->|nonzero complete arrays| ROW[Append source block and signed Q64 weight]
+  ROW --> V{Destination key count0?}
+  V -->|yes| CP[11E1180 key copy; B73F50 value copy]
+  CP --> Q{Weight Q100000?}
+  Q -->|yes| RET[23034A3 direct return; copied FFFF kept]
+  Q -->|no| SC[23033BC..34A3 scale every copied value with exact fixed multiply]
+  V -->|nonempty| MER[2303120 signed fixed term; skip FFFF; U16 lower_bound and zero insert then wrap64 add]
+```
+
+## Ordered source ledger
+
+| Stage | Exact source | Logical effect and required input |
+|---|---|---|
+| Incoming |291C0F0/F3|RCX model, owner QWORD[model+8]; current model identity alone gives no historical stage |
+| Reset |291C0F7→291C010|model+1C !=0 clears weighted count, key count model+84, value count model+EC; otherwise the independent aggregate counts and active arrays survive direct reset |
+| Owned cleanup |291C074→2922950|model+248 pointer array, allocator model+240; normal control zeros only owned count model+254 directly; nonnull cleanup/release children remain physical lifecycle unknown |
+| Reset return |291C0B7/C0C8|pending byte zero after allocator cursor reset; no context values copied or initialized here |
+| Baseline |before291C119|Explicit postreset logical weighted count0, aggregate paired arrays/count. Empty baseline is valid when explicitly supplied; weighted0 alone never implies empty aggregate |
+| Base prefix |291C119|provider+1530 block+40, weight100000; empty source skips |
+| Common prefix |291C150|provider+1A48, native 16B order; each first pointer block+40 at weight100000 |
+| Selected prefix |291C1F0|Actual observed selector18F8 or19A0, native 16B order at weight100000; provider second qword is not a weight |
+| Prebranch |291C204|Complete logical prefix result is the actual required input for291D1D0 |
+| Selected branch |291D238|Initial flag14 true uses actual selected index/providerFA8 block+40 at100000 |
+| Seven groups |291D407|Actual eligible record census; positive signed32 group count in0..6 source order supplies provider1000[group]+40 and signed64 count*100000 |
+| Stop |return to291C209|Remaining preparation contributes additional requests. This packet does not call it complete context or full Entry |
+
+291CF50 later swaps model owners, pending flags, context headers, allocator and
+owned containers. Therefore a present address, pending0 or zero rows cannot
+retroactively prove that present context was the historical baseline.
+
+## Minimal logical input and implementation plan
+
+Extend the existing materialized-prefix module with an explicit stage baseline
+and a bounded prefix→291D1D0 assembler. Keep the existing completed-empty-reset
+API. Reuse its source-defined copy/merge and the existing signed Q multiply;
+factor the fold rather than duplicate the numeric model.
+
+The explicit baseline carries a Character full ID, the exact stage label,
+logical context and caller provenance. After reset the weighted count is zero.
+The retained branch still requires its actual complete paired aggregate arrays;
+negative or mismatched counts remain partial. Source contributions retain native
+order, duplicates, signed zero/negative values and original property rows.
+
+An explicitly requested **modeled new reset** may project the source's direct
+count stores from supplied entering counts. Nonzero weighted count projects an
+empty logical count state; weighted zero preserves the supplied aggregate.
+This is a conditional new-stage numeric model, never proof that native cleanup
+ran or that a historical current-final snapshot was preprefix. Physical allocator
+state is not modeled. A caller can instead supply the explicit postcleanup
+logical context. No automatic adapter turns current-final into historical prior.
+
+Empty destination with nonunit weight is now source-closed at the necessary
+23033BC continuation: copied key/value order is retained, every copied value
+(including keyFFFF) is scaled by the already implemented signed fixed Q helper.
+Constants3037000499 and0x29F16B11C6D1E109, fast and decomposed paths, truncation,
+store order and normal exit match the existing arithmetic primitive. With
+weight100000 the source returns without scaling; nonempty merge still skipsFFFF
+after computing its term. First copy does not coalesce duplicate keys.
+
+Scope is logical numeric postimages after supplied normal source requests,
+without physical allocation readiness claims. The actual arrays determine the
+numeric result; storage capacity remains diagnostic. Other trait/provider
+changes, later helpers, full first-contact context, Entry/stat refresh and
+calendar/RNG remain separate inputs and unknown branches.
+
+## Read receipt
+
+Reuse v79 caller/reset/writer, v83 insertion, v85 copy/materializer, v86 cleanup
+and current state. New necessary scale reads total231codebytes (18B fragment plus
+213B bounded continuation). No new metadata was needed. A29B cleanup-entry read
+duplicated v86 before that cache was found; it is preserved as an avoidable
+attempt, not new research credit. Total fresh EXE I/O260B. Whole EXE scans/hashes,
+native builds, old tests, game/process/query/SDK/pipe/UI/Steam operations:zero.
+CLI `check --plan` failed before source capture due to a wrong argument; the
+correct positional plan check passed. This harness failure remains in receipt.
