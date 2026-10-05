@@ -1,0 +1,127 @@
+{
+  "schema": "g2-person-later-direct-source-evidence/v1",
+  "exact_version": "1.20.0.3",
+  "steam_build": "25652598",
+  "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "reused_frozen_exe_identity": true,
+  "whole_exe_scan_or_rehash": false,
+  "source_contract": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/SOURCE-CONTRACT.json",
+    "bytes": 3711,
+    "sha256": "721977d4e2f65e85bab508d898f844dd17c4019caed12f461e9b6f4dd52b63de"
+  },
+  "native_source_tree": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/CANONICAL-APPENDIX.md",
+    "bytes": 12579,
+    "sha256": "28f56da205df9ff8442cf70e52baeb911eeb085a696d8e9a71c09dddd07017cc"
+  },
+  "capture_receipts": [
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-028BD090-body/RECEIPT.json",
+      "bytes": 6572,
+      "sha256": "47d82c9a0a298fdb8398821f6ad85e660e3410d56541061f8f4079769129cdeb"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-028BD090-metadata/RECEIPT.json",
+      "bytes": 7418,
+      "sha256": "1d1a25332a202edac1b9cb643289cc8c7c1fae86687cf60139b2dfd22367b0f8"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-0291F0A0-body/RECEIPT.json",
+      "bytes": 6884,
+      "sha256": "2783e8ca58d1a728ee0789839cdc23ddb17dd645794d6109242a0146cec13b5e"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-0291F0A0-metadata/RECEIPT.json",
+      "bytes": 7386,
+      "sha256": "9a61465e0163f14d2c38f7671b7a8fd9b5f4982b894009983f039f630dcd3d13"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-02BABEC0-frameless-gap/RECEIPT.json",
+      "bytes": 1453,
+      "sha256": "7252fc5bedd190cf56c0ead1ade162f50eb209bdbec5f7e3107d94d9e3582b0d"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-02BABEC0-metadata/RECEIPT.json",
+      "bytes": 7582,
+      "sha256": "2cd153ae727e324291c25011504bcd5dfee4adac92118bbbd53bd087df6a309f"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-02BFB4C0-metadata/RECEIPT.json",
+      "bytes": 7462,
+      "sha256": "943fe89ec8d0cbf8e2d812740fa1abedd039c8572a22d28b81e2317f0fe6a24f"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181370-frameless-gap/RECEIPT.json",
+      "bytes": 1634,
+      "sha256": "7f67dbfa4c72b4cc2d8c591d930f1320fa1dd7995dc1cd591bf240058fa76e1e"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181370-metadata/RECEIPT.json",
+      "bytes": 6466,
+      "sha256": "468b3704a317e626a1d061cdfa9667beaf24d472661c1cb0b9b2383ab7764dc3"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181BF0-body/RECEIPT.json",
+      "bytes": 6473,
+      "sha256": "35973faa7425b6fa0365ee46e248a34e4ba9448f8ca6ab215314aaff09abfb95"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181BF0-metadata/RECEIPT.json",
+      "bytes": 10076,
+      "sha256": "9b0d6aa283b8cd92967d12bf2fffa13bb41c1bbb82aeedc8c762030c8b2d2b37"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181C17-body/RECEIPT.json",
+      "bytes": 6760,
+      "sha256": "263c7d894f3277f2821b316b6bc289612473e21cadfd19ef311e19fec83dc204"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181C17-metadata/RECEIPT.json",
+      "bytes": 6238,
+      "sha256": "15932ef66a989af6635fd44897c4da65cf89cdc21261ddf4a53850fcce278398"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181C1C-body/RECEIPT.json",
+      "bytes": 5894,
+      "sha256": "9e1760d9453342d04a4cfc2411cbef36f23335cbc7538621b0bba300a8f03ff8"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181C1C-metadata/RECEIPT.json",
+      "bytes": 5016,
+      "sha256": "5d3bdbe721dfa8e107bbf38e39852490664cb908c074a0699400111c9da2aa0e"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03182420-body/RECEIPT.json",
+      "bytes": 6186,
+      "sha256": "1e7fa33ffb7daec3920c02c41b4767a4102062afe52f7609c62e42be4e9a4a54"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03182420-metadata/RECEIPT.json",
+      "bytes": 6000,
+      "sha256": "f3fdeeaa577a2129894079fc1a21ff9ef718d5cb2a876a43d428fbdb963fba4d"
+    }
+  ],
+  "total_new_exe_bytes": 1855,
+  "implementation_scope": "caller291C3FB ordered80 and291C44C guardedAA0 current inputs only",
+  "helper_follow_on": "28BD090 Character1C8 inline88/header5D67E40 and2BABEC0 full-key exactAL source closure",
+  "native_build_and_fixture": "Root centralized pending",
+  "python_validation": {
+    "command": [
+      "C:\\Users\\xenoa\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "-B",
+      "-X",
+      "utf8",
+      "-m",
+      "pytest",
+      "-q",
+      "-p",
+      "no:cacheprovider",
+      "ck3_autonomous_player/tests/unit/test_battle_person_later_direct_12003.py"
+    ],
+    "exit_code": 0,
+    "log": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/python-tests.log",
+    "log_sha256": "2e0729e70012592e0e59b125b826da09c7d4c633a7ddb3e38c7d05bf233bddb5"
+  },
+  "game_sdk_pipe_ui_steam_profile_save_cache_runtime_activity": 0
+}

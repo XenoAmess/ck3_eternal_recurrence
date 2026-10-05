@@ -37,6 +37,11 @@ struct ContextSourceBindingsV1 {
   const void *army_internal_fallback_slot = nullptr;
   const void *pre_291e210_second_storage_slot = nullptr;
   const void *pre_291e210_second_fallback_slot = nullptr;
+  bool later_direct_enabled = false;
+  const void *later_ordered_fallback_header = nullptr;
+  const void *later_ordered_storage_slot = nullptr;
+  const void *later_ordered_fallback_slot = nullptr;
+  const void *later_guarded_fallback_slot = nullptr;
   void *(*provider)() = nullptr;
   bool post_291d7e0_sources_enabled = false;
   const void *post_ab_object_fallback_slot = nullptr;

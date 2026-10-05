@@ -1139,6 +1139,149 @@ game::ContextSource291d7e0V1 BranchB(const ContextSourceBindingsV1 &b,
   return out;
 }
 
+game::ContextSourceLaterDirectV1 LaterDirect(
+    const ContextSourceBindingsV1 &b, const void *character,
+    std::int32_t character_id) {
+  game::ContextSourceLaterDirectV1 out{};
+  out.character_id = character_id;
+  out.status = "partial";
+  bool ordered_ready = false;
+  const auto carrier = Read<const void *>(b, character, 0x1B0);
+  if (!carrier) {
+    Reason(out.reason, "later_ordered_character_carrier_unavailable");
+  } else {
+    out.ordered_header_selection = *carrier ? "character_1b0_inline_98"
+                                           : "inline_static_545a3e8";
+    const void *header = *carrier ? Offset(*carrier, 0x98)
+                                 : b.later_ordered_fallback_header;
+    // Native caller reads pointer0 and signed countC even for an empty list.
+    const auto data = Read<const void *>(b, header);
+    if (data) out.ordered_array_present = *data != nullptr;
+    out.ordered_count = Read<std::int32_t>(b, header, 0xC);
+    if (!data || !out.ordered_count) {
+      Reason(out.reason, "later_ordered_header_fields_unavailable");
+    } else if (*out.ordered_count < 0) {
+      Reason(out.reason, "later_ordered_negative_count_unrepresentable");
+    } else if (*out.ordered_count == 0) {
+      out.ordered_rows.emplace();
+      ordered_ready = true;
+    } else if (!*data) {
+      Reason(out.reason, "later_ordered_positive_count_null_array");
+    } else {
+      // Both slots are loaded before the first key, even if all keys resolve.
+      auto store = Read<const void *>(b, b.later_ordered_storage_slot);
+      auto fallback = Read<const void *>(b, b.later_ordered_fallback_slot);
+      std::vector<const void *> identities;
+      out.ordered_rows.emplace();
+      ordered_ready = true;
+      for (std::int32_t i = 0; i < *out.ordered_count; ++i) {
+        game::ContextSourceLaterOrderedRowV1 row{};
+        row.native_index = i;
+        row.requested_full_id_raw = Read<std::int32_t>(b, *data,
+            static_cast<std::size_t>(i) * 4);
+        const void *selected = nullptr;
+        bool lookup_observed = store.has_value() && fallback.has_value() &&
+                               row.requested_full_id_raw.has_value();
+        if (!lookup_observed) {
+          row.reason = "later_ordered_lookup_operands_unavailable";
+        } else {
+          if (*store) {
+            const auto index = static_cast<std::uint32_t>(
+                *row.requested_full_id_raw) & 0xFFFFFFU;
+            const auto capacity = Read<std::uint32_t>(b, *store, 0x2C);
+            if (!capacity) lookup_observed = false;
+            else if (index < *capacity) {
+              const auto table = Read<const void *>(b, *store, 0x20);
+              if (!table) lookup_observed = false;
+              else {
+                const auto object = Read<const void *>(b, *table,
+                    static_cast<std::size_t>(index) * 16 + 8);
+                if (!object) lookup_observed = false;
+                else if (*object) {
+                  const auto full_id = Read<std::int32_t>(b, *object, 0x10);
+                  if (!full_id) lookup_observed = false;
+                  else if (*full_id == *row.requested_full_id_raw) {
+                    selected = *object;
+                    row.selection = "registry_full_id";
+                  }
+                }
+              }
+            }
+          }
+          if (!lookup_observed) {
+            row.reason = "later_ordered_demanded_registry_read_unavailable";
+          } else if (!selected) {
+            selected = *fallback;
+            row.selection = "native_fallback";
+          }
+        }
+        if (lookup_observed) {
+          if (!selected) {
+            row.reason = "later_ordered_native_selected_null";
+          } else {
+            row.selected_identity = Identity(identities, selected, "later");
+            row.selected_field_24c_raw = Read<std::int32_t>(b, selected, 0x24C);
+            if (!row.selected_field_24c_raw) {
+              row.reason = "later_ordered_selected_24c_unavailable";
+            } else {
+              row.admitted = *row.selected_field_24c_raw != 0;
+              if (*row.admitted) {
+                row.property_block = Properties(b, Offset(selected, 0x80));
+                if (!PropertiesReady(*row.property_block))
+                  row.reason = "later_ordered_consumed_properties_unavailable";
+                // Native caller reloads these slots after each admitted merge.
+                // The readonly observer performs the same reads, no merge.
+                store = Read<const void *>(b, b.later_ordered_storage_slot);
+                fallback = Read<const void *>(b, b.later_ordered_fallback_slot);
+                if (!store || !fallback)
+                  Reason(row.reason, "later_ordered_post_merge_slots_unavailable");
+              }
+            }
+          }
+        }
+        if (!row.reason.empty()) {
+          ordered_ready = false;
+          Reason(out.reason, row.reason.c_str());
+        }
+        out.ordered_rows->push_back(std::move(row));
+      }
+    }
+  }
+
+  bool guarded_ready = false;
+  const auto guarded_carrier = Read<const void *>(b, character, 0x1C0);
+  if (!guarded_carrier) {
+    Reason(out.reason, "later_guarded_character_carrier_unavailable");
+  } else {
+    out.guarded_selection = *guarded_carrier ? "character_1c0_pointer_388"
+                                           : "native_fallback";
+    const auto selected = *guarded_carrier
+        ? Read<const void *>(b, *guarded_carrier, 0x388)
+        : Read<const void *>(b, b.later_guarded_fallback_slot);
+    if (!selected || !*selected) {
+      Reason(out.reason, "later_guarded_selected_pointer_unavailable");
+    } else {
+      out.guarded_magic_raw = Read<std::uint32_t>(b, *selected, 0x38);
+      if (!out.guarded_magic_raw) {
+        Reason(out.reason, "later_guarded_magic_unavailable");
+      } else {
+        out.guarded_admitted = *out.guarded_magic_raw == 0x4744624FU;
+        guarded_ready = true;
+        if (*out.guarded_admitted) {
+          out.guarded_property_block = Properties(b, Offset(*selected, 0xAA0));
+          guarded_ready = PropertiesReady(*out.guarded_property_block);
+          if (!guarded_ready)
+            Reason(out.reason, "later_guarded_consumed_properties_unavailable");
+        }
+      }
+    }
+  }
+  out.ready = ordered_ready && guarded_ready;
+  out.status = out.ready ? "available" : "partial";
+  if (!out.ready) Reason(out.reason, "later_direct_sources_partial");
+  return out;
+}
+
 } // namespace
 
 ContextSourceBindingsV1 BindContextSourceInputs12003(
@@ -1151,6 +1294,11 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   b.army_internal_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1DE50);
   b.pre_291e210_second_storage_slot = reinterpret_cast<const void *>(base + 0x5D1E380);
   b.pre_291e210_second_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E378);
+  b.later_direct_enabled = true;
+  b.later_ordered_fallback_header = reinterpret_cast<const void *>(base + 0x545A3E8);
+  b.later_ordered_storage_slot = reinterpret_cast<const void *>(base + 0x5D1FC58);
+  b.later_ordered_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1FC48);
+  b.later_guarded_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1DCB0);
   b.provider = reinterpret_cast<void *(*)()>(base + 0x8FD4E0);
   b.post_291d7e0_sources_enabled = true;
   b.post_ab_object_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E308);
@@ -1196,6 +1344,8 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
   }
   if (b.pre_291e210_1640_enabled)
     out.pre_291e210_1640 = Pre291e2101640(b, character, character_id);
+  if (b.later_direct_enabled)
+    out.later_direct_291c3fb_44c = LaterDirect(b, character, character_id);
   out.branch_291e210 = BranchA(b, character);
   out.branch_291d7e0 = BranchB(b, character);
   if (b.post_291d7e0_sources_enabled)
@@ -1205,9 +1355,5 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.ready = out.ready && out.pre_291e210_1640->ready;
   if (out.post_291d7e0_sources)
     out.ready = out.ready && out.post_291d7e0_sources->ready;
-  out.status = out.ready ? "available" : "partial";
-  if (!out.ready) out.reason = "context_source_reads_unavailable";
-  return out;
-}
-
-} // namespace xar::ck3_12002
+  if (out.later_direct_291c3fb_44c)
+    out.ready = out.ready && out.later_direct_291c3fb_44c->ready;

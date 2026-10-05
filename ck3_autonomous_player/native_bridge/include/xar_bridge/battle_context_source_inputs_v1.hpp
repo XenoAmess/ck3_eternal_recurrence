@@ -245,17 +245,32 @@ struct ContextSourcePost291d7e0V1 {
   friend bool operator==(const ContextSourcePost291d7e0V1 &,
                          const ContextSourcePost291d7e0V1 &) = default;
 };
-struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
+// The caller-direct leaves after helper291F0A0. Independent readiness does not
+// close that preceding helper or a contiguous complete-person source chain.
+struct ContextSourceLaterOrderedRowV1 {
+  std::int32_t native_index = 0;
+  std::optional<std::int32_t> requested_full_id_raw;
+  std::optional<std::string> selection;
+  std::optional<std::string> selected_identity;
+  std::optional<std::int32_t> selected_field_24c_raw;
+  std::optional<bool> admitted;
+  std::optional<ContextSourcePropertiesV1> property_block;
+  std::string reason;
+  friend bool operator==(const ContextSourceLaterOrderedRowV1 &,
+                         const ContextSourceLaterOrderedRowV1 &) = default;
+};
+struct ContextSourceLaterDirectV1 {
   std::string status = "unavailable";
   bool ready = false;
   std::int32_t character_id = -1;
-  std::optional<ContextSourcePre291e2101640V1> pre_291e210_1640;
-  std::optional<ContextSource291e210V1> branch_291e210;
-  std::optional<ContextSource291d7e0V1> branch_291d7e0;
-  std::optional<ContextSourcePost291d7e0V1> post_291d7e0_sources;
+  std::optional<std::string> ordered_header_selection;
+  std::optional<std::int32_t> ordered_count;
+  std::optional<bool> ordered_array_present;
+  std::optional<std::vector<ContextSourceLaterOrderedRowV1>> ordered_rows;
+  std::optional<std::string> guarded_selection;
+  std::optional<std::uint32_t> guarded_magic_raw;
+  std::optional<bool> guarded_admitted;
+  std::optional<ContextSourcePropertiesV1> guarded_property_block;
   std::string reason;
-  friend bool operator==(const BattleCurrentPersonContextSourceInputsSnapshotV1 &,
-                         const BattleCurrentPersonContextSourceInputsSnapshotV1 &) = default;
-};
-
-} // namespace xar::game
+  friend bool operator==(const ContextSourceLaterDirectV1 &,
+                         const ContextSourceLaterDirectV1 &) = default;

@@ -146,6 +146,62 @@ inline void WeightedSpan(std::string &out,
   out += '}';
 }
 
+inline void LaterDirect(
+    std::string &out, const game::ContextSourceLaterDirectV1 &p) {
+  out += "{\"status\":";
+  String(out, p.status);
+  out += ",\"ready\":";
+  out += p.ready ? "true" : "false";
+  out += ",\"character_id\":" + std::to_string(p.character_id);
+  out += ",\"ordered_header_selection\":";
+  if (p.ordered_header_selection) String(out, *p.ordered_header_selection);
+  else out += "null";
+  out += ",\"ordered_count\":";
+  Number(out, p.ordered_count);
+  out += ",\"ordered_array_present\":";
+  Boolean(out, p.ordered_array_present);
+  out += ",\"ordered_rows\":";
+  if (!p.ordered_rows) out += "null";
+  else {
+    out += '[';
+    for (std::size_t i = 0; i < p.ordered_rows->size(); ++i) {
+      if (i) out += ',';
+      const auto &r = (*p.ordered_rows)[i];
+      out += "{\"native_index\":" + std::to_string(r.native_index);
+      out += ",\"requested_full_id_raw\":";
+      Number(out, r.requested_full_id_raw);
+      out += ",\"selection\":";
+      if (r.selection) String(out, *r.selection);
+      else out += "null";
+      out += ",\"selected_identity\":";
+      if (r.selected_identity) String(out, *r.selected_identity);
+      else out += "null";
+      out += ",\"selected_field_24c_raw\":";
+      Number(out, r.selected_field_24c_raw);
+      out += ",\"admitted\":";
+      Boolean(out, r.admitted);
+      out += ",\"property_block\":";
+      Properties(out, r.property_block);
+      out += ",\"reason\":";
+      Reason(out, r.reason);
+      out += '}';
+    }
+    out += ']';
+  }
+  out += ",\"guarded_selection\":";
+  if (p.guarded_selection) String(out, *p.guarded_selection);
+  else out += "null";
+  out += ",\"guarded_magic_raw\":";
+  Number(out, p.guarded_magic_raw);
+  out += ",\"guarded_admitted\":";
+  Boolean(out, p.guarded_admitted);
+  out += ",\"guarded_property_block\":";
+  Properties(out, p.guarded_property_block);
+  out += ",\"reason\":";
+  Reason(out, p.reason);
+  out += '}';
+}
+
 inline void Branch291e210(std::string &out,
                          const std::optional<game::ContextSource291e210V1> &a) {
   if (!a) { out += "null"; return; }
@@ -455,6 +511,10 @@ inline std::string SerializeBattleCurrentPersonContextSourceInputsV1(
   if (p.pre_291e210_1640) {
     out += ",\"pre_291e210_1640\":";
     Pre291e2101640(out, p.pre_291e210_1640);
+  }
+  if (p.later_direct_291c3fb_44c) {
+    out += ",\"later_direct_291c3fb_44c\":";
+    LaterDirect(out, *p.later_direct_291c3fb_44c);
   }
   out += ",\"branch_291e210\":";
   Branch291e210(out, p.branch_291e210);
