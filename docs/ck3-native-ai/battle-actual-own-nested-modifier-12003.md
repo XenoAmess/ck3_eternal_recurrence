@@ -146,3 +146,36 @@ pending Root. New EXE bytes and all game/runtime operations remain0.
 
 External source,plan,dependency and focused receipt:
 `Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/retained-advantage/actual-dynamic-getter/group-decomposition/nested-19F-inputs/own-modifier-source/`.
+
+## Central producer and first consumer qualification, 2026-10-06
+
+Root qualified the full intended DLL plus the new own19F/point-store targets
+at exact combined source `a0956b80de9bde0248e0b736ae50f4ff60d2ee57`:
+native-own-and-point-stores-04 GREEN8.5540492s; first two new CTests2/2 GREEN,
+total0.30s /wall0.3298416s at2026-10-05T19:29:06UTC. Root's preserved attempts
+are separate:01 canceled after63.334s because an unresolved cherry-pick
+conflict left a dirty integration source;02 /WX point-store fixture type RED
+129.13949s;03 /WX fixture signedness RED7.24625s. Root fixed fixture types
+without changing production logic. Own19F had no native failure.
+
+The four archived own19F production wires were consumed once through Root's
+actual production normalizers/service,immutable adapter and published pure
+MAX/Q helper:4/4 GREEN,processing0.0164600000s /process0.5993037s,actual=0.
+Distinct actual Combat/Character scopes,slow MAX/Q amount product,observed0
+short-circuit despite missing opposite flags,independent missing Character
+scope and owned copy all retain their source-bound values and readiness.
+This seals the current25895A0 term per named aggregate through the native
+serializer/consumer boundary. No old Python/opposite/native sample was rerun.
+Full25899C0 group,future changed-contact aggregates,full forecast and
+production-live remain outside this static qualification; game operations0.
+
+Root archive includes the original compiled bytes and pinned qualification:
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/sourcea0956b80-own-and-point-stores-native-artifacts/HASHES-AND-NATIVE-QUALIFICATION.json`.
+DLL10446848bytes SHA256
+`37b37dfb74b4501e9d8fb5c93757768b1fdbf41a1a55d0c8c2dbbad68c184769`;
+own fixture EXE565248bytes SHA256
+`349a600a0331eccd6330fcdd74b947a61a2eb68be2a9ed2da4f5f466b0d89c8f`.
+These Root-provided binary pins were reused without rehashing or rebuilding.
+The new four wire bytes and production module pins are in
+`own-modifier-source/implementation/NATIVE-WIRE-CONSUMER.json`; final qualifier
+and Oct6/W41 fields are beside it. No further EXE seek was required.
