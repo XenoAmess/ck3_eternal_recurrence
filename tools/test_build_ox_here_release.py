@@ -21,7 +21,11 @@ import build_ox_here_release as release  # noqa: E402
 
 REVISION = "a" * 40
 WORKSHOP_ID = "987654321"
-DESCRIPTOR = b'version="1.0.2"\r\nname="Ox Here fixture"\r\npicture="thumbnail.png"\r\n'
+DESCRIPTOR = (
+    b'version="1.0.2"\r\nname="Ox Here fixture"\r\npicture="thumbnail.png"\r\n'
+    b'supported_version="1.20.*"\r\n'
+    b"tags={ \"Gameplay\" \"1.20 'Crozier'\" }\r\n"
+)
 
 
 class OxHereReleaseTests(unittest.TestCase):
@@ -66,6 +70,7 @@ class OxHereReleaseTests(unittest.TestCase):
             self.assertEqual(22, release.verify_manifest(first[0], first[1]))
             self.assertEqual(release.PRODUCT_ID, first[3]["product_id"])
             self.assertIsNone(first[3]["workshop_item_id"])
+            self.assertEqual(DESCRIPTOR, first[0].joinpath("descriptor.mod").read_bytes())
             with zipfile.ZipFile(first[2]) as archive:
                 self.assertEqual([f"ox_here/{path}" for path in sorted(release.RUNTIME_FILES)], [item.filename for item in archive.infolist()])
                 self.assertTrue(all(item.date_time == release.ZIP_TIMESTAMP for item in archive.infolist()))

@@ -21,7 +21,11 @@ import build_vivhite_release as release  # noqa: E402
 
 REVISION = "a" * 40
 WORKSHOP_ID = "987654321"
-DESCRIPTOR = b'version="1.0.0"\r\nname="Vivhite fixture"\r\n'
+DESCRIPTOR = (
+    b'version="1.0.0"\r\nname="Vivhite fixture"\r\n'
+    b'supported_version="1.20.*"\r\n'
+    b"tags={ \"Gameplay\" \"1.20 'Crozier'\" }\r\n"
+)
 
 
 class VivhiteReleaseTests(unittest.TestCase):
@@ -97,6 +101,7 @@ class VivhiteReleaseTests(unittest.TestCase):
             self.assertIsNone(first[3]["git_tag"])
             self.assertEqual(REVISION, first[3]["git_sha"])
             self.assertEqual(27, len(first[3]["files"]))
+            self.assertEqual(DESCRIPTOR, first[0].joinpath("descriptor.mod").read_bytes())
 
             with zipfile.ZipFile(first[2]) as archive:
                 infos = archive.infolist()
@@ -358,12 +363,15 @@ class VivhiteReleaseTests(unittest.TestCase):
                 + b'\nremote_file_id="987654321"'
             ),
             "content-change": (
-                b'version="1.0.0"\nname="changed"\n'
-                b'remote_file_id="987654321"'
+                DESCRIPTOR.replace(b'name="Vivhite fixture"', b'name="changed"')
+                .replace(b"\r\n", b"\n")
+                + b'remote_file_id="987654321"'
             ),
             "mixed-line-endings": (
-                b'version="1.0.0"\r\nname="Vivhite fixture"\n'
-                b'remote_file_id="987654321"'
+                DESCRIPTOR.replace(
+                    b'name="Vivhite fixture"\r\n', b'name="Vivhite fixture"\n'
+                )
+                + b'remote_file_id="987654321"'
             ),
         }
         for label, descriptor in malformed.items():

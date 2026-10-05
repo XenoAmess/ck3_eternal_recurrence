@@ -27,7 +27,10 @@ class IndependentModReleaseTests(unittest.TestCase):
         self.source = self.root / "source"
         self.source.mkdir()
         self.runtime = {"descriptor.mod", SCRIPT, LOCALIZATION, "thumbnail.png"}
-        self.write("descriptor.mod", b'version="1.0.0"\nname="Maintained Mod"\nsupported_version="1.20.0.3"\n')
+        self.write("descriptor.mod", (
+            b'version="1.0.0"\nname="Maintained Mod"\nsupported_version="1.20.0.3"\n'
+            b"tags={ \"Gameplay\" \"1.20 'Crozier'\" }\n"
+        ))
         self.write(SCRIPT, release.UTF8_BOM + b"namespace = maintained\n")
         self.write(LOCALIZATION, release.UTF8_BOM + 'l_simp_chinese:\n maintained_title:0 "维护版"\n'.encode())
         self.write("thumbnail.png", b"binary-preview-fixture")
