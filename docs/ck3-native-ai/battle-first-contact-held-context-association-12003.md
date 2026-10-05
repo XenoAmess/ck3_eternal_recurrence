@@ -169,7 +169,7 @@ and [person stage chain](battle-person-stage-chain-12003.md).
 `estimate_current_special_knight_initial_stats_12003(normalized_combat_inputs,
 source_provenance=...) -> dict`. It consumes the existing `armies[].knights`
 leaf directly. No production normalizer, arithmetic kernel, native collector,
-service, or runtime source was changed by this child.
+service, or runtime source was changed in the initial `038ddba7` delivery.
 
 The result preserves member/Army identities and order, the actual selected
 Character full ID and `frozen_current_character_values` stage, per-member missing
@@ -193,7 +193,35 @@ are exercised; the original source observation is preserved.
 Receipt: `entry-held-association/CURRENT-VALUE-ATTEMPT-01.json`. No old case,
 sibling producer case, native target, or game operation ran. This consumer is
 **static-ready**. It can be attached to the existing combat-query response in
-the next ordinary source package; this child does not hot-edit the active runtime.
+the next ordinary source package; the subsequent service attachment is recorded
+below. This child does not hot-edit the active runtime.
 It leaves full Entry/person readiness false. The first missing value when this
 slice is partial is an existing `effectiveness_context.operand_raw[i]`, selected
 Character identity, sparse modifier, or loaded multiplier, not a new descriptor.
+
+## V3 query return attachment
+
+`GameplayBridgeService.query_combat_simulation_inputs_v3` now returns
+`current_special_knight_initial_value`. The V3 normalizer's wrapper contains
+the already normalized Army/knight leaf at `normalized["base_inputs"]`; that
+exact leaf is passed to the existing consumer. V1 is unchanged.
+
+The derived JSON includes provenance for the actual V3 query sequence, public
+revision, native revision, snapshot ID, raw date, pause state, backend, and hello
+game version/EXE SHA. This is an additional returned value; no native, driver,
+schema, policy, status, completeness, fidelity, or forecast readiness field changes.
+
+One necessary new service-route case passed on its **first execution** at
+**2026-10-06 07:20:15 Asia/Shanghai**, 1/1, 0.183 s. It uses the existing production
+V3 fixture builder and invokes the actual service method with a fake backend.
+The backend payload has no preattached derived value. The returned result has
+nonempty ready member values and preserves all original forecast flags.
+Public revision four and native revision five remain distinct in its provenance.
+Receipt: `entry-held-association/V3-SERVICE-ATTEMPT-02.json`.
+
+Attempt 01 was import-only **harness RED**, before any case ran: the worktree
+test process lacked the `ck3_workshop_mcp` compatibility registry import path
+required by existing environment imports. The external runner adds the existing
+Root registry source path; production dependencies were unchanged. The failed
+attempt is preserved as JSON/text. The previous numeric compound and all old or
+sibling tests were not rerun. No native build or game operation ran.

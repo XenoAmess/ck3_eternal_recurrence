@@ -9,6 +9,9 @@ from pathlib import Path
 import uuid
 
 from ..replenishment_numeric import project_observed_replenishment_v1
+from ..simulation.battle_current_special_knight_value_12003 import (
+    estimate_current_special_knight_initial_stats_12003,
+)
 from .version_identity import require_exact_native_build
 from .army_loss_allocation_projection import project_observed_army_loss_requests
 
@@ -13797,6 +13800,21 @@ class GameplayBridgeService:
                 completeness["missing_required_domains"]
             ),
             "combat_simulation_inputs": normalized,
+            "current_special_knight_initial_value": estimate_current_special_knight_initial_stats_12003(
+                normalized["base_inputs"],
+                source_provenance={
+                    "source_method": "query_combat_simulation_inputs_v3",
+                    "query_sequence": query_sequence,
+                    "snapshot_id": snapshot.get("snapshot_id"),
+                    "revision": revision,
+                    "native_revision": snapshot.get("native_revision"),
+                    "date_raw": snapshot.get("date_raw"),
+                    "paused": True,
+                    "backend_id": snapshot.get("backend_id"),
+                    "game_version": hello.get("game_version") if isinstance(hello, dict) else None,
+                    "executable_sha256": hello.get("executable_sha256") if isinstance(hello, dict) else None,
+                },
+            ),
         }
 
     def query_war_entry_assessments(
