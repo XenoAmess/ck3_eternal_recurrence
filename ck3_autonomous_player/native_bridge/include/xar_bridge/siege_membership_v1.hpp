@@ -17,6 +17,9 @@ struct SiegeProvinceUnitOccurrenceV1 {
   bool eligible = false;
   bool qualified_regiment_ids_observable = false;
   std::vector<std::int32_t> qualified_regiment_ids;
+
+  friend bool operator==(const SiegeProvinceUnitOccurrenceV1 &,
+                         const SiegeProvinceUnitOccurrenceV1 &) = default;
 };
 
 // Shared by the ordinary objective snapshot and rich occupation MCP wire.
