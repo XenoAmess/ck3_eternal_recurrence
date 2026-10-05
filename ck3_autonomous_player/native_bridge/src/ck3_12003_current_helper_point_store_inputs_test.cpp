@@ -156,7 +156,7 @@ void Cases(const std::filesystem::path &directory) {
         chars[1].character_child_1c0_present == true && chars[2].character_child_1c0_present == false &&
         chars[2].character_used_fallback == true && chars[2].character_resolved_id == -1 &&
         chars[0].child_1b8_alias_ordinal == chars[2].child_1b8_alias_ordinal &&
-        chars[0].child_byte_108_raw == 7 && chars[0].child_character_reference_fc_raw == 42 &&
+        chars[0].child_byte_108_raw == 7 && chars[0].child_character_reference_fc_raw == std::uint32_t{42} &&
         chars[3].character_child_1b8_present == false,
         "three C8/C0 paths and fallback ID-1 share active B8; absent B8 is observed independently");
   Check(army == army_before && containing == containing_before && receiver == receiver_before && invalid == invalid_before &&
