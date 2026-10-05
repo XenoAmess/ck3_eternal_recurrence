@@ -953,3 +953,46 @@ The combined results verify direct-tail actual duplicates and weights; prefix si
 Qualified status is now **static-ready for these independently useful same-query input primitives**, supported by central fake-memory source/serializer and production consumers. There is no new paused artifact and no live readiness claim. Full current-person fold, Entry and forecast remain unfinished. Subsequent helper `2922070` has a concrete remaining comparator adapter source seam (`1A96FD0/1A97160/2922D20`); its prior source-only conclusion about the Character sort field requires the adapter closure, which is being corrected through necessary narrow frozen-file reads. This later package does not alter the current 26-wire qualification.
 
 Root central compiled source89cb683d, four new CTests firstGREEN and 26 unique production wires qualified; final receipt/REDs are archived in `Z:\ck3_mod_rewrite_process_assets\g2-background-round4-20261005\source89cb683d-core-native-artifacts`. Whole suffix/Entry remains unfinished. Subsequent2922070 work found a concrete comparator-adapter source seam; earlier source-closed wording covers the known gather/admission portion, and complete sort operand/collector remains the next active package. No source or test is rerun for this adoption.
+
+## Required input continuation adopted (2026-10-06T01:22:10+08:00)
+
+The following candidate ledger preserves its original pending qualification. The dated central qualification immediately after it supersedes that pending status.
+
+# Required 2922070, conference and uncached-recipient continuation
+
+All work and first qualification for this continuation belong to 2026-10-06 / ISO week 2026-W41. CK3 remains untouched. Exact source remains 1.20.0.3 / Steam25652598 / pinned SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. Source trees, Mermaid and query plans were sealed before code in `person-tail/helper-2922070/`, `person-tail/conference-24b1d00-source/`, and sibling `person-absent-recipient/UNCACHED-IMPLEMENTATION-SOURCE-PLAN.json` with its native topic.
+
+`helper_2922070` closes the required source between 2753860 and 2922530. It preserves the government/land/SubC whole gate, physical recursive descendant walk and mapped holder filters, stable unsigned Character ID18 order, adjacent whole-pointer dedup, first matched membership and full DWORD output admission, then stable unsigned source ID10 order. The comparator adapters pass Character+10 or source+8 to the common +8 getter; this closes the earlier missing argument proof. Equal IDs retain stable order. Final source rows are not deduplicated. Native row order includes skipped ordinal gaps; signed count-zero indexing can select actual row index -1; empty initialized BA0 remains one unit request. Complete collection remains observed during a later PC read failure. The new pure forwarder is public at the existing tail-prefix module as well as its dedicated module.
+
+`conference_24b1d00` corresponds to actual caller 291C548. Character1C8+80 supplies Conf ID, or exact -1 on null carrier; registry/fallback5D1EB78/5D1EB50, Conf magicC436F6E66/fullID8, and the helper's own Character magic1C/fullID18 gate reachability. Mapper327BB90 uses Conf38 and signed Conf60: active records are scanned backward and the first eligible reverse row selects the last physical threshold<=target. Otherwise actual inline54EBAB0 uses raw guard5D71B94; no initializer is called. Matching current/relation IDs, then conditional fullQWORD220 identity comparison, selects the first two PCs; owner/common selects third+570/+730; fourth is unconditional+8F0. Exactly FOUR unit requests appear in order `classified_owner`, `classified_common`, `owner_common`, `unconditional`. Last two remain independently available without Conf68/relationship equality; mapped records do not demand the unused inline guard. Guard0/-1 retains actual inline PC bytes and unavailable status.
+
+`uncached_recipient_inputs` supplies the missing cache440=0 input families, without reading stale cached430/458 or executing their initializer. Dedicated physical seed, active, removed and associated-context observations feed the ordered reducer; derived temporary maps remain computation receipts. Actual cap, fallback key/object, native multipliers and nested physical downstream traits/membership/guard/aggregate/clamp inputs are observed in the same query. Active and seed-boost multiplication uses the separately source-closed MAX-operand native decomposition; cached downstream arithmetic keeps its MIN-operand kernel. Stable native priority/value/key ordering and exact tie behavior are preserved. The available uncached scalar forwards to old `helper_291f0a0.manager_range` with source tag `absent_1c8_2bfac30_uncached`; the original cached440zero raw leaf stays partial. Top-level readiness accepts the independently available uncached alternative rather than mislabeling a derived map as an actual cache. Its first new wire expects scalar660000 and actual managed PC777.
+
+```mermaid
+flowchart TD
+  H275[2753860 already qualified] --> H2922070[Actual DFS / filters / stable full-ID order / BA0]
+  H2922070 --> H2530[2922530 already qualified]
+  H2530 --> Conf[291C548 conference: FOUR unit source families]
+  Conf --> Rank[291F260: held-current snapshot weights]
+  Rank -. next source-owned reachability branch .-> Bucket[Signed2F8 numeric bucket at291C5B2 or later append]
+  Bucket -. remaining qualifier/list/helper stages .-> Full[Full current-person and Entry remain unfinished]
+  Cache0[Absent1C8 / cache440 zero] --> Physical[Physical seed / active / removed / downstream families]
+  Physical --> Reducer[Ordered exact native reducer]
+  Reducer --> Scalar[Available uncached scalar]
+  Scalar --> Managed[Same-query old manager range]
+```
+
+The 291F260 request weights qualify held-current, same-query snapshot operands. The current getter28C3AE0 proves Character1B0/carrier258/owned model8/model10 or guarded inline selection. It does not alone prove that this installed pointer equals a newly evolving caller R13+10 at each earlier helper during a future rebuild. Existing pure stage results therefore retain their conditional held-current scope. Newly source-proven stage operand re-evaluation is a separate functional increment; no old numeric/kernel test is rerun to manufacture that claim.
+
+New source reads for required/helper and conference are **5962 bytes**: 2922070 adapters4330=3826code+504pdata; conference1632=1392code+240pdata. Their earlier frozen prefix6672 bytes remain separately preserved. Sibling uncached lane reports total19849 bytes including its earlier cached source; do not add the cached5029 again. Subsequent provider-bucket source reads87 bytes are a separate source-only next package and are excluded from this target's source costs.
+
+Candidate dependencies: helper pure24b70e4b; conference pure754edac6; same-query native7066d25f; sibling uncached originalb5801f24 (its source-only prerequisitebf98a57f); shared uncached glue33d7d478. New target and CTest are both `xar_ck3_12003_person_tail_continuation_test`; output `ck3_12003_person_tail_continuation_wire/{helper-2922070,conference,uncached}` has **9+7+11=27 new wires**. This target has not yet run. Root owns the sole central fullDLL/newtarget /WX build; after GREEN, parent consumes only 16 helper/conference wires, sibling only 11 uncached wires. Prior 26 wires and prior focused cases are not rerun.
+
+Independent pure-chain increments already reported by their owner: actual required2922070/through2922530 case 1/1 GREEN once, source-shaped singleton, immediate frontier `post2922530_pre291C4E2`; conference/held-current-rank case 1/1 GREEN once at00:50:44, frontier `post291F260_pre291C558`, with held-current scope stated above. Sibling uncached focused case33checks/1pass GREEN0.35s; original collectionRED and earlier pre-large-vector receipt remain preserved. Native and actual-wire qualification for this candidate remain pending. No production-live/full-person/Entry claim is made.
+
+
+### Central compiled qualification (2026-10-06T01:22:10+08:00)
+
+Exact source `3fb869c751d9050caffa790716a332ca71238c1a`: full DLL and three new targets GREEN in necessary incremental 8.0160481s after retained first harness RED179.2425943s. The conference fixture omitted the actual context-source declaration header; ed483d93→3fb869c7 adds that one include, with no production change. First three new CTests are 3/3 GREEN, total0.39s. This target is GREEN0.11s.
+
+All27 new production wires qualify: parent16 helper/conference once GREEN0.2159496s, sibling11 uncached once GREEN75checks/process0.27675s. Old26 wires and old focused cases are not repeated. Physical uncached source gives660000 and actual manager-range PC777 through the source-tagged same-query forwarding. The original cached zero branch stays partial rather than using stale cache. Prior collection/fixture/consumer REDs remain preserved. Held-current weights, complete person/Entry and live boundaries above remain explicit. Archive and final seal: `Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/source3fb869c7-person-ordinary-association-native-artifacts/FINAL-PRODUCTION-QUALIFICATION.json`.

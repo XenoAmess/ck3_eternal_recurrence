@@ -255,3 +255,7 @@ the one needed predicate vtable slot used108 bytes of PE/section metadata and
 an8-byte `.rdata` slot; no PE optional-header or whole-section read occurred.
 The packet's `UNCACHED-SOURCE-SEAL.json` records this continuation and total
 I/O, separate from the retained earlier5029-byte `SOURCE-SEAL.json`.
+
+## Compiled uncached input qualification (2026-10-06T01:22:10+08:00)
+
+Exact Root source `3fb869c751d9050caffa790716a332ca71238c1a`, first continuation fixture GREEN with 11 genuine new uncached wires. Strict production normalizer and pure reducer pass75checks once (process0.27675s). Scalar660000 reaches actual manager PC777; source is absent_1c8_2bfac30_uncached. No prior cached26/auxiliary/census or 33-check Python case repeats. UNCACHED-QUALIFICATION.json and original RESULT SHA82e3ee2564d6faaf1c8ed1bdc8c62d2cc6c580a438eefb14936bf9ff86fb4645 are archived in the central seal. This is current-input static-ready, with no stage-start baseline, full suffix, actual Entry or paused/live credit. Next source-owned dependency is qualifier28BC0D0/repeated291C68D; signed provider remains separately owned.

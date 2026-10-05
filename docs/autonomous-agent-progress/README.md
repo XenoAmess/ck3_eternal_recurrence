@@ -693,3 +693,7 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 ### 2026-10-05 晚间后台增量
 
 source49131256已推送：post-A/B、laterdirect、auxiliaryscratch、knight实际effectiveness Character context、holy-order当前战争资格，5个newnative tests与28真实fixture字节消费GREEN，均static-ready。2633340 conditional raised refresh随后已实现，九cachebyte已交付源码待newnative验收；helper291F0A0四族与retained实际Rules effect继续source-first施工。完整人物/Entry/fullmonthly loss/释放触发仍partial，新增游戏日0与5035冻结指标不变。详情及原生专题/receipt回链见[后台续行交接](../handover/2026-10-05-g2-background-successor.md)、[当天日报](daily/2026-10-05.md)、[W41](weekly/2026-W41.md)。游戏仍由用户使用，所有后台包均没有启动或连接CK3。
+
+## 2026-10-06 后台观测进展（2026-10-06T01:22:10+08:00）
+
+人物required2922070／conference四族／无缓存recipient、ordinary六属性、holy-order部队关联均通过集中fake-memory生产验证，为static-ready；完整person／Entry／MAA／forecast／release live仍未完成。Exact3fb869c7：新CTest3/3 GREEN、35JSON／38场景生产消费GREEN，失败attempt和源码范围保留于[后台交接](../handover/2026-10-05-g2-background-successor.md)、[Oct6日报](daily/2026-10-06.md)、[W41](weekly/2026-W41.md)及各原生专题。累计后续23个不同新增native CTests，首批5独立记录。游戏由用户使用，新增自动游玩日0，5035冻结指标不变。继续首个移除阶段、直接动态优势及具体人物／MAA输入。

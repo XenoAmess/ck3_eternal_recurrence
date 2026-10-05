@@ -1159,3 +1159,7 @@ source49131256已推送：post-A/B、laterdirect、auxiliaryscratch、knight实�
 ## 后台人物阶段与损耗预算增量（2026-10-05T23:06:01+08:00）
 
 本机用户占用期间完成explicit postreset logical baseline/prefix/291D1D0、有序291F550/291F940贡献和post-updater条件monthly预算；只读provider/normalizer/kernel有界static-ready。累计13个新native CTests与70份实际生产serializer fake-memory JSON的生产消费GREEN，详见[后台交接](../handover/2026-10-05-g2-background-successor.md)。这些结果没有改变本机5035/36524、G2 5/8、NW2 2/4、natural0或actual false/null边界。下一source/model依赖为2BFAC30、291C467后的caller、post291D1D0逐stage连接与actualEntry关联及其他monthly effects；新的真实post-updater/post-writer/Entry paused验收等待用户结束本机占用。
+
+## 2026-10-06 后台观测进展（2026-10-06T01:22:10+08:00）
+
+人物required2922070／conference四族／无缓存recipient、ordinary六属性、holy-order部队关联均通过集中fake-memory生产验证，为static-ready；完整person／Entry／MAA／forecast／release live仍未完成。Exact3fb869c7：新CTest3/3 GREEN、35JSON／38场景生产消费GREEN，失败attempt和源码范围保留于[后台交接](../handover/2026-10-05-g2-background-successor.md)、[Oct6日报](daily/2026-10-06.md)、[W41](weekly/2026-W41.md)及各原生专题。累计后续23个不同新增native CTests，首批5独立记录。游戏由用户使用，新增自动游玩日0，5035冻结指标不变。继续首个移除阶段、直接动态优势及具体人物／MAA输入。
