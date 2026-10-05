@@ -300,6 +300,7 @@ def continue_person_stage_chain_tail_12003(
     qualifier_module = "battle_person_qualifier_28bc0d0_contract"
     list_module = "battle_person_list_predicate_2530dd0_contract"
     gated_module = "battle_person_gated_temporary_tail_contract"
+    after_gated_module = "battle_person_after_gated_tail_contract"
     stages = (
         ("2753860", "post2753860_pre291C4D2", prefix_module,
          "emit_helper_2753860_requests_from_current_source_inputs_12003", None),
@@ -323,6 +324,8 @@ def continue_person_stage_chain_tail_12003(
          "emit_list_predicate_2530dd0_requests_from_current_source_inputs_12003", None),
         ("gated_temporary_tail", "postGatedTemporaryAndList_pre291C9D8", gated_module,
          "emit_gated_temporary_tail_requests_from_current_source_inputs_12003", None),
+        ("after_gated_tail", "post326A8E0_and2920310_pre291CB14", after_gated_module,
+         "emit_after_gated_tail_requests_from_current_source_inputs_12003", None),
         ("intervening_lists_flags_temp_helpers_thresholds", "preCarrierWeighted630", None, None, None),
         ("carrier_weighted630", "postCarrierWeighted630_pre291CC71", direct_module,
          "emit_tail_direct_family_requests_from_current_source_inputs_12003", "carrier_weighted630"),
@@ -376,20 +379,31 @@ def continue_person_stage_chain_tail_12003(
         missing, requests, ready = [], (), True
         conference_family_ledger = []
         gated_family_ledger = []
+        after_gated_family_ledger = []
         qualifier_definition_ledger = []
         list_row_ledger = []
         try:
             if not actor_matches:
                 raise ValueError("matching_character_source_unavailable")
             if module is None:
-                raise ValueError("native_source_stage_unclosed")
-            if name in ("conference24B1D00", "gated_temporary_tail"):
+                raise ValueError("source_closed_provider192_2920850_observation_unimplemented"
+                    if name == "intervening_lists_flags_temp_helpers_thresholds" else "native_source_stage_unclosed")
+            if name in ("conference24B1D00", "gated_temporary_tail", "after_gated_tail"):
                 is_gated = name == "gated_temporary_tail"
-                family_names = (("prefix_1398", "delta_prefix_1420_14a8", "list") if is_gated else
-                                ("classified_owner", "classified_common", "owner_common", "unconditional"))
-                family_emitter = ("emit_gated_temporary_tail_family_requests_from_current_source_inputs_12003"
-                                  if is_gated else "emit_conference_24b1d00_family_requests_from_current_source_inputs_12003")
-                family_ledger = gated_family_ledger if is_gated else conference_family_ledger
+                is_after_gated = name == "after_gated_tail"
+                if is_after_gated:
+                    family_names = ("composition_326a8e0", "current_1b8_court_positions",
+                                    "current_1c0_court_positions", "related_court_positions")
+                    family_emitter = "emit_after_gated_tail_family_requests_from_current_source_inputs_12003"
+                    family_ledger = after_gated_family_ledger
+                elif is_gated:
+                    family_names = ("prefix_1398", "delta_prefix_1420_14a8", "list")
+                    family_emitter = "emit_gated_temporary_tail_family_requests_from_current_source_inputs_12003"
+                    family_ledger = gated_family_ledger
+                else:
+                    family_names = ("classified_owner", "classified_common", "owner_common", "unconditional")
+                    family_emitter = "emit_conference_24b1d00_family_requests_from_current_source_inputs_12003"
+                    family_ledger = conference_family_ledger
                 family_contiguous = True
                 for family_name in family_names:
                     family_requests, family_missing = (), []
@@ -480,6 +494,11 @@ def continue_person_stage_chain_tail_12003(
                 completed = sum(row["in_contiguous_family_prefix"] for row in gated_family_ledger)
                 stage = ("postGatedPrefix1398_pre291C892",
                          "postGatedDeltaPrefix_pre291C8AE")[completed - 1]
+            elif name == "after_gated_tail" and any(
+                    row["in_contiguous_family_prefix"] for row in after_gated_family_ledger):
+                completed = sum(row["in_contiguous_family_prefix"] for row in after_gated_family_ledger)
+                stage = ("post326A8E0_pre291CB0F", "post2920310_current1B8_preCurrent1C0",
+                         "post2920310_current1C0_preRelated")[completed - 1]
             elif validated:
                 if name == "conference24B1D00":
                     completed = sum(row["in_contiguous_family_prefix"] for row in conference_family_ledger)
@@ -495,6 +514,7 @@ def continue_person_stage_chain_tail_12003(
             "folded_into_contiguous_context": folded, "missing_inputs": tuple(missing),
             "conference_family_stages": tuple(conference_family_ledger),
             "gated_temporary_family_stages": tuple(gated_family_ledger),
+            "after_gated_family_stages": tuple(after_gated_family_ledger),
             "qualifier_definition_stages": tuple(qualifier_definition_ledger),
             "list_predicate_row_stages": tuple(list_row_ledger)})
         if required:
@@ -508,7 +528,8 @@ def continue_person_stage_chain_tail_12003(
         "future_tail_missing_inputs": tuple(future_missing),
         "first_contiguous_observation_dependency": next(
             (row["stage"] for row in ledger_rows if not row["requests_ready"]), None),
-        "next_native_source_leaf": "291C9D8_326A8E0_2920310", "all_tail_source_stream_ready": False,
+        "next_native_source_leaf": "291CB14_provider192_2920850", "all_tail_source_stream_ready": False,
+        "next_native_source_leaf_status": "source_closed_observation_unimplemented",
         "provider_291c5b2_operand_scope": "held_current_character_1b0_2f8",
         "provider_291c5b2_return_edges": "all selection branches rejoin291C5B7",
         "qualifier_28bc0d0_operand_scope": "held_current_character_1b0_scratch_object_relationships",
@@ -518,6 +539,9 @@ def continue_person_stage_chain_tail_12003(
         "gated_temporary_cached_FC_used": False,
         "gated_temporary_native_evaluation_equivalence_claimed": False,
         "gated_temporary_empty_PC_source_occurrences_preserved": True,
+        "after_gated_tail_operand_scope": "held_current_court_position_sources_and_source_closed_literal_calendar_inputs",
+        "after_gated_empty_default_scope": "actual_header_or_explicit_numeric_model_without_initializer_execution",
+        "after_gated_native_evaluation_equivalence_claimed": False,
         "source_operand_scope": "held_current_same_query_inputs",
         "conditional_on_observed_source_values": True,
         "291f260_weight_source_scope": "held_current_evaluated_values",

@@ -836,3 +836,41 @@ the next source gap. Source-only evidence does not change current static-ready
 preC9D8 readiness or qualify full person/Entry. There is no new test/build or
 old-case rerun for this increment. The authorized four-family producer's
 genuine contract remains the next implementation dependency for this consumer.
+
+## Genuine four-family source now connected throughpre291CB14
+
+Genuine pure/strict contract and shared production normalizer
+`f2e9ed935d11309316bb136f6f280c5b3125e31b` follow source835e95ee and the final
+schema before this code. The new bound `through_stage="after_gated_tail"`
+consumes `composition_326a8e0`, `current_1b8_court_positions`,
+`current_1c0_court_positions`, then `related_court_positions` through their
+actual family emitter. Full group availability reaches
+`post326A8E0_and2920310_pre291CB14`. Missing a group stops the continuous
+context while independently ready later groups retain their request streams.
+Logical partial frontiers are `post326A8E0_pre291CB0F`,
+`post2920310_current1B8_preCurrent1C0` and
+`post2920310_current1C0_preRelated`; no invented inner instruction addresses
+or requested-final labels are attached to them.
+
+The one distinct production-normalizer→stagechain→six-skill compound case,
+`test_battle_person_after_gated_stage_chain_12003.py`, is GREEN on its first
+execution on2026-10-06 03:50:39CST (1/1,0.028s), external receipt
+`after-gated-attempt-01.json`. It reuses only the producer fixture builder,
+without invoking its qualified test. Four-family source counts1/6/5/4 retain
+all16 occurrences, including empty direct/pair PCs;9 new nonempty weighted
+rows yield context85Q and skills`[6,6,6,6,6,91]`. A dynamic typedDef600 result
+keeps the first two families at
+`post2920310_current1B8_preCurrent1C0`,68Q/skills`[6,6,6,6,6,74]`; four related
+requests stay independent. Knownempty326 retains its sole outer request,
+with81Q/skills`[6,6,6,6,6,87]` and one fewer materialized weighted row.
+
+This is static-ready conditional pure assembly from explicit prior and held
+source/literal/calendar inputs, without native evaluation or initializer
+equivalence. Full person/Entry flags remain false. Newly sealed next
+provider192/2920850 source is closed but its observer is unimplemented. The
+future placeholder diagnostic/ledger is corrected to state that distinction
+after the GREEN run; no scalar contribution or assembly reachability changed or test was
+rerun for this metadata correction. No old/sibling case, native build, new
+EXE read or game operation is required for this pure connection. The separate
+1032-byte source-only follow-on is recorded above, not counted as producer
+qualification or a live artifact.
