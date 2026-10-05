@@ -37,6 +37,26 @@ _EMPTY_EVENTS = frozenset(("commander_none", "knight_none"))
 _SOURCE_ENTRY = "selected compiledEffect+160 child at3765780 / fire264E680"
 
 
+KNIGHT_ENTRY_PREPARATION_STAGE_12003 = "admitted_manager_preparation"
+
+
+@dataclass(frozen=True, slots=True)
+class KnightEntryCallbackWindow12003:
+    """Caller-conditioned slot2 preparation, not a native callback receipt.
+
+    A queued row freezes RegimentID only. Earlier fire's type4 root token is
+    independent of this preparation's strictly resolved setter receiver.
+    No schedule/fire history is needed for the ordinary preparation loop.
+    """
+
+    update_stage: str
+    setter_time_validated_receiver: Mapping[str, object]
+    source_context: Mapping[str, object]
+    schedule_regiment_reference: int | None = None
+    fire_time_root_token: int | None = None
+    fire_time_association: Mapping[str, object] | None = None
+
+
 @dataclass(frozen=True, slots=True)
 class KnightCachedStatRefresh12003:
     combat_id: int
@@ -52,6 +72,7 @@ class KnightCachedStatRefresh12003:
     valid_special_knight: bool | None = None
     refresh_boundary_selected: bool | None = None
     source_context: Mapping[str, object] | None = None
+    callback_window: KnightEntryCallbackWindow12003 | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -165,12 +186,30 @@ def _integer(value, field, bits):
     return value
 
 
-def _refresh_knight(carried, request, index, allowed_ids):
+def _refresh_knight(carried, request, index, allowed_ids, *, preparation=False):
     condition = carried.condition
     gaps = _coordinate_gaps(condition, request.source_context, index, "selected_phase_cached_stat")
     if request.combat_id != condition.combat_id or request.side_index not in (0, 1):
         gaps.append(_gap(index, "selected_phase_cached_stat", "current CombatID and side association", "2C06D30"))
-    if request.knight_character_id not in allowed_ids:
+    window = request.callback_window
+    if preparation:
+        if window is None:
+            gaps.append(_gap(index, "preparation_knight_cached_stat", "explicit admitted manager preparation window", "29882A0 / 2AD7F00"))
+        else:
+            gaps.extend(_coordinate_gaps(condition, window.source_context, index, "preparation_knight_cached_stat"))
+            if window.update_stage != KNIGHT_ENTRY_PREPARATION_STAGE_12003:
+                gaps.append(_gap(index, "preparation_knight_cached_stat", "slot2 preparation before date+24 and slot3 phase fire", "2AD7F00 / 258B510"))
+            receiver = window.setter_time_validated_receiver
+            required_receiver = {"regiment_id": request.regiment_id,
+                "native_carmy_id": request.native_carmy_id, "public_cunit_id": request.public_cunit_id,
+                "character_id": request.knight_character_id}
+            if not isinstance(receiver, Mapping) or any(
+                    type(receiver.get(key)) is not int or receiver[key] != value
+                    for key, value in required_receiver.items()):
+                gaps.append(_gap(index, "preparation_knight_cached_stat", "independently resolved setter-time Regiment/Army/public Unit/Character receiver", "2657AC0 / 2634880"))
+    elif window is not None:
+        gaps.append(_gap(index, "selected_phase_cached_stat", "preparation window belongs to public pre_date_knight_refreshes", "29882A0 / 2AD7F00"))
+    elif request.knight_character_id not in allowed_ids:
         gaps.append(_gap(index, "selected_phase_cached_stat", "refresh character is not a selected effect receiver", "2C06D30"))
     operands = ("after_effective_prowess_points", "effectiveness_raw", "loaded_damage_multiplier",
                 "loaded_toughness_multiplier", "valid_special_knight", "refresh_boundary_selected")
@@ -184,7 +223,7 @@ def _refresh_knight(carried, request, index, allowed_ids):
         if entry.state.regiment_id == request.regiment_id
         and entry.native_carmy_id == request.native_carmy_id
         and entry.public_cunit_id == request.public_cunit_id
-        and entry.knight_character_id_raw == request.knight_character_id]
+        and (preparation or entry.knight_character_id_raw == request.knight_character_id)]
     if len(matches) != 1:
         gaps.append(_gap(index, "selected_phase_cached_stat", "exact current Army/public Unit/Regiment/knight identity", "2C06D30"))
     if gaps:
@@ -217,8 +256,26 @@ def _refresh_knight(carried, request, index, allowed_ids):
                         "toughness_raw": toughness, "pursuit_raw": 0, "screen_raw": 0},
         "max_size_and_siege_in_shared_DTO": False,
         "source_entry_replaced": False, "quantities_hard_backing_preserved": True,
-        "origin": "caller_conditioned_literal_2C06D30_projection",
+        "origin": ("caller_conditioned_admitted_slot2_preparation_2C06D30_projection" if preparation
+                   else "caller_conditioned_literal_2C06D30_projection"),
         "base_prowess_used_as_effective": False, "native_callback_timing_claimed": False}
+    if preparation:
+        projection["callback_window"] = {
+            "update_stage": window.update_stage,
+            "setter_time_validated_receiver": deepcopy(window.setter_time_validated_receiver),
+            "source_context": deepcopy(window.source_context),
+            "schedule_regiment_reference": window.schedule_regiment_reference,
+            "fire_time_root_token": window.fire_time_root_token,
+            "fire_time_association": deepcopy(window.fire_time_association),
+            "observed_knight_character_metadata": entry.knight_character_id_raw,
+            "observed_knight_metadata_replaced": False,
+            "same_character_as_schedule_or_fire_required": False,
+            "selected_numeric_allowed_ids_used": False,
+            "effect_request_admits_callback": False,
+            "native_callback_execution_claimed": False,
+            "native_queue_admission_observed": False,
+            "requested_effects_committed": False,
+        }
     return replace(carried, condition=condition), projection, []
 
 
@@ -337,11 +394,15 @@ def run_selected_phase_feedback_horizon_12003(
     initial_condition: CurrentBattleCondition, *, day: ConditionalHorizonDay,
     selected: Sequence[SelectedPhaseEventInput12003], draw_state: DrawState,
     caller_seed_provenance: Mapping[str, object] | None = None,
+    pre_date_knight_refreshes: Sequence[KnightCachedStatRefresh12003] = (),
 ) -> SelectedPhaseFeedbackHorizonResult12003:
     """Consume selected feedback at one accepted continuing-main boundary.
 
     This composes one existing horizon day. It does not reset its calendar to
     run multiple independently called days or forge a future observation.
+    Explicit preparation refreshes use the admitted daily command slot2
+    before its date advancement. A same-day selected request never grants
+    this stage or supplies its setter-time Character/operand values.
     """
     selected = tuple(selected)
     untouched = False
@@ -378,6 +439,39 @@ def run_selected_phase_feedback_horizon_12003(
             or not schedule["main_called"]):
         ledger["event_boundary"] = "not_confirmed_accepted_main"
         return delegate()
+    preparation_projections, preparation_gaps = [], []
+    for index, refresh in enumerate(pre_date_knight_refreshes):
+        state, projection, missing = _refresh_knight(state, refresh, index, set(), preparation=True)
+        preparation_gaps.extend(missing)
+        if projection is not None:
+            preparation_projections.append(projection)
+    ledger["preparation_stage"] = {
+        "update_stage": KNIGHT_ENTRY_PREPARATION_STAGE_12003,
+        "origin": "caller_conditioned_accepted_daily_command_preparation",
+        "modeled_calendar_admission": True,
+        "before_date_raw": initial_condition.observed_date_raw,
+        "following_date_raw": schedule["date_raw_after"],
+        "before_slot3_phase_fire": True,
+        "cached_stat_refreshes": tuple(preparation_projections),
+        "provided_refresh_count": len(pre_date_knight_refreshes),
+        "complete_native_entry_refresh_claimed": False,
+        "native_callback_execution_claimed": False,
+        "selected_request_admission_used": False,
+        "delegate_repeats_preparation": False,
+    }
+    if preparation_gaps:
+        horizon = ConditionalHorizonResult(status="partial",
+            stop_reason="preparation_knight_entry_refresh_pending", final_state=state,
+            modeled_date_raw=initial_condition.observed_date_raw, modeled_accepted_invocations=0,
+            trace=({"timeline_index": 0, "source_context": day.source_context,
+                    "stages": ["accepted_daily_command_preparation"],
+                    "preparation_stage": ledger["preparation_stage"],
+                    "actual_game_days_advanced": 0},),
+            typed_gaps=tuple(preparation_gaps), caller_seed_provenance=caller_seed_provenance)
+        return SelectedPhaseFeedbackHorizonResult12003(None, horizon, False, ledger)
+    # Forward this isolated prepared state. The existing delegate does its
+    # calendar/main projection, but has no preparation argument to reapply.
+    initial_condition = state.condition
     projected = replace(initial_condition, phase_raw=schedule["phase_raw_at_phase_work"],
                         phase="main" if schedule["phase_raw_at_phase_work"] == 1 else initial_condition.phase)
     transition = project_current_main_phase_transition(projected, None,
@@ -394,6 +488,12 @@ def run_selected_phase_feedback_horizon_12003(
         ledger["event_boundary"] = "explicit_selected_event_slot_missing_or_mismatched"
         return delegate()
     feedback = apply_selected_phase_event_feedback_12003(state, selected=selected)
+    if preparation_projections:
+        feedback = replace(feedback,
+            cached_stat_refreshes=tuple(preparation_projections) + feedback.cached_stat_refreshes,
+            ledger={**feedback.ledger, "literal_cached_stats_applied": True,
+                    "preparation_cached_stats_applied": True,
+                    "preparation_stage": ledger["preparation_stage"]})
     ledger.update(selected_effects_executed=feedback.event_execution_consumed,
                   event_boundary="accepted_continue_main_before_rolls_and_damage")
     if feedback.feedback_ready:
@@ -409,7 +509,8 @@ def run_selected_phase_feedback_horizon_12003(
         modeled_date_raw=schedule["date_raw_after"], modeled_accepted_invocations=1,
         trace=({"timeline_index": 0, "source_context": day.source_context,
                 "modeled_date_raw_before": initial_condition.observed_date_raw,
-                "stages": ["calendar", "main_pre_event_exit_check", "selected_phase_feedback"],
+                "stages": (["accepted_daily_command_preparation"] if pre_date_knight_refreshes else [])
+                          + ["calendar", "main_pre_event_exit_check", "selected_phase_feedback"],
                 "state_before": state, "state_after": final, "selected_phase_feedback": feedback,
                 "actual_game_days_advanced": 0},),
         typed_gaps=feedback.typed_gaps, caller_seed_provenance=caller_seed_provenance)
@@ -417,6 +518,7 @@ def run_selected_phase_feedback_horizon_12003(
                                                   feedback.event_execution_consumed, ledger)
 
 
-__all__ = ["KnightCachedStatRefresh12003", "SelectedPhaseEventInput12003",
+__all__ = ["KNIGHT_ENTRY_PREPARATION_STAGE_12003", "KnightEntryCallbackWindow12003",
+    "KnightCachedStatRefresh12003", "SelectedPhaseEventInput12003",
     "SelectedPhaseEventFeedbackResult12003", "SelectedPhaseFeedbackHorizonResult12003",
     "apply_selected_phase_event_feedback_12003", "run_selected_phase_feedback_horizon_12003"]
