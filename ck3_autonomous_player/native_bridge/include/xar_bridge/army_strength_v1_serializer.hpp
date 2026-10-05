@@ -3,6 +3,7 @@
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/owned_regiments_v1_serializer.hpp"
 #include "xar_bridge/army_current_helper_domain_inputs_v1_serializer.hpp"
+#include "xar_bridge/army_current_helper_point_store_inputs_v1_serializer.hpp"
 
 #include <string>
 
@@ -370,6 +371,11 @@ inline void AppendArmyStrengthV1(
     result += ",\"monthly_current_helper_domain_inputs_v1\":";
     AppendArmyCurrentHelperDomainInputsV1(result, *strength.monthly_current_helper_domain_inputs_v1,
                                          number, append_json_string);
+  }
+  if (strength.monthly_current_helper_point_store_inputs_v1) {
+    result += ",\"monthly_current_helper_point_store_inputs_v1\":";
+    AppendArmyCurrentHelperPointStoreInputsV1(result, *strength.monthly_current_helper_point_store_inputs_v1,
+                                             number, append_json_string);
   }
   result += ",\"scope_role\":\"";
   switch (strength.scope_role) {

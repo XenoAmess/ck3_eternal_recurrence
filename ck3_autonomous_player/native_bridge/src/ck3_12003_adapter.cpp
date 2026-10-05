@@ -177,6 +177,7 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
         reinterpret_cast<decltype(caller.contains_war_participant)>(image_base + 0x2494B60);
     result.armies.monthly_daily_queue_bindings.enabled = true;
     result.armies.monthly_first_removal_cleanup_inputs_enabled = true;
+    result.armies.monthly_current_helper_point_store_inputs_enabled = true;
     result.armies.monthly_current_helper_domain_bindings = {
         true,
         reinterpret_cast<void **>(image_base + 0x5D1EB58),

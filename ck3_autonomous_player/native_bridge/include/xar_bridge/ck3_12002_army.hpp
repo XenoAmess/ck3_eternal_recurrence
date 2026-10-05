@@ -156,9 +156,12 @@ struct ArmyBindings {
   ArmyDailyQueueBindings12003 monthly_daily_queue_bindings{};
   bool monthly_first_removal_cleanup_inputs_enabled = false;
   ArmyCurrentHelperDomainBindings12003 monthly_current_helper_domain_bindings{};
+  bool monthly_current_helper_point_store_inputs_enabled = false;
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(
+    const ArmyBindings &, void *current_army);
+game::ArmyCurrentHelperPointStoreInputsV1 ReadCurrentHelperPointStoreInputs12003(
     const ArmyBindings &, void *current_army);
 
 // Same GDbo key/tier implementation used by the raised ArRg reader.
