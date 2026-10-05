@@ -796,3 +796,43 @@ is `post326A8E0_and2920310_pre291CB14`; it is not attached to the current result
 Whole person/Entry readiness remains false. Source-only receipt and the minimal
 input plan are in `person-stage-chain/AFTER-GATED-SOURCE-PLAN.json`; no test,
 native build or game operation is run for this source-ledger increment.
+
+## Source-only follow-on: Character192 provider and2920850
+
+The disjoint unowned caller bound `[291CB14,291CB70)` is now source-ready in
+`person-stage-chain/after-gated-provider-2920850-source/`. Its SOURCE-TREE.md
+contains the exact stage ledger/Mermaid; QUERY-PLAN.md specifies the minimum
+same-query raw inputs. Fresh narrow cost is1032B=888 code+144 pdata, with no
+duplicate fresh spans, full EXE scan/hash, data/unwind/header read or game action.
+Four contiguous2920850 fragments total757B throughRET2920B44. Its demanded
+default getter28D7480 is131B; the cached provider getter and181B membership
+helper4212920/mapper source are reused, not captured again.
+
+Provider selection sign-extends Character WORD192. Signed upper5C69FE4 is
+tested first: value>=upper selects loaded provider16A0. Otherwise value<=lower
+5C69FE0 selects16B0; the middle interval selects actual fallback5D1E0B0.
+Matching selected magic38 emits actual inlinePC40 once atunit100000, including
+empty; wrong magic skips it.2920850 is unconditional after that selection.
+
+Helper2920850 selects inline1C0+168 then1C0+180 when1C0 is present and1D0
+absent, otherwise getter28D7480's static5D67E60 vector with guard5D67E58.
+Each physical DWORD ID resolves through5D1EB60/fullID8 or actual5D1EB90
+fallback. Its table4C0 has four fixed B30-stride rows. For each first-list
+occurrence, all four directPCs at table80 precede all four nested headers at
+table400; second-list offsets are240 and418. This ordering differs from
+291F940's per-outer-row direct/nested interleaving. Duplicate list/descriptor
+occurrences and direct empty source requests remain separate. Nested source
+uses the existing thirdRite750 fullQWORD membership and first-match mapper,
+with that Rite context distinct from the model10 recipient. No initializer or
+native function is called; raw current default state and any explicit numeric
+model of cold empty initialization remain separate scopes.
+
+The proposed verified frontier is
+`postProviderCharacter192_and2920850_pre291CB70`, requiring an explicit
+preceding326/2920310 stage. No producer/contract or pure-chain extension is
+delivered for this follow-on yet. Already closed carrierweighted630 follows
+atCB70 and retains actual stored signed64 weights; later2920B50 atCC71 remains
+the next source gap. Source-only evidence does not change current static-ready
+preC9D8 readiness or qualify full person/Entry. There is no new test/build or
+old-case rerun for this increment. The authorized four-family producer's
+genuine contract remains the next implementation dependency for this consumer.
