@@ -1,0 +1,40 @@
+{
+  "schema": "g2-person-remaining-two-helper-implementation/v1",
+  "utc": "2026-10-05T14:35:24.233038+00:00",
+  "source_only_commit": "e3dc8920755bc4ddd612c6241d1028ea661543a2",
+  "source_only_receipt": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/remaining-two-helper/SOURCE-ONLY-RECEIPT.json",
+    "bytes": 10230,
+    "sha256": "c0627607fac2dcdc9c6a0c5733377d35ee96ea1de3e34048a78768012cdba9a7"
+  },
+  "canonical_qualification": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/remaining-two-helper/IMPLEMENTATION-QUALIFICATION.md",
+    "bytes": 4293,
+    "sha256": "466da1121cf1854b088962642bbacf96fe4bd0c68744d6e4867f719da12c231f"
+  },
+  "python_receipt": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/remaining-two-helper/focused-python-attempt01.json",
+    "bytes": 2236,
+    "sha256": "68c5af6480d1e952b3ad6a7bd6e92fb773d76cb7553597e7287511d92d526e65"
+  },
+  "native": {
+    "target": "xar_ck3_12003_person_remaining_helpers_test",
+    "wire_dir": "BUILD_DIR/ck3_12003_person_remaining_helpers_wire",
+    "cases": [
+      "full-order-duplicates",
+      "lazy-fallback-partial-independent",
+      "culture-skip-inner-zero"
+    ],
+    "validation": "Root central pending; no lane compilation"
+  },
+  "readiness": "Python static-ready; native source implemented pending central build/CTest/genuinewire; no completeperson/Entry/live",
+  "game_sdk_pipe_ui_steam_process_runtime_profile_save_cache_activity": 0,
+  "new_game_days": 0,
+  "new_exe_bytes": 2064,
+  "lane_cumulative_new_exe_bytes": 5173,
+  "remaining": [
+    "Earlier absent1C8 recipient2BFAC30",
+    "Caller291C467 onwards",
+    "Complete-person baseline/actualEntry association per other lanes"
+  ]
+}

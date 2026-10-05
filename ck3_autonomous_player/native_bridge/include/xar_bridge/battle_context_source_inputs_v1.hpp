@@ -328,6 +328,8 @@ struct ContextSourceHelper291f0a0V1 {
   friend bool operator==(const ContextSourceHelper291f0a0V1 &,
                          const ContextSourceHelper291f0a0V1 &) = default;
 };
+#include "xar_bridge/battle_person_remaining_helpers_v1.inc.hpp"
+
 struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
   std::string status = "unavailable";
   bool ready = false;
@@ -335,6 +337,7 @@ struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
   std::optional<ContextSourcePre291e2101640V1> pre_291e210_1640;
   std::optional<ContextSourceLaterDirectV1> later_direct_291c3fb_44c;
   std::optional<ContextSourceHelper291f0a0V1> helper_291f0a0;
+  std::optional<ContextSourceRemainingHelpersV1> later_helpers_291f550_291f940;
   std::optional<ContextSource291e210V1> branch_291e210;
   std::optional<ContextSource291d7e0V1> branch_291d7e0;
   std::optional<ContextSourcePost291d7e0V1> post_291d7e0_sources;
