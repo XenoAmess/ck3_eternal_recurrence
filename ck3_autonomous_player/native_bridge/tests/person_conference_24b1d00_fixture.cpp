@@ -1,4 +1,5 @@
 #include "xar_bridge/battle_context_source_inputs_v1_serializer.hpp"
+#include "xar_bridge/ck3_12003_context_sources.hpp"
 
 #include <cstddef>
 #include <cstdint>
