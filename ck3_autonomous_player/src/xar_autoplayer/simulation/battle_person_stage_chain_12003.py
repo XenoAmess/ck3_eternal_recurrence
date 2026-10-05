@@ -276,10 +276,92 @@ def project_stage_chain_six_skills_12003(
         "full_entry_ready": False, "conditional_stage_projection": True})
 
 
-def _tail_emit(section: Mapping | None, module_name: str, function: str, family: str | int | None = None):
+def _tail_emit(section: Mapping | None, module_name: str, function: str, family: str | int | tuple | None = None):
     module = import_module("xar_autoplayer.bridge." + module_name)
     emit = getattr(module, function)
+    if isinstance(family, tuple):
+        return emit(section, *family)
     return emit(section) if family is None else emit(section, family)
+
+
+def _provider192_prefix(section: Mapping, module: str, outputs: dict):
+    """Retain each source slot while folding only the verified ordered prefix."""
+    name = "provider192_and2920850"
+    api = "emit_provider192_and2920850_"
+    suffix = "_requests_from_current_source_inputs_12003"
+    families = ("provider_192", "list_168", "list_180")
+    frontiers = ("postProviderCharacter192_pre2920850", "post2920850_list168_preList180",
+                 "postProviderCharacter192_and2920850_pre291CB70")
+    leaf = section.get(name)
+    prefix, ledger, missing, frontier, contiguous = (), [], [], None, True
+
+    def emit(kind, indices):
+        try:
+            return tuple(_tail_emit(section, module, api + kind + suffix, indices)), ()
+        except (ValueError, ModuleNotFoundError, AttributeError) as error:
+            return (), (str(error),)
+
+    for family, after in zip(families, frontiers):
+        requests, gaps = emit("family", family)
+        parts = []
+        family_prefix, family_frontier = (), None
+        family_contiguous = True
+        if gaps and family != "provider_192":
+            branch = leaf.get(family) if isinstance(leaf, Mapping) else None
+            rows = branch.get("rows") if isinstance(branch, Mapping) else None
+            count = branch.get("numeric_count") if isinstance(branch, Mapping) else None
+            family_contiguous = (type(count) is int and count >= 0 and isinstance(rows, list)
+                and branch.get("header_selection") is not None
+                and (count == 0 or branch.get("array_present") is True))
+            for occurrence in rows or ():
+                occurrence_index = occurrence["native_index"]
+                for slot in range(8):
+                    label = f"{family}.occurrence{occurrence_index}.slot{slot}"
+                    slot_requests, slot_gaps = emit("slot", (family, occurrence_index, slot))
+                    outputs[name + "." + label] = slot_requests
+                    if not slot_gaps:
+                        if family_contiguous:
+                            family_prefix += slot_requests
+                            family_frontier = f"post2920850_{label.replace('.', '_')}_preSlot{slot + 1}"
+                    elif slot >= 4:
+                        nested_rows = occurrence.get("nested_rows")
+                        header = None if nested_rows is None else nested_rows[slot - 4]["mapped_family"]
+                        descriptors = header.get("rows") if isinstance(header, Mapping) else None
+                        descriptor_count = header.get("count") if isinstance(header, Mapping) else None
+                        descriptor_contiguous = (family_contiguous and type(descriptor_count) is int
+                            and descriptor_count >= 0 and isinstance(descriptors, list)
+                            and header.get("admitted") is True
+                            and (descriptor_count == 0 or header.get("array_present") is True))
+                        for descriptor in descriptors or ():
+                            descriptor_index = descriptor["native_index"]
+                            descriptor_label = f"{family}.occurrence{occurrence_index}.nested{slot - 4}.descriptor{descriptor_index}"
+                            descriptor_requests, descriptor_gaps = emit("descriptor",
+                                (family, occurrence_index, slot - 4, descriptor_index))
+                            outputs[name + "." + descriptor_label] = descriptor_requests
+                            descriptor_contiguous = descriptor_contiguous and not descriptor_gaps
+                            if descriptor_contiguous:
+                                family_prefix += descriptor_requests
+                                family_frontier = f"post2920850_{descriptor_label.replace('.', '_')}_preDescriptor{descriptor_index + 1}"
+                            parts.append({"part": descriptor_label, "requests_ready": not descriptor_gaps,
+                                "request_count": len(descriptor_requests),
+                                "in_contiguous_family_prefix": descriptor_contiguous,
+                                "missing_inputs": descriptor_gaps})
+                    parts.append({"part": label, "requests_ready": not slot_gaps,
+                        "request_count": len(slot_requests),
+                        "in_contiguous_family_prefix": family_contiguous and not slot_gaps,
+                        "missing_inputs": slot_gaps})
+                    family_contiguous = family_contiguous and not slot_gaps
+            requests = family_prefix
+        outputs[name + "." + family] = requests
+        if contiguous:
+            prefix += requests
+            frontier = after if not gaps else (family_frontier or frontier)
+        ledger.append({"family": family, "requests_ready": not gaps,
+            "request_count": len(requests), "in_contiguous_family_prefix": contiguous and not gaps,
+            "verified_parts": tuple(parts), "missing_inputs": gaps})
+        missing.extend(family + ":" + gap for gap in gaps)
+        contiguous = contiguous and not gaps
+    return prefix, ledger, missing, frontier
 
 
 def continue_person_stage_chain_tail_12003(
@@ -301,6 +383,7 @@ def continue_person_stage_chain_tail_12003(
     list_module = "battle_person_list_predicate_2530dd0_contract"
     gated_module = "battle_person_gated_temporary_tail_contract"
     after_gated_module = "battle_person_after_gated_tail_contract"
+    provider192_module = "battle_person_provider192_and2920850_contract"
     stages = (
         ("2753860", "post2753860_pre291C4D2", prefix_module,
          "emit_helper_2753860_requests_from_current_source_inputs_12003", None),
@@ -326,7 +409,8 @@ def continue_person_stage_chain_tail_12003(
          "emit_gated_temporary_tail_requests_from_current_source_inputs_12003", None),
         ("after_gated_tail", "post326A8E0_and2920310_pre291CB14", after_gated_module,
          "emit_after_gated_tail_requests_from_current_source_inputs_12003", None),
-        ("intervening_lists_flags_temp_helpers_thresholds", "preCarrierWeighted630", None, None, None),
+        ("provider192_and2920850", "postProviderCharacter192_and2920850_pre291CB70", provider192_module,
+         "emit_provider192_and2920850_requests_from_current_source_inputs_12003", None),
         ("carrier_weighted630", "postCarrierWeighted630_pre291CC71", direct_module,
          "emit_tail_direct_family_requests_from_current_source_inputs_12003", "carrier_weighted630"),
         ("remaining_later_preparation", "remaining_caller_unclosed", None, None, None),
@@ -380,15 +464,20 @@ def continue_person_stage_chain_tail_12003(
         conference_family_ledger = []
         gated_family_ledger = []
         after_gated_family_ledger = []
+        provider192_family_ledger = []
+        provider192_frontier = None
         qualifier_definition_ledger = []
         list_row_ledger = []
         try:
             if not actor_matches:
                 raise ValueError("matching_character_source_unavailable")
             if module is None:
-                raise ValueError("source_closed_provider192_2920850_observation_unimplemented"
-                    if name == "intervening_lists_flags_temp_helpers_thresholds" else "native_source_stage_unclosed")
-            if name in ("conference24B1D00", "gated_temporary_tail", "after_gated_tail"):
+                raise ValueError("native_source_stage_unclosed")
+            if name == "provider192_and2920850":
+                requests, provider192_family_ledger, missing, provider192_frontier = _provider192_prefix(
+                    source_inputs, module, outputs)
+                ready = not missing
+            elif name in ("conference24B1D00", "gated_temporary_tail", "after_gated_tail"):
                 is_gated = name == "gated_temporary_tail"
                 is_after_gated = name == "after_gated_tail"
                 if is_after_gated:
@@ -482,6 +571,8 @@ def continue_person_stage_chain_tail_12003(
                          "source_ordinal": request.source_ordinal, "first_row_index": request.first_row_index}, updates)
             if ready:
                 stage = after_stage
+            elif name == "provider192_and2920850" and provider192_frontier is not None:
+                stage = provider192_frontier
             elif name == "qualifier_repeated_contribution" and any(
                     row["in_contiguous_definition_prefix"] for row in qualifier_definition_ledger):
                 completed = sum(row["in_contiguous_definition_prefix"] for row in qualifier_definition_ledger)
@@ -515,6 +606,7 @@ def continue_person_stage_chain_tail_12003(
             "conference_family_stages": tuple(conference_family_ledger),
             "gated_temporary_family_stages": tuple(gated_family_ledger),
             "after_gated_family_stages": tuple(after_gated_family_ledger),
+            "provider192_family_stages": tuple(provider192_family_ledger),
             "qualifier_definition_stages": tuple(qualifier_definition_ledger),
             "list_predicate_row_stages": tuple(list_row_ledger)})
         if required:
@@ -528,8 +620,8 @@ def continue_person_stage_chain_tail_12003(
         "future_tail_missing_inputs": tuple(future_missing),
         "first_contiguous_observation_dependency": next(
             (row["stage"] for row in ledger_rows if not row["requests_ready"]), None),
-        "next_native_source_leaf": "291CB14_provider192_2920850", "all_tail_source_stream_ready": False,
-        "next_native_source_leaf_status": "source_closed_observation_unimplemented",
+        "next_native_source_leaf": "291CC71_2920B50", "all_tail_source_stream_ready": False,
+        "next_native_source_leaf_status": "source_closed_minimum_contract_pending",
         "provider_291c5b2_operand_scope": "held_current_character_1b0_2f8",
         "provider_291c5b2_return_edges": "all selection branches rejoin291C5B7",
         "qualifier_28bc0d0_operand_scope": "held_current_character_1b0_scratch_object_relationships",
@@ -542,6 +634,10 @@ def continue_person_stage_chain_tail_12003(
         "after_gated_tail_operand_scope": "held_current_court_position_sources_and_source_closed_literal_calendar_inputs",
         "after_gated_empty_default_scope": "actual_header_or_explicit_numeric_model_without_initializer_execution",
         "after_gated_native_evaluation_equivalence_claimed": False,
+        "provider192_and2920850_operand_scope": "held_current_signed_192_rite_membership_and_list_sources",
+        "provider192_list_order": "each_occurrence_four_direct_slots_then_four_nested_headers",
+        "provider192_mapped_default_guard_scope": "unused_default_guard_does_not_invalidate_actual_mapped_PC",
+        "provider192_native_evaluation_equivalence_claimed": False,
         "source_operand_scope": "held_current_same_query_inputs",
         "conditional_on_observed_source_values": True,
         "291f260_weight_source_scope": "held_current_evaluated_values",

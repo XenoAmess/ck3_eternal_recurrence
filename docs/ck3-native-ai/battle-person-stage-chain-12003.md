@@ -874,3 +874,64 @@ rerun for this metadata correction. No old/sibling case, native build, new
 EXE read or game operation is required for this pure connection. The separate
 1032-byte source-only follow-on is recorded above, not counted as producer
 qualification or a live artifact.
+
+## Genuine provider192/list sources and signed630 connected throughpre291CC71
+
+Source plan82e789b2, the frozen caller tree and mapped-default demand correction
+precede the genuine contract/shared normalizer
+`dc2ee14f14c73488d7b39e7ac92e482bc1b4a3f5` and this consumer extension.
+The former unimplemented placeholder is replaced by the actual
+`provider192_and2920850` leaf. Its families `provider_192`, `list_168`,
+`list_180` are consumed in that order. Every original list occurrence consumes
+four direct slots before four nested headers. The real slot and descriptor
+APIs retain a contiguous verified prefix when a nested header is partial,
+and expose later ready descriptors, slots, occurrences and families separately.
+An actual mapped PC remains qualified with an unused default guard0/-1;
+consumed cold fallback bytes remain partial. No native callback or initializer
+equivalence is claimed.
+
+`through_stage="provider192_and2920850"` reaches
+`postProviderCharacter192_and2920850_pre291CB70` when these three families
+are ready. `through_stage="carrier_weighted630"` then folds the already
+observed signed64 stored weights, including materialized nonempty zero-weight
+rows, and reaches `postCarrierWeighted630_pre291CC71`. Partial labels identify
+the last verified logical family/occurrence/slot/descriptor. They do not name
+the requested final stage. All prior source-held scope restrictions, including
+291F260's held-current ranks, still apply.
+
+```mermaid
+flowchart TD
+  A[Explicit post326A8E0_and2920310_pre291CB14 context] --> P[Signed Character192 provider selection]
+  P --> L[First list: each occurrence direct slots0..3 then nested headers0..3]
+  L --> D[Each nested descriptor in original order]
+  D --> R[Second list: same physical slot ordering]
+  D -. missing selected PC or consumed cold fallback .-> U[Retain last verified descriptor prefix]
+  U --> I[Expose later independently ready sources]
+  R --> W[Carrier630 actual stored signed64 weights]
+  W --> F[postCarrierWeighted630_pre291CC71]
+  F -. genuine minimum observer/contract pending .-> N[2920B50 two source-closed ranked families; cold rank fallback gap]
+```
+
+One distinct production-normalizer→chain→six-skill compound case in
+`test_battle_person_provider192_stage_chain_12003.py` is GREEN on its first
+execution on2026-10-06 04:20:58CST (1/1,0.037s), external
+`person-stage-chain/provider192-attempt-01.json`. Source counts1/20/4 preserve
+all25 requests and original PC references, including one empty direct request.
+Stored630 weights`[0,-100000,200000]` remain separate occurrences; the zero
+weight row still materializes. Context9007450/weighted65 projects skills
+`[6,6,6,6,6,96]`. A missing first occurrence/nested0/descriptor1 stops at
+`post2920850_list_168_occurrence0_nested0_descriptor0_preDescriptor1`,
+context8600911/weighted44/skills`[6,6,6,6,6,92]`. Later descriptor2, slot5,
+the second occurrence, four list180 requests and three630 requests remain
+independent and are not folded past the gap. Raw inputs and the explicit prior
+remain unchanged.
+
+The next source-only packet `person-tail/following2920b50-source/` is owned
+by the native producer lane. Its two ordered ranked families are sealed,
+while the minimum actual contract and cold ranked fallback callback remain
+distinct pending inputs. This bounded chain is static-ready conditional pure
+assembly; full person preparation and Entry remain false. The sole case is
+synthetic source-shaped input through actual production code, not native
+producer or live qualification. No old or sibling tests, native build, fresh
+EXE read, CK3 operation, current-final-as-prior or unknown-as-empty assumption
+is introduced.
