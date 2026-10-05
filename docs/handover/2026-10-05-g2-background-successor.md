@@ -261,3 +261,14 @@ game/SDK/realpipe/UI/Steam/profile/save/cache/runtime部署操作0、新增游�
 资格为有界conditional numeric static-ready，未生成context、历史stage、physical storage、真实copy/write、full native callback或Entry/live。它直接消费stagechain已验证frontier的明确context，余下构造段仍由R4-1..3继续补真实fields并续fold。没有因第一项交付而停止本批后台任务。专题[显式缓存投影](../ck3-native-ai/battle-person-stage-cache-projection-12003.md)，源码module`battle_person_stage_cache_projection_12003.py`及一个新case随本次commit/push；回执`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/cache-stage-projection/attempt01.json`，SHA5dafed929b5be5cba5b22e0e299b213df43d03d6ce4f7a3118252c0f0d5535a8。
 
 同时Root已采用person-tail source-only8557f9a7→b1adea76并将SOURCE-TREE-INITIAL/Mermaid同步frontier：政府870/A30和weighted630 raw weights/order独立闭合，初始source新EXE0；实现/新native资格仍pending，intervening unknown没有当empty。其他six owners/Entry第七owner继续source/model施工，Oct5日周rolling；本机R0046/h9052/raw53265168与5035/36524等live冻结不变。
+
+
+### 首次接触纯刷新与不同省份初始输入连接继续交付
+
+实际采用时间：2026-10-05T23:49:36+08:00。first-contact-final-preparation包494ae01c→Rootc6a0bd1c、a66f1348→Rootb9db5ca1已合入。新专属纯模型使用显式selected Character stage C1..C9与独立linked knight prowess，按exact2C06B00/2C4D680/2C06D30算六值，再按side0→side1、levy→MAA依2651070写入派生Entry六cache；quantity/header不变。ordinary/MAA缺明确endstage getter tuple时partial，不用currentfinal当pre-effect。2C4D680 slowMAX/Q与general numeric helper的MIN/Q分解分开，旧helper不改。
+
+两个新增focused case各通过一次（final primitive0.3682s、initial adapter0.2343s）。第一次final fixture缺MAA counter census在normalizer处harness RED，已保留，仅修fixture后首次成功；旧case/原生compile/新EXE读取/游戏操作0。初始adapter同省复用旧effective_stats；异省只消费initialization_context_stats且sourceProvince必须是actualArmycurrentProvince，缺/错source不拿targettuple补。Root已分配R4-8 replenishment Z:/gbs8补同CombatInputs query这项真实readonly依赖，equalcase不另读getter；这项计划按当前真实追加，不倒填23:18七包或00:00早会。
+
+本次资格为named-stage knight公式、显式六cache refresh及initialstage adapter的有界static-ready；完整人物构造、outer commander/effects/accolade assembly、未来contact/Entry/forecast/live仍未完成。工作继续，R4-3补prefix连续阶段，R4-1补真实trait/tail与absentbranch输入，R4-5 sourceholding/exclusion已合入且新standalone native target/WX首次GREEN10.9545s、新CTest1/1 GREEN0.14s，但9wire消费者此记录时pending、整DLL未就新native源重编（旧完整DLL64bb资格保持）。
+
+证据：本轮first-contact-final-preparation/ROOT-DELIVERY.json、OCT5-W41-FIELDS.json、focused-attempt01 RED与focused-attempt02-fixture-census GREEN、focused-initial-attempt01 GREEN；[首次接触最终stat专题](../ck3-native-ai/battle-first-contact-final-stat-refresh-12003.md)。source-only absentrecipient a0f4d53a→Rootfc749b36（source5,029B、puremodule尚待统一person包新case）和retained source182eb841→69016947 /nativecandidate ab7ab1f1→db015fe8分别保留其research/candidate或独立验证边界，未抢记全人物ready。游戏及新增日0，本机5035/36524等历史freeze保持；Oct5/本周仍rolling，跨日正常收口后续行。

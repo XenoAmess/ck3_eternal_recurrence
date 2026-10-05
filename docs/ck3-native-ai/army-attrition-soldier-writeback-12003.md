@@ -728,3 +728,163 @@ Qualification receipts and SHA-pinned seven wires are indexed in the final
 monthly-budget-source/ROOT-DELIVERY.json. Root owns canonical/report/index
 integration and push. The first source plan and implementation receipt are
 preserved alongside this follow-on qualification.
+
+
+## Round4: remaining monthly caller effects source before implementation
+
+# Remaining24E3430 caller effects, source-first ledger
+
+2026-10-05. Frozen exact1.20.0.3 / Steam25652598 /
+EXE94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6
+is reused. This ledger reads cached source; no game is contacted. The existing
+post-stock budget and four-pass writer/current-max subsystem are preserved.
+
+## Covered source and independent effects
+
+Cached middle3439..39BD: external
+g2-resume-20261003/army-supply-attrition/native-tree/supply-change-next/
+caller-24e3439.txt, binary693311197dd9e054a3cb7859da836f65511be01f0c0cb03e7ec677f1bd61b10d,
+text25f30be470df2b8171830e04d4945aeabaa4f2dfeef7977769859e245f618867.
+Cached9B prologue and159B tail pins/actual spans are sealed in
+tail-source/ROOT-DELIVERY.json and SOURCE-TAIL.md. The three fragments end at
+RET24E3A5B; no final caller quarter/carry write exists at3A4D.
+
+Let S,J,R be original pre-writer whole supply,siege,raid budgets. Correct
+labels remain siege24E8560/5C69618 and raidArmy+1E8/5C69098. These values
+are independent of actual chunk loss, request caps, truncation and writer skip.
+
+1. The already closed24E4D10 first sets Army byte+22 to1 unconditionally.
+   On rejected admission stock and date+188 stay unchanged. On admission,
+   it stores its passed64-bit date at+188, then writes the derived stock.
+   Existing budget projection already derives admission/post-stock. Full
+   passed-date storage needs an explicit64-bit current-frame input; low32
+   clock date alone must not invent its high half.
+2. The four existing allocation/writer/refresh passes follow, preserving
+   original S,J,R rather than substituting physical casualty deltas. Their
+   current/max and associated DATA effects remain a separate conditional
+   subsystem. Other Q statistics/cache values are excluded.
+3. At37E1..37F4 compute signed wrapped i32(J+S). If<=0, skip the entire war
+   accounting branch. R is deliberately excluded. If positive, resolve
+   Army+124 Unit by generation/fallback; use actual Unit+174 actor FullID.
+   Resolve Character by+18 generation/fallback (no Char magic or ID validity
+   gate here); if Character+1C0 realm pointer exists use its+318 stored WarID
+   vector, otherwise use the descriptor at5459D38. Preserve stored order and
+   every repeated occurrence; this is not the active-wars world projection.
+4. Per stored WarID, generation resolve via5D1DE58/+2C capacity/+20 entries,
+   FullID atWar+8, fallback from5D1DE40. This source branch does not reject
+   ended wars or check War magic. At3935 first call2494B60(War+20,actorID).
+   If true select attacker side without asking defender. Otherwise test
+   War+80; if true select defender. Neither true selects no counter. At3958
+   add i32(J+S) to selected side signed32+30. This is a requested-budget
+   counter write, not evidence that the same number of soldiers was removed.
+   Repeated valid references alias by resolved FullID; all fallback references
+   alias the one fallback object. Each occurrence reloads its current cell.
+5. At398D..3999 compute i32(i32(J+R)+S). If<=0 return with no final roster
+   scan, irrespective of current. Otherwise sum current+38 of every identity-
+   valid ArRg occurrence after all writers/refreshes, signed32 wrap, with no
+   tier/eligibility/positive-current filter. Empty roster counts0. Sum>0
+   returns. Sum<=0 callsB02D10(GameData+2A5A8,&ArmyFullID+10 copy).
+
+2494B60 and its only comparator2494B50 are already completely source-closed:
+130B d3f63a0875e33bdffc3f058809e0c4e4c24224e378813e78ea3cbc72b55acaff,
+7B c2af87302b715b8acec91c68c48b58474b6ce6118d12c0b71d2dc16bc8140b04.
+They only read the side member vector and compare each member+8 to actor ID;
+direct writes are stack only. Reuse the source in war-holy-order/
+stock-eligibility/native/span-02494b60-02494be2.txt and its comparator pin.
+
+## Bounded model and remaining dependency
+
+The original frame can independently observe current byte22, explicit date64,
+ordered actor-realm War refs and their actual selected counter cells. A pure
+model can derive the known direct stores and account the budget increment
+with current/fallback aliases, without invoking any native mutator. Current
+snapshot fields do not expose these selected side counters or manager ID list.
+The existing ActiveWars query filters ended wars, deduplicates participants,
+and rejects dual-side actor membership; those policies cannot replace this
+caller's raw source path or stored occurrences.
+
+B02D10's actual container operation is the only newly required tail leaf.
+It is being closed narrowly in tail-source/B02D10; do not infer immediate
+Army destruction from the call. Once append semantics are sealed, observe
+that actual manager descriptor and project its semantic ordered ID list.
+Allocated addresses/growth bookkeeping and its later consumer are separate.
+There is no new paused after-state or full-monthly live result. Every derived
+war counter/list/date is explicitly conditional; actual post-state staysnull.
+The model keeps current actor/realm refs and selected membership/counter
+inputs fixed; weighted Q-statistic cache outcomes remain outside its scope.
+
+```mermaid
+flowchart TD
+  I[Current frame; explicit caller date and original S,J,R] --> U[Known updater byte22 and conditional date188/stock]
+  U --> W[Existing four loss passes and current/max refresh]
+  W --> G{Signed i32 S plus J greater than0?}
+  G -->|yes| V[Actual Unit actor / Character fallback / ordered realm War refs]
+  V --> A[War generation lookup or one fallback; preserve occurrences]
+  A --> P{2494B60 attacker membership?}
+  P -->|yes| C[Signed32 attacker side counter30 plus S plus J]
+  P -->|no| D{Defender membership?}
+  D -->|yes| F[Signed32 defender side counter30 plus S plus J]
+  D -->|no| N[No counter store]
+  C --> T{Signed i32 S plus J plus R greater than0?}
+  F --> T
+  N --> T
+  G -->|no| T
+  T -->|no| RET[Return]
+  T -->|yes| R[Derived post-writer wrapped valid current, per stored occurrence]
+  R --> E{Current sum less than or equal0?}
+  E -->|no| RET
+  E -->|yes| B[B02D10 manager ID container and ArmyFullID]
+  B --> RET
+  B -. leaf closing now; later lifecycle not yet modeled .-> X[Container semantic post-state then actual consumer]
+```
+
+# B02D10 closure unlocks the semantic manager ID-list post-state
+
+2026-10-05 follow-on to the cached caller tree; exact .3 frozen source only.
+The child tail-source/B02D10 source/read receipt is the authoritative byte
+pin. No native mutator is invoked by this research or forthcoming observer.
+
+The target has three adjacent verified pdata fragments,237B total ending at
+RETB02DFC. Receiver is a four-byte element container: data pointer+0,
+capacity signed32+8, count signed32+C. RDX points to the one raw DWORD to
+append. Count!=capacity takes the direct spare-storage path: data[count]=ID,
+then increments count. Full capacity grows allocation to at least count+1
+(loaded float32 growth factor1.5 participates), puts the ID at the new end,
+copies previous IDs in their original order, frees old storage, then writes
+pointer/capacity/count. Allocator address/capacity growth are outside the
+semantic ordered-ID-list projection; no game lifecycle call exists here.
+
+There is no search, uniqueness, sorting, removal, Army receiver or immediate
+Army destruction. An ID already present is appended again.24E3A48 therefore
+adds its raw native ArmyFullID to GameData+2A5A8 only after the caller's
+positive wrapped original three-budget gate and nonpositive post-loss wrapped
+current condition. The later consumer of this container is a separate source
+frontier. The model must never mark actual deletion from this append.
+
+The new readonly input list reads exactly this descriptor on the existing
+paused owning-thread ArmyStrength path, preserving every ID occurrence. The
+pure model derives only ordered semantic list-after, append-requested and
+branch readiness. It does not forecast relocated addresses or allocated
+capacity, invoke the allocator/append, or claim an actual new queue/lifecycle
+observation. Actual effect/deletion/post-state and fullmonthlylive stayfalse/
+null. Existing updater/budget/writer/refresh sources are not reopened.
+
+```mermaid
+flowchart TD
+  I[Caller tail passes original budget and derived current gates] --> V[GameData plus2A5A8 descriptor; pointer ArmyFullID]
+  V --> C{Count differs from capacity?}
+  C -->|yes| A[Write raw DWORD atdata count; incrementcount]
+  C -->|no| G[Grow four-byte allocation, write new end, copy old order, free old]
+  G --> H[Store data pointer,capacity,count]
+  A --> R[Semantic list = previous occurrences followed by raw ArmyFullID]
+  H --> R
+  R -. later consumer source unclosed .-> U[Actual Army lifecycle]
+```
+
+The sealed prologue starts at24E3430;24E3450 is its first updater call,
+not a different function entry. The same-input model explicitly chooses the
+readonly signed64 GameState+8 storage as the conditional entry argument. That
+choice does not prove the real caller RDX on any actual invocation; its upstream
+origin remains a concrete source gap. Actual date/effects staynull/false. Source
+plan receipt: external monthly-caller-effects/SOURCE-PLAN-DELIVERY.json, SHA
+abe43a19f641ee38c386bbbbb7ddd33110b70c8138cdbca3749256cc98fec115.
