@@ -201,3 +201,11 @@ flowchart LR
     S -. "actual death modal not yet observed" .-> C["typed Close and independent clearance/date proof, actual0"]
     C -. "not yet observed" .-> P["successor gameplay and normal pair, actual0"]
 ```
+
+## Minimum balance inputs qualified and post-ransom h9444 retained：R0047自然继承准备增量（2026-10-06T05:27:55+08:00）
+
+仅消费frozen g78 HEADd22e9a1c source/reference和既有R0047/v73配置，不改代码、不重测/构建/游戏。当前heldstdio argv已选ordinary_campaign_succession/no-pact/private-death-succession-modal，loader已有readonly query＋Close注册，nativev73 private modal构建ON。观察到 `continue_as_heir_after_death:false` 是capabilities/_with_one_life_episode的固定metadata，并非actuallaunchdisable；不能修改字段制造readiness，也无需因该字段重启或换MCP。
+
+真正自然paused换人时，先保留旧estateexpectation与同帧actualsuccessor，按已有matched reconciliation绑定；已有continue-as-reconciled-successor只把episode重绑到已played alive successor，零CK3command／零restart、PID/gen/frame/campaignorigin保持。随后fresh publicrevision query exacttimeline，alreadyclear走普通successor日期推进；真正deathmodal且published predicates满足时才用当前successor/新episode一次normalClose。该已注册Close本身包含独立predicate-clear核对和真实life-advance/date proof，**不是只读关窗，也不承诺exact1日**；ACK/submitted_unconfirmed/unknown不能授material credit或盲重放。
+
+Runbook包仅 **research/runbook-ready**；living expectation/query已有历史primitive，ordinarynatural successor matchedrebind/actualdeathmodal/Close及normal successor save/driver pair在当前战役 **actual0**，coldrestore另项。此report固定h9444/raw53276520/5508/原Robertalive；health3.05962旧帧不作死亡日期预测，G2 5/8/NW2 2/4/natural0，610以后未来自然事件不预填。具体既有入口、顺序、casebounds与引用见 [natural succession RUNBOOK](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/natural-succession-preparation/RUNBOOK.md); [natural report fields](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/natural-succession-preparation/REPORT-FIELDS.json); [frozen source/reference manifest](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/natural-succession-preparation/SOURCE-REFERENCE-MANIFEST.json)。

@@ -172,3 +172,24 @@ map-control 的 `_verify_idempotent_map_control_postcondition` 只对 `already_r
 | [pending_character_interaction_context_contract.py](../../ck3_autonomous_player/src/xar_autoplayer/bridge/pending_character_interaction_context_contract.py)：`normalize_pending_interaction_id` / available readiness | `f43876ccfbd32b75005f3954ab9a5877c9274f250d427143e8e31d4904082419` |
 | [service.py](../../ck3_autonomous_player/src/xar_autoplayer/bridge/service.py)：`reply_pending_character_interaction` / `acknowledge_pending_character_interaction` | `4cc430636faca6485e9fb986378d3ca7817f3c6b8474b178c3cfed55e2996eff` |
 | [native_driver.py](../../ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py)：`_execute_pending_character_interaction_reply` / event selection / map-control postcondition | `edcb1f8e4ebbb20703988995a9f584a2cdeef1b6c4e154a84a7560746ec25aed` |
+
+## Minimum balance inputs qualified and post-ransom h9444 retained：exact.3 inbound pay-ransom有限续行（2026-10-06T05:27:55+08:00）
+
+Exact CK3 1.20.0.3／EXE94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6复用既有pin。580 R0047原Robert29829／native894/public895/raw53275704，actualdefinition `pay_ransom_interaction` hash2840579925/ordinal184，ID1946157063、actor34180、recipient29829、secondaryrecipient61540、普通recipient本地channel，剩余58/60日。Target合法absent，9sendoptions中nativeindex2 selected/shown/valid；canonical flag mapping未闭，不能把数字flag直接命名成gold等完整条款。Accept/reject均nativelegal，acknowledge非法；generic actor/on_send/already_applied成本10项零不表示accept赎金交易价值或副作用为零。Structured exchanges/effectpreview缺失、semanticdecisionreadyfalse。
+
+582/583 player prisoner collection完整4人，ordinal2=61540/jailer29829/custodyverified/house2237/notchild/primarytitle-tiernull；其现有privatequote `role_unavailable`，原因尚未由新producer source闭合，不自动当作囚犯不存在、无价值或无条件免费释放。Inboundpay与outboundransom应按actualroles/definition区别处理，不能从outboundquote移植结果。
+
+584现有 `pending_character_interaction_degraded_reject` 只提交一次normaltypedreject，actualinteraction_result rejected/同ID/sender34180；585独立native895/public896同raw、原alive actor/episode/PID69432/gen1且pendingnull。然后590 actual34日lifeadvance（request30）到native904/public905/raw53276520，正常h9444 retained save102604585B/SHAaf390207e0ee66b4433fb053d9bb77db0d29abdf90b116df3e7cb9c556d29a68，仍无war/army/event/pending。
+
+该有限“真实query→既有degradedreply→独立旧ID清空→普通日期推进→保存”达到有界 **production-live loop**；不授fullsemantic/nativeAI等价决策、赎金货币结果或custody release。真实同角色条款/quote缺口已经交gbs7 owner施工，本记录不修改策略或新增门禁；缺失观测沿actualreceivedroles补全，不能长期以null当完成。[retained h9444](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/checkpoints/h9444-post-ransom-5508days/checkpoint-receipt.json); [ransom580 context](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/580-pending-interaction-current-context.json); [583 target quote gap](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/583-ransom61540-current-quote.json); [584 once reject](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/584-ransom-exact-existing-reply.json); [585 independent clear](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/585-ransom-reply-independent.json); [590 actual34days](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/590-peace-existing-planner-turn-05.json); [590 final saved frame](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/590-peace-existing-planner-final-snapshot.json)。
+
+```mermaid
+flowchart LR
+    P["actual pay_ransom1946157063 / actor34180 / jailer29829"] --> Q["580 reply legal; terms missing"]
+    Q --> C["583 prisoner61540 custody; quote role_unavailable"]
+    Q --> R["584 existing degraded reject once"]
+    R --> I["585 independent pending clear"]
+    I --> D["590 actual34days / h9444 normal save"]
+    C -.-> N["gbs7 actual inbound terms/quote observer施工"]
+    N -.-> U["完整赎金语义/物质结果未qualified"]
+```
