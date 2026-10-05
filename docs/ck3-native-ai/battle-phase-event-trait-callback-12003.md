@@ -765,3 +765,46 @@ Root performs the fresh deployment and actual query. C is assigned the **sole or
 v80 remains **research/source-ready local inputs and an actionable existing-query recipe**; v79's qualified current-input primitive is unchanged. Complete future context, Entry/advantage timing, lifecycle/callbacks, battle horizon and Monte Carlo remain partial. No new tests or live credit; v79's single GREEN case is reused by receipt. This EOF increment preserves the adopted83866-byte prefix. Additional frozen-file input totals **3029 bytes** (reset197+paired979+growth788+new classified/selector1065); no whole scan, full hash or repeated EXE capture.
 
 The [joint receipt and Oct5/W41 fields](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-future-context-inputs-v80/publication/ROOT-DELIVERY.json) link all source continuations, A/B/C contracts, the C predicate correction and D's sole necessary unexecuted plan. Root owns Git and real paused validation. Next source entrances are the explicit remaining preparation producers in B's ledger; next observable value is the g73 current raw-input frame through the existing recipe.
+
+
+## v81: paused current numeric-input observation and one cached computation
+
+This is the first actual paused current-input readback for the adopted v79 numeric observer. Root's existing character-only query selected Robert 29829 with both battle/unit scopes null; C alone read the original query artifact once, then A/B/D used C's extracted cache. No new SDK call, game day, window action, model change or fixture execution was performed by this package.
+
+Observed native input leaf: `current_person_state.raw_numeric_inputs.status=available`, ready=true, scratch present=true, context source=`model_inline`. Base skills are `[4,9,6,6,10,6]`; all six loaded caps are 100; F0 adjustment is -9; category operands are `[1,3,1,0]`; ratio operands are 0/100. The current container supplies 71 ordered weighted rows and 160 aggregate keys. This frame is not the native null-scratch no-op branch.
+
+The public response preserves snapshot `native:3`, public revision 2, native revision 3, date raw 53262000, paused=true and backend `native-headless`. Its version and EXE-SHA fields are null and remain null in the extracted evidence. Root's separately supplied deployment/build context is g73/454e, exact 1.20.0.3 frozen EXE SHA94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6; it is not a value read from those null response fields. Root reported the native build GREEN (572 TUs, 64 jobs, 87 seconds), CI run37249487804 SUCCESS and the existing SDK56730 query bundle CLOSED0GREEN.
+
+### Current arithmetic and observed scope
+
+B called the adopted `compute_six_skill_cache_from_native_inputs_12003` once on C's cached public leaf: computed=true, no missing inputs, elapsed 0.0135913 seconds. Raw and first-clipped skill points are `[5,23,9,12,12,17]`; final points are `[5,23,9,12,12,8]`. The prowess component is positive11 plus `min(negative-2 + absolute5,0)`, yielding11; base6 produces raw17. The signed F0=-9 transforms first-clipped prowess17 to final prowess8. The actually observed Character EC is available8, giving a diagnostic difference of0. This comparison is evidence for this one current prowess pair, not a new equality gate.
+
+Only Character EC was observed as a final native skill cache in this artifact. The remaining five final values are source-defined computation from actual input operands, not observed six-skill native parity. The current final container can include prior derived-loop contributions; these71 rows are not a pre-trait or pre-derived-loop baseline. F08/F58 provider contribution identity, future trait context construction, injury/health auxiliary writers, Entry six-stat setters and their date/admission timing remain separate dependencies.
+
+```mermaid
+flowchart TD
+  R[Root paused character-only query 29829] --> O[Existing .3 native raw-input observer]
+  O --> C[C sole original008 extraction]
+  C --> N[Actual base caps F0 categories ratio and context rows]
+  N --> B[B sole current pure computation]
+  B --> V[Final computed skills 5 23 9 12 12 8]
+  C --> E[Observed current Character EC 8]
+  V --> D[One-frame prowess diagnostic delta0]
+  E --> D
+  N -. pre-derived baseline and future trait preparation unknown .-> F[Future trait callback context]
+  V -. actor target and setter scheduling remain separate .-> S[Combat Entry and resolved advantage]
+```
+
+### Artifacts and readiness
+
+- Original Root artifact, consumed only by C: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v68/root-results/actual-main-readback-01/008-ck3_query_battle_terminal_transition_v1.json`.
+- Extracted complete cached rows: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/v81-actual-current-numeric/cache/SELECTED-CHARACTER-ROWS.json`,47355B,SHA818543c2c7d3e395c1a35ae674d4971e3acea0246d4c2e4486af322cb9817f9d.
+- C extraction receipt: same directory `EXTRACTION-RECEIPT.json`,2538B,SHAb541b5db77ae0c9bef84ce043da0d688669625575d4314db969e795491039db1.
+- Cached arithmetic and full component ledger: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/v81-actual-current-numeric/numeric-comparison/ACTUAL-CURRENT-COMPUTATION.json`.
+- Joint publication/source and Oct5/W41 fields: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/v81-actual-current-numeric/publication/ROOT-DELIVERY.json`.
+
+Readiness changes to **production-live primitive** for the current raw-numeric-input observation and one actual paused prowess diagnostic. The v79 prepared-input pure function remains static-ready with its already sealed focused case; no old case was rerun. This package does not make a production-live future trait transition, automatic Combat Entry refresh, six-skill parity, health callback, future-date horizon, win odds or complete battle claim. No source no-op frame was observed; the old focused source no-op contract remains the existing static evidence.
+
+Root's actual checkpoint context is h8578/rawdate53262000,98380683B,SHA8ad3ef74f933dc42ce0e1f0db4bfeb85301954a19a0ee00bc231498ad771dfeb; actor alive, event null, same episode,0 new days, count4903. Source v80 was already adopted as5a9193d0; this package is a single EOF after its unchanged canonical postimage. Root remains the sole shared/Git/native-build/game operator.
+
+Next value-bearing work keeps the current observed numeric primitive and the separate Entry observer available while closing exact trait-preparation source inputs. Existing source entrances are291D1D0/291E210/291D7E0/291DED0/291DCE0; no extra callback or future numerical effect is inferred from the current prowess match.
