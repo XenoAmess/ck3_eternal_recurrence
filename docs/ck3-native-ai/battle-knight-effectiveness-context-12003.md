@@ -135,6 +135,30 @@ old-field absence and `.3` ordinal identity. Receipt:
 This is a consumer test only: native compilation and its independent fixture
 remain for Root's centralized build. Current source/observer qualification is
 **implementation candidate with consumer GREEN; native static-ready pending**.
+
+The new native fixture target/CTest is
+`xar_ck3_12003_knight_effectiveness_context_test`. It calls production
+`ReadCombatSimulationInputs` through source-only reuse of the combat fake-memory
+setup, with explicit callable leaves. Four cases check selected full ID
+`0x0300000D` versus linked knight `0x0100000A`, self selection, signed C1..C9
+modifier/operand mapping including carrier-null0 and zero skills, selected model
+context+68, and missing C5/model diagnostics while the native scalar125000 and
+knight stats remain available. Memory copies are compared before/after reads.
+The scalar callable is deliberately independent of the raw-table diagnostic;
+this fixture does not prove the native weighted formula or natural encounter.
+
+At build time `tests/project_knight_context_serializer.py` projects literal
+production `AppendCombatKnights` and its three JSON helpers from `bridge.cpp`.
+The fixture checks exact context JSON bytes and preserved scalar/stat bytes.
+Generated projection hashes and four wire files are written under
+`<build>/ck3_12003_knight_effectiveness_context_wire/`:
+`SERIALIZER-PROJECTION.json`, `selected_character.json`, `self_character.json`,
+`missing_key.json`, and `missing_model.json`. This follow-up adds fixture and
+source-qualification documentation only; it does not alter the reader/query.
+It was prepared without configuring, compiling or running native code. Root
+owns the first centralized focused build/run and must record its result before
+native static-ready qualification; no old case or consumer test was rerun.
+
 No CK3 launch, attach, live pipe, SDK, query, UI, Steam, profile, save, cache,
 runtime preparation or game-day operation occurred. There is no new live or
 complete Entry claim. The concrete forecast increment is explicit current
