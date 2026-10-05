@@ -1092,3 +1092,6 @@ GEN-034 子包进度另按 `4/4` 汇报：A/B/C/D 均已完成；
 ## 2026-10-05T08:11:48+08:00 R40 零日：自有围城兵种与雇佣兵组成已观测
 
 当前仍 4852/36524 日、resume1699、Oct5+194，R40/g72/PID110616 本次查询和 normal 保存0日。三个已召集军队 scope 的104行均读出：36 tier0、1 positive tier2、67合法 type absence/null；自有主军39行与守军24行均无正围城等级，敌方41行中唯一正值是 mangonel20/20 tier2。554雇佣公司可读，1538持久 regiment 行含984 typed tier0及554非MAA；30可雇 terms 含27 affordable、3 debt-allowed，当前无 siege-goal 公司。两组成查询为只读 production-live primitive，未 hire/buy/AI-loop。下一 P0 继续真实围城 OODA，以必要观测选择策略；G2 5/8、NW2 2/4、自然终态0不变。normal h8411/raw53260776/98135202B/SHA256 bc71178f3b934498c3286f12d1243ef71f723f03c6f0e7610d9838542677064c。
+
+## 2026-10-05T08:21:02+08:00 R40 当前4876日：正常24日围城延续
+当前4876/36524日、resume1723、Oct5+218；4852后新增24个正常 whole/calendar/bounded 保存日（576h），批次已关闭、全部GREEN、partial0/无失败。末native100/pub97：主军301989997@470 sieging3/route[]，守军184549452@2619 regular，owncombat0、Robert alive、event/interactionclear；470未占，Siege503316504 work9832460/55000000、ETA445仅估计，War117440524 active/+25。继续实际围城OODA与正常保存验收；本批未新增capability family、攻占或全战胜利，G2 5/8、NW2 2/4、自然终态0不变。normal h8483/raw53261352/98360179B/SHA256 8c38025b22a8e75766eba48f752b9b020ea63473d493d05fa715df0b6c78b95c；军事封存SHA256 275eb8e7ce6380572cf731abe0aa5818fd3701adfa7828ae6bdc9ab6d558d2c3。
