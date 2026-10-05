@@ -2236,9 +2236,9 @@ def create_server(
 
     @server.tool()
     def ck3_take_snapshot(
-        include_native_command_history: bool = True,
+        include_native_command_history: bool = False,
     ) -> dict[str, object]:
-        """Return the session snapshot; opt out of the full native transcript."""
+        """Return the session snapshot; opt in to the full native transcript."""
         return service.snapshot(
             include_native_command_history=include_native_command_history,
         )
