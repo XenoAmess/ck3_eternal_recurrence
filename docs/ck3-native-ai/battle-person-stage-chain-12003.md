@@ -490,3 +490,71 @@ Receipt `provider-attempt-01.json` identifies the exact consumed source files.
 This is static-ready pure source assembly, using synthetic source-shaped input
 through production code; it does not qualify the native collector or any live
 frame. No old case, native build, fresh EXE read or game operation was run.
+
+## Actual qualifier repetition connected in source order
+
+The separate source owner sealed `battle-person-qualifier-repetition-12003.md`
+at01:25:57 on2026-10-06, before its implementation (b5ee1c03). Its receipt
+records913 new EXE bytes by that owner; this chain consumes the sealed tree and
+reads zero new EXE bytes. Genuine pure45c69184 is adopted on the producer tree
+as dd7e1886, followed by shared normalizer
+`ce5cccf277517b6d0f949422eaf7ffd61b081e41`.
+
+The optional `qualifier_28bc0d0` holds the current actual manager5D1E2B0
+definitions50/count5C and Character1B0 scratch record prefixes. For each
+definition, native291C655 resets the local output DWORD count. Call28BC0D0
+evaluates2596950/25942D0 direct or relationship pointer matches first, then
+reads the full DWORD ID, rejectsFFFFFFFF and keeps its first accepted
+occurrence. Different generation bits remain different IDs. Dedup resets per
+definition; duplicate manager definition occurrences remain distinct.
+Native291C68D adds Definition40 with unit100000 once per accepted distinct ID,
+in manager order. The next helper call is291FB10 at291C6CF.
+
+The chain uses the genuine whole/per-definition emitters reexported by
+`battle_person_qualifier_28bc0d0_contract`. A complete stream preserves its
+global source ordinals and every unit request. On a partial definition it
+retains all independently ready definition streams and folds only the complete
+definition prefix. Its partial logical stage is
+`postQualifierDefinition{last verified native index}_pre291C655`, meaning the
+next definition's reset is the frontier. A known zero-repeat definition can
+advance that prefix without fabricating a PC. With no complete definition
+prefix, the verified government context remains the result.
+
+```mermaid
+flowchart TD
+  G[postGovernmentA30_pre291C620] --> M[Manager definitions in actual physical order]
+  M --> Z[Reset per-definition DWORD count0]
+  Z --> P[Actual held scratch predicate prefixes]
+  P --> D[After true predicate: fullDWORD sentinel/first-dedup]
+  D --> R[One Definition40 unit100000 append per accepted distinctID]
+  R --> N{Next manager definition?}
+  N -->|yes| Z
+  N -->|no| Q[postQualifierContribution_pre291C6CF]
+  Q --> F[Existing independent291FB10 leaf]
+  F -.-> U[Unclosed lists/flags/temp helpers/thresholds]
+  P -.-> X[Partial definition: continuous fold stops]
+  X --> I[Later ready definition streams stay independent]
+```
+
+`through_stage="qualifier_repeated_contribution"` supplies this bounded
+logical context under explicit baseline and observed current scratch operands.
+It does not establish a new construction-stage scratch association or reevaluate
+future object/relationship inputs. Existing held-current260 weight scope,
+current-final exclusion and full preparation/Entry false flags are retained.
+The distinct new chain integration is
+`test_battle_person_qualifier_stage_chain_12003.py`; the source owner's compound
+predicate case and our previous provider/government case are not rerun.
+
+The first distinct qualifier chain case passed once on2026-10-06 01:47:54
+Asia/Shanghai (1/1, 0.014s). Its repeated unit stream has physical definition
+indices `[0,0,1,2,2]`, preserving duplicate manager Definition0 again at2 and
+full DWORD IDs `AB000001/CD000001` as different identities. The ready bound
+`postQualifierContribution_pre291C6CF` projects skills `[6,6,6,6,6,47]`.
+Missing Definition1 PC keeps the complete Definition0 prefix at
+`postQualifierDefinition0_pre291C655`, skills `[6,6,6,6,6,44]`; the two later
+Definition2 requests remain independently available and are not folded across
+that gap. Receipt `qualifier-attempt-01.json` binds the actual source files.
+This is static-ready conditional pure assembly, using source-shaped synthetic
+frames through production code. The native collector and full current
+preparation/Entry remain separate qualifications. No old test, native build,
+new EXE read or game operation was run by this chain extension.
