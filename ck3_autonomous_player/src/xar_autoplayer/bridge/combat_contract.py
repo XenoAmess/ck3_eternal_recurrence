@@ -3343,6 +3343,8 @@ def _normalize_knights(
             # preserved for exact same-frame source attribution.
             if isinstance(raw_member, dict) and "effectiveness_components" in raw_member:
                 member_keys.add("effectiveness_components")
+            if isinstance(raw_member, dict) and "effectiveness_context" in raw_member:
+                member_keys.add("effectiveness_context")
             member = _exact_object(
                 raw_member,
                 member_keys,
@@ -3438,6 +3440,42 @@ def _normalize_knights(
                 normalized_member["effectiveness_components"] = {
                     "status": component_status,
                     **arrays,
+                }
+            if "effectiveness_context" in member:
+                context_name = f"{member_name}.effectiveness_context"
+                context = _exact_object(member["effectiveness_context"],
+                    {"schema", "status", "character_id", "modifier_indices",
+                     "modifier_raw", "operand_raw", "scale", "unavailable_reason"},
+                    context_name)
+                if context["schema"] != "ck3_12003_knight_effectiveness_context_v1":
+                    raise ValueError(f"native {context_name}.schema is malformed")
+                context_status = _available_status(context["status"], f"{context_name}.status")
+                context_id = (None if context["character_id"] is None else
+                    _non_negative_int32_id(context["character_id"], f"{context_name}.character_id"))
+                if context_status == "available" and context_id is None:
+                    raise ValueError(f"native {context_name}.character_id is missing")
+                indices = _array(context["modifier_indices"], f"{context_name}.modifier_indices")
+                if indices != list(range(0xC1, 0xCA)) or any(type(i) is not int for i in indices):
+                    raise ValueError(f"native {context_name}.modifier_indices is malformed")
+                context_arrays = {}
+                for key in ("modifier_raw", "operand_raw"):
+                    if context_status == "unavailable":
+                        if context[key] is not None:
+                            raise ValueError(f"native {context_name}.{key} must be null")
+                        context_arrays[key] = None
+                    else:
+                        values = _array(context[key], f"{context_name}.{key}")
+                        if len(values) != 9:
+                            raise ValueError(f"native {context_name}.{key} must have nine values")
+                        context_arrays[key] = [_signed_int64(v, f"{context_name}.{key}[{i}]")
+                            for i, v in enumerate(values)]
+                _fixed_scale(context["scale"], f"{context_name}.scale")
+                normalized_member["effectiveness_context"] = {
+                    "schema": context["schema"], "status": context_status,
+                    "character_id": context_id, "modifier_indices": list(indices),
+                    **context_arrays, "scale": CK3_COMBAT_FIXED_POINT_SCALE,
+                    "unavailable_reason": _status_reason(context_status,
+                        context["unavailable_reason"], context_name),
                 }
             members.append(normalized_member)
             ordering.append((army_id, regiment_id, character_id))

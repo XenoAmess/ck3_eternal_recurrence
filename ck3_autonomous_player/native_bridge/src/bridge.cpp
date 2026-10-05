@@ -3334,6 +3334,38 @@ void AppendCombatKnights(std::string &result,
       result += SignedNumber(knight.prowess);
       result += ",\"knight_effectiveness_raw\":";
       result += SignedNumber(knight.knight_effectiveness_raw);
+      if (knight.effectiveness_context.has_value()) {
+        const auto &context = *knight.effectiveness_context;
+        result += ",\"effectiveness_context\":{\"schema\":\"ck3_12003_knight_effectiveness_context_v1\",\"status\":\"";
+        result += context.available ? "available" : "unavailable";
+        result += "\",\"character_id\":";
+        result += context.character_id.has_value() ? SignedNumber(*context.character_id) : "null";
+        result += ",\"modifier_indices\":[193,194,195,196,197,198,199,200,201],\"modifier_raw\":";
+        if (context.available) {
+          result += '[';
+          for (std::size_t i = 0; i < context.modifier_raw.size(); ++i) {
+            if (i != 0) result += ',';
+            result += SignedNumber(context.modifier_raw[i]);
+          }
+          result += "]";
+        } else {
+          result += "null";
+        }
+        result += ",\"operand_raw\":";
+        if (context.available) {
+          result += '[';
+          for (std::size_t i = 0; i < context.operand_raw.size(); ++i) {
+            if (i != 0) result += ',';
+            result += SignedNumber(context.operand_raw[i]);
+          }
+          result += "]";
+        } else {
+          result += "null";
+        }
+        result += ",\"scale\":100000,\"unavailable_reason\":";
+        AppendUnavailableReason(result, !context.available, context.unavailable_reason);
+        result += '}';
+      }
       result += ",\"effectiveness_components\":{\"status\":\"";
       result += knight.effectiveness_components_observed ? "available" : "unavailable";
       result += "\",\"modifier_raw\":[";

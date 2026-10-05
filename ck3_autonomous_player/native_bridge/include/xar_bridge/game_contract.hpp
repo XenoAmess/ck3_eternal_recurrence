@@ -525,6 +525,20 @@ struct CombatCommanderSnapshot {
                          const CombatCommanderSnapshot &) = default;
 };
 
+// Exact .3 final-evaluator inputs. The selected Character can be the knight's
+// employer/liege or the knight itself; these are current inputs, not a prestage
+// source-construction baseline. Failure is independent of the native scalar.
+struct CombatKnightEffectivenessContextSnapshot {
+  bool available = false;
+  std::optional<std::int32_t> character_id;
+  std::array<std::int64_t, 9> modifier_raw{};
+  std::array<std::int64_t, 9> operand_raw{};
+  std::string unavailable_reason = "effectiveness_context_unavailable";
+
+  friend bool operator==(const CombatKnightEffectivenessContextSnapshot &,
+                         const CombatKnightEffectivenessContextSnapshot &) = default;
+};
+
 struct CombatKnightSnapshot {
   bool eligible = false;
   std::int32_t character_id = -1;
@@ -541,6 +555,7 @@ struct CombatKnightSnapshot {
   std::int64_t effective_damage_raw = 0;
   std::int64_t effective_toughness_raw = 0;
   std::int64_t scale = 100'000;
+  std::optional<CombatKnightEffectivenessContextSnapshot> effectiveness_context;
 
   friend bool operator==(const CombatKnightSnapshot &,
                          const CombatKnightSnapshot &) = default;

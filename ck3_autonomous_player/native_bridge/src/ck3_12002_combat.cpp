@@ -496,6 +496,56 @@ bool ReadCharacterModifierRaw(const CombatBindings &bindings, void *aggregator,
                               std::int32_t modifier_index,
                               std::int64_t &output) noexcept;
 
+CombatKnightEffectivenessContextSnapshot ReadKnightEffectivenessContextSources(
+    const CombatBindings &bindings, void *context) noexcept {
+  CombatKnightEffectivenessContextSnapshot output{};
+  bool identity_valid = false;
+  if (!ReadCharacterIdentity(context, identity_valid) || !identity_valid) {
+    return output;
+  }
+  const auto id = LoadAt<std::int32_t>(context, kCharacterIdOffset);
+  if (id < 0 || ResolveStoredComponent(bindings.character_storage_slot, id,
+                                     kCharacterIdOffset) != context) {
+    output.unavailable_reason = "effectiveness_context_identity_unavailable";
+    return output;
+  }
+  output.character_id = id;
+  void *const model_context = bindings.get_character_modifier_aggregator(context);
+  if (model_context == nullptr) {
+    output.unavailable_reason = "effectiveness_context_modifiers_unavailable";
+    return output;
+  }
+  // 2C06B00 C1..C9 operands belong to this selected Character, not the knight.
+  output.operand_raw[0] = kFixedPointScale;
+  void *const landed = LoadAt<void *>(context, 0x1C0);
+  output.operand_raw[1] = landed == nullptr ? 0 : LoadAt<std::int64_t>(landed, 0x350);
+  output.operand_raw[2] = landed == nullptr ? 0 : LoadAt<std::int64_t>(landed, 0x358);
+  constexpr std::array<std::size_t, 6> skill_offsets{0xEC, 0xD8, 0xE4, 0xE8, 0xDC, 0xE0};
+  for (std::size_t index = 0; index < skill_offsets.size(); ++index) {
+    output.operand_raw[index + 3] =
+        static_cast<std::int64_t>(LoadAt<std::int32_t>(context, skill_offsets[index])) *
+        kFixedPointScale;
+  }
+  // Actual mode0 24389A0 adds68 before2303700. Read the current raw key even
+  // for an operand0; these diagnostic keys are not claimed as executed terms.
+  void *const sparse = static_cast<std::byte *>(model_context) + 0x68;
+  for (std::size_t index = 0; index < output.modifier_raw.size(); ++index) {
+    if (!ReadCharacterModifierRaw(bindings, sparse,
+            0xC1 + static_cast<std::int32_t>(index), output.modifier_raw[index])) {
+      output.unavailable_reason = "effectiveness_context_modifiers_unavailable";
+      return output;
+    }
+  }
+  if (ResolveStoredComponent(bindings.character_storage_slot, id,
+                             kCharacterIdOffset) != context) {
+    output.unavailable_reason = "effectiveness_context_identity_changed";
+    return output;
+  }
+  output.available = true;
+  output.unavailable_reason.clear();
+  return output;
+}
+
 bool ReadCounterClassCount(const CombatBindings &bindings,
                            std::int32_t &class_count) noexcept {
   class_count = 0;
@@ -786,6 +836,8 @@ bool ReadCombatKnights(
       output.unavailable_reason = "knight_effectiveness_unavailable";
       return false;
     }
+    knight.effectiveness_context =
+        ReadKnightEffectivenessContextSources(bindings, effectiveness_context);
     if (ResolveStoredComponent(bindings.regiment_storage_slot,
                                regiment_row.regiment_id,
                                kRegimentIdOffset) != regiment ||
