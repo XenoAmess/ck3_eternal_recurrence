@@ -486,7 +486,7 @@ void Run(const std::filesystem::path &directory) {
     const auto &mapped = b.outer_rows->at(0).inner_mapped;
     Require(!mapped.ready && mapped.rows && mapped.rows->size() == 1 &&
                 mapped.rows->at(0).admitted == true &&
-                mapped.rows->at(0).key_magic_raw == 0 &&
+                mapped.rows->at(0).key_magic_raw == 0U &&
                 !mapped.rows->at(0).mapping_native_index &&
                 !mapped.reason.empty(),
             "940 actual static fallback selection missing");
