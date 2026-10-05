@@ -394,3 +394,29 @@ consumer 整合为 **static-ready Python same-input conditional replay**；nativ
 现有query的native_loss_writer_skipped、完整DATA身份/顺序/current/max/state已足够，不新增native字段或重跑D的readerfixture。纯`project_observed_raised_regiment_refresh`已接入writer输出`conditional_raised_regiment_refresh`。例：state3 max4/current0＋ordinary physical20/max25的两个DATA别名，直接条件refresh为44/54；同输入writer对ordinary物理chunk扣3后，条件refresh为38/54，而唯一physical delta为−3。不能把两种统计混为一项。ArRg current0走refresh-only，state3有效贡献仍可能非0；Char writer skip则根本不调用refresh，输出not_called，不能误用独立refresh的1/1覆盖规则。
 
 一个新的focused Python case在`-B -O`下GREEN，覆盖上述各分支和signed32 wrap。状态为static-ready同输入条件aggregate；它不是actual post-stage frame，`raised_regiment_current_after`仍None，整月applied_loss_ready继续false。specialassociation−1仍不在available DATA域；0 SDK/游戏日/进程/UI/Steam/编译/旧测试/新EXE读取。Source、test receipt、commit和日周字段见`Z:/ck3_mod_rewrite_process_assets/g2-background-round3-20261005/raised-refresh/ROOT-DELIVERY.json`，由Root整合canonical报告及发布。
+
+
+### 2026-10-05：四pass同输入条件损耗子系统串接
+
+Source阶段账本先落盘，再将现有allocation、associated26341B0/2657EA0及2633340条件current/max刷新串接。复用caller和2A95800缓存，必要的新冻结文件read仅为verified.pdata `[262BE30,262C0C4)`660B（SHA`eb6415efb1b5649057f15f979bafa8bc617982d332cc32b5f4718c85ee86826d`），加512B PE mapping及18条12B二分pdata读，没有EXE全扫描或重hash。该统计helper的所有direct非栈store仅写实际caller的80B scratch返回区；refresh只将它加到其他Q统计scratch，Regi-receiver子调用是此前已闭合readonly262CF40/262C700。没有改写本四pass必需的eligibility、admission、tier、DATA identity/state或current。未扩展无关modifier树。
+
+已有army-strengths consumer新增 `same_input_conditional_loss_sequence_v1`。`conditional_sequence_ready`表示从当前readonly budgets和完整必要DATA，可完成四个条件pass的请求、关联物理chunk写回及ArRg current/max刷新。保留原stored FullID顺序；每pass先重统计conditional current，每row在writer前读最新值，再按old current减少分母、按requested q减少预算。残余只接首轮initial overflow：supply flags2、siege/raid flags0，均无bit1 fallback。物理别名按persistent FullID+ordinal整体更新；refresh仍对每条DATA occurrence重复计数。character writer skip不refresh，parent current0照常refresh，不能用request简单减兵。
+
+条件结果的final rows、wrapped flags0 current total、唯一physical chunks及physical delta独立命名。完整物理输入不足时其单独`conditional_physical_chunks_ready=false`且physical结果None；不得将未读chunk视为0。整个中间frame都是derived，`actual_loss=false`、`actual_post_stage_current=null`；原actual-stage missing inputs、`applied_loss_ready=false`及`applied_soldier_loss=None`保持。它只闭合显式输入下的loss current/max子系统，不运行24E4D10或猜未来supplybudget、不回放其他monthly stats、不是新paused观测或fullmonthly live。
+
+一个新增生产service case在`-B -O`下GREEN（3.37秒进程，仅1case），覆盖四pass totals`6→8→2→9`和budgets`8→2→7→5`；DATA别名让physical debit与ArRg统计不同，跳过writer仍消费请求预算，state3/parent0先refresh增兵，后经`−1→0`两遍保持有效current3。最终stored-order current`[0,3,2,1]`、current aggregate`12→6`、唯一physical delta`−7`，查询输入未改写，service只有一次fake内存query。缺失legacy admission时停止条件链且final None，不能补false。没有重跑C/D/refresh旧test，没有native修改/编译或任何游戏操作。
+
+Readiness为static-ready同输入条件loss子系统；actual poststage及完整monthly/live仍未完成。新游戏日0、CK3/SDK/pipe/UI/Steam/profile/save/cache/runtime操作0，历史5035游戏日不变。Source ledger、Mermaid、唯一新test回执、commit及日周字段见 `Z:/ck3_mod_rewrite_process_assets/g2-background-round3-20261005/supply-eligibility/conditional-sequence/ROOT-DELIVERY.json`。Root整合canonical日报/周报/专题；下一项实际施工是用户结束占用后做exact.3 paused同输入观测与真实writer后current/physical互证，或继续明确的外围monthly producer缺口，不能将条件计算当live。
+
+```mermaid
+flowchart TD
+  A[Observed readonly budgets and complete associated DATA] --> B[Supply preferred request/writer/refresh]
+  B --> C[Initial overflow only; flags2 conditional recount]
+  C --> D[Supply residual request/writer/refresh]
+  D --> E[Original siege+raid budget; conditional preferred recount]
+  E --> F[Siege preferred request/writer/refresh]
+  F --> G[Initial overflow only; flags0 conditional recount]
+  G --> H[Siege residual request/writer/refresh]
+  H --> R[Conditional final ArRg current/max and unique physical changes]
+  U[Actual paused poststage and fullmonthly outcome] -. unobserved .-> R
+```

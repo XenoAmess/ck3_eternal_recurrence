@@ -205,3 +205,163 @@ context construction, outer natural first-contact admission/Province, full
 Entry forecast, fixture-live, production-live or complete gameplay. No CK3
 launch/attach/query/live pipe/SDK/UI/Steam/profile/save/cache/runtime preparation
 or game-day operation occurred.
+
+
+# Exact .3 first-contact Entry Province, Character and initialization stages
+
+2026-10-05, CK3 **1.20.0.3 / Steam25652598**, frozen EXE SHA reused:
+`94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
+Readiness of this new package is **research**. It changes no bridge/query,
+policy, canonical document or runtime state and executes no test.
+
+## The Army Province getter is closed
+
+Known `24E0EB0` is a76-byte leaf, `[24E0EB0,24E0EFC)`, with return at24E0EFB.
+No runtime-function pdata row covers this leaf. A bounded128-byte window includes
+its entire body, four padding bytes and48bytes of the next function; those
+next-function bytes are not used as source evidence. Exact source:
+
+| Source | Native selection |
+| --- | --- |
+| `24E0EB0 RCX` | Actual incoming CArmy pointer supplied by264E07A. |
+| `QWORD[RVA5D1E380]` | CUnit storage root. Null storage takes the native fallback. |
+| `DWORD[Army+124]` | Full CUnitID, not CharacterID or ProvinceID. Low24bits index the16-byte storage slot after capacity+2C check. |
+| Root+20 / slot+08 | CUnit pointer; nonnull and CUnit+10 must equal the full ID. Otherwise `QWORD[RVA5D1E378]` supplies the fallback CUnit. |
+| `QWORD[CUnit+20]` | Current Province pointer. Null pointer selects `QWORD[RVA5D1E390]` fallback Province. |
+
+This leaf does not read Combat+6B8, an arrival destination, previous Province,
+terrain, an owner/knight Character or a contact eligibility flag. Its null/ID
+failure behavior is the native fallback described above. The existing query
+publishes a validated real map ProvinceID, so a query `current_province_id=null`
+must not be relabelled as a known real fallback ProvinceID.
+
+## New-row initialization source and order
+
+Reuse the frozen `.3` `264DE30` source. It first rejects an already stored full
+ArmyID. A new Army is appended to Side+10; its Army+38/+44 full RegimentID array
+is then visited in native order. Each Regiment is resolved by full ID. Initial
+result-ledger row+40 and Side+A8 receive wholecurrent*100000 before bucket
+selection; the result row is keyed by the type pointer and Regiment+148 knight
+ID. These separate baseline accounts are not cached effective stats.
+
+MAA-like bucket selection at264DF72..264E065 is true if the type+38 GDbo tag is
+valid, or if Regiment+148 resolves to a Character with Char tag+1C and full
+ID+18 other than−1. Otherwise the ordinary/levy bucket is used. No extra
+Character alive predicate appears in this routing block.
+
+`2653D20 ->26552C0` constructs the new96-byte row before effective stat filling.
+The constructor sets Entry+08 full RegimentID, Entry+10 starting count from
+Regiment+38 wholecurrent*100000, Entry+18 current count to starting only when
+`BYTE[QWORD[Regiment+18]+98A] !=0`, otherwise genuine0; soft+20 is0.
+This is main-phase participation eligibility, separate from admission to a new
+Combat and separate from valid linked-knight identity. A valid row with current0
+can still be constructed and have its stat cache evaluated.
+
+At264E075 the MAA-like row is appended. At264E07D the actual incoming Army is
+passed to24E0EB0; its returned Province becomes RDX at264E082. At264E099
+`2657AC0(new row, returned Province)` resolves Entry+08 back to the full Regiment,
+calls `26344C0(Regiment, temporary Stats38, Province)` at2657B0F, and copies the
+six values into Entry+30/+38/+40/+48/+50/+58. The ordinary branch at264E00C..045
+performs the same Army+124 full CUnit resolution inline, takes CUnit+20/fallback
+Province, and calls the same setter at264E057. There is no source disagreement
+between the ordinary and MAA-like Province paths.
+
+The closed knight subbranch of26344C0 calls2634880, resolves Regiment+148 full
+CharacterID, and calls2C06D30 with the linked Character and output pointer. Its
+Province argument is unused in that subbranch.2C06D30 takes linked prowess+EC,
+then `28BFC70` selects the separate effectiveness Character passed to2C06B00.
+The previously delivered current observer publishes both identities and current
+C1..C9 inputs. This package does not newly close the whole ordinary/MAA formula
+inside26344C0; the linked-knight predicate and formula-source boundaries retain
+their own frozen evidence.
+
+## Initial constructor cache and returned new-contact cache differ by stage
+
+The existing frozen first-contact chain is
+`2479180 ->247971D247A330 ->247A8B62AD81F0 ->25863A0`.
+At247A8A5 the builder passes its actual Province pointer as argument5; the Combat
+constructor stores that pointer at+6B8. The incoming Army and ordered opponent
+Army pointer list go through the role-selected wrappers2586A80/2586B80, then the
+new-only initializer above. For a defender initiator, the already closed
+constructor-kind0 branch skips incoming adjacency; it is not an enemy-history
+lookup. The factory/constructor argument binding is reused from the exact `.3`
+projected-contact native tree, not inferred from a `.2` address match.
+
+The cached `.3`247A820..247AB8D continuation is significant: after the factory
+returns, the builder selects/writes both commanders, refreshes both current sums
+and width, adds adjacency effects, adds Province terrain effects, calls both
+2650A80 accolade context updates, then2586ED0. Finally it calls
+**2651070(side0, Combat+6B8) at247AB32 and
+2651070(side1, Combat+6B8) at247AB41**, before returning.
+The existing refresh tree walks levy then MAA rows and reevaluates the six cache
+fields through2657AC0/26344C0 under the Combat Province and the updated context.
+
+Thus24E0EB0 closes the **first initialization stage** at each Army's current
+Province. It does not alone identify the returned new-contact cache as that
+stage. The builder's later whole-side refresh uses the separate Combat Province
+and changed battle context. Equal Province pointers in a particular frame do not
+remove the intervening context/effect/commander operations. New first-stage
+source credit cannot stand in for complete first-contact Entry preparation or
+forecast readiness.
+
+## Admission and the existing query construction seam
+
+Reused2479180 source first tests the raw Province+20/+1B admission byte, the
+global mode+1C0/+28 flag and2C16770(incoming CUnit,true), then incoming owner
+identity. The one necessary new admission leaf2C16770 is fully captured as143B
+`[2C16770,2C167FF)`. It returns false when incoming Unit+18!=0 or Unit+170>0;
+otherwise Unit+178 resolves to a full CArmyID through `QWORD[RVA5D1DE48]`, with
+native fallback `QWORD[RVA5D1DE50]`. It rejects24E83C0(Army). With its actual
+second argument=true it also rejects24E8360(Army), then returns true. Those two
+existing Army predicates are the published empty/in-combat query bindings.
+No additional hidden Character, Province or stat predicate occurs in this leaf.
+It scans stored Province+758/+764 CombatIDs for existing join before
+scanning Province+740/+74C UnitIDs for a new hostile seed. Existing-join forward
+hostility selection and reverse side choice remain distinct. New-contact seed
+candidates exclude same owner, raw Unit+18!=0, Unit+170>0, and the two native
+Army predicates24E83C0/24E8360; the initiator must have positive valid Regiment
+whole counts before247971D calls the builder. The builder preserves candidate
+order and uses the reverse owner relationship for opponents before holder/fallback
+role classification. These are source-defined current conditions. Future
+calendar/route/contact admission time and future relationship changes remain
+unclosed; no new runtime-admission observation is claimed.
+
+Existing `ReadActualContactScope` mirrors current-Province contact branches and
+requires subject current Province==requested target. Existing combat input
+publishes each Army's validated `current_province_id`, full native CArmyID,
+Regiment full IDs/current whole counts/kind/main eligibility, target effective
+stats with `source_target_province_id`, and current knight Character/context.
+No additional raw admission field is needed for that current contact preflight.
+
+For an explicitly admitted, frozen-current join, existing same-query effective
+stats can supply the first-stage six values **when their source_target_province_id
+equals that incoming Army's current_province_id**. The values remain current
+readonly evaluations, not proof that the initializer ran or a future final cache.
+If the target differs from an incoming Army's current Province, the present
+target-only stat tuple does not supply that first-stage tuple. The concrete
+minimal next observer seam is within the same `ReadCombatSimulationInputs`
+Regiment loop: resolve the already published current Province pointer, reuse
+`ReadEncounterEffectiveStats` at that pointer, and publish an additive optional
+`initialization_context_stats` with its source ProvinceID and six current values.
+It need not launch a new query, invoke24E0EB0's mutator callers, reproduce source
+generators or infer future admission. Root should choose that observer only for
+a concrete caller whose existing target tuple differs from the needed current
+Province; the equality case already has the required inputs.
+
+For full create-new final cache preparation, the next separate functional seam
+is the **247A9CC..247AB41 battle-effect/accolade/commander context then whole-side
+refresh**. The current-final model is not a pre-effect source baseline. This
+package deliberately does not implement or fabricate that changed-stage model.
+
+## Read and execution receipt
+
+Fresh EXE I/O: **271 code bytes +132 pdata bytes=403 bytes**: the known128B
+Province window plus143B admission function,60B getter pdata lookup plus72B
+admission pdata lookup. The getter lookup reused530 prior cached rows; lack of
+a covering row is preserved in its receipt. The final76-byte leaf and its exact SHA are derived from the captured
+window without another EXE read. All callers, quantity/eligibility and outer
+continuation are reused frozen source. No whole EXE scan/hash, native build,
+test, process/pipe/query, SDK, UI, Steam, profile/save/cache operation or game day.
+The initial plan checker rejected `--for-observation` because this is offline
+only; that attempt is preserved. The offline check is plan-consistent and
+expressly does not verify semantics or authorize live observation.
