@@ -659,3 +659,8 @@ production 长跑中自然触发 one-life terminal，完成匹配结算，再经
 用户单独明确授权的战争视频《一座城究竟是怎样被攻下的？》已完成23:27.721成片、完整机器媒体审计、415帧公开保全与AI内容/画面抽检，并仅把最终MP4通过既有OneDrive目录交付；客户端in-sync、远端bytes未独立回读，人工完整1×观看签核未提供。源码/研究普通FF主线551a88e91、exact官方CI37048183916 SUCCESS；最终文档push/CI另由交付回执收口。细节见[专项交付](../handover/2026-10-03-war-episode03-delivery.md)与[专项日报](daily/2026-10-03-war-episode03.md)。
 
 这项独立William/Lewes围城案例与必要public军队ID0/route/回收修复不增加Robert保存日、G2或NW credit，也不恢复Robert自动玩家的战争策略。既有主线指标与进行中非战争工作保持原记录，所有原片与失败attempt永久保留。
+
+
+### 2026-10-05 晚间后台增量
+
+source49131256已推送：post-A/B、laterdirect、auxiliaryscratch、knight实际effectiveness Character context、holy-order当前战争资格，5个newnative tests与28真实fixture字节消费GREEN，均static-ready。2633340 conditional raised refresh随后已实现，九cachebyte已交付源码待newnative验收；helper291F0A0四族与retained实际Rules effect继续source-first施工。完整人物/Entry/fullmonthly loss/释放触发仍partial，新增游戏日0与5035冻结指标不变。详情及原生专题/receipt回链见[后台续行交接](../handover/2026-10-05-g2-background-successor.md)、[当天日报](daily/2026-10-05.md)、[W41](weekly/2026-W41.md)。游戏仍由用户使用，所有后台包均没有启动或连接CK3。

@@ -383,3 +383,14 @@ consumer 整合为 **static-ready Python same-input conditional replay**；nativ
 依赖整合源 `352ebd69` → Root `f0c4aa69`，一次新增生产 service 的 C+D 内存 integration case GREEN（1.69 秒进程）。现有 loss request 已返回 `same_input_conditional_chunk_writeback_v1`，只回放当前 initial supply preferred，或 supply budget=0 的 initial siege/raid preferred；residual 与 post-supply 后段不借用旧 DATA。条件 physical chunk 结果与真正 post-stage/current/整月扣兵分列，`actual_loss=false`、`actual_post_stage_current=null`、原 `applied_loss_ready=false` 保持。专题及 Mermaid 已同步，不增加完整月度/live 信用。
 
 证据根：`Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/`，C/D source 与 conditional-integration ROOT-DELIVERY 各自保留。Readiness 为 static-ready（生产路径 fake-memory fixture 与同输入条件运算），非新 paused/live。新 CK3 启动、连接、SDK/真实 pipe、窗口/Steam、profile/save/cache/runtime 操作与游戏日均0；历史5035天不变。人物后缀、actual knight context、holy-order 查询及后续 scratch 仍在推进，不能据此声称后台工作耗尽。
+
+
+### 2026-10-05：2633340条件raised current/max汇总闭合
+
+完整1952 B`[2633340,2633AE0)`复用已缓存source hex，SHA`1b25b700b5bb5281b98d2a5f9613c27a873266bebbcbf5341fe76fac8027de1d`匹配原pin；新增EXE读取0。源码树和Mermaid先落盘再实现。
+
+该refresh按每条DATA occurrence累加signed32 current/max（wrap），同一物理chunk的多个DATA引用会重复计数。state3且physicalcurrent0时current贡献maximum，其他情况贡献physicalcurrent；maximum恒取maximum。最终Char FullID/magic判定与已有2634880完全相同，true在2633871..3878直接令current/max=1/1，否则在26338B5..38BA加载两累积值，26338C0/38C3写ArRg+38/+3C。其他Q加权统计和失效DATA移除不在本次数值投影范围。
+
+现有query的native_loss_writer_skipped、完整DATA身份/顺序/current/max/state已足够，不新增native字段或重跑D的readerfixture。纯`project_observed_raised_regiment_refresh`已接入writer输出`conditional_raised_regiment_refresh`。例：state3 max4/current0＋ordinary physical20/max25的两个DATA别名，直接条件refresh为44/54；同输入writer对ordinary物理chunk扣3后，条件refresh为38/54，而唯一physical delta为−3。不能把两种统计混为一项。ArRg current0走refresh-only，state3有效贡献仍可能非0；Char writer skip则根本不调用refresh，输出not_called，不能误用独立refresh的1/1覆盖规则。
+
+一个新的focused Python case在`-B -O`下GREEN，覆盖上述各分支和signed32 wrap。状态为static-ready同输入条件aggregate；它不是actual post-stage frame，`raised_regiment_current_after`仍None，整月applied_loss_ready继续false。specialassociation−1仍不在available DATA域；0 SDK/游戏日/进程/UI/Steam/编译/旧测试/新EXE读取。Source、test receipt、commit和日周字段见`Z:/ck3_mod_rewrite_process_assets/g2-background-round3-20261005/raised-refresh/ROOT-DELIVERY.json`，由Root整合canonical报告及发布。
