@@ -168,6 +168,8 @@ def validate() -> list[str]:
         'picture="thumbnail.png"\n'
         'supported_version="1.20.0.3"\n'
     )
+    from workshop_compatibility_tags import render_workshop_descriptor_bytes
+    expected_descriptor = render_workshop_descriptor_bytes(expected_descriptor.encode("utf-8")).decode("utf-8")
     if read_text("descriptor.mod").replace("\r\n", "\n") != expected_descriptor:
         errors.append("descriptor.mod fields or ordering differ from the release contract")
 

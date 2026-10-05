@@ -1,6 +1,7 @@
 version="1.0.2"
 tags={
 	"Gameplay"
+	"1.20 'Crozier'"
 }
 name="琉焰卿的永恒轮回"
 picture="thumbnail.png"

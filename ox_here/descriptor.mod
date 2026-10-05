@@ -1,6 +1,7 @@
 version="1.0.3"
 tags={
 	"Gameplay"
+	"1.20 'Crozier'"
 }
 name="牛来"
 picture="thumbnail.png"

@@ -1,0 +1,121 @@
+{
+  "schema": "ck3.workshop-products.v1",
+  "consumer_app_id": "1158310",
+  "compatibility_registry": "ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py",
+  "forbidden_upstream_target_ids": ["3596580780", "3596263413", "3600021457", "3337428403"],
+  "products": [
+    {
+      "key": "eternal-recurrence",
+      "directory": "XenoAmess_s_Eternal_Recurrence",
+      "workshop_item_id": "3784706360",
+      "forbidden_upstream_ids": [],
+      "builder": "tools/build_release.py",
+      "release_flags": ["--release", "--output", "{new-output}"]
+    },
+    {
+      "key": "vivhite-courtier",
+      "directory": "Eternal_Recurrence_Vivhite_Courtier",
+      "workshop_item_id": "3787304042",
+      "forbidden_upstream_ids": [],
+      "builder": "tools/build_vivhite_release.py",
+      "release_flags": ["--release", "--output", "{new-output}", "--workshop-item-id", "3787304042"]
+    },
+    {
+      "key": "remove-mandala",
+      "directory": "mod_remove_mandala",
+      "workshop_item_id": "3797711947",
+      "forbidden_upstream_ids": [],
+      "builder": "tools/build_remove_mandala_release.py",
+      "release_flags": ["--release", "--output", "{new-output}", "--workshop-item-id", "3797711947"]
+    },
+    {
+      "key": "xqol",
+      "directory": "mod_xenoamess_quality_of_life",
+      "workshop_item_id": "3798133925",
+      "forbidden_upstream_ids": [],
+      "builder": "tools/build_xenoamess_quality_of_life_release.py",
+      "release_flags": ["--release", "--output", "{new-output}", "--workshop-item-id", "3798133925"]
+    },
+    {
+      "key": "reclaim-motherland",
+      "directory": "mod_reclaim_the_motherland",
+      "workshop_item_id": "3798404599",
+      "forbidden_upstream_ids": [],
+      "builder": "tools/build_reclaim_the_motherland_release.py",
+      "release_flags": ["--release", "--output", "{new-output}", "--workshop-item-id", "3798404599"]
+    },
+    {
+      "key": "tributary-expansion-directives",
+      "directory": "mod_tributary_expansion_directives",
+      "workshop_item_id": "3801490405",
+      "forbidden_upstream_ids": [],
+      "builder": "tools/build_tributary_expansion_directives_release.py",
+      "release_flags": ["--release", "--output", "{new-output}", "--workshop-item-id", "3801490405"]
+    },
+    {
+      "key": "celestial-commerce-corruption",
+      "directory": "mod_celestial_commerce_corruption",
+      "workshop_item_id": "3804807463",
+      "forbidden_upstream_ids": ["3596263413"],
+      "builder": "tools/build_celestial_commerce_corruption_release.py",
+      "release_flags": ["--release", "--output", "{new-output}", "--workshop-item-id", "3804807463"]
+    },
+    {
+      "key": "auto-upgrade-buildings",
+      "directory": "mod_auto_upgrade_buildings",
+      "workshop_item_id": "3800124956",
+      "forbidden_upstream_ids": ["3596580780"],
+      "builder": "tools/build_auto_upgrade_buildings_release.py",
+      "release_flags": ["--release", "--output", "{new-output}", "--workshop-item-id", "3800124956"]
+    },
+    {
+      "key": "ox-here",
+      "directory": "ox_here",
+      "workshop_item_id": "3790635143",
+      "forbidden_upstream_ids": [],
+      "builder": "tools/build_ox_here_release.py",
+      "release_flags": ["--release", "--output", "{new-output}", "--workshop-item-id", "3790635143"]
+    },
+    {
+      "key": "zhongguo-361",
+      "directory": "mod_zhongguo_style",
+      "workshop_item_id": "3792585972",
+      "forbidden_upstream_ids": [],
+      "builder": "tools/build_mod_zhongguo_style_release.py",
+      "release_flags": ["--release", "--output", "{new-output}", "--workshop-item-id", "3792585972"]
+    },
+    {
+      "key": "de-jure-conquest",
+      "directory": "mod_de_jure_conquest",
+      "workshop_item_id": "3812510217",
+      "forbidden_upstream_ids": ["3600021457"],
+      "builder": "mod_de_jure_conquest/tools/build_release.py",
+      "release_flags": ["--release", "--output", "{new-output}", "--workshop-item-id", "3812510217"]
+    },
+    {
+      "key": "change-holding-types",
+      "directory": "mod_change_holding_types",
+      "workshop_item_id": "3812510834",
+      "forbidden_upstream_ids": ["3337428403"],
+      "builder": "mod_change_holding_types/tools/build_release.py",
+      "release_flags": ["--output", "{new-output}", "--git-tag", "{matching-product-tag}", "--workshop-item-id", "3812510834", "--release-localization"]
+    },
+    {
+      "key": "superman-qiang",
+      "directory": "mod_superman_qiang",
+      "workshop_item_id": "3812991990",
+      "forbidden_upstream_ids": [],
+      "builder": "mod_superman_qiang/tools/build_release.py",
+      "release_flags": ["--output", "{new-output}", "--git-tag", "{matching-product-tag}", "--workshop-item-id", "3812991990"]
+    },
+    {
+      "key": "li-yu-dao",
+      "directory": "mod_li_yu_dao",
+      "workshop_item_id": null,
+      "forbidden_upstream_ids": [],
+      "builder": "mod_li_yu_dao/tools/build_release.py",
+      "release_flags": ["--output", "{new-output}"],
+      "publication": "development-only; no Workshop target"
+    }
+  ]
+}

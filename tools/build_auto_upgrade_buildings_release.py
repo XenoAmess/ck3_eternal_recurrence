@@ -14,6 +14,8 @@ import tempfile
 import zipfile
 from pathlib import Path, PurePosixPath
 
+from workshop_compatibility_tags import render_release_file_bytes
+
 import gen_auto_upgrade_buildings as generator
 
 
@@ -245,7 +247,7 @@ def build_release(
     for relative in sorted(RUNTIME_FILES):
         target = staging / PurePosixPath(relative)
         target.parent.mkdir(parents=True, exist_ok=True)
-        shutil.copyfile(source / PurePosixPath(relative), target)
+        target.write_bytes(render_release_file_bytes(relative, (source / PurePosixPath(relative)).read_bytes()))
     version = descriptor_version(source)
     payload = manifest(staging, revision, version, workshop_item_id, git_tag)
     stem = f"{staging.name}-v{version}" if versioned_sidecars else staging.name

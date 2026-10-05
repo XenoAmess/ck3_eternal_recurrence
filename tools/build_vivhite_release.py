@@ -14,6 +14,8 @@ import tempfile
 import zipfile
 from pathlib import Path, PurePosixPath
 
+from workshop_compatibility_tags import render_release_file_bytes
+
 
 ROOT = Path(__file__).resolve().parent.parent
 PRODUCT_ID = "Eternal_Recurrence_Vivhite_Courtier"
@@ -347,7 +349,7 @@ def build_release(
         source_path = source / PurePosixPath(relative)
         target_path = staging / PurePosixPath(relative)
         target_path.parent.mkdir(parents=True, exist_ok=True)
-        target_path.write_bytes(source_path.read_bytes())
+        target_path.write_bytes(render_release_file_bytes(relative, source_path.read_bytes()))
 
     staging_errors = release_source_errors(staging)
     if staging_errors:

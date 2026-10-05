@@ -90,6 +90,14 @@
   字符数、行数和 SHA-256 做精确核对并保存证据。更新既有条目时必须证明该条目正文确实被替换；如果原生 `change_note` 提交没有
   改变公开页面，应通过登录态 owner page 编辑既有条目后重新匿名回读。缺少这项公开回读时，不得把 release 标为完成。
 
+## Steam Workshop Compatible Version
+
+- 完整规范见 [Compatible Version 自动维护](docs/workshop-compatible-version.md)，全部14个玩家产品的目录、canonical ID、禁止上游ID及构建参数见 [产品清单](workshop/products.json)。清单不存会过时的当前公开版本；无ID的开发版不得猜目标。
+- 从CK3 1.20开始，兼容标签唯一取自正式发布 `descriptor.mod` 的 `supported_version` major.minor，再查 `ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py` 的单一registry；当前精确普通Steam tag为 `1.20 'Crozier'`，通过SetItemTags维护。未来minor须先确认实际分类值，只更新此registry一次，各builder和native发布自动使用；未知1.20+ minor拒绝构建／发布。旧1.19不预标1.20。
+- `tools/workshop_compatibility_tags.py`及14产品builder只渲染descriptor标签，不改变业务字节；native从实际staging再次派生。完整待提交tags须保留非版本tag的原字符串和顺序，包括 `"Balance "` 末尾空格，禁止strip／排序／只提交版本tag覆盖原分类。
+- 已验收公开release允许仅tags回补：从该release固定commit提取原始published descriptor到新外置metadata-anchor，不传content；仅StartItemUpdate＋SetItemTags完整列表＋SubmitItemUpdate(NULL notes)。这是metadata修订，不是新内容release，不新增Notes、不需相同业务重验；完整正式发布继续遵守上节所有门禁。
+- tags-only必须核owner/app/item，冻结anchor及前后tags，保存实际SDK回执、匿名完整tags与Compatible Version右栏及requiredtags链接exact核对、最终Steam离线证据；成功后追加 `docs/workshop-metadata-revisions/<product-key>/<date>-compatible-version.md` 并实际commit/push master。原发布版本／日期和旧失败记录保留；回调成功或源码标签不能替代公开回读，缺证据标METADATA_PENDING。
+
 ## 构建/生成
 
 ```text

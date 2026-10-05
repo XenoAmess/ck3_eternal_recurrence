@@ -351,8 +351,11 @@ def package_checks(errors: list[str], report: dict[str, object]) -> None:
                 errors.append(
                     f"descriptor.mod {field} must be exactly {expected!r}, got {values}"
                 )
-        if not re.search(r'(?ms)^tags=\{\n\s*"Gameplay"\n\}$', descriptor):
-            errors.append("descriptor.mod tags must contain exactly Gameplay")
+        from workshop_compatibility_tags import workshop_compatibility_tag
+        tag_block = re.search(r'(?ms)^tags=\{([^}]*)\}', descriptor)
+        actual_tags = re.findall(r'"([^"]+)"', tag_block.group(1)) if tag_block else []
+        if actual_tags != ["Gameplay", workshop_compatibility_tag(descriptor)]:
+            errors.append("descriptor.mod tags must contain Gameplay and its supported-version compatibility tag")
 
     bom_count = 0
     for relative_path in sorted(build_release.RUNTIME_FILES):

@@ -189,6 +189,8 @@ def validate(
         'name="自动升级建筑（XenoAmess维护版）"\n'
         'supported_version="1.20.0.3"\n'
     )
+    from workshop_compatibility_tags import render_workshop_descriptor_bytes
+    expected_descriptor = render_workshop_descriptor_bytes(expected_descriptor.encode("utf-8")).decode("utf-8")
     if descriptor != expected_descriptor:
         errors.append("descriptor.mod differs from the 4.0.3 / 1.20.0.3 maintenance contract")
 

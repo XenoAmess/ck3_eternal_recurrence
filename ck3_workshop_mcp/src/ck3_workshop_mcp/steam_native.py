@@ -26,6 +26,8 @@ from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any, Iterator, Mapping, Sequence
 
+from .compatibility_tags import compatibility_tags_for_staging
+
 
 DEFAULT_APP_ID = 1_158_310
 ERESULT_OK = 1
@@ -212,6 +214,7 @@ class _PreparedPlan:
     change_note: str
     legal_agreement_accepted: bool
     payload_sha256: str
+    tags_only: bool = False
     additional_preview_files: tuple[_PreviewFile, ...] = ()
     update_preview_files: tuple[_PreviewFile, ...] = ()
     remove_preview_indices: tuple[int, ...] = ()
@@ -754,8 +757,9 @@ class _NativeClient:
         parameters = SteamParamStringArray(array, len(encoded))
         return bool(self._set_tags(self.ugc, handle, ctypes.byref(parameters)))
 
-    def submit_item_update(self, handle: int, change_note: str) -> _SubmitResult:
-        call = int(self._submit(self.ugc, handle, self._utf8(change_note)))
+    def submit_item_update(self, handle: int, change_note: str | None) -> _SubmitResult:
+        note = None if change_note is None else self._utf8(change_note)
+        call = int(self._submit(self.ugc, handle, note))
         raw = self._wait_for_result(
             call, SubmitItemUpdateResult, SUBMIT_ITEM_UPDATE_CALLBACK_ID
         )
@@ -961,6 +965,15 @@ def _prepare_plan(data: Mapping[str, object]) -> _PreparedPlan:
     operation = _require_string(data, "operation").lower()
     if operation not in {"create", "update"}:
         raise SteamNativeError("INVALID_PLAN", "operation must be create or update")
+    tags_only = data.get("tags_only", False)
+    if not isinstance(tags_only, bool):
+        raise SteamNativeError("INVALID_PLAN", "tags_only must be boolean")
+    if tags_only and operation != "update":
+        raise SteamNativeError("INVALID_PLAN", "tags_only requires an update operation")
+    if tags_only and any(data.get(field) for field in (
+        "additional_preview_files", "update_preview_files", "remove_preview_indices",
+    )):
+        raise SteamNativeError("INVALID_PLAN", "tags_only cannot change additional previews")
     raw_app_id = data.get("app_id", data.get("consumer_app_id", DEFAULT_APP_ID))
     if not isinstance(raw_app_id, int) or isinstance(raw_app_id, bool) or raw_app_id <= 0:
         raise SteamNativeError("INVALID_PLAN", "app_id must be a positive integer")
@@ -1016,7 +1029,10 @@ def _prepare_plan(data: Mapping[str, object]) -> _PreparedPlan:
         isinstance(tag, str) and tag for tag in raw_tags
     ):
         raise SteamNativeError("INVALID_PLAN", "tags must be an array of non-empty strings")
-    tags = tuple(raw_tags)
+    try:
+        tags = compatibility_tags_for_staging(content_path, raw_tags)
+    except (OSError, UnicodeError, ValueError) as error:
+        raise SteamNativeError("INVALID_PLAN", str(error)) from error
     change_note = data.get("change_note", "")
     if not isinstance(change_note, str):
         raise SteamNativeError("INVALID_PLAN", "change_note must be a string")
@@ -1033,7 +1049,7 @@ def _prepare_plan(data: Mapping[str, object]) -> _PreparedPlan:
         raise SteamNativeError("INVALID_PLAN", "remove_preview_indices must be an array")
     remove_indices = tuple(sorted((_preview_index(index) for index in raw_remove), reverse=True))
     expected_previews: dict[str, object] | None = None
-    if additional_files or update_files or remove_indices or "expected_additional_previews" in data:
+    if not tags_only and (additional_files or update_files or remove_indices or "expected_additional_previews" in data):
         if operation != "update" or target_item_id is None:
             raise SteamNativeError("INVALID_PLAN", "additional preview edits require an update of an existing item")
         expected_previews = _preview_snapshot(data.get("expected_additional_previews"), target_item_id, raw_app_id)
@@ -1061,9 +1077,10 @@ def _prepare_plan(data: Mapping[str, object]) -> _PreparedPlan:
         "preview": preview_identity,
         "visibility": visibility,
         "tags": list(tags),
-        "change_note": change_note,
+        "tags_only": tags_only,
+        "change_note": None if tags_only else change_note,
     }
-    # Preserve legacy payload hashes when no additional-preview fields are used.
+    # Additional-preview identity is included only when preview edits are prepared.
     if expected_previews is not None:
         payload_identity["additional_previews"] = {
             "expected": expected_previews,
@@ -1093,6 +1110,7 @@ def _prepare_plan(data: Mapping[str, object]) -> _PreparedPlan:
         change_note=change_note,
         legal_agreement_accepted=legal_accepted,
         payload_sha256=payload_sha256,
+        tags_only=tags_only,
         additional_preview_files=additional_files,
         update_preview_files=update_files,
         remove_preview_indices=remove_indices,
@@ -1162,6 +1180,9 @@ def _new_receipt(plan: _PreparedPlan, stage: str, item_id: int | None) -> dict[s
         "operation": plan.operation,
         "app_id": plan.app_id,
         "payload_sha256": plan.payload_sha256,
+        "tags_only": plan.tags_only,
+        "update_scope": "compatibility_tags_only" if plan.tags_only else "content_and_metadata",
+        "tags": list(plan.tags),
         "stage": stage,
         "item_id": str(item_id) if item_id is not None else None,
         "created_at": _utc_now(),
@@ -1364,18 +1385,19 @@ def publish(
             receipt = _updated(receipt, additional_previews_before=observed)
             _write_receipt(receipt_path, receipt)
         update_handle = client.start_item_update(plan.app_id, item_id)
-        _require_set(client.set_title(update_handle, plan.title), "title")
-        _require_set(
-            client.set_description(update_handle, plan.description), "description"
-        )
-        _require_set(client.set_content(update_handle, plan.content_path), "content")
-        if plan.preview_path is not None:
+        if not plan.tags_only:
+            _require_set(client.set_title(update_handle, plan.title), "title")
             _require_set(
-                client.set_preview(update_handle, plan.preview_path), "preview"
+                client.set_description(update_handle, plan.description), "description"
             )
-        _require_set(
-            client.set_visibility(update_handle, plan.visibility), "visibility"
-        )
+            _require_set(client.set_content(update_handle, plan.content_path), "content")
+            if plan.preview_path is not None:
+                _require_set(
+                    client.set_preview(update_handle, plan.preview_path), "preview"
+                )
+            _require_set(
+                client.set_visibility(update_handle, plan.visibility), "visibility"
+            )
         _require_set(client.set_tags(update_handle, plan.tags), "tags")
 
         # Replace before removal, then remove descending, then append in plan order.
@@ -1399,7 +1421,9 @@ def publish(
             }
         receipt = _updated(receipt, **changes)
         _write_receipt(receipt_path, receipt)
-        submit_result = client.submit_item_update(update_handle, plan.change_note)
+        submit_result = client.submit_item_update(
+            update_handle, None if plan.tags_only else plan.change_note
+        )
         if submit_result.result != ERESULT_OK:
             receipt = _updated(
                 receipt,

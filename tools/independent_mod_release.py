@@ -18,6 +18,8 @@ import tempfile
 from typing import Iterable
 import zipfile
 
+from workshop_compatibility_tags import render_release_file_bytes
+
 
 ZIP_TIMESTAMP = (1980, 1, 1, 0, 0, 0)
 UTF8_BOM = b"\xef\xbb\xbf"
@@ -245,6 +247,7 @@ def build(
     entries: list[dict[str, object]] = []
     for relative in sorted(spec.runtime_files):
         data = (source / PurePosixPath(relative)).read_bytes()
+        data = render_release_file_bytes(relative, data)
         # Recheck the bytes actually copied, in case source changed after preflight.
         errors = _runtime_text_errors(spec, relative, data)
         if errors:

@@ -14,6 +14,8 @@ import tempfile
 import zipfile
 from pathlib import Path, PurePosixPath
 
+from workshop_compatibility_tags import render_release_file_bytes
+
 
 ROOT = Path(__file__).resolve().parent.parent
 PRODUCT_ID = "mod_xenoamess_quality_of_life"
@@ -331,7 +333,7 @@ def build_release(source: Path, staging: Path, revision: str | None = None, vers
     for relative in sorted(RUNTIME_FILES):
         target = staging / PurePosixPath(relative)
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes((source / PurePosixPath(relative)).read_bytes())
+        target.write_bytes(render_release_file_bytes(relative, (source / PurePosixPath(relative)).read_bytes()))
     errors = release_source_errors(staging, allow_source_only_files=False)
     if errors:
         raise ValueError("invalid XenoAmess Quality of Life staging:\n" + "\n".join(errors))

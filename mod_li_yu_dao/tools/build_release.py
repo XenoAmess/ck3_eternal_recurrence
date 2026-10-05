@@ -19,6 +19,8 @@ import zipfile
 
 SOURCE = Path(__file__).resolve().parents[1]
 ROOT = SOURCE.parent
+sys.path.insert(0, str(ROOT / "tools"))
+from workshop_compatibility_tags import render_release_file_bytes
 PRODUCT_ID = "mod_li_yu_dao"
 REQUIRED_RUNTIME_FILES = frozenset({
     'common/character_interactions/lyd_i3b_nomination_interactions.txt',
@@ -130,7 +132,7 @@ def build_release(source: Path, output: Path, *, revision: str | None = None) ->
         raise ValueError("build sidecar already exists; choose a fresh output")
     descriptor = (source / "descriptor.mod").read_text(encoding="utf-8-sig")
     version = re.search(r'^version\s*=\s*"([^"]+)"', descriptor, re.M).group(1)
-    payloads = {relative: (source / relative).read_bytes() for relative in inventory}
+    payloads = {relative: render_release_file_bytes(relative, (source / relative).read_bytes()) for relative in inventory}
     manifest = {
         "format_version": 1,
         "product_id": PRODUCT_ID,

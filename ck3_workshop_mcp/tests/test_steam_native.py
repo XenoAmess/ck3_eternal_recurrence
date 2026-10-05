@@ -70,7 +70,7 @@ class FakeSteamClient:
         self.fields.append(("tags", value))
         return handle == 123
 
-    def submit_item_update(self, handle: int, change_note: str) -> steam_native._SubmitResult:
+    def submit_item_update(self, handle: int, change_note: str | None) -> steam_native._SubmitResult:
         self.submit_calls += 1
         self.fields.append(("change_note", change_note))
         if self.submit_error:
@@ -84,7 +84,9 @@ class SteamNativeTests(unittest.TestCase):
         self.root = Path(self.temporary.name)
         self.content = self.root / "staging"
         self.content.mkdir()
-        (self.content / "descriptor.mod").write_text('name="Fixture"\n', encoding="utf-8")
+        (self.content / "descriptor.mod").write_text(
+            'name="Fixture"\nsupported_version="1.20.0.3"\n', encoding="utf-8"
+        )
         self.preview = self.content / "thumbnail.png"
         self.preview.write_bytes(b"fake-png")
         self.description = self.root / "description.bbcode"
@@ -223,6 +225,107 @@ class SteamNativeTests(unittest.TestCase):
         with self.assertRaises(steam_native.SteamNativeError) as raised:
             self._publish(FakeSteamClient())
         self.assertEqual("RECEIPT_PLAN_MISMATCH", raised.exception.code)
+
+    def test_default_update_keeps_content_metadata_and_notes_with_derived_tag(self) -> None:
+        self.plan.update(operation="update", target_item_id="9000000010")
+        self._write_plan()
+        client = FakeSteamClient()
+        result = self._publish(client)
+        self.assertTrue(result["ok"])
+        self.assertEqual(0, client.create_calls)
+        self.assertEqual(1, client.submit_calls)
+        self.assertEqual(
+            ["update_app_id", "item_id", "title", "description", "content", "preview", "visibility", "tags", "change_note"],
+            [name for name, value in client.fields],
+        )
+        self.assertIn(("tags", ("Balance", "1.20 'Crozier'")), client.fields)
+        self.assertIn(("change_note", "Initial release"), client.fields)
+        self.assertFalse(json.loads(self.receipt_file.read_text())["tags_only"])
+
+    def test_tags_only_updates_complete_tag_list_without_content_or_new_notes(self) -> None:
+        self.plan.update(operation="update", target_item_id="9000000010", tags_only=True,
+                         tags=["Gameplay", "1.19 'Old fixture'", "Balance"])
+        self._write_plan()
+        client = FakeSteamClient()
+        result = self._publish(client)
+        self.assertTrue(result["ok"])
+        self.assertEqual(0, client.create_calls)
+        self.assertEqual(1, client.submit_calls)
+        self.assertEqual(
+            [("update_app_id", 1_158_310), ("item_id", 9_000_000_010),
+             ("tags", ("Gameplay", "Balance", "1.20 'Crozier'")), ("change_note", None)],
+            client.fields,
+        )
+        receipt = json.loads(self.receipt_file.read_text())
+        self.assertTrue(receipt["tags_only"])
+        self.assertEqual("compatibility_tags_only", receipt["update_scope"])
+        self.assertEqual(["Gameplay", "Balance", "1.20 'Crozier'"], receipt["tags"])
+
+    def test_tags_only_flag_and_final_tag_list_are_bound_in_payload_hash(self) -> None:
+        self.plan.update(operation="update", target_item_id="9000000010")
+        normal = steam_native._prepare_plan(self.plan)
+        self.plan["tags_only"] = True
+        tags_only = steam_native._prepare_plan(self.plan)
+        self.assertNotEqual(normal.payload_sha256, tags_only.payload_sha256)
+        self.plan["tags"] = ["Balance", "Events"]
+        other_tags = steam_native._prepare_plan(self.plan)
+        self.assertNotEqual(tags_only.payload_sha256, other_tags.payload_sha256)
+        self.assertEqual(("Balance", "Events", "1.20 'Crozier'"), other_tags.tags)
+
+    def test_tags_only_rejects_create_or_preview_changes_before_client_open(self) -> None:
+        self.plan["tags_only"] = True
+        with patch.object(steam_native, "_open_client") as opened:
+            self._write_plan()
+            with self.assertRaisesRegex(steam_native.SteamNativeError, "requires an update"):
+                steam_native.publish("unused.dll", self.plan_file, self.receipt_file)
+            self.plan.update(operation="update", target_item_id="9000000010")
+            for field in ("additional_preview_files", "update_preview_files", "remove_preview_indices"):
+                self.plan[field] = [0]
+                self._write_plan()
+                with self.assertRaisesRegex(steam_native.SteamNativeError, "cannot change additional previews"):
+                    steam_native.publish("unused.dll", self.plan_file, self.receipt_file)
+                del self.plan[field]
+            opened.assert_not_called()
+
+    def test_unknown_staging_minor_rejected_before_any_SDK_client(self) -> None:
+        (self.content / "descriptor.mod").write_text('supported_version="1.21.0"\n', encoding="utf-8")
+        with patch.object(steam_native, "_open_client") as opened:
+            with self.assertRaisesRegex(steam_native.SteamNativeError, "no confirmed"):
+                steam_native.publish("unused.dll", self.plan_file, self.receipt_file)
+            opened.assert_not_called()
+        self.assertFalse(self.receipt_file.exists())
+
+    def test_legacy_119_actual_provider_keeps_original_tags_content_and_notes(self) -> None:
+        (self.content / "descriptor.mod").write_text('supported_version="1.19.0.6"\n', encoding="utf-8")
+        self.plan.update(operation="update", target_item_id="9000000010",
+                         tags=["Balance", "1.19 'Prior fixture'"])
+        self._write_plan()
+        client = FakeSteamClient()
+        self.assertTrue(self._publish(client)["ok"])
+        self.assertIn(("tags", ("Balance", "1.19 'Prior fixture'")), client.fields)
+        self.assertIn(("content", self.content), client.fields)
+        self.assertIn(("change_note", "Initial release"), client.fields)
+        self.assertEqual(1, client.submit_calls)
+        self.assertFalse(json.loads(self.receipt_file.read_text())["tags_only"])
+
+    def test_submit_nullable_change_note_passes_c_char_p_NULL(self) -> None:
+        observed = []
+        client = object.__new__(steam_native._NativeClient)
+        client.ugc = steam_native.ctypes.c_void_p(1)
+        signature = steam_native.ctypes.CFUNCTYPE(
+            steam_native.ctypes.c_uint64, steam_native.ctypes.c_void_p,
+            steam_native.ctypes.c_uint64, steam_native.ctypes.c_char_p,
+        )
+
+        def submit(_ugc, _handle, note):
+            observed.append(note)
+            return 123
+
+        client._submit = signature(submit)
+        client._wait_for_result = lambda *_args: steam_native.SubmitItemUpdateResult(1, False)
+        self.assertEqual(1, client.submit_item_update(123, None).result)
+        self.assertEqual(1, client.submit_item_update(123, "Original note").result)
+        self.assertEqual([None, b"Original note"], observed)
 
 
 if __name__ == "__main__":

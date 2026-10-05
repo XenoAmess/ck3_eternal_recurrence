@@ -110,6 +110,8 @@ def validate(*, release_localization: bool = False) -> list[str]:
         'supported_version="1.20.0.3"\n'
     )
     descriptor = text("descriptor.mod").replace("\r\n", "\n")
+    from workshop_compatibility_tags import render_workshop_descriptor_bytes
+    expected_descriptor = render_workshop_descriptor_bytes(expected_descriptor.encode("utf-8")).decode("utf-8")
     if descriptor != expected_descriptor:
         errors.append("descriptor.mod fields or ordering differ from the 0.4.1 contract")
     thumbnail = MOD / "thumbnail.png"

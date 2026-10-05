@@ -15,6 +15,8 @@ import tempfile
 import zipfile
 from pathlib import Path, PurePosixPath
 
+from workshop_compatibility_tags import render_release_file_bytes
+
 
 ROOT = Path(__file__).resolve().parent.parent
 PRODUCT_ID = "mod_zhongguo_style"
@@ -550,7 +552,7 @@ def build_release(
         relative = _relative(source_path, source)
         target = staging / PurePosixPath(relative)
         target.parent.mkdir(parents=True, exist_ok=True)
-        target.write_bytes(source_path.read_bytes())
+        target.write_bytes(render_release_file_bytes(relative, source_path.read_bytes()))
 
     errors = release_source_errors(staging, allow_source_only_files=False)
     if errors:

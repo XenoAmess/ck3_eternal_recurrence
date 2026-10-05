@@ -90,6 +90,8 @@ def validate(game: Path | None = DEFAULT_GAME, *, release_localization: bool = F
         if descriptor.startswith(b"\xef\xbb\xbf"):
             raise ValueError("descriptor must not have BOM")
         expected = f'version="{VERSION}"\ntags={{\n\t"Balance"\n}}\nname="公国／王国／帝国法理征服（XenoAmess维护版）"\nsupported_version="{SUPPORTED_VERSION}"\npicture="thumbnail.png"\n'
+        from workshop_compatibility_tags import render_workshop_descriptor_bytes
+        expected = render_workshop_descriptor_bytes(expected.encode("utf-8")).decode("utf-8")
         if descriptor.decode("utf-8") != expected:
             raise ValueError("descriptor identity changed")
         english = localization(SOURCE / "localization/english/greatwar_l_english.yml")

@@ -1,7 +1,7 @@
 {
   "schema": "ck3-product-permanent-release-evidence-index-v1",
   "intended_repository_path": "docs/release-evidence/eternal-recurrence/1.0.2.json",
-  "status": "ACTUAL_UPLOAD_PUBLIC_CACHE_OFFLINE_VERIFIED_MASTER_RECORD_PENDING",
+  "status": "RELEASE_COMPLETE",
   "product": "eternal-recurrence",
   "workshop_item_id": "3784706360",
   "app_id": 1158310,
@@ -21,10 +21,14 @@
     }
   },
   "master_record_closeout": {
-    "status": "PENDING_ACTUAL_ROOT_COMMIT_PUSH",
-    "actual_master_record_commit": null,
-    "actual_push_receipt": null,
-    "release_complete": false
+    "status": "ACTUAL_ROOT_COMMIT_PUSH_REMOTE_EXACT",
+    "actual_master_record_commit": "c55db0c3f38b6e1ff2207a88d36e4dbaaa542097",
+    "actual_push_receipt": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/release-closeout-01.json",
+      "bytes": 1114,
+      "sha256": "9a3bb7f530a712af2f4f33e04091117ec92a30182873be471ccaaa3c7c37bf19"
+    },
+    "release_complete": true
   },
   "actual_upload": {
     "steam_result": 1,
@@ -348,5 +352,6 @@
       "sha256": "fca33342da534b4682a3f39b5b7ffdc7d62b6c51fc202d7a5c343bddf5d74e8c"
     }
   },
-  "boundary": "Index of already actual receipts only; no new runtime/API/cache/offline checks and no future master commit/push facts. Original RED and UNKNOWN records remain unchanged."
+  "boundary": "Index of already actual receipts only; no new runtime/API/cache/offline checks and no future master commit/push facts. Original RED and UNKNOWN records remain unchanged.",
+  "record_status_before_Git_closeout": "ACTUAL_UPLOAD_PUBLIC_CACHE_OFFLINE_VERIFIED_MASTER_RECORD_PENDING"
 }

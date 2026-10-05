@@ -12,6 +12,8 @@ import tempfile
 import zipfile
 from pathlib import Path
 
+from workshop_compatibility_tags import render_workshop_descriptor_bytes
+
 
 ROOT = Path(__file__).resolve().parent.parent
 DEFAULT_SOURCE = ROOT / "XenoAmess_s_Eternal_Recurrence"
@@ -138,6 +140,8 @@ def release_files(source):
 def render_release_bytes(path, relative):
     """Strip marked development regions while preserving all other bytes."""
     data = path.read_bytes()
+    if relative == "descriptor.mod":
+        return render_workshop_descriptor_bytes(data)
     if path.suffix.lower() not in {".txt", ".gui", ".yml"}:
         return data
     had_bom = data.startswith(b"\xef\xbb\xbf")

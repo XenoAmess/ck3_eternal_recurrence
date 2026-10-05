@@ -1,0 +1,668 @@
+{
+  "schema": "ck3.workshop-metadata-revision.v1",
+  "status": "PUBLIC_METADATA_VERIFIED",
+  "revision_date_local": "2026-10-06",
+  "recorded_at_utc": "2026-10-05T17:04:09.003271+00:00",
+  "scope": "Eight existing published 1.20 releases; tags-only, no content release or additional gameplay acceptance.",
+  "compatibility_tag": "1.20 'Crozier'",
+  "consumer_app_id": 1158310,
+  "owner_steam_id": "76561198273714027",
+  "preparation": {
+    "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/eight-tags-only-preparation-01.json",
+    "bytes": 8007,
+    "sha256": "86d884896bef451564c978143e8c3235a76e55a2ea1c228f792ca152c667b3e5"
+  },
+  "public_before": {
+    "path": "C:/workspace/ck3-upgrade-20261006/workshop-eight-items-curl-baseline-agent-01/response-body-01.raw.json",
+    "bytes": 47309,
+    "sha256": "09e4d2db55d005f23b03a51f678c6b1675fc86727aea7aaa8661337bc1b0b35e"
+  },
+  "public_after": {
+    "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/anonymous-readback-01/batch8-after.body.raw",
+    "bytes": 47509,
+    "sha256": "64dd34e98688580860b915eb412ccfd309a60a9ddffcb9fa6b0461a270c3e462"
+  },
+  "anonymous_readback": {
+    "path": "C:/workspace/ck3-upgrade-20261006/workshop-eight-items-final-readback-agent-01/verification-merged-02.json",
+    "bytes": 6753,
+    "sha256": "ce92f17d33bdebd1bd447d81cebb4b30a8501ba89ee4d6fea44044ceb3af6a5b"
+  },
+  "anonymous_HTTP_evidence_index": {
+    "path": "C:/workspace/ck3-upgrade-20261006/workshop-eight-items-final-readback-agent-01/readback-evidence-index-02.json",
+    "bytes": 30102,
+    "sha256": "d0d681c4fb0458a38f9ee90cfa14f6579194119bc74086f2987f1ec3492d596e"
+  },
+  "notes_baselines": [
+    {
+      "path": "C:/workspace/ck3-upgrade-20261006/workshop-eight-items-notes-baseline-agent-01/notes-baseline-receipt-01.json",
+      "bytes": 20082,
+      "sha256": "58c853af67ef89c369677d20b799365364846422ac734428bc048b65e962bfa3"
+    },
+    {
+      "path": "C:/workspace/ck3-upgrade-20261006/workshop-eight-items-notes-retry-agent-01/failed-five-retry-receipt-01.json",
+      "bytes": 28016,
+      "sha256": "3e15e1e9d08b7983bc8661c2c6f872459c7468c20390150c0ceec7a16000ff4b"
+    }
+  ],
+  "notes_last_baseline_finished_utc": "2026-10-05T16:50:20.693425+00:00",
+  "native_implementation": {
+    "path": "C:/workspace/ck3_eternal_recurrence/ck3_workshop_mcp/src/ck3_workshop_mcp/steam_native.py",
+    "bytes": 62923,
+    "sha256": "0a97d38baf510f2f42de2589796d334966429f31d579672a154e70506efbba59"
+  },
+  "version_registry": {
+    "path": "C:/workspace/ck3_eternal_recurrence/ck3_workshop_mcp/src/ck3_workshop_mcp/compatibility_tags.py",
+    "bytes": 3226,
+    "sha256": "47ff303baf94867db406ec9dab52037b83551b8c39a8dff0a0bdceafed7c2d90"
+  },
+  "implementation_checks": [
+    {
+      "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-tags-provider-agent-02/targeted-tests-02.json",
+      "bytes": 658,
+      "sha256": "e70647976a344e12104605855e393ec2ca89ac2d106b89a2579a64666f0998df"
+    },
+    {
+      "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-tags-provider-agent-03/legacy-targeted-tests-03.json",
+      "bytes": 971,
+      "sha256": "b3be4fae53c7a45f03f670e8390abe90f73752f14018e2e8e6f4672bfa2b160b"
+    },
+    {
+      "path": "C:/workspace/ck3-upgrade-20261005/compatibility-renderer-actual-01/handoff-01.json",
+      "bytes": 9041,
+      "sha256": "56bd6d1636b5f77f5b164a5ffefd00f47e8ac27cda58a737eebae86da9b50ac8"
+    }
+  ],
+  "Steam_offline_after": {
+    "image": {
+      "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/offline-after-metadata-challenge-02/challenge-2.png",
+      "bytes": 688046,
+      "sha256": "f4a748c3d24e28d6434065dac4c2b3c01a0376a80391bb432ac7cd3077b5aaa0"
+    },
+    "reviewed_by": "Root",
+    "visible_text": "离线模式",
+    "visible_nonce": "38383b85449c",
+    "captured_utc": "2026-10-05T17:00:08.958349+00:00"
+  },
+  "screen_release": {
+    "task": "ck3-upgrade-screen-20261006-a64",
+    "keeper_actual_exit": 0,
+    "keeper_actual_last_sequence": 3610,
+    "CAS_actual_sequence": 3611,
+    "state": "done",
+    "resources": [],
+    "actual_tool_chunk": "6056d7"
+  },
+  "items": [
+    {
+      "item_id": "3787304042",
+      "product": "vivhite-courtier",
+      "public_version": "1.0.2",
+      "public_commit": "49f535dcf277243312d7e7c0b89e6985b841b01f",
+      "descriptor_source": "Eternal_Recurrence_Vivhite_Courtier/descriptor.mod",
+      "descriptor_sha256": "e72d846e2ace0a6266a8a908a8aa64a3a1ad405eca15660d46cd653bdf37a04e",
+      "before_tags": [
+        "Gameplay"
+      ],
+      "effective_tags": [
+        "Gameplay",
+        "1.20 'Crozier'"
+      ],
+      "payload_sha256": "1345775968f8aa6ec3ce2996c70d07ddd9c877b26a140bc2d4f43b3bb0433b12",
+      "plan": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3787304042/native-publish-plan.json",
+        "bytes": 7189,
+        "sha256": "ee18213f9ac99bd7b478a6a43a3573da9be83582944610c3911b1643be6fdaa8"
+      },
+      "effective_change_note": null,
+      "content_upload": false,
+      "public_tag": "vivhite-v1.0.2",
+      "original_changelog": "docs/release-changelogs/vivhite-courtier/1.0.2.md",
+      "SDK_receipt": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3787304042/native-publish-receipt.json",
+        "bytes": 657,
+        "sha256": "52eb2791fda2d94e7bf08830035ca608385ae8503574323ad79230dbcb31e6b7"
+      },
+      "SDK_created_at_utc": "2026-10-05T16:52:59.845286+00:00",
+      "SDK_submitted_at_utc": "2026-10-05T16:53:00.750603+00:00",
+      "sdk_steam_result": 1,
+      "public_verification": {
+        "item": "3787304042",
+        "creator": "76561198273714027",
+        "consumer_app_id": 1158310,
+        "creator_app_id": 1158310,
+        "visibility": 0,
+        "title": "琉焰卿的永恒轮回：典造琉焰廷臣·白绮特供版",
+        "exact_full_tags": [
+          "Gameplay",
+          "1.20 'Crozier'"
+        ],
+        "full_tag_set_exact": true,
+        "sidebar_category_value_href_exact": true,
+        "existing_Notes_unchanged": true,
+        "existing_entry_count": 3,
+        "metadata_HTTP_reused": true,
+        "sidebar_HTTP_reused": true,
+        "Notes_HTTP_reused": true
+      },
+      "unchanged_metadata_fields": [
+        "creator",
+        "creator_app_id",
+        "consumer_app_id",
+        "title",
+        "description",
+        "visibility",
+        "filename",
+        "file_size",
+        "file_url",
+        "hcontent_file",
+        "preview_url",
+        "hcontent_preview",
+        "time_created",
+        "banned",
+        "ban_reason"
+      ],
+      "existing_Notes_baseline_precedes_actual_SDK": true
+    },
+    {
+      "item_id": "3800124956",
+      "product": "auto-upgrade-buildings",
+      "public_version": "4.0.3",
+      "public_commit": "7dc8d31e51d16fda1b1d7aaae231dccf4af9b97b",
+      "descriptor_source": "mod_auto_upgrade_buildings/descriptor.mod",
+      "descriptor_sha256": "93293ba409b0e2056f280aa52e2fc3aa5ef9bef6954f5e2b5b942ccfc5d620e4",
+      "before_tags": [
+        "Balance "
+      ],
+      "effective_tags": [
+        "Balance ",
+        "1.20 'Crozier'"
+      ],
+      "payload_sha256": "55ca8ce5d2a3b68dc0a0a98581b0ef11f940b974b21779c941422dbbe6aebfc6",
+      "plan": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3800124956/native-publish-plan.json",
+        "bytes": 7896,
+        "sha256": "30067f2c6b4479805f69fac2eac3cfd1965761050db213314b151b8ffadedec2"
+      },
+      "effective_change_note": null,
+      "content_upload": false,
+      "public_tag": "auto-upgrade-buildings-v4.0.3",
+      "original_changelog": "docs/release-changelogs/auto-upgrade-buildings/4.0.3.md",
+      "SDK_receipt": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3800124956/native-publish-receipt.json",
+        "bytes": 657,
+        "sha256": "fbca53a715fa29d996794ff468ec6ff4573fe770bb53b88673f68124908f4221"
+      },
+      "SDK_created_at_utc": "2026-10-05T16:54:33.319631+00:00",
+      "SDK_submitted_at_utc": "2026-10-05T16:54:34.671788+00:00",
+      "sdk_steam_result": 1,
+      "public_verification": {
+        "item": "3800124956",
+        "creator": "76561198273714027",
+        "consumer_app_id": 1158310,
+        "creator_app_id": 1158310,
+        "visibility": 0,
+        "title": "自动升级建筑（XenoAmess维护版）",
+        "exact_full_tags": [
+          "Balance ",
+          "1.20 'Crozier'"
+        ],
+        "full_tag_set_exact": true,
+        "sidebar_category_value_href_exact": true,
+        "existing_Notes_unchanged": true,
+        "existing_entry_count": 7,
+        "metadata_HTTP_reused": true,
+        "sidebar_HTTP_reused": true,
+        "Notes_HTTP_reused": true
+      },
+      "unchanged_metadata_fields": [
+        "creator",
+        "creator_app_id",
+        "consumer_app_id",
+        "title",
+        "description",
+        "visibility",
+        "filename",
+        "file_size",
+        "file_url",
+        "hcontent_file",
+        "preview_url",
+        "hcontent_preview",
+        "time_created",
+        "banned",
+        "ban_reason"
+      ],
+      "existing_Notes_baseline_precedes_actual_SDK": true
+    },
+    {
+      "item_id": "3797711947",
+      "product": "remove-mandala",
+      "public_version": "1.0.1",
+      "public_commit": "94e6ec4d75f7a165ed8aad885d33f019c92b336d",
+      "descriptor_source": "mod_remove_mandala/descriptor.mod",
+      "descriptor_sha256": "018728348590a364b21d9154aec24a6d8278a30dec64d81e8073188f77e94d3b",
+      "before_tags": [
+        "Gameplay"
+      ],
+      "effective_tags": [
+        "Gameplay",
+        "1.20 'Crozier'"
+      ],
+      "payload_sha256": "a97b50ccd69c20ff554dacc46395e5c9057886ebada03df4aa930af89a34a7c7",
+      "plan": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3797711947/native-publish-plan.json",
+        "bytes": 3968,
+        "sha256": "7503d0a40c877e05dc91c33764f445c20672ff047abf1255c4ef6f2c9b666fdc"
+      },
+      "effective_change_note": null,
+      "content_upload": false,
+      "public_tag": "remove-mandala-v1.0.1",
+      "original_changelog": "docs/release-changelogs/remove-mandala/1.0.1.md",
+      "SDK_receipt": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3797711947/native-publish-receipt.json",
+        "bytes": 657,
+        "sha256": "8f408f7ebca877a789f6fe77e3929c716b1a052ac5c92a74399ba68fb732bca3"
+      },
+      "SDK_created_at_utc": "2026-10-05T16:54:36.650593+00:00",
+      "SDK_submitted_at_utc": "2026-10-05T16:54:37.616885+00:00",
+      "sdk_steam_result": 1,
+      "public_verification": {
+        "item": "3797711947",
+        "creator": "76561198273714027",
+        "consumer_app_id": 1158310,
+        "creator_app_id": 1158310,
+        "visibility": 0,
+        "title": "Mandala Purge — 肃清曼荼罗伪信",
+        "exact_full_tags": [
+          "Gameplay",
+          "1.20 'Crozier'"
+        ],
+        "full_tag_set_exact": true,
+        "sidebar_category_value_href_exact": true,
+        "existing_Notes_unchanged": true,
+        "existing_entry_count": 2,
+        "metadata_HTTP_reused": true,
+        "sidebar_HTTP_reused": true,
+        "Notes_HTTP_reused": true
+      },
+      "unchanged_metadata_fields": [
+        "creator",
+        "creator_app_id",
+        "consumer_app_id",
+        "title",
+        "description",
+        "visibility",
+        "filename",
+        "file_size",
+        "file_url",
+        "hcontent_file",
+        "preview_url",
+        "hcontent_preview",
+        "time_created",
+        "banned",
+        "ban_reason"
+      ],
+      "existing_Notes_baseline_precedes_actual_SDK": true
+    },
+    {
+      "item_id": "3790635143",
+      "product": "ox-here",
+      "public_version": "1.0.3",
+      "public_commit": "27233b21273959c85d4f2b85bd7519e53fcf99a1",
+      "descriptor_source": "ox_here/descriptor.mod",
+      "descriptor_sha256": "5b6abeae7c2baddd25dab061967d3f7b22c8389a0d1de74c6b625de4df916dbf",
+      "before_tags": [
+        "Gameplay"
+      ],
+      "effective_tags": [
+        "Gameplay",
+        "1.20 'Crozier'"
+      ],
+      "payload_sha256": "2f14709132e01819a36ec7ff20549fc3a767c129219bace08507b9836e4d400d",
+      "plan": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3790635143/native-publish-plan.json",
+        "bytes": 6589,
+        "sha256": "47a166cf06b3b84fc12256515cfca5c9cf9ae1e4cdc71a9f517f480d91d2f43b"
+      },
+      "effective_change_note": null,
+      "content_upload": false,
+      "public_tag": "ox-here-v1.0.3",
+      "original_changelog": "docs/release-changelogs/ox-here/1.0.3.md",
+      "SDK_receipt": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3790635143/native-publish-receipt.json",
+        "bytes": 657,
+        "sha256": "539625a8a7aa77db6363e2ba4609d869fb41a654848ec957fb0d79c9878ec4fe"
+      },
+      "SDK_created_at_utc": "2026-10-05T16:54:39.674012+00:00",
+      "SDK_submitted_at_utc": "2026-10-05T16:54:41.499157+00:00",
+      "sdk_steam_result": 1,
+      "public_verification": {
+        "item": "3790635143",
+        "creator": "76561198273714027",
+        "consumer_app_id": 1158310,
+        "creator_app_id": 1158310,
+        "visibility": 0,
+        "title": "牛来",
+        "exact_full_tags": [
+          "Gameplay",
+          "1.20 'Crozier'"
+        ],
+        "full_tag_set_exact": true,
+        "sidebar_category_value_href_exact": true,
+        "existing_Notes_unchanged": true,
+        "existing_entry_count": 3,
+        "metadata_HTTP_reused": true,
+        "sidebar_HTTP_reused": true,
+        "Notes_HTTP_reused": true
+      },
+      "unchanged_metadata_fields": [
+        "creator",
+        "creator_app_id",
+        "consumer_app_id",
+        "title",
+        "description",
+        "visibility",
+        "filename",
+        "file_size",
+        "file_url",
+        "hcontent_file",
+        "preview_url",
+        "hcontent_preview",
+        "time_created",
+        "banned",
+        "ban_reason"
+      ],
+      "existing_Notes_baseline_precedes_actual_SDK": true
+    },
+    {
+      "item_id": "3784706360",
+      "product": "eternal-recurrence",
+      "public_version": "1.0.2",
+      "public_commit": "36aa60f5aac2ae53bc8fa56db36a7df5a38dd095",
+      "descriptor_source": "XenoAmess_s_Eternal_Recurrence/descriptor.mod",
+      "descriptor_sha256": "9ad35e2e3efad1cb4532179f3e394f980d08243337c52aadcacadd203804c3be",
+      "before_tags": [
+        "Gameplay"
+      ],
+      "effective_tags": [
+        "Gameplay",
+        "1.20 'Crozier'"
+      ],
+      "payload_sha256": "e3311481c60af34553520d7e4e7afaee0620eae4571fe995a6d3dda669db6afa",
+      "plan": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3784706360/native-publish-plan.json",
+        "bytes": 8357,
+        "sha256": "c33ca768038f39ae91f415caa3060dec53e6cdb302c40cf0d2ce5b4e657b26d2"
+      },
+      "effective_change_note": null,
+      "content_upload": false,
+      "public_tag": "v1.0.2",
+      "original_changelog": "docs/release-changelogs/eternal-recurrence/1.0.2.md",
+      "SDK_receipt": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3784706360/native-publish-receipt.json",
+        "bytes": 657,
+        "sha256": "a65a0d03d9e864721f0ee0f87154b9e4f6a36386a22b1d36cd95d4de24644766"
+      },
+      "SDK_created_at_utc": "2026-10-05T16:54:43.466288+00:00",
+      "SDK_submitted_at_utc": "2026-10-05T16:54:44.920324+00:00",
+      "sdk_steam_result": 1,
+      "public_verification": {
+        "item": "3784706360",
+        "creator": "76561198273714027",
+        "consumer_app_id": 1158310,
+        "creator_app_id": 1158310,
+        "visibility": 0,
+        "title": "琉焰卿的永恒轮回",
+        "exact_full_tags": [
+          "Gameplay",
+          "1.20 'Crozier'"
+        ],
+        "full_tag_set_exact": true,
+        "sidebar_category_value_href_exact": true,
+        "existing_Notes_unchanged": true,
+        "existing_entry_count": 8,
+        "metadata_HTTP_reused": true,
+        "sidebar_HTTP_reused": true,
+        "Notes_HTTP_reused": true
+      },
+      "unchanged_metadata_fields": [
+        "creator",
+        "creator_app_id",
+        "consumer_app_id",
+        "title",
+        "description",
+        "visibility",
+        "filename",
+        "file_size",
+        "file_url",
+        "hcontent_file",
+        "preview_url",
+        "hcontent_preview",
+        "time_created",
+        "banned",
+        "ban_reason"
+      ],
+      "existing_Notes_baseline_precedes_actual_SDK": true
+    },
+    {
+      "item_id": "3812510217",
+      "product": "de-jure-conquest",
+      "public_version": "1.0.0",
+      "public_commit": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231",
+      "descriptor_source": "mod_de_jure_conquest/descriptor.mod",
+      "descriptor_sha256": "359e9378843b2532e156f4701179a1dd963dc7dd131a6c5e8d52dab96aaa63d7",
+      "before_tags": [
+        "Balance "
+      ],
+      "effective_tags": [
+        "Balance ",
+        "1.20 'Crozier'"
+      ],
+      "payload_sha256": "844f1c18f52d59e2e86917bcb59e514123785aab0db5aa7f3b596a8cb788768a",
+      "plan": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3812510217/native-publish-plan.json",
+        "bytes": 3756,
+        "sha256": "9473d93d3306684ef288492b504e2de4bbf353628982b4398134252e57b4ff16"
+      },
+      "effective_change_note": null,
+      "content_upload": false,
+      "public_tag": "de-jure-conquest-v1.0.0",
+      "original_changelog": "docs/release-changelogs/de-jure-conquest/1.0.0.md",
+      "SDK_receipt": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3812510217/native-publish-receipt.json",
+        "bytes": 657,
+        "sha256": "e90e17a6460fcb6580a72a2900de26bf3ed53e2481ee54a2f78f1921f84a35a4"
+      },
+      "SDK_created_at_utc": "2026-10-05T16:54:47.054702+00:00",
+      "SDK_submitted_at_utc": "2026-10-05T16:54:47.989799+00:00",
+      "sdk_steam_result": 1,
+      "public_verification": {
+        "item": "3812510217",
+        "creator": "76561198273714027",
+        "consumer_app_id": 1158310,
+        "creator_app_id": 1158310,
+        "visibility": 0,
+        "title": "公国／王国／帝国法理征服（XenoAmess维护版）",
+        "exact_full_tags": [
+          "Balance ",
+          "1.20 'Crozier'"
+        ],
+        "full_tag_set_exact": true,
+        "sidebar_category_value_href_exact": true,
+        "existing_Notes_unchanged": true,
+        "existing_entry_count": 1,
+        "metadata_HTTP_reused": true,
+        "sidebar_HTTP_reused": true,
+        "Notes_HTTP_reused": true
+      },
+      "unchanged_metadata_fields": [
+        "creator",
+        "creator_app_id",
+        "consumer_app_id",
+        "title",
+        "description",
+        "visibility",
+        "filename",
+        "file_size",
+        "file_url",
+        "hcontent_file",
+        "preview_url",
+        "hcontent_preview",
+        "time_created",
+        "banned",
+        "ban_reason"
+      ],
+      "existing_Notes_baseline_precedes_actual_SDK": true
+    },
+    {
+      "item_id": "3812510834",
+      "product": "change-holding-types",
+      "public_version": "1.0.0",
+      "public_commit": "dc53f4a183d4a753c0c5eeb3623f7f060b59f231",
+      "descriptor_source": "mod_change_holding_types/descriptor.mod",
+      "descriptor_sha256": "c5301c5d8a286b3666d98915fd4a9240e143dc6930f849c9741c43a9bcf96e70",
+      "before_tags": [
+        "Balance "
+      ],
+      "effective_tags": [
+        "Balance ",
+        "1.20 'Crozier'"
+      ],
+      "payload_sha256": "42c9420424adbd3d4c27799ad5dd18823499c6825dac8dc58d6d6339b3d5b8e3",
+      "plan": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3812510834/native-publish-plan.json",
+        "bytes": 3360,
+        "sha256": "d92ebb3e3e1ed01b95ed47b39f14214032d36d28f9f9693f4efcdc734c2d94b9"
+      },
+      "effective_change_note": null,
+      "content_upload": false,
+      "public_tag": "change-holding-types-v1.0.0",
+      "original_changelog": "docs/release-changelogs/change-holding-types/1.0.0.md",
+      "SDK_receipt": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3812510834/native-publish-receipt.json",
+        "bytes": 657,
+        "sha256": "d93a83bfa61f46384b9aae869b75bf1725b6f9b6993fd3ba45eb66f5d4095fc9"
+      },
+      "SDK_created_at_utc": "2026-10-05T16:54:50.099466+00:00",
+      "SDK_submitted_at_utc": "2026-10-05T16:54:51.697276+00:00",
+      "sdk_steam_result": 1,
+      "public_verification": {
+        "item": "3812510834",
+        "creator": "76561198273714027",
+        "consumer_app_id": 1158310,
+        "creator_app_id": 1158310,
+        "visibility": 0,
+        "title": "地产类型转换（XenoAmess维护版）",
+        "exact_full_tags": [
+          "Balance ",
+          "1.20 'Crozier'"
+        ],
+        "full_tag_set_exact": true,
+        "sidebar_category_value_href_exact": true,
+        "existing_Notes_unchanged": true,
+        "existing_entry_count": 1,
+        "metadata_HTTP_reused": true,
+        "sidebar_HTTP_reused": true,
+        "Notes_HTTP_reused": true
+      },
+      "unchanged_metadata_fields": [
+        "creator",
+        "creator_app_id",
+        "consumer_app_id",
+        "title",
+        "description",
+        "visibility",
+        "filename",
+        "file_size",
+        "file_url",
+        "hcontent_file",
+        "preview_url",
+        "hcontent_preview",
+        "time_created",
+        "banned",
+        "ban_reason"
+      ],
+      "existing_Notes_baseline_precedes_actual_SDK": true
+    },
+    {
+      "item_id": "3812991990",
+      "product": "superman-qiang",
+      "public_version": "1.1.0",
+      "public_commit": "f7fde816e295a62807ab636ee2d93cf307ea69cf",
+      "descriptor_source": "mod_superman_qiang/descriptor.mod",
+      "descriptor_sha256": "7b0bae16d8d339bff9c9f2fb3cceee5fa2d4a2a0b3b1f2ce4da6a77347e41ca5",
+      "before_tags": [
+        "Gameplay",
+        "Balance ",
+        "Events"
+      ],
+      "effective_tags": [
+        "Gameplay",
+        "Balance ",
+        "Events",
+        "1.20 'Crozier'"
+      ],
+      "payload_sha256": "3fce8bb352d30fb987992818c176d148f00e4fccfcf7d6fac0cb535f2566816d",
+      "plan": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3812991990/native-publish-plan.json",
+        "bytes": 4956,
+        "sha256": "0b5eee521425ef2aa13b5603358a247a8924f8157e8ac3c66491e042e4dc8844"
+      },
+      "effective_change_note": null,
+      "content_upload": false,
+      "public_tag": "superman-qiang-v1.1.0",
+      "original_changelog": "docs/release-changelogs/superman-qiang/1.1.0.md",
+      "SDK_receipt": {
+        "path": "C:/workspace/ck3-upgrade-20261006/workshop-compatible-version-backfill-root-01/plans-02/item-3812991990/native-publish-receipt.json",
+        "bytes": 687,
+        "sha256": "863522f1a710d9fffde0d60af27018ed5c7fa74f22e5ef535f58ae0cc074b1d0"
+      },
+      "SDK_created_at_utc": "2026-10-05T16:54:53.740998+00:00",
+      "SDK_submitted_at_utc": "2026-10-05T16:54:54.944902+00:00",
+      "sdk_steam_result": 1,
+      "public_verification": {
+        "item": "3812991990",
+        "creator": "76561198273714027",
+        "consumer_app_id": 1158310,
+        "creator_app_id": 1158310,
+        "visibility": 0,
+        "title": "超人强：越超人越强",
+        "exact_full_tags": [
+          "Gameplay",
+          "Balance ",
+          "Events",
+          "1.20 'Crozier'"
+        ],
+        "full_tag_set_exact": true,
+        "sidebar_category_value_href_exact": true,
+        "existing_Notes_unchanged": true,
+        "existing_entry_count": 2,
+        "metadata_HTTP_reused": true,
+        "sidebar_HTTP_reused": true,
+        "Notes_HTTP_reused": false
+      },
+      "unchanged_metadata_fields": [
+        "creator",
+        "creator_app_id",
+        "consumer_app_id",
+        "title",
+        "description",
+        "visibility",
+        "filename",
+        "file_size",
+        "file_url",
+        "hcontent_file",
+        "preview_url",
+        "hcontent_preview",
+        "time_created",
+        "banned",
+        "ban_reason"
+      ],
+      "existing_Notes_baseline_precedes_actual_SDK": true
+    }
+  ],
+  "limits": [
+    "Original published release commits and content remain unchanged.",
+    "Four unpublished 1.20 migrations get this label with their real release; 361 stays 1.19; 礼与道 has no target.",
+    "Official labels for future minors are confirmed once before adding to the single registry."
+  ]
+}
