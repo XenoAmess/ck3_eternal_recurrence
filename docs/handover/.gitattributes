@@ -1,0 +1,3 @@
+# Preserve only this immutable completed-video cleanup handover pair.
+2026-10-05-completed-war-video-storage-cleanup.md -text whitespace=trailing-space,space-before-tab,cr-at-eol
+2026-10-05-completed-war-video-storage-cleanup.receipt.json -text whitespace=trailing-space,space-before-tab,cr-at-eol

@@ -1,0 +1,214 @@
+{
+  "schema": "ck3.completed-war-video-storage-cleanup-portable/v1",
+  "status": "ACTUAL_LOCAL_CLEANUP_COMPLETE_PORTABLE_KNOWLEDGE_CANDIDATE",
+  "cleanup_completed_at_utc": "2026-10-05T10:20:23.925708+00:00",
+  "authorization": {
+    "date": "2026-10-05",
+    "speaker": "project_owner",
+    "exact_instruction": "开一个子任务，清理过期的垃圾文件。包含以往的已经做完了的视频的原始素材也可以清理。",
+    "interpretation": "Specific authorization to remove expired files and completed past-video source media overrides the prior default of permanently retaining all process material for this cleanup. It does not authorize deletion of current unfinished Episode04 material."
+  },
+  "scope": {
+    "episode": "Episode03 original, revision and expansion",
+    "roots": [
+      "D:/ck3-war-episode03-20261002-a01",
+      "D:/ck3-war-episode03-expansion-20261003-a01",
+      "D:/ck3-war-episode03-revision-20261003-a01",
+      "C:/ck3-war-episode03-expansion-20261003-a01"
+    ],
+    "removed_classes": [
+      "old raw recordings",
+      "intermediate encodes and extracted frames",
+      "explicit narration PCM and speech-output caches"
+    ],
+    "no_directory_tree_removal": true,
+    "episode01_or_episode02_deleted": false
+  },
+  "completed_video_basis": {
+    "local_proof": {
+      "path": "C:/ck3-war-episode03-expansion-20261003-a01/root-final-completion-a01/receipt.json",
+      "sha256": "91842d8c97558ded6fe018744e223974bac733ec112f10d319e0a116e71ea685",
+      "copied_exact": "C:/ck3-war-storage-cleanup-20261005-a01/completed-episode03-proof-exact.json"
+    },
+    "movie_name": "CK3-War-AI-Episode03-Siege-Expansion01.mp4",
+    "movie_bytes": 273653717,
+    "movie_sha256": "41b7b59922d3d8397e750656e347d2dd6c7985801217f19b34cc3abd06752175",
+    "duration_seconds": 1837.388021,
+    "production_and_client_delivery_complete": true,
+    "human_full_1x_review": "not-provided",
+    "human_signoff": "not-provided",
+    "independent_remote_video_sha": "not-verified"
+  },
+  "actual_deletion": {
+    "file_count": 8298,
+    "bytes": 48557119802,
+    "bytes_by_drive": {
+      "c:": 37124394468,
+      "d:": 11432725334
+    },
+    "all_deleted_paths_absent": true,
+    "skipped_or_failed_count": 0,
+    "gigabyte_definition": "1 GB = 1,000,000,000 bytes"
+  },
+  "disk_free_bytes_at_cleanup_receipt": {
+    "C:/": 56657616896,
+    "D:/": 12173090816
+  },
+  "actual_retention_validation": {
+    "checked_local_file_count": 75239,
+    "method": "Existence, file byte length and modification timestamp compared with pre-cleanup inventory; no rehash of all retained files.",
+    "all_retained_metadata_unchanged": true,
+    "retained_metadata_exception_count": 0,
+    "protected_categories": {
+      "all-sha256-directories": {
+        "files": 4308,
+        "bytes": 6585917313
+      },
+      "knowledge-code-reports-text-subtitles": {
+        "files": 32433,
+        "bytes": 2999618189
+      },
+      "all-named-final-movies": {
+        "files": 10,
+        "bytes": 1066038773
+      },
+      "all-save-files": {
+        "files": 40,
+        "bytes": 2886419176
+      },
+      "series-music-master": {
+        "files": 11,
+        "bytes": 337987760
+      }
+    },
+    "named_video_output_count": 10,
+    "series_music_copies_sha256_verified": 11,
+    "series_music_sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f",
+    "two_delivered_final_copies": [
+      {
+        "path": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-native-build-a04/CK3-War-AI-Episode03-Siege-Expansion01.mp4",
+        "bytes": 273653717,
+        "sha256": "41b7b59922d3d8397e750656e347d2dd6c7985801217f19b34cc3abd06752175"
+      },
+      {
+        "path": "C:/Users/1/OneDrive/CK3-War-AI-20260923/CK3-War-AI-Episode03-Siege-Expansion01.mp4",
+        "bytes": 273653717,
+        "sha256": "41b7b59922d3d8397e750656e347d2dd6c7985801217f19b34cc3abd06752175"
+      }
+    ],
+    "all_saves_and_sha256_directories_preserved": true
+  },
+  "excluded_and_untouched": {
+    "all_episode04_material": true,
+    "game_sdk_desktop_security_steam_processes_git_worktrees": true,
+    "other_drives_or_personal_files": true
+  },
+  "source_media_availability_after_cleanup": {
+    "all_past_raw_available": false,
+    "some_old_source_media_intentionally_unavailable": true,
+    "original_manifests_not_rewritten_to_hide_deletion": true,
+    "remaining_json_hashes_are_historical_identity_evidence": true,
+    "boundary": "Old deleted source media is intentionally unavailable after authorized cleanup. Existing source hashes, JSON evidence, scripts, narration text, subtitles and knowledge remain historical records. Prior machine audits do not imply current source-media availability or human signoff."
+  },
+  "external_full_closure": {
+    "path": "C:/ck3-war-storage-cleanup-20261005-a01/ROOT-DELIVERY-a01.json",
+    "bytes": 10529,
+    "sha256": "28beb3a0251cfbb6ec8ca1f98c45a396506dc3457a47dd68800e0b613d216462"
+  },
+  "external_frozen_manifest_and_timeline": [
+    {
+      "source": "D:/ck3-war-episode03-expansion-20261003-a01/expansion-production-input-freeze-a04.json",
+      "bytes": 7730,
+      "sha256": "2e8c8d5c4cb8a284c1896c67e37aa1e0f98abc4d655a5aa68f2081faccd40a22",
+      "preserved_copy": "C:/ck3-war-storage-cleanup-20261005-a01/frozen-source-00-expansion-production-input-freeze-a04.json"
+    },
+    {
+      "source": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-production-a04/native-run/run-manifest.json",
+      "bytes": 31789,
+      "sha256": "455b4d2bff1ad6676b53635e6a9bb1a4634803db0dd24ca1dee9b1d43f36cd3f",
+      "preserved_copy": "C:/ck3-war-storage-cleanup-20261005-a01/frozen-source-01-run-manifest.json"
+    },
+    {
+      "source": "C:/ck3-war-episode03-expansion-20261003-a01/expansion-production-a04/timeline.json",
+      "bytes": 707376,
+      "sha256": "74ccd9f71b8863e0b27a9adbbfdbee66a442bf6247bde56274fa5f1e4dbda4f9",
+      "preserved_copy": "C:/ck3-war-storage-cleanup-20261005-a01/frozen-source-02-timeline.json"
+    }
+  ],
+  "batches": [
+    {
+      "batch": "batch01-completed-episode03-raw",
+      "deleted_count": 24,
+      "deleted_bytes": 31517501318,
+      "deleted_bytes_by_drive": {
+        "c:": 27406922366,
+        "d:": 4110578952
+      },
+      "skipped_count": 0,
+      "result": {
+        "path": "C:/ck3-war-storage-cleanup-20261005-a01/batch01-completed-episode03-raw-result.json",
+        "bytes": 1125,
+        "sha256": "02b2ec438e094a699aa2a79d6975bd819ce386373887613650a50a6492443328"
+      },
+      "external_full_ledger": {
+        "path": "C:/ck3-war-storage-cleanup-20261005-a01/batch01-completed-episode03-raw-deletion-ledger.jsonl",
+        "bytes": 61094,
+        "sha256": "c4e114a3a1646de894da7610601f8320c309b7b8c26ad035e2d3026010a75d72"
+      },
+      "plan": {
+        "path": "C:/ck3-war-storage-cleanup-20261005-a01/batch01-completed-episode03-raw-plan.json",
+        "sha256": "34d79bd36e016601e0df682c2f11d6b459746844fd6e7393b2c02f49b743cb0f"
+      }
+    },
+    {
+      "batch": "batch02-completed-episode03-intermediate",
+      "deleted_count": 7698,
+      "deleted_bytes": 14885767558,
+      "deleted_bytes_by_drive": {
+        "c:": 8912477198,
+        "d:": 5973290360
+      },
+      "skipped_count": 0,
+      "result": {
+        "path": "C:/ck3-war-storage-cleanup-20261005-a01/batch02-completed-episode03-intermediate-result.json",
+        "bytes": 1137,
+        "sha256": "e7250f902c42162bd8e4f30a247a404dbbacff92e7499a26b39877ef0d6ddd4a"
+      },
+      "external_full_ledger": {
+        "path": "C:/ck3-war-storage-cleanup-20261005-a01/batch02-completed-episode03-intermediate-deletion-ledger.jsonl",
+        "bytes": 15977508,
+        "sha256": "51566decb8972154332d4fe7110695c4a129c43e3c7e6736a8d0c30c161899a1"
+      },
+      "plan": {
+        "path": "C:/ck3-war-storage-cleanup-20261005-a01/batch02-completed-episode03-intermediate-plan.json",
+        "sha256": "8096b17dc69598dfe185121be9ceb2f84fae89661ce299027f9d730fb1761769"
+      }
+    },
+    {
+      "batch": "batch03-completed-episode03-voice",
+      "deleted_count": 576,
+      "deleted_bytes": 2153850926,
+      "deleted_bytes_by_drive": {
+        "c:": 804994904,
+        "d:": 1348856022
+      },
+      "skipped_count": 0,
+      "result": {
+        "path": "C:/ck3-war-storage-cleanup-20261005-a01/batch03-completed-episode03-voice-result.json",
+        "bytes": 1128,
+        "sha256": "d1bbe7ef682fde206703d1937edf45418c202c44f6b6be2e682ccfc232c5a5b8"
+      },
+      "external_full_ledger": {
+        "path": "C:/ck3-war-storage-cleanup-20261005-a01/batch03-completed-episode03-voice-deletion-ledger.jsonl",
+        "bytes": 1585952,
+        "sha256": "a8f5100f2437151d3b93101f3b959ef17dc8bbcb9152b4e916b3371ce185f55b"
+      },
+      "plan": {
+        "path": "C:/ck3-war-storage-cleanup-20261005-a01/batch03-completed-episode03-voice-plan.json",
+        "sha256": "f75bebac822cbe5ba871dc97f81954339415108a98e65109075246ca1455421a"
+      }
+    }
+  ],
+  "portable_package_boundary": "This small fact record is reusable on other machines without the full file inventory or deletion ledgers. Exact old-media paths are machine-local provenance. The external ledger remains authoritative for a specific deleted path. This candidate does not assert Git integration or CI completion.",
+  "candidate_preparation_validation": "Only the 10,529-byte closure and three approximately 1 KB batch result JSONs were re-read and SHA-verified. No additional deletion, disk scan, full retained-file check or large-media/ledger hash was performed."
+}
