@@ -106,3 +106,22 @@ flowchart TD
     E --> M[既有 holy-order context MCP 新字段]
     W -. 自动释放 caller unknown .-> U[何时实际调用 2A889C0]
 ```
+
+
+# Holy-order current war input, final offline receipt
+
+Why: the already-hired finalCanHire=false state must retain independent current religious-war qualification for planning; it cannot stand in for employer persistence or automatic release.
+
+Result: exact native261C120(order, actualplayedactor, reasons) now feeds military_terms.current_war_eligibility {available, unavailable_reason, qualifies, reasons_available, reason_literal} in the existing registered ck3_query_player_holy_order_context_v1. It is evaluated independently of finalCanHire and resource terms. Nonmilitary rows stay inapplicable and older frozen wires remain compatible.
+
+Source increment: release callback261C720 resolves order Title and actual Title holder, then28CBDD0 returns holder knight Character vector. Its source body is closed, while a true war-end incoming2A889C0 caller has no known manager constructor/vtable/update/xref cache locator. No arbitrary RVA, whole EXE scan, release action or mode was invented.
+
+Validation: Root strict DLL+5 new targets GREEN at source96e4c6a688d95dc326db4cd3b7cd25961e3c40c6; five new CTests GREEN once, our ck3_12003_holy_order_war_eligibility0.12s. One registered MCP replay of genuine native fixture GREEN,3samples/48checks, exact native domain preserved. Cases: already-hired true/false war input, unavailable final resource terms with war input still available, missing war binding unavailable, empty/heap native reasons, historical-wire compatibility. No consumer mismatch or source edits after validation.
+
+Readiness: new current war input static-ready. Ordinary player release and automatic war-end/multiwar persistence research. No new live, gameplay days, paid actions, CK3/process/UI/Steam/profile/save/cache activity, or old test rerun.
+
+Commits: parent source ledgerf3afac55ea46b02a62a1be6eb58f0be4ce6cf036; implementation5c3b14f4b41c181eb91d54aad915d7fa401f18f5. Root integration96e4c6a688d95dc326db4cd3b7cd25961e3c40c6. Source gbr6 clean, local commits only.
+
+Artifacts: lifecycle-caller/VALIDATION-RECEIPT.json pins native fixture, registered-mcp/RESULT.json and observed.json, source plan check/render. Plan consistency checks file bytes and author declarations only, not semantics or live results. Earlier attempt RED/partial source is preserved.
+
+Next: locate one actual incoming2A889C0 lifecycle producer via cached exact-build manager binding and close war-end, remaining-opponent and multiwar conditions. Current qualifies bool must not be promoted to automatic-release/persistence legality. Root merges shared canonical/index/daily/week reports.

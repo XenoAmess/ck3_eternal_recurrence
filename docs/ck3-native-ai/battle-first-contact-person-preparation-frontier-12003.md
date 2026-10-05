@@ -350,3 +350,25 @@ Source receipt, bounded binaries/assembly, previous caller/getter reuse pins and
 ### Offline implementation qualification
 
 Isolated source commit `73e8f3f1` implements this optional raw leaf, four exact loaded threshold bindings, current prepared/copied observations, strict optional normalizer and `compute_auxiliary_scratch_from_native_inputs_12003`. No new MCP or native getter invocation was added. One new production-normalizer→kernel Python case was run once: **1 passed in1.52s**; it covers low/middle/high signed selector boundaries, legal negative438, wrap64-before-clamp, empty/missing properties, legacy absent/explicit-null leaves and native-null scratch. Receipt/log: `PYTHON-VALIDATION.json/.log` in this packet. Python qualification is **static-ready**. Native target/CTest `xar_ck3_12003_person_auxiliary_scratch_test` has six production-reader/serializer fixture samples and is implemented but **not yet built or run by this lane**; Root owns the combined offline build. It emits `${CMAKE_BINARY_DIR}/person_auxiliary_scratch_12003.json` for one genuine wire-consumption follow-up. No new fixture-live or production-live qualification is claimed.
+
+
+## Post-A/B genuine native fixture wire integration, 2026-10-05
+
+After the root central offline /WX DLL/new-target build and one 5/5 GREEN CTest run, the eight genuine post_291d7e0_sources_wire.json snapshots were consumed once by the adopted production normalizer and post-B unit-request emitter from Z:/gb0, source 96e4c6a688d95dc326db4cd3b7cd25961e3c40c6. All eight cases passed. Exact request counts were [5,1,1,3,0,null,null,null]; the three partial demanded-source cases retained independent current facts and rejected complete post-B request emission.
+
+This integration preserved guarded630→carrier40→stored orderedD8 order, duplicates, FFFF/zero and negative Q values, independent value counts, native wrong-magic/signed-JL short circuits, actual admitted fallback with a nonempty inline static list, and negative/unread list count distinctions. The adopted production module's optional later_direct extension remained compatible. Wire SHA-256: 6f0c05a9c5dd4f7783b0653f15af15aad387950e31520a76dc2d94fe8e6bf656.
+
+Receipt: Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/post-ab-observer/native-wire-integration/WIRE-INTEGRATION-RECEIPT.json. Normalized actual native snapshots and unit requests are retained in NORMALIZED-AND-REQUESTS.json in the same directory. The root native build/CTest receipts are native-person-holy-01.json and native-person-holy-ctest-01.json in its round2 output. The old sixteen Python cases were not rerun; no source/native input changed during this integration.
+
+The new post-A/B observer/consumer is now static-ready using the compiled production reader, serializer and adopted Python ingress. This is synthetic native-memory fixture evidence, not fixture-live or production-live. No paused artifact, full-person/Entry/forecast claim or game day was added. Game/process/pipe/runtime/desktop access remained zero.
+
+
+### Root 整合 native/consumer 资格
+
+实际验收收口时间：2026-10-05T21:12:06+08:00。整合 source `96e4c6a688d95dc326db4cd3b7cd25961e3c40c6` 在 adopted v73 capability flags 下 MSVC `/WX`、jobs4 below-normal 纯离线 bridge + 5新增targets构建 GREEN（152.98 秒、362增量步骤），`native-person-holy-01.json/.log` 保留。只运行5个新增 CTests，一次 **5/5 GREEN**（总0.73 秒）：post-A/B、knight effectiveness context、later direct、auxiliary scratch、holy-order current-war eligibility。旧C/D及旧Python cases未重跑。
+
+真实生产reader/serializer输出随后各消费一次，合计28份：post-A/B8（ordered requests `[5,1,1,3,0,null,null,null]`）；knight4（缺诊断仍保留真实scalar/stats）；later-direct7（duplicates、fullgeneration fallback、negative count/missing/false分开）；auxiliary scratch6（真实准备/复制结果分列、native-noop、missing threshold）；holy-order3通过注册MCP consumer 48checks。无synthetic replacement，生产normalizer/module从Z:/gb0导入；十三份later/scratch在 `later-scratch-genuine-wire-integration.json`，其他各lane native-wire-integration/VALIDATION-RECEIPT保留wire、consumer与projection pins。新native+consumer资格均为 **static-ready**，不是live，也没有完整人物、changed-stage、Entry预测或release action信用。
+
+qualified DLL已归档 `source96e4c6a6-person-holy-qualified-binaries/xar_ck3_bridge.dll`：9,691,648 bytes，SHA `ce030baa45956ffac50b43e3b1337b6b06c8407e9a38fe2ab110382d0c51ca41`，同档案保留5fixture EXE、实际JSON、CMakeCache与编译result。未注入或deploy。上一已推送loss milestone `02d187b2cf7df41393affe840992d26f2b715691` 官方CI `37313580089` SUCCESS；对应[CI日志](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37313580089)不能外推新commit已过CI。
+
+下一后台工作仍在做：已交付九cachebyte child源待Root采用/独立native验证；291F0A0 helper四族观测、2633340 conditional raised refresh及retained selected Rules真实effect值正在 source-first施工。这些都针对当前功能输入缺口，不派生理论安全审计，不用无paused状态当停止理由。新CK3启动/连接/SDK/真实pipe、UI/Steam、profile/save/cache/runtimeprepare/stage/deploy与游戏日全部0；历史5035保存日与R0046停点不变。日/周保持rolling，不倒填早会，不把幕后源码测试记成production-live。

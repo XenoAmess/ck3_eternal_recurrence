@@ -164,3 +164,44 @@ runtime preparation or game-day operation occurred. There is no new live or
 complete Entry claim. The concrete forecast increment is explicit current
 effectiveness source identity and numerical inputs; changed-stage context/model
 construction and outer first-contact Province/admission remain separate gaps.
+
+
+# Current knight effectiveness context: offline qualification update
+
+Root integrated the source/observer package as `122d1eb7` and focused native
+fixture as `9a92c24e`. The central `/WX` native DLL plus five new targets built
+GREEN at source `96e4c6a688d95dc326db4cd3b7cd25961e3c40c6` in153seconds. Root ran
+the five new CTests once, GREEN5/5 in0.73seconds. The context test is
+`xar_ck3_12003_knight_effectiveness_context_test`; its four new fake-memory
+cases passed through production `ReadCombatSimulationInputs`, the new context
+reader, production DTO and literal production `AppendCombatKnights` projection.
+The scalar leaf remains explicit and independent of diagnostic table reads.
+
+After Root supplied native GREEN, the external integration consumer ran once
+with Python `-B -O` and passed4/4 in0.984seconds. It read the four actual emitted
+native files under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261005/native-build/ck3_12003_knight_effectiveness_context_wire/`,
+then called the integrated production `_normalize_knights` from `Z:/gb0`.
+The selected Character full ID50331661 stays distinct from knight16777226;
+self selection retains the same ID; signed C1..C9 inputs remain unchanged.
+Missing C5/model cases retain selected identity, null diagnostic arrays and the
+available native scalar125000 plus damage312500000/toughness31250000, adding
+zero consumer input gaps. Every case preserves loaded coefficients100/10.
+
+The integration receipt pins the normalizer, external consumer script, native
+serializer projection receipt/functions and actual four input bytes:
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/actual-entry-context/native-wire-integration/attempt01/RESULT.json`.
+Root's central receipts are `round2/native-person-holy-01.json` and
+`round2/native-person-holy-ctest-01.json`; the Root report should use its canonical
+full paths. No old Python/native case was rerun by this consumer, no replacement
+fixture JSON was synthesized, and no production/native source changed during
+the central build or consumer pass.
+
+This qualifies the focused current effectiveness-context observer as
+**static-ready**, with native reader/DTO/serializer/production-consumer evidence.
+It supplies current selected Character identity and exact current numerical
+inputs. It does not qualify the native weighted formula, changed-stage model
+context construction, outer natural first-contact admission/Province, full
+Entry forecast, fixture-live, production-live or complete gameplay. No CK3
+launch/attach/query/live pipe/SDK/UI/Steam/profile/save/cache/runtime preparation
+or game-day operation occurred.
