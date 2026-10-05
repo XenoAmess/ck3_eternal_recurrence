@@ -935,3 +935,56 @@ synthetic source-shaped input through actual production code, not native
 producer or live qualification. No old or sibling tests, native build, fresh
 EXE read, CK3 operation, current-final-as-prior or unknown-as-empty assumption
 is introduced.
+
+## Next source-first connection plan:2920B50 entire-vector admission
+
+The producer lane's sealed `person-tail/following2920b50-source/` tree and
+query plan are reused before any consumer implementation. This consumer
+performs zero new EXE reads; the producer's1763-byte closure is credited to
+that lane. The concrete next boundary is
+`postCarrierWeighted630_pre291CC71` → `post2920B50_pre291CC76`. Proposed
+families are `list_1c8_50`, then `own_1b0_570`; the final genuine schema and
+emitter remain required before this chain can call them.
+
+Each selected accolade occurrence has an all-or-none preflight: every
+stored attribute Definition pointer must be nonnull with ObDG magic before
+any attribute emits a request. A known invalid later attribute suppresses
+the entire occurrence, including earlier valid attributes. An unknown
+preflight cannot release an apparent earlier attribute prefix. The first
+list family has no additional Acco magic/fullID admission; the own family
+does require Acco magic and fullID!=-1 before its vector preflight.
+
+Only after this whole preflight succeeds may a pure consumer preserve
+ordered attribute prefixes. Rank selects `wrap_i32(rank-1)` by signed
+range against the actual Definition3C0 vector, stride5F8. Each selected
+ownerPC+10 or peerPC+1D0 emits one outer100000 request evenempty. An
+unknown selected PC stops that prefix and leaves later independently
+ready attributes/own family separate. Known rejected occurrences and
+zero vectors can advance with no requests; negative counts cannot.
+
+```mermaid
+flowchart TD
+  A[Explicit postCarrierWeighted630_pre291CC71 context] --> L[List1C8+50: original selected accolade occurrences]
+  L --> G{Entire attribute Definition preflight known?}
+  G -->|all valid| R[Ordered rank selection: wrap32 rank-1, actual vector3C0]
+  G -->|known invalid| S[Skip entire occurrence including earlier attributes]
+  G -. unknown .-> U[No attribute prefix released for this occurrence]
+  R --> P[Owner PC+10 unit100000 evenempty]
+  R -. cold ranked fallback result missing .-> M[Stop at verified earlier attribute; later ready values independent]
+  P --> O[Own1B0+570 selected Acco magic/fullID admission then same preflight]
+  S --> O
+  O --> C[Peer PC+1D0 unit100000 evenempty]
+  C -. actual contract pending .-> F[Proposed post2920B50_pre291CC76]
+  F -. next exact helper source .-> N[2BCA620 provider classifier and cached later caller]
+```
+
+Default list5D67E80 has source-closed direct empty stores, separate from
+the actual initialized header. Cold ranked default5D68FB0 still lacks
+the final allocator callback outcome and remains specifically
+`ranked_default_initialization_result`; intermediate zero stores do not
+justify an empty selected PC. In-range rows do not numerically demand
+that default guard/PC. External
+`person-stage-chain/FOLLOWING2920B50-CHAIN-SOURCE-PLAN.json` preserves
+the source pins, ordered input plan and actual next dependency. This
+research increment does not change preCC71 readiness, run tests/builds,
+or claim later preparation/Entry completion.
