@@ -338,6 +338,8 @@ struct ContextSourceHelper291f0a0V1 {
 #include "xar_bridge/battle_person_uncached_recipient_v1.inc.hpp"
 #include "xar_bridge/battle_person_helper_2922070_v1.inc.hpp"
 #include "xar_bridge/battle_person_conference_24b1d00_v1.inc.hpp"
+#include "xar_bridge/battle_person_provider_bucket_v1.inc.hpp"
+#include "xar_bridge/battle_person_qualifier_28bc0d0_v1.inc.hpp"
 
 struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
   std::string status = "unavailable";
@@ -355,6 +357,8 @@ struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
   std::optional<ContextSourceUncachedRecipientInputsV1> uncached_recipient_inputs;
   std::optional<ContextSourceHelper2922070V1> helper_2922070;
   std::optional<ContextSourceConference24b1d00V1> conference_24b1d00;
+  std::optional<ContextSourceProviderBucket291c5b2V1> provider_bucket_291c5b2;
+  std::optional<ContextSourceQualifier28bc0d0InputsV1> qualifier_28bc0d0;
   std::optional<ContextSource291e210V1> branch_291e210;
   std::optional<ContextSource291d7e0V1> branch_291d7e0;
   std::optional<ContextSourcePost291d7e0V1> post_291d7e0_sources;
