@@ -97,12 +97,19 @@ Combat Province for MAA environmental inputs. An ordinary getter does not
 use the Province internally, but its final setter tuple still carries the
 caller binding and exact callsite.
 
-The pure minimum packet contains an unexecuted implementation recipe for this
-join. Its only imports are the already qualified ordinary/MAA adapter and
-existing final setter. It does not calculate new getter formulas or publish
-another readonly capability. Production implementation and one genuinely new
-integration case are the next coding package; earlier tests and wires need
-not be repeated.
+The sealed source-only packet retains its original unexecuted recipe. The
+authorized follow-on implements this join in
+battle_first_contact_final_caller_assembly_12003.py using only the already
+qualified ordinary/MAA adapters and existing final setter. It calculates no
+new getter formula and publishes no additional readonly capability.
+
+FinalCallerGetterOccurrence12003 carries the exact occurrence binding, typed
+getter result, actual source Province and explicit input mode.
+assemble_closed_final_caller_12003 converts ordinary/MAA results, retains their
+real stage and source ledger, then calls the existing setter once. A supplied
+getter with ready=false remains partial even if it carries a partial cache.
+Additional already-closed final inputs support the separate special-knight
+primitive. This join does not construct the entering post2586ED0 state.
 
 ## Source references and readiness
 
@@ -112,10 +119,25 @@ not be repeated.
 - [Final stat formula and setter](battle-first-contact-final-stat-refresh-12003.md).
 - [Ordinary and MAA getter sources](battle-ordinary-maa-changed-stage-stats-12003.md): five ordinary formulas, qualified current MAA source groups, and explicit lower stage APIs.
 
-Readiness: research closure of the immediate final caller and an implementable
-pure assembly contract. Ordinary/MAA current source getter qualification is
-reused as its existing scope. No new static-ready implementation, complete
-Entry, actual constructor execution, future forecast or live credit is claimed.
+The single new integration case passed1/1 GREEN on2026-10-06,1.4203 seconds
+including Python import. Production ordinary/MAA source normalizers and existing
+lower changed-stage APIs feed four entries in deliberately shuffled source
+order. The final join visits side0 then side1, levy then MAA; it preserves all
+entering quantity/result accounts, the original frame, zero-current membership,
+negative outputs and each real input stage. An unavailable MAA source remains
+unrefreshed while the other three entries stay usable.
+
+The first new attempt was harness RED before case execution because the fresh
+worktree's sparse checkout omitted the existing static compatibility registry,
+which an unrelated bridge import needs. The exact tracked source was restored
+from the same published commit in this isolated tree. The unchanged new case
+then passed once. Both attempts are retained; no old test, native build, old
+wire or game operation was performed.
+
+Readiness: static-ready bounded conditional ordinary/MAA final-caller join.
+Current getter qualification retains its existing scope. Complete entering
+constructor state, person preparation, complete Entry, actual constructor
+execution, future forecast and live credit remain separate and partial.
 
 External delivery:
 Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/final-entry-caller-assembly/.
