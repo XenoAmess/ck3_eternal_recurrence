@@ -158,3 +158,195 @@ Root集中离线验收已于2026-10-05完成，整合源码 `4733655173e65be99c9
 本次是默认配置的离线bridge/fixture资格，G2 capability flags未从v73运行配置采用，宗教private query仍OFF；不是可直接部署的v74，也未进行runtime prepare/stage/attach。未来实机须采用实际所需flags并另冻候选。用户独占CK3期间game/SDK/attach/query/pipe/UI/Steam/profile操作均0；没有新paused artifact、live资格或游戏日。
 
 `xar_ck3_12003_pre_291e210_1640_test` 已真实编译并一次GREEN；lane新增Python16例一次GREEN（1.86秒），原日志/回执 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-implementation/battle-entry/python-tests.json`。prestage及两个registry bindings的生产读取/序列化/消费现为static-ready；current final不替代该baseline、-1/false/0与missing仍独立保留。上文post-A/B贡献族是新source研究输入，尚未observer施工；完整人物初始化、changed-stage census与actualEntry上下文仍partial，不授首次接战或完整战斗forecast。
+
+
+## Post-A/B current observer implementation, 2026-10-05 second background batch
+
+The three source-closed post-B contribution families are now implemented as optional current_person_state.current_context_source_inputs.post_291d7e0_sources. Exact .3 bindings are 5D1E308 (actual object fallback pointer slot), 5C6A19C (loaded signed32 threshold), and 54E7270 (**inline** static ordered-list header). This extends the existing native DTO, readonly collector, serializer and authoritative Python normalization reached by the existing current-person/MCP path; no new query, command, initialization helper or source writer is invoked.
+
+The three leaves retain independent availability and the same current Character/full ID. guarded630 preserves the current 1B0/280 pointer guards, actual object selection, signed32 wire bits of DWORD +38, signed16 Character +68, loaded signed32 threshold and exact admission. Wrong magic stops before the signed operands; the native signed less-than result stops before the property read. Readable null carrier/280 chooses the actual fallback and still evaluates it. A failed selected-object read is partial, rather than a native null guard or false admission.
+
+carrier40 independently observes current Character +1B0 and carrier+288. Native null skips the family; two present guards establish admission before the selected object's +18 pointer/+40 property can be read. A failed demanded pointer/property preserves the known true admission but leaves the leaf partial. There is no fallback for this family.
+
+ordered_d8 selects the current inline carrier1C0+200 header or actual inline static 54E7270. It reads header pointer0 before signed32 countC, matching the caller, and emits every stored source occurrence with its index, snapshot-local source identity and actual paired property block source+D8. Duplicate occurrences remain separate and preserve their order. The additional nullable source_array_present records the readable pointer0 result: a known empty list with a readable null pointer is distinct from an unread header. Zero count is a valid empty list; negative count is retained as signed32 and unavailable, without manufacturing zero/empty storage. The native static header is observed directly, never reconstructed from frozen initial bytes.
+
+The three families reuse the existing PropertyContainer reader, including legal zero keys, unused value-field short circuit and independently observed value counts. The optional field remains absent for older/unbound producers. The strict Python normalizer retains these current values/statuses and validates the existing actor join. emit_post_291d7e0_requests_from_current_source_inputs_12003 emits unit-weight requests in order **guarded630 → carrier40 → every orderedD8 occurrence**; empty blocks and duplicates remain requests. The complete native stage order remains 291D1D0 → pre-A1640 → A → B → guarded630 → carrier40 → orderedD8 → later291C371. No prestage baseline, current-final append, future context, full person or Entry is computed.
+
+The new Python validation ran once against this package: **16 passed in 1.68 seconds**, covering the production current-person authority ingress, signed16-to-signed32 comparison, inline fallback, stored occurrence order/duplicates, independent paired counts, legal empty blocks, missing demanded PC, closed wire types and older producer compatibility. Receipt/log: Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/post-ab-observer/python-tests.json and python-tests.log. open_kaishek is not applicable: native-memory DTO/JSON and guards are outside Paradox finite runtime semantics.
+
+The new native build target and CTest name are xar_ck3_12003_post_291d7e0_sources_test. Its one CTest invocation writes eight production collector/serializer snapshots to post_291d7e0_sources_wire.json in CMAKE_BINARY_DIR. The fake-memory fixture covers exact RVA binding, actual nonempty inline static fallback, native stored duplicates and signed paired values, empty-key unused-field reads, wrong-magic and signed-JL short circuits, null pointer guards, unread demanded selected pointer and negative/unread list counts. The lane has not compiled or run it; the root integrator owns the central offline jobs4 build with the adopted capability flags.
+
+Qualification at lane delivery: the new Python path is **static-ready**; native source and focused fixture are implemented with compile/execution pending. No live/paused qualification, first-contact/Entry/forecast credit or new game day. No CK3 process/pipe, attach/query, runtime prepare/stage, UI, Steam, profile/save/cache or frozen-EXE read occurred.
+
+Remaining source work is unchanged: changed-stage generation/lifetime/writers of Character 1C0+200, later caller sources beginning 291C371, receiver/held-title/qualifier/census association, full-person auxiliaries 2948DF0/2948F00 and postcopy 2949010, and 28BFC70→2C06B00 effectiveness context/actual first-contact caller. The independently assigned later-suffix and scratch/census lanes own these follow-ons.
+
+
+## Later current-person direct contributions, exact 1.20.0.3
+
+2026-10-05 / W41. This background lane continues the cached caller at `291C371`. It closes two direct contribution families after `291F0A0` and captures that helper's exact source extent. The prior post-A/B observer and actual Entry-context lane remain separate. Source tree and field contract were persisted before implementing any observer.
+
+Reuse the CK3 1.20.0.3 / Steam25652598 EXE pin `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. The cached entire `291C0D0` caller was reused; no EXE scan or rehash was performed. Exact `.pdata` closure of `291F0A0` is `[291F0A0,291F25D)`, 445 code bytes; binary-search metadata demanded four new 12-byte rows, total new frozen-file I/O **493 bytes**. All seeks, bytes and small file pins are retained in `Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/`.
+
+### Closed direct inputs and demand order
+
+At `291C377`, `291F0A0` receives `model` and the same Character; its recipient becomes `model+10`. The caller then executes:
+
+1. **Ordered `+80` property occurrences, `291C3FB`.** Read `QWORD[Character+1B0]`. Nonnull selects the inline header at `carrier+98`; null selects the **address** of static header RVA `545A3E8`, rather than its first QWORD as another header pointer. Read signed32 count `header+C`, then the native stored DWORD full-key vector at `header+0`. Zero count is a real empty family, without demanding either registry slot. For each occurrence, resolve low24 index through `QWORD[5D1FC58]`, unsigned capacity `+2C`, stride16 pointer at slot `+8`, and full DWORD object ID `+10`. A readable native null/miss/mismatched generation selects `QWORD[5D1FC48]`; an unread operand remains unavailable. Native signed32 `selected+24C==0` skips its property. Every other signed value, including negative values, admits `selected+80`, weight100000 into `model+10`. Retain duplicate requested keys and duplicate selected objects, in stored order. `R12D` is zero from `291C1A6` and remains zero at this comparison.
+2. **Guarded `+AA0` property, `291C44C`.** Read `QWORD[Character+1C0]`. Nonnull selects `QWORD[carrier+388]`; null selects the actual `QWORD[5D1DCB0]` fallback. Demand DWORD `selected+38`; exactly `4744624F` admits `selected+AA0`, unit100000, into the same context. Wrong magic skips the property; unread carrier/selection/magic does not establish false. No extra positive-ID or selected-pointer null guard occurs in this native body.
+
+The direct contribution order is after post-A/B ordered `+D8` occurrences, **then helper291F0A0, then ordered+80, then guarded+AA0, then helper291F550 and helper291F940**, followed by caller `291C467`. Observing these direct leaves does not close or omit the helper between the earlier post-A/B leaves and them. Their property containers use the existing paired keys/values observation, retaining independent count provenance and genuine empty blocks. Current final storage cannot be supplied as a before-helper baseline or receive these leaves twice.
+
+### Source-closed helper body and concrete remaining operands
+
+The complete 445-byte `291F0A0` body contains four ordered families, each writing via `2438850` to `model+10` at weight100000:
+
+- `291F11C`: Character full key `+B4` resolves through storage `5D1E2F8` and native fallback `5C67670`, comparing selected full DWORD ID at **+8**. A readable null registry skips the Character key read. The selected object's pointer `+20` / signed32 count `+2C` vector consists of direct PropertyContainer pointers; preserve occurrences.
+- `291F1C1`: manager slot `5D1F6D0` can initialize via `3F8B660` when null. `3181BF0(manager, Character)` selects a object; `3181370(selected, recipient)` supplies a property block, admitted when signed32 `block+C !=0`. Recipient is `QWORD[Character1C8+A0]` or `2BFB4C0`'s output when the Character carrier is null. These selection/cache helper leaves are not closed or called by this observer.
+- `291F1FC`: `28BD090(Character)` returns a pointer header (`+0` / signed32 `+C`). Each stored source pointer demands signed32 `source+A24`; nonzero admits `source+A18` (the count is the property container's own `+C`). The getter's physical header selection remains a concrete follow-on.
+- `291F23C`: exact AL from `2BABEC0(Character)` gates selected object's pointer `+938` / signed32 `+944` list of direct PropertyContainer pointers. False demands no list. The predicate leaf remains a concrete follow-on.
+
+```mermaid
+flowchart TD
+  P["Post A/B orderedD8 occurrences"] --> H["291C377 → 291F0A0"]
+  H --> H1["CharacterB4 / registry5D1E2F8 / fallback5C67670; selected20/2C direct PC list"]
+  H1 -.-> H2["3181BF0→3181370 selected cached PC; missing leaf selection"]
+  H2 -.-> H3["28BD090 header, sourceA24!=0 → sourceA18"]
+  H3 -.-> H4["2BABEC0 AL gate → selected938/944 direct PC list"]
+  H4 --> L["Character1B0 → inline98 or static header545A3E8"]
+  L --> C["Signed32 countC / ordered full DWORD keys0"]
+  C -->|each occurrence| R["Registry5D1FC58 fullID10 or actual fallback5D1FC48"]
+  R --> A["Selected signed32 24C!=0"]
+  A -->|true| PC["291C3FB selected80 unit100000"]
+  A -->|false| N["Next occurrence"]
+  PC --> N
+  N -->|list end or zero| G["Character1C0: selected388 or fallback5D1DCB0"]
+  G --> M["Selected DWORD38 ==4744624F"]
+  M -->|true| Q["291C44C selectedAA0 unit100000"]
+  M -->|false| S["291F550 then291F940"]
+  Q --> S
+  S -.-> E["Later caller291C467 and complete-person inputs unknown"]
+  classDef unknown stroke-dasharray: 5 5;
+  class H2,H3,H4,S,E unknown;
+```
+
+The new optional current source section is `later_direct_291c3fb_44c`; its independent readiness qualifies exactly the two direct families. Missing helper inputs, later caller/helper branches, scratch430/438, changed-stage list generation/receiver/title/qualifier/census and actual Entry association retain their concrete seams. The observer provides current read-only inputs, without native initializer/counter/writer calls, prepared-cache mutation, new MCP query, forecast or game-result credit. No launch, attach, game/SDK/pipe query, UI, Steam, save/cache/profile or runtime preparation occurred; `open_kaishek` is not applicable to native ABI memory/DTO arithmetic.
+
+### Implemented direct observer and focused validation
+
+The two caller-direct families are now implemented under that optional field in the existing query: exact .3 binding, production readonly collector/DTO/serializer, shared strict Python current-source normalizer and pure unit-request emitter. Newer producers retain source actor29829, native full DWORD generation bits, selected snapshot-local identity, signed nonzero admission, actual fallback choices, ordered duplicates and genuine empty PropertyContainers. Older producers omitting the new field still load. A negative native list count is retained as unavailable/unrepresentable, never invented as an empty list. Header pointer0 and countC are demanded even for zero count; registry slots and occurrence bodies are not demanded on zero. Both registry slots are loaded before the first key, and reread after admitted native merge sites; the readonly observer performs these reads without merging.
+
+The focused Python suite ran once: **11/11 GREEN**, 2.33s, receipt/log `python-tests.json` and `python-tests.log` in this external directory. It covers duplicate order/block reference preservation, negative nonzero admission, zero and false skipped body, failed reads instead of native fallback, admitted unavailable properties, negative source count, source actor join/legacy producer, native word types and undemanded branch properties. Source changes are ready for root's centralized native build. Target and CTest **`xar_ck3_12003_person_later_direct_test`** use the production collector and serializer and output seven genuine case wires under `BUILD_DIR/ck3_12003_person_later_direct_wire`; this lane did not compile or run it. Qualification remains Python static-ready/native implemented pending build, no complete-person/Entry/live/forecast credit.
+
+### Additional exact helper leaf closures for the next implementation
+
+After the direct implementation and its test, bounded source follow-on closed two of the previously unclosed helper operands. This does not silently extend the tested direct observer.
+
+- **`28BD090`**: complete .pdata extent `[28BD090,28BD12A)`,154B. A nonnull `QWORD[Character+1C8]` returns the **address** `carrier+88`. Null carrier returns the **address** of inline static header **`5D67E40`**, not a QWORD header pointer. TLS guard paths can initialize the static header but rejoin that exact address; a readonly observer samples its current bytes without initializer calls or assuming static file zeroes. Combined with `291F1FC`, every stored occurrence has source+A24 nonzero admission and source+A18 PropertyContainer, unit100000.
+- **`2BABEC0`**: complete161B frameless leaf, captured176B gap through next function start2BABF70 with15B INT3 padding; surrounding .pdata rows prove no covering body. Read signed/raw DWORD `Character+15C`; exactlyFFFFFFFF returns AL0 and demands no registry/key. Otherwise, select first object using registry **`5D1E2F8`**, full key Character+B4, exact full DWORD selected ID **+8**, actual fallback **`5C67670`**. A readable null registry does not demand the key. Second registry **`5D1E300`** selects using first object full key **+4B8**, again exact ID+8, with actual fallback **`5D1E2E0`**. AL1 iff the first Character15C DWORD equals selected second object's DWORD **+A0**. Legal zero and negative raw words compare by exact bits. Unread demanded fields cannot establish native false. This gates the previously captured selected first object's938/944 direct-PC list at291F23C.
+
+`3181370` also now has a captured176B frameless gap, exact leaf `[3181370,3181417)` plus9B padding. It reads selected+64 signed32 count. Zero branches to3182420's current inline default PC (address **5D70FC0**, known116B getter, lazy guard not called). Nonzero compares the recipient signed64 with two loaded native QWORD threshold slots **5C68E00/5C68DF8**, selects the first or last stride218 row at selected+58 at the extreme bounds, otherwise scans rows in stored order. It consumes row signed64 lower1E0/upper1E8 and the exact sign-dependent inequalities, returns first matching row's base PC, or QWORD[selected+70] fallback. These source branches are captured but no new observer is installed; demanded threshold values and selected object remain missing inputs in the old query.
+
+`3181BF0` is split into multiple .pdata regions. The captured39B head validates Character magic43686172 at+1C and ID18!=-1; captured5B/276B continuation closes three chained full-ID+8 lookups (first5D1E2F8/fallback5C67670 CharacterB4, second5D1E300/fallback5D1E2E0 first4B8, third5D1DE88/fallback5D1DE00 second8C). It then takes QWORD[third+20] and scans manager+50/signed count5C definition pointers using `A11CC0(definition+40, &third20)`. The captured continuation stops at3181D30: return/default tail3181D30/3E/50 and A11CC0 membership remain precise unclosed seams. An absent Character1C8 recipient still invokes `2BFB4C0`; its known551B .pdata extent was recorded but its body was not captured. Do not call native getters or assume an identity from these partial paths.
+
+All subsequent captures retain separate raw receipts; total lane I/O including these follow-ons is frozen in `ROOT-DELIVERY.json`, while the earlier493B figure accurately records the source input available before the direct implementation. The follow-ons are research, distinct from the tested direct observer.
+
+```mermaid
+flowchart TD
+  H["291F0A0 first selected object /20 directPC occurrences"] --> M["3181BF0 Character magic/fullID then three registry selections"]
+  M -.-> ML["A11CC0 manager definition-membership + return/default tail unclosed"]
+  ML --> R["Recipient: Character1C8+A0"]
+  R --> K["3181370 current selected64/58 stride218 + signed recipient intervals"]
+  R -. "null carrier" .-> RF["2BFB4C0 recipient construction unclosed"]
+  K --> C["Current selected PC; countC!=0 then291F1C1"]
+  C --> L["28BD090: Character1C8+88 or inline5D67E40"]
+  L --> O["Stored pointers0/signedcountC:sourceA24!=0 → sourceA18"]
+  O --> P["2BABEC0: Character15C==-1 earlyfalse; otherwise fullID8 two registries → secondA0 equality"]
+  P -->|ALfalse| END["Return to caller ordered80 and guardedAA0"]
+  P -->|ALtrue| X["Selected first938/944 directPC occurrences"]
+  X --> END
+  classDef unknown stroke-dasharray: 5 5;
+  class ML,RF unknown;
+```
+
+### Manager tail closure after the implementation handoff
+
+The next narrow reads close the previously named3181D30/3E/50 tail, without changing the validated observer code. Matching manager+50 stored definition occurrence returns the QWORD definition itself at3181D30. Exhausting the list selects QWORD**manager+EF0** at3181D3E (not a inferred small-offset default). An invalid Character magic43686172 or fullID18==-1 selects QWORD of **slot5D1FBD8** at3181D50. These are three separate native selections; null or unread current selected pointers do not manufacture an empty PC.
+
+The326B A11CC0 body consumes header pointer0 / signed32 countC, compares its QWORD entries with the QWORD supplied at `&third20`, and returns AL whether a matching stored pointer was found. Its visible baseline paths compare complete64-bit values: SSE scans twoQWORDs at a time, followed by a scalar tail; duplicates do not change the predicate. A native global guard has lazy feature initialization. When the loaded upper32 feature word is >=4EE8, it delegates the same begin/end/key search to `3F90910`; that optimized leaf is not independently reversed here. Accordingly baseline bit-equal membership is source closed, while the optimized helper's return equivalence remains source inference. No static initializer, membership predicate or native selector was called.
+
+The smallest next current observer is therefore manager slot5D1F6D0, Character identity/magic, the three resolved fullID8 objects and their selected third+20 pointer, manager50/5C ordered definition pointers plus each definition+40 membership header, managerEF0 and invalid-Character fallback5D1FBD8. The3181370 selectedPC range inputs and actual recipient still follow. Absent Character1C8 recipient2BFB4C0 and optimized search3F90910 are the precise remaining source leaves; once those are closed the whole291F0A0 helper can be implemented in this same query. The direct observer does not wait on or claim those future inputs.
+
+```mermaid
+flowchart TD
+  C["Character magic1C=43686172 and ID18!=-1"] -->|false| F["Actual slot5D1FBD8 selected definition"]
+  C -->|true| A["Three fullID8 registry selections: B4 → first4B8 → second8C"]
+  A --> K["QWORD third20; manager50/5C stored definition occurrences"]
+  K --> S["A11CC0(definition40,key): baseline fullQWORD equality"]
+  S -->|first match| D["Return stored definition occurrence"]
+  S -->|exhausted| N["Return QWORD managerEF0"]
+  S -. "feature upper32>=4EE8" .-> O["3F90910 optimized find equivalence unclosed"]
+  D --> G["3181370 current selected range PC"]
+  N --> G
+  F --> G
+  G -. "recipient absent1C8" .-> R["2BFB4C0 actual recipient construction unclosed"]
+  classDef unknown stroke-dasharray: 5 5;
+  class O,R unknown;
+```
+
+
+## Auxiliary person scratch preparation, exact 1.20.0.3
+
+2026-10-05 background round 2. This source increment closes the auxiliary `scratch+430/+438` producers independently from the already implemented six-skill cache. Frozen CK3 1.20.0.3 / Steam25652598 EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6` is reused. Only the frozen file was read; no whole-file scan/hash, CK3/process/SDK/pipe/UI/Steam action or game-day advance occurred.
+
+### Exact inputs and native order
+
+Reuse the v77 `28C3D80` caller windows. `RBP=Character`, `R15=QWORD[Character+1B0]` scratch and `R14=the actual context returned by 28C3AE0`. The caller first finishes six skill results, then calls `2948DF0(scratch, output, context)` at `28C3EB0`; the returned signed Q64 is copied to `scratch+430` at `28C3EBD`. The `.pdata`-bounded leaf is `[2948DF0,2948EFB)`,267 bytes.
+
+The `430` leaf reads weighted key `0x38` through source-closed `24389A0` in mode1 then mode2, preserving stored weighted-row order and signed fixed-Q products. It also performs a lower-bound aggregate lookup for key `0x3D` in context's embedded `+68` PropertyContainer; actual absent key is zero. Let `P` be mode1 sum, `N` mode2 sum, `A` the aggregate key3D value and `B` signed QWORD[scratch+2D8]. Its native result is:
+
+`negative_tail=wrap64(N+A); negative_tail=negative_tail<0 ? negative_tail : 0; total=wrap64(P+wrap64(negative_tail+B)); result=total<0 ? 0 : signed_min(total,100000)`.
+
+Every ADD wraps before its subsequent signed test. The base is added after the negative-tail choice; moving it inside that choice produces a different result. No division occurs in this leaf.
+
+For `438`, the caller reads `Character+1A1` byte and sign-extended signed16 `Character+68`. When the byte is zero it loads low/high signed32 slots `5C6A15C/5C69D18`; otherwise `5C69D10/5C69D14`. The caller selects key `0x3A` when the signed16 value is below the low slot. Otherwise it selects `0x3B` when below the high slot, else `0x3C`. The high slot is not demanded on the first branch. These operands have no inferred business names. It calls `2948F00(scratch,output,context,selected_u16_key)` at `28C3F1C` and copies the result to `scratch+438` at `28C3F24`, then sets scratch byte440 to1. The exact leaf is `[2948F00,2949008)`,264 bytes.
+
+The `438` leaf first obtains key39 mode2 (`N`), reads aggregate key3E (`A`), wraps their sum, then obtains key39 mode1 (`P`) and aggregate selected3A/B/C (`S`). Signed QWORD[scratch+2E8] is `B`. Its native result is `wrap64(wrap64(wrap64(min(wrap64(N+A),0)+B)+S)+P)`. There is **no final zero clamp, upper cap, rounding or division**. A negative result is legitimate.
+
+The source-closed mode getter and aggregate lookup are reused from v77; no native getter invocation is needed to consume the materialized current context. Missing context/keys/values/weighted rows remain partial; legal zero values and native absent keys remain zero. The current stored context is a current input only, not a changed-stage materialized baseline.
+
+### Copy and following nine-byte cache
+
+Reuse v64 `28C3F60` writer: it copies `scratch438→scratch2F0` at `28C3FED/3FF4`, rereads Character1B0 and copies `scratch430→scratch2E0` at `28C4002/4009`, then calls `2949010(scratch)` at `28C4017`, and clears440. Prepared430/438 and copied2E0/2F0 are separate observations; neither implies the copy has happened.
+
+New bounded source `[2949010,2949578)`,1384 bytes, establishes that the next helper is a separate nine-byte producer. It reads `QWORD[scratch+258]` as model, searches aggregate U16 keys at model78/count84 with signed Q64 values at modelE0, then optionally adds definition-selected keys. The optional family requires scratch278 object DWORD28=`41495374`, selects object20+238 or actual fallback QWORD[5D1F7B8], then requires DWORD38=`4744624F`; its nine U16 definition operands at312..322 are grouped in three triples and `FFFF` means skip. Sums preserve wrap64. Each result is truncated by native /100000, narrowed to signed low32, clamped to[-100,100], and stored as a signed byte through QWORD[scratch+310]. The embedded jump table at2949550 selects the nine initial property IDs; the tenth entry is outside the actual0..8 loop. This entire helper does not consume scratch430/438 and does not establish Entry refresh or a cache's business name.
+
+```mermaid
+flowchart TD
+  Six["Six skill cache scratch410..424"] --> S430["2948DF0: key38 +/-; aggregate3D; scratch2D8"]
+  S430 --> P430["Clamp signed wrap64 total to0..100000 → scratch430"]
+  P430 --> Sel["Character1A1 + signed16Character68 + loadedlow/high"]
+  Sel --> K["Select3A,3B or3C"]
+  K --> S438["2948F00: key39 +/-; aggregate3E/selected; scratch2E8"]
+  S438 --> P438["Signed wrap64 result → scratch438; ready440=1"]
+  P438 --> Copy["F60:438→2F0 then430→2E0"]
+  Copy --> Nine["2949010: model aggregate + guarded ninekeys → nine signedbytes"]
+  Nine --> Done["F60 clears440"]
+  S430 -.-> Changed["Changed-stage exactcontext materialization/census unresolved"]
+  Done -.-> Entry["Fullperson→actualEntry caller/context association unresolved"]
+  classDef unknown stroke-dasharray:5 5;
+  class Changed,Entry unknown;
+```
+
+### Minimal same-query increment
+
+The useful bounded implementation is optional `raw_numeric_inputs.auxiliary_scratch_inputs`, under the existing explicit-Character current-person query and its actor/frame. It emits scratch2D8/2E8, source selector operands, prepared430/438, copied2E0/2F0 and ready440. The existing actual-selected `raw_numeric_inputs.context` is reused. A pure adapter reproduces the two source-closed leaves from this materialized context; it never writes, prepares, flushes, rebuilds a current-final baseline or updates Entry. Native-null scratch is a named no-op and demands none of these fields. The high threshold is demanded only when the low comparison passes. Older producers without the optional leaf remain compatible.
+
+This increment releases the actual auxiliary calculation interface. Fullperson and Entry remain partial: changed-stage receiver/title/qualifier/census inputs, earlier source-stage baselines and actual first-contact association are still required. The newly closed nine-byte helper can be implemented in a subsequent independent package with its exact table, selected definition and actual model-bound properties; no forecast is inferred here.
+
+### Receipt boundary
+
+Source receipt, bounded binaries/assembly, previous caller/getter reuse pins and implementation qualification are under `Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-scratch-census/`. New frozen-file reads are1915 code bytes plus180 `.pdata` bytes=2095 bytes. The three function bodies and previously cached source were interpreted once. No unwind body, full-image xref scan, initializer or unneeded caller was followed. `open_kaishek` is not applicable to this ABI/DTO/native integer-arithmetic work; no Paradox script semantics are changed.
+
+### Offline implementation qualification
+
+Isolated source commit `73e8f3f1` implements this optional raw leaf, four exact loaded threshold bindings, current prepared/copied observations, strict optional normalizer and `compute_auxiliary_scratch_from_native_inputs_12003`. No new MCP or native getter invocation was added. One new production-normalizer→kernel Python case was run once: **1 passed in1.52s**; it covers low/middle/high signed selector boundaries, legal negative438, wrap64-before-clamp, empty/missing properties, legacy absent/explicit-null leaves and native-null scratch. Receipt/log: `PYTHON-VALIDATION.json/.log` in this packet. Python qualification is **static-ready**. Native target/CTest `xar_ck3_12003_person_auxiliary_scratch_test` has six production-reader/serializer fixture samples and is implemented but **not yet built or run by this lane**; Root owns the combined offline build. It emits `${CMAKE_BINARY_DIR}/person_auxiliary_scratch_12003.json` for one genuine wire-consumption follow-up. No new fixture-live or production-live qualification is claimed.
