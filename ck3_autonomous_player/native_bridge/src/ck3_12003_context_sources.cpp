@@ -1140,6 +1140,7 @@ game::ContextSource291d7e0V1 BranchB(const ContextSourceBindingsV1 &b,
 }
 
 #include "ck3_12003_person_helper_291f0a0.inc.hpp"
+#include "ck3_12003_person_remaining_helpers.inc.hpp"
 
 game::ContextSourceLaterDirectV1 LaterDirect(
     const ContextSourceBindingsV1 &b, const void *character,
@@ -1312,6 +1313,15 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   b.helper_default_pc_guard_slot = reinterpret_cast<const void *>(base + 0x5D70FBC);
   b.helper_source_pointer_fallback_header = reinterpret_cast<const void *>(base + 0x5D67E40);
   b.helper_source_pointer_fallback_guard_slot = reinterpret_cast<const void *>(base + 0x5D67E38);
+  b.remaining_helpers_enabled = true;
+  b.remaining_character_storage_slot = reinterpret_cast<const void *>(base + 0x5C67568);
+  b.remaining_character_fallback_slot = reinterpret_cast<const void *>(base + 0x5C67570);
+  b.remaining_government_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E2A8);
+  b.remaining_government_default_pc = reinterpret_cast<const void *>(base + 0x5D65890);
+  b.remaining_government_default_guard_slot = reinterpret_cast<const void *>(base + 0x5D6588C);
+  b.remaining_culture_mapped_default_pc = reinterpret_cast<const void *>(base + 0x5DC2380);
+  b.remaining_culture_mapped_default_guard_slot = reinterpret_cast<const void *>(base + 0x5DC2370);
+  b.remaining_nested_mapped_default_guard_slot = reinterpret_cast<const void *>(base + 0x5DC21A4);
   b.provider = reinterpret_cast<void *(*)()>(base + 0x8FD4E0);
   b.post_291d7e0_sources_enabled = true;
   b.post_ab_object_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E308);
@@ -1361,6 +1371,8 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.later_direct_291c3fb_44c = LaterDirect(b, character, character_id);
   if (b.helper_291f0a0_enabled)
     out.helper_291f0a0 = Helper291f0a0(b, character, character_id);
+  if (b.remaining_helpers_enabled)
+    out.later_helpers_291f550_291f940 = RemainingHelpers(b, character, character_id);
   out.branch_291e210 = BranchA(b, character);
   out.branch_291d7e0 = BranchB(b, character);
   if (b.post_291d7e0_sources_enabled)
@@ -1374,6 +1386,8 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.ready = out.ready && out.later_direct_291c3fb_44c->ready;
   if (out.helper_291f0a0)
     out.ready = out.ready && out.helper_291f0a0->ready;
+  if (out.later_helpers_291f550_291f940)
+    out.ready = out.ready && out.later_helpers_291f550_291f940->ready;
   out.status = out.ready ? "available" : "partial";
   if (!out.ready) out.reason = "context_source_reads_unavailable";
   return out;

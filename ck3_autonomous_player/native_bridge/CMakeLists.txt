@@ -7956,6 +7956,22 @@ if(BUILD_TESTING AND WIN32)
       "${CMAKE_BINARY_DIR}/person_title_census_12003.json")
 endif()
 
+if(BUILD_TESTING)
+  add_executable(xar_ck3_12003_person_remaining_helpers_test
+    src/ck3_12003_context_sources.cpp
+    tests/person_remaining_helpers_12003_test.cpp)
+  target_include_directories(xar_ck3_12003_person_remaining_helpers_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_person_remaining_helpers_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_person_remaining_helpers_test PRIVATE NOMINMAX)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_person_remaining_helpers_test PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_12003_person_remaining_helpers_test
+    COMMAND xar_ck3_12003_person_remaining_helpers_test
+      "${CMAKE_BINARY_DIR}/ck3_12003_person_remaining_helpers_wire")
+endif()
+
 # Selected-unit total rates: new focused production reader/serializer/MCP cases.
 if(BUILD_TESTING AND WIN32)
   add_executable(xar_ck3_12003_commander_movement_speed_test

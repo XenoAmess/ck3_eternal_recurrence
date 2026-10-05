@@ -622,6 +622,8 @@ def normalize_current_context_source_inputs(
         fields.add("later_direct_291c3fb_44c")
     if isinstance(value, dict) and "helper_291f0a0" in value:
         fields.add("helper_291f0a0")
+    if isinstance(value, dict) and "later_helpers_291f550_291f940" in value:
+        fields.add("later_helpers_291f550_291f940")
     raw = _dict(value, field, fields)
     status, ready, reason = _availability(raw, field)
     normalized = {
@@ -656,6 +658,13 @@ def normalize_current_context_source_inputs(
         if helper is not None and helper["character_id"] != normalized["character_id"]:
             raise ValueError(field + ".helper_291f0a0 character disagrees with source actor")
         normalized["helper_291f0a0"] = helper
+    if "later_helpers_291f550_291f940" in raw:
+        from .battle_person_remaining_helpers_contract import normalize_later_helpers_291f550_291f940
+        later = normalize_later_helpers_291f550_291f940(
+            raw["later_helpers_291f550_291f940"], field + ".later_helpers_291f550_291f940")
+        if later is not None and later["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".later_helpers_291f550_291f940 character disagrees with source actor")
+        normalized["later_helpers_291f550_291f940"] = later
     return normalized
 
 
