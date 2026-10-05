@@ -14,6 +14,7 @@ from typing import Literal, Mapping, Sequence
 
 from .army_chunk_loss_writeback_projection import project_observed_writer_chunk_changes
 from .army_loss_sequence_replay import project_conditional_army_loss_sequence
+from .army_monthly_loss_budget_projection import construct_conditional_monthly_loss_budgets
 
 
 FRACTION_SCALE = 100_000
@@ -212,6 +213,8 @@ def project_observed_army_loss_requests(
                 "writer_requests_ready": False, "applied_loss_ready": False,
                 "applied_soldier_loss": None, "passes": [],
                 "missing_inputs": ["available_loss_application_inputs_v1"],
+                "same_input_conditional_monthly_loss_budgets_v1":
+                    construct_conditional_monthly_loss_budgets(army),
             })
             continue
         preferred = None
@@ -258,6 +261,9 @@ def project_observed_army_loss_requests(
         )
         projection["same_input_conditional_loss_sequence_v1"] = (
             project_conditional_army_loss_sequence(army)
+        )
+        projection["same_input_conditional_monthly_loss_budgets_v1"] = (
+            construct_conditional_monthly_loss_budgets(army)
         )
         result.append({
             "army_id": army["army_id"], **projection,

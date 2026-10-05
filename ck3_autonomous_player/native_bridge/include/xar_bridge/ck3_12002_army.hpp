@@ -40,6 +40,27 @@ inline constexpr std::uintptr_t kArmyCountyEntryPredicateRva12003 = 0x24E2250;
 inline constexpr std::uintptr_t kArmyCountyEntryCharacterStorageRva12003 = 0x5C67568;
 inline constexpr std::uintptr_t kArmyRegimentLossWriterSkippedRva12003 = 0x2634880;
 
+// Complete readonly leaves and loaded state vectors for monthly budget replay.
+struct ArmyMonthlyLossBudgetBindings12003 {
+  bool enabled = false;
+  bool (*is_unit_in_combat)(void *) = nullptr;
+  bool (*is_unit_gathering)(void *) = nullptr;
+  bool (*is_army_fleet_supply_active)(void *) = nullptr;
+  void **fleet_storage_slot = nullptr;
+  void **fleet_fallback_slot = nullptr;
+  const std::int32_t *fleet_date_sentinel = nullptr;
+  const std::int32_t **supply_state_levels_slot = nullptr;
+  const std::int32_t *supply_state_levels_count = nullptr;
+  const std::int64_t **supply_state_fractions_slot = nullptr;
+  const std::int32_t *supply_state_fractions_count = nullptr;
+  void **character_storage_slot = nullptr;
+  void **character_fallback_slot = nullptr;
+  void **province_fallback_slot = nullptr;
+  void *(*get_character_modifier_aggregator)(void *) = nullptr;
+  std::int64_t *(*read_character_modifier)(void *, std::int64_t *,
+                                         std::int32_t) = nullptr;
+};
+
 struct ArmyBindings {
   bool enabled = false;
   void **game_state_slot = nullptr;
@@ -104,6 +125,7 @@ struct ArmyBindings {
   bool (*county_entry_condition)(void *, void *, void *, std::int32_t) = nullptr;
   // Exact .3 readonly Char FullID predicate used by26341B0 before DATA writes.
   bool (*is_army_regiment_loss_writer_skipped)(void *) = nullptr;
+  ArmyMonthlyLossBudgetBindings12003 monthly_loss_budget_bindings{};
 };
 
 // Same GDbo key/tier implementation used by the raised ArRg reader.

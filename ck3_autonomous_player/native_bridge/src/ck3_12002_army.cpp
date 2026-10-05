@@ -359,6 +359,116 @@ game::ArmyLossApplicationInputsV1 LossApplicationInputs(
   return result;
 }
 
+// Same generation lookup as the closed native leaves, with their actual
+// fallback object. Char FullID is+18; Fleet FullID is+10.
+void *ResolveBudgetObject(void **slot, void **fallback, std::int32_t id,
+                          std::size_t id_offset) noexcept {
+  void *objects = nullptr;
+  std::int32_t capacity = 0;
+  if (Storage(slot, objects, capacity)) {
+    const auto index = static_cast<std::uint32_t>(id) & 0xFFFFFF;
+    if (index < static_cast<std::uint32_t>(capacity)) {
+      void *object = Load<void *>(objects, static_cast<std::size_t>(index) * 0x10 + 8);
+      if (object != nullptr && Load<std::int32_t>(object, id_offset) == id)
+        return object;
+    }
+  }
+  return fallback == nullptr ? nullptr : *fallback;
+}
+
+template <class T>
+std::optional<std::vector<T>> LoadedBudgetVector(
+    const T **slot, const std::int32_t *count_pointer) {
+  if (slot == nullptr || count_pointer == nullptr) return std::nullopt;
+  const auto count = *count_pointer;
+  // Native nonpositive counts select the invalid-index/zero component branch.
+  if (count <= 0) return std::vector<T>{};
+  if (count > kMaximumRegiments || *slot == nullptr) return std::nullopt;
+  return std::vector<T>(*slot, *slot + count);
+}
+
+game::ArmyMonthlyLossBudgetInputsV1 MonthlyBudgetSample(
+    const ArmyBindings &bindings, void *army, void *unit) {
+  const auto &native = bindings.monthly_loss_budget_bindings;
+  game::ArmyMonthlyLossBudgetInputsV1 result{};
+  result.unit_native_170_raw = Load<std::int32_t>(unit, 0x170);
+  result.army_gathering_count_raw = Load<std::int32_t>(army, 0x5C);
+  if (native.is_unit_in_combat != nullptr)
+    result.native_unit_in_combat = native.is_unit_in_combat(unit);
+  if (native.is_unit_gathering != nullptr)
+    result.native_unit_gathering = native.is_unit_gathering(unit);
+  result.loaded_supply_state_levels = LoadedBudgetVector(
+      native.supply_state_levels_slot, native.supply_state_levels_count);
+  result.loaded_supply_state_fractions_raw = LoadedBudgetVector(
+      native.supply_state_fractions_slot, native.supply_state_fractions_count);
+  if (native.is_army_fleet_supply_active != nullptr) {
+    if (!native.is_army_fleet_supply_active(army)) {
+      result.native_fleet_supply_loss_suppressed = false;
+    } else if (native.fleet_storage_slot != nullptr &&
+               native.fleet_date_sentinel != nullptr &&
+               bindings.game_state_slot != nullptr && *bindings.game_state_slot != nullptr) {
+      void *fleet = ResolveBudgetObject(native.fleet_storage_slot,
+          native.fleet_fallback_slot, Load<std::int32_t>(army, 0x12C), 0x10);
+      if (fleet != nullptr) {
+        const auto date = Load<std::int32_t>(fleet, 0x20);
+        const auto current_date = Load<std::int32_t>(*bindings.game_state_slot, 8);
+        result.native_fleet_supply_loss_suppressed =
+            date != *native.fleet_date_sentinel && date > current_date;
+      }
+    }
+  }
+  if (native.character_storage_slot != nullptr) {
+    void *character = ResolveBudgetObject(native.character_storage_slot,
+        native.character_fallback_slot, Load<std::int32_t>(army, 0x120), 0x18);
+    if (character != nullptr) {
+      result.commander_valid = Load<std::uint32_t>(character, 0x1C) == 0x43686172U &&
+                               Load<std::int32_t>(character, 0x18) != -1;
+      if (*result.commander_valid) {
+        //24E0EB0 resolves this validated Army+124 Unit and returns Unit+20,
+        // or the native province fallback. The ordinal belongs to that frame.
+        void *province = Load<void *>(unit, 0x20);
+        if (province == nullptr && native.province_fallback_slot != nullptr)
+          province = *native.province_fallback_slot;
+        void *province_type = province == nullptr ? nullptr : Load<void *>(province, 0x20);
+        void *definition = province_type == nullptr ? nullptr : Load<void *>(province_type, 0xB8);
+        if (definition != nullptr) {
+          result.commander_supply_modifier_id = Load<std::uint16_t>(definition, 0x770);
+          if (native.get_character_modifier_aggregator != nullptr &&
+              native.read_character_modifier != nullptr) {
+            void *context = native.get_character_modifier_aggregator(character);
+            std::int64_t raw = 0;
+            if (context != nullptr && native.read_character_modifier(
+                    static_cast<std::byte *>(context) + 0x68, &raw,
+                    *result.commander_supply_modifier_id) == &raw)
+              result.commander_supply_modifier_raw = raw;
+          }
+        }
+      }
+    }
+  }
+  result.available = result.native_unit_in_combat.has_value() &&
+      result.native_unit_gathering.has_value() &&
+      result.loaded_supply_state_levels.has_value() &&
+      result.loaded_supply_state_fractions_raw.has_value() &&
+      result.native_fleet_supply_loss_suppressed.has_value() &&
+      result.commander_valid.has_value() &&
+      (!*result.commander_valid || (result.commander_supply_modifier_id.has_value() &&
+                                   result.commander_supply_modifier_raw.has_value()));
+  if (!result.available)
+    result.unavailable_reason = "monthly_loss_budget_operands_unavailable";
+  return result;
+}
+
+game::ArmyMonthlyLossBudgetInputsV1 MonthlyBudgetInputs(
+    const ArmyBindings &bindings, void *army, void *unit) {
+  const auto first = MonthlyBudgetSample(bindings, army, unit);
+  const auto second = MonthlyBudgetSample(bindings, army, unit);
+  if (first == second) return second;
+  game::ArmyMonthlyLossBudgetInputsV1 unavailable{};
+  unavailable.unavailable_reason = "monthly_loss_budget_inputs_changed_during_read";
+  return unavailable;
+}
+
 game::ArmyCountyEntryInputsV1 CountyEntryInputs(
     const ArmyBindings &bindings, void *army, void *unit,
     std::int32_t whole_soldiers) {
@@ -587,6 +697,10 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
       g_army_strength_query_diagnostic_v1.reader.store("loss_application_inputs_getters");
       result.loss_application_inputs_v1 =
           LossApplicationInputs(bindings, army, native_current);
+    }
+    if (bindings.monthly_loss_budget_bindings.enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("monthly_loss_budget_inputs_readonly");
+      result.monthly_loss_budget_inputs_v1 = MonthlyBudgetInputs(bindings, army, unit);
     }
     if (bindings.county_entry_inputs_enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("county_entry_current_inputs_getters");
