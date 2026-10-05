@@ -38,6 +38,9 @@ struct Bindings {
   CanHire current_war_eligibility = nullptr;
   LifecyclePredicate release_eligible = nullptr;
   LifecyclePredicate associated_regiment_in_combat = nullptr;
+  void **regiment_registry_slot = nullptr;
+  void **army_registry_slot = nullptr;
+  void **combat_registry_slot = nullptr;
 };
 
 struct TroopStrength {
@@ -64,6 +67,26 @@ struct ServiceLifecycle {
   std::optional<bool> release_check_queued;
 };
 
+struct AssociatedRegiment {
+  std::uint32_t regiment_id = UINT32_MAX;
+  bool available = false;
+  std::string unavailable_reason = "not_sampled";
+  bool regiment_resolved = false;
+  std::optional<std::uint32_t> native_carmy_id;
+  bool native_carmy_resolved = false;
+  std::optional<std::uint32_t> combat_id;
+  bool combat_resolved = false;
+};
+struct TroopAssociation {
+  bool available = false;
+  std::string unavailable_reason = "native_troop_association_binding_unavailable";
+  bool applies_to_player = false;
+  // Source occurrences, including duplicates and generation misses.
+  // Internal CArmy full IDs may be joined with army_strength.native_carmy_id
+  // by their uint32 bits; they are never public CUnit IDs.
+  std::vector<AssociatedRegiment> rows;
+};
+
 struct MilitaryTerms {
   bool available = false;
   std::string unavailable_reason = "not_sampled";
@@ -80,6 +103,7 @@ struct MilitaryTerms {
   TroopStrength troop_strength;
   WarEligibility current_war_eligibility;
   ServiceLifecycle service_lifecycle;
+  TroopAssociation troop_association;
 };
 struct Row {
   std::uint32_t holy_order_id = UINT32_MAX;
