@@ -213,3 +213,13 @@ R2 `4-8e1c2f1861--ox-here--R0002` 的实际业务与简体中文 UI 复核为 **
 屏幕任务 `ck3-upgrade-screen-20261004-a42` 的真实 CAS 完成回执为 sequence **2756**、state=done、resources=[]，已释放屏幕；没有根据命令 ACK 推定释放。后续 QOL 占用不改变此历史释放事实。
 
 永久 [发布证据索引](release-evidence/ox-here/1.0.3.json) 与 [changelog](release-changelogs/ox-here/1.0.3.md) 分别记录发布与版本差异。**本轮永久记录的 master 提交、推送及远端回读仍待 Root 实际执行并追加 release-closeout 回执**；没有虚填未来 master commit。源码 tag 与最终文档收口 commit 分开。此脚本不重播实机、上传或下载，不改公开描述与 Notes 正文字节。
+
+## 2026-10-05 接续增量：正式完成4/10，体验优化付款范围通过
+
+牛来永久记录已实际提交、推送并核对远端 `68e323a2738d1d74403f259c75d2576dc6f01532`；[最终发布收口](C:/workspace/ck3-upgrade-20261005/ox-workshop-publish-1.0.3-01/release-closeout-01.json)为 `RELEASE_COMPLETE`。以上待推送措辞保留为写入当时的历史。白绮、自动建造、肃清曼荼罗、牛来共 **4/10（40%）** 正式完成，不能把未发布产品的单项通过计入此分母。
+
+体验优化付款 R7 在同一游戏进程内完成原五步及实际一天推进，24小时、同actor34422/PID18580/generation1；10项付款标记各一次、三类FAIL为零，新增scope三标记各一次、scope FAIL为零。首次开局通知造成的资格超时及完整领地DTO缺口保留，完整harness为RED；实际会话 `2026-10-05T00:45:00.956256Z` 闭合，清理及线程退出通过。见[当前角色资格与真实范围](ck3-native-ai/ck3-12003-current-actor-fixture-qualification-2026-10-05.md)。宗教 R8 在D0取得15项/FAIL0和scope身份，原四步及另三项只读查询实际finished，于 `2026-10-05T01:09:42.968610Z` 正常hold到期GREEN闭合，清理及线程退出通过；未执行finish_hold，完整领地读取仍unavailable，当前日志的夹具编码提示及原版court块另存不泛豁免。此结论仅覆盖限定宗教场景，不能记录为产品已发布。防御新有限场景输入正在并行准备，旧one_life严格入口阻塞保留。
+
+原版创建器 R10 因未在900秒内取得完整暂停地图而超时，原业务16项未执行，已实际清理退出；最后heartbeat ready不授予完整snapshot或00 anchor。已准备另一份未用冷profile，复用现有typed普通Robert开局，完整规则实际回读与原one_life/00资格保留；不改旧现场或计时。writer33/33、reader12/12既有实测范围保留，无继承人及新创建器GUI仍待前台。
+
+本轮并发调整：前台运行体验优化付款／宗教；后台同步准备防御、领地读取诊断、原版新冷输入和发布文案、永久知识记录及C盘清理。重整河山、驱策朝贡国、经商贪腐已封存执行卡，等待前台，不重复未变输入的检查；天朝361最后，具体礼仪选择仍在全部翻新维护之后。C盘另完成精确19份已闭文本无损压缩，API尺寸差112.64MiB；全部内容SHA与原mtime保持，详见[清理记录新增](maintenance/c-disk-cleanup-2026-10-04.md#2026-10-05-新闭场文本无损压缩精确19文件)。
