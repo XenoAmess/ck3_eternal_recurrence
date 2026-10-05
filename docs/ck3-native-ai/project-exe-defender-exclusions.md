@@ -116,3 +116,20 @@ ShellExecuteEx 的启动成功只证明进程启动；上面另外要求 child e
 外置公共 helper 包 `defender-exe-hook-a01/ROOT-DELIVERY-a08.json` SHA `d202d9ea8682118318683462cd5bfb70ccbbaf8f18efb6b9c43c0af65613b08c`；五入口包 `defender-build-wrappers-a01/ROOT-DELIVERY.json` SHA `d7d22fd1c0fb1903e2a626acd5cff2a238e5c29a5c1ecdf6577fc30cd5469f3d`。历史验证、失败 attempts、原始 source 及素材均保留。本次主树集成的 34 项 helper/provenance fake-WMI 测试、追加 1 项隔离动态 import 回归、五 wrapper 的 21 个 fake adapter 场景及 Python-only 全树校验均通过，回执位于外置 `defender-integration-a01/`。8 个实施文件与文档 Python 示例语法检查通过；示例未执行。不实际运行 compiler、生成 EXE、连接 WMI、改 Defender、操作 CK3 或修改冻结 Cf。
 
 官方方法来源：[Microsoft exclusions](https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-exclusions-configure)、[MSFT_MpPreference Add](https://learn.microsoft.com/en-us/previous-versions/windows/desktop/defender/add-msft-mppreference)、[CMake File API](https://cmake.org/cmake/help/latest/manual/cmake-file-api.7.html)、[ShellExecuteExW](https://learn.microsoft.com/en-us/windows/win32/api/shellapi/nf-shellapi-shellexecuteexw)、[SHELLEXECUTEINFO](https://learn.microsoft.com/en-us/windows/win32/api/shellapi/ns-shellapi-shellexecuteinfow)。实际 None/权限视角由上述本机证据纠正，不能只按 ReturnValue 的文档预期推断。
+
+
+## 2026-10-05：一次管理员安装后的普通构建入口（候选，尚未安装）
+
+本段描述新的 broker 候选设计。截至本候选生成时，受保护运行时、固定计划任务与 inbox 尚未实际安装，普通 token → SYSTEM 的当场处理验收也未发生。上文 238 个排除项和管理员 WMI 实测是独立历史证据，不能据此宣称此 broker 已运行成功。现有本机 Git opt-in、六个生产入口和构建清单来源规则继续适用。
+
+首次安装由已授权的所有者进行一次管理员安装，把封存的 Python 3.14.7 运行时、stdlib worker、原生文件/ACL 适配器、策略和任务配置写入固定受保护目录 `C:/Program Files/XAR CK3 Project EXE Broker`。安装回读通过后，后续普通构建可提交两种已有的生产格式：`cmake-file-api-v2` 或 `msvc-explicit-command-v1`。新的项目 EXE 字节和目标在这些格式、项目范围与所有者信任边界内由实际清单检查处理，无需为每个 EXE 再次弹 UAC 或登记哈希。所有者和普通调用方是已授权信任边界；这不提供抵抗同一所有者伪造生产证据的独立构建认证。
+
+此 broker 接入仅自动覆盖这六个入口经过公共 helper 产出的、两种已知生产格式内的声明 EXE。此前清点的 161 个旧研究生产器以及手工绕过 helper 的构建仍未自动覆盖；要登记它们的新输出，必须先接入已知清单合同或另行保全真实来源登记。用户对全部本项目 EXE 的永久排除授权，不等于工具已经覆盖所有生产器。
+
+六个现有构建 hook 都通过 `register_manifest` 接入。它先在普通调用方复核实际成功的 CMake/MSVC 来源、声明输出及当前字节，只有默认 `admin=None` 且没有注入 fake WMI client、实际 token 非管理员时才尝试固定 broker。显式 `admin=False` 或 fake client 的旧测试不会发现或运行机器任务。测试可显式注入 `broker_dispatch`；生产不接受环境变量替换安装策略、任务、运行时或返回路径。未安装时继续返回原 `admin_required_for_verified_readback`，不自动安装，不请求 UAC。
+
+普通客户端读取并校验受保护的 `policy.json`、`runtime-seal.json`、`installation-manifest.json`，逐项检查运行时实际 bytes/SHA/保护 ACL，以及固定任务的 principal、唯一 Exec action、无触发器、按需执行与 task/folder 保护 ACL。请求是七个固定 JSON 字段，携带原生产清单 JSON 的精确 UTF-8 字节及 SHA、请求 UUID、安装 UUID 与策略 SHA；不携带要执行的命令、模块或任意结果路径。它只在固定 owner-SID inbox 中排他写入临时文件再原子发布，并通过 COM 对固定 `RegisterDeclaredProjectExecutables` 任务调用一次 `Run(None)`，不传任务参数。
+
+任务 ACK 只表示启动请求。客户端在有限时间内读取固定 `receipts/<UUID>.receipt.json` 的受保护实际字节，核对请求/清单/策略/运行时/安装身份、实际 SYSTEM/Admin token、原文件行及当前 EXE SHA。只有实际 before/after 的三项设置回读证明所有请求路径存在、所有先前路径保留，且 ExclusionExtension/ExclusionProcess 集合未变化，才接收 `verified`。完整绑定的失败或部分变更回执照实保留；错误哈希、过期回执、当前字节改变或互相矛盾的 verified 结果都返回失败。
+
+受保护 worker 回执原 bytes 先 pin 到普通调用方的新 proof attempt，再由原 helper 的 `finally` 按原 bytes 排他复制到 caller receipt，不重新序列化、不覆盖历史回执。客户端失败也保留请求、已取得的原结果和失败 proof。权限安装、实际普通 → SYSTEM 回执和实际设置回读通过之前，本段状态保持“候选，尚未安装”；排除设置成功仍不等于 EXE 运行时可信或发布签核。

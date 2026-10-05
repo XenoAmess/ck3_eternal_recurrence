@@ -241,7 +241,7 @@ def after_successful_command_build(repo: Path, source: Path, build: Path,
         return {"status": "settings_failed", "receipt": str(attempt / "receipt.json"), "error": str(error)}
     manifest_path = attempt / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    result = register_manifest(manifest, attempt / "receipt.json")
+    result = register_manifest(manifest, attempt / "receipt.json", manifest_bytes=manifest_path.read_bytes())
     return {"status": result["status"], "manifest": str(manifest_path), "receipt": str(attempt / "receipt.json"),
             "receipt_sha256": hashlib.sha256((attempt / "receipt.json").read_bytes()).hexdigest(), "error": result.get("error")}
 
@@ -281,18 +281,28 @@ class DefenderWmi:
 
 def _write_receipt(path: Path, receipt: dict) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
+    raw = getattr(receipt, "broker_raw_bytes", None)
+    if raw is not None:
+        if not isinstance(raw, bytes) or json.loads(raw.decode("utf-8")) != dict(receipt):
+            raise ValueError("Broker raw receipt bytes differ from returned receipt")
+        with path.open("xb") as handle:
+            handle.write(raw)
+        return
     with path.open("x", encoding="utf-8") as handle:
         json.dump(receipt, handle, ensure_ascii=False, indent=2)
         handle.write("\n")
 
 
-def register_manifest(manifest: dict, receipt_path: Path, *, client=None, admin: bool | None = None) -> dict:
+def register_manifest(manifest: dict, receipt_path: Path, *, client=None, admin: bool | None = None,
+                      broker_dispatch=None, manifest_bytes: bytes | None = None) -> dict:
     if receipt_path.exists():
         raise FileExistsError(f"Receipt already exists; no WMI operation attempted: {receipt_path}")
     receipt = {"schema": SCHEMA, "status": "running", "method": "WMI MSFT_MpPreference.Add ExclusionPath only",
                "namespace": NAMESPACE, "before": None, "after": None, "calls": [], "files": manifest.get("files", []),
                "settings_success_is_runtime_trust": False, "exclusion_types_written": ["ExclusionPath exact files"]}
     stage = "manifest-validation"
+    # Explicit admin/fake-client paths never discover or run a machine task.
+    auto_broker = admin is None and client is None
     def record_readback(paths: list[str]) -> bool:
         receipt["after"] = paths
         observed = {ntpath.normcase(p) for p in paths}
@@ -326,6 +336,21 @@ def register_manifest(manifest: dict, receipt_path: Path, *, client=None, admin:
             admin = os.name == "nt" and bool(ctypes.windll.shell32.IsUserAnAdmin())
         receipt["admin_token"] = admin
         if not admin:
+            if auto_broker or broker_dispatch is not None:
+                stage = "broker-dispatch"
+                dispatch = broker_dispatch
+                if dispatch is None:
+                    from project_exe_exclusion_broker_client import dispatch_manifest
+                    dispatch = dispatch_manifest
+                dispatch_kwargs = {"proof_dir": receipt_path.parent / ("broker-proof-" + uuid.uuid4().hex)}
+                if manifest_bytes is not None:
+                    dispatch_kwargs["manifest_bytes"] = manifest_bytes
+                broker_receipt = dispatch(manifest, **dispatch_kwargs)
+                if broker_receipt is not None:
+                    if not isinstance(broker_receipt, dict) or broker_receipt.get("schema") != SCHEMA:
+                        raise ValueError("Broker did not return an actual project EXE receipt")
+                    receipt = broker_receipt
+                    return receipt
             # Non-admin WMI may hide exclusions as empty arrays. Neither an
             # empty list nor existing-path verification is trustworthy here.
             receipt["admin_required_for_verified_readback"] = True
@@ -385,6 +410,8 @@ def register_manifest(manifest: dict, receipt_path: Path, *, client=None, admin:
         receipt.update(status="verified", verification_source="same-admin-client fresh readback")
     except Exception as error:
         receipt.update(status="settings_failed", error=str(error), error_type=type(error).__name__, error_stage=stage)
+        if stage == "broker-dispatch" and getattr(error, "proof", None) is not None:
+            receipt["broker_failure_proof"] = error.proof
         if client is not None and admin and receipt["before"] is not None:
             try:
                 fulfilled = record_readback(client.read_paths())
@@ -419,7 +446,7 @@ def after_successful_build(repo: Path, source: Path, build: Path, configuration:
                 "error": str(error)}
     manifest_path = attempt / "manifest.json"
     manifest_path.write_text(json.dumps(manifest, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
-    result = register_manifest(manifest, attempt / "receipt.json")
+    result = register_manifest(manifest, attempt / "receipt.json", manifest_bytes=manifest_path.read_bytes())
     return {"status": result["status"], "manifest": str(manifest_path), "receipt": str(attempt / "receipt.json"),
             "receipt_sha256": hashlib.sha256((attempt / "receipt.json").read_bytes()).hexdigest(),
             "error": result.get("error")}
@@ -430,7 +457,7 @@ def main() -> int:
     parser.add_argument("--manifest", type=Path, required=True, help="Frozen exact CMake-target or successful MSVC-command manifest; never scan an EXE directory")
     parser.add_argument("--receipt", type=Path, required=True, help="New append-only output file")
     args = parser.parse_args()
-    result = register_manifest(_json(args.manifest), args.receipt)
+    result = register_manifest(_json(args.manifest), args.receipt, manifest_bytes=args.manifest.read_bytes())
     print(json.dumps(result, ensure_ascii=False, indent=2))
     return 0 if result["status"] in ("disabled", "verified") else 1
 
