@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12002_battle_journal.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
 #include "xar_bridge/battle_retained_rule_effects_reader.hpp"
+#include "xar_bridge/battle_stored_advantage_sources_reader.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -210,6 +211,9 @@ bool TransitionSample(const BattleBindings &b,
   if (b.retained_read_province_multiplier || b.retained_has_modifier_flag)
     out.actual_geography_v1->current_rule_context_v1 =
         CurrentRuleContext(b, combat, province, *out.actual_geography_v1);
+  if (b.stored_advantage_sources_enabled)
+    out.actual_geography_v1->stored_advantage_sources_v1 =
+        ReadStoredAdvantageSources12003(combat);
   out.phase_raw = At<std::int32_t>(combat, kBattlePhaseOffset);
   out.phase = Phase(out.phase_raw);
   out.phase_day = At<std::int32_t>(combat, kBattlePhaseDayOffset);
@@ -1992,6 +1996,7 @@ bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
 void EnableBattleRetainedRuleEffects12003(BattleBindings &b, std::uintptr_t base,
                                         std::string_view sha) noexcept {
   if (b.enabled && base && sha == ck3_12003::kExecutableSha256) {
+    b.stored_advantage_sources_enabled = true;
     b.retained_constructor_effect_rules =
         reinterpret_cast<GetCombatRules>(base + kAdvantageRuleDatabaseRva);
     b.retained_read_province_multiplier = reinterpret_cast<ReadAdvantageProvinceModifier>(

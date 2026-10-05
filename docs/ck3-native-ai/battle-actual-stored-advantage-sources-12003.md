@@ -1,6 +1,6 @@
-# Exact .3 next actual advantage inputs
+# Exact .3 actual stored combat advantage sources
 
-Research only, recorded after the nine new production wire frames passed. CK3 1.20.0.3 / Steam 25652598 / EXE SHA256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`. This package reuses cached source and the current provider. New EXE bytes, game operations, builds, tests and repository edits are all zero.
+Source tree sealed after the nine earlier current-context wire frames passed. CK3 1.20.0.3 / Steam 25652598 / EXE SHA256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`. This package reuses cached source and the current provider. Native source closing used zero new EXE bytes or game operations. The source-first tree commit preceded the implementation below.
 
 The next independently useful observation is the actual stored effect ledger. It closes the concrete distinction between currently selected Rules slots and contributions retained in a real Combat. `append-effect.json` freezes all chained pieces of `2586C90..2586ECD`, code SHA256 `1c0a0e673451f31b5269874d78af9f72b4a4f21ee924ae9f11071f1105efe472`.
 
@@ -61,4 +61,17 @@ current loaded points unequal to retained amounts, observed zero/negative rows,
 an undecoded key, an empty side and an unavailable side. A dedicated new native
 fixture command emits only these new stored-source frames. Root performs the
 central build and the producer-byte consumer replay follows that result.
-Implementation/native/live status remains pending at this source-tree commit.
+The first implementation validation passed one new Python case with four subcases,
+0.002 seconds test time and 1.652605 seconds process time, at
+2026-10-06 00:13:35 +08. The immutable consumer preserves exact native order,
+retained zero/negative amounts, undecoded keys and independently usable sides.
+No passing old test was rerun. Native target/CTest is
+`xar_ck3_12003_stored_advantage_sources_test`, command
+`--stored-advantage-sources-only <wire-dir>`. It emits four new frames only.
+Root central native build and producer-byte consumption remain pending.
+
+Readiness is source-ready plus focused Python GREEN, actual/live0. Complete
+advantage, original constructor attribution, historical cross-side clamp order
+and future forecast remain separate. External implementation receipt and the
+prepared production replay are under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/retained-advantage/next-constructor-inputs/implementation/`.

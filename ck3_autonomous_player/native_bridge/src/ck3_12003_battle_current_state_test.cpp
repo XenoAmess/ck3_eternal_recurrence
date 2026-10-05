@@ -829,6 +829,8 @@ struct CurrentRuleContextMemory {
 };
 CurrentRuleContextMemory *CurrentRuleContextMemory::current = nullptr;
 
+#include "ck3_12003_stored_advantage_fixture.inc"
+
 int RunCurrentRuleContextFixtures(const char *directory) {
   try {
     for (int scenario = 0; scenario < 8; ++scenario) {
@@ -1164,6 +1166,9 @@ int RunSelectedCommanderRollFixtures(const char *output_directory) {
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc > 1 && std::string_view(argv[1]) == "--stored-advantage-sources-only") {
+    return RunStoredAdvantageSourceFixtures(argc > 2 ? argv[2] : "");
+  }
   if (argc > 1 && std::string_view(argv[1]) == "--current-rule-context-only") {
     return RunCurrentRuleContextFixtures(argc > 2 ? argv[2] : "");
   }

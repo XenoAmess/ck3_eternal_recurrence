@@ -110,6 +110,41 @@ inline std::string SerializeBattleActualGeographyV1(
     else String(out, commander.unavailable_reason);
     out += "}}";
   }
+  if (inputs.stored_advantage_sources_v1) {
+    const auto &stored = *inputs.stored_advantage_sources_v1;
+    out += ",\"stored_advantage_sources_v1\":{\"scale\":100000,\"base_advantage_raw\":";
+    out += std::to_string(stored.base_advantage_raw);
+    out += ",\"resolved_advantage_raw\":" + std::to_string(stored.resolved_advantage_raw);
+    out += ",\"sides\":[";
+    for (std::size_t index = 0; index < stored.sides.size(); ++index) {
+      if (index) out += ',';
+      const auto &side = stored.sides[index];
+      out += "{\"side_index\":" + std::to_string(side.side_index) + ",\"status\":";
+      String(out, side.available ? "available" : "unavailable");
+      out += ",\"unavailable_reason\":";
+      if (side.available) out += "null";
+      else String(out, side.unavailable_reason);
+      out += ",\"rows\":";
+      if (!side.available) out += "null";
+      else {
+        out += '[';
+        for (std::size_t ordinal = 0; ordinal < side.rows.size(); ++ordinal) {
+          if (ordinal) out += ',';
+          const auto &row = side.rows[ordinal];
+          out += "{\"effect_key\":";
+          if (row.effect_key) String(out, *row.effect_key);
+          else out += "null";
+          out += ",\"key_unavailable_reason\":";
+          if (row.effect_key) out += "null";
+          else String(out, row.key_unavailable_reason);
+          out += ",\"contribution_raw\":" + std::to_string(row.contribution_raw) + '}';
+        }
+        out += ']';
+      }
+      out += '}';
+    }
+    out += "]}";
+  }
   out += '}';
   return out;
 }

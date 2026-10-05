@@ -740,6 +740,31 @@ struct BattleCurrentRuleContextV1 {
                          const BattleCurrentRuleContextV1 &) = default;
 };
 
+// Retained append rows use a 16-byte native record, unlike participant hard
+// casualties. Amounts are stored Q100000 contributions before the side sign.
+struct BattleStoredAdvantageRowV1 {
+  std::optional<std::string> effect_key;
+  std::string key_unavailable_reason;
+  std::int64_t contribution_raw = 0;
+  friend bool operator==(const BattleStoredAdvantageRowV1 &,
+                         const BattleStoredAdvantageRowV1 &) = default;
+};
+struct BattleStoredAdvantageSideV1 {
+  std::int32_t side_index = 0;
+  bool available = false;
+  std::vector<BattleStoredAdvantageRowV1> rows;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleStoredAdvantageSideV1 &,
+                         const BattleStoredAdvantageSideV1 &) = default;
+};
+struct BattleStoredAdvantageSourcesV1 {
+  std::int64_t base_advantage_raw = 0;
+  std::int64_t resolved_advantage_raw = 0;
+  std::array<BattleStoredAdvantageSideV1, 2> sides;
+  friend bool operator==(const BattleStoredAdvantageSourcesV1 &,
+                         const BattleStoredAdvantageSourcesV1 &) = default;
+};
+
 // Current actual Combat geography; the outer battle query supplies identity and
 // frame. Retained constructor fields do not reconstruct a historical entry.
 struct BattleActualGeographyInputsV1 {
@@ -748,6 +773,7 @@ struct BattleActualGeographyInputsV1 {
   std::optional<bool> holding_defender;
   std::optional<BattleRetainedRuleEffectsV1> constructor_rule_effects_v1;
   std::optional<BattleCurrentRuleContextV1> current_rule_context_v1;
+  std::optional<BattleStoredAdvantageSourcesV1> stored_advantage_sources_v1;
 
   friend bool operator==(const BattleActualGeographyInputsV1 &,
                          const BattleActualGeographyInputsV1 &) = default;

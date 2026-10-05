@@ -100,6 +100,7 @@ struct BattleBindings {
   CombatBindings commander_roll_context{};
   // Exact .3 loaded PhaseEffect DB, distinct from the men-at-arms type DB.
   GetCombatRules retained_constructor_effect_rules = nullptr;
+  bool stored_advantage_sources_enabled = false;
   ReadAdvantageProvinceModifier retained_read_province_multiplier = nullptr;
   ReadAdvantageModifierValue retained_read_holding_modifier = nullptr;
   AdvantageModifierFlag retained_has_modifier_flag = nullptr;

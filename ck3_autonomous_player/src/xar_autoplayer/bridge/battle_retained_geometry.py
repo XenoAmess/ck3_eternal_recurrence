@@ -136,4 +136,21 @@ def retained_constructor_geometry_fields(
         diagnostic["current_rule_contributions_v1"] = (
             evaluate_current_retained_rule_contributions(inputs) if inputs is not None else None
         )
-    return {"retained_constructor_geometry_v1": diagnostic}
+    fields = {"retained_constructor_geometry_v1": diagnostic}
+    stored = geometry.get("stored_advantage_sources_v1") if geometry is not None else None
+    if stored is not None:
+        from ..simulation.battle_actual_stored_advantage_sources import (
+            adapt_actual_stored_advantage_sources, evaluate_actual_stored_advantage_sources,
+        )
+        stored_diagnostic = {
+            "schema_version": 1,
+            "current_frame_qualified": bool(exact_build and actual),
+            "source": copy.deepcopy(diagnostic["source"]),
+            "stored_inputs": copy.deepcopy(stored),
+        }
+        inputs = adapt_actual_stored_advantage_sources(stored_diagnostic)
+        stored_diagnostic["current_sources"] = (
+            evaluate_actual_stored_advantage_sources(inputs) if inputs is not None else None
+        )
+        fields["stored_advantage_sources_v1"] = stored_diagnostic
+    return fields
