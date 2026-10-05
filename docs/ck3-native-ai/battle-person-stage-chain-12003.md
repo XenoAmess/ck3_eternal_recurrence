@@ -373,7 +373,7 @@ preceding context rather than copying current-final weights. That is a
 separate functional input connection. This metadata-only clarification changes
 no arithmetic and reruns no successful case. Native/provider source ownership
 remains with the native owner; the next signed2F8 packet must also preserve its
-real control-flow bypasses before extending the chain.
+actual control-flow return edges before extending the chain.
 
 The dispatcher identity seam is now source-closed for its serial paired
 construction binding. The packet is
@@ -415,3 +415,14 @@ flowchart TD
   G -.-> I[Owner equality does not establish receiver/source identity]
   S -.-> J[Parallel execute-slot association not followed]
 ```
+
+The signed2F8 source seam had an initial reachability interpretation RED before
+implementation: null1B0/nonnegative forward branches were mistakenly described
+as bypassing government/qualifier/291FB10. Reusing only cached caller391-397
+closes the return edges:291C715 jumps back291C595 on count miss;291C728 jumps
+back291C59C after actual bucket selection. Both rejoin the Definition magic/
+optional unit40 append and continue291C5B7. Null1B0 selects index0 and uses the
+same flow. No production branch or readiness claim used the incorrect bypass.
+The corrected native stage order remains bucket40 then government/qualifier/
+291FB10. Original interpretation and correction are preserved in the external
+`SIGNED2F8-CALLER-SEAM.md`; no test, native build or new EXE read was needed.
