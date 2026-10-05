@@ -123,3 +123,37 @@ This source package authorizes no new native behavior by itself.
 Human modifier names and upstream trait causes stay outside this useful first
 component value. Complete historical constructor, refreshed native tick,
 complete future advantage/forecast and live acceptance are not claimed.
+
+
+## Implemented independent component boundary, 2026-10-06T01:31:59.674609+08:00
+
+Optional `actual_geography_v1.current_dynamic_components_v1` now carries two
+native side-indexed rows. Each copies signed current roll and raw selected
+reference, then independently publishes selection identity/fallback lineage,
+relation kind, commander whole contribution and Combat side aggregate whole
+contribution. Units are signed Q100000 for contribution values; relation and
+full references remain raw signed32. Exact .3 dedicated bindings reuse the
+reviewed phase types/RVAs and canonical Character storage/fallback globals.
+Valid fullID0 and zero relation/aggregate are available values. Wrong-generation
+selected references use native fallback. Missing callback/output is null with
+the specific RVA reason, without withholding the other independent source.
+
+The reader and serializer live in exclusive headers; the existing foreign
+transition collects the leaf and owned control copies it without a weaker
+ownership gate. No refresh, selector, new public API or native command is added.
+Strict normalization, frozen inputs and the existing service publish per-group
+readiness plus a wrapped roll+commander+side-aggregate side total. An optional
+same-frame direct258A470 total may be compared; missing/mismatching comparison
+never blocks component readiness. Nested19F eligibility/fine source rows remain
+explicit partial, and stored row+8 is never replaced by current effect40.
+
+One necessary new Python case with four service subcases passed once, 0.021s
+unittest /4.1981539s process, actual=0. It covers validID0/zero values,
+explicit fallback, independent missing commander, owned parent readiness,
+immutable copies and nullable/mismatched direct comparison. Prior direct4 wire
+consumers and old tests were not rerun. Native target/CTest
+`xar_ck3_12003_current_dynamic_components_test` runs only
+`--current-dynamic-components-only` and prepares four fresh production wires.
+Root central full bridge/new-target build and that unique new producer replay
+are pending at this commit; no live or complete forecast qualification.
+Source closing/read cost for this new component package is0 EXE bytes.
