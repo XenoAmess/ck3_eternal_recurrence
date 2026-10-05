@@ -1,0 +1,65 @@
+struct ContextSourceConferenceObjectV1 {
+  std::optional<std::int32_t> requested_full_id_raw;
+  std::optional<std::string> selection;
+  std::optional<std::string> identity;
+  std::optional<std::int32_t> full_id_raw;
+  std::string reason;
+  friend bool operator==(const ContextSourceConferenceObjectV1 &, const ContextSourceConferenceObjectV1 &) = default;
+};
+struct ContextSourceConferencePackProbeV1 {
+  std::int32_t native_index = 0;
+  std::int64_t timestamp_q64 = 0;
+  friend bool operator==(const ContextSourceConferencePackProbeV1 &, const ContextSourceConferencePackProbeV1 &) = default;
+};
+struct ContextSourceConferencePackV1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::optional<std::string> configuration_identity;
+  std::optional<std::int64_t> target_q64;
+  std::optional<std::uint8_t> enabled_u8;
+  std::optional<std::int32_t> count_raw;
+  std::optional<bool> array_present;
+  std::optional<std::vector<ContextSourceConferencePackProbeV1>> probes;
+  std::optional<std::string> selection;
+  std::optional<std::int32_t> selected_native_index;
+  std::optional<std::string> pack_identity;
+  std::optional<std::int32_t> default_guard_raw;
+  std::string reason = "conference_pack_not_consumed";
+  friend bool operator==(const ContextSourceConferencePackV1 &, const ContextSourceConferencePackV1 &) = default;
+};
+struct ContextSourceConferenceFamilyV1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::int32_t native_index = 0;
+  std::optional<bool> admitted;
+  std::optional<std::uint32_t> pc_offset;
+  std::optional<std::string> property_identity;
+  std::optional<ContextSourcePropertiesV1> property_block;
+  std::string reason;
+  friend bool operator==(const ContextSourceConferenceFamilyV1 &, const ContextSourceConferenceFamilyV1 &) = default;
+};
+struct ContextSourceConference24b1d00V1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::int32_t character_id = -1;
+  std::optional<bool> carrier_present;
+  ContextSourceConferenceObjectV1 conference;
+  std::optional<std::uint32_t> conference_magic_raw;
+  std::optional<bool> conference_admitted;
+  std::optional<std::uint32_t> character_magic_raw;
+  std::optional<std::int32_t> character_full_id_raw;
+  std::optional<bool> character_admitted;
+  std::optional<bool> admitted;
+  ContextSourceConferencePackV1 pack;
+  std::optional<bool> relation_registry_present;
+  ContextSourceConferenceObjectV1 first;
+  ContextSourceConferenceObjectV1 second;
+  std::optional<std::int32_t> owner_full_id_raw;
+  std::optional<bool> owner_matches;
+  std::optional<std::string> first_group_identity;
+  std::optional<std::string> second_group_identity;
+  std::optional<std::string> category;
+  std::vector<ContextSourceConferenceFamilyV1> families;
+  std::string reason;
+  friend bool operator==(const ContextSourceConference24b1d00V1 &, const ContextSourceConference24b1d00V1 &) = default;
+};

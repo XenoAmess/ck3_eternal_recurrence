@@ -420,6 +420,8 @@ inline void Branch291d7e0(std::string &out,
 #include "xar_bridge/battle_person_tail_prefix_serializer.inc.hpp"
 #include "xar_bridge/battle_person_trait_stage_291d460_serializer.inc.hpp"
 #include "xar_bridge/battle_person_absent_recipient_serializer.inc.hpp"
+#include "xar_bridge/battle_person_helper_2922070_serializer.inc.hpp"
+#include "xar_bridge/battle_person_conference_24b1d00_serializer.inc.hpp"
 
 }  // namespace battle_context_source_inputs_v1_detail
 
@@ -551,6 +553,14 @@ inline std::string SerializeBattleCurrentPersonContextSourceInputsV1(
   if (p.absent_recipient_inputs) {
     out += ",\"absent_recipient_inputs\":";
     AbsentRecipientV1Json(out, *p.absent_recipient_inputs);
+  }
+  if (p.helper_2922070) {
+    out += ",\"helper_2922070\":";
+    Helper2922070V1Json(out, *p.helper_2922070);
+  }
+  if (p.conference_24b1d00) {
+    out += ",\"conference_24b1d00\":";
+    Conference24b1d00V1Json(out, *p.conference_24b1d00);
   }
   out += ",\"branch_291e210\":";
   Branch291e210(out, p.branch_291e210);
