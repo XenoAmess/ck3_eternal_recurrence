@@ -86,3 +86,23 @@ R14 的 MCP 保存四行均实际通过；存档为 68,460,590 B，SHA-256 `c132
 本场 05:20:25.665247Z harness GREEN/error null、清理完成，keeper final3054、screen CAS3055于05:24:18.375422Z done/resources[]。Root 原生退出桌面请求后的截图仍显示保存中，随后 finish_hold 实际触发受管终止（job before termination=1、CK3 exit code=1）；因此正常 GUI 自退尚未证明，下一冷加载场补验。最终日志仍68E，未知块不予豁免；16/16及保存通过不代替完整产品验收或发布。
 
 证据：[保存及历史](C:/workspace/ck3-upgrade-20261005/main-cold-reload-manual-inputs-agent-01/actual-R14-save-fourrows-and-anchors-thin-01.json)、[实际关闭及终止边界](C:/workspace/ck3-upgrade-20261005/main-creator-r14-readonly-monitor-agent-01/actual-R14-closed15-and-managed-termination-thin-01.json)、[最终日志](C:/workspace/ck3-upgrade-20261005/main-r14-current-engine-log-boundary-agent-01/closed-r14-final-engine-body-source-and-runtime-boundary-03.json)、[实际 CAS3055](C:/workspace/ck3-upgrade-20261005/main-r14-root-closeout-01/screen-release-01.json)。
+
+## 2026-10-05：Main R15 冷加载与正常自退
+
+R15 在新进程中实际加载 R14 的 checkpoint；原00完整18项资格通过，新 episode、暂停D1、532金币。Root 实际审阅7个保留设计页、自定义廷臣及6项特质提示，未再次购买。原生退出到桌面后独立句柄实际读得exit0，先于 finish_hold；随后旧harness强制向已退出进程取样而记录RED，保留8成功/finish1失败，不改写旧结果。实际thread/cleanup/treegone/job0/库存空，keeper3123后CAS3124 done。
+
+证据见[Main R15专题](../ck3-1.20.0.3-eternal-recurrence-readiness-2026-10-05.md)、[冷加载清单](C:/workspace/ck3-upgrade-20261005/main-r15-cold-evidence-append-agent-01/r15-coldload-thin-evidence-manifest-01.json)及[闭合补记](C:/workspace/ck3-upgrade-20261005/main-r15-cold-evidence-append-agent-01/r15-closeout-thin-addendum-02.json)。Main正式发布仍待无继承人业务及其他剩余门禁，正式完成仍4/10。
+
+## 2026-10-05：Main R16 原 00 开局资格失败与真实关场
+
+R16 使用当前 1.20.0.3、source04 / DLL70 / harness95ff、生产86文件与原 NoHeir fixture12；原 `one_life`、完整18项资格和43阶段输入没有放宽。Root 在原生 GUI 实际核三项规则为 `xar_on` / `xar_inherit_100` / `xar_score_growth`，Apply 关闭后以罗贝尔实际 Start 一次。此规则证据来自 Root 原图，不能称为本场完整90项 applied规则 DTO 回读。
+
+原 00 在 `06:48:30.501098Z → 06:48:45.157315Z` 返回 MCP campaign-root 错误；底层为 `stage=wait / wait_result=executor_failed / executor_enter=false`。callback 实际开始并完成一次，而 campaign DTO reader 尚未执行，因此完整18项和90规则均未取得。前后快照保持同角色31254、暂停D0（date raw53144328），但 active_event 从空变为 instance1 / 两选项；实际日志 import→opening flow→offering pact。源码要求入口快照整体相等，active_event 参与比较；这是开局竞态的证据方向，但回执未细分内部 guard，不能唯一断言故障字段，也不能据此说新启动路线已经修复。
+
+R14 已实际通过的语义罗贝尔 Start 是 `xar_off` / inherit100 / growth 加 ERVAstandalone。R16 的 `xar_on` 开局与 NoHeir 输入是新增覆盖，不能外推 R14 的 full18。现有 semantic Start 只等待同 actor/date/PID/generation 的后续暂停 pump，随后仍调用一次完整 root；并未提供独立的契约事件稳定门禁。新 R17 输入仅作待执行准备，actual 尚未取得。
+
+R16 harness 于 `06:48:47.400146Z` 真实 RED 关闭；managed thread finished / cleanup_ok 均 true，CK3 tree gone / job final0 / inventory[]。native session 为受管 stop，CK3 exit code1，不能称正常 GUI 自退0。keeper final3145 / thread exited，Root 取得 keeper exit0 后，screen CAS3146 于 `06:55:52.091311Z` 实际 done/resources[]。原 after-start capture 因 PID 已 gone 没有生成地图原图；不能把原目录或一次 capture 请求写成地图截图存在。
+
+NoHeir 的原01→43业务、真实死亡及八项渲染值仍未跑，旧 R15 原生退出0及随后 HRED、R14 GUI16/16、writer33/reader12 等各自范围保留，不增加本场产品或发布信用。
+
+证据：[R16 原00失败及受管退场](C:/workspace/ck3-upgrade-20261005/main-noheir-r16-readonly-monitor-agent-01/actual-R16-original00-failed-pact-event-and-closed-thin-02.json)，SHA `3f728f4df7d98c2d5f87794fa19317e21400f6e8a133f2bb3809d83e85a0a6be`；[独立 caller/source 与 CAS3146 补记](C:/workspace/ck3-upgrade-20261005/main-noheir-r16-readonly-monitor-agent-01/actual-R16-CAS3146-and-caller-source-addendum-03.json)；[Root 实际 release](C:/workspace/ck3-upgrade-20261005/main-r16-root-closeout-01/screen-release-01.json)。
