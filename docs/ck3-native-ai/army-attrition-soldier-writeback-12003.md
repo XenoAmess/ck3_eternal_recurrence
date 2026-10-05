@@ -1284,3 +1284,27 @@ frame. It cannot stand in for the frame produced by earlier native cleanup
 calls. This packet is `research`; nonzero Domain/allocator boundaries and
 the enclosing late DB/virtual stage remain partial. Actual cleanup/removal,
 actual poststate and full monthly/lifecycle readiness remainfalse/null.
+
+## 2026-10-06 first manager-stage native qualification
+
+Root source `c7b1b2c0548bf6a34b2bcdf6c149d9c555756c71` passed the first
+central fullDLL/two-new-target `/WX` build in192.3092681s. The first two
+new CTests passed2/2 in0.39s; first-removal inputs took0.10s. The four new
+actual production-serializer wires were then consumed once through that
+source's production normalizer/kernel/service:4/4 GREEN atOct6 01:37:33+08,
+consumer0.0377004s/process2.7869819s. No old passed cases or samples reran.
+Ordinary/distinct-helper/empty branches were ready; missing bucket retained
+independent list/record families while the complete finite stage stayed
+partial. IDs, opaque records, pointer-equality matches and actualfalse/null
+boundaries survived the real serializer-to-service path.
+
+The initial consumer invocation failed during import before any wire read:
+Root's sparse checkout omitted the tracked `ck3_workshop_mcp` dependency.
+`HARNESS-IMPORT-RED-01.json` retains that harness RED/exit1/process0.6613927s.
+Root restored the exact tracked package without changing source/HEAD, then
+the necessary import retry ran the first four cases. No stub or alternate
+production module was used. The successful receipt is
+`first-removal-stage-ledger/NATIVE-WIRE-CONSUMER-RECEIPT.json`; central
+receipts are frozen under `sourcec7b1b2c0-cleanup-current-dynamic-native-artifacts`.
+This is qualified `static-ready`, with zero game operations/days. Actual
+cleanup/removal/loss/poststage/date-calltime and full lifecycle remainfalse/null.
