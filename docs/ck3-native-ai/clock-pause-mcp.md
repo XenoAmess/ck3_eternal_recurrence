@@ -199,3 +199,11 @@ consumer must pin its actual qualified local DLL/injector bytes separately.
 The profile still has seven fields, now setting `game_version` to `1.20.0.3`
 and binding its own reviewed current guard/installation sources. No project
 run identifier, mod ID or installation path is added to the tool schema.
+
+### R44 native timeline core correction, 2026-10-05
+
+- R44 ordinary day03 remained paused at raw53263128/native48/public10, with zero advancement and `CK3 map state is unavailable`; frozen Python wrapping plus that exact text identifies the first resume attempt by inference, while the particular native rejection category remains unknown.
+- Actual .3 dispatch passes through WorkerAdapter: its full gameplay cache/read epoch and owner stamp precede native MatchesCoreSnapshot/TimelineReady/QueueTimeline. Core map_ready only tests local-player availability and its +0x70 sentinel; unrelated full snapshot failure can therefore block timeline submission.
+- The minimal external candidate uses the existing exact-build Core reader's eight fields (date, speed, paused, player, map-ready, played-actor presence/ID/alive), retaining owner readable stamp/TLS/date/paused, MatchesCoreSnapshot, TimelineReady, queue and Python expected_revision checks; full gameplay-cache coupling is removed.
+- Command-only core is never published as a complete Snapshot: Crozier idempotent ACKs request the existing full ReadSnapshot path; older adapter full-observed behavior is retained. Native ABI offsets, retries and protocol schemas are unchanged.
+- Full post-publication read failure preserves read_failed/revision/payload0 after the command ACK and never fabricates a full frame. Candidate/fixture/build success alone cannot establish repaired live advancement; [source and candidate evidence](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/r44-map-unavailable-diagnosis/native/ROOT-DELIVERY.json) preserves the original zero-day failure and Oct5/W41 boundary.
