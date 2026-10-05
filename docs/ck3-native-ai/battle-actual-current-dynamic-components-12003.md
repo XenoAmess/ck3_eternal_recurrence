@@ -157,3 +157,25 @@ consumers and old tests were not rerun. Native target/CTest
 Root central full bridge/new-target build and that unique new producer replay
 are pending at this commit; no live or complete forecast qualification.
 Source closing/read cost for this new component package is0 EXE bytes.
+
+## 2026-10-06: current component wire boundary qualified
+
+Root full bridge DLL plus five new targets GREEN195.8294221s at exact source
+`47ecd200e6ef72d46c4d58e1ed7378a76aebae21`. First new components CTest
+GREEN0.14s; batch5/5 GREEN2.75s,completed2026-10-05T18:16:47Z.
+
+Four new component producer wires consumed once against gb0 production
+normalizers/service and immutable adapter,4/4 GREEN0.009939s processing,
+0.4086423s process. Valid fullID0/zero relation/zero aggregate, wrong-generation
+canonical fallback, independently missing commander output and owned copy
+retain expected status and ownership behavior. Missing direct totals keep
+comparison null,without blocking component value. Native source and producer
+hashes/six production modules are pinned in NATIVE-WIRE-CONSUMER.json.
+
+Static-ready native producer/consumer boundary only: no actual game query,
+refreshed native tick or full future forecast. No old direct4 wire replay,
+old test or new EXE read;actual=0. The following stored raw88/89 extension
+has its own source/Python/native qualification and is not covered by this build.
+
+Actual consumer completion 2026-10-06T02:18:07.148634+08:00; Oct6/week2026-W41.
+Receipt `Z:\ck3_mod_rewrite_process_assets\g2-background-round4-20261005\retained-advantage\actual-dynamic-getter\group-decomposition\implementation/ROOT-DELIVERY.json`.

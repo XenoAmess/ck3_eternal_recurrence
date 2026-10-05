@@ -1390,3 +1390,45 @@ partial inputs through the existing normalization and allocation path.
 `python-current-helper-domain/PYTHON-TEST-RECEIPT.json` preserves its exact
 one-run stdout/stderr and source pins. Native central qualification remains
 pending; this Python result does not claim an observed native cleanup.
+
+## 2026-10-06 current-helper Domain native qualification
+
+Root adopted child `0c749bffe9916f39538dfbaa9c18b4673fa1a38d` as
+`4226ab12`. Exact central source `47ecd200e6ef72d46c4d58e1ed7378a76aebae21`
+passed the first full DLL/five-new-target `/WX` build in195.8294221s. The
+first five new CTests passed5/5 in2.75s at18:16:47UTC; the current-helper
+Domain target took0.10s. These are offline native fake-memory tests, not
+game live evidence.
+
+Only this target's five new actual production-serializer wires were consumed
+once through that exact source's production normalizer/kernel/service:
+5/5 GREEN at2026-10-06 02:17:59+08, consumer0.4490735s. Nonzero and Title
+fallback cases each derived count8 and ordered same-Domain values
+200000→1000000→1800000. Count32 wrap derived−2147483646 and both writes
+clamped to0. A valid Domain with null unchecked predicate receiver retained
+native captured-traversal readiness while its effect remained partial;
+zero groups independently proved no Domain calls. Native physical aliases,
+raw count records, source-selected receivers, and all actualfalse/null
+boundaries survived the real wire-to-service path. No old passed case or
+wire was rerun and there was no new RED.
+
+`NATIVE-WIRE-CONSUMER-RECEIPT.json` preserves exact source, each new wire's
+bytes/SHA and the one-run result. The central archive is
+`source47ecd200-person-maa-domain-components-native-artifacts/`
+`HASHES-AND-NATIVE-QUALIFICATION.json`. Its DLL is10349568B with SHA
+`05fd8939b2d922b4710e8bbb70716ae46b31aaf0f58f836833d489f2cb40e556`;
+the Domain target EXE is236032B with SHA
+`0e60ba9be952c7431aa845c5325e85e203aeb1f3abc07bc578fc8b16d2f9ff20`.
+Those existing central pins are reused, not recomputed. The source-first
+implementation delivery remains unchanged as historical pre-build status;
+`QUALIFICATION-DELIVERY.json` and Oct6/W41 qualification fields record this
+new completion.
+
+This is qualified `static-ready` current-input/conditional functionality.
+Actual Domain effects/postvalue, actual loss/poststage, the real late caller
+frame, complete helper and full Army/monthly lifecycle remainfalse/null.
+New game access/operations/days are0. The next current-helper point-store
+source/Mermaid/query plan is already sealed from cache: DATA byte14 clear
+does not require state4; character membership removal uses reread rawDATA8;
+group character-child stores follow record effects. Group release/virtual
+callbacks remain separately bounded.

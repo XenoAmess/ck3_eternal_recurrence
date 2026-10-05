@@ -1163,3 +1163,11 @@ source49131256已推送：post-A/B、laterdirect、auxiliaryscratch、knight实�
 ## 2026-10-06 后台观测进展（2026-10-06T01:22:10+08:00）
 
 人物required2922070／conference四族／无缓存recipient、ordinary六属性、holy-order部队关联均通过集中fake-memory生产验证，为static-ready；完整person／Entry／MAA／forecast／release live仍未完成。Exact3fb869c7：新CTest3/3 GREEN、35JSON／38场景生产消费GREEN，失败attempt和源码范围保留于[后台交接](../handover/2026-10-05-g2-background-successor.md)、[Oct6日报](daily/2026-10-06.md)、[W41](weekly/2026-W41.md)及各原生专题。累计后续23个不同新增native CTests，首批5独立记录。游戏由用户使用，新增自动游玩日0，5035冻结指标不变。继续首个移除阶段、直接动态优势及具体人物／MAA输入。
+
+## Five native input packages and R0047 runtime cutoffs recorded：能力与证据入口（2026-10-06T02:44:46+08:00）
+
+新source47ecd200五target／52个新生产样本一次GREEN，只授 source-bound **static-ready**；累计30个不同新增native CTests，最早5项另记。真实 normalizer人物frontier postList2530DD0_pre291C7A7／prowess51为held-current条件阶段，当前MAA六属性、优势components、Domain条件输出都有独立资格；完整person／Entry／未来forecast／monthly／release仍partial。
+
+用户新授权后Root恢复R0047原Robert29829／same episode／v73：九天里程碑 raw53265384／h9067／5044/36524，三军3711、K176100/tier2；event29 option1后的 fulfillment500000→1000000 与旧instance消失为有界 **production-live loop**。之后050请求7实际13，frozen raw53265696／051／052形成 **22天／5057** 的后续截止；这是已暂停、已保存的真实controller故障，不是最新状态或未来修复成功。整战／自然终态／完整目标未达。[Oct6日报](Z:/gb0/docs/autonomous-agent-progress/daily/2026-10-06.md)、[W41](Z:/gb0/docs/autonomous-agent-progress/weekly/2026-W41.md)、[交接](Z:/gb0/docs/handover/2026-10-05-g2-background-successor.md) 汇总 actual receipts 和下一可施工入口；[native最终封存](Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/source47ecd200-person-maa-domain-components-native-artifacts/FINAL-PRODUCTION-QUALIFICATION.json) 区分原生资格、实机截止和既有精确head CI。
+
+后续已保留 **h9088／raw53266080／38实际新日／5073** 截止：060十六个独立speed1步骤各elapsed1，围城3711达work34589892/55M／62.890%，K175050／tier2／ETA69，breach1／CanAssault true但未assault、未occupation；Root仍在该截止后运行。scopevariant265ba48→c6273217新1/1静态资格严格区分022public19九scope与010public18 authored count3，独立live效果仍由023–026证明。source47五target／52样本资格不变，新增opposite6b098171尚未nativequalified；后续cadence修复另记。
