@@ -628,3 +628,53 @@ flowchart LR
 2A98B64读persistent+148；2A98C0F零store实际清chunk max/current，不清prepared。2A98FEB/2A99011清manager+A4 list count，也不清prepared。已缓存apply/refresh不建立“prepared单次消费后清零”结论；month1 pre-stage262C6A0会重写fresh fraction或0，当前prepared与下一prepare新值不能混用。不为该合同做全局writer审计，未展开的其它writer保留准确locator。
 
 source与未执行纯候选见`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/replenishment-numeric/ROOT-DELIVERY.json`，9795 B / SHA `e2d22201bfb686ec680847f3cd4c9728ae697853e529109cbc12e5165018559b`。本次research增量未运行/测试/编译，不增加SDK/游戏日或live资格，正式5035保持；已有same-identity补员primitive不重复计信用。
+
+### 2026-10-05: same-input numeric projection available to the existing query
+
+The external candidate is now implemented in
+`ck3_autonomous_player/src/xar_autoplayer/replenishment_numeric.py` and consumed by
+`GameplayBridgeService.query_army_strengths`, so the existing
+`ck3_query_army_strengths` response adds `same_input_replenishment_v1`. It uses only
+the selected, normalized full DATA rows already returned by that query; it adds
+no native reader, command, or game operation. The actual prepared-scale field is
+`persistent_prepared_replenishment_fraction_scale`, rather than the external
+candidate's provisional generic `fraction_scale`.
+
+Each persistent ID retains seven `same_input_q_by_chunk` slots, effective
+deficits, per-slot statuses and observation identities. Available integer zero
+remains distinct from an unavailable/null slot; the calculation separately
+retains `native_core_chunk_qualifies`, including native eligibility true with
+integer q0. Unobserved slots, unavailable source records and disagreeing aliases
+are explicit. Repeated references do not create additional gain. Source snapshot
+statuses, reasons and stored record counts are retained alongside the projection;
+available count0 is empty observed coverage. No whole-army sum is emitted, and
+seven-slot completeness is only a coverage flag.
+
+The pure calculation preserves signed32 operands, signed64 low-product wrap,
+signed minimum, division truncating toward zero and signed32 output storage.
+It caps against the selected chunk deficit. It consumes prepared F and the
+chunk predicate; the fresh monthly fraction and independent persistent predicate
+remain raw observations rather than additional conditions. Existing
+normalization rejects incomplete available records before query projection.
+The pure projection also marks missing numeric inputs unavailable rather than
+substituting zero. These are conditional same-input requests, not actual
+writeback, a net gain, a dispatch date, or next-month replenishment.
+
+One focused offline validation passed all five cases, including the existing
+query consumer, native low64 overflow/trunc0/low32 storage, qualified q0,
+chunk-cap versus whole capacity, missing F, aliases, partial and empty coverage:
+
+```text
+py ck3_autonomous_player/tests/unit/test_replenishment_numeric.py --artifacts Z:/ck3_mod_rewrite_process_assets/g2-background-replenishment-20261005
+```
+
+Receipt: `Z:/ck3_mod_rewrite_process_assets/g2-background-replenishment-20261005/offline-validation.json`.
+`open_kaishek` prevalidation is not applicable: this change projects native
+integer arithmetic and Python query output and exercises no Paradox script
+semantics. Readiness is **static-ready** for the pure projection and existing
+query consumer. No CK3 launch, attach, query, UI, Steam operation, process stop,
+native build or live verification was performed; the user's game session stays
+reserved. The frozen5035-day ledger and earlier replenishment primitive are
+unchanged. R46's held summary still lacks exact F: this implementation does not
+infer it from the physical6→7 observation. A future authorized fresh query can
+evaluate its own observed prepared input; it cannot predict the next prepare.

@@ -8,6 +8,7 @@ from collections.abc import Callable
 from pathlib import Path
 import uuid
 
+from ..replenishment_numeric import project_observed_replenishment_v1
 from .version_identity import require_exact_native_build
 
 from .driver import (
@@ -4478,6 +4479,7 @@ class GameplayBridgeService:
             "army_ids": requested_ids,
             "scope_army_ids": scope_ids,
             "army_strengths": selected_rows,
+            "same_input_replenishment_v1": project_observed_replenishment_v1(selected_rows),
         }
 
     def query_campaign_root_context_v1(
