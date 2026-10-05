@@ -10537,6 +10537,8 @@ public:
       xar::ck3_12003::RegisterPlayerDefaultRaiseMailboxExecutorV1(environment);
       xar::ck3_12003::RegisterPlayerMercenaryMailboxExecutorV1(environment);
       xar::ck3_12003::RegisterPlayerMercenaryHireMailboxExecutorV1(environment);
+      environment.permitted_executor_regular_maa_create12003 =
+          &xar::ck3_12002::ExecuteRegularMaaCreateMailbox12003;
 #if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
       environment.permitted_executor_quattuorquadragintary =
           &xar::ck3_11906::ExecuteCurrentTimelineBlockerContextMailboxQueryV1;
