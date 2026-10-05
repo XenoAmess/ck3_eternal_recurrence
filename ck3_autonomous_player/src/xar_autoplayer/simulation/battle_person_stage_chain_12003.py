@@ -299,6 +299,7 @@ def continue_person_stage_chain_tail_12003(
     provider_module = "battle_person_provider_bucket_contract"
     qualifier_module = "battle_person_qualifier_28bc0d0_contract"
     list_module = "battle_person_list_predicate_2530dd0_contract"
+    gated_module = "battle_person_gated_temporary_tail_contract"
     stages = (
         ("2753860", "post2753860_pre291C4D2", prefix_module,
          "emit_helper_2753860_requests_from_current_source_inputs_12003", None),
@@ -320,6 +321,8 @@ def continue_person_stage_chain_tail_12003(
          "emit_helper_291fb10_requests_from_current_source_inputs_12003", None),
         ("list2530DD0", "postList2530DD0_pre291C7A7", list_module,
          "emit_list_predicate_2530dd0_requests_from_current_source_inputs_12003", None),
+        ("gated_temporary_tail", "postGatedTemporaryAndList_pre291C9D8", gated_module,
+         "emit_gated_temporary_tail_requests_from_current_source_inputs_12003", None),
         ("intervening_lists_flags_temp_helpers_thresholds", "preCarrierWeighted630", None, None, None),
         ("carrier_weighted630", "postCarrierWeighted630_pre291CC71", direct_module,
          "emit_tail_direct_family_requests_from_current_source_inputs_12003", "carrier_weighted630"),
@@ -372,6 +375,7 @@ def continue_person_stage_chain_tail_12003(
         required = index <= bound_index
         missing, requests, ready = [], (), True
         conference_family_ledger = []
+        gated_family_ledger = []
         qualifier_definition_ledger = []
         list_row_ledger = []
         try:
@@ -379,13 +383,18 @@ def continue_person_stage_chain_tail_12003(
                 raise ValueError("matching_character_source_unavailable")
             if module is None:
                 raise ValueError("native_source_stage_unclosed")
-            if name == "conference24B1D00":
+            if name in ("conference24B1D00", "gated_temporary_tail"):
+                is_gated = name == "gated_temporary_tail"
+                family_names = (("prefix_1398", "delta_prefix_1420_14a8", "list") if is_gated else
+                                ("classified_owner", "classified_common", "owner_common", "unconditional"))
+                family_emitter = ("emit_gated_temporary_tail_family_requests_from_current_source_inputs_12003"
+                                  if is_gated else "emit_conference_24b1d00_family_requests_from_current_source_inputs_12003")
+                family_ledger = gated_family_ledger if is_gated else conference_family_ledger
                 family_contiguous = True
-                for family_name in ("classified_owner", "classified_common", "owner_common", "unconditional"):
+                for family_name in family_names:
                     family_requests, family_missing = (), []
                     try:
-                        family_requests = _tail_emit(source_inputs, module,
-                            "emit_conference_24b1d00_family_requests_from_current_source_inputs_12003", family_name)
+                        family_requests = _tail_emit(source_inputs, module, family_emitter, family_name)
                     except (ValueError, ModuleNotFoundError, AttributeError) as error:
                         family_missing.append(str(error))
                     family_ready = not family_missing
@@ -394,7 +403,7 @@ def continue_person_stage_chain_tail_12003(
                     if family_contiguous:
                         requests += tuple(family_requests)
                     missing.extend(family_name + ":" + item for item in family_missing)
-                    conference_family_ledger.append({"family": family_name, "requests_ready": family_ready,
+                    family_ledger.append({"family": family_name, "requests_ready": family_ready,
                         "request_count": len(family_requests), "in_contiguous_family_prefix": family_contiguous,
                         "missing_inputs": tuple(family_missing)})
                 ready = not missing
@@ -466,6 +475,11 @@ def continue_person_stage_chain_tail_12003(
             elif name == "list2530DD0" and any(row["in_contiguous_row_prefix"] for row in list_row_ledger):
                 completed = sum(row["in_contiguous_row_prefix"] for row in list_row_ledger)
                 stage = "postList2530DD0Row" + str(completed - 1) + "_preRow" + str(completed)
+            elif name == "gated_temporary_tail" and any(
+                    row["in_contiguous_family_prefix"] for row in gated_family_ledger):
+                completed = sum(row["in_contiguous_family_prefix"] for row in gated_family_ledger)
+                stage = ("postGatedPrefix1398_pre291C892",
+                         "postGatedDeltaPrefix_pre291C8AE")[completed - 1]
             elif validated:
                 if name == "conference24B1D00":
                     completed = sum(row["in_contiguous_family_prefix"] for row in conference_family_ledger)
@@ -480,6 +494,7 @@ def continue_person_stage_chain_tail_12003(
             "requests_ready": ready, "request_count": len(validated),
             "folded_into_contiguous_context": folded, "missing_inputs": tuple(missing),
             "conference_family_stages": tuple(conference_family_ledger),
+            "gated_temporary_family_stages": tuple(gated_family_ledger),
             "qualifier_definition_stages": tuple(qualifier_definition_ledger),
             "list_predicate_row_stages": tuple(list_row_ledger)})
         if required:
@@ -493,11 +508,16 @@ def continue_person_stage_chain_tail_12003(
         "future_tail_missing_inputs": tuple(future_missing),
         "first_contiguous_observation_dependency": next(
             (row["stage"] for row in ledger_rows if not row["requests_ready"]), None),
-        "next_native_source_leaf": "291C7A7_gated_temporary_tail", "all_tail_source_stream_ready": False,
+        "next_native_source_leaf": "291C9D8_326A8E0_2920310", "all_tail_source_stream_ready": False,
         "provider_291c5b2_operand_scope": "held_current_character_1b0_2f8",
         "provider_291c5b2_return_edges": "all selection branches rejoin291C5B7",
         "qualifier_28bc0d0_operand_scope": "held_current_character_1b0_scratch_object_relationships",
         "list_predicate_2530dd0_operand_scope": "held_current_character_1b0_458_list_and_scope_inputs",
+        "gated_temporary_tail_operand_scope": "held_current_selected_inputs_and_source_closed_raw_named_literals",
+        "gated_temporary_rank_source": "slot168_literal_or_known_zero_then_native_clamp_and_first_LE_threshold",
+        "gated_temporary_cached_FC_used": False,
+        "gated_temporary_native_evaluation_equivalence_claimed": False,
+        "gated_temporary_empty_PC_source_occurrences_preserved": True,
         "source_operand_scope": "held_current_same_query_inputs",
         "conditional_on_observed_source_values": True,
         "291f260_weight_source_scope": "held_current_evaluated_values",

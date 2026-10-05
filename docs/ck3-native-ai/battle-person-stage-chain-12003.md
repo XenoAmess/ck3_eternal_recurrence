@@ -634,3 +634,93 @@ binds the exact consumed production source files. This is static-ready bounded
 conditional pure assembly; source-shaped synthetic frames do not qualify the
 native collector or a live frame. No old/sibling test, native build, new EXE
 read or game operation was run by this chain extension.
+
+## Raw literal gated temporaries and list at291C7A7
+
+Source-owned interval `[291C7A7,291C9D8)` is sealed in the external
+`person-tail/gated-temporary-tail-source/SOURCE-TREE.md`, `QUERY-PLAN.md`,
+`LITERAL-EMPTY-ADDENDUM.md` and the final raw/numeric-empty schema clarifications.
+The source owner reads2710 new EXE bytes, including72 duplicate metadata bytes;
+this chain reads zero new EXE bytes. Source-only262adf4f and the genuine
+producer contract/production normalizer932f2eac precede this stage code.
+External `person-stage-chain/GATED-SOURCE-PLAN.json` seals family order and
+partial frontiers before implementation. The actual addendum is5688 bytes with
+SHA256 `d6ec94e236a8a74a90a85507b7eb65a8cf2679961a78ed44aafbbeabf730d86e`;
+the separately reported1666-byte/hash receipt is metadata, not that Markdown.
+
+The optional leaf `gated_temporary_tail_291c7a7` supplies the actual family
+emitter in `battle_person_gated_temporary_tail_contract.py`. The new public
+bound `through_stage="gated_temporary_tail"` folds, in order, `prefix_1398`,
+`delta_prefix_1420_14a8`, then `list`. Internal FE20 blocks use the source-closed
+paired property fold to form each temporary PC first. Only its one outer
+unit100000 B3D0 request is appended to the person context. Inner slot170 weight
+is consumed during temporary composition and is not applied a second time.
+Duplicate source blocks and list occurrences remain ordered. A true temporary
+gate has exactly two outer source occurrences, including a numeric empty PC;
+the existing property writer skips the empty weighted row, not its source
+position. Known bit20 false gives an empty whole segment. With absent current
+selected458, the two temporary families skip, while a bit20-enabled relatedBE0
+list still has its own source demand.
+
+Slot168/170 decoding checks tree70 first. A nonnull tree remains precise
+dynamic missing; a null tree with flag7B0 yields a legal zero without reading68;
+any nonzero flag takes the actual signed literal68. Slot168 literal/zero is
+clamped by the native minimum-first branch, then the first stored threshold
+greater than or equal to it yields freshly derivedFC. CachedFC is not used.
+Delta is wrapped signed32 selectedE8/F8 minus that fresh rank. Zero delta and
+source-proven numeric-empty prefixes can leave170 unconsumed. This is numeric
+assembly and does not claim equivalence to native evaluator activity.
+
+```mermaid
+flowchart TD
+  P[postList2530DD0_pre291C7A7] --> G{Actual land/selected/global bit20 gates}
+  G --> A[FE20 provider1398 prefix, inner100000]
+  A --> B[Composed PC, one outer100000 request including empty]
+  G --> N{Slot168 tree70}
+  N -->|null, flag0 or actual literal68| R[Native clamp then first LE threshold, freshFC]
+  N -.-> U[Dynamic current result unknown]
+  R --> D[wrap32 selected value minus freshFC]
+  D --> E[Zero/empty or1420/14A8 prefix with actual slot170 inner weight]
+  E --> F[Composed PC, second outer100000 request including empty]
+  B --> F
+  F --> L[Current_A20 or related_BE0 unit list occurrences]
+  U --> X[Stop at postGatedPrefix1398_pre291C892]
+  X --> I[Ready later list remains independent]
+  L --> S[postGatedTemporaryAndList_pre291C9D8]
+  S -.-> Q[326A8E0 composition and2920310 remain unknown]
+```
+
+The result preserves the verified context even if a later family is missing.
+Completing only1398 reaches `postGatedPrefix1398_pre291C892`; completing both
+temporary families reaches `postGatedDeltaPrefix_pre291C8AE`, including known
+skips with zero requests. A missing delta never becomes an invented empty PC.
+The bound becomes ready only when every preceding source stage and all three
+families are ready. Current selected/provider/list inputs and earlier260
+weights retain their held-current conditional scope, with an explicit logical
+baseline. Full person preparation and full Entry remain false. The next exact
+source seams are291C9D8→326A8E0→B3D0 at291CAFA and291CB0F→2920310; no broad
+unknown segment is assumed empty before weighted630.
+
+The new compound integration is
+`test_battle_person_gated_stage_chain_12003.py`. It consumes the producer's
+genuine fixture builder without invoking its test, then joins the production
+normalizer, owned stage chain and existing six-skill kernel. Literal negative
+inner weight, dynamic fresh-rank absence and zero-delta source occurrence are
+the distinct new behavior. Its qualification is recorded only after the first
+new run; previous/sibling qualified cases are not rerun.
+
+The new compound chain case is GREEN on2026-10-06 02:52:35 Asia/Shanghai
+(1/1, 0.018s), receipt `gated-attempt-02.json`. The literal path composes two
+temporary PCs with contributions2Q and5Q, then two zero-valued list PCs; its
+ready `postGatedTemporaryAndList_pre291C9D8` context has52Q and projects skills
+`[6,6,6,6,6,58]`. The actual inner signed literal170 is-250000; both outer
+requests remain100000. Dynamic168 absence preserves only the1398 prefix at
+`postGatedPrefix1398_pre291C892`, context47Q and skills`[6,6,6,6,6,53]`, while
+two later list requests stay independent. Zero delta retains its second empty
+outer request with170 unconsumed; it yields46Q, skills`[6,6,6,6,6,52]` and one
+fewer materialized weighted row. First attempt01 is preserved harness RED:
+the test expected leaf reason text inside a field-based emitter diagnostic.
+Only that assertion was corrected; production logic was unchanged before02.
+This qualification uses source-shaped synthetic frames through production
+Python, and does not qualify native reading or live execution. No old/sibling
+case, native build, new EXE read or game operation was run by this extension.
