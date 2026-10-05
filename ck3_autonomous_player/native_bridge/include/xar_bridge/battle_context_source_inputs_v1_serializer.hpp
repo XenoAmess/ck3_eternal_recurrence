@@ -413,6 +413,8 @@ inline void Branch291d7e0(std::string &out,
   out += '}';
 }
 
+#include "xar_bridge/battle_person_helper_291f0a0_serializer.inc.hpp"
+
 }  // namespace battle_context_source_inputs_v1_detail
 
 namespace battle_context_source_inputs_v1_detail {
@@ -515,6 +517,10 @@ inline std::string SerializeBattleCurrentPersonContextSourceInputsV1(
   if (p.later_direct_291c3fb_44c) {
     out += ",\"later_direct_291c3fb_44c\":";
     LaterDirect(out, *p.later_direct_291c3fb_44c);
+  }
+  if (p.helper_291f0a0) {
+    out += ",\"helper_291f0a0\":";
+    Helper291f0a0(out, *p.helper_291f0a0);
   }
   out += ",\"branch_291e210\":";
   Branch291e210(out, p.branch_291e210);
