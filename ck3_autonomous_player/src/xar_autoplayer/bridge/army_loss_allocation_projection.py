@@ -18,6 +18,7 @@ from .army_monthly_loss_budget_projection import construct_conditional_monthly_l
 from .army_monthly_caller_effect_projection import project_conditional_monthly_caller_effects
 from .army_daily_queue_transfer_projection import project_conditional_daily_id_transfer
 from .army_manager_cleanup_projection import project_conditional_first_removal_manager_cleanup
+from .army_current_helper_domain_projection import project_conditional_current_helper_domain_updates
 
 
 FRACTION_SCALE = 100_000
@@ -210,6 +211,7 @@ def project_observed_army_loss_requests(
     result = []
     for army in army_strengths:
         conditional_budgets = construct_conditional_monthly_loss_budgets(army)
+        conditional_current_helper_domain = project_conditional_current_helper_domain_updates(army)
         conditional_caller_effects = project_conditional_monthly_caller_effects(army, conditional_budgets)
         conditional_daily_transfer = project_conditional_daily_id_transfer(army)
         conditional_manager_cleanup = project_conditional_first_removal_manager_cleanup(
@@ -226,6 +228,7 @@ def project_observed_army_loss_requests(
                 "same_input_conditional_monthly_caller_effects_v1": conditional_caller_effects,
                 "same_input_conditional_daily_id_transfer_v1": conditional_daily_transfer,
                 "same_input_conditional_first_removal_manager_cleanup_v1": conditional_manager_cleanup,
+                "same_input_conditional_current_helper_domain_updates_v1": conditional_current_helper_domain,
             })
             continue
         preferred = None
@@ -279,6 +282,7 @@ def project_observed_army_loss_requests(
         projection["same_input_conditional_monthly_caller_effects_v1"] = conditional_caller_effects
         projection["same_input_conditional_daily_id_transfer_v1"] = conditional_daily_transfer
         projection["same_input_conditional_first_removal_manager_cleanup_v1"] = conditional_manager_cleanup
+        projection["same_input_conditional_current_helper_domain_updates_v1"] = conditional_current_helper_domain
         result.append({
             "army_id": army["army_id"], **projection,
             "input_basis": "current_readonly_inputs; conditional requests, not updater execution",

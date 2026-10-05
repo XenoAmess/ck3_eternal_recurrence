@@ -388,6 +388,68 @@ struct ArmyFirstRemovalCleanupInputsV1 {
                          const ArmyFirstRemovalCleanupInputsV1 &) = default;
 };
 
+struct ArmyCurrentHelperDomainCountRecordV1 {
+  std::int32_t stored_index = 0;
+  std::int32_t count_00_raw = 0;
+  std::int32_t count_04_raw = 0;
+  std::int32_t state_18_raw = 0;
+  friend bool operator==(const ArmyCurrentHelperDomainCountRecordV1 &,
+                         const ArmyCurrentHelperDomainCountRecordV1 &) = default;
+};
+
+// Ordered source operands for isolated current-frame2C57020 calls. These are
+// neither the late2A978A0 entry frame nor observed effects of2A98590.
+struct ArmyCurrentHelperDomainRowV1 {
+  std::int32_t group_index = 0;
+  std::int32_t stored_index = 0;
+  std::int32_t record_regiment_reference_id = -1;
+  std::int32_t chunk_index = 0;
+  std::optional<std::int32_t> record_regiment_resolved_id;
+  std::optional<bool> record_regiment_used_fallback;
+  std::optional<std::uint32_t> record_regiment_magic_14_raw;
+  std::optional<bool> data_record_present;
+  std::optional<std::int32_t> data_state_18_raw;
+  std::optional<std::int32_t> data_owner_regiment_reference_id;
+  std::optional<std::int32_t> receiver_regiment_resolved_id;
+  std::optional<bool> receiver_regiment_used_fallback;
+  std::optional<std::int32_t> receiver_state_138_raw;
+  std::optional<std::int32_t> receiver_title_reference_130_raw;
+  std::optional<std::int32_t> receiver_character_reference_12c_raw;
+  std::optional<std::int32_t> owner_title_resolved_id;
+  std::optional<bool> owner_title_used_fallback;
+  std::optional<std::int32_t> owner_title_holder_character_id_128_raw;
+  std::optional<std::int32_t> selected_character_reference_id;
+  std::optional<std::int32_t> selected_character_resolved_id;
+  std::optional<bool> selected_character_used_fallback;
+  std::optional<bool> character_domain_child_present;
+  std::optional<std::int32_t> domain_reference_id;
+  std::optional<std::int32_t> domain_resolved_id;
+  std::optional<bool> domain_used_fallback;
+  std::optional<std::uint32_t> domain_magic_0c_raw;
+  std::optional<bool> domain_data_30_present;
+  std::optional<std::uint8_t> domain_flag_17e_raw;
+  std::optional<std::int32_t> count_base_128_raw;
+  std::optional<std::vector<ArmyCurrentHelperDomainCountRecordV1>> count_records;
+  std::optional<std::int32_t> domain_owner_character_reference_id;
+  std::optional<std::int32_t> domain_owner_character_resolved_id;
+  std::optional<bool> domain_owner_character_used_fallback;
+  std::optional<std::uint32_t> domain_owner_character_magic_1c_raw;
+  std::optional<std::int64_t> domain_value_48_raw64;
+  std::optional<std::int32_t> domain_alias_ordinal;
+  friend bool operator==(const ArmyCurrentHelperDomainRowV1 &,
+                         const ArmyCurrentHelperDomainRowV1 &) = default;
+};
+
+struct ArmyCurrentHelperDomainInputsV1 {
+  bool available = false;
+  std::string unavailable_reason;
+  std::int32_t entry_army_id = -1;
+  std::optional<std::int32_t> group_count_5c_raw;
+  std::optional<std::vector<ArmyCurrentHelperDomainRowV1>> rows;
+  friend bool operator==(const ArmyCurrentHelperDomainInputsV1 &,
+                         const ArmyCurrentHelperDomainInputsV1 &) = default;
+};
+
 // Current native county-entry budget, independent of a route or applied event.
 // The predicate uses the validated current province and the FIRST province of
 // the complete stored route. It omits the entry executor's special-call flag;
@@ -504,6 +566,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyMonthlyCallerEffectInputsV1> monthly_caller_effect_inputs_v1;
   std::optional<ArmyDailyQueueInputsV1> monthly_daily_queue_inputs_v1;
   std::optional<ArmyFirstRemovalCleanupInputsV1> monthly_first_removal_cleanup_inputs_v1;
+  std::optional<ArmyCurrentHelperDomainInputsV1> monthly_current_helper_domain_inputs_v1;
   std::optional<ArmyCountyEntryInputsV1> county_entry_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<NativeMaaRecruitmentInputsV1> native_maa_recruitment_inputs_v1;

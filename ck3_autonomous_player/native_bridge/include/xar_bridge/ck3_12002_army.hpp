@@ -76,6 +76,17 @@ struct ArmyDailyQueueBindings12003 {
   void **army_fallback_slot = nullptr;
 };
 
+struct ArmyCurrentHelperDomainBindings12003 {
+  bool enabled = false;
+  void **persistent_regiment_fallback_slot = nullptr;
+  void **title_storage_slot = nullptr;
+  void **title_fallback_slot = nullptr;
+  void **character_storage_slot = nullptr;
+  void **character_fallback_slot = nullptr;
+  void **domain_storage_slot = nullptr;
+  void **domain_fallback_slot = nullptr;
+};
+
 struct ArmyBindings {
   bool enabled = false;
   void **game_state_slot = nullptr;
@@ -144,7 +155,11 @@ struct ArmyBindings {
   ArmyMonthlyCallerEffectBindings12003 monthly_caller_effect_bindings{};
   ArmyDailyQueueBindings12003 monthly_daily_queue_bindings{};
   bool monthly_first_removal_cleanup_inputs_enabled = false;
+  ArmyCurrentHelperDomainBindings12003 monthly_current_helper_domain_bindings{};
 };
+
+game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(
+    const ArmyBindings &, void *current_army);
 
 // Same GDbo key/tier implementation used by the raised ArRg reader.
 void ReadOwnedRegimentTypeV1(

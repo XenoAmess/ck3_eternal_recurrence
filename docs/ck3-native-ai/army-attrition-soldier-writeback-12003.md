@@ -1308,3 +1308,85 @@ production module was used. The successful receipt is
 receipts are frozen under `sourcec7b1b2c0-cleanup-current-dynamic-native-artifacts`.
 This is qualified `static-ready`, with zero game operations/days. Actual
 cleanup/removal/loss/poststage/date-calltime and full lifecycle remainfalse/null.
+
+## 2026-10-06 current-helper Domain predicate/count and input implementation
+
+The two concrete dependencies of the preceding later-helper ledger are now
+closed entirely from existing exact-build cache. Complete109-byte
+`2B9D2D0` has no calls/stores: Character+1C8 child+ B68 selects Domain through
+`5D1EB80`/fallback`5D1EB38`, FullID+8, magic+C. Invalid Domi returns false;
+valid Domi reads its+30 receiver byte+17E **without a null check**. A missing
+receiver therefore remains an unknown ordinary continuation, not false.
+Complete76-byte `262BBC0` also has no calls/stores. It starts at signed32
+persistent+128 and processes exactly seven DATA records at
+`persistent+0x18+0x24*i`: `a==0` contributes0; state3/current`b==0`
+contributes0; otherwise it adds `wrap_i32(b-a)` with ADD32 wrap. Negative
+counts are legitimate source values. This closes the selected count/predicate
+frontier without a modifier/census expansion or any new EXE read.
+
+An implementation correction preserves all sealed historical packets:
+persistent+130 is a **Title** reference on this owner route. Cached instruction
+`2C57052` resolves global`5D1DAF8`, with fallback`5D1DAE0`, checks Title+10
+generation, then reads Title+128 holder. It does not use CArmy storage or
+Army+128. Direct-character+12C and the both/neither-present minus1 fallback
+branches remain distinct. Persistent Regi lookup uses FullID+10/magic+14;
+Domi's FullID+8/magic+C is a different receiver layout.
+
+The additive army-strength observation
+`monthly_current_helper_domain_inputs_v1` captures the explicit current CArmy
+entry+5C/+50 ordered group/record traversal, actual DATA-owner persistent
+receiver, corrected Title/character route, Domi/owner/flag/value operands,
+seven raw count records, and native physical Domain alias ordinals. It calls
+no native mutator or getter. Two complete samples must agree; the new family
+alone becomes unavailable on a change. No new collection count cap or
+associated-ArRg chunk backlink/index gate is imposed. Native family `ready`
+means the traversal was captured; row effects have independent readiness.
+
+The production normalizer and allocation consumer expose
+`same_input_conditional_current_helper_domain_updates_v1`. This isolated
+ordered `2C57020` subsystem derives nonzero count*100000, ADD64 wrap and
+negative-result clamp, carrying known prior derived values across physical
+Domain aliases. An unresolved earlier write basis remains partial rather
+than resetting from a duplicate snapshot operand. Current explicit-entry
+inputs do not establish the real late `2A978A0` caller frame or the other
+character-array/group-release effects of `2A98590`.
+
+```mermaid
+flowchart TD
+  A[Explicit current CArmy entry] --> B[Ordered group DATA records]
+  B --> C{Valid Regi and DATA state4?}
+  C -->|yes| D[DATA8 selects actual persistent receiver]
+  D --> E{receiver138 equals4?}
+  E -->|yes| T[Title130 through5D1DAF8 holder128 or Char12C or minus1 fallback]
+  T --> F[Char1C8 B68 resolves Domi]
+  F --> G{Domi valid and byte17E nonzero?}
+  G -. unreadable unchecked receiver .-> U[Partial]
+  G -->|yes| H[Base128 plus seven DATA signed32 wrapping count]
+  H --> I{Nonzero count and valid owner?}
+  I -->|yes| J[Physical alias carry ADD64 then negative clamp0]
+  C -->|no| N[No Domain store]
+  E -->|no| N
+  G -->|false| N
+  I -->|no| N
+  B -. excluded parent effects .-> X[Character arrays / group release / actual late frame]
+```
+
+Source-first packets and corrections are frozen under
+`later-manager-removal-stage/domain-predicate-count-source/`: original
+`ROOT-DELIVERY.json`, `OWNER-ROUTE-CORRECTION-RECEIPT.json`, and the separately
+sealed implementation plan/schema addendum. The new focused Python case and
+new native target qualify only this production input/conditional subsystem.
+Native target `xar_ck3_12003_current_helper_domain_inputs_test` and CTest
+`xar_ck3_12003_current_helper_domain_inputs` emit five new wires under
+`current-helper-domain-wire`; Root owns their first central compilation and
+qualification. No prior passed cases or wires are rerun. Actual effects,
+actual Domain postvalue, actual loss, real late frame, complete helper and
+full Army/monthly lifecycle readiness remainfalse/null; new game days0.
+
+The single new production-service Python case first passed1/1 in0.009s,
+process3.1214061s atOct6 02:07:39+08. It verifies nonzero updates, corrected
+Title fallback, count/Domain wrap, alias-carried values and independent
+partial inputs through the existing normalization and allocation path.
+`python-current-helper-domain/PYTHON-TEST-RECEIPT.json` preserves its exact
+one-run stdout/stderr and source pins. Native central qualification remains
+pending; this Python result does not claim an observed native cleanup.
