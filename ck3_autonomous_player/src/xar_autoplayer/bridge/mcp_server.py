@@ -1765,6 +1765,16 @@ def create_server(
                 scheme_instance_id=scheme_instance_id,
             )
 
+    if callable(getattr(driver, "submit_regular_maa_create_private_v1", None)):
+        @server.tool()
+        def ck3_submit_regular_maa_create(
+            expected_revision: int, type_index: int, action_id: str,
+        ) -> dict[str, object]:
+            """Submit one regular MAA command; queued ACK does not verify creation/payment."""
+            return service.submit_regular_maa_create_private_v1(
+                expected_revision=expected_revision, type_index=type_index, action_id=action_id,
+            )
+
     if getattr(driver, "allow_private_player_clergy_appointment_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_clergy_appointment_v1(

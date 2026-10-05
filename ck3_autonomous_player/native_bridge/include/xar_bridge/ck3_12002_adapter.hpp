@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12003_maa_recruitment.hpp"
+#include "xar_bridge/ck3_12003_maa_create.hpp"
 
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_12002_army.hpp"
@@ -34,6 +35,7 @@ struct Ck3_12002AdapterBindings {
   ck3_12002::BattleBindings native_owner_recall;
   ck3_12003::NativeMaaRecruitmentBindings native_maa_recruitment;
   ck3_12003::OwnedRegimentsBindingsV1 owned_regiments;
+  ck3_12003::NativeMaaCreateBindings native_maa_create;
   ck3_12002::WorldBindings world;
   ck3_12002::ProvinceBindings provinces;
   ck3_12002::MilitaryBindings military;
@@ -59,6 +61,10 @@ void AttachPlayerOwnedRegimentsToArmyRowsV1(
     const ck3_12002::CoreBindings &,
     const ck3_12003::OwnedRegimentsBindingsV1 &,
     const Snapshot &, std::vector<ArmyStrengthSnapshot> &) noexcept;
+
+// Used by the existing paused owning-thread private action provider.
+NativeMaaRegularPersonalCreateSubmissionV1 SubmitNativeMaaRegularPersonalCreate(
+    const GameAdapter &, const NativeMaaRegularPersonalCreateRequestV1 &) noexcept;
 
 Ck3_12002AdapterBindings BindCk3_12002AdapterImage(
     std::uintptr_t image_base, std::string_view executable_sha256) noexcept;

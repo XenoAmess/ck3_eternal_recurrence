@@ -3232,6 +3232,17 @@ class NativeHeadlessGameplayDriver:
             action_id=action_id, timeout_seconds=timeout_seconds,
         )
 
+    def submit_regular_maa_create_private_v1(
+        self, *, expected_revision: int, type_index: int, action_id: str,
+        timeout_seconds: float = 30.0,
+    ) -> dict[str, object]:
+        from .regular_maa_create_private_action_v1 import submit_regular_maa_create_private_v1
+
+        return submit_regular_maa_create_private_v1(
+            self, expected_revision=expected_revision, type_index=type_index,
+            action_id=action_id, timeout_seconds=timeout_seconds,
+        )
+
     def query_county_conversion_task_result_private_v1(
         self, *, expected_revision: int, submitted_request_id: str, action_id: str,
         timeout_seconds: float = 30.0,

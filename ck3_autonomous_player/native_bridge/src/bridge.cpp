@@ -5,6 +5,7 @@
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12003_maa_create_private_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
 #include "xar_bridge/title_holder_v1_serializer.hpp"
@@ -13039,6 +13040,24 @@ void RunConnectedSession(
                         game, state, request_id, step, incoming.payload)
                   : RunArmyCommanderCandidatesQuery12003(
                         game, state, request_id, step, incoming.payload);
+          connected = write_frame(pipe, response);
+        } else if (xar::ck3_12002::IsRegularMaaCreatePrivateStep12003(step)) {
+          std::uint64_t expected_revision = 0;
+          xar::game::Snapshot current{};
+          std::string response, failure;
+          if (!xar::bridge::JsonUnsignedField(incoming.payload, "expected_revision", expected_revision) ||
+              expected_revision == 0 || expected_revision != state_revision ||
+              !previous_snapshot.has_value() || !xar::game::ReadSnapshot(game, current) ||
+              current != *previous_snapshot) {
+            failure = "regular MAA Create snapshot revision is stale or malformed";
+          } else {
+            xar::ck3_12002::HandleRegularMaaCreatePrivate12003(
+                game, g_main_thread_query_mailbox_v1, current, state_revision,
+                step, incoming.payload, request_id, response, failure);
+          }
+          if (response.empty()) response = CommandResultFrame(
+              request_id, step, false,
+              failure.empty() ? "regular MAA Create private action unavailable" : failure);
           connected = write_frame(pipe, response);
         } else if (xar::game::IsReviewedCrozierAdapter(game) &&
                    xar::ck3_12002::IsNonwarPrivateStep12002(step)) {

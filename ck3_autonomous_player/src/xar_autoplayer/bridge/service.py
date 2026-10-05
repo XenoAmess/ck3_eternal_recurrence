@@ -598,6 +598,17 @@ class GameplayBridgeService:
             action_id=action_id,
         )
 
+    def submit_regular_maa_create_private_v1(
+        self, *, expected_revision: int, type_index: int, action_id: str,
+        timeout_seconds: float = 30.0,
+    ) -> dict[str, object]:
+        """Submit one regular MAA command and retain its native pending/rejection."""
+        submit = getattr(self.driver, "submit_regular_maa_create_private_v1", None)
+        if not callable(submit):
+            raise UnsupportedStepError("selected backend cannot submit regular MAA Create")
+        return submit(expected_revision=expected_revision, type_index=type_index,
+                      action_id=action_id, timeout_seconds=timeout_seconds)
+
     def query_county_conversion_task_result_private_v1(
         self, *, expected_revision: int, submitted_request_id: str, action_id: str,
     ) -> dict[str, object]:

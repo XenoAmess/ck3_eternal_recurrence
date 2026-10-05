@@ -117,6 +117,8 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
   // Current normal MAA permission and raw prices use the actual .3 identity.
   result.native_maa_recruitment = ck3_12003::BindNativeMaaRecruitmentImage(
       image_base, executable_sha256);
+  result.native_maa_create = ck3_12003::BindNativeMaaCreateImage(
+      image_base, executable_sha256);
   // These numeric GUI getter ABIs are closed only for exact .3. Do not install
   // them in BindArmyImage: that binder also serves the unchanged .2 adapter.
   if (result.armies.enabled) {

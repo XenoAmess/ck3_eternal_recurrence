@@ -456,6 +456,12 @@ public:
     return ck3_12002::SubmitOfferWhitePeace(bindings_.diplomacy, war);
   }
 
+  NativeMaaRegularPersonalCreateSubmissionV1 SubmitRegularMaaCreate(
+      const NativeMaaRegularPersonalCreateRequestV1 &request) const noexcept {
+    return ck3_12003::SubmitNativeMaaRegularPersonalCreateV1(
+        bindings_.native_maa_create, request);
+  }
+
 private:
   bool MatchesCoreSnapshot(const Snapshot &observed) const noexcept {
     ck3_12002::CoreSnapshotPrefix current{};
@@ -628,6 +634,18 @@ bool ReadCk3_12003WarCashCurrentResourcesV1(
   output = {};
   const auto *native = dynamic_cast<const Ck3_12002Adapter *>(&adapter);
   return native != nullptr && native->ReadWarCashCurrentResources(snapshot, output);
+}
+
+NativeMaaRegularPersonalCreateSubmissionV1 SubmitNativeMaaRegularPersonalCreate(
+    const GameAdapter &adapter,
+    const NativeMaaRegularPersonalCreateRequestV1 &request) noexcept {
+  const auto *native = dynamic_cast<const Ck3_12002Adapter *>(&adapter);
+  if (native != nullptr) return native->SubmitRegularMaaCreate(request);
+  NativeMaaRegularPersonalCreateSubmissionV1 output;
+  output.owner_character_id = request.owner_character_id;
+  output.type_index = request.type_index;
+  output.reason = "native_adapter_unavailable";
+  return output;
 }
 
 std::unique_ptr<GameAdapter> CreateCk3_12002AdapterFromBindings(
