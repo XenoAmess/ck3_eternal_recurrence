@@ -2567,11 +2567,29 @@ struct BattleCurrentPersonRawNumericInputsSnapshotV1 {
                          const BattleCurrentPersonRawNumericInputsSnapshotV1 &) = default;
 };
 
+// Readonly operands of the exact .3 291D1D0 preparation branch.
+// Current prepared contributions; not a final-context or future-state cache.
+struct BattleCurrentPersonContextBranchInputsSnapshotV1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::int32_t character_id = -1;
+  std::optional<bool> flag14;
+  std::optional<std::int32_t> selected_index;
+  std::optional<BattleCurrentPersonRawPropertiesSnapshotV1> selected_property_block;
+  std::array<std::optional<std::int32_t>, 7> group_counts{};
+  std::array<std::optional<BattleCurrentPersonRawPropertiesSnapshotV1>, 7>
+      group_property_blocks{};
+  std::string unavailable_reason;
+  friend bool operator==(const BattleCurrentPersonContextBranchInputsSnapshotV1 &,
+                         const BattleCurrentPersonContextBranchInputsSnapshotV1 &) = default;
+};
+
 struct BattleCurrentPersonStateSnapshotV1 {
   BattleCurrentPersonEffectiveProwessSnapshotV1 effective_prowess;
   BattleCurrentPersonInjuryTraitsSnapshotV1 injury_traits;
   BattleCurrentPersonDeathRecordSnapshotV1 death_record;
   std::optional<BattleCurrentPersonRawNumericInputsSnapshotV1> raw_numeric_inputs;
+  std::optional<BattleCurrentPersonContextBranchInputsSnapshotV1> context_branch_inputs;
   friend bool operator==(const BattleCurrentPersonStateSnapshotV1 &,
                          const BattleCurrentPersonStateSnapshotV1 &) = default;
 };

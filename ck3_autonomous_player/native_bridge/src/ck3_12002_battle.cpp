@@ -1022,11 +1022,157 @@ game::BattleCurrentPersonRawNumericInputsSnapshotV1 CurrentRawNumericInputs(
   return out;
 }
 
+// Source-exact registry resolver for 291D1D0. Full DWORD identities can have
+// signed high bits; do not apply the other battle resolver's positive-ID gate.
+const void *CurrentContextBranchRecord(const BattleBindings &b,
+                                      std::int32_t full_id) {
+  const void *storage = b.current_person_context_record_storage_slot
+      ? *b.current_person_context_record_storage_slot : nullptr;
+  if (storage) {
+    const auto index = static_cast<std::uint32_t>(full_id) & 0xFFFFFFU;
+    const auto capacity = At<std::uint32_t>(storage, 0x2C);
+    const auto *rows = At<const void *>(storage, 0x20);
+    if (index < capacity && rows) {
+      const auto *record = At<const void *>(rows, index * 0x10ULL + 8);
+      if (record && At<std::int32_t>(record, 0x10) == full_id) return record;
+    }
+  }
+  return b.current_person_context_record_fallback_slot
+      ? *b.current_person_context_record_fallback_slot : nullptr;
+}
+
+const void *CurrentContextBranchPropertyBlock(const void *provider,
+                                              std::size_t table_offset,
+                                              std::int32_t index) {
+  if (!provider) return nullptr;
+  const auto *table = At<const void *>(provider, table_offset);
+  if (!table) return nullptr;
+  // Native sign-extension/indexing is retained; the diagnostic index is not
+  // replaced with a guessed title rank or an invented clamp.
+  const auto address = reinterpret_cast<std::uintptr_t>(table) +
+      static_cast<std::uintptr_t>(static_cast<std::int64_t>(index) * 8);
+  const auto *definition = At<const void *>(reinterpret_cast<const void *>(address), 0);
+  return definition ? static_cast<const std::byte *>(definition) + 0x40 : nullptr;
+}
+
+game::BattleCurrentPersonContextBranchInputsSnapshotV1 CurrentContextBranchInputs(
+    const BattleBindings &b, void *character, std::int32_t character_id) {
+  game::BattleCurrentPersonContextBranchInputsSnapshotV1 out{};
+  out.character_id = character_id;
+  if (!character || !b.current_person_context_branch_inputs_enabled) {
+    out.unavailable_reason = character ? "context_branch_reader_unbound"
+                                       : "character_unresolved";
+    return out;
+  }
+  bool complete = true;
+  const auto fail = [&out, &complete](const char *reason) {
+    complete = false;
+    if (out.unavailable_reason.empty()) out.unavailable_reason = reason;
+  };
+  const auto government_flag = [&b, character]() -> std::optional<bool> {
+    if (!b.current_person_context_government) return std::nullopt;
+    const auto *government = b.current_person_context_government(character);
+    if (!government) return std::nullopt;
+    return (At<std::uint64_t>(government, 0x40) & (1ULL << 14)) != 0;
+  };
+  const auto *provider = b.current_person_context_provider
+      ? b.current_person_context_provider() : nullptr;
+  out.flag14 = government_flag();
+  if (!out.flag14) fail("context_branch_initial_flag_unavailable");
+  else if (*out.flag14) {
+    if (!b.current_person_context_selected_index)
+      fail("context_branch_selected_index_unavailable");
+    else {
+      out.selected_index = b.current_person_context_selected_index(character);
+      const auto *block = CurrentContextBranchPropertyBlock(
+          provider, 0xFA8, *out.selected_index);
+      if (block) {
+        out.selected_property_block = CurrentRawProperties(block);
+        if (!CurrentRawPropertiesReady(*out.selected_property_block))
+          fail("context_branch_selected_properties_unavailable");
+      } else fail("context_branch_selected_properties_unavailable");
+    }
+  }
+
+  std::array<std::int32_t, 7> counts{};
+  bool census_complete = true;
+  const auto *carrier = At<const void *>(character, 0x1C0);
+  const auto *header = carrier
+      ? static_cast<const std::byte *>(carrier) + 0x1E0
+      : b.current_person_context_static_header;
+  if (!header) {
+    census_complete = false;
+    fail("context_branch_object_header_unavailable");
+  } else {
+    const auto count = At<std::int32_t>(header, 0xC);
+    const auto *ids = At<const void *>(header, 0);
+    if (count < 0 || (count > 0 && !ids)) {
+      census_complete = false;
+      fail("context_branch_object_census_unavailable");
+    } else for (std::int32_t i = 0; i < count; ++i) {
+      const auto full_id = At<std::int32_t>(ids, static_cast<std::size_t>(i) * 4);
+      const auto *record = CurrentContextBranchRecord(b, full_id);
+      if (!record) {
+        census_complete = false;
+        fail("context_branch_record_unavailable");
+        continue;
+      }
+      if (At<std::uint8_t>(record, 0x1D8) != 0 ||
+          At<std::uint8_t>(record, 0x130) != 0 ||
+          At<std::int32_t>(record, 0x12C) != -1) continue;
+      // Native re-reads the same Character government for each eligible row.
+      // The first flag alone cannot prove that all group counts are zero.
+      const auto row_flag = government_flag();
+      if (!row_flag) {
+        census_complete = false;
+        fail("context_branch_record_flag_unavailable");
+        continue;
+      }
+      if (!*row_flag) continue;
+      const auto *category = At<const void *>(record, 0x48);
+      if (!category) {
+        census_complete = false;
+        fail("context_branch_category_unavailable");
+        continue;
+      }
+      const auto index = At<std::int32_t>(category, 0x64);
+      if (index < 0 || index >= static_cast<std::int32_t>(counts.size())) {
+        census_complete = false;
+        // This seven-count projection cannot represent the native out-of-array
+        // store. Do not clamp/discard it and publish completed prefix counts.
+        out.unavailable_reason = "context_branch_category_outside_0_6";
+        complete = false;
+        continue;
+      }
+      counts[static_cast<std::size_t>(index)] = static_cast<std::int32_t>(
+          static_cast<std::uint32_t>(counts[static_cast<std::size_t>(index)]) + 1U);
+    }
+  }
+  for (std::size_t i = 0; i < counts.size(); ++i) {
+    if (census_complete) out.group_counts[i] = counts[i];
+    // Known nonpositive counts do not consume a property block. Unknown census
+    // retains null counts and can still preserve independently observed blocks.
+    if (census_complete && counts[i] <= 0) continue;
+    const auto *block = CurrentContextBranchPropertyBlock(
+        provider, 0x1000, static_cast<std::int32_t>(i));
+    if (block) {
+      out.group_property_blocks[i] = CurrentRawProperties(block);
+      if (!CurrentRawPropertiesReady(*out.group_property_blocks[i]))
+        fail("context_branch_group_properties_unavailable");
+    } else fail("context_branch_group_properties_unavailable");
+  }
+  out.ready = complete && census_complete;
+  out.status = out.ready ? "available" : "partial";
+  return out;
+}
+
 game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
     const BattleBindings &b, void *character, std::int32_t character_id) noexcept {
   game::BattleCurrentPersonStateSnapshotV1 observed{};
   if (b.current_person_raw_numeric_inputs_enabled)
     observed.raw_numeric_inputs = CurrentRawNumericInputs(b, character, character_id);
+  if (b.current_person_context_branch_inputs_enabled)
+    observed.context_branch_inputs = CurrentContextBranchInputs(b, character, character_id);
   auto &death = observed.death_record;
   if (!character) {
     death.unavailable_reason = "character_unresolved";
@@ -1460,6 +1606,19 @@ void EnableBattleCurrentPerson12003(BattleBindings &b, std::uintptr_t base,
   b.current_person_state_enabled = true;
   b.current_person_effective_prowess_enabled = true;
   b.current_person_raw_numeric_inputs_enabled = true;
+  b.current_person_context_branch_inputs_enabled = true;
+  b.current_person_context_government =
+      reinterpret_cast<void *(*)(void *)>(base + 0x028C2E10);
+  b.current_person_context_selected_index =
+      reinterpret_cast<std::int32_t (*)(void *)>(base + 0x028AC6B0);
+  b.current_person_context_provider =
+      reinterpret_cast<void *(*)()>(base + 0x008FD4E0);
+  b.current_person_context_static_header =
+      reinterpret_cast<const void *>(base + 0x05439C88);
+  b.current_person_context_record_storage_slot =
+      reinterpret_cast<void **>(base + 0x05D1DAF8);
+  b.current_person_context_record_fallback_slot =
+      reinterpret_cast<void **>(base + 0x05D1DAE0);
   constexpr std::array<std::uintptr_t, 6> cap_rvas{
       0x05C6A0D8, 0x05C6A0D4, 0x05C6A0BC,
       0x05C6A0B8, 0x05C6A0C0, 0x05C6A0C4};

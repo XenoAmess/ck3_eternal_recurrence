@@ -117,6 +117,14 @@ struct BattleBindings {
   const std::int32_t *current_person_raw_factor_denominator = nullptr;
   const void *current_person_raw_fallback_context = nullptr;
   std::array<std::int32_t (*)(void *), 4> current_person_raw_category_getters{};
+  // Independent exact .3 preparation operands for the same Character query.
+  bool current_person_context_branch_inputs_enabled = false;
+  void *(*current_person_context_government)(void *) = nullptr;
+  std::int32_t (*current_person_context_selected_index)(void *) = nullptr;
+  void *(*current_person_context_provider)() = nullptr;
+  const void *current_person_context_static_header = nullptr;
+  void **current_person_context_record_storage_slot = nullptr;
+  void **current_person_context_record_fallback_slot = nullptr;
 
 };
 

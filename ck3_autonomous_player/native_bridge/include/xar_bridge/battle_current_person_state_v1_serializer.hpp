@@ -145,6 +145,37 @@ inline std::string SerializeRawNumericInputs(
   return out;
 }
 
+inline std::string SerializeContextBranchInputs(
+    const xar::game::BattleCurrentPersonContextBranchInputsSnapshotV1 &p) {
+  std::string out = "{\"status\":";
+  AppendString(out, p.status);
+  out += ",\"ready\":";
+  out += p.ready ? "true" : "false";
+  out += ",\"character_id\":" + std::to_string(p.character_id);
+  out += ",\"flag14\":";
+  out += p.flag14 ? (*p.flag14 ? "true" : "false") : "null";
+  out += ",\"selected_index\":";
+  AppendRawNumber(out, p.selected_index);
+  out += ",\"selected_property_block\":";
+  if (p.selected_property_block) AppendRawProperties(out, *p.selected_property_block);
+  else out += "null";
+  out += ",\"group_counts\":[";
+  for (std::size_t i = 0; i < p.group_counts.size(); ++i) {
+    if (i) out += ',';
+    AppendRawNumber(out, p.group_counts[i]);
+  }
+  out += "],\"group_property_blocks\":[";
+  for (std::size_t i = 0; i < p.group_property_blocks.size(); ++i) {
+    if (i) out += ',';
+    if (p.group_property_blocks[i]) AppendRawProperties(out, *p.group_property_blocks[i]);
+    else out += "null";
+  }
+  out += "],\"unavailable_reason\":";
+  AppendReason(out, p.ready, p.unavailable_reason, "context_branch_inputs_unavailable");
+  out += '}';
+  return out;
+}
+
 }  // namespace battle_current_person_state_v1_detail
 
 // A current-character read; it does not project historical injury causality.
@@ -203,6 +234,10 @@ inline std::string SerializeBattleCurrentPersonStateV1(
   if (state.raw_numeric_inputs) {
     output += ",\"raw_numeric_inputs\":";
     output += SerializeRawNumericInputs(*state.raw_numeric_inputs);
+  }
+  if (state.context_branch_inputs) {
+    output += ",\"context_branch_inputs\":";
+    output += SerializeContextBranchInputs(*state.context_branch_inputs);
   }
   output += '}';
   return output;

@@ -378,6 +378,71 @@ def _normalize_raw_numeric_inputs(value: object, field: str) -> dict[str, object
     return normalized
 
 
+def _normalize_context_branch_inputs(value: object, field: str) -> dict[str, object] | None:
+    """Keep actual readonly291D1D0 operands distinct from final context/EC."""
+    if value is None:
+        return None
+    raw = _exact_dict(value, field, {
+        "status", "ready", "character_id", "flag14", "selected_index",
+        "selected_property_block", "group_counts", "group_property_blocks",
+        "unavailable_reason",
+    })
+
+    def properties(item: object, name: str) -> dict[str, object] | None:
+        if item is None:
+            return None
+        block = _exact_dict(item, name, {"count", "keys_u16", "values_q64"})
+        count = _optional_integer(block["count"], name + ".count", minimum=-(2**31), maximum=2**31 - 1)
+        keys = block["keys_u16"]
+        values = block["values_q64"]
+        if keys is not None:
+            if not isinstance(keys, list):
+                raise ValueError(name + ".keys_u16 must be a list or null")
+            keys = [_integer(key, name + ".keys_u16", minimum=0, maximum=65535) for key in keys]
+        if values is not None:
+            if not isinstance(values, list):
+                raise ValueError(name + ".values_q64 must be a list or null")
+            values = [_integer(v, name + ".values_q64", minimum=-(2**63), maximum=2**63 - 1) for v in values]
+        if count is not None:
+            expected = max(count, 0)
+            if ((keys is not None and len(keys) != expected)
+                    or (values is not None and len(values) != expected)):
+                raise ValueError(name + " copied arrays disagree with native count")
+        return {"count": count, "keys_u16": keys, "values_q64": values}
+
+    def complete(block: dict[str, object] | None) -> bool:
+        return block is not None and all(block[key] is not None for key in ("count", "keys_u16", "values_q64"))
+
+    flag = _optional_boolean(raw["flag14"], field + ".flag14")
+    selected_index = _optional_integer(raw["selected_index"], field + ".selected_index", minimum=-(2**31), maximum=2**31 - 1)
+    selected = properties(raw["selected_property_block"], field + ".selected_property_block")
+    counts_value = raw["group_counts"]
+    blocks_value = raw["group_property_blocks"]
+    if not isinstance(counts_value, list) or len(counts_value) != 7:
+        raise ValueError(field + ".group_counts must contain seven native entries")
+    if not isinstance(blocks_value, list) or len(blocks_value) != 7:
+        raise ValueError(field + ".group_property_blocks must contain seven native entries")
+    counts = [_optional_integer(c, field + ".group_counts", minimum=-(2**31), maximum=2**31 - 1) for c in counts_value]
+    blocks = [properties(block, field + f".group_property_blocks[{i}]") for i, block in enumerate(blocks_value)]
+    ready = _boolean(raw["ready"], field + ".ready")
+    consumed_complete = (flag is not None
+        and (flag is False or (selected_index is not None and complete(selected)))
+        and all(count is not None and (count <= 0 or complete(block)) for count, block in zip(counts, blocks)))
+    status, reason = raw["status"], raw["unavailable_reason"]
+    if status not in {"available", "partial", "unavailable"}:
+        raise ValueError(field + " status is invalid")
+    if ready != consumed_complete or (status == "available") != ready:
+        raise ValueError(field + " readiness disagrees with consumed native operands")
+    if ((ready and reason is not None)
+            or (not ready and (not isinstance(reason, str) or not reason))):
+        raise ValueError(field + " reason disagrees with readiness")
+    return {"status": status, "ready": ready,
+        "character_id": _positive_int32(raw["character_id"], field + ".character_id"),
+        "flag14": flag, "selected_index": selected_index,
+        "selected_property_block": selected, "group_counts": counts,
+        "group_property_blocks": blocks, "unavailable_reason": reason}
+
+
 def _normalize_current_person_state(
     value: object, field: str,
 ) -> dict[str, object]:
@@ -387,6 +452,8 @@ def _normalize_current_person_state(
         fields.add("death_record")
     if isinstance(value, dict) and "raw_numeric_inputs" in value:
         fields.add("raw_numeric_inputs")
+    if isinstance(value, dict) and "context_branch_inputs" in value:
+        fields.add("context_branch_inputs")
     state = _exact_dict(value, field, fields)
     if state["scope"] != "current_character":
         raise ValueError(f"{field}.scope must be current_character")
@@ -468,6 +535,9 @@ def _normalize_current_person_state(
     if "raw_numeric_inputs" in state:
         normalized["raw_numeric_inputs"] = _normalize_raw_numeric_inputs(
             state["raw_numeric_inputs"], f"{field}.raw_numeric_inputs")
+    if "context_branch_inputs" in state:
+        normalized["context_branch_inputs"] = _normalize_context_branch_inputs(
+            state["context_branch_inputs"], f"{field}.context_branch_inputs")
     return normalized
 
 
@@ -509,6 +579,9 @@ def _normalize_character_custody_rows(
             raw = normalized["current_person_state"].get("raw_numeric_inputs")
             if raw is not None and raw["character_id"] != character_id:
                 raise ValueError(f"{field}[{index}] raw numeric CharacterID disagrees")
+            branch = normalized["current_person_state"].get("context_branch_inputs")
+            if branch is not None and branch["character_id"] != character_id:
+                raise ValueError(f"{field}[{index}] context branch CharacterID disagrees")
         result.append(normalized)
     return result
 

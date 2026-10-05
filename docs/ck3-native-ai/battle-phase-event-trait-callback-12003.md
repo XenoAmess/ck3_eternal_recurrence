@@ -808,3 +808,58 @@ Readiness changes to **production-live primitive** for the current raw-numeric-i
 Root's actual checkpoint context is h8578/rawdate53262000,98380683B,SHA8ad3ef74f933dc42ce0e1f0db4bfeb85301954a19a0ee00bc231498ad771dfeb; actor alive, event null, same episode,0 new days, count4903. Source v80 was already adopted as5a9193d0; this package is a single EOF after its unchanged canonical postimage. Root remains the sole shared/Git/native-build/game operator.
 
 Next value-bearing work keeps the current observed numeric primitive and the separate Entry observer available while closing exact trait-preparation source inputs. Existing source entrances are291D1D0/291E210/291D7E0/291DED0/291DCE0; no extra callback or future numerical effect is inferred from the current prowess match.
+
+
+## v82: native preparation branch291D1D0 operands and bounded composition
+
+The newly usable seam is the deterministic context contribution branch called at291C204. Its643-byte291D1D0 body was already frozen in v79; v82 reuses it and the exact .3 government/tier/provider bindings to publish a precise input contract. The actual caller passes RCX=model, RDX=Character[model+8]; its target context is model+10, after earlier preparation and before trait helper291D460 at291C28D. Source TREE and INPUT were sealed before the new model and observer were written.
+
+### Native contributions and readonly input recipe
+
+Initial government getter28C2E10 returns an actual object or actual fallback; its low32 flags at+40 bit14 control the initial contribution. When true, native signed index28AC6B0 chooses `qword[qword[provider+FA8]+8*sext32(index)]+40`, which is appended with Q weight100000. When false, this contribution is skipped; group counts are independently collected.
+
+The object-ID header is `Character+1C0` carrier+1E0, or actual static header5439C88 when that carrier is null: data+0, signed count+C, DWORD FullIDs in native order. Registry5D1DAF8 resolves low24 index through its+20 16-byte rows/+2C capacity and checks record+10 FullID; failures use the actual fallback pointer at5D1DAE0. The associated objects are not given guessed business names.
+
+For each object, native qualifiers require U8 record+1D8=0, U8+130=0, signed32+12C=-1, then a fresh government getter's bit14=true. Category is signed32 at `qword[record+48]+64`; native increments that counter with wrap32. Native does not clamp category. The bounded seven-counter projection supports contributing categories0..6; an observed category outside that range makes prepared counts unknown instead of silently dropping or clamping the object.
+
+Groups0..6 contribute in order only when signed count>0. Source block is `qword[qword[provider+1000]+8*group]+40`, weight is sext32(count)*100000. Nonpositive counts skip; a valid empty property block produces no context row. U16 property keys and signed Q64 values preserve source order and legal zero/negative values. Existing property-container layout is data+0/count+C/values-pointer+68. Neither the new observer nor pure model calls291D1D0 or writer2438850.
+
+```mermaid
+flowchart TD
+  A[291C204 model and actual Character] --> B[Cached291D1D0 branch]
+  B --> G[Initial government flags40 bit14]
+  G -->|true| S[Native tier index and providerFA8 selected block]
+  S --> Q[Selected contribution weight100000]
+  B --> H[Actual native FullID census and fallback records]
+  H --> F[Three raw qualifiers and fresh government bit14]
+  F --> C[Seven wrap32 counters]
+  C --> P[Positive counts in group0..6 native order]
+  P --> R[Provider1000 group blocks count times100000]
+  Q --> W[Ordered weighted property contributions]
+  R --> W
+  W --> M[compose_context_branch_12003]
+  M --> E[Existing-key fold with explicit pre291C204 context]
+  M -. earlier preparation baseline absent .-> U[Contribution projection only]
+  E -. new-key postimage and other preparation unknown .-> X[Full future context remains partial]
+  M -. separately owned .-> K[Entry and advantage timing]
+```
+
+### Public seam and focused qualification
+
+The existing `ck3_query_battle_terminal_transition_v1` publishes optional `current_person_state.context_branch_inputs`: actor/status/ready/reason, flag14, selected index and block, seven signed counts and seven actual blocks. Existing raw_numeric_inputs14 fields and readiness remain unchanged. The readonly producer follows actual FullID fallback and per-eligible-object government reads; missing source inputs stay null/partial. It does not publish a guessed prebranch baseline, add a tool, or turn a current count into a guaranteed future count.
+
+New `battle_trait_context_branch_12003.py` exposes `compose_context_branch_12003(ContextBranchInputs12003|Mapping|None, *, prior_context=None)`. It computes selected then positive-group weighted contributions from native primitives, preserving independently known rows when other inputs are missing. A missing baseline is a separate context gap. Only an explicitly supplied materialized pre291C204 context can be folded; existing keys use the already closed native Q and wrap64 helpers. Unknown new-key storage postimages remain partial. Current final71 rows/160 aggregate keys are never a default baseline. The module does not repeat six-skill computation or claim complete future context.
+
+D's sole new test method passed on its first execution:1/1 GREEN,0 errors/failures/skips,2.0041236000251956 seconds including the readonly g74 overlay/import. The production path imports C's new normalizer and B's new composer. Source-shaped synthetic inputs cover selectedQ/group0 2Q/group6 3Q order, zero and negative values, nonpositive count and positive-empty-block skips, explicit existing-key aggregate[-100000,-200000]/four weighted rows, independent missing-baseline gap, initial false flag with independently supplied groups, and out-of-range-category prepared counts retaining known selected contribution. Actor/date/EC metadata from v81 is a fixture anchor, not a new observed native frame. Native collector/serializer/counter wrap were not executed by this test; no old case or current six-skill calculation was rerun.
+
+Readiness: **static-ready** for this bounded preparation contribution and its Python normalization/composition seam; native producer is CODE_READY pending Root's build and paused verification. The previously observed v81 current raw-numeric-input primitive remains production-live primitive. Future mutation/stability of branch operands, other preparation branches, observed prebranch baseline, new-key postimages, complete future six-skill cache, health/RNG and full battle/odds remain partial. Entry receiver and scheduling are separately owned by the casualty pod.
+
+### Source, candidate and report receipts
+
+External package is `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-future-context-branch-v82/`. Source `source-lane/ROOT-DELIVERY.json` f576b6aa references INPUTcd1a0e9b/TREE5772a266/source receiptcab81894. Model `context-model/ROOT-DELIVERY.json`93624c2f pins module0f6ed58d and API; wire `context-wire/ROOT-DELIVERY.json`afa3d593 pins five existing-file candidates and normalizer4a4a4f52; focused `focused-fixture/ROOT-DELIVERY.json`1c869458 pins the single actual attempt and new test3795b343. Parent joint publication and Oct5/W41 fields are in `publication/ROOT-DELIVERY.json`.
+
+Five existing wire files use readonly g74 HEAD1d8e8d3435b12f9eb3520b35be88efe8b80d9e44/attemptv69 preimages. Source-topic EOF uses the unchanged Root-adopted v81 canonical98048B/SHAf10ee3cb392a57a785f8809bfd0acba25d8f4bbf58c80b18d09bb9185e4fdbe3. The eight-path standard Git LF patch contains only those five files, the new composer, the one new test and this topic EOF; Root alone applies, commits, pushes, builds or queries CK3.
+
+Retained actual costs/failures: A's cache lookup and getter capture ran concurrently, causing245 bytes of avoidable duplicate government evidence; no new getter capability is counted. Existing643-byte branch and tier/provider caches were reused. C's first projection-builder syntax harness RED occurred before script execution or candidate writes; the corrected second metadata attempt succeeded. D's new case had no RED. No safety audit or extra gate was introduced. Package operations are0 SDK/RPM/window/game/Git/shared edits/native builds/original008 rereads, with one new focused test and0 old tests.
+
+Next concrete source work is another actual preparation caller291C282→291E210 (or the remaining291D7E0/291DED0/291DCE0 dependencies), after reusing any existing exact cache. This new branch contributes useful known input rather than freezing the old whole context or marking its missing earlier stage complete.
