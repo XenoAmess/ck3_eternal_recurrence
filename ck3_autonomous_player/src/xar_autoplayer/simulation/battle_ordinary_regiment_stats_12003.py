@@ -8,7 +8,7 @@ from __future__ import annotations
 
 from copy import deepcopy
 from dataclasses import dataclass
-from typing import Mapping
+from typing import Mapping, TYPE_CHECKING
 
 from .battle_trait_numeric_inputs_12003 import (
     NativeModifierContext12003, _Calculation, from_raw_numeric_inputs_12003,
@@ -18,6 +18,15 @@ from .battle_trait_numeric_inputs_12003 import (
 ORDINARY_DAMAGE_BASE_RVA_12003 = "5C69BC0"
 ORDINARY_DAMAGE_KEYS_12003 = (0xB0, 0x1B3)
 Q_12003 = 100000
+if TYPE_CHECKING:
+    from .battle_first_contact_final_stat_refresh_12003 import EntrySixStatCache12003
+ORDINARY_STAT_PARAMETERS_12003 = (
+    ("siege_raw", "2C15B70", "5C69BD0", 0xB2, 0x1B2),
+    ("damage_raw", "2C15610", "5C69BC0", 0xB0, 0x1B3),
+    ("toughness_raw", "2C158C0", "5C69BC8", 0xB1, 0x1B4),
+    ("pursuit_raw", "2C15E20", "5C69BE0", 0xB3, 0x1B5),
+    ("screen_raw", "2C160D0", "5C69BD8", 0xB4, 0x1B6),
+)
 
 
 @dataclass(frozen=True, slots=True)
@@ -40,6 +49,96 @@ class OrdinaryDamageStageResult12003:
     native_write_performed: bool = False
     full_six_stat_getter_ready: bool = False
     actual_game_days_advanced: int = 0
+
+
+@dataclass(frozen=True, slots=True)
+class OrdinarySixStatStageResult12003:
+    selected_character_full_id: int | None
+    stage: str
+    stat_cache: EntrySixStatCache12003 | None
+    ready: bool
+    missing_inputs: tuple[str, ...]
+    ledger: Mapping[str, object]
+    native_write_performed: bool = False
+    full_entry_ready: bool = False
+    actual_game_days_advanced: int = 0
+
+
+def calculate_ordinary_six_stat_stage_12003(
+    *, selected_character_full_id: int | None, stage: str,
+    context: NativeModifierContext12003 | Mapping[str, object] | None,
+    loaded_bases: Mapping[str, object] | None,
+    source_provenance: Mapping[str, object] | None = None,
+) -> OrdinarySixStatStageResult12003:
+    """Compute all six ordinary cache values from exact five getter operands."""
+    from .battle_first_contact_final_stat_refresh_12003 import (
+        EntrySixStatCache12003, knight_effectiveness_fixed_mul_12003,
+    )
+
+    calc = _Calculation()
+    character = calc.i32(selected_character_full_id, "selected_character_full_id")
+    if not isinstance(stage, str) or not stage:
+        calc.gap("stage")
+    selected = (context if isinstance(context, NativeModifierContext12003)
+                else from_raw_numeric_inputs_12003({"context": context}).context)
+    bases = loaded_bases if isinstance(loaded_bases, Mapping) else {}
+    values, terms = [], []
+    for name, getter, base_rva, add_key, mult_key in ORDINARY_STAT_PARAMETERS_12003:
+        base = calc.i64(bases.get(name), "loaded_bases." + name)
+        add = calc.context_value(selected, add_key, 0)
+        mult = calc.context_value(selected, mult_key, 0)
+        subtotal = native_wrap64_12003(base + add) if base is not None and add is not None else None
+        factor = native_wrap64_12003(Q_12003 + mult) if mult is not None else None
+        value = (knight_effectiveness_fixed_mul_12003(subtotal, factor)
+                 if subtotal is not None and factor is not None else None)
+        values.append(value)
+        terms.append({"stat": name, "getter": getter, "base_rva": base_rva,
+                      "base_raw": base, "add_key": add_key, "add_raw": add,
+                      "mult_key": mult_key, "mult_raw": mult, "result_raw": value})
+    ready = not calc.missing
+    return OrdinarySixStatStageResult12003(character, stage,
+        EntrySixStatCache12003(0, *values) if ready else None, ready, tuple(calc.missing),
+        {"source": "26344C0->30C3BA0->five_named_Character_getters", "stage": stage,
+         "source_kind": "explicit_named_stage", "getter_terms": tuple(terms),
+         "property_lookups": tuple(calc.lookups), "ordinary_max_size_raw": 0,
+         "province_operand_used": False, "person_context_prepared": False,
+         "historical_stage_observed": False, "source_provenance": deepcopy(source_provenance)})
+
+
+def ordinary_six_stats_from_combat_regiment_12003(
+    regiment: Mapping[str, object], *, source_provenance: Mapping[str, object] | None = None,
+) -> OrdinarySixStatStageResult12003:
+    """Consume the optional normalized ordinary same-query source leaf."""
+    leaf = regiment.get("ordinary_stat_inputs_v1")
+    leaf = leaf if isinstance(leaf, Mapping) else {}
+    return calculate_ordinary_six_stat_stage_12003(
+        selected_character_full_id=leaf.get("selected_character_full_id"),
+        stage="frozen_current_ordinary_selected_Character_context",
+        context={"aggregate_properties": leaf.get("aggregate_properties")},
+        loaded_bases=leaf.get("loaded_bases"), source_provenance=source_provenance)
+
+
+def ordinary_six_stats_from_person_stage_12003(
+    person_stage, *, loaded_bases: Mapping[str, object] | None,
+    source_provenance: Mapping[str, object] | None = None,
+) -> OrdinarySixStatStageResult12003:
+    """Use the existing named PersonStatStage and observed runtime bases."""
+    return calculate_ordinary_six_stat_stage_12003(
+        selected_character_full_id=person_stage.character_full_id, stage=person_stage.stage,
+        context=person_stage.context, loaded_bases=loaded_bases, source_provenance=source_provenance)
+
+
+def ordinary_six_stats_to_final_stat_input_12003(
+    stats: OrdinarySixStatStageResult12003, *, side_index: int, bucket: str,
+    bucket_index: int, native_carmy_id: int, regiment_id: int, target_province_id: int,
+):
+    """Connect source-derived ordinary six stats to the existing final setter."""
+    from .battle_first_contact_final_stat_refresh_12003 import FinalEntryStatInput12003, FINAL_SIDE_CALLS_12003
+    return FinalEntryStatInput12003(side_index, bucket, bucket_index, native_carmy_id,
+        regiment_id, target_province_id, FINAL_SIDE_CALLS_12003[side_index], stats.stat_cache,
+        {"source": "ordinary_source_derived_five_getters_plus_max0",
+         "selected_character_full_id": stats.selected_character_full_id,
+         "stage": stats.stage, "source_ledger": deepcopy(stats.ledger)})
 
 
 def calculate_ordinary_damage_stage_12003(

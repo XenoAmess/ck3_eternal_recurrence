@@ -553,6 +553,21 @@ struct CombatCounterSnapshot {
                          const CombatCounterSnapshot &) = default;
 };
 
+struct CombatOrdinaryStatInputsSnapshotV1 {
+  bool available = false;
+  std::optional<std::int32_t> selected_character_full_id;
+  std::string character_resolution;
+  std::optional<std::int32_t> aggregate_count;
+  std::optional<std::vector<std::uint16_t>> aggregate_keys_u16;
+  std::optional<std::vector<std::int64_t>> aggregate_values_q64;
+  // Getter/cache order: siege, damage, toughness, pursuit, screen.
+  std::array<std::optional<std::int64_t>, 5> loaded_bases{};
+  std::int64_t scale = 100'000;
+  std::string unavailable_reason = "ordinary_stat_inputs_unavailable";
+  friend bool operator==(const CombatOrdinaryStatInputsSnapshotV1 &,
+                         const CombatOrdinaryStatInputsSnapshotV1 &) = default;
+};
+
 struct CombatRegimentSnapshot {
   bool available = false;
   std::int32_t regiment_id = -1;
@@ -567,6 +582,7 @@ struct CombatRegimentSnapshot {
   // Same-query readonly initial-stage evaluation at the Army's current Province.
   // Omitted when current==target; that case reuses effective_stats.
   std::optional<CombatEffectiveStatsSnapshot> initialization_context_stats;
+  std::optional<CombatOrdinaryStatInputsSnapshotV1> ordinary_stat_inputs_v1;
   CombatCounterSnapshot counter;
   std::string unavailable_reason;
 

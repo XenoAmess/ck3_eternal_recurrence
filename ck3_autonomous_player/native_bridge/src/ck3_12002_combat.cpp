@@ -675,6 +675,7 @@ bool ReadCombatCounter(const CombatBindings &bindings, void *regiment,
 }
 
 #include "ck3_12003_initialization_context_stats.inc"
+#include "ck3_12003_ordinary_stat_inputs.inc"
 
 bool ReadCombatRegiments(const CombatBindings &bindings, void *internal_army,
                           void *target_province,
@@ -750,6 +751,7 @@ bool ReadCombatRegiments(const CombatBindings &bindings, void *internal_army,
     ReadInitializationContextStats12003(
         bindings, regiment, validated_current_province, current_province_id,
         target_province_id, row);
+    ReadOrdinaryRegimentStatInputs12003(bindings, regiment, row);
     if (!ReadCombatCounter(bindings, regiment, row.regiment_id,
                            row.current_soldiers, counter_class_count,
                            row.counter)) {
@@ -1841,6 +1843,24 @@ CombatBindings BindCombatImage(std::uintptr_t image_base,
   result.minimum_combat_width = reinterpret_cast<const std::int32_t *>(image_base + 0x5C699C8);
   result.base_combat_width_ratio = reinterpret_cast<const std::int64_t *>(image_base + 0x5C69BA8);
   return result;
+}
+
+void EnableOrdinaryRegimentStatInputs12003(
+    CombatBindings &bindings, std::uintptr_t image_base,
+    std::string_view executable_sha256) noexcept {
+  if (!bindings.enabled || image_base == 0 || executable_sha256 !=
+      "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") return;
+  bindings.ordinary_stat_inputs_enabled = true;
+  bindings.ordinary_regiment_storage_slot = reinterpret_cast<void **>(image_base + 0x5D1EB68);
+  bindings.ordinary_regiment_fallback_slot = reinterpret_cast<void **>(image_base + 0x5D1EB58);
+  bindings.ordinary_selector_storage_slot = reinterpret_cast<void **>(image_base + 0x5D1DAF8);
+  bindings.ordinary_selector_fallback_slot = reinterpret_cast<void **>(image_base + 0x5D1DAE0);
+  bindings.ordinary_character_fallback_slot = reinterpret_cast<void **>(image_base + 0x5C67570);
+  constexpr std::array<std::uintptr_t, 5> bases{
+      0x5C69BD0, 0x5C69BC0, 0x5C69BC8, 0x5C69BE0, 0x5C69BD8};
+  for (std::size_t i = 0; i != bases.size(); ++i)
+    bindings.ordinary_stat_loaded_bases[i] =
+        reinterpret_cast<const std::int64_t *>(image_base + bases[i]);
 }
 
 game::CombatTerrainSnapshot ReadProvinceTerrainSnapshot(
