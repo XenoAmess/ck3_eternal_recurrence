@@ -1,4 +1,4 @@
-"""Offline integration contracts for LYD content and leadership.
+﻿"""Offline integration contracts for LYD content and leadership.
 
 These checks inspect generated Clausewitz ASTs and generator ownership. They do
 not emulate CK3, native scope validation, consent outcomes or title succession.
@@ -274,17 +274,25 @@ class ContentLeadershipIntegrationTests(unittest.TestCase):
             with self.assertRaises(ValueError, msg="Standalone C2 rendering may overwrite formal C3 ownership"):
                 consent.generate(SOURCE, include_shared=True, check=True)
 
-    def test_native_challenger_is_closed_and_personal_teaching_does_not_fake_hor(self):
+    def test_native_challenger_requires_native_office_and_personal_teaching_does_not_fake_hor(self):
         gate = self.c.triggers["lyd_c3_native_challenger_admitted_trigger"]
-        self.assertEqual([(e.key,e.operator,e.value) for e in gate.entries], [("always","=","no")])
-        registration = self.c.effects["lyd_c3_declare_claim_effect"]
-        outer = one(registration, "if")
-        native = one(outer, "if")
+        self.assertFalse(has(gate, "always", "yes"))
+        self.assertFalse(has(gate, "always", "no"))
+        self.assertTrue(player_guard(gate, self.c.triggers))
+        self.assertTrue(has(gate, "lyd_c3_native_challenger_eligible_trigger", "yes"))
+        self.assertTrue(contains_direct_fragment(gate,
+            "NOT = { has_variable = lyd_c3_active } NOT = { has_variable = lyd_c3_claim_title }"))
+        eligible = self.c.triggers["lyd_c3_native_challenger_eligible_trigger"]
+        self.assertTrue(has(eligible, "exists", "faith.religious_head_title"))
+        registration = self.c.effects["lyd_c3_register_native_claim_effect"]
+        native = one(registration, "if")
         self.assertTrue(has(one(native,"limit"), "lyd_c3_native_challenger_admitted_trigger", "yes"))
-        self.assertTrue(has(one(native,"limit"), "lyd_c3_native_challenger_eligible_trigger", "yes"))
-        outside = Block(tuple(e for e in outer.entries if e.key != "if"))
-        self.assertFalse(any(e.key in {"create_dynamic_title","sponsor_new_religious_head_challenger","set_religious_head_title"}
-                             for e,_ in self.c.operations(outside)))
+        self.assertTrue(has(one(native,"limit"), "lyd_c3_claim_current_trigger", "yes"))
+        self.assertTrue(has(registration, "sponsor_new_religious_head_challenger", "scope:lyd_c3_new_claim_title"))
+        self.assertTrue(has(registration, "lyd_c3_read_native_claim_registration_effect", "yes"))
+        readback = self.c.effects["lyd_c3_read_native_claim_registration_effect"]
+        self.assertTrue(has(readback, "every_religious_head_challenger"))
+        self.assertFalse(any(e.key == "set_religious_head_title" for e,_ in self.c.operations(registration)))
         for effect, body in self.c.effects.items():
             self.assertFalse(any(e.key in {"set_head_of_rite","set_rite_head","set_head_of_rite_title","set_religious_head"}
                                  for e,_ in self.c.operations(body)), f"Invented native setter in {effect}")
@@ -305,13 +313,65 @@ class ContentLeadershipIntegrationTests(unittest.TestCase):
 
     def test_owned_title_retirement_never_selects_other_held_titles(self):
         retirement = self.c.effects["lyd_c2_retire_source_head_effect"]
-        self.assertTrue(has(one(one(retirement,"if"),"limit"),"lyd_c2_source_retirement_trigger"))
+        # Follow the exact supported exists-guard branches. Recursive `has`
+        # would also find a safe-looking conjunct beside an unsafe alternative.
+        keys = lambda body: [entry.key for entry in body.entries]
+        self.assertEqual(keys(retirement), ["if"])
+        retiring = one(retirement,"if")
+        self.assertEqual(keys(retiring), ["limit","var:lyd_c2_source_faith","destroy_title","set_variable"])
+        retirement_limit = one(retiring,"limit")
+        self.assertEqual(keys(retirement_limit), ["is_ai","lyd_c2_source_retirement_trigger"])
+        self.assertEqual(scalar(retirement_limit,"is_ai"), "no")
+        self.assertEqual(scalar(one(retirement_limit,"lyd_c2_source_retirement_trigger"),"ACTOR"), "scope:lyd_c2_actor")
+        detached_faith = one(retiring,"var:lyd_c2_source_faith")
+        self.assertEqual(keys(detached_faith), ["remove_religious_head_title"])
+        self.assertEqual(scalar(detached_faith,"remove_religious_head_title"), "yes")
+        self.assertEqual(scalar(retiring,"destroy_title"), "var:lyd_c2_source_head_title")
         rules = self.c.triggers["lyd_c2_source_retirement_trigger"]
-        self.assertTrue(has(rules,"var:lyd_c2_source_faith.religious_head_title","var:lyd_c2_source_head_title"))
-        owned = one(rules,"var:lyd_c2_source_head_title")
-        self.assertTrue(has(owned,"has_variable","lyd_c2_owned_head_title") or has(owned,"var:lyd_c2_owned_head_title","1"))
-        self.assertTrue(has(owned,"var:lyd_c2_owner_faith","$ACTOR$.var:lyd_c2_source_faith"))
-        self.assertTrue(has(owned,"holder","$ACTOR$.var:lyd_c2_source_head"))
+        self.assertEqual(keys(rules), ["var:lyd_c2_source_singleton","var:lyd_c2_source_main","var:lyd_c2_source_faith","trigger_if","trigger_else"])
+        self.assertEqual(scalar(rules,"var:lyd_c2_source_singleton"), "1")
+        self.assertEqual(scalar(rules,"var:lyd_c2_source_main"), "var:lyd_c2_moving_rite")
+        source_faith = one(rules,"var:lyd_c2_source_faith")
+        self.assertEqual(keys(source_faith), ["lyd_c2_single_rite_faith_trigger"])
+        self.assertEqual(scalar(source_faith,"lyd_c2_single_rite_faith_trigger"), "yes")
+        source_guard = one(rules,"trigger_if")
+        self.assertEqual(keys(source_guard), ["limit","var:lyd_c2_source_faith.religious_head_title","var:lyd_c2_source_head","var:lyd_c2_source_head_title","trigger_if"])
+        source_limit = one(source_guard,"limit")
+        self.assertEqual(keys(source_limit), ["exists","exists","var:lyd_c2_source_faith"])
+        self.assertEqual([entry.value for entry in source_limit.entries if entry.key == "exists"],
+                         ["var:lyd_c2_source_head","var:lyd_c2_source_head_title"])
+        source_binding = one(source_limit,"var:lyd_c2_source_faith")
+        self.assertEqual(keys(source_binding), ["exists"])
+        self.assertEqual(scalar(source_binding,"exists"), "religious_head_title")
+        self.assertEqual(scalar(source_guard,"var:lyd_c2_source_faith.religious_head_title"), "var:lyd_c2_source_head_title")
+        source_holder = one(source_guard,"var:lyd_c2_source_head")
+        self.assertEqual(keys(source_holder), ["is_alive","rite"])
+        self.assertEqual(scalar(source_holder,"is_alive"), "yes")
+        self.assertEqual(scalar(source_holder,"rite"), "$ACTOR$.var:lyd_c2_moving_rite")
+        owned = one(source_guard,"var:lyd_c2_source_head_title")
+        self.assertEqual(keys(owned)[1:], ["trigger_if","trigger_else"])
+        self.assertTrue(scalar(owned,"has_variable") == "lyd_c2_owned_head_title" or scalar(owned,"var:lyd_c2_owned_head_title") == "1")
+        ownership_guard = one(owned,"trigger_if")
+        self.assertEqual(keys(ownership_guard), ["limit","var:lyd_c2_owner_faith","holder"])
+        ownership_limit = one(ownership_guard,"limit")
+        self.assertEqual(keys(ownership_limit), ["has_variable","exists"])
+        self.assertEqual(scalar(ownership_limit,"has_variable"), "lyd_c2_owner_faith")
+        self.assertEqual(scalar(ownership_limit,"exists"), "holder")
+        self.assertEqual(scalar(ownership_guard,"var:lyd_c2_owner_faith"), "$ACTOR$.var:lyd_c2_source_faith")
+        self.assertEqual(scalar(ownership_guard,"holder"), "$ACTOR$.var:lyd_c2_source_head")
+        for branch in (one(owned,"trigger_else"), one(rules,"trigger_else")):
+            self.assertEqual(keys(branch), ["always"])
+            self.assertEqual(scalar(branch,"always"), "no")
+        target_guard = one(source_guard,"trigger_if")
+        self.assertEqual(keys(target_guard), ["limit","NOT"])
+        target_limit = one(target_guard,"limit")
+        self.assertEqual(keys(target_limit), ["var:lyd_c2_target_faith"])
+        target_binding = one(target_limit,"var:lyd_c2_target_faith")
+        self.assertEqual(keys(target_binding), ["exists"])
+        self.assertEqual(scalar(target_binding,"exists"), "religious_head_title")
+        protected_target = one(target_guard,"NOT")
+        self.assertEqual(keys(protected_target), ["var:lyd_c2_source_head_title"])
+        self.assertEqual(scalar(protected_target,"var:lyd_c2_source_head_title"), "var:lyd_c2_target_faith.religious_head_title")
         withdrawal = self.c.effects["lyd_c3_withdraw_claim_effect"]
         title = one(withdrawal,"var:lyd_c3_claim_title")
         guard = one(one(title,"if"),"limit")
@@ -398,14 +458,38 @@ class ContentLeadershipIntegrationTests(unittest.TestCase):
         self.assertEqual(len(rite_lists),1)
         self.assertEqual(scalar(rite_lists[0],"save_temporary_scope_as"),"lyd_c3_checked_rite")
         rite_conditions = one(rite_lists[0],"NOT")
-        branches = blocks(one(rite_conditions,"OR"),"AND")
-        empty = next(b for b in branches if has(b,"var:lyd_c3_delegate_required","0"))
+        roles = one(rite_conditions,"OR")
+        self.assertEqual([e.key for e in roles.entries], ["AND","AND"])
+        branches = blocks(roles,"AND")
+        self.assertCountEqual([scalar(b,"var:lyd_c3_delegate_required") for b in branches], ["0","1"])
+        empty = next(b for b in branches if scalar(b,"var:lyd_c3_delegate_required") == "0")
         self.assertTrue(contains_direct_fragment(empty,
             "var:lyd_c3_delegate_required = 0 rite_counties = 0 scope:lyd_c3_checked_faith = { NOT = { any_faith_character = { is_alive = yes rite = scope:lyd_c3_checked_rite } } }"),
             "An empty-school exemption must test the captured rite in the captured round faith")
-        delegated = next(b for b in branches if has(b,"var:lyd_c3_delegate_required","1"))
-        self.assertTrue(contains_direct_fragment(delegated,
-            "exists = head_of_rite head_of_rite = var:lyd_c3_delegate var:lyd_c3_delegate = { is_alive = yes is_adult = yes rite = scope:lyd_c3_checked_rite NOT = { has_trait = incapable } }"))
+        delegated = next(b for b in branches if scalar(b,"var:lyd_c3_delegate_required") == "1")
+        # A dormant rite has no delegate variable. Follow the exact active-role
+        # guard, rather than finding identity conjuncts inside an unsafe OR.
+        keys = lambda body: [e.key for e in body.entries]
+        self.assertEqual(keys(delegated), ["var:lyd_c3_delegate_required","exists","trigger_if","trigger_else"])
+        self.assertEqual(scalar(delegated,"exists"), "head_of_rite")
+        delegate_guard = one(delegated,"trigger_if")
+        self.assertEqual(keys(delegate_guard), ["limit","head_of_rite","var:lyd_c3_delegate"])
+        delegate_limit = one(delegate_guard,"limit")
+        self.assertEqual(keys(delegate_limit), ["has_variable","exists"])
+        self.assertEqual(scalar(delegate_limit,"has_variable"), "lyd_c3_delegate")
+        self.assertEqual(scalar(delegate_limit,"exists"), "head_of_rite")
+        self.assertEqual(scalar(delegate_guard,"head_of_rite"), "var:lyd_c3_delegate")
+        delegate = one(delegate_guard,"var:lyd_c3_delegate")
+        self.assertEqual(keys(delegate), ["is_alive","is_adult","rite","NOT"])
+        self.assertEqual(scalar(delegate,"is_alive"), "yes")
+        self.assertEqual(scalar(delegate,"is_adult"), "yes")
+        self.assertEqual(scalar(delegate,"rite"), "scope:lyd_c3_checked_rite")
+        capable = one(delegate,"NOT")
+        self.assertEqual(keys(capable), ["has_trait"])
+        self.assertEqual(scalar(capable,"has_trait"), "incapable")
+        missing = one(delegated,"trigger_else")
+        self.assertEqual(keys(missing), ["always"])
+        self.assertEqual(scalar(missing,"always"), "no")
         represented = self.c.triggers["lyd_c3_rite_represented_trigger"]
         self.assertTrue(contains_direct_fragment(represented,
             "save_temporary_scope_as = lyd_c3_represented_rite faith = { save_temporary_scope_as = lyd_c3_represented_faith }"))

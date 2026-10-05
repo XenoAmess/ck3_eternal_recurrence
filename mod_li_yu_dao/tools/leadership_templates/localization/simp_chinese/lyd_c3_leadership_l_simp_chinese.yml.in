@@ -1,4 +1,4 @@
-l_simp_chinese:
+﻿l_simp_chinese:
  lyd_c3_declare_claim_decision:0 "提出学统之议"
  lyd_c3_declare_claim_decision_desc:0 "我愿为本礼仪的传承提出自己的主张。这份主张尚未获得各礼仪与同信仰诸侯承认，也不改变现任共宗领袖。"
  lyd_c3_declare_claim_decision_tooltip:0 "记录独立的学统主张"
@@ -87,3 +87,14 @@ l_simp_chinese:
  lyd_c3_round_refusal_result:0 "拒绝这一轮；本轮仍有效时终止其议定，其他主张继续保留。"
  lyd_c3_recognition_ready:0 "本轮仍有效，各必要礼仪代表与受影响玩家均已同意，现任领袖已同意让位或职位为空。该职位须为空或由本模组设立，且本礼仪允许我担任此职。"
  lyd_c3_round_cancel_result:0 "终止我当前的议定，只解除这一轮的占用。"
+ lyd_c3_register_challenger_decision:0 "设立我的对立领袖之职"
+ lyd_c3_register_challenger_decision_desc:0 "我已提出学统之争。若现有共同宗主与我的资格符合条件，我可为自己的主张设立独立的争统之职；现任宗主仍保有共同宗主之位。"
+ lyd_c3_register_challenger_decision_tooltip:0 "为我当前的学统主张设立独立的争统之职"
+ lyd_c3_register_challenger_decision_confirm:0 "设立争统之职"
+ lyd_c3_native_challenger_ready:0 "我能行动，持有公国或更高头衔，并有首府伯爵领。我的信仰允许宗主制度，且现有存活的共同宗主持有该宗教头衔；我的礼仪允许我的性别任宗教领袖。我尚未持有或赞助对立领袖之职，没有进行中的合议，各派也没有其他待决提案。"
+ lyd_c3_register_challenger_result:0 "尝试设立我自己的争统之职。只有我的头衔实际列入本信仰的对立领袖名单，且现任宗主、信仰、礼仪、主要头衔与首府仍与申请时一致，才确认设立成功。"
+ lyd_c3_challenger_registered_t:0 "我的争统之职"
+ lyd_c3_challenger_registered_desc:0 "我的争统之职已设立，并列入本信仰的对立领袖。现任宗主保有共同宗主之位，我的主要头衔与首府也未改变。获得共同认可仍需各派、受影响玩家与现任宗主同意。"
+ lyd_c3_challenger_incomplete_t:0 "尚未确认的争统之职"
+ lyd_c3_challenger_incomplete_desc:0 "这次申请未能得到完整确认。我的主张，以及为它创建的独立职位，仍留有记录，可供核对或撤回。在再次提出申请前，我应先核对现有职位。"
+ lyd_c3_acknowledge:0 "我明白了"

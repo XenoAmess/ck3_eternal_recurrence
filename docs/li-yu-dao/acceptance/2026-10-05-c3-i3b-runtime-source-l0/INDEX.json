@@ -1,0 +1,19 @@
+{
+  "files": [
+    {
+      "path": "RAW-MAPPINGS.json",
+      "bytes": 906510,
+      "sha256": "3487e40e5addf74f7dca701d4ccece5c879cd2343e538531fcfcf15f8769ca35"
+    },
+    {
+      "path": "RESULT.json",
+      "bytes": 12826,
+      "sha256": "49ba8e25020534cb0b2565dfcba8a1d6787f9adeb4e423b59eab3f9ecc07e558"
+    },
+    {
+      "path": "source-evidence.tar.gz",
+      "bytes": 6845276,
+      "sha256": "976962fce0b05b1e4259535d5aef28dc83f901d5f50bd9bc082fca5214f706ed"
+    }
+  ]
+}

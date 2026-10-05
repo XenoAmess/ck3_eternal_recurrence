@@ -1,4 +1,4 @@
-# Character ROOT. Personal teacher consent never writes native head_of_rite.
+﻿# Character ROOT. Personal teacher consent never writes native head_of_rite.
 lyd_c3_leave_teacher_effect = {
     save_scope_as = lyd_c3_leaving_student
     var:lyd_c3_personal_teacher ?= {
@@ -84,6 +84,7 @@ lyd_c3_player_reconcile_effect = {
             limit = { has_variable = lyd_c3_personal_teacher NOT = { var:lyd_c3_personal_teacher = { is_alive = yes faith = prev.faith } } }
             lyd_c3_leave_teacher_effect = yes
         }
+        if = { limit = { lyd_c3_claim_current_trigger = yes has_variable = lyd_c3_claim_title } lyd_c3_read_native_claim_registration_effect = yes }
         faith = { lyd_c3_reconcile_faith_roles_effect = yes }
         var:lyd_c3_office_faith ?= { lyd_c3_reconcile_faith_roles_effect = yes }
         # Only a dead or expired owner is stale. Live pending rounds are untouched.

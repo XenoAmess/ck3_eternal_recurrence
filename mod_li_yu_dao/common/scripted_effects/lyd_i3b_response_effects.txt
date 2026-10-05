@@ -84,6 +84,7 @@ lyd_i3b_close_effect = {
         }
     }
     remove_variable = lyd_i3b_active remove_variable = lyd_i3b_phase
+    remove_variable = lyd_i3b_authority_mode remove_variable = lyd_i3b_required_native_hor
     clear_variable_list = lyd_i3b_rites clear_variable_list = lyd_i3b_members clear_variable_list = lyd_i3b_political_titles
     # Actor serial and nonce are intentionally monotone and survive cleanup.
 }

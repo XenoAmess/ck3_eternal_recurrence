@@ -123,7 +123,12 @@ class ActualScriptTests(unittest.TestCase):
         body=one(self.c.effects['lyd_i3b_commit_effect'],'if')
         gate=one(body,'limit')
         self.assertTrue(contains_direct_fragment(gate,'lyd_i3b_actor_trigger = yes lyd_i3b_event_context_trigger = yes this = scope:lyd_i3b_actor lyd_i3b_ready_trigger = { ACTOR = scope:lyd_i3b_actor } lyd_i3b_native_admitted_trigger = yes'))
-        self.assertEqual([(e.key,e.value) for e in self.c.triggers['lyd_i3b_native_admitted_trigger'].entries],[('always','no')])
+        runtime=self.c.triggers['lyd_i3b_native_admitted_trigger']
+        self.assertEqual([e.key for e in runtime.entries],
+                         ['lyd_i3b_actor_trigger','lyd_i3b_event_context_trigger','this','lyd_i3b_ready_trigger'])
+        self.assertTrue(contains_direct_fragment(runtime,
+            'lyd_i3b_actor_trigger = yes lyd_i3b_event_context_trigger = yes this = scope:lyd_i3b_actor lyd_i3b_ready_trigger = { ACTOR = scope:lyd_i3b_actor }'))
+        self.assertFalse(any(e.key=='always' for e,_ in walk(runtime)))
         ops=[e.key for e,_ in self.c.operations(body)]
         self.assertLess(ops.index('change_rite_doctrine'),ops.index('create_dynamic_title'))
         self.assertFalse(set(ops)&{'set_head_of_rite','set_government_type','set_parent_faith','detach_rite_to_new_faith','destroy_title','set_realm_capital','add_tenet','remove_tenet'})
@@ -308,12 +313,13 @@ class ActualScriptTests(unittest.TestCase):
         self.assertTrue(has(post,'set_variable'))
         self.assertTrue(has(post,'faith.religious_head','this'))
         self.assertTrue(has(post,'lyd_c3_owned_current_head_trigger','yes'))
+        self.assertTrue(contains_direct_fragment(one(post,'limit'),'NOT = { any_in_list = { variable = lyd_i3b_political_titles NOT = { holder = scope:lyd_i3b_actor } } }'))
         self.assertTrue(contains_direct_fragment(post,'set_variable = { name = lyd_i3b_result_code value = 1 } set_variable = { name = lyd_i3b_result_head_title value = faith.religious_head_title }'))
         # The factory failure branch follows identity failure, and must precede
         # doctrine/old-title tests: doctrines can succeed while the factory fails.
         branches=[e.value for e in failure.entries if e.key in {'if','else_if','else'}]
         codes=[scalar(one(b,'set_variable'),'value') for b in branches]
-        self.assertEqual(codes,['2','3','4','5','6'])
+        self.assertEqual(codes,['2','3','4','5','7','6'])
         factory=branches[1]
         self.assertTrue(has(one(factory,'limit'),'faith.religious_head','this'))
         self.assertTrue(has(one(factory,'limit'),'lyd_c3_owned_current_head_trigger','yes'))

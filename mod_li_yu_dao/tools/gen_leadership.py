@@ -1,7 +1,7 @@
-"""Render formal leadership templates with native challenger admission closed.
+﻿"""Render formal leadership templates with runtime challenger prerequisites.
 
-External probes retain their own generator. Formal output never opts into an
-unverified native challenger registration or contains an acceptance fixture.
+The production path uses the real Title/Faith challenger APIs. Rendering never
+creates an admission receipt or proves CK3 runtime, AI, or save/reload behavior.
 """
 from __future__ import annotations
 
@@ -17,7 +17,7 @@ def build_outputs() -> dict[str, bytes]:
     outputs = {}
     for source in sorted(SOURCE.rglob("*.in")):
         relative = source.relative_to(SOURCE).with_suffix("").as_posix()
-        text = source.read_text(encoding="utf-8-sig").replace("@NATIVE_CHALLENGER_PROBE@", "no")
+        text = source.read_text(encoding="utf-8-sig")
         if re.search(r"@[A-Z_]+@", text):
             raise ValueError(f"Unrendered leadership token: {relative}")
         lines = text.splitlines()

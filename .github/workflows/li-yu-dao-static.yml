@@ -40,6 +40,8 @@ jobs:
           python mod_li_yu_dao/tools/test_c2_preview_scope.py --report /tmp/lyd-c2-preview-scope.json
           python mod_li_yu_dao/tools/test_content_leadership.py
           python mod_li_yu_dao/tools/test_institution_candidate.py
+          python mod_li_yu_dao/tools/test_institution_detached.py
+          python mod_li_yu_dao/tools/test_c3_i3b_preview_scope.py --report /tmp/lyd-c3-i3b-preview-scope.json
           python mod_li_yu_dao/tools/build_release.py --check
       - name: Preserve static report
         if: always()
@@ -49,4 +51,5 @@ jobs:
           path: |
             /tmp/lyd-static.json
             /tmp/lyd-c2-preview-scope.json
+            /tmp/lyd-c3-i3b-preview-scope.json
           if-no-files-found: ignore

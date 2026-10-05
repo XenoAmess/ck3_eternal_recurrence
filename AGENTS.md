@@ -43,6 +43,8 @@
 
 ## Steam 离线模式与账号占用
 
+- 用户于2026-10-05明确永久允许当前 `C:/workspace/ck3_eternal_recurrence` 所在机器实机使用CK3，后续直接沿用，无需重复询问。确切原话与机器范围见 [当前机器永久授权](docs/handover/2026-10-05-ck3-lyd-local-permanent-runtime-authorization.md)；Z机器的历史用户占用限制不由此自动解除，以下离线、账号及现场规则继续适用。
+
 - 除非任务确实必须联网（例如上传或更新 Steam Workshop mod），禁止把 Steam 从离线模式切换为在线模式；普通开发、构建、静态检查和 CK3 实机验收默认保持 Steam 离线。
 - 受管 CK3 实机前必须取得当次新鲜的 Steam 离线画面证据。若桌面画面冻结、变黑或远程重连后不能确认实时性，执行者应先领取任务总线独占 `ck3-screen:acquired`，使用 `tools/desktop_steam_offline_recovery.py inspect` 与新的外置 attempt 运行 `recover`，自动尝试恢复本机桌面采集和 ToDesk 服务；只有窗口位移取证确证 stale、且确认没有 CK3/录制/其他屏幕占用时，才使用其显式 ToDesk 重启重试选项。每次必须审阅新截图中的“离线模式”，并按 `docs/ck3-native-ai/desktop-steam-offline-recovery-2026-09-27.md` 保存回执；旧截图、窗口响应或服务运行状态不能代替离线确认。
 - 因必要任务临时切换到在线模式后，该联网任务完成或终止时必须第一时间把 Steam 恢复为离线模式，不得让客户端无故保持在线。

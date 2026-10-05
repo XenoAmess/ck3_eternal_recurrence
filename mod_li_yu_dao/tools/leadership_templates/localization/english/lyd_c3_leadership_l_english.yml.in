@@ -1,4 +1,4 @@
-l_english:
+﻿l_english:
  lyd_c3_declare_claim_decision:0 "Present a Lineage Claim"
  lyd_c3_declare_claim_decision_desc:0 "I present my own claim to the transmission of this rite. This claim has not been recognized and does not replace the current common religious leader."
  lyd_c3_declare_claim_decision_tooltip:0 "Record an independent lineage claim"
@@ -87,3 +87,14 @@ l_english:
  lyd_c3_round_refusal_result:0 "Refuse this round and end its deliberation if it is still current; other claims remain."
  lyd_c3_recognition_ready:0 "This round is still current, every required rite representative and affected player has consented, and the incumbent has consented or the office is vacant. The office is vacant or belongs to this mod, and my rite allows me to hold it."
  lyd_c3_round_cancel_result:0 "End my current deliberation and release only this round's reservations."
+ lyd_c3_register_challenger_decision:0 "Establish My Challenger Office"
+ lyd_c3_register_challenger_decision_desc:0 "I have already presented a lineage claim. With an existing common religious leader and the required standing, I may establish a separate challenger office. The incumbent retains the common office."
+ lyd_c3_register_challenger_decision_tooltip:0 "Establish a separate challenger office for my current lineage claim"
+ lyd_c3_register_challenger_decision_confirm:0 "Establish the Office"
+ lyd_c3_native_challenger_ready:0 "I can act, hold a duchy or higher title and have a capital county. My faith has a living common leader holding its religious title and permits a religious head; my rite permits my gender to hold religious office. I do not already hold or sponsor a challenger office, have no deliberation in progress, and no rite has another proposal pending."
+ lyd_c3_register_challenger_result:0 "Attempt to establish my own challenger office. It is confirmed only when the actual challenger list contains my office and the incumbent, faith, rite, primary title and capital still match the request."
+ lyd_c3_challenger_registered_t:0 "My Challenger Office"
+ lyd_c3_challenger_registered_desc:0 "My challenger office was established and appeared among the challengers of our faith. The incumbent retained the common office, and my primary title and capital remained unchanged. Common recognition still requires the rites, affected players and incumbent to consent."
+ lyd_c3_challenger_incomplete_t:0 "An Unconfirmed Challenger Office"
+ lyd_c3_challenger_incomplete_desc:0 "My request could not be fully confirmed. My claim and any separate office created for it remain recorded for review or withdrawal. I should review the current offices before making another request."
+ lyd_c3_acknowledge:0 "I understand"
