@@ -724,3 +724,75 @@ Only that assertion was corrected; production logic was unchanged before02.
 This qualification uses source-shaped synthetic frames through production
 Python, and does not qualify native reading or live execution. No old/sibling
 case, native build, new EXE read or game operation was run by this extension.
+
+## Next source ledger after the gated bound, before a released contract
+
+The source owner seals `[291C9D8,291CB14)` on2026-10-06 03:10:36CST in
+`person-tail/gated-tail-next-326a8e0-2920310/DELIVERY.json`. Source-ready knowledge
+precedes any next chain code. Its recorded cost is6062 new EXE bytes
+(5426 code+636 pdata; no duplicate reads), with cached730-byte calendar tables
+reused. This consumer reads zero new EXE bytes and reuses the source tree and
+corrections. Proposed optional leaf `after_gated_tail_326a8e0_2920310`, collector
+and emitter names in that query plan are proposals; no genuine DTO/normalizer
+or stage-chain implementation exists for this next segment yet.
+
+The exact four-family order is326A8E0 composition,2920310 current1B8+D0/DC,
+current1C0+3B8/3C4, then related1C0+3B8/3C4. The full-ID8 registry5D1DD10/08
+and type110 are **CourtPosition**, proven by existing phase-misc ABI. Early
+provisional Title wording is corrected before code. Fields120/124 remain raw
+source labels; no owner/employer interpretation is inferred from their use.
+
+| Ordered family | Source contribution boundary |
+|---|---|
+|326A8E0|Bit20 gates this family only. Current/related458 handle178 chooses mode1/0 and levelF8. Merge every admitted first threshold row in stored order, then month-threshold rows, into one PC. One CAFA B3D0 outer100000 occurrence is retained evenempty. Partial internal rows are not an actual Character outer contribution.|
+|2920310 current1B8|Each original CourtPosition occurrence emits Def2748, then nonempty291B8D0 composition, then magic-admitted OtherDef1940.|
+|2920310 current1C0|Each occurrence emits Def2908 and tier2CB8, nonempty291B8D0, then magic-admitted OtherDef1B00 and tier1CC0.|
+|2920310 related1C0|Def3658/3818 and magic-admitted OtherDef2580/2740 pairs each require any of their six source PC counts nonzero. All-six-zero skips both/tier demand; an admitted pair retains two unit occurrences even if the chosen PC is empty.|
+
+326A8E0 selects the entire8-byte date pointer with the signed maximum rawDWORD
+between handle8 and currentCharacter1B8+E8, or literal4763CB8 when1B8 is absent.
+Equal rawDWORD retains handleDate.3836460 compares currentDate to that chosen
+date by completed calendar months, including cached day/month/year fields or
+source-closed365-day decoding and day comparison. It is neither a rank nor
+30-day division. The three2920310 lists are processed independently of bit20,
+with full DWORD generation IDs and occurrence order, including repeats.
+
+291B8D0 merges its base, conditionalB, then conditionalA PCs using previously
+closed D460 membership inputs, without growth. It appends only a nonempty
+composite. This differs from direct PC and326 caller occurrences, which retain
+empty requests. Related default list54E7220 is an actual raw header or separately
+explicit modeled initializer result; no initializer is executed or relabeled
+observed. Negative list counts remain precise missing inputs.
+
+Tier2423700 uses actual played-character full-ID membership and rawA0, or
+Def600 numerical result with the first four stored signed thresholds. A
+threshold count below4 proves numericalkind4 while native evaluation activity
+remains a separate fact. Def600 ScriptValue checks modeC0 first: mode0 copies
+raw signed98 before any tree access. This precedence differs from the prior
+NamedValue tree70-first getter. Nonzero mode supports source-closed raw fallback
+and nested named literal/zero; dynamic trees or typed targets keep exact missing
+producer09D7060/3755520, without a generic expression interpreter or invented
+tier. A future genuine grouped emitter must preserve these demand and source
+occurrence differences before the pure chain can extend.
+
+```mermaid
+flowchart TD
+  P[Ready postGatedTemporaryAndList_pre291C9D8] --> G{Bit20 and actual326 receiver?}
+  G -->|admitted| T[Two ordered threshold rowsets with exact calendar inputs]
+  T --> C[One completed temporary PC; outer100000 evenempty]
+  G -->|knownskip| L[Unconditional2920310 current1B8 CourtPosition list]
+  C --> L
+  L --> R[Current1C0 list, actual tier inputs]
+  R --> K[Related1C0 list, any-six-count pair gates]
+  K -. genuine grouped contract pending .-> E[Proposed post326A8E0_and2920310_pre291CB14]
+  R -. dynamic Def600 output missing .-> U[Specific09D7060/3755520 producer]
+  E -. next source unknown .-> N[Character192/provider16A0/16B0 and2920850]
+```
+
+Current static-ready gated context does not depend on this future leaf. The
+next query owner must release the actual four-group contract before this
+consumer adds code or a new integration case. The proposed full next frontier
+is `post326A8E0_and2920310_pre291CB14`; it is not attached to the current result.
+Whole person/Entry readiness remains false. Source-only receipt and the minimal
+input plan are in `person-stage-chain/AFTER-GATED-SOURCE-PLAN.json`; no test,
+native build or game operation is run for this source-ledger increment.
