@@ -445,6 +445,11 @@ def continue_person_stage_chain_tail_12003(
         "first_contiguous_observation_dependency": next(
             (row["stage"] for row in ledger_rows if not row["requests_ready"]), None),
         "next_native_source_leaf": "291C5B2_signed2F8_provider_bucket", "all_tail_source_stream_ready": False,
+        "source_operand_scope": "held_current_same_query_inputs",
+        "conditional_on_observed_source_values": True,
+        "291f260_weight_source_scope": "held_current_evaluated_values",
+        "291f260_weights_recomputed_from_assembled_context": False,
+        "291f260_preceding_stage_weight_input_seam": "28C3AE0 receiver/model10 source proof required",
         "current_final_context_used_as_default": False, "unknown_stages_assumed_empty": False,
         "full_person_preparation_ready": False, "full_entry_ready": False, "game_operations": 0}
     return PersonStageChainResult12003(previous.character_full_id, stage,

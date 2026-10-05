@@ -355,3 +355,22 @@ stay unchanged. No earlier GREEN case, old case, native build, new EXE read or
 game operation ran. This is **static-ready for the bounded through291F260
 chain**, with no full tail/person preparation/Entry or live claim. The next
 contiguous dependency is signed carrier2F8 provider bucket at291C5B2.
+
+Scope correction recorded immediately after qualification:291F260's emitted
+weights are **held current evaluated same-query values**. Its arithmetic/order
+fixture proves a conditional fold under those observed values; it does not
+prove that a future assembled context would re-evaluate to those same weights.
+The source ledger now explicitly records `source_operand_scope`,
+`conditional_on_observed_source_values`, `291f260_weight_source_scope`, and
+`291f260_weights_recomputed_from_assembled_context=false`. Readiness here
+qualifies the bounded projection under its declared observed source operands.
+The named stage is the source-order frontier of that conditional fold, with no
+historical-frame or native preparation claim.
+
+True preceding-stage weight evaluation needs the actual28C3AE0 receiver and
+context/model10 source proof, then keys45/44/46/47 derived from the coherent
+preceding context rather than copying current-final weights. That is a
+separate functional input connection. This metadata-only clarification changes
+no arithmetic and reruns no successful case. Native/provider source ownership
+remains with the native owner; the next signed2F8 packet must also preserve its
+real control-flow bypasses before extending the chain.
