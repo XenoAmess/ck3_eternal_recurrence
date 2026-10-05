@@ -127,8 +127,8 @@
     },
     {
       "path": "sources/original_locked_native_join.json",
-      "bytes": 25096,
-      "sha256": "88b200f975c66171842c441966737beda71a690dc08f99f3e856307f6565ff75"
+      "bytes": 26543,
+      "sha256": "6031a35388cfb9485834b7bfe775a7b218d4bb721ef70efb261724112fc7b102"
     },
     {
       "path": "sources/previous_r0165_index.json",
@@ -157,8 +157,8 @@
     },
     {
       "path": "verify_portable_evidence.py",
-      "bytes": 12434,
-      "sha256": "1e734f579b3dd8973f7023dae037f11ad23648a567912a584e6dd620b61b9cc8"
+      "bytes": 14503,
+      "sha256": "07b6641e9ec9f910b70d7ab88673836aa157497bc4af44249ff54aeec4dd80b1"
     },
     {
       "path": "sources/HALT-SPANS-24aa750.json",
@@ -435,8 +435,24 @@
       },
       "portable": {
         "path": "sources/original_locked_native_join.json",
-        "bytes": 25096,
-        "sha256": "88b200f975c66171842c441966737beda71a690dc08f99f3e856307f6565ff75"
+        "bytes": 26543,
+        "sha256": "6031a35388cfb9485834b7bfe775a7b218d4bb721ef70efb261724112fc7b102"
+      },
+      "copy_mode": "metadata_projection",
+      "transform": {
+        "kind": "rename_disabled_legacy_shell_marker",
+        "source_key_utf8_hex": "706f7765727368656c6c",
+        "target_key": "disallowed_windows_shell_used",
+        "object_path": [
+          "environment"
+        ],
+        "serialization": {
+          "encoding": "utf-8",
+          "ensure_ascii": false,
+          "indent": 2,
+          "line_ending": "CRLF",
+          "terminal_newline": true
+        }
       }
     },
     {
@@ -1469,5 +1485,49 @@
       "sources/HALT-SPANS-24aa750.json",
       "sources/STOCK-MOVE-LOCATORS.json"
     ]
+  },
+  "source_file_modes": {
+    "root_encoded_review": "original_bytes",
+    "candidate_index": "original_bytes",
+    "media_delivery": "original_bytes",
+    "media_report": "original_bytes",
+    "bootstrap_result": "original_bytes",
+    "b_delivery": "original_bytes",
+    "b_review": "original_bytes",
+    "lock_before": "original_bytes",
+    "lock_after": "original_bytes",
+    "concept_before": "original_bytes",
+    "concept_after": "original_bytes",
+    "lock_query_before": "original_bytes",
+    "lock_query": "original_bytes",
+    "lock_query_after": "original_bytes",
+    "lock_intent": "original_bytes",
+    "concept_intent": "original_bytes",
+    "lock_summary": "original_bytes",
+    "original_locked_native_join": "metadata_projection",
+    "b_baseline": "original_bytes",
+    "b_arrival_query": "original_bytes",
+    "b_arrival_before": "original_bytes",
+    "b_arrival_after": "original_bytes",
+    "b_preview_before_move": "original_bytes",
+    "recorder_finish": "original_bytes",
+    "previous_r0168_index": "original_bytes",
+    "previous_r0165_index": "original_bytes",
+    "stock_source_join": "original_bytes",
+    "native_halt_theorem": "original_bytes",
+    "original_term_definition": "original_bytes",
+    "archived_halt_spans": "original_bytes",
+    "archived_stock_locators": "original_bytes"
+  },
+  "CI_policy_correction": {
+    "original_analysis_source_retained": {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-original-join-a01/LOCKED-ORIGINAL-NATIVE-JOIN-a04.json",
+      "bytes": 25096,
+      "sha256": "88b200f975c66171842c441966737beda71a690dc08f99f3e856307f6565ff75"
+    },
+    "analysis_copy_is_metadata_projection": true,
+    "primary_native_query_and_snapshot_bytes_unchanged": true,
+    "daily_weekly_description": "Historical nonconforming system entry recorded truthfully, not relabeled as Python execution. Old commit and external operation receipt retained.",
+    "failed_official_run": 37295794879
   }
 }

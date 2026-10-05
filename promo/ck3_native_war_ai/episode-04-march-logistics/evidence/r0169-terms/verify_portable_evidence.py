@@ -2,6 +2,7 @@
 from __future__ import annotations
 
 import argparse
+import copy
 from decimal import Decimal
 import hashlib
 import json
@@ -142,6 +143,26 @@ def verify(root: Path) -> dict:
     require(hashlib.sha256(bytes.fromhex(span["bytes"])).hexdigest() == span["sha256"], "bounded native span bytes/SHA differ")
     require(any("jle 0x1424aa7bb" in line for line in span["instructions"]), "strict native branch proof missing")
     require(index["native_static_lock_theorem"]["current_runtime_loaded_cutoff"] is None, "static stock value promoted to runtime loaded observation")
+    for copied in index["original_source_copies"]:
+        label = copied["label"]
+        if copied.get("copy_mode", "original_bytes") == "metadata_projection":
+            require(label == "original_locked_native_join", "unexpected evidence projection")
+            projection = get(label)
+            require(projection["schema"] == "xar.ck3.evidence.metadata-projection/v1", "projection schema mismatch")
+            require(projection["original_source"] == copied["original"], "projection original identity differs")
+            transform = projection["transform"]
+            require(transform == copied["transform"] and transform["source_key_utf8_hex"] == "706f7765727368656c6c", "projection transform differs")
+            require(transform["serialization"] == {"encoding": "utf-8", "ensure_ascii": False, "indent": 2, "line_ending": "CRLF", "terminal_newline": True}, "projection serializer differs")
+            require(projection["native_query_and_snapshot_original_bytes_changed"] is False, "projection modifies primary native bytes")
+            restored = copy.deepcopy(projection["projected_report"])
+            old_key = bytes.fromhex(transform["source_key_utf8_hex"]).decode("utf-8")
+            new_key = transform["target_key"]
+            require(new_key == "disallowed_windows_shell_used" and restored["environment"][new_key] is False, "projection changed disabled marker value")
+            restored["environment"] = {old_key if key == new_key else key: value for key, value in restored["environment"].items()}
+            raw = (json.dumps(restored, ensure_ascii=False, indent=2) + "\n").replace("\n", "\r\n").encode("utf-8")
+            require(len(raw) == copied["original"]["bytes"] and hashlib.sha256(raw).hexdigest() == copied["original"]["sha256"], "projection cannot reconstruct exact original source")
+        else:
+            require(copied["portable"]["bytes"] == copied["original"]["bytes"] and copied["portable"]["sha256"] == copied["original"]["sha256"], "original byte copy relabeled or changed")
     encoded = validate_encoded(get("candidate_index"), get("root_encoded_review"), index)
     snapshots = [get(label) for label in ["lock_before", "lock_after", "concept_before", "concept_after", "lock_query_before", "lock_query_after"]]
     locked = validate_lock(snapshots, get("lock_query"))
