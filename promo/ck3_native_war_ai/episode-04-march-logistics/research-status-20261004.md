@@ -174,3 +174,22 @@ Exact1.20.0.3 静态原版 HUD 链为 `28BFDA0` 返回 ExpenseContextCharacter�
 最小 source 候选保留现有 NET 字段，增加 gross/total 可审输入和 exact `.3` 语义标记 `ck3-1.20.0.3-native-income-minus-total-expenses-v2`；失败与 signed overflow 为 null/明确原因，合法零仍是0。无标记历史 packet 不取得新 NET 信用。当前只完成外置生产 reader/serializer/fake-bindings 严格构建、六份实际 wire 的注册 in-memory MCP合同、8项 Python合同和 focused CMake/CTest；源码集成、新 DLL、实际暂停净值读取仍由Root另验。提醒前新路径 test EXE 运行缺少 Defender 排除回读的流程缺口已记录，之后停跑并交精确 CMake target 待登记；没有自行提权或扩大排除范围。
 
 R0165 使用旧 a06继续独立兵员采样时，只消费已确认金币余额，旧 NET 禁止用于费用计算。P0-TERM11、同档 A/B/C、登船实际付款 ledger、累计行军代价、影片/TTS/完整人工签核与交付仍按各自证据闭合；本次静态费用修正不提升这些门禁或影片完成百分比。净额、维护月率与实付流水必须分开：只在新的 true-NET 字段已验时说明军事支出已包含，不能再扣军费一次。
+
+
+## 2026-10-05 R0165 收口：实际整数补员与四项术语PNG
+
+本节更新前文历史pending，保留所有原始append和费用勘误。[R0165索引](evidence/r0165-index.json)绑定fea65ebb/a06、William33388、新episode native-33388-c6f1ef2b4089/PID19360/connection1，由actual day15来源SHA2255独立冷载，paused初末raw53147520→53147664，真实新增6日；原Jan11计划共21日，总end53147880不变、尚余9日，未完成整30日，也不是A/B/C。
+
+P03严格相邻004→005（原+20→+21日、native23/public24→native25/public26）取得整数补员正例：同Sea完整14个actual团仅53 current9→10/max10，全军1086→1087/max1087，其余13团current/max不变。全24physical records已核，只有目标人数/effective增长，但23条prepared刷新，不能称所有records不变或23团增长。独立完整玩家postread再次同native25/public26/date53147664重合人数及records；最终保存后全玩家[0,16777220]三读同native26/public27/raw53147664、paused/map_ready。Sea仍2327/moving7/route[2325]，不是抵达2325后休整；stock/cap300/300、month15.61404及+188日期53147520在这个补员窗口均未变。
+
+结合R0164“补给回到容量而人数未增”，现在本期已实际观察补给与兵员两项独立变化。两次run及边界必须分别标注；整数正例不等于整军净月补员公式、完整恢复策略或损耗因果验收。actual +21 save72936215B/SHA3c841cbc7585989c2334392697608a600907dc2fd615f992a59b7d55abee5bb0、同SHAimmutable seed与新外置checkpoint均保全，保存前后暂停身份和复制receipt绑定。
+
+P0-TERM当前原图覆盖TERM-01/02/05/07，共4/11：补给300/300、当地1086/4960、+15/月及实际breakdown；损耗零值0%/0月与Army0围攻1%/−56月；当前移动3天/Feb4；停止移动H。Root直接审阅原始PNG及五个实际encoded中心（107.167、195.3、1617.767、1705.6、1744.767秒）。平分只有警告PNG，合并部分与其他六项整项未完成，完整剩余为TERM03/04/06/08/09/10/11；平分PNG超过actualraw范围不绑定，当前移动日期不当实际抵达。
+
+30分钟raw2949921171B/SHA6ee0a20cb16b46c74902fc281b107c451205a49584b354db74a846ae3bd13f31正常finish exit0/Job0，全metadata/54000frames/54000packets及strict decode均PASS、零时间戳缺失/相等/回退、零解码错误、1920×1080/30fps/无音频。媒体报告SHA0712dc942341f6fc94e0b13a46955f4966082204cab31b7e32ca9f5fc15a7f5b只授机器媒体条件，Root五帧authority只授这五帧；clean_spans_certified、完整人工1×及film signoff均false，原PNGraw时码保持null。两次typed tooltip cache的hoverdifferent/topbound/locked1拒绝继续保留，不被像素成功盖过。
+
+关闭流程保留一次Unknown tool:stop-session失败，再由实际stop工具请求收口。launcher返回0，SDK与keeper退出；CK3实际exit_code=1，Job0/tree_gone/cleanup_proven=true，不能改写成CK3 exit0。屏幕CAS已done、资源空，1024×768与Steam原rect已恢复，Root直接审阅新离线footer及01:35:11/nonce5d56a225c5e5关闭图。
+
+费用新source ffc29已有income−total expenses修正，但本轮运行a06旧NET仍实际月收入，禁止作净额计算；只消费已确认余额。新的DLL与exact true-NET实读、实际支付ledger仍另验。剩余核心包括七项完整术语、actual merge、同档A/B/C共同出发档与三回放、路线与费用边界、连续可用镜头、全文/TTS/成片/完整人工审阅及指定视频交付。
+
+当前调度粗估为整体约30%、研究约70%，术语PNG4/11约36%、ABC0/3、影片制作0；这是Root向用户说明的规划估算，**正式研究加权完成比例及分母仍为null**，不由素材分钟数推出。Oct5（Asia/Shanghai）12:00–15:00补研究、18:00–22:00拍A/B/C、Oct6下午/晚间Review01是目标，尚非完成事实或保证。

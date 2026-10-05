@@ -542,3 +542,16 @@ Evidence is under `army-loss-r39-corrected-actual/` (compact cache and
 Root's subsequent ordinary24-day run is separate and receives no advance credit
 from this cache consumer. This work performs zero SDK, original-raw, code-review,
 test, shared-write, Git, window or gameplay-day operations.
+
+
+## 2026-10-05：R0165 实际补员整数正例（有界追加）
+
+在新的 day15 checkpoint2255 冷载 episode `native-33388-c6f1ef2b4089`、PID19360/connection1/actor33388 中，先以旧记录 persistent16793680/chunk0 唯一重绑实际 owned/controllable FullCUnit16777220、FullCArmy16777220、FullArmyRegiment53/record0；当前 ID 与玩家 roster 数量均来自新现场，而非旧 episode 固定值。当前请求严格覆盖玩家阵列[0,16777220]，snapshot 缓存的额外战争参与者不充当玩家请求范围。exact EXE SHA仍为 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`。
+
+最小相邻 pair 为 `root-pulse-r0165/r0165-p03/004.sample.json`（native23/public24/raw53147640/paused）→`005.sample.json`（native25/public26/raw53147664/paused），真实增加24raw即1日，原Jan11计划的+20→+21。完整14个 actual ArmyRegiment FullID 集合与 maximum 保持一致；仅53 actual current9→10/max10，全14团 SUM1086→1087/max1087，其他13团人数/max未变。同一物理 record[53,0,16793680,0] current/effective9→10、maximum10，state0；月比例10000/100000未变，prepared0→10000/100000，两项 native 补员许可true/true→false/false。这是实际整数增加；许可false出现在已满员端点，不能称永久不可补。
+
+完整24条 physical records 全部对比：仅该1条人数/effective变化，但23条 prepared 值刷新，不能写成全记录不变，也不能把23条 prepared 刷新算作23团增兵。record SUM不代替 actual Strength SUM。Root 的独立 `r0165-positive-full-a01-before/strengths/after` 按当前完整玩家 roster 再读，确认为相同native25/public26/raw53147664，完整14团和24 records 与005完全相同。
+
+两个端点仍在2327、moving7、route[2325]，owner33388/controllable且端点无combat/retreat；不是抵达2325后休整。stock/cap均30000000/100000，月贡献1561404/100000、+188解析日期53147520均未变。因此本窗口独立展示兵员补充，而不是一次补给回升。Root bounded runner `observed-boundary-stop` 在真实+3日/5pulses时因 `net-regiment-gain-observed` 停止，无target/hard-bound overshoot；原总终点53147880尚余9日，没有重置30日。
+
+完整数值证据与 source/postread pins 见 `C:/ck3-war-episode04-research-20261004-a01/refill-day15-r0165-a01/integer-positive-pair-a05/actual-integer-positive-pair.json`（125867 bytes，SHA-256 `5d23bee4ac502b580411af88c64bb51db7418f2f21c6e416052856eaf62e2499`）。本追加只授该有界实际整数端点，不穷举全部军队、wholepersistent补员规则，也不替代 Root 的实际像素、录像连续性与人工成片审阅。

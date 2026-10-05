@@ -131,3 +131,19 @@ E4-02/P0-SUPPLY与P0-REFILL取得本期自己的实际数字配对。正式输�
 数字、实际PNG和已关闭raw分别见[本期R0164索引](evidence/r0164-index.json)。Root已直接审阅原图：1086人、补给300/300、1067年1月26日；只绑定这些PNG字节，raw_video_timecode_binding=null，不按UTC倒算视频时码。900秒原片全媒体PASS仅证明帧/包和时间戳条件；实际Army补给/损耗tooltip仍未出现，不授十一术语门槛或影片签核。此增量授予实际数字窗口与上述PNG信用，不能写成整段原片或成片验收完成。A/B/C、合军实测及独立整数补员等剩余目标不因此清空。
 
 此前章节的“正补给仍待验”保留为R0162/R0163历史切点；截至R0164，当前库存正增长与容量clamp已经观测，实际整数补员正例仍待证。原始7f总30日预算已用15日，actual day15 checkpoint SHA2255db3e442650afac51e4e5d75bea7ed9864a90e3b4d1d96de243ef6dd7257f保全。后续独立R0165只续余15日、absolute end53147880；它不是A/B/C对照，实际执行另记。
+
+
+## 2026-10-05 R0165 有界勘误：P0-REFILL 整数正例已实际取得
+
+补员正例由 pending 更新为 numeric PASS：R0165新冷载day15来源2255、actor33388、episode `native-33388-c6f1ef2b4089`，真实原+20→+21（raw53147640→53147664）Sea完整14团 SUM1086/1087→1087/1087，仅FullArmyRegiment53 actual9/10→10/10。同record[53,0,16793680,0]人数/effective也+1；24records中23prepared刷新但只有1条实际人数增长。独立完整玩家 query + before/after 在同native25/public26/raw53147664再次确认。
+
+可采用的对照口播为：“此前补给回到了上限，人数还是1086；后来人数补到了1087，这个窗口补给仍是300。”对应R0164补给正窗口与R0165补员整数窗口，必须各自标清实际来源，不把两次run合称一个无缝现场。R0165两端还在2327行军、路线[2325]，不能写成抵达2325后休整。满员后两个许可从true变false，不能据此说军团永远不能补员。
+
+Root在整数增长观测后已停止推进，原总30日含旅行终点53147880不变，+21实测终点余9日；5个pulses只实际新增3日。完整数字pair与 pins 见 `C:/ck3-war-episode04-research-20261004-a01/refill-day15-r0165-a01/integer-positive-pair-a05/actual-integer-positive-pair.json`（125867 bytes，SHA-256 `5d23bee4ac502b580411af88c64bb51db7418f2f21c6e416052856eaf62e2499`）。本追加授数字观察成功；真实GUI/原片片段、术语镜头、合并/A-B-C与成片审阅仍各自沿 Root/capture index 的实际证据收口，不能由数字pair虚构完成。
+
+
+### R0165 本轮实际术语素材与编辑边界
+
+[R0165索引](evidence/r0165-index.json)已绑定TERM-01/02/05/07四项原始PNG与五个Root直接审过的encoded单帧：补给、零/非零每月损耗、当前移动3天/Feb4、停止移动H。非零损耗当前Army0为1%/−56月/围攻+1%，不作为已实际损失56人的结算证明；“当前预计抵达”不改写为已经抵达。TERM-10仅平分及锁定拒绝PNG，合并尚欠，该PNG在1800秒原片之外保持编码绑定null。两次typed tooltip cache仍拒绝，当前Army窗口/像素成功不追认缓存freshness。
+
+本次独立冷载只从原day15推进6日到原+21，实际+21存档SHA3c841cbc7585989c2334392697608a600907dc2fd615f992a59b7d55abee5bb0保全，尚余9日；两次run不能剪称一个无缝原现场。30分钟raw全媒体PASS且五帧已读，只授机器媒体条件与单帧内容，clean spans/完整1×影片审阅/签核仍false。下一研究和A/B/C的时间窗是调度目标，不当已完成镜头或固定交付承诺；费用按最新true-NET勘误与新实读另闭合，旧a06运行不得再称净额。

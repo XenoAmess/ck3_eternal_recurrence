@@ -69,3 +69,21 @@
 - 新发现：补给容量可复用原版modifier用词；同名补给上限需要限定主体；停止移动/停止集结不同；月补员费用不等于月兵数；锁定概念中英阈值措辞不同。
 - 下一门槛：屏幕协调者按TERM-01至TERM-11采当前实图，绑定主案Army/驻地/日期；移动包闭合阈值，主案包核查特殊部队补给例外。
 - 富化归属：术语与GUI定位是通用CK3知识，可入主仓原生专题；主案具体实图与回放属于本期冻结媒体证据。无第三方mod源码或素材。
+
+
+## 2026-10-05 R0165：四项当前术语已有原图及原片单帧
+
+这是对上文文件研究阶段“11项待拍”的追加更新。当前 exact1.20.0.3、William33388、episode `native-33388-c6f1ef2b4089`，运行 source `fea65ebb763da5b2ddf7acd4897cd80a7a7a0f59`/a06。证据及原始 key/GUI 定位继续见[本期R0165索引](../../promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0165-index.json)，旧107key材料不重写。
+
+| 项目 | Root直接审阅的实际原始PNG | 已直接审阅的原片单帧 |
+| --- | --- | --- |
+| TERM-01 补给 | Sea16777220，Jan26、1086人；补给300/300，补给充分，当地1086/4960，+15补给/月；友方+20、冬季−5、将领−12%。容量与当地容纳人数保持不同单位 | PTS107.167s，完整补给提示，包括容量加成说明；不把将领−12%误作容量加成 |
+| TERM-02 每月损耗 | Sea零值0%（0/月）与Army0非零1%（−56/月）、围攻+1%；非零端独立Army窗口effective_visible=true/current_subject_id=0/owner33388，pausedFeb1 | PTS195.3s零值、1617.767s非零值；当前提示不是该月实际已损失56人的因果验收 |
+| TERM-05 当前移动 | Sea1087人、pausedFeb1，当前抵达Argentan剩3天（1067Feb4） | PTS1705.6s；这是当前移动估计，实际抵达仍另读 |
+| TERM-07 停止移动 | Sea的“停止移动”及H快捷键当前提示；本次没有执行停止或键盘动作 | PTS1744.767s；停止前后、锁定两侧连续结果仍属P0-MOVE独立门槛 |
+
+因此当前术语PNG覆盖为4/11（约36%，固定镜头清单计数），不等于本期研究或制作的加权完成率。TERM-03/04/06/08/09/10/11仍欠完整镜头；TERM-10只取得“平分”及移动锁定无法平分的实际警告，合并/整编部分未拍。这个警告不完成独立TERM-08“移动锁定”概念提示，也没有执行分军。
+
+自然PNG由Root `reviews.json` SHA71ca7ccca56f6b88afe3b2c71a91510876f60de80e751367b4f920e75015f6a8及新增七图`addendum-a02.json` SHA6c8d09fb06997bf7d5c86d9230d4959675d30153bc2738cd70671c0728667fed绑定；这些PNG的raw_video_timecode_binding继续null。五个decoded中心由独立`encoded-centers-a03.json` SHA6460e3de60c7e3c76f1c4a943f90de1ba9e6b5f98ae4429014a2b53782230efc绑定实际encodedPTS/timebase/rawSHA，只授这五帧。平分PNG的monotonic搜索区间1875.9283351–1876.429109s超出实际raw末PTS1799.967s，编码绑定为null，不能挪到尾帧。
+
+两次typed Supply/Attrition文本缓存读回仍真实拒绝：`tooltip_hover_source_top_unlocked_join_failed;capacity=1;count=1;hover=different;top_source=bound;top_locked=1`。自然提示像素和Army窗口身份成功不追认typed cache刷新。完整原片媒体PASS、五个单帧直接审图均不自动生成连续clean spans、完整1×影片审阅或签核；这些值保持false。

@@ -252,3 +252,12 @@ Root确认该30日推进为normal/calendar/bounded/whole（720小时），global
 Q100000补给实读：stock29122808→30000000，capacity两端30000000，当前月贡献两端1561404。`min(29122808+1561404,30000000)=30000000`与实际吻合，净增877192（8.77192），超出容量的684212未保留。真实+188的raw64由300064531523761328变为300333907577599872，解析日期53146800→53147520；selected bucket19→20，实际Army bucket20不变。后续独立snapshot/Strength再次确认pausedtrue/raw53147520和上述值。CArmy+0xC0原始flag未由此Strength DTO发布，不能从capacity300反推其值或成因。
 
 完整14个actual ArmyRegiment FullID人数向量仍1086/1087，53团仍9/10。这个窗口实际证明补给库存恢复可以发生而逐团人数没有增加；它不证明补员producer永不执行。原片正常收口后已有900秒全媒体审计PASS，数字窗口与实际PNG由[本期R0164索引](../../promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0164-index.json)分别绑定；没有原片时间码或clean span信用，数字回执不能代替完整原片审阅或成片签核。
+
+
+## 2026-10-05：R0165 兵员补充与补给回升的独立窗口
+
+R0164 原+14→+15 已实际证明 stock29122808→30000000，+188解析日期改写到53147520而全部14团/24 records不变。随后从真实day15 checkpoint2255独立冷载的R0165，在原+20→+21相邻暂停端点（raw53147640→53147664）实际看到同Sea14团 SUM1086/1087→1087/1087，仅 ArmyRegiment53 actual9/10→10/10；完整24records中只有目标人数增长，其中23条 prepared 刷新，不将比例变化算人数。
+
+该R0165补员窗口两端 stock/cap均30000000/100000、月贡献1561404/100000，+188解析日期仍53147520；actual bucket20，当前selected phase25→26。因此这不是供给桶更新或新库存回升。两端军队仍owned33388/controllable、2327 moving7、route[2325]；不得写成2325驻营回满。Root完整玩家 roster 独立 postread在native25/public26/raw53147664再次确认全部14团和24records。
+
+数值pair与独立postread见 `C:/ck3-war-episode04-research-20261004-a01/refill-day15-r0165-a01/integer-positive-pair-a05/actual-integer-positive-pair.json`（125867 bytes，SHA-256 `5d23bee4ac502b580411af88c64bb51db7418f2f21c6e416052856eaf62e2499`）。补给库存与兵员人数是两个独立观察对象；本期已具有“先补给回升且人数未变，后实际补员且库存未变”的两个实测窗口。各自的场景/episode来源和原总30日预算分别保留；本lane只读数字回执，没有媒体签核。
