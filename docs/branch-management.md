@@ -222,3 +222,8 @@ ref as part of delivery rather than as a later cleanup project.
 - [ ] 删除的是 local/remote branch ref，不是 worktree、clone、artifact 或 process directory；
 - [ ] 已枚举并按 common-dir 去重所有 workspace、worktree 与独立 `%TEMP%` clone；
 - [ ] 最终 ref 清单只剩 master、ledger 中 active `wip/`/必要 `release/` 和明确 exception。
+
+
+### 2026-10-05：短路径仍可能超出Windows默认长度
+
+后台第二批从master3e2737b5创建Z:/gbr2时，两个新跟踪的docs/li-yu-dao深层claim路径出现`Filename too long`，Git随后无法reset index并自动回收失败worktree。短路径并不保证所有仓库文件都低于默认路径长度。此真实RED用`git -c core.longpaths=true worktree add --detach <short-absolute-path> <exact-head>`修复；只对本次Git命令启用，不改全机设置、不清理旧树。新checkout后核.git、exact HEAD和clean status再分配owner。原工具回执和未宣称完整log保全的纠正记录在Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/CHECKOUT-RED-RECEIPT.json；六树登记见同目录lanes.json。

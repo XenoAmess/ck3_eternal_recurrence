@@ -84,3 +84,21 @@
 普通fast-forward push已成功发布 [`f8625cb2`](https://github.com/XenoAmess/ck3_eternal_recurrence/commit/f8625cb262cb09dd0ce4cceb66cd7e2c483627ac)。期间另一机器提交a3a0cadf，Root保留其Main GUI修复及R17/R18日报，先fetch再线性rebase；只发生独立日报append冲突，两侧全文保全。`git diff --quiet 4733655173e65be99c9ffaafbe2d9275940df4d6 f8625cb262cb09dd0ce4cceb66cd7e2c483627ac -- ck3_autonomous_player` exit0，已验证自动玩家源码逐字节相同，复用本轮离线结果，不重跑。实际Root采用提交由原rebase前编号对应到：ETA4289373c、pre1640536570d5、holy7e7e5674、lossb16a290a、成员7a1abd42、source/frontier2944aaae、geography0d784483、fixture5b7e1282、equalityae72e842、link9dd50766；上段旧编号为当时的采用事实。映射与actual push回执在 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261005/PUBLICATION-RECEIPT.json`。
 
 整合源码exact官方CI [37305495479](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37305495479) 登记时in_progress，不提前称GREEN；本发布记录为docs-only追加，随即普通push，最终exact CI终态保存到同根ROOT-FINAL-DELIVERY.json。BG-4提交/推送已实际完成。所有CK3/SDK/界面/Steam操作和新增自动游戏日仍0；日/周仍滚动。
+
+
+### 第二批后台施工已启动（实际登记 2026-10-05T20:28:07+08:00）
+
+用户再次明确继续所有能后台执行的任务，CK3由用户自行使用、不得启动。上一轮八包是阶段性交付，不能据此声称后台任务耗尽。本次重新扫描P0/P1、测试/CI、知识同步与后续能力依赖，继续六条确有原生缺口的功能线，Root串行整合和集中新路径native验证。源码base3e2737b5909616cd2ab301da59352250410bafb8；原用户树、g38/g78和第一批产物保持保全。
+
+| 工作包/优先级 | Owner树 | 可交付项与一次离线验收 | 依赖和完成边界 |
+| --- | --- | --- | --- |
+| R2-1 P0 post-A/B observer | Z:/gb9 | source-closed guarded630、carrier40、orderedD8接现有context query/DTO/consumer；原生三叶fixture与必要消费验证 | 复用已闭contract、真实顺序/短路/inline54E7270，完整Entry与live仍分开 |
+| R2-2 P0 actualEntry context | Z:/gbr2 | 28BFC70→2C06B00来源/首次caller闭合；输入可读时直接补同query observer | narrow cached/source证据先行，不把current final当prestage |
+| R2-3 P0 supply eligibility | Z:/gbr3 | 逐ArRg2A956D0现成军力口及loss consumer依赖 | 正供给request真实资格缺口；不虚构post-supply current |
+| R2-4 P0 loss writer inputs | Z:/gbr4 | 2634880 admission、DATA/special原始字段与可完整计算的同输入chunk写回 | 已闭setter复用；完整应用与真实净人数分开，source先于实现 |
+| R2-5 P1 retained geometry | Z:/gbr5 | 已观测6F8/6FE和明确provenance进入retained constructor diagnostics消费 | 对实际当前combat的独立诊断；不补造历史entry/initiator或未来接战 |
+| R2-6 P1 holy-order release | Z:/gbr6 | 普通release原生树及可闭合typed command/provider/MCP | 不猜hire mode、不用Disband冒充release；提交ACK不升格employer/CUnit后态 |
+
+六owner已经启动；需要进一步source叶时以实际依赖补小线，不为64上限填槽或派安全审计。Root唯一source/Git integrator；owner在各自clean detached树记录测试、why、RED、artifact、commit、readiness和精确剩余，共享canonical/daily/weekly由Root合并。知识先落盘再施工，新native统一jobs4低优先级编译；每包验证完成即普通push，不等其它包或实机。open_kaishek对本轮ABI/DTO/native命令不覆盖，记not-applicable；有CK3脚本语义时再按实际子集预验。无旧测试重跑、无全EXE扫描/hash、无新策略猜测或理论安全机制。
+
+本次不执行CK3/SDK/attach/query/realpipe/UI/Steam/gameprocess/profile/save/cache/runtime prepare/stage/launch。新增自动游戏日与live0；5035/36524、resume1882、Oct5+377、G2 5/8、NW2 2/4、自然0和h9052/raw53265168仍为历史冻结。日/周保持滚动，此计划实际晚间登记，不倒填00:00。工作树登记与checkout回执在Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/lanes.json；第一批实际CI37305747276 GREEN直接复用。
