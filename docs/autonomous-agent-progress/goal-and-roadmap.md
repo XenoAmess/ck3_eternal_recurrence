@@ -1149,3 +1149,8 @@ R45 当前补录（2026-10-05T13:10:11+08:00）：4950 后新增 21 个实际正
 围城冻结3711同Siege486539314/guard184549452，C24279868/T55m/rem30720132、44.145%、B2883/G500/M85800/K0/D96432、ETA319估计、breach0/CanStartfalse；470仍Robert占领、G47/B0/SiegeNull。470首次完成日边界为前12日段ordinal12/raw53265000未占→53265024日域行移除/armyregular/war25→38，加独立同日occupation与h9020闭合，不把缺行当occupied或B0当全军伤亡；捕获专题21371892、双军与接管专题12ce5533已推。敌军只读battle新冻结main/day16@4893、未finalized/winnernone，defender新增16777766(owner32313)；宽2684→1342、resolvedAdv+3，仍仅remote observation primitive，不授Robert参战/整战结果或terrain。原current-person四域仍仅原5006资格，fullEntry/flush/reset与warwin/natural均未完成。
 
 **实机已交还用户**：Root于2026-10-05T07:22:36.507945UTC正常STOP自身R46/PID104164；07:22:48UTC／北京时间15:22:48确认managed47337 CLOSED0，最后h9052已保存。直到用户再次明确授权，不执行CK3 SDK、注入/attach、输入、窗口/进程操作、运行环境prepare/stage/build/launch或用户profile修改；只做不影响游玩的轻量文件/冻结源码后台工作。恢复入口见[用户接管与恢复交接](../handover/2026-10-05-ck3-user-session-and-autoplayer-resume.md)；实际恢复先fresh actor/episode/war/army/revision，禁止把这次冻结字段当用户玩完后的当前状态。5035剩余任务是3711实际到场/K验证、继续围城与战争目标；G2 5/8、NW2 2/4、natural0、percent_reporting_allowed=false保持。容量失败保留，Root用三个轻量文件消费者收口报告，不切模型、不重复服务或已通过检查。
+
+
+### 2026-10-05 晚间后台增量
+
+source49131256已推送：post-A/B、laterdirect、auxiliaryscratch、knight实际effectiveness Character context、holy-order当前战争资格，5个newnative tests与28真实fixture字节消费GREEN，均static-ready。2633340 conditional raised refresh随后已实现，九cachebyte已交付源码待newnative验收；helper291F0A0四族与retained实际Rules effect继续source-first施工。完整人物/Entry/fullmonthly loss/释放触发仍partial，新增游戏日0与5035冻结指标不变。详情及原生专题/receipt回链见[后台续行交接](../handover/2026-10-05-g2-background-successor.md)、[当天日报](daily/2026-10-05.md)、[W41](weekly/2026-W41.md)。游戏仍由用户使用，所有后台包均没有启动或连接CK3。

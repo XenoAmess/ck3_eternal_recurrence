@@ -372,3 +372,55 @@ The new post-A/B observer/consumer is now static-ready using the compiled produc
 qualified DLL已归档 `source96e4c6a6-person-holy-qualified-binaries/xar_ck3_bridge.dll`：9,691,648 bytes，SHA `ce030baa45956ffac50b43e3b1337b6b06c8407e9a38fe2ab110382d0c51ca41`，同档案保留5fixture EXE、实际JSON、CMakeCache与编译result。未注入或deploy。上一已推送loss milestone `02d187b2cf7df41393affe840992d26f2b715691` 官方CI `37313580089` SUCCESS；对应[CI日志](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37313580089)不能外推新commit已过CI。
 
 下一后台工作仍在做：已交付九cachebyte child源待Root采用/独立native验证；291F0A0 helper四族观测、2633340 conditional raised refresh及retained selected Rules真实effect值正在 source-first施工。这些都针对当前功能输入缺口，不派生理论安全审计，不用无paused状态当停止理由。新CK3启动/连接/SDK/真实pipe、UI/Steam、profile/save/cache/runtimeprepare/stage/deploy与游戏日全部0；历史5035保存日与R0046停点不变。日/周保持rolling，不倒填早会，不把幕后源码测试记成production-live。
+
+
+## Following nine-byte person cache, exact 1.20.0.3
+
+2026-10-05 background round 2 continuation. Reuse the newly closed `2949010` body and table from `person-scratch-census`, frozen CK3 1.20.0.3 / Steam25652598 EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. No new EXE bytes, full-file hash/scan, game/process/SDK/pipe/UI/Steam operation or native initialization is required.
+
+### Current receiver, lists, demand and exact arithmetic
+
+`28C4017` passes the current `QWORD[Character+1B0]` scratch to `2949010`. Unlike the earlier `28C3AE0` selection, this helper unconditionally selects `QWORD[scratch+258]` as its model; there is **no `model+8==Character` ownership branch or fallback-context selection** in this body. Its actual aggregate PropertyContainer is embedded at **model+78**: U16 key data+0, signed32 count+C (model84), signed Q64 value pointer+68 (modelE0). Reusing an earlier fallback-selected `raw_numeric_inputs.context` would therefore use the wrong model on an ownership mismatch. The minimal readonly observer copies this actual aggregate separately.
+
+The actual loop has nine occurrences, in jump-table order at `2949550`: **[22A,228,22B,229,225,22D,22C,226,227]**. The tenth table branch is not consumed by this0..8 loop. Every base occurrence uses source lower-bound lookup; a legitimate native absent key contributes0. Actual count/keys/values are preserved, without reordering or synthesizing values.
+
+The optional contribution family first reads `QWORD[scratch+278]` and its DWORD+28. Only magic **41495374** demands QWORD+20. If that pointer is nonnull, select QWORD[linked+238]; otherwise select the actual native **QWORD[5D1F7B8]** fallback. Demand DWORD[selected+38]; only magic **4744624F** admits definition keys. The caller's source has no null guard for scratch278 or the selected definition. An observer seeing a native null there reports an unavailable demanded operand; it does not manufacture a false family. Wrong first/second magic is a source-closed skipped family and demands no later fields.
+
+An admitted family reads exactly nine U16 definition keys at **312,314,316,318,31A,31C,31E,320,322**, in three triples. Each corresponding cache position wrap64-adds the aggregate lookup for its own key. **FFFF skips** that contribution. Duplicates remain positional, and a selected key equal to its position's base key contributes that value again. No positivity rule is added.
+
+Each final signed Q64 sum is truncated toward0 by **/100000**. The result is narrowed to **signed low32** before comparing against the actual instruction constants **-100 and100**; this is not a direct signed64 clamp. The clamped signed point is stored as its signed byte to `QWORD[scratch+310]+index`. Current cache bytes copied by an observer remain separate from these calculated results; stale or unprepared bytes are not treated as calculation evidence.
+
+```mermaid
+flowchart TD
+  C["Current requested Character1B0 scratch"] -->|native null| N["F60 no-op; no model/cache operands demanded"]
+  C -->|present| M["scratch258 actual model, no owner/fallback branch"]
+  M --> A["Actual aggregate model78/count84/valuesE0"]
+  A --> B["Nine base keys in native jump-table order"]
+  B --> G["scratch278 DWORD28 ==41495374"]
+  G -->|false| D["No definition-key additions"]
+  G -->|true| L["linked20+238 or actual slot5D1F7B8"]
+  L --> H["Selected definition DWORD38 ==4744624F"]
+  H -->|false| D
+  H -->|true| K["Nine positional U16 keys312..322; FFFF skip"]
+  K --> W["Wrap64-add each aggregate value"]
+  D --> Q["Each sum /100000 toward0 then signedlow32"]
+  W --> Q
+  Q --> P["Clamp to actual[-100,100] constants"]
+  P --> S["Native destination scratch310 signedbyte[9]"]
+  S -.-> F["Complete person / changed-stage source baselines remain unresolved"]
+  F -.-> E["Actual Entry caller/context association remains unresolved"]
+  classDef unknown stroke-dasharray:5 5;
+  class F,E unknown;
+```
+
+### Same-query and calculation boundary
+
+Add optional `raw_numeric_inputs.nine_cache_byte_inputs` to the existing explicitly requested current-person query. Reuse its actor/frame and emit the actual model aggregate, source gate operands and selected keys, and actual current nine signed bytes from scratch310. A null scratch is the existing F60 no-op; a missing demanded model/definition operand is partial. No native getters or helper2949010 run. Add a pure `compute_nine_cache_bytes_from_native_inputs_12003` adapter consuming these source operands; preserve distinct calculated sums, low32 points and clamped results. It does not write the cache or claim complete person, Entry, future forecast or callback execution.
+
+Source body/table pins and Mermaid are published before code in this appendix. `open_kaishek` is not applicable to this native ABI/DTO/integer-arithmetic package. Root owns canonical append, daily/weekly records, central build, eventual runtime adoption and master push.
+
+### Offline implementation qualification
+
+Isolated child commit `2306c381` implements this same-query optional raw leaf, exact fallback binding, independent actual model aggregate, strict optional normalizer and `compute_nine_cache_bytes_from_native_inputs_12003`. Observation `ready` concerns formula source inputs; a missing current cache pointer remains separately observed and does not manufacture cache bytes or block calculation of otherwise known inputs. One new production-normalizer→kernel Python case ran once: **1 passed in1.10s**. It checks exact base order, both false native guard families, fallback selection, positional duplicates/FFFF, wrap64-before-division, signedlow32-before-clamp, missing demanded operands, legal empty containers, native-null scratch and old absent/explicit-null producer compatibility. Receipt/log: `PYTHON-VALIDATION.json/.log` in `person-nine-cache-byte`.
+
+Native target/CTest `xar_ck3_12003_person_nine_cache_bytes_test` is implemented with eight production query/serializer samples and is **not yet compiled or run by this lane**. Its output is `${CMAKE_BINARY_DIR}/person_nine_cache_bytes_12003.json`; `replay_compiled_wire.py` consumes those genuine fixture bytes through the integrated normalizer and kernel, optionally also consuming the previous six auxiliary-scratch samples. Root owns the one central offline build. This is Python **static-ready**, native fixture execution pending, with no new live/game/Entry credit.
