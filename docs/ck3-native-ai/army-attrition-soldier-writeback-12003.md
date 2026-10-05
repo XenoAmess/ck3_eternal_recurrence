@@ -1214,3 +1214,73 @@ Four new serializer wires are planned under `first-removal-cleanup-wire`:
 first-cleanup, distinct-helper-resolution, partial-bucket and empty-queue.
 Native qualification remains pending the centrally owned build/CTest.
 No game operation or game-day advance is part of this package.
+
+## 2026-10-06 later helper2A98590 source ledger
+
+The next source-only packet is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/monthly-caller-effects/queue-consumer-source/first-removal-stage-ledger/later-manager-removal-stage/ROOT-DELIVERY.json`
+(3021bytes, SHA256 `86f69371c650ffa5ab3ad39f0044f11e0d4a81624ecb08c438f9a81561a7e453`).
+Its source/Mermaid, minimal standalone query plan and Oct6/W41 fields were
+sealed before any production change for this stage. The complete1043-byte
+main body was reused from generic v61 cache, with every direct control
+branch contained in that extent. Its entry.pdata is a fragment, rather than
+a newly verified whole-method extent. Necessary helper reads totaled1396
+new frozen bytes (header0/pdata540/unwind64/code792); prior1625-byte first
+stage cost remains separate. No new test/build/game operation occurred.
+
+The outer cleanup calls `2A98590(primaryManager, passedArmy+10)` at
+`2A97CB6`, reading that FullID after its earlier attachment/regiment/fleet
+calls. The helper resolves that argument again through actual Army storage
+or fallback, without a magic gate. Resolved Army+5C **exactly zero** returns
+without calls or stores, including no manager+C8 removal. Nonzero follows
+the finite rules below; these are not proof of the actual late caller frame.
+
+Positive entry count captures ordered group pointers at Army+50. Group+8
+contains16-byte DATA references, with persistentID+8/chunkIndex+C.
+The computed chunk address is explicitly **Regi+0x18+0x24*index** (the sealed
+source's plain24/36 constants denote decimal24/36). Valid Regi magic/FullID
+permits DATA byte+14=0 regardless of state+18; state4 then invokes the
+special persistent helper. Group+20 character references resolve without
+an extra character magic gate; a nonnull character+1B8 child receives
+byte+108=0 and DWORD+FC=-1. These are program-point stores, not an actual
+completed cleanup poststate.
+
+The subsequent release loop **re-reads** Army+5C/+50 after record effects.
+`24E9940(&pointerSlot)` has a complete130-byte body from three verified
+fragments. It clears/frees the group object's internal vectors and releases
+the38h allocation, with allocator/EBA050 callbacks still explicit. It
+**never stores null in the outer Army+50 slot**. Resolved Army+5C becomes0
+after ordinary returns; this is logical emptiness, not zeroed slot bytes.
+The manager+C8 scan uses the then-current list and removes **all** original
+argument matches with stable compaction, unlike first-top-helper swap-first.
+Complete191-byte `B105D0` independently performs stable all-DWORD removal.
+
+Complete471-byte `2C57020` returns unless persistent+138==4, resolves its
+owner, calls `2B9D2D0(character)` and, if true, `262BBC0(persistent)` for a
+signed32 count. It resolves/validates Domi and its owner, requires Domi+30's
+byte+17E, and adds count*100000 to Domi+48 with signed64 wrapping followed
+by a negative-result clamp to0. The main body does not write persistent
+owner fields+130/+12C. Those two predicate/count dependencies are the next
+bounded source frontier; no mutable native routine is invoked to invent
+their results and no permanent-null Domain schema claims completion.
+
+```mermaid
+flowchart TD
+  E[Explicit actual later Army FullID] --> R[Resolve helper receiver / fallback]
+  R --> Z{Army+5C exactly zero?}
+  Z -->|yes| X[No calls/stores; C8 unchanged]
+  Z -->|nonzero| P[Positive-count ordered DATA and character point stores]
+  P --> D[State4 persistent helper]
+  D -. predicate/count source frontier .-> Q[Domi+48 wrapping add and clamp]
+  P --> G[Re-read Army+5C/+50; release requests]
+  G -. allocator/EBA050 callbacks .-> C[Logical count0; outer slots not nulled]
+  C --> V[Then-current C8 stable all-match removal]
+  V --> X
+  X -. real late DB/virtual frame still required .-> L[Outer cleanup and next queued occurrence]
+```
+
+A current query may explicitly supply a hypothetical standalone helper-entry
+frame. It cannot stand in for the frame produced by earlier native cleanup
+calls. This packet is `research`; nonzero Domain/allocator boundaries and
+the enclosing late DB/virtual stage remain partial. Actual cleanup/removal,
+actual poststate and full monthly/lifecycle readiness remainfalse/null.
