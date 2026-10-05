@@ -10,6 +10,7 @@ import uuid
 
 from ..replenishment_numeric import project_observed_replenishment_v1
 from .version_identity import require_exact_native_build
+from .army_loss_allocation_projection import project_observed_army_loss_requests
 
 from .driver import (
     BridgeUnavailableError,
@@ -4491,6 +4492,7 @@ class GameplayBridgeService:
             "scope_army_ids": scope_ids,
             "army_strengths": selected_rows,
             "same_input_replenishment_v1": project_observed_replenishment_v1(selected_rows),
+            "loss_allocation_requests_v1": project_observed_army_loss_requests(selected_rows),
         }
 
     def query_campaign_root_context_v1(

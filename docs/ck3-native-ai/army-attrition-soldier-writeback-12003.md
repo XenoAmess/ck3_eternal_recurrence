@@ -274,3 +274,37 @@ flowchart LR
 现regiment_strengths的原数组次序/current及同GDbo signed+2A0 type tier可复用。逐军团2A956D0、真正供给写回后的阶段输入、2634880 skip和2657EA0..2657F0E的110B setter仍是应用投影的具体剩余入口；不能用预算直接预测最终扣兵。外置纯request candidate尚未执行、导入、编译或测试，状态只research/未验证候选。
 
 外置`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/attrition-loss-model/ROOT-DELIVERY.json`，3245 B / SHA `1452b95cbf79c0351fba537309d31dd0603609f69b8ad23d6018ded81e9b59f1`，含源树与input合同。源知新增，游戏/SDK/日期及live信用新增0；5035冻结历史不代表用户当前实机。
+
+### 2026-10-05：交接后纯整数请求 consumer 已接入生产查询
+
+本增量遵守用户重新独占 CK3 的指令，仅离线施工；没有启动、attach、查询或操作任何真实 CK3/Steam/窗口，也没有 native 构建或新增游戏日。原 source-ready 外置候选已转为 `ck3_autonomous_player/src/xar_autoplayer/bridge/army_loss_allocation_projection.py`，并由 `GameplayBridgeService.query_army_strengths` 在既有返回中增加独立 `loss_allocation_requests_v1`。原 `army_strengths` native 字段保持原样，派生值不写回 native DTO；不增加第二次查询。
+
+consumer 按原 `regiment_strengths[]` 次序复用 current 与可观测 signed `siege_tier`，以及 `loss_application_inputs_v1` 的真实聚合/预算。每个请求保留当行旧 current、remaining budget/eligible total、signed32 IMUL 低32结果、IDIV toward0 的整数 q 与 signed64 `q*100000` writer 参数；合资格零人数行仍生成零请求。preferred 初始化超额与循环未分完的 budget 是两个独立值；仅前者传 residual，不能将 whole budget 或 writer 实际跳过量当作 residual。
+
+纯 typed API `project_native_loss_sequence` 接收各阶段 `LossAllocationInputs`，顺序固定为 supply preferred → supply residual(flags2) → post-supply siege+raid preferred → post-preferred residual(flags0)。调用者必须提供对应阶段真实 current、筛选行与 total；不得靠减去上一阶段请求推造后态。siege/raid 保留供给写回前产生的两个原预算，之后相加并保留 signed32 算术。
+
+当前 MCP adapter 的可执行范围明确受现有观测输入约束：当 readonly `current_supply_loss_budget=0` 时，可用当前 stored rows 投影**条件性的** siege/raid preferred 请求；其 overflow=0 时四 pass 的全部请求可用。供给预算正值时，逐行 `2A956D0` 与实际 post-supply current 尚缺，返回明确 missing inputs；siege/raid preferred overflow 正值时缺实际 post-preferred residual rows，同样不拿早期 whole/current 代替。readonly budget 本身不是 updater 执行结果，也不预测下次月结。
+
+请求数学与生产 Python 接线为 **static-ready**。`writer_requests_ready` 只表示当前条件输入足够复现请求；`applied_loss_ready=false`、`applied_soldier_loss=null` 保留应用层边界。没有新 paused artifact，不能升级为新 production-live primitive/loop，也不能用本模型归因历史 budget28 与净−29。
+
+唯一针对本增量的离线验证：`Z:/ck3_mod_rewrite/tools/.venv/Scripts/python.exe ck3_autonomous_player/tests/unit/test_army_loss_allocation_projection.py -v`，6 cases GREEN。覆盖实际 service query 接线/原字段保真、stored order 与零 writer、显式阶段输入及 overflow、正供给缺口、residual 不能复用早期帧、signed32 乘法溢出及负数 toward0、不可观测 tier 不按单位名猜值。service fixture 是纯内存 subclass，没有 native endpoint、进程或游戏调用。可核验 stdout/receipt 在 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-successor-attrition/focused-test-output.txt` 与 `focused-test-receipt.json`；纯数值域不使用 Paradox parser/runtime，`open_kaishek` 预验为 not-applicable。
+
+### 2026-10-05：最终 chunk setter 的 110 B 完整叶闭合（后台 source）
+
+并行 source owner 仅对冻结 exact 1.20.0.3 副本读取 `[2657EA0,2657F0E)` 110 B，SHA `8101e3c101bb81cb321d1beb721bbddc91b47f863750d3aa4a3881a2256bbcac` 与既有 pin 相符；复用 EXE SHA `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`，没有全 EXE 读取/扫描/hash。该完整叶没有 callee 或外跳；PE 映射窄读另计 400 B，不混入代码窗口大小。
+
+`2634374/2634467 ->2657EA0(chunk RCX,int32 newCurrent EDX)` 在 `2657EA3` 直接写 chunk+4；signed newCurrent<maximum+0 时立即返回，普通扣损产生的低于 maximum 结果就是 writer 传入的整数。setter 没有舍入、fraction/carry、state+18 读取或上下界 clamp；负参数也不能擅自截成 0。其余分支仅在 newCurrent>=maximum、chunk+10==-1、byte+14==0 时解析 chunk+8 FullID（table `5D1EB68` / fallback `5D1EB58`）；owner+138==0 且 owner+118 对象 magic+38 不等于 `0x4744624F` 时，`2657F0A` 清零 chunk 首 8 B，即 maximum/current 同时归 0。零请求在 current 已等于 maximum 时也可能进入这条原始谓词分支，不能只建模第一条 store；这些字段的生命周期名称未证，不推断特殊单位类别。
+
+完整 source 与 receipt：`Z:/ck3_mod_rewrite_process_assets/g2-background-20261005/attrition-setter-research/ROOT-DELIVERY.json`（SHA `d784dd25e9c051d2b649d26fb488c8ae4ef4ecafd53944fdbaaf00fd1aa0286b`），`SOURCE-SETTER.md`（SHA `bc5315a8a26ba56c5e54064ee6540111a615fe93ac556c291f2c8d773083c2a7`）。此前“setter 内部未知 clamp/carry”的具体 gap 已闭合；writer-skip `2634880`、逐 ArRg `2A956D0`、完整 DATA/特殊分支原始字段以及真实 post-supply/post-preferred current 仍是最终全链应用投影的独立输入。已有 DATA 的 current/max/state 不包含本叶全部 owner/association 字段，不能将“完整 DATA 观测”误称为全部 setter 输入。
+
+此 source 叶仍为 **research / source-closed**；纯 request consumer 的 static-ready 资格独立保持，继续只报告 requests。新增真实 CK3/SDK/游戏日/UI/Steam/native 构建及 setter 实机验收均 0，不把当前预算或历史净减员当已应用扣兵。
+
+```mermaid
+flowchart LR
+  A[writer EDX integer newCurrent] --> B[2657EA3 store chunk+4]
+  B --> C{signed newCurrent below maximum}
+  C -->|yes| D[return exact stored current]
+  C -->|no| E[raw association / flag / owner / magic predicates]
+  E --> F[retain store or clear maximum and current]
+  U[unproved lifecycle names] -. unknown .-> E
+```
