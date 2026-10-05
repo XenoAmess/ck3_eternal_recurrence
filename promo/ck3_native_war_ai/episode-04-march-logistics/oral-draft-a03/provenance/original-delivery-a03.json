@@ -1,0 +1,198 @@
+{
+  "schema": "xar.e04.oral-delivery.v1",
+  "created_utc": "2026-10-05T13:02:45.188001+00:00",
+  "status": "COMPLETE_BOUNDED_EXTERNAL_DRAFT",
+  "directory": "e04-oral-draft-a03",
+  "files": [
+    {
+      "path": "FINITE-REVIEW-a01.json",
+      "bytes": 3921,
+      "sha256": "bc487c8c6a069dfc5704dcbf06933af9a1323209fc803ed324c9a65c6f849dbd"
+    },
+    {
+      "path": "PROCESS-HISTORY-a01.json",
+      "bytes": 1154,
+      "sha256": "9ede1ad1a4975acdac6a4b04b6eb50d0be714559cd0b497c4cc788e80d59d0a7"
+    },
+    {
+      "path": "READ-SOURCE-PINS-a01.json",
+      "bytes": 2435,
+      "sha256": "5b18bf4006a28227cb9dc69e0f4bdc6ec165a3cd06a4a4569af8771b289556c1"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2330,
+      "sha256": "6d8c108f123fb7816c28b0c7cd6f2828a01d55e3737f69789a7216b7e9bb211d"
+    },
+    {
+      "path": "SPLIT-REVIEW-SOURCE-PIN-a01.json",
+      "bytes": 318,
+      "sha256": "116ddd57dafc2d797c45a0d5e4ca0e7a1902cf85ae796aedde136ded32fe2fbe"
+    },
+    {
+      "path": "assemble_assets_a01.py",
+      "bytes": 20504,
+      "sha256": "efd437e9aa27c6b513d4898bf638be3c11138b3c1616cf8b611025341033e79a"
+    },
+    {
+      "path": "assemble_assets_a02.py",
+      "bytes": 972,
+      "sha256": "6d89bdc7b5eb33e23cc9b049282eaecad0c686f64eed1cffbc3d30e9dccb70b1"
+    },
+    {
+      "path": "assemble_narration_a01.py",
+      "bytes": 15098,
+      "sha256": "8d2b37ce4a5be0a72c3cb5282735fd7282dcd05add511edb98989713e4a7fafa"
+    },
+    {
+      "path": "claim-ledger-a03.json",
+      "bytes": 62466,
+      "sha256": "6cb9a93476cb5f9fc70221b6969711db2ba57c691ebb411c1f3f8899b428477a"
+    },
+    {
+      "path": "freeze_review_a01.py",
+      "bytes": 9011,
+      "sha256": "91d7e7fc92dad810b6e27abfad6d7503b35a7c611c693ea7faeae0872839d28d"
+    },
+    {
+      "path": "inspect_summary_shapes_a01.py",
+      "bytes": 852,
+      "sha256": "402dfd4e161c6c01af28a647518baf4920626e2b4f8c9b5507fcd8bc45b05460"
+    },
+    {
+      "path": "knowledge-code-references-a03.md",
+      "bytes": 10753,
+      "sha256": "33d5480441e8b4f8b7dd0b1d5c61589273251dd2725b5d06f1b897e42bbc282f"
+    },
+    {
+      "path": "outline-and-shot-needs-a03.md",
+      "bytes": 7456,
+      "sha256": "f443cf4bb3035d3d2ac6b8e4d8f47cdda68e23a7c329dcb45516660c762db012"
+    },
+    {
+      "path": "read_sources_a01.py",
+      "bytes": 2173,
+      "sha256": "95cd618d8dd8cf74cc2f3597026291317b6b78f1d050b5073c5b15a45db15ece"
+    },
+    {
+      "path": "read_split_checks_a01.py",
+      "bytes": 1011,
+      "sha256": "f7143dc592aa47bbc0822af1b62395a84f43e09d2ac3e80969fbd0524da9c5ce"
+    },
+    {
+      "path": "six-chapter-narration-a03.md",
+      "bytes": 25501,
+      "sha256": "220cd7d85f995b62609d4ce3fd71760fc55748f80ab252d8725579fc04134e83"
+    },
+    {
+      "path": "sources/r0171-ui-eta-observation.json",
+      "bytes": 1215,
+      "sha256": "786ecc14f6bca5adfe74ebae69cd8734aaf66c6f981a9a2329a57b70774433e1"
+    },
+    {
+      "path": "sources/r0173-half-split-facts.json",
+      "bytes": 10242,
+      "sha256": "612fd337eb4539fc4992ddace98d974a01a075cb931c04ace9a67726e104b6fd"
+    },
+    {
+      "path": "wordcount-budget-a03.json",
+      "bytes": 3239,
+      "sha256": "1aaf7d10b9bb20336c0372ebdc6fd2530063a86918a04bd99a97e3debf081b10"
+    }
+  ],
+  "main_deliverables": [
+    "six-chapter-narration-a03.md",
+    "outline-and-shot-needs-a03.md",
+    "knowledge-code-references-a03.md",
+    "claim-ledger-a03.json",
+    "wordcount-budget-a03.json"
+  ],
+  "spoken_paragraphs": 69,
+  "Chinese_characters": 6907,
+  "shot_needs": 17,
+  "estimated_script_read_minutes": [
+    26.57,
+    32.89
+  ],
+  "read_rate_assumption_CJK_per_min": [
+    210,
+    260
+  ],
+  "reference_chapter_minutes": [
+    2,
+    6,
+    7,
+    6,
+    8,
+    3
+  ],
+  "delivery_range_minutes": [
+    20,
+    40
+  ],
+  "actual_audio_duration_seconds": null,
+  "actual_video_duration_seconds": null,
+  "source_commits": {
+    "runtime": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+    "TERM": "accc385ecb4086f8912cd9492f95e049c8065f7d",
+    "R0172": "3e2737b5909616cd2ab301da59352250410bafb8"
+  },
+  "R0173_master_integration": "pending_at_this_cut",
+  "finite_review": "FINITE-REVIEW-a01.json",
+  "finite_review_checks": 29,
+  "remaining_pending": [
+    {
+      "id": "P-ABC",
+      "status": "pending",
+      "needs": "Three actual comparable qualified same-start runs, result table and any winner"
+    },
+    {
+      "id": "P-STARVATION",
+      "status": "pending",
+      "needs": "William actual threshold crossing, state and integer writeback, same-window loss/refill/events"
+    },
+    {
+      "id": "P-R0173-RECOVERY",
+      "status": "pending",
+      "needs": "Separated actual positions, fresh conditions and successful stock/count update"
+    },
+    {
+      "id": "P-APPLIED-LEDGER",
+      "status": "pending",
+      "needs": "Actual applied loss/refill execution and payment ledger; endpoint net values alone insufficient"
+    },
+    {
+      "id": "P-MERGE-UPPERCLAMP",
+      "status": "pending",
+      "needs": "Actual weightedmerge preclamp above resultingcapacity and actual clamp output"
+    },
+    {
+      "id": "P-LOCK-BOUNDARY",
+      "status": "pending",
+      "needs": "Actual loadedcutoff and exact50percent live behavior"
+    },
+    {
+      "id": "P-MEDIA",
+      "status": "pending",
+      "needs": "Sentencefreeze/TTS/actualtiming/encodedclean spans/full1xreview/signoff; none granted here"
+    }
+  ],
+  "source_summaries_only_no_raw_media_binary_copy": true,
+  "prohibited_actions_actual_counts": {
+    "SDK": 0,
+    "UI": 0,
+    "game": 0,
+    "provider": 0,
+    "TTS": 0,
+    "media": 0,
+    "security": 0,
+    "taskbus": 0,
+    "Git": 0,
+    "main_or_Cf_mutation": 0
+  },
+  "ABC_winner": null,
+  "clean_span_credit": false,
+  "human_full1x_review": false,
+  "signoff": false,
+  "overall_research_completion_percent": null
+}

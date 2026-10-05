@@ -1,0 +1,183 @@
+{
+  "schema": "xar.e04.oral-late-qualification-source-pins.v1",
+  "created_utc": "2026-10-05T14:00:49.876299+00:00",
+  "source_commit": "700b6917ad7ee1a9ca7bcb930b114f8bd4f11498",
+  "OfficialCI": {
+    "run_id": 37318647289,
+    "status": "completed/success",
+    "authority": "Refill official integration terminal receipt; no new Git or CI query in this package"
+  },
+  "source_files": [
+    {
+      "repo_relative_path": "docs/ck3-native-ai/army-r0173-split-rest-qualification-12003.md",
+      "public_commit_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/700b6917ad7ee1a9ca7bcb930b114f8bd4f11498/docs/ck3-native-ai/army-r0173-split-rest-qualification-12003.md",
+      "bytes": 5650,
+      "sha256": "7393ef0d024ff68dbe8ab771937ae3fa91d3a1ad2a0bf0443fa149708a07485f",
+      "local_read_scope": "Authorized summary/prose/index only; no original game packet or media read"
+    },
+    {
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0173-split-rest/index.json",
+      "public_commit_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/blob/700b6917ad7ee1a9ca7bcb930b114f8bd4f11498/promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0173-split-rest/index.json",
+      "bytes": 47381,
+      "sha256": "4abb9de818d1dbf1dd7ad4e572bb90cadfff1b3d9bedf998af7b9133375eded8",
+      "local_read_scope": "Authorized summary/prose/index only; no original game packet or media read"
+    }
+  ],
+  "source_verifier_repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0173-split-rest/review_frozen.py",
+  "source_verifier_executed_by_this_lane": false,
+  "original_body_ledger_rewritten": false,
+  "original14candidatefiles_exact_copied": true,
+  "original_body_cut": "Day44samepaused actual half split3337/3342 remains unchanged historical narration.",
+  "subject": {
+    "actor_character_id": 33388,
+    "runtime_source_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+    "game_version_binding": "exact1.20.0.3 external Root protocol/build binding",
+    "payload_game_version": null,
+    "payload_executable_sha256": null
+  },
+  "protocol": {
+    "original_start_raw": 53147376,
+    "absolute_end_raw": 53149536,
+    "max_actual_days": 90,
+    "loaded_whole_raw": 53148432,
+    "used_before_R0173": 44,
+    "latest_raw": 53149200,
+    "original_days_used": 76,
+    "remaining_original_days": 14,
+    "budget_reset": false
+  },
+  "observed_windows": [
+    {
+      "endpoints": [
+        "q01",
+        "q02"
+      ],
+      "original_days": [
+        45,
+        47
+      ],
+      "claim": "Main negative stock110.37716 to106.13988; actual update mark originalday46; no troop or full DATA changes"
+    },
+    {
+      "endpoints": [
+        "q03",
+        "q04"
+      ],
+      "original_days": [
+        49,
+        50
+      ],
+      "claim": "Both halves stationary at distinct2174/2327 and monthly+20 atday50; stocks unchanged across this arrival window"
+    },
+    {
+      "endpoints": [
+        "q10",
+        "q11"
+      ],
+      "original_days": [
+        64,
+        66
+      ],
+      "claim": "Child overcap110.37716 tocapacity100, +188 markday65; not positive recovery or soldier gain"
+    },
+    {
+      "endpoints": [
+        "q13",
+        "q14"
+      ],
+      "original_days": [
+        70,
+        72
+      ],
+      "claim": "Same27FullIDs/37DATA keys and max; six DATA integer gains total+7/+3, stocks and supply anchors unchanged; known calendar consistency is not producer-PC attribution"
+    },
+    {
+      "endpoints": [
+        "q15",
+        "q16"
+      ],
+      "original_days": [
+        74,
+        76
+      ],
+      "claim": "Main106.13988 to126.13988 with monthly+20/cap300 and new update markday76; full27/37 rows unchanged; child atcap100 unchanged"
+    }
+  ],
+  "day50_site": {
+    "Main0": {
+      "province": 2174,
+      "usage_soldiers": 3337,
+      "local_limit_soldiers": 4960,
+      "monthly_supply": 20,
+      "commander_character_id": 27357
+    },
+    "child204_native199": {
+      "province": 2327,
+      "usage_soldiers": 3342,
+      "local_limit_soldiers": 4160,
+      "monthly_supply": 20,
+      "commander_character_id": 33388
+    },
+    "stationary_regular": true,
+    "route_empty": true,
+    "stocks_changed_across49to50": false,
+    "commander_scope": "Only this same-paused+50 frame; not an independent reading at+72/+76"
+  },
+  "integer_window_70to72": {
+    "Main_current_before": 3337,
+    "Main_current_after": 3344,
+    "Main_net": 7,
+    "child_current_before": 3342,
+    "child_current_after": 3345,
+    "child_net": 3,
+    "DATA_integer_gain_rows": 6,
+    "full_actual_ID_count": 27,
+    "full_DATA_key_count": 37,
+    "max_IDs_unchanged": true,
+    "stock_and_supply_anchors_unchanged": true,
+    "known_calendar_consistency_is_producer_call_stack_proof": false
+  },
+  "stock_window_74to76": {
+    "Main_stock_raw_before": 10613988,
+    "Main_stock_raw_after": 12613988,
+    "Main_delta_raw": 2000000,
+    "scale": 100000,
+    "Main_capacity_raw": 30000000,
+    "Main_current_monthly_raw": 2000000,
+    "Main_success_update_raw": 53149200,
+    "child_stock_raw_before": 10000000,
+    "child_stock_raw_after": 10000000,
+    "full27actual37DATA_rows_unchanged": true,
+    "same_window_as_integer_gain": false
+  },
+  "save_roles": {
+    "ABC_unsplit_whole_sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a",
+    "qualification_split_backup_sha256": "c43f71c4973e035e04fb44609ba86f04407beb7af1a775191e09fddb9e943b66",
+    "qualified_split_is_ABC_common_start": false,
+    "bytes_read_copied_or_rehashed": 0
+  },
+  "world_control": {
+    "sites2174_2327_in_war_objective_rows": false,
+    "continuous_occupation_controller_garrison_unchanged_proven": false,
+    "unread_fields": null,
+    "old_STOP_receipts_relabelled_success": false
+  },
+  "credits": {
+    "ABC_completed_arms": 0,
+    "film": 0,
+    "clean_span": 0,
+    "human_signoff": 0
+  },
+  "pending": [
+    "ABC common whole checkpoint choice and fresh live rebind for each arm",
+    "C actual distinct route validation",
+    "producer/applied refill or death ledger and weighted merge clamp",
+    "encoded media scope, clean span, final film and actual human review"
+  ],
+  "media": {
+    "raw_or_image_read": false,
+    "new_timecode_binding": null,
+    "clean_span": null,
+    "human_signoff": false
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "schema": "xar.e04.text-only-budget.v1",
+  "created_utc": "2026-10-05T12:59:44.472925+00:00",
+  "input": "six-chapter-narration-a03.md",
+  "numbered_spoken_paragraphs": 69,
+  "counting_rule": "Only C01-01..C06-10 numbered spoken paragraphs; headings, IDs, sourceledger, shotnotes and pendingblocks excluded.",
+  "Chinese_characters": 6907,
+  "nonwhitespace_characters": 8391,
+  "reference_minutes": 32,
+  "delivery_range_minutes": [
+    20,
+    40
+  ],
+  "editor_target_minutes": [
+    30,
+    35
+  ],
+  "assumed_read_rate_CJK_per_min": [
+    210,
+    260
+  ],
+  "estimated_script_read_minutes": [
+    26.57,
+    32.89
+  ],
+  "estimate_is_text_only": true,
+  "actual_audio_duration_seconds": null,
+  "actual_video_duration_seconds": null,
+  "chapters": [
+    {
+      "chapter": "E4-01",
+      "spoken_paragraph_count": 8,
+      "Chinese_characters": 759,
+      "nonwhitespace_characters": 850,
+      "numeric_groups": 5,
+      "reference_minutes": 2,
+      "estimated_read_minutes_at_260_CJK_per_min": 2.92,
+      "estimated_read_minutes_at_210_CJK_per_min": 3.61
+    },
+    {
+      "chapter": "E4-02",
+      "spoken_paragraph_count": 12,
+      "Chinese_characters": 1238,
+      "nonwhitespace_characters": 1607,
+      "numeric_groups": 56,
+      "reference_minutes": 6,
+      "estimated_read_minutes_at_260_CJK_per_min": 4.76,
+      "estimated_read_minutes_at_210_CJK_per_min": 5.9
+    },
+    {
+      "chapter": "E4-03",
+      "spoken_paragraph_count": 12,
+      "Chinese_characters": 1225,
+      "nonwhitespace_characters": 1577,
+      "numeric_groups": 55,
+      "reference_minutes": 7,
+      "estimated_read_minutes_at_260_CJK_per_min": 4.71,
+      "estimated_read_minutes_at_210_CJK_per_min": 5.83
+    },
+    {
+      "chapter": "E4-04",
+      "spoken_paragraph_count": 11,
+      "Chinese_characters": 1108,
+      "nonwhitespace_characters": 1361,
+      "numeric_groups": 40,
+      "reference_minutes": 6,
+      "estimated_read_minutes_at_260_CJK_per_min": 4.26,
+      "estimated_read_minutes_at_210_CJK_per_min": 5.28
+    },
+    {
+      "chapter": "E4-05",
+      "spoken_paragraph_count": 16,
+      "Chinese_characters": 1549,
+      "nonwhitespace_characters": 1865,
+      "numeric_groups": 33,
+      "reference_minutes": 8,
+      "estimated_read_minutes_at_260_CJK_per_min": 5.96,
+      "estimated_read_minutes_at_210_CJK_per_min": 7.38
+    },
+    {
+      "chapter": "E4-06",
+      "spoken_paragraph_count": 10,
+      "Chinese_characters": 1028,
+      "nonwhitespace_characters": 1131,
+      "numeric_groups": 0,
+      "reference_minutes": 3,
+      "estimated_read_minutes_at_260_CJK_per_min": 3.95,
+      "estimated_read_minutes_at_210_CJK_per_min": 4.9
+    }
+  ],
+  "limits": [
+    "210–260 Chinesecharacters/min is an editorial assumption, not an observed actor/TTS rate.",
+    "Digits, English run labels, decimal readings, pauses and synchronized genuine footage change actual time.",
+    "Pending ABC/starvation/result blocks are excluded and do not represent recorded content.",
+    "Reference32min and perchapter allocations are layout budgets, not measured clip durations.",
+    "Actual20–40min delivery must be verified after sentencefreeze, real audio and usable motion footage; no filler to meet a budget."
+  ]
+}

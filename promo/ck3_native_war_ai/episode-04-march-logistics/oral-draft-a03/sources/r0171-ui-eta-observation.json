@@ -1,0 +1,30 @@
+{
+  "schema": "xar.e04.curated-original-UI-observation.v1",
+  "authority": "Root direct original image",
+  "observed_at": "2026-10-05T10:53:47.900541+00:00",
+  "source_summary_pin": {
+    "source_name": "r0171-full-route-ETA-original-review.json",
+    "bytes": 820,
+    "sha256": "2acf4c77db2c75fbb4079c3036a1a62ee280d165b4a1f7f92d24f6894738c672"
+  },
+  "original_source_image_pin": {
+    "bytes": 3144046,
+    "sha256": "df13de2268117f1bbb52c240a98a6585183e1a13d26eea090bcd87c71fee1ca8"
+  },
+  "original_dimensions": [
+    1920,
+    1080
+  ],
+  "observed_date_text": "公元1067年1月20日",
+  "army_total_text": "6746",
+  "supply_text": "116/300",
+  "commander_text": "伯爵理查",
+  "tooltip_text": "抵达利雪，剩余43天（1067年3月4日）",
+  "scope": "Native Chinese GUI full-route estimate only. First-edge getter separately30 days. No arrival/day advancement/entire film review claim.",
+  "image_or_media_copied": false,
+  "new_image_read": false,
+  "encoded_binding": null,
+  "clean_span": null,
+  "human_1x_signoff": false,
+  "limits": "Root original-UI observation only; 43 full-route estimated days and 30 native first-edge days are separate scopes. No subtraction-derived onward duration."
+}

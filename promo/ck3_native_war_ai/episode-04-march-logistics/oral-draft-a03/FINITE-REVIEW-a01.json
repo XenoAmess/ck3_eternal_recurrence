@@ -1,0 +1,157 @@
+{
+  "schema": "xar.e04.oral-finite-review.v1",
+  "created_utc": "2026-10-05T13:02:45.151532+00:00",
+  "status": "PASS",
+  "checks": [
+    {
+      "check": "69spoken_IDs_match_69claim_rows",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "claim_text_exactly_matches_numbered_paragraphs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "all_claim_source_keys_defined",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "all_catalog_citations_public_commit_or_resolved_package_relative",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "knowledge-code-references-a03.md_reference_labels_resolved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "knowledge-code-references-a03.md_inline_links_resolved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "knowledge-code-references-a03.md_no_machine_absolute_knowledge_links",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "outline-and-shot-needs-a03.md_reference_labels_resolved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "outline-and-shot-needs-a03.md_inline_links_resolved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "outline-and-shot-needs-a03.md_no_machine_absolute_knowledge_links",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "README.md_reference_labels_resolved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "README.md_inline_links_resolved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "README.md_no_machine_absolute_knowledge_links",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "CJK_count_matches_budget",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "estimate_is_unmeasured_and_within_delivery_range",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "split_actual_IDs_and_native_IDs",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "split_current_and_max_totals",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "split_complete_27actual_37DATA",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "split_actual_IDs_disjoint",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "split_both_stocks_and_independent_capacities",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "split_child_overcap_not_clamped",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "split_date_relative_baseline_44days",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "split_all_actual_cohort_checks_true",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "split_samepaused0days",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "split_clock_history_and_unknown_commander_preserved",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "no_winner_or_film_credit",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "a02_prior_artifacts_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "authorized_summary_prose_index_source_pins_unchanged",
+      "passed": true,
+      "detail": null
+    },
+    {
+      "check": "authorized_split_summary_pin_unchanged",
+      "passed": true,
+      "detail": null
+    }
+  ],
+  "check_count": 29,
+  "python_executable": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "scope": "Text IDs/relative refs/curated summary arithmetic/unchanged authorized text pins only; not product, runtime or media acceptance.",
+  "SDK_UI_game_provider_media_Git_security_taskbus_calls": 0
+}

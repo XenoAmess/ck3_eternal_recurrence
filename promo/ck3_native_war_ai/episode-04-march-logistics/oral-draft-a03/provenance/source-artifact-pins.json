@@ -1,0 +1,81 @@
+{
+  "schema": "xar.e04.oral-portable-source-pins.v1",
+  "original_delivery": {
+    "path": "provenance/original-delivery-a03.json",
+    "bytes": 5813,
+    "sha256": "beae9164398e03f67d115217768923109d1fa6f2289ed923ad8bb06ba7c8fd9f"
+  },
+  "exact_projected_artifacts": [
+    {
+      "package_relative_path": "README.md",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/oral-draft-a03/README.md",
+      "bytes": 2330,
+      "sha256": "6d8c108f123fb7816c28b0c7cd6f2828a01d55e3737f69789a7216b7e9bb211d",
+      "projection": "exact original frozen bytes"
+    },
+    {
+      "package_relative_path": "six-chapter-narration-a03.md",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/oral-draft-a03/six-chapter-narration-a03.md",
+      "bytes": 25501,
+      "sha256": "220cd7d85f995b62609d4ce3fd71760fc55748f80ab252d8725579fc04134e83",
+      "projection": "exact original frozen bytes"
+    },
+    {
+      "package_relative_path": "outline-and-shot-needs-a03.md",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/oral-draft-a03/outline-and-shot-needs-a03.md",
+      "bytes": 7456,
+      "sha256": "f443cf4bb3035d3d2ac6b8e4d8f47cdda68e23a7c329dcb45516660c762db012",
+      "projection": "exact original frozen bytes"
+    },
+    {
+      "package_relative_path": "knowledge-code-references-a03.md",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/oral-draft-a03/knowledge-code-references-a03.md",
+      "bytes": 10753,
+      "sha256": "33d5480441e8b4f8b7dd0b1d5c61589273251dd2725b5d06f1b897e42bbc282f",
+      "projection": "exact original frozen bytes"
+    },
+    {
+      "package_relative_path": "claim-ledger-a03.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/oral-draft-a03/claim-ledger-a03.json",
+      "bytes": 62466,
+      "sha256": "6cb9a93476cb5f9fc70221b6969711db2ba57c691ebb411c1f3f8899b428477a",
+      "projection": "exact original frozen bytes"
+    },
+    {
+      "package_relative_path": "wordcount-budget-a03.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/oral-draft-a03/wordcount-budget-a03.json",
+      "bytes": 3239,
+      "sha256": "1aaf7d10b9bb20336c0372ebdc6fd2530063a86918a04bd99a97e3debf081b10",
+      "projection": "exact original frozen bytes"
+    },
+    {
+      "package_relative_path": "sources/r0173-half-split-facts.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/oral-draft-a03/sources/r0173-half-split-facts.json",
+      "bytes": 10242,
+      "sha256": "612fd337eb4539fc4992ddace98d974a01a075cb931c04ace9a67726e104b6fd",
+      "projection": "exact original frozen bytes"
+    },
+    {
+      "package_relative_path": "sources/r0171-ui-eta-observation.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/oral-draft-a03/sources/r0171-ui-eta-observation.json",
+      "bytes": 1215,
+      "sha256": "786ecc14f6bca5adfe74ebae69cd8734aaf66c6f981a9a2329a57b70774433e1",
+      "projection": "exact original frozen bytes"
+    },
+    {
+      "package_relative_path": "FINITE-REVIEW-a01.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/oral-draft-a03/FINITE-REVIEW-a01.json",
+      "bytes": 3921,
+      "sha256": "bc487c8c6a069dfc5704dcbf06933af9a1323209fc803ed324c9a65c6f849dbd",
+      "projection": "exact original frozen bytes"
+    }
+  ],
+  "original_manifest_scope": "Original external a03 full assets; this projection intentionally carries reading artifacts, not its machine-dependent construction scripts.",
+  "cut": "R0173 day44 samepaused actual half-split; later day50/72/76 research is not substituted.",
+  "late_research_formal_source": "pending",
+  "source_commits": {
+    "runtime": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+    "TERM": "accc385ecb4086f8912cd9492f95e049c8065f7d",
+    "R0172": "3e2737b5909616cd2ab301da59352250410bafb8"
+  }
+}

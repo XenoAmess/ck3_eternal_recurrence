@@ -1,0 +1,2 @@
+# Preserve only this frozen oral draft package and qualification appendices.
+* -text whitespace=trailing-space,space-before-tab,cr-at-eol
