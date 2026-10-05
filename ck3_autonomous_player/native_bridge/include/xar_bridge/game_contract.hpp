@@ -285,6 +285,26 @@ struct ArmyLossApplicationInputsV1 {
                          const ArmyLossApplicationInputsV1 &) = default;
 };
 
+// Exact .3 operands of24E4D10 admission and24E4FA0 post-stock component.
+// This is a readonly current frame; no updater or loss writer is called.
+struct ArmyMonthlyLossBudgetInputsV1 {
+  bool available = false;
+  std::string unavailable_reason;
+  std::optional<std::int32_t> unit_native_170_raw;
+  std::optional<bool> native_unit_in_combat;
+  std::optional<bool> native_unit_gathering;
+  std::optional<std::int32_t> army_gathering_count_raw;
+  std::optional<std::vector<std::int32_t>> loaded_supply_state_levels;
+  std::optional<std::vector<std::int64_t>> loaded_supply_state_fractions_raw;
+  std::optional<bool> native_fleet_supply_loss_suppressed;
+  std::optional<bool> commander_valid;
+  std::optional<std::uint16_t> commander_supply_modifier_id;
+  std::optional<std::int64_t> commander_supply_modifier_raw;
+
+  friend bool operator==(const ArmyMonthlyLossBudgetInputsV1 &,
+                         const ArmyMonthlyLossBudgetInputsV1 &) = default;
+};
+
 // Current native county-entry budget, independent of a route or applied event.
 // The predicate uses the validated current province and the FIRST province of
 // the complete stored route. It omits the entry executor's special-call flag;
@@ -397,6 +417,7 @@ struct ArmyStrengthSnapshot {
   // gathering; not_gathering is an observed absence, with no invented days.
   std::optional<ArmySupplyTimingSnapshot> army_update_clock_v1;
   std::optional<ArmyLossApplicationInputsV1> loss_application_inputs_v1;
+  std::optional<ArmyMonthlyLossBudgetInputsV1> monthly_loss_budget_inputs_v1;
   std::optional<ArmyCountyEntryInputsV1> county_entry_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<NativeMaaRecruitmentInputsV1> native_maa_recruitment_inputs_v1;

@@ -139,6 +139,29 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
   // them in BindArmyImage: that binder also serves the unchanged .2 adapter.
   if (result.armies.enabled) {
     result.armies.regiment_composition_enabled = true;
+    auto &monthly = result.armies.monthly_loss_budget_bindings;
+    monthly.enabled = true;
+    monthly.is_unit_in_combat = reinterpret_cast<decltype(monthly.is_unit_in_combat)>(
+        image_base + 0x24AC3E0);
+    monthly.is_unit_gathering = reinterpret_cast<decltype(monthly.is_unit_gathering)>(
+        image_base + 0x24AC160);
+    monthly.is_army_fleet_supply_active =
+        reinterpret_cast<decltype(monthly.is_army_fleet_supply_active)>(image_base + 0x24E8460);
+    monthly.fleet_storage_slot = reinterpret_cast<void **>(image_base + 0x5D1F9B8);
+    monthly.fleet_fallback_slot = reinterpret_cast<void **>(image_base + 0x5D1F9A8);
+    monthly.fleet_date_sentinel = reinterpret_cast<const std::int32_t *>(image_base + 0x5C83A68);
+    monthly.supply_state_levels_slot = reinterpret_cast<const std::int32_t **>(image_base + 0x5456498);
+    monthly.supply_state_levels_count = reinterpret_cast<const std::int32_t *>(image_base + 0x54564A4);
+    monthly.supply_state_fractions_slot = reinterpret_cast<const std::int64_t **>(image_base + 0x5451308);
+    monthly.supply_state_fractions_count = reinterpret_cast<const std::int32_t *>(image_base + 0x5451314);
+    monthly.character_storage_slot = reinterpret_cast<void **>(image_base + 0x5C67568);
+    monthly.character_fallback_slot = reinterpret_cast<void **>(image_base + 0x5C67570);
+    monthly.province_fallback_slot = reinterpret_cast<void **>(image_base + 0x5D1E390);
+    // Reuse the approved numeric context/getter ABI with the actual province ordinal.
+    monthly.get_character_modifier_aggregator =
+        reinterpret_cast<decltype(monthly.get_character_modifier_aggregator)>(image_base + 0x28C3AE0);
+    monthly.read_character_modifier =
+        reinterpret_cast<decltype(monthly.read_character_modifier)>(image_base + 0x2303700);
     result.armies.is_regiment_supply_loss_eligible =
         reinterpret_cast<decltype(result.armies.is_regiment_supply_loss_eligible)>(
             image_base + ck3_12002::kRegimentSupplyLossEligibleRva12003);

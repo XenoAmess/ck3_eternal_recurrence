@@ -87,6 +87,51 @@ inline void AppendNativeMaaRecruitmentInputsV1(
   output += "]}";
 }
 
+template <class Number, class JsonString>
+inline void AppendArmyMonthlyLossBudgetInputsV1(
+    std::string &output, const ArmyMonthlyLossBudgetInputsV1 &inputs,
+    Number number, JsonString append_json_string) {
+  output += "{\"status\":\"";
+  output += inputs.available ? "available" : "unavailable";
+  output += "\",\"ready\":";
+  output += inputs.available ? "true" : "false";
+  output += ",\"unavailable_reason\":";
+  if (inputs.unavailable_reason.empty()) output += "null";
+  else append_json_string(output, inputs.unavailable_reason);
+  output += ",\"scale\":100000";
+  const auto integer = [&](std::string_view key, const auto &value) {
+    output += ",\""; output += key; output += "\":";
+    output += value.has_value() ? number(*value) : "null";
+  };
+  const auto boolean = [&](std::string_view key, const std::optional<bool> &value) {
+    output += ",\""; output += key; output += "\":";
+    output += value.has_value() ? (*value ? "true" : "false") : "null";
+  };
+  const auto array = [&](std::string_view key, const auto &values) {
+    output += ",\""; output += key; output += "\":";
+    if (!values.has_value()) { output += "null"; return; }
+    output += '[';
+    bool first = true;
+    for (const auto value : *values) {
+      if (!first) output += ',';
+      first = false;
+      output += number(value);
+    }
+    output += ']';
+  };
+  integer("unit_native_170_raw", inputs.unit_native_170_raw);
+  boolean("native_unit_in_combat", inputs.native_unit_in_combat);
+  boolean("native_unit_gathering", inputs.native_unit_gathering);
+  integer("army_gathering_count_raw", inputs.army_gathering_count_raw);
+  array("loaded_supply_state_levels", inputs.loaded_supply_state_levels);
+  array("loaded_supply_state_fractions_raw", inputs.loaded_supply_state_fractions_raw);
+  boolean("native_fleet_supply_loss_suppressed", inputs.native_fleet_supply_loss_suppressed);
+  boolean("commander_valid", inputs.commander_valid);
+  integer("commander_supply_modifier_id", inputs.commander_supply_modifier_id);
+  integer("commander_supply_modifier_raw", inputs.commander_supply_modifier_raw);
+  output += '}';
+}
+
 // One row implementation shared by the bridge and its production-reader fixture.
 // The bridge supplies its existing number, array, and string-escaping helpers.
 template <class Number, class Int32Array, class JsonString>
@@ -121,6 +166,11 @@ inline void AppendArmyStrengthV1(
     result += ",\"entry_full_id\":";
     result += resolution.entry_full_id.has_value() ? number(*resolution.entry_full_id) : "null";
     result += '}';
+  }
+  if (strength.monthly_loss_budget_inputs_v1) {
+    result += ",\"monthly_loss_budget_inputs_v1\":";
+    AppendArmyMonthlyLossBudgetInputsV1(result, *strength.monthly_loss_budget_inputs_v1,
+                                      number, append_json_string);
   }
   result += ",\"scope_role\":\"";
   switch (strength.scope_role) {
