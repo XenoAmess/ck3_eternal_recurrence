@@ -273,3 +273,77 @@ correction. The direct wire was read twice across those attempts, the other
 six once; no earlier passed case or wire was repeated and no native rebuild
 was needed. This is synthetic production path qualification and static-ready
 ordinary observation/calculation, with no live or complete Entry credit.
+
+## Source-shaped MAA baseline construction inputs
+
+The next actual source package closes 2551090/2551290, the split unwind
+fragments of 30C2F80 and 2B91EA0/2B92160/2B924C0, 30C3460,
+30C3670, 2B9CBC0, 2B8FCF0 and the 262D050 leaf. Source-first plan and
+same-MCP fields are in `MAA-BASELINE-MODEL-PLAN.json`, its Mermaid and
+`MAA-BASELINE-OBSERVER-QUERY-PLAN.json`. The short first unwind rows of
+several helpers do not contain their return; all reached fragments are used.
+No entry prefix is reread to close these continuations.
+
+Culture government callbacks iterate definition+7C8/count+7D4 rows of
+stride48; global callbacks use definition+FE0/count+FEC with the same shape.
+A row is added when its definition+40 has a nonGDbo tag or its pointer equals
+the selected MAA type, and row signed class+38 is -1 or equals type.class+260.
+All matching rows contribute, preserving pointer-array order and row order,
+with max_size wrap32 and the five Q64 fields wrap64. Debug branches are skipped.
+
+The actual extra+120 object provides context+30 and Title fullID+738. Its
+native resolved holder2C42950 supplies piety rank28BE0D0, whose existing
+source contract is reused. Actual class absence returns before consuming this
+object. With a class row, max_size has no generic or class extra keys; five
+stats use these exact source fields:
+
+| Stat | Extra generic add/mult | Class add/mult offsets | Rank multiplier |
+|---|---|---|---|
+| siege | 1C9 / 1CA | 40 / 4A | none |
+| damage | 1C1 / 1C2 | 42 / 4C | 1CB times piety rank |
+| toughness | 1C3 / 1C4 | 44 / 4E | 1CC times piety rank |
+| pursuit | 1C5 / 1C6 | 46 / 50 | none |
+| screen | 1C7 / 1C8 | 48 / 52 | none |
+
+The cached raw mapper/jump tables in `EXTRA-MAPPER-TABLES.json` establish
+index0's skip. Selected Character and extra scratch values are combined into
+the same six adds/factors before one2647B60 apply. They are not two successive
+multiplications. When selector_mode is true, 2B9CBC0 returns Q for government
+byte+4D6 other than5; otherwise it evaluates real scriptvalue ID4E in the
+selected Character scope and floors the result at zero. 30C3670 replaces
+only the five nonmax factors with that result, leaving max_size factorQ, then
+the caller performs a second native apply. A script evaluator result supplied
+for another context must carry an explicit named-stage provenance.
+
+262D050 resolves CRegiment+28 to actual ArRg, then ArRg+140 to actual CArmy.
+The Army+38/count+44 Regiment occurrence order supplies +148 linked Characters.
+Each actual accolade row+58/count+64 has level+8 and definition+10 of stride18;
+2B8FCF0 selects `(level-1)*5F8` from definition+3C0, or its real initialized
+fallback. Terrain/definition/Province tier class maps are at+570/+598/+5C0.
+All matching rows contribute; linked occurrences are not deduplicated. The
+actual class maps and initialized fallback values must be observed, not
+replaced with presumed zero. Accolade tier+390 aggregate modifiers apply after
+the completed baseline, before the six ordered environment components.
+
+These are baseline and getter input construction steps. They reuse supplied
+named person stages and actual source fields, without reconstructing person
+preparation or equating the final current tuple to its own baseline.
+
+`battle_maa_source_stages_12003.py` now builds the culture contribution stage,
+combines selected Character and actual extra source modifiers before one
+application, applies the optional selector factor to five fields, and applies
+the ordered accolade aggregate after the baseline. These typed results feed
+the existing ordered environment/end-stage calculator and final-cache input.
+The actual source tuples and script evaluator result remain explicitly supplied
+named-stage inputs; no historical or executed native construction is claimed.
+
+The single new baseline case reached an import-time syntax RED caused by an
+extra patch character. Its receipt remains `focused-maa-baseline-once/RESULT.json`.
+After the local correction, the same failed new case passed1/1 GREEN in
+0.009 seconds at `focused-maa-baseline-fixed-once/RESULT.json`. It covers both
+native callback filters, skipped unread row operands, context/extra combination
+before multiplication, piety terms, the five-field selector factor with legal
+zero versus missing, absent class skip, accolade application and the existing
+final-cache input. Earlier passed cases and wires were not rerun. This is
+static-ready conditional baseline construction. The same-MCP raw source observer
+listed in the sealed query plan is the next implementation dependency.
