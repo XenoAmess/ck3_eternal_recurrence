@@ -631,7 +631,7 @@ def normalize_current_context_source_inputs(
                      "conference_24b1d00", "uncached_recipient_inputs", "provider_bucket_291c5b2",
                      "qualifier_28bc0d0", "list_predicate_2530dd0",
                      "gated_temporary_tail_291c7a7", "after_gated_tail_326a8e0_2920310",
-                     "provider192_and2920850", "following_2920b50"):
+                     "provider192_and2920850", "following_2920b50", "following_2bca620"):
         if isinstance(value, dict) and optional in value:
             fields.add(optional)
     raw = _dict(value, field, fields)
@@ -777,6 +777,13 @@ def normalize_current_context_source_inputs(
         if following is not None and following["character_id"] != normalized["character_id"]:
             raise ValueError(field + ".following_2920b50 character disagrees with source actor")
         normalized["following_2920b50"] = following
+    if "following_2bca620" in raw:
+        from .battle_person_following_2bca620_contract import normalize_following_2bca620
+        following = normalize_following_2bca620(
+            raw["following_2bca620"], field + ".following_2bca620")
+        if following is not None and following["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".following_2bca620 character disagrees with source actor")
+        normalized["following_2bca620"] = following
     return normalized
 
 
