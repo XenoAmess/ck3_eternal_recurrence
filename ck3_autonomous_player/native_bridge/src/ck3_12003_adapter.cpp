@@ -9,6 +9,7 @@
 #include "xar_bridge/ck3_12003_default_raise_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_hire_mailbox.hpp"
+#include "xar_bridge/ck3_12003_player_holy_order_hire_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 #include <windows.h>
 #include <utility>
@@ -51,6 +52,7 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
     result.push_back(ck3_12003::kPlayerDefaultRaiseCapabilityV1);
     result.push_back(ck3_12003::kPlayerMercenaryContextCapabilityV1);
     result.push_back(ck3_12003::kMercenaryHireCapabilityV1);
+    result.push_back(ck3_12003::kHolyOrderHireCapabilityV1);
     result.push_back(kWarOccupationTargetsV1Capability);
     result.push_back(kTitleHolderV1Capability);
     result.push_back(kProjectedContactScopeV1Capability);

@@ -1,0 +1,187 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://xar.local/schemas/holy-order-hire-action-v1.schema.json",
+  "title": "Current-player normal holy-order hire request and submission ACK v1",
+  "description": "A submission ACK records native validation and queue acceptance; independent employer, army and resource observation remains separate.",
+  "oneOf": [
+    {
+      "$ref": "#/$defs/request"
+    },
+    {
+      "$ref": "#/$defs/result"
+    }
+  ],
+  "$defs": {
+    "request": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "holy_order_id",
+        "expected_revision"
+      ],
+      "properties": {
+        "holy_order_id": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 4294967294
+        },
+        "expected_revision": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    },
+    "nativeAction": {
+      "type": "object",
+      "required": [
+        "schema",
+        "status",
+        "snapshot_revision",
+        "date_raw",
+        "actor_character_id",
+        "holy_order_id",
+        "holy_order_resolved",
+        "prior_employer_character_id",
+        "native_hire_mode",
+        "prior_context",
+        "native_command_validation_observable",
+        "native_command_valid",
+        "command_submitted",
+        "verification_pending",
+        "after_state_observed",
+        "unavailable_reason"
+      ],
+      "properties": {
+        "schema": {
+          "const": "ck3_12003_holy_order_hire_action_v1"
+        },
+        "status": {
+          "enum": [
+            "unavailable",
+            "rejected",
+            "submitted",
+            "already_hired"
+          ]
+        },
+        "snapshot_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "date_raw": {
+          "type": "integer"
+        },
+        "actor_character_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "holy_order_id": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 4294967294
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "holy_order_resolved": {
+          "type": "boolean"
+        },
+        "prior_employer_character_id": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "native_hire_mode": {
+          "const": 3
+        },
+        "native_command_validation_observable": {
+          "type": "boolean"
+        },
+        "native_command_valid": {
+          "type": [
+            "boolean",
+            "null"
+          ]
+        },
+        "command_submitted": {
+          "type": "boolean"
+        },
+        "verification_pending": {
+          "type": "boolean"
+        },
+        "after_state_observed": {
+          "const": false
+        },
+        "unavailable_reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "prior_context": {
+          "type": "object"
+        }
+      }
+    },
+    "result": {
+      "type": "object",
+      "required": [
+        "step",
+        "accepted",
+        "status",
+        "read_only",
+        "game_version",
+        "executable_sha256",
+        "command_sequence",
+        "snapshot_revision",
+        "date_raw",
+        "holy_order_hire"
+      ],
+      "properties": {
+        "step": {
+          "const": "hire-holy-order-v1"
+        },
+        "accepted": {
+          "type": "boolean"
+        },
+        "status": {
+          "enum": [
+            "unavailable",
+            "rejected",
+            "submitted_verification_pending",
+            "already_hired"
+          ]
+        },
+        "read_only": {
+          "const": false
+        },
+        "game_version": {
+          "const": "1.20.0.3"
+        },
+        "executable_sha256": {
+          "const": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+        },
+        "command_sequence": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "snapshot_revision": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "date_raw": {
+          "type": "integer"
+        },
+        "holy_order_hire": {
+          "$ref": "#/$defs/nativeAction"
+        }
+      }
+    }
+  }
+}

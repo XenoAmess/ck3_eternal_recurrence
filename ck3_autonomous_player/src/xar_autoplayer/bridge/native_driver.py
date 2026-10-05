@@ -10624,6 +10624,37 @@ class NativeHeadlessGameplayDriver:
                 "submitted_revision": expected_revision,
                 "submitted_native_revision": before.get("native_revision")}
 
+    def hire_holy_order_v1(
+        self, *, holy_order_id: int, expected_revision: int,
+    ) -> dict[str, object]:
+        """Submit one normal native holy-order hire; the ACK is not an after-state."""
+        from .hire_holy_order import (
+            CAPABILITY, STEP, normalize_hire_holy_order_v1,
+            validate_hire_holy_order_request_v1,
+        )
+        validate_hire_holy_order_request_v1(holy_order_id, expected_revision)
+        before = self.take_snapshot()
+        player = before.get("played_character")
+        if (before.get("paused") is not True or before.get("map_ready") is not True
+                or not isinstance(player, dict) or player.get("alive") is not True):
+            raise BridgeUnavailableError("holy-order hire requires a living paused player")
+        if before.get("revision") != expected_revision:
+            raise PreSubmissionRevisionMismatchError("holy-order hire source revision is stale")
+        raw = self._execute_primitive_step(
+            STEP, expected_revision=expected_revision, required_capability=CAPABILITY,
+            request_fields={"holy_order_id": holy_order_id},
+        )
+        try:
+            normalized = normalize_hire_holy_order_v1(
+                raw, snapshot=before, expected_holy_order_id=holy_order_id,
+            )
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        return {**normalized,
+                "submitted_snapshot_id": before.get("snapshot_id"),
+                "submitted_revision": expected_revision,
+                "submitted_native_revision": before.get("native_revision")}
+
     def _execute_primitive_step(
         self,
         step: str,
@@ -28563,7 +28594,7 @@ def _action_steps(
             # Its exact key/full recipient and durable claim belong to the
             # explicit typed endpoint, never a parameterless planner action.
             continue
-        if capability == "game.command.hire-mercenary-v1":
+        if capability in {"game.command.hire-mercenary-v1", "game.command.hire-holy-order-v1"}:
             # This typed action requires an explicit company full ID. The
             # bare fixed step cannot supply that payload to execute_step.
             continue

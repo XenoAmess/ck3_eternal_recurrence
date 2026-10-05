@@ -4186,6 +4186,17 @@ class GameplayBridgeService:
             raise UnsupportedStepError("selected backend cannot submit native mercenary hire")
         return callback(company_id=company_id, expected_revision=expected_revision)
 
+    def hire_holy_order_v1(
+        self, *, holy_order_id: int, expected_revision: int,
+    ) -> dict[str, object]:
+        """Submit a normal native hire; observe employer, armies and payment separately."""
+        from .hire_holy_order import validate_hire_holy_order_request_v1
+        validate_hire_holy_order_request_v1(holy_order_id, expected_revision)
+        callback = getattr(self.driver, "hire_holy_order_v1", None)
+        if not callable(callback):
+            raise UnsupportedStepError("selected backend cannot submit native holy-order hire")
+        return callback(holy_order_id=holy_order_id, expected_revision=expected_revision)
+
     def query_player_mercenary_context_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:

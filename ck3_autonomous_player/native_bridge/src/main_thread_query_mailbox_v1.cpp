@@ -528,6 +528,7 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_septendenary == nullptr &&
        environment.permitted_executor_player_mercenary_context12003 == nullptr &&
        environment.permitted_executor_player_mercenary_hire12003 == nullptr &&
+       environment.permitted_executor_player_holy_order_hire12003 == nullptr &&
        environment.permitted_executor_regular_maa_create12003 == nullptr &&
        environment.permitted_executor_current_actor_stress_adjustment12003 == nullptr &&
        environment.permitted_executor_ordinary_interaction12003 == nullptr &&
@@ -960,6 +961,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_player_mercenary_context12003;
   mailbox.permitted_executor_player_mercenary_hire12003 =
       environment.permitted_executor_player_mercenary_hire12003;
+  mailbox.permitted_executor_player_holy_order_hire12003 =
+      environment.permitted_executor_player_holy_order_hire12003;
   mailbox.permitted_executor_regular_maa_create12003 =
       environment.permitted_executor_regular_maa_create12003;
   mailbox.permitted_executor_current_actor_stress_adjustment12003 =
@@ -1227,6 +1230,7 @@ MainThreadQueryUninstallResultV1 UninstallMainThreadQueryMailboxV1(
   mailbox.snapshot_observer_context = nullptr;
   mailbox.permitted_executor_player_mercenary_context12003 = nullptr;
   mailbox.permitted_executor_player_mercenary_hire12003 = nullptr;
+  mailbox.permitted_executor_player_holy_order_hire12003 = nullptr;
   mailbox.permitted_executor_regular_maa_create12003 = nullptr;
   mailbox.permitted_executor_current_actor_stress_adjustment12003 = nullptr;
   mailbox.permitted_executor_ordinary_interaction12003 = nullptr;
@@ -1332,6 +1336,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
          mailbox.permitted_executor_holy_order_selected_title_terms12003 != nullptr ||
          mailbox.permitted_executor_player_mercenary_context12003 != nullptr ||
          mailbox.permitted_executor_player_mercenary_hire12003 != nullptr ||
+         mailbox.permitted_executor_player_holy_order_hire12003 != nullptr ||
          mailbox.permitted_executor_regular_maa_create12003 != nullptr ||
          mailbox.permitted_executor_current_actor_stress_adjustment12003 != nullptr ||
          mailbox.permitted_executor_ordinary_interaction12003 != nullptr ||
@@ -1452,6 +1457,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        executor != mailbox.permitted_executor_holy_order_selected_title_terms12003 &&
        executor != mailbox.permitted_executor_player_mercenary_context12003 &&
        executor != mailbox.permitted_executor_player_mercenary_hire12003 &&
+       executor != mailbox.permitted_executor_player_holy_order_hire12003 &&
        executor != mailbox.permitted_executor_regular_maa_create12003 &&
        executor != mailbox.permitted_executor_current_actor_stress_adjustment12003 &&
        executor != mailbox.permitted_executor_ordinary_interaction12003 &&

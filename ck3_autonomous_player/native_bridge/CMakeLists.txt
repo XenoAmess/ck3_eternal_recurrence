@@ -925,7 +925,6 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_repentance_petition_decision_terms.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_repentance_mailbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_repentance_wire.cpp"
-    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_holy_order_context.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_holy_order_mailbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_holy_order_wire.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_holy_order_selected_parameters.cpp"
@@ -1143,6 +1142,10 @@ add_library(xar_ck3_12002_runtime STATIC
   src/ck3_12003_mercenary_hire_action.cpp
   src/ck3_12003_mercenary_hire_wire.cpp
   src/ck3_12003_player_mercenary_hire_mailbox.cpp
+  src/ck3_12003_player_holy_order_context.cpp
+  src/ck3_12003_holy_order_hire_action.cpp
+  src/ck3_12003_holy_order_hire_wire.cpp
+  src/ck3_12003_player_holy_order_hire_mailbox.cpp
   src/ck3_12003_army_reserve.cpp
   src/ck3_12003_commander_assignment.cpp
   src/ck3_12003_commander_assignment_mailbox.cpp
@@ -1197,6 +1200,24 @@ endif()
 add_test(NAME ck3_12003_mercenary_hire_action
   COMMAND xar_ck3_12003_mercenary_hire_action_test
     "${CMAKE_CURRENT_BINARY_DIR}/ck3_12003_mercenary_hire_action_wire.json")
+add_executable(xar_ck3_12003_holy_order_hire_action_test
+  src/ck3_12003_holy_order_hire_action_test.cpp
+  src/ck3_12003_holy_order_hire_action.cpp
+  src/ck3_12003_holy_order_hire_wire.cpp
+  src/ck3_12003_player_holy_order_context.cpp
+  src/ck3_12002_commands.cpp
+  src/ck3_12002.cpp)
+target_include_directories(xar_ck3_12003_holy_order_hire_action_test PRIVATE include)
+target_compile_definitions(xar_ck3_12003_holy_order_hire_action_test PRIVATE NOMINMAX NDEBUG)
+if(MSVC)
+  target_compile_options(xar_ck3_12003_holy_order_hire_action_test PRIVATE
+    /O2 /W4 /WX /permissive- /EHsc /utf-8 /Gy)
+  target_link_options(xar_ck3_12003_holy_order_hire_action_test PRIVATE
+    /OPT:REF /INCREMENTAL:NO)
+endif()
+add_test(NAME ck3_12003_holy_order_hire_action
+  COMMAND xar_ck3_12003_holy_order_hire_action_test
+    "${CMAKE_CURRENT_BINARY_DIR}/ck3_12003_holy_order_hire_action_wire.json")
 
 if(XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1 AND (NOT XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1 OR NOT XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1 OR NOT XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1 OR NOT XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1))
   message(FATAL_ERROR "White age+1 action requires actual White business/text providers and owning frontend main-thread admission")

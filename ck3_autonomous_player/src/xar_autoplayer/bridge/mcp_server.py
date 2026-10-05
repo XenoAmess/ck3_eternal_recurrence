@@ -2498,6 +2498,15 @@ def create_server(
             company_id=company_id, expected_revision=expected_revision,
         )
 
+    @server.tool()
+    def ck3_hire_holy_order_v1(
+        holy_order_id: int, expected_revision: int,
+    ) -> dict[str, object]:
+        """Submit one normal holy-order hire; native ACK awaits independent after-state."""
+        return service.hire_holy_order_v1(
+            holy_order_id=holy_order_id, expected_revision=expected_revision,
+        )
+
     @server.tool(annotations=read_only_tool)
     def ck3_query_player_mercenary_context_v1(
         expected_revision: int,

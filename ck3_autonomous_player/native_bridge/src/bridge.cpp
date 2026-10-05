@@ -23,6 +23,7 @@
 #include "xar_bridge/ck3_12003_war_cash_current_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_hire_mailbox.hpp"
+#include "xar_bridge/ck3_12003_player_holy_order_hire_mailbox.hpp"
 #include "xar_bridge/ck3_12002_lifestyle.hpp"
 #include "xar_bridge/ck3_12002_family.hpp"
 #include "xar_bridge/ck3_12002_family_projection.hpp"
@@ -10551,6 +10552,7 @@ public:
       xar::ck3_12003::RegisterPlayerDefaultRaiseMailboxExecutorV1(environment);
       xar::ck3_12003::RegisterPlayerMercenaryMailboxExecutorV1(environment);
       xar::ck3_12003::RegisterPlayerMercenaryHireMailboxExecutorV1(environment);
+      xar::ck3_12003::RegisterPlayerHolyOrderHireMailboxExecutorV1(environment);
       environment.permitted_executor_regular_maa_create12003 =
           &xar::ck3_12002::ExecuteRegularMaaCreateMailbox12003;
 #if defined(XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1)
@@ -11168,6 +11170,7 @@ struct WorkerState {
   std::uint64_t player_default_raise_query_sequence = 0;
   std::uint64_t player_mercenary_query_sequence = 0;
   std::uint64_t player_mercenary_hire_command_sequence = 0;
+  std::uint64_t player_holy_order_hire_command_sequence = 0;
   std::uint64_t army_commander_assignment_command_sequence = 0;
   std::uint64_t province_local_siege_query_sequence = 0;
   std::uint64_t combat_inputs_query_sequence = 0;
@@ -12536,6 +12539,72 @@ std::string RunPlayerMercenaryHire12003(
       action.envelope.expected_snapshot_revision, snapshot.date_raw);
 }
 
+std::string RunPlayerHolyOrderHire12003(
+    const xar::game::GameAdapter &game, WorkerState &state,
+    std::string_view request_id, std::string_view step,
+    std::string_view payload) {
+  xar::ck3_12003::PlayerHolyOrderHireMailboxContextV1 action{};
+  action.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);
+  action.envelope.mailbox = &g_main_thread_query_mailbox_v1;
+  action.envelope.typed_context = &action;
+  xar::ck3_12003::HolyOrderHireRequestV1 request{};
+  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+      !xar::ck3_12003::ParseHolyOrderHireRequestV1(step, payload, request)) {
+    return CommandResultFrame(request_id, step, false,
+                              "holy_order hire request is malformed or unsupported");
+  }
+  action.holy_order_id = request.holy_order_id;
+  action.envelope.expected_snapshot_revision = request.expected_revision;
+  if (request.expected_revision != state.state_revision ||
+      state.state_revision == 0 || !state.previous_snapshot.has_value() ||
+      !xar::game::ReadSnapshot(game, action.envelope.expected_snapshot) ||
+      action.envelope.expected_snapshot != *state.previous_snapshot) {
+    return CommandResultFrame(request_id, step, false, "state_changed");
+  }
+  const auto &snapshot = action.envelope.expected_snapshot;
+  if (!snapshot.paused) {
+    return CommandResultFrame(request_id, step, false, "requires_paused");
+  }
+  if (!snapshot.map_ready || !snapshot.has_played_character ||
+      !snapshot.played_character_alive) {
+    return CommandResultFrame(request_id, step, false, "player_map_not_ready");
+  }
+  if (!xar::ck3_12003::BindPlayerHolyOrderHireMailboxImageV1(action,
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+          game.descriptor())) {
+    return CommandResultFrame(request_id, step, false,
+                              "holy_order hire image bindings unavailable");
+  }
+  const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1,
+      &xar::ck3_12003::ExecutePlayerHolyOrderHireMailboxV1,
+      &action.envelope, action.envelope.ticket);
+  if (submit != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+    return CommandResultFrame(request_id, step, false,
+        "application-main holy_order hire executor is unavailable or busy");
+  }
+  auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, action.envelope.ticket, 30'000);
+  while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                     timeout_executor_already_running) {
+    wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, action.envelope.ticket, 2'000);
+  }
+  const bool completed =
+      wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+      action.completed;
+  const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, action.envelope.ticket);
+  if (reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed ||
+      !completed) {
+    return CommandResultFrame(request_id, step, false,
+        "holy_order hire execution unresolved; query current holy order employer and armies");
+  }
+  return xar::ck3_12003::SerializeHolyOrderHireResultV1(action.observation,
+      request_id, ++state.player_holy_order_hire_command_sequence,
+      action.envelope.expected_snapshot_revision, snapshot.date_raw);
+}
+
 std::string RunTitleHolderQueryV1(
     const xar::game::GameAdapter &game, WorkerState &state,
     std::string_view request_id, std::string_view step,
@@ -13106,6 +13175,12 @@ void RunConnectedSession(
         if (!early_step_dispatched &&
             step == xar::ck3_12003::kMercenaryHireStepV1) {
           connected = write_frame(pipe, RunPlayerMercenaryHire12003(
+              game, state, request_id, step, incoming.payload));
+          early_step_dispatched = true;
+        }
+        if (!early_step_dispatched &&
+            step == xar::ck3_12003::kHolyOrderHireStepV1) {
+          connected = write_frame(pipe, RunPlayerHolyOrderHire12003(
               game, state, request_id, step, incoming.payload));
           early_step_dispatched = true;
         }
