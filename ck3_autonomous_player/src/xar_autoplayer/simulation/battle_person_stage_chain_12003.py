@@ -296,6 +296,7 @@ def continue_person_stage_chain_tail_12003(
     conference_module = "battle_person_conference_24b1d00_contract"
     middle_module = "battle_person_middle_helpers_contract"
     direct_module = "battle_person_tail_direct_contract"
+    provider_module = "battle_person_provider_bucket_contract"
     stages = (
         ("2753860", "post2753860_pre291C4D2", prefix_module,
          "emit_helper_2753860_requests_from_current_source_inputs_12003", None),
@@ -307,7 +308,8 @@ def continue_person_stage_chain_tail_12003(
          "emit_conference_24b1d00_requests_from_current_source_inputs_12003", None),
         ("291F260", "post291F260_pre291C558", middle_module,
          "emit_helper_291f260_requests_from_current_source_inputs_12003", None),
-        ("signed2F8_provider_bucket", "postProvider2F8_pre291C5B7", None, None, None),
+        ("signed2F8_provider_bucket", "postProvider2F8_pre291C5B7", provider_module,
+         "emit_provider_bucket_requests_from_current_source_inputs_12003", None),
         ("government_870_a30", "postGovernmentA30_pre291C620", direct_module,
          "emit_tail_direct_family_requests_from_current_source_inputs_12003", "government_870_a30"),
         ("qualifier_repeated_contribution", "postQualifierContribution_pre291C6CF", None, None, None),
@@ -444,7 +446,9 @@ def continue_person_stage_chain_tail_12003(
         "future_tail_missing_inputs": tuple(future_missing),
         "first_contiguous_observation_dependency": next(
             (row["stage"] for row in ledger_rows if not row["requests_ready"]), None),
-        "next_native_source_leaf": "291C5B2_signed2F8_provider_bucket", "all_tail_source_stream_ready": False,
+        "next_native_source_leaf": "291C68D_qualifier_28BC0D0", "all_tail_source_stream_ready": False,
+        "provider_291c5b2_operand_scope": "held_current_character_1b0_2f8",
+        "provider_291c5b2_return_edges": "all selection branches rejoin291C5B7",
         "source_operand_scope": "held_current_same_query_inputs",
         "conditional_on_observed_source_values": True,
         "291f260_weight_source_scope": "held_current_evaluated_values",
