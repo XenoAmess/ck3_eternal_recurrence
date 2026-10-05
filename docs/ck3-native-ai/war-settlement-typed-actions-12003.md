@@ -168,3 +168,23 @@ flowchart TD
 death-time participant/primary/army-owner writer仍是已有逆向账本：War+0x20/+0x80、+0x288/+0x28C及ended+0x358的现代.3读取已刊，写入因果未闭；fresh查询已能读实际归属，只有实际决策需要归因时再沿writer入口补施工，不阻普通推进。本包source research完成，复用published static-ready接口；没有新增bridge/getter/policy、natural继任或war-ending live信用，消费者新增游戏天数、动作均0。
 
 来源只消费两份封存decoded短报告各一次：[stock scope](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war117440524-raiktor-conquest-ending-succession-review/stock-cb/SHORT-STOCK-CB-ENDING-SUCCESSION.md)（SHA873b2327f3f8b659e66f8064480b8d0969658205e5ef3058def35497e1059082），[native ending与继任接口](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/war117440524-raiktor-conquest-ending-succession-review/native-ending/NATIVE-ENDING-APPLICABILITY-AND-HEIR-SEAMS.md)（SHA09817c11e6c380012f5fade8bfab8b44bbf94bf5ab6c85582f6679f97f7cb7f9）。本fragment建议追加war-settlement-typed-actions-12003.md，canonical目标由Root最后确认；本消费者未读写shared/canonical/sourceleaf、原eventoptions或raw，未调用SDK/Git/tests/window。
+
+## Provider192 qualified and War117 victory retained at h9390：real raiktor conquest结果（2026-10-06T04:53:09+08:00）
+
+冻结 exact CK3 1.20.0.3／EXE94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6。R0047原Robert29829、generation1、原ordinary episode；Arta142实际围城日后攻占，3个exact单日后fresh502 War117440524为primaryattacker、actual CB29 `raiktor_conquest_cb`、whole100（occupation90/ticking10/battle0/imprisonment0），victory constructed/validator/available/autoaccept true。CB-specific terms仍unavailable，不能由它预填资源或收件人回答；Root实际503仅一次enforce，war_victory=victory_enforced，随后独立504 active_wars=[]。
+
+独立505/506/507 title1333/1351/1358均holder72315，holder_is_player=false、in_player_realm=true、immediate/topLiege29829。508 native844/public845 domain5/6、health3.05962、direct landed vassals含72315；这是实测目标title转入玩家realm并交vassal持有，不是三county直接进入Robert domain，也不把stock claimant100gold推给玩家。512 native845/public846仅后帧当前2factions non-dangerous。固定h9390/raw53271912/5316（恢复281日）retained save receipt，100939303B／SHA05179d733e35af076d12376a0162dcadc38529187c91252028d4ffa18b07b053；postwar disband不并入。
+
+有限“fresh状态→合法胜利选择→一次执行→独立WarID退出＋三个title/liege material readback→正常保存”达到 **production-live loop**。404无assault事实保留，c4ed Python后续修复仅static-ready；自然继承0、G2 5/8、NW2 2/4，不称完整战争策略／战斗／世纪／complete。[h9390 retained checkpoint](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/checkpoints/h9390-war117-victory/checkpoint-receipt.json); [fresh502 victory](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/502-victory-tick-war-termination.json); [once503 enforce](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/503-war117-enforce-demands-once.json); [independent504 no wars](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/504-war117-post-demand-independent-snapshot.json); [title505/506/507](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/505-dyrrachion-title-after-war.json); [freshroot508](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/508-campaign-root-after-war.json); [separate512 factions](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/512-peace-current-faction-alerts.json)。
+
+```mermaid
+flowchart LR
+    S["Arta142实际围城日攻占"] --> D["3个exact单日：score100"]
+    D --> Q["502 fresh CB29 victory available"]
+    Q --> A["503 enforce once"]
+    A --> W["504 independent active_wars empty"]
+    W --> T["505–507 title holders72315 / liege29829"]
+    T --> C["508 root domain5/6 + direct vassal72315"]
+    C --> H["509 retained h9390 save"]
+    Q -.-> U["CB-specific terms / final recipient reply未发布"]
+```
