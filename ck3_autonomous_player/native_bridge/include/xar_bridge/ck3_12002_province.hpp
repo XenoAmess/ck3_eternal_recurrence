@@ -19,6 +19,8 @@ inline constexpr std::size_t kObjectiveTitleChildrenOffset = 0x110;
 inline constexpr std::size_t kObjectiveProvinceArrayOffset = 0x140;
 inline constexpr std::size_t kObjectiveProvinceCountOffset = 0x14C;
 inline constexpr std::size_t kObjectiveProvinceOccupationIdOffset = 0x73C;
+inline constexpr std::size_t kObjectiveProvinceUnitIdsOffset = 0x740;
+inline constexpr std::size_t kObjectiveProvinceUnitCountOffset = 0x74C;
 inline constexpr std::size_t kObjectiveProvinceActiveSiegeIdOffset = 0x788;
 inline constexpr std::size_t kObjectiveProvinceFortLevelOffset = 0x850;
 inline constexpr std::size_t kObjectiveProvinceMagicOffset = 0x85C;
@@ -51,6 +53,9 @@ using SiegeBlockedPredicate = bool (*)(void *);
 using SiegeDailyAssaultGetter = std::int64_t *(*)(void *, std::int64_t *, std::int32_t);
 using SiegeAssaultValidator = bool (*)(std::int32_t, std::int32_t, std::int32_t, void *);
 using ObjectiveTitleProvinceGetter = void *(*)(void *);
+// Exact .3 M/K callsite AL predicates; raw states retain their source meaning.
+using SiegeArmyExclusionPredicate = std::uint8_t (*)(void *);
+using SiegeArmyProvinceEligibilityPredicate = std::uint8_t (*)(void *, void *);
 
 struct ProvinceBindings {
   bool enabled = false;
@@ -70,6 +75,8 @@ struct ProvinceBindings {
   SiegeFixedGetter siege_total_work = nullptr;
   ProvinceIntGetter siege_days_left = nullptr;
   ArmyBindings siege_armies{};
+  SiegeArmyExclusionPredicate siege_army_excluded = nullptr;
+  SiegeArmyProvinceEligibilityPredicate siege_army_province_eligible = nullptr;
   SiegeOrdinaryDailyGetter siege_ordinary_daily_progress = nullptr;
   SiegePhaseLengthGetter siege_current_phase_length = nullptr;
   SiegeBlockedPredicate siege_is_blocked = nullptr;

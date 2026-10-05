@@ -405,3 +405,23 @@ Military 同 raw 部署前 h8573 派生 cache 与本帧21字段相同，work del
 - M/K枚举实际Province+740/+74C的CUnit出现次数。先验currentProvince相同及Unit+18==0/+170<=0/+44==0、Army0x24E8360 AL0、Province+788有效，再调用**0x2C16690(CArmy,actualProvince)→AL**；通过才枚举Army+38/+44 ArRg。完整predicate先P+850>0/Army+1D4,+1EC byte0，经Army+124 primaryCUnit→Unit+174 identity；未占P+73C==-1走0x2C099F0分类0（visible self/sameidentity2、relation-war0、其它hierarchy1/2），已占走0x2C09DA0→0x247D030当前identity→0x2C09640 verdict。M/K loop与此完整predicate均无lead/besieger Army等值要求：独立军满足这些原生条件即可入算，单纯同省不足，源码不要求先合军；裸状态位保持raw语义，不额外命名。
 - M每调用初始化0现算eligible有效围城work×normalizedcount；K每调用初始化0取qualified tier max，D直接复用M/K，无证据要求另发cache刷新动作。最小施工入口是同existing rich occupation附加**CUnit occurrence/publicUnit/nativeArmy/native完整资格bool/qualified ArRgIDs**身份账本，复用既有军团identity/type/count与当前K/M/D，保留原生出现次数，不重复库存schema或设计合军策略。arrival resident-list writer和更深外交语义留明确未闭locator；资格可直接读完整原生predicate，单ArRg M归因本次非目标。
 - 状态仅research/source已闭分支；member observer尚未实现/编译/fixture/live，不给用户当前状态、未来到场或K信用。0SDK/pipe/attach/游戏进程/窗口/profile/prepare-build-launch/编译测试/旧query存档读取/Git/shared/新日。用户再授权后才以fresh同帧实际成员与K/M/D验证首次参与。
+
+### 2026-10-05 接手续建：省份参围成员只读实现（离线）
+
+- 新用户指令再次保留 CK3 给用户自行游玩。本工作仅改隔离源码 `Z:/gb2`，没有启动、attach、query、pipe、窗口、Steam 或停止游戏；新增游戏日与 live 信用均为 0。exact-build 继续复用本专题的 1.20.0.3 / Steam25652598 / EXE SHA，不重扫 EXE。
+- `ReadObjectiveProvince` 在同一 paused rich active-siege 读取中，按实际 `Province+740/+74C` CUnit 出现顺序发布 `active_siege.province_unit_occurrences`。每行包含 `occurrence_index`、`public_unit_id`、已解析的 `native_carmy_id`、nullable `eligible` 与 `qualified_regiment_ids`。保留重复 CUnit 与重复 ArRg，公共/原生 slot 0 是有效身份。列表为 `null` 表示未取得该域，为 `[]` 表示实际空集合；已排除成员的资格是 `false`、消耗军团列表是 `[]`，不可读原生输入保持 `null`。数组中失效 CUnit 身份的资格保持未知，不伪造实际参与。
+- 资格严格按 source-closed M/K 外层四项 CUnit 条件、原生 `0x24E8360` 的 AL0 与完整 `0x2C16690(CArmy, actualProvince)` 非零 AL 判定；没有补 leadArmy 等值、合军或 cache 刷新动作。通过资格后沿现有 CArmy 与 ArRg generation storage 取得 Army+38/+44 军团 ID 出现顺序；成员资格已知而该军团数组不可读时，仅军团列表为 `null`。这里的合格 ID 是 M/K 循环消耗的身份，不是每个军团的数字 M 归因，也不增加正兵数门槛。
+- 同一身份 DTO/serializer 接入现有 war-occupation rich query 和普通 objective/province-local-siege wire；Python 的共享 active-siege normalizer 保留这些成员字段。库存/type/count 继续由既有 ArmyStrength 提供，K/M/D 继续消费原生 getter；没有新增 MCP endpoint、动作或策略门禁。
+
+```mermaid
+flowchart LR
+  P["实际 Province +740/+74C CUnit occurrences"] --> U["完整公共 CUnit / 已解析 native CArmy"]
+  U --> R["四项 raw prerequisite + 24E8360 AL0"]
+  R --> N["完整 2C16690 原生资格"]
+  N --> A["qualified Army +38/+44 ArRg occurrences"]
+  A --> W["同帧 existing occupation / objective wire"]
+  I["arrival resident-list writer unknown"] -.-> P
+```
+
+- 新增 Python 定向验证仅运行一次：`tests/unit/test_siege_membership_contract.py` 的 **3 tests GREEN**，覆盖 ordinary objective、province-local-siege 与 rich occupation 三条 normalizer 消费路径，以及 legacy key 缺席、null/empty/false、重复成员和 slot 0。外置回执 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/siege-engine-arrival/IMPLEMENTED-PYTHON-TEST-RESULT.json`。
+- 新 native target `xar_ck3_12003_siege_membership_test` 已提供生产 Province reader 与 occupation serializer 的 owned-memory fixture，包含独立军、AL 非 1 的 true、原生 false、raw 条件排除、重复 occurrences、qualified 空列表及不可读军团；由 Root 统一编译运行，本 lane 没有编译或执行。**当前为 implemented research，Python 合同已验证；native static-ready/fixture-live/production-live 尚未授予**。未来获准实机后仍须以 fresh 同帧成员和 K/M/D 实读确认器械到场及实际贡献，历史 470/3711 实证资格不改写。

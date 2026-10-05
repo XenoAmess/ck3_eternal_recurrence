@@ -6,6 +6,7 @@
 #include "xar_bridge/owned_regiments.hpp"
 
 #include "xar_bridge/war_occupation_targets_v1.hpp"
+#include "xar_bridge/siege_membership_v1.hpp"
 #include "xar_bridge/battle_native_owner_recall_inputs_12003.hpp"
 #include "xar_bridge/ck3_12003_army_supply_timing.hpp"
 #include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
@@ -995,6 +996,8 @@ struct WarObjectiveProvinceState {
   FixedPointValue siege_eligible_regiment_siege_work;
   bool siege_highest_eligible_siege_tier_observable = false;
   std::int32_t siege_highest_eligible_siege_tier = 0;
+  bool siege_province_unit_occurrences_observable = false;
+  std::vector<SiegeProvinceUnitOccurrenceV1> siege_province_unit_occurrences;
   bool siege_current_phase_length_observable = false;
   FixedPointValue siege_current_phase_length;
   bool siege_prepared_phase_length_observable = false;

@@ -3745,6 +3745,10 @@ void AppendWarObjectiveProvinceState(
     } else {
       result += SignedNumber(state.siege_days_left);
     }
+    result += ",\"province_unit_occurrences\":";
+    result += xar::game::SerializeSiegeProvinceUnitOccurrencesV1(
+        state.siege_province_unit_occurrences_observable,
+        state.siege_province_unit_occurrences);
     result += ",\"assault_observable\":";
     result += state.assault_observable ? "true" : "false";
     result += ",\"breach_level\":";

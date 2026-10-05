@@ -4,6 +4,8 @@
 #include <string_view>
 #include <vector>
 
+#include "xar_bridge/siege_membership_v1.hpp"
+
 namespace xar::game {
 
 inline constexpr std::string_view kWarOccupationTargetsV1Capability =
@@ -25,6 +27,8 @@ struct WarOccupationActiveSiegeV1 {
   std::int64_t eligible_regiment_siege_work_raw = 0;
   bool highest_eligible_siege_tier_observable = false;
   std::int32_t highest_eligible_siege_tier = 0;
+  bool province_unit_occurrences_observable = false;
+  std::vector<SiegeProvinceUnitOccurrenceV1> province_unit_occurrences;
   // Fresh getter output and the last prepared cache are separate observations.
   bool current_phase_length_observable = false;
   std::int64_t current_phase_length_raw = 0;

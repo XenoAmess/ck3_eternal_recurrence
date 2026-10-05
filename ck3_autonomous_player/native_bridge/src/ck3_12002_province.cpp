@@ -3,6 +3,7 @@
 #include <cstring>
 #include <algorithm>
 #include <limits>
+#include <utility>
 
 namespace xar::ck3_12002 {
 namespace {
@@ -21,6 +22,77 @@ void *Component(void **slot, std::int32_t id, std::size_t id_offset) noexcept {
       index >= static_cast<std::uint32_t>(capacity)) return nullptr;
   const auto object = Read<void *>(data, static_cast<std::size_t>(index) * 0x10 + 8);
   return object != nullptr && Read<std::int32_t>(object, id_offset) == id ? object : nullptr;
+}
+
+void ReadSiegeProvinceUnitOccurrences(
+    const ProvinceBindings &b, void *province,
+    game::WarObjectiveProvinceState &out) noexcept {
+  const auto ids = Read<void *>(province, kObjectiveProvinceUnitIdsOffset);
+  const auto count = Read<std::int32_t>(province, kObjectiveProvinceUnitCountOffset);
+  if (count < 0 || count > 1'000'000 ||
+      (count > 0 && ids == nullptr)) return;
+  try {
+    std::vector<game::SiegeProvinceUnitOccurrenceV1> rows;
+    rows.reserve(static_cast<std::size_t>(count));
+    for (std::int32_t index = 0; index < count; ++index) {
+      game::SiegeProvinceUnitOccurrenceV1 row{};
+      row.occurrence_index = index;
+      row.public_unit_id = Read<std::int32_t>(ids, static_cast<std::size_t>(index) * 4);
+      const auto unit = Component(b.unit_storage_slot, row.public_unit_id, 0x10);
+      if (unit != nullptr) {
+        const auto native_id = Read<std::int32_t>(unit, 0x178);
+        const auto army = ResolveInternalArmy(b.siege_armies, native_id);
+        if (army != nullptr) row.native_carmy_id = native_id;
+        // The four raw CUnit tests are the exact M/K loop prerequisites.
+        // Preserve false separately from an unresolved native input.
+        if (Read<std::int32_t>(unit, 0x20) != Read<std::int32_t>(province, 0x10) ||
+            Read<std::int32_t>(unit, 0x18) != 0 ||
+            Read<std::int32_t>(unit, 0x170) > 0 ||
+            Read<std::int32_t>(unit, 0x44) != 0) {
+          row.eligible_observable = true;
+        } else if (army != nullptr && b.siege_army_excluded != nullptr) {
+          if (b.siege_army_excluded(army) != 0) {
+            row.eligible_observable = true;
+          } else if (b.siege_army_province_eligible != nullptr) {
+            // The active-siege binding is already validated by the caller.
+            // No lead-army equality or invented owner predicate is added.
+            row.eligible_observable = true;
+            row.eligible = b.siege_army_province_eligible(army, province) != 0;
+          }
+        }
+        if (row.eligible) {
+          const auto regiments = Read<void *>(army, 0x38);
+          const auto regiment_capacity = Read<std::int32_t>(army, 0x40);
+          const auto regiment_count = Read<std::int32_t>(army, 0x44);
+          if (regiment_count >= 0 && regiment_capacity >= regiment_count &&
+              regiment_capacity <= 65'536 &&
+              (regiment_count == 0 || regiments != nullptr)) {
+            row.qualified_regiment_ids_observable = true;
+            for (std::int32_t regiment = 0; regiment < regiment_count; ++regiment) {
+              const auto regiment_id = Read<std::int32_t>(
+                  regiments, static_cast<std::size_t>(regiment) * 4);
+              const auto component = Component(
+                  b.siege_armies.regiment_storage_slot, regiment_id, 0x10);
+              if (component == nullptr ||
+                  Read<std::uint32_t>(component, 0x14) != 0x41725267U) {
+                row.qualified_regiment_ids_observable = false;
+                row.qualified_regiment_ids.clear();
+                break;
+              }
+              row.qualified_regiment_ids.push_back(regiment_id);
+            }
+          }
+        }
+      }
+      if (row.eligible_observable && !row.eligible)
+        row.qualified_regiment_ids_observable = true;
+      rows.push_back(std::move(row));
+    }
+    out.siege_province_unit_occurrences.swap(rows);
+    out.siege_province_unit_occurrences_observable = true;
+  } catch (...) {
+    out.siege_province_unit_occurrences.clear();
+  }
 }
 } // namespace
 
@@ -46,6 +118,10 @@ ProvinceBindings BindProvinceImage(std::uintptr_t base, std::string_view sha) no
   result.siege_total_work = reinterpret_cast<SiegeFixedGetter>(base + 0x251DD20);
   result.siege_days_left = reinterpret_cast<ProvinceIntGetter>(base + 0x251CB00);
   result.siege_armies = BindArmyImage(base, sha);
+  result.siege_army_excluded =
+      reinterpret_cast<SiegeArmyExclusionPredicate>(base + 0x24E8360);
+  result.siege_army_province_eligible =
+      reinterpret_cast<SiegeArmyProvinceEligibilityPredicate>(base + 0x2C16690);
   result.siege_ordinary_daily_progress =
       reinterpret_cast<SiegeOrdinaryDailyGetter>(base + 0x251F170);
   result.siege_current_phase_length =
@@ -180,6 +256,7 @@ game::WarObjectiveProvinceState ReadObjectiveProvince(
   out.siege_progress_fraction.raw = progress;
   out.siege_current_work.raw = current;
   out.siege_total_work.raw = total;
+  ReadSiegeProvinceUnitOccurrences(b, province, out);
   // Current Province eligibility is independent of commander and assault.
   // Native zero is a valid empty contribution/tier, never a missing read.
   if (b.eligible_regiment_siege_work != nullptr) {

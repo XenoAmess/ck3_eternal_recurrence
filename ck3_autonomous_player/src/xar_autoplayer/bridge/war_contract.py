@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from .native_maa_recruitment_inputs_contract import normalize_native_maa_recruitment_inputs_v1
 from .owned_regiments_v1 import normalize_owned_regiments_v1
+from .siege_membership_contract import normalize_siege_province_unit_occurrences
 
 from .army_replenishment_records_contract import normalize_regiment_replenishment_records_v1
 
@@ -843,6 +844,10 @@ def _normalize_active_siege(
         result["highest_eligible_siege_tier"] = _optional_non_negative_int32(
             value["highest_eligible_siege_tier"],
             f"{name}.highest_eligible_siege_tier",
+        )
+    if "province_unit_occurrences" in value:
+        result["province_unit_occurrences"] = normalize_siege_province_unit_occurrences(
+            value["province_unit_occurrences"], name=f"{name}.province_unit_occurrences"
         )
     return result
 

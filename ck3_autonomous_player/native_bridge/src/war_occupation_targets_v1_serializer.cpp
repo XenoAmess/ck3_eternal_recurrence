@@ -64,6 +64,10 @@ std::string ActiveSiege(const WarOccupationTargetRowV1 &row) {
       ",\"highest_eligible_siege_tier\":" + ObservableInt(
           siege.highest_eligible_siege_tier_observable,
           siege.highest_eligible_siege_tier) +
+      ",\"province_unit_occurrences\":" +
+      SerializeSiegeProvinceUnitOccurrencesV1(
+          siege.province_unit_occurrences_observable,
+          siege.province_unit_occurrences) +
       ",\"current_phase_length\":" +
       (siege.current_phase_length_observable
           ? FixedPoint(siege.current_phase_length_raw) : std::string("null")) +

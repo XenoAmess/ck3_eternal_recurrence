@@ -284,6 +284,9 @@ WarOccupationTargetsReadResultV1 ReadWarOccupationTargetsV1(
               rich.siege_highest_eligible_siege_tier_observable;
           siege.highest_eligible_siege_tier =
               rich.siege_highest_eligible_siege_tier;
+          siege.province_unit_occurrences_observable =
+              rich.siege_province_unit_occurrences_observable;
+          siege.province_unit_occurrences = rich.siege_province_unit_occurrences;
           siege.current_phase_length_observable =
               rich.siege_current_phase_length_observable;
           siege.current_phase_length_raw = rich.siege_current_phase_length.raw;

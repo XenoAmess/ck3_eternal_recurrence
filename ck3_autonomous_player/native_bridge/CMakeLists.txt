@@ -2343,6 +2343,17 @@ endif()
 
 include(CTest)
 if(BUILD_TESTING)
+  add_executable(xar_ck3_12003_siege_membership_test
+    src/ck3_12002_province.cpp
+    src/war_occupation_targets_v1_serializer.cpp
+    src/ck3_12003_siege_membership_test.cpp)
+  target_include_directories(xar_ck3_12003_siege_membership_test PRIVATE include)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_siege_membership_test PRIVATE
+      /W4 /WX /permissive- /EHsc /utf-8)
+  endif()
+  add_test(NAME xar_ck3_12003_siege_membership_test
+    COMMAND xar_ck3_12003_siege_membership_test)
   add_executable(xar_ck3_12003_title_holder_test
     src/ck3_12002_province.cpp
     src/ck3_12003_title_holder.cpp
