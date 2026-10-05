@@ -104,3 +104,40 @@ No additional EXE read was needed during implementation: source cost stays
 reuse cached `2589E10` commander body and exact known `25899C0` side aggregate
 getter. Current Character/side contribution groups are not separately published
 yet; future forecast still requires changed-context constructor/getter inputs.
+
+## Root qualification adoption (2026-10-06T01:51:56+08:00)
+
+## 2026-10-06: current direct native wire boundary qualified
+
+Root's first full bridge DLL plus two new target build was GREEN192.3092681s
+at exact integrated source `c7b1b2c0548bf6a34b2bcdf6c149d9c555756c71`.
+The first two new CTests were2/2 GREEN,total0.39s; the direct dynamic target
+was0.22s,completed2026-10-05T17:32:42Z. These are central native results,
+not a game query or a child standalone build.
+
+The four new direct dynamic production wires were consumed once against
+`Z:/gb0/ck3_autonomous_player/src`: production strict normalizer/service to
+immutable input and wrapped current resolution,4/4 GREEN0.0013369s processing
+/0.5929727s process. The consumer receipt pins each producer SHA and five
+production modules. Actual=0; no stored4/retained9/old Python case was repeated.
+Current/stored disagreement remains available data; legitimate zero and one
+independently missing direct output preserve parent lifecycle/control readiness.
+
+One initial harness import RED occurred before any wire read: Root's sparse
+checkout omitted tracked `ck3_workshop_mcp`, now required by the production
+environment import. Root restored it with sparse-checkout add,without source
+or HEAD change. The RED traceback/receipt are preserved separately; no fake
+module,alternate source,producer rewrite or model fix was used.
+
+Qualification is static-ready native serializer/consumer boundary only. It
+does not grant a refreshed native tick, future forecast or production-live
+primitive. The separate components child77501bc4 is still pending its own
+central native target/consumer qualification and is not covered by this build.
+The prior actual getter source cost remains560 code bytes plus368 mapping
+bytes; this wire consumption read no EXE or game state.
+
+External receipt: `Z:\ck3_mod_rewrite_process_assets\g2-background-round4-20261005\retained-advantage\actual-dynamic-getter/ROOT-DELIVERY.json`.
+Consumer receipt: `Z:\ck3_mod_rewrite_process_assets\g2-background-round4-20261005\retained-advantage\actual-dynamic-getter/NATIVE-WIRE-CONSUMER.json`.
+Actual completion: 2026-10-06T01:36:05.676788+08:00;report day2026-10-06/week2026-W41.
+
+Historical source-only and implementation-pending statements above retain their original timing. The user has now authorized CK3 on this Z machine; Root owns the fresh live resume. This completed background qualification still has actual game acceptance 0, and its readiness remains static-ready. No future live result is implied.
