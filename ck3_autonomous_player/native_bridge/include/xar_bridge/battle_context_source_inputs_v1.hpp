@@ -274,3 +274,19 @@ struct ContextSourceLaterDirectV1 {
   std::string reason;
   friend bool operator==(const ContextSourceLaterDirectV1 &,
                          const ContextSourceLaterDirectV1 &) = default;
+};
+struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::int32_t character_id = -1;
+  std::optional<ContextSourcePre291e2101640V1> pre_291e210_1640;
+  std::optional<ContextSourceLaterDirectV1> later_direct_291c3fb_44c;
+  std::optional<ContextSource291e210V1> branch_291e210;
+  std::optional<ContextSource291d7e0V1> branch_291d7e0;
+  std::optional<ContextSourcePost291d7e0V1> post_291d7e0_sources;
+  std::string reason;
+  friend bool operator==(const BattleCurrentPersonContextSourceInputsSnapshotV1 &,
+                         const BattleCurrentPersonContextSourceInputsSnapshotV1 &) = default;
+};
+
+} // namespace xar::game

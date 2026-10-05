@@ -1357,3 +1357,9 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.ready = out.ready && out.post_291d7e0_sources->ready;
   if (out.later_direct_291c3fb_44c)
     out.ready = out.ready && out.later_direct_291c3fb_44c->ready;
+  out.status = out.ready ? "available" : "partial";
+  if (!out.ready) out.reason = "context_source_reads_unavailable";
+  return out;
+}
+
+} // namespace xar::ck3_12002
