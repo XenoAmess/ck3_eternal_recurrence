@@ -7,13 +7,13 @@
 
 Version 1.0.2 · CK3 1.20.0.3 · Workshop 3784706360
 
-[b]1.0.2 为待发布候选；公开版仍为 1.0.1，完整验收与上传尚未完成。/ 1.0.2 is pending acceptance and publication; the public version remains 1.0.1.[/b]
-
 [b]⚠ 必须开启教程 / TUTORIAL REQUIRED：设置 → 教程选择「完整」或「警告」，切勿禁用。旧纪录仍可读取，但禁用后新余烬位阶、契约 PB 与图鉴不会落盘。[/b]
 
 [h1]1.0.2 新版适配 / CK3 1.20 Maintenance[/h1]
 廷臣目录更新为 226 项原生特质。信仰选择显示并绑定礼仪：同信仰保留玩家礼仪，其他信仰使用主礼仪；旧配置缺失或不匹配的礼仪自动补齐。继承窗保留新版教会选项，九语帮助同步。
 The catalog now has 226 native traits. Faith selection displays and binds your current Rite for your faith, or another faith's main Rite; missing or mismatched saved Rites are repaired. The succession window keeps new ecclesiastical choices; help is updated in nine languages.
+修复无继承人终局界面：八项数值正确读取已提交结算记录。
+Fix the no-heir settlement screen so all eight values correctly read the committed settlement record.
 
 [h1]1.0.1 性能与终局改进 / Performance & Finale[/h1]
 开局按需扫描 700 档教程纪录，生日契约提前过滤无关角色；死亡先同步完整结算再写纪录，并使用专属终幕画面。计分、奖池、商店、契约和持久化均保留。
@@ -57,8 +57,8 @@ Each pair grants 1 XP; every 10 XP raises level and stress gain, alternating rer
 [h1]本地化与兼容性 / Localization & Compatibility[/h1]
 简中 / English / Français / Deutsch / 日本語 / 한국어 / Polski / Русский / Español
 
-目标 CK3 1.20.0.3；推荐新开局、单机。真实死亡纪录写入/新进程教程导入已验，无继承人完整界面及退出仍待验。覆盖同一 window_succession_event.gui 的 mod 冲突；其他同键 on_action、GUI、资源组合不作保证。
-Target: CK3 1.20.0.3; new single-player games recommended. Actual death-record writing/new-process tutorial import passed; full no-heir UI and exit remain pending. Mods replacing window_succession_event.gui conflict; other same-key on_action, GUI or asset combinations are not guaranteed.
+目标 CK3 1.20.0.3；推荐新开局、单机。真实死亡纪录写入、新进程教程导入、廷臣配置冷加载、无继承人结算界面及正常退出已验。覆盖同一 window_succession_event.gui 的 mod 冲突；其他同键 on_action、GUI、资源组合不作保证。
+Target: CK3 1.20.0.3; new single-player games recommended. Death records, fresh-process tutorial import, saved courtier settings, the no-heir display and normal exit passed validation. Mods replacing window_succession_event.gui conflict; other same-key on_action, GUI or asset combinations are not guaranteed.
 
 [h1]一局有多长 / Run Length[/h1]
 一局就是签约统治者的一生；30–50 年通常经历约 10–17 次垂青会。/ One run is the contracted ruler's lifetime; 30–50 years usually contains about 10–17 favor sessions.

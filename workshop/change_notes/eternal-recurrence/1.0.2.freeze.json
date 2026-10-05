@@ -37,5 +37,15 @@
     "bytes": 8193,
     "sha256": "356f5632b500e21cfae34d81601f1f029140407992021c4c05b6068794f6a21b"
   },
-  "normal_native_exit0_pending": true
+  "normal_native_exit0_pending": false,
+  "actual_R20_acceptance": {
+    "path": "C:/workspace/ck3-upgrade-20261005/main-r20-root-closeout-01/actual-final-readback-01.json",
+    "bytes": 3625,
+    "sha256": "17e645bdc2bcc0b207f342148f9ff1b69353b2ec6bee7f14f51709b22ea8598d"
+  },
+  "actual_R20_gui_eight_validation": {
+    "path": "C:/workspace/ck3-upgrade-20261005/main-r20-terminal-original-root-01/actual-eight-values-root-observation-01.json",
+    "bytes": 9342,
+    "sha256": "f5f0614a6518c95cc4a6d65e4e775526a0045e1e87ec69c439c30a217377f905"
+  }
 }
