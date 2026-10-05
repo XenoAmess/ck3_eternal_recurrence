@@ -3010,3 +3010,5 @@ flowchart LR
 纯离线 `/WX` 构建新增 loss-writer fixture 时，UTF-8 无 BOM 注释在本机 CP936 下触发 C4819/C2220；添加 UTF-8 BOM 后，narrow diagnostic 中的 Unicode minus 又触发 C4566/C2220。最小修复是 fixture 使用 UTF-8 BOM、该 narrow diagnostic 使用 ASCII minus，第三 attempt GREEN。生产 reader/公式未改，未调整 compiler flags 或系统编码。三个原始日志保留在 `Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/native-loss-0{1,2,3}.log`；这是该新增 fixture 的具体构建故障，不据此重复扫描或改写旧文件。
 
 CTest 的 target 名可能不同于 `add_test(NAME ...)`。本次 supply 名误含 `_test` 时组合过滤器仍因 writer 匹配而返回 GREEN，但仅执行1/1；实际日志确认遗漏后，只补跑正确 `xar_ck3_12003_supply_loss_eligibility` 一次。报告以实际执行名和数量为准，不将整体 exit0 当作每个传入名字都已执行。
+
+2026-10-05 retained Rules 的外置 native-wire consumer 首次在导入 dataclasses 时失败：同目录临时 `inspect.py` 遮蔽 Python stdlib inspect。该 harness RED 消费0帧；仅修正外置 import path 后，首次实际消费7份生产 JSON GREEN。生产代码与旧测试未修改或重跑。失败和修复结果分别保存在第二批 `retained-geometry/loaded-effects/NATIVE-WIRE-REPLAY-ATTEMPT-01-RED.json` 与 `NATIVE-WIRE-REPLAY.json`。临时工具采用任务名称，遇到导入失败先核对实际模块路径。
