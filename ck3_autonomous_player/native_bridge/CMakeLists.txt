@@ -7731,6 +7731,7 @@ endif()
 
 if(BUILD_TESTING)
   add_executable(xar_ck3_12003_battle_current_state_test
+    src/ck3_12002_phase_character.cpp
     src/ck3_12003_context_sources.cpp
     src/ck3_12003_task_position_inputs.cpp
     src/ck3_12002_battle.cpp
