@@ -34,7 +34,7 @@ source/staged h8710/date53262888，98361006B，SHA-256 `bece1716da90018266fdea05
 
 默认NO-PREQUERY空calls；MAIN仅 existing `ck3_query_battle_terminal_transition_v1` character-only：prior_combat_id=null、subject_public_cunit_id=null、character_ids=[29829]、after_terminal_sequence=null，expected_revision取紧前fresh snapshot.public revision。exactargs沿C已sealed合同，无Create/market/Sway/plan重查，不猜新增armyIDs。
 
-Root sole owner已唯一消费original004：211083B，SHA-256 `278494071d5f7e51b2fc8b78685ef3c6448b7e8949690be8ef3e942934297934`；完整缓存 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-context-v71-r44-actual-01/FULL-CACHE.json`。本 lane只引用指针与提供值，不读取原件/缓存。
+Root sole owner已唯一消费original004：211083B，SHA-256 `278494071d5f7e51b2fc8b78685ef3c6448b7e8949690be8ef3e942934297934`；完整缓存 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-future-context-branch-v82/battle-context-v71-r44-actual-01/FULL-CACHE.json`。本 lane只引用指针与提供值，不读取原件/缓存。
 
 `current_person_state.context_branch_inputs` available/readytrue，actor29829、flag14=true、selectedindex3、selected7 rows；seven counts `[0,0,5,1,0,0,0]`，positive group count2、readable property count3、reasonnull。该exact paused只读scope为production-live primitive；不外推prebaseline、fullfuture、native writer、Entry或v83 priorfield。v70 finite normalMAACreate的独立创建/金币闭环保持旧截点，不冒充本observer以外的整局能力。本 lane不读MAIN/raw/TOP/State或其他numeric样本。
 
