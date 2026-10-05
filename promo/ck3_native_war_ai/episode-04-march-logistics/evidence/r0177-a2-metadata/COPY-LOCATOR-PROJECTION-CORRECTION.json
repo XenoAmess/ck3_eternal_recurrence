@@ -1,0 +1,24 @@
+{
+  "schema": "xar.ck3.M2.metadata-locator-projection-correction.v1",
+  "historical_commit": "d5966bfc02769ed0c6d36015c40f6f268bf87dc6",
+  "historical_receipt_repo_path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0177-a2-metadata/CLOSED-SOURCE-COPY-RECEIPT.json",
+  "historical_receipt_pin": {
+    "bytes": 2224,
+    "sha256": "a00d979eee121f93d276cd2ade193b1897bcc66103b2721297ba3364d52d66b8"
+  },
+  "cause": "A command-token regex matched part of an opaque historical artifact filename in one derived metadata source locator. There was no executable shell entry or call.",
+  "changed_projection": "One derived copy receipt removes that opaque external path and references its preserved commit plus exact relative input and SHA; companion manifest repins derived receipt.",
+  "original_actual_JSON_code_media_and_packet_bytes_modified": false,
+  "source_start_snapshot": {
+    "path": "inputs/start2.json",
+    "bytes": 7085,
+    "sha256": "d2125061fa66db567185c3ddb42db493a6665dab4a631e87b848f9e66abdaa3c"
+  },
+  "original_failed_CI_runs": [
+    37352522577,
+    37352524027
+  ],
+  "old_attempts_receipts_and_origin_bytes_preserved": true,
+  "validator_policy_relaxed": false,
+  "SDK_Game_UI_media_RAW_rehash_or_Git_actions_by_projection": 0
+}

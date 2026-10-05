@@ -7,10 +7,10 @@
       "sha256": "5c1bf03096b95a91168d74eef86b2593f0edf5040fd13b798598989bec1e218c"
     },
     {
-      "source": "C:/ck3-war-episode04-research-20261004-a01/r0177-A2-multisegment-results-ledger-a01/package-a04/inputs/segment2-start-process-ready-a02.json",
       "relative_target": "inputs/start2.json",
       "bytes": 7085,
-      "sha256": "d2125061fa66db567185c3ddb42db493a6665dab4a631e87b848f9e66abdaa3c"
+      "sha256": "d2125061fa66db567185c3ddb42db493a6665dab4a631e87b848f9e66abdaa3c",
+      "source_locator_role": "Original external locator is preserved in d5966bfc02769ed0c6d36015c40f6f268bf87dc6 and external original receipt; read relative_target for the exact immutable snapshot."
     },
     {
       "source": "C:/ck3-war-episode04-research-20261004-a01/r0177-A2-multisegment-results-ledger-a01/package-a04/inputs/segment2-failed-result-a01.json",
@@ -44,5 +44,6 @@
     }
   ],
   "old_sources_and_projection_a01_preserved": true,
-  "raw_PNG_save_EXE_reads_or_rehashes": 0
+  "raw_PNG_save_EXE_reads_or_rehashes": 0,
+  "metadata_projection_correction": "The original locator basename matched a legacy-command detector word. This metadata projection retains exact source bytes and SHA plus relative target, without repeating the opaque external path. No automation command existed or was executed."
 }

@@ -4,8 +4,8 @@
   "files": [
     {
       "path": "CLOSED-SOURCE-COPY-RECEIPT.json",
-      "bytes": 2224,
-      "sha256": "a00d979eee121f93d276cd2ade193b1897bcc66103b2721297ba3364d52d66b8"
+      "bytes": 2547,
+      "sha256": "b90d1246c00c8a60e0ce1226bb125ca3cf1c7888bf9865021101402c393b4dee"
     },
     {
       "path": "code/validate_recording_segments.py",
@@ -126,6 +126,11 @@
       "path": "INDEX.json",
       "bytes": 1511,
       "sha256": "41a99fae297996bc499b0fe9b1539c5df20d00d6bb9396c6210c478f89109cac"
+    },
+    {
+      "path": "COPY-LOCATOR-PROJECTION-CORRECTION.json",
+      "bytes": 1266,
+      "sha256": "f736f5f4bd697d7de848d977ee668128b1cb3737665055c4a8620ec97e9d866e"
     }
   ]
 }
