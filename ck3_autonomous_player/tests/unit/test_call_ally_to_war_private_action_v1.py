@@ -88,10 +88,10 @@ class CallAllyTransportTests(unittest.TestCase):
         self.assertEqual(driver.requests[-1]["recipient_character_id"], emitted["recipient_character_id"])
         self.assertNotIn("ally_joined", result)
 
-    def test_current_native_legal_target_is_required_without_native_send(self):
+    def test_unobserved_native_legality_remains_unavailable_without_native_send(self):
         driver = NativeFixtureDriver()
         row = driver.quote["result"]["alliance_obligations"]["first_wars"][0]
-        row["native_complete_can_send"] = False
+        row["native_complete_can_send"] = None
         with self.assertRaises(BridgeUnavailableError):
             driver.submit_call_ally_to_war_private_v1(**driver.arguments())
         self.assertEqual([request["step"] for request in driver.requests], [QUERY_STEP])
@@ -122,6 +122,53 @@ class CallAllyTransportTests(unittest.TestCase):
 
 
 class CallAllyRegisteredMcpTests(unittest.IsolatedAsyncioTestCase):
+    async def test_observed_native_refusal_retains_terms_without_submission(self):
+        from mcp import Client
+
+        driver = NativeFixtureDriver()
+        row = driver.quote["result"]["alliance_obligations"]["first_wars"][0]
+        # Synthetic diagnostic values exercise the changed .3 consumer only;
+        # they do not claim a fresh native C88 capture or live war observation.
+        row.update(
+            native_complete_can_send=False,
+            native_send_precheck_passed=False,
+            native_send_setup_passed=True,
+            native_send_availability_passed=True,
+            native_send_pair_restriction_blocked=False,
+            native_send_diplomatic_range_passed=True,
+            native_send_already_considering_blocked=False,
+            native_send_answer_status_raw=2,
+            native_send_definition_gate_results=[True, False, True, True, True, True, True],
+            native_first_failed_send_stage="definition_c88",
+            native_c88_failure_description_status="observed",
+            native_c88_failure_description_text="#N Receiver clause false#!\n#P Context true#!; UTF8: 对象",
+        )
+        expected_terms = deepcopy(row)
+        async with Client(create_server(driver)) as client:
+            response = await client.call_tool(
+                "ck3_submit_call_ally_to_war_private_v1", driver.arguments())
+        self.assertFalse(response.is_error, response.content)
+        result = response.structured_content
+        self.assertEqual(result["status"], "rejected")
+        self.assertEqual(result["reason"], "call_ally_native_complete_can_send_false")
+        self.assertEqual(result["selected_native_terms"], expected_terms)
+        self.assertEqual(result["quoted_send_cost_raw"], expected_terms["send_cost_raw"])
+        self.assertEqual(result["result_source"], "native_family_query")
+        self.assertTrue(result["read_only"])
+        self.assertIsNone(result["request_id"])
+        self.assertEqual(result["queried_revision"], driver.snapshot["revision"])
+        self.assertEqual(result["queried_native_revision"], driver.snapshot["native_revision"])
+        self.assertEqual(result["source_query_frame"], driver.quote["result"]["frame"])
+        for key in ("accepted", "submitted", "material_result", "verification_pending",
+                    "native_submit_attempted", "automatic_retry"):
+            self.assertIs(result[key], False, key)
+        self.assertNotIn("actual_send_cost_raw", result)
+        self.assertNotIn("ally_joined", result)
+        self.assertEqual([request["step"] for request in driver.requests], [QUERY_STEP])
+        row["send_cost_raw"][0] += 1
+        row["attacker_character_ids"].append(42)
+        self.assertEqual(result["selected_native_terms"], expected_terms)
+
     async def test_registered_action_replays_native_packets_and_separates_ack_from_join(self):
         from mcp import Client
 

@@ -1,6 +1,7 @@
 """Submit one caller-selected native-final ally invitation to one active war.
 
 The existing family observation permit and execute-step channel are reused.
+An observed native refusal returns the queried terms without submitting.
 A native submission receipt never establishes that the ally joined the war.
 """
 
@@ -55,7 +56,7 @@ def submit_call_ally_to_war_private_v1(
     driver: object, *, expected_revision: int, war_id: int,
     recipient_character_id: int, timeout_seconds: float = 30.0,
 ) -> dict[str, object]:
-    """Quote the selected pair and queue one native invitation without retry."""
+    """Quote the selected pair; reject or queue one native invitation without retry."""
     if not _full_id(war_id) or not _full_id(recipient_character_id):
         raise ValueError("call ally requires complete signed war and character IDs")
     if type(timeout_seconds) not in (int, float) or timeout_seconds <= 0:
@@ -86,11 +87,35 @@ def submit_call_ally_to_war_private_v1(
     quote = selected.get("send_cost_raw")
     if (selected.get("native_target_can_be_picked") is not True
             or selected.get("native_target_row_selectable") is not True
-            or selected.get("native_complete_can_send") is not True
+            or type(selected.get("native_complete_can_send")) is not bool
             or not _costs(quote)):
         raise BridgeUnavailableError("call ally selected target lacks final native send legality")
     if _binding(_frame(driver, expected_revision)) != _binding(before):
         raise BridgeUnavailableError("call ally paused player frame changed before submit")
+    if selected["native_complete_can_send"] is False:
+        # This is an observed query refusal, with no native sender request.
+        # Keep the owning C88 text and sampled terms exactly as published.
+        return {
+            "schema": SCHEMA, "schema_version": 1, "kind": KIND,
+            **private_native_provenance(before),
+            "status": "rejected", "accepted": False, "submitted": False,
+            "material_result": False, "verification_pending": False,
+            "native_submit_attempted": False, "request_id": None,
+            "result_source": "native_family_query", "read_only": True,
+            "private_build": True, "advertised": False,
+            "reason": "call_ally_native_complete_can_send_false",
+            "played_character_id": actor_id,
+            "recipient_character_id": recipient_character_id, "war_id": war_id,
+            "expected_revision": expected_revision,
+            "source_date_raw": before.get("date_raw"),
+            "queried_snapshot_id": observation.get("queried_snapshot_id"),
+            "queried_revision": observation["queried_revision"],
+            "queried_native_revision": observation["queried_native_revision"],
+            "source_query_frame": deepcopy(observation.get("frame")),
+            "raw_scale": 100000, "send_cost_slot_keys": list(COST_SLOTS),
+            "quoted_send_cost_raw": list(quote), "automatic_retry": False,
+            "selected_native_terms": deepcopy(dict(selected)),
+        }
     request_id = "call-ally-" + uuid.uuid4().hex
     driver.endpoint.send({
         "type": "execute_step", "protocol_version": 1, "request_id": request_id,
