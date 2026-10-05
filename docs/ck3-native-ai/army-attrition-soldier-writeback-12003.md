@@ -255,3 +255,22 @@ closed SDK20965的paused raw53265024/native107/public2/queryseq4四军available�
 此段仅为用户接手游戏前Root正常STOP后的历史证据，不声明用户当前状态。冻结paused raw53265168/native140/public2/queryseq5：主2407/3873（较已held捕获+360）、器械8/11（+1）、守2883/3000（−29）、敌2846/4702（−12）。主/器械库存300、月+20、attr0、各损耗预算0；守库存81.81820、月−4.54545、attr.01/围城预算28，敌95/月−5/attr0/预算0，supply/raid四军均0。
 
 198DATA available且prepared字段present：正主28/器械1/守0/敌127，零12/0/24/6，null0；Can/chunk真主28/31、器械1/1、守0/0、敌126/0，保持独立，不沿用此前末态prepared全0或归因净兵数变化。D394382/phase2及lastSupply原值只作调度/库存账本。普通6日SAVEh9048与0日query SAVEh9052分别引用冻结metadata，不互相替代；consumer只读新健康派生1次，原006/旧/fullcomposition/SDK/实机/attach/window/prepare/build/launch/profile/test/compile/shared/Git及新增日均0。完整历史字段：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-frozen-march3711-r46-day06/ROOT-DELIVERY.json`。
+
+### 2026-10-05：损耗预算分摊与整数writer请求源闭合
+
+用户独占CK3期间仅复用exact 1.20.0.3缓存片段。24E3430先更新供给库存，分配供给preferred与overflow，再以供给写回后的ArRg current分配原先算出的siege+raid预算。preferred选signed type tier<=0（供给另要求2A956D0），残余分别走2A95800 flags2/flags0；按原ArRg存储顺序进行signed32 IMUL截断、signed IDIV toward0，再传q×100000到writer。whole budget不是residual，eligible total足够时residual为0；writer跳过/钳制也不把请求变成实际损失，历史预算28不能解释净兵数−29。
+
+```mermaid
+flowchart LR
+  A[Supply update] --> B[Preferred allocation]
+  B --> C[Residual flags2 in stored order]
+  C --> D[Post-supply current soldiers]
+  D --> E[Siege plus raid preferred]
+  E --> F[Residual flags0 in stored order]
+  F --> G[Signed integer q times Q100000 writer request]
+  G -. Final setter unresolved .-> H[Actual applied soldiers]
+```
+
+现regiment_strengths的原数组次序/current及同GDbo signed+2A0 type tier可复用。逐军团2A956D0、真正供给写回后的阶段输入、2634880 skip和2657EA0..2657F0E的110B setter仍是应用投影的具体剩余入口；不能用预算直接预测最终扣兵。外置纯request candidate尚未执行、导入、编译或测试，状态只research/未验证候选。
+
+外置`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/attrition-loss-model/ROOT-DELIVERY.json`，3245 B / SHA `1452b95cbf79c0351fba537309d31dd0603609f69b8ad23d6018ded81e9b59f1`，含源树与input合同。源知新增，游戏/SDK/日期及live信用新增0；5035冻结历史不代表用户当前实机。
