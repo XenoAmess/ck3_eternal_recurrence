@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "C:/ck3-war-episode04-research-20261004-a01/r0177-media-tools-a01/audit_finished_r0177.py",
+    "--execute-finished-audit",
+    "--finish-receipt",
+    "C:/ck3-war-episode04-research-20261004-a01/native-live-r0177-a01/responses/r0177-recorder-finish-first-tape-a01.json",
+    "--finish-response-sha256",
+    "38485cd006682839391a5955c9e78583327fb0021df1509b56e3b9e0b02d2e3d"
+  ],
+  "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "finish_receipt_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\responses\\r0177-recorder-finish-first-tape-a01.json",
+    "bytes": 1353,
+    "sha256": "38485cd006682839391a5955c9e78583327fb0021df1509b56e3b9e0b02d2e3d"
+  },
+  "finished_receipt_gate_passed": true
+}

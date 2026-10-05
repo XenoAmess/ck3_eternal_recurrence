@@ -1,0 +1,2 @@
+# Preserve only this closed A2 small evidence package.
+* -text whitespace=trailing-space,space-before-tab,cr-at-eol

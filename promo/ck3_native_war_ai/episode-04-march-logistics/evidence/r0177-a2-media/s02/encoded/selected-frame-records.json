@@ -1,0 +1,100 @@
+{
+  "source_full_table_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\audit-attempt-a01\\video-frames\\stdout.json",
+    "bytes": 37535663,
+    "sha256": "0eeaddac5055ac7e51408bffd74cbcf2805ff18ba592085984209e25e511dfa8"
+  },
+  "full_table_not_bundled_or_revalidated": true,
+  "records": [
+    {
+      "role": "continuation_first_frame_context",
+      "frame_zero_based": 30,
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 1000,
+        "pts_time": "1.000000",
+        "pkt_dts": 1000,
+        "pkt_dts_time": "1.000000",
+        "best_effort_timestamp": 1000,
+        "best_effort_timestamp_time": "1.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      }
+    },
+    {
+      "role": "first_observed_london_arrival_search",
+      "frame_zero_based": 52050,
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 1735000,
+        "pts_time": "1735.000000",
+        "pkt_dts": 1735000,
+        "pkt_dts_time": "1735.000000",
+        "best_effort_timestamp": 1735000,
+        "best_effort_timestamp_time": "1735.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      }
+    },
+    {
+      "role": "independent_london_siege_endpoint_search",
+      "frame_zero_based": 80100,
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 2670000,
+        "pts_time": "2670.000000",
+        "pkt_dts": 2670000,
+        "pkt_dts_time": "2670.000000",
+        "best_effort_timestamp": 2670000,
+        "best_effort_timestamp_time": "2670.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      }
+    },
+    {
+      "role": "london_army_supply_endpoint_search",
+      "frame_zero_based": 84600,
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 2820000,
+        "pts_time": "2820.000000",
+        "pkt_dts": 2820000,
+        "pkt_dts_time": "2820.000000",
+        "best_effort_timestamp": 2820000,
+        "best_effort_timestamp_time": "2820.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      }
+    },
+    {
+      "role": "continuation_actual_last_encoded_frame",
+      "frame_zero_based": 86548,
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 2884933,
+        "pts_time": "2884.933000",
+        "pkt_dts": 2884933,
+        "pkt_dts_time": "2884.933000",
+        "best_effort_timestamp": 2884933,
+        "best_effort_timestamp_time": "2884.933000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      }
+    }
+  ]
+}

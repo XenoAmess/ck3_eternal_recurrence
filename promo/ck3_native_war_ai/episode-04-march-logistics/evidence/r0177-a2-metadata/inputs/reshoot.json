@@ -1,0 +1,56 @@
+{
+  "schema": "ck3.e04.abc.prospective-reshoot/v1",
+  "at_utc": "2026-10-05T14:50:37.830284+00:00",
+  "status": "ROOT_FROZEN_BEFORE_NEW_A2_EXECUTION_OR_OUTCOME",
+  "reason": "A1 recording window was consumed by preparation; only one actual game day was advanced and no London arrival was observed. Repeat recording of A is selected for capture completeness before any new outcome.",
+  "original_frozen_ABC_protocol": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-abc-protocol-freeze-a01\\protocol.json",
+    "bytes": 54230,
+    "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+  },
+  "primary_arms": {
+    "A": "R0177 independent A2",
+    "B": "R0175",
+    "C": "R0176"
+  },
+  "original_A1": {
+    "run": "R0174",
+    "closure": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-closure-and-release-a01\\actual-closure.json",
+      "bytes": 980,
+      "sha256": "c9285ff94ec56e900f3d963e73e1310dc6e535de5c262de073f452a16325b228"
+    },
+    "disposition": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-partial-A1-finish-and-stop-a01\\terminal-disposition.json",
+      "bytes": 869,
+      "sha256": "22071ff7c607b3b87b171ce79f851efd4d503959a598aa013b79934b02e1472c"
+    },
+    "used_days": 1,
+    "remaining_days": 89,
+    "arrival_observed": false,
+    "primary_completion_credit": 0,
+    "classification": "capture-incomplete; all original bytes retained"
+  },
+  "new_A2_prepared": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\prepared-r0177-a01\\prepared.json",
+    "bytes": 5511,
+    "sha256": "34a325a8701bcdef8e2e44d47ba21430011b7d694be28e0f180a04c7d58a6cee"
+  },
+  "independent_common_checkpoint_sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "maximum_actual_days_per_arm": 90,
+  "reserve_stop_days": 89,
+  "recording_seconds_per_independent_arm": 3600,
+  "recording_starts_only_after_all_baseline_and_protocol_gates": true,
+  "typed_move_immediately_after_recording_start": true,
+  "A2_cold_baseline_must_be_fresh_and_match_normative_27_regiments_37_DATA": true,
+  "maximum_A_capture_attempts_in_this_protocol": 2,
+  "A1_budget_not_reset_or_extended": true,
+  "B_and_C_actual_started": false,
+  "source_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+  "native_build": "a08",
+  "cash_is_net_only_no_payment_ledger": true,
+  "all_arrival_and_strategy_outcomes_null": true,
+  "old_protocol_and_A1_files_not_modified": true
+}

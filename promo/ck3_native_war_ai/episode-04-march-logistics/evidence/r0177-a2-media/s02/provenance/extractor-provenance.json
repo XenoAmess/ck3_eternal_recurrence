@@ -1,0 +1,24 @@
+{
+  "original": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\sealed_first_tape_extractor04.py",
+    "bytes": 9858,
+    "sha256": "f465680e080baede73e745af681951e57cea6960e4db7da19b0ba1da3ce14b4c"
+  },
+  "snapshot": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\extractor-original-first-tape04.py",
+    "bytes": 9858,
+    "sha256": "f465680e080baede73e745af681951e57cea6960e4db7da19b0ba1da3ce14b4c"
+  },
+  "candidate": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\sealed_continuation_extractor01.py",
+    "bytes": 9914,
+    "sha256": "4240bbcb32f5486c376c7d0445dbb6176e7e4f2063292a6a113c04566833fec2"
+  },
+  "diff": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\extractor-adaptation01.patch",
+    "bytes": 2204,
+    "sha256": "2c5edd6c4e60464eb01b7b638f73376b7a1cc287f21b7c2c4b184ffd38244bfb"
+  },
+  "closure_is_direct_terminal_not_sdk_envelope": true,
+  "no_other_raw_allowed": true
+}

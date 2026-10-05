@@ -1,0 +1,14 @@
+# Preserve only this closed A2 small evidence package.
+* -text whitespace=trailing-space,space-before-tab,cr-at-eol
+
+# Retain exact recorded FFmpeg progress whitespace and historical patch context.
+s01/encoded/extract-00/showinfo.log whitespace=-trailing-space,space-before-tab,cr-at-eol
+s01/encoded/extract-01/showinfo.log whitespace=-trailing-space,space-before-tab,cr-at-eol
+s01/encoded/extract-02/showinfo.log whitespace=-trailing-space,space-before-tab,cr-at-eol
+s01/encoded/extract-03/showinfo.log whitespace=-trailing-space,space-before-tab,cr-at-eol
+s01/provenance/auditor-adaptation.patch whitespace=-trailing-space,space-before-tab,cr-at-eol
+s02/encoded/extract-00/showinfo.log whitespace=-trailing-space,space-before-tab,cr-at-eol
+s02/encoded/extract-01/showinfo.log whitespace=-trailing-space,space-before-tab,cr-at-eol
+s02/encoded/extract-02/showinfo.log whitespace=-trailing-space,space-before-tab,cr-at-eol
+s02/encoded/extract-03/showinfo.log whitespace=-trailing-space,space-before-tab,cr-at-eol
+s02/encoded/extract-04/showinfo.log whitespace=-trailing-space,space-before-tab,cr-at-eol

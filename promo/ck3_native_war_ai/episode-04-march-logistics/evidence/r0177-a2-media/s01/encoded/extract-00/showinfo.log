@@ -1,0 +1,25 @@
+Input #0, matroska,webm, from 'C:\ck3-war-episode04-research-20261004-a01\r0177-raw-abc-a2-a01\raw.mkv':
+  Metadata:
+    ENCODER         : Lavf63.1.101
+  Duration: 01:00:00.00, start: 0.000000, bitrate: 13111 kb/s
+  Stream #0:0: Video: h264 (Constrained Baseline), yuv420p(tv, progressive), 1920x1080, 30 fps, 30 tbr, 1k tbn
+    Metadata:
+      ENCODER         : Lavc63.1.101 libx264
+      DURATION        : 01:00:00.000000000
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> png (native))
+[Parsed_showinfo_1 @ 000001d3cc8ca480] config in time_base: 1/1000, frame_rate: 30/1
+[Parsed_showinfo_1 @ 000001d3cc8ca480] config out time_base: 0/0, frame_rate: 0/0
+[Parsed_showinfo_1 @ 000001d3cc8ca480] n:   0 pts:   1000 pts_time:1       duration:     33 duration_time:0.033   fmt:yuv420p cl:left sar:0/1 s:1920x1080 i:P iskey:0 type:P checksum:3F0BDDE9 plane_checksum:[D94D9287 39942BF4 1E301F6E] mean:[99 125 127] stdev:[27.3 9.0 5.6]
+[Parsed_showinfo_1 @ 000001d3cc8ca480] color_range:tv color_space:unknown color_primaries:unknown color_trc:unknown
+Output #0, image2, to 'C:\ck3-war-episode04-research-20261004-a01\r0177-media-tools-a01\encoded-candidates-a01\r0177-early\candidate-%02d.png':
+  Metadata:
+    encoder         : Lavf63.1.101
+  Stream #0:0: Video: png, rgb24(pc, gbr/unknown/unknown, progressive), 1920x1080, q=2-31, 200 kb/s, 30 fps, 30 tbn
+    Metadata:
+      encoder         : Lavc63.1.101 png
+      DURATION        : 01:00:00.000000000
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.52    [Parsed_showinfo_1 @ 000001d3cc8ca480] n:   1 pts:  12000 pts_time:12      duration:     33 duration_time:0.033   fmt:yuv420p cl:left sar:0/1 s:1920x1080 i:P iskey:0 type:P checksum:1581871E plane_checksum:[CCADF6E6 DD345A05 8B753624] mean:[100 125 126] stdev:[28.0 8.8 5.5]
+[Parsed_showinfo_1 @ 000001d3cc8ca480] color_range:tv color_space:unknown color_primaries:unknown color_trc:unknown
+frame=    1 fps=1.0 q=-0.0 size=N/A time=N/A bitrate=N/A speed=N/A elapsed=0:00:01.03    [out#0/image2 @ 000001d3ca1c3640] video:5302KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+frame=    2 fps=1.6 q=-0.0 Lsize=N/A time=00:00:00.00 bitrate=N/A speed=   0x elapsed=0:00:01.23    

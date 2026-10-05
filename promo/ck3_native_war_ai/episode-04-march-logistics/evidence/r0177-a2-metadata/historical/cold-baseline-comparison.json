@@ -1,0 +1,147 @@
+{
+  "schema": "ck3.e04.cold-baseline-compare.v1",
+  "python": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "mode": "compare",
+  "paths": {
+    "normative": [
+      "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\baseline.json",
+      "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\after.json",
+      "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\strength.json",
+      "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\commander.json"
+    ],
+    "target": [
+      "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-readonly-start-and-previews-a03\\baseline.json",
+      "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-readonly-start-and-previews-a03\\after.json",
+      "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-readonly-start-and-previews-a03\\strength.json",
+      "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-readonly-start-and-previews-a03\\commander.json"
+    ]
+  },
+  "source_pins": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\baseline.json",
+      "bytes": 34577,
+      "sha256": "da0454906ff6af6ab81da354471dcac6062882eddaac4e274b5f79e6d2fd33e9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\after.json",
+      "bytes": 217676,
+      "sha256": "6a5785df05686dcd0844926d9265155f685e2bdd21d239afbe2cec69d6b4da0c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\strength.json",
+      "bytes": 78964,
+      "sha256": "9d8ae09a8a73595444b8f8d2ff1d39958eb2c7261116fb6e61d6ef3e2bdf5603"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\commander.json",
+      "bytes": 11470,
+      "sha256": "2bbb099318a1927a9b87d67df4b0b67658dcc27919b2d8321608a3e1fddfcdf3"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-readonly-start-and-previews-a03\\baseline.json",
+      "bytes": 34574,
+      "sha256": "5c3f978984fa0348772ec773b04360d1f74c4cd36df237514084529e6a015c9d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-readonly-start-and-previews-a03\\after.json",
+      "bytes": 217673,
+      "sha256": "b2b7a992e60fafdb83720c1d6a191f46c280f7b53f9dc80994983e12a41cde19"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-readonly-start-and-previews-a03\\strength.json",
+      "bytes": 78964,
+      "sha256": "77bc1f6b77784eb610d20fa2f25f9f03360b3e098c7364eec2bf9a27714791a0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-readonly-start-and-previews-a03\\commander.json",
+      "bytes": 11470,
+      "sha256": "2bbb099318a1927a9b87d67df4b0b67658dcc27919b2d8321608a3e1fddfcdf3"
+    }
+  ],
+  "cohort_or_producer_application_credit": false,
+  "ABC_result_credit": false,
+  "SDK_game_desktop_bus_Git_calls": false,
+  "status": "PASS_COLD_BASELINE_EQUAL",
+  "semantic_differences": [],
+  "semantic_difference_count": 0,
+  "binding_evidence": {
+    "normative": {
+      "wrappers": {
+        "before": {
+          "episode_run_id": "native-33388-938bf03cdbfc",
+          "snapshot_id": "native:2",
+          "revision": 3,
+          "native_revision": 2
+        },
+        "after": {
+          "episode_run_id": "native-33388-938bf03cdbfc",
+          "snapshot_id": "native:2",
+          "revision": 3,
+          "native_revision": 2
+        },
+        "strength_query_sequence": 1,
+        "commander_query_sequence": 1
+      },
+      "commander_binding": {
+        "public_query_frame_present": true,
+        "episode_or_connection_query_stamp": null,
+        "note": "native body date/revision/identity joined; missing stamps are not backfilled"
+      }
+    },
+    "target": {
+      "wrappers": {
+        "before": {
+          "episode_run_id": "native-33388-dc0d8e1d4891",
+          "snapshot_id": "native:2",
+          "revision": 3,
+          "native_revision": 2
+        },
+        "after": {
+          "episode_run_id": "native-33388-dc0d8e1d4891",
+          "snapshot_id": "native:2",
+          "revision": 3,
+          "native_revision": 2
+        },
+        "strength_query_sequence": 1,
+        "commander_query_sequence": 1
+      },
+      "commander_binding": {
+        "public_query_frame_present": true,
+        "episode_or_connection_query_stamp": null,
+        "note": "native body date/revision/identity joined; missing stamps are not backfilled"
+      }
+    }
+  },
+  "allowed_wrapper_differences": [
+    {
+      "path": "/after/episode_run_id",
+      "normative": "native-33388-938bf03cdbfc",
+      "target": "native-33388-dc0d8e1d4891"
+    },
+    {
+      "path": "/before/episode_run_id",
+      "normative": "native-33388-938bf03cdbfc",
+      "target": "native-33388-dc0d8e1d4891"
+    }
+  ],
+  "entire_rows_sha256": {
+    "normative": {
+      "regiments": "63de001683d0996b8101f00a87f28c73197ce9d4150a52f21864767b24bdbfda",
+      "DATA": "8dab2ce2575040214e99e7899026ab180a4a89afcaaad6f01148e3cc0eaa4d09"
+    },
+    "target": {
+      "regiments": "63de001683d0996b8101f00a87f28c73197ce9d4150a52f21864767b24bdbfda",
+      "DATA": "8dab2ce2575040214e99e7899026ab180a4a89afcaaad6f01148e3cc0eaa4d09"
+    }
+  },
+  "row_counts": {
+    "normative": {
+      "regiments": 27,
+      "DATA": 37
+    },
+    "target": {
+      "regiments": 27,
+      "DATA": 37
+    }
+  }
+}

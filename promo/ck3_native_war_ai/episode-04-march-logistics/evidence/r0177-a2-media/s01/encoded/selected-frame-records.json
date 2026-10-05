@@ -1,0 +1,118 @@
+{
+  "source_full_table_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\video-frames\\stdout.json",
+    "bytes": 46888299,
+    "sha256": "f25d6cda6b2a0b0ecf058d5331a998866eaa0e5b162ced5faf0b0a5ee0305ffd"
+  },
+  "full_table_not_bundled_or_revalidated": true,
+  "records": [
+    {
+      "role": "baseline_search",
+      "frame_zero_based": 30,
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 1000,
+        "pts_time": "1.000000",
+        "pkt_dts": 1000,
+        "pkt_dts_time": "1.000000",
+        "best_effort_timestamp": 1000,
+        "best_effort_timestamp_time": "1.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      }
+    },
+    {
+      "role": "first_move_search",
+      "frame_zero_based": 360,
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 12000,
+        "pts_time": "12.000000",
+        "pkt_dts": 12000,
+        "pkt_dts_time": "12.000000",
+        "best_effort_timestamp": 12000,
+        "best_effort_timestamp_time": "12.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      }
+    },
+    {
+      "role": "day27_integer_growth_search",
+      "frame_zero_based": 36600,
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 1220000,
+        "pts_time": "1220.000000",
+        "pkt_dts": 1220000,
+        "pkt_dts_time": "1220.000000",
+        "best_effort_timestamp": 1220000,
+        "best_effort_timestamp_time": "1220.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      }
+    },
+    {
+      "role": "TERM08_parent_search",
+      "frame_zero_based": 43440,
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 1448000,
+        "pts_time": "1448.000000",
+        "pkt_dts": 1448000,
+        "pkt_dts_time": "1448.000000",
+        "best_effort_timestamp": 1448000,
+        "best_effort_timestamp_time": "1448.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      }
+    },
+    {
+      "role": "TERM08_concept_search",
+      "frame_zero_based": 46440,
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 1548000,
+        "pts_time": "1548.000000",
+        "pkt_dts": 1548000,
+        "pkt_dts_time": "1548.000000",
+        "best_effort_timestamp": 1548000,
+        "best_effort_timestamp_time": "1548.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      }
+    },
+    {
+      "role": "day31_sea_6689_supply106_search",
+      "frame_zero_based": 55200,
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 1840000,
+        "pts_time": "1840.000000",
+        "pkt_dts": 1840000,
+        "pkt_dts_time": "1840.000000",
+        "best_effort_timestamp": 1840000,
+        "best_effort_timestamp_time": "1840.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      }
+    }
+  ]
+}

@@ -1,0 +1,48 @@
+{
+  "new_exact_smallJSON_copies": [
+    {
+      "source": "C:/ck3-war-episode04-research-20261004-a01/root-r0177-A2-recording-segment-addendum-a02/receipt.json",
+      "relative_target": "inputs/segments2.json",
+      "bytes": 11175,
+      "sha256": "5c1bf03096b95a91168d74eef86b2593f0edf5040fd13b798598989bec1e218c"
+    },
+    {
+      "source": "C:/ck3-war-episode04-research-20261004-a01/r0177-A2-multisegment-results-ledger-a01/package-a04/inputs/segment2-start-process-ready-a02.json",
+      "relative_target": "inputs/start2.json",
+      "bytes": 7085,
+      "sha256": "d2125061fa66db567185c3ddb42db493a6665dab4a631e87b848f9e66abdaa3c"
+    },
+    {
+      "source": "C:/ck3-war-episode04-research-20261004-a01/r0177-A2-multisegment-results-ledger-a01/package-a04/inputs/segment2-failed-result-a01.json",
+      "relative_target": "inputs/failed2.json",
+      "bytes": 502,
+      "sha256": "1e87c0ed39d0771b120a919bafdc65598c589af7cd8d2c37e13a4cb8ebd076e0"
+    },
+    {
+      "source": "C:/ck3-war-episode04-research-20261004-a01/r0177-A2-multisegment-results-ledger-a01/package-a04/inputs/segment2-failed-start-a01.json",
+      "relative_target": "inputs/failure2.json",
+      "bytes": 158,
+      "sha256": "438c6c8efbe742a2e647b55ea2c56896290d8d069a34e4f2649300fc4b2bf1a6"
+    },
+    {
+      "source": "C:/ck3-war-episode04-research-20261004-a01/r0177-raw-abc-a2-continuation-a02/result.json",
+      "relative_target": "inputs/finish2.json",
+      "bytes": 968,
+      "sha256": "2dbe24bfbd559d7ecf6685f945901aa57e338a3ddf9641c4f2e1cee92f21889d"
+    },
+    {
+      "source": "C:/ck3-war-episode04-research-20261004-a01/root-r0177-A2-actual-endpoint-acceptance-a01/receipt.json",
+      "relative_target": "inputs/endpoint.json",
+      "bytes": 3652,
+      "sha256": "d2600854a7646339c97e4343666185d7153b91fcd3901b65f8a0108e9c11a3ad"
+    },
+    {
+      "source": "C:/ck3-war-episode04-research-20261004-a01/root-r0177-closure-and-release-a01/actual-closure.json",
+      "relative_target": "inputs/closure.json",
+      "bytes": 1223,
+      "sha256": "36deb5e62a4135da1dea9ed150d8d34d010528d6f43077a6b7f3c90880e6c41c"
+    }
+  ],
+  "old_sources_and_projection_a01_preserved": true,
+  "raw_PNG_save_EXE_reads_or_rehashes": 0
+}

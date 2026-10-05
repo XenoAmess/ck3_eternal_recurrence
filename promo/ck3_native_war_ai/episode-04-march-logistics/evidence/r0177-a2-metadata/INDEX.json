@@ -1,0 +1,50 @@
+{
+  "schema": "xar.ck3.episode04.A2.portable-joined-package.v1",
+  "experiment": "R0177-A2",
+  "numeric_completed_primary_arms": 1,
+  "planned_primary_arms": 3,
+  "B": null,
+  "C": null,
+  "winner": null,
+  "observed_arrival_interval_raw": [
+    53149608,
+    53149656
+  ],
+  "exact_arrival_tick_or_frame": null,
+  "first_observed_elapsed_days": 51,
+  "same_T0_END": [
+    53148432,
+    53150592
+  ],
+  "net": {
+    "soldiers": 10,
+    "supply_raw": -423728,
+    "treasury_raw": -1606233,
+    "fixedpoint_scale": 100000,
+    "treasury_role": "net change; payments unknown"
+  },
+  "required_cohort": {
+    "native_Main": 0,
+    "owner": 33388,
+    "commander": 27357,
+    "actual_regiments": 27,
+    "DATA_records": 37,
+    "extra_CUnit16777443_native_health_classification": null,
+    "global_scope": "partial"
+  },
+  "packages": {
+    "arrival": "../r0177-a2-arrival/manifest.json",
+    "media": "../r0177-a2-media/manifest.json",
+    "segment_metadata": "recording-segments-metadata.json"
+  },
+  "Root_endpoint_acceptance_sha256": "d2600854a7646339c97e4343666185d7153b91fcd3901b65f8a0108e9c11a3ad",
+  "Root_actual_closure_sha256": "36deb5e62a4135da1dea9ed150d8d34d010528d6f43077a6b7f3c90880e6c41c",
+  "encoded_Root_single_frame_reviews": {
+    "S01": 6,
+    "S02": 5
+  },
+  "continuous_video_clean_spans_full1x_signoff_film_credit": 0,
+  "applied_refill_loss_death_payment_ledger": null,
+  "loaded_movement_cutoff_and_exact50_execution": null,
+  "raw_PNG_save_binary_reads_or_rehash_by_this_integration": 0
+}

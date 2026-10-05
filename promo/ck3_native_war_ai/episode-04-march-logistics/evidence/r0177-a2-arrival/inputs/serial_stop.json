@@ -1,0 +1,15 @@
+{
+  "status": "STOP_ACTUAL_STATIONARY_ARRIVAL",
+  "actual_paused": true,
+  "actual_date_raw": 53149656,
+  "completed_helper_batches": 3,
+  "no_more_resume": true,
+  "comparison_completion_credit": 0,
+  "actual_helper_status": "STOP_ACTUAL_STATIONARY_ARRIVAL",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "no_reset_of_actual_budget": true,
+  "actual_days_from_common": 51.0,
+  "actual_pause_not_inferred_from_failed_ACK": true,
+  "TERM_clean_film_human_approval_credit": 0
+}

@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "C:/ck3-war-episode04-research-20261004-a01/r0177-continuation-media-tools-a01/audit_finished_r0177_continuation.py",
+    "--execute-finished-audit",
+    "--terminal-result",
+    "C:/ck3-war-episode04-research-20261004-a01/r0177-raw-abc-a2-continuation-a02/result.json",
+    "--terminal-result-sha256",
+    "2dbe24bfbd559d7ecf6685f945901aa57e338a3ddf9641c4f2e1cee92f21889d"
+  ],
+  "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "closure_receipt_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\result.json",
+    "bytes": 968,
+    "sha256": "2dbe24bfbd559d7ecf6685f945901aa57e338a3ddf9641c4f2e1cee92f21889d"
+  },
+  "finished_receipt_gate_passed": true
+}

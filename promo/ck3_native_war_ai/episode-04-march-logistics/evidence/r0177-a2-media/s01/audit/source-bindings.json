@@ -1,0 +1,50 @@
+{
+  "at": "2026-10-05T16:12:14.096364+00:00",
+  "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "identities": {
+    "ffprobe": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "bytes": 222026240,
+      "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+    },
+    "ffmpeg": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "bytes": 222229504,
+      "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+    },
+    "finish": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\responses\\r0177-recorder-finish-first-tape-a01.json",
+      "bytes": 1353,
+      "sha256": "38485cd006682839391a5955c9e78583327fb0021df1509b56e3b9e0b02d2e3d"
+    },
+    "raw": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+      "bytes": 5900357006,
+      "sha256": "ac6394f08db078207c26a64af9d2767e8d36007f8021317ff930a55a9775780a"
+    }
+  },
+  "media_tools_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-preflight-a01\\media-tools.json",
+    "bytes": 826,
+    "sha256": "82fc43d8a922780a73e73127cff35acf2da2e1655029777aba17e5e7fb5f6393"
+  },
+  "finish_job": {
+    "schema": "xar.promo.recorder-job/v1",
+    "state": "NORMAL_TREE_EMPTY",
+    "pid": 20084,
+    "returncode": 0,
+    "job_active_processes": 0,
+    "error": null,
+    "at_utc": "2026-10-05T16:08:28.250730+00:00"
+  },
+  "terminal_result_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\result.json",
+    "bytes": 799,
+    "sha256": "9bf818e426a225cd3c3f245e3ef8d351221984e6f18aed10633b15777f33cc6e"
+  },
+  "sealed_terminal_hash_reused": true,
+  "audit_raw_sha_reads": 0,
+  "recorder_clean_spans_certified": false,
+  "recorder_human_approval": false
+}

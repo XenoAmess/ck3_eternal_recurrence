@@ -1,0 +1,97 @@
+{
+  "status": "ROOT_ACCEPTED_A2_ACTUAL_LONDON_ARRIVAL_STOP_NO_MORE_GAME_TIME",
+  "at_utc": "2026-10-05T17:22:31.523297+00:00",
+  "first_observed_arrival": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-main-scoped-serial-a05-b003\\pulse-01\\inspect\\observation.json",
+    "bytes": 357927,
+    "sha256": "7760d0e0088c425c1947c5092e7d36fa03fea93834157954e7ab8e6f86cd6003"
+  },
+  "independent_full_confirmation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-main-scoped-endpoint-independent-a01\\initial\\observation.json",
+    "bytes": 552829,
+    "sha256": "23da342b79cf17e1e25b76017f6c7384de8f8c6e254b424b15e7b0b84b362ad5"
+  },
+  "independent_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-main-scoped-endpoint-independent-a01\\result.json",
+    "bytes": 441,
+    "sha256": "da256cf48e40197b670110cd0602e4bed8c461b6188ba2e2e58d42a1a1af7d50"
+  },
+  "source_protocol": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-abc-protocol-freeze-a01\\protocol.json",
+    "bytes": 54230,
+    "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+  },
+  "scope_addendum": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-new-CUnit-scope-readonly-a02\\scope-addendum.json",
+    "bytes": 3705,
+    "sha256": "fafd2766b6bd8c74709412a47bba421fecd3120ab218818b53b0443ad3d5d53a"
+  },
+  "same_A2_episode": "native-33388-dc0d8e1d4891",
+  "current_main": {
+    "army_id": 0,
+    "owner_character_id": 33388,
+    "soldiers": null,
+    "current_province_id": 1527,
+    "move_target_province_id": null,
+    "move_target_observable": false,
+    "controllable": true,
+    "source": "native",
+    "route_province_ids": [],
+    "route_read_status": "complete_empty",
+    "route_source_count": 0,
+    "in_combat": false,
+    "retreating": false,
+    "army_state": "sieging",
+    "army_state_code": 3,
+    "siege_days_left": null,
+    "siege_province_holder_character_id": null,
+    "siege_province_in_player_subrealm": null
+  },
+  "current_soldiers": 6689,
+  "maximum_soldiers": 6747,
+  "supply_raw": 10613988,
+  "supply_scale": 100000,
+  "capacity_raw": 30000000,
+  "supply_monthly_raw": 0,
+  "attrition_fraction_raw": 1000,
+  "attrition_scale": 100000,
+  "gold": {
+    "raw": 62148329,
+    "scale": 100000
+  },
+  "current_minus_common_baseline": {
+    "soldiers": 10,
+    "supply_raw": -423728,
+    "gold_raw": -1606233,
+    "gold_is_net_cash_not_payment_ledger": true
+  },
+  "start_raw": 53148432,
+  "actual_raw": 53149656,
+  "first_observed_days": 51,
+  "absolute_end_raw": 53150592,
+  "unused_actual_days": 39,
+  "exact_arrival_tick": null,
+  "Root_direct_original_pixel_review": {
+    "images": [
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-actual-London-arrival-frame-a01\\desktop.png",
+        "bytes": 3054168,
+        "sha256": "a711a2c32ac4846e7b825081bbb7b139015fb6a69a499354cdc2116b85327860"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-actual-London-Army-supply-frame-a01\\desktop.png",
+        "bytes": 3057750,
+        "sha256": "a68e0e6aa07141905f46681069d24a12e3ba002bc8ae40459c450c34e57d255e"
+      }
+    ],
+    "visible_date": "1067-04-25",
+    "siege_frame": "London siege/6689, no supply value visible",
+    "Army_frame": "6689/106of300/1% monthly attrition/current siege; current attrition is not applied deaths"
+  },
+  "endpoint_numeric_accepted": true,
+  "second_raw_finish_pending": true,
+  "Game_job_and_SDK_closure_pending": true,
+  "media_encoded_endpoint_binding_pending": true,
+  "B_and_C_results": null,
+  "human_signoff": false
+}

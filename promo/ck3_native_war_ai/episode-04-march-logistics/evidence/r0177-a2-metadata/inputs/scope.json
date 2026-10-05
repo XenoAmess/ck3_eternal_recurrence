@@ -1,0 +1,90 @@
+{
+  "schema": "ck3.e04.abc.required-cohort-scope/v1",
+  "at_utc": "2026-10-05T15:48:08.282053+00:00",
+  "status": "ROOT_FROZEN_BEFORE_NEXT_RESUME",
+  "Root_frozen_protocol": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-abc-protocol-freeze-a01\\protocol.json",
+    "bytes": 54230,
+    "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+  },
+  "prospective_A2_reshoot": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-A2-prospective-reshoot-a01\\receipt.json",
+    "bytes": 2541,
+    "sha256": "1a5a027c2c2f269ff673a868dc7eeec3586ebdeb5f8178acd3fa52870740572f"
+  },
+  "actual_failure": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-a2-serial-a06-b004\\result.json",
+    "bytes": 247,
+    "sha256": "d551cac1b8538587bbdabb838423bc7503108d473ce5f739ef063d3c6a8cbf93"
+  },
+  "failed_all_player_health": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-a2-serial-a06-b004\\pulse-01\\inspect\\health.json",
+    "bytes": 89467,
+    "sha256": "e036bd958b21386ff0127faafcfc2f282e403cf736958049541b0a489210482f"
+  },
+  "fresh_before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-new-CUnit-scope-readonly-a01\\before.json",
+    "bytes": 231320,
+    "sha256": "9ce201e309eda47d9db6511aa2c5ba125ab93f521ad8f1e13df2a77bc3eca77f"
+  },
+  "fresh_required_Main_health": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-new-CUnit-scope-readonly-a01\\required-Main-health.json",
+    "bytes": 79205,
+    "sha256": "f260dc9c72492f18f704fc9c3bb95b28c31a09b028546a38b2dfc3bc6e876e03"
+  },
+  "fresh_Main_commander": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-new-CUnit-scope-readonly-a02\\Main-commander.json",
+    "bytes": 11476,
+    "sha256": "19078d1fc3ad3aa104b6c1e0c785aebfdc965b290d07a40944a1f58a7d39b5e6"
+  },
+  "fresh_after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-new-CUnit-scope-readonly-a02\\after.json",
+    "bytes": 231320,
+    "sha256": "43918cbd79c99b8caba9bebc1dae4a52007100d5a15c536c3e17060127f0a35b"
+  },
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01",
+  "episode_run_id": "native-33388-dc0d8e1d4891",
+  "pipe_name": "\\\\.\\pipe\\ck3-e04-r0177-20261005-a01",
+  "required_public_ids": [
+    0
+  ],
+  "required_native_carmy_ids": [
+    0
+  ],
+  "required_commander_character_ids": [
+    27357
+  ],
+  "required_full_regiments": 27,
+  "required_full_DATA": 37,
+  "unassessed_current_CUnit_ids": [
+    16777443
+  ],
+  "unassessed_CUnit_native_carmy_id": null,
+  "unassessed_CUnit_health": null,
+  "unassessed_CUnit_classification": null,
+  "global_scope_status_retained": "partial",
+  "required_Main_rows_available": true,
+  "full_native_snapshots_and_roster_preserved_without_projection": true,
+  "other_roster_rows_and_actual_all_player_unavailable_reports_remain_saved": true,
+  "no_unknown_value_coerced_to_zero_or_transport": true,
+  "allowed_scope_status_for_complete_required_subject_query": [
+    "available",
+    "partial"
+  ],
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "maximum_batches_per_arm": 120,
+  "actual_raw_at_addendum": 53149176,
+  "actual_days_used": 31,
+  "remaining_days": 59,
+  "same_A2_session_and_recorder": true,
+  "budget_and_strategy_and_arrival_predicate_unchanged": true,
+  "required_subject_owner_source_fullID_current_commander_and_every_cohort_record_still_strict": true,
+  "required_Main_arrival_target": 1527,
+  "required_Main_arrival_states": [
+    "regular",
+    "sieging"
+  ],
+  "all_arrival_and_strategy_results_still_null": true,
+  "old_failed_attempts_and_protocol_and_input_bytes_not_modified": true
+}

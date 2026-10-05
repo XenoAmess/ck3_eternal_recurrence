@@ -1,0 +1,120 @@
+{
+  "schema": "xar.ck3.episode04.a2.closed-media-catalog.v1",
+  "created_at_utc": "2026-10-05T17:45:04.582300+00:00",
+  "experiment": "R0177_same_A2",
+  "recording_segments_contiguous_media_claimed": false,
+  "inter_segment_time_and_capture_gap_not_eliminated": true,
+  "segments": [
+    {
+      "segment_id": "S01",
+      "sealed_raw_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+        "bytes": 5900357006,
+        "sha256": "ac6394f08db078207c26a64af9d2767e8d36007f8021317ff930a55a9775780a"
+      },
+      "audit": "s01/audit/report.json",
+      "terminal_result": "s01/source/terminal-result.json",
+      "candidate_delivery": "s01/encoded/candidates.json",
+      "Root_encoded_review": "s01/encoded/root-direct-review.json",
+      "root_delivery": "s01/source/root-delivery.json",
+      "extractions": [
+        {
+          "actual_pts": [
+            1000,
+            12000
+          ],
+          "receipt": "s01/encoded/extract-00/receipt.json",
+          "showinfo_log": "s01/encoded/extract-00/showinfo.log"
+        },
+        {
+          "actual_pts": [
+            1220000
+          ],
+          "receipt": "s01/encoded/extract-01/receipt.json",
+          "showinfo_log": "s01/encoded/extract-01/showinfo.log"
+        },
+        {
+          "actual_pts": [
+            1448000,
+            1548000
+          ],
+          "receipt": "s01/encoded/extract-02/receipt.json",
+          "showinfo_log": "s01/encoded/extract-02/showinfo.log"
+        },
+        {
+          "actual_pts": [
+            1840000
+          ],
+          "receipt": "s01/encoded/extract-03/receipt.json",
+          "showinfo_log": "s01/encoded/extract-03/showinfo.log"
+        }
+      ],
+      "selected_frame_records": "s01/encoded/selected-frame-records.json",
+      "selected_packet_records": "s01/encoded/selected-packet-records.json"
+    },
+    {
+      "segment_id": "S02",
+      "sealed_raw_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\raw.mkv",
+        "bytes": 4373163416,
+        "sha256": "e9be832ba02b607bcf8ce36b1b6a37d4f841fdbe674d7af924456b31c028f49d"
+      },
+      "audit": "s02/audit/report.json",
+      "terminal_result": "s02/source/terminal-result.json",
+      "candidate_delivery": "s02/encoded/candidates.json",
+      "Root_encoded_review": "s02/encoded/root-direct-review.json",
+      "root_delivery": "s02/source/root-delivery.json",
+      "extractions": [
+        {
+          "actual_pts": [
+            1000
+          ],
+          "receipt": "s02/encoded/extract-00/receipt.json",
+          "showinfo_log": "s02/encoded/extract-00/showinfo.log"
+        },
+        {
+          "actual_pts": [
+            1735000
+          ],
+          "receipt": "s02/encoded/extract-01/receipt.json",
+          "showinfo_log": "s02/encoded/extract-01/showinfo.log"
+        },
+        {
+          "actual_pts": [
+            2670000
+          ],
+          "receipt": "s02/encoded/extract-02/receipt.json",
+          "showinfo_log": "s02/encoded/extract-02/showinfo.log"
+        },
+        {
+          "actual_pts": [
+            2820000
+          ],
+          "receipt": "s02/encoded/extract-03/receipt.json",
+          "showinfo_log": "s02/encoded/extract-03/showinfo.log"
+        },
+        {
+          "actual_pts": [
+            2884933
+          ],
+          "receipt": "s02/encoded/extract-04/receipt.json",
+          "showinfo_log": "s02/encoded/extract-04/showinfo.log"
+        }
+      ],
+      "selected_frame_records": "s02/encoded/selected-frame-records.json",
+      "selected_packet_records": "s02/encoded/selected-packet-records.json"
+    }
+  ],
+  "A2_numeric_endpoint_acceptance": "source/a2-numeric-endpoint-acceptance.json",
+  "A2_numeric_arrival_accepted": true,
+  "B_C_results": null,
+  "exact_arrival_tick_or_event_frame": null,
+  "source_RAW_and_PNG_not_bundled": true,
+  "external_absolute_paths_are_opaque_provenance_only": true,
+  "verifier_reads_only_relative_small_files": true,
+  "full_frame_and_packet_tables_not_bundled": true,
+  "continuous_clean_spans_certified": false,
+  "full_human_1x_review_completed": false,
+  "human_signoff": false,
+  "film_approved": false
+}

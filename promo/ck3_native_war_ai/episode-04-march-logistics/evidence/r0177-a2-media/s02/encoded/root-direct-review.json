@@ -1,0 +1,74 @@
+{
+  "at_utc": "2026-10-05T17:42:13.804606+00:00",
+  "observer": "Root actual view_image(original) five original encoded PNGs",
+  "candidate_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\CANDIDATE-DELIVERY01.json",
+    "bytes": 26716,
+    "sha256": "00f944edaea8241f5952cd1967f8cab4d8e5b80a184a3a96fd960c3f0e43f93c"
+  },
+  "reviews": [
+    {
+      "image": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\encoded-candidates-a01\\r0177-continuation-00\\candidate-00.png",
+        "bytes": 2750078,
+        "sha256": "ba9dc4119e05399262041dd63cb6012e30ce9ada39b8061954ef8cf54c3edc82"
+      },
+      "frame_index": 30,
+      "pts_ms": 1000,
+      "Root_direct_original_image_review": true,
+      "observation": "1067-04-05 ship/embarked, Main6689/S106of300/0% current attrition"
+    },
+    {
+      "image": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\encoded-candidates-a01\\r0177-continuation-01\\candidate-00.png",
+        "bytes": 2510433,
+        "sha256": "3507a40caaf5ed52743ae48d451af2171eb31bb08570f44fbf5e733367655452"
+      },
+      "frame_index": 52050,
+      "pts_ms": 1735000,
+      "Root_direct_original_image_review": true,
+      "observation": "1067-04-25 London siege panel, Main6689; no Supply visible"
+    },
+    {
+      "image": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\encoded-candidates-a01\\r0177-continuation-02\\candidate-00.png",
+        "bytes": 2561468,
+        "sha256": "cb31669b00dda6b15bdab62c984fe95cf7da4cbc1f9f1fbaa9e1f20ea6ed2421"
+      },
+      "frame_index": 80100,
+      "pts_ms": 2670000,
+      "Root_direct_original_image_review": true,
+      "observation": "1067-04-25 London siege panel, Main6689; no Supply visible"
+    },
+    {
+      "image": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\encoded-candidates-a01\\r0177-continuation-03\\candidate-00.png",
+        "bytes": 2576378,
+        "sha256": "6533ba23223fd5bf8a99e33ca6cf4312d42692f37bf0969cf34ad5fddd0c0814"
+      },
+      "frame_index": 84600,
+      "pts_ms": 2820000,
+      "Root_direct_original_image_review": true,
+      "observation": "1067-04-25 Main Army panel6689/S106of300/current1%/sieging"
+    },
+    {
+      "image": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\encoded-candidates-a01\\r0177-continuation-04\\candidate-00.png",
+        "bytes": 2581441,
+        "sha256": "6e028967225238e693538f416c53b86646afa7a355a9e846b76b0b0fdb017df9"
+      },
+      "frame_index": 86548,
+      "pts_ms": 2884933,
+      "Root_direct_original_image_review": true,
+      "observation": "actual last coded frame,1067-04-25 Main6689/S106of300/current1%/sieging"
+    }
+  ],
+  "exact_arrival_tick": null,
+  "observed_arrival_interval_days": [
+    49,
+    51
+  ],
+  "full_continuous_clean_review": false,
+  "human_1x_review_or_signoff": false,
+  "new_raw_SHA_or_probe_reads": 0
+}

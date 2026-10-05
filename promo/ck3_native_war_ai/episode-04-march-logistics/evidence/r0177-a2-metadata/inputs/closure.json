@@ -1,0 +1,32 @@
+{
+  "at_utc": "2026-10-05T17:26:14.633585+00:00",
+  "bootstrap": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\bootstrap-result.json",
+    "bytes": 13783,
+    "sha256": "4c88f04bb2af1ed5adaa8063d54985986b62a06c5f2f8836a19bd9935bee2a15"
+  },
+  "SDK_thread_exited": true,
+  "keeper_thread_exited": true,
+  "GameJob0": true,
+  "native_CK3_inventory_empty": true,
+  "watchdog_absent": true,
+  "supervisor_exit0_actual_unified_session": 1783,
+  "first_recorder_closed": true,
+  "continuation_recorder": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\result.json",
+    "bytes": 968,
+    "sha256": "2dbe24bfbd559d7ecf6685f945901aa57e338a3ddf9641c4f2e1cee92f21889d"
+  },
+  "continuation_job0": true,
+  "Root_endpoint_accepted": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-A2-actual-endpoint-acceptance-a01\\receipt.json",
+    "bytes": 3652,
+    "sha256": "d2600854a7646339c97e4343666185d7153b91fcd3901b65f8a0108e9c11a3ad"
+  },
+  "A2_actual_days": 51,
+  "actual_London_arrival": true,
+  "primary_numeric_ABC_completed": 1,
+  "B_C_and_winner": null,
+  "encoded_endpoint_binding_pending": true,
+  "human_signoff": false
+}

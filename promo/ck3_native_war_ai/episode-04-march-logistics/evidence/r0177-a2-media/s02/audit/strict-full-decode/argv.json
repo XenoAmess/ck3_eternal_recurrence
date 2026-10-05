@@ -1,0 +1,28 @@
+{
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "-hide_banner",
+    "-nostdin",
+    "-loglevel",
+    "error",
+    "-xerror",
+    "-threads",
+    "4",
+    "-err_detect",
+    "explode",
+    "-i",
+    "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\raw.mkv",
+    "-map",
+    "0:v:0",
+    "-an",
+    "-progress",
+    "pipe:1",
+    "-stats_period",
+    "20",
+    "-f",
+    "null",
+    "-"
+  ],
+  "purpose": "strict-full-decode",
+  "read_only_source": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\raw.mkv"
+}

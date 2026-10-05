@@ -1,0 +1,18 @@
+{
+  "state": "RED_START_FAILED",
+  "job": null,
+  "raw": null,
+  "raw_hash_performed_once_after_job_empty": false,
+  "started_at_utc": null,
+  "start_monotonic_ns": null,
+  "completed_at_utc": "2026-10-05T16:21:02.627439+00:00",
+  "end_monotonic_ns": 440289237789000,
+  "same_A2": true,
+  "checkpoint_reload": false,
+  "budget_reset": false,
+  "absolute_end_raw": 53150592,
+  "media_audit_pending": true,
+  "partial_assets_retained": true,
+  "clean_spans_certified": false,
+  "human_approval": false
+}

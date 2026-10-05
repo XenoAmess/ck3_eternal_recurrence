@@ -4,3 +4,6 @@ army-county-entry-current-inputs-r0171-runtime.md -text whitespace=trailing-spac
 army-r0172-periodic-siege-loss-runtime-12003.md -text whitespace=trailing-space,space-before-tab,cr-at-eol
 # Retain exact R0173 qualification knowledge bytes.
 army-r0173-split-rest-qualification-12003.md -text whitespace=trailing-space,space-before-tab,cr-at-eol
+
+# Closed R0177 A2 exact source knowledge document.
+army-episode04-a2-london-arrival-12003.md -text whitespace=trailing-space,space-before-tab,cr-at-eol

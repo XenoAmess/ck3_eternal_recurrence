@@ -1,0 +1,103 @@
+{
+  "status": "PASS_CLOSED_METADATA_FOCUSED_CASES",
+  "cases": 8,
+  "negative_cases": 7,
+  "old14_fixture_not_repeated": true,
+  "fixtures_are_artificial_local_mutations": true,
+  "Game_SDK_UI_Steam_Git_bus_network_media_raw_or_save_actions": 0,
+  "results": [
+    {
+      "case": "actual_closed_two_segment_cut",
+      "status": "PASS",
+      "expected": "metadata-only success",
+      "actual_result": {
+        "status": "PASS_PINNED_SEGMENT_METADATA_ONLY",
+        "scope": "SmallJSON exact pins and supplied metadata consistency; not native/session/recording coverage validation",
+        "experiment_id": "R0177-A2",
+        "experiment_state": "closed",
+        "actual_declared_boundary_raw": 53149656,
+        "declared_days_used": 51,
+        "declared_days_remaining": 39,
+        "source_count": 13,
+        "closed_segment_sources": [
+          {
+            "id": "A2-S01",
+            "source_ref": "finish1",
+            "raw_provenance": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+              "bytes": 5900357006,
+              "sha256": "ac6394f08db078207c26a64af9d2767e8d36007f8021317ff930a55a9775780a"
+            }
+          },
+          {
+            "id": "A2-S02",
+            "source_ref": "finish2",
+            "raw_provenance": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\raw.mkv",
+              "bytes": 4373163416,
+              "sha256": "e9be832ba02b607bcf8ce36b1b6a37d4f841fdbe674d7af924456b31c028f49d"
+            }
+          }
+        ],
+        "prospective_segment_ids": [],
+        "raw_source_identities_reused_without_read_or_rehash": true,
+        "source_public_native_frame_cohort_replay": "Separate validator and original packets required",
+        "credits": {
+          "completed_primary_arms": 0,
+          "valid_primary_arrivals": 0,
+          "continuous_video": 0,
+          "clean_span": 0,
+          "human_signoff": 0,
+          "native_application_or_exact_threshold": 0
+        },
+        "no_IO_to_referenced_media_paths": true,
+        "side_effects": {
+          "files_written": 0,
+          "Game_SDK_UI_Steam_bus_Git_network_media_calls": 0
+        }
+      }
+    },
+    {
+      "case": "Root_closure_wrong_completion_count",
+      "status": "PASS",
+      "expected": "reject",
+      "error": "Root declared A-only completion and budget"
+    },
+    {
+      "case": "start_pid_does_not_match_closed_Job",
+      "status": "PASS",
+      "expected": "reject",
+      "error": "successful retry actual start and closure identity"
+    },
+    {
+      "case": "failed_admission_falsely_has_job",
+      "status": "PASS",
+      "expected": "reject",
+      "error": "failed recorder admission must retain no job/raw/start"
+    },
+    {
+      "case": "fake_lifecycle_interval",
+      "status": "PASS",
+      "expected": "reject",
+      "error": "controller event interval from actual supplied timestamps"
+    },
+    {
+      "case": "controller_interval_claimed_video_gap",
+      "status": "PASS",
+      "expected": "reject",
+      "error": "unknown wall gap is not continuous recording proof"
+    },
+    {
+      "case": "changed_acceptance_without_matching_later_closure_pin",
+      "status": "PASS",
+      "expected": "reject",
+      "error": "later closure must bind the original acceptance receipt"
+    },
+    {
+      "case": "invented_second_successful_job_attempt",
+      "status": "PASS",
+      "expected": "reject",
+      "error": "one actual successful recorder attempt per supplied segment"
+    }
+  ]
+}

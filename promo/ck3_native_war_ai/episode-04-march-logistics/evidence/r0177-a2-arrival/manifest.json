@@ -1,0 +1,123 @@
+{
+  "schema": "ck3.e04.A2.endpoint-package-catalog.v1",
+  "files": [
+    {
+      "path": "inputs/cold_before.json",
+      "bytes": 34574,
+      "sha256": "5c3f978984fa0348772ec773b04360d1f74c4cd36df237514084529e6a015c9d"
+    },
+    {
+      "path": "inputs/cold_after.json",
+      "bytes": 217673,
+      "sha256": "b2b7a992e60fafdb83720c1d6a191f46c280f7b53f9dc80994983e12a41cde19"
+    },
+    {
+      "path": "inputs/cold_health.json",
+      "bytes": 78964,
+      "sha256": "77bc1f6b77784eb610d20fa2f25f9f03360b3e098c7364eec2bf9a27714791a0"
+    },
+    {
+      "path": "inputs/cold_commander.json",
+      "bytes": 11470,
+      "sha256": "2bbb099318a1927a9b87d67df4b0b67658dcc27919b2d8321608a3e1fddfcdf3"
+    },
+    {
+      "path": "inputs/last_not_arrived.json",
+      "bytes": 370695,
+      "sha256": "7a28d8183bcac95c7aa5ad42a87896523712bff76c30740d9d4dc409d0483430"
+    },
+    {
+      "path": "inputs/last_not_arrived_commander.json",
+      "bytes": 11375,
+      "sha256": "b51a00f8e053c247ad6a28c9f4b2a5cf702b7a7ebf0b08de2415af943f399d13"
+    },
+    {
+      "path": "inputs/first_arrived.json",
+      "bytes": 357927,
+      "sha256": "7760d0e0088c425c1947c5092e7d36fa03fea93834157954e7ab8e6f86cd6003"
+    },
+    {
+      "path": "inputs/first_arrived_commander.json",
+      "bytes": 11384,
+      "sha256": "7ff9c089a307dc751525c5f76e0c0d9e04fc6fa36b85cd379f4ce8dbce363e89"
+    },
+    {
+      "path": "inputs/independent_arrived.json",
+      "bytes": 552829,
+      "sha256": "23da342b79cf17e1e25b76017f6c7384de8f8c6e254b424b15e7b0b84b362ad5"
+    },
+    {
+      "path": "inputs/independent_arrived_commander.json",
+      "bytes": 11384,
+      "sha256": "fabee2879b69af2df226eaa767397b9f92290b65e8459779a18a891f6d5b0cba"
+    },
+    {
+      "path": "inputs/serial_stop.json",
+      "bytes": 489,
+      "sha256": "f827d93fe828cf76c7ae737549ccd9cc26926f1d59e9ea54e0f048793b26aec4"
+    },
+    {
+      "path": "inputs/independent_inspect_result.json",
+      "bytes": 441,
+      "sha256": "da256cf48e40197b670110cd0602e4bed8c461b6188ba2e2e58d42a1a1af7d50"
+    },
+    {
+      "path": "inputs/Root_protocol.json",
+      "bytes": 54230,
+      "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+    },
+    {
+      "path": "inputs/Root_protocol_receipt.json",
+      "bytes": 4470,
+      "sha256": "cce78dd6206c548d1e0d7b3bd77fdd352d45d5f9901f07afa34a260fe31b8bdf"
+    },
+    {
+      "path": "inputs/Root_numeric_acceptance.json",
+      "bytes": 3652,
+      "sha256": "d2600854a7646339c97e4343666185d7153b91fcd3901b65f8a0108e9c11a3ad"
+    },
+    {
+      "path": "inputs/second_recording_sealed.json",
+      "bytes": 968,
+      "sha256": "2dbe24bfbd559d7ecf6685f945901aa57e338a3ddf9641c4f2e1cee92f21889d"
+    },
+    {
+      "path": "inputs/A2_actual_closure.json",
+      "bytes": 1223,
+      "sha256": "36deb5e62a4135da1dea9ed150d8d34d010528d6f43077a6b7f3c90880e6c41c"
+    },
+    {
+      "path": "inputs/results_parent_template.json",
+      "bytes": 16104,
+      "sha256": "5028404a7d4e21650f4071904eba8ac55ff61f99f6a76c76d81984fe6b05166d"
+    },
+    {
+      "path": "A2-endpoint-values.json",
+      "bytes": 79747,
+      "sha256": "475420d14f654c4418412108603937dacd142c17419a5c32d199ea09fa7e6616"
+    },
+    {
+      "path": "A2-endpoint-values-before-closure.json",
+      "bytes": 75590,
+      "sha256": "b32b015df7260454394060f69c3c47a441924d1b3ebbf7d8fe5450366bd583cd"
+    },
+    {
+      "path": "code/historical-validate-results.py",
+      "bytes": 23594,
+      "sha256": "144613e1ab9a35820323cfa2ca197e784565f02581c808fa35c6dafc8fe084e2"
+    },
+    {
+      "path": "code/verify_A2_values.py",
+      "bytes": 8546,
+      "sha256": "87881dcdee1dcf55935bff4209fa0b55fee1390f2addfd248440d30c7a8d6dc9"
+    },
+    {
+      "path": "ENDPOINT-BOUNDARY.md",
+      "bytes": 2823,
+      "sha256": "2ef621a94c6f797d7b663a62c352210e3d44029d008de493b22778fb44e6e252"
+    }
+  ],
+  "file_count": 23,
+  "total_bytes": 1930152,
+  "media_raw_save_or_game_dependencies": false
+}

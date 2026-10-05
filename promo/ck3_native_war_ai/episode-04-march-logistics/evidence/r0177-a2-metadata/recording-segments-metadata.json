@@ -1,0 +1,249 @@
+{
+  "schema": "xar.ck3.recording-segments.metadata.v1",
+  "created_utc": "2026-10-05T17:43:45.281672+00:00",
+  "source_pins": [
+    {
+      "id": "protocol",
+      "path": "inputs/protocol.json",
+      "bytes": 54230,
+      "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+    },
+    {
+      "id": "reshoot",
+      "path": "inputs/reshoot.json",
+      "bytes": 2541,
+      "sha256": "1a5a027c2c2f269ff673a868dc7eeec3586ebdeb5f8178acd3fa52870740572f"
+    },
+    {
+      "id": "scope",
+      "path": "inputs/scope.json",
+      "bytes": 3705,
+      "sha256": "fafd2766b6bd8c74709412a47bba421fecd3120ab218818b53b0443ad3d5d53a"
+    },
+    {
+      "id": "segments",
+      "path": "inputs/segments.json",
+      "bytes": 3400,
+      "sha256": "1fff294e685749fa6ebfdab31068be871d4a9c6542ce026ab668d544eb7b37b3"
+    },
+    {
+      "id": "day27",
+      "path": "inputs/day27.json",
+      "bytes": 3729,
+      "sha256": "6b6a6e806a46003f0efd1b4a9ff0784b5fa70f5c954de9aa46170cb91407e558"
+    },
+    {
+      "id": "finish1",
+      "path": "inputs/finish1.json",
+      "bytes": 1353,
+      "sha256": "38485cd006682839391a5955c9e78583327fb0021df1509b56e3b9e0b02d2e3d"
+    },
+    {
+      "id": "segments2",
+      "path": "inputs/segments2.json",
+      "bytes": 11175,
+      "sha256": "5c1bf03096b95a91168d74eef86b2593f0edf5040fd13b798598989bec1e218c"
+    },
+    {
+      "id": "start2",
+      "path": "inputs/start2.json",
+      "bytes": 7085,
+      "sha256": "d2125061fa66db567185c3ddb42db493a6665dab4a631e87b848f9e66abdaa3c"
+    },
+    {
+      "id": "failed2",
+      "path": "inputs/failed2.json",
+      "bytes": 502,
+      "sha256": "1e87c0ed39d0771b120a919bafdc65598c589af7cd8d2c37e13a4cb8ebd076e0"
+    },
+    {
+      "id": "failure2",
+      "path": "inputs/failure2.json",
+      "bytes": 158,
+      "sha256": "438c6c8efbe742a2e647b55ea2c56896290d8d069a34e4f2649300fc4b2bf1a6"
+    },
+    {
+      "id": "finish2",
+      "path": "inputs/finish2.json",
+      "bytes": 968,
+      "sha256": "2dbe24bfbd559d7ecf6685f945901aa57e338a3ddf9641c4f2e1cee92f21889d"
+    },
+    {
+      "id": "endpoint",
+      "path": "inputs/endpoint.json",
+      "bytes": 3652,
+      "sha256": "d2600854a7646339c97e4343666185d7153b91fcd3901b65f8a0108e9c11a3ad"
+    },
+    {
+      "id": "closure",
+      "path": "inputs/closure.json",
+      "bytes": 1223,
+      "sha256": "36deb5e62a4135da1dea9ed150d8d34d010528d6f43077a6b7f3c90880e6c41c"
+    }
+  ],
+  "source_refs": {
+    "protocol": "protocol",
+    "prospective_reshoot": "reshoot",
+    "scope_addendum": "scope",
+    "segment_addendum": "segments2",
+    "experiment_closure": "closure",
+    "endpoint_acceptance": "endpoint"
+  },
+  "experiment": {
+    "id": "R0177-A2",
+    "attempt": "A2",
+    "state": "closed",
+    "primary_run_description": "R0177 independent A2",
+    "checkpoint_sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a",
+    "source_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+    "start_raw": 53148432,
+    "absolute_end_raw": 53150592,
+    "observed_boundary_raw": 53149656,
+    "observed_boundary_source": {
+      "source_ref": "endpoint",
+      "json_pointer": "/actual_raw"
+    },
+    "raw_units_per_day": 24,
+    "maximum_actual_days": 90,
+    "game_pid": 20068,
+    "episode_run_id": "native-33388-dc0d8e1d4891",
+    "required_native_carmy_ids": [
+      0
+    ],
+    "required_regiments": 27,
+    "required_DATA": 37,
+    "terminal_observation_ref": "endpoint"
+  },
+  "recording_segments": [
+    {
+      "id": "A2-S01",
+      "ordinal": 1,
+      "experiment_id": "R0177-A2",
+      "attempt": "A2",
+      "state": "closed",
+      "start_raw": 53148432,
+      "absolute_end_raw": 53150592,
+      "planned_maximum_wall_seconds": 3600,
+      "finish_source_ref": "finish1",
+      "closure_fields": {
+        "returncode": "/body/job/returncode",
+        "job_active_processes": "/body/job/job_active_processes",
+        "is_error": "/is_error",
+        "raw": "/body/raw"
+      },
+      "raw_provenance": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+        "bytes": 5900357006,
+        "sha256": "ac6394f08db078207c26a64af9d2767e8d36007f8021317ff930a55a9775780a"
+      },
+      "recorded_game_interval": null,
+      "encoded_binding": null
+    },
+    {
+      "id": "A2-S02",
+      "ordinal": 2,
+      "experiment_id": "R0177-A2",
+      "attempt": "A2",
+      "state": "closed",
+      "start_raw": 53148432,
+      "absolute_end_raw": 53150592,
+      "planned_maximum_wall_seconds": 3600,
+      "continuation_addendum_ref": "segments2",
+      "finish_source_ref": "finish2",
+      "raw_provenance": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\raw.mkv",
+        "bytes": 4373163416,
+        "sha256": "e9be832ba02b607bcf8ce36b1b6a37d4f841fdbe674d7af924456b31c028f49d"
+      },
+      "recorded_game_interval": null,
+      "encoded_binding": null,
+      "closure_fields": {
+        "returncode": "/job/returncode",
+        "job_active_processes": "/job/job_active_processes",
+        "is_error": null,
+        "raw": "/raw"
+      },
+      "recording_attempts": [
+        {
+          "id": "A2-S02-job-a01",
+          "state": "failed_before_start",
+          "failure_ref": "failure2",
+          "result_ref": "failed2"
+        },
+        {
+          "id": "A2-S02-job-a02",
+          "state": "closed",
+          "start_source_ref": "start2",
+          "finish_source_ref": "finish2"
+        }
+      ]
+    }
+  ],
+  "inter_segment_intervals": [
+    {
+      "from_segment": "A2-S01",
+      "to_segment": "A2-S02",
+      "source_ref": "segments2",
+      "Root_declared_no_game_advance": true,
+      "boundary_raw": 53149176,
+      "wall_gap_seconds": null,
+      "continuous_video_credit": false,
+      "lifecycle_interval": {
+        "kind": "reported_finish_event_to_next_process_start_event",
+        "from_source_ref": "finish1",
+        "from_json_pointer": "/body/end_monotonic_ns",
+        "to_source_ref": "start2",
+        "to_json_pointer": "/start_monotonic_ns",
+        "delta_nanoseconds": 1314821508200,
+        "is_encoded_last_to_first_frame": false
+      }
+    }
+  ],
+  "arrival_result": null,
+  "strategy_ranking": null,
+  "credits": {
+    "completed_primary_arms": 0,
+    "valid_primary_arrivals": 0,
+    "continuous_video": 0,
+    "clean_span": 0,
+    "human_signoff": 0,
+    "native_application_or_exact_threshold": 0
+  },
+  "source_observations_outside_segment_metadata_gate": {
+    "day27_source_ref": "day27",
+    "Root_reviewed_integer_window": {
+      "days": [
+        26,
+        27
+      ],
+      "before": 6679,
+      "after": 6689,
+      "net": 10,
+      "stock_unchanged_10613988": true,
+      "producer_execution_or_applied_ledger": null
+    },
+    "Root_reviewed_TERM08": {
+      "progress_raw": 90000,
+      "scale": 100000,
+      "remaining_raw": 300000,
+      "pixel_locked_at_90_percent": true,
+      "exact50percent_execution_proven": false,
+      "loaded_cutoff_read": false,
+      "encoded_binding": null
+    }
+  },
+  "scope": "SmallJSON source pins and source metadata transcription only. The supplied boundaries are not recorded game coverage or complete native frame proof.",
+  "metadata_update_revision": "actual-closed-A2-a02",
+  "independent_Root_declared_numeric_completion": {
+    "source_ref": "closure",
+    "completed_primary_arms": 1,
+    "A2_days": 51,
+    "arrival_interval_days": [
+      49,
+      51
+    ],
+    "exact_arrival_tick": null,
+    "native_full_frame_and_cohort_verifier": "Separate r0177-a2-arrival package",
+    "B_C_and_winner": null
+  }
+}

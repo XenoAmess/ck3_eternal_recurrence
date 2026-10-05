@@ -1,0 +1,33 @@
+{
+  "original": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-shot-usability-r0177-parallel-a01\\extract_closed_candidates05.py",
+    "bytes": 9780,
+    "sha256": "6afde06b59c58351d9d95f3e299b76dd8aa75b3f58a5e698d977fe0f4e806aac"
+  },
+  "candidate": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\sealed_first_tape_extractor04.py",
+    "bytes": 9858,
+    "sha256": "f465680e080baede73e745af681951e57cea6960e4db7da19b0ba1da3ce14b4c"
+  },
+  "diff": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\extractor-adaptation04.patch",
+    "bytes": 1014,
+    "sha256": "61d4a6d0f59cfc5e0cddb793aad9f46a52d13756291fcfa12aabc39ba8be3af2"
+  },
+  "failed_attempt03": {
+    "stderr": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\candidates03-stderr.txt",
+      "bytes": 616,
+      "sha256": "533c2312f9d3bdfb3a69e2807882861310abbd454d580901decd94cf6f69a004"
+    },
+    "before_any_raw_stat_or_decode": true,
+    "PNG_count": 0,
+    "reason": "Old-run helper correctly rejected every R0177 raw before access. Newexact sealedfirsttape guard replaces that prior blanketguard; failedattempt preserved."
+  },
+  "new_wrapper": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-prepare-a01\\extract_candidates04.py",
+    "bytes": 3327,
+    "sha256": "b47a0bd6a2fc1aaacd60729607a7353ce5866e32478aa61d99efb0715c1623e3"
+  },
+  "new_active_segment_forbidden": true
+}

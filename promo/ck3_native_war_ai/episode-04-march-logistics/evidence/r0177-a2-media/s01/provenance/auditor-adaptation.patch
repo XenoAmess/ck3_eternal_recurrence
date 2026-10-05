@@ -1,0 +1,66 @@
+--- original-r0174.py
++++ audit_finished_r0177.py
+@@ -15,7 +15,9 @@
+ PACKAGE = Path(__file__).resolve().parent
+ BASE = PACKAGE / 'audit-attempt-a01'
+ ROOT = PACKAGE.parent
+-RAW = ROOT / 'r0174-raw-abc-a-first-a01/raw.mkv'
++RAW = ROOT / 'r0177-raw-abc-a2-a01/raw.mkv'
++TERMINAL = ROOT / 'r0177-raw-abc-a2-a01/result.json'
++EXPECTED_TERMINAL_SHA = '9bf818e426a225cd3c3f245e3ef8d351221984e6f18aed10633b15777f33cc6e'
+ FINISH = None
+ TOOLS = ROOT / 'recording-preflight-a01/media-tools.json'
+ 
+@@ -131,11 +133,17 @@
+ assert finish['body']['job']['returncode'] == 0
+ assert finish['body']['job']['job_active_processes'] == 0
+ assert Path(finish['body']['raw']['path']).resolve() == RAW.resolve()
+-raw_stat_before = RAW.stat()
++terminal_identity = pin(TERMINAL)
++assert terminal_identity['sha256'] == EXPECTED_TERMINAL_SHA
++terminal = json.loads(TERMINAL.read_text(encoding='utf-8-sig'))
++assert terminal == finish['body']
++raw_stat_before = RAW.stat()
++assert raw_stat_before.st_size == finish['body']['raw']['bytes']
+ ffprobe = Path(tools['ffprobe']['path'])
+ ffmpeg = Path(tools['ffmpeg']['path'])
+ with ThreadPoolExecutor(max_workers=4) as executor:
+-    identities = dict(zip(('raw', 'ffprobe', 'ffmpeg', 'finish'), executor.map(pin, (RAW, ffprobe, ffmpeg, FINISH))))
++    identities = dict(zip(('ffprobe', 'ffmpeg', 'finish'), executor.map(pin, (ffprobe, ffmpeg, FINISH))))
++identities['raw'] = dict(finish['body']['raw'])  # Exact sealed OwnedRecorder terminal identity; raw not rehashed here.
+ assert identities['raw']['bytes'] == finish['body']['raw']['bytes']
+ assert identities['raw']['sha256'] == finish['body']['raw']['sha256']
+ assert identities['ffprobe']['bytes'] == tools['ffprobe']['bytes']
+@@ -144,9 +152,10 @@
+ assert identities['ffmpeg']['sha256'] == tools['ffmpeg']['sha256']
+ write_new(BASE / 'source-bindings.json', {'at': now(), 'interpreter': sys.executable,
+     'python_version': sys.version, 'identities': identities, 'media_tools_identity': pin(TOOLS),
+-    'finish_job': finish['body']['job'], 'recorder_clean_spans_certified': False,
++    'finish_job': finish['body']['job'], 'terminal_result_identity': terminal_identity,
++    'sealed_terminal_hash_reused': True, 'audit_raw_sha_reads': 0, 'recorder_clean_spans_certified': False,
+     'recorder_human_approval': False})
+-print(json.dumps({'source_sha_verified': identities['raw']['sha256'], 'ffprobe_sha_verified': identities['ffprobe']['sha256']}, ensure_ascii=False), flush=True)
++print(json.dumps({'sealed_terminal_source_sha_reused': identities['raw']['sha256'], 'ffprobe_sha_verified': identities['ffprobe']['sha256']}, ensure_ascii=False), flush=True)
+ 
+ common = [str(ffprobe), '-v', 'error', '-threads', '4']
+ commands = {
+@@ -223,7 +232,9 @@
+     'started_at_utc': start_at, 'completed_at_utc': now(), 'errors': errors,
+     'source_identity': identities['raw'], 'ffprobe_identity': identities['ffprobe'],
+     'finish_receipt_identity': identities['finish'], 'probe_receipts': receipts,
+-    'raw_stat_unchanged_during_audit': unchanged, 'closed_source_sha_independently_verified_once': True, 'source_identity_after_audit': raw_identity_after,
++    'raw_stat_unchanged_during_audit': unchanged, 'closed_source_sha_independently_verified_once': False,
++    'sealed_terminal_hash_reused': True, 'audit_raw_sha_reads': 0, 'terminal_result_identity': terminal_identity,
++    'terminal_finish_body_matches': True, 'source_identity_after_audit': raw_identity_after,
+     'format': metadata['format'], 'video_stream': v,
+     'stream_counts': {'video': len(video), 'audio': len(audio), 'all': len(streams)},
+     'actual_duration_seconds': str(duration), 'actual_duration_minutes': str(duration / 60),
+@@ -234,7 +245,7 @@
+     'observed_picture_types': {kind: sum(frame.get('pict_type') == kind for frame in frames)
+         for kind in sorted({frame.get('pict_type', 'unknown') for frame in frames})},
+     'strict_full_decode': {'reached_progress_end': decode_done, 'final_decoded_frames': decode_last_frames, 'errors_on_stderr': receipts['strict-full-decode']['stderr_identity']['bytes'], 'ffmpeg_identity': identities['ffmpeg']},
+-    'scope': 'Finished R0174 raw only: full-file demux metadata, complete packet timestamps and complete decoded-frame timestamps. No human audiovisual viewing, clean span, pixel-content or final film verdict.',
++    'scope': 'Finished R0177 first A2 tape only: full-file demux metadata, complete packet timestamps and complete decoded-frame timestamps. No human audiovisual viewing, clean span, pixel-content or final film verdict.',
+     'full_human_viewing_performed': False, 'clean_spans_certified': False,
+     'human_signoff': False, 'final_film_certified': False,
+     'sdk_requests_executed': 0, 'game_processes_started': 0, 'desktop_inputs': 0,

@@ -1,0 +1,121 @@
+{
+  "run": "R0177-continuation-02",
+  "audit": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\audit-attempt-a01\\report.json",
+    "bytes": 12057,
+    "sha256": "d1925b34e59d1345c9a089d8bd69bdf2d8e687d23f951d7ead12aa9810834253"
+  },
+  "finish": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\result.json",
+    "bytes": 968,
+    "sha256": "2dbe24bfbd559d7ecf6685f945901aa57e338a3ddf9641c4f2e1cee92f21889d"
+  },
+  "raw_prior_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\raw.mkv",
+    "bytes": 4373163416,
+    "sha256": "e9be832ba02b607bcf8ce36b1b6a37d4f841fdbe674d7af924456b31c028f49d"
+  },
+  "source_after_audit": {
+    "stat_only": true,
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\raw.mkv",
+    "bytes": 4373163416,
+    "mtime_ns": 1791220731864328100,
+    "no_second_large_raw_rehash": true
+  },
+  "frame_table": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\audit-attempt-a01\\video-frames\\stdout.json",
+    "bytes": 37535663,
+    "sha256": "0eeaddac5055ac7e51408bffd74cbcf2805ff18ba592085984209e25e511dfa8"
+  },
+  "packet_table": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\audit-attempt-a01\\video-packets\\stdout.json",
+    "bytes": 25139070,
+    "sha256": "28727079d1c18cad2214e8a23d71677321edc5bd750b6c7e1f0562e421c374e5"
+  },
+  "selections": [
+    {
+      "role": "independent_london_siege_endpoint_search",
+      "search_seconds": "2670",
+      "packets": [
+        "native-live-r0177-a01/responses/r0177-main-scoped-endpoint-independent-a01-initial-before.json",
+        "r0177-main-scoped-endpoint-independent-a01/initial/observation.json",
+        "root-r0177-actual-London-arrival-frame-a01/receipt.json"
+      ],
+      "packet_pins": [
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\responses\\r0177-main-scoped-endpoint-independent-a01-initial-before.json",
+          "bytes": 956128,
+          "sha256": "ef507b5988964e7d79fc1519a87a2de7b6728d4bb08d636ea37776b29fc5106f"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-main-scoped-endpoint-independent-a01\\initial\\observation.json",
+          "bytes": 552829,
+          "sha256": "23da342b79cf17e1e25b76017f6c7384de8f8c6e254b424b15e7b0b84b362ad5"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-actual-London-arrival-frame-a01\\receipt.json",
+          "bytes": 1905,
+          "sha256": "af987ef37780b52214b4fe7bc65128eca78e66a4d9a4929477562b1e109f5d56"
+        }
+      ],
+      "decoded_frame_index_zero_based": 80100,
+      "actual_pts": 2670000,
+      "time_base": "1/1000",
+      "actual_seconds": "2670",
+      "saved_complete_frame_record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 2670000,
+        "pts_time": "2670.000000",
+        "pkt_dts": 2670000,
+        "pkt_dts_time": "2670.000000",
+        "best_effort_timestamp": 2670000,
+        "best_effort_timestamp_time": "2670.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      },
+      "saved_complete_packet_record": {
+        "stream_index": 0,
+        "pts": 2670000,
+        "pts_time": "2670.000000",
+        "dts": 2670000,
+        "dts_time": "2670.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "flags": "___"
+      },
+      "exact_native_event_frame_synchronization": false,
+      "source_clock_labels_search_only": true,
+      "root_direct_content_review": "PENDING",
+      "clean_span_certified": false,
+      "decoded_png": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\encoded-candidates-a01\\r0177-continuation-02\\candidate-00.png",
+        "bytes": 2561468,
+        "sha256": "cb31669b00dda6b15bdab62c984fe95cf7da4cbc1f9f1fbaa9e1f20ea6ed2421"
+      },
+      "png_size": [
+        1920,
+        1080
+      ],
+      "showinfo_pts_confirmed": true
+    }
+  ],
+  "ffmpeg_prior_identity": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "bytes": 222229504,
+    "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+  },
+  "prior_strict_decode_available": true,
+  "state": "ACTUAL_PTS_BOUND_CANDIDATES_CONTENT_REVIEW_PENDING",
+  "receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\encoded-candidates-a01\\r0177-continuation-02\\extraction-receipt.json",
+    "bytes": 944,
+    "sha256": "5dc39b63a3dafa884c5040a670de40cf1e1bb8f1230e39698f4ea1475795e058"
+  },
+  "source_stat_stable": true,
+  "prior_audited_mtime_available": true,
+  "new_raw_hash": false,
+  "new_media_probe": false,
+  "full_clean_or_human_signoff": false
+}

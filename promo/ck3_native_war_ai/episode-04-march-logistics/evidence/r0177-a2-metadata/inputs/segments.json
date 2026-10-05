@@ -1,0 +1,71 @@
+{
+  "schema": "ck3.e04.abc.recording-segment-addendum/v1",
+  "at_utc": "2026-10-05T16:11:45.317093+00:00",
+  "status": "ROOT_PROSPECTIVE_SAME_A2_CONTINUATION_BEFORE_NEW_RECORDER_AND_RESUME",
+  "protocol": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-abc-protocol-freeze-a01\\protocol.json",
+    "bytes": 54230,
+    "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+  },
+  "A2_prospective_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-A2-prospective-reshoot-a01\\receipt.json",
+    "bytes": 2541,
+    "sha256": "1a5a027c2c2f269ff673a868dc7eeec3586ebdeb5f8178acd3fa52870740572f"
+  },
+  "required_Main_scope_addendum": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-new-CUnit-scope-readonly-a02\\scope-addendum.json",
+    "bytes": 3705,
+    "sha256": "fafd2766b6bd8c74709412a47bba421fecd3120ab218818b53b0443ad3d5d53a"
+  },
+  "segment1_finish_response": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-first-tape-finish-a01\\response.json",
+    "bytes": 1353,
+    "sha256": "38485cd006682839391a5955c9e78583327fb0021df1509b56e3b9e0b02d2e3d"
+  },
+  "segment1_raw_terminal_identity_reused_without_rehash": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+    "bytes": 5900357006,
+    "sha256": "ac6394f08db078207c26a64af9d2767e8d36007f8021317ff930a55a9775780a"
+  },
+  "actual_paused_Main_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-main-scoped-inspect-a01\\initial\\observation.json",
+    "bytes": 576513,
+    "sha256": "95ef328573b5b12617117432bd17c696209dcd558a606fda540f7e9cdd474550"
+  },
+  "Root_reviewed_original": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-continuation-admission-frame-a01\\desktop.png",
+    "bytes": 3289669,
+    "sha256": "403d70b10f9c88f5bf32db3ae0514b6d44a725e1cd7af4db30267d871d5da19e"
+  },
+  "Root_pixel_observations": {
+    "date": "1067-04-05",
+    "army_current": 6689,
+    "supply": "106/300",
+    "attrition": "0%",
+    "state": "ship on sea, paused"
+  },
+  "same_game_pid": 20068,
+  "same_game_hwnd": 146998254,
+  "same_episode_run_id": "native-33388-dc0d8e1d4891",
+  "same_A2_experiment": true,
+  "new_independent_replay_or_A3": false,
+  "checkpoint_reloaded": false,
+  "date_reset": false,
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "actual_raw_before_segment2": 53149176,
+  "actual_days_used": 31,
+  "remaining_actual_days": 59,
+  "maximum_shared_batches": 120,
+  "no_game_advance_between_segments": true,
+  "gap_wall_clock_duration_pending": true,
+  "segment2_workdir": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a01",
+  "segment2_max_wall_seconds": 3600,
+  "segment2_process_owner": "Independent Root Windows Job using existing recorder_job.spawn, same exclusive screen lease; frozen SDK OwnedRecorder cannot restart and is not modified",
+  "reason": "First recorder reached its fixed wall limit while the same paused A2 native required-Main scope was being verified. Continue recording the existing run; no strategy, route, source, commander, outcome or game-day budget changes.",
+  "frozen_one_recorder_SDK_constraint_preserved": true,
+  "old_files_preserved": true,
+  "arrival_and_comparison_results": null,
+  "clean_span_certification": false,
+  "human_signoff": false
+}

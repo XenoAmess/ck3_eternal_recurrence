@@ -1,0 +1,80 @@
+{
+  "source_files": [
+    {
+      "id": "protocol",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/root-r0174-abc-protocol-freeze-a01/protocol.json",
+      "bytes": 54230,
+      "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+    },
+    {
+      "id": "reshoot",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/root-r0177-A2-prospective-reshoot-a01/receipt.json",
+      "bytes": 2541,
+      "sha256": "1a5a027c2c2f269ff673a868dc7eeec3586ebdeb5f8178acd3fa52870740572f"
+    },
+    {
+      "id": "scope",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/root-r0177-new-CUnit-scope-readonly-a02/scope-addendum.json",
+      "bytes": 3705,
+      "sha256": "fafd2766b6bd8c74709412a47bba421fecd3120ab218818b53b0443ad3d5d53a"
+    },
+    {
+      "id": "segments",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/root-r0177-A2-recording-segment-addendum-a01/receipt.json",
+      "bytes": 3400,
+      "sha256": "1fff294e685749fa6ebfdab31068be871d4a9c6542ce026ab668d544eb7b37b3"
+    },
+    {
+      "id": "day27",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/root-r0177-day27-TERM08-and-integer-review-a01/review.json",
+      "bytes": 3729,
+      "sha256": "6b6a6e806a46003f0efd1b4a9ff0784b5fa70f5c954de9aa46170cb91407e558"
+    },
+    {
+      "id": "finish1",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/root-r0177-first-tape-finish-a01/response.json",
+      "bytes": 1353,
+      "sha256": "38485cd006682839391a5955c9e78583327fb0021df1509b56e3b9e0b02d2e3d"
+    }
+  ],
+  "exact_copies": [
+    {
+      "id": "protocol",
+      "path": "inputs/protocol.json",
+      "bytes": 54230,
+      "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+    },
+    {
+      "id": "reshoot",
+      "path": "inputs/reshoot.json",
+      "bytes": 2541,
+      "sha256": "1a5a027c2c2f269ff673a868dc7eeec3586ebdeb5f8178acd3fa52870740572f"
+    },
+    {
+      "id": "scope",
+      "path": "inputs/scope.json",
+      "bytes": 3705,
+      "sha256": "fafd2766b6bd8c74709412a47bba421fecd3120ab218818b53b0443ad3d5d53a"
+    },
+    {
+      "id": "segments",
+      "path": "inputs/segments.json",
+      "bytes": 3400,
+      "sha256": "1fff294e685749fa6ebfdab31068be871d4a9c6542ce026ab668d544eb7b37b3"
+    },
+    {
+      "id": "day27",
+      "path": "inputs/day27.json",
+      "bytes": 3729,
+      "sha256": "6b6a6e806a46003f0efd1b4a9ff0784b5fa70f5c954de9aa46170cb91407e558"
+    },
+    {
+      "id": "finish1",
+      "path": "inputs/finish1.json",
+      "bytes": 1353,
+      "sha256": "38485cd006682839391a5955c9e78583327fb0021df1509b56e3b9e0b02d2e3d"
+    }
+  ],
+  "raw_PNG_save_EXE_bytes_read_or_rehashed": 0,
+  "originals_modified": false
+}

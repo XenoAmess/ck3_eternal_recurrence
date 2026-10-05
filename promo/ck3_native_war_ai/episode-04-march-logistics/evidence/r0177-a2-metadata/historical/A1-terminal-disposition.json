@@ -1,0 +1,17 @@
+{
+  "at_utc": "2026-10-05T14:30:24.827702+00:00",
+  "attempt": "A1 R0174",
+  "status": "capture-incomplete-independent-attempt",
+  "reason": "Recording started during protocol preparation; fixed1200s capture window ended after only1 actual game day; no London arrival or strategy outcome observed. Preserve firstattempt, use an independently coldloaded longer A2 filming attempt before comparing outcomes.",
+  "original_start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "last_actual_paused_raw": 53148456,
+  "actual_days_used": 1,
+  "actual_days_remaining": 89,
+  "arrival_confirmed": false,
+  "strategy_advantage": null,
+  "primary_ABC_completed_arms": 0,
+  "subsequent_attempt_does_not_reinterpret_or_erase_A1_budget_or_bytes": true,
+  "coldload_A2_input": "same original WHOLEd052, not A1 current moving state",
+  "comparison_after_outcome_selection": false
+}

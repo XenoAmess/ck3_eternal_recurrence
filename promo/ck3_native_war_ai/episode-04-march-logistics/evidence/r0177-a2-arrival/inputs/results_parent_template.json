@@ -1,0 +1,385 @@
+{
+  "schema": "xar.ck3.abc-results.v1",
+  "created_utc": "2026-10-05T14:52:15.273175+00:00",
+  "status": "PRIMARY_INITIALS_AND_RESULTS_NULL_ROOT_A2_SELECTION_PIN_APPENDED",
+  "common": {
+    "checkpoint_sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a",
+    "checkpoint_bytes": 73795635,
+    "start_raw": 53148432,
+    "planned_absolute_end_raw": 53150592,
+    "planned_actual_days": 90,
+    "protocol_freeze_ref": {
+      "artifact_id": "Root_frozen_protocol",
+      "Root_receipt_artifact_id": "Root_freeze_receipt",
+      "protocol_sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa",
+      "frozen_before_first_arm_action": true
+    },
+    "protocol_freeze_status": "ROOT_ACTUAL_FROZEN_BEFORE_FIRST_ARM_ACTION",
+    "actor_character_id": 33388,
+    "initial_gold": {
+      "raw": 63754562,
+      "scale": 100000
+    },
+    "whole_current_soldiers": 6679,
+    "whole_maximum_soldiers": 6747,
+    "regiment_count": 27,
+    "complete_DATA_record_count": 37,
+    "cold_baseline_regiment_rows_sha256": "63de001683d0996b8101f00a87f28c73197ce9d4150a52f21864767b24bdbfda",
+    "cold_baseline_complete_DATA_rows_sha256": "8dab2ce2575040214e99e7899026ab180a4a89afcaaad6f01148e3cc0eaa4d09",
+    "cold_vs_hot_save_boundary": "Known22prepared_fraction resets belong to actual coldload serialization/projection. Match each arm to this fresh R0174coldbaseline, never assert all37rows equal historical hotR0172.",
+    "conservative_pre_resume_guard_raw": 53150568,
+    "allowed_terminal_statuses": [
+      "ARRIVED_VALID_EVENT",
+      "CENSORED_CONSERVATIVE_TIME_GUARD",
+      "CENSORED_DEADLINE",
+      "STOPPED_GATE_INCOMPLETE",
+      "INVALID_BUDGET_BREACH"
+    ],
+    "normative_cold_baseline_only": {
+      "source": "R0174 A1 actual coldload beforefirstmove; not any primary A2/B/C observation",
+      "original_source_refs": {
+        "before": "A_initial_before",
+        "health": "A_initial_health",
+        "after": "A_initial_after",
+        "commander": "A_initial_commander_full_wrapper"
+      },
+      "new_primary_initials_must_be_independently_observed": true
+    },
+    "primary_preoutcome_reshoot_selection_receipt_ref": {
+      "artifact_id": "Root_A2_prospective_reshoot_selection",
+      "bytes": 2541,
+      "sha256": "1a5a027c2c2f269ff673a868dc7eeec3586ebdeb5f8178acd3fa52870740572f",
+      "scope": "Root pre-outcome selection of new independently coldloaded A2; same original d052 and90day END. Recording3600 seconds does not reset/reinterpret A1 or change game policy."
+    }
+  },
+  "artifact_pins": [
+    {
+      "id": "A_initial_before",
+      "path": "inputs/A-initial/before.json",
+      "bytes": 217676,
+      "sha256": "042ac954be7fa84a687044612b18c4aaf98400ae180d09edbab9d8a301a71c09",
+      "historical_attempt_path": "r0174-abc-fresh-whole-inspect-a01/initial/before.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "A_initial_health",
+      "path": "inputs/A-initial/health.json",
+      "bytes": 78964,
+      "sha256": "0242b9a3a87e95f8dc878f63e2b1c549332caca9270180035da53d045bf6ceb7",
+      "historical_attempt_path": "r0174-abc-fresh-whole-inspect-a01/initial/health.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "A_initial_after",
+      "path": "inputs/A-initial/after.json",
+      "bytes": 217677,
+      "sha256": "505d7e398115692232849d9705d19a0c73b4c92d899c6252fa50ccc45e1a03d7",
+      "historical_attempt_path": "r0174-abc-fresh-whole-inspect-a01/initial/after.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "A_initial_commander",
+      "path": "inputs/A-initial/commander-0.json",
+      "bytes": 11376,
+      "sha256": "4838e309464e545ce41c7bc0a4f57f6376df9fa4a8c7e4914e2d16a1f64adc22",
+      "historical_attempt_path": "r0174-abc-fresh-whole-inspect-a01/initial/commander-0.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "whole_save_pin",
+      "path": "inputs/common-whole-save-pin.json",
+      "bytes": 388,
+      "sha256": "b68bfb5ce26275280a2146899efa2089b6004401a89b4f03b0cabf4971852970",
+      "historical_attempt_path": "root-packets-r0172-a01/attempts/r0172-whole-arrival-common-checkpoint-a01/actual-checkpoint-pin.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "A_preview_direct_London",
+      "path": "inputs/previews/preview-1527.json",
+      "bytes": 1331,
+      "sha256": "01abefde741473100e72984eb487858dd35fc1a8f28fbe17b999528d27afaad5",
+      "historical_attempt_path": "root-r0174-readonly-start-and-previews-a03/preview-1527.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "C_preview_first_waypoint",
+      "path": "inputs/previews/preview-2176.json",
+      "bytes": 1288,
+      "sha256": "ebccea6f07106a2ddfb0353264b2c96e2a219eb462e74f2d0f500a246190d287",
+      "historical_attempt_path": "root-r0174-readonly-start-and-previews-a03/preview-2176.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "C_preview_alternative_not_chosen",
+      "path": "inputs/previews/preview-2179.json",
+      "bytes": 1276,
+      "sha256": "b162d44f57b81b6f7527f8e35dbb6c2d7d21d4a80e03e7e39bb2cc140a8283e7",
+      "historical_attempt_path": "root-r0174-readonly-start-and-previews-a03/preview-2179.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "Root_frozen_protocol",
+      "path": "inputs/root-frozen/protocol.json",
+      "bytes": 54230,
+      "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa",
+      "historical_attempt_path": "root-r0174-abc-protocol-freeze-a01/protocol.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "Root_freeze_receipt",
+      "path": "inputs/root-frozen/receipt.json",
+      "bytes": 4470,
+      "sha256": "cce78dd6206c548d1e0d7b3bd77fdd352d45d5f9901f07afa34a260fe31b8bdf",
+      "historical_attempt_path": "root-r0174-abc-protocol-freeze-a01/receipt.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "A_first_move_before",
+      "path": "inputs/A-first-command/before.json",
+      "bytes": 217680,
+      "sha256": "238aba1b273db735da7f09cd9870a9f618cc51dc7e38f63abb13312a70054372",
+      "historical_attempt_path": "root-r0174-first-A-London-move-a01/before.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "A_first_move_health-before",
+      "path": "inputs/A-first-command/health-before.json",
+      "bytes": 78964,
+      "sha256": "64b15374f1a9221f53bc14e3b0fd39b11df573b76d6799b12007cb398ff6afda",
+      "historical_attempt_path": "root-r0174-first-A-London-move-a01/health-before.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "A_first_move_preview",
+      "path": "inputs/A-first-command/preview.json",
+      "bytes": 1331,
+      "sha256": "01abefde741473100e72984eb487858dd35fc1a8f28fbe17b999528d27afaad5",
+      "historical_attempt_path": "root-r0174-first-A-London-move-a01/preview.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "A_first_move_command",
+      "path": "inputs/A-first-command/command.json",
+      "bytes": 1308,
+      "sha256": "86eb6d9ea4c232b4826f5079d1161b4e5afd02f16ed4319818ecf0640e947be4",
+      "historical_attempt_path": "root-r0174-first-A-London-move-a01/command.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "A_first_move_after",
+      "path": "inputs/A-first-command/after.json",
+      "bytes": 34828,
+      "sha256": "0a7b12b9737d29522d936cfc827437b575d401c2936d2a151cb220be18a16211",
+      "historical_attempt_path": "root-r0174-first-A-London-move-a01/after.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "A_first_move_health-after",
+      "path": "inputs/A-first-command/health-after.json",
+      "bytes": 79055,
+      "sha256": "57b9a120072598e0ca31d21d82cfec02af305d6e093390ab44663991c289a892",
+      "historical_attempt_path": "root-r0174-first-A-London-move-a01/health-after.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "A_first_move_summary",
+      "path": "inputs/A-first-command/summary.json",
+      "bytes": 1926,
+      "sha256": "246b9f4ce3229ab5489029cc66c6d3610fd6f1b3614343ee186b1d3ce38d27af",
+      "historical_attempt_path": "root-r0174-first-A-London-move-a01/summary.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "A_initial_commander_full_wrapper",
+      "path": "inputs/A-initial/commander-full-wrapper.json",
+      "bytes": 11470,
+      "sha256": "2bbb099318a1927a9b87d67df4b0b67658dcc27919b2d8321608a3e1fddfcdf3",
+      "historical_attempt_path": "root-r0174-readonly-start-and-previews-a03/commander.json",
+      "representation": "original exact samepaused full typed query wrapper; native body-only4pack retained separately"
+    },
+    {
+      "id": "A1_terminal_disposition",
+      "path": "inputs/historical-A1/terminal-disposition.json",
+      "bytes": 869,
+      "sha256": "22071ff7c607b3b87b171ce79f851efd4d503959a598aa013b79934b02e1472c",
+      "historical_attempt_path": "root-r0174-partial-A1-finish-and-stop-a01/terminal-disposition.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "A1_closed_session",
+      "path": "inputs/historical-A1/actual-closure.json",
+      "bytes": 980,
+      "sha256": "c9285ff94ec56e900f3d963e73e1310dc6e535de5c262de073f452a16325b228",
+      "historical_attempt_path": "root-r0174-closure-and-release-a01/actual-closure.json",
+      "representation": "exact original JSON bytes"
+    },
+    {
+      "id": "Root_A2_prospective_reshoot_selection",
+      "path": "inputs/root-frozen/A2-prospective-reshoot-receipt.json",
+      "bytes": 2541,
+      "sha256": "1a5a027c2c2f269ff673a868dc7eeec3586ebdeb5f8178acd3fa52870740572f",
+      "historical_attempt_path": "root-r0177-A2-prospective-reshoot-a01/receipt.json",
+      "representation": "original exact Root actual preoutcome reshoot receipt bytes"
+    }
+  ],
+  "arms": {
+    "A": {
+      "policy": {
+        "mode": "whole_direct_London",
+        "target_province_id": 1527,
+        "initial_preview_route": [
+          1009,
+          725,
+          965,
+          686,
+          628,
+          629,
+          1527
+        ]
+      },
+      "initial_observation": null,
+      "terminal_observation": null,
+      "ordered_observation_source_refs": null,
+      "action_source_refs": null,
+      "stop": null,
+      "derived_result": null,
+      "world_and_NPC_difference_review": null,
+      "applied_soldier_loss_or_refill_cause": null,
+      "maintenance_cost_attribution": null,
+      "media_or_human_credit": null,
+      "policy_execution_review": null,
+      "planned_primary_run": "R0177 A2",
+      "planned_capture_seconds": 3600,
+      "capture_start_policy": "After all actual coldload/frame/protocol gates are ready; immediately before commands, not during setup"
+    },
+    "B": {
+      "policy": {
+        "mode": "normal_halves_rest_then_reunite_merge_London",
+        "rest_sites": [
+          2174,
+          2327
+        ],
+        "main_recovery": "first actual positive stock write belowactualcap with update anchor change",
+        "child_recovery": "first actual successful full/overcap write toactualcap; zeroornegative delta does not count as positive growth",
+        "reunite_province_id": 2174,
+        "target_province_id": 1527,
+        "new_B_recovery_source_pairs": null,
+        "new_B_split_and_merge_source_refs": null
+      },
+      "initial_observation": null,
+      "terminal_observation": null,
+      "ordered_observation_source_refs": null,
+      "action_source_refs": null,
+      "stop": null,
+      "derived_result": null,
+      "world_and_NPC_difference_review": null,
+      "applied_soldier_loss_or_refill_cause": null,
+      "maintenance_cost_attribution": null,
+      "media_or_human_credit": null,
+      "policy_execution_review": null,
+      "planned_primary_run": "R0175",
+      "planned_capture_seconds": 3600,
+      "capture_start_policy": "After all actual coldload/frame/protocol gates are ready; immediately before commands, not during setup"
+    },
+    "C": {
+      "policy": {
+        "mode": "whole_via_distinct_waypoint_then_London",
+        "first_waypoint_province_id": 2176,
+        "initial_waypoint_route": [
+          2175,
+          2179,
+          2176
+        ],
+        "waypoint_to_London_actual_preview": null,
+        "target_province_id": 1527
+      },
+      "initial_observation": null,
+      "terminal_observation": null,
+      "ordered_observation_source_refs": null,
+      "action_source_refs": null,
+      "stop": null,
+      "derived_result": null,
+      "world_and_NPC_difference_review": null,
+      "applied_soldier_loss_or_refill_cause": null,
+      "maintenance_cost_attribution": null,
+      "media_or_human_credit": null,
+      "policy_execution_review": null,
+      "planned_primary_run": "R0176",
+      "planned_capture_seconds": 3600,
+      "capture_start_policy": "After all actual coldload/frame/protocol gates are ready; immediately before commands, not during setup"
+    }
+  },
+  "comparison": {
+    "all_arms_terminal_observed": false,
+    "arrival_ranking": null,
+    "gold_net_ranking": null,
+    "soldier_change_causal_ranking": null,
+    "victory_or_best_policy": null
+  },
+  "fill_contract": "Use a new attempt/output. Every unobserved terminal/arrival/result is null. Initial observations may be filled only from actual frame-bound original packets. Treasury net is endpoint gold difference, not inferred army upkeep. No Game/SDK/UI/bus/Git/raw activity from this package.",
+  "historical_attempts": {
+    "A1_R0174": {
+      "primary_result_eligible": false,
+      "initial_observation": {
+        "source_refs": {
+          "before": "A_initial_before",
+          "health": "A_initial_health",
+          "after": "A_initial_after",
+          "commander": "A_initial_commander_full_wrapper"
+        },
+        "episode_run_id": "native-33388-938bf03cdbfc",
+        "date_raw": 53148432,
+        "public_revision": 3,
+        "native_revision": 2,
+        "public_to_native_CArmy": {
+          "0": 0
+        },
+        "actor_character_id": 33388,
+        "commander_character_id": 27357,
+        "gold_raw": 63754562,
+        "gold_scale": 100000,
+        "source_exact_build": {
+          "version": "1.20.0.3",
+          "ck3_build_match": true,
+          "bridge_pid": 19884,
+          "connection_generation": 1,
+          "advertised_expected_executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+          "hash_basis": "native diagnostic hello expected hash with ck3_build_match=true; independent frozen protocol exact_build is separately pinned; original health.source null stays untouched"
+        },
+        "stock_raw": 11037716,
+        "stock_capacity_raw": 30000000,
+        "monthly_supply_raw": -423728,
+        "supply_scale": 100000,
+        "province_id": 2174,
+        "route_province_ids": [],
+        "cohort_readback": {
+          "current_soldiers": 6679,
+          "maximum_soldiers": 6747,
+          "regiment_count": 27,
+          "DATA_record_count": 37
+        },
+        "original_captured_native_commander_body_ref": "A_initial_commander"
+      },
+      "first_move_source_refs": [
+        "A_first_move_before",
+        "A_first_move_health-before",
+        "A_first_move_preview",
+        "A_first_move_command",
+        "A_first_move_after",
+        "A_first_move_health-after",
+        "A_first_move_summary"
+      ],
+      "terminal_disposition_artifact_id": "A1_terminal_disposition",
+      "closure_artifact_id": "A1_closed_session",
+      "original_start_raw": 53148432,
+      "original_END_raw": 53150592,
+      "actual_last_raw": 53148456,
+      "actual_days_used": 1,
+      "actual_days_remaining": 89,
+      "London_arrival": false,
+      "strategy_result": null,
+      "capture_status": "capture-incomplete-independent-attempt",
+      "budget_or_bytes_reinterpreted": false
+    }
+  }
+}

@@ -1,0 +1,74 @@
+{
+  "status": "ROOT_DIRECT_ENCODED_CONTENT_REVIEW_SIX_FRAMES",
+  "at_utc": "2026-10-05T16:30:21.753450+00:00",
+  "observer": "Root direct view_image each encoded original",
+  "candidate_PTS_packet_frame_mapping": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\CANDIDATE-DELIVERY04.json",
+    "bytes": 25171,
+    "sha256": "a49492e95be64a541552b64d04b4ab24643328cdfa5fedaf6db50f72406dc081"
+  },
+  "media_audit": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\report.json",
+    "bytes": 11770,
+    "sha256": "b14377a2a761b7b14590498dd41c50fb6df2478144f915d77ca156b638fa5e6f"
+  },
+  "native_day27_contemporaneous_progress_and_full_health": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-day27-TERM08-and-integer-review-a01\\review.json",
+    "bytes": 3729,
+    "sha256": "6b6a6e806a46003f0efd1b4a9ff0784b5fa70f5c954de9aa46170cb91407e558"
+  },
+  "frames": [
+    {
+      "image": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\encoded-candidates-a01\\r0177-early\\candidate-00.png",
+        "bytes": 2632317,
+        "sha256": "271d751e1b043b8994959c7787c64ad7f3ef4b81bd678029dab64518f12d7196"
+      },
+      "observed_pixels": "March5; selected army6679/110 of300/0%, waiting"
+    },
+    {
+      "image": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\encoded-candidates-a01\\r0177-early\\candidate-01.png",
+        "bytes": 2796741,
+        "sha256": "0069fdb84a8b0a3372261d50dbac854af724734b36450ab2b7ba57c87fc355e2"
+      },
+      "observed_pixels": "Same March5; actual route visible, movement remaining30days;6679/110of300"
+    },
+    {
+      "image": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\encoded-candidates-a01\\r0177-integer\\candidate-00.png",
+        "bytes": 2900652,
+        "sha256": "9d7a5641eb7c6f633ce743ea792eeaf66f5cf3a52183024aa024a15910469fe4"
+      },
+      "observed_pixels": "April1; army6689/106of300/0%, movingremaining3days"
+    },
+    {
+      "image": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\encoded-candidates-a01\\r0177-term08\\candidate-00.png",
+        "bytes": 2774755,
+        "sha256": "a634185d4531ab40f62c05d2c9be8b2cd1ca3eabfe30423122ec0bb8d330938a"
+      },
+      "observed_pixels": "April1; same6689/106, armytooltip ETA24days/April25 to中撒克逊, movementlocked"
+    },
+    {
+      "image": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\encoded-candidates-a01\\r0177-term08\\candidate-01.png",
+        "bytes": 2803731,
+        "sha256": "9e7adaf6f2f54417d7567bcf0e0e34252742c3eb4ee86f5bb808ad31763055b7"
+      },
+      "observed_pixels": "April1; native移动锁定concept: half-progress movement cannot be changed before reaching destination; existing underlying army6689/106"
+    },
+    {
+      "image": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\encoded-candidates-a01\\r0177-day31\\candidate-00.png",
+        "bytes": 2873369,
+        "sha256": "d6df6e3d663f39766c4bf11653711e307e3276df5549d2f32efd4e90fb701bbd"
+      },
+      "observed_pixels": "April5; paused; sea ship6689, samearmy panel106of300/0%, embarked"
+    }
+  ],
+  "TERM08": "Currentleg progress90000/100000 belongs to actualpausedApril1 fullMain source. This encoded concept and parent are present in sealed firsttape. Exact50% execution boundary remains untested.",
+  "arrival_credit": false,
+  "continuous_clean_span_certified": false,
+  "human_full_film_review_or_signoff": false
+}

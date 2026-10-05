@@ -1,0 +1,12 @@
+{
+  "status": "ACTUAL_INSPECT_ONLY_PAUSED",
+  "latest_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-main-scoped-endpoint-independent-a01\\initial\\observation.json",
+    "bytes": 552829,
+    "sha256": "23da342b79cf17e1e25b76017f6c7384de8f8c6e254b424b15e7b0b84b362ad5"
+  },
+  "no_resume_published": true,
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "TERM_clean_film_human_signoff_credit": 0
+}

@@ -1,0 +1,5 @@
+{
+  "state": "RED_RETAINED",
+  "at_utc": "2026-10-05T16:21:02.626786+00:00",
+  "error": "RuntimeError('Exactly one live actual bootstrap launch required')"
+}

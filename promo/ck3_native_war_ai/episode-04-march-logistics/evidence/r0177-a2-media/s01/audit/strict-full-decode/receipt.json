@@ -1,0 +1,21 @@
+{
+  "started_at_utc": "2026-10-05T16:12:14.105739+00:00",
+  "completed_at_utc": "2026-10-05T16:14:39.900646+00:00",
+  "elapsed_seconds": 145.79492,
+  "returncode": 0,
+  "argv_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\strict-full-decode\\argv.json",
+    "bytes": 673,
+    "sha256": "3b178b1ddc5b09a45704bab51b732cc1649d38dfe862d1ff7503578d162a9566"
+  },
+  "stdout_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\strict-full-decode\\stdout.json",
+    "bytes": 1561,
+    "sha256": "e19dd1d1f0e69721a50bfd1ddb9c2c514875dc23b85dcbd90645b3f65654e980"
+  },
+  "stderr_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\strict-full-decode\\stderr.txt",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

@@ -1,0 +1,94 @@
+{
+  "source_full_table_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\video-packets\\stdout.json",
+    "bytes": 31402762,
+    "sha256": "cf25d12f290c1d46c1185954a68dd02f3f1707f7a306dd6882736f27a1db5083"
+  },
+  "full_table_not_bundled_or_revalidated": true,
+  "records": [
+    {
+      "role": "baseline_search",
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "pts": 1000,
+        "pts_time": "1.000000",
+        "dts": 1000,
+        "dts_time": "1.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "flags": "___"
+      }
+    },
+    {
+      "role": "first_move_search",
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "pts": 12000,
+        "pts_time": "12.000000",
+        "dts": 12000,
+        "dts_time": "12.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "flags": "___"
+      }
+    },
+    {
+      "role": "day27_integer_growth_search",
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "pts": 1220000,
+        "pts_time": "1220.000000",
+        "dts": 1220000,
+        "dts_time": "1220.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "flags": "___"
+      }
+    },
+    {
+      "role": "TERM08_parent_search",
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "pts": 1448000,
+        "pts_time": "1448.000000",
+        "dts": 1448000,
+        "dts_time": "1448.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "flags": "___"
+      }
+    },
+    {
+      "role": "TERM08_concept_search",
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "pts": 1548000,
+        "pts_time": "1548.000000",
+        "dts": 1548000,
+        "dts_time": "1548.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "flags": "___"
+      }
+    },
+    {
+      "role": "day31_sea_6689_supply106_search",
+      "time_base": "1/1000",
+      "record": {
+        "stream_index": 0,
+        "pts": 1840000,
+        "pts_time": "1840.000000",
+        "dts": 1840000,
+        "dts_time": "1840.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "flags": "___"
+      }
+    }
+  ]
+}

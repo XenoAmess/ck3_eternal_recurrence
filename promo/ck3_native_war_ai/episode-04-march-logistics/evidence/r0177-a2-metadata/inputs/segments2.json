@@ -1,0 +1,315 @@
+{
+  "schema": "ck3.e04.abc.recording-segment-addendum/v1",
+  "at_utc": "2026-10-05T16:27:49.913230+00:00",
+  "status": "ROOT_PROSPECTIVE_SAME_A2_CONTINUATION_BEFORE_NEW_RECORDER_AND_RESUME",
+  "protocol": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-abc-protocol-freeze-a01\\protocol.json",
+    "bytes": 54230,
+    "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+  },
+  "A2_prospective_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-A2-prospective-reshoot-a01\\receipt.json",
+    "bytes": 2541,
+    "sha256": "1a5a027c2c2f269ff673a868dc7eeec3586ebdeb5f8178acd3fa52870740572f"
+  },
+  "required_Main_scope_addendum": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-new-CUnit-scope-readonly-a02\\scope-addendum.json",
+    "bytes": 3705,
+    "sha256": "fafd2766b6bd8c74709412a47bba421fecd3120ab218818b53b0443ad3d5d53a"
+  },
+  "segment1_finish_response": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-first-tape-finish-a01\\response.json",
+    "bytes": 1353,
+    "sha256": "38485cd006682839391a5955c9e78583327fb0021df1509b56e3b9e0b02d2e3d"
+  },
+  "segment1_raw_terminal_identity_reused_without_rehash": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+    "bytes": 5900357006,
+    "sha256": "ac6394f08db078207c26a64af9d2767e8d36007f8021317ff930a55a9775780a"
+  },
+  "actual_paused_Main_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-main-scoped-inspect-a01\\initial\\observation.json",
+    "bytes": 576513,
+    "sha256": "95ef328573b5b12617117432bd17c696209dcd558a606fda540f7e9cdd474550"
+  },
+  "Root_reviewed_original": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-continuation-admission-frame-a01\\desktop.png",
+    "bytes": 3289669,
+    "sha256": "403d70b10f9c88f5bf32db3ae0514b6d44a725e1cd7af4db30267d871d5da19e"
+  },
+  "Root_pixel_observations": {
+    "date": "1067-04-05",
+    "army_current": 6689,
+    "supply": "106/300",
+    "attrition": "0%",
+    "state": "ship on sea, paused"
+  },
+  "same_game_pid": 20068,
+  "same_game_hwnd": 146998254,
+  "same_episode_run_id": "native-33388-dc0d8e1d4891",
+  "same_A2_experiment": true,
+  "new_independent_replay_or_A3": false,
+  "checkpoint_reloaded": false,
+  "date_reset": false,
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "actual_raw_before_segment2": 53149176,
+  "actual_days_used": 31,
+  "remaining_actual_days": 59,
+  "maximum_shared_batches": 120,
+  "no_game_advance_between_segments": true,
+  "gap_wall_clock_duration_pending": true,
+  "segment2_workdir": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02",
+  "segment2_max_wall_seconds": 3600,
+  "segment2_process_owner": "Independent Root Windows Job using existing recorder_job.spawn, same exclusive screen lease; frozen SDK OwnedRecorder cannot restart and is not modified",
+  "reason": "Recorder admission failed before any FFmpeg start because Windows venv launchers duplicate exact command lines. Preserve failed attempt; use actual same-chain default-desktop SDK process and creation time, without any game resume or checkpoint reload. Same A2 recording segment2, not an independent replay.",
+  "frozen_one_recorder_SDK_constraint_preserved": true,
+  "old_files_preserved": true,
+  "arrival_and_comparison_results": null,
+  "clean_span_certification": false,
+  "human_signoff": false,
+  "previous_prospective_addendum": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-A2-recording-segment-addendum-a01\\receipt.json",
+    "bytes": 3400,
+    "sha256": "1fff294e685749fa6ebfdab31068be871d4a9c6542ce026ab668d544eb7b37b3"
+  },
+  "previous_segment2_recorder_start_failure": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a01\\failure.json",
+    "bytes": 158,
+    "sha256": "438c6c8efbe742a2e647b55ea2c56896290d8d069a34e4f2649300fc4b2bf1a6"
+  },
+  "previous_segment2_start_terminal": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a01\\result.json",
+    "bytes": 502,
+    "sha256": "1e87c0ed39d0771b120a919bafdc65598c589af7cd8d2c37e13a4cb8ebd076e0"
+  },
+  "actual_game_process": {
+    "pid": 20068,
+    "create_time": 1791212180.2009034,
+    "ppid": 20200
+  },
+  "actual_game_ancestors": [
+    {
+      "pid": 20200,
+      "ppid": 14360,
+      "create_time": 1791212115.007346,
+      "name": "python.exe"
+    },
+    {
+      "pid": 14360,
+      "ppid": 18404,
+      "create_time": 1791212114.960278,
+      "name": "python.exe"
+    },
+    {
+      "pid": 18404,
+      "ppid": 17504,
+      "create_time": 1791212114.6664464,
+      "name": "python.exe"
+    },
+    {
+      "pid": 17504,
+      "ppid": 21856,
+      "create_time": 1791212114.6507993,
+      "name": "python.exe"
+    },
+    {
+      "pid": 21856,
+      "ppid": 21808,
+      "create_time": 1791212114.1902335,
+      "name": "python.exe"
+    },
+    {
+      "pid": 21808,
+      "ppid": 21760,
+      "create_time": 1791212114.1770165,
+      "name": "python.exe"
+    },
+    {
+      "pid": 21760,
+      "ppid": 19504,
+      "create_time": 1791212114.1239955,
+      "name": "cmd.exe"
+    },
+    {
+      "pid": 19504,
+      "ppid": 19044,
+      "create_time": 1791104116.1782677,
+      "name": "codex.exe"
+    },
+    {
+      "pid": 19044,
+      "ppid": 19552,
+      "create_time": 1791104116.0527043,
+      "name": "node.exe"
+    },
+    {
+      "pid": 19552,
+      "ppid": 13892,
+      "create_time": 1791104116.003369,
+      "name": "cmd.exe"
+    },
+    {
+      "pid": 13892,
+      "ppid": 6904,
+      "create_time": 1790777074.6478295,
+      "name": "Paseo.exe"
+    },
+    {
+      "pid": 6904,
+      "ppid": 13356,
+      "create_time": 1790777074.292566,
+      "name": "Paseo.exe"
+    },
+    {
+      "pid": 13356,
+      "ppid": 2252,
+      "create_time": 1790777062.5199745,
+      "name": "Paseo.exe"
+    },
+    {
+      "pid": 2252,
+      "ppid": 4372,
+      "create_time": 1790776943.2028556,
+      "name": "explorer.exe"
+    }
+  ],
+  "actual_same_bootstrap_chain": [
+    {
+      "pid": 17504,
+      "ppid": 21856,
+      "create_time": 1791212114.6507993,
+      "cmdline": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\w\\e4countybuilda01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\capture_bootstrap.py",
+        "run",
+        "--prepared",
+        "C:\\ck3-war-episode04-research-20261004-a01\\prepared-r0177-a01\\prepared.json",
+        "--run-dir",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01",
+        "--steam-offline-receipt",
+        "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-launch-a01\\root-offline-review.json",
+        "--screen-cli",
+        "C:\\w\\e4countybuilda01\\tools\\codex_task_bus.py",
+        "--task-bus",
+        "D:\\workspace\\.codex-task-bus",
+        "--screen-repo",
+        "C:\\w\\e4countybuilda01",
+        "--screen-task-id",
+        "war-e04-capture-abc-A2-a08-20261005-a23",
+        "--screen-expected-sequence",
+        "4986",
+        "--screen-cli-sha256",
+        "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+        "--timeout",
+        "21600",
+        "--default-desktop",
+        "--private-war-cash-queries"
+      ]
+    },
+    {
+      "pid": 18404,
+      "ppid": 17504,
+      "create_time": 1791212114.6664464,
+      "cmdline": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\w\\e4countybuilda01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\capture_bootstrap.py",
+        "run",
+        "--prepared",
+        "C:\\ck3-war-episode04-research-20261004-a01\\prepared-r0177-a01\\prepared.json",
+        "--run-dir",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01",
+        "--steam-offline-receipt",
+        "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-launch-a01\\root-offline-review.json",
+        "--screen-cli",
+        "C:\\w\\e4countybuilda01\\tools\\codex_task_bus.py",
+        "--task-bus",
+        "D:\\workspace\\.codex-task-bus",
+        "--screen-repo",
+        "C:\\w\\e4countybuilda01",
+        "--screen-task-id",
+        "war-e04-capture-abc-A2-a08-20261005-a23",
+        "--screen-expected-sequence",
+        "4986",
+        "--screen-cli-sha256",
+        "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+        "--timeout",
+        "21600",
+        "--default-desktop",
+        "--private-war-cash-queries"
+      ]
+    },
+    {
+      "pid": 14360,
+      "ppid": 18404,
+      "create_time": 1791212114.960278,
+      "cmdline": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\w\\e4countybuilda01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\capture_bootstrap.py",
+        "run",
+        "--prepared",
+        "C:\\ck3-war-episode04-research-20261004-a01\\prepared-r0177-a01\\prepared.json",
+        "--run-dir",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01",
+        "--steam-offline-receipt",
+        "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-launch-a01\\root-offline-review.json",
+        "--screen-cli",
+        "C:\\w\\e4countybuilda01\\tools\\codex_task_bus.py",
+        "--task-bus",
+        "D:\\workspace\\.codex-task-bus",
+        "--screen-repo",
+        "C:\\w\\e4countybuilda01",
+        "--screen-task-id",
+        "war-e04-capture-abc-A2-a08-20261005-a23",
+        "--screen-expected-sequence",
+        "4986",
+        "--screen-cli-sha256",
+        "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+        "--timeout",
+        "21600",
+        "--private-war-cash-queries"
+      ]
+    },
+    {
+      "pid": 20200,
+      "ppid": 14360,
+      "create_time": 1791212115.007346,
+      "cmdline": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\w\\e4countybuilda01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\tools\\capture_bootstrap.py",
+        "run",
+        "--prepared",
+        "C:\\ck3-war-episode04-research-20261004-a01\\prepared-r0177-a01\\prepared.json",
+        "--run-dir",
+        "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01",
+        "--steam-offline-receipt",
+        "C:\\ck3-war-episode04-research-20261004-a01\\root-r0177-launch-a01\\root-offline-review.json",
+        "--screen-cli",
+        "C:\\w\\e4countybuilda01\\tools\\codex_task_bus.py",
+        "--task-bus",
+        "D:\\workspace\\.codex-task-bus",
+        "--screen-repo",
+        "C:\\w\\e4countybuilda01",
+        "--screen-task-id",
+        "war-e04-capture-abc-A2-a08-20261005-a23",
+        "--screen-expected-sequence",
+        "4986",
+        "--screen-cli-sha256",
+        "B3C44B42F7BDF401B593D863E3210106A46412DCD7D89F8596C74F4C27392DEE",
+        "--timeout",
+        "21600",
+        "--private-war-cash-queries"
+      ]
+    }
+  ]
+}

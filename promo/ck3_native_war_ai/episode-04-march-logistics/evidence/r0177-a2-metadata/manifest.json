@@ -1,0 +1,131 @@
+{
+  "schema": "xar.ck3.A2.segment-companion.portable-manifest.v1",
+  "scope": "Small immutable source JSON, derived metadata, documentation and stdlib consumer; no media access or execution credit",
+  "files": [
+    {
+      "path": "CLOSED-SOURCE-COPY-RECEIPT.json",
+      "bytes": 2224,
+      "sha256": "a00d979eee121f93d276cd2ade193b1897bcc66103b2721297ba3364d52d66b8"
+    },
+    {
+      "path": "code/validate_recording_segments.py",
+      "bytes": 15991,
+      "sha256": "efc63610af132dab3904d45e5ccbb1b55fbc8639113b4da973ea5dcba60f04ca"
+    },
+    {
+      "path": "inputs/closure.json",
+      "bytes": 1223,
+      "sha256": "36deb5e62a4135da1dea9ed150d8d34d010528d6f43077a6b7f3c90880e6c41c"
+    },
+    {
+      "path": "inputs/day27.json",
+      "bytes": 3729,
+      "sha256": "6b6a6e806a46003f0efd1b4a9ff0784b5fa70f5c954de9aa46170cb91407e558"
+    },
+    {
+      "path": "inputs/endpoint.json",
+      "bytes": 3652,
+      "sha256": "d2600854a7646339c97e4343666185d7153b91fcd3901b65f8a0108e9c11a3ad"
+    },
+    {
+      "path": "inputs/failed2.json",
+      "bytes": 502,
+      "sha256": "1e87c0ed39d0771b120a919bafdc65598c589af7cd8d2c37e13a4cb8ebd076e0"
+    },
+    {
+      "path": "inputs/failure2.json",
+      "bytes": 158,
+      "sha256": "438c6c8efbe742a2e647b55ea2c56896290d8d069a34e4f2649300fc4b2bf1a6"
+    },
+    {
+      "path": "inputs/finish1.json",
+      "bytes": 1353,
+      "sha256": "38485cd006682839391a5955c9e78583327fb0021df1509b56e3b9e0b02d2e3d"
+    },
+    {
+      "path": "inputs/finish2.json",
+      "bytes": 968,
+      "sha256": "2dbe24bfbd559d7ecf6685f945901aa57e338a3ddf9641c4f2e1cee92f21889d"
+    },
+    {
+      "path": "inputs/protocol.json",
+      "bytes": 54230,
+      "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+    },
+    {
+      "path": "inputs/reshoot.json",
+      "bytes": 2541,
+      "sha256": "1a5a027c2c2f269ff673a868dc7eeec3586ebdeb5f8178acd3fa52870740572f"
+    },
+    {
+      "path": "inputs/scope.json",
+      "bytes": 3705,
+      "sha256": "fafd2766b6bd8c74709412a47bba421fecd3120ab218818b53b0443ad3d5d53a"
+    },
+    {
+      "path": "inputs/segments.json",
+      "bytes": 3400,
+      "sha256": "1fff294e685749fa6ebfdab31068be871d4a9c6542ce026ab668d544eb7b37b3"
+    },
+    {
+      "path": "inputs/segments2.json",
+      "bytes": 11175,
+      "sha256": "5c1bf03096b95a91168d74eef86b2593f0edf5040fd13b798598989bec1e218c"
+    },
+    {
+      "path": "inputs/start2.json",
+      "bytes": 7085,
+      "sha256": "d2125061fa66db567185c3ddb42db493a6665dab4a631e87b848f9e66abdaa3c"
+    },
+    {
+      "path": "MULTISEGMENT-KNOWLEDGE-CANDIDATE.md",
+      "bytes": 5091,
+      "sha256": "9b06a8c118972e3f4d8fabfdd91bc38d7b8cfcb649b3e7389366951662e83c98"
+    },
+    {
+      "path": "ORIGINAL-SOURCE-COPY-RECEIPT.json",
+      "bytes": 2712,
+      "sha256": "711f9622cf7d63d2665badb3135b5078f82fcac93684230481737830bb9201bd"
+    },
+    {
+      "path": "recording-segments-metadata.json",
+      "bytes": 7601,
+      "sha256": "ee80b239f28790271233de4d6afdc13f94b9af3bfa7a62005f57e8a6d2364d42"
+    },
+    {
+      "path": "verification/closed-metadata-focused-result.json",
+      "bytes": 3583,
+      "sha256": "0b53777f1513a448730fda9137bad4615feea8dbad180cfbd6121e6002d06d9b"
+    },
+    {
+      "path": "verification/historical-active-metadata-focused-result.json",
+      "bytes": 5689,
+      "sha256": "a7827453b2bc8aff47503a1592c1b2186ebb54deddb652e3ced49462050eca44"
+    },
+    {
+      "path": "historical/cold-baseline-comparison.json",
+      "bytes": 5780,
+      "sha256": "9091746968c165919a9defeeb1efffa6e32c2f959aebfa8c58c0da47e5075798"
+    },
+    {
+      "path": "historical/A1-actual-closure.json",
+      "bytes": 980,
+      "sha256": "c9285ff94ec56e900f3d963e73e1310dc6e535de5c262de073f452a16325b228"
+    },
+    {
+      "path": "historical/A1-terminal-disposition.json",
+      "bytes": 869,
+      "sha256": "22071ff7c607b3b87b171ce79f851efd4d503959a598aa013b79934b02e1472c"
+    },
+    {
+      "path": "README.md",
+      "bytes": 2982,
+      "sha256": "d2e963fa439f83ba33a696473d0226ced20635f27b1bab503e05c7161e7a17ec"
+    },
+    {
+      "path": "INDEX.json",
+      "bytes": 1511,
+      "sha256": "41a99fae297996bc499b0fe9b1539c5df20d00d6bb9396c6210c478f89109cac"
+    }
+  ]
+}

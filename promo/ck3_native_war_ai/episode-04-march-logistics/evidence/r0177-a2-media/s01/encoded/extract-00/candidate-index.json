@@ -1,0 +1,170 @@
+{
+  "run": "R0177-early",
+  "audit": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\report.json",
+    "bytes": 11770,
+    "sha256": "b14377a2a761b7b14590498dd41c50fb6df2478144f915d77ca156b638fa5e6f"
+  },
+  "finish": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\responses\\r0177-recorder-finish-first-tape-a01.json",
+    "bytes": 1353,
+    "sha256": "38485cd006682839391a5955c9e78583327fb0021df1509b56e3b9e0b02d2e3d"
+  },
+  "raw_prior_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+    "bytes": 5900357006,
+    "sha256": "ac6394f08db078207c26a64af9d2767e8d36007f8021317ff930a55a9775780a"
+  },
+  "source_after_audit": {
+    "stat_only": true,
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+    "bytes": 5900357006,
+    "mtime_ns": 1791216360362392000,
+    "no_second_large_raw_rehash": true
+  },
+  "frame_table": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\video-frames\\stdout.json",
+    "bytes": 46888299,
+    "sha256": "f25d6cda6b2a0b0ecf058d5331a998866eaa0e5b162ced5faf0b0a5ee0305ffd"
+  },
+  "packet_table": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\video-packets\\stdout.json",
+    "bytes": 31402762,
+    "sha256": "cf25d12f290c1d46c1185954a68dd02f3f1707f7a306dd6882736f27a1db5083"
+  },
+  "selections": [
+    {
+      "role": "baseline_search",
+      "search_seconds": "1",
+      "packets": [
+        "native-live-r0177-a01/responses/r0177-whole-strength-baseline-a01.json"
+      ],
+      "packet_pins": [
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\responses\\r0177-whole-strength-baseline-a01.json",
+          "bytes": 343009,
+          "sha256": "70667d27de5833d5c8906c55f373ba2157a5e64a28c62874742eae7828b42bcc"
+        }
+      ],
+      "decoded_frame_index_zero_based": 30,
+      "actual_pts": 1000,
+      "time_base": "1/1000",
+      "actual_seconds": "1",
+      "saved_complete_frame_record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 1000,
+        "pts_time": "1.000000",
+        "pkt_dts": 1000,
+        "pkt_dts_time": "1.000000",
+        "best_effort_timestamp": 1000,
+        "best_effort_timestamp_time": "1.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      },
+      "saved_complete_packet_record": {
+        "stream_index": 0,
+        "pts": 1000,
+        "pts_time": "1.000000",
+        "dts": 1000,
+        "dts_time": "1.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "flags": "___"
+      },
+      "exact_native_event_frame_synchronization": false,
+      "source_clock_labels_search_only": true,
+      "root_direct_content_review": "PENDING",
+      "clean_span_certified": false,
+      "decoded_png": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\encoded-candidates-a01\\r0177-early\\candidate-00.png",
+        "bytes": 2632317,
+        "sha256": "271d751e1b043b8994959c7787c64ad7f3ef4b81bd678029dab64518f12d7196"
+      },
+      "png_size": [
+        1920,
+        1080
+      ],
+      "showinfo_pts_confirmed": true
+    },
+    {
+      "role": "first_move_search",
+      "search_seconds": "12",
+      "packets": [
+        "native-live-r0177-a01/responses/r0177-first-A-London-command-a01.json",
+        "native-live-r0177-a01/responses/r0177-first-A-London-health-after-a01.json"
+      ],
+      "packet_pins": [
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\responses\\r0177-first-A-London-command-a01.json",
+          "bytes": 6879,
+          "sha256": "7c4c40c833e9eaf40906cb82f8556145ee41e29a34c5765065c1230612042d54"
+        },
+        {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0177-a01\\responses\\r0177-first-A-London-health-after-a01.json",
+          "bytes": 343441,
+          "sha256": "1b3b695d68059870b67476c83691ff7d26235491f4a2670d004ed9836f13b6e7"
+        }
+      ],
+      "decoded_frame_index_zero_based": 360,
+      "actual_pts": 12000,
+      "time_base": "1/1000",
+      "actual_seconds": "12",
+      "saved_complete_frame_record": {
+        "stream_index": 0,
+        "key_frame": 0,
+        "pts": 12000,
+        "pts_time": "12.000000",
+        "pkt_dts": 12000,
+        "pkt_dts_time": "12.000000",
+        "best_effort_timestamp": 12000,
+        "best_effort_timestamp_time": "12.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "pict_type": "P"
+      },
+      "saved_complete_packet_record": {
+        "stream_index": 0,
+        "pts": 12000,
+        "pts_time": "12.000000",
+        "dts": 12000,
+        "dts_time": "12.000000",
+        "duration": 33,
+        "duration_time": "0.033000",
+        "flags": "___"
+      },
+      "exact_native_event_frame_synchronization": false,
+      "source_clock_labels_search_only": true,
+      "root_direct_content_review": "PENDING",
+      "clean_span_certified": false,
+      "decoded_png": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\encoded-candidates-a01\\r0177-early\\candidate-01.png",
+        "bytes": 2796741,
+        "sha256": "0069fdb84a8b0a3372261d50dbac854af724734b36450ab2b7ba57c87fc355e2"
+      },
+      "png_size": [
+        1920,
+        1080
+      ],
+      "showinfo_pts_confirmed": true
+    }
+  ],
+  "ffmpeg_prior_identity": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "bytes": 222229504,
+    "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+  },
+  "prior_strict_decode_available": true,
+  "state": "ACTUAL_PTS_BOUND_CANDIDATES_CONTENT_REVIEW_PENDING",
+  "receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\encoded-candidates-a01\\r0177-early\\extraction-receipt.json",
+    "bytes": 883,
+    "sha256": "208b93350c3dc50718c55008844f625668fa741554ee3c537b8021a228d11f76"
+  },
+  "source_stat_stable": true,
+  "prior_audited_mtime_available": true,
+  "new_raw_hash": false,
+  "new_media_probe": false,
+  "full_clean_or_human_signoff": false
+}

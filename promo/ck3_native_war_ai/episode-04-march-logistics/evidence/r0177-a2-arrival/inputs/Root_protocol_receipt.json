@@ -1,0 +1,91 @@
+{
+  "schema": "xar.e04.Root-frozen-ABC-protocol/v1",
+  "frozen_at_utc": "2026-10-05T14:18:18.952601+00:00",
+  "frozen_protocol": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-abc-protocol-freeze-a01\\protocol.json",
+    "bytes": 54230,
+    "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+  },
+  "reviewed_candidate": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-abc-final-protocol-preparation-a01\\candidate-a04\\protocol-candidate.json",
+    "bytes": 54041,
+    "sha256": "507ac15cc4ac6260cde5b68f7bdf46e7ee11055334cafa99c23a0fa6811262d3"
+  },
+  "source_candidate_bytes_preserved": true,
+  "Root_alias_normalization": {
+    "absolute_end_raw": 53150592,
+    "actor_id": 33388,
+    "reason": "Candidate uses end_raw/actor_character_id; actual queue and pulse guard require exact equal absolute_end_raw/actor_id. No budget/actor/experiment change."
+  },
+  "Root_decisions": {
+    "C_selected_waypoint": 2176,
+    "selection_rule": "Higher actual destination supply limit among fresh whole2176/2179 previews; both remain below current6679 strength",
+    "C_second_route": "Fresh typed London1527 preview and move only after actual stationary2176",
+    "coldload_prepared_cache_differences": "Accept and retain22 prepared-cache zero differences; actual R0174 coldload37DATA is shared admission baseline; B/C independently compare it; no producer/reset cause claim or in-game normalization",
+    "stationary_arrival": "Exact destination, empty route, known regular or sieging; paused, no combat/retreat, exact current Main/cohort/health source",
+    "comparison_stop": "First actually observed stationary London or genuine bounded stop; incomplete/censored outcomes distinct from London arrival",
+    "fees": "Native net treasury change separate; payment/death/other hidden-flow ledgers unknown"
+  },
+  "common_start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "max_actual_days_per_arm": 90,
+  "former_R0173_qualification_budget_unchanged": {
+    "start_raw": 53147376,
+    "end_raw": 53149536,
+    "used_days": 76,
+    "remaining_days": 14
+  },
+  "first_army_move_or_new_game_day_not_yet_issued": true,
+  "sources": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\baseline.json",
+      "bytes": 34577,
+      "sha256": "da0454906ff6af6ab81da354471dcac6062882eddaac4e274b5f79e6d2fd33e9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\after.json",
+      "bytes": 217676,
+      "sha256": "6a5785df05686dcd0844926d9265155f685e2bdd21d239afbe2cec69d6b4da0c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\strength.json",
+      "bytes": 78964,
+      "sha256": "9d8ae09a8a73595444b8f8d2ff1d39958eb2c7261116fb6e61d6ef3e2bdf5603"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\commander.json",
+      "bytes": 11470,
+      "sha256": "2bbb099318a1927a9b87d67df4b0b67658dcc27919b2d8321608a3e1fddfcdf3"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\preview-1527.json",
+      "bytes": 1331,
+      "sha256": "01abefde741473100e72984eb487858dd35fc1a8f28fbe17b999528d27afaad5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\preview-2176.json",
+      "bytes": 1288,
+      "sha256": "ebccea6f07106a2ddfb0353264b2c96e2a219eb462e74f2d0f500a246190d287"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-readonly-start-and-previews-a03\\preview-2179.json",
+      "bytes": 1276,
+      "sha256": "b162d44f57b81b6f7527f8e35dbb6c2d7d21d4a80e03e7e39bb2cc140a8283e7"
+    }
+  ],
+  "Root_original_baseline_frame": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-whole-baseline-frame-a01\\desktop.png",
+    "bytes": 3200411,
+    "sha256": "d8b7b135b390a2da93db7cfd9b206f294649c47fc5d860d647c03c7ccae9add1"
+  },
+  "Root_original_frame_observations": {
+    "date": "1067-03-05",
+    "army_count": 6679,
+    "displayed_supply": "110/300",
+    "displayed_attrition": "0%",
+    "state": "等待"
+  },
+  "ABC_completed_arms": 0,
+  "encoded_frame_or_clean_span_or_human_signoff_credit": 0,
+  "protocol_freeze_is_research_intent_not_human_movie_signoff": true
+}
