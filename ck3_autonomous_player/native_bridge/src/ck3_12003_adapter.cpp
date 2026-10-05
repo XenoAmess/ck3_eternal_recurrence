@@ -138,6 +138,24 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
   if (result.armies.enabled) {
     result.armies.regiment_composition_enabled = true;
     result.armies.loss_application_inputs_enabled = true;
+    result.armies.county_entry_inputs_enabled = true;
+    result.armies.county_entry_minimum_soldiers =
+        reinterpret_cast<const std::int32_t *>(
+            image_base + ck3_12002::kArmyCountyEntryMinimumRva12003);
+    result.armies.county_entry_character_storage_slot = reinterpret_cast<void **>(
+        image_base + ck3_12002::kArmyCountyEntryCharacterStorageRva12003);
+    result.armies.get_county_entry_loss_budget =
+        reinterpret_cast<decltype(result.armies.get_county_entry_loss_budget)>(
+            image_base + ck3_12002::kArmyCountyEntryLossBudgetRva12003);
+    result.armies.get_county_entry_loss_fraction =
+        reinterpret_cast<decltype(result.armies.get_county_entry_loss_fraction)>(
+            image_base + ck3_12002::kArmyCountyEntryLossFractionRva12003);
+    result.armies.get_county_entry_multiplier =
+        reinterpret_cast<decltype(result.armies.get_county_entry_multiplier)>(
+            image_base + ck3_12002::kArmyCountyEntryMultiplierRva12003);
+    result.armies.county_entry_condition =
+        reinterpret_cast<decltype(result.armies.county_entry_condition)>(
+            image_base + ck3_12002::kArmyCountyEntryPredicateRva12003);
     result.armies.siege_loss_rate_raw = reinterpret_cast<const std::int64_t *>(
         image_base + ck3_12002::kArmySiegeLossRateRva12003);
     result.armies.raid_loss_rate_raw = reinterpret_cast<const std::int64_t *>(

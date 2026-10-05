@@ -265,6 +265,30 @@ struct ArmyLossApplicationInputsV1 {
                          const ArmyLossApplicationInputsV1 &) = default;
 };
 
+// Current native county-entry budget, independent of a route or applied event.
+// The predicate uses the validated current province and the FIRST province of
+// the complete stored route. It omits the entry executor's special-call flag;
+// even a true condition is not evidence that an entry or soldier write occurred.
+struct ArmyCountyEntryInputsV1 {
+  bool available = false;
+  std::string unavailable_reason;
+  std::int32_t whole_soldiers = 0;
+  std::int32_t current_loss_budget = 0;
+  std::int64_t effective_fraction_raw = 0;
+  std::int64_t minimum_multiplier_raw = 0;
+  std::int32_t loaded_minimum_soldiers = 0;
+  bool condition_available = false;
+  std::string condition_unavailable_reason = "county_entry_budget_unavailable";
+  std::int32_t actor_character_id = -1;
+  std::int32_t source_province_id = -1;
+  std::int32_t target_province_id = -1;
+  std::int32_t mode = 0;
+  bool condition_passes = false;
+
+  friend bool operator==(const ArmyCountyEntryInputsV1 &,
+                         const ArmyCountyEntryInputsV1 &) = default;
+};
+
 // Independent observation of the existing CUnit -> CArmy resolver. Available
 // describes the read of the reference/branch, including a failed CArmy lookup.
 enum class ArmyNativeResolutionBranchV1 {
@@ -353,6 +377,7 @@ struct ArmyStrengthSnapshot {
   // gathering; not_gathering is an observed absence, with no invented days.
   std::optional<ArmySupplyTimingSnapshot> army_update_clock_v1;
   std::optional<ArmyLossApplicationInputsV1> loss_application_inputs_v1;
+  std::optional<ArmyCountyEntryInputsV1> county_entry_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<NativeMaaRecruitmentInputsV1> native_maa_recruitment_inputs_v1;
   std::optional<ck3_12003::OwnedRegimentsSnapshotV1> owned_regiments_v1;

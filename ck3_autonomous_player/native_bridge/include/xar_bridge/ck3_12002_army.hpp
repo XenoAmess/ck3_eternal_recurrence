@@ -31,6 +31,12 @@ inline constexpr std::uintptr_t kArmySupplyLossBudgetRva12003 = 0x24E32E0;
 inline constexpr std::uintptr_t kArmySiegeActiveRva12003 = 0x24E8560;
 inline constexpr std::uintptr_t kArmySiegeLossRateRva12003 = 0x5C69618;
 inline constexpr std::uintptr_t kArmyRaidLossRateRva12003 = 0x5C69098;
+inline constexpr std::uintptr_t kArmyCountyEntryLossBudgetRva12003 = 0x24E6670;
+inline constexpr std::uintptr_t kArmyCountyEntryLossFractionRva12003 = 0x24E6590;
+inline constexpr std::uintptr_t kArmyCountyEntryMultiplierRva12003 = 0x24DD9C0;
+inline constexpr std::uintptr_t kArmyCountyEntryMinimumRva12003 = 0x5C68B64;
+inline constexpr std::uintptr_t kArmyCountyEntryPredicateRva12003 = 0x24E2250;
+inline constexpr std::uintptr_t kArmyCountyEntryCharacterStorageRva12003 = 0x5C67568;
 
 struct ArmyBindings {
   bool enabled = false;
@@ -83,6 +89,15 @@ struct ArmyBindings {
   std::int64_t *(*get_merge_destination_weight_part_a)(void *, std::int64_t *,
                                                       std::uint32_t) = nullptr;
   std::int64_t *(*get_merge_destination_weight_part_b)(void *, std::int64_t *) = nullptr;
+  // Exact .3 current hypothetical county-entry inputs, never the entry executor.
+  // Budget receives a null breakdown; fraction/multiplier return their out pointer.
+  bool county_entry_inputs_enabled = false;
+  const std::int32_t *county_entry_minimum_soldiers = nullptr;
+  void **county_entry_character_storage_slot = nullptr;
+  std::int32_t (*get_county_entry_loss_budget)(void *, void *) = nullptr;
+  std::int64_t *(*get_county_entry_loss_fraction)(void *, std::int64_t *) = nullptr;
+  std::int64_t *(*get_county_entry_multiplier)(std::int64_t *, void *) = nullptr;
+  bool (*county_entry_condition)(void *, void *, void *, std::int32_t) = nullptr;
 };
 
 // Same GDbo key/tier implementation used by the raised ArRg reader.

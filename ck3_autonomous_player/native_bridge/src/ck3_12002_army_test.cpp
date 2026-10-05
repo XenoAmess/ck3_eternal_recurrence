@@ -804,9 +804,201 @@ void MergeWeightFixture() {
           legacy.get_merge_destination_weight_part_b==nullptr,"unchanged .2 binder has no exact3 leaf");
 }
 
+void *county_fixture_army = nullptr, *county_fixture_actor = nullptr;
+void *county_fixture_source = nullptr, *county_fixture_target = nullptr;
+std::int32_t county_fixture_budget = 137, county_fixture_mode = 1;
+std::int64_t county_fixture_fraction = 5'000, county_fixture_multiplier = 100'000;
+bool county_fixture_passes = true, county_fixture_wrong_return = false;
+int county_budget_calls = 0, county_fraction_calls = 0;
+int county_multiplier_calls = 0, county_condition_calls = 0;
+
+std::int32_t CountyBudget(void *army, void *breakdown) {
+  Require(army == county_fixture_army && breakdown == nullptr,
+          "county budget actual CArmy and null breakdown ABI");
+  ++county_budget_calls;
+  return county_fixture_budget;
+}
+std::int64_t *CountyFraction(void *army, std::int64_t *out) {
+  Require(army == county_fixture_army && out != nullptr, "county fraction CArmy/out ABI");
+  ++county_fraction_calls;
+  *out = county_fixture_fraction;
+  return county_fixture_wrong_return ? nullptr : out;
+}
+std::int64_t *CountyMultiplier(std::int64_t *out, void *army) {
+  Require(army == county_fixture_army && out != nullptr, "county multiplier out/CArmy ABI");
+  ++county_multiplier_calls;
+  *out = county_fixture_multiplier;
+  return out;
+}
+bool CountyCondition(void *actor, void *source, void *target, std::int32_t mode) {
+  Require(actor == county_fixture_actor && source == county_fixture_source &&
+          target == county_fixture_target && mode == county_fixture_mode,
+          "county predicate actual actor/current province/FIRST complete route entry/mode ABI");
+  ++county_condition_calls;
+  return county_fixture_passes;
+}
+
+void CountyEntryFixture() {
+  using namespace xar;
+  using namespace xar::ck3_12002;
+  constexpr std::int32_t public_id = 0x01000001, native_id = 0x02000001;
+  constexpr std::int32_t regiment_id = 0x03000001, actor_id = 0x05000001;
+  std::array<std::byte, 0x180> unit{};
+  std::array<std::byte, 0x200> army{};
+  std::array<std::byte, 0x50> regiment{};
+  std::array<std::byte, 0x20> actor{}, p1{}, p2{}, p3{};
+  std::array<std::byte, 0xA8> state{};
+  std::array<std::byte, 0x150> data{};
+  std::array<std::byte, 0x30> units{}, armies{}, regiments{}, characters{};
+  std::array<std::byte, 0x20> unit_slots{}, army_slots{}, regiment_slots{}, character_slots{};
+  std::array<std::int32_t, 1> ids{regiment_id};
+  std::array<std::int32_t, 2> route_ids{2, 3};
+  std::array<void *, 2> route{&route_ids[0], &route_ids[1]};
+  std::array<void *, 4> provinces{nullptr, p1.data(), p2.data(), p3.data()};
+  Put(unit, 0x10, public_id); Put(unit, 0x178, native_id); Put(unit, 0x174, actor_id);
+  Put(unit, 0x20, static_cast<void *>(p1.data()));
+  Put(unit, 0x38, static_cast<void *>(route.data()));
+  Put(unit, 0x40, std::int32_t{2}); Put(unit, 0x44, std::int32_t{2});
+  Put(army, 0x10, native_id); Put(army, 0x124, public_id);
+  Put(army, 0x38, static_cast<void *>(ids.data()));
+  Put(army, 0x40, std::int32_t{1}); Put(army, 0x44, std::int32_t{1});
+  Put(regiment, 0x10, regiment_id); Put(regiment, 0x14, std::uint32_t{0x41725267});
+  Put(regiment, 0x38, std::int32_t{900}); Put(regiment, 0x3C, std::int32_t{1500});
+  Put(actor, 0x18, actor_id);  // +10 is deliberately zero: character identity is +18.
+  Put(p1, 0x10, std::int32_t{1}); Put(p2, 0x10, std::int32_t{2}); Put(p3, 0x10, std::int32_t{3});
+  Put(state, 0xA0, static_cast<void *>(data.data()));
+  Put(data, 0x140, static_cast<void *>(provinces.data())); Put(data, 0x14C, std::int32_t{4});
+  Put(unit_slots, 0x18, static_cast<void *>(unit.data()));
+  Put(army_slots, 0x18, static_cast<void *>(army.data()));
+  Put(regiment_slots, 0x18, static_cast<void *>(regiment.data()));
+  Put(character_slots, 0x18, static_cast<void *>(actor.data()));
+  for (auto *storage : {&units, &armies, &regiments, &characters}) Put(*storage, 0x2C, std::int32_t{2});
+  Put(units, 0x20, static_cast<void *>(unit_slots.data()));
+  Put(armies, 0x20, static_cast<void *>(army_slots.data()));
+  Put(regiments, 0x20, static_cast<void *>(regiment_slots.data()));
+  Put(characters, 0x20, static_cast<void *>(character_slots.data()));
+  void *units_ptr = units.data(), *armies_ptr = armies.data(), *regiments_ptr = regiments.data();
+  void *state_ptr = state.data(), *characters_ptr = characters.data();
+  std::int32_t minimum = 100;
+  ArmyBindings bindings{};
+  bindings.enabled = true; bindings.unit_storage_slot = &units_ptr;
+  bindings.internal_army_storage_slot = &armies_ptr; bindings.regiment_storage_slot = &regiments_ptr;
+  bindings.game_state_slot = &state_ptr; bindings.get_army_current_soldiers = Current;
+  bindings.get_army_maximum_soldiers = Maximum; bindings.county_entry_inputs_enabled = true;
+  bindings.county_entry_minimum_soldiers = &minimum;
+  bindings.county_entry_character_storage_slot = &characters_ptr;
+  bindings.get_county_entry_loss_budget = CountyBudget;
+  bindings.get_county_entry_loss_fraction = CountyFraction;
+  bindings.get_county_entry_multiplier = CountyMultiplier;
+  bindings.county_entry_condition = CountyCondition;
+  reg_objects = {nullptr, regiment.data(), nullptr};
+  county_fixture_army = army.data(); county_fixture_actor = actor.data();
+  county_fixture_source = p1.data(); county_fixture_target = p2.data();
+  county_fixture_budget = 137; county_fixture_passes = true; county_fixture_mode = 1;
+  county_fixture_wrong_return = false;
+  std::array<ArmyStrengthScope, 1> scope{{{public_id, game::ArmyStrengthScopeRole::player, {42}}}};
+  std::vector<game::ArmyStrengthSnapshot> rows;
+  auto read = [&]() -> const game::ArmyCountyEntryInputsV1 & {
+    Require(ReadArmyStrengthsForScope(bindings, scope, rows) == game::ReadArmyStrengthsResult::available &&
+            rows[0].available && rows[0].current_soldiers == 900 && rows[0].county_entry_inputs_v1.has_value(),
+            "ordinary strength survives independently unavailable county operands");
+    return *rows[0].county_entry_inputs_v1;
+  };
+  const auto unit_before = unit;
+  const auto army_before = army;
+  const auto actor_before = actor;
+  const auto regiment_before = regiment;
+  auto observed = read();
+  Require(observed.available && observed.current_loss_budget == 137 && observed.whole_soldiers == 900 &&
+          observed.effective_fraction_raw == 5'000 && observed.minimum_multiplier_raw == 100'000 &&
+          observed.loaded_minimum_soldiers == 100 && observed.condition_available && observed.condition_passes &&
+          observed.actor_character_id == actor_id && observed.source_province_id == 1 &&
+          observed.target_province_id == 2 && observed.mode == 1,
+          "current native outputs are preserved rather than recomputing 5% or minimum");
+  Require(unit == unit_before && army == army_before && actor == actor_before && regiment == regiment_before,
+          "production county observer leaves all fake native input bytes unchanged");
+  EmitSupplyCase("county_current_route_first", rows[0]);
+  county_fixture_budget = 0; county_fixture_passes = false; county_fixture_mode = 0;
+  Put(army, 0x1D4, std::uint8_t{9});
+  observed = read();
+  Require(observed.available && observed.current_loss_budget == 0 && observed.condition_available &&
+          !observed.condition_passes && observed.mode == 0, "zero budget and false condition are observed values");
+  EmitSupplyCase("county_zero_false_mode0", rows[0]);
+  const int condition_calls = county_condition_calls;
+  Put(unit, 0x44, std::int32_t{0});
+  observed = read();
+  Require(observed.available && !observed.condition_available && observed.condition_unavailable_reason == "no_stored_route" &&
+          county_condition_calls == condition_calls, "empty route is unknown condition without suppressing budget");
+  EmitSupplyCase("county_no_route", rows[0]);
+  Put(unit, 0x44, std::int32_t{2}); route_ids[1] = 99;
+  observed = read();
+  Require(!observed.condition_available && observed.condition_unavailable_reason == "stored_route_unavailable" &&
+          county_condition_calls == condition_calls, "unresolved later entry prevents publishing a partial route predicate");
+  EmitSupplyCase("county_invalid_complete_route", rows[0]); route_ids[1] = 3;
+  Put(p1, 0x10, std::int32_t{2});
+  observed = read();
+  Require(!observed.condition_available && observed.condition_unavailable_reason == "current_province_unavailable" &&
+          county_condition_calls == condition_calls, "current province must join actual indexed pointer");
+  EmitSupplyCase("county_bad_current_province", rows[0]); Put(p1, 0x10, std::int32_t{1});
+  Put(actor, 0x18, std::int32_t{0x06000001});
+  observed = read();
+  Require(!observed.condition_available && observed.condition_unavailable_reason == "actor_character_unresolved" &&
+          county_condition_calls == condition_calls, "same actor index with stale generation is unknown not fallback");
+  EmitSupplyCase("county_stale_actor", rows[0]); Put(actor, 0x18, actor_id);
+  bindings.county_entry_character_storage_slot = nullptr;
+  observed = read();
+  Require(observed.available && !observed.condition_available && county_condition_calls == condition_calls,
+          "missing actor binding retains current native budget");
+  EmitSupplyCase("county_condition_binding_missing", rows[0]);
+  bindings.county_entry_character_storage_slot = &characters_ptr;
+  county_fixture_wrong_return = true;
+  observed = read();
+  Require(!observed.available && !observed.condition_available && county_condition_calls == condition_calls,
+          "wrong native out pointer makes county subdomain unknown");
+  EmitSupplyCase("county_wrong_return", rows[0]); county_fixture_wrong_return = false;
+  for (const auto budget : {-1, 901}) {
+    county_fixture_budget = budget; observed = read();
+    Require(!observed.available && county_condition_calls == condition_calls,
+            "invalid native integer budget is not silently clamped or applied");
+    EmitSupplyCase(budget < 0 ? "county_negative_budget" : "county_budget_exceeds_strength", rows[0]);
+  }
+  county_fixture_budget = 137;
+  const int before_budget = county_budget_calls, before_fraction = county_fraction_calls;
+  const int before_multiplier = county_multiplier_calls;
+  bindings.get_county_entry_multiplier = nullptr;
+  observed = read();
+  Require(!observed.available && county_budget_calls == before_budget &&
+          county_fraction_calls == before_fraction && county_multiplier_calls == before_multiplier,
+          "missing budget binding prevents partial native getter calls");
+  EmitSupplyCase("county_budget_binding_missing", rows[0]); bindings.get_county_entry_multiplier = CountyMultiplier;
+  Put(army, 0x124, std::int32_t{0x07000001});
+  Require(ReadArmyStrengthsForScope(bindings, scope, rows) == game::ReadArmyStrengthsResult::available &&
+          !rows[0].county_entry_inputs_v1.has_value() && county_budget_calls == before_budget,
+          "CArmy backlink mismatch prevents all county calls");
+  EmitSupplyCase("county_backlink_missing", rows[0]); Put(army, 0x124, public_id);
+  Put(army, 0x10, std::int32_t{0x07000001});
+  Require(ReadArmyStrengthsForScope(bindings, scope, rows) == game::ReadArmyStrengthsResult::partial &&
+          !rows[0].county_entry_inputs_v1.has_value() && county_budget_calls == before_budget,
+          "CArmy full generation mismatch prevents all county calls");
+  EmitSupplyCase("county_native_generation_missing", rows[0]); Put(army, 0x10, native_id);
+  bindings.county_entry_inputs_enabled = false;
+  Require(ReadArmyStrengthsForScope(bindings, scope, rows) == game::ReadArmyStrengthsResult::available &&
+          !rows[0].county_entry_inputs_v1.has_value() && county_budget_calls == before_budget,
+          "older producers omit county block without synthesized values");
+  EmitSupplyCase("county_legacy_omitted", rows[0]);
+  const auto legacy = BindArmyImage(0x140000000, kExecutableSha256);
+  Require(legacy.enabled && !legacy.county_entry_inputs_enabled &&
+          legacy.get_county_entry_loss_budget == nullptr && legacy.county_entry_condition == nullptr,
+          "unchanged exact .2 binder does not install .3 county getters");
+}
+
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--county-entry-fixture") {
+    CountyEntryFixture();
+    return 0;
+  }
   if (argc == 2 && std::string_view(argv[1]) == "--merge-weight-fixture") {
     MergeWeightFixture();
     return 0;
@@ -820,6 +1012,7 @@ int main(int argc, char **argv) {
     return 0;
   }
   if (!Test()) return 1;
+  CountyEntryFixture();
   std::cout << "CK3 1.20.0.2 army offline fixtures passed\n";
   return 0;
 }

@@ -412,6 +412,38 @@ inline void AppendArmyStrengthV1(
     append_number("raid_loss_budget", inputs.raid_loss_budget);
     result += ",\"fraction_scale\":100000,\"soldier_scale\":1}";
   }
+  if (strength.county_entry_inputs_v1.has_value()) {
+    const auto &inputs = *strength.county_entry_inputs_v1;
+    result += ",\"county_entry_inputs_v1\":{\"status\":\"";
+    result += inputs.available ? "available" : "unavailable";
+    result += "\",\"source\":\"native_current_county_entry_inputs\",\"unavailable_reason\":";
+    if (inputs.available) result += "null";
+    else append_json_string(result, inputs.unavailable_reason);
+    const auto append_number = [&](std::string_view key, std::int64_t value,
+                                   bool available) {
+      result += ',';
+      append_json_string(result, key);
+      result += ':';
+      result += available ? number(value) : "null";
+    };
+    append_number("whole_soldiers", inputs.whole_soldiers, inputs.available);
+    append_number("current_loss_budget", inputs.current_loss_budget, inputs.available);
+    append_number("effective_fraction_raw", inputs.effective_fraction_raw, inputs.available);
+    append_number("minimum_multiplier_raw", inputs.minimum_multiplier_raw, inputs.available);
+    append_number("loaded_minimum_soldiers", inputs.loaded_minimum_soldiers, inputs.available);
+    result += ",\"fraction_scale\":100000,\"soldier_scale\":1,\"condition\":{\"status\":\"";
+    result += inputs.condition_available ? "available" : "unavailable";
+    result += "\",\"source\":\"current_stored_route_first_province\",\"unavailable_reason\":";
+    if (inputs.condition_available) result += "null";
+    else append_json_string(result, inputs.condition_unavailable_reason);
+    append_number("actor_character_id", inputs.actor_character_id, inputs.condition_available);
+    append_number("source_province_id", inputs.source_province_id, inputs.condition_available);
+    append_number("target_province_id", inputs.target_province_id, inputs.condition_available);
+    append_number("mode", inputs.mode, inputs.condition_available);
+    result += ",\"passes\":";
+    result += inputs.condition_available ? (inputs.condition_passes ? "true" : "false") : "null";
+    result += "}}";
+  }
   if (strength.army_update_clock_v1.has_value()) {
     const auto &clock = *strength.army_update_clock_v1;
     result += ",\"army_update_clock_v1\":{\"status\":";

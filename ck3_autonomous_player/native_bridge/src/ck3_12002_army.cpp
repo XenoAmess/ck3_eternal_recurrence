@@ -359,6 +359,78 @@ game::ArmyLossApplicationInputsV1 LossApplicationInputs(
   return result;
 }
 
+game::ArmyCountyEntryInputsV1 CountyEntryInputs(
+    const ArmyBindings &bindings, void *army, void *unit,
+    std::int32_t whole_soldiers) {
+  game::ArmyCountyEntryInputsV1 result{};
+  if (bindings.county_entry_minimum_soldiers == nullptr ||
+      bindings.get_county_entry_loss_budget == nullptr ||
+      bindings.get_county_entry_loss_fraction == nullptr ||
+      bindings.get_county_entry_multiplier == nullptr) {
+    result.unavailable_reason = "county_entry_budget_bindings_unavailable";
+    return result;
+  }
+  std::int64_t fraction = 0, multiplier = 0;
+  const auto *fraction_out = bindings.get_county_entry_loss_fraction(army, &fraction);
+  const auto *multiplier_out = bindings.get_county_entry_multiplier(&multiplier, army);
+  const auto budget = bindings.get_county_entry_loss_budget(army, nullptr);
+  if (fraction_out != &fraction || multiplier_out != &multiplier ||
+      budget < 0 || budget > whole_soldiers) {
+    result.unavailable_reason = "county_entry_budget_native_output_invalid";
+    return result;
+  }
+  result.available = true;
+  result.whole_soldiers = whole_soldiers;
+  result.current_loss_budget = budget;
+  result.effective_fraction_raw = fraction;
+  result.minimum_multiplier_raw = multiplier;
+  result.loaded_minimum_soldiers = *bindings.county_entry_minimum_soldiers;
+  result.condition_unavailable_reason = "county_entry_condition_bindings_unavailable";
+  if (bindings.county_entry_condition == nullptr ||
+      bindings.county_entry_character_storage_slot == nullptr) return result;
+  result.condition_unavailable_reason = "county_entry_game_data_unavailable";
+  if (bindings.game_state_slot == nullptr || *bindings.game_state_slot == nullptr)
+    return result;
+  void *game_data = Load<void *>(*bindings.game_state_slot, 0xA0);
+  game::ArmySnapshot route{};
+  Route(game_data, unit, route);
+  if (route.route_read_status != game::ArmyRouteReadStatus::complete_nonempty) {
+    result.condition_unavailable_reason =
+        route.route_read_status == game::ArmyRouteReadStatus::complete_empty
+            ? "no_stored_route" : "stored_route_unavailable";
+    return result;
+  }
+  void *source = Load<void *>(unit, 0x20);
+  result.condition_unavailable_reason = "current_province_unavailable";
+  if (source == nullptr ||
+      Province(game_data, Load<std::int32_t>(source, 0x10)) != source) return result;
+  void *target = Province(game_data, route.route_province_ids.front());
+  result.condition_unavailable_reason = "route_first_province_unavailable";
+  if (target == nullptr) return result;
+  // AEAA20(CArmy+124) is the same full-generation CUnit already resolved here.
+  // Its +174 actor is a CCharacter; unlike CUnit, character FullID is at +18.
+  const auto actor_id = Load<std::int32_t>(unit, 0x174);
+  void *objects = nullptr;
+  std::int32_t capacity = 0;
+  result.condition_unavailable_reason = "actor_character_unresolved";
+  if (actor_id < 0 ||
+      !Storage(bindings.county_entry_character_storage_slot, objects, capacity))
+    return result;
+  const auto index = static_cast<std::uint32_t>(actor_id) & 0xFFFFFF;
+  if (index >= static_cast<std::uint32_t>(capacity)) return result;
+  void *actor = Load<void *>(objects, index * 0x10ULL + 0x08);
+  if (actor == nullptr || Load<std::int32_t>(actor, 0x18) != actor_id) return result;
+  const std::int32_t mode = Load<std::uint8_t>(army, 0x1D4) == 0 ? 1 : 0;
+  result.condition_passes = bindings.county_entry_condition(actor, source, target, mode);
+  result.condition_available = true;
+  result.condition_unavailable_reason.clear();
+  result.actor_character_id = actor_id;
+  result.source_province_id = Load<std::int32_t>(source, 0x10);
+  result.target_province_id = route.route_province_ids.front();
+  result.mode = mode;
+  return result;
+}
+
 game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
                                    const ArmyStrengthScope &scope) {
   game::ArmyStrengthSnapshot result{};
@@ -509,6 +581,10 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
       g_army_strength_query_diagnostic_v1.reader.store("loss_application_inputs_getters");
       result.loss_application_inputs_v1 =
           LossApplicationInputs(bindings, army, native_current);
+    }
+    if (bindings.county_entry_inputs_enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("county_entry_current_inputs_getters");
+      result.county_entry_inputs_v1 = CountyEntryInputs(bindings, army, unit, native_current);
     }
     if (bindings.persistent_regiment_storage_slot != nullptr &&
         bindings.can_regiment_replenish != nullptr &&
