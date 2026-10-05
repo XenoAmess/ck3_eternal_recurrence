@@ -33,8 +33,9 @@
 - [I3b制度与36派文案整合L0](acceptance/2026-10-05-I3b-content-integration-l0/README.md)：实际主树155项产品测试与9条命令通过，保留独立复审、真实校验负例、53项精确应用记录和未验边界。
 - [经疏原典补充](2026-10-05-jingshu-source-supplement.md)：653年明经考试标准与《礼记正义》官藏影像；匿名服制疑案继续保留未考定边界。
 - [R0007 首次正式分裂及闭合 NOT_GREEN](acceptance/2026-10-05-r0007-3bd0ed926/REPORT.md)：正式分裂、取消与签署、显式冷却重置、独立存档保护检查、完整日志及维护失败；消费者与租约实际关闭，完整周期仍待验。
-- [MCP 路径修复](2026-10-05-mcp-path-repair.md)：通用决议映射、角色互动施工、只读压力查询和 tooltip 修正的已实现／待验边界；发送 ACK 与真实结果分别记录。
+- [MCP 路径修复](2026-10-05-mcp-path-repair.md)：通用决议映射、角色互动、正常退出、只读压力查询和 tooltip 修正的已实现／待验边界；发送 ACK 与真实结果分别记录。
 - [MCP 与儒家脚本修复的聚焦 L0](acceptance/2026-10-05-mcp-source-repair-l0/REPORT.md)：201 项回归、生成及静态检查，包含 profile 首轮失败和纠正后的原始回执；尚不代表新 DLL 实机通过。
 - [一般互动 MCP 源码互证](../ck3-native-ai/ordinary-character-interaction-generic-mcp-source-only-2026-10-05.md)：六角色与完整 ID、请求消费防重、独立互证和主树 107 项聚焦检查；旧失败原文永久保全，实机仍待新轮次。
+- [正常退出 MCP 源码互证](../ck3-native-ai/normal-exit-map-generic-mcp-source-only-2026-10-05.md)：地图退出确认、原始进程句柄持续观察、41 项生产测试和实际 21 工具 profile；保留测试适配首轮失败与纠正，最终 DLL 和游戏行为待验。
 
 R0004 证明本版不存在此前候选使用的 `has_same_core_doctrines` 接口。当前改用原版有依据的 `any_doctrine`、`rite_has_doctrine`，比较两个主礼仪的有效 Doctrine 集合；这是本 mod 的保守批准条件，并非已经证明的原生同核心接口。礼仪的核心 Tenet 可不同，实际偏离度和领袖条件继续单独限制。旧报告保持原文；修复后的运行含义仍须新实机证明。

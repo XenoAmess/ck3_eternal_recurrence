@@ -1,0 +1,1719 @@
+{
+  "schema": "normal-exit-map-generic-MCP-permanent-source-report-status-v1",
+  "created_at_utc": "2026-10-05T03:32:01.257580+00:00",
+  "status": "OFFLINE_SOURCE_ONLY",
+  "native_gate": "CLOSED",
+  "immutable_inputs": [
+    {
+      "label": "native009",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009",
+      "INDEX_sha256": "30ea4f0b9d06b0d8953d93c5ef31c73b456d6b68b6a00fb5c25e273a31d3438f",
+      "indexed_payload_count": 5661,
+      "payloads_actually_read_and_archived": 302,
+      "other_payloads": "INDEX SHA/size references only; no full source-tree reread/import"
+    },
+    {
+      "label": "Python010_final002",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010",
+      "INDEX_sha256": "30d659d2a079b4d9f51e9cd285fe5200ab9e767dbca351cf33e31eec24766cb3",
+      "indexed_payload_count": 1989,
+      "payloads_actually_read_and_archived": 253,
+      "other_payloads": "INDEX SHA/size references only; no full source-tree reread/import"
+    },
+    {
+      "label": "composition011",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011",
+      "INDEX_sha256": "dc466741f4480709c2abdf6b1a760787d83eb5702d4f1457be088a87351c8745",
+      "indexed_payload_count": 91,
+      "payloads_actually_read_and_archived": 81,
+      "other_payloads": "INDEX SHA/size references only; no full source-tree reread/import"
+    }
+  ],
+  "ROOT_actual_applies": {
+    "root-exit-native-hunks-integration-20261005-001": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-exit-native-hunks-integration-20261005-001\\APPLIED.json",
+      "bytes": 4828,
+      "sha256": "7c2fc5e570db375afcc97c97a957a490545863135c4de52c3a8db01cbbc2ff9f",
+      "receipt": {
+        "utc": "2026-10-05T03:00:53.007237+00:00",
+        "status": "6_DIRECTED_SHARED_HUNKS_AND_7_NEW_FILES_APPLIED",
+        "targets": [
+          {
+            "target": "CMakeLists.txt",
+            "before_sha256": "d45df228b6b25601c7119a0316c5b651fed0c14ec91a4f23f5b55e0eec264e01",
+            "after_sha256": "2b531faa9d7cfeef92870646fa7e59c96b1ca393c7c24f49a704c1ef1483fcf9",
+            "source": "EXACT_EXIT_ONLY_DIRECTED_HUNKS"
+          },
+          {
+            "target": "include/xar_bridge/frontend_gui_route_v1.hpp",
+            "before_sha256": "2590d206247829f6d7653c05eaf2efd9a594a96e61cd7b6ef3d81c6fb6d514f5",
+            "after_sha256": "9fcc71688cfa39c5f0ef081b2e080b1cac2e5023fc3570904ea84ed18636792c",
+            "source": "EXACT_EXIT_ONLY_DIRECTED_HUNKS"
+          },
+          {
+            "target": "src/frontend_gui_route_v1.cpp",
+            "before_sha256": "d00791a36b4cd3c904220c4fb981eec1dd43cf466ef1fd253a421d47743984d5",
+            "after_sha256": "2fdfc38d1dfc21921d2ff9b5a7a90ed08d60183cf1350a5cfe45bb1ca1f80334",
+            "source": "EXACT_EXIT_ONLY_DIRECTED_HUNKS"
+          },
+          {
+            "target": "src/game_adapter.cpp",
+            "before_sha256": "435ca2dc37d413dc517a61a6ecf7f2703e7c2cc0af7ac236c73dd655a02b95d3",
+            "after_sha256": "060a24d7e92628091dd05e89bcfc44c8b3ef3c46c91b5b6b112218dac0814372",
+            "source": "EXACT_EXIT_ONLY_DIRECTED_HUNKS"
+          },
+          {
+            "target": "src/ck3_12003_adapter.cpp",
+            "before_sha256": "e49b7012c2164d75a45476282dfc5b6daf6cb30b9199a814395912064845ae0b",
+            "after_sha256": "ad3b860f4d6e142e0cd6b6fb54bb5e1d6f001540ef19fb227ce60c2cf9d3beea",
+            "source": "EXACT_EXIT_ONLY_DIRECTED_HUNKS"
+          },
+          {
+            "target": "src/bridge.cpp",
+            "before_sha256": "61b5c2646a5f1eabe90b763d8804efaf00f76be816a1c385278dce98d9fb9536",
+            "after_sha256": "606bfdf47934d1666afcfeee7eb0fd8360f339c9c8fbd6651f2b927aeb4315c5",
+            "source": "EXACT_EXIT_ONLY_DIRECTED_HUNKS"
+          },
+          {
+            "target": "include/xar_bridge/normal_exit_map_v1.hpp",
+            "before_sha256": null,
+            "after_sha256": "48311bca8b448471b7cdf2f3fb43bfdd3eb8c001e50306c539fdb9ce3944ddbe",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\composition-attempt-001\\composed-after\\include\\xar_bridge\\normal_exit_map_v1.hpp"
+          },
+          {
+            "target": "include/xar_bridge/normal_exit_map_source_v1.hpp",
+            "before_sha256": null,
+            "after_sha256": "18ede1286fdb28b7db096a62c31375b0f676905be29f359156b5ce3b7caf806f",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\composition-attempt-001\\composed-after\\include\\xar_bridge\\normal_exit_map_source_v1.hpp"
+          },
+          {
+            "target": "src/normal_exit_map_v1.cpp",
+            "before_sha256": null,
+            "after_sha256": "a7ee905f5c3893b3893a83fe40e768f883139097d5c7f68dc44f5029dad46890",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\composition-attempt-001\\composed-after\\src\\normal_exit_map_v1.cpp"
+          },
+          {
+            "target": "src/normal_exit_map_request_v1.cpp",
+            "before_sha256": null,
+            "after_sha256": "49f5a64c93607055baa91982c2c904d77260ff60e12ab0b747dea13fc4ccbafd",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\composition-attempt-001\\composed-after\\src\\normal_exit_map_request_v1.cpp"
+          },
+          {
+            "target": "src/normal_exit_map_source_v1.cpp",
+            "before_sha256": null,
+            "after_sha256": "6fc8ed1a278ca572cc662389a687b521f6ec9a7981fab9515547f60b758194d5",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\composition-attempt-001\\composed-after\\src\\normal_exit_map_source_v1.cpp"
+          },
+          {
+            "target": "src/normal_exit_map_pins_v1.inc",
+            "before_sha256": null,
+            "after_sha256": "6f286b24df3cc8b01a87443ee536c7c03f89390c5b600f34ec17fc18ff565076",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\composition-attempt-001\\composed-after\\src\\normal_exit_map_pins_v1.inc"
+          },
+          {
+            "target": "tests/normal_exit_map_contract_test.cpp",
+            "before_sha256": null,
+            "after_sha256": "190fcf081d700de5b8fdbdb10bd1c4cd942b5a645d17ebcdd8cee059640d0b28",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\composition-attempt-001\\composed-after\\tests\\normal_exit_map_contract_test.cpp"
+          }
+        ],
+        "new_game_calls": 0,
+        "whole_shared_after_overwrites": 0,
+        "runtime": "NOT_RUN"
+      }
+    },
+    "root-exit-python-hunks-integration-20261005-001": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-exit-python-hunks-integration-20261005-001\\APPLIED.json",
+      "bytes": 5527,
+      "sha256": "de9265d6d57851f24a1923ce96d3dde6d8db0525a8fcfc09934f8154e9979a64",
+      "receipt": {
+        "utc": "2026-10-05T03:16:05.762574+00:00",
+        "status": "5_DIRECTED_SHARED_HUNKS_AND_6_NEW_FILES_APPLIED",
+        "targets": [
+          {
+            "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+            "before_sha256": "a395ae235c403287cf75ab3e7d8c062f2d896480de5d997b8a5f1fb383f5bb9c",
+            "after_sha256": "3b2de674b53b4c97f23881e6de6ca890261899d8822cf01cfe038407861f6e8b",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\python-composition-attempt-003\\directed-diff\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py.diff"
+          },
+          {
+            "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+            "before_sha256": "d31d5a6a2ced6c49aa311d818164b565787912a459cf0bdc8f894e2badc82f4f",
+            "after_sha256": "9c61a207e3c3c21370f8e453f09def3a0af0cfaab06952b3059bcbe04eb7fe55",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\python-composition-attempt-003\\directed-diff\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py.diff"
+          },
+          {
+            "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/mcp_server.py",
+            "before_sha256": "fc88fc0aee9e783a548225405ce5d101a3470e1d486d6efef65359790c7c19df",
+            "after_sha256": "b4504697bd2d784928bb818b8883a5e491a43f7e5a49801e026a9e0cfd5e23f2",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\python-composition-attempt-003\\directed-diff\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\mcp_server.py.diff"
+          },
+          {
+            "target": "tools/ck3_native_profile_mcp.py",
+            "before_sha256": "bf6c3dde1468f7020d8816d57cc8af9f902473df4d2cdf518620160a96bb7ee7",
+            "after_sha256": "fe3728f1b97ed3485979ca3fdd32c62790290afd301187cc383de63470e8b7a5",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\python-composition-attempt-003\\directed-diff\\tools\\ck3_native_profile_mcp.py.diff"
+          },
+          {
+            "target": "tools/test_ck3_native_profile_mcp.py",
+            "before_sha256": "e5c94e0c99aa0ea469cf487df8375531121ef769501a28627eaad2b9a1e142eb",
+            "after_sha256": "7804781fd7b9e56cb1dcaf90cf197c26d4ad2b3eb4fe2fd2d21f08cc4c8ef925",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\python-composition-attempt-003\\directed-diff\\tools\\test_ck3_native_profile_mcp.py.diff"
+          },
+          {
+            "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_contract_v1.py",
+            "before_sha256": null,
+            "after_sha256": "a09062dfc1b78e3ad12bd787caffac9e0c86c493fef53e0872680e50f0bcec8c",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\review-package-002\\after\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_contract_v1.py"
+          },
+          {
+            "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_map_driver_v1.py",
+            "before_sha256": null,
+            "after_sha256": "6e1d6da7c0e1d315bd84027c2e98ad139d6ca9e3ed5589d771a3ec75c8606ec0",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\review-package-002\\after\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_map_driver_v1.py"
+          },
+          {
+            "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_process_observer_v1.py",
+            "before_sha256": null,
+            "after_sha256": "ed6e041ed0555807cd7956cb73c0d978a5b39945a9b69beb6a9724796bd8dd70",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\review-package-002\\after\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_process_observer_v1.py"
+          },
+          {
+            "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_source_inventory_v1.py",
+            "before_sha256": null,
+            "after_sha256": "3ef26629e78cde28bb0affcc9f807a0a16b3db4ac41d8c1fa7f198f44727ada2",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\review-package-002\\after\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_source_inventory_v1.py"
+          },
+          {
+            "target": "ck3_autonomous_player/src/xar_autoplayer/bridge/normal_exit_pending_observer_v1.py",
+            "before_sha256": null,
+            "after_sha256": "630ab09bd15ac6558b878332de0956579e8231f1178484731b185794a1b03996",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\review-package-002\\after\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_pending_observer_v1.py"
+          },
+          {
+            "target": "tools/build_normal_exit_source_inventory_v1.py",
+            "before_sha256": null,
+            "after_sha256": "4c9cd8f950fc0b961816ab99a55fa020931e0bb27f5fb4979ba844d917e8a260",
+            "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\review-package-002\\after\\tools\\build_normal_exit_source_inventory_v1.py"
+          }
+        ],
+        "whole_shared_after_overwrites": 0,
+        "runtime": "NOT_RUN"
+      }
+    }
+  },
+  "ROOT_actual_combined_checks": {
+    "ordinary": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-normal-exit-combined-checks-20261005-001\\ordinary",
+      "actual_unittest_count": 24,
+      "RESULT_sha256": "21d0aff557fdbcae06c70f9040820da7ccffcc35034b1877880d83c90f86a9f7",
+      "INPUTS_sha256": "10b2163b552306141ba05c0b71ee2508aa6f8603a4a4ab2c8585149b08d62d9c",
+      "result": {
+        "utc": "2026-10-05T03:17:52.013883+00:00",
+        "case": "ordinary",
+        "status": "PASS",
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "3a83287551a9e33fbe6dcceffb38ec8833330b5965659a6b78370e543a8aa5af"
+      }
+    },
+    "host": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-normal-exit-combined-checks-20261005-001\\host",
+      "actual_unittest_count": 13,
+      "RESULT_sha256": "43d431fb976f0f71653ec4069e33445f8563447f713fd9212ee431d5e50008a7",
+      "INPUTS_sha256": "934a0fa7b15c8fb80ff2121b4cb6f19286384c22812adc95ec924e9f5efb379f",
+      "result": {
+        "utc": "2026-10-05T03:17:52.306695+00:00",
+        "case": "host",
+        "status": "PASS",
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "b9e01130bab7973cb05d53f8eec26375eb007d5928a4803df7d61ed21df5cd83"
+      }
+    },
+    "stress": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-normal-exit-combined-checks-20261005-001\\stress",
+      "actual_unittest_count": 23,
+      "RESULT_sha256": "895f43c83df8bc97b7406eab10c7ec02c7d2221c84838403fd1bd11b7135e861",
+      "INPUTS_sha256": "ec54e86782177588bf8cff91381f890244479bb2ae9d9ecd5190d02cd8d307e6",
+      "result": {
+        "utc": "2026-10-05T03:17:53.635299+00:00",
+        "case": "stress",
+        "status": "PASS",
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "8a70760c509b57ee8a3255345a63dbe292bae886f8e1494e7ce83c9ec1b01e10"
+      }
+    },
+    "outcomes": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-normal-exit-combined-checks-20261005-001\\outcomes",
+      "actual_unittest_count": 29,
+      "RESULT_sha256": "b8e8b9ca77271c11bdaf1f0d850c93a16bc50bd51f62c8a209ad765a882e1a53",
+      "INPUTS_sha256": "3f479b71b4a841ed757df5774e542c489714793402db6bfff522f8ce63c5adbd",
+      "result": {
+        "utc": "2026-10-05T03:17:54.680158+00:00",
+        "case": "outcomes",
+        "status": "PASS",
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "a3d7575df0a3e0cf06e5cfd41c9db0b5d50dc56c839f4c022a641a3937535e3e"
+      }
+    },
+    "profile": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-normal-exit-combined-checks-20261005-001\\profile",
+      "actual_unittest_count": 18,
+      "RESULT_sha256": "530f232b46f49a385742946647af6301028ba312c7f98adb8be1e0ce4505640b",
+      "INPUTS_sha256": "9857848ff0f22d7b674d3c881e8c164c6c43943fe8b602a4871fc26fa1d6b17b",
+      "result": {
+        "utc": "2026-10-05T03:17:53.981072+00:00",
+        "case": "profile",
+        "status": "PASS",
+        "exit_code": 0,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "0f6923eaffd20219c391f76363e0dd99f8ef2e9a8ca7ec3dc34fe9107ec82295"
+      }
+    }
+  },
+  "ROOT_combined_focused_count": 107,
+  "ROOT_main_rebound_60_and_combined_actual_SDK": {
+    "status": "PASS",
+    "main_production": 41,
+    "external_legacy": 19,
+    "same60_not_additional": true,
+    "mock_only": true,
+    "broad": 165,
+    "profile": 21
+  },
+  "ROOT_new_production_unit_tests": {
+    "status": "APPLIED_AND_41_PASS",
+    "files": 3,
+    "initial_errors": 17,
+    "original_failure_preserved": true,
+    "legacy19_not_imported": true
+  },
+  "author_receipt_facts": {
+    "native_author_REPORT": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\REPORT.json",
+      "bytes": 8499,
+      "sha256": "227cbf87d181fd20e67b1d3efb9027ef63816fc3ae2466c25c01d3bdb4f0a4d8",
+      "receipt": {
+        "schema": "ck3-normal-exit-map-source-review-v1",
+        "status": "SOURCE_AND_OFFLINE_BUILD_REVIEW_READY",
+        "native_game_validation": "NOT_RUN",
+        "default_feature": "OFF",
+        "frontend_revision_zero": "UNSUPPORTED",
+        "baseline": {
+          "actual_freeze": "C:/lmb1/source",
+          "head": "3bd0ed926fef86f2660f2ed80c231dd9682ee877",
+          "dirty": true,
+          "selected_source_files": 4838,
+          "index_sha256": "c4825242f7cd868debfb2dab3714d28193347f9a3bef89652628e3e31837532b",
+          "source_manifest_sha256": "768311ce4a0095120ba47c1178cbae63d8fa5aeac9d0283b54abb7113baf283e",
+          "bindings_sha256": "732454bb683f059de5632fb65464977920d2ab468091a426ff4df23d4f3a7218"
+        },
+        "integration": {
+          "shared_hunks": 6,
+          "new_dedicated_files": 7,
+          "source_slice_index": {
+            "path": "native-source-slice-001/INDEX.json",
+            "bytes": 6473,
+            "sha256": "38b817da97321d1051d31634685e364eebf25780b238a9b74f0ffe6a6e5b70e3"
+          },
+          "delta": {
+            "path": "native-source-slice-001/DELTA.json",
+            "bytes": 6118,
+            "sha256": "737e8bb24b1db8ebab2624c4f44c3b4070e5adb25d2cfc5876e711afb55693b9"
+          },
+          "apply_rule": "Use directed shared hunks only; root composes ordinary native 18 independently. Never overwrite newer shared files with these after copies.",
+          "ordinary_native_18_in_this_dll": false,
+          "same_execution_boundary_changed": false,
+          "owner_executor_and_tls": "Existing exact frontend owner executor and paused owner stamp retained."
+        },
+        "wire": {
+          "capability": "normal-exit-map-v1",
+          "step": "normal-exit-map-v1",
+          "actions": [
+            "query_context",
+            "prepare_confirmation",
+            "confirm_desktop"
+          ],
+          "query_keys": 12,
+          "mutation_keys": 13,
+          "player_character_id_domain": "1..INT32_MAX, matching actual game::Snapshot signed int32_t field",
+          "filetime_domain": "Positive exact uint64 FILETIME in 100 ns units; float timestamps are not accepted.",
+          "inventory_sha256_field": "source_inventory_sha256; no expected_profile_binding_sha256 wire key.",
+          "framing": "Actual endpoint 4-byte little-endian length prefix followed by compact UTF-8 JSON payload, no newline.",
+          "mutation_signature": "Fresh backend verified query signature echoed before it is consumed."
+        },
+        "fixed_stock_targets": [
+          {
+            "root": "timeline_widget",
+            "leaf": "pause_menu_button",
+            "purpose": "Open stock PauseMenu from the normally visible paused map."
+          },
+          {
+            "root": "ingame_pausemenu",
+            "leaf": "exit_button",
+            "purpose": "Open official resign confirmation and require actual fresh modal readback."
+          },
+          {
+            "root": "ingame_resign_confirmation",
+            "leaf": "descktop_button",
+            "purpose": "Dispatch stock desktop confirmation with its existing autosave checkbox default untouched."
+          }
+        ],
+        "claim_and_result_contract": {
+          "claim_owner": "Bridge retained Session with independent atomic consumed claim for each fixed internal dispatch stage.",
+          "claim_lifetime": "No query, native revision, connection generation or reconnect clears a consumed stage.",
+          "native_false": "A false native_handled remains unknown claimed even if the callback may have run.",
+          "post_teardown": "Missing post-frame or enclosing mailbox drift remains unknown claimed; never a successful exit claim.",
+          "orderly_exit_verified": false,
+          "autosave_verified": false,
+          "final_exit_owner": "Separate retained-process observer. Native ACK pending/unknown does not replace final process facts.",
+          "confirm_bridge_completion_snapshot": "Confirm branch does not read the dead process snapshot; the existing owner mailbox stamp rule is unchanged."
+        },
+        "source_binding": {
+          "stock_contract": {
+            "path": "STOCK-SOURCE-CONTRACT.json",
+            "bytes": 4119,
+            "sha256": "14a8cb28217b68aab7245665083f3c0fceb1a4583566ef63d31157867f9fdfe3"
+          },
+          "inventory_file": "Actual unique launch -userdir absolute path / normal-exit-source-inventory-v1.json",
+          "private_v1_limit": "Strict zero enabled-mod GUI and GUI-affecting replace_path / archive mount rejection.",
+          "inventory_missing_behavior": "Typed unavailable; no hardcoded true proof.",
+          "physical_verification": "Actual manifest SHA, launch userdir, pdx_settings.txt, dlc_load.json, enabled mod descriptor order, all mod file SHA and exact file census, six exact stock GUI SHA, and final source-manifest/config readback.",
+          "profile_binding": "Python verifies canonical hostprofile projection excluding the inventory reference; native verifies static source bytes independently and runtime PID/FILETIME/current generation separately.",
+          "executable_admission": "Existing exact .3 descriptor/hash admission plus exact loaded GUI pins retained; inventory executable SHA is matched to that exact descriptor and current module path.",
+          "future_r8_runtime_values": "Absent; no R7 PID, generation, UI or maintenance facts reused."
+        },
+        "verification": {
+          "strict_objects": "Build003 all three source units default OFF and enabled /std:c++20 /W4 /WX PASS; Build004 final provider both modes PASS.",
+          "full_dll": "Build002 complete 367-step CMake DLL PASS; Build003 stock manifest schema rebuild PASS; Build004 backend signature echo rebuild PASS.",
+          "final_dll": {
+            "path": "source/_exit_build_004/final-composed-candidate.dll",
+            "bytes": 5396480,
+            "sha256": "8b761c09ec2f4cb416508cf1c423902f659dfbbc34a281870271a8d8feefcb42"
+          },
+          "final_build_receipts": {
+            "path": "source/_exit_build_004/RECEIPTS.json",
+            "bytes": 1900,
+            "sha256": "3f6f19120cc2c8e3ba0f625cab0c2e8194caf15bbd4f26a9e27f708e5f771fc0"
+          },
+          "final_build_source_inputs": {
+            "path": "source/_exit_build_004/SOURCE-INPUTS.json",
+            "bytes": 2353,
+            "sha256": "989989593856fc8380bf43ffd7f73363adcc81be3114ac27fceb074faa51ccf6"
+          },
+          "parser_harness": {
+            "path": "source/_exit_build_003/normal_exit_map_contract_test.exe",
+            "bytes": 492032,
+            "sha256": "e96e7c1373ecc73b6bbd8236e9c4c7fbd2520796207ffab2441f1bc18c4a59fd"
+          },
+          "parser_harness_attestation": {
+            "path": "source/_exit_build_003/EXE-SOURCE-ATTESTATION.json",
+            "bytes": 573,
+            "sha256": "5b1eaa227c34bc8fb5e6b6d5cd7ac8fe7071dc9c921225163db09e8514670fb5"
+          },
+          "actual_final_encoder_parser_interop": {
+            "path": "actual-production-parser-interop-004/REPORT.json",
+            "bytes": 22210,
+            "sha256": "4904c8502bf8eddea50c09d8923246fdce71ccabff013255b3e3b3446194b9f5"
+          },
+          "encoder_source_sha256": "a09062dfc1b78e3ad12bd787caffac9e0c86c493fef53e0872680e50f0bcec8c",
+          "cases": {
+            "valid": 4,
+            "rejected": 13,
+            "rejected_output_unchanged": true
+          },
+          "self_test": "Actual serializer forces exit/save facts false, independent retained header claims stay consumed, SHA256 known answer passes, missing/unsupported launch source guard rejects.",
+          "limitation": "Owner callback, map menu transition, confirmation transition and natural desktop exit were not exercised in a game or by a synthetic execution-memory fixture. Compile and parser tests do not prove these runtime behaviors."
+        },
+        "preserved_failures": [
+          {
+            "phase": "Initial baseline clone",
+            "fact": "Initial copy hit Windows long-path limitations; failed script preserved. A separate clone v2 used extended paths and verified all 4838 selected source SHA."
+          },
+          {
+            "phase": "Build001",
+            "fact": "Cached build PATH did not resolve the selected tools; environment failure receipt preserved before any compile. Build002 used verified absolute VS tool paths."
+          },
+          {
+            "phase": "Build002 source schema",
+            "fact": "Superseded stock record relative_path schema preserved with compiled input bytes and DLL; Build003 corrected to actual absolute {path,bytes,sha256} stock records."
+          },
+          {
+            "phase": "Defender registration",
+            "fact": "Root reported disabled/stopped WinDefend and COM Add 0x80041001; permanent exact EXE source/path registration remains environment RED. Root explicitly authorized offline fixtures without a successful registration prerequisite."
+          }
+        ],
+        "side_effects": {
+          "main_writes": 0,
+          "git_calls": 0,
+          "game_calls": 0,
+          "pipe_calls": 0,
+          "lease_calls": 0,
+          "ui_calls": 0,
+          "inject_or_attach_calls": 0,
+          "platform_policy_changes": 0
+        }
+      }
+    },
+    "Python_final_METADATA": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\review-package-002\\FINAL-METADATA.json",
+      "bytes": 1711,
+      "sha256": "229feaec9006f840215ad02ced6f9ccc5e4c041067e1503739e1bd589de1fb43",
+      "receipt": {
+        "schema": "ck3-normal-exit-python-final-metadata-v1",
+        "new_broad_tools": [
+          "ck3_query_normal_exit_context_v1",
+          "ck3_request_normal_exit_v1",
+          "ck3_observe_normal_exit_v1"
+        ],
+        "new_profile_tools": [
+          "ck3_query_normal_exit_context_v1",
+          "ck3_request_normal_exit_v1",
+          "ck3_observe_profile_normal_exit_v1"
+        ],
+        "existing_tool_schemas_changed": false,
+        "native_wire_keys": {
+          "query": 12,
+          "mutation": 13
+        },
+        "actual_sdk_schema_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\sdk-schema-005\\RECEIPT.json",
+        "actual_sdk_schema_receipt_sha256": "0e7a9c07e714c455236cc40646180609a887b9a23da429090948d2eff2622fd1",
+        "observed_exit_only_baseline_counts": {
+          "broad": 162,
+          "profile": 19
+        },
+        "focused_tests_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\focused-tests-005\\RECEIPT.json",
+        "focused_tests_receipt_sha256": "6876386d92d52b491ab304b2a80e457f7d78d75e65308b392747ca87f14baaae",
+        "focused_tests": 60,
+        "existing_profile_regression_tests": 18,
+        "actual_encoder_inputs": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\actual-encoder-interop-004\\INPUTS.json",
+        "actual_encoder_inputs_sha256": "2122679d51e1554d024d40a83f132fbad3baebc3b4640ddbc41b61b70b14a0ae",
+        "production_contract_sha256": "a09062dfc1b78e3ad12bd787caffac9e0c86c493fef53e0872680e50f0bcec8c",
+        "inventory_module_sha256": "3ef26629e78cde28bb0affcc9f807a0a16b3db4ac41d8c1fa7f198f44727ada2",
+        "runtime": "NOT_RUN",
+        "actual_runtime_calls": 0
+      }
+    },
+    "Python_focused_tests": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\focused-tests-005\\RECEIPT.json",
+      "bytes": 6434,
+      "sha256": "6876386d92d52b491ab304b2a80e457f7d78d75e65308b392747ca87f14baaae",
+      "receipt": {
+        "commands": [
+          {
+            "label": "focused",
+            "argv": [
+              "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_normal_exit_process_readback_v2",
+              "test_normal_exit_process_observer_v1",
+              "test_normal_exit_contract_v1",
+              "test_normal_exit_integrated_v1"
+            ],
+            "exit_code": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "959a7b3b060e213087114e2466ae2875d5e86c71e5e973e75d8275b2f3de2e61"
+          },
+          {
+            "label": "profile-regression",
+            "argv": [
+              "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+              "-B",
+              "-m",
+              "unittest",
+              "-v",
+              "test_ck3_native_profile_mcp"
+            ],
+            "exit_code": 0,
+            "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "stderr_sha256": "6a4d97243a15ba902240d43bba306e8995e206cdf71b85328f5785e129d6482e"
+          }
+        ],
+        "inputs": [
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\build_normal_exit_source_inventory_v1.py",
+            "bytes": 4621,
+            "sha256": "4c9cd8f950fc0b961816ab99a55fa020931e0bb27f5fb4979ba844d917e8a260"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\normal_exit_contract_v1.py",
+            "bytes": 20244,
+            "sha256": "a09062dfc1b78e3ad12bd787caffac9e0c86c493fef53e0872680e50f0bcec8c"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\normal_exit_map_driver_v1.py",
+            "bytes": 13230,
+            "sha256": "6e1d6da7c0e1d315bd84027c2e98ad139d6ca9e3ed5589d771a3ec75c8606ec0"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\normal_exit_pending_observer_v1.py",
+            "bytes": 6415,
+            "sha256": "630ab09bd15ac6558b878332de0956579e8231f1178484731b185794a1b03996"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\normal_exit_process_observer_v1.py",
+            "bytes": 10155,
+            "sha256": "ed6e041ed0555807cd7956cb73c0d978a5b39945a9b69beb6a9724796bd8dd70"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\normal_exit_process_readback_v2.py",
+            "bytes": 6321,
+            "sha256": "2e4777a505bb9ec4b5e08bc9a6628f607968162c980e6d4bda180264f92330cc"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\normal_exit_source_inventory_v1.py",
+            "bytes": 9114,
+            "sha256": "3ef26629e78cde28bb0affcc9f807a0a16b3db4ac41d8c1fa7f198f44727ada2"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\test_normal_exit_contract_v1.py",
+            "bytes": 3551,
+            "sha256": "bf99c9f39137f3a45ef99e82e83f2833eedd3cacb2969c69f6d239870b212166"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\test_normal_exit_integrated_v1.py",
+            "bytes": 28537,
+            "sha256": "159d184e4ff25b519ce0372405060546d7ee6c4c8630029855369a2b76ba6380"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\test_normal_exit_process_observer_v1.py",
+            "bytes": 5704,
+            "sha256": "cf0da8107456f9c8549b38a275f681808d8f61c85b28846a4299bc84d453dee1"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\test_normal_exit_process_readback_v2.py",
+            "bytes": 6766,
+            "sha256": "22408445f1e0d02bbf2407b2806465cd51c50b691ad7579b31b2c5b996b181eb"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_contract_v1.py",
+            "bytes": 20244,
+            "sha256": "a09062dfc1b78e3ad12bd787caffac9e0c86c493fef53e0872680e50f0bcec8c"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_map_driver_v1.py",
+            "bytes": 13230,
+            "sha256": "6e1d6da7c0e1d315bd84027c2e98ad139d6ca9e3ed5589d771a3ec75c8606ec0"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_pending_observer_v1.py",
+            "bytes": 6415,
+            "sha256": "630ab09bd15ac6558b878332de0956579e8231f1178484731b185794a1b03996"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_process_observer_v1.py",
+            "bytes": 10155,
+            "sha256": "ed6e041ed0555807cd7956cb73c0d978a5b39945a9b69beb6a9724796bd8dd70"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_process_readback_v2.py",
+            "bytes": 6321,
+            "sha256": "2e4777a505bb9ec4b5e08bc9a6628f607968162c980e6d4bda180264f92330cc"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_source_inventory_v1.py",
+            "bytes": 9114,
+            "sha256": "3ef26629e78cde28bb0affcc9f807a0a16b3db4ac41d8c1fa7f198f44727ada2"
+          }
+        ],
+        "actual_game_calls": 0,
+        "actual_pipe_calls": 0,
+        "actual_process_calls": 0,
+        "mock_only": true
+      }
+    },
+    "Python_SDK_schema": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\sdk-schema-005\\RECEIPT.json",
+      "bytes": 10547,
+      "sha256": "0e7a9c07e714c455236cc40646180609a887b9a23da429090948d2eff2622fd1",
+      "receipt": {
+        "interpreter": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "python_version": "3.13.15 (tags/v3.13.15:4061bc4, Aug  5 2026, 13:05:39) [MSC v.1944 64 bit (AMD64)]",
+        "mcp_version": "2.0.0",
+        "pydantic_version": "2.13.5",
+        "actual_runtime_calls": 0,
+        "sdk": {
+          "tool_count": 162,
+          "full_serialized_schema_sha256": "ad4a9d472e7eb6a629b2733f650619ef9c2679823942231c0f6433de1abe476d",
+          "invalid_inputs": [
+            {
+              "tool": "ck3_query_normal_exit_context_v1",
+              "arguments": {
+                "expected_revision": null
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_query_normal_exit_context_v1",
+              "arguments": {
+                "expected_revision": true
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_query_normal_exit_context_v1",
+              "arguments": {
+                "expected_revision": 0
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_query_normal_exit_context_v1",
+              "arguments": {
+                "expected_revision": 1.0
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_query_normal_exit_context_v1",
+              "arguments": {
+                "expected_revision": 1,
+                "pid": 43
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": 1,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "skip_save": true
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "frontend_quit",
+                "expected_revision": 1,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": null,
+                "expected_revision": 1,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": true,
+                "expected_revision": 1,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": null,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": true,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": 0,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": 1,
+                "expected_exit_context_signature": null
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": 1,
+                "expected_exit_context_signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": 1,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_observe_normal_exit_v1",
+              "arguments": {
+                "pid": 43
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_observe_normal_exit_v1",
+              "arguments": {
+                "handle": 77
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_observe_normal_exit_v1",
+              "arguments": {
+                "expected_revision": 72
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_observe_normal_exit_v1",
+              "arguments": {
+                "override": null
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_observe_normal_exit_v1",
+              "arguments": {
+                "skip_save": true
+              },
+              "is_error": true
+            }
+          ],
+          "business_callbacks": 0
+        },
+        "profile": {
+          "tool_count": 19,
+          "full_serialized_schema_sha256": "a135c08ab0c7ceb9c161e3ddf139aa16872b972f088c4698290bc74dc9c929b2",
+          "invalid_inputs": [
+            {
+              "tool": "ck3_query_normal_exit_context_v1",
+              "arguments": {
+                "expected_revision": null
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_query_normal_exit_context_v1",
+              "arguments": {
+                "expected_revision": true
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_query_normal_exit_context_v1",
+              "arguments": {
+                "expected_revision": 0
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_query_normal_exit_context_v1",
+              "arguments": {
+                "expected_revision": 1.0
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_query_normal_exit_context_v1",
+              "arguments": {
+                "expected_revision": 1,
+                "pid": 43
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": 1,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+                "skip_save": true
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "frontend_quit",
+                "expected_revision": 1,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": null,
+                "expected_revision": 1,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": true,
+                "expected_revision": 1,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": null,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": true,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": 0,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": 1,
+                "expected_exit_context_signature": null
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": 1,
+                "expected_exit_context_signature": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_request_normal_exit_v1",
+              "arguments": {
+                "action": "confirm_desktop",
+                "expected_revision": 1,
+                "expected_exit_context_signature": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_observe_profile_normal_exit_v1",
+              "arguments": {
+                "pid": 43
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_observe_profile_normal_exit_v1",
+              "arguments": {
+                "handle": 77
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_observe_profile_normal_exit_v1",
+              "arguments": {
+                "expected_revision": 72
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_observe_profile_normal_exit_v1",
+              "arguments": {
+                "override": null
+              },
+              "is_error": true
+            },
+            {
+              "tool": "ck3_observe_profile_normal_exit_v1",
+              "arguments": {
+                "skip_save": true
+              },
+              "is_error": true
+            }
+          ],
+          "business_callbacks": 0
+        },
+        "source_binding": {
+          "files": 556,
+          "before_after_exact": true,
+          "before_manifest_sha256": "0618483d6b6027860d191db3a9fbef0e8f951e343cfd44107dba479b5858ecac",
+          "after_manifest_sha256": "0618483d6b6027860d191db3a9fbef0e8f951e343cfd44107dba479b5858ecac"
+        }
+      }
+    },
+    "final_production_encoder_native_parser_interop": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\REPORT.json",
+      "bytes": 22210,
+      "sha256": "4904c8502bf8eddea50c09d8923246fdce71ccabff013255b3e3b3446194b9f5",
+      "receipt": {
+        "schema": "ck3-normal-exit-production-parser-interop-v1",
+        "status": "PASS",
+        "inputs_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\actual-encoder-interop-004\\INPUTS.json",
+        "inputs_sha256": "2122679d51e1554d024d40a83f132fbad3baebc3b4640ddbc41b61b70b14a0ae",
+        "production_contract_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-python-010\\candidate\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\normal_exit_contract_v1.py",
+        "production_contract_sha256": "a09062dfc1b78e3ad12bd787caffac9e0c86c493fef53e0872680e50f0bcec8c",
+        "production_contract_bytes_preserved": true,
+        "native_exe": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+        "native_exe_sha256": "e96e7c1373ecc73b6bbd8236e9c4c7fbd2520796207ffab2441f1bc18c4a59fd",
+        "native_source_inputs": "../source/_exit_build_003/SOURCE-INPUTS.json",
+        "native_source_attestation": "../source/_exit_build_003/EXE-SOURCE-ATTESTATION.json",
+        "records": [
+          {
+            "name": "self-test",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--self-test"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.014559300034306943,
+            "readback": {
+              "self_test": true,
+              "facts_never_forged": true,
+              "claims_survive_query": true,
+              "stock_source_missing_rejected": true
+            }
+          },
+          {
+            "name": "query-min",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\query-min.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.011837200028821826,
+            "readback": {
+              "accepted": true,
+              "rejected_output_unchanged": false,
+              "reason": "",
+              "action": "query_context",
+              "expected_revision": 1,
+              "expected_player_character_id": 1,
+              "expected_game_pid": 1,
+              "expected_connection_generation": 1,
+              "expected_process_creation_filetime_100ns": 1
+            },
+            "payload_sha256": "6da66fa7a934fbf8b462b378925b2220cf45c571e61f261d90f06f32b6846749",
+            "packet_sha256": "3b8b742c3b52ee03259392a3edb80a587398d96e938b539fba54a3639969e7c9",
+            "expected_acceptance": true
+          },
+          {
+            "name": "query-max",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\query-max.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010961799998767674,
+            "readback": {
+              "accepted": true,
+              "rejected_output_unchanged": false,
+              "reason": "",
+              "action": "query_context",
+              "expected_revision": 18446744073709551615,
+              "expected_player_character_id": 2147483647,
+              "expected_game_pid": 4294967295,
+              "expected_connection_generation": 18446744073709551615,
+              "expected_process_creation_filetime_100ns": 18446744073709551615
+            },
+            "payload_sha256": "7dc9dbab8307d05276d095709cbb9af97c951d8797a5d2b35627f8b61b4e0e3b",
+            "packet_sha256": "33c5c16340656be2f0224a5469859785148f92514407edc4e67f3a02eb00a6bd",
+            "expected_acceptance": true
+          },
+          {
+            "name": "prepare",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\prepare.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010546699981205165,
+            "readback": {
+              "accepted": true,
+              "rejected_output_unchanged": false,
+              "reason": "",
+              "action": "prepare_confirmation",
+              "expected_revision": 72,
+              "expected_player_character_id": 9301,
+              "expected_game_pid": 43,
+              "expected_connection_generation": 8,
+              "expected_process_creation_filetime_100ns": 133000000000000043
+            },
+            "payload_sha256": "71b6c5f75e29bd7732b4035e461aae2c0c0c5c6e0b061e5b7fc218a580a53d70",
+            "packet_sha256": "285c02ef330aa99d14ba5da0f0b25ca2866334ac7a3acfc9c88ba69dec169031",
+            "expected_acceptance": true
+          },
+          {
+            "name": "confirm",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\confirm.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010733500006608665,
+            "readback": {
+              "accepted": true,
+              "rejected_output_unchanged": false,
+              "reason": "",
+              "action": "confirm_desktop",
+              "expected_revision": 72,
+              "expected_player_character_id": 9301,
+              "expected_game_pid": 43,
+              "expected_connection_generation": 8,
+              "expected_process_creation_filetime_100ns": 133000000000000043
+            },
+            "payload_sha256": "af0e10f71a10102e12868099df3b29fa02495352776ed46fe61df50a6181d11e",
+            "packet_sha256": "f3ca7e57d8b67ff7d13a7a34ae8da9e0696ac24a10380ea2f4936156f2d0326a",
+            "expected_acceptance": true
+          },
+          {
+            "name": "bad-extra",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\bad-extra.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010840900009498,
+            "readback": {
+              "accepted": false,
+              "rejected_output_unchanged": true,
+              "reason": "malformed_closed_exit_request",
+              "action": "confirm_desktop",
+              "expected_revision": 71,
+              "expected_player_character_id": 72,
+              "expected_game_pid": 73,
+              "expected_connection_generation": 74,
+              "expected_process_creation_filetime_100ns": 75
+            },
+            "payload_sha256": "d6c456e1580c4c621b02ea6770ef6cca56cdc130cfe6736dd1aac0764cc28b4a",
+            "packet_sha256": "a92db5188cfa3874f7c31146ae616c282ba3c4db5b38026340558cc509fdaae9",
+            "expected_acceptance": false
+          },
+          {
+            "name": "bad-frontend",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\bad-frontend.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.011511699995025992,
+            "readback": {
+              "accepted": false,
+              "rejected_output_unchanged": true,
+              "reason": "unsupported_exit_action_frontend_unavailable",
+              "action": "confirm_desktop",
+              "expected_revision": 71,
+              "expected_player_character_id": 72,
+              "expected_game_pid": 73,
+              "expected_connection_generation": 74,
+              "expected_process_creation_filetime_100ns": 75
+            },
+            "payload_sha256": "7e7d157ea06e3ebab09617879b3448caac6ade4203541b67bd5472d02aef9c86",
+            "packet_sha256": "5baded3782370930dae227f7821ba24e1ba499203378dc1ba628aa0be937d0ca",
+            "expected_acceptance": false
+          },
+          {
+            "name": "bad-zero-revision",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\bad-zero-revision.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010648999945260584,
+            "readback": {
+              "accepted": false,
+              "rejected_output_unchanged": true,
+              "reason": "exit_request_binding_missing_or_invalid",
+              "action": "confirm_desktop",
+              "expected_revision": 71,
+              "expected_player_character_id": 72,
+              "expected_game_pid": 73,
+              "expected_connection_generation": 74,
+              "expected_process_creation_filetime_100ns": 75
+            },
+            "payload_sha256": "3dc0a3d7df96a494ef4d800aabc3945ee7fa3ca8358926e6eb5aea4a4a581bbc",
+            "packet_sha256": "8e573d0c99ccf781ff57d7fb14949c8b4e4e5d72a3ce591c32e1bb94cebc6209",
+            "expected_acceptance": false
+          },
+          {
+            "name": "bad-bool-revision",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\bad-bool-revision.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010749400011263788,
+            "readback": {
+              "accepted": false,
+              "rejected_output_unchanged": true,
+              "reason": "malformed_closed_exit_request",
+              "action": "confirm_desktop",
+              "expected_revision": 71,
+              "expected_player_character_id": 72,
+              "expected_game_pid": 73,
+              "expected_connection_generation": 74,
+              "expected_process_creation_filetime_100ns": 75
+            },
+            "payload_sha256": "489ad1786d0ad3fbc1942d2b585acc861d51dbb28de32062c45d352f4f0db54a",
+            "packet_sha256": "557491726b5d9fac2ad2ac4d06a4024b640a15057d24b0023bd3699a0b5e9e1f",
+            "expected_acceptance": false
+          },
+          {
+            "name": "bad-float-filetime",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\bad-float-filetime.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010585000040009618,
+            "readback": {
+              "accepted": false,
+              "rejected_output_unchanged": true,
+              "reason": "malformed_closed_exit_request",
+              "action": "confirm_desktop",
+              "expected_revision": 71,
+              "expected_player_character_id": 72,
+              "expected_game_pid": 73,
+              "expected_connection_generation": 74,
+              "expected_process_creation_filetime_100ns": 75
+            },
+            "payload_sha256": "8293edd298c18bf1d0bd95c3b2ef7aef68e7510e9f8593d6e13ca6f4048ca6a5",
+            "packet_sha256": "2a3c0b225bffc6947dd1d7fc7027ca6a09450da4789b7e8a484ccbf0c0a9346a",
+            "expected_acceptance": false
+          },
+          {
+            "name": "bad-actor-int32-overflow",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\bad-actor-int32-overflow.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010686399997211993,
+            "readback": {
+              "accepted": false,
+              "rejected_output_unchanged": true,
+              "reason": "exit_request_binding_missing_or_invalid",
+              "action": "confirm_desktop",
+              "expected_revision": 71,
+              "expected_player_character_id": 72,
+              "expected_game_pid": 73,
+              "expected_connection_generation": 74,
+              "expected_process_creation_filetime_100ns": 75
+            },
+            "payload_sha256": "e54a183392f23a247efc1a2722a813034e71c9e63d9ea17a884a606fbbdce91e",
+            "packet_sha256": "40a7678005107eb642112a8c54c777686f012c7ae1da2c20a855a89b196be700",
+            "expected_acceptance": false
+          },
+          {
+            "name": "bad-actor-uint32-max",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\bad-actor-uint32-max.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010921699926257133,
+            "readback": {
+              "accepted": false,
+              "rejected_output_unchanged": true,
+              "reason": "exit_request_binding_missing_or_invalid",
+              "action": "confirm_desktop",
+              "expected_revision": 71,
+              "expected_player_character_id": 72,
+              "expected_game_pid": 73,
+              "expected_connection_generation": 74,
+              "expected_process_creation_filetime_100ns": 75
+            },
+            "payload_sha256": "c6c536b2397524c31067150eedf1414e87c201eff6e4d8cab562bef00bd22352",
+            "packet_sha256": "cafbb337f0c72a8942efcf2964af2aa71c1728d13c5fb7121f16ec551cc21227",
+            "expected_acceptance": false
+          },
+          {
+            "name": "bad-actor-uint64-max",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\bad-actor-uint64-max.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010603199945762753,
+            "readback": {
+              "accepted": false,
+              "rejected_output_unchanged": true,
+              "reason": "exit_request_binding_missing_or_invalid",
+              "action": "confirm_desktop",
+              "expected_revision": 71,
+              "expected_player_character_id": 72,
+              "expected_game_pid": 73,
+              "expected_connection_generation": 74,
+              "expected_process_creation_filetime_100ns": 75
+            },
+            "payload_sha256": "b0e4c7e067f5cb192f9a160376d070b120180943238a3fc7d0283de3187efcf4",
+            "packet_sha256": "2046888bca40f21969a1ecce48cc366e2f49b3e48201b010ab29dddd05aa7af7",
+            "expected_acceptance": false
+          },
+          {
+            "name": "bad-pid-overflow",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\bad-pid-overflow.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010896899970248342,
+            "readback": {
+              "accepted": false,
+              "rejected_output_unchanged": true,
+              "reason": "exit_request_binding_missing_or_invalid",
+              "action": "confirm_desktop",
+              "expected_revision": 71,
+              "expected_player_character_id": 72,
+              "expected_game_pid": 73,
+              "expected_connection_generation": 74,
+              "expected_process_creation_filetime_100ns": 75
+            },
+            "payload_sha256": "0769aa1171d16051d2ca7d4ab3ef299c8527c796601a77db881188397f837762",
+            "packet_sha256": "829f6230155eaa53b5034e3895bd2aa7fd41850b410956b717668d52116555bc",
+            "expected_acceptance": false
+          },
+          {
+            "name": "bad-signature",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\bad-signature.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.01095929997973144,
+            "readback": {
+              "accepted": false,
+              "rejected_output_unchanged": true,
+              "reason": "exit_mutation_requires_backend_context_signature",
+              "action": "confirm_desktop",
+              "expected_revision": 71,
+              "expected_player_character_id": 72,
+              "expected_game_pid": 73,
+              "expected_connection_generation": 74,
+              "expected_process_creation_filetime_100ns": 75
+            },
+            "payload_sha256": "9ac9f07465297f8db98028c31d509726b3070d8cd5dc4b7115fc6bea2378b665",
+            "packet_sha256": "6c6186983571befe8ebe59368fc4478923edfe2e845503018f8883087561c045",
+            "expected_acceptance": false
+          },
+          {
+            "name": "bad-source-sha",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\bad-source-sha.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010886600008234382,
+            "readback": {
+              "accepted": false,
+              "rejected_output_unchanged": true,
+              "reason": "exit_request_binding_missing_or_invalid",
+              "action": "confirm_desktop",
+              "expected_revision": 71,
+              "expected_player_character_id": 72,
+              "expected_game_pid": 73,
+              "expected_connection_generation": 74,
+              "expected_process_creation_filetime_100ns": 75
+            },
+            "payload_sha256": "8ef5d43391d04b9d00a54bc71f81a356b1b88fc595efe84dc80119a5d60a6cfb",
+            "packet_sha256": "26fbafa11f01557134f78f7dba79b351305c402647478e069e00799a284de081",
+            "expected_acceptance": false
+          },
+          {
+            "name": "bad-nonce-space",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\bad-nonce-space.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010485100094228983,
+            "readback": {
+              "accepted": false,
+              "rejected_output_unchanged": true,
+              "reason": "exit_request_binding_missing_or_invalid",
+              "action": "confirm_desktop",
+              "expected_revision": 71,
+              "expected_player_character_id": 72,
+              "expected_game_pid": 73,
+              "expected_connection_generation": 74,
+              "expected_process_creation_filetime_100ns": 75
+            },
+            "payload_sha256": "486ed3b782cb16ef693283065766060a49ddd5830bd6eca8a32e1bcdd1b473ac",
+            "packet_sha256": "93c40d242a9510b9d7225184ddb3cf36dda05d47eebbc586b950fc8af307a474",
+            "expected_acceptance": false
+          },
+          {
+            "name": "bad-duplicate",
+            "argv": [
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\source\\_exit_build_003\\normal_exit_map_contract_test.exe",
+              "--packet",
+              "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-stock-map-exit-menu-revision-009\\actual-production-parser-interop-004\\bad-duplicate.packet.bin"
+            ],
+            "exit_code": 0,
+            "elapsed_seconds": 0.010529099963605404,
+            "readback": {
+              "accepted": false,
+              "rejected_output_unchanged": true,
+              "reason": "malformed_closed_exit_request",
+              "action": "confirm_desktop",
+              "expected_revision": 71,
+              "expected_player_character_id": 72,
+              "expected_game_pid": 73,
+              "expected_connection_generation": 74,
+              "expected_process_creation_filetime_100ns": 75
+            },
+            "payload_sha256": "6ef9dd21328c3b1b56badcaf78571b0641521ad0a1771734622c23cd4ce5b4f5",
+            "packet_sha256": "989a18c84ebd059a545238d712e8ed04e4dfe4686d158c017c99a57cdc3d88c6",
+            "expected_acceptance": false
+          }
+        ],
+        "valid": 4,
+        "rejected": 13,
+        "rejected_output_unchanged": true,
+        "actual_parser": true,
+        "actual_encoder": true,
+        "actual_endpoint_send": true,
+        "endpoint_write_all_mocked": true,
+        "game_calls": 0,
+        "pipe_calls": 0,
+        "ui_calls": 0,
+        "native_exit": "NOT_RUN",
+        "defender_registration": "Pending environment RED; root authorized offline fixtures without a successful registration prerequisite."
+      }
+    },
+    "composition011_REPORT": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\REPORT.json",
+      "bytes": 5985,
+      "sha256": "24afb43486c7214149131cd10ee3af14eaa77b5aa88e7b96987efa89e118db37",
+      "receipt": {
+        "schema": "ck3-normal-exit-final-independent-integration-review-v1",
+        "utc": "2026-10-05T03:13:20.226255+00:00",
+        "status": "SOURCE_IMPLEMENTATION_AND_DIRECTED_COMPOSITION_READY",
+        "baseline": {
+          "root": "C:/lmb1/source",
+          "source_files_independently_checked": 4838,
+          "index_sha256": "c4825242f7cd868debfb2dab3714d28193347f9a3bef89652628e3e31837532b",
+          "is_pure_HEAD_checkout": false,
+          "root_declared_HEAD": "3bd0ed926fef86f2660f2ed80c231dd9682ee877",
+          "root_declared_DIRTY": "stress + admission and other selected actual working source"
+        },
+        "final_native_author_index_sha256": "30ea4f0b9d06b0d8953d93c5ef31c73b456d6b68b6a00fb5c25e273a31d3438f",
+        "final_python_author_index_sha256": "30d659d2a079b4d9f51e9cd285fe5200ab9e767dbca351cf33e31eec24766cb3",
+        "source_composition_and_review_refs": [
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\composition-attempt-001\\INDEX.json",
+            "bytes": 7864,
+            "sha256": "741c2e3922f3be4b2120ce8586a2238c8f99ffa7aee1b90a26b81ec40e552b81"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\python-composition-attempt-003\\INDEX.json",
+            "bytes": 5021,
+            "sha256": "4ea5acb1d0b73566071d43b5bb00f279bcdad393189c3d710b50434761d62934"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\FINAL-NATIVE-INDEPENDENT-REVIEW.json",
+            "bytes": 4216,
+            "sha256": "8e2873ae391c68b07fc94f1c5e56fd93f97d74c3e042bbc698a40d1de0330ab4"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-map-exit-integration-review-011\\FINAL-PYTHON-INDEPENDENT-REVIEW.json",
+            "bytes": 1396,
+            "sha256": "f76c11a8214f19190ff0090633ded420b4e27e63af0fe6f80b474cb6344f149b"
+          }
+        ],
+        "root_receipt_refs": [
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-ordinary-native-integration-20261005-001\\APPLIED.json",
+            "bytes": 3829,
+            "sha256": "4bba50df5084179655c96b76467b02a873873ddc8b80819574028ec5be0269a1",
+            "attribution": "Actual ROOT receipt read only; no independent main/game access"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-ordinary-python-integration-20261005-001\\APPLIED.json",
+            "bytes": 4182,
+            "sha256": "9d5f356234d56d5cff496df58fb4da9b5be18a3338b9a4c5e3f58b8e62c34178",
+            "attribution": "Actual ROOT receipt read only; no independent main/game access"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-exit-native-hunks-integration-20261005-001\\APPLIED.json",
+            "bytes": 4828,
+            "sha256": "7c2fc5e570db375afcc97c97a957a490545863135c4de52c3a8db01cbbc2ff9f",
+            "attribution": "Actual ROOT receipt read only; no independent main/game access"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-new-native-exe-registration-inputs-20261005-001\\MANIFEST.json",
+            "bytes": 4232,
+            "sha256": "0bdd443daf57912cc4c407e0d73bf23c5e8bcc59ed9b8ad65cae9363c5353f3f",
+            "attribution": "Actual ROOT receipt read only; no independent main/game access"
+          }
+        ],
+        "native_shared_hunks": 6,
+        "native_new_files": 7,
+        "python_shared_hunks": 5,
+        "python_new_files": 6,
+        "diff_forward_reverse_checks": 11,
+        "profile_tool_allowlist": "2 ordinary +3 exit + stress and all existing retained exactly once",
+        "native_builds": "Author strict default-OFF/enabled objects + full exit-only DLL PASS; root final integrated clean-HEAD Release required",
+        "final_parser_encoder_cases": {
+          "actual_native_parser": true,
+          "actual_production_python_encoder": true,
+          "valid": 4,
+          "rejected_unchanged": 13
+        },
+        "Python_tests": {
+          "focused": 60,
+          "existing_profile": 18,
+          "mock_only": true
+        },
+        "actual_MCP_2_exit_only_schema": {
+          "broad": 162,
+          "profile": 19,
+          "invalid_inputs_per_server": 20,
+          "business_callbacks": 0
+        },
+        "actual_combined_MCP_schema": "PENDING ROOT actual list_tools after integration; static profile closed allowlist21 is not a schema receipt",
+        "map_entry_chain": [
+          "timeline_widget/pause_menu_button",
+          "ingame_pausemenu/exit_button",
+          "ingame_resign_confirmation/descktop_button"
+        ],
+        "typed_success": "Validated actual desktop dispatch-pending + same retained PID/create/HANDLE signaled with actual DWORD exit_code=0",
+        "pending_lifecycle": "Original HANDLE retained across timeout/failure; explicit read-only observer <=5s; no redispatch or live snapshot/guard",
+        "source_admission": "Actual future managed-userdir inventory hash + profile projection + exact stock6/descriptor/enabledmod bytes; no future data emitted",
+        "scope": [
+          "Exact CK3 1.20.0.3 paused map",
+          "Native feature default OFF",
+          "Frontend revision zero unsupported",
+          "Zero enabled-mod GUI files; archives rejected; Python all replace_path unsupported, native GUI-affecting replace_path rejected"
+        ],
+        "known_R7_maintenance": "Official desktop GUI click led to observed process/window disappearance; actual CK3 exit code NULL; no MCP capability credit",
+        "Defender": "ROOT WinDefend Disabled/Stopped and prior COM registration failure; verified=false/policy0; explicit authorization allowed offline parser fixtures",
+        "future_R8_PREPARED": "PENDING ROOT actual generation; no old R7 source/profile/PID/creation/DLL inventory substituted",
+        "actual_game_exit": "NOT_RUN",
+        "autosave_integrity": "NOT_VERIFIED",
+        "quantity_model": "Separate work; no calibration/144 matrix completion claim",
+        "main_reads": 0,
+        "main_writes": 0,
+        "Git_calls": 0,
+        "game_calls": 0,
+        "native_game_calls": 0,
+        "pipe_calls": 0,
+        "UI_calls": 0,
+        "third_full_Dll_rebuild": "NOT_RUN per ROOT request",
+        "failed_reader_attempts": "001 size-key and 002 long-path failures preserved before source composition"
+      }
+    }
+  },
+  "integrated_Release_build": "NOT_RUN",
+  "actual_game_exit": "NOT_RUN",
+  "autosave_integrity": "NOT_VERIFIED",
+  "native_DLL_qualification": "native009 exit-only frozen source inputs, excludes ordinary18; no composition011 Release credit",
+  "future_R8_inventory_PID_profile_generation_HELLO": "NOT_YET_RECORDED",
+  "Defender": "disabled/stopped and COM registration failure preserved in author/ROOT references; no policy mutation or configuration completion claimed",
+  "reviewer_tests_rerun_in_this_document_task": false,
+  "runtime_calls": {
+    "main_writes": 0,
+    "Git": 0,
+    "game": 0,
+    "pipe": 0,
+    "MCP": 0,
+    "lease": 0,
+    "desktop": 0
+  },
+  "history_policy": "frozen author and error bytes retained; later receipts append without rewriting original RED",
+  "exact_rebase_HEAD": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+  "ROOT_postrebase_actual_checks": {
+    "ordinary": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\ordinary",
+      "RESULT_sha256": "32657085b0ac49fe3bb384f579816e9bba3f6895278c3975ab39caca2b46cd0f",
+      "INPUTS_sha256": "3ddde8ed12242dfb308cdf558db82cd9abd71ebe11db19b13f4bc68a344d39d1",
+      "actual_unittest_count": 24,
+      "result": {
+        "utc": "2026-10-05T03:25:50.324009+00:00",
+        "case": "ordinary",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "a1883959a09d6fa9594a0f52dc5d6d8f41741b02bbe65905969efae30e0cf6a9"
+      }
+    },
+    "stress": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\stress",
+      "RESULT_sha256": "adb779aaf9cf6a515f01e10e48f4dea44e0c7a01d8360463cdcd09c923448ffb",
+      "INPUTS_sha256": "f2aa3783d1d330977cbc581f5477831fb1c6d375bda4bb56872cb28758855644",
+      "actual_unittest_count": 23,
+      "result": {
+        "utc": "2026-10-05T03:25:51.914593+00:00",
+        "case": "stress",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "455a5ed79751d5fcc5588df4f81dc0de933475d9b832858dacad7f67cfd33e68"
+      }
+    },
+    "outcomes": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\outcomes",
+      "RESULT_sha256": "a4834277e85dcb50cee30415de8c416eca2f49d7d517305e21ca7ac39103d77b",
+      "INPUTS_sha256": "5d966863a66e13aa22c12936c0558aae7d5fdce8ad05f576861b755827fc815d",
+      "actual_unittest_count": 29,
+      "result": {
+        "utc": "2026-10-05T03:25:53.191805+00:00",
+        "case": "outcomes",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "0c1b2d1608e48aff9ae4254d919c48258c2e3c62f64ef3d89ac2842860fe9bbb"
+      }
+    },
+    "profile": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\profile",
+      "RESULT_sha256": "ea4fea9da53a0cc63681c672ccafe3a20423b30a57160e4111e32479743a50cb",
+      "INPUTS_sha256": "bbe1a92c5ea9ba2ad3f1432b0df1476a524911e29e067bd908799cc0c0093041",
+      "actual_unittest_count": 18,
+      "result": {
+        "utc": "2026-10-05T03:25:52.180542+00:00",
+        "case": "profile",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "5ce9977e029b297e9568df32f2fe0a3511968ca2c397dd5800ac86b405f8dade"
+      }
+    },
+    "product-static": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\product-static",
+      "RESULT_sha256": "80730e12f421f1a7f5426016470550cd741a2c01d2c99d3f9f504b6e5f44a412",
+      "INPUTS_sha256": "6b488bbcc9139b8a43de0c19698de5d08237994dad55b19b4455b0619d128a47",
+      "actual_unittest_count": null,
+      "result": {
+        "utc": "2026-10-05T03:25:47.964085+00:00",
+        "case": "product-static",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "82868577806baacf019a6695cd9b1b5c80b5b68e001f353a2c607a96ef1adaca",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "product-build": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\product-build",
+      "RESULT_sha256": "8ea5290e3e1efe529afa16f405b0581bf0e22f3a13b784a262326c8457007bd7",
+      "INPUTS_sha256": "07e4403506b17ace7828a7d177118495a8ed7acaec623388a9c13d557291b87a",
+      "actual_unittest_count": null,
+      "result": {
+        "utc": "2026-10-05T03:25:48.098852+00:00",
+        "case": "product-build",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "18c5285f0b758df5595fe34cd3725451b9002589b184812d28821b7227f780bf",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "c2-generation": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\c2-generation",
+      "RESULT_sha256": "4f6f6694d34264c95cda8b361ba411e5b4da00dc8126b8ff2e2cc59090c1f89b",
+      "INPUTS_sha256": "b71f64eaecbb93bda17e72369ac5738339dcf10c97e4f685c706cbc3312872cb",
+      "actual_unittest_count": null,
+      "result": {
+        "utc": "2026-10-05T03:25:47.766169+00:00",
+        "case": "c2-generation",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "dc5da9d6b814809d7b96b6493ed833a99200b1abcaf74ea32df592d628d124c6",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "python-only": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\python-only",
+      "RESULT_sha256": "82f0d12c66b3ee936d9e3c02e1b9caefa5198bc2fe4f2708d15ef27b4712e8da",
+      "INPUTS_sha256": "2f526382f7807d4995727113734a3543256c5cae9e11ee751114b100cf840b63",
+      "actual_unittest_count": null,
+      "result": {
+        "utc": "2026-10-05T03:26:39.132059+00:00",
+        "case": "python-only",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "c38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "ROOT_postrebase_focused_count": 94,
+  "independent_rebase_review_INDEX_sha256": "00bcddd9376ed9f2ce9b73aac5b4b0a390eb4d47e200a520b59110b162517bdc",
+  "independent_013_correction_INDEX_sha256": "233f18ed3eeaf4feef12d929874dba40ed5bad15abf4af952f0b7423c91bef09",
+  "base_snapshot_preserved_as": "STATUS-at-base-snapshot.json in evidence archive",
+  "append_receipt_path": "docs/ck3-native-ai/evidence/normal-exit-map-generic-mcp-source-only-2026-10-05.root-rebase-rebound-sdk-append.json",
+  "append_receipt_sha256": "144a7a7392d1b962ead55662a498068d3587e9cb1d426faa21be574dc186ad73"
+}

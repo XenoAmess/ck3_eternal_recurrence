@@ -1,0 +1,218 @@
+{
+  "schema": "normal-exit-source-only-ROOT-rebase-rebound-SDK-append-v1",
+  "created_at_utc": "2026-10-05T03:32:01.257580+00:00",
+  "status": "OFFLINE_SOURCE_ONLY",
+  "base_archive_sha256": "b08047c5032c8524b78580db4f2be6cfb143f3438fe9654fef88393a4083fbd5",
+  "immutable_addendum_packages": [
+    {
+      "label": "original012_adaptation_preserved",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-exit-main-test-adaptation-012",
+      "INDEX_sha256": "3fb2f9ab95331bad3cb7188705ff2b6c90cc9855cb03d03a85730d001ff46e4b",
+      "indexed_payload_count": 16
+    },
+    {
+      "label": "actual013_correction_receipts",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-exit-main-test-correction-receipts-013",
+      "INDEX_sha256": "233f18ed3eeaf4feef12d929874dba40ed5bad15abf4af952f0b7423c91bef09",
+      "indexed_payload_count": 18
+    },
+    {
+      "label": "independent_rebase_source_preservation",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\rebase-review-f861921e1-20261005-001",
+      "INDEX_sha256": "00bcddd9376ed9f2ce9b73aac5b4b0a390eb4d47e200a520b59110b162517bdc",
+      "indexed_payload_count": 55
+    }
+  ],
+  "exact_rebase_HEAD": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+  "independent_rebase_SHORT_RECEIPT": {
+    "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\rebase-review-f861921e1-20261005-001\\SHORT-RECEIPT.json",
+    "sha256": "12579ce703eca3ab5d625d5a3efdc22bfecb44a65e3acfde8c6d3e0da0eb47f4",
+    "receipt": {
+      "exact_HEAD": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+      "review_status": "GREEN",
+      "hunks": 9,
+      "files_with_conflicts": 4,
+      "input_stage_and_resolution_hashes_verified": true,
+      "conflict_resolution_independently_reconstructed_exact": true,
+      "HEAD_working_resolved_exact": true,
+      "MAA_three_layers_ast_exact": true,
+      "all_eight_flags_runtime_bridge_paths_retained": true,
+      "report_sha256": "924dba0cd532c49245003693b157f374aa68be06b68cc83ebd17da9fcbdf2a28",
+      "tests_builds_run": false
+    }
+  },
+  "ROOT_production_tests_APPLIED_sha256": "89ab1332ed6be71fad5cc11da7548a6e65bda10ecdf8d26850899ef0ff1414ec",
+  "initial_main_41": {
+    "exit_code": 1,
+    "errors": 17,
+    "kind": "NameError ROOT removed in test setup adaptation",
+    "RECEIPT_sha256": "fe223ab89838e7402ec6a7a0f3b1c50c2183431b99d0d59a8a9dfde9529f2978",
+    "original_stdio_preserved": true
+  },
+  "corrected_main_41_and_external_legacy_19": {
+    "main": 41,
+    "external_legacy": 19,
+    "both_exit_code": 0,
+    "RECEIPT_sha256": "1d054c0b467547a3b5cf680fd93317092bdea139a6f989931000c6421ffbaffb",
+    "same_60_cases_as_original_author_not_additional60": true,
+    "mock_only": true
+  },
+  "exact_test_setup_correction": {
+    "source_before_origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\i4-matrix-resume-review-20261005-001\\r7-exit-main-test-adaptation-012\\production-tests\\ck3_autonomous_player\\tests\\unit\\test_normal_exit_integrated_v1.py",
+    "before_sha256": "b270cf28f6624440bc4eebabdc3e443030e93479b702a186190d327eb859f3ee",
+    "after_sha256": "d66ec3222b45b287dc45b913341f94dd0981f9d701e8641c7b7d51af08bf884e",
+    "after_bytes": 28764,
+    "global_definition_inserted_bytes": "\nROOT = Path(tempfile.gettempdir())\n",
+    "offset": 190,
+    "all_test_methods_AST_unchanged": true,
+    "test_method_count": 23,
+    "source_copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\normal-exit-permanent-report-independent-20261005-001\\corrected-root-test-source-001\\test_normal_exit_integrated_v1.py",
+    "binding": "Reconstructed only from frozen012 + one ROOT definition, exact SHA matches ROOT actual main source_before/after receipt; no main source read or test execution"
+  },
+  "actual_combined_MCP_schema": {
+    "RECEIPT_sha256": "7526c7a428a50d1931cbd7b8f192538529a9eb4dc2f21cab5c822b2fc15eb375",
+    "broad": 165,
+    "profile": 21,
+    "invalid_rejected_per_server": 20,
+    "business_callbacks": 0,
+    "source_files": 1092,
+    "source_before_after_SHA256": "038b7c646aac24ecd8766bd07346251fbe06010bd49323c5ab13e10d53664f0d",
+    "zero_game_pipe_MCP_business_calls": true
+  },
+  "ROOT_postrebase_actual_checks": {
+    "ordinary": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\ordinary",
+      "RESULT_sha256": "32657085b0ac49fe3bb384f579816e9bba3f6895278c3975ab39caca2b46cd0f",
+      "INPUTS_sha256": "3ddde8ed12242dfb308cdf558db82cd9abd71ebe11db19b13f4bc68a344d39d1",
+      "actual_unittest_count": 24,
+      "result": {
+        "utc": "2026-10-05T03:25:50.324009+00:00",
+        "case": "ordinary",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "a1883959a09d6fa9594a0f52dc5d6d8f41741b02bbe65905969efae30e0cf6a9"
+      }
+    },
+    "stress": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\stress",
+      "RESULT_sha256": "adb779aaf9cf6a515f01e10e48f4dea44e0c7a01d8360463cdcd09c923448ffb",
+      "INPUTS_sha256": "f2aa3783d1d330977cbc581f5477831fb1c6d375bda4bb56872cb28758855644",
+      "actual_unittest_count": 23,
+      "result": {
+        "utc": "2026-10-05T03:25:51.914593+00:00",
+        "case": "stress",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "455a5ed79751d5fcc5588df4f81dc0de933475d9b832858dacad7f67cfd33e68"
+      }
+    },
+    "outcomes": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\outcomes",
+      "RESULT_sha256": "a4834277e85dcb50cee30415de8c416eca2f49d7d517305e21ca7ac39103d77b",
+      "INPUTS_sha256": "5d966863a66e13aa22c12936c0558aae7d5fdce8ad05f576861b755827fc815d",
+      "actual_unittest_count": 29,
+      "result": {
+        "utc": "2026-10-05T03:25:53.191805+00:00",
+        "case": "outcomes",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "0c1b2d1608e48aff9ae4254d919c48258c2e3c62f64ef3d89ac2842860fe9bbb"
+      }
+    },
+    "profile": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\profile",
+      "RESULT_sha256": "ea4fea9da53a0cc63681c672ccafe3a20423b30a57160e4111e32479743a50cb",
+      "INPUTS_sha256": "bbe1a92c5ea9ba2ad3f1432b0df1476a524911e29e067bd908799cc0c0093041",
+      "actual_unittest_count": 18,
+      "result": {
+        "utc": "2026-10-05T03:25:52.180542+00:00",
+        "case": "profile",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "stderr_sha256": "5ce9977e029b297e9568df32f2fe0a3511968ca2c397dd5800ac86b405f8dade"
+      }
+    },
+    "product-static": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\product-static",
+      "RESULT_sha256": "80730e12f421f1a7f5426016470550cd741a2c01d2c99d3f9f504b6e5f44a412",
+      "INPUTS_sha256": "6b488bbcc9139b8a43de0c19698de5d08237994dad55b19b4455b0619d128a47",
+      "actual_unittest_count": null,
+      "result": {
+        "utc": "2026-10-05T03:25:47.964085+00:00",
+        "case": "product-static",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "82868577806baacf019a6695cd9b1b5c80b5b68e001f353a2c607a96ef1adaca",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "product-build": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\product-build",
+      "RESULT_sha256": "8ea5290e3e1efe529afa16f405b0581bf0e22f3a13b784a262326c8457007bd7",
+      "INPUTS_sha256": "07e4403506b17ace7828a7d177118495a8ed7acaec623388a9c13d557291b87a",
+      "actual_unittest_count": null,
+      "result": {
+        "utc": "2026-10-05T03:25:48.098852+00:00",
+        "case": "product-build",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "18c5285f0b758df5595fe34cd3725451b9002589b184812d28821b7227f780bf",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "c2-generation": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\c2-generation",
+      "RESULT_sha256": "4f6f6694d34264c95cda8b361ba411e5b4da00dc8126b8ff2e2cc59090c1f89b",
+      "INPUTS_sha256": "b71f64eaecbb93bda17e72369ac5738339dcf10c97e4f685c706cbc3312872cb",
+      "actual_unittest_count": null,
+      "result": {
+        "utc": "2026-10-05T03:25:47.766169+00:00",
+        "case": "c2-generation",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "dc5da9d6b814809d7b96b6493ed833a99200b1abcaf74ea32df592d628d124c6",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "python-only": {
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-postrebase-source-checks-20261005-001\\python-only",
+      "RESULT_sha256": "82f0d12c66b3ee936d9e3c02e1b9caefa5198bc2fe4f2708d15ef27b4712e8da",
+      "INPUTS_sha256": "2f526382f7807d4995727113734a3543256c5cae9e11ee751114b100cf840b63",
+      "actual_unittest_count": null,
+      "result": {
+        "utc": "2026-10-05T03:26:39.132059+00:00",
+        "case": "python-only",
+        "head": "f861921e137009cba1d739a6e53fba8c8965ee0b",
+        "status": "PASS",
+        "exit_code": 0,
+        "source_before_after_exact": true,
+        "stdout_sha256": "c38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490",
+        "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "postrebase_focused_count": 94,
+  "earlier_host13_retained_not_recounted": true,
+  "native_combined_Release": "NOT_RUN",
+  "actual_game_exit": "NOT_RUN",
+  "autosave_integrity": "NOT_VERIFIED",
+  "tests_rerun_by_report_author": false
+}
