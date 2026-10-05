@@ -628,7 +628,7 @@ def normalize_current_context_source_inputs(
         fields.add("tail_direct_291c5b7_291cc49")
     for optional in ("tail_prefix_2753860_2922530", "middle_helpers_291f260_291fb10",
                      "trait_stage_291d460", "absent_recipient_inputs", "helper_2922070",
-                     "conference_24b1d00"):
+                     "conference_24b1d00", "uncached_recipient_inputs"):
         if isinstance(value, dict) and optional in value:
             fields.add(optional)
     raw = _dict(value, field, fields)
@@ -719,6 +719,12 @@ def normalize_current_context_source_inputs(
         if conference is not None and conference["character_id"] != normalized["character_id"]:
             raise ValueError(field + ".conference_24b1d00 character disagrees with source actor")
         normalized["conference_24b1d00"] = conference
+    if "uncached_recipient_inputs" in raw:
+        from .battle_person_uncached_recipient_contract import normalize_uncached_recipient_inputs
+        uncached = normalize_uncached_recipient_inputs(raw["uncached_recipient_inputs"], field + ".uncached_recipient_inputs")
+        if uncached is not None and uncached["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".uncached_recipient_inputs character disagrees with source actor")
+        normalized["uncached_recipient_inputs"] = uncached
     return normalized
 
 

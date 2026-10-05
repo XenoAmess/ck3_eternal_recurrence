@@ -8038,7 +8038,8 @@ if(BUILD_TESTING)
     src/ck3_12003_context_sources.cpp
     tests/person_tail_continuation_12003_test.cpp
     tests/person_helper_2922070_fixture.cpp
-    tests/person_conference_24b1d00_fixture.cpp)
+    tests/person_conference_24b1d00_fixture.cpp
+    tests/person_uncached_recipient_fixture.cpp)
   target_include_directories(xar_ck3_12003_person_tail_continuation_test PRIVATE include)
   target_compile_features(xar_ck3_12003_person_tail_continuation_test PRIVATE cxx_std_20)
   target_compile_definitions(xar_ck3_12003_person_tail_continuation_test PRIVATE NOMINMAX)
