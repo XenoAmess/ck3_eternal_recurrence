@@ -628,7 +628,7 @@ def normalize_current_context_source_inputs(
         fields.add("tail_direct_291c5b7_291cc49")
     for optional in ("tail_prefix_2753860_2922530", "middle_helpers_291f260_291fb10",
                      "trait_stage_291d460", "absent_recipient_inputs", "helper_2922070",
-                     "conference_24b1d00", "uncached_recipient_inputs"):
+                     "conference_24b1d00", "uncached_recipient_inputs", "provider_bucket_291c5b2"):
         if isinstance(value, dict) and optional in value:
             fields.add(optional)
     raw = _dict(value, field, fields)
@@ -725,6 +725,13 @@ def normalize_current_context_source_inputs(
         if uncached is not None and uncached["character_id"] != normalized["character_id"]:
             raise ValueError(field + ".uncached_recipient_inputs character disagrees with source actor")
         normalized["uncached_recipient_inputs"] = uncached
+    if "provider_bucket_291c5b2" in raw:
+        from .battle_person_provider_bucket_contract import normalize_provider_bucket_291c5b2
+        provider_bucket = normalize_provider_bucket_291c5b2(
+            raw["provider_bucket_291c5b2"], field + ".provider_bucket_291c5b2")
+        if provider_bucket is not None and provider_bucket["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".provider_bucket_291c5b2 character disagrees with source actor")
+        normalized["provider_bucket_291c5b2"] = provider_bucket
     return normalized
 
 
