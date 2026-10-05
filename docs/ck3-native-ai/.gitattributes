@@ -1,0 +1,2 @@
+# Retain the exact R0171 current-input handover text bytes.
+army-county-entry-current-inputs-r0171-runtime.md -text whitespace=trailing-space,space-before-tab,cr-at-eol

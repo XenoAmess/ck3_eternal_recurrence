@@ -1,0 +1,147 @@
+{
+  "schema": "xar.episode04.r0171.county-current-inputs.v1",
+  "run": "R0171",
+  "observation_kind": "Actual current-input runtime readback at paused endpoints",
+  "source_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+  "game_build": "1.20.0.3",
+  "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "version_binding": "Pinned exact build/source plus actual session final_bridge and SDK loaded module origins. Strength source version/hash fields are null, not self-published evidence.",
+  "actor_character_id": 33388,
+  "army_id": 0,
+  "native_carmy_id": 0,
+  "date_raw": 53147376,
+  "game_date_delta_raw": 0,
+  "baseline": {
+    "snapshot_id": "native:2",
+    "revision": 3,
+    "native_revision": 2,
+    "query_sequence": 1,
+    "current_soldiers": 6746,
+    "maximum_soldiers": 6747,
+    "county_entry_inputs_v1": {
+      "status": "available",
+      "source": "native_current_county_entry_inputs",
+      "unavailable_reason": null,
+      "whole_soldiers": 6746,
+      "current_loss_budget": 236,
+      "effective_fraction_raw": 3500,
+      "minimum_multiplier_raw": 70000,
+      "loaded_minimum_soldiers": 5,
+      "fraction_scale": 100000,
+      "soldier_scale": 1,
+      "condition": {
+        "status": "unavailable",
+        "source": "current_stored_route_first_province",
+        "unavailable_reason": "no_stored_route",
+        "actor_character_id": null,
+        "source_province_id": null,
+        "target_province_id": null,
+        "mode": null,
+        "passes": null
+      }
+    }
+  },
+  "move": {
+    "snapshot_id": "native:3",
+    "revision": 4,
+    "native_revision": 3,
+    "query_sequence": 2,
+    "current_soldiers": 6746,
+    "maximum_soldiers": 6747,
+    "county_entry_inputs_v1": {
+      "status": "available",
+      "source": "native_current_county_entry_inputs",
+      "unavailable_reason": null,
+      "whole_soldiers": 6746,
+      "current_loss_budget": 236,
+      "effective_fraction_raw": 3500,
+      "minimum_multiplier_raw": 70000,
+      "loaded_minimum_soldiers": 5,
+      "fraction_scale": 100000,
+      "soldier_scale": 1,
+      "condition": {
+        "status": "available",
+        "source": "current_stored_route_first_province",
+        "unavailable_reason": null,
+        "actor_character_id": 33388,
+        "source_province_id": 1506,
+        "target_province_id": 725,
+        "mode": 1,
+        "passes": false
+      }
+    },
+    "movement_progress": {
+      "status": "available",
+      "source": "native_current_route_edge",
+      "unit_state_raw": 3,
+      "accumulated_movement_weight_raw": 0,
+      "cached_edge_speed_raw": 0,
+      "normalized_edge_progress": {
+        "raw": 0,
+        "scale": 100000
+      },
+      "first_route_edge_remaining_duration": {
+        "raw": 3000000,
+        "scale": 100000
+      },
+      "unavailable_reason": null
+    }
+  },
+  "endpoint_strength_delta": 0,
+  "actual_regiment_count": 27,
+  "full_data_container_count": 27,
+  "full_data_record_count": 37,
+  "zero_record_actual_regiment_ids": [
+    56,
+    57,
+    58,
+    59,
+    60
+  ],
+  "same_actual_regiment_strengths": true,
+  "same_full_data_records": true,
+  "same_army_clock": true,
+  "current_other_budgets": {
+    "status": "available",
+    "unavailable_reason": null,
+    "raid_association_id": -1,
+    "siege_active": true,
+    "raid_active": false,
+    "siege_rate_raw": 1000,
+    "raid_rate_raw": 1000,
+    "whole_soldiers": 6746,
+    "definition_le_zero_soldiers": 6677,
+    "supply_eligible_soldiers": 6746,
+    "definition_le_zero_supply_eligible_soldiers": 6677,
+    "current_supply_loss_budget": 0,
+    "siege_loss_budget": 67,
+    "raid_loss_budget": 0,
+    "fraction_scale": 100000,
+    "soldier_scale": 1
+  },
+  "readiness": {
+    "current_county_budget": true,
+    "current_route_first_condition": true,
+    "actual_applied_loss": false,
+    "refill_event_ledger": false,
+    "county_arrival": false,
+    "executor_special_R9_boolean": false,
+    "movement_loaded_lock_threshold": false,
+    "William_starvation_crossing": false,
+    "filming_completion": false
+  },
+  "claims": [
+    "No-route condition is unknown/null while current budget remains available.",
+    "Actual stored route first province 725, not final target 2174, is used by current condition.",
+    "Current 236 budget and current predicate false are readable in the a08 session.",
+    "Both paused endpoints have unchanged 6746/6747, 27 actual regiments and 37 DATA records."
+  ],
+  "limits": [
+    "No game-time advance, arrival or applied integer loss in this pair.",
+    "Current/hypothetical budget 236 is not a record of 236 deaths or applied loss.",
+    "Predicate false is current state, not a prediction of conditions at a future arrival.",
+    "Loaded minimum soldiers 5 is a county loss input, not the loaded movement lock-day threshold.",
+    "No persisted loss/refill event ledger or executor special flag is published.",
+    "No starvation threshold crossing or filming signoff is credited."
+  ]
+}

@@ -1,0 +1,2 @@
+# This bounded R0171 evidence package preserves immutable source bytes.
+* -text whitespace=trailing-space,space-before-tab,cr-at-eol

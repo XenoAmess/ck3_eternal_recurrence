@@ -1,0 +1,127 @@
+{
+  "base_commit": "538a35a3973813cdee125f3777d151e42fdedd97",
+  "files": [
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_army.hpp",
+      "candidate": {
+        "path": "C:\\w\\e4countya01\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_army.hpp",
+        "bytes": 8531,
+        "sha256": "5188315ea2f89015f7e01916761f65b8b9d75d258b8b39ce98e5e105edf00300"
+      },
+      "base": {
+        "bytes": 7394,
+        "sha256": "b76176e3d46de5696579728a5e64cbb9515a8ececa546a665375ed1844ccede7"
+      }
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12003_adapter.cpp",
+      "candidate": {
+        "path": "C:\\w\\e4countya01\\ck3_autonomous_player\\native_bridge\\src\\ck3_12003_adapter.cpp",
+        "bytes": 15553,
+        "sha256": "6fce74b0f22907e6ed3ee5babbdb03c36ed42446b73cd2b0743daa3c0370ed33"
+      },
+      "base": {
+        "bytes": 14374,
+        "sha256": "bb963c25782d505b5ddb5efab1e55c8b28499be7d7da1a4bd153d18da2229416"
+      }
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12002_army.cpp",
+      "candidate": {
+        "path": "C:\\w\\e4countya01\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_army.cpp",
+        "bytes": 39139,
+        "sha256": "a4dd365e0dc8c286716af10b536bdbc08f0b4e7b843563653e8f6de88893bbcb"
+      },
+      "base": {
+        "bytes": 35156,
+        "sha256": "f39aee43ec7d2e154bb6196a6b832ee4dc817f3b17b8fd57551138f9445748b2"
+      }
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/game_contract.hpp",
+      "candidate": {
+        "path": "C:\\w\\e4countya01\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\game_contract.hpp",
+        "bytes": 128331,
+        "sha256": "9d1b7677dddbb8a8f4dc460c952be9d5003092f18928f5916642bbbf3422ae55"
+      },
+      "base": {
+        "bytes": 127222,
+        "sha256": "fc06bd7f5981ef390fb4f57dfc972390e102bf91d7c77a7322ad16c3e20e89e2"
+      }
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/army_strength_v1_serializer.hpp",
+      "candidate": {
+        "path": "C:\\w\\e4countya01\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\army_strength_v1_serializer.hpp",
+        "bytes": 26554,
+        "sha256": "213ee8ba72144e7fe23500e7a04a586ca4117393914e42c6af27d5529a42e41f"
+      },
+      "base": {
+        "bytes": 24502,
+        "sha256": "582d8445751a9691a056d0db61da787fd97193cd968d61426e18a23495dc4c9b"
+      }
+    },
+    {
+      "relative_path": "ck3_autonomous_player/native_bridge/src/ck3_12002_army_test.cpp",
+      "candidate": {
+        "path": "C:\\w\\e4countya01\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_army_test.cpp",
+        "bytes": 58208,
+        "sha256": "ba7ff9ddee5877f4b7cc3f203acca4a1b42cc2e4b352a5118fd1754e2570478f"
+      },
+      "base": {
+        "bytes": 46059,
+        "sha256": "c345f2c9881ad71b19f6f2b1d9ac22f39ebbb22f0941372c3fc84290fc9ac41b"
+      }
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/army_county_entry_inputs_contract.py",
+      "candidate": {
+        "path": "C:\\w\\e4countya01\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\army_county_entry_inputs_contract.py",
+        "bytes": 3885,
+        "sha256": "902a01933560e2038cd78312b54e3c9897cc599491791206003b806c0c1c2373"
+      },
+      "base": null
+    },
+    {
+      "relative_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/war_contract.py",
+      "candidate": {
+        "path": "C:\\w\\e4countya01\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\war_contract.py",
+        "bytes": 177293,
+        "sha256": "3ef33b5653941c81ce54ede68287054ac798298f867fe7deac8f89b3fe006763"
+      },
+      "base": {
+        "bytes": 176786,
+        "sha256": "bbdeff614cfa8e3f67cb506ff0891d779752ebcdcaf232d571200c38294da290"
+      }
+    },
+    {
+      "relative_path": "ck3_autonomous_player/tests/unit/test_army_county_entry_inputs_contract.py",
+      "candidate": {
+        "path": "C:\\w\\e4countya01\\ck3_autonomous_player\\tests\\unit\\test_army_county_entry_inputs_contract.py",
+        "bytes": 7316,
+        "sha256": "5228afc03c61ed9bdc03b44f5acd84a863db39ef483e392deab1b749bbf17fb7"
+      },
+      "base": null
+    },
+    {
+      "relative_path": "docs/ck3-native-ai/army-county-entry-current-inputs-12003.md",
+      "candidate": {
+        "path": "C:\\w\\e4countya01\\docs\\ck3-native-ai\\army-county-entry-current-inputs-12003.md",
+        "bytes": 8603,
+        "sha256": "deeb19ef7248e1b012ed5e5b825e8e02e770a7b601ad2106933a3b941e7bfca1"
+      },
+      "base": null
+    }
+  ],
+  "patch": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\SOURCE-a02.patch",
+    "bytes": 49999,
+    "sha256": "c796e636b3cd25f8554e765cb9135bbf2aa617e1134f09635db7b19fe65fb64a"
+  },
+  "revision": "Only doc clarifies nonnegative signed actor FullID observation domain; all9 producer/test bytes unchanged.",
+  "old_doc_archive": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\before-signbit-note-doc-a01.md",
+    "bytes": 8377,
+    "sha256": "262ec1271f0fb847fb423e33246bb5930f37a08c78b0d5e46db2743e218d1f20"
+  }
+}

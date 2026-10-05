@@ -1,0 +1,10 @@
+{
+  "request_id": "r0171-baseline-strength-a02",
+  "tool": "ck3_query_army_strengths",
+  "arguments": {
+    "army_ids": [
+      0
+    ],
+    "expected_revision": 3
+  }
+}

@@ -1,0 +1,359 @@
+{
+  "schema": "xar.episode04.county-current-inputs-integrated.v1",
+  "status": "source-integrated-and-offline-ci-passed; live-pending",
+  "time_utc": "2026-10-05T09:02:16.980307+00:00",
+  "worktree": "C:\\w\\e4countya01",
+  "worktree_clean": true,
+  "source_commit": "dcacf1d7b24342262dbd25983cf0e319c69b93c4",
+  "source_commit_parent": "15baf598909ef2075c2e2fe235a21cb77534f1fa",
+  "final_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+  "final_commit_parent": "dcacf1d7b24342262dbd25983cf0e319c69b93c4",
+  "push_method": "ordinary fast-forward HEAD:master after fetch/rebase; no force push",
+  "final_exact_ci": {
+    "run_id": "37286721665",
+    "commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+    "url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37286721665",
+    "status": "completed",
+    "conclusion": "success",
+    "receipt": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\exact-ci-final-a05-RECEIPT.json",
+      "bytes": 23317,
+      "sha256": "de906d274a7a634f33bc5933679c62e16f79f6ec7514a5b8f1db1aff539760d2"
+    },
+    "raw": {
+      "stdout.json": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\exact-ci-final-a05-stdout.json",
+        "bytes": 15176,
+        "sha256": "a4f535c08c0ceb77e2727958b855828f9fdb711c3cf5187159d909111d5a3534"
+      },
+      "stderr.bin": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\exact-ci-final-a05-stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "native_army_step": {
+      "completedAt": "2026-10-05T08:57:38Z",
+      "conclusion": "success",
+      "name": "Test isolated native army route producer without CK3",
+      "number": 14,
+      "startedAt": "2026-10-05T08:57:19Z",
+      "status": "completed"
+    }
+  },
+  "first_exact_ci_preserved": {
+    "run_id": "37284730330",
+    "commit": "dcacf1d7b24342262dbd25983cf0e319c69b93c4",
+    "workflow_conclusion": "failure",
+    "native_isolated_army_step": "success",
+    "failure_scope": "Four historical forbidden literal references in received daily/W41 prose; no source failure.",
+    "receipt": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\exact-ci-a03-RECEIPT.json",
+      "bytes": 1302,
+      "sha256": "d62bec195416bb312cbe6def7d1bf466dc5533ec5868cefccdf3a5c07ffc9205"
+    },
+    "failed_log": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\exact-ci-a03-failed-log-stdout.bin",
+      "bytes": 3891,
+      "sha256": "11e570c67ef9789d5997d2cec264fc6a1127602633c35003c0e73e487972e2f9"
+    }
+  },
+  "bounded_wording_followup": {
+    "changed_paths": [
+      "docs/autonomous-agent-progress/daily/2026-10-05.md",
+      "docs/autonomous-agent-progress/weekly/2026-W41.md"
+    ],
+    "changed_lines": "4 added / 4 removed; four prose replacements",
+    "facts": "Historical external Windows draft and dry-run remain preserved; Python migration is explicitly pending and old entry forbidden. Actual deletion remains zero.",
+    "validator_changed": false,
+    "verification": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\WORDING-COMMIT-VERIFY-a01.json",
+      "bytes": 2602,
+      "sha256": "45c2ca22542aa50fe05d80d34fc8df800f675d8fddc2557902110c6f3aec21f9"
+    },
+    "targeted_gate": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\progress-ci-wording-fix-a01\\REPORT.json",
+      "bytes": 1382,
+      "sha256": "30ee4509385c76990b4dc4ec6502293fb1e411b77123457b41892b89db454346"
+    }
+  },
+  "source_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\CANDIDATE-MANIFEST-a02.json",
+    "bytes": 5291,
+    "sha256": "040ff05ab4651b6076ef698c138a021704b30293ff48df0fb57827424b4e1203"
+  },
+  "source_patch": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\SOURCE-a02.patch",
+    "bytes": 49999,
+    "sha256": "c796e636b3cd25f8554e765cb9135bbf2aa617e1134f09635db7b19fe65fb64a"
+  },
+  "source_10_unchanged_after_wording_followup": true,
+  "previous_candidate_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\ROOT-DELIVERY-a03.json",
+    "bytes": 10726,
+    "sha256": "e9af5a7b1e9a762215cd42a10c3fac9f121aadd9d14cee615228d44b2a968982"
+  },
+  "independent_peer": {
+    "decision": "NO BLOCK",
+    "delivery": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-peer-split-a01\\ROOT-DELIVERY-a02.json",
+      "bytes": 1843,
+      "sha256": "8e174ef2aa16279f2fa869017cb23acb7db274393bfdf2ed0a723a38bb870153"
+    },
+    "abi_dto_report": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-peer-split-a01\\PEER-REPORT-a01.json",
+      "bytes": 17165,
+      "sha256": "4b1e1683774120f31c9fa068433bae238f8e1481bf34e14e1b7ebd1ad123fc3f"
+    },
+    "doc_revision_report": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-peer-split-a01\\DOC-REVISION-PEER-a02.json",
+      "bytes": 6202,
+      "sha256": "bcd4fa15627d27308c80e729d93ea988242a6968af8c6a55144d2e3c6f15e8c9"
+    },
+    "scope": "Finite static ABI/DTO review only; no actual native/SDK/game execution."
+  },
+  "focused_validation": {
+    "python_county_contract": "10 cases PASS, normal and -O",
+    "python_strength_regression": "10 cases PASS",
+    "native_new_fixture": "14 county fixture cases included in default native army entry; final exact CI native step SUCCESS",
+    "native_wire_crossparse": "not claimed: native stdout captured by runner; GH log lacks 14 JSON wires",
+    "local_native_fixture_execution": false,
+    "checks": [
+      {
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "ck3_autonomous_player/tests/unit/test_army_county_entry_inputs_contract.py"
+        ],
+        "cwd": "C:\\w\\e4countya01",
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\county-python-normal-stdout.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\county-python-normal-stderr.bin",
+          "bytes": 114,
+          "sha256": "ebf45a56fb525dded78b98e038e365ebce1c1f7d87ba7d0c48bbe4cd173c081d"
+        }
+      },
+      {
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-O",
+          "-X",
+          "utf8",
+          "ck3_autonomous_player/tests/unit/test_army_county_entry_inputs_contract.py"
+        ],
+        "cwd": "C:\\w\\e4countya01",
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\county-python-optimized-stdout.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\county-python-optimized-stderr.bin",
+          "bytes": 114,
+          "sha256": "ebf45a56fb525dded78b98e038e365ebce1c1f7d87ba7d0c48bbe4cd173c081d"
+        }
+      },
+      {
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "ck3_autonomous_player/tests/unit/test_army_strength_contract.py"
+        ],
+        "cwd": "C:\\w\\e4countya01",
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\strength-python-regression-stdout.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\strength-python-regression-stderr.bin",
+          "bytes": 114,
+          "sha256": "9006308d47a9575a7382b3af4166b3c56e3437f553b56f2859d6c962f008a071"
+        }
+      },
+      {
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "tools/validate_python_only.py"
+        ],
+        "cwd": "C:\\w\\e4countya01",
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\validate-python-only-stdout.bin",
+          "bytes": 19,
+          "sha256": "c38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490"
+        },
+        "stderr": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\validate-python-only-stderr.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "tools/native_research_plan.py",
+          "check",
+          "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\plan-a02.json",
+          "--for-observation",
+          "--output",
+          "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\PLAN-CHECK-a02.json"
+        ],
+        "cwd": "C:\\w\\e4countya01",
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\plan-check-stdout.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\plan-check-stderr.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "argv": [
+          "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+          "-X",
+          "utf8",
+          "tools/native_research_plan.py",
+          "render",
+          "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\plan-a02.json",
+          "--for-observation",
+          "--output",
+          "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\PLAN-RENDER-a02.md"
+        ],
+        "cwd": "C:\\w\\e4countya01",
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\plan-render-stdout.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\plan-render-stderr.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "argv": [
+          "git",
+          "diff",
+          "--check"
+        ],
+        "cwd": "C:\\w\\e4countya01",
+        "returncode": 0,
+        "stdout": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\diff-check-stdout.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\diff-check-stderr.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      }
+    ],
+    "syntax_report": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\syntax-a01\\REPORT.json",
+      "bytes": 4599,
+      "sha256": "ccae4bd4c4f3dd47f594c33103cc2c3111bd5e93c1189ea66a21b379a34c5d82"
+    },
+    "syntax_scope": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\SYNTAX-SCOPE-VERIFY-a01.json",
+      "bytes": 328,
+      "sha256": "19b59457f4ec0cabeab4a660adc93f79167cac024bb9e4cc6c540bec6dce986f"
+    },
+    "source_rebase_verify": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\loss-cause\\county-loss-inputs-a01\\REBASE-SOURCE-VERIFY-a01.json",
+      "bytes": 3635,
+      "sha256": "2f2a3136ac08bd7e4ec55b4397b064310861946673c0d90fcda791a1f959cf01"
+    }
+  },
+  "published_contract": {
+    "tool": "query-army-strengths-v1",
+    "capability": "game.command.query-army-strengths-v1",
+    "request_change": null,
+    "addition": "Optional county_entry_inputs_v1 on available same-backlink Strength rows",
+    "available_observation": "Current whole soldiers, native current integer county budget, effective fraction, minimum multiplier, loaded minimum, and current actor/source/stored-route-first target/native mode predicate.",
+    "condition_unavailable": "Null/unknown for absent/incomplete route, mismatched province/actor, absent binding, or negative signed actor FullID; current valid budget remains separate.",
+    "pointer_and_range_failure": "Only new block unavailable; ordinary strength unchanged. Existing outer SEH remains the fault boundary.",
+    "legacy_exact_12002": "No county block; binding disabled."
+  },
+  "implementation_boundary": {
+    "actual_applied_loss_ledger": "unknown",
+    "refill_event_ledger": "unknown",
+    "county_executor_special_flag": "not-published",
+    "per_regiment_loss_eligibility": "not-published",
+    "william_starvation_actual_threshold_crossing_and_integer_loss": "pending",
+    "budget_equals_applied_loss": false,
+    "new_filming_completion_credit": false,
+    "old_cf2_packet_reinterpreted": false
+  },
+  "root_build_requirements": {
+    "root_new_freeze_only": true,
+    "source_paths": [
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_army.hpp",
+      "ck3_autonomous_player/native_bridge/src/ck3_12003_adapter.cpp",
+      "ck3_autonomous_player/native_bridge/src/ck3_12002_army.cpp",
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/game_contract.hpp",
+      "ck3_autonomous_player/native_bridge/include/xar_bridge/army_strength_v1_serializer.hpp",
+      "ck3_autonomous_player/native_bridge/src/ck3_12002_army_test.cpp",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/army_county_entry_inputs_contract.py",
+      "ck3_autonomous_player/src/xar_autoplayer/bridge/war_contract.py",
+      "ck3_autonomous_player/tests/unit/test_army_county_entry_inputs_contract.py",
+      "docs/ck3-native-ai/army-county-entry-current-inputs-12003.md"
+    ],
+    "targets": [
+      "xar_ck3_bridge",
+      "xar_ck3_bridge_injector",
+      "xar_ck3_bridge_host"
+    ],
+    "reuse_flags": "copy actual approved a07 feature/build definitions; do not invent profile flags",
+    "local_native_fixture": "tools/check_native_army_routes_ci.py --build-dir <fresh absolute C path>; invokes existing broker registration after build, so Root coordinates actual system call",
+    "python_contract": "Use new frozen Python/SDK source too; old Cf2/a07 strict normalizer does not accept the new optional block."
+  },
+  "next_read_only_live_check": [
+    "Root cold-loads new DLL and matching new Python/SDK source freeze.",
+    "Fresh paused exact .3 same actor/Army FullIDs and Army backlink; query existing Strength tool.",
+    "Join before/after dates, current province and route, commander/owner, full actual regiment IDs/current/max and persistent records.",
+    "Record current budget/predicate separately from endpoint integer strength delta; reject causal loop if events/combat/roster/owner/identity changes.",
+    "Do not credit applied ledger, hidden refill exclusion, death attribution or starvation crossing from this source addition."
+  ],
+  "daily_weekly_report_fields": {
+    "completed": "County current inputs source, serializer and fail-closed Python contract integrated; independent peer NO BLOCK; exact whole Official CI SUCCESS.",
+    "evidence": "Source dcacf1d7 + wording followup 7f1db1a77 + exact CI 37286721665; source patch/manifest and focused/peer receipts pinned.",
+    "remaining": "Root new DLL+matching Python source freeze/live current-input readback; actual applied/refill ledger, special flag, per-reg eligible fields and William starvation crossing/integer loss remain open.",
+    "credit_boundary": "Offline implementation/testing only; no increase to filmed scene/applied loss/starvation completion."
+  },
+  "side_effect_boundary": {
+    "sdk_contacted": false,
+    "game_contacted": false,
+    "screen_contacted": false,
+    "local_project_exe_run": false,
+    "local_native_exe_build": false,
+    "system_settings_modified": false,
+    "broker_called": false,
+    "main_tracked_modified": false,
+    "cf2_modified": false,
+    "task_bus_final_expected": "done with resources[]"
+  },
+  "preservation": "All old candidate revisions, first CI RED, failed display/wire parsing attempts, raw stdio, syntax inputs and C worktree retained.",
+  "open_kaishek": "not-applicable: exact compiled native getter ABI and output; no finite script/runtime replacement"
+}

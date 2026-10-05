@@ -1,0 +1,128 @@
+{
+  "schema": "xar.episode04.portable-evidence.v1",
+  "run": "R0171",
+  "portable": true,
+  "media_files": 0,
+  "roles": {
+    "baseline_strength": "raw/baseline-strength.json",
+    "move_strength": "raw/move-strength.json",
+    "baseline_snapshot": "raw/baseline-snapshot.json",
+    "move_snapshot": "raw/move-snapshot.json",
+    "move_command": "raw/move-command.json",
+    "baseline_response": "raw/baseline-response.json",
+    "move_response": "raw/move-response.json",
+    "baseline_snapshot_response": "raw/baseline-snapshot-response.json",
+    "move_snapshot_response": "raw/move-snapshot-response.json",
+    "move_command_response": "raw/move-command-response.json",
+    "baseline_request": "raw/baseline-request.json",
+    "move_request": "raw/move-request.json",
+    "sdk_ready": "raw/sdk-ready.json",
+    "capabilities": "raw/capabilities.json",
+    "build_delivery": "raw/build-delivery.json",
+    "source_manifest": "raw/source-manifest.json",
+    "source_integration_delivery": "raw/source-integration-delivery.json",
+    "session_ready": "raw/session-ready-record.json"
+  },
+  "files": [
+    {
+      "path": "raw/baseline-strength.json",
+      "bytes": 81280,
+      "sha256": "f68a05b6d37e71ad052c7632d46483426e806aa593fe23e03076d0a819a32acd"
+    },
+    {
+      "path": "raw/move-strength.json",
+      "bytes": 81376,
+      "sha256": "46d9db1ab6c5c677630f6c6cedbac1848ce96dbf8e1e576c57e1985309d4adc4"
+    },
+    {
+      "path": "raw/baseline-snapshot.json",
+      "bytes": 37030,
+      "sha256": "52a47404e3f6027aac44e0decca69e4af43832ca69f157e004202a8438cd6212"
+    },
+    {
+      "path": "raw/move-snapshot.json",
+      "bytes": 37162,
+      "sha256": "7c550a490fe305b7d022b9f69282d2d6a4bf52f665685d9f797e6fbd596cce5f"
+    },
+    {
+      "path": "raw/move-command.json",
+      "bytes": 1303,
+      "sha256": "ee06a9aa26f746d1a0e7e4c91cee41b866cd9e8513f2746510b14a2b67ce12f0"
+    },
+    {
+      "path": "raw/baseline-response.json",
+      "bytes": 343213,
+      "sha256": "10509b48bec14b236dab8586e8e4f507b70d55f476de7b9e9f035aebadd3c902"
+    },
+    {
+      "path": "raw/move-response.json",
+      "bytes": 343643,
+      "sha256": "a9c5551f6d0da88912357e14ec1914133b393ecede0084cda6d2ab2ee066349b"
+    },
+    {
+      "path": "raw/baseline-snapshot-response.json",
+      "bytes": 157220,
+      "sha256": "6221264fa7b8cc4dd208d01d0717a8eb9fa7be24d8fd027fd71195e05dbdec95"
+    },
+    {
+      "path": "raw/move-snapshot-response.json",
+      "bytes": 157784,
+      "sha256": "a89d9e5f71d0882e7d8f82215d696866da82d92bfd37f507be72f7cd10ad0794"
+    },
+    {
+      "path": "raw/move-command-response.json",
+      "bytes": 6641,
+      "sha256": "873d58ca984fdb49935db4fb243161879b005b6c043e19d796a31c6c22c54554"
+    },
+    {
+      "path": "raw/baseline-request.json",
+      "bytes": 170,
+      "sha256": "a154fac87b5428caf1db1ecf307f61c31fbf58f6c421d3cb72d1abfd912912ce"
+    },
+    {
+      "path": "raw/move-request.json",
+      "bytes": 175,
+      "sha256": "9a894dcc1f9c557079e3a30af4a5d812cf37a1f2c34ab80a013ba3471d5df310"
+    },
+    {
+      "path": "raw/sdk-ready.json",
+      "bytes": 40072,
+      "sha256": "a2d8a36a09719ce3d1f1050cb5b33845204e080708c0c6e6fe86b9dc4dbd68ba"
+    },
+    {
+      "path": "raw/capabilities.json",
+      "bytes": 25336,
+      "sha256": "719f4afa362915604a3848c2f150621c6a627f7008f511da3e154771abac3fae"
+    },
+    {
+      "path": "raw/build-delivery.json",
+      "bytes": 9367,
+      "sha256": "36a28c850b4f3bf31e68b60528bea89deee12f00e34115f658c756a7f5ce4e91"
+    },
+    {
+      "path": "raw/source-manifest.json",
+      "bytes": 5291,
+      "sha256": "040ff05ab4651b6076ef698c138a021704b30293ff48df0fb57827424b4e1203"
+    },
+    {
+      "path": "raw/source-integration-delivery.json",
+      "bytes": 17771,
+      "sha256": "c0fa75c8cacb1c25cd3ac38fe399dfdd8752e9ba58aa09d07878d0b0b66e4736"
+    },
+    {
+      "path": "raw/session-ready-record.json",
+      "bytes": 5306,
+      "sha256": "8313d7edaae5790af22bfcd69933d3542913e4b8f43bdb8872b889118e67671b"
+    },
+    {
+      "path": "summary.json",
+      "bytes": 4987,
+      "sha256": "4d13d92fb6c3e6084cc91b3852dc000fd91046529fb69c883a46244becd6ce25"
+    }
+  ],
+  "source_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+  "game_build": "1.20.0.3",
+  "game_executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "scope": "Current native county inputs runtime readiness; no actual applied-loss/refill/starvation/film credit.",
+  "original_bytes": "All selected JSON copied exactly; mutable session source represented by one full unchanged ready record."
+}
