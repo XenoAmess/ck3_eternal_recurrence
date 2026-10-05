@@ -162,6 +162,15 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
         reinterpret_cast<decltype(monthly.get_character_modifier_aggregator)>(image_base + 0x28C3AE0);
     monthly.read_character_modifier =
         reinterpret_cast<decltype(monthly.read_character_modifier)>(image_base + 0x2303700);
+    auto &caller = result.armies.monthly_caller_effect_bindings;
+    caller.enabled = true;
+    caller.character_storage_slot = reinterpret_cast<void **>(image_base + 0x5C67568);
+    caller.character_fallback_slot = reinterpret_cast<void **>(image_base + 0x5C67570);
+    caller.war_storage_slot = reinterpret_cast<void **>(image_base + 0x5D1DE58);
+    caller.war_fallback_slot = reinterpret_cast<void **>(image_base + 0x5D1DE40);
+    caller.empty_war_ids_descriptor = reinterpret_cast<const void *>(image_base + 0x5459D38);
+    caller.contains_war_participant =
+        reinterpret_cast<decltype(caller.contains_war_participant)>(image_base + 0x2494B60);
     result.armies.is_regiment_supply_loss_eligible =
         reinterpret_cast<decltype(result.armies.is_regiment_supply_loss_eligible)>(
             image_base + ck3_12002::kRegimentSupplyLossEligibleRva12003);

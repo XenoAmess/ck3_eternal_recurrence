@@ -10,6 +10,7 @@ from .army_replenishment_records_contract import normalize_regiment_replenishmen
 
 from .army_update_clock_contract import normalize_army_update_clock_v1
 from .army_monthly_loss_budget_inputs_contract import normalize_monthly_loss_budget_inputs_v1
+from .army_monthly_caller_effect_inputs_contract import normalize_monthly_caller_effect_inputs_v1
 from .army_county_entry_inputs_contract import normalize_army_county_entry_inputs_v1
 from .battle_native_owner_recall_inputs_contract import (
     normalize_battle_native_owner_recall_inputs_v1,
@@ -277,7 +278,7 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
     key for pair in _ARMY_STRENGTH_SUPPLY_FIELD_PAIRS for key in pair
 } | {"regiment_replenishment", "regiment_strengths", "regiment_replenishment_records_v1", "current_movement_progress",
      "army_update_clock_v1", "native_owner_recall_inputs_v1", "native_maa_recruitment_inputs_v1", "owned_regiments_v1",
-     "loss_application_inputs_v1", "monthly_loss_budget_inputs_v1", "county_entry_inputs_v1", "native_army_resolution_v1"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
+     "loss_application_inputs_v1", "monthly_loss_budget_inputs_v1", "monthly_caller_effect_inputs_v1", "county_entry_inputs_v1", "native_army_resolution_v1"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -1851,6 +1852,10 @@ def _normalize_army_strength_row(
     if "monthly_loss_budget_inputs_v1" in value:
         result["monthly_loss_budget_inputs_v1"] = normalize_monthly_loss_budget_inputs_v1(
             value["monthly_loss_budget_inputs_v1"]
+        )
+    if "monthly_caller_effect_inputs_v1" in value:
+        result["monthly_caller_effect_inputs_v1"] = normalize_monthly_caller_effect_inputs_v1(
+            value["monthly_caller_effect_inputs_v1"]
         )
     if "loss_application_inputs_v1" in value:
         result["loss_application_inputs_v1"] = _normalize_loss_application_inputs_v1(

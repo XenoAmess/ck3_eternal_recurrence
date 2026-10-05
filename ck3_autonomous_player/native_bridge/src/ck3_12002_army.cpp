@@ -362,17 +362,20 @@ game::ArmyLossApplicationInputsV1 LossApplicationInputs(
 // Same generation lookup as the closed native leaves, with their actual
 // fallback object. Char FullID is+18; Fleet FullID is+10.
 void *ResolveBudgetObject(void **slot, void **fallback, std::int32_t id,
-                          std::size_t id_offset) noexcept {
+                          std::size_t id_offset, bool *used_fallback = nullptr) noexcept {
   void *objects = nullptr;
   std::int32_t capacity = 0;
   if (Storage(slot, objects, capacity)) {
     const auto index = static_cast<std::uint32_t>(id) & 0xFFFFFF;
     if (index < static_cast<std::uint32_t>(capacity)) {
       void *object = Load<void *>(objects, static_cast<std::size_t>(index) * 0x10 + 8);
-      if (object != nullptr && Load<std::int32_t>(object, id_offset) == id)
+      if (object != nullptr && Load<std::int32_t>(object, id_offset) == id) {
+        if (used_fallback != nullptr) *used_fallback = false;
         return object;
+      }
     }
   }
+  if (used_fallback != nullptr) *used_fallback = true;
   return fallback == nullptr ? nullptr : *fallback;
 }
 
@@ -467,6 +470,86 @@ game::ArmyMonthlyLossBudgetInputsV1 MonthlyBudgetInputs(
   game::ArmyMonthlyLossBudgetInputsV1 unavailable{};
   unavailable.unavailable_reason = "monthly_loss_budget_inputs_changed_during_read";
   return unavailable;
+}
+
+std::optional<std::vector<std::int32_t>> CallerIdList(const void *descriptor) {
+  if (descriptor == nullptr) return std::nullopt;
+  const auto count = Load<std::int32_t>(descriptor, 0xC);
+  if (count <= 0) return std::vector<std::int32_t>{};
+  const auto *ids = Load<const std::int32_t *>(descriptor, 0);
+  if (ids == nullptr) return std::nullopt;
+  return std::vector<std::int32_t>(ids, ids + count);
+}
+
+game::ArmyMonthlyCallerEffectInputsV1 MonthlyCallerSample(
+    const ArmyBindings &bindings, void *army, void *unit) {
+  const auto &native = bindings.monthly_caller_effect_bindings;
+  game::ArmyMonthlyCallerEffectInputsV1 result{};
+  result.army_byte_22_raw = Load<std::uint8_t>(army, 0x22);
+  const auto actor = Load<std::int32_t>(unit, 0x174);
+  result.unit_actor_character_id = actor;
+  if (bindings.game_state_slot != nullptr && *bindings.game_state_slot != nullptr) {
+    result.current_date_storage_raw64 = Load<std::int64_t>(*bindings.game_state_slot, 8);
+    void *manager = Load<void *>(*bindings.game_state_slot, 0xA0);
+    if (manager != nullptr)
+      result.manager_army_id_list_2a5a8 = CallerIdList(
+          static_cast<std::byte *>(manager) + 0x2A5A8);
+  }
+  void *character = ResolveBudgetObject(native.character_storage_slot,
+      native.character_fallback_slot, actor, 0x18);
+  if (character != nullptr) {
+    void *realm = Load<void *>(character, 0x1C0);
+    const void *descriptor = realm == nullptr ? native.empty_war_ids_descriptor
+        : static_cast<std::byte *>(realm) + 0x318;
+    const auto ids = CallerIdList(descriptor);
+    if (ids) {
+      result.war_counter_rows.emplace();
+      result.war_counter_rows->reserve(ids->size());
+      for (std::size_t index = 0; index < ids->size(); ++index) {
+        game::ArmyMonthlyCallerWarCounterRowV1 row{};
+        row.stored_index = static_cast<std::int32_t>(index);
+        row.war_reference_id = (*ids)[index];
+        bool fallback = false;
+        void *war = ResolveBudgetObject(native.war_storage_slot,
+            native.war_fallback_slot, row.war_reference_id, 8, &fallback);
+        if (war != nullptr) {
+          row.resolved_war_id = Load<std::int32_t>(war, 8);
+          row.used_fallback = fallback;
+          if (native.contains_war_participant != nullptr) {
+            // Caller asks attacker first; a match bypasses the defender query.
+            void *side = static_cast<std::byte *>(war) + 0x20;
+            if (native.contains_war_participant(side, actor)) {
+              row.native_selected_side = 0;
+            } else {
+              side = static_cast<std::byte *>(war) + 0x80;
+              row.native_selected_side = native.contains_war_participant(side, actor) ? 1 : -1;
+            }
+            if (*row.native_selected_side != -1)
+              row.native_counter_30_raw = Load<std::int32_t>(side, 0x30);
+            row.available = true;
+          }
+        }
+        if (!row.available) row.unavailable_reason = "monthly_caller_war_counter_unavailable";
+        result.war_counter_rows->push_back(row);
+      }
+    }
+  }
+  result.available = result.current_date_storage_raw64.has_value() &&
+      result.manager_army_id_list_2a5a8.has_value() && result.war_counter_rows.has_value();
+  if (result.war_counter_rows)
+    for (const auto &row : *result.war_counter_rows) result.available &= row.available;
+  if (!result.available) result.unavailable_reason = "monthly_caller_effect_operands_unavailable";
+  return result;
+}
+
+game::ArmyMonthlyCallerEffectInputsV1 MonthlyCallerInputs(
+    const ArmyBindings &bindings, void *army, void *unit) {
+  const auto first = MonthlyCallerSample(bindings, army, unit);
+  const auto second = MonthlyCallerSample(bindings, army, unit);
+  if (first == second) return second;
+  game::ArmyMonthlyCallerEffectInputsV1 result{};
+  result.unavailable_reason = "monthly_caller_effect_inputs_changed_during_read";
+  return result;
 }
 
 game::ArmyCountyEntryInputsV1 CountyEntryInputs(
@@ -701,6 +784,10 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
     if (bindings.monthly_loss_budget_bindings.enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("monthly_loss_budget_inputs_readonly");
       result.monthly_loss_budget_inputs_v1 = MonthlyBudgetInputs(bindings, army, unit);
+    }
+    if (bindings.monthly_caller_effect_bindings.enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("monthly_caller_effect_inputs_readonly");
+      result.monthly_caller_effect_inputs_v1 = MonthlyCallerInputs(bindings, army, unit);
     }
     if (bindings.county_entry_inputs_enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("county_entry_current_inputs_getters");

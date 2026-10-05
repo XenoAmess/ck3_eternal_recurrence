@@ -305,6 +305,32 @@ struct ArmyMonthlyLossBudgetInputsV1 {
                          const ArmyMonthlyLossBudgetInputsV1 &) = default;
 };
 
+// Ordered current-frame operands for24E3430's counters and deferred ArmyID list.
+struct ArmyMonthlyCallerWarCounterRowV1 {
+  bool available = false;
+  std::string unavailable_reason;
+  std::int32_t stored_index = 0;
+  std::int32_t war_reference_id = -1;
+  std::optional<std::int32_t> resolved_war_id;
+  std::optional<bool> used_fallback;
+  std::optional<std::int32_t> native_selected_side;
+  std::optional<std::int32_t> native_counter_30_raw;
+  friend bool operator==(const ArmyMonthlyCallerWarCounterRowV1 &,
+                         const ArmyMonthlyCallerWarCounterRowV1 &) = default;
+};
+
+struct ArmyMonthlyCallerEffectInputsV1 {
+  bool available = false;
+  std::string unavailable_reason;
+  std::optional<std::uint8_t> army_byte_22_raw;
+  std::optional<std::int64_t> current_date_storage_raw64;
+  std::optional<std::int32_t> unit_actor_character_id;
+  std::optional<std::vector<ArmyMonthlyCallerWarCounterRowV1>> war_counter_rows;
+  std::optional<std::vector<std::int32_t>> manager_army_id_list_2a5a8;
+  friend bool operator==(const ArmyMonthlyCallerEffectInputsV1 &,
+                         const ArmyMonthlyCallerEffectInputsV1 &) = default;
+};
+
 // Current native county-entry budget, independent of a route or applied event.
 // The predicate uses the validated current province and the FIRST province of
 // the complete stored route. It omits the entry executor's special-call flag;
@@ -418,6 +444,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmySupplyTimingSnapshot> army_update_clock_v1;
   std::optional<ArmyLossApplicationInputsV1> loss_application_inputs_v1;
   std::optional<ArmyMonthlyLossBudgetInputsV1> monthly_loss_budget_inputs_v1;
+  std::optional<ArmyMonthlyCallerEffectInputsV1> monthly_caller_effect_inputs_v1;
   std::optional<ArmyCountyEntryInputsV1> county_entry_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<NativeMaaRecruitmentInputsV1> native_maa_recruitment_inputs_v1;

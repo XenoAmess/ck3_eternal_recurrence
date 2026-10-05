@@ -132,6 +132,59 @@ inline void AppendArmyMonthlyLossBudgetInputsV1(
   output += '}';
 }
 
+template <class Number, class JsonString>
+inline void AppendArmyMonthlyCallerEffectInputsV1(
+    std::string &output, const ArmyMonthlyCallerEffectInputsV1 &inputs,
+    Number number, JsonString append_json_string) {
+  const auto status = [&](bool available, const std::string &reason, bool ready) {
+    output += "{\"status\":\"";
+    output += available ? "available" : "unavailable";
+    output += '"';
+    if (ready) { output += ",\"ready\":"; output += available ? "true" : "false"; }
+    output += ",\"unavailable_reason\":";
+    if (reason.empty()) output += "null"; else append_json_string(output, reason);
+  };
+  const auto integer = [&](std::string_view key, const auto &value) {
+    output += ",\""; output += key; output += "\":";
+    output += value.has_value() ? number(*value) : "null";
+  };
+  status(inputs.available, inputs.unavailable_reason, true);
+  integer("army_byte_22_raw", inputs.army_byte_22_raw);
+  integer("current_date_storage_raw64", inputs.current_date_storage_raw64);
+  integer("unit_actor_character_id", inputs.unit_actor_character_id);
+  output += ",\"war_counter_rows\":";
+  if (inputs.war_counter_rows) {
+    output += '[';
+    bool first = true;
+    for (const auto &row : *inputs.war_counter_rows) {
+      if (!first) output += ',';
+      first = false;
+      status(row.available, row.unavailable_reason, false);
+      output += ",\"stored_index\":" + number(row.stored_index);
+      output += ",\"war_reference_id\":" + number(row.war_reference_id);
+      integer("resolved_war_id", row.resolved_war_id);
+      output += ",\"used_fallback\":";
+      output += row.used_fallback ? (*row.used_fallback ? "true" : "false") : "null";
+      integer("native_selected_side", row.native_selected_side);
+      integer("native_counter_30_raw", row.native_counter_30_raw);
+      output += '}';
+    }
+    output += ']';
+  } else output += "null";
+  output += ",\"manager_army_id_list_2a5a8\":";
+  if (inputs.manager_army_id_list_2a5a8) {
+    output += '[';
+    bool first = true;
+    for (const auto id : *inputs.manager_army_id_list_2a5a8) {
+      if (!first) output += ',';
+      first = false;
+      output += number(id);
+    }
+    output += ']';
+  } else output += "null";
+  output += '}';
+}
+
 // One row implementation shared by the bridge and its production-reader fixture.
 // The bridge supplies its existing number, array, and string-escaping helpers.
 template <class Number, class Int32Array, class JsonString>
@@ -171,6 +224,11 @@ inline void AppendArmyStrengthV1(
     result += ",\"monthly_loss_budget_inputs_v1\":";
     AppendArmyMonthlyLossBudgetInputsV1(result, *strength.monthly_loss_budget_inputs_v1,
                                       number, append_json_string);
+  }
+  if (strength.monthly_caller_effect_inputs_v1) {
+    result += ",\"monthly_caller_effect_inputs_v1\":";
+    AppendArmyMonthlyCallerEffectInputsV1(result, *strength.monthly_caller_effect_inputs_v1,
+                                        number, append_json_string);
   }
   result += ",\"scope_role\":\"";
   switch (strength.scope_role) {

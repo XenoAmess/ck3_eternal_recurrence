@@ -15,6 +15,7 @@ from typing import Literal, Mapping, Sequence
 from .army_chunk_loss_writeback_projection import project_observed_writer_chunk_changes
 from .army_loss_sequence_replay import project_conditional_army_loss_sequence
 from .army_monthly_loss_budget_projection import construct_conditional_monthly_loss_budgets
+from .army_monthly_caller_effect_projection import project_conditional_monthly_caller_effects
 
 
 FRACTION_SCALE = 100_000
@@ -206,6 +207,8 @@ def project_observed_army_loss_requests(
     """
     result = []
     for army in army_strengths:
+        conditional_budgets = construct_conditional_monthly_loss_budgets(army)
+        conditional_caller_effects = project_conditional_monthly_caller_effects(army, conditional_budgets)
         inputs = army.get("loss_application_inputs_v1")
         if army.get("status") != "available" or not isinstance(inputs, dict) or inputs.get("status") != "available":
             result.append({
@@ -214,7 +217,8 @@ def project_observed_army_loss_requests(
                 "applied_soldier_loss": None, "passes": [],
                 "missing_inputs": ["available_loss_application_inputs_v1"],
                 "same_input_conditional_monthly_loss_budgets_v1":
-                    construct_conditional_monthly_loss_budgets(army),
+                    conditional_budgets,
+                "same_input_conditional_monthly_caller_effects_v1": conditional_caller_effects,
             })
             continue
         preferred = None
@@ -263,8 +267,9 @@ def project_observed_army_loss_requests(
             project_conditional_army_loss_sequence(army)
         )
         projection["same_input_conditional_monthly_loss_budgets_v1"] = (
-            construct_conditional_monthly_loss_budgets(army)
+            conditional_budgets
         )
+        projection["same_input_conditional_monthly_caller_effects_v1"] = conditional_caller_effects
         result.append({
             "army_id": army["army_id"], **projection,
             "input_basis": "current_readonly_inputs; conditional requests, not updater execution",

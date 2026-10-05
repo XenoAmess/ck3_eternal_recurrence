@@ -61,6 +61,16 @@ struct ArmyMonthlyLossBudgetBindings12003 {
                                          std::int32_t) = nullptr;
 };
 
+struct ArmyMonthlyCallerEffectBindings12003 {
+  bool enabled = false;
+  void **character_storage_slot = nullptr;
+  void **character_fallback_slot = nullptr;
+  void **war_storage_slot = nullptr;
+  void **war_fallback_slot = nullptr;
+  const void *empty_war_ids_descriptor = nullptr;
+  bool (*contains_war_participant)(const void *, std::int32_t) = nullptr;
+};
+
 struct ArmyBindings {
   bool enabled = false;
   void **game_state_slot = nullptr;
@@ -126,6 +136,7 @@ struct ArmyBindings {
   // Exact .3 readonly Char FullID predicate used by26341B0 before DATA writes.
   bool (*is_army_regiment_loss_writer_skipped)(void *) = nullptr;
   ArmyMonthlyLossBudgetBindings12003 monthly_loss_budget_bindings{};
+  ArmyMonthlyCallerEffectBindings12003 monthly_caller_effect_bindings{};
 };
 
 // Same GDbo key/tier implementation used by the raised ArRg reader.
