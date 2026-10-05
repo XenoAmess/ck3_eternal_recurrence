@@ -55,6 +55,35 @@ inline std::string SerializeBattleActualGeographyV1(
   out += ",\"holding_defender\":";
   out += !inputs.holding_defender ? "null"
       : (*inputs.holding_defender ? "true" : "false");
+  if (inputs.constructor_rule_effects_v1) {
+    const auto &effects = *inputs.constructor_rule_effects_v1;
+    out += ",\"constructor_rule_effects_v1\":{\"status\":";
+    String(out, effects.available ? "available" : "unavailable");
+    out += ",\"points_scale\":1,\"unavailable_reason\":";
+    if (effects.available) out += "null";
+    else String(out, effects.unavailable_reason);
+    out += ",\"rows\":[";
+    for (std::size_t i = 0; i < effects.rows.size(); ++i) {
+      if (i) out += ',';
+      const auto &row = effects.rows[i];
+      out += "{\"stage\":";
+      String(out, row.stage);
+      out += ",\"side_index\":" + std::to_string(row.side_index);
+      out += ",\"rules_pointer_offset\":" + std::to_string(row.rules_pointer_offset);
+      out += ",\"status\":";
+      String(out, row.status);
+      out += ",\"key\":";
+      if (row.key) String(out, *row.key);
+      else out += "null";
+      out += ",\"advantage_points\":";
+      out += row.advantage_points ? std::to_string(*row.advantage_points) : "null";
+      out += ",\"unavailable_reason\":";
+      if (row.unavailable_reason.empty()) out += "null";
+      else String(out, row.unavailable_reason);
+      out += '}';
+    }
+    out += "]}";
+  }
   out += '}';
   return out;
 }

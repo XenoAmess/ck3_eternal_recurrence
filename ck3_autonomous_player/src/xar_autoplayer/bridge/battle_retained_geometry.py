@@ -74,6 +74,10 @@ def retained_constructor_geometry_fields(
         if holding is None:
             missing.append("retained_holding_defender")
     crossing = _CROSSING_BY_RETAINED_KIND.get(raw_kind)
+    effects = copy.deepcopy(geometry.get("constructor_rule_effects_v1")) if geometry is not None else None
+    effects_ready = bool(exact_build and actual and crossing is not None
+                         and holding is not None and effects is not None
+                         and effects["status"] == "available")
     # These are the closed constructor's rule slots, not captured effect values.
     # Commander exclusions, scale modifiers and initial contexts stay separate.
     rule_plan = None
@@ -85,7 +89,7 @@ def retained_constructor_geometry_fields(
                 "side_index": 1, "rules_pointer_offset": 0xF10,
                 "enabled": holding, "predicate_source": "retained_combat_6FE",
             },
-            "effect_values_observed": False,
+            "effect_values_observed": effects_ready,
             "commander_exclusion_and_scale_inputs_observed": False,
         }
     diagnostic = {
@@ -109,6 +113,10 @@ def retained_constructor_geometry_fields(
         "holding_defender": holding,
         "holding_source": "retained_combat_6FE",
         "constructor_rule_plan": rule_plan,
+        "current_loaded_rule_effects": effects,
+        "loaded_selected_rule_effects_ready": effects_ready,
+        "loaded_effect_source": "current_frame_phase_effect_database_8FC3E0",
+        "loaded_effect_selection_scope": "retained_rule_slots_before_commander_exclusion_and_holding_scale",
         "missing_inputs": missing,
         "complete_constructor_ready": False,
         "future_contact_preview": False,

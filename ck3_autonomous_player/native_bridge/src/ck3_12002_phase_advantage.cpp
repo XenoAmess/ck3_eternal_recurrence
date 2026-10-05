@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12002_phase_advantage.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
+#include "xar_bridge/ck3_combat_effect_reader.hpp"
 
 #include <algorithm>
 #include <array>
@@ -9,7 +10,6 @@
 namespace xar::ck3_12002 {
 namespace {
 constexpr std::int64_t kScale = 100'000;
-constexpr std::uint32_t kEffectMagic = 0x4744624F;
 constexpr std::array<std::size_t, 3> kSupplyOffsets{0xF20, 0xF30, 0xF40};
 constexpr std::array<std::string_view, 3> kSupplyKeys{
     "supply_state_supplied_advantage", "supply_state_running_low_advantage",
@@ -39,21 +39,8 @@ void *Resolve(void **slot, std::int32_t id) noexcept {
   return result != nullptr && Load<std::int32_t>(result, 0x10) == id
       ? result : nullptr;
 }
-bool ReadKey(void *object, std::string &key) {
-  if (object == nullptr) return false;
-  const auto length = Load<std::size_t>(object, 0x28);
-  const auto capacity = Load<std::size_t>(object, 0x30);
-  if (length == 0 || length > 512 || capacity < length) return false;
-  const auto *data = capacity < 16
-      ? static_cast<const char *>(object) + 0x18
-      : Load<const char *>(object, 0x18);
-  if (data == nullptr) return false;
-  key.assign(data, length);
-  return true;
-}
-bool ValidEffect(void *effect) noexcept {
-  return effect != nullptr && Load<std::uint32_t>(effect, 0x38) == kEffectMagic;
-}
+using combat_effect_detail::ReadKey;
+using combat_effect_detail::ValidEffect;
 bool RequireKey(void *effect, std::string_view expected) {
   std::string key;
   return ValidEffect(effect) && ReadKey(effect, key) && key == expected;

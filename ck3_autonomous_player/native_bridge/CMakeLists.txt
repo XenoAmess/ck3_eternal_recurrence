@@ -7779,6 +7779,10 @@ if(BUILD_TESTING)
   add_test(NAME xar_ck3_12003_actual_battle_geography
     COMMAND xar_ck3_12003_battle_current_state_test --actual-geography-only
       "${CMAKE_BINARY_DIR}/ck3_12003_actual_geography_wire")
+  file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/ck3_12003_retained_rule_effects_wire")
+  add_test(NAME xar_ck3_12003_retained_rule_effects
+    COMMAND xar_ck3_12003_battle_current_state_test --retained-rule-effects-only
+      "${CMAKE_BINARY_DIR}/ck3_12003_retained_rule_effects_wire")
 endif()
 
 # Focused current knight effectiveness context reader and literal bridge wire.

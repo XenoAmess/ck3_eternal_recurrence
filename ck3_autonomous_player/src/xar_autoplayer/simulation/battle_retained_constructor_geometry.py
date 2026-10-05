@@ -66,3 +66,50 @@ def adapt_retained_constructor_geometry(
         holding_defender_rules_pointer_offset=plan["holding_defender"]["rules_pointer_offset"],
         game_version=source["game_version"], executable_sha256=source["executable_sha256"],
     )
+
+
+@dataclass(frozen=True, slots=True)
+class CurrentLoadedRetainedRuleEffect:
+    stage: str
+    side_index: int
+    rules_pointer_offset: int
+    status: str
+    key: str | None
+    advantage_points: int | None
+
+
+@dataclass(frozen=True, slots=True)
+class CurrentLoadedRetainedRuleEffectsInput:
+    combat_id: int
+    province_id: int
+    snapshot_revision: int
+    observed_date_raw: int
+    constructor_adjacency_kind_raw: int
+    holding_defender: bool
+    points_scale: int
+    rows: tuple[CurrentLoadedRetainedRuleEffect, ...]
+    source: str
+    selection_scope: str
+
+
+def adapt_current_loaded_retained_rule_effects(
+    diagnostic: Mapping[str, object],
+) -> CurrentLoadedRetainedRuleEffectsInput | None:
+    """Independent loaded-value input, without requiring full geometry readiness."""
+    if diagnostic.get("loaded_selected_rule_effects_ready") is not True:
+        return None
+    source = diagnostic["source"]
+    effects = diagnostic["current_loaded_rule_effects"]
+    return CurrentLoadedRetainedRuleEffectsInput(
+        combat_id=source["combat_id"], province_id=source["province_id"],
+        snapshot_revision=source["snapshot_revision"], observed_date_raw=source["observed_date_raw"],
+        constructor_adjacency_kind_raw=diagnostic["constructor_adjacency_kind_raw"],
+        holding_defender=diagnostic["holding_defender"], points_scale=effects["points_scale"],
+        rows=tuple(CurrentLoadedRetainedRuleEffect(
+            stage=row["stage"], side_index=row["side_index"],
+            rules_pointer_offset=row["rules_pointer_offset"], status=row["status"],
+            key=row["key"], advantage_points=row["advantage_points"],
+        ) for row in effects["rows"]),
+        source=diagnostic["loaded_effect_source"],
+        selection_scope=diagnostic["loaded_effect_selection_scope"],
+    )
