@@ -629,7 +629,8 @@ def normalize_current_context_source_inputs(
     for optional in ("tail_prefix_2753860_2922530", "middle_helpers_291f260_291fb10",
                      "trait_stage_291d460", "absent_recipient_inputs", "helper_2922070",
                      "conference_24b1d00", "uncached_recipient_inputs", "provider_bucket_291c5b2",
-                     "qualifier_28bc0d0", "list_predicate_2530dd0"):
+                     "qualifier_28bc0d0", "list_predicate_2530dd0",
+                     "gated_temporary_tail_291c7a7"):
         if isinstance(value, dict) and optional in value:
             fields.add(optional)
     raw = _dict(value, field, fields)
@@ -747,6 +748,13 @@ def normalize_current_context_source_inputs(
         if list_predicate is not None and list_predicate["character_id"] != normalized["character_id"]:
             raise ValueError(field + ".list_predicate_2530dd0 character disagrees with source actor")
         normalized["list_predicate_2530dd0"] = list_predicate
+    if "gated_temporary_tail_291c7a7" in raw:
+        from .battle_person_gated_temporary_tail_contract import normalize_gated_temporary_tail_291c7a7
+        gated = normalize_gated_temporary_tail_291c7a7(
+            raw["gated_temporary_tail_291c7a7"], field + ".gated_temporary_tail_291c7a7")
+        if gated is not None and gated["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".gated_temporary_tail_291c7a7 character disagrees with source actor")
+        normalized["gated_temporary_tail_291c7a7"] = gated
     return normalized
 
 
