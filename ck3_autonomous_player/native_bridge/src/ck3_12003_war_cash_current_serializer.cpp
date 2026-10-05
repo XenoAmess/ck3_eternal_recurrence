@@ -105,7 +105,18 @@ std::string SerializeCurrentResourcesV1(
       ",\"date_raw\":" + std::to_string(snapshot.date_raw) +
       ",\"active_war_ids\":" + war_ids + ",\"player_army_ids\":" + ArmyIds(snapshot) +
       ",\"current_treasury\":" + Fixed(resources.current_treasury_raw) +
+      ",\"player_monthly_gross_income\":" + Fixed(resources.monthly_gross_income_raw) +
+      ",\"player_monthly_total_expenses\":" + Fixed(resources.monthly_total_expenses_raw) +
       ",\"player_monthly_net_income\":" + Fixed(resources.monthly_net_income_raw) +
+      ",\"monthly_income_semantics\":{\"version\":\"ck3-1.20.0.3-native-income-minus-total-expenses-v2\","
+      "\"time_basis\":\"month\",\"source_scope\":\"played_character_personal_gold\","
+      "\"income_source\":\"native_character_monthly_gold_income\","
+      "\"expense_source\":\"native_character_monthly_total_gold_expenses\","
+      "\"military_expenses_included\":true},"
+      "\"monthly_gross_income_unavailable_reason\":" +
+      (resources.monthly_gross_income_raw ? "null" : Reason(resources.gross_income_unavailable_reason)) +
+      ",\"monthly_total_expenses_unavailable_reason\":" +
+      (resources.monthly_total_expenses_raw ? "null" : Reason(resources.total_expenses_unavailable_reason)) +
       ",\"current_treasury_unavailable_reason\":" +
       (treasury ? "null" : Reason(resources.treasury_unavailable_reason)) +
       ",\"monthly_net_income_unavailable_reason\":" +
@@ -114,6 +125,8 @@ std::string SerializeCurrentResourcesV1(
       Expense(resources.current, actor, war_ids, false) + ",\"all_raised\":" +
       Expense(resources.all_raised, actor, war_ids, true) + "},\"readiness\":{"
       "\"current_treasury_ready\":" + Bool(treasury) +
+      ",\"monthly_gross_income_ready\":" + Bool(resources.monthly_gross_income_raw.has_value()) +
+      ",\"monthly_total_expenses_ready\":" + Bool(resources.monthly_total_expenses_raw.has_value()) +
       ",\"monthly_net_income_ready\":" + Bool(income) +
       ",\"current_military_expenses_ready\":" + Bool(resources.current.available) +
       ",\"all_raised_military_expenses_ready\":" + Bool(resources.all_raised.available) +

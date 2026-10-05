@@ -163,3 +163,14 @@ Root直接审阅四张精确PNG：末帧面板1086人、补给300/300、HUD1067J
 actual day15 save72775729B/SHA2255db3e442650afac51e4e5d75bea7ed9864a90e3b4d1d96de243ef6dd7257f、同SHA immutable seed及保存前后paused/map_ready身份保全。SDK线程退出、CK3/recorder Job空、屏幕资源CAS释放，Root直接审阅新的Steam离线关闭图并恢复1024×768；这些为R0164历史收口证据。后续独立R0165只续余15日、总end53147880，实际证据另记，不是A/B/C。
 
 仍需十一tooltip、实际整数补员、actual merge、同档A/B/C三回放、累计支付/路线代价与全文/TTS/成片/1×签核/指定视频交付。本例闭合库存恢复与人数未增长的区别，不清空这些门槛。权威总账没有正式加权分母，研究完成百分比保持null；900秒素材不能换算研究或影片完成百分比。
+
+
+## 2026-10-05 费用口径勘误：旧月 NET 实为月总收入
+
+**本节纠正前文费用口径，原始事实和历史文字保留：旧 `.3` `player_monthly_net_income` 只读 `2BCA960`，实际是月总收入。** [费用原生专题追加勘误](../../../docs/ck3-native-ai/war-cash-current-resources-12003.md) 逐项说明初始 “already net” 合同、Robert `+3.57546` 与 R0162 William `+4.69417` 三处旧解释。R0164 Jan11 的 `469417` 同为收入侧，不能标为已扣全部支出的 NET；各帧金币余额、current/all-raised 维护保留其原先已验范围。旧原始 payload/录像/文档历史均不重写。
+
+Exact1.20.0.3 静态原版 HUD 链为 `28BFDA0` 返回 ExpenseContextCharacter，`2BCA960` 收入与 secondary 输出，`2BCB180` 完整支出（包含军事，按原版 false/nil 参数），再做 signed income−expenses；缓存净额 getter无除30。原版显示月口径有 GUI/本地化和实际 writer 证明；没有同帧完整支出采样，不能用 HUD `+0.2`/`+0.3` 与旧收入的数学拟合建立每日率或跨日期的精确对账。
+
+最小 source 候选保留现有 NET 字段，增加 gross/total 可审输入和 exact `.3` 语义标记 `ck3-1.20.0.3-native-income-minus-total-expenses-v2`；失败与 signed overflow 为 null/明确原因，合法零仍是0。无标记历史 packet 不取得新 NET 信用。当前只完成外置生产 reader/serializer/fake-bindings 严格构建、六份实际 wire 的注册 in-memory MCP合同、8项 Python合同和 focused CMake/CTest；源码集成、新 DLL、实际暂停净值读取仍由Root另验。提醒前新路径 test EXE 运行缺少 Defender 排除回读的流程缺口已记录，之后停跑并交精确 CMake target 待登记；没有自行提权或扩大排除范围。
+
+R0165 使用旧 a06继续独立兵员采样时，只消费已确认金币余额，旧 NET 禁止用于费用计算。P0-TERM11、同档 A/B/C、登船实际付款 ledger、累计行军代价、影片/TTS/完整人工签核与交付仍按各自证据闭合；本次静态费用修正不提升这些门禁或影片完成百分比。净额、维护月率与实付流水必须分开：只在新的 true-NET 字段已验时说明军事支出已包含，不能再扣军费一次。

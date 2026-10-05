@@ -96,3 +96,24 @@ The focused suite also exposed a historical fixture-byte mismatch: all six track
 `initial-cash-a02.json` 同 paused native:2/public3/date53147160，角色33388；runtime Python dba795、DLL 编译来源2db29c，二者 native C++树逐字节相同。个人金币654.18341，已经净掉支出的月收入+4.69417；当前军费3.88749/月，全部集结替代月率4.87050/月。不能把两种军费相加，也不能再从净收入扣一次。raw整数/100000精确换算。两个十槽vector完整、treasury槽6=0，不把 treasury 并入个人gold。
 
 player_army_ids [0,16777220,166] 与同帧snapshot一致；这里的0是合法PublicCUnitID，不从cash表推nativeCArmyID或免费军队。cash packet SHA7a0430c2e7211a76cb2e0af514ebe2247b86336b9a195ca62ad63f94582adfc9；完整解释在 `C:/ck3-war-episode04-research-20261004-a01/cash-live-r0162-a01/ACTUAL-CASH-INTERPRETATION.json`。已实读财务primitive不等于正式战争预算loop：advertised=false/formal_action_ready=false，未取得累计行军费用、登船实际支付流水或逐军分摊。
+
+
+## 2026-10-05 勘误：旧 NET 字段实际为月总收入；新版完整支出合同
+
+**上文三处历史 NET 解释已纠正，原日期、原始 packet、失败 attempt 和当时文字保留。旧 `.3` producer 的 `player_monthly_net_income` 实际只调用 `0x2BCA960`，取得月总收入，不能按已扣支出的净额使用。** 本勘误不重写历史原始数据，也不将静态修复当作新 DLL 实机验收。
+
+| 保留的旧记载 | 2026-10-05 纠正及使用边界 |
+| --- | --- |
+| 初始 “Monthly net gold / `2BCA960`”、字段意义和 “already net” 解释 | `2BCA960` 为月金币收入侧；完整月金币支出是 `2BCB180`，净值必须为二者差，不能只扣军费 |
+| 2026-10-04 Robert29829 实读 `357546`，旧表写 `+3.57546` 月净额 | 保留该读取事实；值只证明月总收入 `+3.57546`，实际完整支出和 NET 当时未读 |
+| 2026-10-05 追加的 R0162 William33388 实读 `469417`，旧文写已净支出 `+4.69417` | 保留原 packet SHA `7a0430c2e7211a76cb2e0af514ebe2247b86336b9a195ca62ad63f94582adfc9`；值是月总收入 `+4.69417`，不能再把它作为 NET。R0164 Jan11 同数值也适用这一纠正 |
+
+上述帧的金币余额及 current/all-raised 维护读取不因此失效。两种维护仍为角色跨全部战争各计一次的替代总量，不相加、不按战争数乘、不把 treasury 资源槽6加入个人金币。**只有新 `monthly_income_semantics.version=ck3-1.20.0.3-native-income-minus-total-expenses-v2` 才证明本次 NET 合同；旧无标记 packet 的字段名和 ready=true 均不能代替该语义证明。**
+
+Exact `.3` HUD 原生 writer `DF1C70..DF20C9`（1113B / SHA `e5b02e7831555c2edcb37227e4530858ce24a6041a14d9659adceb97c68b28e9`）先取得 `28BFDA0(Character)` 返回的 ExpenseContextCharacter，再调用 `2BCA960(out64, Character, secondary_out64, nullptr)`，将 secondary 收入整数交给 `2BCB180(out64, Character, ExpenseContextCharacter, secondary_income64, false, nullptr)`，最后做收入减完整支出并写 Topbar `+B88`。返回 context 可以不同于 played Character，按原版链传递；`false` 保留军事支出，不以军事小计代替完整支出。两个数均为 signed int64 /100000、金币/月；此 writer 不除30。`InGameTopbar.GetGoldBalance` 读取该缓存。Renderer epoch 与真实结算时刻分开，R0164 HUD 的 `+0.2`/`+0.3` 不能凭数值拟合恢复未采样的完整支出，也不能证明不同日期 cache 与 private query 同帧。未经核验的 `.2` 不外推。
+
+新版 [reader](../../ck3_autonomous_player/native_bridge/src/ck3_12003_war_cash_current_reader.cpp) 保留已核 `.3` EXE SHA 绑定、paused owning-thread mailbox 和完整快照前后相等门禁，增加 Character 类型/full ID/alive 重读与 caller-out 返回指针核对；丢失 context、getter、身份或返回指针时 NET 保持 null，有效零保留0，signed 减法溢出保留两个可审输入并把 NET 置为明确 unknown。序列化添加 `player_monthly_gross_income`、`player_monthly_total_expenses` 和独立 availability/reason；原 NET 字段保持位置并改为真正净额。Python 对新标记严格核对 exact build、月/个人金币 scope、signed scale100000、readiness 与数学合同；旧无标记原始 payload 按历史合同保留，不能被追认成已验 NET。
+
+外置候选基于主树 `c77734c9c11a90b8080139d4658e9bd27b2b8464`，来源和 focused 验证包在 `C:/ck3-war-episode04-research-20261004-a01/cash-net-fix-candidate-20261005-a01/`。实际生产 reader/serializer 配 fake native bindings 的严格 MSVC Release/NDEBUG 构建已通过，六份实际序列化 wire 经注册的 in-memory MCP、实际 driver 和生产 normalizer 完整往返；新增 Python 合同8项通过。Focused CMake target及两项 CTest也实际通过。提醒前测试 EXE 曾在新路径排除回读前运行，流程缺口与待登记 target manifest 如实保存在 `defender-registration-pending-a01/PENDING.json`，随后停止 EXE 重跑；不把此前执行说成已符合新路径排除门禁。所有测试为 offline/static，未执行 CK3 原生 getter、游戏、屏幕或 live SDK。
+
+Root 仍需按顺序审核/集成源码、用已正式登记的构建输出生成新 DLL，冻结新来源后取得一次实际暂停 current-cash packet，核对 gross、完整 total、NET、语义标记和 same-frame。R0165 旧 a06 只用已证余额，不消费旧 NET 做费用计算。当前仍无实际累计行军费用、登船付款流水、逐军维护分摊或完整战争预算 loop；净率不等于实付，也不能从新 NET 再扣一次军事维护。

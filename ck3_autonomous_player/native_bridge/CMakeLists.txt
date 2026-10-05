@@ -7860,3 +7860,33 @@ if(XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1)
   target_compile_options(xar_ck3_white_numeric_control_specs_v1_test PRIVATE $<$<CXX_COMPILER_ID:MSVC>:/UNDEBUG>)
   add_test(NAME xar_ck3_white_numeric_control_specs_v1_test COMMAND xar_ck3_white_numeric_control_specs_v1_test)
 endif()
+
+# True monthly NET: real production reader/serializer with fake native bindings.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12003_war_cash_net_income_test
+    src/ck3_12003_war_cash_current_reader.cpp
+    src/ck3_12003_war_cash_current_serializer.cpp
+    src/ck3_12003_war_cash_net_income_test.cpp)
+  target_include_directories(xar_ck3_12003_war_cash_net_income_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_war_cash_net_income_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_war_cash_net_income_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_war_cash_net_income_test PRIVATE
+      /W4 /WX /permissive- /EHsc /Gy /O2)
+    target_link_options(xar_ck3_12003_war_cash_net_income_test PRIVATE /OPT:REF)
+  endif()
+  add_test(NAME xar_ck3_12003_war_cash_net_income
+    COMMAND xar_ck3_12003_war_cash_net_income_test
+      "${CMAKE_BINARY_DIR}/ck3_12003_war_cash_net_income_wire")
+  add_test(NAME xar_ck3_12003_war_cash_net_income_registered_mcp
+    COMMAND ${Python3_EXECUTABLE} -O
+      "${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/run_war_cash_net_income_mcp_fixture.py"
+      --projection-root "${CMAKE_CURRENT_SOURCE_DIR}/../.."
+      --native-dir "${CMAKE_BINARY_DIR}/ck3_12003_war_cash_net_income_wire"
+      --output-dir "${CMAKE_BINARY_DIR}/ck3_12003_war_cash_net_income_registered")
+  set_tests_properties(xar_ck3_12003_war_cash_net_income PROPERTIES
+    FIXTURES_SETUP war_cash_net_income_wire)
+  set_tests_properties(xar_ck3_12003_war_cash_net_income_registered_mcp PROPERTIES
+    FIXTURES_REQUIRED war_cash_net_income_wire)
+endif()

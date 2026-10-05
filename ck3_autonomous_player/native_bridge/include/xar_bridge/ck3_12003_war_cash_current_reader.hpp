@@ -11,16 +11,27 @@
 
 namespace xar::ck3_12003::war_cash_current {
 
-inline constexpr std::uintptr_t kMonthlyNetIncomeRva = 0x2BCA960;
+inline constexpr std::uintptr_t kMonthlyIncomeRva = 0x2BCA960;
+inline constexpr std::uintptr_t kExpenseContextCharacterRva = 0x28BFDA0;
+inline constexpr std::uintptr_t kMonthlyTotalExpensesRva = 0x2BCB180;
 inline constexpr std::uintptr_t kCurrentMaintenanceRva = 0x2C13F80;
 inline constexpr std::uintptr_t kAllRaisedMaintenanceRva = 0x2C152D0;
 inline constexpr std::int64_t kResourceScale = 100000;
 inline constexpr std::size_t kGoldResourceSlot = 0;
 inline constexpr std::size_t kTreasuryResourceSlot = 6;
 
-using MonthlyNetIncome = std::int64_t *(*)(
-    std::int64_t *output, void *character, void *optional_breakdown,
-    void *evaluation_context);
+// Exact HUD consumer: third arg is an optional secondary income output;
+// fourth arg is the optional breakdown. Neither is a generic UI context.
+using MonthlyIncome = std::int64_t *(*)(
+    std::int64_t *output, void *character, std::int64_t *secondary_income,
+    void *optional_breakdown);
+// Vanilla resolves this (potentially another Character) through the actor
+// ancestry chain and passes it unchanged to its total expense function.
+using ExpenseContextCharacter = void *(*)(void *character);
+using MonthlyTotalExpenses = std::int64_t *(*)(
+    std::int64_t *output, void *character, void *expense_context_character,
+    std::int64_t secondary_income, bool exclude_military,
+    void *optional_breakdown);
 using CurrentMaintenance = std::int64_t *(*)(
     std::int64_t *output, void *character, void *optional_breakdown);
 using AllRaisedMaintenance = std::int64_t *(*)(
@@ -28,7 +39,9 @@ using AllRaisedMaintenance = std::int64_t *(*)(
 
 struct Bindings {
   bool enabled = false;
-  MonthlyNetIncome monthly_net_income = nullptr;
+  MonthlyIncome monthly_income = nullptr;
+  ExpenseContextCharacter expense_context_character = nullptr;
+  MonthlyTotalExpenses monthly_total_expenses = nullptr;
   CurrentMaintenance current_maintenance = nullptr;
   AllRaisedMaintenance all_raised_maintenance = nullptr;
 };
@@ -42,11 +55,17 @@ struct MilitaryResources {
 struct ActorResources {
   // Personal stock GetGold balance; distinct from military resource slot 6.
   std::optional<std::int64_t> current_treasury_raw;
-  // Independent native scalar, never derived from maintenance or save deltas.
+  // Same exact native income/total-expense pair used by the gold HUD.
+  // NET is their checked subtraction, never derived from military alone
+  // or from elapsed wallet deltas. Old v1 packets used a mislabeled income.
+  std::optional<std::int64_t> monthly_gross_income_raw;
+  std::optional<std::int64_t> monthly_total_expenses_raw;
   std::optional<std::int64_t> monthly_net_income_raw;
   MilitaryResources current;
   MilitaryResources all_raised;
   std::string treasury_unavailable_reason = "not_sampled";
+  std::string gross_income_unavailable_reason = "not_sampled";
+  std::string total_expenses_unavailable_reason = "not_sampled";
   std::string income_unavailable_reason = "not_sampled";
   std::string unavailable_reason = "not_sampled";
 };
