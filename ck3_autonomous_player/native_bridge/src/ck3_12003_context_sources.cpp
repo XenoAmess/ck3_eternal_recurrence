@@ -1153,6 +1153,7 @@ game::ContextSource291d7e0V1 BranchB(const ContextSourceBindingsV1 &b,
 #include "ck3_12003_person_qualifier_28bc0d0.inc.hpp"
 #include "ck3_12003_person_list_predicate_2530dd0.inc.hpp"
 #include "ck3_12003_person_gated_temporary_tail.inc.hpp"
+#include "ck3_12003_person_after_gated_tail.inc.hpp"
 
 game::ContextSourceLaterDirectV1 LaterDirect(
     const ContextSourceBindingsV1 &b, const void *character,
@@ -1355,6 +1356,7 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   b.qualifier_28bc0d0 = BindQualifier28bc0d0Sources12003(base);
   b.list_predicate_2530dd0 = BindListPredicate2530dd0Sources12003(base);
   b.gated_temporary_tail = BindGatedTemporaryTailSources12003(base);
+  b.after_gated_tail = BindAfterGatedTailSources12003(base);
   b.provider = reinterpret_cast<void *(*)()>(base + 0x8FD4E0);
   b.post_291d7e0_sources_enabled = true;
   b.post_ab_object_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E308);
@@ -1440,6 +1442,8 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.list_predicate_2530dd0 = ListPredicate2530dd0Inputs(b, character, character_id);
   if (b.gated_temporary_tail.enabled)
     out.gated_temporary_tail_291c7a7 = GatedTemporaryTail291c7a7Inputs(b, character, character_id);
+  if (b.after_gated_tail.enabled)
+    out.after_gated_tail_326a8e0_2920310 = AfterGatedTail326a8e0And2920310(b, character, character_id);
   out.branch_291e210 = BranchA(b, character);
   out.branch_291d7e0 = BranchB(b, character);
   if (b.post_291d7e0_sources_enabled)
@@ -1482,6 +1486,8 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.ready = out.ready && out.list_predicate_2530dd0->ready;
   if (out.gated_temporary_tail_291c7a7)
     out.ready = out.ready && out.gated_temporary_tail_291c7a7->ready;
+  if (out.after_gated_tail_326a8e0_2920310)
+    out.ready = out.ready && out.after_gated_tail_326a8e0_2920310->ready;
   out.status = out.ready ? "available" : "partial";
   if (!out.ready) out.reason = "context_source_reads_unavailable";
   return out;
