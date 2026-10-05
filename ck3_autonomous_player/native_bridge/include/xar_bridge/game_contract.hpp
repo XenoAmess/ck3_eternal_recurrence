@@ -2525,6 +2525,9 @@ struct BattleCurrentPersonDeathRecordSnapshotV1 {
   // available/null. A copied empty stable key remains an empty string.
   std::optional<std::string> reason_key;
   std::string unavailable_reason;
+  std::optional<std::uint64_t> date_object_raw_u64;
+  std::optional<std::int32_t> killer_full_character_id_raw;
+  std::optional<std::int32_t> artifact_full_id_raw;
   friend bool operator==(const BattleCurrentPersonDeathRecordSnapshotV1 &,
                          const BattleCurrentPersonDeathRecordSnapshotV1 &) = default;
 };
@@ -2809,6 +2812,38 @@ struct BattleTerminalSuccessorSnapshotV1 {
       default;
 };
 
+// Current native pending storage, independent of selected script requests.
+struct BattlePendingDeathQueueRowSnapshotV1 {
+  std::string status = "unavailable";
+  std::string unavailable_reason;
+  std::int32_t row_index = 0;
+  std::optional<bool> victim_pointer_present;
+  std::optional<std::int32_t> victim_full_character_id_raw;
+  std::optional<bool> victim_death_data_pointer_present;
+  std::optional<bool> reason_pointer_present;
+  std::optional<std::string> reason_key;
+  std::optional<std::uint64_t> date_object_raw_u64;
+  std::optional<bool> killer_pointer_present;
+  std::optional<std::int32_t> killer_full_character_id_raw;
+  std::optional<bool> artifact_pointer_present;
+  std::optional<std::int32_t> artifact_full_id_raw;
+  friend bool operator==(const BattlePendingDeathQueueRowSnapshotV1 &,
+                         const BattlePendingDeathQueueRowSnapshotV1 &) = default;
+};
+struct BattlePendingDeathQueueSnapshotV1 {
+  std::string status = "unavailable";
+  std::string unavailable_reason;
+  std::optional<bool> source_state_pointer_present;
+  std::optional<bool> manager_owner_pointer_present;
+  std::optional<std::uint8_t> execution_mode_raw;
+  std::optional<bool> data_pointer_present;
+  std::optional<std::int32_t> capacity_raw;
+  std::optional<std::int32_t> count_raw;
+  std::optional<std::vector<BattlePendingDeathQueueRowSnapshotV1>> rows;
+  friend bool operator==(const BattlePendingDeathQueueSnapshotV1 &,
+                         const BattlePendingDeathQueueSnapshotV1 &) = default;
+};
+
 struct BattleTerminalTransitionSnapshotV1 {
   BattleTerminalTransitionStatusV1 status =
       BattleTerminalTransitionStatusV1::unavailable;
@@ -2825,6 +2860,7 @@ struct BattleTerminalTransitionSnapshotV1 {
   BattleTerminalSuccessorSnapshotV1 successor;
   std::optional<std::vector<BattleTerminalCharacterCustodySnapshotV1>>
       character_observations;
+  std::optional<BattlePendingDeathQueueSnapshotV1> pending_death_queue;
 
   friend bool operator==(const BattleTerminalTransitionSnapshotV1 &,
                          const BattleTerminalTransitionSnapshotV1 &) =

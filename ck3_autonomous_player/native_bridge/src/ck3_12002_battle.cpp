@@ -1255,6 +1255,94 @@ game::BattleCurrentPersonPriorContextInputsSnapshotV1 CurrentPriorContextInputs(
   return out;
 }
 
+// Same exact .3 stable-key span used by current-person and pending rows.
+// Null reason and an empty owning copy are legal, distinct observations.
+bool CopyDeathReasonKey(const void *reason,
+                        std::optional<std::string> &out) {
+  if (!reason) return true;
+  const auto length = At<std::uint32_t>(reason, 0x28);
+  const auto capacity = At<std::uint64_t>(reason, 0x30);
+  const char *const key = capacity < 16
+      ? static_cast<const char *>(reason) + 0x18
+      : At<const char *>(reason, 0x18);
+  if (length == 0) {
+    out.emplace();
+    return true;
+  }
+  if (!key) return false;
+  out.emplace(key, static_cast<std::size_t>(length));
+  return true;
+}
+
+game::BattlePendingDeathQueueSnapshotV1 PendingDeathQueueSample(
+    const BattleBindings &b) {
+  game::BattlePendingDeathQueueSnapshotV1 out{};
+  // EnableBattleCurrentPerson12003 already binds this exact global slot.
+  // The queue is independent of prior-context flags and requested person IDs.
+  if (!b.current_person_prior_owner_slot) {
+    out.unavailable_reason = "pending_death_queue_state_slot_unbound";
+    return out;
+  }
+  const void *const state = *b.current_person_prior_owner_slot;
+  out.source_state_pointer_present = state != nullptr;
+  if (!state) {
+    out.unavailable_reason = "pending_death_queue_state_unavailable";
+    return out;
+  }
+  out.execution_mode_raw = At<std::uint8_t>(state, 0xC1);
+  const void *const owner = At<const void *>(state, 0xA0);
+  out.manager_owner_pointer_present = owner != nullptr;
+  if (!owner) {
+    out.unavailable_reason = "pending_death_queue_manager_owner_unavailable";
+    return out;
+  }
+  const void *const manager = static_cast<const std::byte *>(owner) + 0x2EE40;
+  out.capacity_raw = At<std::int32_t>(manager, 0x4E10);
+  out.count_raw = At<std::int32_t>(manager, 0x4E14);
+  out.data_pointer_present = At<const void *>(manager, 0x4E08) != nullptr;
+  const void *rows = nullptr;
+  std::int32_t count = 0;
+  if (!Header(manager, 0x4E08, 0x4E10, 0x4E14, rows, count)) {
+    out.unavailable_reason = "pending_death_queue_header_unavailable";
+    return out;
+  }
+  out.rows.emplace();
+  out.rows->reserve(static_cast<std::size_t>(count));
+  for (std::int32_t index = 0; index < count; ++index) {
+    const void *const source = static_cast<const std::byte *>(rows)
+        + static_cast<std::size_t>(index) * 0x30;
+    game::BattlePendingDeathQueueRowSnapshotV1 row{};
+    row.row_index = index;
+    const void *const victim = At<const void *>(source, 0x08);
+    row.victim_pointer_present = victim != nullptr;
+    if (victim) {
+      row.victim_full_character_id_raw = At<std::int32_t>(victim, 0x18);
+      row.victim_death_data_pointer_present =
+          At<const void *>(victim, kCharacterDeathDataOffset) != nullptr;
+    }
+    const void *const reason = At<const void *>(source, 0x10);
+    row.reason_pointer_present = reason != nullptr;
+    row.date_object_raw_u64 = At<std::uint64_t>(source, 0x18);
+    const void *const killer = At<const void *>(source, 0x20);
+    row.killer_pointer_present = killer != nullptr;
+    if (killer)
+      row.killer_full_character_id_raw = At<std::int32_t>(killer, 0x18);
+    const void *const artifact = At<const void *>(source, 0x28);
+    row.artifact_pointer_present = artifact != nullptr;
+    if (artifact)
+      row.artifact_full_id_raw = At<std::int32_t>(artifact, 0x10);
+    if (CopyDeathReasonKey(reason, row.reason_key)) {
+      row.status = "available";
+    } else {
+      row.unavailable_reason = "death_reason_key_storage_unavailable";
+    }
+    out.rows->push_back(std::move(row));
+  }
+  // Presence in this current ordered vector is not admission or commit history.
+  out.status = "available";
+  return out;
+}
+
 game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
     const BattleBindings &b, void *character, std::int32_t character_id) noexcept {
   game::BattleCurrentPersonStateSnapshotV1 observed{};
@@ -1278,27 +1366,15 @@ game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
     if (!data) {
       death.status = game::BattleCurrentPersonDeathRecordStatusV1::none;
     } else {
+      // Independent raw metadata from the actual current DeathData object.
+      death.date_object_raw_u64 = At<std::uint64_t>(data, 0x04);
+      death.killer_full_character_id_raw = At<std::int32_t>(data, 0x18);
+      death.artifact_full_id_raw = At<std::int32_t>(data, 0x1C);
       const void *const reason = At<void *>(data, 0x10);
-      if (!reason) {
+      if (CopyDeathReasonKey(reason, death.reason_key)) {
         death.status = game::BattleCurrentPersonDeathRecordStatusV1::available;
       } else {
-        // Exact .3 CDeathReason getter 0x2F52EC0: low DWORD length,
-        // unsigned qword capacity, and primary definition key at +0x18.
-        // Copy the owning-thread span; do not invoke its locked DB getter.
-        const auto length = At<std::uint32_t>(reason, 0x28);
-        const auto capacity = At<std::uint64_t>(reason, 0x30);
-        const char *const key = capacity < 16
-            ? static_cast<const char *>(reason) + 0x18
-            : At<const char *>(reason, 0x18);
-        if (length == 0) {
-          death.reason_key.emplace();
-          death.status = game::BattleCurrentPersonDeathRecordStatusV1::available;
-        } else if (key) {
-          death.reason_key.emplace(key, static_cast<std::size_t>(length));
-          death.status = game::BattleCurrentPersonDeathRecordStatusV1::available;
-        } else {
-          death.unavailable_reason = "death_reason_key_storage_unavailable";
-        }
+        death.unavailable_reason = "death_reason_key_storage_unavailable";
       }
     }
   }
@@ -1393,6 +1469,8 @@ bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
   o.prior_combat_id = r.prior_combat_id;
   o.subject_public_cunit_id = r.subject_public_cunit_id;
   o.prior.combat_id = r.prior_combat_id;
+  if (b.current_person_state_enabled)
+    o.pending_death_queue = PendingDeathQueueSample(b);
   if (!r.character_ids.empty()) {
     o.character_observations.emplace();
     for (const auto id : r.character_ids) {

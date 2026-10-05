@@ -264,6 +264,73 @@ bool ValidCharacterObservations(
   return true;
 }
 
+bool AppendPendingDeathQueueRow(
+    std::string &output, const game::BattlePendingDeathQueueRowSnapshotV1 &row) {
+  output += "{\"status\":";
+  AppendJsonString(output, row.status);
+  output += ",\"unavailable_reason\":";
+  if (row.status == "available") output += "null";
+  else AppendJsonString(output, row.unavailable_reason);
+  output += ",\"row_index\":";
+  if (!AppendNumber(output, row.row_index)) return false;
+  output += ",\"victim_pointer_present\":";
+  AppendOptionalBool(output, row.victim_pointer_present);
+  output += ",\"victim_full_character_id_raw\":";
+  if (!AppendOptionalNumber(output, row.victim_full_character_id_raw)) return false;
+  output += ",\"victim_death_data_pointer_present\":";
+  AppendOptionalBool(output, row.victim_death_data_pointer_present);
+  output += ",\"reason_pointer_present\":";
+  AppendOptionalBool(output, row.reason_pointer_present);
+  output += ",\"reason_key\":";
+  if (row.reason_key) AppendJsonString(output, *row.reason_key);
+  else output += "null";
+  output += ",\"date_object_raw_u64\":";
+  if (!AppendOptionalNumber(output, row.date_object_raw_u64)) return false;
+  output += ",\"killer_pointer_present\":";
+  AppendOptionalBool(output, row.killer_pointer_present);
+  output += ",\"killer_full_character_id_raw\":";
+  if (!AppendOptionalNumber(output, row.killer_full_character_id_raw)) return false;
+  output += ",\"artifact_pointer_present\":";
+  AppendOptionalBool(output, row.artifact_pointer_present);
+  output += ",\"artifact_full_id_raw\":";
+  if (!AppendOptionalNumber(output, row.artifact_full_id_raw)) return false;
+  output += '}';
+  return true;
+}
+
+bool AppendPendingDeathQueue(
+    std::string &output, const game::BattlePendingDeathQueueSnapshotV1 &queue) {
+  output += "{\"status\":";
+  AppendJsonString(output, queue.status);
+  output += ",\"unavailable_reason\":";
+  if (queue.status == "available") output += "null";
+  else AppendJsonString(output, queue.unavailable_reason);
+  output += ",\"source_state_pointer_present\":";
+  AppendOptionalBool(output, queue.source_state_pointer_present);
+  output += ",\"manager_owner_pointer_present\":";
+  AppendOptionalBool(output, queue.manager_owner_pointer_present);
+  output += ",\"execution_mode_raw\":";
+  if (!AppendOptionalNumber(output, queue.execution_mode_raw)) return false;
+  output += ",\"data_pointer_present\":";
+  AppendOptionalBool(output, queue.data_pointer_present);
+  output += ",\"capacity_raw\":";
+  if (!AppendOptionalNumber(output, queue.capacity_raw)) return false;
+  output += ",\"count_raw\":";
+  if (!AppendOptionalNumber(output, queue.count_raw)) return false;
+  output += ",\"rows\":";
+  if (!queue.rows) output += "null";
+  else {
+    output += '[';
+    for (std::size_t index = 0; index < queue.rows->size(); ++index) {
+      if (index != 0) output += ',';
+      if (!AppendPendingDeathQueueRow(output, (*queue.rows)[index])) return false;
+    }
+    output += ']';
+  }
+  output += '}';
+  return true;
+}
+
 bool AppendCharacterObservations(
     std::string &output,
     const std::optional<std::vector<game::BattleTerminalCharacterCustodySnapshotV1>>
@@ -754,6 +821,10 @@ std::string SerializeBattleTerminalTransitionV1(
   if (!AppendNumber(output, snapshot.subject_public_cunit_id)) return {};
   output += ",\"character_observations\":";
   if (!AppendCharacterObservations(output, snapshot.character_observations, true)) return {};
+  if (snapshot.pending_death_queue) {
+    output += ",\"pending_death_queue\":";
+    if (!AppendPendingDeathQueue(output, *snapshot.pending_death_queue)) return {};
+  }
   const auto &journal = snapshot.terminal_journal;
   output += ",\"terminal_journal\":{\"requested_after_sequence\":";
   if (!AppendOptionalNumber(output, journal.requested_after_sequence)) return {};

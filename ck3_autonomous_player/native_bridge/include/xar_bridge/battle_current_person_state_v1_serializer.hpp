@@ -400,6 +400,12 @@ inline std::string SerializeBattleCurrentPersonStateV1(
     AppendString(output, *death.reason_key);
   else
     output += "null";
+  output += ",\"date_object_raw_u64\":";
+  AppendRawNumber(output, death.date_object_raw_u64);
+  output += ",\"killer_full_character_id_raw\":";
+  AppendRawNumber(output, death.killer_full_character_id_raw);
+  output += ",\"artifact_full_id_raw\":";
+  AppendRawNumber(output, death.artifact_full_id_raw);
   output += ",\"unavailable_reason\":";
   AppendReason(output,
                death.status != xar::game::BattleCurrentPersonDeathRecordStatusV1::unavailable,

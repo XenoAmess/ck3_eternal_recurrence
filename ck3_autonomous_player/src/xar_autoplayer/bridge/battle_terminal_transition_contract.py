@@ -41,7 +41,9 @@ _TOP_FIELDS: Final = {
     "subject",
     "successor",
 }
-_TOP_OPTIONAL_EXTENSION_FIELDS: Final = {"character_observations"}
+_TOP_OPTIONAL_EXTENSION_FIELDS: Final = {
+    "character_observations", "pending_death_queue",
+}
 _JOURNAL_FIELDS: Final = {
     "requested_after_sequence",
     "oldest_available_sequence",
@@ -511,6 +513,83 @@ def _normalize_current_prior_context_inputs(value: object, field: str) -> dict[s
             "selected_property_blocks": selected}
 
 
+def _normalize_pending_death_queue(value: object) -> dict[str, object] | None:
+    """Copy current ordered native storage; do not infer callback or commit."""
+    if value is None:
+        return None
+    field = "battle_terminal_transition.pending_death_queue"
+    queue = _exact_dict(value, field, {
+        "status", "unavailable_reason", "source_state_pointer_present",
+        "manager_owner_pointer_present", "execution_mode_raw",
+        "data_pointer_present", "capacity_raw", "count_raw", "rows",
+    })
+
+    def observed_status(row: dict[str, object], path: str) -> None:
+        status, reason = row["status"], row["unavailable_reason"]
+        if status == "available":
+            if reason is not None:
+                raise ValueError(path + " available read has unavailable_reason")
+        elif status == "unavailable":
+            if type(reason) is not str or not reason:
+                raise ValueError(path + " unavailable read needs its reason")
+        else:
+            raise ValueError(path + ".status is invalid")
+
+    observed_status(queue, field)
+    normalized = copy.deepcopy(queue)
+    for key in ("source_state_pointer_present", "manager_owner_pointer_present",
+                "data_pointer_present"):
+        normalized[key] = _optional_boolean(queue[key], field + "." + key)
+    normalized["execution_mode_raw"] = _optional_integer(
+        queue["execution_mode_raw"], field + ".execution_mode_raw",
+        minimum=0, maximum=255,
+    )
+    for key in ("capacity_raw", "count_raw"):
+        normalized[key] = _optional_integer(
+            queue[key], field + "." + key,
+            minimum=-(2**31), maximum=2**31 - 1,
+        )
+    if queue["rows"] is None:
+        return normalized
+    if type(queue["rows"]) is not list:
+        raise ValueError(field + ".rows must be a list or null")
+    rows = []
+    for index, value in enumerate(queue["rows"]):
+        path = field + f".rows[{index}]"
+        row = _exact_dict(value, path, {
+            "status", "unavailable_reason", "row_index",
+            "victim_pointer_present", "victim_full_character_id_raw",
+            "victim_death_data_pointer_present", "reason_pointer_present",
+            "reason_key", "date_object_raw_u64", "killer_pointer_present",
+            "killer_full_character_id_raw", "artifact_pointer_present",
+            "artifact_full_id_raw",
+        })
+        observed_status(row, path)
+        result = copy.deepcopy(row)
+        result["row_index"] = _integer(
+            row["row_index"], path + ".row_index", minimum=0, maximum=2**31 - 1,
+        )
+        for key in ("victim_pointer_present", "victim_death_data_pointer_present",
+                    "reason_pointer_present", "killer_pointer_present",
+                    "artifact_pointer_present"):
+            result[key] = _optional_boolean(row[key], path + "." + key)
+        for key in ("victim_full_character_id_raw", "killer_full_character_id_raw",
+                    "artifact_full_id_raw"):
+            result[key] = _optional_integer(
+                row[key], path + "." + key,
+                minimum=-(2**31), maximum=2**31 - 1,
+            )
+        result["date_object_raw_u64"] = _optional_integer(
+            row["date_object_raw_u64"], path + ".date_object_raw_u64",
+            minimum=0, maximum=2**64 - 1,
+        )
+        if row["reason_key"] is not None and type(row["reason_key"]) is not str:
+            raise ValueError(path + ".reason_key must be a string or null")
+        rows.append(result)
+    normalized["rows"] = rows
+    return normalized
+
+
 def _normalize_current_person_state(
     value: object, field: str,
 ) -> dict[str, object]:
@@ -587,9 +666,12 @@ def _normalize_current_person_state(
         "injury_traits": {**injury, "flags": flags, "wounded_rank": rank},
     }
     if "death_record" in state:
-        death = _exact_dict(state["death_record"], f"{field}.death_record", {
-            "status", "reason_key", "unavailable_reason",
-        })
+        death_fields = {"status", "reason_key", "unavailable_reason"}
+        metadata_fields = {"date_object_raw_u64", "killer_full_character_id_raw",
+                           "artifact_full_id_raw"}
+        if isinstance(state["death_record"], dict):
+            death_fields |= metadata_fields & state["death_record"].keys()
+        death = _exact_dict(state["death_record"], f"{field}.death_record", death_fields)
         status, key, reason = (death["status"], death["reason_key"],
                                death["unavailable_reason"])
         if key is not None and type(key) is not str:
@@ -605,7 +687,14 @@ def _normalize_current_person_state(
                 raise ValueError(f"{field} unavailable death record disagrees")
         else:
             raise ValueError(f"{field} death record status is invalid")
-        normalized["death_record"] = dict(death)
+        normalized_death = dict(death)
+        for name in metadata_fields & death.keys():
+            normalized_death[name] = _optional_integer(
+                death[name], f"{field}.death_record.{name}",
+                minimum=0 if name == "date_object_raw_u64" else -(2**31),
+                maximum=2**64 - 1 if name == "date_object_raw_u64" else 2**31 - 1,
+            )
+        normalized["death_record"] = normalized_death
     if "raw_numeric_inputs" in state:
         normalized["raw_numeric_inputs"] = _normalize_raw_numeric_inputs(
             state["raw_numeric_inputs"], f"{field}.raw_numeric_inputs")
@@ -1597,6 +1686,9 @@ def normalize_battle_terminal_transition_v1(
         {"character_observations": observations}
         if "character_observations" in frame else {}
     )
+    if "pending_death_queue" in frame:
+        character_extension["pending_death_queue"] = _normalize_pending_death_queue(
+            frame["pending_death_queue"])
     if frame.get("schema_version") != 1:
         raise ValueError("battle_terminal_transition.schema_version must be 1")
     if (
