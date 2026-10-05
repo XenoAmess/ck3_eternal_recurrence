@@ -628,7 +628,8 @@ def normalize_current_context_source_inputs(
         fields.add("tail_direct_291c5b7_291cc49")
     for optional in ("tail_prefix_2753860_2922530", "middle_helpers_291f260_291fb10",
                      "trait_stage_291d460", "absent_recipient_inputs", "helper_2922070",
-                     "conference_24b1d00", "uncached_recipient_inputs", "provider_bucket_291c5b2"):
+                     "conference_24b1d00", "uncached_recipient_inputs", "provider_bucket_291c5b2",
+                     "qualifier_28bc0d0"):
         if isinstance(value, dict) and optional in value:
             fields.add(optional)
     raw = _dict(value, field, fields)
@@ -732,6 +733,13 @@ def normalize_current_context_source_inputs(
         if provider_bucket is not None and provider_bucket["character_id"] != normalized["character_id"]:
             raise ValueError(field + ".provider_bucket_291c5b2 character disagrees with source actor")
         normalized["provider_bucket_291c5b2"] = provider_bucket
+    if "qualifier_28bc0d0" in raw:
+        from .battle_person_qualifier_28bc0d0_contract import normalize_qualifier_28bc0d0
+        qualifier = normalize_qualifier_28bc0d0(
+            raw["qualifier_28bc0d0"], field + ".qualifier_28bc0d0")
+        if qualifier is not None and qualifier["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".qualifier_28bc0d0 character disagrees with source actor")
+        normalized["qualifier_28bc0d0"] = qualifier
     return normalized
 
 
