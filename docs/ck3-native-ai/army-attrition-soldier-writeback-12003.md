@@ -1432,3 +1432,81 @@ source/Mermaid/query plan is already sealed from cache: DATA byte14 clear
 does not require state4; character membership removal uses reread rawDATA8;
 group character-child stores follow record effects. Group release/virtual
 callbacks remain separately bounded.
+
+## 2026-10-06 source-closed current-helper point stores
+
+The next source/Mermaid/query packet is
+`later-manager-removal-stage/current-helper-point-stores/ROOT-DELIVERY.json`
+(SHA`f8248a5109f333224bdd090019d24270c9b9bd1c86960059067d21d179c74a0b`).
+It reuses the held complete2A98590/B105D0 bodies, with new EXE reads0.
+DATA+14 clears to0 for every valid containing Regi and nonnull computed
+DATA, regardless of DATA state4. Only the following2C57020/member continuation
+requires state4. After2C ordinary return, the owner route is reread through
+Title130/holder128 or directChar12C; selected Character has no added
+magic/non-minus1 gate. Its nonnull+1C0 child+2A8 receives stable **all-match**
+DWORD removal with target reread rawDATA8, not the fallback Regi's actual ID.
+
+Each group's records precede its character loop. Group record+14 uses signed
+`<=0` skip; group character+2C uses begin/end equality and only zero is a
+known immediate skip. A negative character count cannot become an empty
+traversal. All C8/C0 branches in that loop reduce to nonnullChar+1B8: byte108
+is set0, then the parent pointer is reread and DWORDFC becomes-1, with no
+intervening call. Outer group slots are not nulled by later release.
+
+The additive `monthly_current_helper_point_store_inputs_v1` directly reads
+the explicit current argument ID's actual helper Army resolution/fallback,
+ordered groups/records/characters, existing DATA byte14, real nonempty
+membership vectors and child108/FC values. Native equality-derived DATA,
+membership-header and child aliases retain physical identity. The separately
+published helper/current-Army pointer equality supports reuse of the
+same-query Domain ordinary-return basis without substituting ID equality.
+Collection calls no native helper/mutator/getter, imposes no new count cap
+or backlink/index gate, and requires two complete new-family samples to agree.
+
+The production normalizer/allocation sibling
+`same_input_conditional_current_helper_point_stores_v1` independently exposes
+DATA clears, membership ALL removal with alias-carried vectors, and ordered
+idempotent child constants. A false Domain store predicate or receiver138!=4
+can return ordinarily and must not block member removal. Unknown ordinary
+continuation remains distinct while an earlier DATA clear can still be
+source-ready. The model preserves each group's record-before-character order;
+it does not claim full helper/group release or the real late caller frame.
+
+```mermaid
+flowchart TD
+  A[Explicit current argument ArmyID] --> H[Actual helper registry/fallback and pointer witness]
+  H --> G[Stored group order]
+  G --> R{record14 signed positive?}
+  R -->|yes| D{Valid Regi and computed DATA nonnull?}
+  D -->|yes| Z[Conditional DATA14=0 independent of state4]
+  Z --> S{DATAstate4?}
+  S -->|yes| Q[Preceding2C57020 ordinary-return scope]
+  Q -. unknown return/read basis .-> U[Membership continuation partial]
+  Q --> T[Fresh Title/Char owner route and rawDATA8 target]
+  T --> V[Child2A8 stable all-match removal; header alias carry]
+  R -->|no| C[Group characters]
+  V --> C
+  S -->|no| C
+  C --> B{CharB8 nonnull?}
+  B -->|yes| W[byte108=0 then DWORDFC=-1; child alias carry]
+  B -->|no| N[No child stores]
+  W --> G
+  N --> G
+  C -. negative pointer-bound traversal .-> U
+  G -. excluded later stage .-> L[Group release / Army count and C8 / physical lifecycle]
+```
+
+The one new production-service Python case first passed on Oct6 03:18:15
+Asia/Shanghai (one unittest method, process1.656877s), with a nonempty repeated
+raw-ID vector, cross-group DATA/header/child alias carry, ordinary-return scope,
+non-state4 clearing, partial member operands and legal skips. Its external
+`python-point-stores/PYTHON-TEST-RECEIPT.json` preserves this first attempt;
+previous qualified paths were not rerun.
+
+New native target `xar_ck3_12003_current_helper_point_store_inputs_test`, CTest
+`xar_ck3_12003_current_helper_point_store_inputs`, and four wire outputs under
+`current-helper-point-store-wire` cover nonempty aliases, partial membership,
+negative character traversal and legal zero groups. Root owns their first
+central compilation/CTest/wire qualification. Previous Domain tests/wires
+are reused, not rerun. Actual effects/loss/poststate, real late caller,
+complete helper and full Army/monthly lifecycle remainfalse/null; game days0.

@@ -451,6 +451,74 @@ struct ArmyCurrentHelperDomainInputsV1 {
                          const ArmyCurrentHelperDomainInputsV1 &) = default;
 };
 
+struct ArmyCurrentHelperPointRecordV1 {
+  std::int32_t stored_index = 0;
+  std::int32_t record_regiment_reference_id = -1;
+  std::int32_t chunk_index = 0;
+  std::optional<std::int32_t> record_regiment_resolved_id;
+  std::optional<bool> record_regiment_used_fallback;
+  std::optional<std::uint32_t> record_regiment_magic_14_raw;
+  std::optional<bool> data_record_present;
+  std::optional<std::int32_t> data_alias_ordinal;
+  std::optional<std::uint8_t> data_byte_14_raw;
+  std::optional<std::int32_t> data_state_18_raw;
+  std::optional<std::int32_t> data_owner_regiment_reference_id;
+  std::optional<std::int32_t> receiver_regiment_resolved_id;
+  std::optional<bool> receiver_regiment_used_fallback;
+  std::optional<std::int32_t> receiver_title_reference_130_raw;
+  std::optional<std::int32_t> receiver_character_reference_12c_raw;
+  std::optional<std::int32_t> owner_title_resolved_id;
+  std::optional<bool> owner_title_used_fallback;
+  std::optional<std::int32_t> owner_title_holder_character_id_128_raw;
+  std::optional<std::int32_t> selected_character_reference_id;
+  std::optional<std::int32_t> selected_character_resolved_id;
+  std::optional<bool> selected_character_used_fallback;
+  std::optional<bool> character_child_1c0_present;
+  std::optional<std::int32_t> membership_alias_ordinal;
+  std::optional<std::int32_t> membership_count_2b4_raw;
+  std::optional<std::vector<std::int32_t>> ordered_persistent_regiment_ids_2a8;
+  friend bool operator==(const ArmyCurrentHelperPointRecordV1 &,
+                         const ArmyCurrentHelperPointRecordV1 &) = default;
+};
+
+struct ArmyCurrentHelperPointCharacterV1 {
+  std::int32_t stored_index = 0;
+  std::int32_t character_reference_id = -1;
+  std::optional<std::int32_t> character_resolved_id;
+  std::optional<bool> character_used_fallback;
+  std::optional<bool> character_child_1b8_present;
+  std::optional<std::int32_t> child_1b8_alias_ordinal;
+  std::optional<std::uint8_t> child_byte_108_raw;
+  std::optional<std::int32_t> child_character_reference_fc_raw;
+  std::optional<bool> character_child_1c8_present;
+  std::optional<bool> character_child_1c0_present;
+  friend bool operator==(const ArmyCurrentHelperPointCharacterV1 &,
+                         const ArmyCurrentHelperPointCharacterV1 &) = default;
+};
+
+struct ArmyCurrentHelperPointGroupV1 {
+  std::int32_t group_index = 0;
+  std::int32_t record_count_14_raw = 0;
+  std::optional<std::vector<ArmyCurrentHelperPointRecordV1>> record_rows;
+  std::int32_t character_count_2c_raw = 0;
+  std::optional<std::vector<ArmyCurrentHelperPointCharacterV1>> character_rows;
+  friend bool operator==(const ArmyCurrentHelperPointGroupV1 &,
+                         const ArmyCurrentHelperPointGroupV1 &) = default;
+};
+
+struct ArmyCurrentHelperPointStoreInputsV1 {
+  bool available = false;
+  std::string unavailable_reason;
+  std::int32_t entry_army_id = -1;
+  std::optional<std::int32_t> helper_resolved_army_id;
+  std::optional<bool> helper_used_fallback;
+  std::optional<bool> helper_same_current_army_pointer;
+  std::optional<std::int32_t> group_count_5c_raw;
+  std::optional<std::vector<ArmyCurrentHelperPointGroupV1>> groups;
+  friend bool operator==(const ArmyCurrentHelperPointStoreInputsV1 &,
+                         const ArmyCurrentHelperPointStoreInputsV1 &) = default;
+};
+
 // Current native county-entry budget, independent of a route or applied event.
 // The predicate uses the validated current province and the FIRST province of
 // the complete stored route. It omits the entry executor's special-call flag;
@@ -568,6 +636,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyDailyQueueInputsV1> monthly_daily_queue_inputs_v1;
   std::optional<ArmyFirstRemovalCleanupInputsV1> monthly_first_removal_cleanup_inputs_v1;
   std::optional<ArmyCurrentHelperDomainInputsV1> monthly_current_helper_domain_inputs_v1;
+  std::optional<ArmyCurrentHelperPointStoreInputsV1> monthly_current_helper_point_store_inputs_v1;
   std::optional<ArmyCountyEntryInputsV1> county_entry_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<NativeMaaRecruitmentInputsV1> native_maa_recruitment_inputs_v1;

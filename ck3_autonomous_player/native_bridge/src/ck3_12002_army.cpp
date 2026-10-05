@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12002_military.hpp"
 #include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
 #include "xar_bridge/ck3_12003_current_helper_domain_inputs.hpp"
+#include "xar_bridge/ck3_12003_current_helper_point_store_inputs.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -941,6 +942,11 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
       g_army_strength_query_diagnostic_v1.reader.store("current_helper_domain_inputs_readonly");
       result.monthly_current_helper_domain_inputs_v1 =
           ReadCurrentHelperDomainInputs12003(bindings, army);
+    }
+    if (bindings.monthly_current_helper_point_store_inputs_enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("current_helper_point_store_inputs_readonly");
+      result.monthly_current_helper_point_store_inputs_v1 =
+          ReadCurrentHelperPointStoreInputs12003(bindings, army);
     }
     if (bindings.county_entry_inputs_enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("county_entry_current_inputs_getters");
