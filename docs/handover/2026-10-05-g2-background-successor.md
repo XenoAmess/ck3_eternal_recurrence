@@ -116,3 +116,12 @@ R2-5 retained constructor geometry消费已完成，实际采用时间2026-10-05
 源1668f551，Root采用82c114b8，8个文件；一次新Python聚焦4/4GREEN（test0.019秒、process3.106秒）实际使用第一批compiled production wire原字节及明确kind/holding变体，覆盖source-frame/roles、零/false/signed width、unavailable、旧shape及immutable输入。没有native改动/构建或旧测试重跑，diff checkGREEN。回执Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/retained-geometry/ROOT-DELIVERY.json；SOURCE-TREE.md/CANONICAL-APPEND.md同根，canonical与Mermaid已采用。资格static-ready独立diagnostic，真正效果数值/统帅exclusion/scale/初始context/roster与历史initiator/entry仍未闭，实际pausedadoption等待用户。
 
 Root立即提交普通push此独立包，同时其它七线继续；新game/SDK/realpipe/UI/Steam/process/profile/save/cache操作、游戏日/live/MC信用均0，5035历史冻结不變，日报/W41持续滚动。第一批默认DLL已在source47336551-default-offline-binary按字节归档，不覆盖旧资格；后续新native会使用已存v73能力flags进行纯离线CMake联编，不执行任何runtime prepare/stage/launch。
+
+
+### R2-3/R2-4损耗输入已实现，集中native验证中
+
+实际采用2026-10-05T20:45:16+08:00：R2-3供给资格源f850fcbf→Root326c40c1、R2-4写回源61e5059a→Rootf5d0c607已整合。Source-first完整只读2A956D0和2634880分别闭合，现成regiment_strengths发布前者bool/reason，fullDATA父行发布native_loss_writer_skipped、每record发布chunk_army_regiment_id。既有严格generation读取和DATA关联已经证明特殊setter的association−1清零域不可达，因此不用虚构owner/flags，能独立释放当前关联chunk回放。
+
+正供给分配现能计算initial preferred请求；同阶段chunk projection按原生Q100000、两轮、别名/顺序、state3物理零及负数量修复转移、角色skip/parentzero处理，不擅加clamp。两个owner各一次新Python focused case GREEN；gbr4首次importpath harnessRED已保留。两新增native targets由Root集中低优先级jobs4编译，尚未在本段抢记native GREEN。源码/读取、Python测试、日志和SHA回执在第二批根supply-eligibility与loss-writer-inputs；两canonical/Mermaid已采用。
+
+Root正在联编生产bridge与两新增native目标，采用已存v73 capability flags（纯离线CMake，不prepare/stage/deploy/launch游戏），第一批默认DLL已单独归档。gbr3继续一条依赖整合：只把initial supplypreferred、供给budget0时的initial siegepreferred请求送入对应同阶段DATA回放；实际post-supply/postpreferred current缺失仍不制造后态。applied_loss_ready与整月应用信用继续false；新游戏/SDK/realpipe/UI/Steam/profile/save/cache/game日均0，5035历史冻结保持。其余人物/holy施工继续，并非后台任务耗尽。

@@ -308,3 +308,43 @@ flowchart LR
   E --> F[retain store or clear maximum and current]
   U[unproved lifecycle names] -. unknown .-> E
 ```
+
+
+### 2026-10-05 第二轮后台：逐 ArRg 供给损耗资格已接入原查询
+
+用户继续独占 CK3。本包只读 frozen exact 1.20.0.3 / Steam25652598 副本 `[2A956D0,2A95740)` 112 B（完整函数 98 B、尾部 INT3 14 B），SHA `51d048d3dd57f7b8ecc10b2860435db87d6f0b32e02a727160747d957dcb6243`；复用 EXE pin `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`，没有全 EXE scan/hash。PE mapping 共 400 B 独立记账，完整读取 ledger/反汇编在 `Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/supply-eligibility/READ-RECEIPT.json` 与 `supply-loss-eligibility.asm.txt`。
+
+`2A956D0(ArRg)->AL` 完整叶没有 CALL、外跳或 memory store。signed ArRg+14C!=1 直接 true；相等时取 DATA+20 第一 record 的 persistent FullID+8（count+2C==0 时为 -1），经 table `5D1EB68` 的 slot/full-generation 检查解析，未解析则使用 native fallback `5D1EB58`；persistent/fallback byte+141!=0 为 true，0 为 false。没有从 troop count、tier、补员 permission 或第二条 DATA 猜值。这些 raw 字段的生命周期名字仍未知，不引入特殊兵种标签。
+
+```mermaid
+flowchart TD
+  A[Identity-valid ArRg from stored roster] --> B{ArRg signed+14C equals1}
+  B -->|no| T[Native AL true]
+  B -->|yes| C[first DATA persistent FullID or -1]
+  C --> D[full-generation table resolve or native fallback]
+  D --> E{persistent byte+141 nonzero}
+  E -->|yes| T
+  E -->|no| F[Native AL false]
+  U[raw lifecycle labels] -. unknown .-> B
+```
+
+原 `regiment_strengths[]` 生产 owning-thread 循环新增 `native_supply_loss_eligible` bool/null 与 `supply_loss_eligibility_unavailable_reason`；getter 仅在 exact .3 adapter 绑定，严格 ArRg full-generation receiver 后调用一次。没有新增查询 family、额外 live 查询、排序或 broad native scope。observed false 为有效结果；缺少 getter 时 null/`supply_loss_eligibility_not_bound`，不压制已有兵力。DTO、共享 serializer 和 Python authority 已接线；旧 producer 省略新字段的两种 schema 继续保留。
+
+`loss_allocation_requests_v1` 新增可执行的正供给分支：逐行 native bool 与 signed tier 足够时，按原序选供给 preferred 并复用 native `definition_le_zero_supply_eligible_soldiers`。供给 preferred 超额才转 residual；真实 post-preferred residual rows 与 post-supply siege/raid current 未由本包取得，保持 missing inputs，不减去 request 制造后态。最终 applied loss 继续 null/unready。供给后的全部请求资格只有在其余预算/实际阶段输入足够时才能成立，不授月结完成信用。
+
+唯一新 Python 验证 `test_supply_loss_eligibility_consumer.py -v`：1 case GREEN，覆盖 authority 保真 true/false/null、full/native0、stored order 的正供给 preferred 请求、旧字段省略兼容，以及 post-supply current/final-loss 边界。新 native focused target `xar_ck3_12003_supply_loss_eligibility_test` 提供 production reader/serializer 的 bool/null、原序 receiver 与 stale generation 验证，由 Root 独占 `jobs4` 构建/运行；本 owner 未构建，native 资格待 Root 回执。完整 source、Python stdout/receipt 与 delivery 在同一外置目录；`open_kaishek` not-applicable（native bool/full-ID lookup，不含受支持的 Paradox runtime 语义）。
+
+新增真实 CK3/SDK/real pipe/UI/Steam/process/runtime prepare/stage/profile/save/cache 操作、native build、游戏日均 0。此包为 source-closed provider implementation + 新 Python path GREEN；native static-ready 与新 live 资格不得抢记。下个具体缺口是来源已独立开工的 `2634880`/complete DATA writer 输入与实际阶段 current；没有借未知谓词继续绕圈，也没有把预算解释为最终损兵。
+
+
+### 2026-10-05：writer admission观测与同输入关联chunk回放
+
+冻结.3原生`2634880`完整86 B叶现已闭合（SHA`f80c7030b99bee7eb5e0c8b5e4082672f6eccf10b1bf6be6489a21b5a0bf3bbe`）：ArRg+148 FullCharacterID为−1返回false；否则按Char storage`5C67568`精确generation解析，未解析走`5C67570`fallback，最终magic+1C==`0x43686172`且FullID+18!=-1返回true。它无callee/写入，true正是`26341B0`的writer skip。完整源树与Mermaid先落盘后才实现，源读receipt保留原128 B叶窗以及纠正漏存false-return的3 B读取；没有整EXE扫描/hash。
+
+已有`ck3_query_army_strengths.regiment_replenishment_records_v1`新增每ArRg的`native_loss_writer_skipped`bool/null与缺失原因；每DATA项新增原生`chunk_army_regiment_id`（chunk+10）。exact.3绑定调用只读2634880，旧binding/旧packet保留已知DATA、缺失admission为null。当前available DATA早已验证chunk+10等于有效ArRgID，因此该查询域不会触发2657EA0要求association−1的maximum/current清零支路；无需虚构owner/flag字段。
+
+新的纯`project_observed_writer_chunk_changes`消费该既有查询以及显式同阶段writer request，完整处理原生Q100000分配、两轮、DATA别名/顺序、raw预算与整数写回差、state3物理0/有效maximum、character skip和parent current0的refresh-only。输出只为conditional关联chunk写回，不是实际/未来损失，也不补raised-regiment/全军终态。一个非平凡source向量：state3/max4/current0先写−3；零remaining仍进入第二轮，native负cap将其恢复0并把300000 raw转移到下一ordinary chunk，使20→17。不得加入zero clamp。
+
+一个focused Python新case在`-B -O`下GREEN；初次缺src import path为harness RED并保留。新增native focused target`xar_ck3_12003_loss_writer_inputs_test`待Root集中编译/执行，本owner没有构建。native实现/当前MCP新增字段仍属候选，真实paused读回待后续用户许可；Python同输入projection为static-ready。真实post-supply/post-preferred阶段DATA仍缺，整月链的applied_loss_ready继续false，没有新增游戏/SDK/UI/Steam/live信用。
+
+外置交付：`Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/loss-writer-inputs/ROOT-DELIVERY.json`，包括源树、read/test receipt、commit和日/周字段。canonical/report/Git发布由Root整合。
