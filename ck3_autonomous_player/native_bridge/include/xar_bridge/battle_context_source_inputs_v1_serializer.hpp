@@ -431,6 +431,7 @@ inline void Branch291d7e0(std::string &out,
 #include "xar_bridge/battle_person_provider192_and2920850_serializer.inc.hpp"
 #include "xar_bridge/battle_person_following_2920b50_serializer.inc.hpp"
 #include "xar_bridge/battle_person_following_2bca620_serializer.inc.hpp"
+#include "xar_bridge/battle_person_following_312a950_serializer.inc.hpp"
 
 }  // namespace battle_context_source_inputs_v1_detail
 
@@ -606,6 +607,10 @@ inline std::string SerializeBattleCurrentPersonContextSourceInputsV1(
   if (p.following_2bca620) {
     out += ",\"following_2bca620\":";
     Following2bca620Json(out, *p.following_2bca620);
+  }
+  if (p.following_government_land_312a950) {
+    out += ",\"following_government_land_312a950\":";
+    Following312a950Json(out, *p.following_government_land_312a950);
   }
   out += ",\"branch_291e210\":";
   Branch291e210(out, p.branch_291e210);

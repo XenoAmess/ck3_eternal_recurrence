@@ -8143,6 +8143,24 @@ if(BUILD_TESTING)
       "${CMAKE_BINARY_DIR}/ck3_12003_person_remaining_helpers_wire")
 endif()
 
+# Source-selected government bit29 and first-Land312A950 minimum branches.
+if(BUILD_TESTING)
+  add_executable(xar_ck3_12003_person_following_312a950_test
+    src/ck3_12003_context_sources.cpp
+    tests/person_following_312a950_12003_test.cpp
+    tests/person_following_312a950_fixture.cpp)
+  target_include_directories(xar_ck3_12003_person_following_312a950_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_person_following_312a950_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_person_following_312a950_test PRIVATE NOMINMAX)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_person_following_312a950_test PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_12003_person_following_312a950_test
+    COMMAND xar_ck3_12003_person_following_312a950_test
+      "${CMAKE_BINARY_DIR}/ck3_12003_person_following_312a950_wire")
+endif()
+
 # Current nonnegative balance and source-selected provider contribution.
 if(BUILD_TESTING)
   add_executable(xar_ck3_12003_person_following_2bca620_test

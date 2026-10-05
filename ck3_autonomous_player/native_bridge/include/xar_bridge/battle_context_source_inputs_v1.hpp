@@ -346,6 +346,7 @@ struct ContextSourceHelper291f0a0V1 {
 #include "xar_bridge/battle_person_provider192_and2920850_v1.inc.hpp"
 #include "xar_bridge/battle_person_following_2920b50_v1.inc.hpp"
 #include "xar_bridge/battle_person_following_2bca620_v1.inc.hpp"
+#include "xar_bridge/battle_person_following_312a950_v1.inc.hpp"
 
 struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
   std::string status = "unavailable";
@@ -371,6 +372,7 @@ struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
   std::optional<ContextSourceProvider192And2920850InputsV1> provider192_and2920850;
   std::optional<ContextSourceFollowing2920b50InputsV1> following_2920b50;
   std::optional<ContextSourceFollowing2bca620InputsV1> following_2bca620;
+  std::optional<ContextSourceFollowing312a950InputsV1> following_government_land_312a950;
   std::optional<ContextSource291e210V1> branch_291e210;
   std::optional<ContextSource291d7e0V1> branch_291d7e0;
   std::optional<ContextSourcePost291d7e0V1> post_291d7e0_sources;
