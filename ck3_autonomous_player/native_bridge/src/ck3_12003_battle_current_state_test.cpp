@@ -713,6 +713,104 @@ struct SelectedRollFixture {
 };
 SelectedRollFixture *SelectedRollFixture::current = nullptr;
 
+struct ActualGeographyFixture : ForeignFixture {
+  Bytes<0x68> terrain{};
+  int terrain_queries = 0;
+  bool missing_terrain = false;
+  static ActualGeographyFixture *current;
+  static void *ProvinceTerrain(void *province) {
+    auto &f = *current;
+    Require(province == f.province.data(), "geography getter needs actual Combat province");
+    ++f.terrain_queries;
+    return f.missing_terrain ? nullptr : f.terrain.data();
+  }
+  ActualGeographyFixture() {
+    current = this;
+    std::memcpy(terrain.data() + 0x18, "forest", 6);
+    Put<std::size_t>(terrain, 0x28, 6);
+    Put<std::size_t>(terrain, 0x30, 15);
+    b.commander_roll_context.enabled = true;
+    b.commander_roll_context.get_province_terrain = ProvinceTerrain;
+    Put<std::int32_t>(combat, 0x6F8, 0);
+    Put<std::uint8_t>(combat, 0x6FE, 0);
+  }
+};
+ActualGeographyFixture *ActualGeographyFixture::current = nullptr;
+
+int RunActualGeographyFixtures(const char *output_directory) {
+  try {
+    ActualGeographyFixture foreign;
+    BattleTransitionSnapshot transition{};
+    Require(ReadBattleTransitionSnapshot(foreign.b, foreign.scope, {kActualCombat}, transition) ==
+                BattleTransitionSnapshotStatus::available,
+            "foreign battle transition unavailable");
+    Require(transition.actual_geography_v1.has_value(), "actual geography leaf absent");
+    const auto &geometry = *transition.actual_geography_v1;
+    Require(geometry.terrain.available && geometry.terrain.key == "forest" &&
+                geometry.terrain.combat_width_multiplier_raw == 0 &&
+                geometry.constructor_adjacency_kind_raw == 0 &&
+                geometry.holding_defender == false,
+            "native zero width, adjacency and false holding were lost");
+    Require(foreign.terrain_queries == 2, "terrain must be read once per lifecycle sample");
+    transition.snapshot_revision = 2;
+    const auto available_wire = xar::ck3_11906::SerializeBattleTransitionV1(transition);
+    Require(!available_wire.empty() && available_wire.find("\"actual_geography_v1\"") != std::string::npos,
+            "transition serializer lost geography");
+    if (*output_directory) WriteWire(output_directory, "foreign-available.json", available_wire);
+    BattleControlSnapshot forbidden{};
+    Require(ReadBattleControlSnapshot(foreign.b, foreign.scope, {251658381}, forbidden) !=
+                BattleControlSnapshotStatus::available,
+            "foreign control ownership changed");
+
+    foreign.missing_terrain = true;
+    Require(ReadBattleTransitionSnapshot(foreign.b, foreign.scope, {kActualCombat}, transition) ==
+                BattleTransitionSnapshotStatus::available && transition.battle_transition_ready &&
+                transition.actual_geography_v1 && !transition.actual_geography_v1->terrain.available &&
+                transition.actual_geography_v1->terrain.unavailable_reason == "terrain_unavailable" &&
+                transition.actual_geography_v1->holding_defender == false,
+            "terrain unavailability lowered lifecycle readiness or erased retained holding");
+    transition.snapshot_revision = 2;
+    const auto unavailable_wire = xar::ck3_11906::SerializeBattleTransitionV1(transition);
+    Require(!unavailable_wire.empty(), "unavailable terrain could not serialize");
+    if (*output_directory) WriteWire(output_directory, "foreign-unavailable.json", unavailable_wire);
+
+    SelectedRollFixture owned;
+    Put<std::int32_t>(owned.battle.combat, 0x6B0, 2);
+    std::memcpy(owned.terrain.data() + 0x18, "hills", 5);
+    Put<std::size_t>(owned.terrain, 0x28, 5);
+    Put<std::size_t>(owned.terrain, 0x30, 15);
+    Put<std::int64_t>(owned.terrain, 0x60, -123456);
+    Put<std::int32_t>(owned.battle.combat, 0x6F8, 2);
+    Put<std::uint8_t>(owned.battle.combat, 0x6FE, 1);
+    Require(ReadBattleTransitionSnapshot(owned.battle.b, owned.battle.scope, {0x1000003}, transition) ==
+                BattleTransitionSnapshotStatus::available,
+            "owned transition unavailable");
+    const auto owned_geometry = transition.actual_geography_v1;
+    owned.terrain_queries = 0;
+    BattleControlSnapshot control{};
+    Require(ReadBattleControlSnapshot(owned.battle.b, owned.battle.scope, {0x1000001}, control) ==
+                BattleControlSnapshotStatus::available && control.battle_control_ready &&
+                control.actual_geography_v1 == owned_geometry && owned.terrain_queries == 2,
+            "owned control did not copy sampled transition geography");
+    Require(control.actual_geography_v1->terrain.combat_width_multiplier_raw == -123456 &&
+                control.actual_geography_v1->constructor_adjacency_kind_raw == 2 &&
+                control.actual_geography_v1->holding_defender == true,
+            "signed native width or retained constructor values lost");
+#ifdef XAR_SELECTED_ROLL_WIRE_FIXTURE
+    control.snapshot_revision = 2;
+    const auto control_wire = xar::ck3_11906::SerializeBattleControlSnapshotV1(control);
+    Require(!control_wire.empty() && control_wire.find("\"actual_geography_v1\"") != std::string::npos,
+            "owned control serializer lost geography");
+    if (*output_directory) WriteWire(output_directory, "owned-available.json", control_wire);
+#endif
+    std::cout << "Actual Combat geography focused fixtures GREEN: foreign and owned; live=0\n";
+    return 0;
+  } catch (const std::exception &error) {
+    std::cerr << "Actual Combat geography focused fixture RED: " << error.what() << '\n';
+    return 1;
+  }
+}
+
 struct RollExpectation {
   bool available = true;
   std::int32_t minimum = 0, maximum = 0;
@@ -826,6 +924,9 @@ int RunSelectedCommanderRollFixtures(const char *output_directory) {
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc > 1 && std::string_view(argv[1]) == "--actual-geography-only") {
+    return RunActualGeographyFixtures(argc > 2 ? argv[2] : "");
+  }
   if (argc > 1 && std::string_view(argv[1]) == "--selected-roll-only") {
     return RunSelectedCommanderRollFixtures(argc > 2 ? argv[2] : "");
   }

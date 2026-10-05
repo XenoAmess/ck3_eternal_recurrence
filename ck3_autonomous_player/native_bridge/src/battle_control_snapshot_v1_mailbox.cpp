@@ -1,5 +1,6 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
+#include "xar_bridge/battle_actual_geography_v1_serializer.hpp"
 
 #include <windows.h>
 
@@ -1984,6 +1985,12 @@ std::string SerializeBattleControlSnapshotV1(
   output += ",\"full_backing_inputs_v1\":";
   if (!AppendFullBackingInputsV1(output, snapshot.full_backing_inputs_v1)) {
     return {};
+  }
+  if (snapshot.actual_geography_v1) {
+    const auto geography =
+        bridge::SerializeBattleActualGeographyV1(*snapshot.actual_geography_v1);
+    if (geography.empty()) return {};
+    output += ",\"actual_geography_v1\":" + geography;
   }
   if (snapshot.actual_hard_casualty_sides.attempted) {
     output += ",\"actual_hard_casualty_sides\":";

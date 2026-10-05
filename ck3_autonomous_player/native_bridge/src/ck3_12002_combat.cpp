@@ -1782,6 +1782,31 @@ CombatBindings BindCombatImage(std::uintptr_t image_base,
   return result;
 }
 
+game::CombatTerrainSnapshot ReadProvinceTerrainSnapshot(
+    const CombatBindings &bindings, void *actual_province) noexcept {
+  game::CombatTerrainSnapshot output{};
+  if (!bindings.enabled || bindings.get_province_terrain == nullptr) {
+    output.unavailable_reason = "terrain_reader_unbound";
+    return output;
+  }
+  if (actual_province == nullptr) {
+    output.unavailable_reason = "province_unavailable";
+    return output;
+  }
+  void *const terrain = bindings.get_province_terrain(actual_province);
+  if (terrain == nullptr ||
+      !ReadDatabaseObjectKey(terrain, kDatabaseObjectKeyOffset, output.key) ||
+      output.key.empty()) {
+    output.key.clear();
+    output.unavailable_reason = "terrain_unavailable";
+    return output;
+  }
+  output.combat_width_multiplier_raw = LoadAt<std::int64_t>(
+      terrain, kTerrainCombatWidthMultiplierOffset);
+  output.available = true;
+  return output;
+}
+
 ReadCombatSimulationInputsResult ReadCombatSimulationInputs(
     const CombatBindings &bindings, const Snapshot &current,
     const CombatSimulationInputsRequest &request,

@@ -1,4 +1,5 @@
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
+#include "xar_bridge/battle_actual_geography_v1_serializer.hpp"
 
 #include <windows.h>
 
@@ -383,7 +384,8 @@ bool ValidateSnapshot(
            snapshot.attacker_public_cunit_ids_in_stored_order.empty() &&
            snapshot.defender_public_cunit_ids_in_stored_order.empty() &&
            !snapshot.current_observation.has_value() &&
-           !snapshot.native_owner_recall_inputs_v1.has_value();
+           !snapshot.native_owner_recall_inputs_v1.has_value() &&
+           !snapshot.actual_geography_v1.has_value();
   }
   const bool phase_valid =
       (snapshot.phase_raw == 0 && snapshot.phase == "maneuver") ||
@@ -710,6 +712,12 @@ std::string SerializeBattleTransitionV1(
   if (!AppendCurrentObservation(output, snapshot.current_observation)) return {};
   output += ",\"native_owner_recall_inputs_v1\":";
   if (!AppendNativeOwnerRecallInputs(output, snapshot.native_owner_recall_inputs_v1)) return {};
+  if (snapshot.actual_geography_v1) {
+    const auto geography =
+        bridge::SerializeBattleActualGeographyV1(*snapshot.actual_geography_v1);
+    if (geography.empty()) return {};
+    output += ",\"actual_geography_v1\":" + geography;
+  }
   output.push_back('}');
   return output;
 }

@@ -2022,3 +2022,50 @@ flowchart TD
 R46 实际远方敌军 control query 因 ownership 被拒绝，既有 ck3_query_battle_transition_v1(combat_id, expected_revision) 成功；候选沿该现有可达入口发布同一 optional leaf，owned control 保留原权限。leaf 仅有 terrain（复用现有五字段 shape）、constructor_adjacency_kind_raw、holding_defender，身份与 frame 仍由原外层绑定。原始 terrain unavailable 不降低旧 lifecycle/control readiness，旧没有该字段的归档保持原 shape。
 
 当前 v2 仅接受 ctor0/null-entry，ReadContactDefenderContext 还实时按显式 defender 首军 owner 调用 holding predicate，未消费 retained6FE；故非零 kind 的最小 classifier 扩展仍须配合明确 retained holding/provenance，才可标 retained-geometry diagnostics。raw0 自身不能证明 original initiator 或 native-defender 角色；未来新玩家接战继续使用其 fresh preview/projectedroles。source合同、候选与输入配方见 Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/battle-terrain/ROOT-DELIVERY.json。此轮仅 research：未编译、测试、调用 SDK/pipe/进程或窗口，也未读取新的 paused artifact，不记 live、游戏日、完整 MC 或胜率。
+
+
+## 2026-10-05: actual geography provider and Python integration
+
+The handoff candidate is adopted into the exact CK3 1.20.0.3 source path
+(Steam25652598 / EXE SHA256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`).
+`TransitionSample` follows the already strict `Combat+6B8 -> Province+10`
+binding and reads the existing `247E590` terrain getter once per lifecycle
+sample, publishing native key+18 and signed Q100000 width+60 alongside retained
+adjacency+6F8 and holding+6FE. `ControlSample` copies this sampled leaf; the
+existing owned control admission and enemy-reachable transition query are
+unchanged. Both production serializers emit `actual_geography_v1` only when
+present, sharing the same terrain serializer. Terrain unavailability remains
+inside the leaf and does not lower lifecycle/control readiness.
+
+The formal Python transition/control normalizers retain the optional leaf and
+old absent-field shape. The transition native driver and service also preserve
+the mirrored geography field; the existing owned control cache and service
+preserve the normalized nested leaf. One focused offline run passed **5/5**
+tests through production normalizers, native-driver fake endpoints, cache and
+service. Coverage includes native zero/false, signed width, absent/null old
+fields and unavailable terrain with existing readiness retained. This is
+Python **static-ready** evidence using synthetic wire DTOs; it does not grant
+new live credit or prove a compiled native provider.
+
+The prepared native fixture reuses
+`ck3_12003_battle_current_state_test.cpp --actual-geography-only <wire-dir>`
+and tests production readers against foreign and owned battle data. It checks
+enemy transition publication, unchanged enemy-control rejection, unavailable
+terrain readiness, one getter per transition sample, signed width and the owned
+transition-copy path. With `XAR_SELECTED_ROLL_WIRE_FIXTURE` and the production
+control serializer linked, it also exports the owned wire. The coordinator
+owns the single integrated native build and execution; these native checks
+have **not yet run** in this source package.
+
+This leaf describes this actual Combat's terrain and retained geometry. It
+does not reconstruct the complete retained constructor: historical initiator,
+entry province, retained holding provenance and context inputs remain separate
+requirements. Raw kind0 alone does not prove native-defender provenance. The
+remote enemy battle's geometry cannot supply a future player's contact; fresh
+preview geometry and role ordering remain that contact's inputs. No constructor
+classifier, Monte Carlo, win odds or strategy change is claimed here.
+
+Evidence/compile handoff:
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round03/battle-terrain/ROOT-DELIVERY.json`.
+No CK3 launch, attach, query, UI, Steam interaction, stop or new paused sample
+occurred. New normal/saved days and live credit are zero.

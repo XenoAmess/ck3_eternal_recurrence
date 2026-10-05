@@ -14512,6 +14512,11 @@ class NativeHeadlessGameplayDriver:
                 if "current_observation" in normalized
                 else {}
             ),
+            **(
+                {"actual_geography_v1": copy.deepcopy(normalized["actual_geography_v1"])}
+                if "actual_geography_v1" in normalized
+                else {}
+            ),
             "queried_snapshot_id": starting.get("snapshot_id"),
             "queried_revision": starting.get("revision"),
             "queried_native_revision": native_revision,

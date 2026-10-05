@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from .battle_actual_geography_contract import normalize_actual_geography_v1
 from .public_unit_contract import (
     public_cunit_id as _public_cunit_id,
     public_cunit_ids as _public_cunit_ids,
@@ -59,6 +60,7 @@ _SNAPSHOT_KEYS = {
     "defender",
 }
 _OPTIONAL_SNAPSHOT_KEYS = {
+    "actual_geography_v1",
     "roll_cadence_interval",
     "current_phase_transition_inputs_v1",
     "current_pursuit_inputs_v1",
@@ -704,6 +706,11 @@ def normalize_battle_control_snapshot_v1(
     if "current_pursuit_inputs_v1" in value:
         result["current_pursuit_inputs_v1"] = _normalize_current_pursuit_inputs_v1(
             value["current_pursuit_inputs_v1"], combat_id=combat_id
+        )
+    if "actual_geography_v1" in value:
+        result["actual_geography_v1"] = normalize_actual_geography_v1(
+            value["actual_geography_v1"],
+            field="battle_control_snapshot.actual_geography_v1",
         )
     return result
 

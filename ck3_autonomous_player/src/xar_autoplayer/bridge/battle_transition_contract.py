@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from .battle_actual_geography_contract import normalize_actual_geography_v1
 from .public_unit_contract import (
     public_cunit_id as _public_cunit_id,
     public_cunit_ids as _public_cunit_ids,
@@ -51,7 +52,9 @@ _FIELDS: Final = {
     "attacker_public_cunit_ids_in_stored_order",
     "defender_public_cunit_ids_in_stored_order",
 }
-_OPTIONAL_FIELDS: Final = {"current_observation", "native_owner_recall_inputs_v1"}
+_OPTIONAL_FIELDS: Final = {
+    "current_observation", "native_owner_recall_inputs_v1", "actual_geography_v1"
+}
 _CURRENT_OBSERVATION_FIELDS: Final = {
     "status",
     "unavailable_reason",
@@ -324,6 +327,15 @@ def normalize_battle_transition_v1(
         else {}
     )
 
+    actual_geography = (
+        {"actual_geography_v1": normalize_actual_geography_v1(
+            value["actual_geography_v1"],
+            field="battle_transition_snapshot.actual_geography_v1",
+        )}
+        if "actual_geography_v1" in value
+        else {}
+    )
+
     attacker_ids = _public_cunit_ids(
         value.get("attacker_public_cunit_ids_in_stored_order"),
         "battle_transition_snapshot.attacker_public_cunit_ids_in_stored_order",
@@ -336,6 +348,10 @@ def normalize_battle_transition_v1(
         raise ValueError("battle_transition_snapshot sides overlap")
 
     if status != "available":
+        if actual_geography.get("actual_geography_v1") is not None:
+            raise ValueError(
+                "non-available battle_transition_snapshot invented actual geography"
+            )
         nullable = (
             "province_id",
             "phase",
@@ -360,6 +376,7 @@ def normalize_battle_transition_v1(
             **value,
             **current_observation,
             **native_owner_recall_inputs,
+            **actual_geography,
             "attacker_public_cunit_ids_in_stored_order": attacker_ids,
             "defender_public_cunit_ids_in_stored_order": defender_ids,
         }
@@ -412,7 +429,8 @@ def normalize_battle_transition_v1(
     return {
         **value,
         **current_observation,
-            **native_owner_recall_inputs,
+        **native_owner_recall_inputs,
+        **actual_geography,
         "province_id": province_id,
         "phase": phase,
         "phase_raw": phase_raw,

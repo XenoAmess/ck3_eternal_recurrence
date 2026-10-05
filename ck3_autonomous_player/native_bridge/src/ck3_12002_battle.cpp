@@ -126,6 +126,13 @@ bool TransitionSample(const BattleBindings &b,
   if (!province)
     return false;
   out.province_id = At<std::int32_t>(province, 0x10);
+  out.actual_geography_v1.emplace();
+  out.actual_geography_v1->terrain =
+      ReadProvinceTerrainSnapshot(b.commander_roll_context, province);
+  out.actual_geography_v1->constructor_adjacency_kind_raw =
+      At<std::int32_t>(combat, 0x6F8);
+  out.actual_geography_v1->holding_defender =
+      At<std::uint8_t>(combat, 0x6FE) != 0;
   out.phase_raw = At<std::int32_t>(combat, kBattlePhaseOffset);
   out.phase = Phase(out.phase_raw);
   out.phase_day = At<std::int32_t>(combat, kBattlePhaseDayOffset);
@@ -610,6 +617,7 @@ bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
   out.selected_owner_character_id = At<std::int32_t>(unit, 0x174);
   out.province_id = t.province_id;
   out.combat_province_id = t.province_id;
+  out.actual_geography_v1 = t.actual_geography_v1;
   out.phase = t.phase;
   out.phase_raw = t.phase_raw;
   out.phase_day = t.phase_day;

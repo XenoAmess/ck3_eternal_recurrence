@@ -54,6 +54,11 @@ struct CombatBindings {
 // No process discovery, remote reads or changes to CK3 state are performed.
 CombatBindings BindCombatImage(std::uintptr_t image_base,
                               std::string_view executable_sha256) noexcept;
+// Readonly terrain tuple for an already validated actual Province. The caller
+// binds it to its existing CombatID/province/date/revision frame.
+game::CombatTerrainSnapshot ReadProvinceTerrainSnapshot(
+    const CombatBindings &, void *actual_province) noexcept;
+
 // Readonly endpoints for an already selected battle commander and actual
 // combat terrain. Reuses the v2 modifier reader; never calls native RNG.
 game::BattleControlNextRollBoundsSnapshot ReadSelectedCommanderNextRollBounds(

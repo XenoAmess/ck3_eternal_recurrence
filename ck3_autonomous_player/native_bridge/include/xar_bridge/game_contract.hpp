@@ -599,6 +599,17 @@ struct CombatTerrainSnapshot {
                          const CombatTerrainSnapshot &) = default;
 };
 
+// Current actual Combat geography; the outer battle query supplies identity and
+// frame. Retained constructor fields do not reconstruct a historical entry.
+struct BattleActualGeographyInputsV1 {
+  CombatTerrainSnapshot terrain;
+  std::optional<std::int32_t> constructor_adjacency_kind_raw;
+  std::optional<bool> holding_defender;
+
+  friend bool operator==(const BattleActualGeographyInputsV1 &,
+                         const BattleActualGeographyInputsV1 &) = default;
+};
+
 struct CombatCrossingSnapshot {
   bool available = false;
   std::string kind;
@@ -2261,6 +2272,8 @@ struct BattleControlSnapshot {
   // Optional current-frame first-Army permission inputs, independent of ready.
   std::optional<BattleControlCurrentPhaseTransitionInputsV1>
       current_phase_transition_inputs_v1;
+  // Copied from the existing transition sample; independent of control ready.
+  std::optional<BattleActualGeographyInputsV1> actual_geography_v1;
   bool battle_control_ready = false;
 
   friend bool operator==(const BattleControlSnapshot &,
@@ -2387,6 +2400,8 @@ struct BattleTransitionSnapshot {
   std::optional<BattleCurrentObservationSnapshotV1> current_observation;
   // Current owner recall operands; no scheduler or command-event claim.
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
+  // Independent actual geography; terrain failure preserves lifecycle ready.
+  std::optional<BattleActualGeographyInputsV1> actual_geography_v1;
 
   friend bool operator==(const BattleTransitionSnapshot &,
                          const BattleTransitionSnapshot &) = default;

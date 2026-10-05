@@ -12615,6 +12615,7 @@ class GameplayBridgeService:
             "queried_revision",
             "queried_native_revision",
             "current_observation",
+            "actual_geography_v1",
         }
         if (
             not required_result_keys <= set(result)
@@ -12656,6 +12657,12 @@ class GameplayBridgeService:
             )
         if "current_observation" in normalized:
             mirror_keys.add("current_observation")
+        if ("actual_geography_v1" in result) != ("actual_geography_v1" in normalized):
+            raise BridgeUnavailableError(
+                "battle-transition actual geography mirror disagrees with its frame"
+            )
+        if "actual_geography_v1" in normalized:
+            mirror_keys.add("actual_geography_v1")
         lifecycle_mirrors = {
             key: copy.deepcopy(normalized[key]) for key in mirror_keys
         }
