@@ -204,6 +204,22 @@ public:
     *observed_snapshot = observed;
     return ResumeFromSnapshot(observed);
   }
+  // Command-only core observation. It must not be published as a full snapshot.
+  bool ReadTimelineCoreSnapshot(Snapshot &output) const noexcept {
+    output = {};
+    ck3_12002::CoreSnapshotPrefix prefix{};
+    if (!ck3_12002::ReadCoreSnapshot(bindings_.core, prefix)) return false;
+    output.date_raw = prefix.clock.date_raw;
+    output.speed = prefix.clock.speed;
+    output.paused = prefix.clock.paused;
+    output.player_id = prefix.local_player_id;
+    output.map_ready = prefix.map_ready;
+    output.has_played_character = prefix.has_played_character;
+    output.played_character_id = prefix.played_character_id;
+    output.played_character_alive = prefix.played_character_alive;
+    return true;
+  }
+
   PauseSubmitResult SubmitObservedPause(
       const Snapshot &observed) const noexcept {
     return MatchesCoreSnapshot(observed) ? PauseFromSnapshot(observed)
@@ -606,6 +622,13 @@ Ck3_12002AdapterBindings BindCk3_12002AdapterImage(
 }
 
 const AdapterDescriptor &Ck3_12002AdapterDescriptor() noexcept { return kDescriptor; }
+
+bool ReadCk3_12002TimelineCoreSnapshot(
+    const GameAdapter &adapter, Snapshot &output) noexcept {
+  output = {};
+  const auto *native = dynamic_cast<const Ck3_12002Adapter *>(&adapter);
+  return native != nullptr && native->ReadTimelineCoreSnapshot(output);
+}
 
 PauseSubmitResult SubmitCk3_12002PauseMapObserved(
     const GameAdapter &adapter, const Snapshot &observed_snapshot) noexcept {

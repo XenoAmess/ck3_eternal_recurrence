@@ -49,11 +49,11 @@ public:
   [[nodiscard]] bool supports_step(std::string_view step) const noexcept;
 
   virtual bool read_snapshot(Snapshot &output) const noexcept = 0;
-  // When supplied, observed_snapshot is the exact snapshot used to decide
-  // whether the command was idempotent or had to be queued.  The bridge can
-  // therefore publish an already_paused/already_running acknowledgement and
-  // its state postcondition from one native observation instead of racing a
-  // second full snapshot read at an automatic-pause boundary.
+  // When supplied, observed_snapshot contains the observation used to decide
+  // idempotence or command submission. Crozier worker timeline operations use
+  // only core fields; the bridge obtains the complete published postcondition
+  // separately. Older adapters return a full snapshot, usable at an automatic
+  // pause boundary without racing a second read.
   virtual PauseSubmitResult
   submit_pause_map(Snapshot *observed_snapshot = nullptr) const noexcept = 0;
   virtual ResumeSubmitResult

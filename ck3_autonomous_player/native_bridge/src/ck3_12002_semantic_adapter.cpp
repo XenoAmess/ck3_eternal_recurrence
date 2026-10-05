@@ -9,6 +9,23 @@
 
 namespace xar::ck3_12002 {
 namespace {
+bool ReadTimelineCommandObservation(
+    const game::GameAdapter &native,
+    const ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    game::Snapshot &output) noexcept {
+  output = {};
+  const auto stamp = ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(mailbox);
+  if (!stamp.observed_stamp_read_success ||
+      stamp.observed_tls_initialized != 1 ||
+      stamp.observed_tls_main_thread_marker != 1) return false;
+  game::Snapshot observed{};
+  if (!game::ReadCk3_12002TimelineCoreSnapshot(native, observed) ||
+      observed.date_raw != stamp.observed_date_raw ||
+      observed.paused != stamp.observed_paused) return false;
+  output = std::move(observed);
+  return true;
+}
+
 enum class SemanticOperation {
   select_event, reply, acknowledge, raise, move, halt, disband, split, merge, assault_start, assault_stop, declare, marriage, enforce, surrender, white_peace,
   preview, declarations, declarations_for_target, marriage_choices, family_candidates, strengths, combat_v2, combat_v3,
@@ -175,7 +192,8 @@ game::PauseSubmitResult WorkerAdapter::submit_pause_map(
   }
   *observed_snapshot = {};
   game::Snapshot observed{};
-  if (!read_snapshot(observed)) return game::PauseSubmitResult::unavailable;
+  if (!ReadTimelineCommandObservation(*native_, *mailbox_, observed))
+    return game::PauseSubmitResult::unavailable;
   const auto result = game::SubmitCk3_12002PauseMapObserved(*native_, observed);
   if (result == game::PauseSubmitResult::submitted) WakeAfterDirectControlSubmit();
   if (result != game::PauseSubmitResult::unavailable)
@@ -191,7 +209,8 @@ game::ResumeSubmitResult WorkerAdapter::submit_resume_map(
   }
   *observed_snapshot = {};
   game::Snapshot observed{};
-  if (!read_snapshot(observed)) return game::ResumeSubmitResult::unavailable;
+  if (!ReadTimelineCommandObservation(*native_, *mailbox_, observed))
+    return game::ResumeSubmitResult::unavailable;
   const auto result = game::SubmitCk3_12002ResumeMapObserved(*native_, observed);
   if (result == game::ResumeSubmitResult::submitted) WakeAfterDirectControlSubmit();
   if (result != game::ResumeSubmitResult::unavailable)

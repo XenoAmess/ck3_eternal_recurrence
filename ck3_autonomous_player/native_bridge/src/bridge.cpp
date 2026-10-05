@@ -16776,7 +16776,8 @@ void RunConnectedSession(
               connected = PublishTimelineSnapshotWithDiagnostics(
                   pipe, request_id, game, previous_snapshot, state_revision,
                   checkpoint_submission, published_checkpoint_sequence,
-                  result == xar::game::PauseSubmitResult::already_paused
+                  result == xar::game::PauseSubmitResult::already_paused &&
+                          !xar::game::IsReviewedCrozierAdapter(game)
                       ? &command_observation
                       : nullptr);
             }
@@ -16806,7 +16807,8 @@ void RunConnectedSession(
               connected = PublishTimelineSnapshotWithDiagnostics(
                   pipe, request_id, game, previous_snapshot, state_revision,
                   checkpoint_submission, published_checkpoint_sequence,
-                  result == xar::game::ResumeSubmitResult::already_running
+                  result == xar::game::ResumeSubmitResult::already_running &&
+                          !xar::game::IsReviewedCrozierAdapter(game)
                       ? &command_observation
                       : nullptr);
             }

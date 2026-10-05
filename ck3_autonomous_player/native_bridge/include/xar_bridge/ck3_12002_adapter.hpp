@@ -71,11 +71,13 @@ Ck3_12002AdapterBindings BindCk3_12002AdapterImage(
 std::unique_ptr<GameAdapter> CreateCk3_12002AdapterFromBindings(
     Ck3_12002AdapterBindings bindings) noexcept;
 
-// Worker timeline operations use its owner-published full snapshot. These
-// private exact-build entry points validate one current core prefix before
-// using that frame to decide idempotence or queue the existing time command.
-// A stale prefix or a different adapter returns unavailable; no full native
-// snapshot is read on the bridge worker thread.
+// Command-only exact-build core fields. This partial Snapshot must never be
+// published as a full gameplay snapshot. Worker timeline operations match its
+// date/pause against the existing owner read stamp, then these entry points
+// validate the current core again before deciding idempotence or queuing.
+// No full native snapshot is read on the bridge worker thread.
+bool ReadCk3_12002TimelineCoreSnapshot(
+    const GameAdapter &adapter, Snapshot &output) noexcept;
 PauseSubmitResult SubmitCk3_12002PauseMapObserved(
     const GameAdapter &adapter, const Snapshot &observed_snapshot) noexcept;
 ResumeSubmitResult SubmitCk3_12002ResumeMapObserved(
