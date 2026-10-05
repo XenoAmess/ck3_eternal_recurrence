@@ -7,6 +7,7 @@
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12002_combat.hpp"
 #include "xar_bridge/ck3_12002_phase_advantage.hpp"
+#include "xar_bridge/ck3_12002_phase.hpp"
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/ck3_12002_phase_character.hpp"
 
@@ -101,6 +102,8 @@ struct BattleBindings {
   // Exact .3 loaded PhaseEffect DB, distinct from the men-at-arms type DB.
   GetCombatRules retained_constructor_effect_rules = nullptr;
   bool stored_advantage_sources_enabled = false;
+  bool current_dynamic_advantage_enabled = false;
+  ReadPhaseDynamic current_read_side_dynamic = nullptr;
   ReadAdvantageProvinceModifier retained_read_province_multiplier = nullptr;
   ReadAdvantageModifierValue retained_read_holding_modifier = nullptr;
   AdvantageModifierFlag retained_has_modifier_flag = nullptr;

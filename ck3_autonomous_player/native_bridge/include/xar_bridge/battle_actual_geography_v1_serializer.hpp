@@ -145,6 +145,28 @@ inline std::string SerializeBattleActualGeographyV1(
     }
     out += "]}";
   }
+  if (inputs.current_dynamic_advantage_v1) {
+    const auto &current = *inputs.current_dynamic_advantage_v1;
+    out += ",\"current_dynamic_advantage_v1\":{\"scale\":100000,\"base_advantage_raw\":";
+    out += std::to_string(current.base_advantage_raw);
+    out += ",\"stored_resolved_advantage_raw\":" + std::to_string(current.stored_resolved_advantage_raw);
+    out += ",\"sides\":[";
+    for (std::size_t index = 0; index < current.sides.size(); ++index) {
+      if (index) out += ',';
+      const auto &side = current.sides[index];
+      out += "{\"side_index\":" + std::to_string(side.side_index) + ",\"status\":";
+      String(out, side.side_dynamic_total_raw ? "available" : "unavailable");
+      out += ",\"current_roll_points\":" + std::to_string(side.current_roll_points);
+      out += ",\"selected_character_id_raw\":" + std::to_string(side.selected_character_id_raw);
+      out += ",\"side_dynamic_total_raw\":";
+      out += side.side_dynamic_total_raw ? std::to_string(*side.side_dynamic_total_raw) : "null";
+      out += ",\"unavailable_reason\":";
+      if (side.side_dynamic_total_raw) out += "null";
+      else String(out, side.unavailable_reason);
+      out += '}';
+    }
+    out += "]}";
+  }
   out += '}';
   return out;
 }

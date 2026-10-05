@@ -781,6 +781,25 @@ struct BattleStoredAdvantageSourcesV1 {
                          const BattleStoredAdvantageSourcesV1 &) = default;
 };
 
+// Current direct getter output uses the existing cached aggregate. Stored+710
+// is independently observed and need not equal a current getter resolution.
+struct BattleCurrentDynamicAdvantageSideV1 {
+  std::int32_t side_index = 0;
+  std::int32_t current_roll_points = 0;
+  std::int32_t selected_character_id_raw = -1;
+  std::optional<std::int64_t> side_dynamic_total_raw;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleCurrentDynamicAdvantageSideV1 &,
+                         const BattleCurrentDynamicAdvantageSideV1 &) = default;
+};
+struct BattleCurrentDynamicAdvantageV1 {
+  std::int64_t base_advantage_raw = 0;
+  std::int64_t stored_resolved_advantage_raw = 0;
+  std::array<BattleCurrentDynamicAdvantageSideV1, 2> sides;
+  friend bool operator==(const BattleCurrentDynamicAdvantageV1 &,
+                         const BattleCurrentDynamicAdvantageV1 &) = default;
+};
+
 // Current actual Combat geography; the outer battle query supplies identity and
 // frame. Retained constructor fields do not reconstruct a historical entry.
 struct BattleActualGeographyInputsV1 {
@@ -790,6 +809,7 @@ struct BattleActualGeographyInputsV1 {
   std::optional<BattleRetainedRuleEffectsV1> constructor_rule_effects_v1;
   std::optional<BattleCurrentRuleContextV1> current_rule_context_v1;
   std::optional<BattleStoredAdvantageSourcesV1> stored_advantage_sources_v1;
+  std::optional<BattleCurrentDynamicAdvantageV1> current_dynamic_advantage_v1;
 
   friend bool operator==(const BattleActualGeographyInputsV1 &,
                          const BattleActualGeographyInputsV1 &) = default;

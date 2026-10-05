@@ -153,4 +153,18 @@ def retained_constructor_geometry_fields(
             evaluate_actual_stored_advantage_sources(inputs) if inputs is not None else None
         )
         fields["stored_advantage_sources_v1"] = stored_diagnostic
+    current = geometry.get("current_dynamic_advantage_v1") if geometry is not None else None
+    if current is not None:
+        from ..simulation.battle_actual_current_dynamic_advantage import (
+            adapt_actual_current_dynamic_advantage, evaluate_actual_current_dynamic_advantage,
+        )
+        current_diagnostic = {
+            "schema_version": 1, "current_frame_qualified": bool(exact_build and actual),
+            "source": copy.deepcopy(diagnostic["source"]), "current_inputs": copy.deepcopy(current),
+        }
+        inputs = adapt_actual_current_dynamic_advantage(current_diagnostic)
+        current_diagnostic["current_advantage"] = (
+            evaluate_actual_current_dynamic_advantage(inputs) if inputs is not None else None
+        )
+        fields["current_dynamic_advantage_v1"] = current_diagnostic
     return fields

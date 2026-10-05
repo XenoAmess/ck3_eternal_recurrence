@@ -1,6 +1,6 @@
 # Actual current side dynamic getter, CK3 1.20.0.3
 
-This package closes one specific next actual input: `258A470`, not another constructor or a future contact. Exact identity is CK3 1.20.0.3 / Steam25652598 / EXE SHA256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`. Source-only: no repository edits, build, test, game/SDK/pipe/UI/process/profile/save/cache operation.
+This package closes one specific next actual input: `258A470`, not another constructor or a future contact. Exact identity is CK3 1.20.0.3 / Steam25652598 / EXE SHA256 `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`. The source closing stage preceded the implementation below. All work is offline; no game/SDK/pipe/UI/process/profile/save/cache operation occurred.
 
 The cached complete .2 body establishes the known span `258A470..258A6A0`. Existing reviewed .3 phase manifest and exact .3 `258B510` caller already bind the entry and null fourth argument. One necessary seek of the frozen installed .3 EXE read only that 560-byte span, plus368 bytes of PE section mapping headers. The entire body equals the cached .2 bytes, SHA256 `ae1ad782febee1ce96788004f8479736383923a2f46baa593d4df75f56a2cb52`. No other code, EXE scan or full EXE hash was read. `GETTER-258A470-560.json` contains all133 decoded instructions and the exact equality receipt.
 
@@ -63,3 +63,44 @@ performed. One new Python case and one new native fixture command are planned;
 passing stored4/current-context9 tests and consumers will not be repeated.
 Source closing cost is exactly560 code bytes plus368 mapping-header bytes.
 Implementation, native wire and live remain pending at this source-tree commit.
+
+
+## Implemented current input boundary, 2026-10-06T01:11:20.209933+08:00
+
+The optional actual leaf now publishes observed stored base6C8, independently
+named stored resolved710 and both current direct258A470 totals. Its exact .3
+binding reuses the existing `ReadPhaseDynamic` ABI and RVA with a null fourth
+argument. It reads resolved actual Combat in the existing foreign transition;
+owned control copies that leaf through its existing ownership gate. Missing
+binding or returned output produces null with a concrete258A470 reason, while
+zero and signed raw selected CharacterID0 remain valid observed values.
+
+Strict normalization and frozen inputs are consumed by the existing service.
+The pure result computes `wrap64(base + side0 - side1)` only when both current
+totals are available, with per-side readiness otherwise. Stored710 always
+remains separately named; equality and wrapped delta are diagnostic values.
+This result can be ready independently of unknown retained kind/holding or
+stored append-ledger availability. It observes the current cached side+110
+aggregate, without native resolve/refresh, historical reconstruction or future
+changed-context prediction. This closes a useful current-input result, not a
+complete future forecast or production-live acceptance.
+
+One necessary new Python case (four service subcases, signed-wrap fixture and
+immutable copy) passed once: 0.002s unittest, 1.6177008s process, actual=0.
+External `PYTHON-FOCUSED-01.json` records the real Oct6 completion time.
+No old stored4/current-context9 tests or consumer replays were rerun.
+
+The new native target/CTest `xar_ck3_12003_current_dynamic_advantage_test`
+executes only `--current-dynamic-advantage-only`. Four fresh production wires
+cover current/stored disagreement, legitimate zero, one missing direct output
+and owned copy; the callback checks actual Combat/local output/native side/null
+explanation arguments. Root will compile this new target and the full bridge
+centrally. Native build, producer-wire replay and live remain pending here.
+The prepared external `replay_native_wire.py` accepts production source-root,
+native-dir and native-source pins and must run only after Root's new GREEN.
+
+No additional EXE read was needed during implementation: source cost stays
+560 code bytes plus368 PE mapping bytes. Remaining requested decomposition can
+reuse cached `2589E10` commander body and exact known `25899C0` side aggregate
+getter. Current Character/side contribution groups are not separately published
+yet; future forecast still requires changed-context constructor/getter inputs.

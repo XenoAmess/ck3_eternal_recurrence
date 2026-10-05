@@ -8,6 +8,7 @@ from __future__ import annotations
 
 from .battle_current_rule_context_contract import normalize_current_rule_context_v1
 from .battle_stored_advantage_sources_contract import normalize_stored_advantage_sources_v1
+from .battle_current_dynamic_advantage_contract import normalize_current_dynamic_advantage_v1
 
 
 def _optional_signed(value: object, field: str, bits: int) -> int | None:
@@ -28,7 +29,7 @@ def normalize_actual_geography_v1(
         "terrain", "constructor_adjacency_kind_raw", "holding_defender"
     }
     if (not isinstance(value, dict) or not required <= set(value)
-            or set(value) - required - {"constructor_rule_effects_v1", "current_rule_context_v1", "stored_advantage_sources_v1"}):
+            or set(value) - required - {"constructor_rule_effects_v1", "current_rule_context_v1", "stored_advantage_sources_v1", "current_dynamic_advantage_v1"}):
         raise ValueError(f"{field} must contain the actual-geography v1 fields")
     terrain = value["terrain"]
     terrain_field = f"{field}.terrain"
@@ -91,6 +92,10 @@ def normalize_actual_geography_v1(
     if "stored_advantage_sources_v1" in value:
         result["stored_advantage_sources_v1"] = normalize_stored_advantage_sources_v1(
             value["stored_advantage_sources_v1"], field=f"{field}.stored_advantage_sources_v1",
+        )
+    if "current_dynamic_advantage_v1" in value:
+        result["current_dynamic_advantage_v1"] = normalize_current_dynamic_advantage_v1(
+            value["current_dynamic_advantage_v1"], field=f"{field}.current_dynamic_advantage_v1",
         )
     return result
 
