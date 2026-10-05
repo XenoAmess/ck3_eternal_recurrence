@@ -42,6 +42,17 @@ struct ContextSourceBindingsV1 {
   const void *later_ordered_storage_slot = nullptr;
   const void *later_ordered_fallback_slot = nullptr;
   const void *later_guarded_fallback_slot = nullptr;
+  bool helper_291f0a0_enabled = false;
+  const void *helper_manager_slot = nullptr;
+  const void *helper_third_storage_slot = nullptr;
+  const void *helper_third_fallback_slot = nullptr;
+  const void *helper_invalid_character_fallback_slot = nullptr;
+  const void *helper_range_first_threshold_slot = nullptr;
+  const void *helper_range_last_threshold_slot = nullptr;
+  const void *helper_default_pc = nullptr;
+  const void *helper_default_pc_guard_slot = nullptr;
+  const void *helper_source_pointer_fallback_header = nullptr;
+  const void *helper_source_pointer_fallback_guard_slot = nullptr;
   void *(*provider)() = nullptr;
   bool post_291d7e0_sources_enabled = false;
   const void *post_ab_object_fallback_slot = nullptr;

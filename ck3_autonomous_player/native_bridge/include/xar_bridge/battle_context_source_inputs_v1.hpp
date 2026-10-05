@@ -275,12 +275,66 @@ struct ContextSourceLaterDirectV1 {
   friend bool operator==(const ContextSourceLaterDirectV1 &,
                          const ContextSourceLaterDirectV1 &) = default;
 };
+struct ContextSourceHelperRowV1 {
+  std::int32_t native_index = 0;
+  std::optional<std::string> source_identity;
+  std::optional<std::int32_t> gate_raw;
+  std::optional<bool> admitted;
+  std::optional<ContextSourcePropertiesV1> property_block;
+  std::string reason;
+  friend bool operator==(const ContextSourceHelperRowV1 &,
+                         const ContextSourceHelperRowV1 &) = default;
+};
+struct ContextSourceHelperFamilyV1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::string selected_source;
+  std::optional<bool> admitted;
+  std::optional<std::int32_t> count;
+  std::optional<bool> array_present;
+  std::optional<std::vector<ContextSourceHelperRowV1>> rows;
+  std::string reason;
+  friend bool operator==(const ContextSourceHelperFamilyV1 &,
+                         const ContextSourceHelperFamilyV1 &) = default;
+};
+struct ContextSourceHelper291f0a0V1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::int32_t character_id = -1;
+  std::optional<std::string> first_selection;
+  std::optional<std::int32_t> first_key_b4_raw;
+  std::optional<bool> manager_present;
+  std::optional<std::string> manager_definition_selection;
+  std::optional<std::string> manager_definition_identity;
+  std::optional<std::string> recipient_source;
+  std::optional<std::int64_t> recipient_q64;
+  std::optional<std::int32_t> range_count_raw;
+  std::optional<std::string> range_selection;
+  std::optional<std::int32_t> range_native_index;
+  std::optional<std::int64_t> range_lower_q64;
+  std::optional<std::int64_t> range_upper_q64;
+  std::optional<std::int32_t> default_pc_guard_raw;
+  std::optional<std::int32_t> pointer_list_guard_raw;
+  std::optional<std::int32_t> predicate_character_15c_raw;
+  std::optional<std::int32_t> predicate_first_key_b4_raw;
+  std::optional<std::int32_t> predicate_second_key_4b8_raw;
+  std::optional<std::int32_t> predicate_second_a0_raw;
+  std::optional<bool> predicate_admitted;
+  ContextSourceHelperFamilyV1 primary_direct;
+  ContextSourceHelperFamilyV1 manager_range;
+  ContextSourceHelperFamilyV1 source_a18;
+  ContextSourceHelperFamilyV1 conditional_direct;
+  std::string reason;
+  friend bool operator==(const ContextSourceHelper291f0a0V1 &,
+                         const ContextSourceHelper291f0a0V1 &) = default;
+};
 struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
   std::string status = "unavailable";
   bool ready = false;
   std::int32_t character_id = -1;
   std::optional<ContextSourcePre291e2101640V1> pre_291e210_1640;
   std::optional<ContextSourceLaterDirectV1> later_direct_291c3fb_44c;
+  std::optional<ContextSourceHelper291f0a0V1> helper_291f0a0;
   std::optional<ContextSource291e210V1> branch_291e210;
   std::optional<ContextSource291d7e0V1> branch_291d7e0;
   std::optional<ContextSourcePost291d7e0V1> post_291d7e0_sources;

@@ -1,0 +1,56 @@
+{
+  "schema": "g2-person-helper-291f0a0-source-evidence/v1",
+  "exact_version": "1.20.0.3",
+  "steam_build": "25652598",
+  "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "reused_frozen_exe_identity": true,
+  "whole_exe_scan_or_rehash": false,
+  "source_tree_before_code": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/HELPER-SOURCE-TREE.md",
+    "bytes": 5276,
+    "sha256": "7ee70829bfe7e0331c8ec4dfdb52d60462d561d9affb16c5c75cbde7b0865bfd"
+  },
+  "canonical_appendix": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/HELPER-CANONICAL-APPENDIX.md",
+    "bytes": 4020,
+    "sha256": "c05fb66cfea5c442016b5fe951cf680c2dbedc61f7002d61f671fb0d62a1d6a8"
+  },
+  "reused_earlier_lane_evidence": "docs/ck3-native-ai/battle-current-person-later-direct-sources-12003-evidence.json",
+  "reused_helper_selector_source_delivery": "2d567cd73d8e3fa36536c28d7844578a11dff320",
+  "new_capture_receipts": [
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-02BFB4C0-body/RECEIPT.json",
+      "bytes": 5928,
+      "sha256": "32ce2ac8fbf75a1705bec67b5e43be83a8be835dc5fefee19268b20c1f625a37"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03F90910-metadata/RECEIPT.json",
+      "bytes": 8458,
+      "sha256": "be8423741bf9d966358b2a5ee259fa998de53f419390b9e6c52b707aac3752c8"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03F90910-frameless-gap/RECEIPT.json",
+      "bytes": 1634,
+      "sha256": "a3f6a7d8ccdd6b0418470e2a2f6c5d4be0a66617e4f5a93409f412dcd13a543f"
+    }
+  ],
+  "new_frozen_exe_bytes": 775,
+  "lane_cumulative_new_frozen_exe_bytes": 3109,
+  "python_validation": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/helper-python-tests.json",
+    "bytes": 2077,
+    "sha256": "9850607986e1628a170b47ef0be35a48a5b0c4ae548665493b16c9395ebbceaf"
+  },
+  "native_validation": {
+    "target": "xar_ck3_12003_person_helper_291f0a0_test",
+    "central_build": "Root pending; lane did not compile",
+    "wire_cases": 7,
+    "wire_dir": "BUILD_DIR/ck3_12003_person_helper_291f0a0_wire"
+  },
+  "game_sdk_pipe_ui_steam_profile_save_cache_runtime_activity": 0,
+  "unclosed_leaves": [
+    "Absent1C8 recipient:2BFB4C0 ->2BFAC30 contribution producer/current inputs",
+    "Remaining current-person caller suffix291F550/291F940"
+  ],
+  "readiness": "Python static-ready; native source implemented pending Root central build/fixture; complete person/Entry/forecast not ready"
+}
