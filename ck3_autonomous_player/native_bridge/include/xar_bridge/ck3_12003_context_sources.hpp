@@ -31,6 +31,13 @@ using ContextSourceExistingTokenLookupV1 = ContextSourceTokenCursorV1 *(*)(
 struct ContextSourceBindingsV1 {
   ContextSourceLocaleBindingsV1 current_locale{};
   bool enabled = false;
+  // Reused Army slots/provider; only the second-object pair is a new binding.
+  bool pre_291e210_1640_enabled = false;
+  const void *army_internal_storage_slot = nullptr;
+  const void *army_internal_fallback_slot = nullptr;
+  const void *pre_291e210_second_storage_slot = nullptr;
+  const void *pre_291e210_second_fallback_slot = nullptr;
+  void *(*provider)() = nullptr;
   const void *lifestyle_fallback_header = nullptr;
   const void *house_extra_fallback_header = nullptr;
   const void *first_storage_slot = nullptr;

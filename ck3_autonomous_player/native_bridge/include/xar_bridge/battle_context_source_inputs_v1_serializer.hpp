@@ -85,6 +85,38 @@ inline void Resolution(std::string &out,
   out += '}';
 }
 
+inline void Pre291e2101640(
+    std::string &out,
+    const std::optional<game::ContextSourcePre291e2101640V1> &p) {
+  if (!p) { out += "null"; return; }
+  out += "{\"status\":";
+  String(out, p->status);
+  out += ",\"ready\":";
+  out += p->ready ? "true" : "false";
+  out += ",\"character_id\":" + std::to_string(p->character_id);
+  out += ",\"army_selection\":";
+  if (p->army_selection) String(out, *p->army_selection);
+  else out += "null";
+  out += ",\"army_key_f4_raw\":";
+  Number(out, p->army_key_f4_raw);
+  out += ",\"army_field_120_raw\":";
+  Number(out, p->army_field_120_raw);
+  out += ",\"army_field_124_raw\":";
+  Number(out, p->army_field_124_raw);
+  out += ",\"second_selection\":";
+  if (p->second_selection) String(out, *p->second_selection);
+  else out += "null";
+  out += ",\"second_field_174_raw\":";
+  Number(out, p->second_field_174_raw);
+  out += ",\"admitted\":";
+  Boolean(out, p->admitted);
+  out += ",\"property_block\":";
+  Properties(out, p->property_block);
+  out += ",\"unavailable_reason\":";
+  Reason(out, p->unavailable_reason);
+  out += '}';
+}
+
 inline void WeightedSpan(std::string &out,
                         const std::optional<game::ContextSourceWeightedSpanV1> &s) {
   if (!s) { out += "null"; return; }
@@ -336,6 +368,10 @@ inline std::string SerializeBattleCurrentPersonContextSourceInputsV1(
   out += ",\"ready\":";
   out += p.ready ? "true" : "false";
   out += ",\"character_id\":" + std::to_string(p.character_id);
+  if (p.pre_291e210_1640) {
+    out += ",\"pre_291e210_1640\":";
+    Pre291e2101640(out, p.pre_291e210_1640);
+  }
   out += ",\"branch_291e210\":";
   Branch291e210(out, p.branch_291e210);
   out += ",\"branch_291d7e0\":";

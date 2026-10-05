@@ -77,6 +77,101 @@ bool PropertiesReady(const game::ContextSourcePropertiesV1 &p) {
       p.values_q64->size() == static_cast<std::size_t>(*p.keys_count);
 }
 
+// Mirrors the caller's exact lookup demand order. Failed observations never
+// take a native fallback; a readable native miss does. Raw IDs stay DWORDs.
+const void *PreRegistry(const ContextSourceBindingsV1 &b,
+                        const void *storage_slot, const void *fallback_slot,
+                        const void *key_address,
+                        std::optional<std::int32_t> &key_raw,
+                        std::optional<std::string> &selection,
+                        std::string &reason) {
+  const auto store = Read<const void *>(b, storage_slot);
+  if (!store) { reason = "registry_store_read_unavailable"; return nullptr; }
+  if (*store) {
+    key_raw = Read<std::int32_t>(b, key_address);
+    if (!key_raw) { reason = "registry_key_read_unavailable"; return nullptr; }
+    const auto index = static_cast<std::uint32_t>(*key_raw) & 0xFFFFFFU;
+    const auto capacity = Read<std::uint32_t>(b, *store, 0x2C);
+    if (!capacity) { reason = "registry_capacity_read_unavailable"; return nullptr; }
+    if (index < *capacity) {
+      const auto table = Read<const void *>(b, *store, 0x20);
+      if (!table) { reason = "registry_table_read_unavailable"; return nullptr; }
+      const auto object = Read<const void *>(b, *table,
+          static_cast<std::size_t>(index) * 16 + 8);
+      if (!object) { reason = "registry_slot_read_unavailable"; return nullptr; }
+      if (*object) {
+        const auto full_id = Read<std::int32_t>(b, *object, 0x10);
+        if (!full_id) { reason = "registry_full_id_read_unavailable"; return nullptr; }
+        if (*full_id == *key_raw) {
+          selection = "registry_full_id";
+          return *object;
+        }
+      }
+    }
+  }
+  const auto fallback = Read<const void *>(b, fallback_slot);
+  if (!fallback) { reason = "registry_fallback_read_unavailable"; return nullptr; }
+  selection = "native_fallback";
+  if (!*fallback) reason = "registry_native_fallback_null";
+  return *fallback;
+}
+
+game::ContextSourcePre291e2101640V1 Pre291e2101640(
+    const ContextSourceBindingsV1 &b, const void *character,
+    std::int32_t character_id) {
+  game::ContextSourcePre291e2101640V1 out{};
+  out.character_id = character_id;
+  out.status = "partial";
+  const auto fail = [&](const char *reason) {
+    out.unavailable_reason = reason;
+    return out;
+  };
+  const auto link = Read<const void *>(b, character, 0x1B8);
+  if (!link) return fail("character_carrier_1b8_read_unavailable");
+  const void *army = nullptr;
+  if (*link) {
+    army = PreRegistry(b, b.army_internal_storage_slot,
+                       b.army_internal_fallback_slot, Offset(*link, 0xF4),
+                       out.army_key_f4_raw, out.army_selection,
+                       out.unavailable_reason);
+  } else {
+    const auto fallback = Read<const void *>(b, b.army_internal_fallback_slot);
+    if (!fallback) return fail("army_native_fallback_read_unavailable");
+    out.army_selection = "native_fallback";
+    army = *fallback;
+    if (!army) return fail("army_native_fallback_null");
+  }
+  if (!army) return out;
+  out.army_field_120_raw = Read<std::int32_t>(b, army, 0x120);
+  if (!out.army_field_120_raw) return fail("army_field_120_read_unavailable");
+  if (*out.army_field_120_raw == -1) {
+    out.admitted = false;
+  } else {
+    const void *second = PreRegistry(
+        b, b.pre_291e210_second_storage_slot,
+        b.pre_291e210_second_fallback_slot, Offset(army, 0x124),
+        out.army_field_124_raw, out.second_selection, out.unavailable_reason);
+    if (!second) return out;
+    out.second_field_174_raw = Read<std::int32_t>(b, second, 0x174);
+    if (!out.second_field_174_raw) return fail("second_field_174_read_unavailable");
+    out.admitted = *out.army_field_120_raw == *out.second_field_174_raw;
+  }
+  if (*out.admitted) {
+    // The closed 8FD4E0 getter and actual provider+1640 Def+40 are demanded
+    // only after AL=true; this never calls 24DFB70 or a context writer.
+    const void *provider = b.provider ? b.provider() : nullptr;
+    if (!provider) return fail("provider_unavailable");
+    const auto definition = Read<const void *>(b, provider, 0x1640);
+    if (!definition || !*definition) return fail("provider_1640_definition_unavailable");
+    out.property_block = Properties(b, Offset(*definition, 0x40));
+    if (!PropertiesReady(*out.property_block))
+      return fail("provider_1640_consumed_properties_unavailable");
+  }
+  out.ready = true;
+  out.status = "available";
+  return out;
+}
+
 struct Resolved {
   game::ContextSourceResolutionV1 observation;
   const void *object = nullptr;
@@ -908,6 +1003,12 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   ContextSourceBindingsV1 b{};
   if (!base || sha != ck3_12003::kExecutableSha256) return b;
   b.enabled = true;
+  b.pre_291e210_1640_enabled = true;
+  b.army_internal_storage_slot = reinterpret_cast<const void *>(base + 0x5D1DE48);
+  b.army_internal_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1DE50);
+  b.pre_291e210_second_storage_slot = reinterpret_cast<const void *>(base + 0x5D1E380);
+  b.pre_291e210_second_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E378);
+  b.provider = reinterpret_cast<void *(*)()>(base + 0x8FD4E0);
   b.lifestyle_fallback_header = reinterpret_cast<const void *>(base + 0x54E7288);
   b.house_extra_fallback_header = reinterpret_cast<const void *>(base + 0x54E56B0);
   b.first_storage_slot = reinterpret_cast<const void *>(base + 0x5D1DAF0);
@@ -946,9 +1047,13 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.reason = character ? "context_source_reader_unbound" : "character_unresolved";
     return out;
   }
+  if (b.pre_291e210_1640_enabled)
+    out.pre_291e210_1640 = Pre291e2101640(b, character, character_id);
   out.branch_291e210 = BranchA(b, character);
   out.branch_291d7e0 = BranchB(b, character);
   out.ready = out.branch_291e210->ready && out.branch_291d7e0->ready;
+  if (out.pre_291e210_1640)
+    out.ready = out.ready && out.pre_291e210_1640->ready;
   out.status = out.ready ? "available" : "partial";
   if (!out.ready) out.reason = "context_source_reads_unavailable";
   return out;

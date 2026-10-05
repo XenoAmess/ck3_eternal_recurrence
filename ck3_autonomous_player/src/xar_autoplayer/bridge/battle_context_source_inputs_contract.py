@@ -152,6 +152,51 @@ def _availability(raw: dict[str, object], field: str) -> tuple[str, bool, str | 
     return status, ready, reason
 
 
+def _pre_291e210_1640(value: object, field: str) -> dict[str, object] | None:
+    if value is None:
+        return None
+    raw = _dict(value, field, {
+        "status", "ready", "character_id", "army_selection", "army_key_f4_raw",
+        "army_field_120_raw", "army_field_124_raw", "second_selection",
+        "second_field_174_raw", "admitted", "property_block", "unavailable_reason",
+    })
+    status, ready, reason = _availability({
+        "status": raw["status"], "ready": raw["ready"],
+        "reason": raw["unavailable_reason"],
+    }, field)
+    normalized = {
+        "status": status, "ready": ready,
+        "character_id": _integer(raw["character_id"], field + ".character_id", 32),
+        "admitted": _boolean(raw["admitted"], field + ".admitted", optional=True),
+        "property_block": _properties(raw["property_block"], field + ".property_block"),
+        "unavailable_reason": reason,
+    }
+    for key in ("army_selection", "second_selection"):
+        selected = _string(raw[key], field + "." + key, optional=True)
+        if selected not in {None, "registry_full_id", "native_fallback"}:
+            raise ValueError(field + "." + key + " is invalid")
+        normalized[key] = selected
+    for key in ("army_key_f4_raw", "army_field_120_raw", "army_field_124_raw",
+                "second_field_174_raw"):
+        normalized[key] = _number(raw[key], field + "." + key, 32)
+    first, second = normalized["army_field_120_raw"], normalized["second_field_174_raw"]
+    actual = False if first == -1 else (first == second if first is not None and second is not None else None)
+    if normalized["admitted"] != actual:
+        raise ValueError(field + ".admitted disagrees with the exact DWORD predicate")
+    if first == -1 and any(normalized[key] is not None for key in (
+        "army_field_124_raw", "second_selection", "second_field_174_raw",
+    )):
+        raise ValueError(field + " early false branch contains undemanded second operands")
+    if actual is not True and normalized["property_block"] is not None:
+        raise ValueError(field + " provider block requires true admission")
+    complete = (normalized["army_selection"] is not None and actual is not None
+                and (first == -1 or normalized["second_selection"] is not None)
+                and (not actual or _properties_ready(normalized["property_block"])))
+    if ready != complete:
+        raise ValueError(field + " availability disagrees with consumed native operands")
+    return normalized
+
+
 def _branch_291e210(value: object, field: str) -> dict[str, object] | None:
     if value is None:
         return None
@@ -438,6 +483,8 @@ def normalize_current_context_source_inputs(
     fields = {"status", "ready", "character_id", "branch_291e210", "reason"}
     if isinstance(value, dict) and "branch_291d7e0" in value:
         fields.add("branch_291d7e0")
+    if isinstance(value, dict) and "pre_291e210_1640" in value:
+        fields.add("pre_291e210_1640")
     raw = _dict(value, field, fields)
     status, ready, reason = _availability(raw, field)
     normalized = {
@@ -449,7 +496,37 @@ def normalize_current_context_source_inputs(
     if "branch_291d7e0" in raw:
         normalized["branch_291d7e0"] = _branch_291d7e0(
             raw["branch_291d7e0"], field + ".branch_291d7e0")
+    if "pre_291e210_1640" in raw:
+        pre = _pre_291e210_1640(raw["pre_291e210_1640"], field + ".pre_291e210_1640")
+        if pre is not None and pre["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".pre_291e210_1640 character disagrees with source actor")
+        normalized["pre_291e210_1640"] = pre
     return normalized
+
+
+def emit_pre_291e210_1640_requests_from_current_source_inputs_12003(
+    normalized_section: dict[str, object] | None,
+) -> tuple[NativeWeightedContributionRequest12003, ...]:
+    """Emit the unit request after 291D1D0 and before A (then B).
+
+    This observes no baseline and performs no append. Current final storage
+    cannot supply the required before-stage baseline for a later assembler.
+    """
+    from ..simulation.battle_context_preparation_branch_291e210_12003 import (
+        NativeWeightedContributionRequest12003,
+    )
+
+    value = None if normalized_section is None else normalized_section.get("pre_291e210_1640")
+    branch = _pre_291e210_1640(value, "pre_291e210_1640")
+    if branch is None or not branch["ready"]:
+        raise ValueError("Required native input unavailable: pre_291e210_1640")
+    if not branch["admitted"]:
+        return ()
+    return (NativeWeightedContributionRequest12003(
+        source_ordinal=0, source_name="pre_291e210_1640", first_row_index=0,
+        row_count=1, definition_identity="provider1640",
+        base_property_block=value["property_block"], weight_q64=100000,
+    ),)
 
 
 def emit_291e210_requests_from_current_source_inputs_12003(

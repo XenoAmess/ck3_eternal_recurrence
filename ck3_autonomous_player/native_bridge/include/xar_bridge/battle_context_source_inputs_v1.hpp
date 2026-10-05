@@ -170,10 +170,29 @@ struct ContextSource291d7e0V1 {
   friend bool operator==(const ContextSource291d7e0V1 &,
                          const ContextSource291d7e0V1 &) = default;
 };
+// 291C255 predicate and 291C277 unit contribution. These are current operands,
+// after 291D1D0 and before A/B, never a before-stage context postimage.
+struct ContextSourcePre291e2101640V1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::int32_t character_id = -1;
+  std::optional<std::string> army_selection;
+  std::optional<std::int32_t> army_key_f4_raw;
+  std::optional<std::int32_t> army_field_120_raw;
+  std::optional<std::int32_t> army_field_124_raw;
+  std::optional<std::string> second_selection;
+  std::optional<std::int32_t> second_field_174_raw;
+  std::optional<bool> admitted;
+  std::optional<ContextSourcePropertiesV1> property_block;
+  std::string unavailable_reason;
+  friend bool operator==(const ContextSourcePre291e2101640V1 &,
+                         const ContextSourcePre291e2101640V1 &) = default;
+};
 struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
   std::string status = "unavailable";
   bool ready = false;
   std::int32_t character_id = -1;
+  std::optional<ContextSourcePre291e2101640V1> pre_291e210_1640;
   std::optional<ContextSource291e210V1> branch_291e210;
   std::optional<ContextSource291d7e0V1> branch_291d7e0;
   std::string reason;
