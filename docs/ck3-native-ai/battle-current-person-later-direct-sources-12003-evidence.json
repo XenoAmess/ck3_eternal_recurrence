@@ -12,10 +12,20 @@
   },
   "native_source_tree": {
     "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/CANONICAL-APPENDIX.md",
-    "bytes": 12579,
-    "sha256": "28f56da205df9ff8442cf70e52baeb911eeb085a696d8e9a71c09dddd07017cc"
+    "bytes": 15322,
+    "sha256": "91f45925b20beedb36e1649213d68d3fc9dea45b72365c87cb7629514ffeba2f"
   },
   "capture_receipts": [
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-00A11CC0-body/RECEIPT.json",
+      "bytes": 6798,
+      "sha256": "c5256827600436477b38fa3f34b2787c8cd749b5b352c2c2606997d84439d051"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-00A11CC0-metadata/RECEIPT.json",
+      "bytes": 7645,
+      "sha256": "b0078f6e5aee19212e80ea686355c0348856eaf9f243d2b5a58cfd3b2266b9a4"
+    },
     {
       "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-028BD090-body/RECEIPT.json",
       "bytes": 6572,
@@ -92,6 +102,36 @@
       "sha256": "5d3bdbe721dfa8e107bbf38e39852490664cb908c074a0699400111c9da2aa0e"
     },
     {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181D30-body/RECEIPT.json",
+      "bytes": 6765,
+      "sha256": "04c814657be5198586f5f63a5441dcee2ed7b2c82460f3e9a41b11f4d86fe7e2"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181D30-metadata/RECEIPT.json",
+      "bytes": 6927,
+      "sha256": "af7153c22725d410b6afebe320f0375267ce528d57c2ac2af8634042a1479663"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181D3E-body/RECEIPT.json",
+      "bytes": 6473,
+      "sha256": "bf09458ed61e4e4811f5aa51e55aa6c30df691794fe4c830036db4bb3b370b2b"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181D3E-metadata/RECEIPT.json",
+      "bytes": 5599,
+      "sha256": "7b435b7829badbf5d39ab761b1b28f409a4f332559094d21ca01f459d21b25e5"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181D50-body/RECEIPT.json",
+      "bytes": 6765,
+      "sha256": "d7a2fc515287b862b822cceedf6bc3b91c0e180e44fa6507d6abd086b8047c6f"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03181D50-metadata/RECEIPT.json",
+      "bytes": 6239,
+      "sha256": "ea8611980953222db93dff40b7241e06dd15884ab8b9eeb8b5412af2e7d3c8ca"
+    },
+    {
       "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/capture-03182420-body/RECEIPT.json",
       "bytes": 6186,
       "sha256": "1e7fa33ffb7daec3920c02c41b4767a4102062afe52f7609c62e42be4e9a4a54"
@@ -102,7 +142,7 @@
       "sha256": "f3fdeeaa577a2129894079fc1a21ff9ef718d5cb2a876a43d428fbdb963fba4d"
     }
   ],
-  "total_new_exe_bytes": 1855,
+  "total_new_exe_bytes": 2334,
   "implementation_scope": "caller291C3FB ordered80 and291C44C guardedAA0 current inputs only",
   "helper_follow_on": "28BD090 Character1C8 inline88/header5D67E40 and2BABEC0 full-key exactAL source closure",
   "native_build_and_fixture": "Root centralized pending",
