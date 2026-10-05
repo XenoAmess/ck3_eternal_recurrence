@@ -368,6 +368,10 @@ public:
     const auto result = ck3_12002::ReadArmyStrengths(bindings_.armies, scope, output);
     diagnostic.baseline_result.store(static_cast<std::int64_t>(result));
     diagnostic.scope_rows.store(static_cast<std::int64_t>(output.size()));
+    if (result == ReadArmyStrengthsResult::available ||
+        result == ReadArmyStrengthsResult::partial)
+      ck3_12002::AttachCommittedRouteTimelineToArmyRows(
+          bindings_.movement_routes, scope, output);
     if ((result == ReadArmyStrengthsResult::available ||
          result == ReadArmyStrengthsResult::partial) &&
         bindings_.native_owner_recall.enabled) {

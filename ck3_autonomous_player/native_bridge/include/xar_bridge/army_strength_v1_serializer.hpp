@@ -376,6 +376,36 @@ inline void AppendArmyStrengthV1(
     result += ",\"unavailable_reason\":";
     if (movement.unavailable_reason.empty()) result += "null";
     else append_json_string(result, movement.unavailable_reason);
+    if (movement.committed_route_timeline.has_value()) {
+      const auto &timeline = *movement.committed_route_timeline;
+      result += ",\"committed_route_timeline\":{\"status\":\"";
+      const bool available = timeline.status == ArmyMovementProgressStatus::available;
+      const bool empty = timeline.status == ArmyMovementProgressStatus::not_applicable;
+      result += available ? "available" : (empty ? "not_applicable" : "unavailable");
+      result += "\",\"source\":\"native_committed_route\",\"native_duration_scale\":100000";
+      result += ",\"committed_route_province_ids\":";
+      if (available || empty) append_int32_array(result, timeline.committed_route_province_ids);
+      else result += "null";
+      result += ",\"native_route_prefix_remaining_days_q100000\":";
+      if (available || empty) {
+        result += '[';
+        for (std::size_t i = 0; i < timeline.native_route_prefix_remaining_days_q100000.size(); ++i) {
+          if (i != 0) result += ',';
+          result += number(timeline.native_route_prefix_remaining_days_q100000[i]);
+        }
+        result += ']';
+      } else result += "null";
+      result += ",\"native_full_route_remaining_days_q100000\":";
+      result += timeline.native_full_route_remaining_days_q100000.has_value()
+                    ? number(*timeline.native_full_route_remaining_days_q100000) : "null";
+      result += ",\"projected_route_arrival_date_raws\":";
+      if (available || empty) append_int32_array(result, timeline.projected_route_arrival_date_raws);
+      else result += "null";
+      result += ",\"unavailable_reason\":";
+      if (timeline.unavailable_reason.empty()) result += "null";
+      else append_json_string(result, timeline.unavailable_reason);
+      result += '}';
+    }
     result += '}';
   }
   if (strength.loss_application_inputs_v1.has_value()) {

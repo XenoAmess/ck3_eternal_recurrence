@@ -197,6 +197,20 @@ enum class ArmyMovementProgressStatus {
   available,
 };
 
+// Unrounded native predictions for every committed path prefix. Arrival dates
+// are the existing bridge projection; the final prefix is the full remainder.
+struct ArmyCommittedRouteTimelineSnapshot {
+  ArmyMovementProgressStatus status = ArmyMovementProgressStatus::unavailable;
+  std::vector<std::int32_t> committed_route_province_ids;
+  std::vector<std::int64_t> native_route_prefix_remaining_days_q100000;
+  std::optional<std::int64_t> native_full_route_remaining_days_q100000;
+  std::vector<std::int32_t> projected_route_arrival_date_raws;
+  std::string unavailable_reason;
+
+  friend bool operator==(const ArmyCommittedRouteTimelineSnapshot &,
+                         const ArmyCommittedRouteTimelineSnapshot &) = default;
+};
+
 // Independent current CUnit observations. Accumulated movement and cached
 // speed are movement-weight operands; normalized progress is Q100000 and is
 // not elapsed days. Remaining duration is signed Q100000 days, without a
@@ -209,6 +223,7 @@ struct ArmyMovementProgressSnapshot {
   std::optional<std::int64_t> normalized_edge_progress_raw;
   std::optional<std::int64_t> first_route_edge_remaining_duration_raw;
   std::string unavailable_reason;
+  std::optional<ArmyCommittedRouteTimelineSnapshot> committed_route_timeline;
 
   friend bool operator==(const ArmyMovementProgressSnapshot &,
                          const ArmyMovementProgressSnapshot &) = default;

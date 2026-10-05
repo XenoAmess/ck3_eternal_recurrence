@@ -7828,6 +7828,40 @@ if(BUILD_TESTING AND WIN32)
     FIXTURES_REQUIRED army_replenishment_records_wire)
 endif()
 
+# Complete committed-route predictions reuse the production route reader and
+# strengths serializer; the registered MCP consumes the four emitted packets.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12003_committed_route_timeline_test
+    src/ck3_12002_army.cpp
+    src/ck3_12002_routes.cpp
+    src/ck3_12003_army_supply_timing.cpp
+    src/ck3_12003_army_replenishment_records.cpp
+    src/ck3_12003_committed_route_timeline_test.cpp)
+  target_include_directories(xar_ck3_12003_committed_route_timeline_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_committed_route_timeline_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_committed_route_timeline_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_committed_route_timeline_test PRIVATE
+      /W4 /WX /permissive- /EHsc /Gy /O2)
+    target_link_options(xar_ck3_12003_committed_route_timeline_test PRIVATE /OPT:REF)
+  endif()
+  file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/ck3_12003_committed_route_timeline_wire")
+  add_test(NAME xar_ck3_12003_committed_route_timeline_four_cases
+    COMMAND xar_ck3_12003_committed_route_timeline_test
+      "${CMAKE_BINARY_DIR}/ck3_12003_committed_route_timeline_wire")
+  add_test(NAME xar_ck3_12003_committed_route_timeline_registered_mcp
+    COMMAND ${Python3_EXECUTABLE} -O
+      "${CMAKE_CURRENT_SOURCE_DIR}/research/fixtures/run_committed_route_timeline_mcp_fixture.py"
+      --projection-root "${CMAKE_CURRENT_SOURCE_DIR}/../.."
+      --native-dir "${CMAKE_BINARY_DIR}/ck3_12003_committed_route_timeline_wire"
+      --output-dir "${CMAKE_BINARY_DIR}/ck3_12003_committed_route_timeline_registered")
+  set_tests_properties(xar_ck3_12003_committed_route_timeline_four_cases PROPERTIES
+    FIXTURES_SETUP committed_route_timeline_wire)
+  set_tests_properties(xar_ck3_12003_committed_route_timeline_registered_mcp PROPERTIES
+    FIXTURES_REQUIRED committed_route_timeline_wire)
+endif()
+
 # Outcome invariants are synthetic DTO tests and never start or attach CK3.
 if(BUILD_TESTING AND XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
   add_executable(xar_ck3_ingame_decision_outcome_contract_v1_test

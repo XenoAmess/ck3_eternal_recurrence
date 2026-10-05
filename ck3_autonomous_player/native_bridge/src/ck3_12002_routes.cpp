@@ -451,9 +451,12 @@ bool ProjectPathTimeline(
     const void *path_storage, void *origin_province,
     std::int32_t date_raw, std::int64_t base_duration_raw,
     std::vector<std::int32_t> &province_ids,
-    std::vector<std::int32_t> &arrival_date_raws) noexcept {
+    std::vector<std::int32_t> &arrival_date_raws,
+    std::vector<std::int64_t> *native_prefix_remaining_days_q100000 = nullptr) noexcept {
   province_ids.clear();
   arrival_date_raws.clear();
+  if (native_prefix_remaining_days_q100000 != nullptr)
+    native_prefix_remaining_days_q100000->clear();
   if (bindings.read_route_travel_duration == nullptr || game_state == nullptr ||
       unit == nullptr || origin_province == nullptr || base_duration_raw < 0) {
     return false;
@@ -520,6 +523,10 @@ bool ProjectPathTimeline(
     }
     province_ids.push_back(province_id);
     arrival_date_raws.push_back(arrival_date_raw);
+    // 24AADA0 has already subtracted active first-edge progress. Retain its
+    // prefix before date rounding; never subtract CUnit+168 a second time.
+    if (native_prefix_remaining_days_q100000 != nullptr)
+      native_prefix_remaining_days_q100000->push_back(total_duration_raw);
     prior_arrival = arrival_date_raw;
     prior_path_duration_raw = path_duration_raw;
   }
@@ -1914,9 +1921,12 @@ RouteBindings BindRouteImage(std::uintptr_t base, std::string_view sha) noexcept
 bool ReadCommittedRouteTimeline(
     const RouteBindings &bindings, const game::Snapshot &paused_scope,
     std::int32_t public_cunit_id, std::vector<std::int32_t> &province_ids,
-    std::vector<std::int32_t> &arrival_date_raws) noexcept {
+    std::vector<std::int32_t> &arrival_date_raws,
+    std::vector<std::int64_t> *native_prefix_remaining_days_q100000) noexcept {
   province_ids.clear();
   arrival_date_raws.clear();
+  if (native_prefix_remaining_days_q100000 != nullptr)
+    native_prefix_remaining_days_q100000->clear();
   if (!paused_scope.paused || !ClockMatches(bindings, paused_scope)) {
     return false;
   }
@@ -1942,13 +1952,40 @@ bool ReadCommittedRouteTimeline(
   }
   if (!ProjectPathTimeline(bindings, state, unit, path, origin,
                            paused_scope.date_raw, 0, province_ids,
-                           arrival_date_raws) ||
+                            arrival_date_raws, native_prefix_remaining_days_q100000) ||
       !ClockMatches(bindings, paused_scope)) {
     province_ids.clear();
     arrival_date_raws.clear();
+    if (native_prefix_remaining_days_q100000 != nullptr)
+      native_prefix_remaining_days_q100000->clear();
     return false;
   }
   return true;
+}
+
+void AttachCommittedRouteTimelineToArmyRows(
+    const RouteBindings &bindings, const game::Snapshot &paused_scope,
+    std::vector<game::ArmyStrengthSnapshot> &rows) noexcept {
+  if (!bindings.enabled) return;
+  for (auto &row : rows) {
+    if (!row.available || !row.current_movement_progress.has_value()) continue;
+    auto &timeline = row.current_movement_progress->committed_route_timeline.emplace();
+    if (!ReadCommittedRouteTimeline(
+            bindings, paused_scope, row.army_id,
+            timeline.committed_route_province_ids,
+            timeline.projected_route_arrival_date_raws,
+            &timeline.native_route_prefix_remaining_days_q100000)) {
+      timeline.unavailable_reason = "committed_route_timeline_unavailable";
+      continue;
+    }
+    if (timeline.committed_route_province_ids.empty()) {
+      timeline.status = game::ArmyMovementProgressStatus::not_applicable;
+    } else {
+      timeline.status = game::ArmyMovementProgressStatus::available;
+      timeline.native_full_route_remaining_days_q100000 =
+          timeline.native_route_prefix_remaining_days_q100000.back();
+    }
+  }
 }
 
 game::RouteContactHorizonStatus ReadRouteContactHorizon(

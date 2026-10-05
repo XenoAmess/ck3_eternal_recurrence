@@ -473,3 +473,40 @@ flowchart LR
 现contact-horizon实际要求非空且完整hostile集合，不能作为无敌军参数的通用整路线ETA口；复用内部provider即可。empty-route返回true+空数组与失败clear/false分开，合法0时长保留。native预测不保证之后路线/统帅/速度不变，也不证明实际到达；新字段尚未实现或验收，本轮只`research`，游戏日/SDK/编译测试均0。
 
 施工合同：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/movement-eta/SOURCE-CONTRACT.md`，5978 B / SHA `622c7bd4d4e781ffbd69921b00a56148cd5927c96a2dca975aacab5710f5b546`；完整交付`ROOT-DELIVERY.json`，8648 B / SHA `c32f1172670ce520cf54c4e1d217e96e8d8036c619a5a8cdb64330b2c03e5bdf`。未来实施只需该新增生产reader→serializer→registered MCP的必要资格，并在用户再授权后取得真实paused route，不重跑旧已通过检查。
+
+### 2026-10-05：后台实现完整 committed-route remaining，Python 消费链 GREEN
+
+休假接手任务中用户再次明确保留 CK3 给自己游玩。本包只在隔离源码树实现和运行一次离线 Python consumer 验证，没有启动、attach、查询或操作 CK3、Steam、桌面，没有调用 SDK、native 编译或增加正常保存日。上节的“尚未实现”是此前研究封存截点；本节为新增实现边界，旧 v73/R0046 不因此获得新字段。
+
+`ReadCommittedRouteTimeline` 增量接受可选 `vector<int64_t>*`，原五参数调用方继续可编译。`ProjectPathTimeline` 在每个省份与日期 append 的同一点保留已有 checked `total_duration_raw`，保持 signed Q100000 DAYS；committed base 仍为 0，**24AADA0 已减首段 progress，因此没有再减 CUnit+168**。既有 native sentinel、单调性、范围与日期转换判定照常使用；失败 wrapper 清空所有三个向量，不能发布前面成功的半条路线。合法 0 仍保留；合法空 route 无 getter 调用，区分为 not_applicable。
+
+既有 strengths adapter 在其同一 paused Snapshot 的 baseline read 后调用 `AttachCommittedRouteTimelineToArmyRows`，不向敌军 contact wrapper 塞入空集合、不建立独立 MCP。新增 `movement_routes` 只由 exact .3 adapter 绑定，复用已审阅 `BindRouteImage` 地址图；旧 .2 producer 继续省略该 observer。所有新字段位于已有 `current_movement_progress.committed_route_timeline`：
+
+| 字段 | 发布意义 |
+| --- | --- |
+| `status` / `source` | available / not_applicable / unavailable；source 固定 `native_committed_route`。它独立于现有首段 getter 的 status。 |
+| `native_duration_scale` | 固定 100000，单位是 DAYS，不是 movement weight 或 native HOURS。 |
+| `committed_route_province_ids` | 现有 provider 顺序，无添加起点、无新规划路径。 |
+| `native_route_prefix_remaining_days_q100000` | 每个 committed prefix 的未舍入原生预测。 |
+| `native_full_route_remaining_days_q100000` | 非空路线最后一个 prefix；合法 0 为 0，空/失败为 null。 |
+| `projected_route_arrival_date_raws` | 原有 rounded bridge 日期预测，与 native durations 分列。 |
+| `unavailable_reason` | 成功/合法空为 null；失败给具体 observer reason。 |
+
+成功非空时三个数组等长，final 等于末 prefix。空时数组 `[]`、final null；失败时数组与 final 均 null，不冒充空或 0。Python authority normalizer 允许旧 edge-only shape，保留新 duration signed int64、合法 0、数组对齐及来源；native_driver/service/MCP 三条消费入口复用该 authority，不需复制 mapper。该日期或时长是当前路线预测，仍不证明实际未来抵达、后续速度/统帅/路线稳定性或新的 movement loop。
+
+```mermaid
+flowchart LR
+  A[Same paused strengths Snapshot] --> B[Existing ReadCommittedRouteTimeline]
+  B --> C[Existing checked native prefix duration]
+  C --> D[Signed Q100000 days retained before date rounding]
+  C --> E[Existing rounded bridge arrival dates]
+  D --> F[current_movement_progress.committed_route_timeline]
+  E --> F
+  F --> G[Authority Python normalizer]
+  G --> H[Existing ck3_query_army_strengths]
+  H -. Authorized future paused snapshot still pending .-> I[New live qualification]
+```
+
+本包只运行一次 `py -B -O ck3_autonomous_player/native_bridge/research/fixtures/run_committed_route_timeline_mcp_fixture.py --projection-root Z:/gb1 --output-dir Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-maintainer-resume-20261005/movement-eta/python-registered`：**GREEN / exit 0**。四个新增 synthetic consumer cases（两段 fractional prefix、合法 0、合法空、失败 null）实际经过 registered MCP → service → driver → authority normalizer，并核旧 edge-only 兼容、paused 时间不变。fixture transport/hello/paused Snapshot 都是合成输入，无真实 pipe/game 查询；`RESULT.json` 与 `registered-route-results.json` 同目录记录实际调用链与结果。资格为 **consumer-static-ready**；本包尚未编译原生实现，不能称完整 native static-ready 或任何 live。
+
+新增原生 focused target `xar_ck3_12003_committed_route_timeline_test` 将 production `ReadArmyStrengths` → `AttachCommittedRouteTimelineToArmyRows` → production serializer 串起 owned-memory/native-callback fixture；保留非零 accumulated progress 并检查两个 raw prefixes 未二次扣减、getter 调用恰好两次、后段 sentinel 失败清空全部输出、合法零/空、旧 disabled adapter 省略。CTest `xar_ck3_12003_committed_route_timeline_four_cases` 生成四份真正 production-serialized packets，`xar_ck3_12003_committed_route_timeline_registered_mcp` 再消费这些原件。交给唯一整合者低并发构建/运行一次；本包未执行该 native target。后续在用户明确允许实机后，还需现有 registered query 对真实 paused committed route 的一次读回；旧 fractional 首段、v73 strict64 与旧 live artifact 不替代这些新增资格。

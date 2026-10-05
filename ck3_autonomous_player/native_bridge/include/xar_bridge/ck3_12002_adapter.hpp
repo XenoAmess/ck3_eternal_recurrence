@@ -5,6 +5,7 @@
 
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_12002_army.hpp"
+#include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12002_battle.hpp"
 #include "xar_bridge/ck3_12002_claim_terms.hpp"
 #include "xar_bridge/ck3_12002_combat.hpp"
@@ -32,6 +33,7 @@ struct Ck3_12002AdapterBindings {
   ck3_12002::CommandBindings commands;
   ck3_12002::EventsBindings events;
   ck3_12002::ArmyBindings armies;
+  ck3_12002::RouteBindings movement_routes;
   ck3_12002::BattleBindings native_owner_recall;
   ck3_12003::NativeMaaRecruitmentBindings native_maa_recruitment;
   ck3_12003::OwnedRegimentsBindingsV1 owned_regiments;

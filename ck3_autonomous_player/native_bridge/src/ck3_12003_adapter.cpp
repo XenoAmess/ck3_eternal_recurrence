@@ -208,6 +208,10 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
         reinterpret_cast<decltype(result.armies.get_army_gathering_days_left)>(
             image_base + ck3_12002::kArmyGatheringDaysLeftRva12003);
     result.armies.current_movement_progress_enabled = true;
+    // Reuse the exact-.3 reviewed route provider address map. The .2 adapter
+    // leaves this additive strengths observer disabled.
+    result.movement_routes = ck3_12002::BindRouteImage(
+        image_base, ck3_12002::kExecutableSha256);
     result.armies.get_unit_normalized_edge_progress =
         reinterpret_cast<decltype(result.armies.get_unit_normalized_edge_progress)>(
             image_base + ck3_12002::kUnitNormalizedEdgeProgressRva12003);

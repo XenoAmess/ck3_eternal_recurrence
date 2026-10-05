@@ -1990,14 +1990,16 @@ def _normalize_regiment_strengths(
 def _normalize_current_movement_progress(
     value: object, *, name: str
 ) -> dict[str, object] | None:
-    """Keep independent native edge observations; no ETA or permission inference."""
+    """Keep native edge observations and an optional whole committed prediction."""
     if value is None:
         return None
-    if not isinstance(value, dict) or set(value) != {
+    required = {
         "status", "source", "unit_state_raw", "accumulated_movement_weight_raw",
         "cached_edge_speed_raw", "normalized_edge_progress",
         "first_route_edge_remaining_duration", "unavailable_reason",
-    }:
+    }
+    if (not isinstance(value, dict) or not required <= value.keys()
+            or set(value) - required - {"committed_route_timeline"}):
         raise ValueError(f"native {name} schema is malformed")
     if value["status"] not in {"available", "not_applicable", "partial", "unavailable"}:
         raise ValueError(f"native {name}.status is malformed")
@@ -2022,7 +2024,57 @@ def _normalize_current_movement_progress(
         normalized[field] = (
             None if amount is None else _signed_fixed_point(amount, f"{name}.{field}")
         )
+    if "committed_route_timeline" in value:
+        normalized["committed_route_timeline"] = _normalize_committed_route_timeline(
+            value["committed_route_timeline"], name=f"{name}.committed_route_timeline"
+        )
     return normalized
+
+
+def _normalize_committed_route_timeline(
+    value: object, *, name: str
+) -> dict[str, object]:
+    """Preserve signed native Q100000 days separately from rounded dates."""
+    arrays = (
+        "committed_route_province_ids", "native_route_prefix_remaining_days_q100000",
+        "projected_route_arrival_date_raws",
+    )
+    final = "native_full_route_remaining_days_q100000"
+    if not isinstance(value, dict) or set(value) != {
+        "status", "source", "native_duration_scale", "unavailable_reason", final, *arrays,
+    }:
+        raise ValueError(f"native {name} schema is malformed")
+    status = value["status"]
+    if status not in {"available", "not_applicable", "unavailable"}:
+        raise ValueError(f"native {name}.status is malformed")
+    if value["source"] != "native_committed_route" or value["native_duration_scale"] != CK3_FIXED_POINT_SCALE:
+        raise ValueError(f"native {name} source or duration scale is malformed")
+    reason = value["unavailable_reason"]
+    if status == "unavailable":
+        if any(value[field] is not None for field in (*arrays, final)):
+            raise ValueError(f"native unavailable {name} must null its predictions")
+        if not isinstance(reason, str) or not reason:
+            raise ValueError(f"native unavailable {name} requires a reason")
+        return dict(value)
+    if reason is not None or any(not isinstance(value[field], list) for field in arrays):
+        raise ValueError(f"native observable {name} arrays or reason are malformed")
+    if len({len(value[field]) for field in arrays}) != 1:
+        raise ValueError(f"native {name} prefixes are not aligned")
+    for province in value[arrays[0]]:
+        if type(province) is not int or not 0 < province <= 2**31 - 1:
+            raise ValueError(f"native {name} province must be positive int32")
+    for raw in value[arrays[1]]:
+        if type(raw) is not int or not -(2**63) <= raw <= 2**63 - 1:
+            raise ValueError(f"native {name} duration must be signed int64")
+    for raw in value[arrays[2]]:
+        _signed_int32(raw, f"{name}.projected_route_arrival_date_raws")
+    prefixes = value[arrays[1]]
+    if status == "available":
+        if not prefixes or type(value[final]) is not int or value[final] != prefixes[-1]:
+            raise ValueError(f"native available {name} final must equal its last prefix")
+    elif prefixes or value[final] is not None:
+        raise ValueError(f"native empty {name} must retain empty arrays and null final")
+    return dict(value)
 
 
 def _normalize_army_gathering_days(

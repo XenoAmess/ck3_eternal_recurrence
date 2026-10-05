@@ -69,7 +69,14 @@ RouteBindings BindRouteImage(std::uintptr_t image_base,
 bool ReadCommittedRouteTimeline(
     const RouteBindings &, const game::Snapshot &paused_scope,
     std::int32_t public_cunit_id, std::vector<std::int32_t> &province_ids,
-    std::vector<std::int32_t> &arrival_date_raws) noexcept;
+    std::vector<std::int32_t> &arrival_date_raws,
+    std::vector<std::int64_t> *native_prefix_remaining_days_q100000 = nullptr) noexcept;
+
+// Existing strengths query enrichment from its same paused owning-thread
+// snapshot. No hostile army input and no newly planned route are required.
+void AttachCommittedRouteTimelineToArmyRows(
+    const RouteBindings &, const game::Snapshot &paused_scope,
+    std::vector<game::ArmyStrengthSnapshot> &) noexcept;
 
 game::RouteContactHorizonStatus ReadRouteContactHorizon(
     const RouteBindings &, const game::Snapshot &paused_scope,
