@@ -236,3 +236,19 @@ R2 `4-8e1c2f1861--ox-here--R0002` 的实际业务与简体中文 UI 复核为 **
 R20 八值、正常 OS0、16/16、EOF 和已赚 Writer33/Reader12/Creator16/R15cold 只按原范围复用。Pub01 EResult2、网络中断、旧匿名 UNKNOWN、第一次命中旧缓存及其校验失败原件保留；不重传已成功版本，不重跑已经通过的验收。[永久 changelog](release-changelogs/eternal-recurrence/1.0.2.md) 与 [发布证据索引](release-evidence/eternal-recurrence/1.0.2.json) 已作为本次 master 记录；实际 commit/push/远端核对保存于 `C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/release-closeout-01.json`，该回执实际闭合后累计正式完成 **5/10（50%）**。
 
 体验优化唯一新场 `4-8e1c2f1861--xenoamess-quality-of-life--R0011` 已实际启动，前置只读 observer 在 launch 前运行，尚不授予防御业务或正式发布信用。重整河山 operation03、驱策朝贡国 operation04、经商贪腐 operation12 的 Source05 入口已准备，业务实机仍待前台。天朝361最后；任意具体礼仪选择仍在全部1.20维护之后。另一台机器的窗口保留记录不限制本机验收。
+
+
+## 本机模组维护增量（2026-10-06 01:08 后补录）
+
+此节实际编制 UTC `2026-10-05T17:11:20.577046+00:00`，仅记本机模组，不改另一机器 M/BG 的整体状态或早会基线。此前未完成记录按原时点保留。
+
+正式迁移完成 **5/10（50%）**；白绮、自动建造优先工作均已完成，琉焰卿原版 1.0.2 的永久发布 commit/push 为 c55db0c3，最终证据索引已在 f8bbcb849 入库。
+
+体验优化 R11 已取得实际资格、initial2 和 D0 审阅。唯一 24h 推进为 53144328→53144352，原 23 条业务只有 startup4，出现 `reverse_contracts_setup` 和 `composite_relationship_setup_not_ready` 两项 FAIL；原版拒绝测试样本的 forced 朝贡契约，前提修订只进入新候选。游戏正常退出 0、job0、所有观察器实际退出，a63 CAS3596/done/resources[]。[原业务和清场交接](C:/workspace/ck3-upgrade-20261005/xqol-r11-live-monitor-agent-01/HANDOFF-R11-CLOSEOUT-01.md)保留；不把清场 GREEN 当作业务通过。新 fixture03 使用真实原版忠顺 effect 并保留目标、非同盟与真实旗标检查；新 cold12 仍未消费／未启动。
+
+兼容版本专项已完成：8 个已公开 1.20 产品 tags-only 实际 SDK 成功，匿名完整标签、Compatible Version 右栏及旧 Notes 全文均精确核对；内容 handle、描述及预览 handle 保持。14 个正式构建路径接入同一映射、14 双构建与 7 个静态校验通过。规范、产品表、8 份永久修订和证据已普通提交／推送至 master **f8bbcb849a571e7179d337cb45a991b00582ab6b**；Steam 恢复离线，a64 CAS3611 实际释放。详见[规范](workshop-compatible-version.md)和[永久证据](workshop-metadata-revisions/2026-10-06-compatible-version.json)。此项不增加正式产品发布数。
+
+当前前台继续体验优化；重整河山、驱策朝贡国、经商贪腐并行更新新 descriptor 的正式输入绑定，业务实机仍待各自新场。旧公开 1.19 产品随真正 1.20 发布添加版本标记；天朝361最后，具体礼仪选择在全部维护之后。用户对另一台机器的游戏窗口安排不限制本机。
+
+
+随后源码独审确认，忠顺候选03对当前宋的 celestial 政体不适用：原版 Obedience 条件只在支持该机制的政府生效。因此03保持 CHANGES_REQUIRED，未消费新场。改为审查候选02：在真实结义资格存在时设置原契约，再走原版正常解除盟约；解除后的真实 forced flag 与非同盟必须由新场严格断言决定。实际保持尚未验证，不新增产品通过信用。
