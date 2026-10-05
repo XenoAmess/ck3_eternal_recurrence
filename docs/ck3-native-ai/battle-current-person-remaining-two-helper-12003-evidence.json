@@ -1,0 +1,36 @@
+{
+  "schema": "g2-current-person-remaining-two-helper-source-only/v1",
+  "exact_version": "1.20.0.3",
+  "steam_build": "25652598",
+  "reused_executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "source_tree": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/remaining-two-helper/SOURCE-TREE.md",
+    "bytes": 10521,
+    "sha256": "b3b3c73d5e53f320c161888298973f8f2bbc9e884f4fba7bb2925adf5345efe8"
+  },
+  "query_plan": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/remaining-two-helper/QUERY-PLAN.json",
+    "bytes": 7203,
+    "sha256": "f6eadd53d811929a9d8322d9983eda0c199e8b5d49739fe66b4de6e64c755711"
+  },
+  "logical_function_extents": {
+    "291F550": "[291F550,291F940) seven segments1008B",
+    "291F940": "[291F940,291FB09) three segments457B",
+    "4212920": "[4212920,42129D5) three segments181B"
+  },
+  "new_exe_bytes": 2064,
+  "lane_cumulative_new_exe_bytes": 5173,
+  "result": "Both later helpers source-closed; all contributions receiver=model+10/unit100000,550threefamilies and940outer-direct/inner-mapped interleaving",
+  "readiness": "research source-closed; no implementation/compiler/tests at source freeze",
+  "unknown": [
+    "Earlier absent1C8 recipient2BFAC30",
+    "Caller291C467 onwards",
+    "Complete person baseline/actualEntry association perotherlanes"
+  ],
+  "source_documented_before_code": true,
+  "source_only_receipt": {
+    "path": "Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/remaining-two-helper/SOURCE-ONLY-RECEIPT.json",
+    "bytes": 10230,
+    "sha256": "c0627607fac2dcdc9c6a0c5733377d35ee96ea1de3e34048a78768012cdba9a7"
+  }
+}
