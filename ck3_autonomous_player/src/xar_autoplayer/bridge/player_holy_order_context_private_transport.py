@@ -152,6 +152,37 @@ def normalize_player_holy_order_context_v1(
                 raise ValueError("unavailable native holy-order service lifecycle lost its reason")
             if not service["applies_to_player"] and any(service.get(key) is not None for key in fields):
                 raise ValueError("inapplicable native holy-order service lifecycle contains player predicates")
+        if "troop_association" in terms:
+            association = terms["troop_association"]
+            if (not isinstance(association, Mapping)
+                    or type(association.get("available")) is not bool
+                    or type(association.get("applies_to_player")) is not bool
+                    or association["applies_to_player"] !=
+                    (row.get("employer_id") == value["played_character_id"])):
+                raise ValueError("native holy-order troop association scope is malformed")
+            members = association.get("rows")
+            if not isinstance(members, list) or (not association["applies_to_player"] and members):
+                raise ValueError("native holy-order troop association occurrences are malformed")
+            if association["available"]:
+                if association.get("unavailable_reason") is not None:
+                    raise ValueError("available native holy-order troop association has a reason")
+            elif (not isinstance(association.get("unavailable_reason"), str)
+                  or not association["unavailable_reason"]):
+                raise ValueError("unavailable native holy-order troop association lost its reason")
+            for member in members:
+                if (not isinstance(member, Mapping) or not _full_reference(member.get("regiment_id"))
+                        or any(type(member.get(key)) is not bool for key in (
+                            "available", "regiment_resolved", "native_carmy_resolved", "combat_resolved"))):
+                    raise ValueError("native holy-order associated regiment identity is malformed")
+                for key in ("native_carmy_id", "combat_id"):
+                    if member.get(key) is not None and not _full_reference(member[key]):
+                        raise ValueError(f"native holy-order association full reference is malformed: {key}")
+                if member["available"]:
+                    if member.get("unavailable_reason") is not None:
+                        raise ValueError("available native holy-order associated regiment has a reason")
+                elif (not isinstance(member.get("unavailable_reason"), str)
+                      or not member["unavailable_reason"] or association["available"]):
+                    raise ValueError("unavailable native holy-order associated regiment lost its reason")
     return dict(value)
 
 

@@ -211,6 +211,89 @@ void ReadServiceLifecycle(const Bindings &b, void *order, const Row &row,
       service.associated_regiment_in_combat.has_value() && service.release_check_queued.has_value();
   if (service.available) service.unavailable_reason.clear();
 }
+bool ResolveAssociated(void **slot, std::uint32_t id, std::size_t id_offset,
+    std::size_t tag_offset, std::uint32_t tag, void *&object) {
+  object = nullptr;
+  // This is the native empty reference, not a failed registry read.
+  if (id == UINT32_MAX) return true;
+  void *registry = nullptr;
+  if (!Read(slot, 0, registry)) return false;
+  if (registry == nullptr) return true; // Native canonical-invalid fallback.
+  std::int32_t bound = -1;
+  if (!Read(registry, 0x2C, bound) || bound < 0) return false;
+  const auto index = id & 0x00FFFFFFU;
+  if (index >= static_cast<std::uint32_t>(bound)) return true;
+  const void *entries = nullptr;
+  if (!Read(registry, 0x20, entries) || entries == nullptr) return false;
+  void *candidate = nullptr;
+  if (!Read(entries, static_cast<std::size_t>(index) * 0x10 + 8, candidate)) return false;
+  if (candidate == nullptr) return true;
+  std::uint32_t actual_id = UINT32_MAX, actual_tag = 0;
+  if (!Read(candidate, id_offset, actual_id) || !Read(candidate, tag_offset, actual_tag)) return false;
+  // Generation mismatch, absent slots and wrong types all follow the native
+  // invalid fallback path. No fields from an invalid candidate are consumed.
+  if (actual_id == id && actual_tag == tag) object = candidate;
+  return true;
+}
+void ReadTroopAssociation(const Bindings &b, void *order, const Row &row,
+    std::int32_t actor, TroopAssociation &association) {
+  association.applies_to_player = row.employer_id == static_cast<std::uint32_t>(actor);
+  if (!association.applies_to_player) {
+    association.available = true;
+    association.unavailable_reason.clear();
+    return;
+  }
+  if (b.regiment_registry_slot == nullptr || b.army_registry_slot == nullptr ||
+      b.combat_registry_slot == nullptr) return;
+  association.unavailable_reason = "native_troop_association_vector_unavailable";
+  const void *ids = nullptr;
+  std::int32_t count = -1;
+  if (!Read(order, 0x88, ids) || !Read(order, 0x94, count) ||
+      count < 0 || (count != 0 && ids == nullptr)) return;
+  association.rows.reserve(static_cast<std::size_t>(count));
+  bool complete = true;
+  for (std::int32_t i = 0; i < count; ++i) {
+    AssociatedRegiment member;
+    if (!Read(ids, static_cast<std::size_t>(i) * sizeof(member.regiment_id), member.regiment_id)) return;
+    member.unavailable_reason = "native_associated_regiment_unavailable";
+    void *regiment = nullptr;
+    if (ResolveAssociated(b.regiment_registry_slot, member.regiment_id,
+                          0x10, 0x14, 0x41725267U, regiment)) {
+      member.regiment_resolved = regiment != nullptr;
+      if (regiment == nullptr) member.available = true;
+      else {
+        std::uint32_t army_id = UINT32_MAX;
+        member.unavailable_reason = "native_associated_army_unavailable";
+        if (Read(regiment, 0x140, army_id)) {
+          member.native_carmy_id = Identity(army_id);
+          void *army = nullptr;
+          if (ResolveAssociated(b.army_registry_slot, army_id, 0x10, 0x14, 0x41726D79U, army)) {
+            member.native_carmy_resolved = army != nullptr;
+            if (army == nullptr) member.available = true;
+            else {
+              std::uint32_t combat_id = UINT32_MAX;
+              member.unavailable_reason = "native_associated_combat_unavailable";
+              if (Read(army, 0x128, combat_id)) {
+                member.combat_id = Identity(combat_id);
+                void *combat = nullptr;
+                if (ResolveAssociated(b.combat_registry_slot, combat_id,
+                                      0x08, 0x0C, 0x436F6D62U, combat)) {
+                  member.combat_resolved = combat != nullptr;
+                  member.available = true;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+    if (member.available) member.unavailable_reason.clear();
+    else complete = false;
+    association.rows.push_back(std::move(member));
+  }
+  association.available = complete;
+  association.unavailable_reason = complete ? "" : "native_troop_association_partial";
+}
 void Quote(std::ostream &out, std::string_view text) {
   constexpr char hex[] = "0123456789abcdef";
   out << '"';
@@ -272,7 +355,26 @@ void TermsJson(std::ostream &out, const MilitaryTerms &terms) {
   out << ",\"associated_regiment_in_combat\":";
   Optional(out, service.associated_regiment_in_combat);
   out << ",\"release_check_queued\":"; Optional(out, service.release_check_queued);
-  out << "}}";
+  const auto &association = terms.troop_association;
+  out << "},\"troop_association\":{\"available\":" << association.available
+      << ",\"unavailable_reason\":";
+  if (association.available) out << "null";
+  else Quote(out, association.unavailable_reason);
+  out << ",\"applies_to_player\":" << association.applies_to_player << ",\"rows\":[";
+  for (std::size_t i = 0; i < association.rows.size(); ++i) {
+    if (i != 0) out << ',';
+    const auto &member = association.rows[i];
+    out << "{\"regiment_id\":" << member.regiment_id << ",\"available\":" << member.available
+        << ",\"unavailable_reason\":";
+    if (member.available) out << "null";
+    else Quote(out, member.unavailable_reason);
+    out << ",\"regiment_resolved\":" << member.regiment_resolved << ",\"native_carmy_id\":";
+    Optional(out, member.native_carmy_id);
+    out << ",\"native_carmy_resolved\":" << member.native_carmy_resolved << ",\"combat_id\":";
+    Optional(out, member.combat_id);
+    out << ",\"combat_resolved\":" << member.combat_resolved << '}';
+  }
+  out << "]}}";
 }
 } // namespace
 
@@ -292,6 +394,9 @@ Bindings BindPlayerHolyOrderImage12003(std::uintptr_t base, std::string_view sha
   b.current_war_eligibility = reinterpret_cast<CanHire>(base + 0x261C120);
   b.release_eligible = reinterpret_cast<LifecyclePredicate>(base + 0x261A1D0);
   b.associated_regiment_in_combat = reinterpret_cast<LifecyclePredicate>(base + 0x261D5F0);
+  b.regiment_registry_slot = reinterpret_cast<void **>(base + 0x5D1F340);
+  b.army_registry_slot = reinterpret_cast<void **>(base + 0x5D1DE48);
+  b.combat_registry_slot = reinterpret_cast<void **>(base + 0x5D1DE70);
   return b;
 }
 
@@ -345,6 +450,8 @@ bool ReadPlayerHolyOrderContext12003(const Bindings &b, void *player,
         ReadMilitaryTerms(b, order, player, *row.military_terms);
         ReadServiceLifecycle(b, order, row, actor, release_queue,
                              row.military_terms->service_lifecycle);
+        ReadTroopAssociation(b, order, row, actor,
+                             row.military_terms->troop_association);
       }
       out.rows.push_back(std::move(row));
     }
