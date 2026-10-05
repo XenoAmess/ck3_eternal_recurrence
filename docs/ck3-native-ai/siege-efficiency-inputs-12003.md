@@ -261,3 +261,22 @@ A/C source lanes now own the alternate constructor/class and executor/price clos
 Root MAIN21717 CLOSED0 GREEN后的sole新occupation006数据available，R40/PID110616/raw53260776、native:3/native3/public2/generation2/queryseq1，P470/holding1334/county1333/Siege503316504/main301989997仍active；fort6/G550/B3178，C4847152/T55000000=8.813%、ETA536，M60900/Q100000=.609、K0、D93732/Q100000=.93732，can_advance=true、CanStartAssault=false，未占领或完成。完整368rows派生cache保留原生occurrences，其它lane无需重读原叶。
 fresh phase为1800000=18天、counter12，cold prepared cache为可用真实0；event state breach0/starvation0/disease1/desertion_count1/stalemate0、prepared enum5。缓存0不代表立即due，K0只指本省当前合格tier，不代表库存或完整军团类型absence。原生desertion enum3写入一次5work并cap至当时T；与已交after24端相比，18日两端work差2187176恰好等于18×93732+500000，吻合当前count1，但不声明读取中间tick或具体事件日期，也不新增日信用。
 继续当前目标普通围城，等待已并行current roster/type/tier、stock/CanCreate与mercenary正式可用器械来源；动作后M/K/D独立读回才授改善收益。Root既有累计4852/接续1699/10月5日194保持，部署/消费新增0日，无强攻、城破或战争胜利信用。完整cache、compact和Oct5/W41字段见`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-efficiency-current-fort6-v65/r40-fresh-occupation/ROOT-DELIVERY.json`；原006 SHA`610e044a57789144ccb5c91d92497e9a7402f4e0aae3064c1e968ccc219ec5fe`。
+
+## 2026-10-05 R40：24日、守军路线22日与恢复后5日的实际接续
+
+- 本节合并四个独立已完成包24＋22＋1＋4＝51 whole/calendar/bounded日、1224 raw小时（53260776→53262000）；formal4852→4903、resumed1699→1750、Oct5/W41 +194→+245。R39的42日只作历史，重复信用为0。
+- Runtime只按已供给信息标R40/v67、Robert29829、episode `native-29829-2bc2d599f7f9`、XAR off/environment `5cc5c5acb289acec478c3be7a2d1140615d10f3968ace598773876dff6bada88`；未提供的source_root/exact source pair不猜补。
+- 第一24日全部GREEN/576h，末native100/public97/raw53261352，whole SAVE h8483/98360179 bytes/SHA `8c38025b22a8e75766eba48f752b9b020ea63473d493d05fa715df0b6c78b95c`；该包累计4876/res1723/Oct5+218。
+- 第一24日P470实际work4847152→9832460/55000000、progress8.813%→17.877%、besieging_strength3178→3147、ETA536→445；ETA为当帧估计，强度是eligible siege输入，不充作whole-army health。
+- guard-route-next24实际只完成22日/528h，raw53261352→53261880，累计4898/res1745/Oct5+240；请求预算24日未完成，第23次失败只记0日/0h。
+- 末完整day22绑定native197/public90/raw53261880，whole SAVE h8555/98342648 bytes/SHA `93915c25256706bed0d2949864a71214e2282342d7caec323d0d511ba81fe46c`。
+- day22 P470仍同围城503316504：work12565819/55000000、progress22.846%、B3116、remaining42434181、ETA419、未占领/CanStartAssault=false。
+- 失败day23实际调用MCP `life-advance-one-day@revision91`，错误原文 `native gameplay step failed: CK3 map state is unavailable`；before/primed/after均native198/public91/raw53261880、paused/mapready=true，实际0h/0d。
+- 失败零日正常保存是h8558/98342648 bytes/SHA `8c383c4c81a7edc38c51d8448003cf56b5ec73ddf79b083eb3b11274952f5ee1`，不能替换day22 whole SAVE；native/driver调用RED由harness传播，根因尚未确定。
+- Fresh recovery-one实际GREEN＋1日/24h，raw53261880→53261904；h8561/98344731 bytes/SHA `b7d0b07cf193dfd8b4e972172b13dfe9e388a6153abcb187f0c8cbff27d7ca3d`，P470work12667307/progress23.031%，累计4899/res1746/Oct5+241。
+- Fresh recovered-four实际GREEN＋4日/96h，raw53261904→53262000；末native221/public18，h8573/98381165 bytes/SHA `b77a87104c7d3fdcb9b2e606cdefd227b73793b9448e6b3f1ff16e331ba33ef3`，与Root末anchor一致。
+- 四日末P470 work13073259/55000000、remaining41926741、progress23.769%、B3116、ETA414估计；fort6/garrison550、同围城503316504、仍未占领/CanStartAssault=false。
+- 末main301989997@470 sieging3/route[]，guard184549452仍@2619 moving7→3711/route[8651,1038,3711]，未抵达；owncombat0/actoralive/eventnull，War117440524仍active/+25，无warwin。
+- 外敌268435597末@5603 retreating6→738/route[5599,5598,738]；恢复后的1＋4个正常日证明实际接续，不等于根因修复，不由敌军撤退推本军战胜。
+- Generic兵/供给与围城五项operands/phase-event字段保持未发布/null，不用B回填whole health，不猜围城work或失败的clock/phase因果。
+- 本节来自[first24既有事实追加](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v67/root-results/ordinary-r40-first24-consumed01/NATIVE-STAGE-APPEND.md)、已缓存guard22/failed23/recovery1及本owner四日解码；仅追加到Root已adopt `f2c308f3bc96ed553e0c03c4ac89c2dc6bedc822` 的缓存投影，不重读共享专题或原日包。
