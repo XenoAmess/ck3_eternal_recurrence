@@ -94,3 +94,27 @@ Root's unified strict build and fresh paused Army query must verify actual block
 The separate action source recipe uses a caller-owned receiver of at least 0xF4 bytes with +F0=-1, the actual `1338F90` constructor and actual primary-vtable+40 clone `2977810`. Clone allocates a native heap-owned 0x38-byte command. `37F06F0` receives the embedded manager address `image+5CC1240`, the owning command double pointer and flags0x0E. Both accepted and rejected paths consume that pointer. AL1 means queued acceptance; actor/owned-Regi postconditions remain necessary. This recipe is source-only, not an executed action.
 
 Frozen source entry: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-engine-catalog-current/normal-create-action-source/`. `constructor/ROOT-DELIVERY.json`, `submit-executor/REGULAR-PRICE-CONSUMPTION-ROOT-DELIVERY.json`, `action-constructor-addendum/ROOT-DELIVERY.json` and `regular-native-projection/ROOT-DELIVERY.json` retain the regular class, validator, price, formal construction and current reader provenance.
+
+## R41 current regular permission and final-price readback (2026-10-05)
+
+The paused R41 army-strength query actually returned `native_maa_recruitment_inputs_v1` on both player rows, CUnit `301989997` and `184549452`, for owner `29829`. The independent current source frame is native revision 3 / public revision 2 / date raw 53262000 / query sequence 1. This lane consumed only the original-buffer owner's sealed cache once; the original query leaf was not reread. The duplicate `emitted_result` view is the same query, not another observation.
+
+Both owner leaves are available and identical: `CCreateMAARegimentCommand`, `regular_personal`, kind 1, title -1, requested quantity -1, pay cost true. All nine catalog rows have `inputs_ready=true`, all ten-resource native final quotes are available, and `missing_type_keys=[]`. A false `can_create` is an observed current decision, not failed observation.
+
+| Native Type key | Native Type index | Default quantity | Current CanCreate | Final gold cost (Q100000 decoded) |
+|---|---:|---:|---|---:|
+| onager | 48 | 10 | true | 54 |
+| mangonel | 50 | 10 | true | 59.4 |
+| trebuchet | 52 | 10 | false | 70.2 |
+| bombard | 53 | 10 | false | 86.4 |
+| torch_bearers | 86 | 10 | false | 27 |
+| ballista | 107 | 10 | false | 54 |
+| cloud_ladder | 108 | 10 | false | 59.4 |
+| siege_tower | 109 | 10 | false | 70.2 |
+| cannon | 110 | 10 | false | 109.8 |
+
+The other nine resource slots are actual zeros for every row. The current eligible alternatives are onager index 48 at 54 gold and mangonel index 50 at 59.4 gold, each for the native default quantity 10. These values come from the true regular validator and final-price reader; the earlier Horde projection gives no credit.
+
+The recruitment leaf does not publish a current siege tier. Catalog tier statements remain stock-source facts; actual owned or raised Type/tier and post-purchase army contribution require their own readback. This milestone is a **production-live primitive for current permission and final price**. No Create command, payment, new owned regiment, raised engine or purchase loop is credited here. Emitted version/SHA remain actual nulls; Root's g73/454e and CI run 37249487804 are outer provenance.
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-engine-catalog-current/actual-r41-regular-maa-cache-consumption/ROOT-DELIVERY.json`; original-buffer owner receipt is linked there. Consumer actions, SDK calls and newly credited game days are all zero.
