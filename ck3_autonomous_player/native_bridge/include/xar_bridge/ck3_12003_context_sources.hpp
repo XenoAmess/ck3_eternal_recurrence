@@ -21,6 +21,9 @@ struct ContextSourceTokenSliceV1 {
   std::uint8_t reserved[3]{};
 };
 struct ContextSourceTokenCursorV1 { void *node = nullptr; };
+#include "xar_bridge/ck3_12003_middle_helper_sources.inc.hpp"
+#include "xar_bridge/ck3_12003_trait_stage_sources.inc.hpp"
+#include "xar_bridge/ck3_12003_absent_recipient_sources.inc.hpp"
 static_assert(sizeof(ContextSourceTokenSliceV1) == 16);
 static_assert(offsetof(ContextSourceTokenSliceV1, length) == 8);
 static_assert(offsetof(ContextSourceTokenSliceV1, flag) == 0xC);
@@ -62,6 +65,14 @@ struct ContextSourceBindingsV1 {
   const void *remaining_culture_mapped_default_pc = nullptr;
   const void *remaining_culture_mapped_default_guard_slot = nullptr;
   const void *remaining_nested_mapped_default_guard_slot = nullptr;
+  bool tail_direct_enabled = false;
+  const void *tail_weighted_storage_slot = nullptr;
+  const void *tail_weighted_fallback_slot = nullptr;
+  ContextSourceMiddleHelpersBindingsV1 middle_helpers{};
+  ContextSourceTraitStageBindingsV1 trait_stage{};
+  ContextSourceAbsentRecipientBindingsV1 absent_recipient{};
+  bool tail_prefix_enabled = false;
+  const void *tail_prefix_default_relation_slot = nullptr;
   void *(*provider)() = nullptr;
   bool post_291d7e0_sources_enabled = false;
   const void *post_ab_object_fallback_slot = nullptr;

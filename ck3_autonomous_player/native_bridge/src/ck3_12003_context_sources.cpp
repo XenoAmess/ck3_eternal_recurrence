@@ -1141,6 +1141,11 @@ game::ContextSource291d7e0V1 BranchB(const ContextSourceBindingsV1 &b,
 
 #include "ck3_12003_person_helper_291f0a0.inc.hpp"
 #include "ck3_12003_person_remaining_helpers.inc.hpp"
+#include "ck3_12003_person_tail_direct.inc.hpp"
+#include "ck3_12003_person_middle_helpers.inc.hpp"
+#include "ck3_12003_person_tail_prefix.inc.hpp"
+#include "ck3_12003_person_trait_stage_291d460.inc.hpp"
+#include "ck3_12003_person_absent_recipient.inc.hpp"
 
 game::ContextSourceLaterDirectV1 LaterDirect(
     const ContextSourceBindingsV1 &b, const void *character,
@@ -1322,6 +1327,14 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   b.remaining_culture_mapped_default_pc = reinterpret_cast<const void *>(base + 0x5DC2380);
   b.remaining_culture_mapped_default_guard_slot = reinterpret_cast<const void *>(base + 0x5DC2370);
   b.remaining_nested_mapped_default_guard_slot = reinterpret_cast<const void *>(base + 0x5DC21A4);
+  b.tail_direct_enabled = true;
+  b.tail_weighted_storage_slot = reinterpret_cast<const void *>(base + 0x5D1E310);
+  b.tail_weighted_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E2D0);
+  b.middle_helpers = BindMiddleHelperSources12003(base);
+  b.trait_stage = BindTraitStage291d46012003(base);
+  b.absent_recipient = BindAbsentRecipientSources12003(base);
+  b.tail_prefix_enabled = true;
+  b.tail_prefix_default_relation_slot = reinterpret_cast<const void *>(base + 0x5D26D50);
   b.provider = reinterpret_cast<void *(*)()>(base + 0x8FD4E0);
   b.post_291d7e0_sources_enabled = true;
   b.post_ab_object_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E308);
@@ -1369,10 +1382,23 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.pre_291e210_1640 = Pre291e2101640(b, character, character_id);
   if (b.later_direct_enabled)
     out.later_direct_291c3fb_44c = LaterDirect(b, character, character_id);
+  if (b.absent_recipient.enabled)
+    out.absent_recipient_inputs = AbsentRecipientInputs(b, character, character_id);
   if (b.helper_291f0a0_enabled)
-    out.helper_291f0a0 = Helper291f0a0(b, character, character_id);
+    out.helper_291f0a0 = Helper291f0a0(b, character, character_id,
+        out.absent_recipient_inputs
+            ? out.absent_recipient_inputs->calculated_recipient_q64
+            : std::nullopt);
   if (b.remaining_helpers_enabled)
     out.later_helpers_291f550_291f940 = RemainingHelpers(b, character, character_id);
+  if (b.tail_direct_enabled)
+    out.tail_direct_291c5b7_291cc49 = TailDirect(b, character, character_id);
+  if (b.middle_helpers.enabled)
+    out.middle_helpers_291f260_291fb10 = MiddleHelpers(b, character, character_id);
+  if (b.tail_prefix_enabled)
+    out.tail_prefix_2753860_2922530 = TailPrefix(b, character, character_id);
+  if (b.trait_stage.enabled)
+    out.trait_stage_291d460 = TraitStage291d460(b, character, character_id);
   out.branch_291e210 = BranchA(b, character);
   out.branch_291d7e0 = BranchB(b, character);
   if (b.post_291d7e0_sources_enabled)
@@ -1388,6 +1414,16 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.ready = out.ready && out.helper_291f0a0->ready;
   if (out.later_helpers_291f550_291f940)
     out.ready = out.ready && out.later_helpers_291f550_291f940->ready;
+  if (out.tail_direct_291c5b7_291cc49)
+    out.ready = out.ready && out.tail_direct_291c5b7_291cc49->ready;
+  if (out.middle_helpers_291f260_291fb10)
+    out.ready = out.ready && out.middle_helpers_291f260_291fb10->ready;
+  if (out.tail_prefix_2753860_2922530)
+    out.ready = out.ready && out.tail_prefix_2753860_2922530->ready;
+  if (out.trait_stage_291d460)
+    out.ready = out.ready && out.trait_stage_291d460->ready;
+  if (out.absent_recipient_inputs)
+    out.ready = out.ready && out.absent_recipient_inputs->ready;
   out.status = out.ready ? "available" : "partial";
   if (!out.ready) out.reason = "context_source_reads_unavailable";
   return out;

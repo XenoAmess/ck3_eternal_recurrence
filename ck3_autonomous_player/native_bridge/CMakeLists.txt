@@ -8004,6 +8004,28 @@ if(BUILD_TESTING)
 endif()
 
 # Selected-unit total rates: new focused production reader/serializer/MCP cases.
+if(BUILD_TESTING)
+  add_executable(xar_ck3_12003_person_tail_sources_test
+    src/ck3_12003_context_sources.cpp
+    tests/person_tail_sources_all_12003_test.cpp
+    tests/person_tail_sources_12003_test.cpp
+    tests/person_tail_prefix_fixture.cpp
+    tests/person_middle_helpers_fixture.cpp
+    tests/person_trait_stage_291d460_fixture.cpp
+    tests/person_absent_recipient_fixture.cpp)
+  target_include_directories(xar_ck3_12003_person_tail_sources_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_person_tail_sources_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_person_tail_sources_test PRIVATE
+    NOMINMAX XAR_PERSON_TAIL_SOURCES_NO_MAIN)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_person_tail_sources_test PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_12003_person_tail_sources_test
+    COMMAND xar_ck3_12003_person_tail_sources_test
+      "${CMAKE_BINARY_DIR}/ck3_12003_person_tail_sources_wire")
+endif()
+
 if(BUILD_TESTING AND WIN32)
   add_executable(xar_ck3_12003_commander_movement_speed_test
     src/ck3_12002_army.cpp

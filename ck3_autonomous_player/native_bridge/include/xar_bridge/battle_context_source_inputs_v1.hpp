@@ -3,6 +3,7 @@
 #include "xar_bridge/battle_context_locale_inputs_v1.hpp"
 
 #include <cstdint>
+#include <array>
 #include <optional>
 #include <string>
 #include <vector>
@@ -329,6 +330,11 @@ struct ContextSourceHelper291f0a0V1 {
                          const ContextSourceHelper291f0a0V1 &) = default;
 };
 #include "xar_bridge/battle_person_remaining_helpers_v1.inc.hpp"
+#include "xar_bridge/battle_person_tail_direct_v1.inc.hpp"
+#include "xar_bridge/battle_person_middle_helpers_v1.inc.hpp"
+#include "xar_bridge/battle_person_tail_prefix_v1.inc.hpp"
+#include "xar_bridge/battle_person_trait_stage_291d460_v1.inc.hpp"
+#include "xar_bridge/battle_person_absent_recipient_v1.inc.hpp"
 
 struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
   std::string status = "unavailable";
@@ -338,6 +344,11 @@ struct BattleCurrentPersonContextSourceInputsSnapshotV1 {
   std::optional<ContextSourceLaterDirectV1> later_direct_291c3fb_44c;
   std::optional<ContextSourceHelper291f0a0V1> helper_291f0a0;
   std::optional<ContextSourceRemainingHelpersV1> later_helpers_291f550_291f940;
+  std::optional<ContextSourceTailDirectV1> tail_direct_291c5b7_291cc49;
+  std::optional<ContextSourceMiddleHelpersV1> middle_helpers_291f260_291fb10;
+  std::optional<ContextSourceTailPrefixV1> tail_prefix_2753860_2922530;
+  std::optional<ContextSourceTraitStage291d460V1> trait_stage_291d460;
+  std::optional<ContextSourceAbsentRecipientInputsV1> absent_recipient_inputs;
   std::optional<ContextSource291e210V1> branch_291e210;
   std::optional<ContextSource291d7e0V1> branch_291d7e0;
   std::optional<ContextSourcePost291d7e0V1> post_291d7e0_sources;

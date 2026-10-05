@@ -211,7 +211,8 @@ const void *HelperRangePc(
 
 game::ContextSourceHelper291f0a0V1 Helper291f0a0(
     const ContextSourceBindingsV1 &b, const void *character,
-    std::int32_t character_id) {
+    std::int32_t character_id,
+    std::optional<std::int64_t> absent_recipient_q64 = std::nullopt) {
   game::ContextSourceHelper291f0a0V1 out{};
   out.character_id = character_id;
   std::vector<const void *> identities;
@@ -241,33 +242,38 @@ game::ContextSourceHelper291f0a0V1 Helper291f0a0(
         const auto carrier = Read<const void *>(b, character, 0x1C8);
         if (!carrier) range.reason = "helper_recipient_carrier_unavailable";
         else if (!*carrier) {
-          out.recipient_source = "absent_1c8_2bfac30_unobserved";
-          range.reason = "helper_absent_1c8_recipient_contribution_inputs_unobserved";
+          if (absent_recipient_q64) {
+            out.recipient_source = "absent_1c8_2bfac30_cached";
+            out.recipient_q64 = absent_recipient_q64;
+          } else {
+            out.recipient_source = "absent_1c8_2bfac30_unobserved";
+            range.reason = "helper_absent_1c8_recipient_contribution_inputs_unobserved";
+          }
         } else {
           out.recipient_source = "character_1c8_a0";
           out.recipient_q64 = Read<std::int64_t>(b, *carrier, 0xA0);
           if (!out.recipient_q64) range.reason = "helper_recipient_a0_unavailable";
-          else {
-            const void *pc = HelperRangePc(b, definition, out, range.reason);
-            if (pc) {
-              game::ContextSourceHelperRowV1 row{};
-              row.source_identity = Identity(identities, pc, "h");
-              row.gate_raw = Read<std::int32_t>(b, pc, 0xC);
-              range.count = row.gate_raw;
-              if (!row.gate_raw) row.reason = "helper_manager_pc_count_unavailable";
-              else {
-                row.admitted = *row.gate_raw != 0;
-                if (*row.admitted) {
-                  row.property_block = Properties(b, pc);
-                  if (!PropertiesReady(*row.property_block))
-                    row.reason = "helper_manager_pc_properties_unavailable";
-                }
+        }
+        if (out.recipient_q64) {
+          const void *pc = HelperRangePc(b, definition, out, range.reason);
+          if (pc) {
+            game::ContextSourceHelperRowV1 row{};
+            row.source_identity = Identity(identities, pc, "h");
+            row.gate_raw = Read<std::int32_t>(b, pc, 0xC);
+            range.count = row.gate_raw;
+            if (!row.gate_raw) row.reason = "helper_manager_pc_count_unavailable";
+            else {
+              row.admitted = *row.gate_raw != 0;
+              if (*row.admitted) {
+                row.property_block = Properties(b, pc);
+                if (!PropertiesReady(*row.property_block))
+                  row.reason = "helper_manager_pc_properties_unavailable";
               }
-              if (!row.reason.empty()) Reason(range.reason, row.reason.c_str());
-              if (!range.reason.empty()) Reason(row.reason, range.reason.c_str());
-              range.rows.emplace();
-              range.rows->push_back(std::move(row));
             }
+            if (!row.reason.empty()) Reason(range.reason, row.reason.c_str());
+            if (!range.reason.empty()) Reason(row.reason, range.reason.c_str());
+            range.rows.emplace();
+            range.rows->push_back(std::move(row));
           }
         }
       }

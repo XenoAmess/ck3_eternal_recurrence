@@ -415,6 +415,11 @@ inline void Branch291d7e0(std::string &out,
 
 #include "xar_bridge/battle_person_helper_291f0a0_serializer.inc.hpp"
 #include "xar_bridge/battle_person_remaining_helpers_serializer.inc.hpp"
+#include "xar_bridge/battle_person_tail_direct_serializer.inc.hpp"
+#include "xar_bridge/battle_person_middle_helpers_serializer.inc.hpp"
+#include "xar_bridge/battle_person_tail_prefix_serializer.inc.hpp"
+#include "xar_bridge/battle_person_trait_stage_291d460_serializer.inc.hpp"
+#include "xar_bridge/battle_person_absent_recipient_serializer.inc.hpp"
 
 }  // namespace battle_context_source_inputs_v1_detail
 
@@ -526,6 +531,26 @@ inline std::string SerializeBattleCurrentPersonContextSourceInputsV1(
   if (p.later_helpers_291f550_291f940) {
     out += ",\"later_helpers_291f550_291f940\":";
     RemainingHelpersV1Json(out, *p.later_helpers_291f550_291f940);
+  }
+  if (p.tail_direct_291c5b7_291cc49) {
+    out += ",\"tail_direct_291c5b7_291cc49\":";
+    TailDirectV1Json(out, *p.tail_direct_291c5b7_291cc49);
+  }
+  if (p.middle_helpers_291f260_291fb10) {
+    out += ",\"middle_helpers_291f260_291fb10\":";
+    MiddleHelpersV1Json(out, *p.middle_helpers_291f260_291fb10);
+  }
+  if (p.tail_prefix_2753860_2922530) {
+    out += ",\"tail_prefix_2753860_2922530\":";
+    TailPrefixV1Json(out, *p.tail_prefix_2753860_2922530);
+  }
+  if (p.trait_stage_291d460) {
+    out += ",\"trait_stage_291d460\":";
+    TraitStage291d460V1Json(out, *p.trait_stage_291d460);
+  }
+  if (p.absent_recipient_inputs) {
+    out += ",\"absent_recipient_inputs\":";
+    AbsentRecipientV1Json(out, *p.absent_recipient_inputs);
   }
   out += ",\"branch_291e210\":";
   Branch291e210(out, p.branch_291e210);
