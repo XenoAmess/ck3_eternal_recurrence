@@ -227,6 +227,131 @@ inline std::string SerializeCurrentPriorContextInputs(
 
 }  // namespace battle_current_person_state_v1_detail
 
+// Insert inside xar::bridge, after the existing detail namespace closes and
+// before SerializeBattleCurrentPersonStateV1. Reuses its JSON/property helpers.
+namespace battle_current_person_state_v1_detail {
+inline void AppendTaskPositionBool(std::string &out, const std::optional<bool> &value) {
+  out += value ? (*value ? "true" : "false") : "null";
+}
+inline void AppendTaskPositionProperties(std::string &out,
+    const std::optional<game::BattleCurrentPersonRawPropertiesSnapshotV1> &value) {
+  if (value) AppendRawProperties(out, *value);
+  else out += "null";
+}
+inline void AppendTaskPositionContext(std::string &out,
+    const std::optional<game::BattleCurrentPersonRawContextSnapshotV1> &value) {
+  if (!value) { out += "null"; return; }
+  out += "{\"aggregate_properties\":";
+  AppendTaskPositionProperties(out, value->aggregate_properties);
+  out += ",\"weighted_count\":"; AppendRawNumber(out, value->weighted_count);
+  out += ",\"weighted_rows\":";
+  if (!value->weighted_rows) out += "null";
+  else {
+    out += '[';
+    for (std::size_t i = 0; i < value->weighted_rows->size(); ++i) {
+      if (i) out += ',';
+      const auto &row = (*value->weighted_rows)[i];
+      out += "{\"native_index\":" + std::to_string(row.native_index);
+      out += ",\"weight_q64\":"; AppendRawNumber(out, row.weight_q64);
+      out += ",\"properties\":"; AppendTaskPositionProperties(out, row.properties);
+      out += '}';
+    }
+    out += ']';
+  }
+  out += '}';
+}
+template <typename Row>
+inline void AppendTaskPositionModifierMetadata(std::string &out, const Row &row) {
+  out += ",\"contributor_kind\":"; AppendString(out, row.contributor_kind);
+  out += ",\"scope_root_character_id_raw\":"; AppendRawNumber(out, row.scope_root_character_id_raw);
+  out += ",\"scope_saved_character_id_raw\":"; AppendRawNumber(out, row.scope_saved_character_id_raw);
+  out += ",\"declaration_scale_q64\":"; AppendRawNumber(out, row.declaration_scale_q64);
+  out += ",\"modifier_flags_raw\":"; AppendRawNumber(out, row.modifier_flags_raw);
+  out += ",\"source_provenance\":"; AppendString(out, row.source_provenance);
+}
+inline void AppendTaskPositionDeclaration(std::string &out,
+    const game::BattleCurrentPersonTaskPositionDeclarationSnapshotV1 &row) {
+  out += "{\"native_index\":" + std::to_string(row.native_index);
+  AppendTaskPositionModifierMetadata(out, row);
+  out += ",\"declared_properties\":"; AppendTaskPositionProperties(out, row.declared_properties);
+  out += '}';
+}
+inline void AppendTaskPositionEvaluatedRow(std::string &out,
+    const game::BattleCurrentPersonTaskPositionEvaluatedRowSnapshotV1 &row) {
+  out += "{\"task_native_index\":" + std::to_string(row.task_native_index);
+  out += ",\"declaration_native_index\":" + std::to_string(row.declaration_native_index);
+  AppendTaskPositionModifierMetadata(out, row);
+  out += ",\"properties\":"; AppendTaskPositionProperties(out, row.properties);
+  out += '}';
+}
+template <typename Row, typename Append>
+inline void AppendTaskPositionRows(std::string &out,
+    const std::optional<std::vector<Row>> &rows, Append append) {
+  if (!rows) { out += "null"; return; }
+  out += '[';
+  for (std::size_t i = 0; i < rows->size(); ++i) {
+    if (i) out += ',';
+    append(out, (*rows)[i]);
+  }
+  out += ']';
+}
+inline void AppendTaskPositionTask(std::string &out,
+    const game::BattleCurrentPersonTaskPositionTaskSnapshotV1 &task) {
+  out += "{\"native_index\":" + std::to_string(task.native_index);
+  out += ",\"task_id_raw\":" + std::to_string(task.task_id_raw);
+  out += ",\"resolved_task_id_raw\":"; AppendRawNumber(out, task.resolved_task_id_raw);
+  out += ",\"used_native_default\":"; AppendTaskPositionBool(out, task.used_native_default);
+  out += ",\"frozen_raw\":"; AppendRawNumber(out, task.frozen_raw);
+  out += ",\"incumbent_character_id_raw\":"; AppendRawNumber(out, task.incumbent_character_id_raw);
+  out += ",\"owner_character_id_raw\":"; AppendRawNumber(out, task.owner_character_id_raw);
+  out += ",\"task_type_present\":"; AppendTaskPositionBool(out, task.task_type_present);
+  out += ",\"original_position_type_present\":"; AppendTaskPositionBool(out, task.original_position_type_present);
+  out += ",\"native_gate_allowed\":"; AppendTaskPositionBool(out, task.native_gate_allowed);
+  out += ",\"terminal_task_type_present\":"; AppendTaskPositionBool(out, task.terminal_task_type_present);
+  out += ",\"declarations\":"; AppendTaskPositionRows(out, task.declarations, AppendTaskPositionDeclaration);
+  out += ",\"owner_aggregate_properties_ready\":";
+  out += task.owner_aggregate_properties_ready ? "true" : "false";
+  out += ",\"owner_aggregate_properties\":"; AppendTaskPositionProperties(out, task.owner_aggregate_properties);
+  out += '}';
+}
+inline void AppendTaskPositionBranch(std::string &out,
+    const game::BattleCurrentPersonTaskPositionBranchSnapshotV1 &branch) {
+  out += "{\"status\":"; AppendString(out, branch.status);
+  out += ",\"complete_no_contribution\":"; AppendTaskPositionBool(out, branch.complete_no_contribution);
+  out += ",\"vectors_ready\":"; out += branch.vectors_ready ? "true" : "false";
+  out += ",\"evaluated_rows\":"; AppendTaskPositionRows(out, branch.evaluated_rows, AppendTaskPositionEvaluatedRow);
+  out += ",\"prefix_before\":"; AppendTaskPositionContext(out, branch.prefix_before);
+  out += ",\"prefix_source\":"; AppendString(out, branch.prefix_source);
+  out += ",\"aggregate_properties_after\":"; AppendTaskPositionProperties(out, branch.aggregate_properties_after);
+  out += ",\"aggregate_source\":"; AppendString(out, branch.aggregate_source);
+  out += ",\"unavailable_reason\":";
+  AppendReason(out, branch.vectors_ready, branch.unavailable_reason, "task_position_vector_inputs_unobserved");
+  out += '}';
+}
+}  // namespace battle_current_person_state_v1_detail
+
+inline std::string SerializeCurrentContextTaskPositionInputsV1(
+    const game::BattleCurrentPersonTaskPositionInputsSnapshotV1 &inputs) {
+  using namespace battle_current_person_state_v1_detail;
+  std::string out = "{\"schema_version\":1,\"status\":"; AppendString(out, inputs.status);
+  out += ",\"character_id\":" + std::to_string(inputs.character_id);
+  out += ",\"raw_task_inputs_ready\":"; out += inputs.raw_task_inputs_ready ? "true" : "false";
+  out += ",\"branch_vectors_ready\":"; out += inputs.branch_vectors_ready ? "true" : "false";
+  out += ",\"owner_council_present\":"; AppendTaskPositionBool(out, inputs.owner_council_present);
+  out += ",\"ordered_owned_tasks\":"; AppendTaskPositionRows(out, inputs.ordered_owned_tasks, AppendTaskPositionTask);
+  out += ",\"councillor_task_link_present\":"; AppendTaskPositionBool(out, inputs.councillor_task_link_present);
+  out += ",\"councillor_task\":";
+  if (inputs.councillor_task) AppendTaskPositionTask(out, *inputs.councillor_task);
+  else out += "null";
+  out += ",\"owned_passive\":"; AppendTaskPositionBranch(out, inputs.owned_passive);
+  out += ",\"councillor_position_task\":"; AppendTaskPositionBranch(out, inputs.councillor_position_task);
+  out += ",\"unavailable_reason\":";
+  AppendReason(out, inputs.status == "available", inputs.unavailable_reason, "task_position_inputs_unobserved");
+  out += '}';
+  return out;
+}
+
+
 // A current-character read; it does not project historical injury causality.
 // The enclosing serializer controls optional presence and current-only scope.
 inline std::string SerializeBattleCurrentPersonStateV1(
@@ -283,6 +408,10 @@ inline std::string SerializeBattleCurrentPersonStateV1(
   if (state.raw_numeric_inputs) {
     output += ",\"raw_numeric_inputs\":";
     output += SerializeRawNumericInputs(*state.raw_numeric_inputs);
+  }
+  if (state.current_context_task_position_inputs) {
+    output += ",\"current_context_task_position_inputs\":";
+    output += SerializeCurrentContextTaskPositionInputsV1(*state.current_context_task_position_inputs);
   }
   if (state.context_branch_inputs) {
     output += ",\"context_branch_inputs\":";

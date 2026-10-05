@@ -2619,11 +2619,96 @@ struct BattleCurrentPersonPriorContextInputsSnapshotV1 {
                          const BattleCurrentPersonPriorContextInputsSnapshotV1 &) = default;
 };
 
+// Insert after BattleCurrentPersonRawNumericInputsSnapshotV1, inside xar::game.
+// Existing RawProperties/RawContext DTOs are reused without unit conversion.
+struct BattleCurrentPersonTaskPositionDeclarationSnapshotV1 {
+  std::int32_t native_index = 0;
+  std::string contributor_kind;
+  std::optional<std::int32_t> scope_root_character_id_raw;
+  std::optional<std::int32_t> scope_saved_character_id_raw;
+  std::optional<std::int64_t> declaration_scale_q64;
+  std::optional<BattleCurrentPersonRawPropertiesSnapshotV1> declared_properties;
+  std::optional<std::uint64_t> modifier_flags_raw;
+  std::string source_provenance;
+  friend bool operator==(const BattleCurrentPersonTaskPositionDeclarationSnapshotV1 &,
+                         const BattleCurrentPersonTaskPositionDeclarationSnapshotV1 &) = default;
+};
+
+struct BattleCurrentPersonTaskPositionEvaluatedRowSnapshotV1 {
+  std::int32_t task_native_index = 0;
+  std::string contributor_kind;
+  std::int32_t declaration_native_index = 0;
+  std::optional<std::int32_t> scope_root_character_id_raw;
+  std::optional<std::int32_t> scope_saved_character_id_raw;
+  std::optional<std::int64_t> declaration_scale_q64;
+  // Actual native evaluated, scaled and finalized values; never source base.
+  std::optional<BattleCurrentPersonRawPropertiesSnapshotV1> properties;
+  std::optional<std::uint64_t> modifier_flags_raw;
+  std::string source_provenance;
+  friend bool operator==(const BattleCurrentPersonTaskPositionEvaluatedRowSnapshotV1 &,
+                         const BattleCurrentPersonTaskPositionEvaluatedRowSnapshotV1 &) = default;
+};
+
+struct BattleCurrentPersonTaskPositionTaskSnapshotV1 {
+  std::int32_t native_index = 0;
+  std::int32_t task_id_raw = -1;
+  std::optional<std::int32_t> resolved_task_id_raw;
+  std::optional<bool> used_native_default;
+  std::optional<std::uint8_t> frozen_raw;
+  std::optional<std::int32_t> incumbent_character_id_raw;
+  std::optional<std::int32_t> owner_character_id_raw;
+  std::optional<bool> task_type_present;
+  std::optional<bool> original_position_type_present;
+  std::optional<bool> native_gate_allowed;
+  std::optional<bool> terminal_task_type_present;
+  std::optional<std::vector<BattleCurrentPersonTaskPositionDeclarationSnapshotV1>> declarations;
+  bool owner_aggregate_properties_ready = false;
+  // Real 31ABE10 output: merged owner collection, not emitted per-decl rows.
+  std::optional<BattleCurrentPersonRawPropertiesSnapshotV1> owner_aggregate_properties;
+  friend bool operator==(const BattleCurrentPersonTaskPositionTaskSnapshotV1 &,
+                         const BattleCurrentPersonTaskPositionTaskSnapshotV1 &) = default;
+};
+
+struct BattleCurrentPersonTaskPositionBranchSnapshotV1 {
+  std::string status = "unavailable";
+  std::optional<bool> complete_no_contribution;
+  bool vectors_ready = false;
+  std::optional<std::vector<BattleCurrentPersonTaskPositionEvaluatedRowSnapshotV1>> evaluated_rows;
+  std::optional<BattleCurrentPersonRawContextSnapshotV1> prefix_before;
+  std::string prefix_source = "unobserved";
+  std::optional<BattleCurrentPersonRawPropertiesSnapshotV1> aggregate_properties_after;
+  std::string aggregate_source = "unobserved";
+  std::string unavailable_reason;
+  friend bool operator==(const BattleCurrentPersonTaskPositionBranchSnapshotV1 &,
+                         const BattleCurrentPersonTaskPositionBranchSnapshotV1 &) = default;
+};
+
+struct BattleCurrentPersonTaskPositionInputsSnapshotV1 {
+  std::string status = "unavailable";
+  std::int32_t character_id = -1;
+  bool raw_task_inputs_ready = false;
+  bool branch_vectors_ready = false;
+  std::optional<bool> owner_council_present;
+  std::optional<std::vector<BattleCurrentPersonTaskPositionTaskSnapshotV1>> ordered_owned_tasks;
+  std::optional<bool> councillor_task_link_present;
+  std::optional<BattleCurrentPersonTaskPositionTaskSnapshotV1> councillor_task;
+  BattleCurrentPersonTaskPositionBranchSnapshotV1 owned_passive;
+  BattleCurrentPersonTaskPositionBranchSnapshotV1 councillor_position_task;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleCurrentPersonTaskPositionInputsSnapshotV1 &,
+                         const BattleCurrentPersonTaskPositionInputsSnapshotV1 &) = default;
+};
+
+// Append only this member to BattleCurrentPersonStateSnapshotV1.
+// std::optional<BattleCurrentPersonTaskPositionInputsSnapshotV1>
+//     current_context_task_position_inputs;
+
 struct BattleCurrentPersonStateSnapshotV1 {
   BattleCurrentPersonEffectiveProwessSnapshotV1 effective_prowess;
   BattleCurrentPersonInjuryTraitsSnapshotV1 injury_traits;
   BattleCurrentPersonDeathRecordSnapshotV1 death_record;
   std::optional<BattleCurrentPersonRawNumericInputsSnapshotV1> raw_numeric_inputs;
+  std::optional<BattleCurrentPersonTaskPositionInputsSnapshotV1> current_context_task_position_inputs;
   std::optional<BattleCurrentPersonContextBranchInputsSnapshotV1> context_branch_inputs;
   std::optional<BattleCurrentPersonPriorContextInputsSnapshotV1> current_prior_context_inputs;
   std::optional<BattleCurrentPersonContextSourceInputsSnapshotV1> current_context_source_inputs;

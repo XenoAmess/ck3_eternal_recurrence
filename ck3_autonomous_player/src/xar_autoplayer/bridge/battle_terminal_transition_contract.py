@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .battle_task_position_context_contract import normalize_current_context_task_position_inputs
+
 from .public_unit_contract import (
     public_cunit_id as _public_cunit_id,
     public_cunit_ids as _public_cunit_ids,
@@ -518,6 +520,8 @@ def _normalize_current_person_state(
         fields.add("death_record")
     if isinstance(value, dict) and "raw_numeric_inputs" in value:
         fields.add("raw_numeric_inputs")
+    if isinstance(value, dict) and "current_context_task_position_inputs" in value:
+        fields.add("current_context_task_position_inputs")
     if isinstance(value, dict) and "context_branch_inputs" in value:
         fields.add("context_branch_inputs")
     if isinstance(value, dict) and "current_prior_context_inputs" in value:
@@ -614,6 +618,9 @@ def _normalize_current_person_state(
     if "current_context_source_inputs" in state:
         normalized["current_context_source_inputs"] = normalize_current_context_source_inputs(
             state["current_context_source_inputs"], f"{field}.current_context_source_inputs")
+    if "current_context_task_position_inputs" in state:
+        normalized["current_context_task_position_inputs"] = normalize_current_context_task_position_inputs(
+            state["current_context_task_position_inputs"], f"{field}.current_context_task_position_inputs")
     return normalized
 
 
@@ -655,6 +662,9 @@ def _normalize_character_custody_rows(
             raw = normalized["current_person_state"].get("raw_numeric_inputs")
             if raw is not None and raw["character_id"] != character_id:
                 raise ValueError(f"{field}[{index}] raw numeric CharacterID disagrees")
+            task_position = normalized["current_person_state"].get("current_context_task_position_inputs")
+            if task_position is not None and task_position["character_id"] != character_id:
+                raise ValueError(f"{field}[{index}] task/position CharacterID disagrees")
             branch = normalized["current_person_state"].get("context_branch_inputs")
             if branch is not None and branch["character_id"] != character_id:
                 raise ValueError(f"{field}[{index}] context branch CharacterID disagrees")
