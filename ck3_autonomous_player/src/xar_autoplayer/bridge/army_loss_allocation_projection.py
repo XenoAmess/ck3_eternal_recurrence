@@ -2,14 +2,17 @@
 
 24E3430 applies supply first, then the original siege + raid budgets. Each
 residual pass recounts current soldiers after the preferred writer calls.
-These helpers never synthesize that current by subtracting requested losses:
-2634880 admission and the final 2657EA0 setter are not fully modeled.
+These helpers never synthesize that current by subtracting requested losses.
+The independent associated-DATA replay is exposed only for an initial-frame
+preferred pass; later-stage current still needs its own actual observation.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
 from typing import Literal, Mapping, Sequence
+
+from .army_chunk_loss_writeback_projection import project_observed_writer_chunk_changes
 
 
 FRACTION_SCALE = 100_000
@@ -184,7 +187,7 @@ def project_native_loss_sequence(
         "combined_siege_raid_budget_soldiers": combined_budget,
         "passes": passes,
         "missing_inputs": missing,
-        "application_boundary": "2634880 writer admission and final DATA writeback are not modeled",
+        "application_boundary": "Actual post-write stage current and complete monthly applied loss are not observed",
     }
 
 
@@ -249,8 +252,54 @@ def project_observed_army_loss_requests(
         if supply_budget > 0 and projection["combined_siege_raid_budget_soldiers"] > 0:
             if "post_supply_current_soldiers" not in projection["missing_inputs"]:
                 projection["missing_inputs"].append("post_supply_current_soldiers")
+        projection["same_input_conditional_chunk_writeback_v1"] = (
+            _project_initial_preferred_chunk_changes(army, projection)
+        )
         result.append({
             "army_id": army["army_id"], **projection,
             "input_basis": "current_readonly_inputs; conditional requests, not updater execution",
         })
     return result
+
+
+def _project_initial_preferred_chunk_changes(
+    army: Mapping[str, object], allocation: Mapping[str, object],
+) -> dict[str, object]:
+    """Only the first actual-input preferred pass may use current query DATA.
+
+    The positive-supply preferred pass has the initial frame. Siege/raid
+    preferred has it only when supply budget is zero. Residual and later
+    positive-supply stages need their own observations; none are synthesized.
+    """
+    positive_supply = allocation["supply_budget_soldiers"] > 0
+    phase = "supply_preferred" if positive_supply else "siege_raid_preferred"
+    budget = (allocation["supply_budget_soldiers"] if positive_supply
+              else allocation["combined_siege_raid_budget_soldiers"])
+    result = {
+        "projection_kind": "conditional_initial_preferred_chunk_writeback",
+        "input_basis": "initial_same_query_DATA_and_preferred_writer_requests",
+        "phase": phase, "status": "unavailable",
+        "same_input_chunk_writeback_ready": False,
+        "actual_loss": False, "actual_post_stage_current": None,
+        "requests": [], "missing_inputs": [],
+    }
+    if budget <= 0:
+        return {**result, "status": "not_applicable"}
+    preferred = next((row for row in allocation["passes"] if row["phase"] == phase), None)
+    if preferred is None:
+        return {**result, "missing_inputs": ["initial_preferred_writer_requests"]}
+    conditional = [project_observed_writer_chunk_changes(army, request)
+                   for request in preferred["requests"]]
+    complete = all(row["chunk_writeback_ready"] for row in conditional)
+    return {
+        **result,
+        "status": "available" if complete else (
+            "partial" if any(row["chunk_writeback_ready"] for row in conditional) else "unavailable"
+        ),
+        "same_input_chunk_writeback_ready": complete,
+        "requests": conditional,
+        "missing_inputs": [
+            {"army_regiment_id": row["army_regiment_id"], "inputs": row["missing_inputs"]}
+            for row in conditional if not row["chunk_writeback_ready"]
+        ],
+    }
