@@ -182,6 +182,8 @@ bool ObserveDeclaration(const Bindings &b, ModifierVector &vector,
   std::uint32_t flags{};
   if (Read(b, declaration, 0x1B8, flags)) declared.modifier_flags_raw = flags;
   declared.source_provenance = "actual_parsed_declaration;scale_not_separately_evaluated";
+  if (kind == "task_owner")
+    declared.source_provenance += ";selection=terminal_task_type_438";
   task.declarations->push_back(std::move(declared));
   if (!scope.get() || !vector.Ensure()) return false;
   std::int32_t before{}, after{};
@@ -206,6 +208,8 @@ bool ObserveDeclaration(const Bindings &b, ModifierVector &vector,
     if (copied.properties->count == 0) continue;
     if (Read(b, row, 0x1B8, flags)) copied.modifier_flags_raw = flags;
     copied.source_provenance = "native2872840_single_actual_declaration;scaled_finalized;scale_unobserved";
+    if (kind == "task_owner")
+      copied.source_provenance += ";selection=terminal_task_type_438";
     branch.evaluated_rows->push_back(std::move(copied));
   }
   return complete;
@@ -346,7 +350,6 @@ game::BattleCurrentPersonTaskPositionInputsSnapshotV1 ReadInputs12003(
     }
     ModifierVector vector(b);
     bool raw_complete = true, owned_complete = true, councillor_complete = true;
-    bool owner_clone_selection_unclosed = false;
     out.owned_passive.evaluated_rows.emplace();
     out.councillor_position_task.evaluated_rows.emplace();
     const void *council{};
@@ -368,15 +371,11 @@ game::BattleCurrentPersonTaskPositionInputsSnapshotV1 ReadInputs12003(
           if (!task.frozen_raw) owned_complete = false;
           else if (*task.frozen_raw == 0) {
             OwnerAggregate(b, type, actual, task);
-            if (type && terminal != type) {
-              owner_clone_selection_unclosed = true;
-              owned_complete = false;
-            }
-            if (!type || !position || !task.incumbent_character_id_raw) owned_complete = false;
+            if (!terminal || !position || !task.incumbent_character_id_raw) owned_complete = false;
             else {
               const auto incumbent = *task.incumbent_character_id_raw;
               Scope task_scope(b, incumbent, &incumbent, &actual);
-              owned_complete = Collection(b, vector, Offset(type, 0x438), true,
+              owned_complete = Collection(b, vector, Offset(terminal, 0x438), true,
                   task_scope, "task_owner", incumbent, actual, task, out.owned_passive) && owned_complete;
               Scope position_scope(b, incumbent);
               owned_complete = Collection(b, vector, Offset(position, 0xDD8), false,
@@ -424,8 +423,6 @@ game::BattleCurrentPersonTaskPositionInputsSnapshotV1 ReadInputs12003(
       }
     } else raw_complete = councillor_complete = false;
     Finish(out.owned_passive, owned_complete);
-    if (owner_clone_selection_unclosed)
-      out.owned_passive.unavailable_reason = "owner_clone_contributor_selection_unclosed";
     Finish(out.councillor_position_task, councillor_complete);
     out.raw_task_inputs_ready = raw_complete;
     out.branch_vectors_ready = out.owned_passive.vectors_ready && out.councillor_position_task.vectors_ready;

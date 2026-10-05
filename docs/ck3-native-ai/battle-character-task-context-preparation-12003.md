@@ -95,3 +95,22 @@ A 由 Character+1C0 取得 owner council，保留 council+230/+23C 的任务原�
 raw tasks、owner aggregate、逐条贡献 readiness 各自记录；未知 owner-clone 贡献选择仅 A 分支 partial，其他观测保留。beforeA/beforeB 与 postaggregate 未从当前 fullcontext 推造。Dynamic materialized prior-prefix 的精确阶段是291C204→291D1D0之前，还须完成其后至 A/B 的各个实际贡献阶段。
 
 外置代码已通过两个生产 TU 与一个夹具 TU 的首次严格编译；唯一 A+B compound 由真实 ReadInputs12003→serializer 首次 GREEN，再经正式 normalizer→parser→corrected append helper GREEN。Python 首次 build_release 导入路径 harness RED 原样保留，仅补 readonly tools PYTHONPATH 后重试该消费步骤，原生及旧六stat测试未重跑。battle.cpp 只获严格编译信用，本 direct helper fixture 未链接它；actual prefix/postaggregate 仍缺，声明场景索引 A[1,2]、B[3,4,5]/count6 不冒实机观测。详细 receipt 见同包 focused-run-01/ROOT-FOCUSED-RESULT.json；状态 static-ready，Root 后续集成及 paused 实机验收待完成，native live、完整 future context、MC、胜率与新游戏日均为0。SDK/pipe/game/process/window、共享源码/Git、旧测试与全构建均为0。
+
+## 2026-10-05：owner-clone 声明选择闭合
+
+复用 exact 1.20.0.3 / Steam25652598 / EXE SHA94B55397…02A6 的旧完整缓存31ABF40 [031ABF40,031AC0BE)，382B、SHA19baf190a033e52b1809b5d7d140e20af040d6eacb36d651a8a0b2898d1b2441。该 helper 遇到 TaskType+1358 非空时递归调用自身，返回后直接退出本层，跳过本层+438；只有没有 clone 的末端类型读取+438/+444，保留8B指针原序。此前 A 分支的 owner_clone_contributor_selection_unclosed 已获得实际源解释，选择应改为末端类型438，不能取 original 或中间类型438，也不能借用 B 的 terminal400。
+
+~~~mermaid
+flowchart TD
+  O["原始任务类型"] --> C{"TaskType+1358 有 clone?"}
+  C -->|有| R["递归31ABF40；返回后直接退出本层"]
+  R --> C
+  C -->|无| T["末端类型+438/+444，8B指针原序"]
+  T --> E["原生逐声明求值与属性输出"]
+  E --> V["A task_owner rows；provenance=terminal_task_type_438"]
+  V -.-> P["实际 before/postaggregate 仍需独立观测"]
+~~~
+
+最小原生变更只调整 A 的声明集合并撤掉对应 source partial，原始 type/position passive、独立31ABE10 owner aggregate、实际 scopes32、B terminal400 与公开 DTO/API 均保留。声明 scale 仍为未单独观测的 null，properties 已由原生完成 scale/finalization，不再相乘；当前 fullcontext 不充当 before/post 前缀。源树、输入账本及最小 patch 见 Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-task-owner-clone-contributions-v86/source/ROOT-DELIVERY.json；生产运行资格由本包独立聚焦 receipt 记录。新 paused/live、游戏日、完整 future context、MC 与胜率均不由源闭合产生。
+
+唯一新 clone-chain 离线生产路径夹具已获 GREEN：真实 helper→serializer→正式 normalizer/parser 输出 terminal438 的321000、-432000，再输出原 Position passive55000；owner aggregate 的 key530=777000 单独保留，original/intermediate438 与 terminal400 decoys 均未混入。A vectorsready 在该夹具变为 true，声明 scale 保持 null，causal prefix/post 仍缺。两个必要 TU 严格编译通过；首次原生运行的 B fallbacktask 指针 mock 断言 RED 保留，只修该夹具边界后重试，生产 helper 没有改变；正式 Python consumer 首次 GREEN。未重跑 V85 或六stat案例，状态 static-ready，实机 paused 资格待 Root 新 native 候选观测。
