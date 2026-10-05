@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/battle_context_locale_inputs_v1.hpp"
+
 #include <cstdint>
 #include <optional>
 #include <string>
@@ -64,6 +66,14 @@ struct ContextSource291e210V1 {
   friend bool operator==(const ContextSource291e210V1 &,
                          const ContextSource291e210V1 &) = default;
 };
+struct ContextSourceSignedKeySetV1 {
+  std::int32_t native_index = 0;
+  std::optional<std::int32_t> count;
+  std::optional<std::vector<std::int32_t>> keys_i32;
+  std::string reason;
+  friend bool operator==(const ContextSourceSignedKeySetV1 &,
+                         const ContextSourceSignedKeySetV1 &) = default;
+};
 struct ContextSourceConditionalAV1 {
   std::int32_t native_index = 0;
   std::optional<std::string> key_identity;
@@ -72,6 +82,8 @@ struct ContextSourceConditionalAV1 {
   std::optional<ContextSourcePropertiesV1> property_block;
   std::optional<bool> admitted;
   std::string reason;
+  std::string property_source;
+  std::optional<std::int32_t> property_source_native_index;
   friend bool operator==(const ContextSourceConditionalAV1 &,
                          const ContextSourceConditionalAV1 &) = default;
 };
@@ -81,6 +93,8 @@ struct ContextSourceConditionalBV1 {
   std::optional<ContextSourcePropertiesV1> property_block;
   std::optional<bool> admitted;
   std::string reason;
+  std::string admission_source;
+  std::optional<std::int32_t> admission_nested_native_index;
   friend bool operator==(const ContextSourceConditionalBV1 &,
                          const ContextSourceConditionalBV1 &) = default;
 };
@@ -100,6 +114,7 @@ struct ContextSourceConditionalCV1 {
   std::optional<std::int32_t> first_signed_byte;
   std::optional<std::int32_t> classifier_mode_i32;
   std::optional<std::int32_t> classifier_result_i32;
+  std::optional<ContextSourceLocaleClassificationV1> locale_classification;
   std::string lookup_status;
   std::optional<std::int32_t> condition_token_id;
   std::optional<bool> admitted;
@@ -135,6 +150,16 @@ struct ContextSource291d7e0V1 {
   std::optional<std::int32_t> source_count;
   std::optional<std::vector<ContextSourceSourceRowV1>> source_rows;
   std::optional<ContextSourcePropertiesV1> conditional_a_fallback_properties;
+  std::optional<ContextSourceResolutionV1> selector_a_stage1;
+  std::optional<ContextSourceResolutionV1> selector_a_stage2;
+  std::optional<ContextSourceResolutionV1> selector_a_stage3;
+  std::string selector_a_selected_source;
+  std::optional<std::int32_t> selector_a_key_count;
+  std::optional<std::vector<std::string>> selector_a_key_identities;
+  std::optional<ContextSourceResolutionV1> selector_b_resolution;
+  std::optional<ContextSourceSignedKeySetV1> selector_b_primary_keys;
+  std::optional<std::int32_t> selector_b_nested_count;
+  std::optional<std::vector<ContextSourceSignedKeySetV1>> selector_b_nested_keys;
   std::optional<std::int32_t> government_token_count;
   std::optional<std::vector<std::int32_t>> government_token_ids_i32;
   std::optional<std::int32_t> condition_registry_guard;

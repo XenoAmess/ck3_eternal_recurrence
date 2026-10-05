@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/battle_context_source_inputs_v1.hpp"
+#include "xar_bridge/battle_context_admissions_v86_serializer.hpp"
 
 #include <cstddef>
 #include <optional>
@@ -181,6 +182,10 @@ inline void ConditionalA(std::string &out,
   Number(out, row.key_object_magic);
   out += ",\"property_block\":";
   Properties(out, row.property_block);
+  out += ",\"property_source\":";
+  String(out, row.property_source);
+  out += ",\"property_source_native_index\":";
+  Number(out, row.property_source_native_index);
   out += ",\"admitted\":";
   Boolean(out, row.admitted);
   out += ",\"reason\":";
@@ -195,6 +200,10 @@ inline void ConditionalB(std::string &out,
   Number(out, row.key_i32);
   out += ",\"property_block\":";
   Properties(out, row.property_block);
+  out += ",\"admission_source\":";
+  String(out, row.admission_source);
+  out += ",\"admission_nested_native_index\":";
+  Number(out, row.admission_nested_native_index);
   out += ",\"admitted\":";
   Boolean(out, row.admitted);
   out += ",\"reason\":";
@@ -235,6 +244,8 @@ inline void ConditionalC(std::string &out,
   Number(out, row.classifier_result_i32);
   out += ",\"condition_token_id\":";
   Number(out, row.condition_token_id);
+  out += ",\"locale_classification\":";
+  out += SerializeContextSourceLocaleClassificationV86(row.locale_classification);
   out += ",\"admitted\":";
   Boolean(out, row.admitted);
   out += ",\"token_origin\":";
@@ -308,6 +319,7 @@ inline void Branch291d7e0(std::string &out,
   Number(out, b->condition_fallback_guard);
   out += ",\"token_manager_present\":";
   Boolean(out, b->token_manager_present);
+  out += SerializeContextSourceSelectorFieldsV86(*b);
   out += ",\"reason\":";
   Reason(out, b->reason);
   out += '}';

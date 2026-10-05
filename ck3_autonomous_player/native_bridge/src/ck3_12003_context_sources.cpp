@@ -383,14 +383,26 @@ void Condition(const ContextSourceBindingsV1 &b, const void *character,
     if (*row.condition_length != 0) {
       const auto locale = Read<std::int32_t>(b, b.prefix_classifier_locale_flag);
       row.classifier_mode_i32 = locale;
-      if (!locale || *locale != 0) {
-        row.reason = locale ? "classifier_unavailable_locale_path"
-                            : "classifier_locale_flag_unavailable";
+      if (!locale) {
+        row.reason = "classifier_locale_flag_unavailable";
         return;
       }
       const auto first = *row.first_signed_byte;
       std::uint16_t classification = 0;
-      if (static_cast<std::uint32_t>(first + 1) <= 0x100U) {
+      if (*locale != 0) {
+        auto locale_bindings = b.current_locale;
+        locale_bindings.read_memory = b.read_memory;
+        locale_bindings.read_context = b.read_context;
+        row.locale_classification = ReadContextSourceLocaleClassification12003(
+            locale_bindings, first);
+        if (!row.locale_classification->ready ||
+            !row.locale_classification->result_i32) {
+          row.reason = row.locale_classification->reason;
+          return;
+        }
+        classification = static_cast<std::uint16_t>(
+            *row.locale_classification->result_i32);
+      } else if (static_cast<std::uint32_t>(first + 1) <= 0x100U) {
         const auto table = Read<const void *>(b, b.prefix_classifier_table_slot);
         const void *element = table && *table
             ? static_cast<const std::byte *>(*table) + first * 2 : nullptr;
@@ -473,11 +485,318 @@ void Condition(const ContextSourceBindingsV1 &b, const void *character,
   row.admitted = member != (*row.invert_u8 != 0);
 }
 
+// V86: readonly selector resolution and conditional A/B consumers. Registry
+// objects stay opaque; these field recipes come from the frozen caller/leaves.
+Resolved SelectorResolve(const ContextSourceBindingsV1 &b,
+                         const std::optional<const void *> &store,
+                         const std::optional<std::uint32_t> &id,
+                         const std::optional<const void *> &fallback,
+                         std::size_t generation_offset) {
+  Resolved out{};
+  out.observation.requested_full_id = id;
+  if (!store) {
+    out.observation.reason = "selector_store_unavailable";
+    return out;
+  }
+  const char *miss = "store_null";
+  if (*store) {
+    if (!id) {
+      out.observation.reason = "selector_requested_id_unavailable";
+      return out;
+    }
+    const auto capacity = Read<std::uint32_t>(b, *store, 0x2C);
+    if (!capacity) {
+      out.observation.reason = "selector_capacity_unavailable";
+      return out;
+    }
+    const auto slot_index = *id & 0xFFFFFFU;
+    miss = "index_outside_capacity";
+    if (slot_index < *capacity) {
+      const auto slots = Read<const void *>(b, *store, 0x20);
+      if (!slots || !*slots) {
+        out.observation.reason = "selector_slots_unavailable";
+        return out;
+      }
+      const auto candidate = Read<const void *>(
+          b, *slots, static_cast<std::size_t>(slot_index) * 16 + 8);
+      if (!candidate) {
+        out.observation.reason = "selector_slot_unavailable";
+        return out;
+      }
+      miss = "object_null";
+      if (*candidate) {
+        const auto generation = Read<std::uint32_t>(
+            b, *candidate, generation_offset);
+        if (!generation) {
+          out.observation.reason = "selector_generation_unavailable";
+          return out;
+        }
+        miss = "full_id_mismatch";
+        if (*generation == *id) {
+          out.object = *candidate;
+          out.observation.status = "resolved";
+          out.observation.selected_full_id = generation;
+          return out;
+        }
+      }
+    }
+  }
+  if (!fallback) {
+    out.observation.reason = "selector_fallback_slot_unavailable";
+    return out;
+  }
+  out.object = *fallback;
+  out.observation.status = "native_fallback";
+  out.observation.reason = miss;
+  if (out.object)
+    out.observation.selected_full_id = Read<std::uint32_t>(
+        b, out.object, generation_offset);
+  else
+    out.observation.reason = "selector_native_fallback_null";
+  return out;
+}
+
+struct SelectorState {
+  bool a_sampled = false;
+  bool b_sampled = false;
+  bool b_nested_sampled = false;
+  std::optional<std::vector<const void *>> a_keys;
+  const void *b_object = nullptr;
+  std::optional<const void *> b_nested_data;
+};
+
+void SelectorA(const ContextSourceBindingsV1 &b, const void *character,
+               game::ContextSource291d7e0V1 &branch, SelectorState &state,
+               std::vector<const void *> &keys) {
+  if (state.a_sampled) return;
+  state.a_sampled = true;
+  // R8 and R14 are loaded once and retained through all three stages.
+  const auto first_store = Read<const void *>(b, b.selector_a_storage_slot);
+  const auto initial_fallback = Read<const void *>(
+      b, b.selector_a_initial_fallback_slot);
+  const auto first_id = first_store && *first_store
+      ? Read<std::uint32_t>(b, character, 0xB4) : std::nullopt;
+  const auto first = SelectorResolve(b, first_store, first_id,
+                                     initial_fallback, 8);
+  branch.selector_a_stage1 = first.observation;
+  if (!first.object) return;
+  const auto second_id = Read<std::uint32_t>(b, first.object, 0x4B8);
+  if (!second_id) return;
+  const auto second_store = Read<const void *>(b, b.selector_a_second_storage_slot);
+  const auto second = SelectorResolve(
+      b, second_store, second_id,
+      Read<const void *>(b, b.selector_a_second_fallback_slot), 8);
+  branch.selector_a_stage2 = second.observation;
+  // A null initial store bypasses the selected stage2+98 read altogether.
+  if (!first_store) return;
+  const auto third_id = *first_store
+      ? Read<std::uint32_t>(b, second.object, 0x98) : std::nullopt;
+  const auto third = SelectorResolve(b, first_store, third_id,
+                                     initial_fallback, 8);
+  branch.selector_a_stage3 = third.observation;
+  if (third.observation.status == "resolved")
+    branch.selector_a_selected_source = "stage3_resolved";
+  else if (third.observation.status == "native_fallback")
+    branch.selector_a_selected_source = "initial_fallback5C67670";
+  if (!third.object) return;
+  branch.selector_a_key_count = Read<std::int32_t>(b, third.object, 0x7AC);
+  if (!branch.selector_a_key_count || *branch.selector_a_key_count < 0) return;
+  if (*branch.selector_a_key_count == 0) state.a_keys.emplace();
+  else {
+    const auto key_data = Read<const void *>(b, third.object, 0x7A0);
+    state.a_keys = Vector<const void *>(
+        b, key_data.value_or(nullptr), branch.selector_a_key_count);
+  }
+  if (state.a_keys) {
+    branch.selector_a_key_identities.emplace();
+    for (const auto *key_pointer : *state.a_keys)
+      branch.selector_a_key_identities->push_back(Identity(keys, key_pointer, "k"));
+  }
+}
+
+game::ContextSourceSignedKeySetV1 SignedKeys(const ContextSourceBindingsV1 &b,
+                                          const void *owner,
+                                          std::size_t data_offset,
+                                          std::size_t count_offset,
+                                          std::int32_t native_index) {
+  game::ContextSourceSignedKeySetV1 out{};
+  out.native_index = native_index;
+  out.count = Read<std::int32_t>(b, owner, count_offset);
+  if (!out.count || *out.count < 0) {
+    out.reason = out.count ? "selector_negative_key_count"
+                          : "selector_key_count_unavailable";
+    return out;
+  }
+  if (*out.count == 0) out.keys_i32.emplace();
+  else {
+    const auto key_data = Read<const void *>(b, owner, data_offset);
+    out.keys_i32 = Vector<std::int32_t>(b, key_data.value_or(nullptr), out.count);
+    if (!out.keys_i32) out.reason = "selector_key_data_unavailable";
+  }
+  return out;
+}
+std::optional<bool> SignedMember(const game::ContextSourceSignedKeySetV1 &set,
+                                 std::int32_t key) {
+  if (!set.count || *set.count < 0 || !set.keys_i32) return std::nullopt;
+  const auto found = std::lower_bound(set.keys_i32->begin(), set.keys_i32->end(), key);
+  // Exact native completion test; actual native arrays retain their signed order.
+  return found != set.keys_i32->end() && key >= *found;
+}
+void SelectorB(const ContextSourceBindingsV1 &b, const void *character,
+               game::ContextSource291d7e0V1 &branch, SelectorState &state) {
+  if (state.b_sampled) return;
+  state.b_sampled = true;
+  const auto requested = Read<std::uint32_t>(b, character, 0xB0);
+  if (!requested) return;
+  const auto selected = SelectorResolve(
+      b, Read<const void *>(b, b.selector_b_storage_slot), requested,
+      Read<const void *>(b, b.selector_b_fallback_slot), 0x10);
+  branch.selector_b_resolution = selected.observation;
+  state.b_object = selected.object;
+  const auto owner = Read<const void *>(b, selected.object, 0x20);
+  const auto header = owner ? Read<const void *>(b, *owner, 0x128) : std::nullopt;
+  if (header && *header)
+    branch.selector_b_primary_keys = SignedKeys(b, *header, 8, 0x14, -1);
+}
+void ConditionalB(const ContextSourceBindingsV1 &b, const void *character,
+                  game::ContextSource291d7e0V1 &branch, SelectorState &state,
+                  game::ContextSourceConditionalBV1 &row) {
+  SelectorB(b, character, branch, state);
+  if (!row.key_i32 || !branch.selector_b_primary_keys) {
+    row.reason = "conditional_b_primary_inputs_unavailable";
+    return;
+  }
+  const auto primary = SignedMember(*branch.selector_b_primary_keys, *row.key_i32);
+  if (!primary) {
+    row.reason = "conditional_b_primary_inputs_unavailable";
+    return;
+  }
+  if (*primary) {
+    row.admitted = true;
+    row.admission_source = "primary";
+    return;
+  }
+  if (!state.b_nested_sampled) {
+    state.b_nested_sampled = true;
+    branch.selector_b_nested_count = Read<std::int32_t>(b, state.b_object, 0x524);
+    if (branch.selector_b_nested_count && *branch.selector_b_nested_count >= 0) {
+      branch.selector_b_nested_keys.emplace();
+      if (*branch.selector_b_nested_count > 0)
+        state.b_nested_data = Read<const void *>(b, state.b_object, 0x518);
+    }
+  }
+  if (!branch.selector_b_nested_count || *branch.selector_b_nested_count < 0 ||
+      !branch.selector_b_nested_keys) {
+    row.reason = "conditional_b_nested_count_unavailable";
+    return;
+  }
+  for (std::int32_t i = 0; i < *branch.selector_b_nested_count; ++i) {
+    const auto ordinal = static_cast<std::size_t>(i);
+    if (ordinal == branch.selector_b_nested_keys->size()) {
+      const auto object = state.b_nested_data
+          ? Read<const void *>(b, *state.b_nested_data, ordinal * 8) : std::nullopt;
+      branch.selector_b_nested_keys->push_back(SignedKeys(
+          b, object.value_or(nullptr), 0x1010, 0x101C, i));
+    }
+    const auto member = SignedMember((*branch.selector_b_nested_keys)[ordinal],
+                                      *row.key_i32);
+    if (!member) {
+      row.reason = "conditional_b_nested_inputs_unavailable";
+      return;
+    }
+    if (*member) {
+      row.admitted = true;
+      row.admission_source = "nested";
+      row.admission_nested_native_index = i;
+      return;
+    }
+  }
+  row.admitted = false;
+  row.admission_source = "absent";
+}
+
+void ConditionalA(const ContextSourceBindingsV1 &b, const void *character,
+                  const void *source, const std::optional<std::int32_t> &count,
+                  const std::optional<const void *> &key,
+                  game::ContextSource291d7e0V1 &branch, SelectorState &state,
+                  std::vector<const void *> &keys,
+                  game::ContextSourceConditionalAV1 &row) {
+  SelectorA(b, character, branch, state, keys);
+  if (!state.a_keys) {
+    row.reason = "conditional_a_selector_inputs_unavailable";
+    return;
+  }
+  if (state.a_keys->empty()) {
+    row.admitted = false;
+    return;
+  }
+  if (!key) {
+    row.reason = "conditional_a_key_unavailable";
+    return;
+  }
+  row.admitted = std::find(state.a_keys->begin(), state.a_keys->end(), *key)
+      != state.a_keys->end();
+  if (!*row.admitted) return;
+  row.key_object_magic = Read<std::uint32_t>(b, *key, 0x38);
+  if (!row.key_object_magic) {
+    row.reason = "conditional_a_magic_unavailable";
+    return;
+  }
+  const void *selected_property = nullptr;
+  if (*row.key_object_magic == 0x4744624FU) {
+    row.key_object_id = Read<std::uint32_t>(b, *key, 0x10);
+    if (!row.key_object_id || !count || *count < 0) {
+      row.reason = "conditional_a_full_id_scan_inputs_unavailable";
+      return;
+    }
+    const auto source_rows = *count > 0 ? Read<const void *>(b, source, 0x550)
+                                       : std::optional<const void *>{nullptr};
+    if (!source_rows || (*count > 0 && !*source_rows)) {
+      row.reason = "conditional_a_full_id_scan_rows_unavailable";
+      return;
+    }
+    for (std::int32_t i = 0; i < *count; ++i) {
+      const auto candidate_row = Offset(*source_rows,
+                                         static_cast<std::size_t>(i) * 0x30);
+      const auto candidate_key = Read<const void *>(b, candidate_row, 0x20);
+      const auto candidate_id = candidate_key
+          ? Read<std::uint32_t>(b, *candidate_key, 0x10) : std::nullopt;
+      if (!candidate_id) {
+        row.reason = "conditional_a_scan_candidate_id_unavailable";
+        return;
+      }
+      if (*candidate_id == *row.key_object_id) {
+        const auto property = Read<const void *>(b, candidate_row, 0x28);
+        if (!property || !*property) {
+          row.reason = "conditional_a_first_id_property_unavailable";
+          return;
+        }
+        selected_property = *property;
+        row.property_source = "first_full_id_match";
+        row.property_source_native_index = i;
+        break;
+      }
+    }
+  }
+  if (!selected_property) {
+    row.property_source = "static5DC21B0";
+    if (!branch.conditional_a_fallback_properties && b.conditional_a_fallback_properties)
+      branch.conditional_a_fallback_properties = Properties(
+          b, b.conditional_a_fallback_properties);
+    row.property_block = branch.conditional_a_fallback_properties;
+    if (!row.property_block) row.reason = "conditional_a_fallback_property_unavailable";
+    return;
+  }
+  row.property_block = Properties(b, selected_property);
+}
+
+
 game::ContextSource291d7e0V1 BranchB(const ContextSourceBindingsV1 &b,
                                     const void *character) {
   game::ContextSource291d7e0V1 out{};
   std::vector<const void *> sources, keys, retained;
   ConditionState conditions{};
+  SelectorState selectors{};
   const auto carrier = Read<const void *>(b, character, 0x1B0);
   const void *header = nullptr;
   if (carrier) {
@@ -521,14 +840,9 @@ game::ContextSource291d7e0V1 BranchB(const ContextSourceBindingsV1 &b,
               const auto key = Read<const void *>(b, native, 0x20);
               if (key) {
                 copied.key_identity = Identity(keys, *key, "k");
-                if (*key) {
-                  copied.key_object_id = Read<std::uint32_t>(b, *key, 0x10);
-                  copied.key_object_magic = Read<std::uint32_t>(b, *key, 0x38);
-                }
               }
-              const auto property = Read<const void *>(b, native, 0x28);
-              if (property && *property) copied.property_block = Properties(b, *property);
-              copied.reason = "conditional_a_selector_not_observed";
+              ConditionalA(b, character, *source, row.conditional_a_count, key,
+                           out, selectors, keys, copied);
               return copied;
             });
         row.conditional_b_rows = ConditionalRows<game::ContextSourceConditionalBV1>(
@@ -538,7 +852,7 @@ game::ContextSource291d7e0V1 BranchB(const ContextSourceBindingsV1 &b,
               copied.native_index = index;
               copied.key_i32 = Read<std::int32_t>(b, native);
               copied.property_block = Properties(b, Offset(native, 8));
-              copied.reason = "conditional_b_selector_not_observed";
+              ConditionalB(b, character, out, selectors, copied);
               return copied;
             });
         row.conditional_c_rows = ConditionalRows<game::ContextSourceConditionalCV1>(
@@ -556,9 +870,6 @@ game::ContextSource291d7e0V1 BranchB(const ContextSourceBindingsV1 &b,
       }
     }
   }
-  if (b.conditional_a_fallback_properties)
-    out.conditional_a_fallback_properties = Properties(
-        b, b.conditional_a_fallback_properties);
   out.base_inputs_ready = out.component_present.has_value() &&
       out.source_count.has_value() && out.source_rows.has_value();
   bool conditionals_complete = out.base_inputs_ready;
@@ -605,6 +916,12 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   b.second_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1DE28);
   b.source_fallback_header = reinterpret_cast<const void *>(base + 0x54E78B8);
   b.conditional_a_fallback_properties = reinterpret_cast<const void *>(base + 0x5DC21B0);
+  b.selector_a_storage_slot = reinterpret_cast<const void *>(base + 0x5D1E2F8);
+  b.selector_a_initial_fallback_slot = reinterpret_cast<const void *>(base + 0x5C67670);
+  b.selector_a_second_storage_slot = reinterpret_cast<const void *>(base + 0x5D1E300);
+  b.selector_a_second_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E2E0);
+  b.selector_b_storage_slot = reinterpret_cast<const void *>(base + 0x5D1E2F0);
+  b.selector_b_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E2E8);
   b.government = reinterpret_cast<void *(*)(void *)>(base + 0x28C2E10);
   b.condition_registry = reinterpret_cast<const void *>(base + 0x5DC1390);
   b.condition_fallback_object = reinterpret_cast<const void *>(base + 0x5DC1368);
@@ -613,6 +930,7 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   b.token_manager_slot = reinterpret_cast<const void *>(base + 0x5CBEDE8);
   b.prefix_classifier_locale_flag = reinterpret_cast<const void *>(base + 0x5C5D2D8);
   b.prefix_classifier_table_slot = reinterpret_cast<const void *>(base + 0x542F330);
+  b.current_locale = BindContextSourceLocale12003(base, sha);
   b.existing_token_lookup = reinterpret_cast<ContextSourceExistingTokenLookupV1>(
       base + 0x3F51AB0);
   return b;

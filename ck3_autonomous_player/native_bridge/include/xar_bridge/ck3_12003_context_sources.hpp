@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/ck3_12003_context_locale.hpp"
+
 #include "xar_bridge/battle_context_source_inputs_v1.hpp"
 
 #include <cstddef>
@@ -27,6 +29,7 @@ using ContextSourceExistingTokenLookupV1 = ContextSourceTokenCursorV1 *(*)(
     void *map_header, ContextSourceTokenCursorV1 *output,
     const ContextSourceTokenSliceV1 *slice);
 struct ContextSourceBindingsV1 {
+  ContextSourceLocaleBindingsV1 current_locale{};
   bool enabled = false;
   const void *lifestyle_fallback_header = nullptr;
   const void *house_extra_fallback_header = nullptr;
@@ -36,6 +39,12 @@ struct ContextSourceBindingsV1 {
   const void *second_fallback_slot = nullptr;
   const void *source_fallback_header = nullptr;
   const void *conditional_a_fallback_properties = nullptr;
+  const void *selector_a_storage_slot = nullptr;
+  const void *selector_a_initial_fallback_slot = nullptr;
+  const void *selector_a_second_storage_slot = nullptr;
+  const void *selector_a_second_fallback_slot = nullptr;
+  const void *selector_b_storage_slot = nullptr;
+  const void *selector_b_fallback_slot = nullptr;
   void *(*government)(void *character) = nullptr;
   const void *condition_registry = nullptr;
   const void *condition_fallback_object = nullptr;

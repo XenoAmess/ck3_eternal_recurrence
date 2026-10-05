@@ -9,6 +9,12 @@ from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
+from .battle_context_admissions_v86_contract import (
+    SELECTOR_EXTENSION_FIELDS_V86,
+    normalize_admission_extension_row_v86,
+    normalize_selector_extension_fields_v86,
+)
+
 if TYPE_CHECKING:
     from ..simulation.battle_context_preparation_branch_291e210_12003 import (
         NativeWeightedContributionRequest12003,
@@ -233,11 +239,14 @@ def _raw_rows(value: object, field: str, normalize) -> list[dict[str, object]] |
 
 
 def _conditional_a(value: object, field: str) -> dict[str, object]:
-    raw = _dict(value, field, {
+    fields = {
         "native_index", "key_identity", "key_object_id", "key_object_magic",
         "property_block", "admitted", "reason",
-    })
-    return {
+    }
+    if isinstance(value, dict):
+        fields.update(set(value) & {'property_source', 'property_source_native_index'})
+    raw = _dict(value, field, fields)
+    normalized = {
         "native_index": _integer(raw["native_index"], field + ".native_index", 32),
         "key_identity": _string(raw["key_identity"], field + ".key_identity", optional=True),
         "key_object_id": _number(raw["key_object_id"], field + ".key_object_id", 32, unsigned=True),
@@ -246,31 +255,41 @@ def _conditional_a(value: object, field: str) -> dict[str, object]:
         "admitted": _boolean(raw["admitted"], field + ".admitted", optional=True),
         "reason": _string(raw["reason"], field + ".reason", optional=True),
     }
+    normalized.update(normalize_admission_extension_row_v86(raw, field, 'a'))
+    return normalized
 
 
 def _conditional_b(value: object, field: str) -> dict[str, object]:
-    raw = _dict(value, field, {
+    fields = {
         "native_index", "key_i32", "property_block", "admitted", "reason",
-    })
-    return {
+    }
+    if isinstance(value, dict):
+        fields.update(set(value) & {'admission_source', 'admission_nested_native_index'})
+    raw = _dict(value, field, fields)
+    normalized = {
         "native_index": _integer(raw["native_index"], field + ".native_index", 32),
         "key_i32": _number(raw["key_i32"], field + ".key_i32", 32),
         "property_block": _properties(raw["property_block"], field + ".property_block"),
         "admitted": _boolean(raw["admitted"], field + ".admitted", optional=True),
         "reason": _string(raw["reason"], field + ".reason", optional=True),
     }
+    normalized.update(normalize_admission_extension_row_v86(raw, field, 'b'))
+    return normalized
 
 
 def _conditional_c(value: object, field: str) -> dict[str, object]:
-    raw = _dict(value, field, {
+    fields = {
         "native_index", "source_key_u32", "masked_index_u32", "resolver_count_i32",
         "selected_native_fallback", "invert_u8", "property_block",
         "resolved_condition_identity", "condition_source", "condition_length",
         "condition_capacity", "condition_bytes", "first_signed_byte",
         "classifier_mode_i32", "classifier_result_i32", "condition_token_id", "admitted",
         "token_origin", "lookup_status", "reason",
-    })
-    return {
+    }
+    if isinstance(value, dict):
+        fields.update(set(value) & {'locale_classification'})
+    raw = _dict(value, field, fields)
+    normalized = {
         "native_index": _integer(raw["native_index"], field + ".native_index", 32),
         "source_key_u32": _number(raw["source_key_u32"], field + ".source_key_u32", 32, unsigned=True),
         "masked_index_u32": _number(raw["masked_index_u32"], field + ".masked_index_u32", 32, unsigned=True),
@@ -292,6 +311,8 @@ def _conditional_c(value: object, field: str) -> dict[str, object]:
         "lookup_status": _text(raw["lookup_status"], field + ".lookup_status"),
         "reason": _string(raw["reason"], field + ".reason", optional=True),
     }
+    normalized.update(normalize_admission_extension_row_v86(raw, field, 'c'))
+    return normalized
 
 
 def _source_row(value: object, field: str) -> dict[str, object]:
@@ -321,13 +342,16 @@ def _source_row(value: object, field: str) -> dict[str, object]:
 def _branch_291d7e0(value: object, field: str) -> dict[str, object] | None:
     if value is None:
         return None
-    raw = _dict(value, field, {
+    fields = {
         "status", "ready", "base_inputs_ready", "component_present",
         "selected_source", "source_count", "source_rows",
         "conditional_a_fallback_properties", "government_token_count",
         "government_token_ids_i32", "government_source", "condition_registry_guard",
         "condition_fallback_guard", "token_manager_present", "reason",
-    })
+    }
+    if isinstance(value, dict):
+        fields.update(set(value) & SELECTOR_EXTENSION_FIELDS_V86)
+    raw = _dict(value, field, fields)
     status, ready, reason = _availability(raw, field)
     # Base-copy arrays keep their independent +28C/+2F4 headers. The A
     # append-executor's empty-key shortcut is deliberately not applied here.
@@ -351,6 +375,7 @@ def _branch_291d7e0(value: object, field: str) -> dict[str, object] | None:
         raise ValueError(field + " base-copy availability disagrees with independently observed arrays")
     if ready != _b_consumed_ready(normalized):
         raise ValueError(field + " conditional availability disagrees with observed admission inputs")
+    normalized.update(normalize_selector_extension_fields_v86(raw, field))
     return normalized
 
 
