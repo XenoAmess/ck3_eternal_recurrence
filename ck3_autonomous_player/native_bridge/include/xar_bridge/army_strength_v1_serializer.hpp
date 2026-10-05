@@ -6,6 +6,86 @@
 
 namespace xar::game {
 
+template <class Number, class JsonString>
+inline void AppendNativeMaaRecruitmentQuoteV1(
+    std::string &output, const NativeMaaRecruitmentQuoteV1 &quote,
+    Number number, JsonString append_json_string) {
+  output += "{\"context\":";
+  append_json_string(output, quote.context);
+  output += ",\"status\":";
+  append_json_string(output, quote.status);
+  output += ",\"unavailable_reason\":";
+  if (quote.unavailable_reason.empty()) output += "null";
+  else append_json_string(output, quote.unavailable_reason);
+  output += ",\"resource_scale\":" + number(quote.resource_scale);
+  output += ",\"resources_raw\":";
+  if (quote.resources_raw) {
+    output += '[';
+    bool first = true;
+    for (const auto raw : *quote.resources_raw) {
+      if (!first) output += ',';
+      first = false;
+      output += number(raw);
+    }
+    output += ']';
+  } else output += "null";
+  output += '}';
+}
+
+template <class Number, class JsonString>
+inline void AppendNativeMaaRecruitmentInputsV1(
+    std::string &output, const NativeMaaRecruitmentInputsV1 &inputs,
+    Number number, JsonString append_json_string) {
+  output += "{\"schema_version\":" + number(inputs.schema_version);
+  output += ",\"status\":";
+  append_json_string(output, inputs.status);
+  output += ",\"unavailable_reason\":";
+  if (inputs.unavailable_reason.empty()) output += "null";
+  else append_json_string(output, inputs.unavailable_reason);
+  output += ",\"owner_character_id\":";
+  output += inputs.owner_character_id ? number(*inputs.owner_character_id) : "null";
+  output += ",\"creation_kind\":" + number(inputs.creation_kind);
+  output += ",\"creation_scope\":";
+  append_json_string(output, inputs.creation_scope);
+  output += ",\"command_class\":";
+  append_json_string(output, inputs.command_class);
+  output += ",\"title_id\":" + number(inputs.title_id);
+  output += ",\"requested_quantity\":" + number(inputs.requested_quantity);
+  output += ",\"pay_cost\":";
+  output += inputs.pay_cost ? "true" : "false";
+  output += ",\"catalog_observed\":";
+  output += inputs.catalog_observed ? "true" : "false";
+  output += ",\"types_in_native_order\":[";
+  bool first = true;
+  for (const auto &type : inputs.types_in_native_order) {
+    if (!first) output += ',';
+    first = false;
+    output += "{\"type_key\":";
+    append_json_string(output, type.type_key);
+    output += ",\"type_index\":" + number(type.type_index);
+    output += ",\"inputs_ready\":";
+    output += type.inputs_ready ? "true" : "false";
+    output += ",\"unavailable_reason\":";
+    if (type.unavailable_reason.empty()) output += "null";
+    else append_json_string(output, type.unavailable_reason);
+    output += ",\"effective_quantity\":";
+    output += type.effective_quantity ? number(*type.effective_quantity) : "null";
+    output += ",\"can_create\":";
+    output += type.can_create ? (*type.can_create ? "true" : "false") : "null";
+    output += ",\"regular_personal_quote\":";
+    AppendNativeMaaRecruitmentQuoteV1(output, type.regular_personal_quote, number, append_json_string);
+    output += '}';
+  }
+  output += "],\"missing_type_keys\":[";
+  first = true;
+  for (const auto &key : inputs.missing_type_keys) {
+    if (!first) output += ',';
+    first = false;
+    append_json_string(output, key);
+  }
+  output += "]}";
+}
+
 // One row implementation shared by the bridge and its production-reader fixture.
 // The bridge supplies its existing number, array, and string-escaping helpers.
 template <class Number, class Int32Array, class JsonString>
@@ -55,6 +135,11 @@ inline void AppendArmyStrengthV1(
   }
   result += "\",\"war_ids\":";
   append_int32_array(result, strength.war_ids);
+  if (strength.native_maa_recruitment_inputs_v1) {
+    result += ",\"native_maa_recruitment_inputs_v1\":";
+    AppendNativeMaaRecruitmentInputsV1(
+        result, *strength.native_maa_recruitment_inputs_v1, number, append_json_string);
+  }
   result += ",\"regiment_count\":";
   if (strength.available) {
     result += number(strength.regiment_count);

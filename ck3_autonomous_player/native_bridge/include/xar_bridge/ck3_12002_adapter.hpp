@@ -1,4 +1,6 @@
-﻿#pragma once
+#pragma once
+
+#include "xar_bridge/ck3_12003_maa_recruitment.hpp"
 
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_12002_army.hpp"
@@ -30,6 +32,7 @@ struct Ck3_12002AdapterBindings {
   ck3_12002::EventsBindings events;
   ck3_12002::ArmyBindings armies;
   ck3_12002::BattleBindings native_owner_recall;
+  ck3_12003::NativeMaaRecruitmentBindings native_maa_recruitment;
   ck3_12002::WorldBindings world;
   ck3_12002::ProvinceBindings provinces;
   ck3_12002::MilitaryBindings military;
@@ -45,6 +48,11 @@ struct Ck3_12002AdapterBindings {
   ck3_12002::SettlementBindings settlement;
   ck3_12003::war_cash_current::Bindings war_cash_current;
 };
+
+// Same row publisher called by the current Army query and focused fixtures.
+void AttachNativeMaaRecruitmentInputsToArmyRowsV1(
+    const ck3_12003::NativeMaaRecruitmentBindings &,
+    std::vector<ArmyStrengthSnapshot> &) noexcept;
 
 Ck3_12002AdapterBindings BindCk3_12002AdapterImage(
     std::uintptr_t image_base, std::string_view executable_sha256) noexcept;

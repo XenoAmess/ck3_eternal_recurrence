@@ -828,6 +828,7 @@ file(GLOB XAR_CK3_12002_SOURCES CONFIGURE_DEPENDS
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "_test(_only)?\\.cpp$")
 list(APPEND XAR_CK3_12002_SOURCES
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_battle_current_state.cpp"
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_maa_recruitment.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_army_supply_timing.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_army_replenishment_records.cpp")
 # R11 owns only explicitly READY outcome production CPPs below.

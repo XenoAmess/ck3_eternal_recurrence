@@ -1,4 +1,4 @@
-﻿#include "xar_bridge/ck3_12002_adapter.hpp"
+#include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 
 #include <windows.h>
@@ -372,6 +372,10 @@ public:
         diagnostic.reader.store("owner_recall_returned");
       }
     }
+    if (result == ReadArmyStrengthsResult::available ||
+        result == ReadArmyStrengthsResult::partial)
+      AttachNativeMaaRecruitmentInputsToArmyRowsV1(
+          bindings_.native_maa_recruitment, output);
     diagnostic.reader.store(result == ReadArmyStrengthsResult::unavailable
         ? "baseline_unavailable" : "returned");
     return result;
@@ -519,6 +523,36 @@ private:
 };
 
 } // namespace
+
+void AttachNativeMaaRecruitmentInputsToArmyRowsV1(
+    const ck3_12003::NativeMaaRecruitmentBindings &bindings,
+    std::vector<ArmyStrengthSnapshot> &output) noexcept {
+  if (!bindings.enabled) return;
+  std::vector<NativeMaaRecruitmentInputsV1> observed_owners;
+  for (auto &row : output) {
+    if (row.scope_role != ArmyStrengthScopeRole::player) continue;
+    std::optional<std::int32_t> owner_id;
+    if (row.native_owner_recall_inputs_v1 &&
+        row.native_owner_recall_inputs_v1->available &&
+        row.native_owner_recall_inputs_v1->owners_in_stored_order.size() == 1) {
+      owner_id = row.native_owner_recall_inputs_v1
+                     ->owners_in_stored_order.front().owner_character_id;
+    }
+    for (const auto &observed : observed_owners) {
+      if (owner_id && observed.owner_character_id == owner_id) {
+        row.native_maa_recruitment_inputs_v1 = observed;
+        break;
+      }
+    }
+    if (row.native_maa_recruitment_inputs_v1) continue;
+    auto observed = ck3_12003::ReadNativeMaaRecruitmentInputsForUnitV1(
+        bindings, row.army_id);
+    row.native_maa_recruitment_inputs_v1 = observed;
+    if (observed.owner_character_id)
+      observed_owners.push_back(std::move(observed));
+  }
+}
+
 
 Ck3_12002AdapterBindings BindCk3_12002AdapterImage(
     std::uintptr_t image_base, std::string_view executable_sha256) noexcept {

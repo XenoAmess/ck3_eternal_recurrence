@@ -114,6 +114,9 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
   // The private MCP remains unadvertised; the .2 binder leaves this disabled.
   result.war_cash_current = ck3_12003::war_cash_current::BindImage(
       image_base, ck3_12003::kGameVersion, executable_sha256);
+  // Current normal MAA permission and raw prices use the actual .3 identity.
+  result.native_maa_recruitment = ck3_12003::BindNativeMaaRecruitmentImage(
+      image_base, executable_sha256);
   // These numeric GUI getter ABIs are closed only for exact .3. Do not install
   // them in BindArmyImage: that binder also serves the unchanged .2 adapter.
   if (result.armies.enabled) {
