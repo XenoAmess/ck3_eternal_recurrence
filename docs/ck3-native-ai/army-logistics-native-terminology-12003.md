@@ -87,3 +87,12 @@
 自然PNG由Root `reviews.json` SHA71ca7ccca56f6b88afe3b2c71a91510876f60de80e751367b4f920e75015f6a8及新增七图`addendum-a02.json` SHA6c8d09fb06997bf7d5c86d9230d4959675d30153bc2738cd70671c0728667fed绑定；这些PNG的raw_video_timecode_binding继续null。五个decoded中心由独立`encoded-centers-a03.json` SHA6460e3de60c7e3c76f1c4a943f90de1ba9e6b5f98ae4429014a2b53782230efc绑定实际encodedPTS/timebase/rawSHA，只授这五帧。平分PNG的monotonic搜索区间1875.9283351–1876.429109s超出实际raw末PTS1799.967s，编码绑定为null，不能挪到尾帧。
 
 两次typed Supply/Attrition文本缓存读回仍真实拒绝：`tooltip_hover_source_top_unlocked_join_failed;capacity=1;count=1;hover=different;top_source=bound;top_locked=1`。自然提示像素和Army窗口身份成功不追认typed cache刷新。完整原片媒体PASS、五个单帧直接审图均不自动生成连续clean spans、完整1×影片审阅或签核；这些值保持false。
+
+
+## 2026-10-05 R0168：十二原片单帧与严格术语门槛追加
+
+[R0168 术语索引](../../promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-terms/index.json)将 Root 明确授予的十二个 decoded PNG 内容绑定到实际 PTS/PNG SHA 和当前 stock key/GUI；旧三十候选 pending 报告保留。TERM-03 的 Holding 上限3680与基础2000/发展1200/沿海+25%/森林−10% breakdown、TERM-06 的 Brest 下令前52天/3月4日 ETA及登船费警告、TERM-11 的月维护与同日暂停费用读数满足原门槛。整项新增03/06/11，累计01/02/03/05/06/07/11共7/11（约64%，固定镜头清单计数）。
+
+TERM-04 已有当地上限概念 child，携带补给概念 child仍缺；TERM-09已有野驴炮3×20/20与Sea射石机9/10，军事页补员勾选框/费用提示仍缺。TERM-08的锁标与“一半进度”概念已可读，但原门槛要求同帧native进度：day4 hover raw53147256/public14/native13的snapshot无Strength行，不能复用Jan11进度，因此整项仍pending。其HUD是Jan15，Jan20是正文ETA、剩5天。TERM-10有既有平分拒绝图和本轮分出新军队tooltip，完整平分/整编/可用合并提示仍pending；实际numeric merge不代按钮文字。
+
+Root十二单帧只授这些PNG，未授全部三十候选、连续clean spans、完整1×观看或signoff。3524.9s/3574.9s的postmerge6746、116/300、将领portrait/Jan20可用于界面说明，合军写回另依独立索引；海上额外维护和“会支付登船费”不证明实际已付款。军费已含于本轮true NET，不能再扣。正式研究加权比例与分母仍null。

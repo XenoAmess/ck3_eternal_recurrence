@@ -1,0 +1,1050 @@
+{
+  "schema": "xar.war-episode04.r0168.terms-index/v1",
+  "status": "ROOT_12_SINGLE_FRAME_CONTENT_BOUND_ORIGINAL_TERM_GATES_RETAINED",
+  "source_base_head": "538a35a3973813cdee125f3777d151e42fdedd97",
+  "run": "desktop-3fevhd2-1c74096080--vanilla--R0168",
+  "actor_id": 33388,
+  "episode_run_id": "native-33388-8baabd4dc94f",
+  "runtime_source_head": "ffc29e7c6f616592c0186f18570759eb36f30206",
+  "exact_game_version": "1.20.0.3",
+  "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "raw_identity_reused_without_rehash": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-raw-terms-merge-a01\\raw.mkv",
+    "bytes": 4955431127,
+    "sha256": "48fde0d7645d9ba7331dcd2a4b8dc93c93474ad2fd9cb95a59aea059e13481b9"
+  },
+  "machine_media_conditions": {
+    "actual_duration_seconds": "3584.933000",
+    "configured_limit_seconds_not_actual_duration": 3600,
+    "frames": 107548,
+    "packets": 107548,
+    "video_streams": 1,
+    "audio_streams": 0,
+    "codec": "h264",
+    "resolution": [
+      1920,
+      1080
+    ],
+    "avg_frame_rate": "30/1",
+    "time_base": "1/1000",
+    "frame_pts": {
+      "field": "pts",
+      "count": 107548,
+      "present": 107548,
+      "missing": 0,
+      "equal_adjacent": 0,
+      "regression_examples": [],
+      "non_decreasing": true,
+      "strictly_increasing": true,
+      "first_raw": 0,
+      "last_raw": 3584900,
+      "first_seconds": "0",
+      "last_seconds": "3584.9",
+      "minimum_adjacent_delta_raw": 33,
+      "maximum_adjacent_delta_raw": 34,
+      "span_seconds": "3584.9",
+      "sum_declared_duration_seconds": "3549.084000",
+      "time_base": "1/1000"
+    },
+    "strict_full_decode": {
+      "reached_progress_end": true,
+      "final_decoded_frames": 107548,
+      "errors_on_stderr": 0,
+      "ffmpeg_identity": {
+        "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+        "bytes": 222229504,
+        "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+      }
+    },
+    "source_stat_stable_during_audit_and_extraction": true,
+    "independent_full_raw_hash_passes_by_this_lane": 1,
+    "full_media_audit_attempts": 1
+  },
+  "independent_media_original_reports": {
+    "audit_report": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-capture-next-a01\\audit-attempt-a01\\report.json",
+      "bytes": 11485,
+      "sha256": "995fd52e2ea93e584dcd8cefc58e674475ac6bd31558521069063b94c9a69ae6"
+    },
+    "audit_delivery": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-capture-next-a01\\audit-attempt-a01\\delivery.json",
+      "bytes": 792,
+      "sha256": "0649f1cb191ef06f9be51f2a850cfe43442b5b04c5f2ffea7e6082d2963d0efa"
+    },
+    "audit_source_bindings": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-capture-next-a01\\audit-attempt-a01\\source-bindings.json",
+      "bytes": 1920,
+      "sha256": "33c7699d1e0a0d7899e972452819c12f1e7e33b629fa896b9dd2c4e2f6bceb99"
+    },
+    "candidate_index": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-encoded-candidates-a01\\candidate-index.json",
+      "bytes": 45126,
+      "sha256": "d5a58d4a6e5d2c1b576f0e89670e55ff415af529399f24afb2a8b42e12b32ff0"
+    },
+    "Root_PNG_review_index": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-media-execution-a01\\ROOT-PNG-REVIEW-INDEX-a01.json",
+      "bytes": 41309,
+      "sha256": "9d5eb2a538085f1b060ac42c6db5dd48ce70e441431052b9027fa2efdbcd43fb"
+    }
+  },
+  "Root_content_authority": "root-single-frame-review.json",
+  "stock_source_join": "stock-source-join.json",
+  "original_candidate_index": "candidate-index.json",
+  "local_copy_pins": {
+    "candidate-index.json": {
+      "bytes": 46284,
+      "sha256": "0fcec929ebb2d2053c3e14e556673713400ff2fc5c645a2d76ce6b777d709c4d"
+    },
+    "media-delivery.json": {
+      "bytes": 6863,
+      "sha256": "157f150b699afc4cd4d4cc7cc763d7f2965da351277e86209540b8d346915c06"
+    },
+    "media-report.json": {
+      "bytes": 11803,
+      "sha256": "5e81813ce7ecde77134827522b1bd6d4e7e921f3b9ad7c863702f657fb8bc044"
+    },
+    "root-single-frame-review.json": {
+      "bytes": 12552,
+      "sha256": "f465018399d368996eb4e47c737db29ce7ef5d01f3e7865417b3c585b7817286"
+    },
+    "stock-source-join.json": {
+      "bytes": 76078,
+      "sha256": "98f98cf5c1325c643b51358b83a26472dfd7f7d6198cbecc292cb512ebdf362b"
+    }
+  },
+  "hover_contexts": [
+    {
+      "label": "r0168-military-expenses-hover-a01",
+      "packets": [
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-military-expenses-hover-a01\\before-body.json",
+            "bytes": 250306,
+            "sha256": "35ccbab9673af9055c4d86f06db1668d8a79e9f7b84b579e1f7b4fca24dd1711"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-military-expenses-hover-a01\\after-body.json",
+            "bytes": 250306,
+            "sha256": "054e2524f611a9a583dbd1387fe0693c51bf5c6ebeb669a70dfd5f887ec0c653"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-military-expenses-hover-a01\\result.json",
+            "bytes": 509,
+            "sha256": "4d87008c2f180aac49875573da5430365c47de9b84b2f61e9a3ef643ca5afafa"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": null,
+            "native_revision": null,
+            "snapshot_id": null,
+            "episode_run_id": null
+          },
+          "actor": null,
+          "army_strengths_rows_count": 0
+        }
+      ]
+    },
+    {
+      "label": "r0168-military-naval-hover-a01",
+      "packets": [
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-military-naval-hover-a01\\before-body.json",
+            "bytes": 250306,
+            "sha256": "af25773557178ed7f1e21ec6d97cec9a56494849040b3eba14827423e1af9a28"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-military-naval-hover-a01\\after-body.json",
+            "bytes": 250306,
+            "sha256": "d32b7cfd0b6c1c72ec9adb583235b0d69413ddbf60513e17b8873438e0706c27"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-military-naval-hover-a01\\result.json",
+            "bytes": 506,
+            "sha256": "7d88618a35dd8600abbc257b45f269bb424fc01a38008f6ce6edfb5eac4aa632"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": null,
+            "native_revision": null,
+            "snapshot_id": null,
+            "episode_run_id": null
+          },
+          "actor": null,
+          "army_strengths_rows_count": 0
+        }
+      ]
+    },
+    {
+      "label": "r0168-army-troop-onager-hover-a01",
+      "packets": [
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-army-troop-onager-hover-a01\\before-body.json",
+            "bytes": 250306,
+            "sha256": "1e83f6e65ac49bece67d5960ebe98f8105b4b1ffed500d78346d4c78417af665"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-army-troop-onager-hover-a01\\after-body.json",
+            "bytes": 250306,
+            "sha256": "21aa6e0f366b84d727f0dbb295b13d936885a0ca9ed3cb7c21d29e9716432fb0"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-army-troop-onager-hover-a01\\result.json",
+            "bytes": 509,
+            "sha256": "5cd5e10b6968fe6b9f59ede8c5e7968d4661996280a0b979aaf0782117a77694"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": null,
+            "native_revision": null,
+            "snapshot_id": null,
+            "episode_run_id": null
+          },
+          "actor": null,
+          "army_strengths_rows_count": 0
+        }
+      ]
+    },
+    {
+      "label": "r0168-map-brest-eta-hover-a01",
+      "packets": [
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-map-brest-eta-hover-a01\\before-body.json",
+            "bytes": 250307,
+            "sha256": "036591f4b4b0a60ea055759cb5c7b90f3e500892a680d6c6d8cb3f4c8261e067"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-map-brest-eta-hover-a01\\after-body.json",
+            "bytes": 250307,
+            "sha256": "cd7381e7299a894d3ce1fdc20a286cdead25cf8e8a3a6c2e68304769aca3d609"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-map-brest-eta-hover-a01\\result.json",
+            "bytes": 505,
+            "sha256": "e5ef322d1cb53869316a1faa1fd163ba3c74676f0b759fbb2f46155fac1e74a0"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": null,
+            "native_revision": null,
+            "snapshot_id": null,
+            "episode_run_id": null
+          },
+          "actor": null,
+          "army_strengths_rows_count": 0
+        }
+      ]
+    },
+    {
+      "label": "r0168-holding-supply-limit-hover-a01",
+      "packets": [
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-holding-supply-limit-hover-a01\\before-body.json",
+            "bytes": 250313,
+            "sha256": "746cd82b5c4b80b90460ba0248a876cf187c673ee37dd335666f77804eb3831e"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-holding-supply-limit-hover-a01\\after-body.json",
+            "bytes": 250313,
+            "sha256": "e30e4d26f8dad371fb74d35be43e6f1119c1956a940535add41ed4a3a705fd15"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-holding-supply-limit-hover-a01\\result.json",
+            "bytes": 512,
+            "sha256": "9413460beff026641f93c375aac505a7c4029a50c9378f7f7f9d2ba9c66665e0"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": null,
+            "native_revision": null,
+            "snapshot_id": null,
+            "episode_run_id": null
+          },
+          "actor": null,
+          "army_strengths_rows_count": 0
+        }
+      ]
+    },
+    {
+      "label": "r0168-holding-supply-concept-hover-a01",
+      "packets": [
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-holding-supply-concept-hover-a01\\before-body.json",
+            "bytes": 250313,
+            "sha256": "3514801be23deec06608354db3d12cf4e01b70436c50f11f9b7157f2be9ad086"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-holding-supply-concept-hover-a01\\after-body.json",
+            "bytes": 250313,
+            "sha256": "bd7ebbf54683cae28cc6f7ba3e8a4d2c7e4a42869007a012ecf1043efc01aa5a"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-holding-supply-concept-hover-a01\\result.json",
+            "bytes": 514,
+            "sha256": "1eeed7774be4ee496c311e43d3ba239012667ef8764d6b7885b4defe43f63eae"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": null,
+            "native_revision": null,
+            "snapshot_id": null,
+            "episode_run_id": null
+          },
+          "actor": null,
+          "army_strengths_rows_count": 0
+        }
+      ]
+    },
+    {
+      "label": "r0168-sea-onager-deficit-hover-a01",
+      "packets": [
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-sea-onager-deficit-hover-a01\\before-body.json",
+            "bytes": 250312,
+            "sha256": "6ec8cc4810e5c472581958911671e01d80fa2f30abbef8dd4a61a0e78c6ca300"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-sea-onager-deficit-hover-a01\\after-body.json",
+            "bytes": 250312,
+            "sha256": "cd1e40f66e882a4f785cee96c7f5ff3f8da89cd3907c86cf74f70f30d44215f8"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": 3,
+            "native_revision": 2,
+            "snapshot_id": "native:2",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 5,
+          "query_linkage": {
+            "army_strengths_status": "partial",
+            "army_strengths_query_sequence": 1,
+            "army_strengths_queried_snapshot_id": "native:2",
+            "army_strengths_queried_revision": 3
+          }
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-sea-onager-deficit-hover-a01\\result.json",
+            "bytes": 510,
+            "sha256": "7354345d0cf4d382603cdbca46bda476c42a401ecbce72e3dc0c874b0f3ecd39"
+          },
+          "fields": {
+            "date_raw": 53147160,
+            "paused": true,
+            "revision": null,
+            "native_revision": null,
+            "snapshot_id": null,
+            "episode_run_id": null
+          },
+          "actor": null,
+          "army_strengths_rows_count": 0
+        }
+      ]
+    },
+    {
+      "label": "r0168-sea-map-day4-hover-a01",
+      "packets": [
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-sea-map-day4-hover-a01\\before-body.json",
+            "bytes": 40033,
+            "sha256": "c1e707ebcc4e7aed311ae6b8e94e4ce3e4ab247a3bff90d27fab3a5deb67258b"
+          },
+          "fields": {
+            "date_raw": 53147256,
+            "paused": true,
+            "revision": 14,
+            "native_revision": 13,
+            "snapshot_id": "native:13",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 0
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-sea-map-day4-hover-a01\\after-body.json",
+            "bytes": 40033,
+            "sha256": "b313372f07ad394e5566fcb989aeb5ecd0fde879f151eb08f1a8ce1a51eeaa34"
+          },
+          "fields": {
+            "date_raw": 53147256,
+            "paused": true,
+            "revision": 14,
+            "native_revision": 13,
+            "snapshot_id": "native:13",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 0
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-sea-map-day4-hover-a01\\result.json",
+            "bytes": 504,
+            "sha256": "fa666c54c7b60e091980e7871d6c4fc94427b6bbb83208b5b2a54eb173483708"
+          },
+          "fields": {
+            "date_raw": 53147256,
+            "paused": true,
+            "revision": null,
+            "native_revision": null,
+            "snapshot_id": null,
+            "episode_run_id": null
+          },
+          "actor": null,
+          "army_strengths_rows_count": 0
+        }
+      ]
+    },
+    {
+      "label": "r0168-sea-movement-locked-concept-a01",
+      "packets": [
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-sea-movement-locked-concept-a01\\before-body.json",
+            "bytes": 40034,
+            "sha256": "41f2ddaf80e1bca2b7444114b37dc88e518e8051f29879057948c6e3b23677f2"
+          },
+          "fields": {
+            "date_raw": 53147256,
+            "paused": true,
+            "revision": 14,
+            "native_revision": 13,
+            "snapshot_id": "native:13",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 0
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-sea-movement-locked-concept-a01\\after-body.json",
+            "bytes": 40034,
+            "sha256": "c32bacb6a114777e7b11a2e41ba50c50f8fd35e4d67921fa059b30d49b3fbf8e"
+          },
+          "fields": {
+            "date_raw": 53147256,
+            "paused": true,
+            "revision": 14,
+            "native_revision": 13,
+            "snapshot_id": "native:13",
+            "episode_run_id": "native-33388-8baabd4dc94f"
+          },
+          "actor": {
+            "character_id": 33388,
+            "alive": true,
+            "source": "native",
+            "stress_points": 25,
+            "betrothed_id": null,
+            "primary_spouse_id": 34290,
+            "spouse_ids": [
+              34290
+            ]
+          },
+          "army_strengths_rows_count": 0
+        },
+        {
+          "pin": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-sea-movement-locked-concept-a01\\result.json",
+            "bytes": 513,
+            "sha256": "158b0566757bf9af2126dde92dbaa9df50c9e8dfe076f41ede24d7c7f7ac3830"
+          },
+          "fields": {
+            "date_raw": 53147256,
+            "paused": true,
+            "revision": null,
+            "native_revision": null,
+            "snapshot_id": null,
+            "episode_run_id": null
+          },
+          "actor": null,
+          "army_strengths_rows_count": 0
+        }
+      ]
+    }
+  ],
+  "TERM11_same_paused_cash_join": {
+    "source": {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-merge-r0168-originaljan11-a01/responses/r0168-net-cash-a01.json",
+      "bytes": 15915,
+      "sha256": "f9916759317e8f1285b3f6f9dcfac5bff129bffa0ad40f042852e5e88981d584"
+    },
+    "fields": {
+      "date_raw": 53147160,
+      "played_character_id": 33388,
+      "queried_revision": 3,
+      "queried_native_revision": 2,
+      "queried_snapshot_id": "native:2",
+      "current_treasury": {
+        "raw": 65418341,
+        "scale": 100000
+      },
+      "player_monthly_gross_income": {
+        "raw": 469417,
+        "scale": 100000
+      },
+      "player_monthly_total_expenses": {
+        "raw": 439469,
+        "scale": 100000
+      },
+      "player_monthly_net_income": {
+        "raw": 29948,
+        "scale": 100000
+      },
+      "monthly_income_semantics": {
+        "version": "ck3-1.20.0.3-native-income-minus-total-expenses-v2",
+        "time_basis": "month",
+        "source_scope": "played_character_personal_gold",
+        "income_source": "native_character_monthly_gold_income",
+        "expense_source": "native_character_monthly_total_gold_expenses",
+        "military_expenses_included": true
+      },
+      "military_expenses": {
+        "current": {
+          "status": "available",
+          "resource_kind": "actor_military_current_maintenance",
+          "resource_id": "33388",
+          "owner_character_id": 33388,
+          "war_ids": [
+            1
+          ],
+          "time_basis": "month",
+          "raw_scale": 100000,
+          "source_scope": "actor_owned_military_once_across_all_wars",
+          "source": "native_character_current_military_expenses",
+          "resource_raw_native": [
+            388749,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "gold_raw": 388749,
+          "treasury_raw": 0,
+          "future_war_cost_upper_ready": false,
+          "unavailable_reason": null
+        },
+        "all_raised": {
+          "status": "available",
+          "resource_kind": "actor_military_all_raised_maintenance",
+          "resource_id": "33388",
+          "owner_character_id": 33388,
+          "war_ids": [
+            1
+          ],
+          "time_basis": "month",
+          "raw_scale": 100000,
+          "source_scope": "actor_owned_military_once_across_all_wars",
+          "source": "native_character_all_raised_military_expenses",
+          "resource_raw_native": [
+            487050,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "gold_raw": 487050,
+          "treasury_raw": 0,
+          "future_war_cost_upper_ready": false,
+          "unavailable_reason": null
+        }
+      },
+      "readiness": {
+        "current_treasury_ready": true,
+        "monthly_gross_income_ready": true,
+        "monthly_total_expenses_ready": true,
+        "monthly_net_income_ready": true,
+        "current_military_expenses_ready": true,
+        "all_raised_military_expenses_ready": true,
+        "same_frame_ready": true
+      }
+    },
+    "military_hover_same_paused_identity_date_revision": true,
+    "paid_embark_fee_ledger": null
+  },
+  "TERM08_same_frame_progress": null,
+  "previous_completed_terms": [
+    "TERM-01",
+    "TERM-02",
+    "TERM-05",
+    "TERM-07"
+  ],
+  "new_completed_terms": [
+    "TERM-03",
+    "TERM-06",
+    "TERM-11"
+  ],
+  "completed_terms": [
+    "TERM-01",
+    "TERM-02",
+    "TERM-03",
+    "TERM-05",
+    "TERM-06",
+    "TERM-07",
+    "TERM-11"
+  ],
+  "completed_count": 7,
+  "fixed_original_term_denominator": 11,
+  "fixed_term_coverage_percent": 63.64,
+  "partial_pending_terms": {
+    "TERM-04": {
+      "completed_half": "Holding supply_limit concept, 1926.933s",
+      "missing": "Army supplies concept child: not present in Root-granted twelve frames or prior R0165 credit."
+    },
+    "TERM-08": {
+      "completed_half": "Actual movement-locked label and child concept; Jan15 HUD, Jan20 ETA.",
+      "missing": "Native movement progress same frame: hover snapshots raw53147256/public14/native13 have no Strength rows; initial native progress raw12594/100000 at Jan11 cannot be reused."
+    },
+    "TERM-09": {
+      "completed_half": "Concrete soldiers/max: onager three20/20, Sea mangonel9/10.",
+      "missing": "Monthly reinforcement checkbox/补员兵士 and reinforcement-cost tooltip, required by original TERM-09."
+    },
+    "TERM-10": {
+      "completed_half": "R0165 split-half lock-refusal PNG; R0168 3464.9s split-off tooltip and actual numeric merge independently verified.",
+      "missing": "Complete current split-half/reorganize/enabled-merge tooltip set; numeric merge and postmerge frames do not render button wording."
+    }
+  },
+  "original_TERM_definition_source": "../../../../../docs/ck3-native-ai/army-logistics-native-terminology-12003.md",
+  "P0_TERM_entire_gate_complete": false,
+  "formal_research_weighted_percent": null,
+  "formal_research_denominator": null,
+  "clean_spans_certified": false,
+  "full_human_1x_review": false,
+  "human_signoff": false,
+  "new_media_processes_started": 0,
+  "SDK_game_screen_actions": 0,
+  "raw_read_or_rehash_count": 0,
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "Read-only evidence/hash/localization/GUI and faithful Root frame declaration; no script or runtime semantics evaluated."
+  }
+}

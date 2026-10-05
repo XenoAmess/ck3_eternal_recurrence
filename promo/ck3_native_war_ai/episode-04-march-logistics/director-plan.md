@@ -156,3 +156,10 @@ Root在整数增长观测后已停止推进，原总30日含旅行终点53147880
 center d_normandy实际返回state_changed/is_error/body=null，相机未获得验收信用。静态合同预期public3→native2，实发raw包未独立观测；共享错误不能唯一定位失败条件，也不能证明未dispatch或没有局部相机效果。首次loading snapshot失败原样保留。
 
 Root正常请求受管停止：launcher/wrapper返回0，SDK与keeper退出，CK3实际exit1/managedstop、Jobfinal0/treegone/cleanup_proven=true，保存的独立probe actors[]。本轮无recorder、无resume/timepulse、move/merge未执行，游戏日、TERM、A/B/C及制作新增信用均0；R0165的四项术语与五个encoded单帧不因此扩展。a06历史ignored/generated/external完整输入仍有source_gap，旧运行费用只按treasury-only；后续合军、路线和真实NET必须另案取得实际结果。
+
+
+## 2026-10-05 R0168 十二单帧素材：原门槛下术语7/11
+
+[新增单帧索引](evidence/r0168-terms/index.json)与[逐帧入口](evidence/r0168-terms/README.md)保全 Root 已直接读图的九个中心及三个尾帧：Holding当地上限/breakdown、Brest预期路线/登船警告、月维护、兵种人数、当地上限与移动锁定概念，以及postmerge6746/116/300/将领portrait/Jan20。TERM-03/06/11完整新增，累计7/11约64%，只计固定术语清单，未提高整体影片或正式研究加权比例。
+
+下一轮补TERM-04携带补给child、TERM-09每月补员勾选框/费用、TERM-08锁定同帧native进度、TERM-10完整平分/整编/可用合并提示。day4画面HUD为Jan15/raw53147256，Jan20为ETA剩5天，不能作实际到达；射石机9/10与野驴炮3×20/20不混称。费用与登船警告可读，但累计实付仍缺。当前十二帧只作可定位单帧素材，连续clean spans、同档A/B/C三回放、全文/TTS/成片、完整人工1×与签核/交付仍各自待完成。

@@ -1,0 +1,144 @@
+{
+  "status": "FULL_MEDIA_AUDIT_PASS_EXPLICIT_ACTUAL_PTS_EXTRACTION_PASS_CONTENT_REVIEW_PENDING",
+  "completed_utc": "2026-10-05T07:23:52.641183+00:00",
+  "raw_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-raw-terms-merge-a01\\raw.mkv",
+    "bytes": 4955431127,
+    "sha256": "48fde0d7645d9ba7331dcd2a4b8dc93c93474ad2fd9cb95a59aea059e13481b9"
+  },
+  "finish_response": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-recorder-finish-a01.json",
+    "bytes": 1356,
+    "sha256": "02384934c8e13bab27f0eb5c06c34235a1b26d8faa1e915e53328149b1957e32"
+  },
+  "audit_report": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-capture-next-a01\\audit-attempt-a01\\report.json",
+    "bytes": 11485,
+    "sha256": "995fd52e2ea93e584dcd8cefc58e674475ac6bd31558521069063b94c9a69ae6"
+  },
+  "audit_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-capture-next-a01\\audit-attempt-a01\\delivery.json",
+    "bytes": 792,
+    "sha256": "0649f1cb191ef06f9be51f2a850cfe43442b5b04c5f2ffea7e6082d2963d0efa"
+  },
+  "audit_source_bindings": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-capture-next-a01\\audit-attempt-a01\\source-bindings.json",
+    "bytes": 1920,
+    "sha256": "33c7699d1e0a0d7899e972452819c12f1e7e33b629fa896b9dd2c4e2f6bceb99"
+  },
+  "media_machine_conditions": {
+    "actual_duration_seconds": "3584.933000",
+    "configured_limit_seconds_not_actual_duration": 3600,
+    "frames": 107548,
+    "packets": 107548,
+    "video_streams": 1,
+    "audio_streams": 0,
+    "codec": "h264",
+    "resolution": [
+      1920,
+      1080
+    ],
+    "avg_frame_rate": "30/1",
+    "time_base": "1/1000",
+    "frame_pts": {
+      "field": "pts",
+      "count": 107548,
+      "present": 107548,
+      "missing": 0,
+      "equal_adjacent": 0,
+      "regression_examples": [],
+      "non_decreasing": true,
+      "strictly_increasing": true,
+      "first_raw": 0,
+      "last_raw": 3584900,
+      "first_seconds": "0",
+      "last_seconds": "3584.9",
+      "minimum_adjacent_delta_raw": 33,
+      "maximum_adjacent_delta_raw": 34,
+      "span_seconds": "3584.9",
+      "sum_declared_duration_seconds": "3549.084000",
+      "time_base": "1/1000"
+    },
+    "strict_full_decode": {
+      "reached_progress_end": true,
+      "final_decoded_frames": 107548,
+      "errors_on_stderr": 0,
+      "ffmpeg_identity": {
+        "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+        "bytes": 222229504,
+        "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+      }
+    },
+    "source_stat_stable_during_audit_and_extraction": true,
+    "independent_full_raw_hash_passes_by_this_lane": 1,
+    "full_media_audit_attempts": 1
+  },
+  "actual_dependency_probes": {
+    "ffmpeg_version": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-media-execution-a01\\ffmpeg-version.result.json",
+      "bytes": 594,
+      "sha256": "e55440ad92e360fcf4dbd93dd27fd6dc63b3fb985caf23b01adaa11328c1e2fa"
+    },
+    "ffprobe_version": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-media-execution-a01\\ffprobe-version.result.json",
+      "bytes": 597,
+      "sha256": "5b803605b5ad71fa5e5acdf7d4b0569f33c4667c0743ed73db6b484a1d48e1ce"
+    }
+  },
+  "candidate_index": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-encoded-candidates-a01\\candidate-index.json",
+    "bytes": 45126,
+    "sha256": "d5a58d4a6e5d2c1b576f0e89670e55ff415af529399f24afb2a8b42e12b32ff0"
+  },
+  "candidate_bindings": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-encoded-candidates-a01\\bindings.json",
+    "bytes": 1660,
+    "sha256": "e9d82539ce49b2831d9174c2da26c41dacc5690c6dafb636f3b9237b533d98f8"
+  },
+  "actual_PTS_selections": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-media-execution-a01\\actual-PTS-selections-a01.json",
+    "bytes": 17261,
+    "sha256": "57b3a66c5af60d696292b24f589049da2bde97f39d5fab3050b72c3ff7f3f669"
+  },
+  "Root_PNG_review_index": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-media-execution-a01\\ROOT-PNG-REVIEW-INDEX-a01.json",
+    "bytes": 41309,
+    "sha256": "9d5eb2a538085f1b060ac42c6db5dd48ce70e441431052b9027fa2efdbcd43fb"
+  },
+  "candidate_frame_count": 30,
+  "candidate_label_count": 10,
+  "saved_additional_action_hint_index": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-terms-packets-a01\\ACTION-HINTS-a02.json",
+    "bytes": 12110,
+    "sha256": "ca624ea2d9c940acbb4bab8b8729a9f7abca601327d6c80cfb6243316107ec2d"
+  },
+  "saved_additional_action_full_packet_index": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-terms-packets-a01\\saved-packets-index-a02.json",
+    "bytes": 88710,
+    "sha256": "189a9640df5568b0f653435c2528e5f904d5370c22cbcd755cedcee513c4c558"
+  },
+  "saved_numeric_merge_scope": "Root/saved API confirms same-date Jan20 merge, 27 actual regiments, target current supply116.51751/cap300, source absent; not a clamp example. Those untimed receipts are not assigned a raw timecode by this package.",
+  "unit_name_scope": "Historical onager directory label does not name the visible unit; Root reports the Sea9/10 unit as 射石机, not 野驴炮. Content equivalence still requires Root review of decoded PNGs.",
+  "remaining_media_and_term_limits": [
+    "Thirty candidates require Root actual pixel view before any source-picture/term join",
+    "Nine timing-label search groups do not make original wall/monotonic labels authoritative PTS",
+    "Three actual encoded-tail coarse-search frames do not assert merge/pre27 coverage",
+    "Five added hover snapshots lack independent UI.subject fields; no synthetic owner/subject join",
+    "TERM09 needs actual monthly-reinforcement checkbox half if absent",
+    "TERM04 needs both current supply and limit concept tooltips",
+    "Naval maintenance is not an embark-payment quote or actual payment",
+    "No continuous clean span, full human 1x, narration, final film or signoff from automatic checks"
+  ],
+  "media_process_clear": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-media-execution-a01\\MEDIA-ALL-CLEAR-a01.json",
+    "bytes": 1073,
+    "sha256": "45bfe97f0cf45401cdf04f3be5f00ea2035a4987c331031e2cee439f6842a349"
+  },
+  "new_TERM_credit_by_this_lane": 0,
+  "clean_spans_certified": false,
+  "full_human_1x_review": false,
+  "human_signoff": false,
+  "SDK_or_game_or_desktop_or_recorders_started": 0,
+  "master_Cf_Git_bus_security_changes": 0,
+  "all_assets_preserved": true
+}

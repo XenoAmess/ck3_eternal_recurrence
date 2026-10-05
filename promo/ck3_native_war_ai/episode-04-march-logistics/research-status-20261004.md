@@ -232,3 +232,12 @@ Root实际两项focused CTest及注册in-memory MCP 6cases/52checks通过，门�
 Root随后实际保存postmerge共同候选common-t0：72572576B，SHA `dcd54f1270e4c5e18af2d2a8adb5b9d2af2cd5af60ae3d71330b782adf122260`，Jan20/raw53147376、人物33388、27团6746/6747、保存后public28/native27。immutablecopies与receipt保全由Root另收。**它仍是postmerge候选，A/B/C两处正值、两routegates及三独立同档回放均待筛/执行，ABC完成信用保持0/3。**
 
 本包不碰raw；R0168原片已由Root正常收口、完整媒体/PTS抽帧由capturelane独占另验。TERM03/04/06/08/09/10/11、clean镜头、上限截断、路线/费用归因、全文/TTS/成片/完整人工1×签核及指定视频交付仍各走实际证据。研究formal加权比例/分母仍null，素材分钟和本次PASS不自动提高影片百分比；既有Root整体约30%/研究约70%只保留为当时调度估算。
+
+
+## 2026-10-05 R0168 十二单帧内容验收与术语严格计数
+
+Root明确直接审阅九个decoded-02中心及三个encoded-tail帧，共十二张；[新增可复用索引](evidence/r0168-terms/index.json)绑定实际PTS/timebase、PNG bytes/SHA、原版双语key/GUI与保存的paused context。raw4955431127B/SHA48fde0d7645d9ba7331dcd2a4b8dc93c93474ad2fd9cb95a59aea059e13481b9，duration3584.933s/107548frames及packets/1920×1080/30fps/无音频；沿用完整媒体/PTS/strictdecode PASS，本工作零重hashraw、零媒体/SDK/UI动作。
+
+按原TERM定义，完整新增03（Holding3680/breakdown）、06（Brest下令前52天/3月4日及登船费警告）、11（维护breakdown、同raw53147160/pub3/native2的actualcash与登船费警告）；现01/02/03/05/06/07/11共7/11约64%。04仅当地上限child，仍欠supplies child；09仅具体团20/20及9/10，欠补员勾选框/费用提示；08已锁定/概念可读但欠该帧nativeprogress；10有分出新军队与原平分拒绝，欠完整整编/可用合并文字。门槛不因预期10/11而降低。
+
+day4实际pausedraw53147256/public14/native13，HUDJan15，正文Jan20为ETA剩5天；snapshot未有Strength行，不挪Jan11progress。3524.9s/3574.9s仅授postmerge6746、116/300、将领portrait及Jan20界面；独立numericmerge既有信用保留，不由单帧生造action时间码。旧三十候选内容pending报告不重写，另十八帧未授。clean_spans_certified、完整人类1×及signoff仍false；正式研究加权比例与分母null、ABC0/3及影片制作未增加。军费已含trueNET，登船警告不作实付流水。
