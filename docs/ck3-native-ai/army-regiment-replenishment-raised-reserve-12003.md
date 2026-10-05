@@ -607,3 +607,24 @@ Current cargo/main supply300, monthly supply change+20, attrition0 and loss budg
 Normal6 checkpoint h9048 and the zero-day query checkpoint h9052 are separate cuts, each99036288 bytes, with SHA-256 `9354912f261fca203aeda8e0cedaef6c5b579c210444556faefc590233db783d` and `e0a7fb224723c62296a60ce6683c7b7f2e7614a6d6536e6a3ab8cbf2a5840cec` respectively. Root's frozen ledger is global5035; this document adds zero days. Root stopped runtime work at2026-10-05 07:22:48 UTC/15:22:48 CST to preserve user CK3 hours. These are frozen observations, not a claim about the user's current game state.
 
 Source-boundary receipt: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/maa-reinforcement-frozen-march6-r46/A-source-ledger/ROOT-DELIVERY.json`, 3811 bytes, SHA-256 `073be13faa6a9ae6653e5b1dada38e877a470dc693e6bbbe6adb9e453635bde6`. The parent-owned single-decode receipt is4226 bytes/SHA-256 `2ab55548da7517f24e7bb480347ec67d97c540f289ceac7ee4ab9ac3aa4441e8`; the current Supply compact is linked by metadata only,18191 bytes/SHA-256 `6baf1e2d139cc8ca6bf13fe752c776a9964e4bf83320ff4e708d4fdd4bdd6d51`. This lane rereads none of them and performs no SDK, attach, window/profile, game launch, build/compile or tests. Existing transport and pose trees are unchanged.
+
+### 2026-10-05：逐chunk精确补员请求与prepared生命周期
+
+纯后台复用exact 1.20.0.3 / EXE SHA `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6` 的旧窄缓存，新增闭合262CA3D/262CA69：乘数为同chunk maximum，而非CReg+128整团容量。合资格且scaled缺额为正时，`q_i=trunc0(min(max_i×prepared_raw,(max_i−effective_current_i)×100000)/100000)`；state3且physical current0时effective=max，否则使用physical current。core的chunk谓词与prepare的persistent Can保持不同，不人为AND后者。
+
+max/current为signed32，prepared为signed64；native乘法保留low64，再signed min及multiply-high/shift/sign-correction实现trunc0，ordinal输出存low32，没有额外饱和。native资格真而整数q0合法；现有fullDATA最大兵数/current/state/chunk资格/prepared字段已经足够同输入计算，无需新查询。但冻结summary未持有当前精确F，不能从mangonel6→7倒算F，也不在此计算当前或下月实际到账。
+
+```mermaid
+flowchart LR
+  P[Prepare fresh fraction or zero to persistent148] --> R[Read prepared148]
+  R --> C[Per chunk max times prepared bounded by deficit]
+  C --> A[Integer request then physical addition]
+  A --> F[Raised-count refresh]
+  A --> Z[Conditional unassigned chunk max/current cleanup]
+  F --> M[Manager list-count A4 cleanup]
+  F -. Other writers not examined .-> U[Additional prepared lifecycle]
+```
+
+2A98B64读persistent+148；2A98C0F零store实际清chunk max/current，不清prepared。2A98FEB/2A99011清manager+A4 list count，也不清prepared。已缓存apply/refresh不建立“prepared单次消费后清零”结论；month1 pre-stage262C6A0会重写fresh fraction或0，当前prepared与下一prepare新值不能混用。不为该合同做全局writer审计，未展开的其它writer保留准确locator。
+
+source与未执行纯候选见`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/replenishment-numeric/ROOT-DELIVERY.json`，9795 B / SHA `e2d22201bfb686ec680847f3cd4c9728ae697853e529109cbc12e5165018559b`。本次research增量未运行/测试/编译，不增加SDK/游戏日或live资格，正式5035保持；已有same-identity补员primitive不重复计信用。
