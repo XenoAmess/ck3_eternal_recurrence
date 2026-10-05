@@ -2570,6 +2570,130 @@ def _raiktor_inbound_white_peace_assessment(
     }
 
 
+def _same_frame_received_ransom_collection(
+    rows: list[dict[str, object]], snapshot: dict[str, object],
+) -> dict[str, object] | None:
+    """Use the existing private collection receipt as current prisoner metadata."""
+    for row in reversed(rows):
+        result = _effective_command_result(row)
+        if row.get("ok") is not True or not isinstance(result, dict):
+            continue
+        value = result.get("player_prisoner_collection")
+        if not isinstance(value, dict):
+            continue
+        if (
+            result.get("step") == "query-player-prisoner-collection-private-v1"
+            and result.get("status") == "available"
+            and result.get("snapshot_revision") == snapshot.get("native_revision")
+            and result.get("queried_native_revision") == snapshot.get("native_revision")
+            and result.get("queried_revision") == snapshot.get("revision")
+            and result.get("queried_snapshot_id") == snapshot.get("snapshot_id")
+            and value.get("snapshot_revision") == snapshot.get("native_revision")
+            and value.get("date_raw") == snapshot.get("date_raw")
+        ):
+            return value
+    return None
+
+
+def _received_ransom_ordinary_gold_assessment(
+    context: dict[str, object], *, snapshot: dict[str, object],
+    collection: dict[str, object] | None, accept: dict[str, object],
+) -> dict[str, object]:
+    """Choose the bounded monetary value of an existing unrelated offer."""
+    terms = context.get("terms")
+    term = terms.get("ransom_quote") if isinstance(terms, dict) else None
+    quote = term.get("value") if isinstance(term, dict) else None
+    blocked: list[str] = []
+    evidence: dict[str, object] = {"quote": quote, "prisoner": None}
+    required_step = None
+    required_tool = None
+    if not (
+        isinstance(term, dict) and term.get("status") == "available"
+        and isinstance(quote, dict)
+        and quote.get("ordinary_gold_decision_ready") is True
+        and type(quote.get("gold_raw")) is int and quote["gold_raw"] > 0
+        and quote.get("selected_option_key") in ("gold", "current_gold")
+    ):
+        blocked.append("received_ransom_positive_ordinary_gold_input_unavailable")
+        required_step = QUERY_PENDING_CHARACTER_INTERACTION_CONTEXT_V1_STEP
+    player = snapshot.get("played_character")
+    player_id = player.get("character_id") if isinstance(player, dict) else None
+    roles = context.get("roles")
+    definition = context.get("definition")
+    key = definition.get("canonical_key") if isinstance(definition, dict) else None
+    prisoner_id = (quote.get("prisoner_character_id") if isinstance(quote, dict)
+                   else roles.get("actor_character_id" if key == "ransom_me_interaction"
+                                  else "secondary_recipient_character_id")
+                   if isinstance(roles, dict) else None)
+    prisoners = collection.get("prisoners") if isinstance(collection, dict) else None
+    if not (
+        isinstance(collection, dict) and collection.get("status") == "available"
+        and collection.get("snapshot_revision") == snapshot.get("native_revision")
+        and collection.get("date_raw") == snapshot.get("date_raw")
+        and collection.get("played_character_id") == player_id
+        and collection.get("collection_complete") is True
+        and isinstance(prisoners, list)
+        and collection.get("total_count") == collection.get("returned_count") == len(prisoners)
+    ):
+        blocked.append("received_ransom_same_frame_prisoner_metadata_required")
+        required_tool = "ck3_query_player_prisoner_collection_private_v1"
+    else:
+        matches = [row for row in prisoners if isinstance(row, dict)
+                   and row.get("prisoner_character_id") == prisoner_id]
+        if len(matches) != 1:
+            blocked.append("received_ransom_prisoner_not_in_current_collection")
+        else:
+            prisoner = matches[0]
+            evidence["prisoner"] = {
+                key: prisoner.get(key) for key in (
+                    "source_ordinal", "prisoner_character_id", "jailer_character_id",
+                    "custody_relation_verified", "house_id", "dynasty_id",
+                    "same_house", "same_dynasty", "is_child_of_played_character",
+                    "primary_title_tier_raw",
+                )
+            }
+            if not (
+                prisoner.get("collection_owner_character_id") == player_id
+                and prisoner.get("jailer_character_id") == player_id
+                and prisoner.get("custody_relation_verified") is True
+                and prisoner.get("same_house") is False
+                and prisoner.get("same_dynasty") is False
+                and prisoner.get("is_child_of_played_character") is False
+                and "primary_title_tier_raw" in prisoner
+                and (prisoner["primary_title_tier_raw"] is None
+                     or type(prisoner["primary_title_tier_raw"]) is int)
+            ):
+                blocked.append("received_ransom_prisoner_qualification_failed")
+    if snapshot.get("active_wars") != []:
+        blocked.append("received_ransom_no_war_hostage_input_required")
+    if accept.get("native_legal") is not True:
+        blocked.append("received_ransom_accept_not_native_legal")
+    if accept.get("action_reachable") is not True:
+        blocked.append("received_ransom_accept_command_unavailable")
+    return {
+        "status": "ready" if not blocked else "blocked",
+        "ordinary_gold_decision_ready": not blocked,
+        "evidence": evidence,
+        "blocked_reasons": blocked,
+        "required_step": required_step,
+        "required_mcp_tool": required_tool,
+        "quality_gaps": [
+            "prisoner_title_tier_political_value_not_scored",
+            "native_greed_rivalry_feud_and_other_acceptance_inputs_not_scored",
+        ],
+        "postconditions": {
+            "pending_interaction_id": context.get("pending_interaction_id"),
+            "prisoner_character_id": prisoner_id,
+            "old_jailer_character_id": player_id,
+            "quoted_gold_raw": quote.get("gold_raw") if isinstance(quote, dict) else None,
+            "raw_scale": 100_000,
+            "amount_re_evaluated_on_accept": True,
+            "independent_player_gold_and_custody_required": True,
+            "reply_ack_verifies_payment_or_release": False,
+        },
+    }
+
+
 def _degraded_pending_interaction_decision(
     pending: dict[str, object],
     context: dict[str, object],
@@ -2577,6 +2701,7 @@ def _degraded_pending_interaction_decision(
     snapshot: dict[str, object],
     active_wars: list[dict[str, object]],
     available_steps: set[str],
+    prisoner_collection: dict[str, object] | None = None,
 ) -> dict[str, object]:
     """Choose only the narrow, auditable reply needed to unblock a run.
 
@@ -2692,6 +2817,8 @@ def _degraded_pending_interaction_decision(
         classification = "known_perk_alliance_inbound"
     elif isinstance(call_ally_evidence, dict):
         classification = "known_call_ally_busy_reject"
+    elif definition_key in ("pay_ransom_interaction", "ransom_me_interaction"):
+        classification = "known_received_ransom"
     elif (
         special_status == "unavailable"
         and special_reason == "special_war_binding_not_applicable"
@@ -2905,6 +3032,47 @@ def _degraded_pending_interaction_decision(
 
     if classification == "evidence_invalid":
         blocked_reasons.extend(evidence_gaps)
+        return {"summary": summary, "decision": decision}
+    if classification == "known_received_ransom":
+        assessment = _received_ransom_ordinary_gold_assessment(
+            context, snapshot=snapshot, collection=prisoner_collection,
+            accept=by_action["accept"],
+        )
+        decision.update(
+            rule_id="received-ransom-ordinary-gold-v1",
+            mode="source_backed_ordinary_gold",
+            native_ai_reference="CK3-1.20.0.3 stock self/pay ransom payment and custody tree",
+            ordinary_gold_decision_ready=assessment["ordinary_gold_decision_ready"],
+            received_ransom=assessment,
+            definition_classification={
+                "policy": "ck3-1.20.0.3-stock-received-ransom-ordinary-gold-v1",
+                "definition_key": definition_key,
+                "allowlisted": True,
+                "evidence": {
+                    "source_topic": "pending-self-ransom-received-quote-12003.md",
+                    "source_prison_interactions_sha256": "1bb43b3c2061212af8d41b11314ff4e569af2a3506319f820d05877a7762abc5",
+                    "payment_input": "terms.ransom_quote.ordinary_gold_decision_ready",
+                    "prisoner_metadata": "same-frame private prisoner collection",
+                    "proactive_outgoing_tier_cap_changed": False,
+                },
+            },
+            deterministic_rule=(
+                "accept a positive current ordinary-gold received offer for an "
+                "unrelated non-child prisoner in player custody while no current "
+                "war exists and native accept is legal/executable; retain global "
+                "effect readiness false and require independent gold/custody"
+            ),
+        )
+        summary["ransom_quote"] = terms.get("ransom_quote") if isinstance(terms, dict) else None
+        if assessment["status"] == "ready":
+            decision.update(recommended_action="accept", selected_action="accept",
+                            selected_step=by_action["accept"]["step"])
+        else:
+            blocked_reasons.extend(assessment["blocked_reasons"])
+            if assessment["required_step"]:
+                decision["required_step"] = assessment["required_step"]
+            if assessment["required_mcp_tool"]:
+                decision["required_mcp_tool"] = assessment["required_mcp_tool"]
         return {"summary": summary, "decision": decision}
     if classification == "known_war_exit":
         if (
@@ -3180,7 +3348,14 @@ def _degraded_pending_interaction_plan(
                 "same-frame legal and the reject command is executable"
             )
     elif selected_action == "accept":
-        if rule_id == _RAIKTOR_INBOUND_WHITE_PEACE_POLICY["rule_id"]:
+        if rule_id == "received-ransom-ordinary-gold-v1":
+            phase = "pending_received_ransom_ordinary_gold_accept"
+            reason = (
+                "accept the source-backed positive ordinary-gold offer for this "
+                "unrelated non-child prisoner in current player custody, with no "
+                "current war; independently observe gold and custody after reply"
+            )
+        elif rule_id == _RAIKTOR_INBOUND_WHITE_PEACE_POLICY["rule_id"]:
             phase = "pending_raiktor_white_peace_accept"
             reason = (
                 "accept this exact no-hostage Raiktor white peace: the "
@@ -3241,6 +3416,9 @@ def _degraded_pending_interaction_plan(
         required_step = decision.get("required_step")
         if isinstance(required_step, str) and required_step:
             plan["required_step"] = required_step
+        required_tool = decision.get("required_mcp_tool")
+        if isinstance(required_tool, str):
+            plan["required_mcp_tool"] = required_tool
         recommended_action = decision.get("recommended_action")
         recommended = (
             _PENDING_REPLY_STEPS.get(str(recommended_action))
@@ -3260,6 +3438,7 @@ def _degraded_pending_interaction_plan(
             "known_perk_alliance_inbound",
             "known_call_ally_busy_reject",
             "known_grant_vassal_reject_only",
+            "known_received_ransom",
         }:
             plan["required_capabilities"] = [
                 "game.state.pending-character-interaction-structured-terms",
@@ -8712,6 +8891,7 @@ def _choose_one_life_turn_core(
                 snapshot=snapshot,
                 active_wars=active_wars,
                 available_steps=available_steps,
+                prisoner_collection=_same_frame_received_ransom_collection(rows, snapshot),
             )
             degraded_plan = _degraded_pending_interaction_plan(degraded)
             if active_wars:

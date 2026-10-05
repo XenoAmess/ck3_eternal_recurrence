@@ -612,8 +612,9 @@ def _normalize_ransom_quote(
     routing: dict[str, object], rows: list[dict[str, object]],
 ) -> dict[str, object]:
     term = _exact_object(value, _STATUS_VALUE_REASON_FIELDS, "terms.ransom_quote")
-    if definition_key != "pay_ransom_interaction":
-        raise ValueError("ransom quote requires the received pay-ransom definition")
+    self_ransom = definition_key == "ransom_me_interaction"
+    if not self_ransom and definition_key != "pay_ransom_interaction":
+        raise ValueError("ransom quote requires a received ransom definition")
     if term.get("status") == "unavailable":
         if term.get("value") is not None:
             raise ValueError("unavailable ransom quote contains a value")
@@ -621,34 +622,50 @@ def _normalize_ransom_quote(
                 "reason": _reason(term.get("reason"), "terms.ransom_quote.reason")}
     if term.get("status") != "available" or term.get("reason") is not None:
         raise ValueError("ransom quote status is invalid")
-    quote = _exact_object(term.get("value"), _RANSOM_QUOTE_FIELDS,
+    raw_quote = term.get("value")
+    fields = _RANSOM_QUOTE_FIELDS | (
+        {"ordinary_gold_decision_ready"}
+        if isinstance(raw_quote, dict) and "ordinary_gold_decision_ready" in raw_quote
+        else set()
+    )
+    quote = _exact_object(raw_quote, fields,
                           "terms.ransom_quote.value")
+    index = _int(quote.get("selected_option_index"),
+                 "ransom_quote.selected_option_index", minimum=2, maximum=3)
+    if index == 3 and not self_ransom:
+        raise ValueError("received pay-ransom current payer binding is not supported")
+    prisoner_id = roles["actor_character_id"] if self_ransom else roles["secondary_recipient_character_id"]
     fixed = {
         "actor_character_id": roles["actor_character_id"],
         "jailer_character_id": roles["recipient_character_id"],
-        "prisoner_character_id": roles["secondary_recipient_character_id"],
-        "selected_option_index": 2, "selected_option_key": "gold",
-        "raw_scale": 100_000, "amount_source_key": "normal_ransom_cost_value",
+        "prisoner_character_id": prisoner_id,
+        "selected_option_index": index, "selected_option_key": _PAY_RANSOM_FLAGS[index],
+        "raw_scale": 100_000, "amount_source_key": (
+            "normal_ransom_cost_value" if index == 2 else "current_gold_value"
+        ),
         "payer_scope": "puppet_or_actor", "receiver_scope": "recipient",
         "application_timing": "on_accept", "payment_state": "pending",
         "amount_is_current_quote": True, "custody_matches_recipient": True,
     }
     if any(quote.get(key) != expected for key, expected in fixed.items()):
         raise ValueError("ransom quote roles or payment semantics disagree")
-    if (len(rows) != 9 or not rows[2]["selected"] or
-        any(rows[i]["selected"] for i in range(8) if i != 2) or
+    if (len(rows) != 9 or not rows[index]["selected"] or
+        any(rows[i]["selected"] for i in range(8) if i != index) or
         tuple(row["canonical_flag_key"] for row in rows) != _PAY_RANSOM_FLAGS or
         roles["recipient_character_id"] != routing["played_character_id"] or
-        roles["secondary_recipient_character_id"] <= 0):
+        prisoner_id <= 0 or
+        (self_ransom and roles["secondary_recipient_character_id"] != -1)):
         raise ValueError("ransom quote requires verified ordinary-gold selection")
     _int(quote.get("gold_raw"), "ransom_quote.gold_raw", minimum=0, maximum=2**63-1)
     expected_bools = {
-        "selected_option_shown": rows[2]["is_shown"],
-        "selected_option_valid": rows[2]["is_valid"],
+        "selected_option_shown": rows[index]["is_shown"],
+        "selected_option_valid": rows[index]["is_valid"],
         "hook_selected": rows[8]["selected"],
-        "decision_input_ready": rows[2]["is_shown"] and rows[2]["is_valid"]
+        "decision_input_ready": rows[index]["is_shown"] and rows[index]["is_valid"]
                                 and not rows[8]["selected"],
     }
+    if "ordinary_gold_decision_ready" in quote:
+        expected_bools["ordinary_gold_decision_ready"] = expected_bools["decision_input_ready"]
     for key, expected in expected_bools.items():
         if _bool(quote.get(key), "ransom_quote."+key) != expected:
             raise ValueError("ransom quote conditions disagree with native options")
@@ -863,7 +880,7 @@ def _normalize_available_frame(
         )
         selected_count += int(selected)
         mapped = (
-            normalized_definition["canonical_key"] == "pay_ransom_interaction"
+            normalized_definition["canonical_key"] in ("pay_ransom_interaction", "ransom_me_interaction")
             and definition_count == 9
             and row.get("canonical_flag_status") == "available"
             and row.get("canonical_flag_key") == _PAY_RANSOM_FLAGS[index]

@@ -1122,11 +1122,11 @@ bool ReadRansomFlagDirect(void *, std::uintptr_t module,
 #endif
 }
 
-bool ReadRansomGoldDirect(void *, std::uintptr_t module, const void *scope,
-                          std::int32_t actor, std::int32_t jailer,
-                          std::int32_t prisoner, std::int64_t &raw) noexcept {
+bool ReadRansomNamedGoldDirect(std::uintptr_t module, const void *scope,
+                              std::int32_t actor, std::int32_t jailer,
+                              std::int32_t prisoner, std::string_view key,
+                              std::int64_t &raw) noexcept {
   if (module == 0) return false;
-  constexpr std::string_view key = "normal_ransom_cost_value";
 #if defined(_MSC_VER)
   __try {
 #endif
@@ -1142,11 +1142,30 @@ bool ReadRansomGoldDirect(void *, std::uintptr_t module, const void *scope,
 #endif
 }
 
+bool ReadRansomGoldDirect(void *, std::uintptr_t module, const void *scope,
+                          std::int32_t actor, std::int32_t jailer,
+                          std::int32_t prisoner, std::int64_t &raw) noexcept {
+  return ReadRansomNamedGoldDirect(module, scope, actor, jailer, prisoner,
+                                 "normal_ransom_cost_value", raw);
+}
+
+bool ReadRansomCurrentGoldDirect(void *, std::uintptr_t module, const void *scope,
+                                 std::int32_t actor, std::int32_t jailer,
+                                 std::int32_t prisoner, std::int64_t &raw) noexcept {
+  // For ransom_me, payer and prisoner are the ordinary actor. The named stock
+  // value performs floor(gold), matching the acceptance-time saved producer.
+  return ReadRansomNamedGoldDirect(module, scope, actor, jailer, prisoner,
+                                 "current_gold_value", raw);
+}
+
 void ReadReceivedRansomQuote(
     const PendingCharacterInteractionNativeEnvironmentV1 &environment,
     const PendingCharacterInteractionAccessV1 &access,
     ObservationV1 &output) noexcept {
-  if (output.definition.canonical_key != "pay_ransom_interaction") return;
+  const bool self_ransom =
+      output.definition.canonical_key == "ransom_me_interaction";
+  if (!self_ransom &&
+      output.definition.canonical_key != "pay_ransom_interaction") return;
   output.terms.ransom_quote.emplace();
   auto &quote = *output.terms.ransom_quote;
   quote.reason = "ransom_option_mapping_unavailable";
@@ -1170,24 +1189,29 @@ void ReadReceivedRansomQuote(
     row.canonical_flag_reason.clear();
   }
   quote.reason = "ransom_payment_option_not_supported";
-  const auto &gold = output.send_options.rows[2];
+  const std::size_t gold_index =
+      output.send_options.rows[2].selected ? 2 : 3;
+  const auto &gold = output.send_options.rows[gold_index];
   if (!gold.selected) return;
   // hook is independent; all other rows are alternative payments.
   for (std::size_t i = 0; i < 8; ++i)
-    if (i != 2 && output.send_options.rows[i].selected) return;
+    if (i != gold_index && output.send_options.rows[i].selected) return;
   quote.reason = "ransom_roles_unavailable";
   const auto &roles = output.roles;
   if (roles.recipient_character_id != output.routing.played_character_id ||
       roles.actor_character_id == roles.recipient_character_id ||
-      roles.secondary_recipient_character_id <= 0 ||
+      (self_ransom ? roles.secondary_recipient_character_id != -1
+                   : roles.secondary_recipient_character_id <= 0) ||
       roles.secondary_actor_character_id != -1 ||
       roles.intermediary_character_id != -1) return;
   FailureV1 failure{};
   void *actor = ResolveComponent(access, environment.character_storage_slot,
       roles.actor_character_id, kCharacterIdentityOffset,
       "ransom_roles_unavailable", "ransom_roles_unavailable", failure);
+  const auto prisoner_id = self_ransom ? roles.actor_character_id
+                                     : roles.secondary_recipient_character_id;
   void *prisoner = ResolveComponent(access, environment.character_storage_slot,
-      roles.secondary_recipient_character_id, kCharacterIdentityOffset,
+      prisoner_id, kCharacterIdentityOffset,
       "ransom_roles_unavailable", "ransom_roles_unavailable", failure);
   if (actor == nullptr || prisoner == nullptr) return;
   void *extension = nullptr;
@@ -1202,22 +1226,33 @@ void ReadReceivedRansomQuote(
     return;
   }
   quote.reason = "ransom_named_gold_unavailable";
-  auto read_gold = access.read_ransom_named_gold;
+  // current_gold snapshots the payer's funds; this self-ransom path has actor
+  // equal to prisoner. Pay-ransom's distinct payer root is not added here.
+  if (gold_index == 3 && !self_ransom) {
+    quote.reason = "ransom_current_gold_payer_binding_not_supported";
+    return;
+  }
+  auto read_gold = gold_index == 2 ? access.read_ransom_named_gold
+                                 : access.read_ransom_named_current_gold;
   if (read_gold == nullptr && !environment.offline_fixture_function_overrides)
-    read_gold = &ReadRansomGoldDirect;
+    read_gold = gold_index == 2 ? &ReadRansomGoldDirect
+                                : &ReadRansomCurrentGoldDirect;
   const void *scope = nullptr;
   std::int64_t raw = 0;
   if (read_gold == nullptr ||
       !CheckedAddress(output.pending, kPendingPrimaryScopeOffset, scope) ||
       !read_gold(access.context, environment.module_base, scope,
                  roles.actor_character_id, roles.recipient_character_id,
-                 roles.secondary_recipient_character_id, raw) || raw < 0)
+                  prisoner_id, raw) || raw < 0)
     return;
   quote.status = game::PendingCharacterInteractionSemanticStatusV1::available;
   quote.actor_character_id = roles.actor_character_id;
   quote.jailer_character_id = roles.recipient_character_id;
-  quote.prisoner_character_id = roles.secondary_recipient_character_id;
-  quote.selected_option_index = 2;
+  quote.prisoner_character_id = prisoner_id;
+  quote.selected_option_index = static_cast<std::int32_t>(gold_index);
+  quote.selected_option_key = std::string(kPayRansomFlags[gold_index]);
+  quote.amount_source_key = gold_index == 2 ? "normal_ransom_cost_value"
+                                          : "current_gold_value";
   quote.gold_raw = raw;
   quote.selected_option_shown = gold.is_shown;
   quote.selected_option_valid = gold.is_valid;
@@ -1225,6 +1260,7 @@ void ReadReceivedRansomQuote(
   quote.hook_selected = output.send_options.rows[8].selected;
   quote.decision_input_ready = gold.is_shown && gold.is_valid &&
                                !quote.hook_selected;
+  quote.ordinary_gold_decision_ready = quote.decision_input_ready;
   quote.reason.clear();
 }
 

@@ -206,28 +206,42 @@ constexpr std::array<std::string_view, 9> kPayRansomFlags{
 bool ValidRansomQuote(const game::PendingCharacterInteractionContextV1 &context) {
   const auto &term = context.terms->ransom_quote;
   if (!term.has_value()) return true;
-  if (context.definition->canonical_key != "pay_ransom_interaction") return false;
+  const bool self_ransom =
+      context.definition->canonical_key == "ransom_me_interaction";
+  if (!self_ransom &&
+      context.definition->canonical_key != "pay_ransom_interaction") return false;
   const auto &quote = *term;
   if (quote.status == game::PendingCharacterInteractionSemanticStatusV1::unavailable)
-    return !quote.reason.empty() && !quote.decision_input_ready;
+    return !quote.reason.empty() && !quote.decision_input_ready &&
+           !quote.ordinary_gold_decision_ready;
   const auto &roles = *context.roles;
   const auto &rows = context.send_options->rows;
+  if (rows.size() != 9 ||
+      (quote.selected_option_index != 2 && quote.selected_option_index != 3) ||
+      (quote.selected_option_index == 3 && !self_ransom)) return false;
+  const auto index = static_cast<std::size_t>(quote.selected_option_index);
+  const auto prisoner = self_ransom ? roles.actor_character_id
+                                  : roles.secondary_recipient_character_id;
   if (quote.status != game::PendingCharacterInteractionSemanticStatusV1::available ||
-      !quote.reason.empty() || rows.size() != 9 ||
+      !quote.reason.empty() ||
       quote.actor_character_id != roles.actor_character_id ||
       quote.jailer_character_id != roles.recipient_character_id ||
-      quote.prisoner_character_id != roles.secondary_recipient_character_id ||
+      quote.prisoner_character_id != prisoner ||
       quote.jailer_character_id != context.routing->played_character_id ||
-      quote.selected_option_index != 2 || quote.gold_raw < 0 ||
-      !quote.custody_matches_recipient || !rows[2].selected ||
-      quote.selected_option_shown != rows[2].is_shown ||
-      quote.selected_option_valid != rows[2].is_valid ||
+      quote.selected_option_key != kPayRansomFlags[index] ||
+      quote.amount_source_key != (index == 2 ? "normal_ransom_cost_value"
+                                            : "current_gold_value") ||
+      quote.gold_raw < 0 ||
+      !quote.custody_matches_recipient || !rows[index].selected ||
+      quote.selected_option_shown != rows[index].is_shown ||
+      quote.selected_option_valid != rows[index].is_valid ||
       quote.hook_selected != rows[8].selected ||
-      quote.decision_input_ready != (rows[2].is_shown && rows[2].is_valid &&
-                                     !rows[8].selected)) return false;
+      quote.decision_input_ready != (rows[index].is_shown && rows[index].is_valid &&
+                                     !rows[8].selected) ||
+      quote.ordinary_gold_decision_ready != quote.decision_input_ready) return false;
   for (std::size_t i = 0; i < rows.size(); ++i)
     if (rows[i].canonical_flag_key != kPayRansomFlags[i] ||
-        (i < 8 && i != 2 && rows[i].selected)) return false;
+        (i < 8 && i != index && rows[i].selected)) return false;
   return true;
 }
 
@@ -312,7 +326,8 @@ bool ValidAvailable(
   std::int32_t selected_count = 0;
   for (std::size_t index = 0; index < options.rows.size(); ++index) {
     const auto &row = options.rows[index];
-    const bool mapped = definition.canonical_key == "pay_ransom_interaction" &&
+    const bool mapped = (definition.canonical_key == "pay_ransom_interaction" ||
+                         definition.canonical_key == "ransom_me_interaction") &&
         options.rows.size() == kPayRansomFlags.size() &&
         row.canonical_flag_status == game::PendingCharacterInteractionSemanticStatusV1::available &&
         row.canonical_flag_key == kPayRansomFlags[index] &&
@@ -428,9 +443,12 @@ void AppendRansomQuote(std::string &output,
   output += ",\"jailer_character_id\":" + SignedNumber(quote.jailer_character_id);
   output += ",\"prisoner_character_id\":" + SignedNumber(quote.prisoner_character_id);
   output += ",\"selected_option_index\":" + SignedNumber(quote.selected_option_index);
-  output += ",\"selected_option_key\":\"gold\",\"gold_raw\":" + SignedNumber(quote.gold_raw);
-  output += ",\"raw_scale\":100000,\"amount_source_key\":\"normal_ransom_cost_value\","
-            "\"payer_scope\":\"puppet_or_actor\",\"receiver_scope\":\"recipient\","
+  output += ",\"selected_option_key\":";
+  AppendJsonString(output, quote.selected_option_key);
+  output += ",\"gold_raw\":" + SignedNumber(quote.gold_raw);
+  output += ",\"raw_scale\":100000,\"amount_source_key\":";
+  AppendJsonString(output, quote.amount_source_key);
+  output += ",\"payer_scope\":\"puppet_or_actor\",\"receiver_scope\":\"recipient\","
             "\"application_timing\":\"on_accept\",\"payment_state\":\"pending\","
             "\"amount_is_current_quote\":true,\"selected_option_shown\":";
   output += quote.selected_option_shown ? "true" : "false";
@@ -440,6 +458,8 @@ void AppendRansomQuote(std::string &output,
   output += quote.hook_selected ? "true" : "false";
   output += ",\"decision_input_ready\":";
   output += quote.decision_input_ready ? "true" : "false";
+  output += ",\"ordinary_gold_decision_ready\":";
+  output += quote.ordinary_gold_decision_ready ? "true" : "false";
   output += "},\"reason\":null}";
 }
 

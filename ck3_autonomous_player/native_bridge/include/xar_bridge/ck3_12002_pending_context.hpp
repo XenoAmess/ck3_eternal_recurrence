@@ -173,6 +173,7 @@ struct PendingCharacterInteractionAccessV1 {
       invoke_script_identifier_name = nullptr;
   ReadPendingRansomFlagIdentifierV1 read_ransom_flag_identifier = nullptr;
   ReadPendingRansomNamedGoldV1 read_ransom_named_gold = nullptr;
+  ReadPendingRansomNamedGoldV1 read_ransom_named_current_gold = nullptr;
 };
 
 struct PendingCharacterInteractionContextRequestV1 {

@@ -210,12 +210,15 @@ struct PendingCharacterInteractionRansomQuoteV1 {
   std::int32_t jailer_character_id = -1;
   std::int32_t prisoner_character_id = -1;
   std::int32_t selected_option_index = -1;
+  std::string selected_option_key = "gold";
+  std::string amount_source_key = "normal_ransom_cost_value";
   std::int64_t gold_raw = 0;
   bool selected_option_shown = false;
   bool selected_option_valid = false;
   bool custody_matches_recipient = false;
   bool hook_selected = false;
   bool decision_input_ready = false;
+  bool ordinary_gold_decision_ready = false;
   std::string reason;
   friend bool operator==(const PendingCharacterInteractionRansomQuoteV1 &,
                          const PendingCharacterInteractionRansomQuoteV1 &) =
