@@ -21993,6 +21993,10 @@ class NativeHeadlessGameplayDriver:
             exact_one_day_preferred_speed=exact_one_day_preferred_speed,
             available_action_steps=primitive_steps,
         )
+        if timeline_policy == "player_siege":
+            # Reuse the exact-day end condition for the observed stationary
+            # siege; other one-day policies keep their existing contracts.
+            exact_one_day = True
         speed_step = f"set-speed-{timeline_speed}"
         if speed_step not in self.capabilities()["action_steps"]:
             raise BridgeUnavailableError(
@@ -26479,9 +26483,10 @@ def _life_advance_horizon_days(snapshot: dict[str, object]) -> int:
     running ``active_siege=null`` can never masquerade as siege completion.
     Because running frames also suppress full routes, any active controlled or
     hostile route takes a one-day horizon. Any controllable combat/retreat or
-    active assault has the same one-day bound. An ordinary stationary siege
-    and an otherwise route-free active war retain a seven-day ceiling so a
-    direct MCP advance cannot skip the first enemy-target cadence milestone.
+    active assault has the same one-day bound. An observed stationary player
+    siege also uses one day: speed-five polling overshot its requested seven
+    days in R0047. A route-free war without an observed player siege retains
+    its seven-day requested horizon.
     """
     player_armies = snapshot.get("player_armies")
     for army in player_armies if isinstance(player_armies, list) else []:
@@ -26549,39 +26554,36 @@ def _life_advance_horizon_days(snapshot: dict[str, object]) -> int:
             if isinstance(wars, list) and bool(wars)
             else _NATIVE_WAR_ADVANCE_MAX_DAYS
         )
-    player_siege_observed = False
-    for war in wars if isinstance(wars, list) else []:
-        if not isinstance(war, dict):
-            continue
-        states = war.get("objective_province_states")
-        for state in states if isinstance(states, list) else []:
-            active_siege = (
-                state.get("active_siege")
-                if isinstance(state, dict)
-                and state.get("siege_observable") is True
-                else None
-            )
-            if (
-                isinstance(active_siege, dict)
-                and active_siege.get("player_army_besieging") is True
-            ):
-                player_siege_observed = True
-                if (
-                    snapshot.get("war_objective_assault_supported") is True
-                    and active_siege.get("assault_observable") is True
-                    and active_siege.get("assault_in_progress") is True
-                ):
-                    return _NATIVE_ASSAULT_ADVANCE_MAX_DAYS
+    if _player_assault_in_progress(snapshot):
+        return _NATIVE_ASSAULT_ADVANCE_MAX_DAYS
     if (
-        player_siege_observed
+        _observed_player_siege(snapshot)
         and snapshot.get("war_objective_siege_progress_supported") is True
     ):
-        return _NATIVE_SIEGE_ADVANCE_MAX_DAYS
+        return 1
     return (
         _NATIVE_SIEGE_ADVANCE_MAX_DAYS
         if isinstance(wars, list) and bool(wars)
         else _NATIVE_WAR_ADVANCE_MAX_DAYS
     )
+
+
+def _observed_player_siege(snapshot: dict[str, object]) -> bool:
+    """Classify a rich paused CSiege row; running null rows are not absence."""
+    if snapshot.get("paused") is not True:
+        return False
+    wars = snapshot.get("active_wars")
+    for war in wars if isinstance(wars, list) else []:
+        if not isinstance(war, dict):
+            continue
+        states = war.get("objective_province_states")
+        for state in states if isinstance(states, list) else []:
+            if not isinstance(state, dict) or state.get("siege_observable") is not True:
+                continue
+            siege = state.get("active_siege")
+            if isinstance(siege, dict) and siege.get("player_army_besieging") is True:
+                return True
+    return False
 
 
 def _life_advance_timeline_policy(
@@ -26638,6 +26640,8 @@ def _life_advance_timeline_policy(
             if _army_has_active_route(enemy):
                 enemy_routes.append(enemy)
 
+    if not enemy_routes and _observed_player_siege(snapshot):
+        return 1, "player_siege"
     if _remote_enemy_routes_speed_three_ready(snapshot, enemy_routes):
         return 3, "remote_enemy_route"
     return 1, "enemy_route_imminent_or_unknown"

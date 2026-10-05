@@ -1709,7 +1709,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
 
         self.assertEqual(_life_advance_horizon_days(snapshot), 1)
         siege["assault_in_progress"] = False
-        self.assertEqual(_life_advance_horizon_days(snapshot), 7)
+        self.assertEqual(_life_advance_horizon_days(snapshot), 1)
 
     def test_peacetime_life_advance_requires_full_thirty_day_horizon(
         self,
@@ -1944,7 +1944,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["elapsed_days"], 1)
         self.assertEqual(result["timeline_policy"], "player_assault")
 
-    def test_ordinary_siege_seven_day_slice_keeps_speed_five(self) -> None:
+    def test_ordinary_siege_one_day_slice_uses_speed_one(self) -> None:
         player = _army(101, province_id=2585, army_state="sieging")
         siege = _active_siege(
             assault_observable=False,
@@ -1963,15 +1963,15 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
             extra_capabilities=(
                 "game.state.war-objective-siege-progress",
             ),
-            expected_speed=5,
-            horizon_days=7,
+            expected_speed=1,
+            horizon_days=1,
         )
 
         self.assertEqual(
-            steps, ["set-speed-5", "resume-map", "pause-map"]
+            steps, ["set-speed-1", "resume-map", "pause-map"]
         )
-        self.assertEqual(result["elapsed_days"], 7)
-        self.assertEqual(result["timeline_policy"], "bounded_non_tactical")
+        self.assertEqual(result["elapsed_days"], 1)
+        self.assertEqual(result["timeline_policy"], "player_siege")
 
     def test_life_advance_requires_all_timeline_speed_primitives(self) -> None:
         for omitted in ("set-speed-1", "set-speed-3", "set-speed-5"):
@@ -15085,7 +15085,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         self.assertEqual(result["progress_status"], "postcondition")
         self.assertTrue(result["paused"])
 
-    def test_player_siege_uses_seven_day_horizon_and_ignores_running_gap(
+    def test_player_siege_uses_one_day_horizon_and_ignores_running_gap(
         self,
     ) -> None:
         endpoint = FakeEndpoint()
@@ -15158,7 +15158,7 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                 _snapshot(
                     revision,
                     date_raw=date_raw,
-                    speed=5,
+                    speed=1,
                     paused=False,
                     active_wars=[war(paused_rich=False)],
                     player_armies=[player],
@@ -15178,31 +15178,25 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
                     "result": {"step": step, "accepted": True},
                 }
             )
-            if step == "set-speed-5":
+            if step == "set-speed-1":
                 endpoint.publish(
                     _snapshot(
                         101,
                         date_raw=start_date,
-                        speed=5,
+                        speed=1,
                         active_wars=[starting_war],
                         player_armies=[player],
                     )
                 )
             elif step == "resume-map":
                 publish_running(102, start_date + 24)
-                timer = threading.Timer(
-                    0.01,
-                    lambda: publish_running(103, start_date + 7 * 24),
-                )
-                timers.append(timer)
-                timer.start()
             elif step == "pause-map":
                 pause_dates.append(last_running_date)
                 endpoint.publish(
                     _snapshot(
                         104,
                         date_raw=last_running_date,
-                        speed=5,
+                        speed=1,
                         paused=True,
                         active_wars=[
                             war(paused_rich=True, progressed=True)
@@ -15216,8 +15210,8 @@ class NativeHeadlessGameplayDriverTests(unittest.TestCase):
         for timer in timers:
             timer.join(timeout=1.0)
 
-        self.assertEqual(pause_dates, [start_date + 7 * 24])
-        self.assertEqual(result["elapsed_days"], 7)
+        self.assertEqual(pause_dates, [start_date + 24])
+        self.assertEqual(result["elapsed_days"], 1)
         before_state = result["war_progress_before"]["wars"][0][
             "objective_province_states"
         ][0]
