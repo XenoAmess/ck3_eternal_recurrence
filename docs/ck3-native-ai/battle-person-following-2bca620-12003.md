@@ -42,6 +42,8 @@ For negative balance, let actual evaluated income be signedQ64 `I`. If **I<10000
 
 This ordering matters: **income0 or negative income still demands government bit10**. If bit10 is true, it uses positive divisor100000 and enters the ratio path. Only bit10-false income0 returns actual thresholdcountN; only bit10-false negative income returns wrap_i32(N-1). The early unsealed shorthand about an unconditional zero-income return is corrected before implementation.
 
+The bit number is **decimal10**, mask **0x00000400**: cached instructions2BCA698 `mov ecx,[rax+40]`,2BCA69B `shr rcx,0xa`, then2BCA69F `test cl,1`. This numerical clarification reuses the already sealed body and adds0EXE bytes; the original source-only seal is preserved.
+
 Cached28C2E10 has a distinct actual selection chain. Valid Character magic/fullID first checks death1D0 and selects its+88 government pointer; otherwise present1C0 selects+3F8; with neither, it follows related1B8+C8 through Character registry5C67568/fallback5C67570 and repeats. Invalid Character or selected null government selects actual QWORD[global **5D1E2A8**]. The diagnostic callback on a null selected government does not produce flags; a raw observer can use that explicit fallback without executing it. Actual returned flagsDWORD40 are required, rather than assuming they equal another current raw flags field. Both body and exact-build capture receipt are reused from v82; no fresh government EXE read.
 
 ## Gold threshold header and exact return rules
