@@ -3116,6 +3116,19 @@ def stop_tracked(
     running = handle.process.poll() is None
     if require_running and not running:
         errors.append(f"CK3 PID {handle.process.pid} exited before shutdown")
+    root_wait_deadline: float | None = None
+    root_signaled = False
+    root_wait_timed_out = False
+    if not running:
+        # A published exit code can precede the process handle becoming
+        # signaled. Give this exact root its existing 20-second wait budget
+        # before terminating any remaining Job members.
+        root_wait_deadline = time.monotonic() + 20
+        try:
+            handle.process.wait(timeout=20)
+            root_signaled = True
+        except subprocess.TimeoutExpired:
+            pass
     try:
         active_before_termination = _job_active_processes(handle.job_handle)
     except Exception as error:
@@ -3138,9 +3151,19 @@ def stop_tracked(
                 f"TerminateJobObject failed for tracked CK3 tree: {error}"
             )
     try:
-        handle.process.wait(timeout=20)
+        handle.process.wait(
+            timeout=(
+                20
+                if root_wait_deadline is None
+                else max(0.0, root_wait_deadline - time.monotonic())
+            )
+        )
+        root_signaled = True
     except subprocess.TimeoutExpired:
-        errors.append(f"tracked CK3 PID {handle.process.pid} did not exit")
+        if running:
+            errors.append(f"tracked CK3 PID {handle.process.pid} did not exit")
+        else:
+            root_wait_timed_out = True
     try:
         deadline = time.monotonic() + 20
         active = _job_active_processes(handle.job_handle)
@@ -3159,7 +3182,18 @@ def stop_tracked(
         raise UnsafeCleanupError(
             f"tracked CK3 job could not be queried; watchdog retained: {error}"
         ) from error
-    root_process_exited = handle.process.poll() is not None
+    if root_wait_timed_out:
+        # The existing Job-drain wait can finish a forced root exit after its
+        # shared wait budget expires. Recheck the pinned handle without adding
+        # another wait budget or trusting its earlier cached poll value.
+        try:
+            handle.process.wait(timeout=0)
+            root_signaled = True
+        except subprocess.TimeoutExpired:
+            errors.append(f"tracked CK3 PID {handle.process.pid} did not exit")
+    root_process_exited = (
+        handle.process.poll() is not None if running else root_signaled
+    )
     tree_gone = root_process_exited and active == 0
     if not tree_gone:
         write_json_atomic(

@@ -7,6 +7,7 @@
 • 修正廷臣列表初始化与空列表资格保护，使主版和白绮独立版的各自目录保持独立。
 • 更新原生继承窗口投影，保留新版教会政体的继承选项；同步九种语言的目录数量与礼仪帮助。
 • 保留原计分公式、700 档教程纪录、轮回商店、祝福/诅咒、六类契约和跨存档纪录协议。
+• 修复无继承人终局界面：八项数值正确读取已提交结算记录。
 兼容与限制：推荐 CK3 1.20.0.3 新开局、单机；已有教程纪录无需重置。教程必须保持“完整”或“警告”，关闭教程仍会阻止写入新纪录。无继承人结算与覆盖 window_succession_event.gui 的模组冲突；多人及任意同键模组组合不作保证。旧 CK3 存档的新版完整冷加载与全部廷臣 GUI 操作仍需独立验证。
 
 【English】
@@ -16,4 +17,5 @@
 • Correct catalog initialization and empty-list guards, keeping the main mod's and standalone White edition's catalogs independent.
 • Update the native succession-window projection while preserving the new ecclesiastical succession choices. Synchronize catalog counts and Rite help across all nine languages.
 • Preserve scoring, all 700 tutorial record tiers, the reincarnation shop, blessing/curse pools, all six contracts and the cross-save record protocol.
+• Fix the no-heir settlement screen so all eight values correctly read the committed settlement record.
 Compatibility and limits: a new single-player CK3 1.20.0.3 game is recommended. Existing tutorial records need no reset. Tutorials must remain Full or Warnings to write new records. Other mods replacing window_succession_event.gui conflict with the no-heir settlement; multiplayer and arbitrary same-key mod combinations are not guaranteed. Complete cold loading of existing CK3 saves and all courtier GUI controls require separate validation.

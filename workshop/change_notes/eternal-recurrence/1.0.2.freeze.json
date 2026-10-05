@@ -1,5 +1,5 @@
 {
-  "status": "FROZEN_CANDIDATE_TEXT_NOT_PUBLISHED",
+  "status": "FROZEN_GUI_RECORD_FIX_CANDIDATE_TEXT_NOT_PUBLISHED",
   "product": "eternal-recurrence",
   "workshop_item_id": "3784706360",
   "version": "1.0.2",
@@ -8,14 +8,34 @@
   "previous_public_commit": "e9cc6c82aa8c9c24518f4e9c2f118a074b1292f7",
   "target_game_version": "1.20.0.3",
   "notes_path": "workshop/change_notes/eternal-recurrence/1.0.2.txt",
-  "unicode_characters": 2016,
-  "lines": 19,
-  "utf8_bytes": 2852,
-  "sha256": "c6409bac33ffd2f057a6ebddc39a439f3119604cdfe0e9fc01ce4348771b6794",
+  "unicode_characters": 2150,
+  "lines": 21,
+  "utf8_bytes": 3044,
+  "sha256": "ec2e429a398d1a42d32049bd24e3a8ba1655d3205f7eacfa6ce94d751f5ce3ac",
   "normalization": "UTF-8, LF, no trailing newline",
   "frozen_before_submit": true,
   "public_entry_id": null,
   "public_fulltext_verified": false,
   "publication_date": null,
-  "formal_release_tag": null
+  "formal_release_tag": null,
+  "candidate_revision": "gui_record_fix_02",
+  "candidate_notes_path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-gui-record-fix-draft-02/1.0.2.full-candidate-02.txt",
+  "supersedes_candidate_text_sha256": "c6409bac33ffd2f057a6ebddc39a439f3119604cdfe0e9fc01ce4348771b6794",
+  "old_candidate_preserved": {
+    "path": "C:/workspace/ck3-upgrade-20261005/main-canonical-notes-gui-fix-root-01/original-1.0.2.txt",
+    "bytes": 2852,
+    "sha256": "c6409bac33ffd2f057a6ebddc39a439f3119604cdfe0e9fc01ce4348771b6794"
+  },
+  "old_candidate_freeze_preserved": {
+    "path": "C:/workspace/ck3-upgrade-20261005/main-canonical-notes-gui-fix-root-01/original-1.0.2.freeze.json",
+    "bytes": 753,
+    "sha256": "aca434e40d6676cd6fabb26f821b595732237651c41b2ca7fd8bd2f9a7aefa3e"
+  },
+  "source_public_version_unchanged": "1.0.1",
+  "actual_R19_gui_eight_validation": {
+    "path": "C:/workspace/ck3-upgrade-20261005/main-r19-eight-values-format-independent-review-agent-01/review-01.json",
+    "bytes": 8193,
+    "sha256": "356f5632b500e21cfae34d81601f1f029140407992021c4c05b6068794f6a21b"
+  },
+  "normal_native_exit0_pending": true
 }
