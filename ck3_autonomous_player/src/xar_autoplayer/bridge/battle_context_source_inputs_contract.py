@@ -624,6 +624,12 @@ def normalize_current_context_source_inputs(
         fields.add("helper_291f0a0")
     if isinstance(value, dict) and "later_helpers_291f550_291f940" in value:
         fields.add("later_helpers_291f550_291f940")
+    if isinstance(value, dict) and "tail_direct_291c5b7_291cc49" in value:
+        fields.add("tail_direct_291c5b7_291cc49")
+    for optional in ("tail_prefix_2753860_2922530", "middle_helpers_291f260_291fb10",
+                     "trait_stage_291d460", "absent_recipient_inputs"):
+        if isinstance(value, dict) and optional in value:
+            fields.add(optional)
     raw = _dict(value, field, fields)
     status, ready, reason = _availability(raw, field)
     normalized = {
@@ -665,6 +671,41 @@ def normalize_current_context_source_inputs(
         if later is not None and later["character_id"] != normalized["character_id"]:
             raise ValueError(field + ".later_helpers_291f550_291f940 character disagrees with source actor")
         normalized["later_helpers_291f550_291f940"] = later
+    if "tail_direct_291c5b7_291cc49" in raw:
+        from .battle_person_tail_direct_contract import normalize_tail_direct_291c5b7_291cc49
+        tail = normalize_tail_direct_291c5b7_291cc49(
+            raw["tail_direct_291c5b7_291cc49"], field + ".tail_direct_291c5b7_291cc49")
+        if tail is not None and tail["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".tail_direct_291c5b7_291cc49 character disagrees with source actor")
+        normalized["tail_direct_291c5b7_291cc49"] = tail
+    if "tail_prefix_2753860_2922530" in raw:
+        from .battle_person_tail_prefix_contract import normalize_tail_prefix_2753860_2922530
+        tail = normalize_tail_prefix_2753860_2922530(
+            raw["tail_prefix_2753860_2922530"], field + ".tail_prefix_2753860_2922530")
+        if tail is not None and tail["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".tail_prefix_2753860_2922530 character disagrees with source actor")
+        normalized["tail_prefix_2753860_2922530"] = tail
+    if "middle_helpers_291f260_291fb10" in raw:
+        from .battle_person_middle_helpers_contract import normalize_middle_helpers_291f260_291fb10
+        middle = normalize_middle_helpers_291f260_291fb10(
+            raw["middle_helpers_291f260_291fb10"], field + ".middle_helpers_291f260_291fb10")
+        if middle is not None and middle["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".middle_helpers_291f260_291fb10 character disagrees with source actor")
+        normalized["middle_helpers_291f260_291fb10"] = middle
+    if "trait_stage_291d460" in raw:
+        from .battle_person_trait_stage_291d460_contract import normalize_trait_stage_291d460
+        trait = normalize_trait_stage_291d460(
+            raw["trait_stage_291d460"], field + ".trait_stage_291d460")
+        if trait is not None and trait["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".trait_stage_291d460 character disagrees with source actor")
+        normalized["trait_stage_291d460"] = trait
+    if "absent_recipient_inputs" in raw:
+        from .battle_person_absent_recipient_contract import normalize_absent_recipient_inputs
+        absent = normalize_absent_recipient_inputs(
+            raw["absent_recipient_inputs"], field + ".absent_recipient_inputs")
+        if absent is not None and absent["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".absent_recipient_inputs character disagrees with source actor")
+        normalized["absent_recipient_inputs"] = absent
     return normalized
 
 
