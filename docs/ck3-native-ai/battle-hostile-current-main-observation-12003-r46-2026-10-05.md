@@ -60,3 +60,14 @@ The additional owner-recall input primitive is `raw_inputs_ready=true`, but `nat
 Package: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/r46-hostile-battle-observation-v87/`. Original Root packet: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v73/root-results/v73-current8938-01/actual-r46-post-assault470-capture01/008-ck3_query_battle_transition_v1.json`. Identical complete bytes, decoded response and sole-read receipt are under `actual-cache/`; independent qualifications are under `participants/`, `phase-frame/` and `current-observation/`. The Root delivery pins those files and the topic patch.
 
 This observation gives Root a current remote enemy battle, its actual sides and attrition to combine with the separately reported capture of province470 and the war-goal/movement work. It issues no movement decision or battle command and predicts no win odds. This package executed zero SDK calls, game days, process/window operations, code changes or tests; Root alone performed the actual query. No repeated source audit or new gameplay gate was introduced. Oct5 and ISO W41 report fields are supplied externally for the progress coordinator. Commit/push and further actual gameplay remain Root-owned.
+
+### 2026-10-05：最后冻结查询中的敌方战斗第16日
+
+停机前的独立 paused 查询 `008-ck3_query_battle_transition_v1.json` 观察 Combat369098771 / P4893：raw53265168、native140/public2，available/accepted/readiness=true。此处仅封存历史帧；不连接用户正在玩的游戏。对应外置目录 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/r46-hostile-battle-observation-v87/followup-six-days-actual-01/` 保存新派生与失败尝试。
+
+- 同一战斗仍为 main 阶段，day10→16；两个端点相隔144游戏小时，不冒充逐日战斗轨迹。finalized=false、winner=-1；resultID402653203本身不证明结束或有胜者。
+- 攻方军队为[201326822,352321623]、owner72883；守方当前[268435597,16777766]。新守方军16777766/CArmy16777751属于owner32313，实际附着Combat369098771并在4893；该领主另一军234881391在735、attachedCombat=null，仅属owned roster，不计参战。
+- width2684→1342；base advantage raw−1900000保持，resolved advantage raw+100000→+300000。新攻击方 fighting177435744/soft54879885/hard18784371；守方 fighting239802201/soft50234636/hard15863163，其中hard owner35991=15660432、owner32313=202731。阵容改变，不能把两帧总量差当成固定参战阵容的伤亡。
+- 新 current-observation、participants、phase-frame 三条缓存消费者均只消费各自的新缓存一次，未SDK/窗口/attach/构建/测试。父模型在FAST及新cache封存后遇到 `Selected model is at capacity`，记录为包装harness失败；保留失败attempt，由Root据已交结果完成本文，不重读原008或重试模型。
+
+域内version/EXE SHA继续保留实际null，外置exact-build身份不填入域值；terrain仍未发布，不宣布玩家接战、战斗预测或完整玩家battle loop。global5035/普通h9048与零日query h9052沿用Root已冻结账本，本次归档新增0游戏日。用户再次明确授权前，不恢复CK3实机操作。
