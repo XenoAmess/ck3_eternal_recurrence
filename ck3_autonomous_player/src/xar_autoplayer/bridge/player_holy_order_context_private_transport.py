@@ -1,4 +1,4 @@
-"""Read native holy-order identities, leases and military hire terms only."""
+"""Read native holy-order identity, hire terms and independent current war input."""
 
 from __future__ import annotations
 
@@ -111,6 +111,27 @@ def normalize_player_holy_order_context_v1(
                     or (sampled and not isinstance(literal, str))
                     or (not sampled and literal is not None)):
                 raise ValueError(f"native holy-order source reason is malformed: {prefix}")
+        # Historical frozen packets predate this independent native subgate.
+        # It is not a release/persistence predicate and does not change CanHire.
+        if "current_war_eligibility" in terms:
+            war = terms["current_war_eligibility"]
+            if not isinstance(war, Mapping) or type(war.get("available")) is not bool:
+                raise ValueError("native holy-order current war eligibility is malformed")
+            qualifies = war.get("qualifies")
+            if qualifies is not None and type(qualifies) is not bool:
+                raise ValueError("native holy-order war subgate is malformed")
+            if war["available"]:
+                if war.get("unavailable_reason") is not None or type(qualifies) is not bool:
+                    raise ValueError("available native holy-order war subgate is incomplete")
+            elif not isinstance(war.get("unavailable_reason"), str) or not war["unavailable_reason"]:
+                raise ValueError("unavailable native holy-order war subgate lost its reason")
+            sampled = war.get("reasons_available")
+            literal = war.get("reason_literal")
+            if (type(sampled) is not bool
+                    or (sampled and not isinstance(literal, str))
+                    or (not sampled and literal is not None)
+                    or (war["available"] and not sampled)):
+                raise ValueError("native holy-order war subgate reason is malformed")
     return dict(value)
 
 

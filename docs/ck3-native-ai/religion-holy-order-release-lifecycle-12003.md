@@ -83,3 +83,26 @@ flowchart TD
 | `2A88B60..2A88C59` | 249 | `ba81b0ff43bc850478daa3f5ebff29bc3f6a8ddf28728e2e0fd80698d10631b6` |
 
 失败的 `.pdata` exact-begin 查询保留在外置 `ATTEMPTS.json`：两个无 unwind 的小 Execute 改用已知边界有限 slice，`261A49F` epilogue interior 没有冒充函数起点。历史初段 span 与后续完整范围都保留，不给部分读取源闭合信用。
+
+## 后续后台增量：释放清理对象与独立战争输入
+
+同日继续查已有 cached manager 绑定：已检查的 holy-order-systems `NAMES/PTRS/XREFS/SPANS` 与当前 native bindings 没有 manager constructor/vtable/update 或 `2A889C0` incoming-xref 定位。cached literal `477B65F` 的有限读取确认 stock 源文件名 `holy_order_manager.cpp` 及 `AddLeasedTitleToHolyOrder/HireHolyOrder` 名称，但没有给出 update 目标；这些名称不被转写成任意代码 RVA。第二 attempt 保存在外置 `lifecycle-caller/`，第一包原样保留。
+
+沿真实 release 的直接 callback `261C720` 前进：它解析 `order+28` 的 Title full ID、Title `+128` 的 holder full Character ID，再尾调用 `28CBDD0(holder)`。后者返回 holder Character `+1C8` vector，缺席时返回原生合法空 vector。既有[佣兵当前兵数源树](ck3-1.20.0.3-mercenary-candidates-native-query.md)已将同一 getter 命名为 holder 的 knights；因此 release 函数逐项清理的是这些 knight Character 的内部军事 reference，不能直接称作公开 CUnit 集合。getter 完整 substantive leaf 为 `261C720..261C79E`，其直接 getter `28CBDD0..28CBE41` 完整113 B，SHA `96beb1cb1e0bf6eb5c731b2ce97983df4caf39460a0e7063d9598df2fa948dff`。这个 callback 不提供战争结束条件。
+
+独立可施工输入直接复用[已冻结战争资格树](religion-holy-order-war-eligibility-12003.md)：`bool 261C120(order, played_actor, reason_sink)` 遍历当前 actor 全部 WarID，解析实际参战侧及对侧所有成员，调用 `261BFB0` 比较 order Faith 与敌方 Faith 的双向 loaded hostility，任一当前战争满足即返回 true；阈值小于等于0时原生直接返回 true。它与最终 CanHire 分开调用，可以在组织已经由当前玩家雇佣或其他 hire 门拒绝时仍回答当前战争宗教子门是否满足，保留实际原生理由，不从 CanHire 文案猜条件。它的用途是解释当前圣骑士团相关战争输入、识别哪些当前局面仍符合宗教军雇条件；**不是 war-end release、持续服务许可或主动 dismiss 判定**。
+
+同一 `ck3_query_player_holy_order_context_v1` 增加 `military_terms.current_war_eligibility`：独立 `available/unavailable_reason`、native `qualifies` bool 和理由。军事行才采样；其他条款或旧 wire 是否有这个字段分别处理。原生 callback 绑定缺席或调用失败时保留真实 unavailable，不用 null 冒充已完成的正常读取。普通 release action 与自动生命周期 producer readiness 仍为 research。
+
+```mermaid
+flowchart TD
+    C[release 261A280] --> H[261C720 resolve order Title holder]
+    H --> K[28CBDD0 holder knight Character vector]
+    K --> R[清理 knight 内部军事 reference]
+    Q[当前 player 与 military order] --> W[独立 261C120 当前全部战争]
+    W --> S[实际玩家侧与对侧成员]
+    S --> F[order Faith 与敌方 Faith 双向 hostility]
+    F --> E[当前 war 子门 bool 与实际理由]
+    E --> M[既有 holy-order context MCP 新字段]
+    W -. 自动释放 caller unknown .-> U[何时实际调用 2A889C0]
+```

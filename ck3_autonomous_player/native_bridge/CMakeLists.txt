@@ -1219,6 +1219,21 @@ add_test(NAME ck3_12003_holy_order_hire_action
   COMMAND xar_ck3_12003_holy_order_hire_action_test
     "${CMAKE_CURRENT_BINARY_DIR}/ck3_12003_holy_order_hire_action_wire.json")
 
+add_executable(xar_ck3_12003_holy_order_war_eligibility_test
+  src/ck3_12003_holy_order_war_eligibility_test.cpp
+  src/ck3_12003_player_holy_order_context.cpp
+  src/ck3_12003_player_holy_order_wire.cpp)
+target_include_directories(xar_ck3_12003_holy_order_war_eligibility_test PRIVATE include)
+target_compile_definitions(xar_ck3_12003_holy_order_war_eligibility_test PRIVATE
+  NOMINMAX XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+if(MSVC)
+  target_compile_options(xar_ck3_12003_holy_order_war_eligibility_test PRIVATE
+    /W4 /WX /permissive- /EHsc /utf-8)
+endif()
+add_test(NAME ck3_12003_holy_order_war_eligibility
+  COMMAND xar_ck3_12003_holy_order_war_eligibility_test
+    "${CMAKE_CURRENT_BINARY_DIR}/ck3_12003_holy_order_war_eligibility_wire.json")
+
 if(XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1 AND (NOT XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1 OR NOT XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1 OR NOT XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1 OR NOT XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1))
   message(FATAL_ERROR "White age+1 action requires actual White business/text providers and owning frontend main-thread admission")
 endif()

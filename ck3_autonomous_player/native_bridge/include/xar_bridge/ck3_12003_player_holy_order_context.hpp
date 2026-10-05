@@ -33,6 +33,8 @@ struct Bindings {
   CanAfford can_afford = nullptr;
   ReasonDestroy reason_destroy = nullptr;
   CurrentSoldiers current_soldiers = nullptr;
+  // Independent religious-war subgate, not release or service persistence.
+  CanHire current_war_eligibility = nullptr;
 };
 
 struct TroopStrength {
@@ -40,6 +42,14 @@ struct TroopStrength {
   std::string unavailable_reason = "not_sampled";
   // Native GetCurrentSoldiers returns an unscaled int32 headcount.
   std::optional<std::int32_t> current_soldiers;
+};
+
+struct WarEligibility {
+  bool available = false;
+  std::string unavailable_reason = "native_war_eligibility_binding_unavailable";
+  std::optional<bool> qualifies;
+  bool reasons_available = false;
+  std::optional<std::string> reason_literal;
 };
 
 struct MilitaryTerms {
@@ -56,6 +66,7 @@ struct MilitaryTerms {
   std::optional<std::string> can_afford_reason_literal;
   // Independent from final hire/affordability availability.
   TroopStrength troop_strength;
+  WarEligibility current_war_eligibility;
 };
 struct Row {
   std::uint32_t holy_order_id = UINT32_MAX;

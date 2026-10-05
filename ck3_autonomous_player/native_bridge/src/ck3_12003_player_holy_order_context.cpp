@@ -111,6 +111,20 @@ bool ReadIdentity(const Bindings &b, void *order, Row &row) {
 }
 void ReadMilitaryTerms(const Bindings &b, void *order, void *player,
                        MilitaryTerms &terms) {
+  if (b.current_war_eligibility != nullptr) {
+    auto &war = terms.current_war_eligibility;
+    war.unavailable_reason = "native_war_eligibility_evaluation_unavailable";
+    NativeReason reason(b.reason_destroy);
+    bool qualifies = false;
+    if (Call(b.current_war_eligibility, qualifies, order, player, reason.get())) {
+      war.qualifies = qualifies;
+      std::string literal;
+      war.reasons_available = reason.copy(literal);
+      if (war.reasons_available) war.reason_literal = std::move(literal);
+      war.available = war.reasons_available;
+      if (war.available) war.unavailable_reason.clear();
+    }
+  }
   terms.unavailable_reason = "native_evaluation_unavailable";
   terms.troop_strength.unavailable_reason = "native_current_soldiers_unavailable";
   std::int32_t current_soldiers = 0;
@@ -191,6 +205,13 @@ void TermsJson(std::ostream &out, const MilitaryTerms &terms) {
   if (terms.troop_strength.available) out << "null";
   else Quote(out, terms.troop_strength.unavailable_reason);
   out << ",\"current_soldiers\":"; Optional(out, terms.troop_strength.current_soldiers);
+  out << "},\"current_war_eligibility\":{\"available\":"
+      << terms.current_war_eligibility.available << ",\"unavailable_reason\":";
+  if (terms.current_war_eligibility.available) out << "null";
+  else Quote(out, terms.current_war_eligibility.unavailable_reason);
+  out << ",\"qualifies\":"; Optional(out, terms.current_war_eligibility.qualifies);
+  out << ",\"reasons_available\":" << terms.current_war_eligibility.reasons_available
+      << ",\"reason_literal\":"; Optional(out, terms.current_war_eligibility.reason_literal);
   out << "}}";
 }
 } // namespace
@@ -208,6 +229,7 @@ Bindings BindPlayerHolyOrderImage12003(std::uintptr_t base, std::string_view sha
   b.can_afford = reinterpret_cast<CanAfford>(base + 0x310E710);
   b.reason_destroy = reinterpret_cast<ReasonDestroy>(base + 0x856050);
   b.current_soldiers = reinterpret_cast<CurrentSoldiers>(base + 0x261AD10);
+  b.current_war_eligibility = reinterpret_cast<CanHire>(base + 0x261C120);
   return b;
 }
 
