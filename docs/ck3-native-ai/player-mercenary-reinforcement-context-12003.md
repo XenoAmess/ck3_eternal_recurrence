@@ -133,3 +133,47 @@ harness RED is retained; fixing NOMINMAX and unsigned fixture constants left the
 production reader unchanged. No old tests or full DLL were repeated. Root's g72
 paused actual market observation remains the next step before normal hire.
 This package performs zero game SDK/window/Git operations and adds zero game days.
+
+### 2026-10-05: v67/g72 R40 actual mercenary company composition
+
+Root's paused PID110616 / Robert29829 / raw53260776 query is now a
+**production-live primitive observation**. The sole original mercenary leaf was
+completely decoded once into caches; later price and inventory lanes read only
+those caches. Native collection and every one of554 composition leaves are
+available, with complete coverage of1,538 distinct persistent FullRegi records:
+984 MAA records /52 actual canonical keys all have observed signed tier0, and554
+non-MAA records retain null key/tier. There are no positive-tier rows or positive
+current/maximum inventories, rather than a missing field or depleted positive type.
+No company is selected for the positive-tier siege inventory goal in this frame.
+
+Native company current total776,279 and regimental current774,766/max778,070
+remain separate; their1,513 difference preserves the independent holder-knight
+contribution.61 companies have employers; holder/employer equal count is0.
+Inventory tier is not Province K and these observations assert no actual hire gain,
+arrival or military support.
+
+All554 normal finalterms are available.30 have native CanHiretrue;27 also have
+CanAffordtrue/payment2, while3 retain CanAffordfalse/payment1 and valid native debt
+permission. Legal gold quotes span179–741 (market152–1465), all36 months. Cheapest
+actual generic company18 costs179 gold, holder57844/employer-null, native837 versus
+roster835 current soldiers; it has zero positive-tier siege inventory. Real company0
+is also observed (holder57736, price484), with CanHirefalse because it is too far;
+it is neither discarded for ID0 nor borrowed from the offline fixture.
+
+Existing normal action signature remains
+`ck3_hire_mercenary_v1(company_id: int, expected_revision: int)`; selected company
+uses the actual full ID, and Root obtains a fresh public revision before action.
+The new composition `hire_ready` is a selection field and adds no normal-action
+permission gate. The mercenary leaf does not publish current actor gold; Root's
+same MAIN cash observation supplies the budget. No balance is inferred from
+affordability or reason literals, and no new financial gate is added.
+
+Evidence root:
+`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-mercenary-composition-sourcefirst/actual-v67-r40-01/`.
+Original008 leaf SHA
+`f6bcf51e6dbd6b05d7aa4cc2fafa4b998ca774365328179ee0f94afd3a09cee4`;
+complete context-cache SHA
+`d3c883972c27fa58ed330b37e56215c257910389cf78f4b3316c14b4e7a8842a`.
+Readonly observation has no current capability RED or missing composition domain.
+Native22/MCP21 remain the preceding reused static evidence; no tests were repeated.
+This consumer performs0 SDK/window/hire/shared/Git operations and adds0 game days.
