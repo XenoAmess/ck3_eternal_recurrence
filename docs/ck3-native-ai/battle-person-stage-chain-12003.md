@@ -1044,3 +1044,51 @@ preparation and Entry remain false. Native producer fixtures are separately
 owned and qualified centrally. The next named source/observer dependency is
 `291CC76_provider_classifier2BCA620`; the producer source lane is active.
 This consumer adds zero EXE reads, native builds or game operations.
+
+## Next source-first connection plan:2BCA620 classifier and provider
+
+The producer's sealed `person-tail/following2bca620-source/` tree/query plan
+now chart the concrete next contribution to
+`post2BCA620_pre291CCD7`. Its source cost4956 fresh bytes plus397 reused
+binary bytes belongs to that source lane; this consumer reads no EXE bytes.
+The proposed `following_2bca620` leaf/emitter is not yet a genuine released
+contract. Current qualified preCC76 readiness does not require it.
+
+Mode0 balance is actual signedQ64 Character1B0+100, or known0 for absent1B0.
+Nonnegative balance returns classifier-1 without income, government or
+threshold demands. The caller still selects provider1690 on equality with
+signedcount126C, otherwise provider1260 for a valid nonnegative index, else
+actual fallback5D1E0B0. Equality has priority even for negative counts.
+Selected ObDG magic admits exactlyone PC40 outer100000 request, evenempty;
+rejected magic gives known0. Classifier-1 alone does not mean no contribution.
+
+```mermaid
+flowchart TD
+  A[Explicit post2920B50_pre291CC76 context] --> B[Actual mode0 balance1B0+100 or absent known0]
+  B -->|nonnegative| I[Classifier-1; no income or flags demand]
+  B -->|negative| INC[Actual selected income branch]
+  INC -. living played accounting result missing .-> U[2BC5380 result and demanded nonland supplements]
+  INC -->|available income below100000| G[Actual returned government bit10 before sign exits]
+  INC -->|available high income| T[Source-exact ratio and ordered thresholds]
+  G --> T
+  I --> P[Provider equality1690 then indexed1260 else actual fallback]
+  T --> P
+  P --> M{Selected ObDG magic?}
+  M -->|false| F[Proposed post2BCA620_pre291CCD7]
+  M -->|true| PC[One unit PC40 request evenempty]
+  PC -. genuine actual contract pending .-> F
+  F -. next separate source .-> N[Bit29 / landed source /312A950 family]
+```
+
+For negative balance, living played accounting is not cached1B0+2B0.
+Every income below100000 demands actual28C2E10 flags40 bit index10
+(decimal10/hex0xA, mask0x00000400) before zero
+or negative-income exits; bittrue forces divisor100000. Zero/negative divisor
+uses actual threshold countN/N-1; positive divisor retains captured wrap and
+integer division, original threshold order and first strictly-greater return
+ordinal-1. No float approximation, sorting or lower clamp is introduced by
+this future consumer. External
+`person-stage-chain/FOLLOWING2BCA620-CHAIN-SOURCE-PLAN.json` pins this
+dependency/order before code. Genuine raw contract and producer emitter are
+required next; this source-plan increment runs no tests/builds/game and changes
+no current scalar context or full person/Entry readiness.
