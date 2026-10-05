@@ -454,3 +454,22 @@ checkpoint for the query capture. This consumer adds0 days,0 queries and0
 tests, preserving existing primitives and the prior finite arrival loop.
 Current cache, month sidecar and Oct4/W40 fields are indexed at
 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/movement-progress/final-fresh8-r31/ROOT-DELIVERY.json`.
+
+### 2026-10-05：完整已提交路线的未舍入时长施工入口
+
+用户独占CK3期间，仅复用exact 1.20.0.3 / Steam25652598 / EXE SHA `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6` 的已有小缓存与g78/v73源码。当前strengths发布的是首段progress；现成 `ReadCommittedRouteTimeline`（`ck3_12002_routes.hpp:69` / `.cpp:1914`）已读取整条committed path，却只输出province IDs和舍入后的arrival dates。文件名12002不是ABI版本证据，本合同依既有exact.3绑定。
+
+`ProjectPathTimeline`的500–518行先取得signed int64 `path_duration_raw`，512行有checked `total_duration_raw=base_duration_raw+path_duration_raw`，516行才转日期。committed/active分支base=0，已绑定native24AADA0已扣当前首段progress，不能再扣CUnit accumulated weight。最小后续施工是在该append点保留逐prefix原生Q100000 DAYS及末prefix的整路线remaining，并增量挂进现有`current_movement_progress`；日期和raw/100000×24的hours仍单列bridge投影，不从日期差反推原始时长、不新造native getter或独立MCP。
+
+```mermaid
+flowchart LR
+  A[Existing committed route] --> B[ReadCommittedRouteTimeline]
+  B --> C[ProjectPathTimeline native prefix duration]
+  C --> D[Existing rounded arrival dates]
+  C -. Proposed unimplemented publication .-> E[Retain signed Q100000 DAYS prefixes and final]
+  E -. Proposed existing query extension .-> F[current_movement_progress]
+```
+
+现contact-horizon实际要求非空且完整hostile集合，不能作为无敌军参数的通用整路线ETA口；复用内部provider即可。empty-route返回true+空数组与失败clear/false分开，合法0时长保留。native预测不保证之后路线/统帅/速度不变，也不证明实际到达；新字段尚未实现或验收，本轮只`research`，游戏日/SDK/编译测试均0。
+
+施工合同：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/movement-eta/SOURCE-CONTRACT.md`，5978 B / SHA `622c7bd4d4e781ffbd69921b00a56148cd5927c96a2dca975aacab5710f5b546`；完整交付`ROOT-DELIVERY.json`，8648 B / SHA `c32f1172670ce520cf54c4e1d217e96e8d8036c619a5a8cdb64330b2c03e5bdf`。未来实施只需该新增生产reader→serializer→registered MCP的必要资格，并在用户再授权后取得真实paused route，不重跑旧已通过检查。
