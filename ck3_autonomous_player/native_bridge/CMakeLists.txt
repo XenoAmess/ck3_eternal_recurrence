@@ -7739,11 +7739,13 @@ if(BUILD_TESTING)
     src/ck3_12002_routes.cpp
     src/ck3_12003_battle_current_state.cpp
     src/battle_transition_v1_mailbox.cpp
+    src/battle_control_snapshot_v1_mailbox.cpp
     src/ck3_12003_battle_current_state_test.cpp)
   target_include_directories(xar_ck3_12003_battle_current_state_test PRIVATE include)
   target_compile_features(xar_ck3_12003_battle_current_state_test PRIVATE cxx_std_20)
   target_compile_definitions(xar_ck3_12003_battle_current_state_test PRIVATE
-    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+    XAR_SELECTED_ROLL_WIRE_FIXTURE)
   if(MSVC)
     target_compile_options(xar_ck3_12003_battle_current_state_test PRIVATE
       /W4 /WX /permissive- /EHsc)
@@ -7757,6 +7759,10 @@ if(BUILD_TESTING)
   add_test(NAME xar_ck3_12003_selected_commander_next_roll_bounds
     COMMAND xar_ck3_12003_battle_current_state_test --selected-roll-only
       "${CMAKE_BINARY_DIR}/ck3_12003_selected_roll_wire")
+  file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/ck3_12003_actual_geography_wire")
+  add_test(NAME xar_ck3_12003_actual_battle_geography
+    COMMAND xar_ck3_12003_battle_current_state_test --actual-geography-only
+      "${CMAKE_BINARY_DIR}/ck3_12003_actual_geography_wire")
 endif()
 
 if(BUILD_TESTING)
