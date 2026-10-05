@@ -708,3 +708,60 @@ Artifact entries:
 - [C observer qualification](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-native-input-primitive-v79/raw-input-observer/QUALIFICATION-ROOT.json); normalizer SHA `500db71a844e8689dd859bf2d7371195275ca26de5b1e3c0902a5b048e2b2b60`.
 - [D sole production case receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-native-input-primitive-v79/focused-fixture/ROOT-DELIVERY.json); execution receipt SHA `3afe297d45cc0ecbb40b859f4a4b1a48efaf90c8ebd37bf39053065e8209344c`.
 - [Joint publication and Oct5/W41 fields](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-native-input-primitive-v79/publication/ROOT-DELIVERY.json). Root owns adoption/build/paused verification/Git; this pod used external projections only.
+
+
+## v80 — trait preparation inputs, sequential feedback and current-only query recipe (2026-10-05)
+
+This is a source/API-plan increment after v79 adopted `64c1a452756a82c7c0085e87cb1f04c6950437e2`. The existing current-input primitive remains qualified; no new model, case, import, native build or SDK/game/window operation was run here. The pending g73 native build and paused read belong to Root and do not block this offline source work.
+
+### Reset, transfer and growth input now have actual roles
+
+Three independently sealed v79 continuations are incorporated as new source knowledge:
+
+- `291C010` conditionally clears model+1C/+84/+EC counts when weighted-row count+1C is nonzero, then clears pending byte+2F4 with XCHG. It is not an unconditional empty-context constructor. Owned-container cleanup remains opaque. Source input:197 new frozen-file bytes.
+- `291CF50` swaps two models' Character owners+8 and pending bytes+2F4, swaps context/keys/values storage under +238 locks, swaps allocator+240, then transfers owned-container storage. `2439690` has a source-closed direct weighted-row header branch (data+0/count+C/capacity+8 swap); other storage branches remain opaque. This function transfers models and does not recompute traits or attributes. Source input:979 bytes.
+- The actual `28BB0F0` ABI is **RCX=Character, RDX=output header, R8=TraitDef**, correcting the earlier shorthand that omitted the hidden output argument. Character byte1A5!=0 or Def trackcount29C<=0 yields an empty header. Otherwise the matched trait's XP offset is the wrap32 sum of preceding resolved definitions' track counts in Character F8/104 order (`28BA230`), and the XP span comes from Character140/14C, bounded by the selected Def count. Source input:788 bytes. Search/registry utility leaves and future mutation of that vector remain separate gaps.
+
+The former extra-8 address label `28BD84A0` is corrected to actual **2BD84A0**. Its existing exact .3 religion proof is reused: kind0 neutral, kind1 virtue, kind2 sin in the effective Rite map. The newly read `291B690` contributes the actual provider+1620/+1630 owner block at +40 with unit-Q weight; record_out is null and this path does not multiply by religious record18/20 weights. `2549810` now has a closed signed32 membership predicate: a hit in the primary sorted keyset or any secondary sorted keyset returns true. Actual selector objects/keys remain bound to their caller operands; this does not turn selector offsets into guessed Character fields. These two functions cost1065 new frozen-file bytes, with the old classifier untouched.
+
+### Six-skill preparation has ordered context feedback
+
+The newly consumed cached `291C0D0` tail proves an additional dependency. For i=0..5 it calls `2BA95E0(Character, current_context, i)`, then conditionally appends two derived blocks from provider **08FD4E0**:
+
+1. First definition comes from the provider's F08 table, block at Def+40, with native guard **DWORD[Def+4C]!=0** and raw_i!=0; append weight is raw_i*100000.
+2. Second block comes from the F58 table, with native guard **DWORD[block+C]!=0** and wrap32(raw_i+DWORD[5C69D1C])!=0; its weight uses that same raw_i plus the signed runtime offset.
+3. Only then increment i. Each next raw skill sees both preceding context updates. The final completed context feeds v79's six-skill cache primitive; intermediate loop raw_i values are not its final raw6.
+
+The guards are **!=0**, not >0; first Def+4C is not block+4C. C's already sealed observer blueprint retains its historical earlier wording, with the authoritative additive [predicate correction](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-future-context-inputs-v80/observer-recipe/DERIVED-PREDICATE-CORRECTION.json) SHA `ac8f57f65a614b175596c99946b8ccf9abbe559e63ff48db111571ac76789a7d`. No code was generated from that earlier wording.
+
+```mermaid
+flowchart TD
+  Reset["291C010 conditional count reset"] --> Base["explicit materialized preparation stage"]
+  Base --> Traits["trait definitions + conditional keysets + current growth span"]
+  Traits --> Local["known Q contributions / classified owner blocks"]
+  Local -. "remaining preparation/clone postimages" .-> Pre["explicit pre-derived context"]
+  Pre --> Raw["i=0..5: raw_i from then-current context"]
+  Raw --> First["F08 Def+40: raw_i Q append when guards nonzero"]
+  First --> Second["F58 block: wrap32(raw_i+5C69D1C) Q append"]
+  Second --> Next["context updated before next i"]
+  Next --> Raw
+  Next --> Final["completed context -> adopted v79 primitive"]
+  Final -. "actual actor/roster/target/effectiveness and setter admission" .-> Entry["26344C0 Entry six stats"]
+  Final -. "selected commander martial DC and other side inputs/admission" .-> Advantage["258B510 resolved ->2587A90 advantage factor"]
+```
+
+The future `compose_trait_context_from_native_inputs_12003` [API blueprint](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-future-context-inputs-v80/cached-future-context-role/API-PLAN.json) is unimplemented. It requires source-staged materialized baselines, actual definitions/selected rows/growth data, other preparation postimages, both six-block tables and runtime5C69D1C. Current final rows already contain old derived contributions; they cannot be carried as a pre-loop baseline. Conditional Character D8/DC/E0/E4/E8/EC values alone neither refresh Entry six stats nor resolve commander advantage. Their actor/target/effectiveness/context/setter dependencies are explicitly retained in [the source ledger](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-future-context-inputs-v80/cached-future-context-role/DERIVED-LOOP-AND-DEPENDENCIES.json).
+
+### Existing MCP works without a battle or terminal journal
+
+The source-closed [current-query recipe](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-future-context-inputs-v80/observer-recipe/CURRENT-QUERY-RECIPE.json) uses existing `ck3_take_snapshot({include_native_command_history:false})`, then existing `ck3_query_battle_terminal_transition_v1` with `prior_combat_id=null`, `subject_public_cunit_id=null`, `after_terminal_sequence=null`, `character_ids=[29829]` and `expected_revision` bound to the actual public snapshot revision integer. No live BattleID, CUnitID or old terminal scope is required. Other actual full CharacterIDs may be supplied. The [offline JSON argument renderer](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-future-context-inputs-v80/observer-recipe/render_existing_query_arguments.py) only binds a saved public snapshot to arguments; no new tool or SDK action is introduced.
+
+Read `battle_terminal_transition.character_observations[*].current_person_state.raw_numeric_inputs`; top-level character_observations mirrors the same rows. In character-only scope, `battle_terminal_transition_ready=false` is normal and is not a raw-input failure. Match the actual CharacterID and preserve source identities, signed zero/negative values, null/read-unavailable distinction and null-scratch no-op. Current EC versus computed final prowess may be reported as an actual comparison; equality is not assumed from unclosed cache/publication timing and does not create an Entry/date gate.
+
+Root performs the fresh deployment and actual query. C is assigned the **sole original third MAIN consumer** after Root supplies its exact artifact path; it extracts raw inputs/current EC/source once and shares selected cached rows with A/B/D for pure comparisons. No old MAIN was reread and no actual SDK/RPM operation was delegated in this package.
+
+### Readiness and delivery
+
+v80 remains **research/source-ready local inputs and an actionable existing-query recipe**; v79's qualified current-input primitive is unchanged. Complete future context, Entry/advantage timing, lifecycle/callbacks, battle horizon and Monte Carlo remain partial. No new tests or live credit; v79's single GREEN case is reused by receipt. This EOF increment preserves the adopted83866-byte prefix. Additional frozen-file input totals **3029 bytes** (reset197+paired979+growth788+new classified/selector1065); no whole scan, full hash or repeated EXE capture.
+
+The [joint receipt and Oct5/W41 fields](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-future-context-inputs-v80/publication/ROOT-DELIVERY.json) link all source continuations, A/B/C contracts, the C predicate correction and D's sole necessary unexecuted plan. Root owns Git and real paused validation. Next source entrances are the explicit remaining preparation producers in B's ledger; next observable value is the g73 current raw-input frame through the existing recipe.
