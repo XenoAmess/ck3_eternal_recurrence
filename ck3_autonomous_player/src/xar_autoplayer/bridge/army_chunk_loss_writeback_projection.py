@@ -8,6 +8,8 @@ from __future__ import annotations
 
 from typing import Mapping
 
+from .army_regiment_refresh_projection import project_observed_raised_regiment_refresh
+
 SCALE = 100_000
 _MASK64 = (1 << 64) - 1
 
@@ -59,6 +61,7 @@ def project_observed_writer_chunk_changes(
         "input_basis": "same_frame_native_DATA_and_explicit_writer_request",
         "status": "unavailable", "chunk_writeback_ready": False,
         "actual_loss": False, "raised_regiment_current_after": None,
+        "conditional_raised_regiment_refresh": None,
         "missing_inputs": [], "writes": [], "physical_chunks_after": [],
     }
     rows = army_strength.get("regiment_strengths", [])
@@ -80,7 +83,12 @@ def project_observed_writer_chunk_changes(
     if skipped:
         return {**result, "status": "available", "chunk_writeback_ready": True,
                 "writer_skipped": True, "refresh_requested": False,
-                "remaining_writer_quantity_raw": raw, "physical_current_delta": 0}
+                "remaining_writer_quantity_raw": raw, "physical_current_delta": 0,
+                "conditional_raised_regiment_refresh": {
+                    "projection_kind": "conditional_raised_regiment_refresh",
+                    "status": "not_called", "current_maximum_ready": False,
+                    "actual_refresh": False, "missing_inputs": [],
+                    "reason": "2634880_true_writer_exits_before_refresh"}}
     records = data.get("records")
     if data.get("status") != "available" or not isinstance(records, list):
         result["missing_inputs"] = ["complete_available_DATA"]
@@ -141,4 +149,6 @@ def project_observed_writer_chunk_changes(
             "writer_skipped": False, "refresh_requested": True,
             "writes": writes, "physical_chunks_after": after,
             "remaining_writer_quantity_raw": remaining,
+            "conditional_raised_regiment_refresh": project_observed_raised_regiment_refresh(
+                data, physical_chunks_after=after),
             "physical_current_delta": sum(chunk["current"] for chunk in chunks.values()) - before}
