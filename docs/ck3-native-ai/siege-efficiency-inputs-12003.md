@@ -310,3 +310,17 @@ Military 同 raw 部署前 h8573 派生 cache 与本帧21字段相同，work del
 - guard184549452仍在1038、`embarked4 / target3711 / route[3711]`，第三玩家CUnit285212713仍在1038 regular1/空route；main301989997在470 sieging3/空route。P3711仍未占领、`active_siege=null / B0`，三支玩家军队均非combat/retreat，没有到达或新围城信用。
 - 唯一physical消费者完成32原JSON once（28 GREEN工具叶＋4 GREEN日结果）；Root独占TOP和独立末SAVE，专用actual-main004/006/008、前8日原包及共享专题未重读；本段只形成四个实际正常围城观察loop。
 - 原始输出 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v68/root-results/ordinary-r41-next-four02`；`-consumed01/ROOT-DELIVERY.json` SHAc78e8d0c036da3090918b599af76751990dd0404ad541b0256c248c3496e7949；`ROOT-DAY-WEEK-FIELDS.json` SHA8675f866bfec7c3c5b36b937e1b6ce94768b86206609212c69810b104fb1b36a。
+
+### R42 v69：支援军实际登陆目标并形成双围城观察
+
+- Root SDK79783正常关闭，16个独立保存单日实际 `53262288 → 53262672`，384 raw小时、16calendar/bounded/whole、partial0/failed0；累计 `4931 / resumed1778 / Oct5+273（W41）`。R41既有8+4日不重计，MAA创建仍为实际0，不将普通推进归因于器械收益。
+- guard184549452首次到达3711是day06：before `raw53262408/native25/public22` 仍1038 embarked4、route `[3711]`；after `raw53262432/native28/public25` 实际3711 sieging3、完整空route/targetnull。它由真实独立后态确认，不以先前first-edge 5.26667日模型或移动ACK代替到达。
+- 同day06独立P3711行已出现玩家Siege486539314/public besieger184549452/B3000，fort6/garrison500，C98980/T55000000/Q100000、progress0.179%、ETA555估计、未占领且CanStartfalse。正常 `h8636 / 98,317,274B / SHA624c93f495f800e6b19fa364932a02d8342fe19f252669c9ca2e28003cbd74d1` 冻结此到达与新普通围城primitive；没有占领、产权转移或war-win信用。
+- 最后 `raw53262672/native68/public65`，main301989997仍470 sieging3/空route，P470的Siege503316504为 `C24663339/T55000000/rem30336661/progress44.842%/B3085/ETA300估计`，未占领、breach0/CanStartfalse。
+- 同末帧guard仍3711 sieging3/空route，新Siege486539314推进为 `C1088780/T55000000/rem53911220/progress1.979%/B3000/ETA545估计`；同样未占领、breach0/CanStartfalse。到达之后已形成实际双围城普通观察loop，ETA不作为未来收复保证。
+- 第15日P470实际C由23960539到24561939，Δ601400，随后day16Δ101400；此跨度B3085不变。P3711 owned13–16每日Δ98980/B3000。generic ordinary daily progress、phase/counter/event-state均null，记录工作量变化而不归因于未采阶段事件、MAA或全军补员。
+- 当前玩家scope只有184549452和301989997，均非combat/retreat；原CUnit285212713不在末snapshot范围，不推merge、损失、health0或消失原因。Whole soldiers/supply null保持，不把besieging strength替代wholehealth。
+- War117440524仍active/player-relative+25；Robert29829 alive、episode `native-29829-2bc2d599f7f9` 未变，event及pending interaction均null。最后正常 `h8666 / 98,434,029B / SHA224128cbb6c405fa130d53075629deb5c409740f34f44e66bd68e66f4c70475a`，环境 `474acd8427e359bf6f99018684abb022a14b6e9fe5898cdaaabc7b049a0cba9e`。
+- Root-owned MAA实际失败已定位为registration缺slot、invalidrequest-before-worker，未执行native创建；不把本16日、第二围城或工作跳变归到尚未发生的器械动作。该source修复另包施工，不构成新增普通日执行门禁。
+- 四互斥physical组各4日，共128原JSON once（112 GREEN工具叶＋16 GREEN结果）；TOP/独立末SAVE由Root消费，MAA/专军力原件、旧R41包及共享专题未重读。本段实际16日正常观察loop与新3711围城primitive闭合，战争结束与目标占领仍未完成。
+- 原输出 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v69/rebind-cold/recovery-attempt-02/root-results/ordinary-r42-sixteen01`；派生 `-consumed01/ROOT-DELIVERY.json` SHA26e847d78276249676a0663110a5d45e97d9d353999e3a408e2d618f799c1a11、`ROOT-DAY-WEEK-FIELDS.json` SHA7e548642e4885b9b812efb6bf46a6ceaaae7271eddacbdc8f60e2ea43a179c71；首次到达cache SHA70936c1afcacd9a5f5b8e33a886e1b11ac5ff4c4be221cca6959f41b52aa850c。
