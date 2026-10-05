@@ -7815,6 +7815,8 @@ if(BUILD_TESTING)
 endif()
 
 # Focused current knight effectiveness context reader and literal bridge wire.
+include(cmake/initialization_context_stats_12003.cmake)
+
 if(BUILD_TESTING AND WIN32)
   find_package(Python3 COMPONENTS Interpreter REQUIRED)
   set(XAR_KNIGHT_CONTEXT_FIXTURE_DIR

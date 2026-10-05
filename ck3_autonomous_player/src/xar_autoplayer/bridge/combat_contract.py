@@ -2855,6 +2855,7 @@ def _normalize_combat_army(
                 raw_regiment,
                 name=f"{name}.regiments[{index}]",
                 target_province_id=target_province_id,
+                current_province_id=current_province_id,
                 input_gaps=input_gaps,
             )
             regiment_id = int(regiment["regiment_id"])
@@ -3037,7 +3038,11 @@ def _normalize_regiment(
     name: str,
     target_province_id: int,
     input_gaps: set[str],
+    current_province_id: int | None = None,
 ) -> dict[str, object]:
+    optional_keys = {"initialization_context_stats"} if (
+        isinstance(value, dict) and "initialization_context_stats" in value
+    ) else set()
     row = _exact_object(
         value,
         {
@@ -3052,7 +3057,7 @@ def _normalize_regiment(
             "effective_stats",
             "counter",
             "unavailable_reason",
-        },
+        } | optional_keys,
         name,
     )
     status = _available_status(row.get("status"), f"{name}.status")
@@ -3111,7 +3116,7 @@ def _normalize_regiment(
         raise ValueError(
             f"native unavailable {name} lacks a matching required-input gap"
         )
-    return {
+    result = {
         "status": status,
         "regiment_id": regiment_id,
         "identity_valid": identity_valid,
@@ -3124,6 +3129,14 @@ def _normalize_regiment(
         "counter": counter,
         "unavailable_reason": reason,
     }
+    if "initialization_context_stats" in row:
+        # Independent source leaf: do not replace target stats or query readiness.
+        result["initialization_context_stats"] = _normalize_effective_stats(
+            row["initialization_context_stats"],
+            name=f"{name}.initialization_context_stats",
+            target_province_id=current_province_id,
+        )
+    return result
 
 
 def _normalize_maa_type(value: object, *, name: str) -> dict[str, object]:

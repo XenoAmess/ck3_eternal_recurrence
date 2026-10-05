@@ -674,10 +674,14 @@ bool ReadCombatCounter(const CombatBindings &bindings, void *regiment,
       class_count, output);
 }
 
+#include "ck3_12003_initialization_context_stats.inc"
+
 bool ReadCombatRegiments(const CombatBindings &bindings, void *internal_army,
-                         void *target_province,
-                         std::int32_t target_province_id,
-                         std::int32_t counter_class_count,
+                          void *target_province,
+                          std::int32_t target_province_id,
+                          void *validated_current_province,
+                          std::int32_t current_province_id,
+                          std::int32_t counter_class_count,
                          std::vector<CombatRegimentSnapshot> &output,
                          bool &has_unavailable_subdomain,
                          std::string &unavailable_reason) noexcept {
@@ -743,6 +747,9 @@ bool ReadCombatRegiments(const CombatBindings &bindings, void *internal_army,
       row.available = false;
       row.unavailable_reason = row.effective_stats.unavailable_reason;
     }
+    ReadInitializationContextStats12003(
+        bindings, regiment, validated_current_province, current_province_id,
+        target_province_id, row);
     if (!ReadCombatCounter(bindings, regiment, row.regiment_id,
                            row.current_soldiers, counter_class_count,
                            row.counter)) {
@@ -1456,7 +1463,9 @@ CombatArmyInputsSnapshot ReadCombatArmyInputsRow(
 
   std::string regiment_failure;
   if (!ReadCombatRegiments(bindings, internal_army, target_province,
-                           target_province_id, counter_class_count,
+                           target_province_id,
+                           output.current_province_observable ? current_province : nullptr,
+                           output.current_province_id, counter_class_count,
                            output.regiments,
                            has_unavailable_subdomain, regiment_failure)) {
     output.regiments.clear();

@@ -365,3 +365,65 @@ test, process/pipe/query, SDK, UI, Steam, profile/save/cache operation or game d
 The initial plan checker rejected `--for-observation` because this is offline
 only; that attempt is preserved. The offline check is plan-consistent and
 expressly does not verify semantics or authorize live observation.
+
+## 2026-10-05: actual-current-Province initial six-stat observer implemented
+
+The closed differing-Province dependency above is implemented in the existing
+`ReadCombatSimulationInputs` path. `ReadCombatArmyInputsRow` supplies its already
+validated actual current Province pointer and ID to the Regiment loop. The new
+`ck3_12003_initialization_context_stats.inc` calls the existing
+`ReadEncounterEffectiveStats` only when that current Province differs from the
+requested target. It publishes an optional `initialization_context_stats`
+alongside the existing target tuple. Equality omits the optional leaf and adds
+no duplicate native helper call. An unobservable real current Province is not
+replaced by the native fallback or requested target.
+
+The DTO and production Regiment serializer preserve the same six-stat shape,
+source ProvinceID and independent availability/reason. The enclosing full CUnit,
+native CArmy, Regiment, encounter role, owner and knight identities remain those
+of the existing query. The strict normalizer binds the new available tuple to
+that Army's `current_province_id`. Optional failure does not change the existing
+target tuple or query completeness. Target-tuple failure likewise does not erase
+an independently available initial tuple.
+
+```mermaid
+flowchart LR
+  P[Existing validated Army current Province] --> C{Equals requested target}
+  C -->|yes| E[Existing effective_stats]
+  C -->|no| I[Same-query initial six stats at actual Province]
+  E --> A[Initial-stage adapter]
+  I --> A
+  A --> S[Explicit conditional initial cache input]
+  S -. Separate changed-context stage .-> F[Final side refresh]
+```
+
+The usable consumer is
+`simulation.battle_first_contact_final_stat_refresh_12003.initial_entry_stats_from_combat_regiment_12003`.
+It reuses the target tuple for equality and consumes only the new initial tuple
+for inequality. A missing unequal tuple remains a missing initial input; there
+is no target fallback. The adapter preserves source Province and Army/Regiment
+identities and supplies `EntrySixStatCache12003`, retaining signed raw values and
+valid zero. This is a frozen-current readonly evaluation supplied to a
+caller-conditioned initial stage. It does not prove that native initialization
+ran, establish future admission, or supply the changed-context final cache.
+
+Source/Mermaid/query plan was sealed before production edits:
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/first-contact-initial-stats/SOURCE-PLAN-SEALED.json`.
+It reuses the prior `first-contact-province-admission` source packet and exact
+EXE pin; new EXE reads/scans/hashes are0. One new focused Python case passed
+through full combat-input normalization and the committed peer adapter,
+covering unequal/equal selection, independent unavailability and actual-source
+binding. Its receipt is `first-contact-initial-stats/FOCUSED-PYTHON-RESULT.json`.
+`open_kaishek` is not applicable because this case covers native tuple wire and
+Python adapter behavior, without Paradox script semantics.
+
+New native target `xar_ck3_12003_initialization_context_stats_test` reuses the
+existing combat fake-memory setup and extracts literal production Regiment
+serializer functions. It covers differing/equal current Province, exact native
+helper call counts, initial helper failure and unchanged target readiness.
+Compilation/execution belongs to Root's central build; this lane did not run it.
+The Python consumer is static-ready; native producer code and fixture await
+central compilation. No CK3 launch/connection/query/SDK/pipe/attach, UI/Steam,
+process inspection, profile/save/game-cache, runtime preparation/deployment or
+game-day advance occurred. Full first-contact initialization/final preparation,
+forecast and live remain incomplete.

@@ -3241,6 +3241,10 @@ void AppendCombatRegiment(
   }
   result += ",\"effective_stats\":";
   AppendCombatEffectiveStats(result, regiment.effective_stats);
+  if (regiment.initialization_context_stats.has_value()) {
+    result += ",\"initialization_context_stats\":";
+    AppendCombatEffectiveStats(result, *regiment.initialization_context_stats);
+  }
   result += ",\"counter\":";
   AppendCombatCounter(result, regiment.counter);
   result += ",\"unavailable_reason\":";

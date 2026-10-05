@@ -539,6 +539,9 @@ struct CombatRegimentSnapshot {
   CombatMaaTypeSnapshot maa_type;
   CombatRegimentKindSnapshot kind;
   CombatEffectiveStatsSnapshot effective_stats;
+  // Same-query readonly initial-stage evaluation at the Army's current Province.
+  // Omitted when current==target; that case reuses effective_stats.
+  std::optional<CombatEffectiveStatsSnapshot> initialization_context_stats;
   CombatCounterSnapshot counter;
   std::string unavailable_reason;
 
