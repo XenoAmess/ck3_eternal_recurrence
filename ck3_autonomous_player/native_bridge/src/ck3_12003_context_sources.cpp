@@ -1155,6 +1155,7 @@ game::ContextSource291d7e0V1 BranchB(const ContextSourceBindingsV1 &b,
 #include "ck3_12003_person_gated_temporary_tail.inc.hpp"
 #include "ck3_12003_person_after_gated_tail.inc.hpp"
 #include "ck3_12003_person_provider192_and2920850.inc.hpp"
+#include "ck3_12003_person_following_2920b50.inc.hpp"
 
 game::ContextSourceLaterDirectV1 LaterDirect(
     const ContextSourceBindingsV1 &b, const void *character,
@@ -1359,6 +1360,7 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   b.gated_temporary_tail = BindGatedTemporaryTailSources12003(base);
   b.after_gated_tail = BindAfterGatedTailSources12003(base);
   b.provider192_and2920850 = BindProvider192And2920850Sources12003(base);
+  b.following_2920b50 = BindFollowing2920b50Sources12003(base);
   b.provider = reinterpret_cast<void *(*)()>(base + 0x8FD4E0);
   b.post_291d7e0_sources_enabled = true;
   b.post_ab_object_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E308);
@@ -1448,6 +1450,8 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.after_gated_tail_326a8e0_2920310 = AfterGatedTail326a8e0And2920310(b, character, character_id);
   if (b.provider192_and2920850.enabled)
     out.provider192_and2920850 = Provider192And2920850Inputs(b, character, character_id);
+  if (b.following_2920b50.enabled)
+    out.following_2920b50 = Following2920b50Inputs(b, character, character_id);
   out.branch_291e210 = BranchA(b, character);
   out.branch_291d7e0 = BranchB(b, character);
   if (b.post_291d7e0_sources_enabled)
@@ -1494,6 +1498,8 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.ready = out.ready && out.after_gated_tail_326a8e0_2920310->ready;
   if (out.provider192_and2920850)
     out.ready = out.ready && out.provider192_and2920850->ready;
+  if (out.following_2920b50)
+    out.ready = out.ready && out.following_2920b50->ready;
   out.status = out.ready ? "available" : "partial";
   if (!out.ready) out.reason = "context_source_reads_unavailable";
   return out;
