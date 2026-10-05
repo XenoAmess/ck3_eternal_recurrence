@@ -61,6 +61,7 @@ game::ArmyRegimentReplenishmentRecordV1 ReadRecord(
   }
   auto *const chunk = static_cast<std::byte *>(persistent) + 0x18 +
       static_cast<std::size_t>(result.chunk_index) * 0x24;
+  result.chunk_army_regiment_id = Load<std::int32_t>(chunk, 0x10);
   if (Load<std::int32_t>(chunk, 0x08) != result.persistent_regiment_id ||
       Load<std::int32_t>(chunk, 0x0C) != result.chunk_index ||
       Load<std::int32_t>(chunk, 0x10) != army_regiment_id) {
@@ -115,6 +116,14 @@ ReadArmyRegimentReplenishmentRecordsV1(
       Load<std::int32_t>(resolved_army_regiment, 0x10) != army_regiment_id) {
     result.unavailable_reason = "army_regiment_identity_invalid";
     return result;
+  }
+  if (bindings.is_army_regiment_loss_writer_skipped != nullptr) {
+    result.native_loss_writer_skipped =
+        bindings.is_army_regiment_loss_writer_skipped(
+            const_cast<void *>(resolved_army_regiment));
+  } else {
+    result.loss_writer_admission_unavailable_reason =
+        "loss_writer_admission_bindings_unavailable";
   }
   const void *const data = Load<const void *>(resolved_army_regiment, 0x20);
   const auto capacity = Load<std::int32_t>(resolved_army_regiment, 0x28);

@@ -7,6 +7,8 @@ _BOOL=("native_can_replenish","native_chunk_can_replenish")
 _I64=("persistent_monthly_replenishment_fraction_raw","persistent_prepared_replenishment_fraction_raw")
 _SCALE=("persistent_monthly_replenishment_fraction_scale","persistent_prepared_replenishment_fraction_scale")
 _RECORD={"status","unavailable_reason",*_I32,*_BOOL,*_I64,*_SCALE}
+_ADMISSION={"native_loss_writer_skipped","loss_writer_admission_unavailable_reason"}
+_ASSOCIATION={"chunk_army_regiment_id"}
 
 def integer(value, bits, name, nullable=True):
     if value is None and nullable:
@@ -20,7 +22,7 @@ def normalize_regiment_replenishment_records_v1(value: object) -> list[dict[str,
         raise ValueError("native full DATA must be an array")
     result=[]
     for row in value:
-        if not isinstance(row,dict) or set(row) != _ROW or row["source"] != "native_all_data_records":
+        if not isinstance(row,dict) or set(row) not in (_ROW,_ROW|_ADMISSION) or row["source"] != "native_all_data_records":
             raise ValueError("native full DATA regiment schema is malformed")
         integer(row["army_regiment_id"],32,"army_regiment_id",False)
         status=row["status"]
@@ -37,13 +39,23 @@ def normalize_regiment_replenishment_records_v1(value: object) -> list[dict[str,
         reason=row["unavailable_reason"]
         if (status=="available" and reason is not None) or (reason is not None and (not isinstance(reason,str) or not reason)):
             raise ValueError("native full DATA regiment reason is malformed")
+        skipped=row.get("native_loss_writer_skipped")
+        admission_reason=row.get("loss_writer_admission_unavailable_reason")
+        if skipped is not None and type(skipped) is not bool:
+            raise ValueError("native loss writer admission must be bool or null")
+        if admission_reason is not None and (not isinstance(admission_reason,str) or not admission_reason):
+            raise ValueError("native loss writer admission reason is malformed")
+        if skipped is not None and admission_reason is not None:
+            raise ValueError("native loss writer admission available value has a reason")
         for index,record in enumerate(records):
-            if not isinstance(record,dict) or set(record)!=_RECORD or record["status"] not in {"available","unavailable"}:
+            if not isinstance(record,dict) or set(record) not in (_RECORD,_RECORD|_ASSOCIATION) or record["status"] not in {"available","unavailable"}:
                 raise ValueError("native full DATA record schema is malformed")
             for field in _I32:
                 integer(record[field],32,field,field not in {"record_index","persistent_regiment_id","chunk_index"})
             for field in _I64:
                 integer(record[field],64,field)
+            if "chunk_army_regiment_id" in record:
+                integer(record["chunk_army_regiment_id"],32,"chunk_army_regiment_id")
             for field in _BOOL:
                 if record[field] is not None and type(record[field]) is not bool:
                     raise ValueError("native full DATA predicate must be bool or null")
@@ -53,9 +65,13 @@ def normalize_regiment_replenishment_records_v1(value: object) -> list[dict[str,
             reason=record["unavailable_reason"]
             if available and (reason is not None or any(record[field] is None for field in (*_I32,*_I64,*_BOOL))):
                 raise ValueError("native available full DATA record is incomplete")
+            if available and record.get("chunk_army_regiment_id") is not None and record["chunk_army_regiment_id"] != row["army_regiment_id"]:
+                raise ValueError("native available full DATA chunk association differs")
             if not available and (not isinstance(reason,str) or not reason):
                 raise ValueError("native unavailable full DATA record requires its reason")
         if status=="available" and any(record["status"]!="available" for record in records):
             raise ValueError("native complete full DATA contains an unavailable record")
-        result.append({**row,"records":[dict(record) for record in records]})
+        result.append({**row,"native_loss_writer_skipped":skipped,
+                       "loss_writer_admission_unavailable_reason":admission_reason,
+                       "records":[{**record,"chunk_army_regiment_id":record.get("chunk_army_regiment_id")} for record in records]})
     return result

@@ -7882,6 +7882,23 @@ if(BUILD_TESTING AND WIN32)
     FIXTURES_REQUIRED army_replenishment_records_wire)
 endif()
 
+# Readonly writer admission and associated DATA setter operands: one new target.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12003_loss_writer_inputs_test
+    src/ck3_12003_army_replenishment_records.cpp
+    src/ck3_12003_loss_writer_inputs_test.cpp)
+  target_include_directories(xar_ck3_12003_loss_writer_inputs_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_loss_writer_inputs_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_loss_writer_inputs_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_loss_writer_inputs_test PRIVATE
+      /W4 /WX /permissive- /EHsc /Gy /O2)
+  endif()
+  add_test(NAME xar_ck3_12003_loss_writer_inputs
+    COMMAND xar_ck3_12003_loss_writer_inputs_test)
+endif()
+
 # Complete committed-route predictions reuse the production route reader and
 # strengths serializer; the registered MCP consumes the four emitted packets.
 if(BUILD_TESTING AND WIN32)

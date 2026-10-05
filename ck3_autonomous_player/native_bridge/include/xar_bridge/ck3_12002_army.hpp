@@ -38,6 +38,7 @@ inline constexpr std::uintptr_t kArmyCountyEntryMultiplierRva12003 = 0x24DD9C0;
 inline constexpr std::uintptr_t kArmyCountyEntryMinimumRva12003 = 0x5C68B64;
 inline constexpr std::uintptr_t kArmyCountyEntryPredicateRva12003 = 0x24E2250;
 inline constexpr std::uintptr_t kArmyCountyEntryCharacterStorageRva12003 = 0x5C67568;
+inline constexpr std::uintptr_t kArmyRegimentLossWriterSkippedRva12003 = 0x2634880;
 
 struct ArmyBindings {
   bool enabled = false;
@@ -101,6 +102,8 @@ struct ArmyBindings {
   std::int64_t *(*get_county_entry_loss_fraction)(void *, std::int64_t *) = nullptr;
   std::int64_t *(*get_county_entry_multiplier)(std::int64_t *, void *) = nullptr;
   bool (*county_entry_condition)(void *, void *, void *, std::int32_t) = nullptr;
+  // Exact .3 readonly Char FullID predicate used by26341B0 before DATA writes.
+  bool (*is_army_regiment_loss_writer_skipped)(void *) = nullptr;
 };
 
 // Same GDbo key/tier implementation used by the raised ArRg reader.

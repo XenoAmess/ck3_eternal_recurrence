@@ -314,6 +314,12 @@ inline void AppendArmyStrengthV1(
       result += ",\"unavailable_reason\":";
       if (regiment.unavailable_reason.empty()) result += "null";
       else append_json_string(result,regiment.unavailable_reason);
+      result += ",\"native_loss_writer_skipped\":";
+      result += regiment.native_loss_writer_skipped.has_value()
+          ? (*regiment.native_loss_writer_skipped ? "true" : "false") : "null";
+      result += ",\"loss_writer_admission_unavailable_reason\":";
+      if (regiment.loss_writer_admission_unavailable_reason.empty()) result += "null";
+      else append_json_string(result,regiment.loss_writer_admission_unavailable_reason);
       result += ",\"records\":[";
       bool first_record=true;
       for (const auto &record : regiment.records) {
@@ -339,6 +345,7 @@ inline void AppendArmyStrengthV1(
         optional_number("maximum_soldiers",record.maximum_soldiers);
         optional_number("effective_current_soldiers",record.effective_current_soldiers);
         optional_number("state_raw",record.state_raw);
+        optional_number("chunk_army_regiment_id",record.chunk_army_regiment_id);
         optional_bool("native_can_replenish",record.native_can_replenish);
         optional_bool("native_chunk_can_replenish",record.native_chunk_can_replenish);
         optional_number("persistent_monthly_replenishment_fraction_raw",record.persistent_monthly_replenishment_fraction_raw);

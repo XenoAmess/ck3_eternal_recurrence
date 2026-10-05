@@ -206,6 +206,9 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     result.armies.get_regiment_monthly_replenishment_fraction =
         reinterpret_cast<decltype(result.armies.get_regiment_monthly_replenishment_fraction)>(
             image_base + ck3_12002::kRegimentMonthlyReplenishmentRva12003);
+    result.armies.is_army_regiment_loss_writer_skipped =
+        reinterpret_cast<decltype(result.armies.is_army_regiment_loss_writer_skipped)>(
+            image_base + ck3_12002::kArmyRegimentLossWriterSkippedRva12003);
     result.armies.get_army_monthly_supply_change =
         reinterpret_cast<decltype(result.armies.get_army_monthly_supply_change)>(
             image_base + ck3_12002::kArmyMonthlySupplyChangeRva12003);

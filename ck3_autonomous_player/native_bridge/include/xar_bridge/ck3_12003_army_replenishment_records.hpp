@@ -41,6 +41,8 @@ struct ArmyRegimentReplenishmentRecordV1 {
   // physical current above, rather than replacing zero with that operand.
   std::optional<std::int32_t> effective_current_soldiers;
   std::optional<std::int32_t> state_raw;
+  // Physical chunk+10. Available DATA already validates this ArRg backlink.
+  std::optional<std::int32_t> chunk_army_regiment_id;
   std::optional<bool> native_can_replenish;
   std::optional<bool> native_chunk_can_replenish;
   // Both are whole-persistent signed Q100000 values. The first is the fresh
@@ -57,6 +59,8 @@ struct ArmyRegimentReplenishmentRecordsSnapshotV1 {
       ArmyRegimentReplenishmentRecordsStatusV1::unavailable;
   std::int32_t army_regiment_id = -1;
   std::optional<std::int32_t> native_data_record_count;
+  std::optional<bool> native_loss_writer_skipped;
+  std::string_view loss_writer_admission_unavailable_reason{};
   std::string_view unavailable_reason{};
   std::vector<ArmyRegimentReplenishmentRecordV1> records;
   friend bool operator==(const ArmyRegimentReplenishmentRecordsSnapshotV1 &,
