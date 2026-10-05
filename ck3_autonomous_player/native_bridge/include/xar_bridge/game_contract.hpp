@@ -355,6 +355,39 @@ struct ArmyDailyQueueInputsV1 {
                          const ArmyDailyQueueInputsV1 &) = default;
 };
 
+struct ArmyManagerCleanupIdListV1 {
+  std::string manager_offset;
+  std::optional<std::vector<std::int32_t>> ordered_army_ids;
+  friend bool operator==(const ArmyManagerCleanupIdListV1 &,
+                         const ArmyManagerCleanupIdListV1 &) = default;
+};
+
+struct ArmyManagerCleanupBucketRowV1 {
+  std::int32_t stored_index = 0;
+  std::optional<std::int32_t> observed_army_id;
+  bool native_same_cleanup_army_pointer = false;
+  friend bool operator==(const ArmyManagerCleanupBucketRowV1 &,
+                         const ArmyManagerCleanupBucketRowV1 &) = default;
+};
+
+// Initial first daily request and the finite2A98200 manager membership stage.
+// The bucket's helper-resolved physical Army can differ from the passed Army.
+struct ArmyFirstRemovalCleanupInputsV1 {
+  bool available = false;
+  std::string unavailable_reason;
+  std::optional<bool> candidate_found;
+  std::optional<std::int32_t> candidate_stored_index;
+  std::optional<std::int32_t> argument_army_id;
+  std::optional<std::int32_t> cleanup_resolved_army_id;
+  std::optional<bool> cleanup_used_fallback;
+  std::optional<std::uint32_t> selected_bucket_index;
+  std::vector<ArmyManagerCleanupIdListV1> id_lists;
+  std::optional<std::vector<ArmyManagerCleanupBucketRowV1>> selected_bucket_rows;
+  std::optional<std::vector<std::array<std::uint32_t, 4>>> records_b0;
+  friend bool operator==(const ArmyFirstRemovalCleanupInputsV1 &,
+                         const ArmyFirstRemovalCleanupInputsV1 &) = default;
+};
+
 // Current native county-entry budget, independent of a route or applied event.
 // The predicate uses the validated current province and the FIRST province of
 // the complete stored route. It omits the entry executor's special-call flag;
@@ -470,6 +503,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyMonthlyLossBudgetInputsV1> monthly_loss_budget_inputs_v1;
   std::optional<ArmyMonthlyCallerEffectInputsV1> monthly_caller_effect_inputs_v1;
   std::optional<ArmyDailyQueueInputsV1> monthly_daily_queue_inputs_v1;
+  std::optional<ArmyFirstRemovalCleanupInputsV1> monthly_first_removal_cleanup_inputs_v1;
   std::optional<ArmyCountyEntryInputsV1> county_entry_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<NativeMaaRecruitmentInputsV1> native_maa_recruitment_inputs_v1;

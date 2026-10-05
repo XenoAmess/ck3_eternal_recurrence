@@ -233,6 +233,83 @@ inline void AppendArmyDailyQueueInputsV1(
   output += '}';
 }
 
+template <class Number, class JsonString>
+inline void AppendArmyFirstRemovalCleanupInputsV1(
+    std::string &output, const ArmyFirstRemovalCleanupInputsV1 &inputs,
+    Number number, JsonString append_json_string) {
+  output += "{\"status\":\"";
+  output += inputs.available ? "available" : "unavailable";
+  output += "\",\"ready\":";
+  output += inputs.available ? "true" : "false";
+  output += ",\"unavailable_reason\":";
+  if (inputs.unavailable_reason.empty()) output += "null";
+  else append_json_string(output, inputs.unavailable_reason);
+  const auto integer = [&](std::string_view key, const auto &value) {
+    output += ",\""; output += key; output += "\":";
+    output += value.has_value() ? number(*value) : "null";
+  };
+  const auto boolean = [&](std::string_view key, const std::optional<bool> &value) {
+    output += ",\""; output += key; output += "\":";
+    output += value ? (*value ? "true" : "false") : "null";
+  };
+  boolean("candidate_found", inputs.candidate_found);
+  integer("candidate_stored_index", inputs.candidate_stored_index);
+  integer("argument_army_id", inputs.argument_army_id);
+  integer("cleanup_resolved_army_id", inputs.cleanup_resolved_army_id);
+  boolean("cleanup_used_fallback", inputs.cleanup_used_fallback);
+  integer("selected_bucket_index", inputs.selected_bucket_index);
+  output += ",\"id_lists\":[";
+  bool first = true;
+  for (const auto &row : inputs.id_lists) {
+    if (!first) output += ',';
+    first = false;
+    output += "{\"manager_offset\":";
+    append_json_string(output, row.manager_offset);
+    output += ",\"ordered_army_ids\":";
+    if (row.ordered_army_ids) {
+      output += '[';
+      bool first_id = true;
+      for (const auto id : *row.ordered_army_ids) {
+        if (!first_id) output += ',';
+        first_id = false; output += number(id);
+      }
+      output += ']';
+    } else output += "null";
+    output += '}';
+  }
+  output += "],\"selected_bucket_rows\":";
+  if (inputs.selected_bucket_rows) {
+    output += '[';
+    first = true;
+    for (const auto &row : *inputs.selected_bucket_rows) {
+      if (!first) output += ',';
+      first = false;
+      output += "{\"stored_index\":" + number(row.stored_index);
+      integer("observed_army_id", row.observed_army_id);
+      output += ",\"native_same_cleanup_army_pointer\":";
+      output += row.native_same_cleanup_army_pointer ? "true" : "false";
+      output += '}';
+    }
+    output += ']';
+  } else output += "null";
+  output += ",\"records_b0\":";
+  if (inputs.records_b0) {
+    output += '[';
+    first = true;
+    for (const auto &words : *inputs.records_b0) {
+      if (!first) output += ',';
+      first = false; output += '[';
+      for (std::size_t index = 0; index < words.size(); ++index) {
+        if (index != 0) output += ',';
+        output += number(words[index]);
+      }
+      output += ']';
+    }
+    output += ']';
+  } else output += "null";
+  output += '}';
+}
+
 // One row implementation shared by the bridge and its production-reader fixture.
 // The bridge supplies its existing number, array, and string-escaping helpers.
 template <class Number, class Int32Array, class JsonString>
@@ -282,6 +359,11 @@ inline void AppendArmyStrengthV1(
     result += ",\"monthly_daily_queue_inputs_v1\":";
     AppendArmyDailyQueueInputsV1(result, *strength.monthly_daily_queue_inputs_v1,
                                 number, append_json_string);
+  }
+  if (strength.monthly_first_removal_cleanup_inputs_v1) {
+    result += ",\"monthly_first_removal_cleanup_inputs_v1\":";
+    AppendArmyFirstRemovalCleanupInputsV1(result, *strength.monthly_first_removal_cleanup_inputs_v1,
+                                        number, append_json_string);
   }
   result += ",\"scope_role\":\"";
   switch (strength.scope_role) {

@@ -143,6 +143,7 @@ struct ArmyBindings {
   ArmyMonthlyLossBudgetBindings12003 monthly_loss_budget_bindings{};
   ArmyMonthlyCallerEffectBindings12003 monthly_caller_effect_bindings{};
   ArmyDailyQueueBindings12003 monthly_daily_queue_bindings{};
+  bool monthly_first_removal_cleanup_inputs_enabled = false;
 };
 
 // Same GDbo key/tier implementation used by the raised ArRg reader.

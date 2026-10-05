@@ -17,6 +17,7 @@ from .army_loss_sequence_replay import project_conditional_army_loss_sequence
 from .army_monthly_loss_budget_projection import construct_conditional_monthly_loss_budgets
 from .army_monthly_caller_effect_projection import project_conditional_monthly_caller_effects
 from .army_daily_queue_transfer_projection import project_conditional_daily_id_transfer
+from .army_manager_cleanup_projection import project_conditional_first_removal_manager_cleanup
 
 
 FRACTION_SCALE = 100_000
@@ -211,6 +212,8 @@ def project_observed_army_loss_requests(
         conditional_budgets = construct_conditional_monthly_loss_budgets(army)
         conditional_caller_effects = project_conditional_monthly_caller_effects(army, conditional_budgets)
         conditional_daily_transfer = project_conditional_daily_id_transfer(army)
+        conditional_manager_cleanup = project_conditional_first_removal_manager_cleanup(
+            army, conditional_daily_transfer)
         inputs = army.get("loss_application_inputs_v1")
         if army.get("status") != "available" or not isinstance(inputs, dict) or inputs.get("status") != "available":
             result.append({
@@ -222,6 +225,7 @@ def project_observed_army_loss_requests(
                     conditional_budgets,
                 "same_input_conditional_monthly_caller_effects_v1": conditional_caller_effects,
                 "same_input_conditional_daily_id_transfer_v1": conditional_daily_transfer,
+                "same_input_conditional_first_removal_manager_cleanup_v1": conditional_manager_cleanup,
             })
             continue
         preferred = None
@@ -274,6 +278,7 @@ def project_observed_army_loss_requests(
         )
         projection["same_input_conditional_monthly_caller_effects_v1"] = conditional_caller_effects
         projection["same_input_conditional_daily_id_transfer_v1"] = conditional_daily_transfer
+        projection["same_input_conditional_first_removal_manager_cleanup_v1"] = conditional_manager_cleanup
         result.append({
             "army_id": army["army_id"], **projection,
             "input_basis": "current_readonly_inputs; conditional requests, not updater execution",

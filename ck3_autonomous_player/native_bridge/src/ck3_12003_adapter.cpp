@@ -174,6 +174,7 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     caller.contains_war_participant =
         reinterpret_cast<decltype(caller.contains_war_participant)>(image_base + 0x2494B60);
     result.armies.monthly_daily_queue_bindings.enabled = true;
+    result.armies.monthly_first_removal_cleanup_inputs_enabled = true;
     result.armies.monthly_daily_queue_bindings.army_fallback_slot =
         reinterpret_cast<void **>(image_base + 0x5D1DE50);
     result.armies.is_regiment_supply_loss_eligible =

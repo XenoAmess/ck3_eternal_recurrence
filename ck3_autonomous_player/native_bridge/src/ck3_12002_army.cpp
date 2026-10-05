@@ -600,6 +600,97 @@ game::ArmyDailyQueueInputsV1 DailyQueueInputs(const ArmyBindings &bindings) {
   return result;
 }
 
+game::ArmyFirstRemovalCleanupInputsV1 EmptyCleanupInputs() {
+  game::ArmyFirstRemovalCleanupInputsV1 result{};
+  for (const auto *offset : {"50", "68", "80", "98", "c8", "158"})
+    result.id_lists.push_back({offset, std::nullopt});
+  return result;
+}
+
+game::ArmyFirstRemovalCleanupInputsV1 FirstRemovalCleanupSample(
+    const ArmyBindings &bindings) {
+  auto result = EmptyCleanupInputs();
+  void *game_data = nullptr;
+  if (bindings.game_state_slot != nullptr && *bindings.game_state_slot != nullptr)
+    game_data = Load<void *>(*bindings.game_state_slot, 0xA0);
+  if (game_data == nullptr) {
+    result.unavailable_reason = "first_removal_manager_unavailable";
+    return result;
+  }
+  auto *manager = static_cast<std::byte *>(game_data) + 0x2A540;
+  constexpr std::array<std::size_t, 6> offsets{0x50, 0x68, 0x80, 0x98, 0xC8, 0x158};
+  for (std::size_t index = 0; index < offsets.size(); ++index)
+    result.id_lists[index].ordered_army_ids = CallerIdList(manager + offsets[index]);
+  const auto record_count = Load<std::int32_t>(manager, 0xBC);
+  const auto *records = Load<const std::byte *>(manager, 0xB0);
+  if (record_count <= 0 || records != nullptr) {
+    result.records_b0.emplace();
+    for (std::int32_t index = 0; index < record_count; ++index)
+      result.records_b0->push_back(Load<std::array<std::uint32_t, 4>>(
+          records, static_cast<std::size_t>(index) * 0x10));
+  }
+
+  // The queue helper resolves the passed Army once;2A98200 independently
+  // resolves that object's FullID again. Those are distinct physical roles.
+  const auto queue = DailyQueueSample(bindings);
+  if (queue.manager_army_id_list_2a5a8 && queue.initial_army_resolution_rows) {
+    result.candidate_found = false;
+    for (const auto &row : *queue.initial_army_resolution_rows) {
+      if (!row.available) { result.candidate_found.reset(); break; }
+      if (*row.native_army_identity_valid) {
+        result.candidate_found = true;
+        result.candidate_stored_index = row.stored_index;
+        result.argument_army_id = row.resolved_army_id;
+        break;
+      }
+    }
+  }
+  if (result.candidate_found == true) {
+    bool fallback = false;
+    void *cleanup_army = ResolveBudgetObject(bindings.internal_army_storage_slot,
+        bindings.monthly_daily_queue_bindings.army_fallback_slot,
+        *result.argument_army_id, 0x10, &fallback);
+    if (cleanup_army != nullptr) {
+      result.cleanup_resolved_army_id = Load<std::int32_t>(cleanup_army, 0x10);
+      result.cleanup_used_fallback = fallback;
+      result.selected_bucket_index =
+          static_cast<std::uint32_t>(*result.cleanup_resolved_army_id) % 30U;
+      const auto bucket_offset = 0x198 + 0x18 * static_cast<std::size_t>(*result.selected_bucket_index);
+      const auto count = Load<std::int32_t>(manager, bucket_offset + 0xC);
+      const auto *pointers = Load<void *const *>(manager, bucket_offset);
+      if (count <= 0 || pointers != nullptr) {
+        result.selected_bucket_rows.emplace();
+        for (std::int32_t index = 0; index < count; ++index) {
+          game::ArmyManagerCleanupBucketRowV1 row{};
+          row.stored_index = index;
+          void *object = pointers[index];
+          if (object != nullptr) row.observed_army_id = Load<std::int32_t>(object, 0x10);
+          row.native_same_cleanup_army_pointer = object == cleanup_army;
+          result.selected_bucket_rows->push_back(row);
+        }
+      }
+    }
+  }
+  result.available = result.candidate_found.has_value();
+  if (result.candidate_found == true) {
+    result.available &= result.cleanup_resolved_army_id.has_value() &&
+        result.selected_bucket_rows.has_value() && result.records_b0.has_value();
+    for (const auto &row : result.id_lists) result.available &= row.ordered_army_ids.has_value();
+  }
+  if (!result.available) result.unavailable_reason = "first_removal_cleanup_operands_unavailable";
+  return result;
+}
+
+game::ArmyFirstRemovalCleanupInputsV1 FirstRemovalCleanupInputs(
+    const ArmyBindings &bindings) {
+  const auto first = FirstRemovalCleanupSample(bindings);
+  const auto second = FirstRemovalCleanupSample(bindings);
+  if (first == second) return second;
+  auto result = EmptyCleanupInputs();
+  result.unavailable_reason = "first_removal_cleanup_inputs_changed_during_read";
+  return result;
+}
+
 game::ArmyCountyEntryInputsV1 CountyEntryInputs(
     const ArmyBindings &bindings, void *army, void *unit,
     std::int32_t whole_soldiers) {
@@ -840,6 +931,10 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
     if (bindings.monthly_daily_queue_bindings.enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("daily_queue_initial_inputs_readonly");
       result.monthly_daily_queue_inputs_v1 = DailyQueueInputs(bindings);
+    }
+    if (bindings.monthly_first_removal_cleanup_inputs_enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("first_removal_cleanup_inputs_readonly");
+      result.monthly_first_removal_cleanup_inputs_v1 = FirstRemovalCleanupInputs(bindings);
     }
     if (bindings.county_entry_inputs_enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("county_entry_current_inputs_getters");

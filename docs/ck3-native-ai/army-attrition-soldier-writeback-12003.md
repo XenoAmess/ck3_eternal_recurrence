@@ -1143,3 +1143,74 @@ Actualtransfer/removal/poststate/fullorderedremoval/fullmonthlylifecycle
 stayfalse/null. Oldcases/oldsamples/old6callerwire reruns0; gamequeries/actions/
 newdays/runtimechanges0. Nextconcretefrontier is2A978A0's first2A98200 call
 footprint beforeitsownArmyidentity/registrygates, cachefirst/sourceonly.
+
+## 2026-10-06 first-removal manager membership stage
+
+Source was sealed before this implementation at
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/monthly-caller-effects/queue-consumer-source/first-removal-stage-ledger/ROOT-DELIVERY.json`
+(SHA256 `1e4f082b98ade2505518776cb19e1d0fdf2984aaf17fdc8de305a95e56bdffb7`).
+`SOURCE-STAGES.md` holds the complete source footprints and later-stage
+ledger; `QUERY-PLAN.md` pins the exact optional input fields. The897-byte
+`2A98200` body and cached C46100/880430/3F90890/move helpers close this finite
+stage. The actual new frozen read cost1625bytes is retained, including the
+avoidable recapture of a body later located in a generically named cache.
+
+`2A978A0` first passes **the selected Army's actual FullID**, rather than
+its queued raw reference, to `2A98200`. Manager+50 removes the first matching
+DWORD with a stable shift. Manager+68/+80/+98/+C8/+158 remove only the first
+match with a swap from the last element. Manager+B0 removes all matching
+first DWORDs from16-byte opaque records by repeated swap-tail, preserving
+all four raw words. The helper independently resolves its FullID argument;
+unsigned32 resolvedID%30 selects the manager+198+24*phase pointer bucket.
+That bucket removes all **physical pointer** matches with a stable shift.
+Equal FullIDs do not replace the observed native pointer-equality flags.
+For the first daily request, helper-entry manager+68 is derived[] after
+the already modeled transfer; the original query queue is not reused there.
+
+```mermaid
+flowchart TD
+  A[First valid initial daily request] --> B[2A98200 actual passed Army FullID]
+  B --> C[50 stable first removal]
+  C --> D[Resolve FullID again / unsigned32 modulo30]
+  D --> E[Selected bucket stable all physical pointer matches]
+  E --> F[68 derived empty; 80/98/C8/158 swap-last first]
+  F --> G[B0 opaque records swap-tail all matches]
+  G --> H[Passed Army identity preserved by this finite stage]
+  H -. unknown subordinate/virtual effects .-> I[Later DB gate and subsequent occurrence]
+```
+
+The optional exact.3 input block `monthly_first_removal_cleanup_inputs_v1`
+publishes candidate index/argument, six ordered raw ID-list components,
+four-word records, second-lookup ID/fallback and bucket occurrences with
+native pointer-equality flags. The readonly provider uses two complete
+samples; a changed new family becomes unavailable independently of existing
+strengths. It never calls the remover or transfer. The shared serializer
+and Python authority preserve nullable components and source order.
+`same_input_conditional_first_removal_manager_cleanup_v1` derives independent
+list/bucket/record families and the first passed-Army identity after this
+top stage. Candidate and observed queue disagreements retain an explicit
+missing-input boundary. Actual cleanup/removal/poststate and full lifecycle
+remainfalse/null, including all later duplicate occurrences.
+
+Correction to the earlier destruction summary: `2A97E1F` reads the slot
+Army's FullID **after** its virtual destructor returns; the recycledID's
+high8 bits therefore come from that post-virtual value. The earlier phrase
+“old generation bits” is not proof of unchanged initial generation.
+The late DB gate also compares current FullIDs without requiring the slot
+Army pointer to equal the passed Army pointer. Those later-stage operands
+and virtual effects remain outside this finite membership projection.
+
+One new production service case `test_conditional_manager_cleanup.py` passed
+once onOct6 at01:05:01+08 (1case0.005s/process1.6376012s). It checks raw
+queuedID versus actual argument, the second physical resolution, ordered
+duplicate removals, four-word swap-tail preservation, unsigned bucket
+selection and independently available components without changing actual
+readiness. Its external Python receipt SHA256 is
+`8dfcc48c62e1f68e91795178817f0f40f547e811165e4cb77244cb967a542f18`.
+The new native target
+`xar_ck3_12003_first_removal_cleanup_inputs_test` / CTest
+`xar_ck3_12003_first_removal_cleanup_inputs` are the qualification path.
+Four new serializer wires are planned under `first-removal-cleanup-wire`:
+first-cleanup, distinct-helper-resolution, partial-bucket and empty-queue.
+Native qualification remains pending the centrally owned build/CTest.
+No game operation or game-day advance is part of this package.
