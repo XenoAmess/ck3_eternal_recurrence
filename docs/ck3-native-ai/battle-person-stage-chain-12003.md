@@ -1092,3 +1092,50 @@ this future consumer. External
 dependency/order before code. Genuine raw contract and producer emitter are
 required next; this source-plan increment runs no tests/builds/game and changes
 no current scalar context or full person/Entry readiness.
+
+## Genuine minimum nonnegative-balance classifier stage connected
+
+Source3ea9c010, bitmask7344d3a0 and minimum final schema8f856e80 precede
+genuine pure/shared-normalizer commit
+`9bdcf51e835ffefbee5aaadee2afc83122ec604b`. The released scope is
+nonnegative balance only. This consumer calls its actual whole emitter through
+`through_stage="following_2bca620"`; it does not duplicate the classifier or
+implement a negative-income kernel. Available caller selection/magic/PC can
+reach `post2BCA620_pre291CCD7`. The stage ledger retains the real balance,
+classifier and selected-provider metadata. For partial inputs it also carries
+their actual reason fields, including `negative_balance_income_2bca4e0`.
+
+```mermaid
+flowchart TD
+  A[Verified post2920B50_pre291CC76 context] --> B[Actual balance or source-defined absent0]
+  B -->|nonnegative| I[Actual classifier-1]
+  B -. negative income unobserved .-> U[Retain preCC76 context and exact2BCA4E0 dependency]
+  I --> P[Signed provider count equality first1690; otherwise actual fallback]
+  P --> M{Selected magic ObDG?}
+  M -->|false| F[post2BCA620_pre291CCD7; zero requests]
+  M -->|true| C[One signed typedPC40 request at100000 evenempty]
+  C --> F
+  F -. next actual source .-> N[Bit29 / landed source /312A950]
+```
+
+One new production-normalizer→chain→six-skill compound case in
+`test_battle_person_classifier_stage_chain_12003.py` is GREEN on its first
+execution at2026-10-06 05:06:26CST (1/1,0.046s), external
+`following2bca620-attempt-01.json`. Classifier-1 equals observed count-1
+and selects the actual sentinel before indexed-range/fallback logic. Its
+signed PC changes aggregate to8707450/weighted74 and skills
+`[6,6,6,6,6,93]`, below the existing120 cap. The fallback-empty case retains
+one source request with no new weighted row, aggregate20707450/weighted73,
+raw213/final120. Failed magic emits zero requests yet advances this known
+stage with the same preserved prior. Negative balance keeps
+`post2920B50_pre291CC76`, the same prior/capped skills120, zero requests and
+the precise real income reason. Current-final99Q is never substituted for
+the explicit logical prior. Raw fixture input and prior remain unchanged.
+
+This is static-ready conditional pure assembly within the released minimum
+balance scope. No cached2B0 substitute, negative classifier branch, initializer
+or fresh rebuild equivalence is claimed. Full person preparation/Entry flags
+remain false; next caller family is
+`291CCD7_bit29_land_source_312A950`. The consumer performs no old/sibling
+test reruns, native build, EXE read or game operation. Native producer scenes
+and their separate first qualification remain the central owner's work.
