@@ -1,5 +1,7 @@
 ﻿#pragma once
 
+#include "xar_bridge/ck3_12003_context_sources.hpp"
+
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_routes.hpp"
 #include "xar_bridge/ck3_12002_combat.hpp"
@@ -52,6 +54,7 @@ using ReadBattleSideModifier = std::int64_t *(*)(
     std::int64_t *output, void *combat_side, std::uint16_t modifier_enum);
 
 struct BattleBindings {
+  ContextSourceBindingsV1 current_person_context_source_inputs{};
   bool enabled = false;
   void **game_state_slot = nullptr;
   void **jomini_state_slot = nullptr;

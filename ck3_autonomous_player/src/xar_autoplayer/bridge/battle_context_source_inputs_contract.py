@@ -1,0 +1,469 @@
+"""Current exact .3 source operands, independently from prepared context.
+
+Native row order, snapshot-local definition identities and raw signed words
+are retained. The optional enclosing field distinguishes older producers
+from an explicitly null source observation. No branch applies native writes.
+"""
+
+from __future__ import annotations
+
+from typing import TYPE_CHECKING
+
+if TYPE_CHECKING:
+    from ..simulation.battle_context_preparation_branch_291e210_12003 import (
+        NativeWeightedContributionRequest12003,
+    )
+
+
+_SPAN_NAMES = (
+    "selected_lifestyle_span", "selected_dynasty_span", "selected_house_span",
+    "selected_house_extra_span",
+)
+
+
+def _dict(value: object, field: str, fields: set[str]) -> dict[str, object]:
+    if not isinstance(value, dict) or set(value) != fields:
+        raise ValueError(f"{field} must contain exactly {sorted(fields)}")
+    return value
+
+
+def _integer(value: object, field: str, bits: int, *, unsigned: bool = False) -> int:
+    minimum = 0 if unsigned else -(2 ** (bits - 1))
+    maximum = 2**bits - 1 if unsigned else 2 ** (bits - 1) - 1
+    if type(value) is not int or not minimum <= value <= maximum:
+        raise ValueError(f"{field} must be a native {'unsigned' if unsigned else 'signed'}{bits} integer")
+    return value
+
+
+def _number(value: object, field: str, bits: int, *, unsigned: bool = False) -> int | None:
+    return None if value is None else _integer(value, field, bits, unsigned=unsigned)
+
+
+def _boolean(value: object, field: str, *, optional: bool = False) -> bool | None:
+    if optional and value is None:
+        return None
+    if type(value) is not bool:
+        raise ValueError(f"{field} must be a boolean{' or null' if optional else ''}")
+    return value
+
+
+def _string(value: object, field: str, *, optional: bool = False) -> str | None:
+    if optional and value is None:
+        return None
+    if type(value) is not str or not value:
+        raise ValueError(f"{field} must be a nonempty string{' or null' if optional else ''}")
+    return value
+
+
+def _numbers(value: object, field: str, bits: int, *, unsigned: bool = False) -> list[int] | None:
+    if value is None:
+        return None
+    if not isinstance(value, list):
+        raise ValueError(f"{field} must be a list or null")
+    return [_integer(item, f"{field}[{i}]", bits, unsigned=unsigned)
+            for i, item in enumerate(value)]
+
+
+def _properties(value: object, field: str) -> dict[str, object] | None:
+    if value is None:
+        return None
+    raw = _dict(value, field, {
+        "keys_count", "values_count", "keys_u16", "values_q64", "reason",
+    })
+    return {
+        "keys_count": _number(raw["keys_count"], field + ".keys_count", 32),
+        "values_count": _number(raw["values_count"], field + ".values_count", 32),
+        "keys_u16": _numbers(raw["keys_u16"], field + ".keys_u16", 16, unsigned=True),
+        "values_q64": _numbers(raw["values_q64"], field + ".values_q64", 64),
+        "reason": _string(raw["reason"], field + ".reason", optional=True),
+    }
+
+
+def _properties_ready(block: dict[str, object] | None) -> bool:
+    if block is None:
+        return False
+    count = block["keys_count"]
+    if count == 0:
+        return True
+    if type(count) is not int or count < 0:
+        return False
+    keys, values = block["keys_u16"], block["values_q64"]
+    # +74 is provenance; native 2438850 consumes +C keys and corresponding
+    # values. A zero +C exits before arrays or +74 are needed.
+    return (isinstance(keys, list) and len(keys) >= count
+            and isinstance(values, list) and len(values) >= count)
+
+
+def _resolution(value: object, field: str) -> dict[str, object]:
+    raw = _dict(value, field, {
+        "status", "requested_full_id", "selected_full_id", "reason",
+    })
+    return {
+        "status": _string(raw["status"], field + ".status"),
+        "requested_full_id": _number(raw["requested_full_id"], field + ".requested_full_id", 32, unsigned=True),
+        "selected_full_id": _number(raw["selected_full_id"], field + ".selected_full_id", 32, unsigned=True),
+        "reason": _string(raw["reason"], field + ".reason", optional=True),
+    }
+
+
+def _span(value: object, field: str) -> dict[str, object] | None:
+    if value is None:
+        return None
+    raw = _dict(value, field, {"selected_source", "count", "rows", "reason"})
+    count = _number(raw["count"], field + ".count", 32)
+    rows = raw["rows"]
+    if rows is not None:
+        if not isinstance(rows, list):
+            raise ValueError(field + ".rows must be a list or null")
+        copied = []
+        for i, item in enumerate(rows):
+            name = f"{field}.rows[{i}]"
+            row = _dict(item, name, {"native_index", "definition_identity", "weight_q64"})
+            native_index = _integer(row["native_index"], name + ".native_index", 32)
+            if native_index != i:
+                raise ValueError(name + ".native_index disagrees with native row order")
+            copied.append({
+                "native_index": native_index,
+                "definition_identity": _string(row["definition_identity"], name + ".definition_identity", optional=True),
+                "weight_q64": _number(row["weight_q64"], name + ".weight_q64", 64),
+            })
+        rows = copied
+    return {
+        "selected_source": _string(raw["selected_source"], field + ".selected_source"),
+        "count": count, "rows": rows,
+        "reason": _string(raw["reason"], field + ".reason", optional=True),
+    }
+
+
+def _availability(raw: dict[str, object], field: str) -> tuple[str, bool, str | None]:
+    status = raw["status"]
+    ready = _boolean(raw["ready"], field + ".ready")
+    reason = _string(raw["reason"], field + ".reason", optional=True)
+    if status not in {"available", "partial", "unavailable"}:
+        raise ValueError(field + ".status is invalid")
+    if (status == "available") != ready or (ready and reason is not None) or (not ready and reason is None):
+        raise ValueError(field + " availability disagrees")
+    return status, ready, reason
+
+
+def _branch_291e210(value: object, field: str) -> dict[str, object] | None:
+    if value is None:
+        return None
+    raw = _dict(value, field, {
+        "status", "ready", "component_present", "first_relation_resolution",
+        "second_relation_resolution", "house_resolution", "house_extra_enabled",
+        *_SPAN_NAMES, "definition_blocks", "reason",
+    })
+    status, ready, reason = _availability(raw, field)
+    definitions = raw["definition_blocks"]
+    if not isinstance(definitions, list):
+        raise ValueError(field + ".definition_blocks must be a list")
+    blocks = []
+    seen = set()
+    for i, value in enumerate(definitions):
+        name = f"{field}.definition_blocks[{i}]"
+        block = _dict(value, name, {"definition_identity", "properties"})
+        identity = _string(block["definition_identity"], name + ".definition_identity")
+        if identity in seen:
+            raise ValueError(name + ".definition_identity is not distinct")
+        seen.add(identity)
+        blocks.append({"definition_identity": identity,
+                       "properties": _properties(block["properties"], name + ".properties")})
+    normalized = {
+        "status": status, "ready": ready,
+        "component_present": _boolean(raw["component_present"], field + ".component_present", optional=True),
+        "house_extra_enabled": _boolean(raw["house_extra_enabled"], field + ".house_extra_enabled", optional=True),
+        "definition_blocks": blocks, "reason": reason,
+    }
+    for key in ("first_relation_resolution", "second_relation_resolution", "house_resolution"):
+        normalized[key] = _resolution(raw[key], field + "." + key)
+    for key in _SPAN_NAMES:
+        normalized[key] = _span(raw[key], field + "." + key)
+    if ready and not _a_consumed_ready(normalized):
+        raise ValueError(field + " available branch lacks consumed native operands")
+    return normalized
+
+
+def _a_consumed_ready(branch: dict[str, object]) -> bool:
+    gate = branch["house_extra_enabled"]
+    if type(gate) is not bool or type(branch["component_present"]) is not bool:
+        return False
+    blocks = {item["definition_identity"]: item["properties"]
+              for item in branch["definition_blocks"]}
+    # The current census observes all four actually selected headers, including
+    # the disabled fourth span's native static header. The emitter itself skips
+    # that fourth call when the gate is false.
+    for key in _SPAN_NAMES:
+        span = branch[key]
+        if span is None or span["count"] is None:
+            return False
+        count = span["count"]
+        if count <= 0:
+            continue
+        rows = span["rows"]
+        if rows is None or len(rows) < count:
+            return False
+        for row in rows[:count]:
+            identity = row["definition_identity"]
+            if (identity is None or row["weight_q64"] is None
+                    or not _properties_ready(blocks.get(identity))):
+                return False
+    return True
+
+
+def _text(value: object, field: str) -> str:
+    if type(value) is not str:
+        raise ValueError(field + " must be a string")
+    return value
+
+
+def _raw_rows(value: object, field: str, normalize) -> list[dict[str, object]] | None:
+    if value is None:
+        return None
+    if not isinstance(value, list):
+        raise ValueError(field + " must be a list or null")
+    copied = []
+    for i, row in enumerate(value):
+        name = f"{field}[{i}]"
+        normalized = normalize(row, name)
+        if normalized["native_index"] != i:
+            raise ValueError(name + ".native_index disagrees with native row order")
+        copied.append(normalized)
+    return copied
+
+
+def _conditional_a(value: object, field: str) -> dict[str, object]:
+    raw = _dict(value, field, {
+        "native_index", "key_identity", "key_object_id", "key_object_magic",
+        "property_block", "admitted", "reason",
+    })
+    return {
+        "native_index": _integer(raw["native_index"], field + ".native_index", 32),
+        "key_identity": _string(raw["key_identity"], field + ".key_identity", optional=True),
+        "key_object_id": _number(raw["key_object_id"], field + ".key_object_id", 32, unsigned=True),
+        "key_object_magic": _number(raw["key_object_magic"], field + ".key_object_magic", 32, unsigned=True),
+        "property_block": _properties(raw["property_block"], field + ".property_block"),
+        "admitted": _boolean(raw["admitted"], field + ".admitted", optional=True),
+        "reason": _string(raw["reason"], field + ".reason", optional=True),
+    }
+
+
+def _conditional_b(value: object, field: str) -> dict[str, object]:
+    raw = _dict(value, field, {
+        "native_index", "key_i32", "property_block", "admitted", "reason",
+    })
+    return {
+        "native_index": _integer(raw["native_index"], field + ".native_index", 32),
+        "key_i32": _number(raw["key_i32"], field + ".key_i32", 32),
+        "property_block": _properties(raw["property_block"], field + ".property_block"),
+        "admitted": _boolean(raw["admitted"], field + ".admitted", optional=True),
+        "reason": _string(raw["reason"], field + ".reason", optional=True),
+    }
+
+
+def _conditional_c(value: object, field: str) -> dict[str, object]:
+    raw = _dict(value, field, {
+        "native_index", "source_key_u32", "masked_index_u32", "resolver_count_i32",
+        "selected_native_fallback", "invert_u8", "property_block",
+        "resolved_condition_identity", "condition_source", "condition_length",
+        "condition_capacity", "condition_bytes", "first_signed_byte",
+        "classifier_mode_i32", "classifier_result_i32", "condition_token_id", "admitted",
+        "token_origin", "lookup_status", "reason",
+    })
+    return {
+        "native_index": _integer(raw["native_index"], field + ".native_index", 32),
+        "source_key_u32": _number(raw["source_key_u32"], field + ".source_key_u32", 32, unsigned=True),
+        "masked_index_u32": _number(raw["masked_index_u32"], field + ".masked_index_u32", 32, unsigned=True),
+        "resolver_count_i32": _number(raw["resolver_count_i32"], field + ".resolver_count_i32", 32),
+        "selected_native_fallback": _boolean(raw["selected_native_fallback"], field + ".selected_native_fallback", optional=True),
+        "invert_u8": _number(raw["invert_u8"], field + ".invert_u8", 8, unsigned=True),
+        "property_block": _properties(raw["property_block"], field + ".property_block"),
+        "resolved_condition_identity": _string(raw["resolved_condition_identity"], field + ".resolved_condition_identity", optional=True),
+        "condition_source": _text(raw["condition_source"], field + ".condition_source"),
+        "condition_length": _number(raw["condition_length"], field + ".condition_length", 32),
+        "condition_capacity": _number(raw["condition_capacity"], field + ".condition_capacity", 64, unsigned=True),
+        "condition_bytes": _numbers(raw["condition_bytes"], field + ".condition_bytes", 8, unsigned=True),
+        "first_signed_byte": _number(raw["first_signed_byte"], field + ".first_signed_byte", 32),
+        "classifier_mode_i32": _number(raw["classifier_mode_i32"], field + ".classifier_mode_i32", 32),
+        "classifier_result_i32": _number(raw["classifier_result_i32"], field + ".classifier_result_i32", 32),
+        "condition_token_id": _number(raw["condition_token_id"], field + ".condition_token_id", 32),
+        "admitted": _boolean(raw["admitted"], field + ".admitted", optional=True),
+        "token_origin": _text(raw["token_origin"], field + ".token_origin"),
+        "lookup_status": _text(raw["lookup_status"], field + ".lookup_status"),
+        "reason": _string(raw["reason"], field + ".reason", optional=True),
+    }
+
+
+def _source_row(value: object, field: str) -> dict[str, object]:
+    raw = _dict(value, field, {
+        "native_index", "source_identity", "base_properties",
+        "auxiliary_410_provenance", "auxiliary_retained_identity", "auxiliary_retained_present", "auxiliary_tag_u32",
+        "conditional_a_count", "conditional_b_count", "conditional_c_count",
+        "conditional_a_rows", "conditional_b_rows", "conditional_c_rows", "reason",
+    })
+    normalized = {
+        "native_index": _integer(raw["native_index"], field + ".native_index", 32),
+        "source_identity": _string(raw["source_identity"], field + ".source_identity", optional=True),
+        "base_properties": _properties(raw["base_properties"], field + ".base_properties"),
+        "auxiliary_410_provenance": _text(raw["auxiliary_410_provenance"], field + ".auxiliary_410_provenance"),
+        "auxiliary_retained_identity": _string(raw["auxiliary_retained_identity"], field + ".auxiliary_retained_identity", optional=True),
+        "auxiliary_retained_present": _boolean(raw["auxiliary_retained_present"], field + ".auxiliary_retained_present", optional=True),
+        "auxiliary_tag_u32": _number(raw["auxiliary_tag_u32"], field + ".auxiliary_tag_u32", 32, unsigned=True),
+        "reason": _string(raw["reason"], field + ".reason", optional=True),
+    }
+    for kind, normalize in (("a", _conditional_a), ("b", _conditional_b), ("c", _conditional_c)):
+        count_key, rows_key = f"conditional_{kind}_count", f"conditional_{kind}_rows"
+        normalized[count_key] = _number(raw[count_key], field + "." + count_key, 32)
+        normalized[rows_key] = _raw_rows(raw[rows_key], field + "." + rows_key, normalize)
+    return normalized
+
+
+def _branch_291d7e0(value: object, field: str) -> dict[str, object] | None:
+    if value is None:
+        return None
+    raw = _dict(value, field, {
+        "status", "ready", "base_inputs_ready", "component_present",
+        "selected_source", "source_count", "source_rows",
+        "conditional_a_fallback_properties", "government_token_count",
+        "government_token_ids_i32", "government_source", "condition_registry_guard",
+        "condition_fallback_guard", "token_manager_present", "reason",
+    })
+    status, ready, reason = _availability(raw, field)
+    # Base-copy arrays keep their independent +28C/+2F4 headers. The A
+    # append-executor's empty-key shortcut is deliberately not applied here.
+    normalized = {
+        "status": status, "ready": ready,
+        "base_inputs_ready": _boolean(raw["base_inputs_ready"], field + ".base_inputs_ready"),
+        "component_present": _boolean(raw["component_present"], field + ".component_present", optional=True),
+        "selected_source": _text(raw["selected_source"], field + ".selected_source"),
+        "source_count": _number(raw["source_count"], field + ".source_count", 32),
+        "source_rows": _raw_rows(raw["source_rows"], field + ".source_rows", _source_row),
+        "conditional_a_fallback_properties": _properties(raw["conditional_a_fallback_properties"], field + ".conditional_a_fallback_properties"),
+        "government_token_count": _number(raw["government_token_count"], field + ".government_token_count", 32),
+        "government_token_ids_i32": _numbers(raw["government_token_ids_i32"], field + ".government_token_ids_i32", 32),
+        "government_source": _text(raw["government_source"], field + ".government_source"),
+        "condition_registry_guard": _number(raw["condition_registry_guard"], field + ".condition_registry_guard", 32),
+        "condition_fallback_guard": _number(raw["condition_fallback_guard"], field + ".condition_fallback_guard", 32),
+        "token_manager_present": _boolean(raw["token_manager_present"], field + ".token_manager_present", optional=True),
+        "reason": reason,
+    }
+    if normalized["base_inputs_ready"] != _b_base_ready(normalized):
+        raise ValueError(field + " base-copy availability disagrees with independently observed arrays")
+    if ready != _b_consumed_ready(normalized):
+        raise ValueError(field + " conditional availability disagrees with observed admission inputs")
+    return normalized
+
+
+def _b_base_ready(branch: dict[str, object]) -> bool:
+    count = branch["source_count"]
+    if type(branch["component_present"]) is not bool or count is None:
+        return False
+    if count <= 0:
+        return True
+    rows = branch["source_rows"]
+    if rows is None or len(rows) < count:
+        return False
+    for row in rows[:count]:
+        block = row["base_properties"]
+        if row["source_identity"] is None or block is None:
+            return False
+        for count_key, array_key in (("keys_count", "keys_u16"), ("values_count", "values_q64")):
+            native_count, values = block[count_key], block[array_key]
+            if native_count is None or native_count < 0 or values is None or len(values) < native_count:
+                return False
+    return True
+
+
+def _b_consumed_ready(branch: dict[str, object]) -> bool:
+    if not branch["base_inputs_ready"]:
+        return False
+    source_count = branch["source_count"]
+    if source_count <= 0:
+        return True
+    for source in branch["source_rows"][:source_count]:
+        for kind in ("a", "b", "c"):
+            count, rows = source[f"conditional_{kind}_count"], source[f"conditional_{kind}_rows"]
+            if count is None or rows is None:
+                return False
+            if count <= 0:
+                continue
+            if len(rows) < count:
+                return False
+            for row in rows[:count]:
+                admitted = row["admitted"]
+                if type(admitted) is not bool:
+                    return False
+                if kind == "c":
+                    government_count, government_tokens = branch["government_token_count"], branch["government_token_ids_i32"]
+                    if (row["condition_token_id"] is None or row["invert_u8"] is None
+                            or government_count is None or government_tokens is None
+                            or len(government_tokens) < max(0, government_count)):
+                        return False
+                if admitted and not _properties_ready(row["property_block"]):
+                    return False
+    return True
+
+
+def normalize_current_context_source_inputs(
+    value: object, field: str = "current_context_source_inputs",
+) -> dict[str, object] | None:
+    """Copy current native source census, keeping nulls and independent readiness."""
+    if value is None:
+        return None
+    fields = {"status", "ready", "character_id", "branch_291e210", "reason"}
+    if isinstance(value, dict) and "branch_291d7e0" in value:
+        fields.add("branch_291d7e0")
+    raw = _dict(value, field, fields)
+    status, ready, reason = _availability(raw, field)
+    normalized = {
+        "status": status, "ready": ready,
+        "character_id": _integer(raw["character_id"], field + ".character_id", 32),
+        "branch_291e210": _branch_291e210(raw["branch_291e210"], field + ".branch_291e210"),
+        "reason": reason,
+    }
+    if "branch_291d7e0" in raw:
+        normalized["branch_291d7e0"] = _branch_291d7e0(
+            raw["branch_291d7e0"], field + ".branch_291d7e0")
+    return normalized
+
+
+def emit_291e210_requests_from_current_source_inputs_12003(
+    normalized_section: dict[str, object] | None,
+) -> tuple[NativeWeightedContributionRequest12003, ...]:
+    """Adapt actual A fields to the adopted pure emitter; B readiness is separate.
+
+    Actual PropertyContainer snapshot dictionaries pass through by reference.
+    This emits append requests and does not apply them to a context baseline.
+    """
+    from ..simulation.battle_context_preparation_branch_291e210_12003 import (
+        NativePreparationSourceRow12003,
+        NativePreparationSourceSpan12003,
+        emit_291e210_contribution_requests_12003,
+    )
+
+    if normalized_section is None or normalized_section.get("branch_291e210") is None:
+        raise ValueError("Required native input unavailable: branch_291e210")
+    branch = normalized_section["branch_291e210"]
+    if not branch["ready"] or not _a_consumed_ready(branch):
+        raise ValueError("Required native input unavailable: branch_291e210 consumed operands")
+    blocks = {item["definition_identity"]: item["properties"]
+              for item in branch["definition_blocks"]}
+
+    def span(key: str) -> NativePreparationSourceSpan12003 | None:
+        actual = branch[key]
+        if actual is None:
+            return None
+        rows = actual["rows"]
+        copied = None if rows is None else tuple(
+            NativePreparationSourceRow12003(
+                definition_identity=row["definition_identity"],
+                weight_q64=row["weight_q64"],
+                base_property_block=blocks.get(row["definition_identity"]),
+            ) for row in rows
+        )
+        return NativePreparationSourceSpan12003(count=actual["count"], rows=copied)
+
+    return emit_291e210_contribution_requests_12003(
+        span(_SPAN_NAMES[0]), span(_SPAN_NAMES[1]), span(_SPAN_NAMES[2]),
+        branch["house_extra_enabled"], span(_SPAN_NAMES[3]),
+    )

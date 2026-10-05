@@ -1264,6 +1264,9 @@ game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
     observed.context_branch_inputs = CurrentContextBranchInputs(b, character, character_id);
   if (b.current_person_prior_context_inputs_enabled)
     observed.current_prior_context_inputs = CurrentPriorContextInputs(b, character, character_id);
+  if (b.current_person_context_source_inputs.enabled)
+    observed.current_context_source_inputs = ReadCurrentContextSourceInputs12003(
+        b.current_person_context_source_inputs, character, character_id);
   auto &death = observed.death_record;
   if (!character) {
     death.unavailable_reason = "character_unresolved";
@@ -1699,6 +1702,7 @@ void EnableBattleCurrentPerson12003(BattleBindings &b, std::uintptr_t base,
   b.current_person_raw_numeric_inputs_enabled = true;
   b.current_person_context_branch_inputs_enabled = true;
   b.current_person_prior_context_inputs_enabled = true;
+  b.current_person_context_source_inputs = BindContextSourceInputs12003(base, sha);
   b.current_person_prior_find_key = reinterpret_cast<const std::uint32_t *(*)(
       const std::uint32_t *, const std::uint32_t *, const std::uint32_t *)>(base + 0x00880430);
   b.current_person_prior_owner_slot = reinterpret_cast<void **>(base + 0x05C68C50);

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/battle_context_source_inputs_v1_serializer.hpp"
 
 #include <cstddef>
 #include <string>
@@ -290,6 +291,11 @@ inline std::string SerializeBattleCurrentPersonStateV1(
   if (state.current_prior_context_inputs) {
     output += ",\"current_prior_context_inputs\":";
     output += SerializeCurrentPriorContextInputs(*state.current_prior_context_inputs);
+  }
+  if (state.current_context_source_inputs) {
+    output += ",\"current_context_source_inputs\":";
+    output += SerializeBattleCurrentPersonContextSourceInputsV1(
+        *state.current_context_source_inputs);
   }
   output += '}';
   return output;

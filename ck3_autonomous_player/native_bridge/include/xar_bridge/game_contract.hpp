@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/battle_context_source_inputs_v1.hpp"
+
 #include "xar_bridge/ck3_12003_maa_recruitment.hpp"
 #include "xar_bridge/owned_regiments.hpp"
 
@@ -2624,6 +2626,7 @@ struct BattleCurrentPersonStateSnapshotV1 {
   std::optional<BattleCurrentPersonRawNumericInputsSnapshotV1> raw_numeric_inputs;
   std::optional<BattleCurrentPersonContextBranchInputsSnapshotV1> context_branch_inputs;
   std::optional<BattleCurrentPersonPriorContextInputsSnapshotV1> current_prior_context_inputs;
+  std::optional<BattleCurrentPersonContextSourceInputsSnapshotV1> current_context_source_inputs;
   friend bool operator==(const BattleCurrentPersonStateSnapshotV1 &,
                          const BattleCurrentPersonStateSnapshotV1 &) = default;
 };

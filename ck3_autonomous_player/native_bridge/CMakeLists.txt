@@ -835,6 +835,7 @@ file(GLOB XAR_CK3_12002_SOURCES CONFIGURE_DEPENDS
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12002*.cpp")
 list(FILTER XAR_CK3_12002_SOURCES EXCLUDE REGEX "_test(_only)?\\.cpp$")
 list(APPEND XAR_CK3_12002_SOURCES
+  "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_context_sources.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_battle_current_state.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_maa_recruitment.cpp"
   "${CMAKE_CURRENT_SOURCE_DIR}/src/owned_regiments.cpp"
@@ -7697,6 +7698,7 @@ endif()
 
 if(BUILD_TESTING)
   add_executable(xar_ck3_12003_battle_current_state_test
+    src/ck3_12003_context_sources.cpp
     src/ck3_12002_battle.cpp
     src/ck3_12002_combat.cpp
     src/ck3_12002_battle_journal.cpp

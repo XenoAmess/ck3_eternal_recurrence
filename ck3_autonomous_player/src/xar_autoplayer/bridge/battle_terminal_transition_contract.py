@@ -7,6 +7,8 @@ from .public_unit_contract import (
     public_cunit_ids as _public_cunit_ids,
 )
 
+from .battle_context_source_inputs_contract import normalize_current_context_source_inputs
+
 import copy
 from typing import Final
 
@@ -520,6 +522,8 @@ def _normalize_current_person_state(
         fields.add("context_branch_inputs")
     if isinstance(value, dict) and "current_prior_context_inputs" in value:
         fields.add("current_prior_context_inputs")
+    if isinstance(value, dict) and "current_context_source_inputs" in value:
+        fields.add("current_context_source_inputs")
     state = _exact_dict(value, field, fields)
     if state["scope"] != "current_character":
         raise ValueError(f"{field}.scope must be current_character")
@@ -607,6 +611,9 @@ def _normalize_current_person_state(
     if "current_prior_context_inputs" in state:
         normalized["current_prior_context_inputs"] = _normalize_current_prior_context_inputs(
             state["current_prior_context_inputs"], f"{field}.current_prior_context_inputs")
+    if "current_context_source_inputs" in state:
+        normalized["current_context_source_inputs"] = normalize_current_context_source_inputs(
+            state["current_context_source_inputs"], f"{field}.current_context_source_inputs")
     return normalized
 
 
@@ -654,6 +661,9 @@ def _normalize_character_custody_rows(
             prior = normalized["current_person_state"].get("current_prior_context_inputs")
             if prior is not None and prior["character_full_id"] != character_id:
                 raise ValueError(f"{field}[{index}] prior context CharacterID disagrees")
+            sources = normalized["current_person_state"].get("current_context_source_inputs")
+            if sources is not None and sources["character_id"] != character_id:
+                raise ValueError(f"{field}[{index}] context source CharacterID disagrees")
         result.append(normalized)
     return result
 
