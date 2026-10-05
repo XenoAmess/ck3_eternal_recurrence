@@ -274,3 +274,84 @@ It does not qualify the native2922070 collector, the full tail, full person
 preparation, full Entry or live execution. The next source/input connection is
 the actual conference24B1D00 stage at291C548; its native owner is preparing the
 separate source ledger and optional leaf.
+
+The next source-first increment reuses
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-tail/conference-24b1d00-source/SOURCE-TREE.md`
+and `QUERY-PLAN.json`, sealed by the native owner with1632 narrowly read EXE
+bytes. This pure chain lane reads no new EXE bytes. Actual optional leaf
+`conference_24b1d00` and its family emitters are committed in `754edac6`.
+
+Caller291C548 resolves Conf from Character1C8 carrier80 full DWORD or-1,
+Conf registry5D1EB78/fallback5D1EB50. Its magicC/fullID8 gate precedes the
+helper's Character magic1C/fullID18 gate. False gates are known zero requests.
+Actual Conf38 configuration and signedConf60 target select the existing pack:
+disabledAB08 chooses initialized inline54EBAB0; otherwise backward inline1530
+rows choose the last timestamp at or before target. A mapped record consumes
+no unused inline guard. This bridge does not call an initializer.
+
+The four actual Q100000 requests are classified_owner
+(24B1DF0/24B1E29/24B1E52), classified_common(24B1E67),
+owner_common(24B1E87), unconditional(24B1E9C), in that order. Category compares
+full first/second DWORD10, then actual QWORD220 equality if IDs differ. Owner
+compares second DWORD160 with actual Character DWORD18. Category common does
+not need owner; owner common does not need first/category; unconditional needs
+only gates and selected pack. Initialized empty PCs remain requests.
+
+Before implementation, the plan is to fold only the verified continuous
+family prefix and preserve independently ready later families. A missing
+second family keeps the explicit context at
+`post24B1D00_classified_owner_pre24B1E67`; missing third keeps
+`post24B1E67_pre24B1E87`; missing fourth keeps
+`post24B1E87_pre24B1E9C`. Complete conference returns to
+`post24B1D00_pre291C553`. The already source-closed291F260 four weighted ranks
+may follow only when their actual normalized input is ready. Signed carrier2F8
+provider bucket291C5B2 remains the next untranslated stage.
+
+```mermaid
+flowchart TD
+  P[post2922530 / pre291C4E2] --> G[Caller Conf gate then Character gate]
+  G --> S[Existing pack selection; no initializer]
+  S --> A[Classified owner request]
+  A --> B[Classified common request]
+  B --> C[Owner common request]
+  C --> D[Unconditional request]
+  D --> E[post24B1D00 / pre291C553]
+  E --> F[291F260 four actual weighted ranks when ready]
+  F -.-> U[unknown signed carrier2F8 provider bucket291C5B2]
+  S --> I[Independent later family outputs retained across an earlier gap]
+```
+
+This increment is now implemented in the existing tail continuation. Each
+conference family has an independent output under
+`conference24B1D00.<family>`. Only its continuous ready family prefix enters
+the assembled context. Its ledger records the four family readiness/results
+in native order; the result stage names the actual last completed PC call
+when a following family is missing. Fully observed conference can continue
+to the existing291F260 emitter without requiring the later291FB10 family.
+
+One distinct production-normalizer integration passed **1/1 once in0.011s**
+on2026-10-06 at00:50 Asia/Shanghai, receipt
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-stage-chain/conference-attempt-01.json`.
+It uses a source-shaped synthetic frame through the genuine `754edac6`
+conference and `c688d593` middle-helper contracts. Different relationship full
+IDs with equal actual null QWORD220 identities choose the other-ownerC70,
+commonE30,other730 and unconditional8F0 PCs. Backward pack probes skip row2
+timestamp70 and select row1 timestamp40 at target50; no unused inline default
+guard is supplied. All four contributions remain in native order.
+
+Actual291F260 weight lookups produce `(100000,-100000,200000,0)` for its four
+rank0 families, without converting them to declaration multipliers. Their
+nonempty PCs contribute net prowess1. Earlier explicit prowess13 plus
+conference1+2+3+4, rank net1 and base6 produce `(6,6,6,6,6,30)` at the ready
+bound `post291F260_pre291C558`. Later291FB10 remains explicitly unavailable
+and does not erase the complete independent291F260 input.
+
+When classified_common's demanded PC is missing, the same case retains only
+the classified_owner addition at
+`post24B1D00_classified_owner_pre24B1E67`, giving `(6,6,6,6,6,20)`.
+Owner-common/unconditional and all four rank requests remain independent;
+they are not merged across that gap. The original query and explicit prior
+stay unchanged. No earlier GREEN case, old case, native build, new EXE read or
+game operation ran. This is **static-ready for the bounded through291F260
+chain**, with no full tail/person preparation/Entry or live claim. The next
+contiguous dependency is signed carrier2F8 provider bucket at291C5B2.
