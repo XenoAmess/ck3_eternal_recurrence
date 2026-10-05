@@ -287,3 +287,16 @@ R41 新 occupation006 完整 once-consume、368 rows available：raw53262000/nat
 当前 M=.606/K0/D=1.01488，K0 仅为本 Province 的 native eligible tier，不等于全军库存无攻城兵种；fresh phase18日与 cold prepared真实0分开，counter9/can_advance=true，state0/1/2/2/0、prepared enum5仅缓存 sentinel，不据此造事件或固定城破日。
 Military 同 raw 部署前 h8573 派生 cache 与本帧21字段相同，work delta=0，C/T/B/ETA/进度/occupation均未变；旧 generic 未采 D/M/K/phase/counter/eventstate，不能判断这些字段 cold 变化或 event reset。Root SAVE h8578/总日数4903，本包0新日、0动作，下一 ordinary 结果由军务独立消费。
 完整当前缓存、独立同日比较及 Oct5/W41 字段见 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-efficiency-current-fort6-v65/r41-fresh-occupation/ROOT-DELIVERY.json`（SHA256 `aee58696bdc32bb734ea070e081fb77a24dd639f50f747d469d8625f7a26e1db`）；新原006 SHA256 `4f974455b4cd790ed7150ea775470ed491908287afcb81e6c86fbd70e73c233f`，既有 M/K production-live primitive 证据复用，无重测。
+
+### R41 v68：八个实际单日围城观察与支援军登船后路线
+
+- Root 唯一 SDK25057 正常关闭，8 个实际 `life-advance-one-day` 轮次均独立观察、正常保存；`53262000 → 53262192` 共192 raw小时、8 calendar/bounded/whole日，partial0、failed0。累计 `4911 / resumed1758 / Oct5+253（W41）`，R40既有51日及零日失败不重计，自然继承0。
+- 最后正常锚点 `h8602 / 98,341,434B / SHA256 29d07e0ff930bfbc2f81822a623783615814b8117588224c72d2f8decb472cff`；独立末帧 `native36 / public33 / raw53262192`，Robert29829 alive、episode仍为 `native-29829-2bc2d599f7f9`。
+- P470仍未占领，主军301989997实际 `sieging3 / route[] / targetnull`；同帧Siege503316504的 `C13885163 / T55000000 / remain41114837 / Q100000 / progress25.245% / B3116 / nativeETA406`。ETA是当前估计，`CanStart=false`，没有围城完成、突击或战争胜利信用。
+- 本段起点P470为 `C13073259 / progress23.769% / B3116 / ETA414`；末端work增加811904，B保持3116。此端点差只记录实际推进，不归因于新MAA动作、冷恢复、全军补员或未发布的phase/event字段。
+- guard184549452在day04/raw53262096由2619到8651，实际 `embarked4`，route由 `[8651,1038,3711]` 变为 `[1038,3711]`；day08已在1038，目标3711、剩余route `[3711]`。这证明已进入后续路线，尚未到3711或开展当地围城。
+- P3711仍未占领，同帧 `active_siege=null / besieging_strength=0`；不能以支援军的目标或行军ACK授予到达、围城或占领信用。
+- 当前玩家scope新增CUnit285212713：day04实际在8651 regular1/空route，day08在1038 regular1/空route、可控；不从同省或路线变化推断生成、拆军、载运或merge因果。generic soldiers/supply保持null，不把B3116替换成whole军力。
+- 最后War117440524仍active/player-relative +25；三支当前玩家军队均非combat/retreat，active_event及pending_character_interaction为null。M7每轮先实际plan priming再单日推进，未将计划结果当作已执行动作。
+- 四互斥physical组各两日共64原JSON once（56 GREEN工具叶＋8 GREEN结果）；TOP及独立末SAVE为Root独占，actual-main004/006/008、专军力查询、旧包和共享专题均未重读。仅限本段实际正常围城观察loop；历史map-unavailable根因未由本段成功证明已修复。
+- 原始输出：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v68/root-results/ordinary-r41-first-eight01`。母账/日周字段：同输出 `-consumed01/ROOT-DELIVERY.json`（SHA77a43ee318e91e85fe9704b1c236a83e2865887c25c74b7b049f5dfa2fbe8914）及 `ROOT-DAY-WEEK-FIELDS.json`（SHA10d267ebd8b51c0371a76d1a32887e9232b3e5608374fffa57b5ae1cd3407c08）。
