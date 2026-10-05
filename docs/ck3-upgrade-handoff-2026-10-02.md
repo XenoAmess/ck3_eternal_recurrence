@@ -252,3 +252,11 @@ R20 八值、正常 OS0、16/16、EOF 和已赚 Writer33/Reader12/Creator16/R15c
 
 
 随后源码独审确认，忠顺候选03对当前宋的 celestial 政体不适用：原版 Obedience 条件只在支持该机制的政府生效。因此03保持 CHANGES_REQUIRED，未消费新场。改为审查候选02：在真实结义资格存在时设置原契约，再走原版正常解除盟约；解除后的真实 forced flag 与非同盟必须由新场严格断言决定。实际保持尚未验证，不新增产品通过信用。
+
+## 本机体验优化 R12 实际归档（2026-10-06）
+
+只追加本机实际新状态，旧R10/R11、未启动候选和失败原件保持原样。R12 `4-8e1c2f1861--xenoamess-quality-of-life--R0012` 在同actor34422/PID21744/generation1完成D0→D5共120小时，raw53144328→53144448。D1正例38528的 `reverse_positive_native_prejoined` 已实测，说明当时在同War4中已有参与，未证明原版或mod加入因果；不能写成“从未加入”。D5原防御14项必需标记各一次，原矩阵PASS且FAIL0，但新增反向场仍有 `reverse_positive_participating` 与 `reverse_matrix_done` FAIL2，合计19/23，产品防御未全通过。
+
+正例参与检查是四项合取。相邻负例PASS已在同target/War4证明primary_defender=root宋，其余正例朝贡关系、forced flag、参与状态三个D5原子仍UNKNOWN；不能从联合FAIL推断“已退战”或宣称生产召援已定位。两份实际进度为 [D1](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--xenoamess-quality-of-life--R0012/defense-first-day-root-01/progress.json) 与 [D2–D5](C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--xenoamess-quality-of-life--R0012/defense-after-d1-root-01/progress.json)；完整限定见 [防御维护追加](xqol-1.20.0.3-defense-maintenance-2026-10-05.md#2026-10-06-r12-实际归档原防御14项通过反向正例联合检查仍失败)。
+
+游戏真实正常退出0，native shutdown0/tree_gone/cleanup=true/job0/全部库存[]，观察器实际退出、四个原PID均gone；95ff在partial finish中对已退出游戏自动取snapshot报错，完整runner RED和原错误仍保留，cleanup/thread=true。[闭合薄证据](C:/workspace/ck3-upgrade-20261006/xqol-r12-thin-report-observer-agent-01/actual-closed-cleanup-and-observer-exit-01.json)4093B、SHA `92eecbec35e500ec822112d9639fe4497fde867cbdd1b6cc86b2e410d20b914b`；[a65实际释放](C:/workspace/ck3-upgrade-20261006/xqol-r12-close-current-original-root-01/actual-a65-screen-release-01.json)CAS3647/done/resources[]，本机02:18:17。清场成功不授予业务或发布信用；体验优化1.1.1尚未发布，本场不增加正式完成产品数。
