@@ -106,6 +106,18 @@ those rows explicitly unrefreshed, while closed knight rows remain useful.
 The result reports per-row readiness and keeps complete Entry, native execution,
 historical stage observation and game-day advancement false.
 
+The same module's initial_entry_stats_from_combat_regiment_12003 consumes
+the normalized Army and Regiment from the existing combat query. When actual
+Army.current_province_id equals the requested target, it selects the existing
+effective_stats tuple and does not demand any extra field or read. When they
+differ, it selects the optional initialization_context_stats tuple exclusively,
+with source_target_province_id equal to the actual Army Province. A missing,
+unavailable or different-Province initial tuple remains partial; the target
+tuple is never substituted. The returned six cache values are named
+frozen-current inputs to a caller-conditioned initial stage, separate from the
+post-effect final refresh. Full Army/Regiment IDs and initial Province are
+preserved in the result. Admission and result-row initialization remain separate.
+
 The person stage chain can provide an explicitly named conditional context
 and six-skill projection to this interface. A partial preparation chain can
 support a named intermediate-stage calculation; it cannot be silently labeled
@@ -141,3 +153,12 @@ write primitive are static-ready. The constructor's full changed context,
 ordinary/MAA source-derived new-stage evaluation, complete person preparation,
 complete Entry and live operation remain partial. The current-stage native
 observations retain their earlier qualification, without new live credit.
+
+The additional initial-Province adapter has its own new focused case. The
+optional same-query observer is implemented by the parallel replenishment
+owner; this package does not duplicate its native code, bindings or normalizer.
+That adapter case passed 1/1 GREEN once in 0.2343 seconds. It covers equal
+reuse, unequal selection, genuine zero/negative values, unavailable and
+wrong-Province leaf, and unknown Army Province. The earlier final-refresh
+case was not rerun. Native qualification of the new optional observer remains
+with the central build and its owning package.
