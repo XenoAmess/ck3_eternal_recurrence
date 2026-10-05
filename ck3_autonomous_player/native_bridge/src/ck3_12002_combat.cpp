@@ -676,6 +676,7 @@ bool ReadCombatCounter(const CombatBindings &bindings, void *regiment,
 
 #include "ck3_12003_initialization_context_stats.inc"
 #include "ck3_12003_ordinary_stat_inputs.inc"
+#include "ck3_12003_maa_stat_inputs.inc"
 
 bool ReadCombatRegiments(const CombatBindings &bindings, void *internal_army,
                           void *target_province,
@@ -752,6 +753,8 @@ bool ReadCombatRegiments(const CombatBindings &bindings, void *internal_army,
         bindings, regiment, validated_current_province, current_province_id,
         target_province_id, row);
     ReadOrdinaryRegimentStatInputs12003(bindings, regiment, row);
+    ReadMaaRegimentStatInputs12003(bindings, regiment, target_province,
+                                  target_province_id, row);
     if (!ReadCombatCounter(bindings, regiment, row.regiment_id,
                            row.current_soldiers, counter_class_count,
                            row.counter)) {
@@ -1861,6 +1864,30 @@ void EnableOrdinaryRegimentStatInputs12003(
   for (std::size_t i = 0; i != bases.size(); ++i)
     bindings.ordinary_stat_loaded_bases[i] =
         reinterpret_cast<const std::int64_t *>(image_base + bases[i]);
+}
+
+void EnableMaaRegimentStatInputs12003(
+    CombatBindings &b, std::uintptr_t base, std::string_view sha) noexcept {
+  if (!b.enabled || !base || sha !=
+      "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6") return;
+  b.maa_stat_inputs_enabled = true;
+  b.maa_culture_storage_slot = reinterpret_cast<void **>(base + 0x5D1E2F0);
+  b.maa_culture_fallback_slot = reinterpret_cast<void **>(base + 0x5D1E2E8);
+  b.maa_army_regiment_fallback_slot = reinterpret_cast<void **>(base + 0x5D1F338);
+  b.maa_accolade_storage_slot = reinterpret_cast<void **>(base + 0x5D1ECA0);
+  b.maa_accolade_fallback_slot = reinterpret_cast<void **>(base + 0x5D1EC40);
+  b.maa_get_government = reinterpret_cast<MaaGetObject>(base + 0x28C2E10);
+  b.maa_get_actual_army = reinterpret_cast<MaaGetObject>(base + 0x262D050);
+  b.maa_get_title_holder = reinterpret_cast<MaaGetObject>(base + 0x2C42950);
+  b.maa_get_piety_rank = reinterpret_cast<MaaGetPietyRank>(base + 0x28BE0D0);
+  b.maa_get_tier = reinterpret_cast<MaaGetTier>(base + 0x2B8FCF0);
+  b.maa_get_selector_factor = reinterpret_cast<MaaGetSelectorFactor>(base + 0x2B9CBC0);
+  constexpr std::array<std::uintptr_t, 3> type_rvas{0x30BDC80, 0x30BDD20, 0x30BDDC0};
+  constexpr std::array<std::uintptr_t, 3> linked_rvas{0x2B91EA0, 0x2B92160, 0x2B924C0};
+  for (std::size_t i = 0; i != 3; ++i) {
+    b.maa_get_type_environment[i] = reinterpret_cast<MaaGetTypeEnvironment>(base + type_rvas[i]);
+    b.maa_get_linked_environment[i] = reinterpret_cast<MaaGetLinkedEnvironment>(base + linked_rvas[i]);
+  }
 }
 
 game::CombatTerrainSnapshot ReadProvinceTerrainSnapshot(

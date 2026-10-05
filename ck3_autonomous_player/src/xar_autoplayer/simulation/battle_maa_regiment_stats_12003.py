@@ -224,4 +224,4 @@ def maa_six_stats_to_final_stat_input_12003(
     return FinalEntryStatInput12003(side_index, "men_at_arms", bucket_index, native_carmy_id,
         regiment_id, target_province_id, FINAL_SIDE_CALLS_12003[side_index], stats.stat_cache,
         {"source": "explicit_MAA_closed_arithmetic_stage", "stage": stats.stage,
-         "source_ledger": deepcopy(stats.ledger), "full_getter_construction_ready": False})
+         "source_ledger": deepcopy(stats.ledger), "full_getter_construction_ready": stats.full_getter_construction_ready})

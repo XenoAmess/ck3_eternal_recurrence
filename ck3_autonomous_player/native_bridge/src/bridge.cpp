@@ -3280,6 +3280,128 @@ void AppendCombatRegiment(
     AppendUnavailableReason(result, !source.available, source.unavailable_reason);
     result += '}';
   }
+  if (regiment.maa_stat_inputs_v1) {
+    const auto &s = *regiment.maa_stat_inputs_v1;
+    const auto integer = [&result](const auto &value) {
+      result += value ? SignedNumber(*value) : "null";
+    };
+    const auto boolean = [&result](const std::optional<bool> &value) {
+      result += !value ? "null" : (*value ? "true" : "false");
+    };
+    const auto array = [&result](const auto &value) {
+      if (!value) { result += "null"; return; }
+      result += '[';
+      for (std::size_t i = 0; i != value->size(); ++i) {
+        if (i) result += ',';
+        result += SignedNumber((*value)[i]);
+      }
+      result += ']';
+    };
+    const auto stats = [&result](const std::optional<xar::game::CombatMaaSixStatsV1> &value) {
+      if (!value) { result += "null"; return; }
+      result += "{\"max_size\":" + SignedNumber(value->max_size);
+      constexpr std::array<std::string_view, 5> names{
+          "siege_raw", "damage_raw", "toughness_raw", "pursuit_raw", "screen_raw"};
+      for (std::size_t i = 0; i != 5; ++i) {
+        result += ','; AppendJsonString(result, names[i]); result += ':';
+        result += SignedNumber(value->values[i]);
+      }
+      result += '}';
+    };
+    const auto properties = [&result](const std::optional<xar::game::CombatMaaPropertyBlockV1> &value) {
+      if (!value) { result += "null"; return; }
+      result += "{\"count\":" + SignedNumber(value->count) + ",\"keys_u16\":[";
+      for (std::size_t i = 0; i != value->keys_u16.size(); ++i) {
+        if (i) result += ',';
+        result += SignedNumber(value->keys_u16[i]);
+      }
+      result += "],\"values_q64\":[";
+      for (std::size_t i = 0; i != value->values_q64.size(); ++i) {
+        if (i) result += ',';
+        result += SignedNumber(value->values_q64[i]);
+      }
+      result += "]}";
+    };
+    const auto cultures = [&result, &stats](const std::optional<std::vector<xar::game::CombatMaaCultureRowV1>> &value) {
+      if (!value) { result += "null"; return; }
+      result += '[';
+      for (std::size_t i = 0; i != value->size(); ++i) {
+        if (i) result += ',';
+        const auto &r = (*value)[i];
+        result += "{\"definition_index\":" + SignedNumber(r.definition_index) +
+            ",\"row_index\":" + SignedNumber(r.row_index) + ",\"definition_is_gdbo\":";
+        result += r.definition_is_gdbo ? "true" : "false";
+        result += ",\"definition_matches_selected_type\":";
+        result += r.definition_matches_selected_type ? "true" : "false";
+        result += ",\"class_filter\":" + SignedNumber(r.class_filter) + ",\"stats\":";
+        stats(r.stats); result += '}';
+      }
+      result += ']';
+    };
+    result += ",\"maa_stat_inputs_v1\":{\"status\":\"";
+    result += s.available ? "available" : "unavailable";
+    result += "\",\"source_target_province_id\":" + SignedNumber(s.source_target_province_id);
+    result += ",\"source_regiment_full_id\":"; integer(s.source_regiment_full_id);
+    result += ",\"selected_character_full_id\":"; integer(s.selected_character_full_id);
+    result += ",\"character_resolution\":";
+    if (s.character_resolution.empty()) result += "null";
+    else AppendJsonString(result, s.character_resolution);
+    result += ",\"inner_type_is_gdbo\":"; boolean(s.inner_type_is_gdbo);
+    result += ",\"selector_mode\":"; boolean(s.selector_mode);
+    result += ",\"selected_type_class\":"; integer(s.selected_type_class);
+    result += ",\"type_bases\":"; stats(s.type_bases);
+    result += ",\"selected_properties\":"; properties(s.selected_properties);
+    result += ",\"class_row_present\":"; boolean(s.class_row_present);
+    result += ",\"class_add_keys_u16\":"; array(s.class_add_keys_u16);
+    result += ",\"class_mult_keys_u16\":"; array(s.class_mult_keys_u16);
+    result += ",\"culture_full_id\":"; integer(s.culture_full_id);
+    result += ",\"government_index\":"; integer(s.government_index);
+    result += ",\"government_rows\":"; cultures(s.government_rows);
+    result += ",\"global_rows\":"; cultures(s.global_rows);
+    result += ",\"extra_properties\":"; properties(s.extra_properties);
+    result += ",\"extra_add_keys_u16\":"; array(s.extra_add_keys_u16);
+    result += ",\"extra_mult_keys_u16\":"; array(s.extra_mult_keys_u16);
+    result += ",\"extra_title_full_id\":"; integer(s.extra_title_full_id);
+    result += ",\"extra_holder_full_id\":"; integer(s.extra_holder_full_id);
+    result += ",\"holder_piety_rank\":"; integer(s.holder_piety_rank);
+    result += ",\"selected_government_byte_4d6\":"; integer(s.selected_government_byte_4d6);
+    result += ",\"selector_factor_q64\":"; integer(s.selector_factor_q64);
+    result += ",\"linked_character_full_ids\":"; array(s.linked_character_full_ids);
+    result += ",\"accolade_blocks\":";
+    if (!s.accolade_blocks) result += "null";
+    else {
+      result += '[';
+      for (std::size_t i = 0; i != s.accolade_blocks->size(); ++i) {
+        if (i) result += ',';
+        const auto &r = (*s.accolade_blocks)[i];
+        result += "{\"linked_index\":" + SignedNumber(r.linked_index) +
+            ",\"character_full_id\":" + SignedNumber(r.character_full_id) +
+            ",\"accolade_full_id\":" + SignedNumber(r.accolade_full_id) +
+            ",\"row_index\":" + SignedNumber(r.row_index) +
+            ",\"level\":" + SignedNumber(r.level) + ",\"properties\":";
+        properties(r.properties); result += '}';
+      }
+      result += ']';
+    }
+    result += ",\"definition620_present\":"; boolean(s.definition620_present);
+    result += ",\"environment_components\":{";
+    constexpr std::array<std::string_view, 6> names{
+        "type_terrain", "type_definition", "type_province",
+        "linked_terrain", "linked_definition", "linked_province"};
+    for (std::size_t i = 0; i != 6; ++i) {
+      if (i) result += ',';
+      AppendJsonString(result, names[i]); result += ':'; stats(s.environment_components[i]);
+    }
+    result += "},\"fallback_ordinary_bases\":{";
+    constexpr std::array<std::string_view, 5> fallback_names{
+        "siege_raw", "damage_raw", "toughness_raw", "pursuit_raw", "screen_raw"};
+    for (std::size_t i = 0; i != 5; ++i) {
+      if (i) result += ',';
+      AppendJsonString(result, fallback_names[i]); result += ':'; integer(s.fallback_ordinary_bases[i]);
+    }
+    result += "},\"scale\":" + SignedNumber(s.scale) + ",\"unavailable_reason\":";
+    AppendUnavailableReason(result, !s.available, s.unavailable_reason); result += '}';
+  }
   result += ",\"counter\":";
   AppendCombatCounter(result, regiment.counter);
   result += ",\"unavailable_reason\":";
