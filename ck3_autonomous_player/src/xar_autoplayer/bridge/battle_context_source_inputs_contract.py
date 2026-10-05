@@ -630,7 +630,8 @@ def normalize_current_context_source_inputs(
                      "trait_stage_291d460", "absent_recipient_inputs", "helper_2922070",
                      "conference_24b1d00", "uncached_recipient_inputs", "provider_bucket_291c5b2",
                      "qualifier_28bc0d0", "list_predicate_2530dd0",
-                     "gated_temporary_tail_291c7a7", "after_gated_tail_326a8e0_2920310"):
+                     "gated_temporary_tail_291c7a7", "after_gated_tail_326a8e0_2920310",
+                     "provider192_and2920850"):
         if isinstance(value, dict) and optional in value:
             fields.add(optional)
     raw = _dict(value, field, fields)
@@ -762,6 +763,13 @@ def normalize_current_context_source_inputs(
         if after is not None and after["character_id"] != normalized["character_id"]:
             raise ValueError(field + ".after_gated_tail_326a8e0_2920310 character disagrees with source actor")
         normalized["after_gated_tail_326a8e0_2920310"] = after
+    if "provider192_and2920850" in raw:
+        from .battle_person_provider192_and2920850_contract import normalize_provider192_and2920850
+        provider_and_lists = normalize_provider192_and2920850(
+            raw["provider192_and2920850"], field + ".provider192_and2920850")
+        if provider_and_lists is not None and provider_and_lists["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".provider192_and2920850 character disagrees with source actor")
+        normalized["provider192_and2920850"] = provider_and_lists
     return normalized
 
 
