@@ -148,7 +148,7 @@ void Cases(const std::filesystem::path &directory) {
         records[0].membership_alias_ordinal == records[1].membership_alias_ordinal &&
         records[0].ordered_persistent_regiment_ids_2a8 == std::vector<std::int32_t>(memberships.begin(), memberships.end()) &&
         records[2].data_state_18_raw == 1 && records[2].data_byte_14_raw == 7 &&
-        records[3].record_regiment_magic_14_raw == 0 && !records[3].data_record_present &&
+        records[3].record_regiment_magic_14_raw == std::uint32_t{0} && !records[3].data_record_present &&
         inputs.groups->at(1).record_rows->at(0).data_alias_ordinal == records[0].data_alias_ordinal,
         "raw target differs from fallback receiver; real nonempty vector and repeated DATA/header aliases");
   const auto &chars = *inputs.groups->at(0).character_rows;
@@ -156,7 +156,7 @@ void Cases(const std::filesystem::path &directory) {
         chars[1].character_child_1c0_present == true && chars[2].character_child_1c0_present == false &&
         chars[2].character_used_fallback == true && chars[2].character_resolved_id == -1 &&
         chars[0].child_1b8_alias_ordinal == chars[2].child_1b8_alias_ordinal &&
-        chars[0].child_byte_108_raw == 7 && chars[0].child_character_reference_fc_raw == std::uint32_t{42} &&
+        chars[0].child_byte_108_raw == 7 && chars[0].child_character_reference_fc_raw == std::int32_t{42} &&
         chars[3].character_child_1b8_present == false,
         "three C8/C0 paths and fallback ID-1 share active B8; absent B8 is observed independently");
   Check(army == army_before && containing == containing_before && receiver == receiver_before && invalid == invalid_before &&
