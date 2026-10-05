@@ -8087,6 +8087,23 @@ endif()
 
 # Current source-derived temporary requests and selected list rows.
 if(BUILD_TESTING)
+  add_executable(xar_ck3_12003_person_after_gated_tail_test
+    src/ck3_12003_context_sources.cpp
+    tests/person_after_gated_tail_12003_test.cpp
+    tests/person_after_gated_tail_fixture.cpp)
+  target_include_directories(xar_ck3_12003_person_after_gated_tail_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_person_after_gated_tail_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_person_after_gated_tail_test PRIVATE NOMINMAX)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_person_after_gated_tail_test PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_ck3_12003_person_after_gated_tail_test
+    COMMAND xar_ck3_12003_person_after_gated_tail_test
+      "${CMAKE_BINARY_DIR}/ck3_12003_person_after_gated_tail_wire")
+endif()
+
+if(BUILD_TESTING)
   add_executable(xar_ck3_12003_person_gated_temporary_tail_test
     src/ck3_12003_context_sources.cpp
     tests/person_gated_temporary_tail_12003_test.cpp
