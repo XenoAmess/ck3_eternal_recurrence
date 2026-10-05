@@ -102,3 +102,11 @@ attempt's normal anchor is h8618/date 53262288, 98332694 bytes, SHA-256
 
 Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-engine-catalog-current/actual-v69-mailbox-submit-fix/parent-delivery/ROOT-DELIVERY.json`.
 No retry, SDK call, game day or material result is credited by this source package.
+
+### 2026-10-05 R43 normal mangonel Create purchase loop
+
+R42's actual `mailbox_submit_unavailable` failure remains retained. The dedicated callback fix `90f61443` and fix note `116b82a8` were adopted; parent-reported g75/`efe54935` real reload/full64/CI GREEN and the new registration case GREEN across five parallel strict TUs were reused without retesting. R43 action `robert-r43-v70-mangonel-20261005-023224-01` then admitted `CCreateMAARegimentCommand` for owner29829/type50: `queued_pending`, native can-create/submit-accepted/pointer-consumed true. The original wrapper retains `verification_pending=true`, `material_result=false`, `created_observed=false` and `payment_observed=false`; later independent observations establish the postconditions rather than rewriting that receipt.
+
+Complete Commander-owned A108 observations at raw date53262864 advanced native3/public2/seq1 to native4/public3/seq2, with scope available and source count2→3. They independently publish new regiment50347099, owner29829, key`mangonel`, tier2, rawcapacity10; chunk0 current5/max10/backlink−1/pending0/state0, chunks1–6 each current0/max0/backlink−1/pending0/state0. Failures0, removed0, old17003/17004 unchanged, positive0→1. The fresh BEFORE quote for actual catalog index50 had inputs-ready/can-create true, effective quantity10, `regular_personal_create`/`available`, Q100000 resource vector `[5940000,0,0,0,0,0,0,0,0,0]`. Root's same-date gold observation70253129→64313129 gives actual debit5940000 =59.4, matching that fresh quote.
+
+This closes one bounded normal Create purchase loop at `production-live loop` readiness. Normal SAVEh8694,98452477 bytes,SHA-256`33ca14435c7b4402b3173ae4a0d50c4f75f51d96ece17773fe85b5c691797eef`. All backlinks remain−1 and raised rosters are unchanged, so raised/attachment/effectiveK receive no credit. The purchase is a zero-day action; total4939 remains unchanged. Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-engine-catalog-current/actual-v70-r43-create/parent-delivery/ROOT-DELIVERY.json`.
