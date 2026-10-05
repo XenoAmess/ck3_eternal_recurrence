@@ -167,8 +167,47 @@ flowchart TD
   K -.-> L[unknown remaining caller291CC71+]
 ```
 
-No tail implementation or test qualification is claimed by this source ledger.
+At its original source-ledger seal, no tail implementation or test qualification was claimed.
 
 ## Oct6 actual qualification and adoption (2026-10-06T00:21:35+08:00)
 
 Source-first implementation `7af9c744ea960958b95ee3c96bc88a2a920d26d7` depends on actual shared production trait contract `c688d593`. First new case at00:01 had a fixture-only missing disabled fourth-span header; corrected known0 header then only newcase1/1GREEN0.015s. Exact earlier frontier remains useful when trait unavailable: prowess14 vs complete boundedpre467 prowess40, current-final input retained. Both attempts and sourcepins are in `person-stage-chain/ROOT-DELIVERY.json` and attempt-01/02 files. Source/implementation Oct5; first qualification Oct6. A subsequent2753860 continuation case is separately owned and not included in this first-case result. No earlier passed case rerun/native build/game operation.
+
+That copied ledger was sealed before the continuation implementation.
+
+The next bounded continuation API will take the existing chain result and the
+same normalized source section. Its default requested bound is immediately
+after helper2753860, before `291C4D2 -> 2922070`. This independently complete
+prefix can be ready when actual275 operands are complete. Explicitly asking
+through2922530 requires the intervening2922070 observation and preserves a
+partial275 frontier until that observer exists. All later sparse outputs and
+future gaps remain in the ordered ledger; readiness of a requested early bound
+does not label the whole tail ready. A partial preceding pre467 result retains
+its actual earlier context and cannot jump across its prior gap to275.
+
+The continuation is now implemented by
+`continue_person_stage_chain_tail_12003(previous_result,source_inputs,through_stage="2753860")`
+and its same-query person-state wrapper. It reuses the existing logical merge
+arithmetic and the native owner's real `c688d593` contract emitters. Each later
+sparse stage remains independently visible in native caller order. Only
+contiguous stages up to the explicitly requested bound are folded; future
+gaps remain in `future_tail_missing_inputs`. `all_tail_source_stream_ready`
+stays false. Source-closed2922070 currently has no emitter/collector, while
+conference and other untranslated segments remain source gaps.
+
+A distinct new production-normalizer tail integration passed **1/1 once in
+0.012s on 2026-10-06 at 00:16 Asia/Shanghai**, receipt
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-stage-chain/tail-attempt-01.json`.
+The actual275 input's two reads of the same gate byte both equal1, its native
+pointer predicate and direct owner equality admit a Q100000 PC. Explicit prior
+prowess2 plus contribution3 and base6 yields `(6,6,6,6,6,11)` at
+`post2753860_pre291C4D2`. Requesting through2922530 remains partial at that same
+275 frontier because2922070 is missing. Government870/A30 and stored signed64
+weights `(0,-100000,200000)`, including duplicate identities, stay independent
+and are not merged over the gap. An earlier A-stage partial prior also cannot
+jump to275. Original query/prior data remain unchanged.
+
+This new case did not rerun the previously successful pre467 case or any old
+case. Native builds, fresh EXE reads and game operations remained zero. It is
+**static-ready for the independently complete275 bound and sparse output
+consumption**, not complete tail/person preparation/Entry or live evidence.

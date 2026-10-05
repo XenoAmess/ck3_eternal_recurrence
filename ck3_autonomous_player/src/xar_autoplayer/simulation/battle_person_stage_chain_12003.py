@@ -274,3 +274,160 @@ def project_stage_chain_six_skills_12003(
     return replace(projected, ledger={**projected.ledger, "assembled_context_stage": result.stage,
         "bounded_chain_ready": result.ready, "full_person_preparation_ready": False,
         "full_entry_ready": False, "conditional_stage_projection": True})
+
+
+def _tail_emit(section: Mapping | None, module_name: str, function: str, family: str | None = None):
+    module = import_module("xar_autoplayer.bridge." + module_name)
+    emit = getattr(module, function)
+    return emit(section) if family is None else emit(section, family)
+
+
+def continue_person_stage_chain_tail_12003(
+    previous: PersonStageChainResult12003, source_inputs: Mapping | None, *,
+    through_stage: str = "2753860",
+) -> PersonStageChainResult12003:
+    """Extend a requested contiguous bound and expose later sparse inputs.
+
+    Default completes the independently useful actual275 stage. Requesting
+    later stages requires every intervening source/observer; they are not
+    synthetic empty contributions. A prior partial chain cannot jump to tail.
+    """
+    prefix_module = "battle_person_tail_prefix_contract"
+    middle_module = "battle_person_middle_helpers_contract"
+    direct_module = "battle_person_tail_direct_contract"
+    stages = (
+        ("2753860", "post2753860_pre291C4D2", prefix_module,
+         "emit_helper_2753860_requests_from_current_source_inputs_12003", None),
+        ("2922070", "post2922070_pre291C4DD", prefix_module,
+         "emit_helper_2922070_requests_from_current_source_inputs_12003", None),
+        ("2922530", "post2922530_pre291C4E2", prefix_module,
+         "emit_helper_2922530_requests_from_current_source_inputs_12003", None),
+        ("conference24B1D00", "post24B1D00_pre291C553", None, None, None),
+        ("291F260", "post291F260_pre291C558", middle_module,
+         "emit_helper_291f260_requests_from_current_source_inputs_12003", None),
+        ("signed2F8_provider_bucket", "postProvider2F8_pre291C5B7", None, None, None),
+        ("government_870_a30", "postGovernmentA30_pre291C620", direct_module,
+         "emit_tail_direct_family_requests_from_current_source_inputs_12003", "government_870_a30"),
+        ("qualifier_repeated_contribution", "postQualifierContribution_pre291C6CF", None, None, None),
+        ("291FB10", "post291FB10_pre291C6D4", middle_module,
+         "emit_helper_291fb10_requests_from_current_source_inputs_12003", None),
+        ("intervening_lists_flags_temp_helpers_thresholds", "preCarrierWeighted630", None, None, None),
+        ("carrier_weighted630", "postCarrierWeighted630_pre291CC71", direct_module,
+         "emit_tail_direct_family_requests_from_current_source_inputs_12003", "carrier_weighted630"),
+        ("remaining_later_preparation", "remaining_caller_unclosed", None, None, None),
+    )
+    names = tuple(item[0] for item in stages)
+    if through_stage not in names:
+        raise ValueError("Unknown requested person tail bound: " + through_stage)
+    bound_index = names.index(through_stage)
+    gaps = list(previous.missing_inputs)
+    keys, values, weighted = [], [], []
+    context = previous.context
+    context_valid = isinstance(context, NativeModifierContext12003)
+    local = []
+    if context_valid:
+        arrays = None if context.aggregate_properties is None else _block_arrays(
+            context.aggregate_properties, "previous.context.aggregate_properties", local)
+        if arrays is None:
+            context_valid = False
+        else:
+            keys, values = list(arrays[0]), list(arrays[1])
+        count, rows = context.weighted_count, context.weighted_rows
+        if type(count) is int and count == 0:
+            pass
+        elif type(count) is not int or count < 0 or rows is None or len(rows) < count:
+            context_valid = False
+            local.append("previous.context.weighted_rows")
+        else:
+            weighted = list(rows[:count])
+    if not context_valid:
+        local.append("previous.context")
+    if not previous.ready or previous.stage != STOP_STAGE_12003:
+        local.append("previous.completed_post291F940_pre291C467")
+    actor_matches = source_inputs is not None and source_inputs.get("character_id") == previous.character_full_id
+    if not actor_matches:
+        local.append("source_inputs.character_id_matches_previous")
+    gaps.extend(item for item in local if item not in gaps)
+    contiguous = context_valid and previous.ready and previous.stage == STOP_STAGE_12003 and actor_matches
+    reached = False
+    stage = previous.stage
+    contexts = dict(previous.stage_contexts)
+    outputs = dict(previous.independent_stage_outputs)
+    ledger_rows, updates, future_missing = [], [], []
+
+    def snapshot():
+        return NativeModifierContext12003(PropertyContainer12003(tuple(keys), tuple(values), len(keys)),
+                                         tuple(weighted), len(weighted))
+
+    for index, (name, after_stage, module, function, family) in enumerate(stages):
+        required = index <= bound_index
+        missing, requests, ready = [], (), True
+        try:
+            if not actor_matches:
+                raise ValueError("matching_character_source_unavailable")
+            if module is None:
+                raise ValueError("native_source_stage_unclosed")
+            requests = _tail_emit(source_inputs, module, function, family)
+        except (ValueError, ModuleNotFoundError, AttributeError) as error:
+            ready, missing = False, [str(error)]
+        validated = []
+        for request_index, request in enumerate(requests):
+            request_gaps = []
+            pc = _property_input(request.base_property_block)
+            arrays = None if pc is None else _block_arrays(pc, f"{name}.request[{request_index}]", request_gaps)
+            if arrays is None:
+                request_gaps.append(f"{name}.request[{request_index}].properties")
+            if type(request.weight_q64) is not int:
+                request_gaps.append(f"{name}.request[{request_index}].weight_q64")
+            if request_gaps:
+                ready = False
+                missing.extend(request_gaps)
+                break
+            validated.append((request, pc, arrays))
+        outputs[name] = tuple(item[0] for item in validated)
+        folded = contiguous and required
+        if folded:
+            for request, pc, arrays in validated:
+                if arrays[0]:
+                    weight = native_wrap64_12003(request.weight_q64)
+                    weighted.append(WeightedModifierRow12003(pc, weight, len(weighted)))
+                    _fold_property_request(keys, values, arrays[0], arrays[1], weight,
+                        {"stage": name, "definition_identity": request.definition_identity,
+                         "source_ordinal": request.source_ordinal, "first_row_index": request.first_row_index}, updates)
+            if ready:
+                stage = after_stage
+            elif validated:
+                stage = "verified_partial_" + name
+            contexts[stage] = snapshot()
+        destination = gaps if required else future_missing
+        destination.extend(name + ":" + missing_item for missing_item in missing)
+        ledger_rows.append({"stage": name, "after_stage": after_stage, "required_for_requested_bound": required,
+            "requests_ready": ready, "request_count": len(validated),
+            "folded_into_contiguous_context": folded, "missing_inputs": tuple(missing)})
+        if required:
+            contiguous = contiguous and ready
+            if index == bound_index:
+                reached = contiguous
+
+    ledger = {"source_exe_sha256": SOURCE_EXE_SHA256_12003,
+        "prior_chain_ledger": previous.source_ledger, "requested_tail_bound": through_stage,
+        "ordered_tail_stages": tuple(ledger_rows), "tail_aggregate_updates": tuple(updates),
+        "future_tail_missing_inputs": tuple(future_missing),
+        "first_contiguous_observation_dependency": "2922070",
+        "next_native_source_leaf": "24B1D00", "all_tail_source_stream_ready": False,
+        "current_final_context_used_as_default": False, "unknown_stages_assumed_empty": False,
+        "full_person_preparation_ready": False, "full_entry_ready": False, "game_operations": 0}
+    return PersonStageChainResult12003(previous.character_full_id, stage,
+        contexts.get(stage, context if context_valid else None), reached and not gaps,
+        tuple(gaps), ledger, contexts, outputs)
+
+
+def continue_current_person_stage_chain_tail_12003(
+    person_state: Mapping, previous: PersonStageChainResult12003, *, character_full_id: int,
+    through_stage: str = "2753860",
+) -> PersonStageChainResult12003:
+    """Consume the actual optional tail source fields from the same query."""
+    if character_full_id != previous.character_full_id:
+        raise ValueError("current person and previous stage characters disagree")
+    return continue_person_stage_chain_tail_12003(previous,
+        person_state.get("current_context_source_inputs"), through_stage=through_stage)
