@@ -219,3 +219,9 @@ R45/g77/v72，paused raw53263896/native144/public2/queryseq4，健康四军avail
 独立围城owner同帧已资格化470的actual K=2、Mraw=94350、Draw=247620，来源为`siege-arrival-engine470-g76-readiness/actual-r45-engine470-arrival01/ROOT-DELIVERY.json`（SHA `58b9d88760339d545d9cc94055a13c9b9d3d8141a557acba0058534dee64a9e6`）；没有从库存tier反填省K/M/D。现有供给源树与实际预算支持延续普通双围城，继续复用健康LOSS/clock与occupation richrow观测；当前没有必要新增读口、搬军或拆军门禁。Root随后普通20日已closed GREEN、raw53264376，由军域独立消费；本段健康仍是到场截面，未取得20日后新健康，后继planned20日无结果信用。
 
 外置完整字段与源树：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/engine-arrival-r45/ROOT-DELIVERY.json`。本consumer只读Commander健康派生一次，原006/004、旧缓存、SDK、窗口、测试、共享源码/Git与新增游戏日均0；native version/EXE SHA字段null保真。能力记录为production-live primitive，真实日推进信用由Root/军域账本登记。
+
+### 2026-10-05 R45：强攻选择前的实际健康截面
+
+closed SDK57783的paused raw53264472/native244/public2/queryseq5四军available：主2994/3873、器械7/11在470，守2912/3000在3711，敌2878/4702在735。库存/容量/月变化依次290.00001/300/0、300/300/0、86.36365/100/−4.54545、100/100/−5；attr fraction依次.01/.01/.01/0。实际supply与raid整数预算四军全0，主/器械/守siege_active=true、围城整数预算29/0/29；当前预算不是强攻预算或已经扣兵。
+
+完整DATA主40条available（prepared正24、nativeCan真24、chunkCan真0），器械1条与守24条均prepared0且两许可false；敌133条available（prepared正127、nativeCan真124、chunkCan真69），两许可独立，不预测全军净月补兵。相对raw53263896的主−30/守−29/器械0/敌+69仅观测差，不归因本帧预算。健康口没有专用围城B，公开2994+7=3001不能反填B；强攻选择复用独立occupation/source domain的B、城防/缺口与CanStart。本consumer0 action/day/SDK/window/tests/shared/Git，指定健康派生read1、原008/fullcomposition/occupation0，normalSAVE null保留。完整缓存与字段在`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-preassault-health-r45/ROOT-DELIVERY.json`。
