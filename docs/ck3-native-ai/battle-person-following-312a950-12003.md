@@ -116,3 +116,9 @@ Exact consumer frontier on a ready selected branch: `postGovernmentLand312A950_p
 ## Sealed source packet
 
 External packet: `Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-tail/following312a950-source`. `SOURCE-PINS.json`, `READ-COST.json`, and `MINIMAL-RAW-SCHEMA-PROPOSAL.json` seal exact source receipts, byte cost, and the proposed input grouping. No production contract, callback execution, code, test, build or live artifact was produced. Prior4956-B and767-B packets remain unchanged.
+
+## Released minimum raw schema before implementation
+
+Root authorized the four known-zero branches after the source-only seal. `FINAL-RAW-SCHEMA.json` freezes optional leaf `following_government_land_312a950`, the dedicated module/native names and actual raw groups before code. Government flags are always selected with the original death-first source; caller firstLand retains living-first ordering, count!=0 semantics and one stored DWORD. False bit29 and actual1B0 absence retain no later demand; actual invalid/nonnegative selectedLand releases0requests without provider/income evaluation.
+
+Valid negativeLand retains actual loaded provider observation followed by precise `mode3_income_2bca580`/null classifier index, with provider count/selection/PC undemanded. No empty-PC substitution or gold-income alias is introduced. Native names are `ContextSourceFollowing312a950InputsV1`, `ContextSourceFollowing312a950BindingsV1`, member `following_312a950`, base-only factory `BindFollowing312a950Sources12003`, collector `Following312a950Inputs`, serializer `Following312a950Json` and fixture hook `RunFollowing312a950Fixture`. One new producer compound and independent target/CTest `xar_ck3_12003_person_following_312a950_test` are planned for central Root qualification. Prior compiled samples stay immutable; source cost remains219B and implementation reads0newEXE bytes.
