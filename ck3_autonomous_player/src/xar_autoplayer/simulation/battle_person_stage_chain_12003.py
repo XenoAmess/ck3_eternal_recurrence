@@ -298,6 +298,7 @@ def continue_person_stage_chain_tail_12003(
     direct_module = "battle_person_tail_direct_contract"
     provider_module = "battle_person_provider_bucket_contract"
     qualifier_module = "battle_person_qualifier_28bc0d0_contract"
+    list_module = "battle_person_list_predicate_2530dd0_contract"
     stages = (
         ("2753860", "post2753860_pre291C4D2", prefix_module,
          "emit_helper_2753860_requests_from_current_source_inputs_12003", None),
@@ -317,6 +318,8 @@ def continue_person_stage_chain_tail_12003(
          "emit_qualifier_28bc0d0_requests_from_current_source_inputs_12003", None),
         ("291FB10", "post291FB10_pre291C6D4", middle_module,
          "emit_helper_291fb10_requests_from_current_source_inputs_12003", None),
+        ("list2530DD0", "postList2530DD0_pre291C7A7", list_module,
+         "emit_list_predicate_2530dd0_requests_from_current_source_inputs_12003", None),
         ("intervening_lists_flags_temp_helpers_thresholds", "preCarrierWeighted630", None, None, None),
         ("carrier_weighted630", "postCarrierWeighted630_pre291CC71", direct_module,
          "emit_tail_direct_family_requests_from_current_source_inputs_12003", "carrier_weighted630"),
@@ -370,6 +373,7 @@ def continue_person_stage_chain_tail_12003(
         missing, requests, ready = [], (), True
         conference_family_ledger = []
         qualifier_definition_ledger = []
+        list_row_ledger = []
         try:
             if not actor_matches:
                 raise ValueError("matching_character_source_unavailable")
@@ -394,34 +398,37 @@ def continue_person_stage_chain_tail_12003(
                         "request_count": len(family_requests), "in_contiguous_family_prefix": family_contiguous,
                         "missing_inputs": tuple(family_missing)})
                 ready = not missing
-            elif name == "qualifier_repeated_contribution":
+            elif name in ("qualifier_repeated_contribution", "list2530DD0"):
                 try:
                     requests = _tail_emit(source_inputs, module, function)
                 except (ValueError, ModuleNotFoundError, AttributeError) as error:
                     ready, missing = False, [str(error)]
-                leaf = source_inputs.get("qualifier_28bc0d0")
-                definitions = leaf.get("definitions") if isinstance(leaf, Mapping) else None
-                definition_contiguous = True
-                for definition in definitions or ():
-                    native_index = definition["native_index"]
-                    definition_requests, definition_missing = (), []
+                is_qualifier = name == "qualifier_repeated_contribution"
+                leaf = source_inputs.get("qualifier_28bc0d0" if is_qualifier else "list_predicate_2530dd0")
+                parts = leaf.get("definitions" if is_qualifier else "rows") if isinstance(leaf, Mapping) else None
+                part_ledger = qualifier_definition_ledger if is_qualifier else list_row_ledger
+                prefix_key = "in_contiguous_definition_prefix" if is_qualifier else "in_contiguous_row_prefix"
+                part_emitter = ("emit_qualifier_28bc0d0_definition_requests_from_current_source_inputs_12003"
+                                if is_qualifier else "emit_list_predicate_2530dd0_row_requests_from_current_source_inputs_12003")
+                part_contiguous = True
+                for part in parts or ():
+                    native_index = part["native_index"]
+                    part_requests, part_missing = (), []
                     if ready:
-                        definition_requests = tuple(row for row in requests if row.first_row_index == native_index)
+                        part_requests = tuple(row for row in requests if row.first_row_index == native_index)
                     else:
                         try:
-                            definition_requests = _tail_emit(source_inputs, module,
-                                "emit_qualifier_28bc0d0_definition_requests_from_current_source_inputs_12003", native_index)
+                            part_requests = _tail_emit(source_inputs, module, part_emitter, native_index)
                         except (ValueError, ModuleNotFoundError, AttributeError) as error:
-                            definition_missing.append(str(error))
-                    definition_ready = not definition_missing
-                    outputs[name + "." + str(native_index)] = tuple(definition_requests)
-                    definition_contiguous = definition_contiguous and definition_ready
-                    if not ready and definition_contiguous:
-                        requests += tuple(definition_requests)
-                    qualifier_definition_ledger.append({"native_index": native_index,
-                        "requests_ready": definition_ready, "request_count": len(definition_requests),
-                        "in_contiguous_definition_prefix": definition_contiguous,
-                        "missing_inputs": tuple(definition_missing)})
+                            part_missing.append(str(error))
+                    part_ready = not part_missing
+                    outputs[name + "." + str(native_index)] = tuple(part_requests)
+                    part_contiguous = part_contiguous and part_ready
+                    if not ready and part_contiguous:
+                        requests += tuple(part_requests)
+                    part_ledger.append({"native_index": native_index, "requests_ready": part_ready,
+                        "request_count": len(part_requests), prefix_key: part_contiguous,
+                        "missing_inputs": tuple(part_missing)})
             else:
                 requests = _tail_emit(source_inputs, module, function, family)
         except (ValueError, ModuleNotFoundError, AttributeError) as error:
@@ -456,6 +463,9 @@ def continue_person_stage_chain_tail_12003(
                     row["in_contiguous_definition_prefix"] for row in qualifier_definition_ledger):
                 completed = sum(row["in_contiguous_definition_prefix"] for row in qualifier_definition_ledger)
                 stage = "postQualifierDefinition" + str(completed - 1) + "_pre291C655"
+            elif name == "list2530DD0" and any(row["in_contiguous_row_prefix"] for row in list_row_ledger):
+                completed = sum(row["in_contiguous_row_prefix"] for row in list_row_ledger)
+                stage = "postList2530DD0Row" + str(completed - 1) + "_preRow" + str(completed)
             elif validated:
                 if name == "conference24B1D00":
                     completed = sum(row["in_contiguous_family_prefix"] for row in conference_family_ledger)
@@ -470,7 +480,8 @@ def continue_person_stage_chain_tail_12003(
             "requests_ready": ready, "request_count": len(validated),
             "folded_into_contiguous_context": folded, "missing_inputs": tuple(missing),
             "conference_family_stages": tuple(conference_family_ledger),
-            "qualifier_definition_stages": tuple(qualifier_definition_ledger)})
+            "qualifier_definition_stages": tuple(qualifier_definition_ledger),
+            "list_predicate_row_stages": tuple(list_row_ledger)})
         if required:
             contiguous = contiguous and ready
             if index == bound_index:
@@ -482,10 +493,11 @@ def continue_person_stage_chain_tail_12003(
         "future_tail_missing_inputs": tuple(future_missing),
         "first_contiguous_observation_dependency": next(
             (row["stage"] for row in ledger_rows if not row["requests_ready"]), None),
-        "next_native_source_leaf": "291C6D4_intervening_lists_flags_temp_helpers_thresholds", "all_tail_source_stream_ready": False,
+        "next_native_source_leaf": "291C7A7_gated_temporary_tail", "all_tail_source_stream_ready": False,
         "provider_291c5b2_operand_scope": "held_current_character_1b0_2f8",
         "provider_291c5b2_return_edges": "all selection branches rejoin291C5B7",
         "qualifier_28bc0d0_operand_scope": "held_current_character_1b0_scratch_object_relationships",
+        "list_predicate_2530dd0_operand_scope": "held_current_character_1b0_458_list_and_scope_inputs",
         "source_operand_scope": "held_current_same_query_inputs",
         "conditional_on_observed_source_values": True,
         "291f260_weight_source_scope": "held_current_evaluated_values",

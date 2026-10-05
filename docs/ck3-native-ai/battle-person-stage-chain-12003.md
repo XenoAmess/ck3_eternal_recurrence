@@ -558,3 +558,79 @@ This is static-ready conditional pure assembly, using source-shaped synthetic
 frames through production code. The native collector and full current
 preparation/Entry remain separate qualifications. No old test, native build,
 new EXE read or game operation was run by this chain extension.
+
+## First actual ordered predicate list connected after291FB10
+
+Source-owned topic `battle-person-list-predicate-12003.md` is sealed by4b12dbc6;
+its source receipt records3241 new EXE bytes by the gbs3 owner. This chain reads
+zero new EXE bytes. Genuine pure/strict contract
+`dd6a6200223bbabac3b0ae9fe4e4274c69b6f71f` is adopted on the producer tree
+as f9bbad75. Shared production normalizer
+`cfb47238632c163748687c7d380a0a2bdd019bd8` publishes the optional same-query
+`list_predicate_2530dd0` leaf before this stage implementation.
+
+Native291C6D4 follows the existing291FB10 helper. Getter28AA8B0 selects actual
+inline held scratch458, or inline static54E7180 with guard5D67818. The list
+header reads pointer40 before signed count4C, then24B physical rows/fullDWORD
+ID10. Count0 and allFFFFFFFF are known no contributions. ID0 is a real lookup;
+every nonsentinel occurrence is retained, including duplicate IDs. Selected
+objects come from actual full-generation lookup5D1DE68 or actual fallback
+5D1DE30. At291C779,2530DD0 returns true for predicateReceiver490 magic38
+different from4744624F, or matching magic with signed15C exactly0. Only those
+source-closed true branches select actualD8 PC and one unit100000 append.
+
+Nonzero15C requires scoped evaluation with root kind4 Character18 and named
+kind31 selected10 under key5D4C018. The raw trigger110/vtableC8 identity is an
+observation seam; its boolean and applicability372B4E0 remain unclosed. A
+negative15C is nonzero too. No true/false result or selected298 PC is guessed.
+Selected static uninitialized state remains partial; unused default guard0/-1
+does not remove valid held-scratch input because its initialization writes the
+default only.
+
+The public bound `through_stage="list2530DD0"` folds existing291FB10 first,
+then this genuine whole-stream emitter. It preserves source ordinals, every
+unit request and actual PC references. On partial input the genuine per-row
+emitter retains independently ready later rows; only the complete physical row
+prefix reaches the context. Sentinel skips can advance that prefix without
+adding a contribution. A partial stage such as
+`postList2530DD0Row1_preRow2` records exactly the last verified physical row and
+the next missing row, rather than labeling the requested final bound.
+
+```mermaid
+flowchart TD
+  F[Observed291FB10 contribution fold] --> H[Actual selected list header40/count4C]
+  H --> R[Original24B row: fullDWORD ID10]
+  R -->|FFFFFFFF| S[Known skip; next original row]
+  R -->|other; ID0 included| O[Actual full-ID selected/fallback object]
+  O --> P{Predicate magic differs or matching15C0?}
+  P -->|yes| A[Actual D8 PC; one unit100000 append]
+  P -.-> U[Nonzero15C: actual root/named/script identity; boolean unknown]
+  A --> S
+  S --> R
+  S -->|all complete| E[postList2530DD0_pre291C7A7]
+  U --> X[Partial row: stop continuous fold; retain independent later rows]
+  E -.-> N[Next gated carrier/helper source at291C7A7]
+```
+
+Held-current list/scope inputs and260/provider/qualifier scope remain
+conditional on observed values and the supplied explicit logical baseline.
+This stage does not prove a freshly generated post291FB10 list or a historical
+frame. Next source ownership is the separately assigned gated carrier/helper
+segment at291C7A7/C8AE; remaining lists, flags, temporary helpers and thresholds
+are still an explicit gap before weighted630. The one distinct new chain case
+is `test_battle_person_list_stage_chain_12003.py`; neither the list source
+owner's compound case nor our previous successful stage cases are rerun.
+
+The first distinct FB10/list chain case passed once on2026-10-06 02:11:59
+Asia/Shanghai (1/1, 0.030s). Ready bound
+`postList2530DD0_pre291C7A7` projects skills `[6,6,6,6,6,51]`; source request
+indices `[0,2,3,4]` retain duplicate ID occurrences and a real ID0 contribution
+while sentinel row1 skips. Held-scratch selection remains ready with unused
+default guard0. A nonzero scripted row2 preserves
+`postList2530DD0Row1_preRow2`, skills `[6,6,6,6,6,50]`, its distinct root/named
+full IDs and unknown evaluator pointer. Known later rows3/4 remain independent
+and are not folded across the scripted gap. Receipt `list-attempt-01.json`
+binds the exact consumed production source files. This is static-ready bounded
+conditional pure assembly; source-shaped synthetic frames do not qualify the
+native collector or a live frame. No old/sibling test, native build, new EXE
+read or game operation was run by this chain extension.
