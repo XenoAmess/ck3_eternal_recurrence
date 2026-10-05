@@ -193,3 +193,16 @@ P0-TERM当前原图覆盖TERM-01/02/05/07，共4/11：补给300/300、当地1086
 费用新source ffc29已有income−total expenses修正，但本轮运行a06旧NET仍实际月收入，禁止作净额计算；只消费已确认余额。新的DLL与exact true-NET实读、实际支付ledger仍另验。剩余核心包括七项完整术语、actual merge、同档A/B/C共同出发档与三回放、路线与费用边界、连续可用镜头、全文/TTS/成片/完整人工审阅及指定视频交付。
 
 当前调度粗估为整体约30%、研究约70%，术语PNG4/11约36%、ABC0/3、影片制作0；这是Root向用户说明的规划估算，**正式研究加权完成比例及分母仍为null**，不由素材分钟数推出。Oct5（Asia/Shanghai）12:00–15:00补研究、18:00–22:00拍A/B/C、Oct6下午/晚间Review01是目标，尚非完成事实或保证。
+
+
+## 2026-10-05 R0166 partial 关闭事实追加：零日、零录制、相机未验收
+
+[新增R0166索引](evidence/r0166-partial-index.json)逐字节采用外置冻结50301B/SHA-256 `9f98513fe5305bf7857a2374cf8ef2b0b3135017a198795afe4ff92397be0020`，包含102个既有小型来源pins；不重写R0165或历史失败。JSON中的frozen_external_candidate_only与this_lane_actions记录的是此前纯文件索引整理阶段，本次主线文档接收另记，不回写历史阶段。
+
+原始checkpoint7f Jan11/a06冷载的actual actor33388/PID16740/episode native-33388-9c9ac1001e61，三笔独立snapshot同raw53147160/public3/native2、paused/map_ready。请求名单[0,16777220,166]中前两军可用，Army0 5660/5660、Sea1086/1087，166 native_carmy_not_found/人数null。九笔保存的实际请求只涉及snapshot、army strengths、title camera和stop；首次loading snapshot失败及center d_normandy的state_changed均保全，publication returncode0不等于业务成功。静态revision合同预期public3→native2，未独立观测实发raw请求，唯一失败条件、dispatch及局部相机效果仍未知，camera acceptance=false。
+
+actual launcher/wrapper0，SDK/keeper已退出；CK3实际exit1、managed exit_reason=stop、Jobfinal0/treegone/cleanup_proven=true、独立保存probe actors[]，session process_exit_code字段null原样保留。recorder=NOT_STARTED，新增游戏日/timepulse/move/merge/TERM/A-B-C/制作信用均0，clean spans/完整1×审阅/signoff均false。财务仅treasury-only，a06旧NET不是净额；历史a06 ignored/generated/external完整输入source_gap继续保留，现存tracked blobs及当前依赖核对不补造历史全输入闭合。
+
+后续Root独立屏幕交接回执补充索引冻结时尚未声称的CAS事实：旧a09在seq4680释放过期自有声明，a10在seq4687同样释放，均resources=[]、retirement.business_status=unresolved_red；seq4688登记新broker-a11。只授这些时点的释放/登记，不将释放写成业务恢复、broker安装成功或本轮镜头完成。回执位于 `C:/ck3-war-episode04-research-20261004-a01/`：`root-broker-screen-transition-a01/release.stdout`（1426B、SHA-256 `1961cd51adfdd9d262a0769dd3db5efe8ba1037366e7d85fbf19ad56ee5a64dc`、seq4680）；`root-broker-screen-transition-a01/register.stdout`（1382B、SHA-256 `7c35326074deb56ff84ca74fc465e03481c18cf3154415a153a6b1c9f4325a4c`、seq4681）；`root-broker-screen-transition-a02/release.stdout`（1438B、SHA-256 `8580a237995fb85eae835c0eb5be3433bea6297bccd4e6eb5a46e5e60d0a13e3`、seq4687）；`root-broker-screen-transition-a02/register.stdout`（1382B、SHA-256 `aad61bbb3935b57d3a0b4eb9504f66efe8e2965754a458b3a7d3c16131dccf71`、seq4688）。
+
+当前证据计分不因R0166改变：P0-TERM完整PNG4/11，七项整项待补；实际merge、同档A/B/C0/3、连续clean镜头、句稿/TTS/成片及完整人工审阅仍待完成。整体约30%/研究约70%沿用此前Root规划估算，正式研究加权比例和分母仍null；本轮零日尝试与停机分钟数不转成完成度。

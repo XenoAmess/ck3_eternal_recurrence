@@ -147,3 +147,12 @@ Root在整数增长观测后已停止推进，原总30日含旅行终点53147880
 [R0165索引](evidence/r0165-index.json)已绑定TERM-01/02/05/07四项原始PNG与五个Root直接审过的encoded单帧：补给、零/非零每月损耗、当前移动3天/Feb4、停止移动H。非零损耗当前Army0为1%/−56月/围攻+1%，不作为已实际损失56人的结算证明；“当前预计抵达”不改写为已经抵达。TERM-10仅平分及锁定拒绝PNG，合并尚欠，该PNG在1800秒原片之外保持编码绑定null。两次typed tooltip cache仍拒绝，当前Army窗口/像素成功不追认缓存freshness。
 
 本次独立冷载只从原day15推进6日到原+21，实际+21存档SHA3c841cbc7585989c2334392697608a600907dc2fd615f992a59b7d55abee5bb0保全，尚余9日；两次run不能剪称一个无缝原现场。30分钟raw全媒体PASS且五帧已读，只授机器媒体条件与单帧内容，clean spans/完整1×影片审阅/签核仍false。下一研究和A/B/C的时间窗是调度目标，不当已完成镜头或固定交付承诺；费用按最新true-NET勘误与新实读另闭合，旧a06运行不得再称净额。
+
+
+## 2026-10-05 R0166：原始 Jan11 暂停基线与未验收的相机请求
+
+[R0166 partial 索引](evidence/r0166-partial-index.json)保全原始7f Jan11/a06 fallback冷载、九笔实际SDK请求和受管停机回执。actor33388、PID16740、episode `native-33388-9c9ac1001e61`；三个独立snapshot均为raw53147160/public3/native2、paused/map_ready。Army0实读5660/5660，Sea16777220实读1086/1087；包装166返回native_carmy_not_found，人数为null，不能当第三支完整原生军队。数字只授当前暂停基线。
+
+center d_normandy实际返回state_changed/is_error/body=null，相机未获得验收信用。静态合同预期public3→native2，实发raw包未独立观测；共享错误不能唯一定位失败条件，也不能证明未dispatch或没有局部相机效果。首次loading snapshot失败原样保留。
+
+Root正常请求受管停止：launcher/wrapper返回0，SDK与keeper退出，CK3实际exit1/managedstop、Jobfinal0/treegone/cleanup_proven=true，保存的独立probe actors[]。本轮无recorder、无resume/timepulse、move/merge未执行，游戏日、TERM、A/B/C及制作新增信用均0；R0165的四项术语与五个encoded单帧不因此扩展。a06历史ignored/generated/external完整输入仍有source_gap，旧运行费用只按treasury-only；后续合军、路线和真实NET必须另案取得实际结果。

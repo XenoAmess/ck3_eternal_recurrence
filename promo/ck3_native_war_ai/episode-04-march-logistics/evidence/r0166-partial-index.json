@@ -1,0 +1,1089 @@
+{
+  "schema": "xar.war-episode04.partial-attempt-closure/v1",
+  "run": "R0166",
+  "status": "PARTIAL_COLD_BASELINE_CONFIRMED_CAMERA_UNACCEPTED_MANAGED_CLOSED_NO_FILM_CREDIT",
+  "recorded_utc": "2026-10-05T04:53:18.743163+00:00",
+  "frozen_external_candidate_only": true,
+  "source_commit": "fea65ebb763da5b2ddf7acd4897cd80a7a7a0f59",
+  "source_repo": "C:\\w\\e4a01",
+  "game_identity_from_prepared": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101039736,
+    "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "DLL_identity_from_prepared": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a06\\xar_ck3_bridge.dll",
+    "bytes": 5242880,
+    "sha256": "2c47997e8159d365c72c96b34c57bf596540bfd3af644b2336f2170e54b00848"
+  },
+  "native_build": "a06 fallback",
+  "historical_native_build_input_gap": [
+    "a06 original producer did not freeze historical full ignored/generated/external dependency SHA-256 or its own historical source SHA. Current tracked original-commit source blobs and current dependency bytes were independently checked; this is not full historical external/toolchain byte closure."
+  ],
+  "private_cash_queries_enabled": false,
+  "financial_scope": "treasury-only; v2 NET pending",
+  "actor_id": 33388,
+  "ck3_pid": 16740,
+  "episode_run_id": "native-33388-9c9ac1001e61",
+  "connection_generation": 1,
+  "input_checkpoint_identity_from_launch_verified_target": {
+    "name": "episode04_frozen_start",
+    "load_save_name": "episode04_frozen_start",
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\state-merge-originaljan11-a06-fallback-r0166-a01\\profile\\save games\\episode04_frozen_start.ck3",
+    "size": 72221797,
+    "sha256": "7f766a68ea5a588ace13a9580ce440976330c5258bf6fb030a196d278058f3b5"
+  },
+  "identity_provenance": "Saved preparation/file proof, Root actual launch owner input receipts, injected native snapshot hello and managed session receipts; no new game contact or historical large checkpoint rehash by this lane.",
+  "baseline": {
+    "receipt": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0166-baseline-a01\\baseline.json",
+      "bytes": 329924,
+      "sha256": "0b1e97827e01c65d55a0193c8783e550cc6f0ce02da38cf80c81bb8a1eebbaeb"
+    },
+    "requested_public_player_roster": [
+      0,
+      16777220,
+      166
+    ],
+    "native_available_armies": [
+      0,
+      16777220
+    ],
+    "unavailable_public_wrapper": {
+      "army_id": 166,
+      "native_carmy_id": null,
+      "status": "unavailable",
+      "reason": "native_carmy_not_found",
+      "soldiers": null
+    },
+    "before": {
+      "snapshot_id": "native:2",
+      "revision": 3,
+      "native_revision": 2,
+      "date_raw": 53147160,
+      "paused": true,
+      "map_ready": true,
+      "episode_run_id": "native-33388-9c9ac1001e61"
+    },
+    "after": {
+      "snapshot_id": "native:2",
+      "revision": 3,
+      "native_revision": 2,
+      "date_raw": 53147160,
+      "paused": true,
+      "map_ready": true,
+      "episode_run_id": "native-33388-9c9ac1001e61"
+    },
+    "queried_source": {
+      "game_version": null,
+      "executable_sha256": null,
+      "snapshot_id": "native:2",
+      "revision": 3,
+      "native_revision": 2,
+      "date_raw": 53147160,
+      "paused": true,
+      "backend_id": "native-headless"
+    },
+    "queried_scope_army_ids": [
+      0,
+      16777220,
+      166,
+      16777221,
+      16777228
+    ],
+    "army_numeric_summaries": [
+      {
+        "army_id": 0,
+        "native_carmy_id": 0,
+        "status": "available",
+        "current_soldiers": 5660,
+        "maximum_soldiers": 5660,
+        "regiment_count": 13,
+        "current_supply_raw": 8299737,
+        "current_supply_scale": 100000,
+        "current_supply_capacity_raw": 10000000,
+        "current_supply_capacity_scale": 100000,
+        "current_supply_change_monthly_raw": -1000000,
+        "current_supply_change_monthly_scale": 100000,
+        "army_update_clock_v1": {
+          "status": "available",
+          "ready": true,
+          "current_date_raw": 53147160,
+          "native_day_index": 389465,
+          "selected_bucket_phase": 5,
+          "observed_army_bucket_phase": 0,
+          "last_supply_update_date_storage_raw64": 300333821678253472,
+          "last_supply_update_date_raw": 53147040,
+          "grace_anchor_date_storage_raw64": 300061168564366016,
+          "grace_anchor_date_raw": 53144256,
+          "loaded_grace_days": 30,
+          "unavailable_reason": null
+        },
+        "unavailable_reason": null
+      },
+      {
+        "army_id": 16777220,
+        "native_carmy_id": 16777220,
+        "status": "available",
+        "current_soldiers": 1086,
+        "maximum_soldiers": 1087,
+        "regiment_count": 14,
+        "current_supply_raw": 29122808,
+        "current_supply_scale": 100000,
+        "current_supply_capacity_raw": 30000000,
+        "current_supply_capacity_scale": 100000,
+        "current_supply_change_monthly_raw": 0,
+        "current_supply_change_monthly_scale": 100000,
+        "army_update_clock_v1": {
+          "status": "available",
+          "ready": true,
+          "current_date_raw": 53147160,
+          "native_day_index": 389465,
+          "selected_bucket_phase": 5,
+          "observed_army_bucket_phase": 20,
+          "last_supply_update_date_storage_raw64": 300064531523761328,
+          "last_supply_update_date_raw": 53146800,
+          "grace_anchor_date_storage_raw64": 300061194334169936,
+          "grace_anchor_date_raw": 53144400,
+          "loaded_grace_days": 30,
+          "unavailable_reason": null
+        },
+        "unavailable_reason": null
+      },
+      {
+        "army_id": 166,
+        "native_carmy_id": null,
+        "status": "unavailable",
+        "current_soldiers": null,
+        "maximum_soldiers": null,
+        "regiment_count": null,
+        "current_supply_raw": null,
+        "current_supply_scale": null,
+        "current_supply_capacity_raw": null,
+        "current_supply_capacity_scale": null,
+        "current_supply_change_monthly_raw": null,
+        "current_supply_change_monthly_scale": null,
+        "army_update_clock_v1": null,
+        "unavailable_reason": "native_carmy_not_found"
+      }
+    ],
+    "unit_rows": [
+      {
+        "army_id": 0,
+        "owner_character_id": 33388,
+        "soldiers": null,
+        "current_province_id": 1506,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      {
+        "army_id": 16777220,
+        "owner_character_id": 33388,
+        "soldiers": null,
+        "current_province_id": 725,
+        "move_target_province_id": 1506,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          1506
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 1,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "embarked",
+        "army_state_code": 4,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      {
+        "army_id": 166,
+        "owner_character_id": 33388,
+        "soldiers": null,
+        "current_province_id": 725,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "regular",
+        "army_state_code": 1,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    ],
+    "treasury_only": {
+      "raw": 65418341,
+      "scale": 100000
+    },
+    "three_independent_paused_same_date_snapshots": [
+      {
+        "response": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-initial-paused-a03.json",
+          "bytes": 169031,
+          "sha256": "3edbaa9aeb43129ffa228db37858b8c53387586331222524974706c148256032"
+        },
+        "date_raw": 53147160,
+        "paused": true,
+        "map_ready": true,
+        "revision": 3,
+        "native_revision": 2,
+        "episode_run_id": "native-33388-9c9ac1001e61"
+      },
+      {
+        "response": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-after-camera-failure-a01.json",
+          "bytes": 861123,
+          "sha256": "2fd6c6d2b41fd09ca0138033478f934afb4f58cefd5593e5eb6e12524594b075"
+        },
+        "date_raw": 53147160,
+        "paused": true,
+        "map_ready": true,
+        "revision": 3,
+        "native_revision": 2,
+        "episode_run_id": "native-33388-9c9ac1001e61"
+      },
+      {
+        "response": {
+          "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-final-paused-before-broker-a01.json",
+          "bytes": 861147,
+          "sha256": "3cf80bed70ac6cb128ea9b214839cb63a43720c62766f75051772371c6995723"
+        },
+        "date_raw": 53147160,
+        "paused": true,
+        "map_ready": true,
+        "revision": 3,
+        "native_revision": 2,
+        "episode_run_id": "native-33388-9c9ac1001e61"
+      }
+    ]
+  },
+  "historical_initial_map_unavailable": {
+    "response": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-initial-paused-a01.json",
+      "bytes": 1309,
+      "sha256": "ca201abbf6fccf9d86766c8cb3fb4aed433066c71718ec64eb8b4017d67e8403"
+    },
+    "is_error": true,
+    "body": null,
+    "exact_error": "Error executing tool ck3_take_snapshot: native game state is not available yet; CK3 may still be loading or may not have entered a map",
+    "later_snapshot_success_does_not_rewrite_initial_failure": true
+  },
+  "camera_failure": {
+    "response": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-center-normandy-a01.json",
+      "bytes": 1271,
+      "sha256": "3529c407a895e09ba136a2be14c5674cc0695f8013a81e075d6270bb731d73f4"
+    },
+    "is_error": true,
+    "body": null,
+    "exact_error": "Error executing tool ck3_center_map_on_landed_title_v1: native gameplay step failed: state_changed",
+    "title_key": "d_normandy",
+    "SDK_expected_public_revision": 3,
+    "SDK_expected_public_revision_correct_for_observed_snapshot": true,
+    "static_pipe_expected_native_revision": 2,
+    "outgoing_raw_native_request_independently_observed": false,
+    "static_readonly_diagnostic_delivery": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0166-center-revision-readonly-a01\\ROOT-DELIVERY-a01.json",
+      "bytes": 1989,
+      "sha256": "56ffc84f67ef261779d4da377b72187ad0e0935a6b3e177df6811ff67b1285be"
+    },
+    "camera_accepted": false,
+    "unique_failed_predicate_proven": false,
+    "camera_dispatch_true_or_false_proven": false,
+    "absence_of_partial_camera_effects_proven": false,
+    "scope": "Shared state_changed failure does not prove a wrong expected revision, no callback dispatch, or no partial camera effects. Only paused gameplay date/revisions remain independently read unchanged."
+  },
+  "closure": {
+    "Root_stop_receipt": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0166-stop-for-broker-a01\\receipt.json",
+      "bytes": 554,
+      "sha256": "5ca5190a820ce1b7b55ea8267b1eaa85b14311ba6a7e13e8c2e2187d88132793"
+    },
+    "session_result": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\session-result.json",
+      "bytes": 13100,
+      "sha256": "a5fd0e6e51cc49cd62e19428f76d1cdfc1962c59591c7af271b9ae54291792ba"
+    },
+    "bootstrap_result": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\bootstrap-result.json",
+      "bytes": 14422,
+      "sha256": "459a210785f807443aee950818c6c1c00a8f2749d31f398680e9ac28223ff472"
+    },
+    "launcher_result": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\launch-merge-originaljan11-a06-fallback-r0166-a01\\launch-result.json",
+      "bytes": 131,
+      "sha256": "862d108d88dc0d1274f07f45947d663f7094a869197d2a8b0b7c610c9dd09bc3"
+    },
+    "launcher_wrapper_returncode": 0,
+    "SDK_thread_exited": true,
+    "keeper_thread_exited": true,
+    "CK3_exit_code_actual": 1,
+    "managed_exit_reason": "stop",
+    "process_exit_code_field_preserved": null,
+    "game_tree_gone": true,
+    "cleanup_proven": true,
+    "job_active_processes_final": 0,
+    "saved_independent_cleanup_probe": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0166-cleanup-probe-a01\\receipt.json",
+      "bytes": 1039,
+      "sha256": "8b9e401c3cec22ec092c4d6038f6e472073eb04f6de9330a9eb5bb4a3a1fedee"
+    },
+    "actor_inventory_at_saved_probe": [],
+    "screen_CAS_release_not_asserted": true,
+    "screen_owner_at_saved_probe": [
+      {
+        "task_id": "war-e04-capture-merge-legacy-20261005-a09",
+        "status": null,
+        "stale": false,
+        "last_sequence": 4669,
+        "repo_path": null
+      }
+    ],
+    "scope": "Game and managed session cleanly stopped; screen owner/security-broker work is Root separate scope."
+  },
+  "finite_saved_request_inventory": [
+    {
+      "request_id": "r0166-after-camera-failure-a01",
+      "tool": "ck3_take_snapshot",
+      "arguments": {
+        "include_native_command_history": false
+      },
+      "request": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-after-camera-failure-a01.json",
+        "bytes": 150,
+        "sha256": "7dac2cedfb958849500a0a8f31146691b226561e0590573e87d705f333094b63"
+      },
+      "response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-after-camera-failure-a01.json",
+        "bytes": 861123,
+        "sha256": "2fd6c6d2b41fd09ca0138033478f934afb4f58cefd5593e5eb6e12524594b075"
+      },
+      "response_is_error": false,
+      "publication_returncode": 0,
+      "publication_returncode_not_business_success": true
+    },
+    {
+      "request_id": "r0166-baseline-after-a01",
+      "tool": "ck3_take_snapshot",
+      "arguments": {
+        "include_native_command_history": false
+      },
+      "request": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-baseline-after-a01.json",
+        "bytes": 144,
+        "sha256": "270a9b40f3527f7e2b95fbbbb31f8b98b2c7f7c90693d28e36bc2f958ca6e12a"
+      },
+      "response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-baseline-after-a01.json",
+        "bytes": 861111,
+        "sha256": "8274da03ef368dc18f1e2117fa8145af1c83a21a3bcf260cde7eb262d733d764"
+      },
+      "response_is_error": false,
+      "publication_returncode": 0,
+      "publication_returncode_not_business_success": true
+    },
+    {
+      "request_id": "r0166-baseline-before-a01",
+      "tool": "ck3_take_snapshot",
+      "arguments": {
+        "include_native_command_history": false
+      },
+      "request": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-baseline-before-a01.json",
+        "bytes": 145,
+        "sha256": "d15f30314e9a5ec042c8bfc89fbcdbdaef08ce4457a51f71883a23f5d5fcd352"
+      },
+      "response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-baseline-before-a01.json",
+        "bytes": 169037,
+        "sha256": "ba124960add572198978a0d2cfee98631b2bc0c5f2f39a4569b4490823f67e67"
+      },
+      "response_is_error": false,
+      "publication_returncode": 0,
+      "publication_returncode_not_business_success": true
+    },
+    {
+      "request_id": "r0166-baseline-full-roster-strengths-a01",
+      "tool": "ck3_query_army_strengths",
+      "arguments": {
+        "army_ids": [
+          0,
+          16777220,
+          166
+        ],
+        "expected_revision": 3
+      },
+      "request": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-baseline-full-roster-strengths-a01.json",
+        "bytes": 210,
+        "sha256": "21006841a684586947b58ac8fc1f709f92ade7880177b30127dcc133373f7ef1"
+      },
+      "response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-baseline-full-roster-strengths-a01.json",
+        "bytes": 288319,
+        "sha256": "474ce9159084dc11c7c269ce143fe0a325789f47355ace398393cd2e9a4254a8"
+      },
+      "response_is_error": false,
+      "publication_returncode": 0,
+      "publication_returncode_not_business_success": true
+    },
+    {
+      "request_id": "r0166-center-normandy-a01",
+      "tool": "ck3_center_map_on_landed_title_v1",
+      "arguments": {
+        "title_key": "d_normandy",
+        "expected_revision": 3
+      },
+      "request": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-center-normandy-a01.json",
+        "bytes": 175,
+        "sha256": "84e3ea5bf91714696467a0a8eb671ead26b0e6a25a16256a08da0afdbe8edd2a"
+      },
+      "response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-center-normandy-a01.json",
+        "bytes": 1271,
+        "sha256": "3529c407a895e09ba136a2be14c5674cc0695f8013a81e075d6270bb731d73f4"
+      },
+      "response_is_error": true,
+      "publication_returncode": 0,
+      "publication_returncode_not_business_success": true
+    },
+    {
+      "request_id": "r0166-final-paused-before-broker-a01",
+      "tool": "ck3_take_snapshot",
+      "arguments": {
+        "include_native_command_history": false
+      },
+      "request": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-final-paused-before-broker-a01.json",
+        "bytes": 156,
+        "sha256": "3a67037e1797889f8866dc26761f230933d0fb51fcec839c3463d4ee4f4fa108"
+      },
+      "response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-final-paused-before-broker-a01.json",
+        "bytes": 861147,
+        "sha256": "3cf80bed70ac6cb128ea9b214839cb63a43720c62766f75051772371c6995723"
+      },
+      "response_is_error": false,
+      "publication_returncode": 0,
+      "publication_returncode_not_business_success": true
+    },
+    {
+      "request_id": "r0166-initial-paused-a01",
+      "tool": "ck3_take_snapshot",
+      "arguments": {
+        "include_native_command_history": false
+      },
+      "request": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-initial-paused-a01.json",
+        "bytes": 144,
+        "sha256": "46f62a43235e4dd15017aeb6e2c8586be5102bb8f0044f06c27e4ccd3eea937c"
+      },
+      "response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-initial-paused-a01.json",
+        "bytes": 1309,
+        "sha256": "ca201abbf6fccf9d86766c8cb3fb4aed433066c71718ec64eb8b4017d67e8403"
+      },
+      "response_is_error": true,
+      "publication_returncode": 0,
+      "publication_returncode_not_business_success": true
+    },
+    {
+      "request_id": "r0166-initial-paused-a03",
+      "tool": "ck3_take_snapshot",
+      "arguments": {
+        "include_native_command_history": false
+      },
+      "request": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-initial-paused-a03.json",
+        "bytes": 144,
+        "sha256": "71a0e5505bcb157114755a49dae521bd1720225ba9ab155fbf557ce597e90762"
+      },
+      "response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-initial-paused-a03.json",
+        "bytes": 169031,
+        "sha256": "3edbaa9aeb43129ffa228db37858b8c53387586331222524974706c148256032"
+      },
+      "response_is_error": false,
+      "publication_returncode": 0,
+      "publication_returncode_not_business_success": true
+    },
+    {
+      "request_id": "r0166-managed-stop-for-broker-a01",
+      "tool": "stop",
+      "arguments": {},
+      "request": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-managed-stop-for-broker-a01.json",
+        "bytes": 93,
+        "sha256": "a55a7464daecc54147667534c445430d8532e7fa48acee28f3dab76d6d19fc0a"
+      },
+      "response": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-managed-stop-for-broker-a01.json",
+        "bytes": 519,
+        "sha256": "93e068f602028ae840d2cfe0365467f3317e4b72b8f5b09dfaf86c12b97ce0a4"
+      },
+      "response_is_error": false,
+      "publication_returncode": 0,
+      "publication_returncode_not_business_success": true
+    }
+  ],
+  "credits": {
+    "new_game_days": 0,
+    "resume_or_time_pulses": 0,
+    "move_commands": 0,
+    "merge_commands": 0,
+    "recorders_started": 0,
+    "new_TERM_shot_credit": 0,
+    "camera_acceptance_credit": 0,
+    "ABC_completed_credit": 0,
+    "new_video_production_credit": 0,
+    "clean_spans_certified": false,
+    "human_1x_review": false,
+    "human_signoff": false,
+    "research_weighted_percentage": null,
+    "research_weighted_denominator": null
+  },
+  "this_lane_actions": {
+    "SDK": 0,
+    "UI_or_desktop": 0,
+    "game_or_process_control": 0,
+    "Git_or_master_writes": 0,
+    "task_bus_writes": 0,
+    "security_writes": 0,
+    "media_or_original_checkpoint_rehash": 0,
+    "tests_repeated": 0,
+    "historical_R0165_writes": 0
+  },
+  "artifacts": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\prepared-merge-originaljan11-a06-fallback-r0166-a01\\prepared.json",
+      "bytes": 5721,
+      "sha256": "a9fe182683fbc49399250b96284ffb0c70ae5dccf1f354630ecc6c5c09a12979"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\launch-merge-originaljan11-a06-fallback-r0166-a01\\preflight-file-proof.json",
+      "bytes": 3281,
+      "sha256": "1db133f38c1bda96fe4cf20e30e03bf58069eeb052c242e90611d854a6cfbf74"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\launch-merge-originaljan11-a06-fallback-r0166-a01\\root-runtime-input-identities.json",
+      "bytes": 795,
+      "sha256": "f22d851c50ae2a4d725829fb267d9ab49df62d7d4c798c8d374015431267c411"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0166-legacy-fallback-readonly-a01\\fresh-launch-candidate-a01\\FRESH-FALLBACK-READMISSION-a01.json",
+      "bytes": 3492,
+      "sha256": "086d4cfc8be713e84680cd2e713c00ff3d007ddc88e15d2f6734b68ba92cdc33"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0166-legacy-fallback-readonly-a01\\fresh-source-environment-a01\\SOURCE-FREEZE-CANDIDATE-a01.json",
+      "bytes": 5609,
+      "sha256": "e20c25a000877a88c0579946df0b9ceb6bdf2b7f7dba918c881d03920038e488"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\steam-offline-root-review-legacy-r0166-a01.json",
+      "bytes": 1029,
+      "sha256": "3aa26c6e7feba67544c7a9ae6d230ce28bf232b196855a912b5ecab5583dacce"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-screen-legacy-heartbeat-r0166-a01\\heartbeat.stdout",
+      "bytes": 1340,
+      "sha256": "d7d361fca7b838644040a8db716abc9f83f24358bd05d7f1326f6504d5129f9f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0166-baseline-a01\\baseline.json",
+      "bytes": 329924,
+      "sha256": "0b1e97827e01c65d55a0193c8783e550cc6f0ce02da38cf80c81bb8a1eebbaeb"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-after-camera-failure-a01.json",
+      "bytes": 150,
+      "sha256": "7dac2cedfb958849500a0a8f31146691b226561e0590573e87d705f333094b63"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-after-camera-failure-a01.json",
+      "bytes": 861123,
+      "sha256": "2fd6c6d2b41fd09ca0138033478f934afb4f58cefd5593e5eb6e12524594b075"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-after-camera-failure-a01\\publish-result.json",
+      "bytes": 102,
+      "sha256": "26803f9d57b60c59ee7c205df695d9a3fd52809efe5fe78273287e30118cd4b6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-after-camera-failure-a01\\argv.json",
+      "bytes": 596,
+      "sha256": "908eb9710f382684115c75c07b3e4d2f31bb12de5318ea5685249cae4b951501"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-after-camera-failure-a01\\job.json",
+      "bytes": 150,
+      "sha256": "7dac2cedfb958849500a0a8f31146691b226561e0590573e87d705f333094b63"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-after-camera-failure-a01\\arguments.json",
+      "bytes": 46,
+      "sha256": "ea750cb7ff46e631405c18766ac4522340a736aa23016f233090ded6fe0eec7d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-after-camera-failure-a01\\stdout.bin",
+      "bytes": 326,
+      "sha256": "210dd06540690a6bb3c45611ae915d32c66cbe579fdffb219dc38751a16d5dcb"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-after-camera-failure-a01\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-after-camera-failure-a01\\response-observed.json",
+      "bytes": 5604,
+      "sha256": "0d3fff83960f1976ac8bb2fe5030d68bc870b2260ce6d37cb5082e484bbe75f5"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-baseline-after-a01.json",
+      "bytes": 144,
+      "sha256": "270a9b40f3527f7e2b95fbbbb31f8b98b2c7f7c90693d28e36bc2f958ca6e12a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-baseline-after-a01.json",
+      "bytes": 861111,
+      "sha256": "8274da03ef368dc18f1e2117fa8145af1c83a21a3bcf260cde7eb262d733d764"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-after-a01\\publish-result.json",
+      "bytes": 102,
+      "sha256": "04cf256e639fa2f778d1b69c3057616161aab2721571fb9b8d21830eecd5efe6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-after-a01\\argv.json",
+      "bytes": 584,
+      "sha256": "ff45c8d9d39931ebc50ca159e9e1e3a9060042b519c867b61e9a58d72fb8f860"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-after-a01\\job.json",
+      "bytes": 144,
+      "sha256": "270a9b40f3527f7e2b95fbbbb31f8b98b2c7f7c90693d28e36bc2f958ca6e12a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-after-a01\\arguments.json",
+      "bytes": 46,
+      "sha256": "ea750cb7ff46e631405c18766ac4522340a736aa23016f233090ded6fe0eec7d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-after-a01\\stdout.bin",
+      "bytes": 314,
+      "sha256": "3da6e327c7afc9273c8f076ae247924215bca1ab84150a880eb813ee3f425e82"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-after-a01\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-after-a01\\response-observed.json",
+      "bytes": 5598,
+      "sha256": "94376cfde4552ff569896facb2d81d84dbbb256505c4a1e59638d98295e13b8b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-baseline-before-a01.json",
+      "bytes": 145,
+      "sha256": "d15f30314e9a5ec042c8bfc89fbcdbdaef08ce4457a51f71883a23f5d5fcd352"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-baseline-before-a01.json",
+      "bytes": 169037,
+      "sha256": "ba124960add572198978a0d2cfee98631b2bc0c5f2f39a4569b4490823f67e67"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-before-a01\\publish-result.json",
+      "bytes": 102,
+      "sha256": "368c09d75b6c0278eae30d5baa4be2ea6ec04a5a67e7f2e58458b27d0ba1b0c8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-before-a01\\argv.json",
+      "bytes": 586,
+      "sha256": "9f25fc90caa516eee00eee79b8b71339f456c9940d66c5ff40e6045b13308a65"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-before-a01\\job.json",
+      "bytes": 145,
+      "sha256": "d15f30314e9a5ec042c8bfc89fbcdbdaef08ce4457a51f71883a23f5d5fcd352"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-before-a01\\arguments.json",
+      "bytes": 46,
+      "sha256": "ea750cb7ff46e631405c18766ac4522340a736aa23016f233090ded6fe0eec7d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-before-a01\\stdout.bin",
+      "bytes": 316,
+      "sha256": "e2fd0193c1f5f223df2154954ead27265befbf901825bc97e314ecbe53dbaf61"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-before-a01\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-before-a01\\response-observed.json",
+      "bytes": 5599,
+      "sha256": "47d412a92a774187049143f69b7e416c4454c86c838c1d0a0fafd44e3b15a63a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-baseline-full-roster-strengths-a01.json",
+      "bytes": 210,
+      "sha256": "21006841a684586947b58ac8fc1f709f92ade7880177b30127dcc133373f7ef1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-baseline-full-roster-strengths-a01.json",
+      "bytes": 288319,
+      "sha256": "474ce9159084dc11c7c269ce143fe0a325789f47355ace398393cd2e9a4254a8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-full-roster-strengths-a01\\publish-result.json",
+      "bytes": 102,
+      "sha256": "244fa5256561e612e8bb9a3eb9041d6e0e5823624515154241d19d3f8b39069b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-full-roster-strengths-a01\\argv.json",
+      "bytes": 623,
+      "sha256": "d15f733b83e5bde9a96f40a23a8fa401f3eb403a8753cbaca9e2e6a3e5f1318a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-full-roster-strengths-a01\\job.json",
+      "bytes": 210,
+      "sha256": "21006841a684586947b58ac8fc1f709f92ade7880177b30127dcc133373f7ef1"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-full-roster-strengths-a01\\arguments.json",
+      "bytes": 79,
+      "sha256": "3a8c81aca4aa880f5e96f7b6c983d083186c964bfcf2cba5cd909dbbf1d8ae22"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-full-roster-strengths-a01\\stdout.bin",
+      "bytes": 346,
+      "sha256": "5989316ed88179e2bf1264425ff438cb58e1893de8c74e17e92c0e92eb941408"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-full-roster-strengths-a01\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-baseline-full-roster-strengths-a01\\response-observed.json",
+      "bytes": 683,
+      "sha256": "14ecee04f749d7e77a94e48ccd9e215d6b9e2b20e8978ae3cd5d88d52469a011"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-center-normandy-a01.json",
+      "bytes": 175,
+      "sha256": "84e3ea5bf91714696467a0a8eb671ead26b0e6a25a16256a08da0afdbe8edd2a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-center-normandy-a01.json",
+      "bytes": 1271,
+      "sha256": "3529c407a895e09ba136a2be14c5674cc0695f8013a81e075d6270bb731d73f4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-center-normandy-a01\\publish-result.json",
+      "bytes": 102,
+      "sha256": "fa09cb2ea3bd3ab9e88ad745732c3ba66f0970efcfcb3078193353257a400f0a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-center-normandy-a01\\argv.json",
+      "bytes": 602,
+      "sha256": "5f1a9bc67de84aad8afb60be386472592c9413b92961f669e29debd369c6c808"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-center-normandy-a01\\job.json",
+      "bytes": 175,
+      "sha256": "84e3ea5bf91714696467a0a8eb671ead26b0e6a25a16256a08da0afdbe8edd2a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-center-normandy-a01\\arguments.json",
+      "bytes": 58,
+      "sha256": "a15c2882183bbf0a95d9cb21ac391a3d00f670561371f3770db261aba665753c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-center-normandy-a01\\stdout.bin",
+      "bytes": 316,
+      "sha256": "80fc454a21ef99de79a307ae9aa7b401b67d7c6e08db66eb2f0a3d34ba6e9f10"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-center-normandy-a01\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-center-normandy-a01\\response-observed.json",
+      "bytes": 370,
+      "sha256": "257d892f2ce2b284b9b750596f56afd6a5f6ebab9473a37a81c3f03ddf1b55b6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-final-paused-before-broker-a01.json",
+      "bytes": 156,
+      "sha256": "3a67037e1797889f8866dc26761f230933d0fb51fcec839c3463d4ee4f4fa108"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-final-paused-before-broker-a01.json",
+      "bytes": 861147,
+      "sha256": "3cf80bed70ac6cb128ea9b214839cb63a43720c62766f75051772371c6995723"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-final-paused-before-broker-a01\\publish-result.json",
+      "bytes": 102,
+      "sha256": "1339f7a856966e20ecbe5932555292fe1b6ddd4328cc574b58981fa918d0dc71"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-final-paused-before-broker-a01\\argv.json",
+      "bytes": 608,
+      "sha256": "3071d6ef4c152c2ed61a6e051ca20fe02cdc785b6c24c5d8ee0b7825f83233a6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-final-paused-before-broker-a01\\job.json",
+      "bytes": 156,
+      "sha256": "3a67037e1797889f8866dc26761f230933d0fb51fcec839c3463d4ee4f4fa108"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-final-paused-before-broker-a01\\arguments.json",
+      "bytes": 46,
+      "sha256": "ea750cb7ff46e631405c18766ac4522340a736aa23016f233090ded6fe0eec7d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-final-paused-before-broker-a01\\stdout.bin",
+      "bytes": 338,
+      "sha256": "a577b96f254457728ee22aa01a04110248c49c750c853994341bfd7181829162"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-final-paused-before-broker-a01\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-final-paused-before-broker-a01\\response-observed.json",
+      "bytes": 5610,
+      "sha256": "cc7a24cd9528e45e1c64e90d36e920fdf09dfc9f6539865ffaffca766dd5d642"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-initial-paused-a01.json",
+      "bytes": 144,
+      "sha256": "46f62a43235e4dd15017aeb6e2c8586be5102bb8f0044f06c27e4ccd3eea937c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-initial-paused-a01.json",
+      "bytes": 1309,
+      "sha256": "ca201abbf6fccf9d86766c8cb3fb4aed433066c71718ec64eb8b4017d67e8403"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a01\\publish-result.json",
+      "bytes": 102,
+      "sha256": "9e94696f2d9b16fa697acda86a3906c20b367f351888862f7d5da420407bdcee"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a01\\argv.json",
+      "bytes": 584,
+      "sha256": "f3346095f3dac13d0f9cd0de6b21c2a1b7036c2c272ead2bb9cafb71f6edb3f9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a01\\job.json",
+      "bytes": 144,
+      "sha256": "46f62a43235e4dd15017aeb6e2c8586be5102bb8f0044f06c27e4ccd3eea937c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a01\\arguments.json",
+      "bytes": 46,
+      "sha256": "ea750cb7ff46e631405c18766ac4522340a736aa23016f233090ded6fe0eec7d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a01\\stdout.bin",
+      "bytes": 314,
+      "sha256": "a55731bbb7de288ab06def2b41251d90d91c13317218b9d6a607ebedddf6b433"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a01\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a01\\response-observed.json",
+      "bytes": 369,
+      "sha256": "1247df89cb02b3b91b6876c4c0b80048318f2d9576f248fac022a6c054f2a695"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-initial-paused-a03.json",
+      "bytes": 144,
+      "sha256": "71a0e5505bcb157114755a49dae521bd1720225ba9ab155fbf557ce597e90762"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-initial-paused-a03.json",
+      "bytes": 169031,
+      "sha256": "3edbaa9aeb43129ffa228db37858b8c53387586331222524974706c148256032"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a03\\publish-result.json",
+      "bytes": 102,
+      "sha256": "23389c80868e380e93983955abb06df30bf9d892a89f90c90a1a1f12e0d82c33"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a03\\argv.json",
+      "bytes": 584,
+      "sha256": "efcd5964c79b3f6ca43bad312c17d3ecbb2d2756f02fdcaacf2dc98899a51596"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a03\\job.json",
+      "bytes": 144,
+      "sha256": "71a0e5505bcb157114755a49dae521bd1720225ba9ab155fbf557ce597e90762"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a03\\arguments.json",
+      "bytes": 46,
+      "sha256": "ea750cb7ff46e631405c18766ac4522340a736aa23016f233090ded6fe0eec7d"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a03\\stdout.bin",
+      "bytes": 314,
+      "sha256": "84e7c78219e2a0cbce4c4cf3deb5e8c689de16c4e3f685e2da16209db54d691a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a03\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-initial-paused-a03\\response-observed.json",
+      "bytes": 5598,
+      "sha256": "7b72037e3b7e8525ddbce3867cc5fa90156a798b3f1811a1cb4c13aa1bad9ea7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\requests\\r0166-managed-stop-for-broker-a01.json",
+      "bytes": 93,
+      "sha256": "a55a7464daecc54147667534c445430d8532e7fa48acee28f3dab76d6d19fc0a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\responses\\r0166-managed-stop-for-broker-a01.json",
+      "bytes": 519,
+      "sha256": "93e068f602028ae840d2cfe0365467f3317e4b72b8f5b09dfaf86c12b97ce0a4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-managed-stop-for-broker-a01\\publish-result.json",
+      "bytes": 102,
+      "sha256": "e14cb804203887f0dd76a223a765f2d5b5204fab710bdabde8ddb16b994e9ce7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-managed-stop-for-broker-a01\\argv.json",
+      "bytes": 589,
+      "sha256": "64e527273d0db52b69cc0dc27e02417150d70ab0713b9f09a024e79478c253c6"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-managed-stop-for-broker-a01\\job.json",
+      "bytes": 93,
+      "sha256": "a55a7464daecc54147667534c445430d8532e7fa48acee28f3dab76d6d19fc0a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-managed-stop-for-broker-a01\\arguments.json",
+      "bytes": 3,
+      "sha256": "ca3d163bab055381827226140568f3bef7eaac187cebd76878e0b63e9e442356"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-managed-stop-for-broker-a01\\stdout.bin",
+      "bytes": 332,
+      "sha256": "c38edcdd6d8a9c539ec8d903c38c46431f673553546beeadb88988e4d62c6c48"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-managed-stop-for-broker-a01\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-legacy-r0166-a01\\queue-commands\\r0166-managed-stop-for-broker-a01\\response-observed.json",
+      "bytes": 402,
+      "sha256": "27a85bc509bab309d0a6a1e6a6f861bf463f06c296cf497378f72975b107b479"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0166-center-revision-readonly-a01\\ROOT-DELIVERY-a01.json",
+      "bytes": 1989,
+      "sha256": "56ffc84f67ef261779d4da377b72187ad0e0935a6b3e177df6811ff67b1285be"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0166-center-revision-readonly-a01\\ACTUAL-OBSERVATIONS-a01.json",
+      "bytes": 2764,
+      "sha256": "9c6d7b320eb4105638e9344425e3dcf20f98b07082dfaac7b12e29e32973f103"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0166-center-revision-readonly-a01\\SOURCE-SPANS-a01.json",
+      "bytes": 38651,
+      "sha256": "3afbe77f4b474fa58677901af1166fca88e301662c419d9204084f6d86964e9f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0166-center-revision-readonly-a01\\REPORT-a01.md",
+      "bytes": 3723,
+      "sha256": "c5c1a000837ed10f5fe3ad993ea0850a673ee7e56c0ff7f0bad0fd35ab6784d7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0166-stop-for-broker-a01\\receipt.json",
+      "bytes": 554,
+      "sha256": "5ca5190a820ce1b7b55ea8267b1eaa85b14311ba6a7e13e8c2e2187d88132793"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\session-result.json",
+      "bytes": 13100,
+      "sha256": "a5fd0e6e51cc49cd62e19428f76d1cdfc1962c59591c7af271b9ae54291792ba"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\bootstrap-result.json",
+      "bytes": 14422,
+      "sha256": "459a210785f807443aee950818c6c1c00a8f2749d31f398680e9ac28223ff472"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\launch-merge-originaljan11-a06-fallback-r0166-a01\\launch-result.json",
+      "bytes": 131,
+      "sha256": "862d108d88dc0d1274f07f45947d663f7094a869197d2a8b0b7c610c9dd09bc3"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0166-cleanup-probe-a01\\receipt.json",
+      "bytes": 1039,
+      "sha256": "8b9e401c3cec22ec092c4d6038f6e472073eb04f6de9330a9eb5bb4a3a1fedee"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-originaljan11-a06-fallback-r0166-a01\\sdk-ready.json",
+      "bytes": 36004,
+      "sha256": "318f4003a935e02c429b6d6d998f8141f3f197c838ac4e243cf9845ed8b230b8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\launch-merge-originaljan11-a06-fallback-r0166-a01\\launch-argv.json",
+      "bytes": 1003,
+      "sha256": "4ff081f7b6eb8d6f752432d17311e0c4fd1b26366df9f8710f774f6bb357d93b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\launch-merge-originaljan11-a06-fallback-r0166-a01\\bootstrap.stdout",
+      "bytes": 54,
+      "sha256": "4d73ecb5d32299165d978161bd9124b927110cc24eea45f767f815250454400e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\launch-merge-originaljan11-a06-fallback-r0166-a01\\bootstrap.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ]
+}
