@@ -280,3 +280,10 @@ fresh phase为1800000=18天、counter12，cold prepared cache为可用真实0；
 - 外敌268435597末@5603 retreating6→738/route[5599,5598,738]；恢复后的1＋4个正常日证明实际接续，不等于根因修复，不由敌军撤退推本军战胜。
 - Generic兵/供给与围城五项operands/phase-event字段保持未发布/null，不用B回填whole health，不猜围城work或失败的clock/phase因果。
 - 本节来自[first24既有事实追加](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v67/root-results/ordinary-r40-first24-consumed01/NATIVE-STAGE-APPEND.md)、已缓存guard22/failed23/recovery1及本owner四日解码；仅追加到Root已adopt `f2c308f3bc96ed553e0c03c4ac89c2dc6bedc822` 的缓存投影，不重读共享专题或原日包。
+
+## R41/v68 fresh 围城与 cold 对照（2026-10-05）
+
+R41 新 occupation006 完整 once-consume、368 rows available：raw53262000/native3/public2，P470 actual Siege503316504/publicArmy301989997，fort6/G550/B3116；C13073259/T55000000（23.769%）/ETA414，仍未占领，CanStartAssault=false；P3711 明确 active_siege=null/B0，不推断 guard 到达。
+当前 M=.606/K0/D=1.01488，K0 仅为本 Province 的 native eligible tier，不等于全军库存无攻城兵种；fresh phase18日与 cold prepared真实0分开，counter9/can_advance=true，state0/1/2/2/0、prepared enum5仅缓存 sentinel，不据此造事件或固定城破日。
+Military 同 raw 部署前 h8573 派生 cache 与本帧21字段相同，work delta=0，C/T/B/ETA/进度/occupation均未变；旧 generic 未采 D/M/K/phase/counter/eventstate，不能判断这些字段 cold 变化或 event reset。Root SAVE h8578/总日数4903，本包0新日、0动作，下一 ordinary 结果由军务独立消费。
+完整当前缓存、独立同日比较及 Oct5/W41 字段见 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-efficiency-current-fort6-v65/r41-fresh-occupation/ROOT-DELIVERY.json`（SHA256 `aee58696bdc32bb734ea070e081fb77a24dd639f50f747d469d8625f7a26e1db`）；新原006 SHA256 `4f974455b4cd790ed7150ea775470ed491908287afcb81e6c86fbd70e73c233f`，既有 M/K production-live primitive 证据复用，无重测。
