@@ -347,3 +347,85 @@ zero versus missing, absent class skip, accolade application and the existing
 final-cache input. Earlier passed cases and wires were not rerun. This is
 static-ready conditional baseline construction. The same-MCP raw source observer
 listed in the sealed query plan is the next implementation dependency.
+
+## Actual MAA same-query source leaf (2026-10-06)
+
+The existing combat-input Regiment loop now publishes optional
+`maa_stat_inputs_v1` for the native non-special MAA dispatch. It retains
+target ProvinceID, actual first CRegiment full ID, selected Character full ID
+and generation/fallback resolution. Its status is independent of
+`effective_stats` and existing query readiness. Special/knight rows omit
+this leaf, matching26344C0 dispatch before30C4360.
+
+The leaf contains actual inner type+118, class+260, six bases+270/+278..298,
+selected aggregate properties, six class word pairs, ordered culture callback
+rows with source pointer/class admission, extra+120 context+30/title+738,
+resolved holder/piety rank, five extra class word pairs, government byte+4D6,
+actual2B9CBC0 current selector factor, ordered linked Character occurrences,
+eligible actual tier+390 property blocks, and six type/linked environment
+vectors. It calls readonly getters, never the30C3C50/30C4360 writers or person
+preparation.
+
+The30C3C50 government-index gate admits **both** culture callbacks only when
+the signed government index is within Culture+694. Outside that range, both
+arrays are real empty even if the global source array is nonempty. Rejected
+callback rows keep native filter metadata; their stat tuple is absent because
+the source branch does not read it. An absent class row skips the complete
+extra-source read. Actual zero/empty/branch skips remain valid; failed necessary
+reads have independent unavailable status.
+
+Readonly30BDC80/30BDD20/30BDDC0 and2B91EA0/2B92160/2B924C0 copy actual returned
+environment vectors, retaining initialized native fallback values and actual
+loaded Province-class thresholds. The Province+620 GDbo guard skips both
+definition vectors. Linked census uses the source Char+1C magic and initialized
+full-ID predicate, preserving duplicate occurrences. Accolade aggregate
+construction skips the complete group if any definition fails the source GDbo
+precheck, then copies eligible tier property blocks in occurrence/row order.
+The inner-type non-GDbo branch instead supplies ordinary bases and selected
+properties; its pure ordinary six tuple receives the outer MAA Q floors.
+
+`battle_maa_observed_inputs_12003.py` exposes
+`maa_six_stats_from_combat_regiment_12003`. It joins closed baseline,
+the existing logical unit-Q property fold for fresh11E1350 accolade scratch,
+the accolade apply and six ordered environment adds/floors. It connects to
+`maa_six_stats_to_final_stat_input_12003` and existing Entry refresh input.
+A ready result sets `full_getter_construction_ready=true`;
+`full_entry_ready` remains false. This is a frozen current source-derived
+getter, not a future post-effect or historical initializer cache. Changed-stage
+person/extra/script/culture/environment operands remain explicit in the lower
+typed APIs; current source values are not silently substituted.
+
+```mermaid
+flowchart TD
+    A["Actual Regiment occurrence + target Province"] --> S{"26344C0 special?"}
+    S -->|yes| K["Knight path: MAA leaf omitted"]
+    S -->|no: outer MAA| R["First CRegiment + selected Character"]
+    R --> I{"Inner type GDbo?"}
+    I -->|no| O["Ordinary aggregate + actual bases -> six tuple + MAA floors"]
+    I -->|yes| T["Actual type six bases + ordered culture callbacks"]
+    T --> B["Selected and extra context combined once"]
+    B --> SF["Optional selector five-factor apply"]
+    SF --> AC["Linked occurrences -> actual tier390 blocks -> unitQ fold"]
+    AC --> AP["Accolade apply -> six actual environment vectors"]
+    AP --> F["Ordered adds and MAA Q floors"]
+    O --> AD["Typed six tuple -> existing FinalEntryStatInput"]
+    F --> AD
+    AD -.-> U["Future post-effects stage/native Entry execution: unobserved"]
+```
+
+The source/model tree and minimum query plan were sealed before implementation
+in external `MAA-BASELINE-MODEL-PLAN.json`,
+`MAA-BASELINE-MODEL-TREE.md` and
+`MAA-BASELINE-OBSERVER-QUERY-PLAN.json`. This implementation adds no EXE
+read. It reuses exact .3 cached closures and the existing property-fold source.
+
+One new focused offline Python case passed **1/1 once, 0.207 s**:
+strict normalized actual groups -> duplicate accolade contributions -> six
+stats -> existing final-input adapter. It also covers inner ordinary fallback,
+real empty arrays and independent unavailable status. Receipt:
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round5-20261006/ordinary-maa-stat-inputs/focused-maa-observed-once/RESULT.json`.
+No old passed case or wire was rerun. New native target
+`xar_ck3_12003_maa_stat_inputs_test` prepares five literal production
+serializer wires under `ck3_12003_maa_stat_inputs_wire`; the child did not
+compile it. Central build, first new CTest and new-wire production consumption
+remain pending. Pure consumer is static-ready; no live or game-day claim.

@@ -602,6 +602,68 @@ struct CombatOrdinaryStatInputsSnapshotV1 {
                          const CombatOrdinaryStatInputsSnapshotV1 &) = default;
 };
 
+struct CombatMaaPropertyBlockV1 {
+  std::int32_t count = 0;
+  std::vector<std::uint16_t> keys_u16;
+  std::vector<std::int64_t> values_q64;
+  friend bool operator==(const CombatMaaPropertyBlockV1 &,
+                         const CombatMaaPropertyBlockV1 &) = default;
+};
+
+struct CombatMaaSixStatsV1 {
+  std::int32_t max_size = 0;
+  // siege, damage, toughness, pursuit, screen.
+  std::array<std::int64_t, 5> values{};
+  friend bool operator==(const CombatMaaSixStatsV1 &,
+                         const CombatMaaSixStatsV1 &) = default;
+};
+
+struct CombatMaaCultureRowV1 {
+  std::int32_t definition_index = 0, row_index = 0;
+  bool definition_is_gdbo = false, definition_matches_selected_type = false;
+  std::int32_t class_filter = -1;
+  std::optional<CombatMaaSixStatsV1> stats;
+  friend bool operator==(const CombatMaaCultureRowV1 &,
+                         const CombatMaaCultureRowV1 &) = default;
+};
+
+struct CombatMaaAccoladeBlockV1 {
+  std::int32_t linked_index = 0, character_full_id = -1;
+  std::int32_t accolade_full_id = -1, row_index = 0, level = 0;
+  CombatMaaPropertyBlockV1 properties;
+  friend bool operator==(const CombatMaaAccoladeBlockV1 &,
+                         const CombatMaaAccoladeBlockV1 &) = default;
+};
+
+// Actual operands of26344C0->30C4360. This optional leaf has independent
+// readiness and never substitutes the current final tuple for its sources.
+struct CombatMaaStatInputsSnapshotV1 {
+  bool available = false;
+  std::int32_t source_target_province_id = -1;
+  std::optional<std::int32_t> source_regiment_full_id, selected_character_full_id;
+  std::string character_resolution;
+  std::optional<bool> inner_type_is_gdbo, selector_mode, class_row_present;
+  std::optional<std::int32_t> selected_type_class, culture_full_id, government_index;
+  std::optional<CombatMaaSixStatsV1> type_bases;
+  std::optional<CombatMaaPropertyBlockV1> selected_properties, extra_properties;
+  std::optional<std::array<std::uint16_t, 6>> class_add_keys_u16, class_mult_keys_u16;
+  std::optional<std::array<std::uint16_t, 5>> extra_add_keys_u16, extra_mult_keys_u16;
+  std::optional<std::vector<CombatMaaCultureRowV1>> government_rows, global_rows;
+  std::optional<std::int32_t> extra_title_full_id, extra_holder_full_id, holder_piety_rank;
+  std::optional<std::int32_t> selected_government_byte_4d6;
+  // Actual2B9CBC0 return, including its signed nonnegative clamp.
+  std::optional<std::int64_t> selector_factor_q64;
+  std::optional<std::vector<std::int32_t>> linked_character_full_ids;
+  std::optional<std::vector<CombatMaaAccoladeBlockV1>> accolade_blocks;
+  std::optional<bool> definition620_present;
+  std::array<std::optional<CombatMaaSixStatsV1>, 6> environment_components{};
+  std::array<std::optional<std::int64_t>, 5> fallback_ordinary_bases{};
+  std::int64_t scale = 100'000;
+  std::string unavailable_reason = "maa_stat_inputs_unavailable";
+  friend bool operator==(const CombatMaaStatInputsSnapshotV1 &,
+                         const CombatMaaStatInputsSnapshotV1 &) = default;
+};
+
 struct CombatRegimentSnapshot {
   bool available = false;
   std::int32_t regiment_id = -1;
@@ -617,6 +679,7 @@ struct CombatRegimentSnapshot {
   // Omitted when current==target; that case reuses effective_stats.
   std::optional<CombatEffectiveStatsSnapshot> initialization_context_stats;
   std::optional<CombatOrdinaryStatInputsSnapshotV1> ordinary_stat_inputs_v1;
+  std::optional<CombatMaaStatInputsSnapshotV1> maa_stat_inputs_v1;
   CombatCounterSnapshot counter;
   std::string unavailable_reason;
 

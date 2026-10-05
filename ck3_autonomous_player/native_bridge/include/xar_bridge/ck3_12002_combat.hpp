@@ -19,6 +19,12 @@ using GetCounterContextScale = std::int64_t *(*)(std::int64_t *, void *, void *)
 using GetKnightEffectivenessContext = void *(*)(void *);
 using ReadKnightEffectiveness = std::int64_t *(*)(std::int64_t *, void *, std::uint64_t);
 using IsHoldingDefender = bool (*)(void *, void *);
+using MaaGetObject = void *(*)(void *);
+using MaaGetPietyRank = std::int32_t (*)(void *);
+using MaaGetTier = void *(*)(std::int32_t, void *);
+using MaaGetSelectorFactor = std::int64_t *(*)(std::int64_t *, void *, void *);
+using MaaGetTypeEnvironment = const void *(*)(void *, void *);
+using MaaGetLinkedEnvironment = void *(*)(void *, void *, void *, const void *);
 
 struct CombatBindings {
   bool enabled = false;
@@ -55,10 +61,23 @@ struct CombatBindings {
   void **ordinary_selector_fallback_slot = nullptr;
   void **ordinary_character_fallback_slot = nullptr;
   std::array<const std::int64_t *, 5> ordinary_stat_loaded_bases{};
+  bool maa_stat_inputs_enabled = false;
+  void **maa_culture_storage_slot = nullptr, **maa_culture_fallback_slot = nullptr;
+  void **maa_army_regiment_fallback_slot = nullptr;
+  void **maa_accolade_storage_slot = nullptr, **maa_accolade_fallback_slot = nullptr;
+  MaaGetObject maa_get_government = nullptr, maa_get_actual_army = nullptr;
+  MaaGetObject maa_get_title_holder = nullptr;
+  MaaGetPietyRank maa_get_piety_rank = nullptr;
+  MaaGetTier maa_get_tier = nullptr;
+  MaaGetSelectorFactor maa_get_selector_factor = nullptr;
+  std::array<MaaGetTypeEnvironment, 3> maa_get_type_environment{};
+  std::array<MaaGetLinkedEnvironment, 3> maa_get_linked_environment{};
 };
 
 // Source-closed only for exact .3; the unchanged .2 binder leaves this disabled.
 void EnableOrdinaryRegimentStatInputs12003(
+    CombatBindings &, std::uintptr_t image_base, std::string_view executable_sha256) noexcept;
+void EnableMaaRegimentStatInputs12003(
     CombatBindings &, std::uintptr_t image_base, std::string_view executable_sha256) noexcept;
 
 // The same owning-thread paused snapshot supplies participant/war scope.

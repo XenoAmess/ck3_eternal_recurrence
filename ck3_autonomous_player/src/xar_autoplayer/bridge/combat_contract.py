@@ -3040,7 +3040,7 @@ def _normalize_regiment(
     input_gaps: set[str],
     current_province_id: int | None = None,
 ) -> dict[str, object]:
-    optional_keys = ({"initialization_context_stats", "ordinary_stat_inputs_v1"} & set(value)
+    optional_keys = ({"initialization_context_stats", "ordinary_stat_inputs_v1", "maa_stat_inputs_v1"} & set(value)
                      if isinstance(value, dict) else set())
     row = _exact_object(
         value,
@@ -3139,6 +3139,10 @@ def _normalize_regiment(
         from .ordinary_stat_inputs_contract import normalize_ordinary_stat_inputs_v1
         result["ordinary_stat_inputs_v1"] = normalize_ordinary_stat_inputs_v1(
             row["ordinary_stat_inputs_v1"], name=f"{name}.ordinary_stat_inputs_v1")
+    if "maa_stat_inputs_v1" in row:
+        from .maa_stat_inputs_contract import normalize_maa_stat_inputs_v1
+        result["maa_stat_inputs_v1"] = normalize_maa_stat_inputs_v1(
+            row["maa_stat_inputs_v1"], name=f"{name}.maa_stat_inputs_v1")
     return result
 
 
