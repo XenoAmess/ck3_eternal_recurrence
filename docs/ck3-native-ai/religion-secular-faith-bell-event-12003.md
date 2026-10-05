@@ -48,14 +48,33 @@ flowchart TD
 
 首都修正定义为 `county_opinion_add=5`、`travel_danger=-5`。这些是已闭合的脚本输入；条件 stress helper 的最终运行时增量仍不能只凭基值宣称为 `+20`。
 
-窗口 `.b` 的 unavailable reason 明确指出玩家没有 `lifestyle_scholar`，对应原生 effect indicator 的 trait key 也为 `lifestyle_scholar`（该行 native ID `303`）。这是该窗口的实际条件证据，不是给全部玩家 numeric trait ID 建表。Root 报告的 generic snapshot 将三个选项都标成可用；该 generic 结论不能替代实际 window rows。本包没有额外读取该 generic snapshot 产物。
+窗口 `.b` 的 unavailable reason 明确指出玩家没有 `lifestyle_scholar`，对应原生 effect indicator 的 trait key 也为 `lifestyle_scholar`（该行 native ID `303`）。这是该窗口的实际条件证据，不是给全部玩家 numeric trait ID 建表。前态 `691-event31-fresh-snapshot.json` 的 generic `active_event.options` 将三个选项都标成 `enabled=true`；该 generic 结论不能替代同 revision 的实际 window rows。本包在后态归档时离线读取了该前态，确认这项差异。
 
 当前 window query `current_event_window_context_ready=true`，三项都 shown、都不是 fallback/cancel。`.a` indicator rows 为空；`.c` 有 fulfillment/increase row，magnitude unavailable。`complete_effect_set=false`，通用 `semantic_decision_ready=false`，原因为 indicator subset 没有完整性信号。源码已给出本事件窄例效果，因此本次普通选项决策可以依据这里的 source tree 与实际 enabled row；本包不增加 preview 门禁或改变通用 schema/readiness。
 
-## 本次选择的证据边界
+## 本次选择与独立后态
 
-Root 本次计划选择 public API `2`，与已有 first-enabled fallback 得到的候选相同，并以源码中的虔诚和首都修正为依据。前态宗教 query：Catholic faith `23` / rite `152` / Christianity religion `8`；`spiritual_fulfillment_raw=1000000`、scale `100000`；piety devotion `current_devotion_total_raw=150926266`、level `2`。玩家 trait ID 列表没有发布 canonical keys，因此 cynical/zealous 条件保留 unknown，不按数字、图标或邻接表猜测。
+Root 本次选择 public API `2`，与已有 first-enabled fallback 得到的候选相同，并以先落盘源码中的虔诚和首都修正为依据。前态宗教 query：Catholic faith `23` / rite `152` / Christianity religion `8`；`spiritual_fulfillment_raw=1000000`、scale `100000`；piety devotion `current_devotion_total_raw=150926266`、level `2`。玩家 trait ID 列表没有发布 canonical keys，因此 cynical/zealous 条件保留 unknown，不按数字、图标或邻接表猜测。
 
-本包目前为 **source-confirmed + observed current presentation input**。实际提交、事件移除和独立 state/religion 后态由 Root 执行与归档；提交 ACK 不能证明虔诚变化、修正已添加或条件压力效果。只在后态有相应字段时给实机效果信用；修正持续期、目标和数值在未有后态字段时维持 source-confirmed。无本包新 bridge primitive、测试或完整通用事件策略信用。
+`694-event31-select-option2.json` 记录 Root 对 `option_number=2` / `option_index=1` 的一次普通提交，accepted、status submitted、event instance advanced。后续独立 `695-event31-independent-after.json` 和 `696-event31-religion-after.json` 仍在 raw date `53286144`，state public `1007` / native `1006`，玩家 `29829` 存活、暂停、`active_event=null`。这些是 Root 实际执行与归档的产物，本代理只离线整理证据；原始文件 pin 见外置 `POST-ARTIFACT-PINS.json`。
 
-后续最小入口是 Root 的本次普通选择后独立玩家 state/religion 与 current event/window readback。若实际效果与本文有差异，先对照同实例与 raw date，再定位对应脚本效果；不先扩展全事件目录或加入猜测的 trait 映射。
+| 结果 | 前态 → 后态 | 证据与边界 |
+|---|---|---|
+| 当前虔诚 | raw `41766250 → 43016250`，`+1250000 / Q100000 = +12.5` | Root 从独立 `691 → 695` state 读取并报告；这是实际增量，不能写为脚本基值 `+50`。 |
+| 累计 devotion | raw `150926266 → 152176266`，同样 `+1250000` | 独立 `693 → 696` religion profile；与当前虔诚增量一致。 |
+| spiritual fulfillment | raw `1000000 → 1000000` | `693 → 696`，faith `23` / rite `152` 保持一致；没有对选项 `.a` 赋予 `.c` 的 `+3` 效果。 |
+| event 与玩家 | instance `31 → null`；Robert alive；后态 stress `0` | 独立 `695`，stress 数值由 Root 报告；不能据此反推玩家 canonical traits 或条件压力 helper 的完整因果链。 |
+| 首都伯爵领修正 | 目标 capital county、25 年、opinion `+5` / travel danger `-5` | 本次没有独立 modifier readback，仅 source-confirmed；没有派系效果信用。 |
+
+```mermaid
+flowchart LR
+    W["692 actual window<br/>scholar disabled；API2/3 enabled"] --> T["先冻结 .0055 source tree<br/>API2 base piety50 + county modifier"]
+    T --> A["Root 694<br/>普通 API2 提交一次"]
+    A --> R["独立 695/696<br/>event cleared；player alive<br/>piety/devotion 实际 +12.5<br/>fulfillment unchanged"]
+    R -. "base50 到 observed12.5 的运行时原因未闭合" .-> M["multiplier/effect cause unknown"]
+    A -. "未做独立 modifier readback" .-> C["county modifier source only"]
+```
+
+本事件窄例完成了 **production-live loop**：读取实际可选项 → 对照原版树 → Root 普通选择 → 独立后态确认事件关闭及虔诚增量。原版基值 `50` 与当前实际 `12.5` 必须并列保存；本包没有查明倍率/效果原因，不能因计算比例为四分之一就命名原生 multiplier。首都修正仍只有源码资格。无本包新 bridge primitive、测试或完整通用事件策略信用。
+
+后续按真实规划需要，最小入口是 `add_piety` 在当前玩家上的实际资源倍率/效果求值，或同一 capital county 的独立 modifier 观测。它们尚未在本包施工，不能作为已经完成的能力；不因这次差异扩展全事件目录或加入猜测的 trait 映射。
