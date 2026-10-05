@@ -888,3 +888,32 @@ choice does not prove the real caller RDX on any actual invocation; its upstream
 origin remains a concrete source gap. Actual date/effects staynull/false. Source
 plan receipt: external monthly-caller-effects/SOURCE-PLAN-DELIVERY.json, SHA
 abe43a19f641ee38c386bbbbb7ddd33110b70c8138cdbca3749256cc98fec115.
+
+## Oct6 caller-effect production-wire qualification (2026-10-06T00:21:35+08:00)
+
+#2026-10-06 finite caller qualification
+
+The NEW caller target first centralCTest passed0.09s, within the first4/4
+newonlyCTest batch. The necessary incremental centralfullDLL+4newtargets
+build passed9.400365s atsource89cb683dbed31bad3bc0c008ea525faf1db08db0.
+The firstbatchpersonfixture typedconstant/WX RED is retained; its minimal
+fixturefix did not alter this caller capability. No priorpassedtarget was
+rerun by this lane.
+
+SixNEW actualfake-memory C++productionserializer frames were consumed once
+through Z:/gb0's realnormalizer/kernel/service atthat exactsource.6/6GREEN;
+consumerelapsed0.029180200s, processtool1.5449922s. Allwirepaths/bytes/SHA are
+inNATIVE-WIRE-CONSUMER-RECEIPT.json. Oldsamples/oldcases0.
+The actualobserver ordering, fallbackActor/War, endedWar inclusion,
+attackerpriority, signedcounter, raw64datehighhalf, duplicateIDlist and
+stablepartial/changedframe survive strictproductionauthority unchanged.
+The focusednativefixture intentionally isolatescalleroperands and doesnot
+providebudget/DATAframes, so derivedwarwrites stayunknownthere. The NEW
+productionPythonservicecase already suppliesbudget/DATA andcoverscomplete
+finiteconditional writes; it wasnotrerun.
+
+Readiness remainsstatic-ready withofflinecompiledwire qualification.
+Actualeffects/loss=false, actualpoststate/datecalltime=null, fullmonthly
+live/appliedloss=false. Gamequeries/actions/newdays/runtimechanges all0.
+The nextsource2A9FA10/dailyconsumer/datepointerpackage is separatelysealed
+withOct6 timestamps; its newprovider/kernel work isongoing.

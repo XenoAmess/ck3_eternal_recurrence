@@ -868,3 +868,88 @@ flowchart TD
 ```
 
 The existing fields for291DED0 and291DCE0 are already available in current_context_task_position_inputs/evaluated parser and must be reused. Stagechain owner is isolating291D460 trait-growth evaluated vector; that real missing observation is the highest current dependency. Another source-only agent owns earlier absent1C8->2BFAC30 and this owner implements it after closure; this packet does not reread those functions.
+
+## Oct6 five-leaf current-person integration adopted (2026-10-06T00:21:35+08:00)
+
+# Current-person five-leaf source and implementation increment
+
+Source-first research started on 2026-10-05; implementation delivery and first focused Python qualification occurred on 2026-10-06, Asia/Shanghai. Exact executable remains CK3 1.20.0.3 / Steam 25652598 / pinned SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. All source work used cached disassembly or necessary frozen-file spans. No CK3, SDK, pipe, UI, Steam, process inventory, runtime preparation, staging, deployment, profile, save or workshop cache activity occurred.
+
+Source trees and query plans were persisted before implementation: `SOURCE-TREE-INITIAL.md` / `QUERY-PLAN-INITIAL.json`; `tail-prefix-helper-source/SOURCE-TREE.md` / `QUERY-PLAN.json`; `tail-middle-helper-source/SOURCE-TREE.md` / `QUERY-PLAN.json`; `trait-growth-side-source/SOURCE-TREE.md` / `QUERY-PLAN.json`, followed by `SOURCE-CLOSED-ADDENDUM.md` / `QUERY-PLAN-CLOSED.json`; and sibling `person-absent-recipient/SOURCE-SEAL.json`, `SUBMITTED-DTO-PLAN.json`, `GUARD-SOURCE-PLAN.json`. Initial source receipts remain unchanged; addenda close subsequently researched leaves.
+
+## Actual trait stage 291D460
+
+Character `F8` ordered DWORD trait IDs / signed count `104` retain duplicate occurrences. Definition selection uses the actual trait database slot `5C67528`, indexed array `50` / count `5C` and fallback `5D1E318`. Each occurrence folds the complete `30E49F0` temporary PropertyContainer, then its classifier contribution. Composite inputs include base PC, independently admitted B/A conditional records, and current growth. The growth header uses first matching trait occurrence, wrapping preceding-definition track counts, Character aux `140/14C`, and the actual flag `1A5`; returned positive count does not truncate the original all-track loop. Positive XP admits only the threshold prefix through the first larger threshold; nonpositive XP skips level definitions.
+
+The actual side call is RVA `02BD84A0`. It hashes the entire TraitDef QWORD pointer with native FNV-1a32 and probes the selected A `+950` map with raw signed mask and physical forward probe order. First full-pointer equality selects kind `0` (skip), kind `1` (provider `1620+40`) or any other nonzero signed kind (provider `1630+40`). Cached helper `291B690` copies the chosen PC, changes descriptive metadata, then calls `2438850` with unit weight `100000`; no hidden row `18/20` weight is invented. Pure output interleaves each nonempty composite and admitted nonempty side in trait occurrence order. Empty trait count releases a known-empty stage without reading selectors, providers or growth inputs. Complete composites remain independently usable if side capture fails.
+
+## Absent 1C8 cached recipient
+
+Present Character `1C8` is an independently ready not-applicable skip. Absent `1C8` resolves associated B4 by full native ID. Cache DWORD `440 != 0` admits current maps `430/458`; cache zero remains an explicit derived-input seam and never consumes stale maps or runs an initializer.
+
+Cached maps use 24-byte buckets and scan until the first positive occupied count has been gathered, retaining raw bucket indices. `430` entries use full pointer keys, trait ID `keyObject+10`, and signed Q64 values; `458` maps full pointer keys to full QWORD linked IDs. Actual Character trait membership and selected QWORD membership list control the multiplier at slot `5C696F8`. The multiplier is demanded only for a nonzero linked ID in a nonempty membership list and an actual full-QWORD member. `2BFFE10` is insert-or-assign: equal keys replace the prior value. The wrapper then ADD64-sums final values, adds actual effective PC key `25D`, and clamps signed lower-first with slots `5C68E00/5C68DF8`.
+
+Actual current context is carrier `258` model `10` only if model `8` equals this Character, otherwise inline `5D67B90` guarded by DWORD `5D67B80`. Absent membership inline header `5D67E40` is guarded by DWORD `5D67E38`. Guard zero/minus-one retains captured bytes and marks demanded lazy input unavailable; the initializer is never called. Owned model context does not demand the unrelated inline guard. The available cached scalar is forwarded in the same query into existing `helper_291f0a0.manager_range`, preserving actual native range selection and exposing its consumed PC. This is an input unlock, not merely an extra receipt.
+
+## Tail prefix 2753860 and 2922530
+
+`tail_prefix_2753860_2922530` keeps independent helper readiness. `2753860` preserves first-character byte `218`, the same-byte native recheck, source definition pointer `1D8`, government mode `80C` / relation pointer `800` or actual default slot `5D26D50`, owner `1E0/160`, and the actual holder relation traversal. Only an admitted owner appends definition PC `40` at unit weight.
+
+`2922530` resolves source `220`, validates magic `38`, then preserves actual table `208`, signed count `214`, requested signed index `228` and native wrapping clamp. No invented positive-count gate is added: count zero can select physical index `-1` if the actual backing address is readable. Three fixed source positions remain `D60` when byte `280<3`, unconditional `F20`, and `10E0` when owner `160` equals Character `18`, in this order. Actual empty PCs remain unit append requests.
+
+Required helper `2922070` is source-closed by the same bounded source packet but its collector is a subsequent implementation package. The full contiguous tail cannot bypass it.
+
+## Middle helpers 291F260 and 291FB10
+
+`middle_helpers_291f260_291fb10` preserves four independent 260 families in native order: `rank_138`, `rank_118`, `rank_158`, `rank_178` with weight keys `45,44,46,47`. Signed score/threshold rank selects the actual manager vectors or fallback `5D1E0B0`. Definition DWORD `4C` nonzero gates PC `40` and weight reads. Current effective PC uses the same actual model ownership/default selection. Native first lower-bound key occurrence supplies weight `wrap64(100000+value)`; missing key gives `100000`. Zero, negative and wrapped weights remain requests.
+
+`291FB10` gathers the preferred SubC, then actual list `218`, then list `248`, preserving duplicate contexts. Each admitted context gathers modifier PCs with actual owner/token gates, then always its terminal PC, including empty terminal PCs. The complete gather is grouped globally by full PC identity: reverse last-occurrence order, multiplicity times `100000`, and actual last block reference. Partial input cannot manufacture global grouping; complete context/family raw gathers remain separately available.
+
+## Government and weighted tail leaves
+
+`tail_direct_291c5b7_291cc49` exposes independent government and weighted carrier families. Actual Character land gates raw government selection and magic `4744624F`; admitted government PC `870` precedes independently guarded `A30`. Good SubC magic `5362436F` and full signed ID other than `-1` skip A30; bad magic or exact `-1` admit it. Failed demanded reads retain earlier captured PCs.
+
+Carrier `1B0` / signed key `274` controls full-ID registry selection at `5D1E310` / fallback `5D1E2D0`. Exact zero signed count `63C` skips array `630`; positive rows preserve physical 16-byte order, actual PC identity and raw signed Q64 weight, including duplicate PCs and zero/negative weights. Negative count remains partial. Neither this sparse leaf nor the middle sparse leaf claims a complete caller suffix across intervening unobserved calls.
+
+```mermaid
+flowchart TD
+  Traits[Character F8 / 104 ordered traits] --> Composite[30E49F0 complete current composite]
+  Composite --> Classifier[02BD84A0 full pointer kind]
+  Classifier --> Side[291B690 provider PC / unit weight]
+  Side --> KnownPost[Previously observed B and post-B sources]
+  KnownPost --> Cached[Absent1C8 cached recipient / insert-or-assign]
+  Cached --> Managed[Same-query 291F0A0 actual manager range]
+  Managed --> OldLater[Previously observed 291F550 and 291F940]
+  OldLater --> H275[2753860 owner PC]
+  H275 -. required collector pending .-> H2922070[2922070 source closed]
+  H2922070 --> H2530[2922530 D60 / F20 / 10E0]
+  H2530 -. conference gap .-> Rank[291F260 four rank families]
+  Rank -. provider bucket gap .-> Gov[Government 870 / A30]
+  Gov -. qualifier gap .-> Gather[291FB10 global gather/group]
+  Gather -. list and helper gaps .-> Weighted[Carrier 630 ordered weighted rows]
+  Weighted -. remaining caller .-> Frontier[Full person / Entry remain unfinished]
+```
+
+## Costs, validation and qualification
+
+New physical frozen EXE reads owned by this lane and its children: prefix `6672 = 5568 code + 1104 pdata`; middle `2540 = 2168 code + 372 pdata` (includes preserved 120-byte unsuccessful metadata lookup); trait `336 = 240 code + 96 pdata`. Total own new I/O **9548 bytes**. Sibling cached absent source receipt contributes separately **5029 = 4669 code + 360 pdata**; aggregate source packets **14577 bytes**, without charging sibling reads twice. Trait search reuses sibling's existing 128-byte helper; no additional EXE read. Main caller/government source reused cache at zero new I/O. No full scan, full hash or runtime observations.
+
+Implementation: Python contracts/shared normalizer `c688d593805db8540ea75eac58f02a77698c4057`; native same-query integration and new fixed-memory aggregate fixture `29572ee976a63ca2ff7796312cf7f95b49a63360`. Fixture-only followups `cfdfec4cfc38c38e54882f5d1c15a2cd5bd2708f` create output directories; `25a25dee5dd7531d41ed258877be09303de83565` fixes actual MSVC native-width fixture warnings. Sibling pure cached recipient prerequisites remain `a0f4d53a37eef2d7047a3cb669a4a664e62d5ef2` and `db8a174269305f96a6eff7954e7b4bdb04b462a0`.
+
+The sole new focused Python case ran once on Oct6 00:03:55: **1/1 GREEN**, pytest 0.36s, receipt wall 0.85455s (`focused-python-attempt01.json`). First central native attempt `native-round4-core-01` was **harness RED 172.1268s** from two new fixture integer conversion warnings under `/WX`; the original log remains retained. Native compilation/first CTest and the one 26-wire production consumer are pending Root qualification. Do not label native integration static-ready until that qualification succeeds. No old test or actual-wire path was rerun.
+
+The new CMake target and CTest are both `xar_ck3_12003_person_tail_sources_test`; actual wires go under `ck3_12003_person_tail_sources_wire/{tail-direct,tail-prefix,middle,trait,absent}` (4+3+3+4+12=26). Each fixture compares two complete same-frame snapshots with native callbacks null. `consume_actual_wires_once.py` will import Root production normalizer/emitters and the cached pure kernel only after Root reports native GREEN.
+
+Readiness remains source-closed implemented candidate with one focused Python GREEN and central native qualification pending. Full current-person composition, Entry, forecast policy and production-live observations remain unfinished. Next exact functional inputs are collector `2922070`, conference `24B1D00`, signed provider bucket at caller `291C5B2`, qualifier `28BC0D0`, unknown list/helper stages after `291FB10`, and subsequent caller suffix after weighted `291CC49`. Uncached recipient `440=0` is being developed independently from sibling source ledger; no stale cache or initializer is used as its substitute.
+
+## Qualification addendum, Oct6 00:16 Asia/Shanghai
+
+Root's necessary incremental `native-round4-core-02` is **GREEN 9.400365s**, full DLL plus four new targets at exact source `89cb683dbed31bad3bc0c008ea525faf1db08db0`. First new CTest batch is **4/4 GREEN, total 0.51s**; this aggregate target is **GREEN 0.13s**. The original `native-round4-core-01` harness RED 172.1268s remains preserved. The only production candidate changes after the original build were the two fixture-only commits; no production model changed to suppress the warning.
+
+Production consumption of the 26 unique new genuine serializer wires is now **GREEN**. `actual-wire-integration-attempt01.json` preserves a consumer harness RED 0.205563s after six successful absent wires: the scripted assertion read `recipient_source` inside `manager_range` instead of its actual parent helper field. The consumer path was corrected; `actual-wire-integration-attempt02.json` is GREEN 0.204498s and consumes only the failed member wire plus 19 previously unexecuted wires, explicitly skipping the six successful wire cases. No passed old or new wire was rerun.
+
+The combined results verify direct-tail actual duplicates and weights; prefix signed count-zero index `-1` and unconditional empty requests; four independent rank families with zero weight and first duplicate key lookup; FB10 global reverse-last sequence `[empty,403,402,401]` with weights `[300000,100000,200000,200000]`; D460 occurrence-interleaved values `[112,300,200,400,112,300]`; independent composites during partial side input; and all 12 actual absent source cases. The available cached scalar `1300000` reaches the old manager-range selector and emits its actual PC value `777`. Both native and Python scalar kernels agree, including full-QWORD nonmember, empty, guard, owned model, decomposed signed minimum multiplication and lower-first clamp cases.
+
+Qualified status is now **static-ready for these independently useful same-query input primitives**, supported by central fake-memory source/serializer and production consumers. There is no new paused artifact and no live readiness claim. Full current-person fold, Entry and forecast remain unfinished. Subsequent helper `2922070` has a concrete remaining comparator adapter source seam (`1A96FD0/1A97160/2922D20`); its prior source-only conclusion about the Character sort field requires the adapter closure, which is being corrected through necessary narrow frozen-file reads. This later package does not alter the current 26-wire qualification.
+
+Root central compiled source89cb683d, four new CTests firstGREEN and 26 unique production wires qualified; final receipt/REDs are archived in `Z:\ck3_mod_rewrite_process_assets\g2-background-round4-20261005\source89cb683d-core-native-artifacts`. Whole suffix/Entry remains unfinished. Subsequent2922070 work found a concrete comparator-adapter source seam; earlier source-closed wording covers the known gather/admission portion, and complete sort operand/collector remains the next active package. No source or test is rerun for this adoption.

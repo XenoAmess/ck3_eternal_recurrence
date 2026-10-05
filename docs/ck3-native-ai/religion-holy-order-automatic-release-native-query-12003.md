@@ -53,3 +53,31 @@ flowchart TD
 队列 getter 从现成 `5D1DF10` registry 指针减去源已闭合的 `0x28` 得到 manager，读取 `+24A8/count+24B4`，只复制 fullIDs，不调用 producer/consumer/release。历史 wire 可无此新字段。下一次有授权的实机应独立核验 employer 与公开 CUnit 消失，尤其“另有 qualifying war”和“最后 qualifying war 结束但仍在 Combat”两种情形；本轮 fixture 或 ACK 不提供 live、日数、收益或 loop 信用。
 
 新增 `xar_ck3_12003_holy_order_service_lifecycle_test` / CTest `ck3_12003_holy_order_service_lifecycle` 使用 source-bound manager/registry 偏移的 fake memory，覆盖持续服务、war qualification 丢失但 Combat 延迟、原生 release-ready、候选已排队但复核为 false、非玩家 employer、未雇佣、nonmilitary、独立 resource terms unavailable、新 binding 缺失、队列不可读。fixture 通过 production provider/command_result serializer 输出四个 sample；`test_holy_order_service_lifecycle_registered_mcp_v1.py` 将消费该真实 fixture，经已注册 MCP 和实际 Python normalizer 验证字段。中央 Root 统一编译新 target 后只运行这一新 consumer 一次，当前未运行或重复旧 test。
+
+## Root adoption and independent MCP qualification (2026-10-06T00:21:35+08:00)
+
+# Holy-order lifecycle round4 Root appendix
+
+Reported 2026-10-05T23:50:27.952801+08:00 (Asia/Shanghai), natural day 2026-10-05, 2026-W41.
+
+Why: Future player needs to distinguish same-Faith multiwar service retention, native automatic release eligibility, Combat delay, and a queued candidate that still requires recheck. Final CanHire=false and hire ACK cannot answer persistence.
+
+Result: Actual constructor->vtable->candidate producer/consumer and261A1D0/261D5F0 conditions source-closed; existing readonly holy-order MCP exposes independent current-player service_lifecycle native booleans and fullID queue membership.
+
+Source: constructor2A86200 binds secondary477B520. +8 producer2A89390 scans hired IDs, native261A1D0 true queues manager+24A8/count+24B4. +18 consumer2A89760 resolves queued IDs and rechecks employer/condition, real2A89DE7 calls2A889C0(manager,order,true). Predicate retains service while valid landed actual employer is same Faith and ANY qualifying current war remains; after losing that shared condition, valid associated Regi->Army->Combat delays release. The261C120 loaded threshold<=0 native early-true is preserved. No payment/hiremode or genericArmyDisband substitution.
+
+Implementation: aba4cdb6bbf58bc99385c5b2777534de39d26023,7files. Existing registered readonly context gains service_lifecycle {available,unavailable_reason,applies_to_player,release_eligible,associated_regiment_in_combat,release_check_queued} independently of CanHire/resource terms. Inapplicable non-player employment never produces player service claims. Exact native predicates and source-bound manager queue only; no release or producer/consumer execution.
+
+Validation: one source plan check GREEN11evidence/7static edges/1unknown/1our implementation edge, record/file integrity only. One whitespace check GREEN before commit. New strict target xar_ck3_12003_holy_order_service_lifecycle_test and CTest ck3_12003_holy_order_service_lifecycle await Root;4native sample scenarios. New registered MCP consumer awaits the genuine fixture. No old tests rerun. Native source I/O 27891B; new code 12899B and tables 280B. No full EXE scan/hash/closed body reread.
+
+Readiness: research: automatic native source closed; readonly implemented, awaiting centralized validation; no live capability gain yet. Outer engine cadence, actual current native acceptance, post-war/combat employer and publicCUnit removal are pending. Ordinary player release command remains research. No new live artifact, game/day/paidaction/loopcredit.
+
+RED/attempts: preserved bounded8function nohit result; it was only a narrownegative. Table helper indentation error before EXE read fixed once. First43B predicate pdata fragment was explicitly partial; disjointcontinuations sourceclosed it. ATTEMPTS.json and SOURCE-COST.json preserve these costs.
+
+Artifacts: Z:\ck3_mod_rewrite_process_assets\g2-background-round4-20261005\holy-order-lifecycle; research-plan.json, RESEARCH-PLAN-CHECK.json, NATIVE-TREE.md, native spans/table pins, SOURCE-COST.json, ATTEMPTS.json, IMPLEMENTATION-RECEIPT.json, REPORT-FIELDS.json. Root owns shared canonical/index/day/week/month report adoption. No push.
+
+Next: central build/one new CTest then one registeredMCP consumer. Future authorized live acceptance distinguishes remainingqualifyingwar, lastqualifyingwarended-butCombat, release-ready candidate recheck and independentemployer/publicCUnit removal. Do not promise nexttick without outerengine schedule closure.
+
+## Oct6 centralized validation receipt
+
+Actual 2026-10-06T00:14:46.236097+08:00, integrated source 89cb683dbed31bad3bc0c008ea525faf1db08db0. Root native-round4-core-02 fullDLL+4newtargets GREEN9.400365s;4newCTests firstGREEN0.51s, own0.09s. One genuine native wirefile contains4samples (not4files); one new registeredMCPconsumer GREEN4samples/103checks/exit0,2outputfiles. WireSHA 3c269cafb93fe3b6b60b014bd9c92d9e2f54fd053ca167e3e216061aad0ce4ab; RESULT SHA b173f3d66cb88294f90ee05dc4c4ea783410f4e6ed58c0786373a83f9440a345. Readiness static-ready independent current-player automatic service lifecycle input. No old test/wire rerun, source mutation, compile, game query/action or live credit. Continue ordinary playerrelease action source-first offline.

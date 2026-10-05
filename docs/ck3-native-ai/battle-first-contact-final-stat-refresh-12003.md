@@ -162,3 +162,7 @@ reuse, unequal selection, genuine zero/negative values, unavailable and
 wrong-Province leaf, and unknown Army Province. The earlier final-refresh
 case was not rerun. Native qualification of the new optional observer remains
 with the central build and its owning package.
+
+## Oct6 initial Province observer native qualification (2026-10-06T00:21:35+08:00)
+
+Exact integrated source `89cb683dbed31bad3bc0c008ea525faf1db08db0`: new initialization target /WX compiled, unique newCTest firstGREEN0.09s, three actual literal-production-serializer fragments consumed once through Root production normalizer and initial-entry adapter at00:16:20. DifferentProvince uses actual-current Province2 rather than requested1, preserving signed/zero tuple; equality uses existing tuple; failed optional initial leaf does not poison target query and never falls back to target. Receipt `first-contact-initial-stats/NEW-NATIVE-WIRE-CONSUMER-OCT6.json` pins three wire and module SHA. Serializer projection metadata is separately archived, not counted as a fourth wire. Bounded static-ready, no initialization performed, whole Entry/live still incomplete.
