@@ -172,6 +172,20 @@ def _linked_value(
     return (None, None, None) if missing else (0, False, None)
 
 
+def _default_initialized(demand: _Demand, raw: Mapping[str, object], path: str) -> bool:
+    guard = demand.integer(raw.get(path), path)
+    if guard is None:
+        return False
+    guard = native_wrap32_12003(guard)
+    if guard == 0:
+        demand.gap(path + '.uninitialized_inline_default')
+        return False
+    if guard == -1:
+        demand.gap(path + '.inline_default_initialization_in_progress')
+        return False
+    return True
+
+
 def compute_absent_recipient_from_native_inputs_12003(
     payload: Mapping[str, object] | None,
 ) -> NativeAbsentRecipientResult12003:
@@ -195,6 +209,10 @@ def compute_absent_recipient_from_native_inputs_12003(
         'managed_range_selection_replayed': False,
         'source_map_order': deepcopy(raw.get('cached_map_430')),
         'source_association_order': deepcopy(raw.get('cached_map_458')),
+        'source_membership_header': deepcopy(raw.get('membership_ids')),
+        'aggregate_context_selection': raw.get('aggregate_context_selection'),
+        'aggregate_context_guard_raw': raw.get('aggregate_context_guard_raw'),
+        'membership_header_guard_raw': raw.get('membership_header_guard_raw'),
     }
     carrier = raw.get('carrier_present')
     if carrier is True:
@@ -245,6 +263,9 @@ def compute_absent_recipient_from_native_inputs_12003(
         item['cached_value_q64'] = value
         members = raw.get('membership_ids')
         member_count = demand.count(members, 'membership_ids')
+        if not _default_initialized(demand, raw, 'membership_header_guard_raw'):
+            member_count = None
+            item['membership_branch'] = 'inline_header_uninitialized_or_unknown'
         matched = None
         linked = None
         if member_count == 0:
@@ -272,7 +293,14 @@ def compute_absent_recipient_from_native_inputs_12003(
         item['replaced_prior_assignment'] = key in assignments
         assignments[key] = value
 
-    base, lookup = _aggregate_25d(demand, raw.get('aggregate_properties'))
+    if (raw.get('aggregate_context_selection') == 'inline_context_5d67b90'
+            and not _default_initialized(demand, raw, 'aggregate_context_guard_raw')):
+        base, lookup = None, {
+            'key_u16': 0x25D, 'branch': 'inline_context_uninitialized_or_unknown',
+            'raw_aggregate_properties': deepcopy(raw.get('aggregate_properties')),
+        }
+    else:
+        base, lookup = _aggregate_25d(demand, raw.get('aggregate_properties'))
     sum_complete = not demand.missing
     lower = demand.q64(raw.get('clamp_lower_q64'), 'clamp_lower_q64')
     upper = demand.q64(raw.get('clamp_upper_q64'), 'clamp_upper_q64')

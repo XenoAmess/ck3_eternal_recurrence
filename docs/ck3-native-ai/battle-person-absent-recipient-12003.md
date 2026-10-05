@@ -131,9 +131,12 @@ a failed or undemanded observation. No source mutation is required.
 | Each map430 row `bucket_index`, `hash_u32`, `probe_u8`, `key_object`, `trait_id_u32`, `value_q64` | Current bucket fields; key object's actual DWORD10; full key can serialize as unsigned integer or hex string |
 | `trait_ids.count`, `.values_u32` | Current Character F8 header; demanded when map430 contributes entries |
 | `membership_ids.count`, `.values_u64` | Current 28BD090-selected header; count is demanded after trait admission, elements only for a nonzero matching linked ID |
+| `membership_header_guard_raw` | Current signed DWORD5D67E38 for the absent-1C8 inline list; demanded when its count is needed; 0/-1 retain actual bytes but leave the source uninitialized/in progress |
 | `cached_map_458.count`, `.mask`, `.max_probe_u8`, `.entries` | Current associated458; demanded only for an admitted entry and nonempty membership list |
 | Each map458 row `bucket_index`, `hash_u32`, `probe_u8`, `key_object`, `value_u64` | Current linked membership value; retain full QWORD equality and actual raw order |
 | `aggregate_properties.count`, `.keys_u16`, `.values_q64` | Current effective context aggregate source of key25D; use actual native lower-bound order |
+| `aggregate_context_selection` | `owned_model_10` or `inline_context_5d67b90`, from the actual28C3AE0 ownership branch |
+| `aggregate_context_guard_raw` | Current signed DWORD5D67B80, demanded for the inline context only; 0/-1 retain actual PC bytes and keep scalar partial |
 | `member_multiplier_q64` | Current slot5C696F8; demanded only on an actual linked-ID membership match |
 | `clamp_lower_q64`, `clamp_upper_q64` | Current slots5C68E00 and5C68DF8; both native loads occur |
 
@@ -151,6 +154,34 @@ new native fake-memory target centrally. No prior auxiliary, nine-byte,
 census, or previous suffix case is repeated. `open_kaishek` prevalidation is
 not applicable: this packet concerns native C++ memory fields and arithmetic,
 not CK3 script parsing or finite script runtime semantics.
+
+### Actual effective-context and inline-header initialization sources
+
+The reused complete v77 source `numeric-chain/region-028C3AE0.asm` selects
+Character QWORD `1B0`, then scratch QWORD `258`. It accepts that model only
+when nonnull and QWORD `[model+8] == Character`; the context returned is
+`model+10`. A null scratch/model or owner mismatch selects inline context
+RVA `5D67B90`, whose initialization guard is signed DWORD RVA `5D67B80`.
+This is independent of Character `1C8` absence. The actual aggregate PC is
+at `context+68`; for the inline context its keys/count/value-pointer fields
+are `5D67BF8`, `5D67C04`, `5D67C60` respectively.
+
+Source `28C3B1F` compares the actual guard to the calling thread's epoch;
+`28C3B33` enters native thread initialization, and `28C3B3F` checks `-1`
+before calling the context constructor. The readonly collector does not call
+these routines. A current guard `0` denotes uninitialized and `-1` denotes
+initialization in progress; keep actual PC bytes with partial readiness rather
+than treating untouched zero bytes as an initialized empty container.
+Only a selected inline context demands this guard; an owned-model context
+does not depend on the unrelated inline default's initialization.
+
+The reused complete `28BD090` source likewise selects `carrier+88` or inline
+list header `5D67E40`, with signed DWORD guard `5D67E38`. Its initialization
+stores zero QWORDs at `5D67E40` and `5D67E48` and allocator at `5D67E50`.
+For the absent branch a demanded membership count requires the current guard;
+guard0/-1 retains raw header/count bytes and yields a partial scalar. An empty
+map430 or no admitted trait does not demand membership guard/count. These
+fields come from actual native initialization branches, not a new audit gate.
 
 ## Cache-zero continuation and explicit next seam
 
