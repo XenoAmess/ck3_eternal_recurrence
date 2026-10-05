@@ -197,3 +197,15 @@ CommanderObserver 唯一读取 R40 原军力叶后封完整缓存；军需只消
 当前 day index394199/selected phase29，三军 bucket0/28/6；main/enemy 的 last_supply_update_date_raw 仍为 `53260080 / 53260224`，距当前分别696/552 raw小时，守军锚点 `53260032→53260752`、距当前24 raw小时。仅记录当前时钟与锚点变化，不把暂停帧 phase 当 updater/setter 执行轨迹。当前 movement progress 三行均 not_applicable、ETA null，不沿用旧移动边ETA。
 
 军需派生 compact：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-loss-r40-cached-trend/COMPACT-R40-HEALTH-LOSS-CACHE.json`（SHA `123a25d82a9829216f7fc7346ee7c3015e98f0321f6378fee594fad751b64699`）；完整源缓存由 CommanderObserver 持有。单位类型库存与省供给/K保持独立；本次供给值直接来自 health 字段。R39 after24 之后18正常日由 Root 已计至4852，本缓存消费新增0日、0 SDK、0测试、0窗口操作；既有失败 archive 与唯一生产回归保留、不重跑。
+
+### 2026-10-05：v69 同帧前后与独立健康趋势
+
+CommanderObserver 独占原始军力读取；军需只消费其 v69 比较派生与 AFTER health 派生各一次，原始、完整 composition、v68 缓存均未重读。真实 paused `raw53262288 / native:3 / native3 / public2`，前后 query sequence `1→2`，四行已发布字段 diff0；overall/scope 为 partial：旧三军 health available，新 public `285212713` 为 `native_carmy_not_found / native_carmy_id=null / reference_absent(-1)`，health null且损耗/供给对象缺省均不补0。原生版本与 EXE SHA null保留。
+
+主军 `3085/3874/39reg`、库存 `290.00001/300`、月供给变化0、attrition `.01`，当前围城/劫掠/供给预算 `30/0/0`，仍 `siege_active=true / raid_active=false / raid_association_id=-1`。与先前 Commander R41/v68 已提供的 `3116/3874` 相比净减31，库存与月率相同；与 R40 已封帧相比净减93、库存减3.63636，均是独立端点差。当前预算30不是已经扣30人，也不能把净减31归因预算、补员或 Create 尝试。
+
+守军 `3000/3000/24reg`、供给 `100/100`、月率0、attrition0；此前 R41 月率+20。敌军 `2670/4702/41reg`、实际库存285、当前 capacity100、月率+20、attrition0，与 R41 core相同；库存和 capacity 原值分别保留，不自行clip。两军当前三预算均0。主军缺额789、守军0、敌军2032；三可读军团均 not_gathering/ready=true，缺額与当前补员字段不冒充历史净补员原因。
+
+当前 day index394262/selected phase2，三军 bucket0/28/6；last_supply_update_date_raw 主军 `53262240`（距当前48 raw小时）、守军 `53262192`（96小时）、敌军 `53260224`（2064小时）。只记录 updater 锚点；旧 R41 的 budget/clock 未另读、不猜值，不由锚点归因人员变化。主军 ETA null；守军与敌军当前首边 remaining 为 `5.26667 / 4.82347` native days，不冒充整条路线 ETA。
+
+compact：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-loss-v69-cached-trend/COMPACT-V69-SUPPLY-LOSS-CLOCK.json`（SHA `6c0a01de034bd1da59b51c5b5949d7d5aefd80dff88d1ab25c277e20a86d8349`）。保留旧错误 archive 与既有生产回归；本包新增0游戏日、0 SDK、0测试、0窗口操作，未读取 ACTIVE `79783` 或授予其未来日信用。当前供给/损耗观测资格为 production-live primitive，未发布损耗因果预测。
