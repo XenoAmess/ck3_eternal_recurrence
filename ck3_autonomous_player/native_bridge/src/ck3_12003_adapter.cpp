@@ -139,6 +139,9 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
   // them in BindArmyImage: that binder also serves the unchanged .2 adapter.
   if (result.armies.enabled) {
     result.armies.regiment_composition_enabled = true;
+    result.armies.is_regiment_supply_loss_eligible =
+        reinterpret_cast<decltype(result.armies.is_regiment_supply_loss_eligible)>(
+            image_base + ck3_12002::kRegimentSupplyLossEligibleRva12003);
     result.armies.loss_application_inputs_enabled = true;
     result.armies.county_entry_inputs_enabled = true;
     result.armies.county_entry_minimum_soldiers =

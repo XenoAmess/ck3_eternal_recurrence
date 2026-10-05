@@ -193,10 +193,11 @@ def project_observed_army_loss_requests(
 ) -> list[dict[str, object]]:
     """Consume normalized army rows without another query or native execution.
 
-    The current readonly supply budget is not an updater result. A positive
-    value needs the absent per-row 2A956D0 predicate and post-supply current.
-    With budget0, current rows can supply the conditional siege/raid preferred
-    pass. Nonzero overflow still needs actual post-preferred residual rows.
+    The current readonly supply budget is not an updater result. Observed
+    per-row 2A956D0 can select the supply preferred pass. Positive supply still
+    needs real later-stage current; requests do not stand in for writes. With
+    budget0, current rows can supply the conditional siege/raid preferred pass.
+    Nonzero overflow needs actual post-preferred residual rows.
     """
     result = []
     for army in army_strengths:
@@ -210,11 +211,25 @@ def project_observed_army_loss_requests(
             })
             continue
         preferred = None
+        supply_preferred = None
         rows = army.get("regiment_strengths")
         supply_budget = inputs["current_supply_loss_budget"]
-        if supply_budget == 0 and isinstance(rows, list) and all(
+        tiers_available = isinstance(rows, list) and all(
             row.get("siege_tier_observable") is True for row in rows
-        ):
+        )
+        supply_eligibility_available = isinstance(rows, list) and all(
+            type(row.get("native_supply_loss_eligible")) is bool for row in rows
+        )
+        if supply_budget > 0 and tiers_available and supply_eligibility_available:
+            supply_preferred = LossAllocationInputs(
+                native_eligible_total_soldiers=inputs["definition_le_zero_supply_eligible_soldiers"],
+                ordered_eligible_rows=tuple(
+                    EligibleArmyRegiment(row["army_regiment_id"], row["current_soldiers"])
+                    for row in rows
+                    if row["siege_tier"] <= 0 and row["native_supply_loss_eligible"]
+                ),
+            )
+        if supply_budget == 0 and tiers_available:
             preferred = LossAllocationInputs(
                 native_eligible_total_soldiers=inputs["definition_le_zero_soldiers"],
                 ordered_eligible_rows=tuple(
@@ -226,10 +241,14 @@ def project_observed_army_loss_requests(
             supply_budget_soldiers=supply_budget,
             siege_budget_soldiers=inputs["siege_loss_budget"],
             raid_budget_soldiers=inputs["raid_loss_budget"],
+            supply_preferred=supply_preferred,
             post_supply_siege_raid_preferred=preferred,
         )
-        if supply_budget > 0:
+        if supply_budget > 0 and not supply_eligibility_available:
             projection["missing_inputs"].append("per_regiment_native_2a956d0")
+        if supply_budget > 0 and projection["combined_siege_raid_budget_soldiers"] > 0:
+            if "post_supply_current_soldiers" not in projection["missing_inputs"]:
+                projection["missing_inputs"].append("post_supply_current_soldiers")
         result.append({
             "army_id": army["army_id"], **projection,
             "input_basis": "current_readonly_inputs; conditional requests, not updater execution",

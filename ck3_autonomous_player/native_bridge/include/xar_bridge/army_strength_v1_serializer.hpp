@@ -203,6 +203,13 @@ inline void AppendArmyStrengthV1(
       result += ",\"composition_unavailable_reason\":";
       if (regiment.composition_unavailable_reason.empty()) result += "null";
       else append_json_string(result, regiment.composition_unavailable_reason);
+      result += ",\"native_supply_loss_eligible\":";
+      result += regiment.native_supply_loss_eligible.has_value()
+                    ? (*regiment.native_supply_loss_eligible ? "true" : "false")
+                    : "null";
+      result += ",\"supply_loss_eligibility_unavailable_reason\":";
+      if (regiment.supply_loss_eligibility_unavailable_reason.empty()) result += "null";
+      else append_json_string(result, regiment.supply_loss_eligibility_unavailable_reason);
       result += '}';
     }
     result += ']';

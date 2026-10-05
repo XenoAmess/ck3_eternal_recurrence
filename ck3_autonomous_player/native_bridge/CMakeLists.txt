@@ -7916,6 +7916,26 @@ if(BUILD_TESTING AND WIN32)
     FIXTURES_REQUIRED committed_route_timeline_wire)
 endif()
 
+# Per-ArRg supply-loss eligibility: new focused production reader/wire fixture.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12003_supply_loss_eligibility_test
+    src/ck3_12002_army.cpp
+    src/ck3_12003_army_supply_timing.cpp
+    src/ck3_12003_army_replenishment_records.cpp
+    src/ck3_12003_supply_loss_eligibility_test.cpp)
+  target_include_directories(xar_ck3_12003_supply_loss_eligibility_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_supply_loss_eligibility_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_supply_loss_eligibility_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_supply_loss_eligibility_test PRIVATE
+      /W4 /WX /permissive- /EHsc /Gy /O2)
+    target_link_options(xar_ck3_12003_supply_loss_eligibility_test PRIVATE /OPT:REF)
+  endif()
+  add_test(NAME xar_ck3_12003_supply_loss_eligibility
+    COMMAND xar_ck3_12003_supply_loss_eligibility_test)
+endif()
+
 # Outcome invariants are synthetic DTO tests and never start or attach CK3.
 if(BUILD_TESTING AND XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1)
   add_executable(xar_ck3_ingame_decision_outcome_contract_v1_test

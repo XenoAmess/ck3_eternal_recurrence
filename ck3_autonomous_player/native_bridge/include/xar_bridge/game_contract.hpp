@@ -252,6 +252,10 @@ struct ArmyRegimentStrengthSnapshot {
   // Signed native type+0x2A0; legal zero differs from an unread null.
   std::optional<std::int32_t> siege_tier;
   std::string composition_unavailable_reason;
+  // Exact .3 2A956D0(ArRg), independent of type/tier and writer admission.
+  std::optional<bool> native_supply_loss_eligible;
+  std::string supply_loss_eligibility_unavailable_reason =
+      "supply_loss_eligibility_not_bound";
 
   friend bool operator==(const ArmyRegimentStrengthSnapshot &,
                          const ArmyRegimentStrengthSnapshot &) = default;

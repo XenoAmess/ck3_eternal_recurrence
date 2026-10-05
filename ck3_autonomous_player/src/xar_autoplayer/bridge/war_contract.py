@@ -1948,8 +1948,12 @@ def _normalize_regiment_strengths(
             "maa_type_status", "maa_type_key", "siege_tier_observable",
             "siege_tier", "composition_unavailable_reason",
         }
+        supply_eligibility_keys = {
+            "native_supply_loss_eligible", "supply_loss_eligibility_unavailable_reason",
+        }
         if not isinstance(row, dict) or set(row) not in (
-            core_keys, core_keys | composition_keys
+            core_keys, core_keys | composition_keys, core_keys | supply_eligibility_keys,
+            core_keys | composition_keys | supply_eligibility_keys,
         ):
             raise ValueError(f"native {item_name} schema is malformed")
         fields = {
@@ -1986,6 +1990,18 @@ def _normalize_regiment_strengths(
                 maa_type_status=status, maa_type_key=key,
                 siege_tier_observable=tier_observable, siege_tier=tier,
                 composition_unavailable_reason=reason,
+            )
+        if supply_eligibility_keys <= row.keys():
+            eligible = _optional_strict_bool(
+                row["native_supply_loss_eligible"], f"{item_name}.native_supply_loss_eligible"
+            )
+            reason = row["supply_loss_eligibility_unavailable_reason"]
+            if ((eligible is None and (not isinstance(reason, str) or not reason))
+                    or (eligible is not None and reason is not None)):
+                raise ValueError(f"native {item_name} supply eligibility reason disagrees with observation")
+            normalized.update(
+                native_supply_loss_eligible=eligible,
+                supply_loss_eligibility_unavailable_reason=reason,
             )
         result.append(normalized)
     if (sum(row["current_soldiers"] for row in result) != current_soldiers

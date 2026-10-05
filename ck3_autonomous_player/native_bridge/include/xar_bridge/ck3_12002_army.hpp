@@ -28,6 +28,7 @@ inline constexpr std::uintptr_t kProvinceSupplyLimitRva12003 = 0x247BEC0;
 inline constexpr std::uintptr_t kProvinceSupplyUsageRva12003 = 0x247C5A0;
 inline constexpr std::uintptr_t kArmyWholeLossBudgetRva12003 = 0x24DD580;
 inline constexpr std::uintptr_t kArmySupplyLossBudgetRva12003 = 0x24E32E0;
+inline constexpr std::uintptr_t kRegimentSupplyLossEligibleRva12003 = 0x2A956D0;
 inline constexpr std::uintptr_t kArmySiegeActiveRva12003 = 0x24E8560;
 inline constexpr std::uintptr_t kArmySiegeLossRateRva12003 = 0x5C69618;
 inline constexpr std::uintptr_t kArmyRaidLossRateRva12003 = 0x5C69098;
@@ -84,6 +85,8 @@ struct ArmyBindings {
   std::int32_t (*get_army_supply_loss_budget)(void *) = nullptr;
   // Siege predicate; raiding uses the native CArmy+1E8 association.
   bool (*is_army_siege_active)(void *) = nullptr;
+  // Exact .3 complete leaf: no calls or stores; actual per-ArRg AL predicate.
+  bool (*is_regiment_supply_loss_eligible)(void *) = nullptr;
   // Exact .3 merge destination operand: CArmy receiver, signed Q100000 out.
   // 24E0160 uses flags=0; 24E02A0 has no flags or breakdown argument.
   std::int64_t *(*get_merge_destination_weight_part_a)(void *, std::int64_t *,

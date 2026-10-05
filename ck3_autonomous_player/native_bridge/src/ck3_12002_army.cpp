@@ -494,6 +494,12 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
     regiment_strength.army_regiment_id = id;
     regiment_strength.current_soldiers = current_value;
     regiment_strength.maximum_soldiers = maximum_value;
+    if (bindings.is_regiment_supply_loss_eligible != nullptr) {
+      g_army_strength_query_diagnostic_v1.reader.store("regiment_supply_loss_eligibility");
+      regiment_strength.native_supply_loss_eligible =
+          bindings.is_regiment_supply_loss_eligible(regiment);
+      regiment_strength.supply_loss_eligibility_unavailable_reason.clear();
+    }
     if (bindings.regiment_composition_enabled) {
       ReadRegimentComposition(regiment, regiment_strength);
     } else {
