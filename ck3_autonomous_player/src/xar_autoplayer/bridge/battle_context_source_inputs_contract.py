@@ -631,7 +631,8 @@ def normalize_current_context_source_inputs(
                      "conference_24b1d00", "uncached_recipient_inputs", "provider_bucket_291c5b2",
                      "qualifier_28bc0d0", "list_predicate_2530dd0",
                      "gated_temporary_tail_291c7a7", "after_gated_tail_326a8e0_2920310",
-                     "provider192_and2920850", "following_2920b50", "following_2bca620"):
+                     "provider192_and2920850", "following_2920b50", "following_2bca620",
+                     "following_government_land_312a950"):
         if isinstance(value, dict) and optional in value:
             fields.add(optional)
     raw = _dict(value, field, fields)
@@ -784,6 +785,13 @@ def normalize_current_context_source_inputs(
         if following is not None and following["character_id"] != normalized["character_id"]:
             raise ValueError(field + ".following_2bca620 character disagrees with source actor")
         normalized["following_2bca620"] = following
+    if "following_government_land_312a950" in raw:
+        from .battle_person_following_312a950_contract import normalize_following_government_land_312a950
+        following = normalize_following_government_land_312a950(
+            raw["following_government_land_312a950"], field + ".following_government_land_312a950")
+        if following is not None and following["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".following_government_land_312a950 character disagrees with source actor")
+        normalized["following_government_land_312a950"] = following
     return normalized
 
 
