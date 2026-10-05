@@ -1,0 +1,262 @@
+{
+  "result": "ACTUAL_R9_SAVED_PREFIX_COMPARISON",
+  "prefix_only": true,
+  "first_capture": {
+    "start_utc": "2026-10-05T05:54:03.208173+00:00",
+    "end_utc": "2026-10-05T05:54:03.290549+00:00"
+  },
+  "second_capture": {
+    "start_utc": "2026-10-05T06:11:29.015660+00:00",
+    "end_utc": "2026-10-05T06:11:29.103357+00:00"
+  },
+  "parent_reported_callbacks": [
+    {
+      "request": "0006-join-send",
+      "utc_about": "2026-10-05T06:08:44Z",
+      "reported_behavior": "ordinary auto_accept"
+    },
+    {
+      "request": "0011-player-YES",
+      "utc_about": "2026-10-05T06:09:50Z",
+      "reported_event": "lyd.212"
+    },
+    {
+      "request": "0013-source-vote-YES",
+      "utc_about": "2026-10-05T06:10:10Z",
+      "reported_event": "lyd.210"
+    }
+  ],
+  "callback_execution_independently_inspected_by_this_log_reader": false,
+  "saved_vote_counts": "NOT_ASSESSED; separate reader owns immutable save readback",
+  "files": {
+    "code_revisions.log": {
+      "before_bytes": 0,
+      "after_bytes": 0,
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "custom_automated_stats.log": {
+      "before_bytes": 0,
+      "after_bytes": 0,
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "database_conflicts.log": {
+      "before_bytes": 0,
+      "after_bytes": 0,
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "debug.log": {
+      "before_bytes": 463082,
+      "after_bytes": 493098,
+      "before_sha256": "5723c2e5a5ee0dc285cebd46b337d014e23a939487c45e3738cb7274943f64ea",
+      "after_sha256": "4d9e9fdfa8782cb4a27ff1cc442eec47e42fe1ca62b69c5559467b5cb4d04105",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 30016,
+      "added_raw_lines": 280,
+      "added_raw_sha256": "f28a274d8a3dcc0b43c144398770143a29ce8610c9155fe6ea8b3ba3c433e425",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "dedicated_server.log": {
+      "before_bytes": 70,
+      "after_bytes": 70,
+      "before_sha256": "725a39a723e6441548ba09ae8026426045d8502f87ec52b9dee1feac0c5882ae",
+      "after_sha256": "725a39a723e6441548ba09ae8026426045d8502f87ec52b9dee1feac0c5882ae",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "error.log": {
+      "before_bytes": 138556,
+      "after_bytes": 138556,
+      "before_sha256": "0a9b5cfb2628d42b9b334e6adb0777640f6614f2f376ff66d64a0c6d6483fb50",
+      "after_sha256": "0a9b5cfb2628d42b9b334e6adb0777640f6614f2f376ff66d64a0c6d6483fb50",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "game.log": {
+      "before_bytes": 2127,
+      "after_bytes": 2127,
+      "before_sha256": "3b38de110c49dc91ce6477af5d67736b9e4f9ab8df63f69bbe73643445a7beae",
+      "after_sha256": "3b38de110c49dc91ce6477af5d67736b9e4f9ab8df63f69bbe73643445a7beae",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "gui_warnings.log": {
+      "before_bytes": 0,
+      "after_bytes": 0,
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "memory.log": {
+      "before_bytes": 0,
+      "after_bytes": 0,
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "message.log": {
+      "before_bytes": 0,
+      "after_bytes": 0,
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "multiplayer.log": {
+      "before_bytes": 0,
+      "after_bytes": 0,
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "pdxsdk.log": {
+      "before_bytes": 0,
+      "after_bytes": 0,
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "profile.log": {
+      "before_bytes": 0,
+      "after_bytes": 0,
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "setup.log": {
+      "before_bytes": 36864,
+      "after_bytes": 36864,
+      "before_sha256": "9718dc19bd788c139c9166a603a37b45b3a1dfb047cd51ed560cc13e25027be1",
+      "after_sha256": "9718dc19bd788c139c9166a603a37b45b3a1dfb047cd51ed560cc13e25027be1",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": false,
+      "after_final_line_complete": false
+    },
+    "system.log": {
+      "before_bytes": 0,
+      "after_bytes": 0,
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    },
+    "text.log": {
+      "before_bytes": 0,
+      "after_bytes": 0,
+      "before_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "after_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "saved_prefix_byte_identical": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0,
+      "added_raw_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "before_final_line_complete": true,
+      "after_final_line_complete": true
+    }
+  },
+  "added_raw_lines_reviewed": 280,
+  "new_relevant_lines": [],
+  "new_error_log_bytes": 0,
+  "new_error_log_raw_lines": 0,
+  "new_error_e_headers": 0,
+  "second_prefix_fixture_unused_e": 578,
+  "second_prefix_all_e": 578,
+  "second_prefix_current_c2_product_e": 0,
+  "current_c2_product_errors": [],
+  "second_prefix_source_signed_or_scratch_error_groups": 0,
+  "error_prefix": {
+    "bytes": 138556,
+    "sha256": "0a9b5cfb2628d42b9b334e6adb0777640f6614f2f376ff66d64a0c6d6483fb50"
+  },
+  "evidence": {
+    "first_report": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\REPORT.json",
+      "bytes": 32249,
+      "sha256": "49069642ebcac38982927541dbf4a9020ba8558c561dac2a23dd4209c7117585"
+    },
+    "second_report": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-callback-prefix-002\\REPORT.json",
+      "bytes": 32410,
+      "sha256": "497b0b69aec65b71e388cde2b412d4983bdb838861e045a36904b68de74108f4"
+    },
+    "second_classification": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-callback-prefix-002\\CLASSIFICATION.json",
+      "bytes": 379187,
+      "sha256": "11f055a2e380ebb2469bab10fd5f2c77de5e3d7a5635dc976b1b7ca25fbeb482"
+    },
+    "raw_line_ledger": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\compare-first-to-after-callback-001\\ADDED-RAW-LINES.jsonl",
+      "bytes": 112056,
+      "sha256": "b786ca83a99be242b072fbb9fb5b7920b5f9826ddb7536c4824d663dd3be6f35"
+    }
+  },
+  "boundary": "Exact two saved prefix intervals only. No final-whole-log, future-callback, gameplay, native UI or vote correctness verdict. No live reads in comparison; no automatic polling."
+}

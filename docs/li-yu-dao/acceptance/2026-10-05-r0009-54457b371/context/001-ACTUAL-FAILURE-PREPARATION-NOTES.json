@@ -1,0 +1,645 @@
+{
+  "schema": "lyd.r9.failure-preparation-context.v1",
+  "created_utc": "2026-10-05T07:10:05.035028+00:00",
+  "status": "PREPARATION_ONLY_NO_TERMINAL_OR_WHOLE_LOG_CLAIM",
+  "source_revision": "54457b371e947edb86903c2ebd578034f02695db",
+  "run": "R0009",
+  "root_reported_game_state_at_handover": "RUNNING",
+  "live_state_queried_by_note_writer": false,
+  "lifecycle": {
+    "actual_closure_not_supplied_to_this_preparation": true,
+    "closed_credit": false,
+    "normal_exit_credit": false,
+    "orderly_sdk_close_credit": false,
+    "lease_release_credit": false,
+    "source_freeze_release_credit": false
+  },
+  "diagnosis": {
+    "report": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-mcp-timeout-diagnosis-20261005-001\\REPORT.json",
+      "bytes": 36165,
+      "sha256": "5afcbc246f008b35a53d06e8f933a6406e0503125c216d783201e7654e4870bc"
+    },
+    "manifest": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-mcp-timeout-diagnosis-20261005-001\\ARTIFACT-MANIFEST.json",
+      "bytes": 23133,
+      "sha256": "493edde57ff0bdac30b04d94539d69c571e1f2d275dca8fb0cba4072278c6d82"
+    },
+    "manifest_files": 114,
+    "manifest_bytes": 592864680,
+    "raw_artifacts_verified_by_note_writer": "Manifest hash verified; raw per-file verification and lossless projection deferred to actual seal",
+    "diagnosis_status": "READ_ONLY_DIAGNOSIS_COMPLETE; live mutation and recovery not performed",
+    "confirmed_payload_growth_and_text_structured_duplication": true,
+    "precise_contribution_to_60s_timeout_measured": false,
+    "diagnosis_boundaries": [
+      "ERROR_NO_RETRY for 0053,0056,0057,0058 remains authoritative SDK outcome; no SDK result is manufactured or credited.",
+      "Native receipts contain independently verified postconditions and actual frames; raw ACK-only fields are distinct and are not business acceptance.",
+      "recorded_at_utc is generated before receipt JSON serialization, so it timestamps reached postcondition code and does not timestamp final file-write or SDK-return completion.",
+      "server.stderr snapshots are empty; root stdout contains only consumer summaries. No saved raw stdio frame or per-chunk timing trace was found in these captured files.",
+      "Recursive payload growth and text/structured duplication are proven. Their exact share of each 60-second timeout is not measured; client repeated whole-buffer copy/scan is a source-grounded candidate.",
+      "Mailbox/observer facts describe the stored independent native snapshot; they are not a current live observation beyond that receipt.",
+      "No claim that DETACH business acceptance is complete is made. The new saved checkpoint still requires the independent parser."
+    ]
+  },
+  "four_failed_sdk_consumer_results": [
+    {
+      "binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0053-0053-detach-final-review.response.json",
+        "bytes": 535,
+        "sha256": "c1b800a79a0d4dd1f5cc6da20bd396d83fae6ab28d99e734f95d1bec424e0641"
+      },
+      "actual_consumer_response": {
+        "schema": "ck3.lyd.mcp-dispatch.v1",
+        "sequence": 53,
+        "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0053-detach-final-review.request.json",
+        "request_sha256": "69c070c92ced1f0b23d2754ae3dff0f54e7ce996e0f08cbb48096c4fe552a6c7",
+        "started_at_utc": "2026-10-05T06:34:31.734614+00:00",
+        "request_id": "0053-detach-final-review",
+        "status": "ERROR_NO_RETRY",
+        "reason": "MCPError: Request 'tools/call' timed out",
+        "finished_at_utc": "2026-10-05T06:35:32.032877+00:00"
+      },
+      "sdk_file_present": false,
+      "sdk_success_credit": false,
+      "business_credit": false
+    },
+    {
+      "binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0056-0056-detach-commit.response.json",
+        "bytes": 523,
+        "sha256": "cff35ccdd3ab2d99de488b9607c09b3e82d7c98056d200c55c4e6a1673a6dc35"
+      },
+      "actual_consumer_response": {
+        "schema": "ck3.lyd.mcp-dispatch.v1",
+        "sequence": 56,
+        "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0056-detach-commit.request.json",
+        "request_sha256": "06288efb2bb8dbcb83c172e9ffde13d35019801741283c462afabfa3b3a7a6a0",
+        "started_at_utc": "2026-10-05T06:39:16.989024+00:00",
+        "request_id": "0056-detach-commit",
+        "status": "ERROR_NO_RETRY",
+        "reason": "MCPError: Request 'tools/call' timed out",
+        "finished_at_utc": "2026-10-05T06:40:18.791638+00:00"
+      },
+      "sdk_file_present": false,
+      "sdk_success_credit": false,
+      "business_credit": false
+    },
+    {
+      "binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0057-0057-post-detach-commit-observe.response.json",
+        "bytes": 549,
+        "sha256": "c9d15c517adf31ce6d9bce15fcb1f7127a29edbe7237cc0263818629b0d28c82"
+      },
+      "actual_consumer_response": {
+        "schema": "ck3.lyd.mcp-dispatch.v1",
+        "sequence": 57,
+        "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0057-post-detach-commit-observe.request.json",
+        "request_sha256": "db0576f883f609ae2aecaa8d8a0c2e150547f22df11f731849c9116bfe42a943",
+        "started_at_utc": "2026-10-05T06:40:38.958865+00:00",
+        "request_id": "0057-post-detach-commit-observe",
+        "status": "ERROR_NO_RETRY",
+        "reason": "MCPError: Request 'tools/call' timed out",
+        "finished_at_utc": "2026-10-05T06:41:40.082579+00:00"
+      },
+      "sdk_file_present": false,
+      "sdk_success_credit": false,
+      "business_credit": false
+    },
+    {
+      "binding": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0058-0058-post-detach-save.response.json",
+        "bytes": 529,
+        "sha256": "7f81dd2d6412e4083f16676dfce5376bdac22f36570debc446b5bd938cc32117"
+      },
+      "actual_consumer_response": {
+        "schema": "ck3.lyd.mcp-dispatch.v1",
+        "sequence": 58,
+        "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0058-post-detach-save.request.json",
+        "request_sha256": "c428d5a27180c8d50ede6032f62c8cd96df9c899ed045ea0e790b2639db0af4f",
+        "started_at_utc": "2026-10-05T06:48:20.378044+00:00",
+        "request_id": "0058-post-detach-save",
+        "status": "ERROR_NO_RETRY",
+        "reason": "MCPError: Request 'tools/call' timed out",
+        "finished_at_utc": "2026-10-05T06:49:20.683596+00:00"
+      },
+      "sdk_file_present": false,
+      "sdk_success_credit": false,
+      "business_credit": false
+    }
+  ],
+  "no_retry": {
+    "source": "ROOT explicit handover",
+    "failed_requests": [
+      "0053",
+      "0056",
+      "0057",
+      "0058"
+    ],
+    "resent_by_root": false
+  },
+  "actual_native_postconditions": {
+    "0053_native_receipt": {
+      "path": "snapshot-002\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0052-decision-confirm_outcome.json",
+      "bytes": 51460345,
+      "sha256": "6dcdff1f6d792625457d27c0a67b1fda149cf4a18ecac8bd676da60ad6b5cb49",
+      "status": "native_gameplay_postcondition_verified",
+      "recorded_at_utc": "2026-10-05T06:34:40.954949+00:00",
+      "top_field_compact_bytes": {
+        "schema": 31,
+        "session_id": 34,
+        "profile_sha256": 66,
+        "pipe_name": 59,
+        "recorded_at_utc": 34,
+        "status": 40,
+        "result": 4717597,
+        "snapshot_before": 4700745,
+        "snapshot_after": 9418842,
+        "observation_after": 1553,
+        "uses_ocr": 5,
+        "uses_desktop_input": 5,
+        "receipt_path": 146
+      },
+      "nested_native_command_history_occurrences": 128,
+      "max_history_nesting_depth": 25,
+      "nested_history_top_paths": [
+        {
+          "path": "/result/snapshot_after/native_command_history",
+          "length": 42,
+          "depth": 2
+        },
+        {
+          "path": "/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 6
+        },
+        {
+          "path": "/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history",
+          "length": 16,
+          "depth": 6
+        },
+        {
+          "path": "/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 10
+        },
+        {
+          "path": "/result/snapshot_after/native_command_history/23/result/snapshot_after/native_command_history",
+          "length": 23,
+          "depth": 6
+        },
+        {
+          "path": "/result/snapshot_after/native_command_history/23/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 10
+        },
+        {
+          "path": "/result/snapshot_after/native_command_history/23/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history",
+          "length": 16,
+          "depth": 10
+        },
+        {
+          "path": "/result/snapshot_after/native_command_history/23/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 14
+        },
+        {
+          "path": "/result/snapshot_after/native_command_history/28/result/snapshot_after/native_command_history",
+          "length": 28,
+          "depth": 6
+        },
+        {
+          "path": "/result/snapshot_after/native_command_history/28/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 10
+        },
+        {
+          "path": "/result/snapshot_after/native_command_history/28/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history",
+          "length": 16,
+          "depth": 10
+        },
+        {
+          "path": "/result/snapshot_after/native_command_history/28/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 14
+        }
+      ]
+    },
+    "0056_native_receipt": {
+      "path": "snapshot-002\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0055-event-select.json",
+      "bytes": 52845012,
+      "sha256": "2ab638f3343789fb79975b66733f29258221b7ffde932003c3cc9b8bf9781aa4",
+      "status": "native_gameplay_postcondition_verified",
+      "recorded_at_utc": "2026-10-05T06:39:28.452536+00:00",
+      "top_field_compact_bytes": {
+        "schema": 31,
+        "session_id": 34,
+        "profile_sha256": 66,
+        "pipe_name": 59,
+        "recorded_at_utc": 34,
+        "status": 40,
+        "result": 1716,
+        "snapshot_before": 9427801,
+        "snapshot_after": 9429264,
+        "observation_after": 1553,
+        "uses_ocr": 5,
+        "uses_desktop_input": 5,
+        "receipt_path": 134
+      },
+      "nested_native_command_history_occurrences": 128,
+      "max_history_nesting_depth": 25,
+      "nested_history_top_paths": [
+        {
+          "path": "/snapshot_before/native_command_history",
+          "length": 44,
+          "depth": 1
+        },
+        {
+          "path": "/snapshot_before/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 5
+        },
+        {
+          "path": "/snapshot_before/native_command_history/16/result/snapshot_after/native_command_history",
+          "length": 16,
+          "depth": 5
+        },
+        {
+          "path": "/snapshot_before/native_command_history/16/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 9
+        },
+        {
+          "path": "/snapshot_before/native_command_history/23/result/snapshot_after/native_command_history",
+          "length": 23,
+          "depth": 5
+        },
+        {
+          "path": "/snapshot_before/native_command_history/23/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 9
+        },
+        {
+          "path": "/snapshot_before/native_command_history/23/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history",
+          "length": 16,
+          "depth": 9
+        },
+        {
+          "path": "/snapshot_before/native_command_history/23/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 13
+        },
+        {
+          "path": "/snapshot_before/native_command_history/28/result/snapshot_after/native_command_history",
+          "length": 28,
+          "depth": 5
+        },
+        {
+          "path": "/snapshot_before/native_command_history/28/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 9
+        },
+        {
+          "path": "/snapshot_before/native_command_history/28/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history",
+          "length": 16,
+          "depth": 9
+        },
+        {
+          "path": "/snapshot_before/native_command_history/28/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 13
+        }
+      ]
+    },
+    "0057_independent_snapshot": {
+      "path": "snapshot-002\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0056-snapshot.json",
+      "bytes": 26423676,
+      "sha256": "21c0d7698474f02408d8c1bcda8cc4ece34a539f693d695cf37f7c9fb1fa13d1",
+      "status": "native_snapshot_verified",
+      "recorded_at_utc": "2026-10-05T06:40:43.285732+00:00",
+      "top_field_compact_bytes": {
+        "schema": 31,
+        "session_id": 34,
+        "profile_sha256": 66,
+        "pipe_name": 59,
+        "recorded_at_utc": 34,
+        "status": 26,
+        "snapshot": 9429264,
+        "observation_after": 1553,
+        "receipt_path": 130
+      },
+      "nested_native_command_history_occurrences": 64,
+      "max_history_nesting_depth": 25,
+      "nested_history_top_paths": [
+        {
+          "path": "/snapshot/native_command_history",
+          "length": 45,
+          "depth": 1
+        },
+        {
+          "path": "/snapshot/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 5
+        },
+        {
+          "path": "/snapshot/native_command_history/16/result/snapshot_after/native_command_history",
+          "length": 16,
+          "depth": 5
+        },
+        {
+          "path": "/snapshot/native_command_history/16/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 9
+        },
+        {
+          "path": "/snapshot/native_command_history/23/result/snapshot_after/native_command_history",
+          "length": 23,
+          "depth": 5
+        },
+        {
+          "path": "/snapshot/native_command_history/23/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 9
+        },
+        {
+          "path": "/snapshot/native_command_history/23/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history",
+          "length": 16,
+          "depth": 9
+        },
+        {
+          "path": "/snapshot/native_command_history/23/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 13
+        },
+        {
+          "path": "/snapshot/native_command_history/28/result/snapshot_after/native_command_history",
+          "length": 28,
+          "depth": 5
+        },
+        {
+          "path": "/snapshot/native_command_history/28/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 9
+        },
+        {
+          "path": "/snapshot/native_command_history/28/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history",
+          "length": 16,
+          "depth": 9
+        },
+        {
+          "path": "/snapshot/native_command_history/28/result/snapshot_after/native_command_history/16/result/snapshot_after/native_command_history/11/result/snapshot_after/native_command_history",
+          "length": 11,
+          "depth": 13
+        }
+      ]
+    },
+    "0058_new_save": {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0057-checkpoint.json",
+      "sha256": "4d367e72b16827621d577567c94eff1d98ccd2a85766f03b2e788387ab6c4cd5",
+      "bytes": 52847501,
+      "status": "native_gameplay_postcondition_verified",
+      "recorded_at_utc": "2026-10-05T06:48:34.103027+00:00",
+      "checkpoint": {
+        "status": "saved",
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\save games\\xar_checkpoint.ck3",
+        "name": "xar_checkpoint.ck3",
+        "size": 91530739,
+        "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539",
+        "date_raw": 53144712,
+        "overwrite_confirmed": true,
+        "strategy": "native-autosave-command-v1",
+        "episode_projection": "native_campaign",
+        "succession_lifecycle": null,
+        "history_index": 46,
+        "episode_character_id": null,
+        "episode_run_id": null
+      },
+      "submission": {
+        "sequence": 9,
+        "requested_save_name": "xar_checkpoint",
+        "date_raw": 53144712
+      },
+      "frame": {
+        "revision": 30,
+        "native_revision": 29,
+        "date_raw": 53144712,
+        "paused": true,
+        "active_event": {
+          "source": "native",
+          "instance_id": 42,
+          "option_count": 1,
+          "title": null,
+          "options": [
+            {
+              "index": 0,
+              "option_number": 1,
+              "label": null,
+              "enabled": true
+            }
+          ]
+        },
+        "played_character_gold": {
+          "raw": 154300000,
+          "scale": 100000
+        },
+        "played_character_prestige": {
+          "raw": 220000000,
+          "scale": 100000
+        },
+        "played_character_piety": {
+          "raw": 565000000,
+          "scale": 100000
+        }
+      }
+    },
+    "snapshot_mailbox": {
+      "published_sequence": 70,
+      "completed_sequence": 70,
+      "executor_started_sequence": 70,
+      "executed_requests": 70,
+      "owner_tid": 14852,
+      "current_tid": 14852,
+      "failure": 0,
+      "ready": true,
+      "stop": false
+    },
+    "snapshot_observer": {
+      "started_ms": 652928671,
+      "completed_ms": 652928671,
+      "last_read_ms": 0,
+      "read_in_progress": false,
+      "last_read_available": true,
+      "snapshot_cached": true
+    }
+  },
+  "latest_saved_checkpoint": {
+    "utc": "2026-10-05T06:52:50.544556+00:00",
+    "request_id": "0058-post-detach-save",
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\save games\\xar_checkpoint.ck3",
+    "preserved": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\checkpoint.ck3",
+    "bytes": 91530739,
+    "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539",
+    "native_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0057-checkpoint.json",
+    "native_receipt_sha256": "4d367e72b16827621d577567c94eff1d98ccd2a85766f03b2e788387ab6c4cd5",
+    "native_receipt_status": "native_gameplay_postcondition_verified",
+    "recorded_at_utc": "2026-10-05T06:48:34.103027+00:00",
+    "actual_actor_id": 31254,
+    "revision": 30,
+    "native_revision": 29,
+    "date_raw": 53144712,
+    "paused": true,
+    "sdk_status": "ERROR_NO_RETRY",
+    "sdk_result": null,
+    "sdk_success_credit": false,
+    "business_acceptance_credit": false,
+    "scope": "Exact saved bytes match the separately preserved actual native save receipt; independent save parser still required.",
+    "original_save_copied": false,
+    "actual_saved_and_native_bytes_hashed_by_note_writer": true
+  },
+  "independent_detach_readback": "PENDING_AT_HANDOVER; future actual native branch report must be included after it exists; no invented SDK envelope",
+  "first_join": {
+    "actual_independent_readback": "observed-0028/REPORT.json",
+    "rite_169_parent_before_after": [
+      105,
+      104
+    ],
+    "actor_31254_and_npc_65865_after": {
+      "faith": 104,
+      "rite": 169
+    },
+    "recipient_65866_retained": {
+      "faith": 104,
+      "rite": 159
+    },
+    "source_faith_105_retained": true,
+    "dynamically_read_backup_main_rite": 186,
+    "joins_before_after": [
+      0,
+      1
+    ],
+    "detaches_retained": 1,
+    "serialnonce_after": 5,
+    "active_and_owner_released": true,
+    "wallet_after": {
+      "gold": 1743,
+      "piety": 6650,
+      "prestige": 2200
+    },
+    "actual_charge": {
+      "gold": 300,
+      "piety": 1500
+    },
+    "transition_cooldown": 1825,
+    "selected_protections": "Seven political title full ASTs and three selected character family/court fields equal, within named report scope only",
+    "facts_source": "ROOT handover, separately SHA-verified named actual independent reports; no new gameplay interpretation by this note writer"
+  },
+  "fixture_reset": {
+    "request": "0033",
+    "preserved_checkpoint": "0036",
+    "artificial_cooldown_shortening": true,
+    "natural_five_year_credit": false
+  },
+  "join2": "NOT_RUN",
+  "fullcycle": "NOT_RUN",
+  "root_business_decision": "Pause further R9 business; normal exit then recursive-history/C2-preview fix and R10 cold case",
+  "third_log_prefix": {
+    "product_E": 99422,
+    "fixture_E": 578,
+    "total_E": 100000,
+    "possible_cap": true,
+    "cap_independently_verified": false,
+    "no_later_growth_proves_no_errors": false,
+    "callback_execution_independently_inspected": false,
+    "votes": "NOT_ASSESSED",
+    "final_whole_log_credit": false,
+    "failure_prefix_003_kept": true,
+    "recovery_004_and_compare_preserved": true,
+    "count_source": "ROOT explicit handover and previously parsed immutable comparison; report bytes hashed without reparsing its 98MB line ledger"
+  },
+  "future_seal": {
+    "writer": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-failure-report-preparation-20261005-001\\prepare_r9_report_v2.py",
+    "root_only_importer": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-failure-report-preparation-20261005-001\\import_r9_report.py",
+    "target_relative": "docs/li-yu-dao/acceptance/2026-10-05-r0009-54457b371",
+    "requires_root_actual_closure": true,
+    "closure_required_true_fields": [
+      "process_absence",
+      "lease_released",
+      "source_freeze_released"
+    ],
+    "actual_terminal_RED_or_lost_admissible": true,
+    "overall_result_inferred_by_writer": false,
+    "lossless_native_logs_and_diagnosis_preservation": true,
+    "raw_ck3_save_copy": false
+  },
+  "bindings": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-mcp-timeout-diagnosis-20261005-001\\REPORT.json",
+      "bytes": 36165,
+      "sha256": "5afcbc246f008b35a53d06e8f933a6406e0503125c216d783201e7654e4870bc"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-mcp-timeout-diagnosis-20261005-001\\ARTIFACT-MANIFEST.json",
+      "bytes": 23133,
+      "sha256": "493edde57ff0bdac30b04d94539d69c571e1f2d275dca8fb0cba4072278c6d82"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0028\\REPORT.json",
+      "bytes": 473000,
+      "sha256": "2b20539bc6f95463b098690e1e80dc86deffb66c22442c3696111c4fcf83d149"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0028\\INDEX.json",
+      "bytes": 366,
+      "sha256": "ea5de3ef962b8feb61e98f1c0cc7f78c10cb885fcbd9932e807d21e604560645"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0028\\REPORT.json",
+      "bytes": 7098,
+      "sha256": "e3803acb8b96cba3c3d84770751ca40ac810df8d3e5ca501a5246c32fa96312b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0028\\INDEX.json",
+      "bytes": 220,
+      "sha256": "a66846d168295ea2292362f7cb016ebc25876d441013bb0059480655975d164c"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\INDEX.json",
+      "bytes": 2510,
+      "sha256": "366ff5eda57f62dad3a00dd2ce3ca9b8e2c2fc128ffaef61f01e8769b9cbfb09"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\compare-second-to-recovered-third-001\\REPORT.json",
+      "bytes": 98815641,
+      "sha256": "4a1490858729ff2ad8dfe8971f427aab2808643074d63464833bbe6a90ea4dd2"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-report-preparation-20261005-001\\TOOLS-INDEX.json",
+      "bytes": 2494,
+      "sha256": "c016ff2db589463216bf820312f58d14b4d3db90bab02184d3bb06a994cc124d"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\checkpoint.ck3",
+      "bytes": 91530739,
+      "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0057-checkpoint.json",
+      "bytes": 52847501,
+      "sha256": "4d367e72b16827621d577567c94eff1d98ccd2a85766f03b2e788387ab6c4cd5"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\PRESERVED.json",
+      "bytes": 1177,
+      "sha256": "d27ad9fb5c0b5ae6ff27cd5e4d7cec6420c7971ef4c81919c76efcfc84fa7c03"
+    }
+  ],
+  "side_effects": {
+    "tracked": 0,
+    "git": 0,
+    "game": 0,
+    "native": 0,
+    "screen": 0,
+    "ci": 0,
+    "spawn": 0,
+    "raw_save_copy": 0
+  }
+}

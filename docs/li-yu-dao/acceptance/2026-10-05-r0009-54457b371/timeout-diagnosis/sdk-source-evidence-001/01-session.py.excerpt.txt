@@ -1,0 +1,20 @@
+539:         timeout = (
+540:             request_read_timeout_seconds
+541:             if request_read_timeout_seconds is not None
+542:             else self._session_read_timeout_seconds
+543:         )
+544:         if timeout is not None:
+545:             opts["timeout"] = timeout
+546:         if progress_callback is not None:
+1050:                 params=types.CallToolRequestParams(
+1051:                     name=name,
+1052:                     arguments=arguments,
+1053:                     input_responses=input_responses,
+1054:                     request_state=request_state,
+1055:                     _meta=meta,
+1056:                 ),
+1057:             ),
+1058:             self._call_tool_adapter,
+1059:             request_read_timeout_seconds=read_timeout_seconds,
+1060:             progress_callback=progress_callback,
+1061:         )

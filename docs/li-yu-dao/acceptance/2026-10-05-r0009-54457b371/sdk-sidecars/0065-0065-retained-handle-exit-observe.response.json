@@ -1,0 +1,25 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 65,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0065-retained-handle-exit-observe.request.json",
+  "request_sha256": "88bf18ef6c3e36e398f41aba9e5a2949997bf6982fe632b1fced9c019d56dd76",
+  "started_at_utc": "2026-10-05T07:25:09.682510+00:00",
+  "request_id": "0065-retained-handle-exit-observe",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0065-0065-retained-handle-exit-observe.sdk-result.json",
+  "sdk_result_sha256": "003330b1e40e9e1a8fb910092b9c1bf0891f81b7f2ea68cf0514653b110d9333",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0064-normal-exit-observe.json",
+      "copy": "0065-0065-retained-handle-exit-observe.native-01.json",
+      "sha256": "5494e53e10583e926990993384fb7679054f235c38168c825c1587fce9b0ef9e"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-state\\native-session\\normal-exit-map-requests\\ee2a08d57933be0da3d0.observe-b7acf3f81cfc419c.json",
+      "status": "NOT_COPIED",
+      "reason": "outside native evidence directory or missing"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T07:25:09.839100+00:00"
+}

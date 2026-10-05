@@ -6497,7 +6497,10 @@ class NativeHeadlessGameplayDriver:
                         raise BridgeUnavailableError("decision_closed unexpectedly opened an event")
                     later = self.inspect_gui_window_tree_v1("decision_detail")
                     verified = actual_closed_decision_detail(later)
-                ending = self.take_snapshot()
+                # The outcome frame is stored in this command's result and
+                # verified claim. Keep all semantic/identity diagnostics, but
+                # do not copy prior commands back into the next history row.
+                ending = self.take_snapshot_without_native_command_history()
                 if (not outcome_frame_matches(starting, ending, binding)
                         or not _same_paused_native_frame(current, ending)
                         or current.get("revision") != ending.get("revision")

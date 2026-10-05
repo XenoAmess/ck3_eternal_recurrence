@@ -100,6 +100,7 @@ std::string_view NormalExitMapActionNameV1(NormalExitMapActionV1 action) noexcep
   case NormalExitMapActionV1::query_context: return "query_context";
   case NormalExitMapActionV1::prepare_confirmation: return "prepare_confirmation";
   case NormalExitMapActionV1::confirm_desktop: return "confirm_desktop";
+  case NormalExitMapActionV1::continue_preparation: return "continue_preparation";
   default: return {};
   }
 }
@@ -154,6 +155,7 @@ bool ParseNormalExitMapRequestV1(std::string_view json,
     if (action == "query_context") request.action = NormalExitMapActionV1::query_context;
     else if (action == "prepare_confirmation") request.action = NormalExitMapActionV1::prepare_confirmation;
     else if (action == "confirm_desktop") request.action = NormalExitMapActionV1::confirm_desktop;
+    else if (action == "continue_preparation") request.action = NormalExitMapActionV1::continue_preparation;
     else return reject("unsupported_exit_action_frontend_unavailable");
     if (request.action == NormalExitMapActionV1::query_context) {
       if (fields.size() != 12 || fields.contains("expected_exit_context_signature"))
@@ -169,6 +171,34 @@ bool ParseNormalExitMapRequestV1(std::string_view json,
     try { reason = "exit_request_parser_exception"; } catch (...) {}
     return false;
   }
+}
+
+std::array<bool, 3> ReadNormalExitMapStageConsumptionV1(
+    const NormalExitMapSessionV1 &session) noexcept {
+  std::array<bool, 3> consumed{};
+  for (std::size_t i = 0; i < consumed.size(); ++i)
+    consumed[i] = session.claimed[i].load(std::memory_order_acquire);
+  return consumed;
+}
+
+bool NormalExitMapStageConsumptionMatchesQueryV1(
+    const NormalExitMapSessionV1 &session) noexcept {
+  return ReadNormalExitMapStageConsumptionV1(session) == session.queried_stage_consumed;
+}
+
+bool NormalExitMapContinuePreparationAdmittedV1(
+    const std::array<bool, 3> &consumed,
+    const std::array<NormalExitMapTargetV1, 3> &targets,
+    bool confirmation_visible) noexcept {
+  if (consumed != std::array<bool, 3>{true, false, false} || confirmation_visible)
+    return false;
+  for (const auto &target : targets)
+    if (!target.read_complete) return false;
+  const auto &entry = targets[1];
+  return entry.root_exists && entry.root_visible && entry.target_exists &&
+      entry.target_visible && entry.target_enabled && entry.unique_target &&
+      entry.dispatch_admitted && entry.target_vtable_rva != 0 &&
+      !targets[2].root_visible;
 }
 
 std::string SerializeNormalExitMapObservationV1(const NormalExitMapObservationV1 &v) {
@@ -189,7 +219,12 @@ std::string SerializeNormalExitMapObservationV1(const NormalExitMapObservationV1
   // internal observation. Never serialize caller/fixture values as exit/save proof.
   flag("orderly_exit_verified",false); flag("autosave_verified",false);
   text("exit_context_signature",v.exit_context_signature); text("reason",v.reason);
-  json += ",\"targets\":[";
+  json += ",\"stage_consumed\":[";
+  for (std::size_t i = 0; i < v.stage_consumed.size(); ++i) {
+    if (i) json += ',';
+    json += v.stage_consumed[i] ? "true" : "false";
+  }
+  json += "],\"targets\":[";
   for (std::size_t i=0;i<v.targets.size();++i) {
     if(i) json+=','; json+='{';
     const auto &t=v.targets[i];

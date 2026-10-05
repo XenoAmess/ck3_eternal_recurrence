@@ -1,0 +1,16 @@
+{
+  "schema": "lyd.r9.os-process-census.v1",
+  "utc": "2026-10-05T07:51:27.484103+00:00",
+  "api": "CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS) + Process32FirstW/NextW",
+  "census_count": 187,
+  "ck3_processes": [],
+  "original_pid_matches": [],
+  "all_ck3_processes_absent": true,
+  "opened_individual_process_handles": 0,
+  "native_game_calls": 0,
+  "terminal_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0065-0065-retained-handle-exit-observe.sdk-result.json",
+    "bytes": 12645,
+    "sha256": "003330b1e40e9e1a8fb910092b9c1bf0891f81b7f2ea68cf0514653b110d9333"
+  }
+}

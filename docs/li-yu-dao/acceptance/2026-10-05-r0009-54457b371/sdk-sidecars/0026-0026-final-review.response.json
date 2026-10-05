@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 26,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0026-final-review.request.json",
+  "request_sha256": "6715cf834e5cf6f9bfabce00ac2927626677059c925992d37e6365fef21dedbc",
+  "started_at_utc": "2026-10-05T06:13:38.602990+00:00",
+  "request_id": "0026-final-review",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0026-0026-final-review.sdk-result.json",
+  "sdk_result_sha256": "f3a440b4a0fbc9d3292e19ef5316496fdc9b7c2d2ec64f88a886a4d180c996f3",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0025-event-query.json",
+      "copy": "0026-0026-final-review.native-01.json",
+      "sha256": "a4395d9a3ebb7e1bcda17cb1f51ad797bf14392abf2c6535bf07fcc5b7deaed7"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T06:13:40.267942+00:00"
+}

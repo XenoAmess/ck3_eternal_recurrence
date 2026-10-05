@@ -1,0 +1,13 @@
+{
+  "returncode": 3,
+  "stdout": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-001\\CAS-STDOUT.bin",
+    "bytes": 171,
+    "sha256": "f2af5c90ef00c7e811a3873bf48f3098eba716104bb732376e15db873588c8c3"
+  },
+  "stderr": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-001\\CAS-STDERR.bin",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  }
+}

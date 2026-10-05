@@ -1,0 +1,249 @@
+{
+  "schema": "lyd.r9.actual-facts-through-0058-native.v1",
+  "status": "ACTUAL_JOIN1_AND_DETACH_SAVED_AST_VERIFIED_FULL_CYCLE_INCOMPLETE",
+  "source_head": "54457b371e947edb86903c2ebd578034f02695db",
+  "native_profile_sha256": "862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5",
+  "actual_join1_verified": true,
+  "actual_detach_verified_by_preserved_save_AST": true,
+  "actual_join2_verified": null,
+  "full_cycle_credit": false,
+  "sdk_success_credit": false,
+  "sdk_status": "ERROR_NO_RETRY",
+  "native_save_status": "native_gameplay_postcondition_verified",
+  "native_ACK_business_credit": false,
+  "claim_release_called": false,
+  "game_called": false,
+  "reader_native_branch_is_explicit": true,
+  "actual_round": {
+    "serial": [
+      "6",
+      "6"
+    ],
+    "nonce": [
+      "6",
+      "6"
+    ],
+    "joins": [
+      "1",
+      "1"
+    ],
+    "detaches": [
+      "1",
+      "2"
+    ],
+    "fixture_resets": [
+      "2",
+      "2"
+    ]
+  },
+  "actual_fee_delta": {
+    "gold": "-200",
+    "piety": "-1000",
+    "prestige": "0"
+  },
+  "actual_wallet": {
+    "gold": "1543",
+    "piety": "5650",
+    "prestige": "2200"
+  },
+  "extra_graph": {
+    "moving_source_faith": "104",
+    "moving_new_faith": "106",
+    "actual_source_rite_counts": {
+      "before": 2,
+      "after": 1
+    },
+    "actual_new_faith_rite_count": 1,
+    "source_main": "159",
+    "old105_backup_main": {
+      "rite": "186",
+      "parent": "105"
+    },
+    "actual_selected_native_heads": {
+      "104": {
+        "raw_religious_head": "4294967295",
+        "head_title_present": false
+      },
+      "106": {
+        "raw_religious_head": "4294967295",
+        "head_title_present": false
+      }
+    }
+  },
+  "additional_checks": [
+    {
+      "name": "Only moving Rite changed parent",
+      "matches": true,
+      "actual": {
+        "169": [
+          "104",
+          "106"
+        ]
+      }
+    },
+    {
+      "name": "One new dynamic Faith with main169",
+      "matches": true,
+      "actual": {
+        "created": [
+          "106"
+        ],
+        "main": "169"
+      }
+    },
+    {
+      "name": "All existing Faith mains retained",
+      "matches": true,
+      "actual": {
+        "source104": "159",
+        "old105": "186"
+      }
+    },
+    {
+      "name": "Actual source NPC follows moving Rite into new Faith",
+      "matches": true,
+      "actual": {
+        "id": 65865,
+        "rite": "169",
+        "faith": "106"
+      }
+    },
+    {
+      "name": "Actual recipient remains alive receiving Faith/main",
+      "matches": true,
+      "actual": {
+        "id": 65866,
+        "rite": "159",
+        "faith": "104"
+      }
+    },
+    {
+      "name": "Positive source Faith tenets/doctrines retained",
+      "matches": true,
+      "actual": {
+        "positive_entry_count": 32
+      }
+    },
+    {
+      "name": "New Faith retains moving Rite individual tenets/doctrines",
+      "matches": true,
+      "actual": {
+        "positive_entry_count": 32,
+        "new_faith_tenets": [
+          "lyd_tenet_ancestral_reverence",
+          "lyd_tenet_investigate_principle",
+          "lyd_tenet_reverent_attention"
+        ],
+        "source_faith_tenets": [
+          "lyd_tenet_sage_transmission",
+          "lyd_tenet_textual_ritual",
+          "lyd_tenet_classical_synthesis"
+        ]
+      }
+    },
+    {
+      "name": "Actual Faith 104 head sentinel and title absence",
+      "matches": true,
+      "actual": {
+        "faith_exists": true,
+        "raw_religious_head": [
+          "4294967295"
+        ],
+        "religious_head_title_entries": [],
+        "interpretation": "Saved invalid character-ID sentinel; no head title record, never NULL equality"
+      }
+    },
+    {
+      "name": "Actual Faith 106 head sentinel and title absence",
+      "matches": true,
+      "actual": {
+        "faith_exists": true,
+        "raw_religious_head": [
+          "4294967295"
+        ],
+        "religious_head_title_entries": [],
+        "interpretation": "Saved invalid character-ID sentinel; no head title record, never NULL equality"
+      }
+    },
+    {
+      "name": "Seven real actor titles and actual named protection branches match",
+      "matches": true,
+      "actual": {
+        "selected_titles": 7,
+        "all_holders": 31254,
+        "NPC_family_data": "absent on both saves; no equality credit for missing family branches"
+      }
+    }
+  ],
+  "evidence": {
+    "core_readback": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0058-native-002\\REPORT.json",
+      "bytes": 419023,
+      "sha256": "5f0f56d153dc76b1843c529eeda5d6aa9d40f44dfdf2f5db7ca059b21f6955bc"
+    },
+    "core_index": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0058-native-002\\INDEX.json",
+      "bytes": 366,
+      "sha256": "5c213c5b5fc4a761613cc468d2a4141b7227872f64cfcebd403ab301c17aafd5"
+    },
+    "selected_protections": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0058-native-001\\REPORT.json",
+      "bytes": 7184,
+      "sha256": "20bf459fa57c40f12b7f6b37177d17bb5a43ea05e64a8a341a410d2970899576"
+    },
+    "selected_protections_index": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0058-native-001\\INDEX.json",
+      "bytes": 220,
+      "sha256": "bf275d1c56c4f1c3995ebc45b49fd2731acc1ab3aff2824898a2b52ecfac77b5"
+    },
+    "previous_facts": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\facts-through-0051-001\\FACTS.json",
+      "bytes": 9631,
+      "sha256": "5c9b8a9ec8eb5183cbf5243a635662a09831462d0f5fbaae1f35c378a7c45017"
+    },
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\checkpoint.ck3",
+      "bytes": 91530739,
+      "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539"
+    },
+    "native_save_receipt": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0057-checkpoint.json",
+      "bytes": 52847501,
+      "sha256": "4d367e72b16827621d577567c94eff1d98ccd2a85766f03b2e788387ab6c4cd5"
+    },
+    "sdk_error": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0058-0058-post-detach-save.response.json",
+      "bytes": 529,
+      "sha256": "7f81dd2d6412e4083f16676dfce5376bdac22f36570debc446b5bd938cc32117"
+    },
+    "root_preservation": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\PRESERVED.json",
+      "bytes": 1177,
+      "sha256": "d27ad9fb5c0b5ae6ff27cd5e4d7cec6420c7971ef4c81919c76efcfc84fa7c03"
+    },
+    "readonly_correction": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\READONLY-CORRECTION.json",
+      "bytes": 544,
+      "sha256": "e1e3afbcd008a8302d8d42664cad1f9aa6173c93bac04cdc3310522bdd1e2652"
+    },
+    "first_refusal": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0058-native-001\\FAILURE.json",
+      "bytes": 278,
+      "sha256": "3e37f29063e031995a55971abbc2fb7e2881e73844152401d39a7e27d63d25b6"
+    },
+    "metadata_tests": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-native-save-receipt-reader-20261005-001\\review-package-001\\METADATA-TESTS.json",
+      "bytes": 2559,
+      "sha256": "b50cf737860e1ae86cc49a9acadbb7c9921bfb34dacab30d4916a00f2a72b532"
+    }
+  },
+  "limits": [
+    "No second JOIN or host claim release performed.",
+    "SDK timeout retained; actual business comes from genuine preserved checkpoint AST.",
+    "Stress is absent in saved actor sourcefields and remains NULL.",
+    "Core legacy guard_fields NULL equality is excluded; positive top-level branches and seven actual title ASTs were read separately.",
+    "Only three exact characters/current actor domain titles; no entire-world character/title scan.",
+    "Prior R8-to-R9 title AST differences remain disclosed in baseline supplement; within-R9 protections match.",
+    "Initial readonly refusal was preserved; ROOT corrected only attribute32->33 with unchanged save bytes/SHA."
+  ]
+}

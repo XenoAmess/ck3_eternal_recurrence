@@ -1,0 +1,101 @@
+{
+  "schema": "lyd.r9.sealed-lossless-validation.v1",
+  "utc": "2026-10-05T08:00:17.810525+00:00",
+  "status": "PASS_ARTIFACT_INTEGRITY_ONLY",
+  "acceptance": "NOT_GREEN_FULL_CYCLE_INCOMPLETE_AND_FAILURES_RETAINED",
+  "sealed_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-sealed-report-20261005-001\\INDEX.json",
+    "bytes": 153547,
+    "sha256": "49801f3a0ae457a4b4db8dbdff105825bde5b60dabb265a015ba69182cad8657"
+  },
+  "sealed_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-sealed-report-20261005-001\\REPORT.json",
+    "bytes": 93382,
+    "sha256": "907e8c822062c19e696cbd5057e6e785a260147b222ba0f9c3e289fe3e487c67"
+  },
+  "import_plan": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-sealed-report-20261005-001.import-plan.json",
+    "bytes": 608,
+    "sha256": "dc33b7976a795b1b415de4a546fa698d919f0920647841b76cfc72c352e734d2"
+  },
+  "files": 794,
+  "package_bytes": 116969196,
+  "projection_rows": 784,
+  "original_projected_bytes": 2542101425,
+  "projected_bytes": 116209807,
+  "gzip_files": 172,
+  "every_projection_roundtrip_verified": true,
+  "all_original_hashes_reverified": true,
+  "raw_coverage": {
+    "timeout_diagnosis_114": {
+      "required_files": 114,
+      "all_lossless_projected": true
+    },
+    "all_native_receipts": {
+      "required_files": 65,
+      "all_lossless_projected": true
+    },
+    "all_prefix_and_final_whole": {
+      "required_files": 147,
+      "all_lossless_projected": true
+    },
+    "all_captured_log_observations": {
+      "required_files": 0,
+      "all_lossless_projected": true
+    },
+    "native_reader_failure_and_review": {
+      "required_files": 21,
+      "all_lossless_projected": true
+    },
+    "all_consumer_sidecars": {
+      "required_files": 193,
+      "all_lossless_projected": true
+    }
+  },
+  "largest_projected_files": [
+    {
+      "path": "prefix-monitor/compare-second-to-recovered-third-001/ADDED-RAW-LINES.jsonl.gz",
+      "bytes": 3531673,
+      "sha256": "a31fe07feeebcef566356769ea51b276c1cae6bb36b301222925f234e2177eea"
+    },
+    {
+      "path": "closure/bindings/052-0064-0064-exit-confirm.sdk-result.json.gz",
+      "bytes": 2663450,
+      "sha256": "22a57e226452ef97450a4e1e96612a0af610ce9d8fa7802769711378f507b39d"
+    },
+    {
+      "path": "sdk/0064-0064-exit-confirm.sdk-result.json.gz",
+      "bytes": 2663450,
+      "sha256": "22a57e226452ef97450a4e1e96612a0af610ce9d8fa7802769711378f507b39d"
+    },
+    {
+      "path": "closure/bindings/036-0060-0060-exit-prepare.sdk-result.json.gz",
+      "bytes": 2662853,
+      "sha256": "2f85e09a6f9db7be7da4a8befb0f0031d0db5ac42f6331241fbfa9fd2e46bcbd"
+    },
+    {
+      "path": "closure/bindings/041-0061-0061-post-exit-prepare-observe.sdk-result.json.gz",
+      "bytes": 2662687,
+      "sha256": "73fbc4a9c05801f0439c89e8497b9225b477314faaf5935ce7b383e376168f9a"
+    }
+  ],
+  "importer_dryrun_exit_code": 0,
+  "importer_dryrun": {
+    "schema": "lyd.r9.report-import-receipt.v1",
+    "utc": "2026-10-05T08:00:17.799391+00:00",
+    "source_revision": "54457b371e947edb86903c2ebd578034f02695db",
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-sealed-report-20261005-001",
+    "target": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-05-r0009-54457b371",
+    "files": 794,
+    "bytes": 116969196,
+    "plan_sha256": "dc33b7976a795b1b415de4a546fa698d919f0920647841b76cfc72c352e734d2",
+    "terminal_evidence_verified": true,
+    "overall_native_acceptance": "NOT_GREEN_FULL_CYCLE_INCOMPLETE_AND_FAILURES_RETAINED",
+    "execute_requested": false,
+    "game_native_git_ci_screen_calls": 0
+  },
+  "raw_ck3_save_copies": 0,
+  "main_tracked_writes": 0,
+  "git_game_native_ci_screen_spawn_operations": 0,
+  "old_frozen_toolkits_unchanged": true
+}

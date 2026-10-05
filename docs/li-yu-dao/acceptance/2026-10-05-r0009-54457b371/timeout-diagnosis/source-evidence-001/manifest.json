@@ -1,0 +1,71 @@
+[
+  {
+    "source": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_native_profile_mcp.py",
+    "copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-mcp-timeout-diagnosis-20261005-001\\source-evidence-001\\00-ck3_native_profile_mcp.py",
+    "sha256": "fe3728f1b97ed3485979ca3fdd32c62790290afd301187cc383de63470e8b7a5",
+    "ranges": [
+      [
+        1,
+        40
+      ],
+      [
+        150,
+        162
+      ],
+      [
+        526,
+        586
+      ],
+      [
+        730,
+        760
+      ]
+    ]
+  },
+  {
+    "source": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+    "copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-mcp-timeout-diagnosis-20261005-001\\source-evidence-001\\01-native_driver.py",
+    "sha256": "1d75b725fca0d048394c11ea89d13d496eb72645c93e4ae677c0daf2cba41e86",
+    "ranges": [
+      [
+        2622,
+        2653
+      ],
+      [
+        6345,
+        6357
+      ],
+      [
+        6430,
+        6460
+      ],
+      [
+        6480,
+        6530
+      ],
+      [
+        9625,
+        9683
+      ]
+    ]
+  },
+  {
+    "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r9-official-mcp-consumer21-20261005-001\\review-package-001\\persistent_native_mcp_queue_21.py",
+    "copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-mcp-timeout-diagnosis-20261005-001\\source-evidence-001\\02-persistent_native_mcp_queue_21.py",
+    "sha256": "cce433b6950f7821ebe334e986190710cb353d72bf0c12e71c49de2e052a36f8",
+    "ranges": [
+      [
+        1,
+        50
+      ],
+      [
+        174,
+        180
+      ],
+      [
+        194,
+        231
+      ]
+    ]
+  }
+]

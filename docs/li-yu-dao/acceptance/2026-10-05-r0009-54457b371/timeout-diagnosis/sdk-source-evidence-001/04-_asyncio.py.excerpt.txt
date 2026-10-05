@@ -1,0 +1,14 @@
+1140: @dataclass(eq=False)
+1141: class StreamReaderWrapper(abc.ByteReceiveStream):
+1142:     _stream: asyncio.StreamReader
+1143: 
+1144:     async def receive(self, max_bytes: int = 65536) -> bytes:
+1145:         if max_bytes < 1:
+1146:             raise ValueError("max_bytes must be a positive integer")
+1147: 
+1148:         data = await self._stream.read(max_bytes)
+1149:         if data:
+1150:             return data
+1151:         else:
+1152:             raise EndOfStream
+1153: 

@@ -1,0 +1,7 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": false,
+  "code": "CAS_CONFLICT",
+  "reason": "screen operation requires exact bus CLI SHA-256 pin",
+  "observed": null
+}

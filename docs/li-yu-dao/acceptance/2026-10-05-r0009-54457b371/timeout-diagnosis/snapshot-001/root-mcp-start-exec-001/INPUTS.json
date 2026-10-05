@@ -1,0 +1,20 @@
+{
+  "argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r9-official-mcp-consumer21-20261005-001\\review-package-001\\persistent_native_mcp_queue_21.py",
+    "serve",
+    "--profile",
+    "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/native-profile-with-exit-inventory.json",
+    "--queue",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001",
+    "--output",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001",
+    "--binding",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-mcp-binding-001\\ROOT-BINDING.json",
+    "--binding-sha256",
+    "4be080030b1f6c7ae069ebed33e7b1835ba68acda927416ae211dedb1ec1475f"
+  ]
+}

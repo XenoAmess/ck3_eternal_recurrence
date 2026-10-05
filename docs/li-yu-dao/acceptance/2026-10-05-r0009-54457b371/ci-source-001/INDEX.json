@@ -1,0 +1,27 @@
+{
+  "schema": "lyd.r9.ci-source.index.v1",
+  "status": "SOURCE_CI_ONLY",
+  "source_head": "54457b371e947edb86903c2ebd578034f02695db",
+  "files": [
+    {
+      "path": "raw/ci-evidence.tar.gz",
+      "bytes": 369577,
+      "sha256": "37841fb937dc91cb86cd46ececac8882c16491b7a1214f2152b61871de7e62d3"
+    },
+    {
+      "path": "RAW-MAPPINGS.json",
+      "bytes": 100750,
+      "sha256": "c078fb59ddac9be49bddf7a3fd42fa9bcdfa33e06563c4dc6cc697bdaec88b35"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 1271,
+      "sha256": "8173eddc8813cce6bce0d89d5cdbd85f1f3be2cbf51adf18e4b53bc5b258caa8"
+    },
+    {
+      "path": "STATUS.json",
+      "bytes": 2165,
+      "sha256": "f9a0d38fe0f143a9d764e2105e8f4486dffe31c78882916878581ea6112db275"
+    }
+  ]
+}

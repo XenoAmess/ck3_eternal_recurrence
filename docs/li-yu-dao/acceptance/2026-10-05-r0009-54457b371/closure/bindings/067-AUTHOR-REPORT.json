@@ -1,0 +1,27 @@
+{
+  "status": "EXPLICIT_NATIVE_RECEIPT_READER_AUTHORED",
+  "original_reader_sha256": "cfee520abacd426b7b73b1e91da3fa1abe2ad44d67d3e50af758a1dcdeb7b2e4",
+  "bindings_sha256": "3475ca7a09c1fcc6b33295ccee020a9773ec1d71a9b5bb6fd6e5e0cf41f11e73",
+  "identical_function_AST": [
+    "need",
+    "closed",
+    "sha",
+    "jload",
+    "bytesref",
+    "ref",
+    "emit",
+    "parse",
+    "scalar",
+    "section",
+    "asthash",
+    "compactvars",
+    "project",
+    "frame",
+    "counter",
+    "typed",
+    "details"
+  ],
+  "sdk_success_credit": false,
+  "actual_detach_business": "PENDING_ACTUAL_SAVE_PARSE",
+  "game_called": false
+}

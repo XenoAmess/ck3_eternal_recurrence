@@ -1,0 +1,26 @@
+{
+  "schema": "lyd.r9.sealed-validation-index.v1",
+  "files": [
+    {
+      "path": "IMPORTER-DRYRUN-ARGV.json",
+      "bytes": 447,
+      "sha256": "baf1572da8ff6306f13802662cd7210df80e1b2c928843bdad435a8e7d71a0e9"
+    },
+    {
+      "path": "importer-dryrun.stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "importer-dryrun.stdout.log",
+      "bytes": 689,
+      "sha256": "97bd974c864bf454391e5742036932f385a1626fd689f81460285e319759ac60"
+    },
+    {
+      "path": "VALIDATION.json",
+      "bytes": 3767,
+      "sha256": "2ed2458e07ec09021ce460f55487dad2c070c73e412ec7e6caf5e8f886ce4311"
+    }
+  ],
+  "self_boundary": "INDEX excludes itself"
+}

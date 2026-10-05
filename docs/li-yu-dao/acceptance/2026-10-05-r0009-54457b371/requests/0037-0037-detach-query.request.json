@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "0037-detach-query",
+  "operation": "call_tool",
+  "name": "ck3_query_profile_decision_item_v1",
+  "arguments": {
+    "expected_revision": 19,
+    "decision_key": "lyd_c2_propose_detach_decision"
+  }
+}

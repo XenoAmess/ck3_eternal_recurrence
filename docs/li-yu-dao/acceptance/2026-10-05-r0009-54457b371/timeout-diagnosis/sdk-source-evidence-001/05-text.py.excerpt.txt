@@ -1,0 +1,16 @@
+50: 
+51:     transport_stream: AnyByteReceiveStream
+52:     encoding: InitVar[str] = "utf-8"
+53:     errors: InitVar[str] = "strict"
+54:     _decoder: codecs.IncrementalDecoder = field(init=False)
+55: 
+56:     def __post_init__(self, encoding: str, errors: str) -> None:
+57:         decoder_class = codecs.getincrementaldecoder(encoding)
+58:         self._decoder = decoder_class(errors=errors)
+59: 
+60:     async def receive(self) -> str:
+61:         while True:
+62:             chunk = await self.transport_stream.receive()
+63:             decoded = self._decoder.decode(chunk)
+64:             if decoded:
+65:                 return decoded

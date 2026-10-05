@@ -1,0 +1,16 @@
+{
+  "utc": "2026-10-05T06:29:00.082606+00:00",
+  "request_id": "0046-detach-votes-save",
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\save games\\xar_checkpoint.ck3",
+  "preserved": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0046-detach-votes-save\\checkpoint.ck3",
+  "bytes": 91464505,
+  "sha256": "9a4d06456255dcd16e8bd20140de5b066c36a610dbd1d9bb977fc004232115bf",
+  "sdk_result": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0046-0046-detach-votes-save.sdk-result.json",
+  "sdk_result_sha256": "e9021170e5fd129c2f83df7a2bbbeed15b3a6d99b58f325982469fa1bdfe2719",
+  "actual_actor_id": 31254,
+  "revision": 24,
+  "date_raw": 53144712,
+  "paused": true,
+  "native_business_postcondition_credit": false,
+  "scope": "Exact saved bytes; independent parser readback required"
+}

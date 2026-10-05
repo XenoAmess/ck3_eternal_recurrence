@@ -1,0 +1,145 @@
+1: #!/usr/bin/env python3
+2: """Attach the existing CK3 bridge to one frozen, offline, live-run profile."""
+3: from __future__ import annotations
+4: 
+5: import argparse
+6: from datetime import datetime, timezone
+7: import json
+8: from pathlib import Path
+9: import re
+10: import subprocess
+11: import sys
+12: import threading
+13: import time
+14: import uuid
+15: from typing import Annotated, Literal
+16: from pydantic import Field
+17: 
+18: NormalExitRevisionV1 = Annotated[int, Field(strict=True, gt=0, lt=2**64)]
+19: NormalExitSignatureV1 = Annotated[str, Field(strict=True, min_length=64, max_length=64, pattern=r"^[0-9a-f]{64}$")]
+20: StressBaseAmountV1 = Annotated[int, Field(strict=True, ge=-300, le=300)]
+21: StressQueryRevisionV1 = Annotated[int, Field(strict=True, ge=0, lt=2**64)]
+22: OrdinaryInteractionKeyV1 = Annotated[str, Field(strict=True, min_length=1, max_length=128, pattern=r"^[A-Za-z0-9_]+$")]
+23: OrdinaryRecipientIdV1 = Annotated[int, Field(strict=True, ge=1, le=2**32 - 2)]
+24: 
+25: import desktop_semantic_action_mcp as desktop
+26: 
+27: ROOT = Path(__file__).resolve().parents[1]
+28: sys.path.insert(0, str(ROOT / "ck3_autonomous_player/src"))
+29: from xar_autoplayer.operator_mcp import _forbid_unknown_tool_arguments_v1
+30: 
+31: 
+32: def _load_profile_common(path: Path, extra_fields: set[str]) -> dict:
+33:     profile = desktop.exact_fields(json.loads(path.read_text(encoding="utf-8-sig")), {
+34:         "schema_version", "guard_profile", "guard_profile_sha256", "userdir",
+35:         "evidence_directory", "game_version",
+36:     } | extra_fields, "native profile")
+37:     if type(profile["schema_version"]) is not int or profile["schema_version"] != 1:
+38:         raise ValueError("native profile schema_version must be 1")
+39:     for name in ("guard_profile", "userdir", "evidence_directory"):
+40:         if not isinstance(profile[name], str) or not Path(profile[name]).is_absolute():
+150: 
+151:     def _receipt(self, operation: str, value: dict) -> dict:
+152:         self._sequence += 1
+153:         directory = Path(self.profile["evidence_directory"]) / self.session_id
+154:         directory.mkdir(parents=True, exist_ok=True)
+155:         path = directory / f"{self._sequence:04d}-{operation}.json"
+156:         result = {"schema": "ck3.native-profile-receipt.v1", "session_id": self.session_id,
+157:                   "profile_sha256": self.profile["profile_sha256"], "pipe_name": self.pipe_name,
+158:                   "recorded_at_utc": datetime.now(timezone.utc).isoformat(),
+159:                   **value, "receipt_path": str(path)}
+160:         path.write_text(json.dumps(result, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+161:         return result
+162: 
+526:     def decision_action(self, action: str, expected_revision: int, *, decision_key: str | None = None,
+527:                         expected_outcome: str | None = None,
+528:                         expected_event_definition_key: str | None = None) -> dict:
+529:         from xar_autoplayer.bridge.ingame_decision_item_contract import validate_decision_key
+530:         from xar_autoplayer.bridge.ingame_decision_outcome_contract import (
+531:             SCHEMA, validate_expected_outcome, actual_expected_event, actual_closed_decision_detail,
+532:         )
+533:         if action not in {"open", "select", "confirm_outcome"}:
+534:             raise ValueError("unsupported typed profile decision action")
+535:         if action != "open":
+536:             validate_decision_key(decision_key)
+537:         if action == "confirm_outcome":
+538:             validate_expected_outcome(expected_outcome, expected_event_definition_key)
+539:         def invoke(gameplay):
+540:             if action == "open":
+541:                 return gameplay.open_ingame_decisions_v1(expected_revision=expected_revision)
+542:             if action == "select":
+543:                 return gameplay.select_ingame_decision_item_v1(decision_key, expected_revision=expected_revision)
+544:             return gameplay.confirm_ingame_decision_outcome_v1(
+545:                 decision_key, expected_outcome, expected_event_definition_key=expected_event_definition_key,
+546:                 expected_revision=expected_revision)
+547:         def verify(result, before, after):
+548:             if (not isinstance(result, dict) or result.get("postcondition_verified") is not True
+549:                     or result.get("verification_pending") is not False):
+550:                 raise _PostconditionPending("profile decision dispatch lacks an independently observed UI outcome")
+551:             actor = before.get("played_character", {}).get("character_id")
+552:             if (type(actor) is not int or actor <= 0
+553:                     or before.get("played_character", {}).get("alive") is not True
+554:                     or after.get("paused") is not True or before.get("date_raw") != after.get("date_raw")
+555:                     or before.get("speed") != after.get("speed")
+556:                     or before.get("played_character", {}).get("character_id") != after.get("played_character", {}).get("character_id")):
+557:                 raise RuntimeError("profile decision outcome changed its actor/date/paused frame")
+558:             if action != "open" and result.get("decision_key") != decision_key:
+559:                 raise RuntimeError("profile decision outcome changed its actual definition")
+560:             if action == "confirm_outcome":
+561:                 expected_key = expected_event_definition_key if expected_outcome == "event_window" else ""
+562:                 if (result.get("schema") != SCHEMA or result.get("action") != "confirm_outcome"
+563:                         or result.get("expected_outcome") != expected_outcome
+564:                         or result.get("expected_event_definition_key") != expected_key
+565:                         or result.get("business_effects_verified") is not False
+566:                         or result.get("full_product_acceptance_credit") is not False
+567:                         or result.get("front_event_verified") is not False
+568:                         or result.get("event_option_selection_authorized") is not False):
+569:                     raise RuntimeError("profile generic Confirm returned a mismatched or overcredited outcome")
+570:                 proved = result.get("snapshot_after")
+571:                 if (not isinstance(proved, dict) or proved.get("active_event") != after.get("active_event")
+572:                         or proved.get("native_revision") != after.get("native_revision")
+573:                         or proved.get("revision") != after.get("revision")):
+574:                     raise RuntimeError("profile generic Confirm actual readback no longer matches the current event frame")
+575:                 binding = {"date_raw": before["date_raw"], "played_character_id": actor}
+576:                 observation = result.get("later_actual_observation")
+577:                 verified = (actual_expected_event(observation, after, binding, expected_key)
+578:                             if expected_outcome == "event_window" else
+579:                             after.get("active_event") is None and actual_closed_decision_detail(observation))
+580:                 if not verified:
+581:                     raise RuntimeError("profile generic Confirm lacks its actual declared outcome observation")
+582:         return self._ordinary_action("decision-" + action, expected_revision, invoke, verify, paused=True)
+583: 
+584:     def query_pending_interaction(self, pending_interaction_id: int, expected_revision: int) -> dict:
+585:         from xar_autoplayer.bridge.pending_character_interaction_context_contract import normalize_pending_interaction_id
+586:         pending_interaction_id = normalize_pending_interaction_id(pending_interaction_id)
+730:             lambda service: service.save_checkpoint(expected_revision=expected_revision), verify, paused=True)
+731: 
+732:     def close(self) -> None:
+733:         if self.driver is not None:
+734:             self.driver.close()
+735: 
+736: 
+737: class NativeClockProfileService(NativeProfileService):
+738:     def clock(self) -> dict:
+739:         with self._lock:
+740:             self.guard()
+741:             clock = self.backend.read_clock(self.profile)
+742:             after = self.guard()
+743:             return self._receipt("clock", {"status": "native_clock_verified", "clock": clock,
+744:                                             "observation_after": after,
+745:                                             "uses_ocr": False, "uses_desktop_input": False,
+746:                                             "uses_injection": False, "writes_process_memory": False})
+747: 
+748: 
+749: def create_clock_server(service: NativeClockProfileService):
+750:     from mcp.server import MCPServer
+751:     from mcp.types import ToolAnnotations
+752:     server = MCPServer("CK3 frozen native clock")
+753:     @server.tool(annotations=ToolAnnotations(readOnlyHint=True))
+754:     def ck3_read_profile_native_clock_v1() -> dict[str, object]:
+755:         return service.clock()
+756:     _forbid_unknown_tool_arguments_v1(server, "ck3_read_profile_native_clock_v1")
+757:     return server
+758: 
+759: 
+760: def create_server(service: NativeProfileService):

@@ -1,0 +1,252 @@
+{
+  "files": {
+    "code_revisions.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\code_revisions.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\code_revisions.log",
+        "bytes": 1387,
+        "sha256": "793ed8c02a388f50f91d79a24f566022cd250ca69804c0cb736e811e89d6969d"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 1387,
+      "added_raw_lines": 20
+    },
+    "custom_automated_stats.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\custom_automated_stats.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\custom_automated_stats.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0
+    },
+    "database_conflicts.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\database_conflicts.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\database_conflicts.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0
+    },
+    "debug.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\debug.log",
+        "bytes": 3693552,
+        "sha256": "17b243dafe146c1e2f7cf8e478e3b4fc420adc214a816ec4e62497b305443f34"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\debug.log",
+        "bytes": 3709393,
+        "sha256": "d80187b5563e75560ac9e4dca5aaaf4828108c8caade6ef346fcf8c1b81a2c1c"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 15841,
+      "added_raw_lines": 154
+    },
+    "dedicated_server.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\dedicated_server.log",
+        "bytes": 70,
+        "sha256": "725a39a723e6441548ba09ae8026426045d8502f87ec52b9dee1feac0c5882ae"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\dedicated_server.log",
+        "bytes": 70,
+        "sha256": "725a39a723e6441548ba09ae8026426045d8502f87ec52b9dee1feac0c5882ae"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0
+    },
+    "error.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\error.log",
+        "bytes": 30891598,
+        "sha256": "2603033cd62be7676a86213c9b27dd8bd357f18e71f2b5a9370bebacc4224158"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\error.log",
+        "bytes": 30891598,
+        "sha256": "2603033cd62be7676a86213c9b27dd8bd357f18e71f2b5a9370bebacc4224158"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0
+    },
+    "game.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\game.log",
+        "bytes": 3161169,
+        "sha256": "6b2d03e41200e7edf475cc4d18591e77dfee84d149fc1bd8bd97bcf254061f14"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\game.log",
+        "bytes": 3161169,
+        "sha256": "6b2d03e41200e7edf475cc4d18591e77dfee84d149fc1bd8bd97bcf254061f14"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0
+    },
+    "gui_warnings.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\gui_warnings.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\gui_warnings.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0
+    },
+    "memory.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\memory.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\memory.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0
+    },
+    "message.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\message.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\message.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0
+    },
+    "multiplayer.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\multiplayer.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\multiplayer.log",
+        "bytes": 4096,
+        "sha256": "ed4c630b8186002d550b6873d2b0291dc9acacc219dbe9e5dce3600066230cc4"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 4096,
+      "added_raw_lines": 51
+    },
+    "pdxsdk.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\pdxsdk.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\pdxsdk.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0
+    },
+    "profile.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\profile.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\profile.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0
+    },
+    "setup.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\setup.log",
+        "bytes": 36864,
+        "sha256": "9718dc19bd788c139c9166a603a37b45b3a1dfb047cd51ed560cc13e25027be1"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\setup.log",
+        "bytes": 37356,
+        "sha256": "24f420ec89833a11de9a146de5cde66a794d6edbaedb8d19b668b6f7d6f7e7bb"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 492,
+      "added_raw_lines": 7
+    },
+    "system.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\system.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\system.log",
+        "bytes": 926,
+        "sha256": "4ad7055f1569c29ba1c1d7ba9b67122129b8ce05635bc4a71f05d82f18ef3872"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 926,
+      "added_raw_lines": 15
+    },
+    "text.log": {
+      "previous": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-recovery-004\\raw-prefix\\text.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "current": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\text.log",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "previous_prefix_exact": true,
+      "added_bytes": 0,
+      "added_raw_lines": 0
+    }
+  },
+  "new_error_log_E_headers": 0,
+  "error_bytes_identical_to_recovered_prefix_004": true,
+  "prior_detailed_audit": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\third-prefix-critical-audit-001\\REPORT.json",
+    "bytes": 73051,
+    "sha256": "a20ad549fbe95ddf23faad4b26c5fd8112fd28c42602348a90facc7086c11913"
+  },
+  "prior_audit_reusable_only_for_exact_error_bytes": true
+}

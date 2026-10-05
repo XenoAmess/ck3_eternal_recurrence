@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 27,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0027-join-commit.request.json",
+  "request_sha256": "3233e5426bfd4601fd4763267a7f48868d657d4053ce4f9bc51da864a315ec47",
+  "started_at_utc": "2026-10-05T06:13:58.389149+00:00",
+  "request_id": "0027-join-commit",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0027-0027-join-commit.sdk-result.json",
+  "sdk_result_sha256": "30dc0979fe816900125239018b36fb982188b824ba51d3a90b4f8dbd91a02caf",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0026-event-select.json",
+      "copy": "0027-0027-join-commit.native-01.json",
+      "sha256": "1d15e2b8cf8f0afa5483f57c15d256a17aa11d283b9d60c1eadb659206ca1782"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T06:14:02.125048+00:00"
+}

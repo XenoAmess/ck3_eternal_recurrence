@@ -1,0 +1,59 @@
+{
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0057-checkpoint.json",
+  "sha256": "4d367e72b16827621d577567c94eff1d98ccd2a85766f03b2e788387ab6c4cd5",
+  "bytes": 52847501,
+  "status": "native_gameplay_postcondition_verified",
+  "recorded_at_utc": "2026-10-05T06:48:34.103027+00:00",
+  "checkpoint": {
+    "status": "saved",
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\save games\\xar_checkpoint.ck3",
+    "name": "xar_checkpoint.ck3",
+    "size": 91530739,
+    "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539",
+    "date_raw": 53144712,
+    "overwrite_confirmed": true,
+    "strategy": "native-autosave-command-v1",
+    "episode_projection": "native_campaign",
+    "succession_lifecycle": null,
+    "history_index": 46,
+    "episode_character_id": null,
+    "episode_run_id": null
+  },
+  "submission": {
+    "sequence": 9,
+    "requested_save_name": "xar_checkpoint",
+    "date_raw": 53144712
+  },
+  "frame": {
+    "revision": 30,
+    "native_revision": 29,
+    "date_raw": 53144712,
+    "paused": true,
+    "active_event": {
+      "source": "native",
+      "instance_id": 42,
+      "option_count": 1,
+      "title": null,
+      "options": [
+        {
+          "index": 0,
+          "option_number": 1,
+          "label": null,
+          "enabled": true
+        }
+      ]
+    },
+    "played_character_gold": {
+      "raw": 154300000,
+      "scale": 100000
+    },
+    "played_character_prestige": {
+      "raw": 220000000,
+      "scale": 100000
+    },
+    "played_character_piety": {
+      "raw": 565000000,
+      "scale": 100000
+    }
+  }
+}

@@ -1,0 +1,181 @@
+{
+  "schema": "lyd.r9.actual-selected-protections.v1",
+  "status": "ACTUAL_SELECTED_PROTECTIONS_MATCH",
+  "core_readback": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0028\\REPORT.json",
+    "bytes": 473000,
+    "sha256": "2b20539bc6f95463b098690e1e80dc86deffb66c22442c3696111c4fcf83d149"
+  },
+  "after_save": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0028-post-join-save\\checkpoint.ck3",
+    "bytes": 91466119,
+    "sha256": "6eff9e1cdbcd19d1a422f215d7fac949bc882f87c7da43487a9c2ce823123dab"
+  },
+  "before_protection_cache": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0004\\REPORT.json",
+    "bytes": 7087,
+    "sha256": "ffe44990147e61d0708db7178ff85b4e7471e5da4874ad47ada768d93724574a"
+  },
+  "after": {
+    "char_protections": {
+      "31254": {
+        "first_name": "e55ddf6c609638e58fe9bb0a6e6dd9d6fa54be592588e7fb14a6dd88d90b1607",
+        "birth": "b10c14389ec88486e5322c7d2ce284924f2a4d2a392c3d1c7cc5a651b712bdd0",
+        "culture": "200baec47c61ff565118fa2ec9074b63a4ff98bce0c2dbb911ee69397b4745de",
+        "traits": "2155911f9ed3d98fb5a3694e70935f27a732da72dfdb49e2bbeb84c3c1d1820f",
+        "family_data": "be088c5e7660581372b7eff3bf1839c84cbfb7bb78126803af9f2dce0c4e1aea",
+        "court_data": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "dynasty_house": "ffd148761098a52c022e994020453b89abbbe04af30afce80760c24edbc1df67"
+      },
+      "65865": {
+        "first_name": "8829062f80b0c14f41f955e82352257751e43d25bf8fd0705b305b05015ab87c",
+        "birth": "ca404de581dd399d6c36562c09e3c42b2b9b16f1a8091a2a0af978132d2cde42",
+        "culture": "200baec47c61ff565118fa2ec9074b63a4ff98bce0c2dbb911ee69397b4745de",
+        "traits": "c36e923846de277bc27db4e8a0a5a2ec1eaf62f0829df1185263521095995e32",
+        "family_data": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "court_data": "386793c93784a0f38f179f3883aefe720b4d3acfecda785e2d4dcea74d8ee6f8",
+        "dynasty_house": "b0e5680e4a7bfe62697ca4371183455b2bbc1f5424ef3a11f9551caad0d025cf"
+      },
+      "65866": {
+        "first_name": "a71d98dc9789bcce47aa147c426c1eacf37f6e34c6d5fdf329bd7c22c98605ba",
+        "birth": "1cf5be0450a44ddc0b40a60e76d69b6abd1c94d8149dc337da89bc154ce095e1",
+        "culture": "200baec47c61ff565118fa2ec9074b63a4ff98bce0c2dbb911ee69397b4745de",
+        "traits": "7c93333c3cb56a6c583f95a2947aaddd1a9d5a8450ed5ede1e9c0e88dc0a6ee5",
+        "family_data": "74234e98afe7498fb5daf1f36ac2d78acc339464f950703b8c019892f982b90b",
+        "court_data": "386793c93784a0f38f179f3883aefe720b4d3acfecda785e2d4dcea74d8ee6f8",
+        "dynasty_house": "1df157806fd7ec228861b12a5387acc54f5bec9c96abd96b9d002f8fc2321605"
+      }
+    },
+    "actor_landed_protections": {
+      "domain": "6be3b9a285d9ee08d9d66deab3b898990f1be3b941a42fc292425ad0f21520df",
+      "laws": "379c0bb23d3a096f78ba98115c46726861c6684dac7d821200edb7b42067a826",
+      "government": "4440c0d22636f5d18022bf4ed2c539cae5f252dc72f18b2ca7c003089aa986f9",
+      "realm_capital": "0dec9969ba08c4ec8b0469f573ca2e997ec6ff72f4006eb8d824e700f88c05a1",
+      "council": "eabfe6badf770f43e3478918f7898a38fb92ce207b1d5aadac8993a13a7160a9",
+      "vassal_contracts": "185da1c397f37a7fb0bc8b13fed0ef5b9a4939a72820dd00a15d4da0b641638e",
+      "succession": "f88c86534b677f068aeef1142ec3fec7e85e9e32e9e1b67633d45f8344e318fb"
+    },
+    "field_presence": {
+      "31254": {
+        "first_name": true,
+        "birth": true,
+        "culture": true,
+        "traits": true,
+        "family_data": true,
+        "court_data": true,
+        "dynasty_house": true
+      },
+      "65865": {
+        "first_name": true,
+        "birth": true,
+        "culture": true,
+        "traits": true,
+        "family_data": false,
+        "court_data": true,
+        "dynasty_house": true
+      },
+      "65866": {
+        "first_name": true,
+        "birth": true,
+        "culture": true,
+        "traits": true,
+        "family_data": false,
+        "court_data": true,
+        "dynasty_house": true
+      }
+    },
+    "domain_ids": [
+      "2230",
+      "2231",
+      "2262",
+      "2232",
+      "2263",
+      "2235",
+      "2264"
+    ],
+    "titles": {
+      "2230": {
+        "key": "d_apulia",
+        "holder": "31254",
+        "actual_complete_AST_sha256": "8f6e6b80b7d3a95d67813b0dd135dd8a31c128e511959c96ddded2c4b8823b5b"
+      },
+      "2231": {
+        "key": "c_apulia",
+        "holder": "31254",
+        "actual_complete_AST_sha256": "84c7c99dabaef8bce053301472ed96eecf54e6b2eee5415b48deaae0196dddce"
+      },
+      "2262": {
+        "key": "c_rossano",
+        "holder": "31254",
+        "actual_complete_AST_sha256": "958612bf6f2d09f4905a0e5b36c00bcceee5191009834971c334b2ce9e17d17e"
+      },
+      "2232": {
+        "key": "b_trani",
+        "holder": "31254",
+        "actual_complete_AST_sha256": "7bb8a0c711fd8eec5fb0ce4e0ade73af2cadeb442755a66f5fdfe6d5e71ec8b8"
+      },
+      "2263": {
+        "key": "b_rossano",
+        "holder": "31254",
+        "actual_complete_AST_sha256": "e002d509574b8a39685754c7ae045899354b5e0c727ff6048e2f87d5d27383c2"
+      },
+      "2235": {
+        "key": "b_acerenza",
+        "holder": "31254",
+        "actual_complete_AST_sha256": "ff21529e3810d810496cc3600f4e110f5eef43829bbcbfd62a681ac5afcb93de"
+      },
+      "2264": {
+        "key": "b_cotrone",
+        "holder": "31254",
+        "actual_complete_AST_sha256": "5730835221b7c08ee69b62c3a194eddd557a9786c4955c81f8c878b93e275ac9"
+      }
+    },
+    "actual_selected_title_count": 7
+  },
+  "selected_complete_title_AST_equal": true,
+  "actual_selected_title_count": 7,
+  "actual_selected_title_holders_all_actor": true,
+  "actual_domain_ids_equal": true,
+  "selected_family_court_namedbranches_equal": true,
+  "selected_domain_government_laws_equal": true,
+  "field_presence_disclosed": {
+    "31254": {
+      "first_name": true,
+      "birth": true,
+      "culture": true,
+      "traits": true,
+      "family_data": true,
+      "court_data": true,
+      "dynasty_house": true
+    },
+    "65865": {
+      "first_name": true,
+      "birth": true,
+      "culture": true,
+      "traits": true,
+      "family_data": false,
+      "court_data": true,
+      "dynasty_house": true
+    },
+    "65866": {
+      "first_name": true,
+      "birth": true,
+      "culture": true,
+      "traits": true,
+      "family_data": false,
+      "court_data": true,
+      "dynasty_house": true
+    }
+  },
+  "scope": "Only actual actor domain titles and three exact role characters. No entire title or world character AST parsing.",
+  "whole_world_characters_scanned": false,
+  "whole_world_political_titles_scanned": false,
+  "native_ACK_business_credit": false,
+  "full_cycle_credit": false,
+  "game_called": false,
+  "supplement_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\supplement_selected_protections.py",
+    "bytes": 5413,
+    "sha256": "a799756f7ac2fe15069393cf1c716e5edc23ac0291b49708d5ccdcfb1568efe8"
+  }
+}

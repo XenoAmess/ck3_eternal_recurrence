@@ -1,0 +1,11 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 58,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0058-post-detach-save.request.json",
+  "request_sha256": "c428d5a27180c8d50ede6032f62c8cd96df9c899ed045ea0e790b2639db0af4f",
+  "started_at_utc": "2026-10-05T06:48:20.378044+00:00",
+  "request_id": "0058-post-detach-save",
+  "status": "ERROR_NO_RETRY",
+  "reason": "MCPError: Request 'tools/call' timed out",
+  "finished_at_utc": "2026-10-05T06:49:20.683596+00:00"
+}

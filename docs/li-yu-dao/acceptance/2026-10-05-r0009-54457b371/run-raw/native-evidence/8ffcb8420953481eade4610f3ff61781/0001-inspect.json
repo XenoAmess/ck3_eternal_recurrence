@@ -1,0 +1,68 @@
+{
+  "schema": "ck3.native-profile-receipt.v1",
+  "session_id": "8ffcb8420953481eade4610f3ff61781",
+  "profile_sha256": "862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5",
+  "pipe_name": "\\\\.\\pipe\\xar_profile_8ffcb8420953481eade4610f3ff61781",
+  "recorded_at_utc": "2026-10-05T05:59:50.956486+00:00",
+  "status": "profile_bound",
+  "observation": {
+    "pid": 20264,
+    "hwnd": 5637378,
+    "window_pid": 20264,
+    "process_create_time": 1791179349.2116988,
+    "executable": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "executable_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "build_id": "25652598",
+    "app_manifest_sha256": "976e2d1e3898ded52633269ec2e50d19d4e7e8f433502eb14511e7228543c348",
+    "window_visible": true,
+    "window_title": "Crusader Kings III",
+    "window_class": "SDL_app",
+    "window_rect": [
+      152,
+      59,
+      1768,
+      998
+    ],
+    "focus": {
+      "foreground_hwnd": 5637378,
+      "foreground_pid": 20264,
+      "foreground_thread_id": 14852,
+      "focus_hwnd": 5637378,
+      "title": "Crusader Kings III"
+    },
+    "screen_size": [
+      1920,
+      1080
+    ],
+    "mouse_buttons": {
+      "left": false,
+      "right": false,
+      "middle": false,
+      "x1": false,
+      "x2": false
+    },
+    "steam_offline_flags": [
+      "1"
+    ],
+    "steam_loginusers_sha256": "94e993d04f118c58758fb0d6da7dff581c9a7c91c7d0e8fa823440f74c9b2097",
+    "steam_pid": 3028,
+    "steam_create_time": 1790980012.3969574,
+    "steam_executable": "C:\\Program Files (x86)\\Steam\\bin\\cef\\cef.win64\\steamwebhelper.exe",
+    "steam_client_pid": 18100,
+    "steam_client_create_time": 1790980011.1466615,
+    "steam_client_executable": "C:\\Program Files (x86)\\Steam\\steam.exe",
+    "screen_lease_fresh": true,
+    "screen_owners": [
+      "ck3-lyd-r0009-20261005"
+    ],
+    "command_line": [
+      "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "-debug_mode",
+      "-gdpr-compliant",
+      "-userdir=C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/userdir",
+      "-loadsave=lyd_r9_resume_0034"
+    ]
+  },
+  "attached": false,
+  "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0001-inspect.json"
+}

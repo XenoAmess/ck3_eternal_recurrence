@@ -1,0 +1,10 @@
+{
+  "schema": "lyd.r9.increment-facts-index.v1",
+  "files": [
+    {
+      "path": "FACTS.json",
+      "bytes": 8330,
+      "sha256": "59664ccbb8259770fa2f0bb38894b187e1fe487621476113d2be93b9b36d5104"
+    }
+  ]
+}

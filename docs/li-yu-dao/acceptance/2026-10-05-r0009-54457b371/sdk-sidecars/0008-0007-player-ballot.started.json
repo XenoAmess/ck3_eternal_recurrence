@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 8,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0007-player-ballot.request.json",
+  "request_sha256": "cadbdefe46452e7d2273dede5ea30de8a7d13d555499441f22981a1f3f01f5a7",
+  "started_at_utc": "2026-10-05T06:08:54.558959+00:00"
+}

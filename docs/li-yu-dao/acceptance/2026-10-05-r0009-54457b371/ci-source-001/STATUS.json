@@ -1,0 +1,75 @@
+{
+  "schema": "lyd.r9.ci-source.status.v1",
+  "status": "SOURCE_CI_ONLY",
+  "source_head": "54457b371e947edb86903c2ebd578034f02695db",
+  "observed_CI_result": "ACTUAL_BOTH_PUSH_WORKFLOWS_SUCCESS",
+  "LYD_run": {
+    "id": 37267312403,
+    "job_id": 111626738617,
+    "event": "push",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "completed_at": "2026-10-05T05:20:36Z",
+    "actual_test_counts": [
+      11,
+      6,
+      106,
+      11,
+      25
+    ],
+    "actual_test_total": 159,
+    "steps_success": 9
+  },
+  "general_run": {
+    "id": 37267312446,
+    "job_id": 111626739050,
+    "event": "push",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "completed_at": "2026-10-05T05:24:45Z",
+    "steps_total": 80,
+    "steps_success": 60,
+    "conditional_steps_skipped": 20,
+    "failed": 0,
+    "cancelled": 0
+  },
+  "static": {
+    "result": "GREEN",
+    "runtime_files": 70,
+    "localization_keys": 889,
+    "events": 68
+  },
+  "reproducible_build": {
+    "result": "GREEN",
+    "files": 70,
+    "manifest_sha256": "295e101d1bbefff3aeb2f18d5856f7f5b46ab2c2971005753d2eea6706939d15"
+  },
+  "actual_push": {
+    "before": "4f89ab146357a69425c86eaf8a78b033ed264afc",
+    "after": "54457b371e947edb86903c2ebd578034f02695db",
+    "commits": 1,
+    "files": 44,
+    "LYD_watched_paths": [
+      "mod_li_yu_dao/common/scripted_effects/lyd_c2_snapshot_effects.txt",
+      "mod_li_yu_dao/common/scripted_effects/lyd_c2_vote_effects.txt",
+      "mod_li_yu_dao/tools/gen_school_consent.py",
+      "mod_li_yu_dao/tools/school_consent_templates/common/scripted_effects/lyd_c2_vote_effects.txt"
+    ]
+  },
+  "CLA": {
+    "status": "NOT_TRIGGERED",
+    "signature_success": false,
+    "server_bypass_success": false,
+    "actual_run_or_check_or_status_context": false
+  },
+  "network_read_timeout_receipts_preserved": 6,
+  "artifacts_binary_downloaded": false,
+  "raw_source_mapping_count": 134,
+  "runtime_acceptance_credit": false,
+  "R9_closure_or_game_result_claimed": false,
+  "future_R9_runtime_status": "NOT_CLAIMED",
+  "import_executed": false,
+  "no_dispatch_rerun_main_git_game_bus_tests_build": true
+}

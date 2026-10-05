@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 32,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0032-reset-select.request.json",
+  "request_sha256": "7b4e6d804876036f6a1fbb8b2ebb1bf454f05feadc2ceb9e0d9bbb5d853b6932",
+  "started_at_utc": "2026-10-05T06:16:21.004147+00:00"
+}

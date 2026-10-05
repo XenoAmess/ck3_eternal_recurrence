@@ -1,0 +1,11 @@
+# 礼与道 R0009 证据快照
+
+本包只在根代理提供实际终态回执后生成。来源为 `54457b371e947edb86903c2ebd578034f02695db`，实际PID20264/create1791179349.2116988，SDK21项工具，Release DLL与injector的SHA见REPORT.json。终态与整体结果按根代理原回执保存，生成器不推断正常SDK关闭，也不自动给PASS。
+
+保存和SDK ACK仅证明各自原声明；业务结果以各阶段独立存档回读的窄范围为准。0027首次JOIN的300金币/1500虔诚收费必须与0028保存读回共同核对。0033RESET夹具人为缩短冷却，不能授予自然五年通过；DETACH/JOIN2及后续过程由实际追加读回决定，不能从首次JOIN外推。
+
+R9回读报告保留readerSHA、前后saveSHA和SDK绑定；R7observer历史实测/静态审查另作链接，不混作R9当前通过。C2prefixmonitor只证明明确的已捕获区间，不证明final-whole-log或未来回调；第三区间总E恰为100000，日志上限尚未独立验证，后续无增长不能证明无错。CI544的importplan是source-only，不授予实机信用。wrong-key只读查询、无dispatchhelper失败与原SDK错误保留真实来源；没有本地原件的roottool-only失败不制造rawstderr。
+
+0053/0056/0057/0058的SDK消费者结果为ERROR_NO_RETRY，未重发。0058保存的真实native回执与独立存档回读单独保留，不构造缺失的SDK结果。诊断证明递归history增长及text/structured重复，尚未测出其对60秒超时的精确贡献。recorded_at_utc在回执JSON序列化前产生，不能当作最终写盘或SDK返回时间。根代理已暂停进一步业务，JOIN2/fullcycle为NOT_RUN，不能据首次JOIN或native ACK给整体PASS。
+
+原存档和未复制的重复SDKhistory永久外置，checkpoint-index、sdk-request-ledger和external-omissions绑定精确bytes/SHA。114件诊断原件、实际native回执、SDK消费者sidecar和已捕获日志完整保存为原字节或gzip无损投影，逐件验证解压后的bytes/SHA；不能因体积删除失败证据。本包不解析大存档、不操作游戏或屏幕、不访问Git/CI、不写主树。root-only导入脚本必须复核实际进程消失、lease/sourcefreeze释放及全包SHA，真实terminalRED/lost同样可入库。旧包和失败attempt不覆盖。

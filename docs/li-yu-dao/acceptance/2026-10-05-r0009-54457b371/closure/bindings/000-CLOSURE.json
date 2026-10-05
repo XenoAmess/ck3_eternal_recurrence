@@ -1,0 +1,95 @@
+{
+  "schema": "lyd.r9.actual-closure.v1",
+  "utc": "2026-10-05T07:37:01.840806+00:00",
+  "source_head": "54457b371e947edb86903c2ebd578034f02695db",
+  "original_pid": 20264,
+  "process_creation_filetime_100ns": 134356529492116987,
+  "process_exit_observed": true,
+  "exit_code": 0,
+  "typed_normal_exit_observed": true,
+  "full_mcp_preparation_credit": false,
+  "game_exit_route": "official MCP final confirm + retained original HANDLE observe; preparatory WM_CLOSE maintenance required",
+  "autosave_verified": false,
+  "client_exit_code": 0,
+  "client_closed": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\session-closed.json",
+    "bytes": 2922,
+    "sha256": "cdf94951648cc881a7e6e2f397a87427b6180bbca9b5144ce1a434665e446e92"
+  },
+  "terminal_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0065-0065-retained-handle-exit-observe.sdk-result.json",
+    "bytes": 12645,
+    "sha256": "003330b1e40e9e1a8fb910092b9c1bf0891f81b7f2ea68cf0514653b110d9333"
+  },
+  "terminal_response": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0065-0065-retained-handle-exit-observe.response.json",
+    "bytes": 1341,
+    "sha256": "f3bbe9d80f9e8cf28087417429f1710a8535588ac679dc8f6db0e72da8781c3b"
+  },
+  "maintenance_result": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\maintenance-standard-window-close-001\\RESULT.json",
+    "bytes": 896,
+    "sha256": "c8b1266fe920192d032c3d337033e67d09091e11e227f1eef537482bdd042ed6"
+  },
+  "keeper_final": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0009\\FINAL.json",
+    "bytes": 384,
+    "sha256": "4b8d519c602098fda0c6df28be3a84d9400f1a86dcaca557c325d678988b69f4"
+  },
+  "keeper_exit_code": 0,
+  "screen_release": {
+    "schema": "codex.task_bus.v1",
+    "ok": true,
+    "task": {
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "54457b371e947edb86903c2ebd578034f02695db"
+      },
+      "last_sequence": 2981,
+      "next_step": "Fresh-offline-final-DLL-and-isolated-campaign",
+      "pid": 14604,
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "resources": [],
+      "schema": "codex.task_bus.v1",
+      "state": "waiting",
+      "summary": "LYD R0009 saved JOIN and DETACH; native terminal original HANDLE exit0; SDK and C2 failures retained; client and keeper stopped.",
+      "task_id": "ck3-lyd-r0009-20261005",
+      "updated_at_utc": "2026-10-05T07:37:01.639315+00:00"
+    },
+    "event": {
+      "schema": "codex.task_bus.v1",
+      "sequence": 2981,
+      "event_id": "ffbacfbed8fc47afb9b093a9c54421b7",
+      "timestamp_utc": "2026-10-05T07:37:01.640389+00:00",
+      "kind": "status",
+      "task_id": "ck3-lyd-r0009-20261005",
+      "to": [
+        "*"
+      ],
+      "state": "waiting",
+      "summary": "LYD R0009 saved JOIN and DETACH; native terminal original HANDLE exit0; SDK and C2 failures retained; client and keeper stopped.",
+      "next_step": "Fresh-offline-final-DLL-and-isolated-campaign",
+      "resources": [],
+      "repo": "C:\\workspace\\ck3_eternal_recurrence",
+      "git": {
+        "branch": "master",
+        "dirty_entries": 0,
+        "head": "54457b371e947edb86903c2ebd578034f02695db"
+      },
+      "retirement": {
+        "kind": "expired-own-claim-released",
+        "business_status": "unresolved_red",
+        "prior_sequence": 2980
+      }
+    }
+  },
+  "after_list": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-002\\AFTER-LIST.json",
+    "bytes": 87298,
+    "sha256": "a739fc9758225501b0306436e9bcf2234b1c166987d9075ec9a5bc1224f20072"
+  },
+  "JOIN2": "NOT_RUN",
+  "full_cycle_acceptance_credit": false,
+  "workshop_published": false
+}

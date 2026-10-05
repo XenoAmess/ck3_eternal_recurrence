@@ -1,0 +1,20 @@
+{
+  "result": "ACTUAL_R9_THIRD_SAVED_PREFIX_NEW_RED",
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\after-sign-and-first-join-prefix-003\\raw-prefix\\error.log",
+  "bytes": 30891598,
+  "raw_sha256": "2603033cd62be7676a86213c9b27dd8bd357f18e71f2b5a9370bebacc4224158",
+  "second_error_prefix_bytes": 138556,
+  "second_error_prefix_sha256": "0a9b5cfb2628d42b9b334e6adb0777640f6614f2f376ff66d64a0c6d6483fb50",
+  "prior_prefix_exact": true,
+  "new_bytes": 30753042,
+  "new_raw_line_breaks": 129512,
+  "counts": {
+    "known_fixture_unused_variable": 578,
+    "current_product_c2_missing_or_invalid_field": 1,
+    "other_current_product_c2_error": 99421
+  },
+  "final_line_complete": true,
+  "scope_analysis": "Reported Script location is Character-root ready_to_confirm_trigger via lyd.220 option trigger. Current initiator ID/context/frame not independently supplied by these error groups.",
+  "per_native_call_error_growth": "NOT_DETERMINED: no per-call before/after byte offsets were captured; engine second-level times show repeated evaluations, not a one-error-per-command relation.",
+  "boundary": "Only already-copied third error prefix. No fresh game/process/main/pipe operation and no final whole-log assertion."
+}

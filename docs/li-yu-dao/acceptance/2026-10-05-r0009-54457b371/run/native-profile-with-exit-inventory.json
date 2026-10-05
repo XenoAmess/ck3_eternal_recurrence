@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "guard_profile": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-profile-request-001\\native-profile-fresh-001\\guard-profile.json",
+  "guard_profile_sha256": "92a6a17eedad6b9100d05319f6e23534e4513af4a5932a2d8053630864816b70",
+  "userdir": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/userdir",
+  "state_directory": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/native-state",
+  "evidence_directory": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/native-evidence",
+  "game_version": "1.20.0.3",
+  "dll": {
+    "path": "C:\\lydr9-release-20261005-001\\xar_ck3_bridge.dll",
+    "sha256": "7029c06edeb81ad90fa53b7f1f6a092760926c2236be7d8f90b2c25aba036aee"
+  },
+  "injector": {
+    "path": "C:\\lydr9-release-20261005-001\\xar_ck3_bridge_injector.exe",
+    "sha256": "cfbe9edbc2f27c96d9eb99cf7f2d64c498764fd21eecb0e78083101d49cce897"
+  },
+  "normal_exit_source_inventory": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/userdir/normal-exit-source-inventory-v1.json",
+    "sha256": "cc99f8cf190083ab8fa6165c0a7268687131d18027b23df8d871a812bcddbf1b"
+  }
+}

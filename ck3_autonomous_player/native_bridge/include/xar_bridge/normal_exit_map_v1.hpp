@@ -24,6 +24,7 @@ inline constexpr bool kNormalExitMapV1CompiledEnabled = false;
 
 enum class NormalExitMapActionV1 : std::uint32_t {
   query_context = 0, prepare_confirmation = 1, confirm_desktop = 2,
+  continue_preparation = 3,
 };
 enum class NormalExitMapStatusV1 : std::uint32_t {
   unavailable = 0, context_observed = 1, confirmation_observed = 2,
@@ -73,6 +74,9 @@ struct NormalExitMapObservationV1 {
   bool frame_verified = false, context_signature_verified = false;
   bool confirmation_visible = false;
   bool orderly_exit_verified = false, autosave_verified = false;
+  // Actual lifetime CAS state: menu opener, confirmation opener, desktop confirmation.
+  // This is independent of this command's dispatches and never inferred from ACK.
+  std::array<bool, 3> stage_consumed{};
   std::array<NormalExitMapTargetV1, 3> targets{};
   // Fixed stages: menu opener, confirmation opener, desktop confirmation.
   std::array<NormalExitMapDispatchV1, 3> dispatches{};
@@ -94,7 +98,18 @@ struct NormalExitMapSessionV1 {
   void *queried_gui_context = nullptr, *queried_gui_owner = nullptr;
   std::array<void *, 3> queried_roots{}, queried_targets{}, queried_vtables{};
   std::array<NormalExitMapTargetV1, 3> queried_observations{};
+  std::array<bool, 3> queried_stage_consumed{};
 };
+
+// Pure production gates used by the provider and portable regressions.
+std::array<bool, 3> ReadNormalExitMapStageConsumptionV1(
+    const NormalExitMapSessionV1 &session) noexcept;
+bool NormalExitMapStageConsumptionMatchesQueryV1(
+    const NormalExitMapSessionV1 &session) noexcept;
+bool NormalExitMapContinuePreparationAdmittedV1(
+    const std::array<bool, 3> &consumed,
+    const std::array<NormalExitMapTargetV1, 3> &targets,
+    bool confirmation_visible) noexcept;
 
 struct NormalExitMapContextV1 {
   const game::GameAdapter *game = nullptr;

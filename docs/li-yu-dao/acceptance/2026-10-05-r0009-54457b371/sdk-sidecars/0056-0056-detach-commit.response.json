@@ -1,0 +1,11 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 56,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0056-detach-commit.request.json",
+  "request_sha256": "06288efb2bb8dbcb83c172e9ffde13d35019801741283c462afabfa3b3a7a6a0",
+  "started_at_utc": "2026-10-05T06:39:16.989024+00:00",
+  "request_id": "0056-detach-commit",
+  "status": "ERROR_NO_RETRY",
+  "reason": "MCPError: Request 'tools/call' timed out",
+  "finished_at_utc": "2026-10-05T06:40:18.791638+00:00"
+}

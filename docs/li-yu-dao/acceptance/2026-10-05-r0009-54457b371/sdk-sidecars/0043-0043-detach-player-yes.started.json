@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 43,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0043-detach-player-yes.request.json",
+  "request_sha256": "b0b5abf33f7411505816247837f866baedb1fd081c5be769805c25322d9dc258",
+  "started_at_utc": "2026-10-05T06:26:19.454836+00:00"
+}

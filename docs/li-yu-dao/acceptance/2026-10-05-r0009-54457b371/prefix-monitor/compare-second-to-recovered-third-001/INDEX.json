@@ -1,0 +1,74 @@
+{
+  "ADDED-RAW-LINES.jsonl": {
+    "bytes": 96378217,
+    "sha256": "675004f0700e8ad987bd08207393a3371ea5248bdf982108dadee7a20075cd93"
+  },
+  "raw-added-prefix-tails/code_revisions.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-added-prefix-tails/custom_automated_stats.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-added-prefix-tails/database_conflicts.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-added-prefix-tails/debug.log": {
+    "bytes": 3200454,
+    "sha256": "8c7c7e09afd55998f3c5bedf7e3a369799b276a5e5d938efa0f24aef50eeedf0"
+  },
+  "raw-added-prefix-tails/dedicated_server.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-added-prefix-tails/error.log": {
+    "bytes": 30753042,
+    "sha256": "9adda9053ea2416a9fe5ef8e7c52afbd4bff180528ccfdc76371e90d1b0d3644"
+  },
+  "raw-added-prefix-tails/game.log": {
+    "bytes": 3159042,
+    "sha256": "e30918282f1086b98d1053dd09b3954df4f091a8498b66c23a80e0421a460b87"
+  },
+  "raw-added-prefix-tails/gui_warnings.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-added-prefix-tails/memory.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-added-prefix-tails/message.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-added-prefix-tails/multiplayer.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-added-prefix-tails/pdxsdk.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-added-prefix-tails/profile.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-added-prefix-tails/setup.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-added-prefix-tails/system.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-added-prefix-tails/text.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "REPORT.json": {
+    "bytes": 98815641,
+    "sha256": "4a1490858729ff2ad8dfe8971f427aab2808643074d63464833bbe6a90ea4dd2"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 22,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0022-sign-terms.request.json",
+  "request_sha256": "be50fe539fe5062959eb8527a24e0d0d68e087c4ff34e4c97857dcccca43b7ea",
+  "started_at_utc": "2026-10-05T06:12:36.695450+00:00",
+  "request_id": "0022-sign-terms",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0022-0022-sign-terms.sdk-result.json",
+  "sdk_result_sha256": "b7f18ec38f01653d12e4ebabd3b39a4d83d78936f60f9613ada55ec395b7e893",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0021-event-select.json",
+      "copy": "0022-0022-sign-terms.native-01.json",
+      "sha256": "8a635419428ef71c094115473a6e3f736291419ade674a4d4d07b7dde899089a"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T06:12:39.747209+00:00"
+}

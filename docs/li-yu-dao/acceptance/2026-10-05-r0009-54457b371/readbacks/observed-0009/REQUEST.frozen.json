@@ -1,0 +1,46 @@
+{
+  "schema": "lyd.r8.c2.increment-request.v1",
+  "phase": "proposal-opened",
+  "label": "R9 actual0009 proposal-opened",
+  "native_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-profile-with-exit-inventory.json",
+    "bytes": 1148,
+    "sha256": "862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5"
+  },
+  "before": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0004-baseline-save\\checkpoint.ck3",
+      "bytes": 91398984,
+      "sha256": "ee4d61345c3116ada68278105b999369ee2dda7a0857081dadcb5e44520bf246"
+    },
+    "checkpoint_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0005-0004-baseline-save.sdk-result.json",
+      "bytes": 62719,
+      "sha256": "a592f3c3180424b5a7a1e66d7ac35b98f45d8a47d548f6d34d423b5bdc8f893f"
+    },
+    "cached_readback": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0004\\REPORT.json",
+      "bytes": 214298,
+      "sha256": "90b679c6c34a7019d1f6317ab3156002f68b685a15bcfb33ae2de34e3eb0db79"
+    }
+  },
+  "after": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0009-proposal-save\\checkpoint.ck3",
+      "bytes": 91402137,
+      "sha256": "3880628455701557da3fbacb4119ef2ecee0256c9697c377a68aeb87da081fdd"
+    },
+    "checkpoint_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0010-0009-proposal-save.sdk-result.json",
+      "bytes": 177653,
+      "sha256": "cedf9fe7fbf42b97d99226b92f68c47a3386c5ac3de79d8b793a8e8696baca0a"
+    },
+    "cached_readback": null
+  },
+  "ordinary_query_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0006-0005-join-query.sdk-result.json",
+    "bytes": 7607,
+    "sha256": "d0acbeff078bf2ad841492c88c4507b830b2144e5a8c7e1634549431b761cb3e"
+  },
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0009"
+}

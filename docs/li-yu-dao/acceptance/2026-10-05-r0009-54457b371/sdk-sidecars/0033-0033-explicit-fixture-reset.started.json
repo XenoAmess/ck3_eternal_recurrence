@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 33,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0033-explicit-fixture-reset.request.json",
+  "request_sha256": "02a0d6b36adf0f666e5cd72ab95848988764910613e1ab48b255e8b10a9f3f4a",
+  "started_at_utc": "2026-10-05T06:16:25.695024+00:00"
+}

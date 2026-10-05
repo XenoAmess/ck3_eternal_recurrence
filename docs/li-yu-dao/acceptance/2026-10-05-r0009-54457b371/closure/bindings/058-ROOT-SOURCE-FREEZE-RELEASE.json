@@ -1,0 +1,25 @@
+{
+  "schema": "lyd.r9.root-policy-freeze-release.v1",
+  "utc": "2026-10-05T07:51:27.484532+00:00",
+  "owner_checkout": "C:/workspace/ck3_eternal_recurrence",
+  "frozen_head": "54457b371e947edb86903c2ebd578034f02695db",
+  "source_freeze_released": true,
+  "meaning": "ROOT confirms the AGENTS.md clean-checkout policy gate is released after actual saved campaign, original process exit, client close, keeper stop and CAS screen release. Archived frozen source/input records remain historical evidence. No separate filesystem source-lock flag exists or was changed.",
+  "policy_source": "C:/workspace/ck3_eternal_recurrence/AGENTS.md:330",
+  "actual_closure": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-002\\CLOSURE.json",
+    "bytes": 3837,
+    "sha256": "8abaf2c9ac75ce6e004d4d80a80554beda410cd0d14766703d37625997d55714"
+  },
+  "process_absence": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-source-freeze-release-001\\PROCESS-ABSENCE.json",
+    "bytes": 635,
+    "sha256": "b182d9de41beb973661b9aa9d3ae525745654f4da0240c3183832b0ccc14ae61"
+  },
+  "screen_release_sequence": 2981,
+  "screen_release_state": "waiting",
+  "screen_release_business_status": "unresolved_red",
+  "full_mcp_preparation_credit": false,
+  "full_cycle_acceptance_credit": false,
+  "main_tracked_writes_allowed_to": "ROOT only"
+}

@@ -1,0 +1,26 @@
+{
+  "schema": "lyd.r8.c2.increment-request.v1",
+  "phase": "baseline",
+  "label": "R9 actual0004 fresh baseline",
+  "native_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-profile-with-exit-inventory.json",
+    "bytes": 1148,
+    "sha256": "862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5"
+  },
+  "before": null,
+  "after": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0004-baseline-save\\checkpoint.ck3",
+      "bytes": 91398984,
+      "sha256": "ee4d61345c3116ada68278105b999369ee2dda7a0857081dadcb5e44520bf246"
+    },
+    "checkpoint_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0005-0004-baseline-save.sdk-result.json",
+      "bytes": 62719,
+      "sha256": "a592f3c3180424b5a7a1e66d7ac35b98f45d8a47d548f6d34d423b5bdc8f893f"
+    },
+    "cached_readback": null
+  },
+  "ordinary_query_sdk": null,
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0004"
+}

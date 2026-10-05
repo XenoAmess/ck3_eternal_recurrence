@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 41,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0041-detach-wait.request.json",
+  "request_sha256": "a1dfa0e810844d3a604648f1904dd033439fd9670b6de143dfcd8ac1c1a7e21d",
+  "started_at_utc": "2026-10-05T06:18:52.494567+00:00",
+  "request_id": "0041-detach-wait",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0041-0041-detach-wait.sdk-result.json",
+  "sdk_result_sha256": "dd758709645f0de23e4e06981d79f76af1974611a434a4943794c44623bb3165",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0040-event-select.json",
+      "copy": "0041-0041-detach-wait.native-01.json",
+      "sha256": "8a6f06371debb03509a3e34d4c5ce5c8bd7845852718ee04db978b11cdba791e"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T06:19:04.418051+00:00"
+}

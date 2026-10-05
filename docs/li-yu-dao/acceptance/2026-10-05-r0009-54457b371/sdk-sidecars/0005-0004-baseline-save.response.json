@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 5,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0004-baseline-save.request.json",
+  "request_sha256": "b2a6cb2a6ebd8bde35ea859de54f5bfe0dddffdea59b93677d802db83eb94518",
+  "started_at_utc": "2026-10-05T06:00:30.586150+00:00",
+  "request_id": "0004-baseline-save",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0005-0004-baseline-save.sdk-result.json",
+  "sdk_result_sha256": "a592f3c3180424b5a7a1e66d7ac35b98f45d8a47d548f6d34d423b5bdc8f893f",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0004-checkpoint.json",
+      "copy": "0005-0004-baseline-save.native-01.json",
+      "sha256": "bc5aa33f890fe359277f98d1129cee6c5dcac9b583b4d289d4b05b98d5c2648e"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T06:00:37.731220+00:00"
+}

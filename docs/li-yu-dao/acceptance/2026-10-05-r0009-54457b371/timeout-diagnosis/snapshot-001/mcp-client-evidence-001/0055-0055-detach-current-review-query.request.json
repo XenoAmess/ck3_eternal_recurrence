@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "0055-detach-current-review-query",
+  "operation": "call_tool",
+  "name": "ck3_query_profile_event_window_v1",
+  "arguments": {
+    "expected_revision": 28,
+    "event_instance_id": 41
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 45,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0045-detach-source-yes.request.json",
+  "request_sha256": "e07ab63c98ff02628bc195e72e2e1a9891b418398cdd0fdd085efd244c69092f",
+  "started_at_utc": "2026-10-05T06:27:30.755598+00:00",
+  "request_id": "0045-detach-source-yes",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0045-0045-detach-source-yes.sdk-result.json",
+  "sdk_result_sha256": "ab119bc6369105e084c728f746e6b7a4f0c60aecbb80ffed3450fd79af633f2c",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0044-event-select.json",
+      "copy": "0045-0045-detach-source-yes.native-01.json",
+      "sha256": "91eabf63971adfcb5bfc86ba55063c1609ae664d52f8761e8ccfe21d50074bad"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T06:27:40.627674+00:00"
+}

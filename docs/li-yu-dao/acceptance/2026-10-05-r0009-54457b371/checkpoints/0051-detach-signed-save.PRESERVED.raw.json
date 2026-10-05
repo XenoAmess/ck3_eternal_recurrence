@@ -1,0 +1,16 @@
+{
+  "utc": "2026-10-05T06:33:17.574118+00:00",
+  "request_id": "0051-detach-signed-save",
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\save games\\xar_checkpoint.ck3",
+  "preserved": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0051-detach-signed-save\\checkpoint.ck3",
+  "bytes": 91464704,
+  "sha256": "cbc3a50e24a0bfd72d362ae72d9c32cfa605f6bc4e984c0dded3c19809063629",
+  "sdk_result": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0051-0051-detach-signed-save.sdk-result.json",
+  "sdk_result_sha256": "ed55a1d6a0d1b555d8b768ecfffbaa5498928d5bc93b0202f06eb51158cf546f",
+  "actual_actor_id": 31254,
+  "revision": 27,
+  "date_raw": 53144712,
+  "paused": true,
+  "native_business_postcondition_credit": false,
+  "scope": "Exact saved bytes; independent parser readback required"
+}

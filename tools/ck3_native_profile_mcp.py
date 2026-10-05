@@ -793,7 +793,7 @@ def create_server(service: NativeProfileService):
         return service.query_normal_exit_context(expected_revision)
     @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True, idempotentHint=False, openWorldHint=False))
     def ck3_request_normal_exit_v1(
-        action: Literal["prepare_confirmation", "confirm_desktop"], expected_revision: NormalExitRevisionV1,
+        action: Literal["prepare_confirmation", "continue_preparation", "confirm_desktop"], expected_revision: NormalExitRevisionV1,
         expected_exit_context_signature: NormalExitSignatureV1,
     ) -> dict[str, object]:
         return service.request_normal_exit(action, expected_revision, expected_exit_context_signature)

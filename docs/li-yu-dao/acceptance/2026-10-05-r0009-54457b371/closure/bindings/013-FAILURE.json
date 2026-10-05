@@ -1,0 +1,8 @@
+{
+  "schema": "lyd.r8.c2.increment-input-refusal.v1",
+  "status": "ACTUAL_READBACK_REFUSED",
+  "error_type": "ValueError",
+  "error": "checkpoint is not read-only",
+  "request_sha256": "1e78a134b76d80ddf1ba445d02e8255152575f31dc4d0557cb4c177d1adf7e18",
+  "game_called": false
+}

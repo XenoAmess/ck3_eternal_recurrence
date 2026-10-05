@@ -1,0 +1,25 @@
+141:     async def stdout_reader() -> None:
+142:         assert process.stdout, "Opened process is missing stdout"
+143: 
+144:         stdout = TextReceiveStream(process.stdout, encoding=server.encoding, errors=server.encoding_error_handler)
+145:         try:
+146:             async with read_stream_writer:
+147:                 try:
+148:                     # One line at a time; no read-ahead while a delivery is blocked.
+149:                     buffer = ""
+150:                     async for chunk in stdout:
+151:                         lines = (buffer + chunk).split("\n")
+152:                         buffer = lines.pop()
+153:                         for line in lines:
+154:                             try:
+155:                                 await read_stream_writer.send(_parse_line(line))
+156:                             except (anyio.ClosedResourceError, anyio.BrokenResourceError):
+157:                                 return  # the session is gone; only the drain below remains
+218: def _parse_line(line: str) -> SessionMessage | Exception:
+219:     """Parses one stdout line, returning parse errors as values for the session to surface."""
+220:     try:
+221:         message = types.jsonrpc_message_adapter.validate_json(line, by_name=False)
+222:     except ValueError as exc:
+223:         logger.exception("Failed to parse JSONRPC message from server")
+224:         return exc
+225:     return SessionMessage(message)

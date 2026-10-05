@@ -1,0 +1,11 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "0060-exit-prepare",
+  "operation": "call_tool",
+  "name": "ck3_request_normal_exit_v1",
+  "arguments": {
+    "action": "prepare_confirmation",
+    "expected_revision": 30,
+    "expected_exit_context_signature": "4ce3488add5a9f22479b78412c43ceebc6f36ea879df9689ae4d693a1063f00b"
+  }
+}

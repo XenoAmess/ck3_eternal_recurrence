@@ -1,0 +1,10 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "0047-detach-review-select",
+  "operation": "call_tool",
+  "name": "ck3_select_profile_decision_item_v1",
+  "arguments": {
+    "expected_revision": 24,
+    "decision_key": "lyd_c2_review_proposal_decision"
+  }
+}

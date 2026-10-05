@@ -89,10 +89,11 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -O -X utf8 ck3_autonomous_player/tests/unit/test_army_route_read_status_contract.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
-      - name: Test public CUnit zero contracts and planner without CK3
+      - name: Test public CUnit zero and decision history contracts without CK3
         env:
           PYTHONPATH: ${{ github.workspace }};${{ github.workspace }}\ck3_autonomous_player\src;${{ github.workspace }}\ck3_autonomous_player\tests\unit;${{ github.workspace }}\tools
           PYTHONDONTWRITEBYTECODE: "1"
+          XAR_HISTORY_GROWTH_TEST_ARTIFACTS: ${{ runner.temp }}\decision-history-growth
         run: |
           python -m pip install mcp==2.0.0 pytest==9.1.1
           if not "%errorlevel%"=="0" exit /b %errorlevel%
@@ -100,6 +101,15 @@ jobs:
           if not "%errorlevel%"=="0" exit /b %errorlevel%
           python -O -X utf8 -m pytest -q -p no:cacheprovider ck3_autonomous_player/tests/unit/test_public_cunit_core_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_mcp_contract.py ck3_autonomous_player/tests/unit/test_public_cunit_zero_battle_contracts.py ck3_autonomous_player/tests/unit/test_strategy_public_cunit_zero.py
           if not "%errorlevel%"=="0" exit /b %errorlevel%
+          python -X utf8 -m unittest discover -s ck3_autonomous_player/tests/unit -p "test_ingame_decision_history_growth.py"
+          if not "%errorlevel%"=="0" exit /b %errorlevel%
+      - name: Preserve decision history growth evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: decision-history-growth-source-tests
+          path: ${{ runner.temp }}\decision-history-growth
+          if-no-files-found: ignore
       - name: Test CLA checker
         run: python tools/test_cla_check.py
       - name: Test succession GUI projection contract

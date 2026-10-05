@@ -1,0 +1,186 @@
+2622:     def take_snapshot(
+2623:         self, *, include_native_command_history: bool = True
+2624:     ) -> dict[str, object]:
+2625:         snapshot = self.take_internal_semantic_snapshot()
+2626:         with self._driver_state_lock:
+2627:             rollback_war_failures = copy.deepcopy(self._rollback_war_failures)
+2628:             rollback_war_failure = (
+2629:                 copy.deepcopy(rollback_war_failures[0])
+2630:                 if rollback_war_failures
+2631:                 else None
+2632:             )
+2633:         result = {
+2634:             **snapshot,
+2635:             "native_command_history": (
+2636:                 self._history_snapshot() if include_native_command_history else []
+2637:             ),
+2638:             "native_rollback_war_failure": rollback_war_failure,
+2639:             "native_rollback_war_failures": rollback_war_failures,
+2640:         }
+2641:         if not include_native_command_history:
+2642:             with self._history_lock:
+2643:                 total_count = len(self._command_history)
+2644:             result["native_command_history_export"] = {
+2645:                 "mode": "omitted",
+2646:                 "total_count": total_count,
+2647:                 "included_count": 0,
+2648:             }
+2649:         return result
+2650: 
+2651:     def take_snapshot_without_native_command_history(self) -> dict[str, object]:
+2652:         return self.take_snapshot(include_native_command_history=False)
+2653: 
+6345:         while time.monotonic() < selection_deadline:
+6346:             try:
+6347:                 selected = (
+6348:                     self.query_frontend_selected_1066_feudal_candidate_v1(
+6349:                         expected_character_name_key=character_name_key
+6350:                     )
+6351:                 )
+6352:             except BridgeUnavailableError as error:
+6353:                 last_selection_error = error
+6354:             else:
+6355:                 break
+6356:             remaining = selection_deadline - time.monotonic()
+6357:             if remaining > 0:
+6430:         claim_dir = self._native_driver_state_path().parent / "ingame-decision-item-actions"
+6431:         identity = {"game_pid": binding["game_pid"], "actor_id": binding["played_character_id"],
+6432:                     "episode_run_id": binding["episode_run_id"], "decision_key": decision_key,
+6433:                     "action": "confirm_outcome", "public_revision": revision}
+6434:         try:
+6435:             reject_unresolved_claims(claim_dir, identity)
+6436:         except ValueError as error:
+6437:             raise BridgeUnavailableError(str(error)) from error
+6438:         key = hashlib.sha256(json.dumps(identity, sort_keys=True).encode("utf-8")).hexdigest()
+6439:         claim = claim_dir / f"{key}.claim.json"
+6440:         if claim.exists():
+6441:             raise BridgeUnavailableError("generic Confirm already claimed at this revision; no retry")
+6442:         before_model = self.query_ingame_decision_item_v1(decision_key, expected_revision=revision)
+6443:         if not actual_selected_detail(before_model, binding, decision_key):
+6444:             raise BridgeUnavailableError("generic Confirm lacks actual selected detail and current-player owner")
+6445:         current = self.take_snapshot()
+6446:         if (opening_binding(current) != binding or not _same_paused_native_frame(starting, current)
+6447:                 or current.get("revision") != revision or current.get("active_event") is not None
+6448:                 or current.get("pending_character_interaction") is not None):
+6449:             raise BridgeUnavailableError("generic Confirm before-read crossed its frame")
+6450:         claim_dir.mkdir(parents=True, exist_ok=True)
+6451:         request_id = f"decision-outcome-{uuid.uuid4().hex}"
+6452:         try:
+6453:             with claim.open("x", encoding="utf-8", newline="\n") as stream:
+6454:                 json.dump({"schema": "ck3-ingame-decision-outcome-once-claim-v1",
+6455:                            "request_id": request_id, "binding": binding,
+6456:                            "action_identity": identity, "decision_key": decision_key,
+6457:                            "action": "confirm_outcome", "expected_outcome": expected_outcome,
+6458:                            "expected_event_definition_key": event_key,
+6459:                            "status": "claimed_result_unknown_no_retry"}, stream,
+6460:                           ensure_ascii=False, indent=2)
+6480:                 current = self.take_snapshot()
+6481:                 if not outcome_frame_matches(starting, current, binding):
+6482:                     raise BridgeUnavailableError("generic Confirm later owner/date/connection frame changed")
+6483:                 if current.get("pending_character_interaction") is not None:
+6484:                     raise BridgeUnavailableError("generic Confirm unexpectedly opened a pending interaction")
+6485:                 if expected_outcome == "event_window":
+6486:                     active = current.get("active_event")
+6487:                     instance = active.get("instance_id") if isinstance(active, dict) else None
+6488:                     if type(instance) is int and 1 <= instance <= 2**31 - 1:
+6489:                         later = self.query_current_event_window_context_v1(
+6490:                             instance, expected_revision=int(current["revision"]))
+6491:                         verified = actual_expected_event(later, current, binding, event_key)
+6492:                     else:
+6493:                         later = None
+6494:                         verified = False
+6495:                 else:
+6496:                     if current.get("active_event") is not None:
+6497:                         raise BridgeUnavailableError("decision_closed unexpectedly opened an event")
+6498:                     later = self.inspect_gui_window_tree_v1("decision_detail")
+6499:                     verified = actual_closed_decision_detail(later)
+6500:                 ending = self.take_snapshot()
+6501:                 if (not outcome_frame_matches(starting, ending, binding)
+6502:                         or not _same_paused_native_frame(current, ending)
+6503:                         or current.get("revision") != ending.get("revision")
+6504:                         or current.get("active_event") != ending.get("active_event")):
+6505:                     raise BridgeUnavailableError("generic Confirm outcome read crossed its actual frame")
+6506:                 if verified:
+6507:                     break
+6508:                 remaining = deadline - time.monotonic()
+6509:                 if remaining <= 0:
+6510:                     raise BridgeUnavailableError("generic Confirm lacks the actual requested outcome; no retry")
+6511:                 time.sleep(min(0.1, remaining))
+6512:             result.update({"postcondition_verified": True, "verification_pending": False,
+6513:                            "status": "observed_current_event_window" if expected_outcome == "event_window"
+6514:                                      else "observed_decision_detail_closed",
+6515:                            "later_actual_observation": later, "native_ack": dict(raw),
+6516:                            "action_request_id": request_id, "action_claim_path": str(claim),
+6517:                            "episode_run_id": binding["episode_run_id"], "queried_revision": revision,
+6518:                            "snapshot_after": ending,
+6519:                            "verification_scope": "receiver_dispatch_and_declared_ui_outcome",
+6520:                            "business_effects_verified": False, "full_product_acceptance_credit": False,
+6521:                            "front_event_verified": False, "event_option_selection_authorized": False,
+6522:                            "uses_mouse": False, "uses_keyboard": False, "uses_ocr": False})
+6523:             preserve_verified_claim(claim, request_id, result)
+6524:         except Exception as error:
+6525:             self._record_command(STEP, ok=False, result={"raw": raw, "action_claim_path": str(claim)},
+6526:                                  error=f"{type(error).__name__}: {error}")
+6527:             raise
+6528:         self._record_command(STEP, ok=True, result=result)
+6529:         return result
+6530:     def _decision_item_action_v1(self, decision_key: str, *, action: str, expected_revision: int | None,
+9625:     def _record_command(
+9626:         self,
+9627:         step: str,
+9628:         *,
+9629:         ok: bool,
+9630:         result: dict[str, object] | None = None,
+9631:         error: str | None = None,
+9632:     ) -> None:
+9633:         with self._history_lock:
+9634:             if step == _RESTORE_CHECKPOINT_STEP:
+9635:                 if ok:
+9636:                     retained = _checkpoint_history_with_restore_lineage(
+9637:                         self._last_checkpoint, self._command_history
+9638:                     )
+9639:                     if retained is not None:
+9640:                         # Binding the replacement process writes a synthetic
+9641:                         # cold-start row immediately so a daemon crash cannot
+9642:                         # lose the process lineage.  The completed managed
+9643:                         # request below replaces that one provisional row with
+9644:                         # its richer lifecycle-queue result; earlier physical
+9645:                         # restarts remain independent evidence rows.
+9646:                         if (
+9647:                             retained
+9648:                             and isinstance(result, dict)
+9649:                             and result.get("source")
+9650:                             == "native-session-lifecycle-queue"
+9651:                             and _same_restore_process_replacement(
+9652:                                 retained[-1].get("result"), result
+9653:                             )
+9654:                         ):
+9655:                             retained.pop()
+9656:                         self._command_history = retained
+9657:                     self._managed_restore_transaction = None
+9658:                 elif (
+9659:                     isinstance(self._managed_restore_transaction, dict)
+9660:                     and self._managed_restore_transaction.get(
+9661:                         "replacement_bridge_pid"
+9662:                     )
+9663:                     is None
+9664:                     and self._pending_cold_candidate is None
+9665:                 ):
+9666:                     # A pre-relaunch failure leaves the original CK3 process
+9667:                     # and factual branch authoritative.  Disarm the marker so
+9668:                     # the next ordinary hello is not held for reconciliation.
+9669:                     self._managed_restore_transaction = None
+9670:             row: dict[str, object] = {
+9671:                 "index": len(self._command_history) + 1,
+9672:                 "command": step,
+9673:                 "ok": ok,
+9674:             }
+9675:             if result is not None:
+9676:                 row["result"] = copy.deepcopy(result)
+9677:             if error is not None:
+9678:                 row["error"] = error
+9679:             self._command_history.append(row)
+9680:             self._driver_state_dirty = True
+9681:         if not (ok and _is_deferred_read_only_history_step(step)):
+9682:             self._persist_driver_state()
+9683: 

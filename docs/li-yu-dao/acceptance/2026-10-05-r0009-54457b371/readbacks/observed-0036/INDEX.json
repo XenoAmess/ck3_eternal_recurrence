@@ -1,0 +1,15 @@
+{
+  "schema": "lyd.r8.c2.increment-index.v1",
+  "files": [
+    {
+      "path": "REPORT.json",
+      "bytes": 491407,
+      "sha256": "50515f11e81abcf1fe867a87f4761f8c20896fcfef8ada6040636fb9751a8cde"
+    },
+    {
+      "path": "REQUEST.frozen.json",
+      "bytes": 1867,
+      "sha256": "20f99d57616341c4cd7c0aab1108531c131d7f64d90b35342a08d798cdbbc1a5"
+    }
+  ]
+}

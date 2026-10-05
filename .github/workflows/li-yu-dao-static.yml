@@ -37,6 +37,7 @@ jobs:
           python mod_li_yu_dao/tools/test_build_release.py
           python mod_li_yu_dao/tools/test_run_acceptance.py
           python mod_li_yu_dao/tools/test_school_consent.py
+          python mod_li_yu_dao/tools/test_c2_preview_scope.py --report /tmp/lyd-c2-preview-scope.json
           python mod_li_yu_dao/tools/test_content_leadership.py
           python mod_li_yu_dao/tools/test_institution_candidate.py
           python mod_li_yu_dao/tools/build_release.py --check
@@ -45,5 +46,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: li-yu-dao-static-report
-          path: /tmp/lyd-static.json
+          path: |
+            /tmp/lyd-static.json
+            /tmp/lyd-c2-preview-scope.json
           if-no-files-found: ignore

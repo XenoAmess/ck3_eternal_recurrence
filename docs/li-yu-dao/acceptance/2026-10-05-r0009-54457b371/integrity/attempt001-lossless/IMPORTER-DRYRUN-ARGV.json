@@ -1,0 +1,11 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-failure-report-preparation-20261005-001\\import_r9_report.py",
+    "--plan",
+    "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-sealed-report-20261005-001.import-plan.json",
+    "--plan-sha256",
+    "dc33b7976a795b1b415de4a546fa698d919f0920647841b76cfc72c352e734d2"
+  ],
+  "execute_flag": false
+}

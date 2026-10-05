@@ -1,0 +1,23 @@
+{
+  "schema": "lyd.r9.root-launch-profile-helper.v1",
+  "utc": "2026-10-05T05:49:08.319825+00:00",
+  "mode": "launch",
+  "source_revision": "54457b371e947edb86903c2ebd578034f02695db",
+  "game_create_attempted": true,
+  "game_started": true,
+  "native_injected": false,
+  "bus_mutation": false,
+  "input_sent": false,
+  "pid": 20264,
+  "status": "GAME_CREATED_REQUIRES_NATIVE_LOAD_READBACK",
+  "process_create_time": 1791179349.2116988,
+  "argv": [
+    "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "-debug_mode",
+    "-gdpr-compliant",
+    "-userdir=C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/userdir",
+    "-loadsave=lyd_r9_resume_0034"
+  ],
+  "live_run_id": "bf-202609141645-5434332d4d--li-yu-dao--R0009",
+  "execution_id": "591c8d5b-57c8-43ad-9a9b-d2bb16ad0e91"
+}

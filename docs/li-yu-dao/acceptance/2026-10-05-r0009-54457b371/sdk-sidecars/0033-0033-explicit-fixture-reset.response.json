@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 33,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0033-explicit-fixture-reset.request.json",
+  "request_sha256": "02a0d6b36adf0f666e5cd72ab95848988764910613e1ab48b255e8b10a9f3f4a",
+  "started_at_utc": "2026-10-05T06:16:25.695024+00:00",
+  "request_id": "0033-explicit-fixture-reset",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0033-0033-explicit-fixture-reset.sdk-result.json",
+  "sdk_result_sha256": "d75cec8bd6e200f09ee9797e123b84da1caca2db8c08c265543541356210b0d9",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0032-decision-confirm_outcome.json",
+      "copy": "0033-0033-explicit-fixture-reset.native-01.json",
+      "sha256": "fd9412f620804280b9c04bb1a115d97da2c38a5fbc2d1222a1e2f716b6b6d9eb"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T06:16:30.963044+00:00"
+}

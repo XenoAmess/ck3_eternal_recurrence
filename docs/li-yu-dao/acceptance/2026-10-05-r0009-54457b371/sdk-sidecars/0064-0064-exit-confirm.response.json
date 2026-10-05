@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 64,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0064-exit-confirm.request.json",
+  "request_sha256": "afeb46e651f96d078812ac0f4976d66958eb87abe8d6574419d1a38da4a62e0c",
+  "started_at_utc": "2026-10-05T07:22:41.594738+00:00",
+  "request_id": "0064-exit-confirm",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0064-0064-exit-confirm.sdk-result.json",
+  "sdk_result_sha256": "39252b0f5358fadb72ae90acce15a37cae11046da4d6c969187e2d72da1d537d",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0063-normal-exit-confirm_desktop.json",
+      "copy": "0064-0064-exit-confirm.native-01.json",
+      "sha256": "943f2bb678ba6196cd70f82a04a32056a133f3f22a2570d78c9960f72805a604"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T07:23:15.232807+00:00"
+}

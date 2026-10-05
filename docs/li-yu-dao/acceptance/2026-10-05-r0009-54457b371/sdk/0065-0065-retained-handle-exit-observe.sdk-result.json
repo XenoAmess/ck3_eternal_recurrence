@@ -1,0 +1,162 @@
+{
+  "_meta": {
+    "io.modelcontextprotocol/serverInfo": {
+      "name": "CK3 frozen native profile",
+      "version": ""
+    }
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"schema\": \"ck3.native-profile-receipt.v1\",\n  \"session_id\": \"8ffcb8420953481eade4610f3ff61781\",\n  \"profile_sha256\": \"862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5\",\n  \"pipe_name\": \"\\\\\\\\.\\\\pipe\\\\xar_profile_8ffcb8420953481eade4610f3ff61781\",\n  \"recorded_at_utc\": \"2026-10-05T07:25:09.705396+00:00\",\n  \"status\": \"process_exit_observed_zero\",\n  \"result\": {\n    \"schema\": \"ck3-normal-exit-process-observation-result-v1\",\n    \"action\": \"confirm_desktop\",\n    \"public_revision\": 30,\n    \"request_id\": \"normal-exit-confirm_desktop-5e76ff6b862b41ea93f4499c8bb76316\",\n    \"claim_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-009\\\\native-state\\\\native-session\\\\normal-exit-map-requests\\\\39b5709790eec055d2981eb46247807ae3623ad8f4fad707e0d7ece47c78ea5e.claim.json\",\n    \"source_inventory_sha256\": \"cc99f8cf190083ab8fa6165c0a7268687131d18027b23df8d871a812bcddbf1b\",\n    \"process_creation_filetime_100ns\": 134356529492116987,\n    \"process_preconfirm_pin\": {\n      \"pid\": 20264,\n      \"creation_filetime_100ns\": 134356529492116987,\n      \"retained_handle_token\": \"fd0c8f4400c1d9a5b17bf768a47165a7\",\n      \"wait_result\": 258,\n      \"verified_monotonic_ns\": 655454608521300,\n      \"observation_clock_domain\": \"driver_monotonic_v1\"\n    },\n    \"claim_consumed\": true,\n    \"retry_authorized\": false,\n    \"process_exit_observed\": true,\n    \"exit_code\": 0,\n    \"typed_normal_exit_observed\": true,\n    \"autosave_verified\": false,\n    \"status\": \"process_exit_observed_zero\",\n    \"native_observation\": {\n      \"schema\": \"ck3-normal-exit-map-v1\",\n      \"step\": \"normal-exit-map-v1\",\n      \"action\": \"confirm_desktop\",\n      \"status\": \"dispatch_pending\",\n      \"native_revision\": 29,\n      \"connection_generation\": 1,\n      \"game_pid\": 20264,\n      \"played_character_id\": 31254,\n      \"process_creation_filetime_100ns\": 134356529492116987,\n      \"pump_epoch\": 560840,\n      \"exact_build_verified\": true,\n      \"owner_verified\": true,\n      \"process_identity_verified\": true,\n      \"source_abi_pins_verified\": true,\n      \"stock_files_verified\": true,\n      \"loaded_source_binding_verified\": true,\n      \"frame_verified\": true,\n      \"context_signature_verified\": true,\n      \"confirmation_visible\": true,\n      \"orderly_exit_verified\": false,\n      \"autosave_verified\": false,\n      \"exit_context_signature\": \"6536c6ab3ec34f95744762ae0f3ecd5807a4a6f661b4748b1d7c42121b1ce02b\",\n      \"reason\": \"desktop_dispatch_pending_independent_process_observation\",\n      \"targets\": [\n        {\n          \"read_complete\": true,\n          \"root_exists\": true,\n          \"root_visible\": false,\n          \"target_exists\": true,\n          \"target_visible\": false,\n          \"target_enabled\": true,\n          \"unique_target\": true,\n          \"dispatch_admitted\": false,\n          \"target_vtable_rva\": 76961464\n        },\n        {\n          \"read_complete\": true,\n          \"root_exists\": true,\n          \"root_visible\": true,\n          \"target_exists\": true,\n          \"target_visible\": true,\n          \"target_enabled\": true,\n          \"unique_target\": true,\n          \"dispatch_admitted\": true,\n          \"target_vtable_rva\": 76961464\n        },\n        {\n          \"read_complete\": true,\n          \"root_exists\": true,\n          \"root_visible\": true,\n          \"target_exists\": true,\n          \"target_visible\": true,\n          \"target_enabled\": true,\n          \"unique_target\": true,\n          \"dispatch_admitted\": true,\n          \"target_vtable_rva\": 76961464\n        }\n      ],\n      \"dispatches\": [\n        {\n          \"claim_latched\": false,\n          \"dispatch_invoked\": false,\n          \"native_handled\": false,\n          \"post_read_complete\": false,\n          \"postcondition_observed\": false\n        },\n        {\n          \"claim_latched\": false,\n          \"dispatch_invoked\": false,\n          \"native_handled\": false,\n          \"post_read_complete\": false,\n          \"postcondition_observed\": false\n        },\n        {\n          \"claim_latched\": true,\n          \"dispatch_invoked\": true,\n          \"native_handled\": true,\n          \"post_read_complete\": true,\n          \"postcondition_observed\": false\n        }\n      ]\n    },\n    \"process_observation\": {\n      \"pid\": 20264,\n      \"creation_filetime_100ns\": 134356529492116987,\n      \"retained_handle_token\": \"fd0c8f4400c1d9a5b17bf768a47165a7\",\n      \"wait_result\": 0,\n      \"wait_state\": \"signaled\",\n      \"exit_code\": 0,\n      \"process_identity_verified\": true,\n      \"process_exit_observed\": true,\n      \"observed_monotonic_ns\": 655598207693500,\n      \"timeout_ms\": 5000,\n      \"observation_deadline_reached\": false,\n      \"observation_clock_domain\": \"driver_monotonic_v1\",\n      \"errors\": []\n    },\n    \"driver_dispatch_receipt_observed_monotonic_ns\": 655456196291800,\n    \"receipt_clock_meaning\": \"driver observed validated dispatch_invoked response; not native callback time\",\n    \"observer_retained\": false,\n    \"snapshot_after_required\": false,\n    \"native_submission_count\": 0,\n    \"uses_desktop_input\": false,\n    \"uses_ocr\": false,\n    \"receipt_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-009\\\\native-state\\\\native-session\\\\normal-exit-map-requests\\\\ee2a08d57933be0da3d0.observe-b7acf3f81cfc419c.json\",\n    \"observer_close_receipt_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-009\\\\native-state\\\\native-session\\\\normal-exit-map-requests\\\\ee2a08d57933be0da3d0.observer-close-74e9a1563ff04e00.json\"\n  },\n  \"snapshot_after_required\": false,\n  \"uses_ocr\": false,\n  \"uses_desktop_input\": false,\n  \"uses_injection\": false,\n  \"receipt_path\": \"C:\\\\workspace\\\\ck3_lyd_runtime_20261004\\\\live-attempt-009\\\\native-evidence\\\\8ffcb8420953481eade4610f3ff61781\\\\0064-normal-exit-observe.json\"\n}",
+      "annotations": null,
+      "_meta": null
+    }
+  ],
+  "structuredContent": {
+    "schema": "ck3.native-profile-receipt.v1",
+    "session_id": "8ffcb8420953481eade4610f3ff61781",
+    "profile_sha256": "862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5",
+    "pipe_name": "\\\\.\\pipe\\xar_profile_8ffcb8420953481eade4610f3ff61781",
+    "recorded_at_utc": "2026-10-05T07:25:09.705396+00:00",
+    "status": "process_exit_observed_zero",
+    "result": {
+      "schema": "ck3-normal-exit-process-observation-result-v1",
+      "action": "confirm_desktop",
+      "public_revision": 30,
+      "request_id": "normal-exit-confirm_desktop-5e76ff6b862b41ea93f4499c8bb76316",
+      "claim_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-state\\native-session\\normal-exit-map-requests\\39b5709790eec055d2981eb46247807ae3623ad8f4fad707e0d7ece47c78ea5e.claim.json",
+      "source_inventory_sha256": "cc99f8cf190083ab8fa6165c0a7268687131d18027b23df8d871a812bcddbf1b",
+      "process_creation_filetime_100ns": 134356529492116987,
+      "process_preconfirm_pin": {
+        "pid": 20264,
+        "creation_filetime_100ns": 134356529492116987,
+        "retained_handle_token": "fd0c8f4400c1d9a5b17bf768a47165a7",
+        "wait_result": 258,
+        "verified_monotonic_ns": 655454608521300,
+        "observation_clock_domain": "driver_monotonic_v1"
+      },
+      "claim_consumed": true,
+      "retry_authorized": false,
+      "process_exit_observed": true,
+      "exit_code": 0,
+      "typed_normal_exit_observed": true,
+      "autosave_verified": false,
+      "status": "process_exit_observed_zero",
+      "native_observation": {
+        "schema": "ck3-normal-exit-map-v1",
+        "step": "normal-exit-map-v1",
+        "action": "confirm_desktop",
+        "status": "dispatch_pending",
+        "native_revision": 29,
+        "connection_generation": 1,
+        "game_pid": 20264,
+        "played_character_id": 31254,
+        "process_creation_filetime_100ns": 134356529492116987,
+        "pump_epoch": 560840,
+        "exact_build_verified": true,
+        "owner_verified": true,
+        "process_identity_verified": true,
+        "source_abi_pins_verified": true,
+        "stock_files_verified": true,
+        "loaded_source_binding_verified": true,
+        "frame_verified": true,
+        "context_signature_verified": true,
+        "confirmation_visible": true,
+        "orderly_exit_verified": false,
+        "autosave_verified": false,
+        "exit_context_signature": "6536c6ab3ec34f95744762ae0f3ecd5807a4a6f661b4748b1d7c42121b1ce02b",
+        "reason": "desktop_dispatch_pending_independent_process_observation",
+        "targets": [
+          {
+            "read_complete": true,
+            "root_exists": true,
+            "root_visible": false,
+            "target_exists": true,
+            "target_visible": false,
+            "target_enabled": true,
+            "unique_target": true,
+            "dispatch_admitted": false,
+            "target_vtable_rva": 76961464
+          },
+          {
+            "read_complete": true,
+            "root_exists": true,
+            "root_visible": true,
+            "target_exists": true,
+            "target_visible": true,
+            "target_enabled": true,
+            "unique_target": true,
+            "dispatch_admitted": true,
+            "target_vtable_rva": 76961464
+          },
+          {
+            "read_complete": true,
+            "root_exists": true,
+            "root_visible": true,
+            "target_exists": true,
+            "target_visible": true,
+            "target_enabled": true,
+            "unique_target": true,
+            "dispatch_admitted": true,
+            "target_vtable_rva": 76961464
+          }
+        ],
+        "dispatches": [
+          {
+            "claim_latched": false,
+            "dispatch_invoked": false,
+            "native_handled": false,
+            "post_read_complete": false,
+            "postcondition_observed": false
+          },
+          {
+            "claim_latched": false,
+            "dispatch_invoked": false,
+            "native_handled": false,
+            "post_read_complete": false,
+            "postcondition_observed": false
+          },
+          {
+            "claim_latched": true,
+            "dispatch_invoked": true,
+            "native_handled": true,
+            "post_read_complete": true,
+            "postcondition_observed": false
+          }
+        ]
+      },
+      "process_observation": {
+        "pid": 20264,
+        "creation_filetime_100ns": 134356529492116987,
+        "retained_handle_token": "fd0c8f4400c1d9a5b17bf768a47165a7",
+        "wait_result": 0,
+        "wait_state": "signaled",
+        "exit_code": 0,
+        "process_identity_verified": true,
+        "process_exit_observed": true,
+        "observed_monotonic_ns": 655598207693500,
+        "timeout_ms": 5000,
+        "observation_deadline_reached": false,
+        "observation_clock_domain": "driver_monotonic_v1",
+        "errors": []
+      },
+      "driver_dispatch_receipt_observed_monotonic_ns": 655456196291800,
+      "receipt_clock_meaning": "driver observed validated dispatch_invoked response; not native callback time",
+      "observer_retained": false,
+      "snapshot_after_required": false,
+      "native_submission_count": 0,
+      "uses_desktop_input": false,
+      "uses_ocr": false,
+      "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-state\\native-session\\normal-exit-map-requests\\ee2a08d57933be0da3d0.observe-b7acf3f81cfc419c.json",
+      "observer_close_receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-state\\native-session\\normal-exit-map-requests\\ee2a08d57933be0da3d0.observer-close-74e9a1563ff04e00.json"
+    },
+    "snapshot_after_required": false,
+    "uses_ocr": false,
+    "uses_desktop_input": false,
+    "uses_injection": false,
+    "receipt_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0064-normal-exit-observe.json"
+  },
+  "isError": false,
+  "resultType": "complete"
+}

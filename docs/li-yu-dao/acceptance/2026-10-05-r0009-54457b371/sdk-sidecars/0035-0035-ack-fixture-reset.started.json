@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 35,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0035-ack-fixture-reset.request.json",
+  "request_sha256": "31735f95928e403e3161ca8596e8445ac46b5b709d4b8851ba83e0755eb8bcef",
+  "started_at_utc": "2026-10-05T06:17:05.287398+00:00"
+}

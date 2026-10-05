@@ -93,6 +93,14 @@ class OutcomeDriver:
                    "game.command.query-current-event-window-context-v1", "game.command.inspect-gui-window-tree-v1",
                    "game.command.query-frontend-gui-route-v1"}
     def take_snapshot(self):return deepcopy(self.frame)
+    def take_snapshot_without_native_command_history(self):
+        snapshot = self.take_snapshot()
+        history = snapshot.get("native_command_history", [])
+        snapshot["native_command_history"] = []
+        snapshot["native_command_history_export"] = {
+            "mode": "omitted", "total_count": len(history), "included_count": 0,
+        }
+        return snapshot
     def capabilities(self):return {"bridge_capabilities":sorted(self.caps)}
     def _native_driver_state_path(self):return self.directory/"driver-state.json"
     def _record_command(self,*args,**kwargs):self.records.append((args,kwargs))

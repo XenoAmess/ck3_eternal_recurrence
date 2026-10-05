@@ -1,0 +1,950 @@
+{
+  "start_utc": "2026-10-05T06:42:16.149232+00:00",
+  "python": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+  "policy": "read only process, thread, and window queries; no messages, input, pause, kill, attach, pipe connection, or MCP",
+  "processes": [
+    {
+      "pid": 7452,
+      "num_threads": 2,
+      "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "cmdline": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-r9-official-mcp-consumer21-20261005-001\\review-package-001\\persistent_native_mcp_queue_21.py",
+        "serve",
+        "--profile",
+        "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/native-profile-with-exit-inventory.json",
+        "--queue",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001",
+        "--output",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001",
+        "--binding",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-mcp-binding-001\\ROOT-BINDING.json",
+        "--binding-sha256",
+        "4be080030b1f6c7ae069ebed33e7b1835ba68acda927416ae211dedb1ec1475f"
+      ],
+      "ppid": 15956,
+      "cpu_times": {
+        "user": 315.140625,
+        "system": 115.171875,
+        "children_user": 0.0,
+        "children_system": 0.0
+      },
+      "create_time": 1791179955.8551316,
+      "status": "running",
+      "name": "python.exe",
+      "threads": [
+        {
+          "id": 11728,
+          "user_time": 315.140625,
+          "system_time": 115.1875
+        },
+        {
+          "id": 17248,
+          "user_time": 0.0,
+          "system_time": 0.0
+        }
+      ]
+    },
+    {
+      "pid": 7548,
+      "num_threads": 1,
+      "exe": "C:\\Windows\\System32\\cmd.exe",
+      "cmdline": [
+        "C:\\Windows\\system32\\cmd.exe",
+        "/c",
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe -B -X utf8 C:/workspace/ck3_lyd_runtime_20261004/root_r9_start_mcp_20261005.py"
+      ],
+      "ppid": 6136,
+      "cpu_times": {
+        "user": 0.0,
+        "system": 0.015625,
+        "children_user": 0.0,
+        "children_system": 0.0
+      },
+      "create_time": 1791179955.7440023,
+      "status": "running",
+      "name": "cmd.exe",
+      "threads": [
+        {
+          "id": 11888,
+          "user_time": 0.0,
+          "system_time": 0.015625
+        }
+      ]
+    },
+    {
+      "pid": 8140,
+      "num_threads": 27,
+      "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "cmdline": [
+        "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+        "-X",
+        "utf8",
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_native_profile_mcp.py",
+        "--profile",
+        "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-profile-with-exit-inventory.json"
+      ],
+      "ppid": 7452,
+      "cpu_times": {
+        "user": 186.3125,
+        "system": 27.03125,
+        "children_user": 0.0,
+        "children_system": 0.0
+      },
+      "create_time": 1791179959.5006828,
+      "status": "running",
+      "name": "python.exe",
+      "threads": [
+        {
+          "id": 14760,
+          "user_time": 17.3125,
+          "system_time": 2.78125
+        },
+        {
+          "id": 7188,
+          "user_time": 0.015625,
+          "system_time": 0.03125
+        },
+        {
+          "id": 9248,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 7152,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 9176,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 6424,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 16312,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 14568,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 19116,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 1484,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 15592,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 20380,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 20336,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 14360,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 14820,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 19264,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 1520,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 13600,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 12116,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 19300,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 13492,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 18140,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 14112,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 12920,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 14604,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 19460,
+          "user_time": 32.046875,
+          "system_time": 2.109375
+        },
+        {
+          "id": 19796,
+          "user_time": 10.984375,
+          "system_time": 0.96875
+        }
+      ]
+    },
+    {
+      "pid": 15956,
+      "num_threads": 1,
+      "exe": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+      "cmdline": [
+        "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:/workspace/ck3_lyd_runtime_20261004/root_r9_start_mcp_20261005.py"
+      ],
+      "ppid": 7548,
+      "cpu_times": {
+        "user": 0.03125,
+        "system": 0.03125,
+        "children_user": 0.0,
+        "children_system": 0.0
+      },
+      "create_time": 1791179955.7892923,
+      "status": "running",
+      "name": "python.exe",
+      "threads": [
+        {
+          "id": 15720,
+          "user_time": 0.03125,
+          "system_time": 0.03125
+        }
+      ]
+    },
+    {
+      "pid": 20264,
+      "num_threads": 128,
+      "exe": "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+      "cmdline": [
+        "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+        "-debug_mode",
+        "-gdpr-compliant",
+        "-userdir=C:/workspace/ck3_lyd_runtime_20261004/live-attempt-009/userdir",
+        "-loadsave=lyd_r9_resume_0034"
+      ],
+      "ppid": 15900,
+      "cpu_times": {
+        "user": 7210.625,
+        "system": 1643.140625,
+        "children_user": 0.0,
+        "children_system": 0.0
+      },
+      "create_time": 1791179349.2116988,
+      "status": "running",
+      "name": "ck3.exe",
+      "threads": [
+        {
+          "id": 14852,
+          "user_time": 1070.484375,
+          "system_time": 275.875
+        },
+        {
+          "id": 14160,
+          "user_time": 184.921875,
+          "system_time": 43.640625
+        },
+        {
+          "id": 11544,
+          "user_time": 205.953125,
+          "system_time": 40.96875
+        },
+        {
+          "id": 2676,
+          "user_time": 200.40625,
+          "system_time": 40.484375
+        },
+        {
+          "id": 16788,
+          "user_time": 146.703125,
+          "system_time": 35.90625
+        },
+        {
+          "id": 15800,
+          "user_time": 169.765625,
+          "system_time": 30.78125
+        },
+        {
+          "id": 13048,
+          "user_time": 152.609375,
+          "system_time": 41.5
+        },
+        {
+          "id": 1064,
+          "user_time": 151.328125,
+          "system_time": 35.046875
+        },
+        {
+          "id": 2004,
+          "user_time": 122.53125,
+          "system_time": 37.03125
+        },
+        {
+          "id": 17224,
+          "user_time": 138.046875,
+          "system_time": 24.40625
+        },
+        {
+          "id": 2500,
+          "user_time": 103.484375,
+          "system_time": 32.84375
+        },
+        {
+          "id": 13352,
+          "user_time": 106.265625,
+          "system_time": 32.90625
+        },
+        {
+          "id": 10972,
+          "user_time": 93.828125,
+          "system_time": 18.859375
+        },
+        {
+          "id": 11128,
+          "user_time": 103.6875,
+          "system_time": 40.296875
+        },
+        {
+          "id": 16460,
+          "user_time": 106.796875,
+          "system_time": 29.53125
+        },
+        {
+          "id": 6128,
+          "user_time": 112.984375,
+          "system_time": 30.078125
+        },
+        {
+          "id": 15516,
+          "user_time": 96.265625,
+          "system_time": 28.359375
+        },
+        {
+          "id": 19096,
+          "user_time": 96.3125,
+          "system_time": 36.5625
+        },
+        {
+          "id": 20088,
+          "user_time": 102.984375,
+          "system_time": 31.0625
+        },
+        {
+          "id": 19284,
+          "user_time": 113.546875,
+          "system_time": 37.515625
+        },
+        {
+          "id": 8052,
+          "user_time": 102.140625,
+          "system_time": 31.921875
+        },
+        {
+          "id": 15328,
+          "user_time": 93.21875,
+          "system_time": 28.4375
+        },
+        {
+          "id": 13968,
+          "user_time": 96.875,
+          "system_time": 32.46875
+        },
+        {
+          "id": 16888,
+          "user_time": 92.0,
+          "system_time": 33.015625
+        },
+        {
+          "id": 7756,
+          "user_time": 97.21875,
+          "system_time": 32.90625
+        },
+        {
+          "id": 19504,
+          "user_time": 95.15625,
+          "system_time": 28.375
+        },
+        {
+          "id": 13788,
+          "user_time": 88.140625,
+          "system_time": 33.609375
+        },
+        {
+          "id": 20340,
+          "user_time": 87.171875,
+          "system_time": 33.671875
+        },
+        {
+          "id": 15080,
+          "user_time": 91.671875,
+          "system_time": 28.15625
+        },
+        {
+          "id": 15972,
+          "user_time": 89.375,
+          "system_time": 36.34375
+        },
+        {
+          "id": 5984,
+          "user_time": 380.171875,
+          "system_time": 62.46875
+        },
+        {
+          "id": 15440,
+          "user_time": 330.375,
+          "system_time": 28.265625
+        },
+        {
+          "id": 20328,
+          "user_time": 218.734375,
+          "system_time": 36.125
+        },
+        {
+          "id": 8340,
+          "user_time": 164.65625,
+          "system_time": 15.515625
+        },
+        {
+          "id": 15232,
+          "user_time": 297.875,
+          "system_time": 59.09375
+        },
+        {
+          "id": 12512,
+          "user_time": 96.96875,
+          "system_time": 19.03125
+        },
+        {
+          "id": 15600,
+          "user_time": 86.0625,
+          "system_time": 12.65625
+        },
+        {
+          "id": 13508,
+          "user_time": 67.359375,
+          "system_time": 8.421875
+        },
+        {
+          "id": 17700,
+          "user_time": 54.421875,
+          "system_time": 8.4375
+        },
+        {
+          "id": 11348,
+          "user_time": 38.578125,
+          "system_time": 7.0625
+        },
+        {
+          "id": 17020,
+          "user_time": 33.96875,
+          "system_time": 5.453125
+        },
+        {
+          "id": 14120,
+          "user_time": 28.96875,
+          "system_time": 4.953125
+        },
+        {
+          "id": 16044,
+          "user_time": 30.65625,
+          "system_time": 5.203125
+        },
+        {
+          "id": 15388,
+          "user_time": 31.46875,
+          "system_time": 5.296875
+        },
+        {
+          "id": 8084,
+          "user_time": 0.015625,
+          "system_time": 0.0
+        },
+        {
+          "id": 10024,
+          "user_time": 0.0,
+          "system_time": 0.046875
+        },
+        {
+          "id": 11456,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 9688,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 12560,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 12888,
+          "user_time": 0.046875,
+          "system_time": 0.015625
+        },
+        {
+          "id": 20184,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 18852,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 12248,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 14780,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 12824,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 20112,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 16520,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 14632,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 11352,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 18704,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 17772,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 10144,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 14588,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 11304,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 17172,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 7732,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 620,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 5688,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 18560,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 17232,
+          "user_time": 0.046875,
+          "system_time": 0.15625
+        },
+        {
+          "id": 6192,
+          "user_time": 241.359375,
+          "system_time": 26.921875
+        },
+        {
+          "id": 7660,
+          "user_time": 1.25,
+          "system_time": 6.21875
+        },
+        {
+          "id": 6580,
+          "user_time": 371.90625,
+          "system_time": 9.921875
+        },
+        {
+          "id": 17576,
+          "user_time": 0.296875,
+          "system_time": 2.203125
+        },
+        {
+          "id": 10068,
+          "user_time": 67.125,
+          "system_time": 0.734375
+        },
+        {
+          "id": 14156,
+          "user_time": 0.03125,
+          "system_time": 0.421875
+        },
+        {
+          "id": 19768,
+          "user_time": 5.96875,
+          "system_time": 0.265625
+        },
+        {
+          "id": 12188,
+          "user_time": 40.875,
+          "system_time": 2.828125
+        },
+        {
+          "id": 2668,
+          "user_time": 15.96875,
+          "system_time": 0.703125
+        },
+        {
+          "id": 9416,
+          "user_time": 0.015625,
+          "system_time": 0.078125
+        },
+        {
+          "id": 1804,
+          "user_time": 0.109375,
+          "system_time": 0.015625
+        },
+        {
+          "id": 15244,
+          "user_time": 0.09375,
+          "system_time": 0.0625
+        },
+        {
+          "id": 15488,
+          "user_time": 0.140625,
+          "system_time": 0.046875
+        },
+        {
+          "id": 9832,
+          "user_time": 0.140625,
+          "system_time": 0.015625
+        },
+        {
+          "id": 14376,
+          "user_time": 0.0625,
+          "system_time": 0.078125
+        },
+        {
+          "id": 10756,
+          "user_time": 0.109375,
+          "system_time": 0.03125
+        },
+        {
+          "id": 2728,
+          "user_time": 0.09375,
+          "system_time": 0.0625
+        },
+        {
+          "id": 7864,
+          "user_time": 0.140625,
+          "system_time": 0.03125
+        },
+        {
+          "id": 9276,
+          "user_time": 0.1875,
+          "system_time": 0.03125
+        },
+        {
+          "id": 16116,
+          "user_time": 0.09375,
+          "system_time": 0.0625
+        },
+        {
+          "id": 14516,
+          "user_time": 0.0625,
+          "system_time": 0.0
+        },
+        {
+          "id": 2832,
+          "user_time": 0.1875,
+          "system_time": 0.03125
+        },
+        {
+          "id": 15796,
+          "user_time": 0.140625,
+          "system_time": 0.015625
+        },
+        {
+          "id": 7040,
+          "user_time": 0.09375,
+          "system_time": 0.03125
+        },
+        {
+          "id": 11920,
+          "user_time": 0.109375,
+          "system_time": 0.03125
+        },
+        {
+          "id": 18840,
+          "user_time": 0.515625,
+          "system_time": 0.0
+        },
+        {
+          "id": 8968,
+          "user_time": 0.125,
+          "system_time": 0.03125
+        },
+        {
+          "id": 5800,
+          "user_time": 0.046875,
+          "system_time": 0.03125
+        },
+        {
+          "id": 15740,
+          "user_time": 0.109375,
+          "system_time": 0.015625
+        },
+        {
+          "id": 7568,
+          "user_time": 10.203125,
+          "system_time": 17.75
+        },
+        {
+          "id": 10520,
+          "user_time": 0.0,
+          "system_time": 0.0
+        },
+        {
+          "id": 17972,
+          "user_time": 2.859375,
+          "system_time": 0.03125
+        },
+        {
+          "id": 12192,
+          "user_time": 0.328125,
+          "system_time": 0.03125
+        },
+        {
+          "id": 2892,
+          "user_time": 1.96875,
+          "system_time": 0.0625
+        },
+        {
+          "id": 12748,
+          "user_time": 2.296875,
+          "system_time": 0.015625
+        },
+        {
+          "id": 5212,
+          "user_time": 0.234375,
+          "system_time": 0.015625
+        },
+        {
+          "id": 19580,
+          "user_time": 1.703125,
+          "system_time": 0.03125
+        },
+        {
+          "id": 5280,
+          "user_time": 0.15625,
+          "system_time": 0.015625
+        },
+        {
+          "id": 18284,
+          "user_time": 2.609375,
+          "system_time": 0.09375
+        },
+        {
+          "id": 17852,
+          "user_time": 1.421875,
+          "system_time": 0.0625
+        },
+        {
+          "id": 14372,
+          "user_time": 0.5625,
+          "system_time": 0.015625
+        },
+        {
+          "id": 15316,
+          "user_time": 0.125,
+          "system_time": 0.015625
+        },
+        {
+          "id": 10692,
+          "user_time": 3.8125,
+          "system_time": 0.109375
+        },
+        {
+          "id": 7960,
+          "user_time": 1.296875,
+          "system_time": 0.1875
+        },
+        {
+          "id": 16948,
+          "user_time": 2.828125,
+          "system_time": 0.03125
+        },
+        {
+          "id": 16760,
+          "user_time": 0.21875,
+          "system_time": 0.015625
+        },
+        {
+          "id": 3808,
+          "user_time": 1.796875,
+          "system_time": 0.0625
+        },
+        {
+          "id": 15196,
+          "user_time": 0.1875,
+          "system_time": 0.015625
+        },
+        {
+          "id": 9456,
+          "user_time": 0.203125,
+          "system_time": 0.03125
+        },
+        {
+          "id": 1092,
+          "user_time": 54.953125,
+          "system_time": 51.671875
+        },
+        {
+          "id": 18948,
+          "user_time": 0.015625,
+          "system_time": 0.359375
+        },
+        {
+          "id": 11708,
+          "user_time": 0.53125,
+          "system_time": 0.0625
+        },
+        {
+          "id": 10288,
+          "user_time": 0.03125,
+          "system_time": 0.046875
+        },
+        {
+          "id": 17332,
+          "user_time": 0.03125,
+          "system_time": 0.015625
+        },
+        {
+          "id": 2988,
+          "user_time": 0.046875,
+          "system_time": 0.0
+        },
+        {
+          "id": 19440,
+          "user_time": 0.0,
+          "system_time": 0.046875
+        },
+        {
+          "id": 17352,
+          "user_time": 0.734375,
+          "system_time": 0.28125
+        },
+        {
+          "id": 12632,
+          "user_time": 0.0,
+          "system_time": 0.0
+        }
+      ]
+    }
+  ],
+  "window": {
+    "hwnd": 5637378,
+    "exists": true,
+    "visible": true,
+    "owner_pid": 20264,
+    "owner_thread": 14852,
+    "is_hung_app_window": false,
+    "title": "Crusader Kings III",
+    "class": "SDL_app",
+    "foreground_hwnd": 5637378,
+    "rect": [
+      152,
+      59,
+      1768,
+      998
+    ]
+  },
+  "end_utc": "2026-10-05T06:42:19.659371+00:00"
+}

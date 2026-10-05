@@ -1,0 +1,59 @@
+{
+  "schema": "lyd.r9.derived-scope-summary-correction.v1",
+  "utc": "2026-10-05T08:05:51.432195+00:00",
+  "reason": "Frozen v2 used a generic prefix_only default on the new completed final-whole child. Actual raw whole-log report and closure were already accurate.",
+  "original_attempt": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-sealed-report-20261005-001\\INDEX.json",
+    "bytes": 153547,
+    "sha256": "49801f3a0ae457a4b4db8dbdff105825bde5b60dabb265a015ba69182cad8657"
+  },
+  "original_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-sealed-report-20261005-001\\REPORT.json",
+    "bytes": 93382,
+    "sha256": "907e8c822062c19e696cbd5057e6e785a260147b222ba0f9c3e289fe3e487c67"
+  },
+  "actual_whole_report": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\REPORT.json",
+    "bytes": 54489,
+    "sha256": "7de0c4edecdb06f113cbbaf650a14f42ea96b8880ff2ed3e937ce551815d1631"
+  },
+  "corrected_summary": [
+    {
+      "before": {
+        "source": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\REPORT.json",
+          "bytes": 54489,
+          "sha256": "7de0c4edecdb06f113cbbaf650a14f42ea96b8880ff2ed3e937ce551815d1631"
+        },
+        "prefix_only": true,
+        "scope": null,
+        "result": "ACTUAL_R9_WHOLE_LOGS_RED",
+        "new_error_log_bytes": null,
+        "full_whole_log_credit": false
+      },
+      "after": {
+        "source": {
+          "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\REPORT.json",
+          "bytes": 54489,
+          "sha256": "7de0c4edecdb06f113cbbaf650a14f42ea96b8880ff2ed3e937ce551815d1631"
+        },
+        "prefix_only": false,
+        "scope": "All 16 actual files after parent-reported process exit; two whole reads and before/after size/mtime/identity stable during capture.",
+        "result": "ACTUAL_R9_WHOLE_LOGS_RED",
+        "new_error_log_bytes": null,
+        "whole_log_capture_verified": true,
+        "green_log_credit": false,
+        "capture_result": "PASS_STABLE_COMPLETE_FILES"
+      }
+    }
+  ],
+  "all_unchanged_files": 790,
+  "raw_and_gzip_bytes_unchanged": true,
+  "prior_full_lossless_validation": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-sealed-report-verification-20261005-001\\VALIDATION.json",
+    "bytes": 3767,
+    "sha256": "2ed2458e07ec09021ce460f55487dad2c070c73e412ec7e6caf5e8f886ce4311"
+  },
+  "new_business_acceptance_credit": false,
+  "main_import_performed": false
+}

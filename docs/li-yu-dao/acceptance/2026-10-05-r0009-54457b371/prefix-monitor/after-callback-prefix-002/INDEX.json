@@ -1,0 +1,74 @@
+{
+  "CLASSIFICATION.json": {
+    "bytes": 379187,
+    "sha256": "11f055a2e380ebb2469bab10fd5f2c77de5e3d7a5635dc976b1b7ca25fbeb482"
+  },
+  "raw-prefix/code_revisions.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-prefix/custom_automated_stats.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-prefix/database_conflicts.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-prefix/debug.log": {
+    "bytes": 493098,
+    "sha256": "4d9e9fdfa8782cb4a27ff1cc442eec47e42fe1ca62b69c5559467b5cb4d04105"
+  },
+  "raw-prefix/dedicated_server.log": {
+    "bytes": 70,
+    "sha256": "725a39a723e6441548ba09ae8026426045d8502f87ec52b9dee1feac0c5882ae"
+  },
+  "raw-prefix/error.log": {
+    "bytes": 138556,
+    "sha256": "0a9b5cfb2628d42b9b334e6adb0777640f6614f2f376ff66d64a0c6d6483fb50"
+  },
+  "raw-prefix/game.log": {
+    "bytes": 2127,
+    "sha256": "3b38de110c49dc91ce6477af5d67736b9e4f9ab8df63f69bbe73643445a7beae"
+  },
+  "raw-prefix/gui_warnings.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-prefix/memory.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-prefix/message.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-prefix/multiplayer.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-prefix/pdxsdk.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-prefix/profile.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-prefix/setup.log": {
+    "bytes": 36864,
+    "sha256": "9718dc19bd788c139c9166a603a37b45b3a1dfb047cd51ed560cc13e25027be1"
+  },
+  "raw-prefix/system.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-prefix/text.log": {
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "REPORT.json": {
+    "bytes": 32410,
+    "sha256": "497b0b69aec65b71e388cde2b412d4983bdb838861e045a36904b68de74108f4"
+  }
+}

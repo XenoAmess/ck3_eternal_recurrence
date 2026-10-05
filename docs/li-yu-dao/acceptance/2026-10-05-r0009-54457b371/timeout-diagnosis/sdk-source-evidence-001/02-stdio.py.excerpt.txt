@@ -1,0 +1,7 @@
+199:         async def stdout_writer():
+200:             try:
+201:                 async with write_stream_reader:
+202:                     async for session_message in write_stream_reader:
+203:                         json = session_message.message.model_dump_json(by_alias=True, exclude_unset=True)
+204:                         await stdout.write(json + "\n")
+205:                         await stdout.flush()

@@ -1,0 +1,161 @@
+{
+  "start_utc": "2026-10-05T06:43:27.707828+00:00",
+  "fixed_prefix_policy": true,
+  "files": [
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0056-0056-detach-commit.request.json",
+      "relative": "mcp-client-evidence-001\\0056-0056-detach-commit.request.json",
+      "prefix_byte_bound": 258,
+      "copied_bytes": 258,
+      "sha256": "06288efb2bb8dbcb83c172e9ffde13d35019801741283c462afabfa3b3a7a6a0",
+      "source_before_mtime_ns": 1791182356988211700,
+      "source_after_mtime_ns": 1791182356988211700,
+      "source_after_bytes": 258,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0056-0056-detach-commit.response.json",
+      "relative": "mcp-client-evidence-001\\0056-0056-detach-commit.response.json",
+      "prefix_byte_bound": 523,
+      "copied_bytes": 523,
+      "sha256": "cff35ccdd3ab2d99de488b9607c09b3e82d7c98056d200c55c4e6a1673a6dc35",
+      "source_before_mtime_ns": 1791182418791502200,
+      "source_after_mtime_ns": 1791182418791502200,
+      "source_after_bytes": 523,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0056-0056-detach-commit.started.json",
+      "relative": "mcp-client-evidence-001\\0056-0056-detach-commit.started.json",
+      "prefix_byte_bound": 338,
+      "copied_bytes": 338,
+      "sha256": "2e079e58920349fe62fa362e308c40d467bb612b0dc083c95553db4ff7517427",
+      "source_before_mtime_ns": 1791182356989242100,
+      "source_after_mtime_ns": 1791182356989242100,
+      "source_after_bytes": 338,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0057-0057-post-detach-commit-observe.request.json",
+      "relative": "mcp-client-evidence-001\\0057-0057-post-detach-commit-observe.request.json",
+      "prefix_byte_bound": 188,
+      "copied_bytes": 188,
+      "sha256": "db0576f883f609ae2aecaa8d8a0c2e150547f22df11f731849c9116bfe42a943",
+      "source_before_mtime_ns": 1791182438957847500,
+      "source_after_mtime_ns": 1791182438957847500,
+      "source_after_bytes": 188,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0057-0057-post-detach-commit-observe.response.json",
+      "relative": "mcp-client-evidence-001\\0057-0057-post-detach-commit-observe.response.json",
+      "prefix_byte_bound": 549,
+      "copied_bytes": 549,
+      "sha256": "c9d15c517adf31ce6d9bce15fcb1f7127a29edbe7237cc0263818629b0d28c82",
+      "source_before_mtime_ns": 1791182500083225900,
+      "source_after_mtime_ns": 1791182500083225900,
+      "source_after_bytes": 549,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0057-0057-post-detach-commit-observe.started.json",
+      "relative": "mcp-client-evidence-001\\0057-0057-post-detach-commit-observe.started.json",
+      "prefix_byte_bound": 351,
+      "copied_bytes": 351,
+      "sha256": "2e98be908d53db35a953cc8bf129d3b94ea78f28d17d70bf4bb8b3afa5dfe067",
+      "source_before_mtime_ns": 1791182438958847400,
+      "source_after_mtime_ns": 1791182438958847400,
+      "source_after_bytes": 351,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0052-decision-confirm_outcome.json",
+      "relative": "native-evidence\\8ffcb8420953481eade4610f3ff61781\\0052-decision-confirm_outcome.json",
+      "prefix_byte_bound": 51460345,
+      "copied_bytes": 51460345,
+      "sha256": "6dcdff1f6d792625457d27c0a67b1fda149cf4a18ecac8bd676da60ad6b5cb49",
+      "source_before_mtime_ns": 1791182081739982600,
+      "source_after_mtime_ns": 1791182081739982600,
+      "source_after_bytes": 51460345,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0055-event-select.json",
+      "relative": "native-evidence\\8ffcb8420953481eade4610f3ff61781\\0055-event-select.json",
+      "prefix_byte_bound": 52845012,
+      "copied_bytes": 52845012,
+      "sha256": "2ab638f3343789fb79975b66733f29258221b7ffde932003c3cc9b8bf9781aa4",
+      "source_before_mtime_ns": 1791182369461749100,
+      "source_after_mtime_ns": 1791182369461749100,
+      "source_after_bytes": 52845012,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0056-snapshot.json",
+      "relative": "native-evidence\\8ffcb8420953481eade4610f3ff61781\\0056-snapshot.json",
+      "prefix_byte_bound": 26423676,
+      "copied_bytes": 26423676,
+      "sha256": "21c0d7698474f02408d8c1bcda8cc4ece34a539f693d695cf37f7c9fb1fa13d1",
+      "source_before_mtime_ns": 1791182443882547300,
+      "source_after_mtime_ns": 1791182443882547300,
+      "source_after_bytes": 26423676,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-state\\native-session\\ingame-decision-item-actions\\96fb70500892b3e1220cef32ad6a132cf2e9adc578ef79e66e60fab1057655d8.claim.json",
+      "relative": "native-state\\native-session\\ingame-decision-item-actions\\96fb70500892b3e1220cef32ad6a132cf2e9adc578ef79e66e60fab1057655d8.claim.json",
+      "prefix_byte_bound": 749,
+      "copied_bytes": 749,
+      "sha256": "f82639c96f8770d59844e39a30123b4ad6458edfa84f172ed60d19d7f2b9f9a7",
+      "source_before_mtime_ns": 1791182075455397100,
+      "source_after_mtime_ns": 1791182075455397100,
+      "source_after_bytes": 749,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-state\\native-session\\ingame-decision-item-actions\\96fb70500892b3e1220cef32ad6a132cf2e9adc578ef79e66e60fab1057655d8.claim.result.json",
+      "relative": "native-state\\native-session\\ingame-decision-item-actions\\96fb70500892b3e1220cef32ad6a132cf2e9adc578ef79e66e60fab1057655d8.claim.result.json",
+      "prefix_byte_bound": 4098,
+      "copied_bytes": 4098,
+      "sha256": "76b73dbfaf7a958616789ead76109584b5e4a1e293206a6801bff1bb301c43b2",
+      "source_before_mtime_ns": 1791182076060900700,
+      "source_after_mtime_ns": 1791182076060900700,
+      "source_after_bytes": 4098,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-state\\native-session\\ingame-decision-item-actions\\96fb70500892b3e1220cef32ad6a132cf2e9adc578ef79e66e60fab1057655d8.claim.verified.json",
+      "relative": "native-state\\native-session\\ingame-decision-item-actions\\96fb70500892b3e1220cef32ad6a132cf2e9adc578ef79e66e60fab1057655d8.claim.verified.json",
+      "prefix_byte_bound": 12539311,
+      "copied_bytes": 12539311,
+      "sha256": "0ca585731aa89d372582b0bd4220e437d3f0fa18662bca808a92e6ccfe899b42",
+      "source_before_mtime_ns": 1791182078767935600,
+      "source_after_mtime_ns": 1791182078767935600,
+      "source_after_bytes": 12539311,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\server.stderr.log",
+      "relative": "mcp-client-evidence-001\\server.stderr.log",
+      "prefix_byte_bound": 0,
+      "copied_bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "source_before_mtime_ns": 1791179959482997600,
+      "source_after_mtime_ns": 1791179959482997600,
+      "source_after_bytes": 0,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-mcp-start-exec-001\\stdout.bin",
+      "relative": "root-mcp-start-exec-001\\stdout.bin",
+      "prefix_byte_bound": 12819,
+      "copied_bytes": 12819,
+      "sha256": "6b40d4afe1d451bd5562fb390d32a6de87d0f51bb1d016b689461cedc8bbad48",
+      "source_before_mtime_ns": 1791182500083225900,
+      "source_after_mtime_ns": 1791182500083225900,
+      "source_after_bytes": 12819,
+      "changed_during_read": false
+    }
+  ],
+  "end_utc": "2026-10-05T06:43:30.925649+00:00"
+}

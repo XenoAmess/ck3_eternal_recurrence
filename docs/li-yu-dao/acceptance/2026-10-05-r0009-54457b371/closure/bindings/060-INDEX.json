@@ -1,0 +1,152 @@
+{
+  "added-raw/code_revisions.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\added-raw\\code_revisions.log",
+    "bytes": 1387,
+    "sha256": "793ed8c02a388f50f91d79a24f566022cd250ca69804c0cb736e811e89d6969d"
+  },
+  "added-raw/code_revisions.log.jsonl": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\added-raw\\code_revisions.log.jsonl",
+    "bytes": 4798,
+    "sha256": "28e85a8da6a858ff7a9f73470dddd07e5dd83769b3986bb91b3de34631f4e2b7"
+  },
+  "added-raw/debug.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\added-raw\\debug.log",
+    "bytes": 15841,
+    "sha256": "8bbc3c7517a571838ebc00ce62fae8be1fa86074dc5fc43d8fb6b1516f3de525"
+  },
+  "added-raw/debug.log.jsonl": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\added-raw\\debug.log.jsonl",
+    "bytes": 41997,
+    "sha256": "d54599f6efc3b3cfee2c95926350365d16b4a7581372d9b3422872c8107353f6"
+  },
+  "added-raw/multiplayer.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\added-raw\\multiplayer.log",
+    "bytes": 4096,
+    "sha256": "ed4c630b8186002d550b6873d2b0291dc9acacc219dbe9e5dce3600066230cc4"
+  },
+  "added-raw/multiplayer.log.jsonl": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\added-raw\\multiplayer.log.jsonl",
+    "bytes": 12700,
+    "sha256": "536193d0f195f87897a45c4738692184e6ca61bb7bfd3e6982ca45adfb00e9b2"
+  },
+  "added-raw/setup.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\added-raw\\setup.log",
+    "bytes": 492,
+    "sha256": "23d9bbfe0fe8fae7ec8b90fd84c490d2e77a6fbf8f46e96501c48ac6d9e2e75d"
+  },
+  "added-raw/setup.log.jsonl": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\added-raw\\setup.log.jsonl",
+    "bytes": 1647,
+    "sha256": "ac8f11e284abb73df4fbe83e4ab7b144a107050edbdf91b8462f40237d5ef1e7"
+  },
+  "added-raw/system.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\added-raw\\system.log",
+    "bytes": 926,
+    "sha256": "4ad7055f1569c29ba1c1d7ba9b67122129b8ce05635bc4a71f05d82f18ef3872"
+  },
+  "added-raw/system.log.jsonl": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\added-raw\\system.log.jsonl",
+    "bytes": 3355,
+    "sha256": "e366e97d159e6e8c178cbdcfacfb896573188b252cdd93bed33d5d282c8f1eff"
+  },
+  "CLASSIFICATION.json": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\CLASSIFICATION.json",
+    "bytes": 480171,
+    "sha256": "5b24d5833f803efaa252161fa7744bc6c23f43351d33c43cde348a416ce7f789"
+  },
+  "COMPARE-004-TO-FINAL.json": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\COMPARE-004-TO-FINAL.json",
+    "bytes": 11777,
+    "sha256": "0ec713fe16c6939afe904e5c9c0b3a188c8e3dbef2cfd24ae911225e42fc9b86"
+  },
+  "raw-whole/code_revisions.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\code_revisions.log",
+    "bytes": 1387,
+    "sha256": "793ed8c02a388f50f91d79a24f566022cd250ca69804c0cb736e811e89d6969d"
+  },
+  "raw-whole/custom_automated_stats.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\custom_automated_stats.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-whole/database_conflicts.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\database_conflicts.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-whole/debug.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\debug.log",
+    "bytes": 3709393,
+    "sha256": "d80187b5563e75560ac9e4dca5aaaf4828108c8caade6ef346fcf8c1b81a2c1c"
+  },
+  "raw-whole/dedicated_server.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\dedicated_server.log",
+    "bytes": 70,
+    "sha256": "725a39a723e6441548ba09ae8026426045d8502f87ec52b9dee1feac0c5882ae"
+  },
+  "raw-whole/error.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\error.log",
+    "bytes": 30891598,
+    "sha256": "2603033cd62be7676a86213c9b27dd8bd357f18e71f2b5a9370bebacc4224158"
+  },
+  "raw-whole/game.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\game.log",
+    "bytes": 3161169,
+    "sha256": "6b2d03e41200e7edf475cc4d18591e77dfee84d149fc1bd8bd97bcf254061f14"
+  },
+  "raw-whole/gui_warnings.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\gui_warnings.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-whole/memory.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\memory.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-whole/message.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\message.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-whole/multiplayer.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\multiplayer.log",
+    "bytes": 4096,
+    "sha256": "ed4c630b8186002d550b6873d2b0291dc9acacc219dbe9e5dce3600066230cc4"
+  },
+  "raw-whole/pdxsdk.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\pdxsdk.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-whole/profile.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\profile.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "raw-whole/setup.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\setup.log",
+    "bytes": 37356,
+    "sha256": "24f420ec89833a11de9a146de5cde66a794d6edbaedb8d19b668b6f7d6f7e7bb"
+  },
+  "raw-whole/system.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\system.log",
+    "bytes": 926,
+    "sha256": "4ad7055f1569c29ba1c1d7ba9b67122129b8ce05635bc4a71f05d82f18ef3872"
+  },
+  "raw-whole/text.log": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\raw-whole\\text.log",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "REPORT.json": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\REPORT.json",
+    "bytes": 54489,
+    "sha256": "7de0c4edecdb06f113cbbaf650a14f42ea96b8880ff2ed3e937ce551815d1631"
+  },
+  "REPORT.md": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\final-whole-logs-001\\REPORT.md",
+    "bytes": 710,
+    "sha256": "794fb7914b8b19539e65146619b4c357200837a3b8d82bf3fedbbaeb64690ef0"
+  }
+}

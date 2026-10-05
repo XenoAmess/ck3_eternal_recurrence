@@ -1,0 +1,503 @@
+{
+  "schema": "lyd.r9.actual-terminal-business-notes.v1",
+  "created_utc": "2026-10-05T07:43:02.314083+00:00",
+  "status": "ACTUAL_TERMINAL_AND_NATIVE_FACTS_PREPARED_WHOLE_LOG_PENDING",
+  "source_revision": "54457b371e947edb86903c2ebd578034f02695db",
+  "run": "R0009",
+  "actual_root_closure": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-002\\CLOSURE.json",
+    "bytes": 3837,
+    "sha256": "8abaf2c9ac75ce6e004d4d80a80554beda410cd0d14766703d37625997d55714"
+  },
+  "actual_native_facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\facts-through-0058-native-002\\FACTS.json",
+    "bytes": 8330,
+    "sha256": "59664ccbb8259770fa2f0bb38894b187e1fe487621476113d2be93b9b36d5104"
+  },
+  "R9_overall": "NOT_GREEN_FULL_CYCLE_INCOMPLETE_AND_FAILURES_RETAINED",
+  "terminal_results": {
+    "original_pid": 20264,
+    "original_creation_filetime_100ns": 134356529492116987,
+    "retained_original_handle_token": "fd0c8f4400c1d9a5b17bf768a47165a7",
+    "normal_exit_observed": true,
+    "exit_code": 0,
+    "final_confirm": "0064 official MCP once",
+    "independent_handle_observation": "0065 original retained HANDLE, no arguments, native_submission_count=0, handle disposed",
+    "full_mcp_preparation_credit": false,
+    "root_preparation_sequence": "0060 consumed=0 post-unknown; 0062 late menu/modal=false; one maintenance WM_CLOSE posted opened modal only; 0063 new actual query modal=true; 0064 terminal MCP final confirm",
+    "client_session_closed": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\session-closed.json",
+      "bytes": 2922,
+      "sha256": "cdf94951648cc881a7e6e2f397a87427b6180bbca9b5144ce1a434665e446e92"
+    },
+    "client_exec_root_reported_exit_code": 0,
+    "keeper_final": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0009\\FINAL.json",
+      "bytes": 384,
+      "sha256": "4b8d519c602098fda0c6df28be3a84d9400f1a86dcaca557c325d678988b69f4"
+    },
+    "keeper_exec_root_reported_exit_code": 0,
+    "source_gate_release_not_in_original_closure": true
+  },
+  "lease": {
+    "keeper_FINAL_screen_released_is_false": "Keeper stop did not release resources; separate actual CAS proves release",
+    "actual_CAS_before_after": [
+      2980,
+      2981
+    ],
+    "resources_after": [],
+    "state_after": "waiting",
+    "retirement_kind": "expired-own-claim-released",
+    "retirement_business_status": "unresolved_red",
+    "done_credit": false,
+    "first_attempt": "001 rejected lowercase CLI SHA pin before CAS mutation; original rejection retained",
+    "corrected_attempt": "002 exact uppercase CLI SHA pin, actual fresh CAS release"
+  },
+  "business_results": {
+    "join1": "ACTUAL_SAVED_AST_VERIFIED_DECLARED_SCOPE",
+    "detach": "ACTUAL_SAVED_AST_VERIFIED_DECLARED_SCOPE",
+    "join2": "NOT_RUN",
+    "fullcycle": "NOT_RUN",
+    "full_cycle_credit": false,
+    "saved_detach_fee_delta": {
+      "gold": "-200",
+      "piety": "-1000",
+      "prestige": "0"
+    },
+    "saved_wallet": {
+      "gold": "1543",
+      "piety": "5650",
+      "prestige": "2200"
+    },
+    "saved_round": {
+      "serial": [
+        "6",
+        "6"
+      ],
+      "nonce": [
+        "6",
+        "6"
+      ],
+      "joins": [
+        "1",
+        "1"
+      ],
+      "detaches": [
+        "1",
+        "2"
+      ],
+      "fixture_resets": [
+        "2",
+        "2"
+      ]
+    },
+    "new_faith": 106,
+    "moving_rite": 169,
+    "moving_rite_parent_before_after": [
+      104,
+      106
+    ],
+    "new_faith_three_tenets": "Zhuzi tenets equal moving Rite169; source104 Hanxue tenets/doctrines retained",
+    "selected_protections": "Seven actual political title ASTs and present selected character branches match; absent NPC family/NULL branches receive no equality credit",
+    "scope_limits": [
+      "No second JOIN or host claim release performed.",
+      "SDK timeout retained; actual business comes from genuine preserved checkpoint AST.",
+      "Stress is absent in saved actor sourcefields and remains NULL.",
+      "Core legacy guard_fields NULL equality is excluded; positive top-level branches and seven actual title ASTs were read separately.",
+      "Only three exact characters/current actor domain titles; no entire-world character/title scan.",
+      "Prior R8-to-R9 title AST differences remain disclosed in baseline supplement; within-R9 protections match.",
+      "Initial readonly refusal was preserved; ROOT corrected only attribute32->33 with unchanged save bytes/SHA."
+    ],
+    "SDK_failed_calls": [
+      "0053",
+      "0056",
+      "0057",
+      "0058"
+    ],
+    "SDK_outcome": "ERROR_NO_RETRY, no SDK success or ACK-to-business credit; actual DETACH comes from independent preserved save AST",
+    "readonly_correction": "Initial saved file attribute32 caused refusal; ROOT corrected to33 with unchanged content SHA; initial refusal and wrong expectation tests retained"
+  },
+  "whole_log": "PENDING_SEPARATE_FINAL_PACKAGE; no final-whole claim in these notes",
+  "historical_preparation_note": "Earlier ACTUAL-FAILURE-PREPARATION-NOTES accurately records RUNNING/readerpending at earlier handover; this actual terminal note supersedes those current-state fields without overwriting history",
+  "bindings": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-002\\CLOSURE.json",
+      "bytes": 3837,
+      "sha256": "8abaf2c9ac75ce6e004d4d80a80554beda410cd0d14766703d37625997d55714"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\facts-through-0058-native-002\\FACTS.json",
+      "bytes": 8330,
+      "sha256": "59664ccbb8259770fa2f0bb38894b187e1fe487621476113d2be93b9b36d5104"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\facts-through-0058-native-002\\INDEX.json",
+      "bytes": 212,
+      "sha256": "9c47348397e1f3b960176973ca1be88614104855cdcdc7b3c2d768dc59a2a779"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0058-native-002\\REPORT.json",
+      "bytes": 419023,
+      "sha256": "5f0f56d153dc76b1843c529eeda5d6aa9d40f44dfdf2f5db7ca059b21f6955bc",
+      "evidence_role": "core_readback"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0058-native-002\\INDEX.json",
+      "bytes": 366,
+      "sha256": "5c213c5b5fc4a761613cc468d2a4141b7227872f64cfcebd403ab301c17aafd5",
+      "evidence_role": "core_index"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0058-native-001\\REPORT.json",
+      "bytes": 7184,
+      "sha256": "20bf459fa57c40f12b7f6b37177d17bb5a43ea05e64a8a341a410d2970899576",
+      "evidence_role": "selected_protections"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0058-native-001\\INDEX.json",
+      "bytes": 220,
+      "sha256": "bf275d1c56c4f1c3995ebc45b49fd2731acc1ab3aff2824898a2b52ecfac77b5",
+      "evidence_role": "selected_protections_index"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\facts-through-0051-001\\FACTS.json",
+      "bytes": 9631,
+      "sha256": "5c9b8a9ec8eb5183cbf5243a635662a09831462d0f5fbaae1f35c378a7c45017",
+      "evidence_role": "previous_facts"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\checkpoint.ck3",
+      "bytes": 91530739,
+      "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539",
+      "evidence_role": "save"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0057-checkpoint.json",
+      "bytes": 52847501,
+      "sha256": "4d367e72b16827621d577567c94eff1d98ccd2a85766f03b2e788387ab6c4cd5",
+      "evidence_role": "native_save_receipt"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0058-0058-post-detach-save.response.json",
+      "bytes": 529,
+      "sha256": "7f81dd2d6412e4083f16676dfce5376bdac22f36570debc446b5bd938cc32117",
+      "evidence_role": "sdk_error"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\PRESERVED.json",
+      "bytes": 1177,
+      "sha256": "d27ad9fb5c0b5ae6ff27cd5e4d7cec6420c7971ef4c81919c76efcfc84fa7c03",
+      "evidence_role": "root_preservation"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\READONLY-CORRECTION.json",
+      "bytes": 544,
+      "sha256": "e1e3afbcd008a8302d8d42664cad1f9aa6173c93bac04cdc3310522bdd1e2652",
+      "evidence_role": "readonly_correction"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0058-native-001\\FAILURE.json",
+      "bytes": 278,
+      "sha256": "3e37f29063e031995a55971abbc2fb7e2881e73844152401d39a7e27d63d25b6",
+      "evidence_role": "first_refusal"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-native-save-receipt-reader-20261005-001\\review-package-001\\METADATA-TESTS.json",
+      "bytes": 2559,
+      "sha256": "b50cf737860e1ae86cc49a9acadbb7c9921bfb34dacab30d4916a00f2a72b532",
+      "evidence_role": "metadata_tests"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\session-closed.json",
+      "bytes": 2922,
+      "sha256": "cdf94951648cc881a7e6e2f397a87427b6180bbca9b5144ce1a434665e446e92",
+      "evidence_role": "client_closed"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0065-0065-retained-handle-exit-observe.sdk-result.json",
+      "bytes": 12645,
+      "sha256": "003330b1e40e9e1a8fb910092b9c1bf0891f81b7f2ea68cf0514653b110d9333",
+      "evidence_role": "terminal_sdk"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0065-0065-retained-handle-exit-observe.response.json",
+      "bytes": 1341,
+      "sha256": "f3bbe9d80f9e8cf28087417429f1710a8535588ac679dc8f6db0e72da8781c3b",
+      "evidence_role": "terminal_response"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\maintenance-standard-window-close-001\\RESULT.json",
+      "bytes": 896,
+      "sha256": "c8b1266fe920192d032c3d337033e67d09091e11e227f1eef537482bdd042ed6",
+      "evidence_role": "maintenance_result"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0009\\FINAL.json",
+      "bytes": 384,
+      "sha256": "4b8d519c602098fda0c6df28be3a84d9400f1a86dcaca557c325d678988b69f4",
+      "evidence_role": "keeper_final"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-002\\AFTER-LIST.json",
+      "bytes": 87298,
+      "sha256": "a739fc9758225501b0306436e9bcf2234b1c166987d9075ec9a5bc1224f20072",
+      "evidence_role": "after_list"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-001\\CAS-ARGV.json",
+      "bytes": 1368,
+      "sha256": "3b1318e65233657d37f56c46e7ac39f2d19ef6754ea4928ddde74cbe2479330d",
+      "evidence_role": "root-closure-release-001"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-001\\CAS-RESULT.json",
+      "bytes": 486,
+      "sha256": "16e4d64842f1990797f45030242fd8e605eaf9d95e1c50be7a4b3e330dc8d621",
+      "evidence_role": "root-closure-release-001"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-001\\CAS-STDERR.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_role": "root-closure-release-001"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-001\\CAS-STDOUT.bin",
+      "bytes": 171,
+      "sha256": "f2af5c90ef00c7e811a3873bf48f3098eba716104bb732376e15db873588c8c3",
+      "evidence_role": "root-closure-release-001"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-002\\AFTER-LIST-STDERR.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_role": "root-closure-release-002"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-002\\AFTER-LIST-STDOUT.bin",
+      "bytes": 89889,
+      "sha256": "b46a31f2186d1bbee5b87acf6fece36610c37d7b956685df097bafddfd60f21a",
+      "evidence_role": "root-closure-release-002"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-002\\AFTER-LIST.json",
+      "bytes": 87298,
+      "sha256": "a739fc9758225501b0306436e9bcf2234b1c166987d9075ec9a5bc1224f20072",
+      "evidence_role": "root-closure-release-002"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-002\\CAS-ARGV.json",
+      "bytes": 1368,
+      "sha256": "3da4102129055c358790449b5586c72bf5986a9af839e4ea31057794f0576265",
+      "evidence_role": "root-closure-release-002"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-002\\CAS-RESULT.json",
+      "bytes": 487,
+      "sha256": "ff01981567ce1b331895638c80f1a6c5b8eea8a9c77c4871e676ef55dfa06dd3",
+      "evidence_role": "root-closure-release-002"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-002\\CAS-STDERR.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "evidence_role": "root-closure-release-002"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-002\\CAS-STDOUT.bin",
+      "bytes": 1590,
+      "sha256": "5c43627424e1f7f7dde545147c20d27084d2932b1e5573787df63714c81d508b",
+      "evidence_role": "root-closure-release-002"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-closure-release-002\\CLOSURE.json",
+      "bytes": 3837,
+      "sha256": "8abaf2c9ac75ce6e004d4d80a80554beda410cd0d14766703d37625997d55714",
+      "evidence_role": "root-closure-release-002"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\maintenance-standard-window-close-001\\BEFORE.json",
+      "bytes": 640,
+      "sha256": "23f16a814d049ce0fd0790d88cecbe03afaab35a68d70f332b2194ec33e41291",
+      "evidence_role": "maintenance-standard-window-close-001"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\maintenance-standard-window-close-001\\POSTED.json",
+      "bytes": 178,
+      "sha256": "4b6ccea00afba7d8f8418d34b168d34bd934371a4cc0cd0f084611206d55223d",
+      "evidence_role": "maintenance-standard-window-close-001"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\maintenance-standard-window-close-001\\RESULT.json",
+      "bytes": 896,
+      "sha256": "c8b1266fe920192d032c3d337033e67d09091e11e227f1eef537482bdd042ed6",
+      "evidence_role": "maintenance-standard-window-close-001"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0060-0060-exit-prepare.native-01.json",
+      "bytes": 26427052,
+      "sha256": "bde0f0e4c796248389a9158fc952dfef06f27614412a5f8830fecf3e6fb5f60b",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0060-0060-exit-prepare.request.json",
+      "bytes": 341,
+      "sha256": "3071e166d0582a14918dc6aceb1aa32e136df3468c670752fd85d60e28a6bdfc",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0060-0060-exit-prepare.response.json",
+      "bytes": 996,
+      "sha256": "a7ffae30ed6d8bc232ccfe40c720c4df5a60cb0f74cb1e48fe3a5b024e1d0906",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0060-0060-exit-prepare.sdk-result.json",
+      "bytes": 54711881,
+      "sha256": "f4dd7b76c9b475a3f092cb5134a4cb36b0ac806de10f67b0410a99073c4cd52f",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0060-0060-exit-prepare.started.json",
+      "bytes": 337,
+      "sha256": "ed2c07c7a560db016b7075246cb9c8c8292811bc220c7c46af85fa671d40d446",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0061-0061-post-exit-prepare-observe.native-01.json",
+      "bytes": 26425077,
+      "sha256": "33ae30f5b8aca4882fe279cf9e5f19bfdd89cdaa7402d81703b1bb6ba6e2284a",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0061-0061-post-exit-prepare-observe.request.json",
+      "bytes": 187,
+      "sha256": "1ae1853fd59798ea6b7be1b1259b38531afedf39992703f7b455845f754363e5",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0061-0061-post-exit-prepare-observe.response.json",
+      "bytes": 1024,
+      "sha256": "994fab6c30f52ee0b034ed8852569c2b20c3220a97804e9c2391182e35f771b4",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0061-0061-post-exit-prepare-observe.sdk-result.json",
+      "bytes": 54707763,
+      "sha256": "7fff015cddd87c0b2ca71caf6be85551123c22293045564869f0644538daa481",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0061-0061-post-exit-prepare-observe.started.json",
+      "bytes": 350,
+      "sha256": "989ca68cc0b6c74646c27ca907705f5f489311569982e93c512e56bc3b0ba880",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0062-0062-after-prepare-context.request.json",
+      "bytes": 211,
+      "sha256": "4a4b2d059f040707fe21e46ff6979746da95fd8af8bed7abe58cd39e32000d19",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0062-0062-after-prepare-context.response.json",
+      "bytes": 539,
+      "sha256": "dd72df438ff77458af08fcd18558a0eacd7d0e79ff4479daf47a3239fc1f2ed5",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0062-0062-after-prepare-context.started.json",
+      "bytes": 346,
+      "sha256": "f9cd2f265f10991bc9275f701ee0488a21f931f0e82fc3a4ea8abe235e8a65ad",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0063-0063-after-standard-close-context.request.json",
+      "bytes": 218,
+      "sha256": "dcfcad93f69882023c5c1442a6bd775595ec5bb2ab1184aed59eb5e872ed7986",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0063-0063-after-standard-close-context.response.json",
+      "bytes": 553,
+      "sha256": "369393ed0635e8ebe039742763fd2aeca9cbe3a991d4a04b211369548560eabd",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0063-0063-after-standard-close-context.started.json",
+      "bytes": 353,
+      "sha256": "147c13bcb5ad02bb0d7121e83181cc8f5b46f74dc86948676366cc2b520980e3",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0064-0064-exit-confirm.native-01.json",
+      "bytes": 26428078,
+      "sha256": "943f2bb678ba6196cd70f82a04a32056a133f3f22a2570d78c9960f72805a604",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0064-0064-exit-confirm.request.json",
+      "bytes": 336,
+      "sha256": "afeb46e651f96d078812ac0f4976d66958eb87abe8d6574419d1a38da4a62e0c",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0064-0064-exit-confirm.response.json",
+      "bytes": 991,
+      "sha256": "6b9d6a3c7c3a9762282cd88b031639f691d72bf8088ee9f8771a2e3a0f20258a",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0064-0064-exit-confirm.sdk-result.json",
+      "bytes": 54714045,
+      "sha256": "39252b0f5358fadb72ae90acce15a37cae11046da4d6c969187e2d72da1d537d",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0064-0064-exit-confirm.started.json",
+      "bytes": 337,
+      "sha256": "46fcfd767dfd06284fb64054c8f3f30ad8563736c3d07c9f3abbb2b16e6d2ea1",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0065-0065-retained-handle-exit-observe.native-01.json",
+      "bytes": 5827,
+      "sha256": "5494e53e10583e926990993384fb7679054f235c38168c825c1587fce9b0ef9e",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0065-0065-retained-handle-exit-observe.request.json",
+      "bytes": 189,
+      "sha256": "88bf18ef6c3e36e398f41aba9e5a2949997bf6982fe632b1fced9c019d56dd76",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0065-0065-retained-handle-exit-observe.response.json",
+      "bytes": 1341,
+      "sha256": "f3bbe9d80f9e8cf28087417429f1710a8535588ac679dc8f6db0e72da8781c3b",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0065-0065-retained-handle-exit-observe.sdk-result.json",
+      "bytes": 12645,
+      "sha256": "003330b1e40e9e1a8fb910092b9c1bf0891f81b7f2ea68cf0514653b110d9333",
+      "evidence_role": "actual_exit_request_branch"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0065-0065-retained-handle-exit-observe.started.json",
+      "bytes": 353,
+      "sha256": "fa84385c0b48a071d06f0cdb165e90d3980c697d6d34ca470cf9b7c859caa03e",
+      "evidence_role": "actual_exit_request_branch"
+    }
+  ],
+  "side_effects": {
+    "tracked": 0,
+    "git": 0,
+    "game": 0,
+    "native": 0,
+    "screen": 0,
+    "ci": 0,
+    "spawn": 0,
+    "raw_save_copy": 0
+  }
+}

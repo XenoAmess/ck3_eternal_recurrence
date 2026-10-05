@@ -1,0 +1,11 @@
+{
+  "utc": "2026-10-05T07:12:26.442662+00:00",
+  "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\checkpoint.ck3",
+  "bytes": 91530739,
+  "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539",
+  "before_file_attributes": 32,
+  "after_file_attributes": 33,
+  "readonly_verified": true,
+  "content_change": false,
+  "correction": "Initial native-only preservation helper omitted readonly attribute; old preservation receipt and independent reader refusal retained."
+}

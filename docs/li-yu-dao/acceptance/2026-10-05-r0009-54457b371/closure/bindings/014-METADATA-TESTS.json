@@ -1,0 +1,72 @@
+{
+  "schema": "lyd.r9.native-save-metadata-tests.v1",
+  "scope": "Actual immutable native save metadata plus deliberate invalid metadata challenges; no game/release and no AST business credit from these tests",
+  "native_artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0057-checkpoint.json",
+    "bytes": 52847501,
+    "sha256": "4d367e72b16827621d577567c94eff1d98ccd2a85766f03b2e788387ab6c4cd5"
+  },
+  "saved_artifact": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\checkpoint.ck3",
+    "bytes": 91530739,
+    "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539"
+  },
+  "tests": [
+    {
+      "name": "real raw native receipt exact identity",
+      "actual_metadata_accepted": true
+    },
+    {
+      "name": "real saved hash size and native metadata",
+      "actual_metadata_accepted": true
+    },
+    {
+      "name": "real SDK timeout and ROOT immutable preservation",
+      "actual_metadata_accepted": true
+    },
+    {
+      "name": "raw native receipt cannot claim successful SDK",
+      "malformed_metadata_refused": true,
+      "reason": "explicit successful SDK wrapper required; raw native receipt is a separate input kind"
+    },
+    {
+      "name": "wrong PID",
+      "malformed_metadata_refused": true,
+      "reason": "native observation guarded process identity differs"
+    },
+    {
+      "name": "wrong process creation",
+      "malformed_metadata_refused": true,
+      "reason": "native observation guarded process identity differs"
+    },
+    {
+      "name": "snapshot-only status",
+      "malformed_metadata_refused": true,
+      "reason": "exact genuine native save receipt status required"
+    },
+    {
+      "name": "caller success extra field",
+      "malformed_metadata_refused": true,
+      "reason": "direct native save receipt has missing/extra fields"
+    },
+    {
+      "name": "SDK wrapper in native branch",
+      "malformed_metadata_refused": true,
+      "reason": "direct native save receipt has missing/extra fields"
+    },
+    {
+      "name": "wrong save hash",
+      "malformed_metadata_refused": true,
+      "reason": "actual saved metadata does not match preserved save"
+    },
+    {
+      "name": "wrong save size",
+      "malformed_metadata_refused": true,
+      "reason": "actual saved metadata does not match preserved save"
+    }
+  ],
+  "test_count": 11,
+  "sdk_success_credit": false,
+  "business_credit": false,
+  "game_called": false
+}

@@ -1,0 +1,20 @@
+{
+  "schema": "lyd.r9.native-save-reader-delivery.v1",
+  "helper": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-native-save-receipt-reader-20261005-001\\review-package-001\\read_r9_native_c2.py",
+    "bytes": 33969,
+    "sha256": "e9555f157f482642a974379a80d8816d182790911e723609895809dad16bb082"
+  },
+  "actual_facts": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\facts-through-0058-native-002\\FACTS.json",
+    "bytes": 8330,
+    "sha256": "59664ccbb8259770fa2f0bb38894b187e1fe487621476113d2be93b9b36d5104"
+  },
+  "facts_index": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\facts-through-0058-native-002\\INDEX.json",
+    "bytes": 212,
+    "sha256": "9c47348397e1f3b960176973ca1be88614104855cdcdc7b3c2d768dc59a2a779"
+  },
+  "native_sdk_separation": true,
+  "full_cycle_credit": false
+}

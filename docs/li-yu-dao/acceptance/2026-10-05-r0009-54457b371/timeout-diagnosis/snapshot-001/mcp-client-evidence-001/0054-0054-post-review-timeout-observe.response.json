@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 54,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0054-post-review-timeout-observe.request.json",
+  "request_sha256": "cd04180180c5c121c4726707a65e7ec6108e7fef2c2029d083ca0c2fbc823b47",
+  "started_at_utc": "2026-10-05T06:35:51.675656+00:00",
+  "request_id": "0054-post-review-timeout-observe",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0054-0054-post-review-timeout-observe.sdk-result.json",
+  "sdk_result_sha256": "00215791f9ae80faaab373840822debf410e3244f0264099c87e7bd748c7040f",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0053-snapshot.json",
+      "copy": "0054-0054-post-review-timeout-observe.native-01.json",
+      "sha256": "8ee405d67a947f22729cb5bd680629a6c2ac28b378658e44272e8c5259bba441"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T06:36:50.770270+00:00"
+}

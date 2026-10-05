@@ -1,0 +1,14 @@
+{
+  "schema": "lyd.r9.report-import-receipt.v1",
+  "utc": "2026-10-05T08:00:17.799391+00:00",
+  "source_revision": "54457b371e947edb86903c2ebd578034f02695db",
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-sealed-report-20261005-001",
+  "target": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-05-r0009-54457b371",
+  "files": 794,
+  "bytes": 116969196,
+  "plan_sha256": "dc33b7976a795b1b415de4a546fa698d919f0920647841b76cfc72c352e734d2",
+  "terminal_evidence_verified": true,
+  "overall_native_acceptance": "NOT_GREEN_FULL_CYCLE_INCOMPLETE_AND_FAILURES_RETAINED",
+  "execute_requested": false,
+  "game_native_git_ci_screen_calls": 0
+}

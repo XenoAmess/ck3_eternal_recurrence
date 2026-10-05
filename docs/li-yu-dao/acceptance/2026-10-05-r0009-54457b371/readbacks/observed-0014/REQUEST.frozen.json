@@ -1,0 +1,42 @@
+{
+  "schema": "lyd.r8.c2.increment-request.v1",
+  "phase": "ballots",
+  "label": "R9 actual0014 ballots",
+  "native_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-profile-with-exit-inventory.json",
+    "bytes": 1148,
+    "sha256": "862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5"
+  },
+  "before": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0009-proposal-save\\checkpoint.ck3",
+      "bytes": 91402137,
+      "sha256": "3880628455701557da3fbacb4119ef2ecee0256c9697c377a68aeb87da081fdd"
+    },
+    "checkpoint_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0010-0009-proposal-save.sdk-result.json",
+      "bytes": 177653,
+      "sha256": "cedf9fe7fbf42b97d99226b92f68c47a3386c5ac3de79d8b793a8e8696baca0a"
+    },
+    "cached_readback": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0009\\REPORT.json",
+      "bytes": 443810,
+      "sha256": "44cf5d586e74a5fa57f67f0b4d3f570fb17d2ea95edc5cfd664b6b6992e3b57b"
+    }
+  },
+  "after": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0014-votes-save\\checkpoint.ck3",
+      "bytes": 91400023,
+      "sha256": "a2b9d602a5315585d2cef4ac883f2bd715d3b2b34d3269fc8f21b05e61d3d0cd"
+    },
+    "checkpoint_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0015-0014-votes-save.sdk-result.json",
+      "bytes": 385597,
+      "sha256": "206733d02cb90374cbcfd00390f7d45348105185b1ee062b53b4d1144f5dd06d"
+    },
+    "cached_readback": null
+  },
+  "ordinary_query_sdk": null,
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0014"
+}

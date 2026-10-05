@@ -1,0 +1,10 @@
+{
+  "schema": "lyd.r9.c2.selected-protection-index.v1",
+  "files": [
+    {
+      "path": "REPORT.json",
+      "bytes": 7087,
+      "sha256": "ffe44990147e61d0708db7178ff85b4e7471e5da4874ad47ada768d93724574a"
+    }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "schema": "lyd.r8.c2.increment-request.v1",
+  "phase": "source-signed",
+  "label": "R9 actual0023 signed",
+  "native_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-profile-with-exit-inventory.json",
+    "bytes": 1148,
+    "sha256": "862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5"
+  },
+  "before": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0014-votes-save\\checkpoint.ck3",
+      "bytes": 91400023,
+      "sha256": "a2b9d602a5315585d2cef4ac883f2bd715d3b2b34d3269fc8f21b05e61d3d0cd"
+    },
+    "checkpoint_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0015-0014-votes-save.sdk-result.json",
+      "bytes": 385597,
+      "sha256": "206733d02cb90374cbcfd00390f7d45348105185b1ee062b53b4d1144f5dd06d"
+    },
+    "cached_readback": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0014\\REPORT.json",
+      "bytes": 443205,
+      "sha256": "a1f094d7183e0d7a30d6a2c5ac210c903d0606f99cd53362aff4b0b681c1df5c"
+    }
+  },
+  "after": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0023-signed-save\\checkpoint.ck3",
+      "bytes": 91400714,
+      "sha256": "07526f3a39fe7e51ea496096896c2318cf82b6268beff538a8da90eacb128753"
+    },
+    "checkpoint_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0023-0023-signed-save.sdk-result.json",
+      "bytes": 2002139,
+      "sha256": "7654f2f18db06bd44f15b42c4d16e887eb5e728224c3af8a9fbf3bc7ccc7bb6f"
+    },
+    "cached_readback": null
+  },
+  "ordinary_query_sdk": null,
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0023"
+}

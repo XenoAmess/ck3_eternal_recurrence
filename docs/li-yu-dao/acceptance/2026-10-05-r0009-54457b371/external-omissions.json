@@ -1,0 +1,468 @@
+[
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\checkpoint.ck3",
+    "bytes": 91530739,
+    "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539",
+    "reason": "Rawsave remains permanentlyexternal"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0002-0001-profile.sdk-result.json",
+    "bytes": 5575,
+    "sha256": "157ef78c70c58fa5e7d46efa401a09f405f169ed0a77499919319e57992628a0",
+    "isError": false,
+    "sdk_status": "profile_bound",
+    "result_status": null,
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0003-0002-attach.sdk-result.json",
+    "bytes": 41523,
+    "sha256": "f5a42ab6c09a6b6374230456fcd52462f7cb6c5b550aa0573a063f1b58d7bea6",
+    "isError": false,
+    "sdk_status": "attached_snapshot_verified",
+    "result_status": null,
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0004-0003-exit-context.sdk-result.json",
+    "bytes": 59797,
+    "sha256": "ace518aa6a88bc49cb06dbf90f07a94c97e7f0ce1a151b8757c31996becc3331",
+    "isError": false,
+    "sdk_status": "context_observed",
+    "result_status": "context_observed",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0006-0005-join-query.sdk-result.json",
+    "bytes": 7607,
+    "sha256": "d0acbeff078bf2ad841492c88c4507b830b2144e5a8c7e1634549431b761cb3e",
+    "isError": false,
+    "sdk_status": "native_ordinary_interaction_observed",
+    "result_status": "available",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0007-0006-join-send.sdk-result.json",
+    "bytes": 41291,
+    "sha256": "28d9b9f9aaa42242bc829fa46bef49082dd8c30d8ff00fd15e842a0872845566",
+    "isError": false,
+    "sdk_status": "native_ordinary_interaction_pending",
+    "result_status": "pending",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0008-0007-player-ballot.sdk-result.json",
+    "bytes": 41687,
+    "sha256": "ed09663c23c0d1c5d0d26e5548964a808c90ff297d15bea28afadee909c5b601",
+    "isError": false,
+    "sdk_status": "native_event_query_verified",
+    "result_status": "available",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0009-0008-wait-replies.sdk-result.json",
+    "bytes": 171223,
+    "sha256": "0a92e1747356a266cfeea74d10319c03376b4b5ea7ae62a2c235c509a0886e32",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "submitted",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0011-0010-player-source-ballot.sdk-result.json",
+    "bytes": 40015,
+    "sha256": "a7c676cf962ce9611a369ea1dc1593718f2f7d6da6934b9f4ff9a583392e2746",
+    "isError": false,
+    "sdk_status": "native_event_query_verified",
+    "result_status": "available",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0012-0011-player-yes.sdk-result.json",
+    "bytes": 280115,
+    "sha256": "5f58a99f83399c8f5bb46e7ad2e70301cd1a1cf771022c10d1ee9a7bab946745",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "submitted",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0013-0012-source-sign-query.sdk-result.json",
+    "bytes": 39991,
+    "sha256": "2a6c814742cf664f5a4f4f4212c5eeda09146b4c34682fa5665379120f5bb044",
+    "isError": false,
+    "sdk_status": "native_event_query_verified",
+    "result_status": "available",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0014-0013-source-sign-yes.sdk-result.json",
+    "bytes": 380237,
+    "sha256": "cedde8b33aa811f5349823d6d0469cea7f566ae2c26902740efcd4348e2b7d44",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "submitted",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0016-0015-open-decisions.sdk-result.json",
+    "bytes": 730927,
+    "sha256": "2fac2171f1ae3e74c7f6ed6d576aac4fc661226947ed606fe267b4549cb76ffc",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "verified_visible",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0017-0016-confirm-query.sdk-result.json",
+    "bytes": 4773,
+    "sha256": "d7a13512e009ae431b682680569bc1b66c4801a13608055a7ae17cef2917b694",
+    "isError": false,
+    "sdk_status": "native_decision_query_observed",
+    "result_status": null,
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0018-0017-review-query.sdk-result.json",
+    "bytes": 4751,
+    "sha256": "0a2614c509711cdadefa630a1041deac031653fb00f3a6424f86e20f445b32d8",
+    "isError": false,
+    "sdk_status": "native_decision_query_observed",
+    "result_status": null,
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0019-0018-review-select.sdk-result.json",
+    "bytes": 808319,
+    "sha256": "8cf3a0e9979356b741a4313e6d156a20b4e8a14719977688fac7ded65e036392",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "verified_selected_detail",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0020-0020-review-confirm.sdk-result.json",
+    "bytes": 1841915,
+    "sha256": "9cf8804cb8e6f7ffa0ce634e47b9311a9966d3e3cf1d5f6b0b384ba8dc7e7306",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "observed_current_event_window",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0021-0021-review-options.sdk-result.json",
+    "bytes": 33123,
+    "sha256": "e4f7b0d2032760d5ad4977058ccb703e6c260f0112a19f9e50db44613399cd70",
+    "isError": false,
+    "sdk_status": "native_event_query_verified",
+    "result_status": "available",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0022-0022-sign-terms.sdk-result.json",
+    "bytes": 1997617,
+    "sha256": "b7f18ec38f01653d12e4ebabd3b39a4d83d78936f60f9613ada55ec395b7e893",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "submitted",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0024-0024-review-select-signed.sdk-result.json",
+    "bytes": 2049991,
+    "sha256": "e27c69f6d39c8ce92a257f5fd21757c6621dbf4b38d9a543e012925a7c8d592a",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "verified_selected_detail",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0025-0025-review-confirm-signed.sdk-result.json",
+    "bytes": 4463033,
+    "sha256": "c5900c1245217d1faeada23da2d6224658948f464dbd39349d9eecde4ea3588c",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "observed_current_event_window",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0026-0026-final-review.sdk-result.json",
+    "bytes": 33151,
+    "sha256": "f3a440b4a0fbc9d3292e19ef5316496fdc9b7c2d2ec64f88a886a4d180c996f3",
+    "isError": false,
+    "sdk_status": "native_event_query_verified",
+    "result_status": "available",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0029-0029-join-result-query.sdk-result.json",
+    "bytes": 31447,
+    "sha256": "6478e0b93db3ac29d2cf7770f5661320493cd14c92ff21d158719530a1d672e9",
+    "isError": false,
+    "sdk_status": "native_event_query_verified",
+    "result_status": "available",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0030-0030-ack-join-result.sdk-result.json",
+    "bytes": 4787907,
+    "sha256": "51b54d7048c1459de92e2f1e257ca568f62159820912178b798b9a5f40d0e3f0",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "submitted",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0031-0031-reset-query.sdk-result.json",
+    "bytes": 4735,
+    "sha256": "7e789e14f63db24eca854e19a86f32c4f369d9277c3501be70b0be5a674932b7",
+    "isError": false,
+    "sdk_status": "native_decision_query_observed",
+    "result_status": null,
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0032-0032-reset-select.sdk-result.json",
+    "bytes": 4835035,
+    "sha256": "b7937b7a3c8728f066e03c3dc231a1de71d8ec12c361282c04ed9c3c56ac1124",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "verified_selected_detail",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0033-0033-explicit-fixture-reset.sdk-result.json",
+    "bytes": 10295813,
+    "sha256": "d75cec8bd6e200f09ee9797e123b84da1caca2db8c08c265543541356210b0d9",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "observed_current_event_window",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0034-0034-reset-result-query.sdk-result.json",
+    "bytes": 24601,
+    "sha256": "369dc9354979a4658329647d04d0eb23c93428ec78ae642d61b18430e77890d1",
+    "isError": false,
+    "sdk_status": "native_event_query_verified",
+    "result_status": "available",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0035-0035-ack-fixture-reset.sdk-result.json",
+    "bytes": 10684005,
+    "sha256": "56e1ff6c40370a5379998ad7289c73a13a187ebd4dbb0c3a1c2bc66d3007be9e",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "submitted",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0037-0037-detach-query.sdk-result.json",
+    "bytes": 4753,
+    "sha256": "89c9ea7738c8e5db53219957dc43dbc4e1991cfdbec6872489787b29e0a32ade",
+    "isError": false,
+    "sdk_status": "native_decision_query_observed",
+    "result_status": null,
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0038-0038-detach-select.sdk-result.json",
+    "bytes": 10737455,
+    "sha256": "cddb8027d4d1400c10afe0998a50577eda9d48be865a8a65034d0c18318e034a",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "verified_selected_detail",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0039-0039-detach-proposal.sdk-result.json",
+    "bytes": 22669533,
+    "sha256": "a2069e48074291495d04506abc0781c545a51755a7b9b25f0da6371617b4bc19",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "observed_current_event_window",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0040-0040-detach-wait-query.sdk-result.json",
+    "bytes": 29609,
+    "sha256": "e0e9e4bb6aa468c63a5ad66be9043571d4d9798ac837a15a3e9d8490c70f0154",
+    "isError": false,
+    "sdk_status": "native_event_query_verified",
+    "result_status": "available",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0041-0041-detach-wait.sdk-result.json",
+    "bytes": 23407117,
+    "sha256": "dd758709645f0de23e4e06981d79f76af1974611a434a4943794c44623bb3165",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "submitted",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0042-0042-detach-player-query.sdk-result.json",
+    "bytes": 27937,
+    "sha256": "9137b5a582c4e7f3d9f1feac8aa3ea7fedb5cc78733bfa2d12c753963f01e2d7",
+    "isError": false,
+    "sdk_status": "native_event_query_verified",
+    "result_status": "available",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0043-0043-detach-player-yes.sdk-result.json",
+    "bytes": 23481053,
+    "sha256": "100c875f442c4612bbcd9876a498f0584ca659e32e7f3cb00190345bd7a50695",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "submitted",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0044-0044-detach-source-query.sdk-result.json",
+    "bytes": 27913,
+    "sha256": "afae1d8058a6b8b8248ddf3d54c6dbac8e9452f23e56c70ae5037a0d75b9d92c",
+    "isError": false,
+    "sdk_status": "native_event_query_verified",
+    "result_status": "available",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0045-0045-detach-source-yes.sdk-result.json",
+    "bytes": 23552165,
+    "sha256": "ab119bc6369105e084c728f746e6b7a4f0c60aecbb80ffed3450fd79af633f2c",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "submitted",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0047-0047-detach-review-select.sdk-result.json",
+    "bytes": 23605375,
+    "sha256": "a49f2493e254aeaeab94e11099365ebcdab0909abd35371d7d4d42f1c5b3441b",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "verified_selected_detail",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0048-0048-detach-review-confirm.sdk-result.json",
+    "bytes": 49547653,
+    "sha256": "f01c26d84b210365be6e2a01b38c2e7b435e5f6d7bcd187fc4f4e075d73d968a",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "observed_current_event_window",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0049-0049-detach-sign-query.sdk-result.json",
+    "bytes": 31377,
+    "sha256": "a952ba18e5a45f142cb225133affd658de66174852df33cfc0ef005ca88dea72",
+    "isError": false,
+    "sdk_status": "native_event_query_verified",
+    "result_status": "available",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0050-0050-detach-sign.sdk-result.json",
+    "bytes": 50968245,
+    "sha256": "26da497659faadf6a8151d2950d999baac1d95e567521d92313e2311bc9ab786",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "submitted",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0052-0052-detach-final-select.sdk-result.json",
+    "bytes": 51020615,
+    "sha256": "145fafea6ab82a9cea05d6f801a10a041aa78db3e06f5b454aeb3019f2e68a66",
+    "isError": false,
+    "sdk_status": "native_gameplay_postcondition_verified",
+    "result_status": "verified_selected_detail",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0054-0054-post-review-timeout-observe.sdk-result.json",
+    "bytes": 54665231,
+    "sha256": "00215791f9ae80faaab373840822debf410e3244f0264099c87e7bd748c7040f",
+    "isError": false,
+    "sdk_status": "native_snapshot_verified",
+    "result_status": null,
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0055-0055-detach-current-review-query.sdk-result.json",
+    "bytes": 31389,
+    "sha256": "50cf6a4c855a512621f0ed58e02b77cf87a5a7ac72cf0dea46edcbf5966980bc",
+    "isError": false,
+    "sdk_status": "native_event_query_verified",
+    "result_status": "available",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0060-0060-exit-prepare.sdk-result.json",
+    "bytes": 54711881,
+    "sha256": "f4dd7b76c9b475a3f092cb5134a4cb36b0ac806de10f67b0410a99073c4cd52f",
+    "isError": false,
+    "sdk_status": "dispatch_unknown_claimed",
+    "result_status": "dispatch_unknown_claimed",
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  },
+  {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0061-0061-post-exit-prepare-observe.sdk-result.json",
+    "bytes": 54707763,
+    "sha256": "7fff015cddd87c0b2ca71caf6be85551123c22293045564869f0644538daa481",
+    "isError": false,
+    "sdk_status": "native_snapshot_verified",
+    "result_status": null,
+    "business_credit": false,
+    "reason": "Complete SDK envelope permanentlyexternal; exactSHA bound, avoids repeated history payload"
+  }
+]

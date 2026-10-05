@@ -1,0 +1,61 @@
+{
+  "schema": "lyd.r9.first-join-preparation-context.v1",
+  "created_utc": "2026-10-05T06:29:51.732753+00:00",
+  "source_kind": "PARENT_MESSAGE_WITH_REAL_REPORT_HASH_VERIFICATION",
+  "source_revision": "54457b371e947edb86903c2ebd578034f02695db",
+  "status": "ACTUAL_FIRST_JOIN_READBACK_CONFIRMED_ONLY",
+  "bindings": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0028\\REPORT.json",
+      "bytes": 473000,
+      "sha256": "2b20539bc6f95463b098690e1e80dc86deffb66c22442c3696111c4fcf83d149"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0028\\INDEX.json",
+      "bytes": 366,
+      "sha256": "ea5de3ef962b8feb61e98f1c0cc7f78c10cb885fcbd9932e807d21e604560645"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0028\\REPORT.json",
+      "bytes": 7098,
+      "sha256": "e3803acb8b96cba3c3d84770751ca40ac810df8d3e5ca501a5246c32fa96312b"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0028\\INDEX.json",
+      "bytes": 220,
+      "sha256": "a66846d168295ea2292362f7cb016ebc25876d441013bb0059480655975d164c"
+    }
+  ],
+  "actual_observations": {
+    "rite169_parent_faith": {
+      "before": 105,
+      "after": 104
+    },
+    "actor31254_and_npc65865": "Faith104/Rite169",
+    "recipient65866": "remainsFaith104/Rite159",
+    "source_faith105": "stillpresent; actual dynamically readbackupmainRite186",
+    "joins": {
+      "before": 0,
+      "after": 1
+    },
+    "detaches": 1,
+    "serial_nonce": 5,
+    "active_and_owner": "released",
+    "wallet_after": {
+      "gold": 1743,
+      "piety": 6650,
+      "prestige": 2200
+    },
+    "fee": {
+      "gold": 300,
+      "piety": 1500
+    },
+    "transition_cooldown": 1825,
+    "selected_protections": "sevenpoliticaltitlefullAST and threecharactersselectedfamily/courtfieldsactuallyequal"
+  },
+  "fixture_reset0033": "artificialshortenedcooldown; no naturalfiveyearcredit",
+  "whole_cycle": "NOT_RUN_AT_PARENT_UPDATE",
+  "closure": "PENDING_GAME_RUNNING",
+  "SDK_ACK_business_credit": false,
+  "game_native_tracked_git_ci_screen_calls": 0
+}

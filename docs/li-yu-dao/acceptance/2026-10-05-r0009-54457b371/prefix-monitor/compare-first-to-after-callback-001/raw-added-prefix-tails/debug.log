@@ -1,0 +1,280 @@
+[13:54:03][D][gameapplication.cpp:632]: Setup map object mesh streaming: 130.586618 seconds
+[13:54:03][D][gameapplication.cpp:583]: Setting idler 'In Game' with init options
+[13:55:21][D][pdx_mesh_streamer.cpp:249]: Requesting mesh flame_01_mesh
+[13:55:21][D][pdx_mesh_streamer.cpp:249]: Requesting mesh flame_02_mesh
+[13:55:21][D][pdx_mesh_streamer.cpp:249]: Requesting mesh flame_03_mesh
+[13:55:21][D][pdx_mesh_streamer.cpp:249]: Requesting mesh flame_04_mesh
+[13:55:21][D][pdx_mesh_streamer.cpp:249]: Requesting mesh flame_05_mesh
+[13:55:21][D][gameapplication.cpp:635]: Setup completion (history loaded): 209.259857 seconds
+[13:55:25][D][pdx_mesh_streamer.cpp:249]: Requesting mesh mpo_mongol_temple_01_mesh
+[13:55:25][D][pdx_mesh_streamer.cpp:249]: Requesting mesh fp3_building_persian_temple_01_a_01_mesh
+[13:55:25][D][pdx_mesh_streamer.cpp:249]: Requesting mesh building_special_iron_lion_cangzhou_01_mesh
+[13:55:25][D][pdx_mesh_streamer.cpp:249]: Requesting mesh building_special_fanfang_guangzhou_01_mesh
+[13:55:25][D][pdx_mesh_streamer.cpp:249]: Requesting mesh tgp_great_building_mandala_capital_02_mesh
+[13:55:25][D][pdx_mesh_streamer.cpp:249]: Requesting mesh tgp_great_building_mandala_capital_01_mesh
+[13:55:25][D][pdx_mesh_streamer.cpp:249]: Requesting mesh building_emishi_temple_01_mesh
+[13:55:25][D][pdx_mesh_streamer.cpp:249]: Requesting mesh building_special_goguryeo_tomb_01_mesh
+[13:56:24][D][pdx_mesh_streamer.cpp:249]: Requesting mesh player_holding_banner_capital_mesh
+[13:56:24][D][rivers_ambience_node.cpp:20]: CRiversAmbienceNode::Process(): No sound alias named 'river_node' configured! Please check you sound alias database.
+[13:56:24][D][jomini_mapobject_manager.cpp:3196]: CMapObjectManager::GetVisibleObjects: invalid camera index 0 requested.
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:56:24][D][pdx_gui_animation_datatype_valuehelpers.h:147]: Trying to trigger an animation with glow_alpha for a widget which has no glow
+[13:57:08][D][rivers_ambience_node.cpp:20]: CRiversAmbienceNode::Process(): No sound alias named 'river_node' configured! Please check you sound alias database.
+[14:00:31][D][gamestate_persistence.cpp:222]: Savegame time 0
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 78.00 B (reserved 512.0 KB) for Unsynced
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 43.00 B (reserved 512.0 KB) for Random
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 8.000 B (reserved 512.0 KB) for GameSpeed
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 54.00 B (reserved 512.0 KB) for Date
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 24.87 KB (reserved 512.0 KB) for Variables
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 4.039 KB (reserved 512.0 KB) for TraitLookup
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 2.929 MB (reserved 4.000 MB) for Provinces
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 6.302 MB (reserved 8.000 MB) for LandedTitles
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 3.607 MB (reserved 16.00 MB) for Dynasties
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 707.6 KB (reserved 512.0 KB) for ScriptedCharacters
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 24.00 B (reserved 2.000 MB) for DeletedCharacters
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 30.25 MB (reserved 32.00 MB) for LivingCharacters
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 17.82 MB (reserved 32.00 MB) for DeadCharacters
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 11.25 KB (reserved 6.000 MB) for CharacterManager
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 5.659 KB (reserved 512.0 KB) for Units
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 4.215 MB (reserved 512.0 KB) for Events
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 325.0 B (reserved 512.0 KB) for Players
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 1.428 MB (reserved 512.0 KB) for Armies
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 6.277 KB (reserved 512.0 KB) for Activities
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 240.2 KB (reserved 512.0 KB) for Opinions
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 458.5 KB (reserved 512.0 KB) for Relations
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 15.86 KB (reserved 512.0 KB) for Schemes
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 15.97 KB (reserved 512.0 KB) for Stories
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 49.00 B (reserved 512.0 KB) for Combats
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 13.70 KB (reserved 512.0 KB) for PendingCharacterInteractions
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 9.088 KB (reserved 512.0 KB) for Secrets
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 57.38 KB (reserved 512.0 KB) for MercenaryCompanies
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 651.3 KB (reserved 512.0 KB) for SubjectContracts
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 62.86 KB (reserved 512.0 KB) for Religions
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 240.7 KB (reserved 512.0 KB) for Faiths
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 593.0 KB (reserved 512.0 KB) for Rites
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 2.579 KB (reserved 512.0 KB) for Wars
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 223.0 B (reserved 512.0 KB) for Sieges
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 15.00 B (reserved 512.0 KB) for Succession
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 215.0 B (reserved 512.0 KB) for Holdings
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 456.1 KB (reserved 2.000 MB) for Counties
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 31.00 B (reserved 512.0 KB) for Fleets
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 932.0 KB (reserved 2.000 MB) for CouncilTasks
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 11.88 KB (reserved 512.0 KB) for ImportantActions
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 9.409 KB (reserved 2.000 MB) for Factions
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 1.495 MB (reserved 2.000 MB) for Cultures
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 5.228 KB (reserved 512.0 KB) for HolyOrders
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 1.738 MB (reserved 2.000 MB) for AI
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 2.693 KB (reserved 512.0 KB) for GameRules
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 20.00 B (reserved 512.0 KB) for Raids
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 35.00 B (reserved 512.0 KB) for BarterMissions
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 105.0 B (reserved 512.0 KB) for Ironman
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 9.840 MB (reserved 8.000 MB) for CoatOfArms
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 0.000 B (reserved 512.0 KB) for RulerDesigner
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 24.00 B (reserved 512.0 KB) for PlayerEvents
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 511.1 KB (reserved 512.0 KB) for Artifacts
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 857.0 B (reserved 512.0 KB) for Inspirations
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 21.39 KB (reserved 512.0 KB) for CourtPositions
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 2.243 KB (reserved 512.0 KB) for Struggles
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 1.396 MB (reserved 512.0 KB) for CharacterMemories
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 8.500 KB (reserved 512.0 KB) for Diarchies
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 31.86 KB (reserved 512.0 KB) for TravelPlans
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 57.33 KB (reserved 512.0 KB) for Accolades
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 26.87 KB (reserved 512.0 KB) for TaxSlots
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 29.00 B (reserved 512.0 KB) for Epidemics
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 27.00 B (reserved 512.0 KB) for Legends
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 927.9 KB (reserved 512.0 KB) for Domiciles
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 2.069 KB (reserved 512.0 KB) for Contracts
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 5.357 KB (reserved 512.0 KB) for Situations
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 16.39 KB (reserved 512.0 KB) for SituationSubRegions
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 16.28 KB (reserved 512.0 KB) for SituationParticipantGroups
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 246.0 B (reserved 512.0 KB) for Migrations
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 1.140 KB (reserved 512.0 KB) for Confederations
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 67.46 KB (reserved 512.0 KB) for HouseRelations
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 34.00 B (reserved 512.0 KB) for GreatProjects
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 49.00 B (reserved 512.0 KB) for TitleAndVassalChanges
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 7.930 KB (reserved 512.0 KB) for ClericalRegions
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 28.00 B (reserved 512.0 KB) for TheocracyLeases
+[14:00:34][D][gamestate_persistence.cpp:161]: Written size 4.264 KB (reserved 512.0 KB) for Organizations
+[14:00:34][D][gamestate_persistence.cpp:222]: Savegame time 0
+[14:09:20][D][gamestate_persistence.cpp:222]: Savegame time 0
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 78.00 B (reserved 512.0 KB) for Unsynced
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 43.00 B (reserved 512.0 KB) for Random
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 8.000 B (reserved 512.0 KB) for GameSpeed
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 54.00 B (reserved 512.0 KB) for Date
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 24.87 KB (reserved 512.0 KB) for Variables
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 4.039 KB (reserved 512.0 KB) for TraitLookup
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 2.929 MB (reserved 4.000 MB) for Provinces
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 6.302 MB (reserved 8.000 MB) for LandedTitles
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 3.607 MB (reserved 16.00 MB) for Dynasties
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 707.6 KB (reserved 512.0 KB) for ScriptedCharacters
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 24.00 B (reserved 2.000 MB) for DeletedCharacters
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 30.25 MB (reserved 32.00 MB) for LivingCharacters
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 17.82 MB (reserved 32.00 MB) for DeadCharacters
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 11.25 KB (reserved 6.000 MB) for CharacterManager
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 5.659 KB (reserved 512.0 KB) for Units
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 4.216 MB (reserved 512.0 KB) for Events
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 325.0 B (reserved 512.0 KB) for Players
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 1.428 MB (reserved 512.0 KB) for Armies
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 6.277 KB (reserved 512.0 KB) for Activities
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 240.2 KB (reserved 512.0 KB) for Opinions
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 458.5 KB (reserved 512.0 KB) for Relations
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 15.86 KB (reserved 512.0 KB) for Schemes
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 15.97 KB (reserved 512.0 KB) for Stories
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 49.00 B (reserved 512.0 KB) for Combats
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 13.70 KB (reserved 512.0 KB) for PendingCharacterInteractions
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 9.088 KB (reserved 512.0 KB) for Secrets
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 57.38 KB (reserved 512.0 KB) for MercenaryCompanies
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 651.3 KB (reserved 512.0 KB) for SubjectContracts
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 62.86 KB (reserved 512.0 KB) for Religions
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 240.7 KB (reserved 512.0 KB) for Faiths
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 593.2 KB (reserved 512.0 KB) for Rites
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 2.579 KB (reserved 512.0 KB) for Wars
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 223.0 B (reserved 512.0 KB) for Sieges
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 15.00 B (reserved 512.0 KB) for Succession
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 215.0 B (reserved 512.0 KB) for Holdings
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 456.1 KB (reserved 2.000 MB) for Counties
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 31.00 B (reserved 512.0 KB) for Fleets
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 932.0 KB (reserved 2.000 MB) for CouncilTasks
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 11.88 KB (reserved 512.0 KB) for ImportantActions
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 9.409 KB (reserved 2.000 MB) for Factions
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 1.495 MB (reserved 2.000 MB) for Cultures
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 5.228 KB (reserved 512.0 KB) for HolyOrders
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 1.738 MB (reserved 2.000 MB) for AI
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 2.693 KB (reserved 512.0 KB) for GameRules
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 20.00 B (reserved 512.0 KB) for Raids
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 35.00 B (reserved 512.0 KB) for BarterMissions
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 105.0 B (reserved 512.0 KB) for Ironman
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 9.840 MB (reserved 8.000 MB) for CoatOfArms
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 0.000 B (reserved 512.0 KB) for RulerDesigner
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 2.109 KB (reserved 512.0 KB) for PlayerEvents
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 511.1 KB (reserved 512.0 KB) for Artifacts
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 857.0 B (reserved 512.0 KB) for Inspirations
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 21.39 KB (reserved 512.0 KB) for CourtPositions
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 2.243 KB (reserved 512.0 KB) for Struggles
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 1.396 MB (reserved 512.0 KB) for CharacterMemories
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 8.500 KB (reserved 512.0 KB) for Diarchies
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 31.86 KB (reserved 512.0 KB) for TravelPlans
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 57.33 KB (reserved 512.0 KB) for Accolades
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 26.87 KB (reserved 512.0 KB) for TaxSlots
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 29.00 B (reserved 512.0 KB) for Epidemics
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 27.00 B (reserved 512.0 KB) for Legends
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 927.9 KB (reserved 512.0 KB) for Domiciles
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 2.069 KB (reserved 512.0 KB) for Contracts
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 5.357 KB (reserved 512.0 KB) for Situations
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 16.39 KB (reserved 512.0 KB) for SituationSubRegions
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 16.28 KB (reserved 512.0 KB) for SituationParticipantGroups
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 246.0 B (reserved 512.0 KB) for Migrations
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 1.140 KB (reserved 512.0 KB) for Confederations
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 67.46 KB (reserved 512.0 KB) for HouseRelations
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 34.00 B (reserved 512.0 KB) for GreatProjects
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 49.00 B (reserved 512.0 KB) for TitleAndVassalChanges
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 7.930 KB (reserved 512.0 KB) for ClericalRegions
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 28.00 B (reserved 512.0 KB) for TheocracyLeases
+[14:09:23][D][gamestate_persistence.cpp:161]: Written size 4.264 KB (reserved 512.0 KB) for Organizations
+[14:09:23][D][gamestate_persistence.cpp:222]: Savegame time 0
+[14:10:17][D][gamestate_persistence.cpp:222]: Savegame time 0
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 78.00 B (reserved 512.0 KB) for Unsynced
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 43.00 B (reserved 512.0 KB) for Random
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 8.000 B (reserved 512.0 KB) for GameSpeed
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 54.00 B (reserved 512.0 KB) for Date
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 24.87 KB (reserved 512.0 KB) for Variables
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 4.039 KB (reserved 512.0 KB) for TraitLookup
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 2.929 MB (reserved 4.000 MB) for Provinces
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 6.302 MB (reserved 8.000 MB) for LandedTitles
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 3.607 MB (reserved 16.00 MB) for Dynasties
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 707.6 KB (reserved 512.0 KB) for ScriptedCharacters
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 24.00 B (reserved 2.000 MB) for DeletedCharacters
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 30.25 MB (reserved 32.00 MB) for LivingCharacters
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 17.82 MB (reserved 32.00 MB) for DeadCharacters
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 11.25 KB (reserved 6.000 MB) for CharacterManager
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 5.659 KB (reserved 512.0 KB) for Units
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 4.216 MB (reserved 512.0 KB) for Events
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 325.0 B (reserved 512.0 KB) for Players
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 1.428 MB (reserved 512.0 KB) for Armies
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 6.277 KB (reserved 512.0 KB) for Activities
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 240.2 KB (reserved 512.0 KB) for Opinions
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 458.5 KB (reserved 512.0 KB) for Relations
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 15.86 KB (reserved 512.0 KB) for Schemes
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 15.97 KB (reserved 512.0 KB) for Stories
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 49.00 B (reserved 512.0 KB) for Combats
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 13.70 KB (reserved 512.0 KB) for PendingCharacterInteractions
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 9.088 KB (reserved 512.0 KB) for Secrets
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 57.38 KB (reserved 512.0 KB) for MercenaryCompanies
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 651.3 KB (reserved 512.0 KB) for SubjectContracts
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 62.86 KB (reserved 512.0 KB) for Religions
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 240.7 KB (reserved 512.0 KB) for Faiths
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 593.2 KB (reserved 512.0 KB) for Rites
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 2.579 KB (reserved 512.0 KB) for Wars
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 223.0 B (reserved 512.0 KB) for Sieges
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 15.00 B (reserved 512.0 KB) for Succession
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 215.0 B (reserved 512.0 KB) for Holdings
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 456.1 KB (reserved 2.000 MB) for Counties
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 31.00 B (reserved 512.0 KB) for Fleets
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 932.0 KB (reserved 2.000 MB) for CouncilTasks
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 11.88 KB (reserved 512.0 KB) for ImportantActions
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 9.409 KB (reserved 2.000 MB) for Factions
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 1.495 MB (reserved 2.000 MB) for Cultures
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 5.228 KB (reserved 512.0 KB) for HolyOrders
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 1.738 MB (reserved 2.000 MB) for AI
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 2.693 KB (reserved 512.0 KB) for GameRules
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 20.00 B (reserved 512.0 KB) for Raids
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 35.00 B (reserved 512.0 KB) for BarterMissions
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 105.0 B (reserved 512.0 KB) for Ironman
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 9.840 MB (reserved 8.000 MB) for CoatOfArms
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 0.000 B (reserved 512.0 KB) for RulerDesigner
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 24.00 B (reserved 512.0 KB) for PlayerEvents
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 511.1 KB (reserved 512.0 KB) for Artifacts
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 857.0 B (reserved 512.0 KB) for Inspirations
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 21.39 KB (reserved 512.0 KB) for CourtPositions
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 2.243 KB (reserved 512.0 KB) for Struggles
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 1.396 MB (reserved 512.0 KB) for CharacterMemories
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 8.500 KB (reserved 512.0 KB) for Diarchies
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 31.86 KB (reserved 512.0 KB) for TravelPlans
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 57.33 KB (reserved 512.0 KB) for Accolades
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 26.87 KB (reserved 512.0 KB) for TaxSlots
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 29.00 B (reserved 512.0 KB) for Epidemics
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 27.00 B (reserved 512.0 KB) for Legends
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 927.9 KB (reserved 512.0 KB) for Domiciles
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 2.069 KB (reserved 512.0 KB) for Contracts
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 5.357 KB (reserved 512.0 KB) for Situations
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 16.39 KB (reserved 512.0 KB) for SituationSubRegions
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 16.28 KB (reserved 512.0 KB) for SituationParticipantGroups
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 246.0 B (reserved 512.0 KB) for Migrations
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 1.140 KB (reserved 512.0 KB) for Confederations
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 67.46 KB (reserved 512.0 KB) for HouseRelations
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 34.00 B (reserved 512.0 KB) for GreatProjects
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 49.00 B (reserved 512.0 KB) for TitleAndVassalChanges
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 7.930 KB (reserved 512.0 KB) for ClericalRegions
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 28.00 B (reserved 512.0 KB) for TheocracyLeases
+[14:10:21][D][gamestate_persistence.cpp:161]: Written size 4.264 KB (reserved 512.0 KB) for Organizations
+[14:10:21][D][gamestate_persistence.cpp:222]: Savegame time 0

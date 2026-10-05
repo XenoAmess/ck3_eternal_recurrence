@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 30,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0030-ack-join-result.request.json",
+  "request_sha256": "db2a95107cd7c2e4f104caf7fc846830d9c4908d040d9c51a888d71ef138019a",
+  "started_at_utc": "2026-10-05T06:14:57.742027+00:00",
+  "request_id": "0030-ack-join-result",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0030-0030-ack-join-result.sdk-result.json",
+  "sdk_result_sha256": "51b54d7048c1459de92e2f1e257ca568f62159820912178b798b9a5f40d0e3f0",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0029-event-select.json",
+      "copy": "0030-0030-ack-join-result.native-01.json",
+      "sha256": "f4407af5faa3924d9f30b5b3fa5e3ed2ba8e637e521836be384ac73684bbf018"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T06:15:01.776745+00:00"
+}

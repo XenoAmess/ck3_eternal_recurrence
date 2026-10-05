@@ -1,0 +1,22 @@
+{
+  "schema": "lyd.r8.c2.incremental-reader-binding.v1",
+  "source_head": "54457b371e947edb86903c2ebd578034f02695db",
+  "cold_request": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-root-fixture-cold-request-20261005-001\\REQUEST.actual.json",
+    "bytes": 19902,
+    "sha256": "decc863c5a8c094857f13cc01962989742ed0648436d3a06c567c1b49bfc5fe6"
+  },
+  "production_manifest_sha256": "295e101d1bbefff3aeb2f18d5856f7f5b46ab2c2971005753d2eea6706939d15",
+  "dependencies": [
+    {
+      "path": "bounded_save_parser.py",
+      "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+    },
+    {
+      "path": "save_fields.py",
+      "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+    }
+  ],
+  "actual_future_readback": null,
+  "baseline_save_sha256": "20c4528e70b420e469cf90616ab5770779cfcd1e152484c9e1fa6ad63e423e1d"
+}

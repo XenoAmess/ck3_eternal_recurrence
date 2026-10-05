@@ -1,0 +1,42 @@
+{
+  "schema": "lyd.r8.c2.increment-request.v1",
+  "phase": "join-result",
+  "label": "R9 actual0028 first formal join result",
+  "native_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-profile-with-exit-inventory.json",
+    "bytes": 1148,
+    "sha256": "862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5"
+  },
+  "before": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0023-signed-save\\checkpoint.ck3",
+      "bytes": 91400714,
+      "sha256": "07526f3a39fe7e51ea496096896c2318cf82b6268beff538a8da90eacb128753"
+    },
+    "checkpoint_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0023-0023-signed-save.sdk-result.json",
+      "bytes": 2002139,
+      "sha256": "7654f2f18db06bd44f15b42c4d16e887eb5e728224c3af8a9fbf3bc7ccc7bb6f"
+    },
+    "cached_readback": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0023\\REPORT.json",
+      "bytes": 446542,
+      "sha256": "5fe6a5d897b243184798d2957a63751d4142d26e44783b87e25b25ac8983c542"
+    }
+  },
+  "after": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0028-post-join-save\\checkpoint.ck3",
+      "bytes": 91466119,
+      "sha256": "6eff9e1cdbcd19d1a422f215d7fac949bc882f87c7da43487a9c2ce823123dab"
+    },
+    "checkpoint_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0028-0028-post-join-save.sdk-result.json",
+      "bytes": 4708515,
+      "sha256": "fb99ac34ff2dc5d1652630f656aa176b8a3764053ce6808d71ba3a32bf9a2696"
+    },
+    "cached_readback": null
+  },
+  "ordinary_query_sdk": null,
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0028"
+}

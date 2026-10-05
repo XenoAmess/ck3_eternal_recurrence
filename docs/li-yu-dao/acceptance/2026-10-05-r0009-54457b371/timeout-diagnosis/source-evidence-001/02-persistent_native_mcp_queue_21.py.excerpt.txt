@@ -1,0 +1,95 @@
+1: """One persistent official MCP Client(cache=None) for explicit JSON requests.
+2: 
+3: Creating/enqueueing requests does not contact CK3. Only `serve` starts the
+4: existing stdio server, and only explicit call_tool requests invoke its tools.
+5: No automatic attach, retry, reconnect, gameplay policy or desktop input.
+6: """
+7: 
+8: from __future__ import annotations
+9: 
+10: import argparse
+11: import asyncio
+12: from datetime import datetime, timezone
+13: import hashlib
+14: import json
+15: import os
+16: from pathlib import Path
+17: import re
+18: import sys
+19: import uuid
+20: 
+21: from r9_mcp_consumer_binding import load_binding, verify_live_inventory
+22: 
+23: BASE = Path("C:/workspace/ck3_lyd_runtime_20261004")
+24: REPO = Path("C:/workspace/ck3_eternal_recurrence")
+25: SERVER = REPO / "tools/ck3_native_profile_mcp.py"
+26: ATTACH = "ck3_attach_profile_bridge_v1"
+27: TOOLS = {
+28:     "ck3_query_native_profile_v1", ATTACH, "ck3_resume_profile_bridge_v1",
+29:     "ck3_take_profile_native_snapshot_v1", "ck3_query_profile_event_window_v1",
+30:     "ck3_query_profile_pending_interaction_v1", "ck3_reply_profile_pending_interaction_v1",
+31:     "ck3_set_profile_simulation_v1", "ck3_pause_profile_simulation_v1",
+32:     "ck3_select_profile_event_option_v1", "ck3_save_profile_checkpoint_v1",
+33:     "ck3_open_profile_decisions_v1", "ck3_query_profile_decision_item_v1",
+34:     "ck3_select_profile_decision_item_v1", "ck3_confirm_profile_decision_outcome_v1",
+35:     "ck3_query_profile_current_actor_stress_adjustment_v1",
+36:     "ck3_query_profile_character_interaction_ordinary_v1",
+37:     "ck3_initiate_profile_character_interaction_ordinary_v1",
+38:     "ck3_query_normal_exit_context_v1",
+39:     "ck3_request_normal_exit_v1",
+40:     "ck3_observe_profile_normal_exit_v1",
+41: }
+42: 
+43: 
+44: def now() -> str:
+45:     return datetime.now(timezone.utc).isoformat()
+46: 
+47: 
+48: def sha(path: Path) -> str:
+49:     return hashlib.sha256(path.read_bytes()).hexdigest()
+50: 
+174:                                        args=["-X", "utf8", str(SERVER), "--profile", str(profile.resolve())],
+175:                                        cwd=str(REPO), env=environment)
+176:     try:
+177:         with (output / "server.stderr.log").open("w", encoding="utf-8") as errors:
+178:             transport = stdio_client(parameters, errlog=errors)
+179:             async with Client(transport, cache=None) as client:
+180:                 write_fresh(output / "ready.json", {**session, "ready_at_utc": now(), "status": "CLIENT_CONNECTED; bridge NOT_ATTACHED automatically"})
+194:                         record = {"schema": "ck3.lyd.mcp-dispatch.v1", "sequence": sequence,
+195:                                   "request_path": str(path), "request_sha256": sha(path), "started_at_utc": now()}
+196:                         write_fresh(output / f"{prefix}.started.json", record)
+197:                         close_requested = False
+198:                         try:
+199:                             request = validate_request(json.loads(raw.decode("utf-8-sig")))
+200:                             record["request_id"] = request["request_id"]
+201:                             if request["operation"] == "close":
+202:                                 record["status"] = "CLIENT_CLOSE_REQUESTED"
+203:                                 close_requested = True
+204:                             else:
+205:                                 if request["operation"] == "list_tools":
+206:                                     result = await client.list_tools()
+207:                                 else:
+208:                                     terminal_exit_requested = (admit_call_tool(request,
+209:                                         inventory_verified=inventory_verified,
+210:                                         terminal_exit_requested=terminal_exit_requested) or terminal_exit_requested)
+211:                                     if request["name"] == ATTACH:
+212:                                         if attach_requested:
+213:                                             raise RuntimeError("attach was already requested in this client session; no replay")
+214:                                         attach_requested = True
+215:                                     result = await client.call_tool(request["name"], request["arguments"], read_timeout_seconds=60)
+216:                                 # This is the SDK's unmodified typed result, not a
+217:                                 # synthesized business status or wire-packet claim.
+218:                                 payload = result.model_dump(mode="json", by_alias=True, exclude_none=False)
+219:                                 result_path = output / f"{prefix}.sdk-result.json"
+220:                                 write_fresh(result_path, payload)
+221:                                 if request["operation"] == "list_tools":
+222:                                     verify_live_inventory(payload, binding, tools=TOOLS)
+223:                                     inventory_verified = True
+224:                                 record.update(status="MCP_RESULT_RECORDED", is_error=getattr(result, "isError", None),
+225:                                               sdk_result=result_path.name, sdk_result_sha256=sha(result_path),
+226:                                               native_receipts=preserve_native_receipts(payload, output, native_evidence, prefix))
+227:                         except Exception as error:
+228:                             record.update(status="ERROR_NO_RETRY", reason=f"{type(error).__name__}: {error}")
+229:                         record["finished_at_utc"] = now()
+230:                         write_fresh(output / f"{prefix}.response.json", record)
+231:                         print(json.dumps({"request": path.name, "response": str(output / f"{prefix}.response.json"), "status": record["status"]}, ensure_ascii=False), flush=True)

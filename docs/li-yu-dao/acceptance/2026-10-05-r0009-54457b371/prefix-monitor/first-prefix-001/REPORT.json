@@ -1,0 +1,753 @@
+{
+  "result": "ACTUAL_R9_LOG_PREFIX_CAPTURED",
+  "phase": "initial-loading-before-formal-callback",
+  "snapshot_key": "first-prefix-001",
+  "capture_start_utc": "2026-10-05T05:54:03.208173+00:00",
+  "capture_end_utc": "2026-10-05T05:54:03.290549+00:00",
+  "parent_context": {
+    "reported_clean_head": "544",
+    "reported_pid": 20264,
+    "reported_process_create_time": 1791179349.2116988,
+    "reported_hwnd": 5637378,
+    "game_identity_independently_requeried": false,
+    "boundary": "Parent supplied R9 context; this observer reads only logs, never game/main/pipe."
+  },
+  "files": {
+    "code_revisions.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\code_revisions.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\code_revisions.log",
+      "read_start_utc": "2026-10-05T05:54:03.208650+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.209274+00:00",
+      "before_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349779946500,
+        "ctime_ns": 1791179349779946500,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455688
+      },
+      "before_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349779946500,
+        "ctime_ns": 1791179349779946500,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455688
+      },
+      "after_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349779946500,
+        "ctime_ns": 1791179349779946500,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455688
+      },
+      "after_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349779946500,
+        "ctime_ns": 1791179349779946500,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455688
+      },
+      "selected_prefix_byte_bound": 0,
+      "captured_prefix_bytes": 0,
+      "raw_prefix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "custom_automated_stats.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\custom_automated_stats.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\custom_automated_stats.log",
+      "read_start_utc": "2026-10-05T05:54:03.209460+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.210100+00:00",
+      "before_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349780945900,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455689
+      },
+      "before_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349780945900,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455689
+      },
+      "after_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349780945900,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455689
+      },
+      "after_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349780945900,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455689
+      },
+      "selected_prefix_byte_bound": 0,
+      "captured_prefix_bytes": 0,
+      "raw_prefix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "database_conflicts.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\database_conflicts.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\database_conflicts.log",
+      "read_start_utc": "2026-10-05T05:54:03.210218+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.210827+00:00",
+      "before_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349780945900,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455691
+      },
+      "before_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349780945900,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455691
+      },
+      "after_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349780945900,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455691
+      },
+      "after_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349780945900,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455691
+      },
+      "selected_prefix_byte_bound": 0,
+      "captured_prefix_bytes": 0,
+      "raw_prefix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "debug.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\debug.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\debug.log",
+      "read_start_utc": "2026-10-05T05:54:03.210974+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.212443+00:00",
+      "before_path_metadata": {
+        "size": 463082,
+        "mtime_ns": 1791179550925481300,
+        "ctime_ns": 1791179349777946000,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 562949955166334
+      },
+      "before_open_handle_metadata": {
+        "size": 463082,
+        "mtime_ns": 1791179550925481300,
+        "ctime_ns": 1791179550925481300,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 562949955166334
+      },
+      "after_open_handle_metadata": {
+        "size": 463082,
+        "mtime_ns": 1791179550925481300,
+        "ctime_ns": 1791179550925481300,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 562949955166334
+      },
+      "after_path_metadata": {
+        "size": 463082,
+        "mtime_ns": 1791179550925481300,
+        "ctime_ns": 1791179349777946000,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 562949955166334
+      },
+      "selected_prefix_byte_bound": 463082,
+      "captured_prefix_bytes": 463082,
+      "raw_prefix_sha256": "5723c2e5a5ee0dc285cebd46b337d014e23a939487c45e3738cb7274943f64ea",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "dedicated_server.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\dedicated_server.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\dedicated_server.log",
+      "read_start_utc": "2026-10-05T05:54:03.213931+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.214758+00:00",
+      "before_path_metadata": {
+        "size": 70,
+        "mtime_ns": 1791179516988141100,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455690
+      },
+      "before_open_handle_metadata": {
+        "size": 70,
+        "mtime_ns": 1791179516988141100,
+        "ctime_ns": 1791179516988141100,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455690
+      },
+      "after_open_handle_metadata": {
+        "size": 70,
+        "mtime_ns": 1791179516988141100,
+        "ctime_ns": 1791179516988141100,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455690
+      },
+      "after_path_metadata": {
+        "size": 70,
+        "mtime_ns": 1791179516988141100,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455690
+      },
+      "selected_prefix_byte_bound": 70,
+      "captured_prefix_bytes": 70,
+      "raw_prefix_sha256": "725a39a723e6441548ba09ae8026426045d8502f87ec52b9dee1feac0c5882ae",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "error.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\error.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\error.log",
+      "read_start_utc": "2026-10-05T05:54:03.214883+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.216024+00:00",
+      "before_path_metadata": {
+        "size": 138556,
+        "mtime_ns": 1791179517374512800,
+        "ctime_ns": 1791179349777946000,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 281474978455679
+      },
+      "before_open_handle_metadata": {
+        "size": 138556,
+        "mtime_ns": 1791179517374512800,
+        "ctime_ns": 1791179517374512800,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 281474978455679
+      },
+      "after_open_handle_metadata": {
+        "size": 138556,
+        "mtime_ns": 1791179517374512800,
+        "ctime_ns": 1791179517374512800,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 281474978455679
+      },
+      "after_path_metadata": {
+        "size": 138556,
+        "mtime_ns": 1791179517374512800,
+        "ctime_ns": 1791179349777946000,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 281474978455679
+      },
+      "selected_prefix_byte_bound": 138556,
+      "captured_prefix_bytes": 138556,
+      "raw_prefix_sha256": "0a9b5cfb2628d42b9b334e6adb0777640f6614f2f376ff66d64a0c6d6483fb50",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "game.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\game.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\game.log",
+      "read_start_utc": "2026-10-05T05:54:03.261062+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.262123+00:00",
+      "before_path_metadata": {
+        "size": 2127,
+        "mtime_ns": 1791179515890423100,
+        "ctime_ns": 1791179349779946500,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455685
+      },
+      "before_open_handle_metadata": {
+        "size": 2127,
+        "mtime_ns": 1791179515890423100,
+        "ctime_ns": 1791179515890423100,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455685
+      },
+      "after_open_handle_metadata": {
+        "size": 2127,
+        "mtime_ns": 1791179515890423100,
+        "ctime_ns": 1791179515890423100,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455685
+      },
+      "after_path_metadata": {
+        "size": 2127,
+        "mtime_ns": 1791179515890423100,
+        "ctime_ns": 1791179349779946500,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455685
+      },
+      "selected_prefix_byte_bound": 2127,
+      "captured_prefix_bytes": 2127,
+      "raw_prefix_sha256": "3b38de110c49dc91ce6477af5d67736b9e4f9ab8df63f69bbe73643445a7beae",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "gui_warnings.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\gui_warnings.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\gui_warnings.log",
+      "read_start_utc": "2026-10-05T05:54:03.262266+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.262887+00:00",
+      "before_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349777946000,
+        "ctime_ns": 1791179349777946000,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 281474978455680
+      },
+      "before_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349777946000,
+        "ctime_ns": 1791179349777946000,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 281474978455680
+      },
+      "after_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349777946000,
+        "ctime_ns": 1791179349777946000,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 281474978455680
+      },
+      "after_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349777946000,
+        "ctime_ns": 1791179349777946000,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 281474978455680
+      },
+      "selected_prefix_byte_bound": 0,
+      "captured_prefix_bytes": 0,
+      "raw_prefix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "memory.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\memory.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\memory.log",
+      "read_start_utc": "2026-10-05T05:54:03.263005+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.263642+00:00",
+      "before_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349779946500,
+        "ctime_ns": 1791179349779946500,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455686
+      },
+      "before_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349779946500,
+        "ctime_ns": 1791179349779946500,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455686
+      },
+      "after_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349779946500,
+        "ctime_ns": 1791179349779946500,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455686
+      },
+      "after_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349779946500,
+        "ctime_ns": 1791179349779946500,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455686
+      },
+      "selected_prefix_byte_bound": 0,
+      "captured_prefix_bytes": 0,
+      "raw_prefix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "message.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\message.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\message.log",
+      "read_start_utc": "2026-10-05T05:54:03.263763+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.264361+00:00",
+      "before_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349778947200,
+        "ctime_ns": 1791179349778947200,
+        "birthtime_ns": 1791179349778947200,
+        "device": 11439297576789895419,
+        "inode": 281474978455684
+      },
+      "before_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349778947200,
+        "ctime_ns": 1791179349778947200,
+        "birthtime_ns": 1791179349778947200,
+        "device": 11439297576789895419,
+        "inode": 281474978455684
+      },
+      "after_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349778947200,
+        "ctime_ns": 1791179349778947200,
+        "birthtime_ns": 1791179349778947200,
+        "device": 11439297576789895419,
+        "inode": 281474978455684
+      },
+      "after_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349778947200,
+        "ctime_ns": 1791179349778947200,
+        "birthtime_ns": 1791179349778947200,
+        "device": 11439297576789895419,
+        "inode": 281474978455684
+      },
+      "selected_prefix_byte_bound": 0,
+      "captured_prefix_bytes": 0,
+      "raw_prefix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "multiplayer.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\multiplayer.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\multiplayer.log",
+      "read_start_utc": "2026-10-05T05:54:03.264470+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.265084+00:00",
+      "before_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349780945900,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455692
+      },
+      "before_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349780945900,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455692
+      },
+      "after_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349780945900,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455692
+      },
+      "after_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349780945900,
+        "ctime_ns": 1791179349780945900,
+        "birthtime_ns": 1791179349780945900,
+        "device": 11439297576789895419,
+        "inode": 281474978455692
+      },
+      "selected_prefix_byte_bound": 0,
+      "captured_prefix_bytes": 0,
+      "raw_prefix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "pdxsdk.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\pdxsdk.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\pdxsdk.log",
+      "read_start_utc": "2026-10-05T05:54:03.265226+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.265893+00:00",
+      "before_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179350061411100,
+        "ctime_ns": 1791179350061411100,
+        "birthtime_ns": 1791179350061411100,
+        "device": 11439297576789895419,
+        "inode": 281474978455698
+      },
+      "before_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179350061411100,
+        "ctime_ns": 1791179350061411100,
+        "birthtime_ns": 1791179350061411100,
+        "device": 11439297576789895419,
+        "inode": 281474978455698
+      },
+      "after_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179350061411100,
+        "ctime_ns": 1791179350061411100,
+        "birthtime_ns": 1791179350061411100,
+        "device": 11439297576789895419,
+        "inode": 281474978455698
+      },
+      "after_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179350061411100,
+        "ctime_ns": 1791179350061411100,
+        "birthtime_ns": 1791179350061411100,
+        "device": 11439297576789895419,
+        "inode": 281474978455698
+      },
+      "selected_prefix_byte_bound": 0,
+      "captured_prefix_bytes": 0,
+      "raw_prefix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "profile.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\profile.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\profile.log",
+      "read_start_utc": "2026-10-05T05:54:03.266160+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.267350+00:00",
+      "before_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349778947200,
+        "ctime_ns": 1791179349778947200,
+        "birthtime_ns": 1791179349778947200,
+        "device": 11439297576789895419,
+        "inode": 281474978455683
+      },
+      "before_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349778947200,
+        "ctime_ns": 1791179349778947200,
+        "birthtime_ns": 1791179349778947200,
+        "device": 11439297576789895419,
+        "inode": 281474978455683
+      },
+      "after_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349778947200,
+        "ctime_ns": 1791179349778947200,
+        "birthtime_ns": 1791179349778947200,
+        "device": 11439297576789895419,
+        "inode": 281474978455683
+      },
+      "after_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349778947200,
+        "ctime_ns": 1791179349778947200,
+        "birthtime_ns": 1791179349778947200,
+        "device": 11439297576789895419,
+        "inode": 281474978455683
+      },
+      "selected_prefix_byte_bound": 0,
+      "captured_prefix_bytes": 0,
+      "raw_prefix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "setup.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\setup.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\setup.log",
+      "read_start_utc": "2026-10-05T05:54:03.267612+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.269124+00:00",
+      "before_path_metadata": {
+        "size": 36864,
+        "mtime_ns": 1791179386132335900,
+        "ctime_ns": 1791179349779946500,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455687
+      },
+      "before_open_handle_metadata": {
+        "size": 36864,
+        "mtime_ns": 1791179386132335900,
+        "ctime_ns": 1791179386132335900,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455687
+      },
+      "after_open_handle_metadata": {
+        "size": 36864,
+        "mtime_ns": 1791179386132335900,
+        "ctime_ns": 1791179386132335900,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455687
+      },
+      "after_path_metadata": {
+        "size": 36864,
+        "mtime_ns": 1791179386132335900,
+        "ctime_ns": 1791179349779946500,
+        "birthtime_ns": 1791179349779946500,
+        "device": 11439297576789895419,
+        "inode": 281474978455687
+      },
+      "selected_prefix_byte_bound": 36864,
+      "captured_prefix_bytes": 36864,
+      "raw_prefix_sha256": "9718dc19bd788c139c9166a603a37b45b3a1dfb047cd51ed560cc13e25027be1",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "system.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\system.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\system.log",
+      "read_start_utc": "2026-10-05T05:54:03.269576+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.270571+00:00",
+      "before_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349777946000,
+        "ctime_ns": 1791179349777946000,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 281474978455681
+      },
+      "before_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349777946000,
+        "ctime_ns": 1791179349777946000,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 281474978455681
+      },
+      "after_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349777946000,
+        "ctime_ns": 1791179349777946000,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 281474978455681
+      },
+      "after_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349777946000,
+        "ctime_ns": 1791179349777946000,
+        "birthtime_ns": 1791179349777946000,
+        "device": 11439297576789895419,
+        "inode": 281474978455681
+      },
+      "selected_prefix_byte_bound": 0,
+      "captured_prefix_bytes": 0,
+      "raw_prefix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    },
+    "text.log": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\logs\\text.log",
+      "saved_prefix": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-log-prefix-monitor-20261005-001\\first-prefix-001\\raw-prefix\\text.log",
+      "read_start_utc": "2026-10-05T05:54:03.270790+00:00",
+      "read_end_utc": "2026-10-05T05:54:03.271829+00:00",
+      "before_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349778947200,
+        "ctime_ns": 1791179349778947200,
+        "birthtime_ns": 1791179349778947200,
+        "device": 11439297576789895419,
+        "inode": 281474978455682
+      },
+      "before_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349778947200,
+        "ctime_ns": 1791179349778947200,
+        "birthtime_ns": 1791179349778947200,
+        "device": 11439297576789895419,
+        "inode": 281474978455682
+      },
+      "after_open_handle_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349778947200,
+        "ctime_ns": 1791179349778947200,
+        "birthtime_ns": 1791179349778947200,
+        "device": 11439297576789895419,
+        "inode": 281474978455682
+      },
+      "after_path_metadata": {
+        "size": 0,
+        "mtime_ns": 1791179349778947200,
+        "ctime_ns": 1791179349778947200,
+        "birthtime_ns": 1791179349778947200,
+        "device": 11439297576789895419,
+        "inode": 281474978455682
+      },
+      "selected_prefix_byte_bound": 0,
+      "captured_prefix_bytes": 0,
+      "raw_prefix_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "short_read": false,
+      "source_metadata_changed_during_read": false,
+      "source_identity_changed_during_read": false,
+      "claim": "Exact copied bytes and selected size-bound prefix only; no claim that the live source remained frozen."
+    }
+  },
+  "classification": {
+    "error_headers": 578,
+    "counts": {
+      "known_fixture_unused_variable": 576,
+      "other_fixture_error_unreviewed": 2
+    },
+    "prefix_final_line_complete": true,
+    "classification_rule": "Fixture-only known-unused requires exact lyd_im_case_<n>_(armed|acknowledged) variable diagnostic; all other E groups remain separately visible."
+  },
+  "live_operations": 0,
+  "main_operations": 0,
+  "pipe_operations": 0,
+  "prefix_bound_only": true,
+  "formal_interaction_callback_coverage": "NOT_OBSERVED_BY_THIS_READER",
+  "later_callbacks_and_whole_final_log_verdict": "NOT_CLAIMED",
+  "next_action": "Wait for a concrete ROOT callback message; no automatic polling."
+}

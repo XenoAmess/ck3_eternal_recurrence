@@ -1,0 +1,295 @@
+{
+  "schema": "lyd.r9.actual-C2-facts-through-0051.v1",
+  "status": "ACTUAL_JOIN1_AND_EXPLICIT_RESET_VERIFIED_DETACH_SOURCE_SIGNED_ONLY",
+  "source_head": "54457b371e947edb86903c2ebd578034f02695db",
+  "profile": "862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5",
+  "baseline_native": {
+    "session_id": "8ffcb8420953481eade4610f3ff61781",
+    "profile_sha256": "862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5",
+    "pipe_name": "\\\\.\\pipe\\xar_profile_8ffcb8420953481eade4610f3ff61781",
+    "revision": 3,
+    "native_revision": 2,
+    "date_raw": 53144712,
+    "generation": 1,
+    "active_event": null,
+    "paused": true,
+    "PID": 20264,
+    "process_create_time": 1791179349.2116988
+  },
+  "source_READBACKs": {
+    "0004": {
+      "report": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0004\\REPORT.json",
+        "bytes": 214298,
+        "sha256": "90b679c6c34a7019d1f6317ab3156002f68b685a15bcfb33ae2de34e3eb0db79"
+      },
+      "index": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0004\\INDEX.json",
+        "bytes": 366,
+        "sha256": "e131e0baa2c80e2f9fa4a663e80ac08932d20a961d2030247dd60a0cd68632fd"
+      }
+    },
+    "0009": {
+      "report": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0009\\REPORT.json",
+        "bytes": 443810,
+        "sha256": "44cf5d586e74a5fa57f67f0b4d3f570fb17d2ea95edc5cfd664b6b6992e3b57b"
+      },
+      "index": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0009\\INDEX.json",
+        "bytes": 366,
+        "sha256": "dd764485a152127c9119ef318921e8f61f7953b74979f0665660009abe95da9d"
+      }
+    },
+    "0014": {
+      "report": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0014\\REPORT.json",
+        "bytes": 443205,
+        "sha256": "a1f094d7183e0d7a30d6a2c5ac210c903d0606f99cd53362aff4b0b681c1df5c"
+      },
+      "index": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0014\\INDEX.json",
+        "bytes": 366,
+        "sha256": "7b80915c0396ecd2c6d5e7f182a1291f28450b56cbb46d8ea11554856050b59f"
+      }
+    },
+    "0023": {
+      "report": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0023\\REPORT.json",
+        "bytes": 446542,
+        "sha256": "5fe6a5d897b243184798d2957a63751d4142d26e44783b87e25b25ac8983c542"
+      },
+      "index": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0023\\INDEX.json",
+        "bytes": 366,
+        "sha256": "c03805c360bfe23577580acb3998ccb9c740b934a616374d81f029359e165586"
+      }
+    },
+    "0028": {
+      "report": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0028\\REPORT.json",
+        "bytes": 473000,
+        "sha256": "2b20539bc6f95463b098690e1e80dc86deffb66c22442c3696111c4fcf83d149"
+      },
+      "index": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0028\\INDEX.json",
+        "bytes": 366,
+        "sha256": "ea5de3ef962b8feb61e98f1c0cc7f78c10cb885fcbd9932e807d21e604560645"
+      }
+    },
+    "0036": {
+      "report": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0036\\REPORT.json",
+        "bytes": 491407,
+        "sha256": "50515f11e81abcf1fe867a87f4761f8c20896fcfef8ada6040636fb9751a8cde"
+      },
+      "index": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0036\\INDEX.json",
+        "bytes": 366,
+        "sha256": "10ff13e38dda61552df242d8487b48a999784b326c2eae69d7aa5e67f09ede9a"
+      }
+    },
+    "0046": {
+      "report": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0046\\REPORT.json",
+        "bytes": 439847,
+        "sha256": "0159083b5d33d139de167c99e763b54b33eb10724614ddd0d80ac234f0fd9b9e"
+      },
+      "index": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0046\\INDEX.json",
+        "bytes": 366,
+        "sha256": "a0c0954bd6cc533e888167bacff9b327ccc3c82970b4ed6603f713dddfb73813"
+      }
+    },
+    "0051": {
+      "report": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0051\\REPORT.json",
+        "bytes": 392965,
+        "sha256": "1247736456eb662cd17754526b1b776720fa020322604a05095de2f4c553722f"
+      },
+      "index": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0051\\INDEX.json",
+        "bytes": 366,
+        "sha256": "5d7d43a2ebfd91d10ebe6a405d0731fb873f9b5ec03ae7fb8e17745516318d7d"
+      }
+    }
+  },
+  "baseline_saved_stress_raw": null,
+  "baseline_completed_joins_raw": {
+    "present": true,
+    "type": "value",
+    "identity": null,
+    "number": null,
+    "boolean": null,
+    "tick": null,
+    "entries": [
+      {
+        "key": "type",
+        "value": "value"
+      }
+    ]
+  },
+  "baseline_joins_zero_semantics": "Only a present initialized counter with type=value and omitted zero identity; raw null remains preserved. Other missing source fields never become zero.",
+  "first_JOIN": {
+    "source_parent": [
+      "105",
+      "104"
+    ],
+    "source_backup_main_actual": "186",
+    "nonce": [
+      "5",
+      "5"
+    ],
+    "joins": [
+      "0",
+      "1"
+    ],
+    "detaches": [
+      "1",
+      "1"
+    ],
+    "fee": {
+      "gold": "-300",
+      "piety": "-1500",
+      "prestige": "0"
+    },
+    "after_wallet": {
+      "gold": "1743",
+      "piety": "6650",
+      "prestige": "2200"
+    },
+    "selected_protections": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0028\\REPORT.json",
+      "bytes": 7098,
+      "sha256": "e3803acb8b96cba3c3d84770751ca40ac810df8d3e5ca501a5246c32fa96312b"
+    },
+    "political_title_count_actual": 7,
+    "political_title_AST_same_R9baseline_to_JOIN": true
+  },
+  "explicit_reset": {
+    "count": [
+      "1",
+      "2"
+    ],
+    "joins": [
+      "1",
+      "1"
+    ],
+    "detaches": [
+      "1",
+      "1"
+    ],
+    "nonce": [
+      "5",
+      "5"
+    ],
+    "fee": {
+      "gold": "0",
+      "piety": "0",
+      "prestige": "0"
+    },
+    "natural_time_expiry": false,
+    "selected_protections": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0036\\REPORT.json",
+      "bytes": 7094,
+      "sha256": "d13799c6bbcba16d6202457747a15759e868a8f3a91e0077c16a9c5e29b314ee"
+    }
+  },
+  "last_saved_DETACH_precommit": {
+    "native": {
+      "session_id": "8ffcb8420953481eade4610f3ff61781",
+      "profile_sha256": "862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5",
+      "pipe_name": "\\\\.\\pipe\\xar_profile_8ffcb8420953481eade4610f3ff61781",
+      "revision": 27,
+      "native_revision": 26,
+      "date_raw": 53144712,
+      "generation": 1,
+      "active_event": null,
+      "paused": true,
+      "PID": 20264,
+      "process_create_time": 1791179349.2116988
+    },
+    "source_signed": {
+      "present": true,
+      "type": "value",
+      "identity": "100000",
+      "number": "1",
+      "boolean": null,
+      "tick": null,
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "100000"
+        }
+      ]
+    },
+    "target_signed": null,
+    "target_signed_required_for_kind2": false,
+    "snapshot_valid": {
+      "present": true,
+      "type": "value",
+      "identity": "100000",
+      "number": "1",
+      "boolean": null,
+      "tick": null,
+      "entries": [
+        {
+          "key": "type",
+          "value": "value"
+        },
+        {
+          "key": "identity",
+          "value": "100000"
+        }
+      ]
+    },
+    "source_total_yes": [
+      "2",
+      "2"
+    ],
+    "human_total_yes": [
+      "1",
+      "1"
+    ],
+    "nonce": [
+      "6",
+      "6"
+    ],
+    "parent": [
+      "104",
+      "104"
+    ],
+    "fee": {
+      "gold": "0",
+      "piety": "0",
+      "prestige": "0"
+    },
+    "DETACH_success": null
+  },
+  "R8_to_R9_baseline_title_scope": "Same 7 IDs/key/holder and named character+landed branches; all7 complete title AST hashes differ from old R8 cache. Difference is retained without cause inference. Within-R9 JOIN/reset protection ASTs match.",
+  "baseline_protection_ref": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0004\\REPORT.json",
+    "bytes": 7087,
+    "sha256": "ffe44990147e61d0708db7178ff85b4e7471e5da4874ad47ada768d93724574a"
+  },
+  "source_parser_reader": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-incremental-readback-helper-20261005-001\\review-package-002\\read_r8_c2.py",
+    "bytes": 29109,
+    "sha256": "cfee520abacd426b7b73b1e91da3fa1abe2ad44d67d3e50af758a1dcdeb7b2e4"
+  },
+  "top_level_supplement_source": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\supplement_selected_protections.py",
+    "bytes": 5413,
+    "sha256": "a799756f7ac2fe15069393cf1c716e5edc23ac0291b49708d5ccdcfb1568efe8"
+  },
+  "correct_reader_CLI": "Python313 -B read_r8_c2.py --request ACTUAL-REQUEST.json",
+  "actual_second_JOIN": null,
+  "actual_FULL_CYCLE": false,
+  "actual_registry_release": "NOT_RUN",
+  "game_calls": 0,
+  "MCP_calls": 0
+}

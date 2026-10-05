@@ -16,7 +16,7 @@ except ImportError:
 
 NORMAL_EXIT_MAP_CAPABILITY = 'normal-exit-map-v1'
 NORMAL_EXIT_MAP_STEP = 'normal-exit-map-v1'
-MAP_EXIT_ACTIONS = ('prepare_confirmation', 'confirm_desktop')
+MAP_EXIT_ACTIONS = ('prepare_confirmation', 'continue_preparation', 'confirm_desktop')
 SIGNATURE_PATTERN = r'^[0-9a-f]{64}$'
 QUERY_INPUT_SCHEMA = {
     'type': 'object', 'properties': {'expected_revision': {'type': 'integer', 'minimum': 1}},
@@ -66,7 +66,7 @@ def normalize_request_arguments(arguments: dict) -> dict:
         raise ValueError('closed request input requires action, expected_revision and expected_exit_context_signature')
     action = arguments['action']
     if type(action) is not str or action not in MAP_EXIT_ACTIONS:
-        raise ValueError('only map prepare_confirmation and confirm_desktop are supported')
+        raise ValueError('only map prepare_confirmation, continue_preparation and confirm_desktop are supported')
     return {'action': action,
             'expected_revision': positive_integer(arguments['expected_revision'], 'expected_revision'),
             'expected_exit_context_signature': exit_signature(arguments['expected_exit_context_signature'])}
@@ -132,7 +132,7 @@ NATIVE_OBSERVATION_KEYS = {
     'source_abi_pins_verified', 'stock_files_verified', 'loaded_source_binding_verified',
     'frame_verified', 'context_signature_verified', 'confirmation_visible',
     'orderly_exit_verified', 'autosave_verified', 'exit_context_signature', 'reason',
-    'targets', 'dispatches',
+    'targets', 'dispatches', 'stage_consumed',
 }
 NATIVE_PROOF_KEYS = (
     'exact_build_verified', 'owner_verified', 'process_identity_verified',
@@ -146,6 +146,35 @@ TARGET_BOOLEAN_KEYS = {
 DISPATCH_BOOLEAN_KEYS = {
     'claim_latched', 'dispatch_invoked', 'native_handled', 'post_read_complete', 'postcondition_observed',
 }
+
+
+def continue_preparation_context_ready_v1(native: object) -> bool:
+    """Only a fresh owner-observed remaining stage may authorize continuation.
+
+    This reads actual backend progress and targets; the earlier preparation
+    claim remains consumed even when its delivery result was unknown.
+    """
+    if (type(native) is not dict or native.get('action') != 'query_context'
+            or native.get('status') != 'context_observed'
+            or native.get('confirmation_visible') is not False
+            or any(native.get(key) is not True for key in NATIVE_PROOF_KEYS)
+            or type(native.get('pump_epoch')) is not int or native['pump_epoch'] <= 0):
+        return False
+    consumed = native.get('stage_consumed')
+    if (type(consumed) is not list or len(consumed) != 3
+            or any(type(value) is not bool for value in consumed)
+            or consumed != [True, False, False]):
+        return False
+    targets = native.get('targets')
+    if (type(targets) is not list or len(targets) != 3
+            or any(type(target) is not dict or target.get('read_complete') is not True
+                   for target in targets)
+            or targets[2].get('root_visible') is not False):
+        return False
+    target = targets[1]
+    return (all(target.get(key) is True for key in TARGET_BOOLEAN_KEYS)
+            and type(target.get('target_vtable_rva')) is int
+            and target['target_vtable_rva'] > 0)
 
 
 def normalize_native_exit_observation(raw: object, binding: ExitWireBinding, action: str) -> dict:
@@ -192,6 +221,17 @@ def normalize_native_exit_observation(raw: object, binding: ExitWireBinding, act
                 raise ValueError(f'normal-exit {group} requires actual boolean observations')
             if extras and (type(entry['target_vtable_rva']) is not int or entry['target_vtable_rva'] < 0):
                 raise ValueError('normal-exit target vtable identity is invalid')
+    if (type(raw['stage_consumed']) is not list or len(raw['stage_consumed']) != 3
+            or any(type(value) is not bool for value in raw['stage_consumed'])):
+        raise ValueError('normal-exit stage_consumed requires three actual boolean observations')
+    if action == 'continue_preparation':
+        if any(raw['dispatches'][index]['claim_latched'] or raw['dispatches'][index]['dispatch_invoked']
+               for index in (0, 2)):
+            raise ValueError('normal-exit continuation must never claim or dispatch stage 0 or stage 2')
+        if (raw['status'] != 'unavailable' and (raw['stage_consumed'][0] is not True
+                or raw['stage_consumed'][2] is not False
+                or (raw['dispatches'][1]['claim_latched'] and raw['stage_consumed'][1] is not True))):
+            raise ValueError('normal-exit continuation lacks its actual remaining-stage progress')
     if action == 'query_context' and any(entry['claim_latched'] or entry['dispatch_invoked']
                                          for entry in raw['dispatches']):
         raise ValueError('read-only normal-exit query unexpectedly dispatched or claimed')
@@ -199,7 +239,7 @@ def normalize_native_exit_observation(raw: object, binding: ExitWireBinding, act
         raise ValueError('normal-exit mutation lacks backend context signature verification')
     if raw['status'] == 'confirmation_observed':
         target = raw['targets'][2]
-        if action != 'prepare_confirmation' or not raw['confirmation_visible'] or not all(
+        if action not in {'prepare_confirmation', 'continue_preparation'} or not raw['confirmation_visible'] or not all(
                 target[key] for key in TARGET_BOOLEAN_KEYS):
             raise ValueError('normal-exit preparation lacks actual admitted official confirmation readback')
     return dict(raw)
@@ -273,7 +313,7 @@ def normalize_public_exit_result(result: object, *, action: str,
                 or type(result.get('typed_normal_exit_observed')) is not bool
                 or type(result.get('process_exit_observed')) is not bool):
             raise ValueError('normal-exit backend request is not a typed consumed-phase result')
-        if action == 'prepare_confirmation' and (result['typed_normal_exit_observed'] or result['process_exit_observed']):
+        if action in {'prepare_confirmation', 'continue_preparation'} and (result['typed_normal_exit_observed'] or result['process_exit_observed']):
             raise ValueError('normal-exit preparation cannot establish a process exit')
         if action == 'confirm_desktop' and result.get('snapshot_after_required') is not False:
             raise ValueError('terminal normal-exit backend must preserve handle facts without a final live snapshot')

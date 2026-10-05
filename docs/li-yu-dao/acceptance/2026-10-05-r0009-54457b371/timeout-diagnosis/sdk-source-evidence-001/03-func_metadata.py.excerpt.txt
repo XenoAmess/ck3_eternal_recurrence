@@ -1,0 +1,98 @@
+119:         structured content**. This is for MCPServer backwards compatibility: we need to
+120:         retain MCPServer's ad hoc conversion logic for constructing unstructured output
+121:         from function return values, whereas the lowlevel server simply serializes
+122:         the structured output.
+123:         """
+124:         if isinstance(result, InputRequiredResult):
+125:             return result
+126:         if isinstance(result, CallToolResult):
+127:             if self.output_schema is not None:
+128:                 assert self.output_model is not None, "Output model must be set if output schema is defined"
+129:                 self.output_model.model_validate(result.structured_content)
+130:             return result
+131: 
+132:         unstructured_content = _convert_to_content(result)
+133: 
+134:         if self.output_schema is None:
+135:             return CallToolResult(content=unstructured_content)
+136: 
+137:         if self.wrap_output:
+138:             result = {"result": result}
+139: 
+140:         assert self.output_model is not None, "Output model must be set if output schema is defined"
+141:         validated = self.output_model.model_validate(result)
+142:         structured_content = validated.model_dump(mode="json", by_alias=True)
+143: 
+144:         return CallToolResult(content=unstructured_content, structured_content=structured_content)
+145: 
+146:     def pre_parse_json(self, data: dict[str, Any]) -> dict[str, Any]:
+147:         """Pre-parse data from JSON.
+148: 
+149:         Return a dict with the same keys as input but with values parsed from JSON
+150:         if appropriate.
+151: 
+152:         This is to handle cases like `["a", "b", "c"]` being passed in as JSON inside
+153:         a string rather than an actual list. Claude Desktop is prone to this - in fact
+154:         it seems incapable of NOT doing this. For sub-models, it tends to pass
+155:         dicts (JSON objects) as JSON strings, which can be pre-parsed here.
+156:         """
+157:         new_data = data.copy()  # Shallow copy
+158: 
+159:         # Build a mapping from input keys (including aliases) to field info
+160:         key_to_field_info: dict[str, FieldInfo] = {}
+161:         for field_name, field_info in self.arg_model.model_fields.items():
+162:             # Map both the field name and its alias (if any) to the field info
+163:             key_to_field_info[field_name] = field_info
+164:             if field_info.alias:
+165:                 key_to_field_info[field_info.alias] = field_info
+420:         # Case 2: TypedDicts:
+421:         elif is_typeddict(type_annotation):
+422:             model = _create_model_from_typeddict(type_annotation)
+423: 
+424:         # Case 3: Primitive types that need wrapping
+425:         elif type_annotation in (str, int, float, bool, bytes, type(None)):
+426:             model = _create_wrapped_model(func_name, original_annotation)
+427:             wrap_output = True
+428: 
+429:         # Case 4: Other class types (dataclasses, regular classes with annotations)
+430:         else:
+431:             type_hints = get_type_hints(type_annotation)
+432:             if type_hints:
+433:                 # Classes with type hints can be converted to Pydantic models
+434:                 model = _create_model_from_class(type_annotation, type_hints)
+435:             # Classes without type hints are not serializable - model remains None
+436: 
+437:     # Handle any other types not covered above
+438:     else:
+439:         # This includes typing constructs that aren't GenericAlias in Python 3.10
+440:         # (e.g., Union, Optional in some Python versions)
+441:         model = _create_wrapped_model(func_name, original_annotation)
+442:         wrap_output = True
+443: 
+444:     if model:
+445:         # If we successfully created a model, try to get its schema
+446:         # Use StrictJsonSchema to raise exceptions instead of warnings
+447:         try:
+448:             schema = model.model_json_schema(schema_generator=StrictJsonSchema)
+449:         except (
+450:             PydanticUserError,
+451:             TypeError,
+452:             ValueError,
+453:             pydantic_core.SchemaError,
+454:             pydantic_core.ValidationError,
+455:         ) as e:
+456:             # These are expected errors when a type can't be converted to a Pydantic schema
+457:             # PydanticUserError: When Pydantic can't handle the type (e.g. PydanticInvalidForJsonSchema);
+458:             #   subclasses TypeError on pydantic <2.13 and RuntimeError on pydantic >=2.13
+459:             # ValueError: When there are issues with the type definition (including our custom warnings)
+460:             # SchemaError: When Pydantic can't build a schema
+461:             # ValidationError: When validation fails
+462:             logger.info(f"Cannot create schema for type {type_expr} in {func_name}: {type(e).__name__}: {e}")
+463:             return None, None, False
+464: 
+465:         return model, schema, wrap_output
+466: 
+467:     return None, None, False
+468: 
+469: 
+470: _no_default = object()

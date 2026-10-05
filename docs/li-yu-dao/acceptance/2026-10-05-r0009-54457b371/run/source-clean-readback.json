@@ -1,0 +1,140 @@
+{
+  "before": {
+    "head": "54457b371e947edb86903c2ebd578034f02695db",
+    "tree": "b33ec85f4a50c51c97fd2c655b7047af05420afa",
+    "product_tree": "044bf5bf267257522f8be637b7298cb9a801cc08",
+    "native_tree": "e94b04dbd88cc908123d8a8af42cf00c208f764b",
+    "status": ""
+  },
+  "after": {
+    "head": "54457b371e947edb86903c2ebd578034f02695db",
+    "tree": "b33ec85f4a50c51c97fd2c655b7047af05420afa",
+    "product_tree": "044bf5bf267257522f8be637b7298cb9a801cc08",
+    "native_tree": "e94b04dbd88cc908123d8a8af42cf00c208f764b",
+    "status": ""
+  },
+  "commands": [
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "rev-parse",
+        "HEAD"
+      ],
+      "returncode": 0,
+      "stdout": "54457b371e947edb86903c2ebd578034f02695db\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "rev-parse",
+        "HEAD^{tree}"
+      ],
+      "returncode": 0,
+      "stdout": "b33ec85f4a50c51c97fd2c655b7047af05420afa\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "rev-parse",
+        "HEAD:mod_li_yu_dao"
+      ],
+      "returncode": 0,
+      "stdout": "044bf5bf267257522f8be637b7298cb9a801cc08\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "rev-parse",
+        "HEAD:ck3_autonomous_player/native_bridge"
+      ],
+      "returncode": 0,
+      "stdout": "e94b04dbd88cc908123d8a8af42cf00c208f764b\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "rev-parse",
+        "HEAD"
+      ],
+      "returncode": 0,
+      "stdout": "54457b371e947edb86903c2ebd578034f02695db\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "rev-parse",
+        "HEAD^{tree}"
+      ],
+      "returncode": 0,
+      "stdout": "b33ec85f4a50c51c97fd2c655b7047af05420afa\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "rev-parse",
+        "HEAD:mod_li_yu_dao"
+      ],
+      "returncode": 0,
+      "stdout": "044bf5bf267257522f8be637b7298cb9a801cc08\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "rev-parse",
+        "HEAD:ck3_autonomous_player/native_bridge"
+      ],
+      "returncode": 0,
+      "stdout": "e94b04dbd88cc908123d8a8af42cf00c208f764b\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "git",
+        "-C",
+        "C:\\workspace\\ck3_eternal_recurrence",
+        "status",
+        "--porcelain=v1",
+        "--untracked-files=all"
+      ],
+      "returncode": 0,
+      "stdout": "",
+      "stderr": ""
+    }
+  ]
+}

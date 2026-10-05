@@ -1,0 +1,35 @@
+{
+  "argv": [
+    "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\workspace\\ck3_eternal_recurrence\\tools\\codex_task_bus.py",
+    "--bus-dir",
+    "C:/workspace/.codex-task-bus",
+    "--expected-cli-sha256",
+    "b3c44b42f7bdf401b593d863e3210106a46412dcd7d89f8596c74f4c27392dee",
+    "release-screen-cas",
+    "--task",
+    "ck3-lyd-r0009-20261005",
+    "--expected-sequence",
+    "2980",
+    "--summary",
+    "LYD R0009 saved JOIN and DETACH; native terminal original HANDLE exit0; SDK and C2 failures retained; client and keeper stopped."
+  ],
+  "keeper_final": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0009\\FINAL.json",
+    "bytes": 384,
+    "sha256": "4b8d519c602098fda0c6df28be3a84d9400f1a86dcaca557c325d678988b69f4"
+  },
+  "terminal_sdk": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0065-0065-retained-handle-exit-observe.sdk-result.json",
+    "bytes": 12645,
+    "sha256": "003330b1e40e9e1a8fb910092b9c1bf0891f81b7f2ea68cf0514653b110d9333"
+  },
+  "client_closed": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\session-closed.json",
+    "bytes": 2922,
+    "sha256": "cdf94951648cc881a7e6e2f397a87427b6180bbca9b5144ce1a434665e446e92"
+  }
+}

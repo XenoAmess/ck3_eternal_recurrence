@@ -1,0 +1,22 @@
+{
+  "utc": "2026-10-05T06:52:50.544556+00:00",
+  "request_id": "0058-post-detach-save",
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\save games\\xar_checkpoint.ck3",
+  "preserved": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\checkpoint.ck3",
+  "bytes": 91530739,
+  "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539",
+  "native_receipt": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0057-checkpoint.json",
+  "native_receipt_sha256": "4d367e72b16827621d577567c94eff1d98ccd2a85766f03b2e788387ab6c4cd5",
+  "native_receipt_status": "native_gameplay_postcondition_verified",
+  "recorded_at_utc": "2026-10-05T06:48:34.103027+00:00",
+  "actual_actor_id": 31254,
+  "revision": 30,
+  "native_revision": 29,
+  "date_raw": 53144712,
+  "paused": true,
+  "sdk_status": "ERROR_NO_RETRY",
+  "sdk_result": null,
+  "sdk_success_credit": false,
+  "business_acceptance_credit": false,
+  "scope": "Exact saved bytes match the separately preserved actual native save receipt; independent save parser still required."
+}

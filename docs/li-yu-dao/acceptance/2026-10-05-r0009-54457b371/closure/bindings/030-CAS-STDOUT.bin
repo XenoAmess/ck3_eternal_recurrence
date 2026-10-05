@@ -1,0 +1,47 @@
+{
+  "schema": "codex.task_bus.v1",
+  "ok": true,
+  "task": {
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "54457b371e947edb86903c2ebd578034f02695db"
+    },
+    "last_sequence": 2981,
+    "next_step": "Fresh-offline-final-DLL-and-isolated-campaign",
+    "pid": 14604,
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "resources": [],
+    "schema": "codex.task_bus.v1",
+    "state": "waiting",
+    "summary": "LYD R0009 saved JOIN and DETACH; native terminal original HANDLE exit0; SDK and C2 failures retained; client and keeper stopped.",
+    "task_id": "ck3-lyd-r0009-20261005",
+    "updated_at_utc": "2026-10-05T07:37:01.639315+00:00"
+  },
+  "event": {
+    "schema": "codex.task_bus.v1",
+    "sequence": 2981,
+    "event_id": "ffbacfbed8fc47afb9b093a9c54421b7",
+    "timestamp_utc": "2026-10-05T07:37:01.640389+00:00",
+    "kind": "status",
+    "task_id": "ck3-lyd-r0009-20261005",
+    "to": [
+      "*"
+    ],
+    "state": "waiting",
+    "summary": "LYD R0009 saved JOIN and DETACH; native terminal original HANDLE exit0; SDK and C2 failures retained; client and keeper stopped.",
+    "next_step": "Fresh-offline-final-DLL-and-isolated-campaign",
+    "resources": [],
+    "repo": "C:\\workspace\\ck3_eternal_recurrence",
+    "git": {
+      "branch": "master",
+      "dirty_entries": 0,
+      "head": "54457b371e947edb86903c2ebd578034f02695db"
+    },
+    "retirement": {
+      "kind": "expired-own-claim-released",
+      "business_status": "unresolved_red",
+      "prior_sequence": 2980
+    }
+  }
+}

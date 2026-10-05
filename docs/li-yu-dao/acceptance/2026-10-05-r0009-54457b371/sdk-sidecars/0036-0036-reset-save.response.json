@@ -1,0 +1,20 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 36,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0036-reset-save.request.json",
+  "request_sha256": "84756ac54e974664a1bf11b0df0259195bfb1a7db51e1b19c67f31e97947899c",
+  "started_at_utc": "2026-10-05T06:17:12.144979+00:00",
+  "request_id": "0036-reset-save",
+  "status": "MCP_RESULT_RECORDED",
+  "is_error": null,
+  "sdk_result": "0036-0036-reset-save.sdk-result.json",
+  "sdk_result_sha256": "7495549a86746a837f2de398c3201f672e9d0720a3ec886a9415a0f5e09a2ea6",
+  "native_receipts": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0035-checkpoint.json",
+      "copy": "0036-0036-reset-save.native-01.json",
+      "sha256": "957c3e137a4f6a5047423014e8b9d95e58d67b3b4be6ca25ac712f0cf9e03c74"
+    }
+  ],
+  "finished_at_utc": "2026-10-05T06:17:22.219305+00:00"
+}

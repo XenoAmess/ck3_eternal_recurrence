@@ -1,5 +1,6 @@
 ﻿l_simp_chinese:
  # GENERATED FILE: edit tools/gen_school_consent.py.
+ lyd_c2_same_main_doctrines_tt:0 "来源与接收共同体主流礼仪的教义相同。"
  lyd_c2_detach_requirements_tt:0 "我已入儒门，成年且有领地，能够自由理事，学识至少为15；本派属于本模组学统、不是当前共同体主流，且没有正在议定的归属或领袖议案，也不在归属调整或重议等待期。"
  lyd_c2_review_requirements_tt:0 "我仍具备发起资格，且本轮议案仍对应我的学统、共同体、领袖及接收代表；本派与接收方的本轮归属约定仍有效。人选或归属变化后须重新议定。"
  lyd_c2_cancel_requirements_tt:0 "我有尚未实施的当前议案；即使已失去发起资格，仍可撤回自己的这一轮议案。"

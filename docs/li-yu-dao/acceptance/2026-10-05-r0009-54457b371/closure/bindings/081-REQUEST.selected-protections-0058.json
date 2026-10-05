@@ -1,0 +1,14 @@
+{
+  "schema": "lyd.r9.selected-protection-request.v1",
+  "core_readback": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0058-native-002\\REPORT.json",
+    "bytes": 419023,
+    "sha256": "5f0f56d153dc76b1843c529eeda5d6aa9d40f44dfdf2f5db7ca059b21f6955bc"
+  },
+  "before_protection": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0036\\REPORT.json",
+    "bytes": 7094,
+    "sha256": "d13799c6bbcba16d6202457747a15759e868a8f3a91e0077c16a9c5e29b314ee"
+  },
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\selected-protections-0058-native-001"
+}

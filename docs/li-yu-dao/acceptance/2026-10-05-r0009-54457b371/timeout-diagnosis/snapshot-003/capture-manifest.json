@@ -1,0 +1,51 @@
+{
+  "start_utc": "2026-10-05T06:50:57.219693+00:00",
+  "policy": "fixed initial byte bound; read only source; new external copies",
+  "files": [
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0058-0058-post-detach-save.request.json",
+      "relative": "mcp-client-evidence-001\\0058-0058-post-detach-save.request.json",
+      "prefix_byte_bound": 204,
+      "copied_bytes": 204,
+      "sha256": "c428d5a27180c8d50ede6032f62c8cd96df9c899ed045ea0e790b2639db0af4f",
+      "source_before_mtime_ns": 1791182900377187000,
+      "source_after_mtime_ns": 1791182900377187000,
+      "source_after_bytes": 204,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0058-0058-post-detach-save.response.json",
+      "relative": "mcp-client-evidence-001\\0058-0058-post-detach-save.response.json",
+      "prefix_byte_bound": 529,
+      "copied_bytes": 529,
+      "sha256": "7f81dd2d6412e4083f16676dfce5376bdac22f36570debc446b5bd938cc32117",
+      "source_before_mtime_ns": 1791182960683522000,
+      "source_after_mtime_ns": 1791182960683522000,
+      "source_after_bytes": 529,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0058-0058-post-detach-save.started.json",
+      "relative": "mcp-client-evidence-001\\0058-0058-post-detach-save.started.json",
+      "prefix_byte_bound": 341,
+      "copied_bytes": 341,
+      "sha256": "0b342f61e0452f19efb11dcd34fe60aac89745d9ad9ba425bf1f962d8857c4fb",
+      "source_before_mtime_ns": 1791182900378220900,
+      "source_after_mtime_ns": 1791182900378220900,
+      "source_after_bytes": 341,
+      "changed_during_read": false
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0057-checkpoint.json",
+      "relative": "native-evidence\\8ffcb8420953481eade4610f3ff61781\\0057-checkpoint.json",
+      "prefix_byte_bound": 52847501,
+      "copied_bytes": 52847501,
+      "sha256": "4d367e72b16827621d577567c94eff1d98ccd2a85766f03b2e788387ab6c4cd5",
+      "source_before_mtime_ns": 1791182915107293900,
+      "source_after_mtime_ns": 1791182915107293900,
+      "source_after_bytes": 52847501,
+      "changed_during_read": false
+    }
+  ],
+  "end_utc": "2026-10-05T06:50:57.949523+00:00"
+}

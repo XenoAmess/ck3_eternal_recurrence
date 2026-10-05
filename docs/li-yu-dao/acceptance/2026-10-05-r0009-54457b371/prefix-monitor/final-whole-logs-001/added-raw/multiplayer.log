@@ -1,0 +1,51 @@
+[13:49:15][I][session.cpp:759]: [INFO] Init session
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: West Slavic Attire
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Tours and Tournaments
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: North African Attire
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Roads to Power
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Legends of the Dead
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Celestial Court Attire
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: The Northern Lords
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: All Under Heaven
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Garments of the Holy Roman Empire
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Legacy of Persia
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: The Royal Court
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Fashion of the Abbasid Court
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Songs of the Realm
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Holy Buildings
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Wards and Wardens
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Coronations
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: East Asian Wonders
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: The Fate of Iberia
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Elegance of the Empire
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: North Pacific Attire
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Couture of the Capets
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: High Medieval Warfare Attire
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Medieval Monuments
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Wandering Nobles
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Friends and Foes
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Khans of the Steppe
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Symbols of Authority
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Crowns of the World
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: Arctic Attire
+[13:49:15][I][session.cpp:2446]: [INFO] SSessionDlcCache: By God Alone
+[13:51:56][I][jominigamestate.cpp:209]: [INFO] Creating gamestate
+[13:55:21][I][session.h:420]: [INFO] Setting execute commands: yes
+[13:55:21][I][session.h:432]: [INFO] Enabling recorded command replaying
+[13:55:21][I][multiplayer.cpp:181]: [INFO] Adding local player
+[13:55:21][I][session.cpp:1223]: [INFO] Replaying recorded commands: 0
+[13:55:21][I][session.h:426]: [INFO] Setting record commands: no
+[13:55:21][I][session.cpp:1230]: [INFO] Notifying callbacks with DoneReplayingCommands
+[13:55:21][I][ingamemultiplayeridlerlogic.cpp:207]: [INFO] Handling session notification: done replaying commands for machine ID: 1
+[13:55:25][I][controlcommands.cpp:52]: [INFO] CAddPlayer local player: UNKNOWN with machine ID: 1 sender: 1
+[13:55:25][I][controlcommands.cpp:1097]: [INFO] Setting "done replaying commands" for machine ID: 1
+[13:55:26][I][controlcommands.cpp:409]: [INFO] Setting playable: 31254 for machine ID: 1
+[13:55:26][I][controlcommands.cpp:433]: [INFO] Setting character controller
+[13:55:26][I][session.cpp:2250]: [INFO] Setting preparation lobby: no
+[13:55:26][I][controlcommands.cpp:1054]: [INFO] Setting "player here" for machine ID: 1
+[13:56:24][I][controlcommands.cpp:1330]: [INFO] Setting observer: no for machine ID: 1
+[13:56:24][I][controlcommands.cpp:543]: [INFO] Starting game, sender: 1
+[13:56:24][I][controlcommands.cpp:1097]: [INFO] Setting "done replaying commands" for machine ID: 1
+[13:56:24][I][controlcommands.cpp:409]: [INFO] Setting playable: 31254 for machine ID: 1
+[15:22:49][I][ingamesavegametransferhandler.cpp:88]: [INFO] Clearing pending save transfers
+[15:22:49][I][jominigamestate.cpp:216]: [INFO] Destroying gamestate

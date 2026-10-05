@@ -912,6 +912,11 @@ class GeneratedGraphTests(unittest.TestCase):
                     children = [evaluate(Block([child]), current, previous, saved, source, target, universe)
                                 for child in value.entries]
                     result = all(children) if key == "AND" else any(children) if key == "OR" else not all(children)
+                elif key == "custom_tooltip":
+                    # Presentation wrapper still evaluates every real condition.
+                    result = evaluate(value, current, previous, saved, source, target, universe)
+                elif key == "text":
+                    result = True
                 elif key == "any_doctrine":
                     result = any(evaluate(value, doctrine, current, saved, source, target, universe) for doctrine in universe)
                 elif key == "save_temporary_scope_as":

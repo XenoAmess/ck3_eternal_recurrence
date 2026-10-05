@@ -1,0 +1,22 @@
+{
+  "result": "ACTUAL_R9_SAVED_PREFIX_COMPARISON",
+  "first_capture": {
+    "start_utc": "2026-10-05T06:11:29.015660+00:00",
+    "end_utc": "2026-10-05T06:11:29.103357+00:00"
+  },
+  "second_capture": {
+    "start_utc": "2026-10-05T06:48:22.509031+00:00",
+    "end_utc": "2026-10-05T06:48:30.254041+00:00"
+  },
+  "added_raw_lines_reviewed": 199942,
+  "new_error_log_bytes": 30753042,
+  "new_error_e_headers": 99422,
+  "second_prefix_fixture_unused_e": 578,
+  "second_prefix_all_e": 100000,
+  "second_prefix_current_c2_product_e": 99422,
+  "second_prefix_source_signed_or_scratch_error_groups": 1,
+  "error_prefix": {
+    "bytes": 30891598,
+    "sha256": "2603033cd62be7676a86213c9b27dd8bd357f18e71f2b5a9370bebacc4224158"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "utc": "2026-10-05T06:07:32.397584+00:00",
+  "request_id": "0004-baseline-save",
+  "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\userdir\\save games\\xar_checkpoint.ck3",
+  "preserved": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0004-baseline-save\\checkpoint.ck3",
+  "bytes": 91398984,
+  "sha256": "ee4d61345c3116ada68278105b999369ee2dda7a0857081dadcb5e44520bf246",
+  "sdk_result": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0005-0004-baseline-save.sdk-result.json",
+  "sdk_result_sha256": "a592f3c3180424b5a7a1e66d7ac35b98f45d8a47d548f6d34d423b5bdc8f893f",
+  "actual_actor_id": 31254,
+  "revision": 3,
+  "date_raw": 53144712,
+  "paused": true,
+  "native_business_postcondition_credit": false,
+  "scope": "Exact saved bytes; independent parser readback required"
+}

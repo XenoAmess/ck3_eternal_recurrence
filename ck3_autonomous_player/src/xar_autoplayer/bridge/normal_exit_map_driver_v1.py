@@ -19,7 +19,7 @@ from .ingame_decisions_open_contract import opening_binding
 from .normal_exit_contract_v1 import (
     ExitWireBinding, NORMAL_EXIT_MAP_CAPABILITY, encode_normal_exit_map_request,
     normalize_query_arguments, normalize_request_arguments, normalize_native_exit_observation,
-    classify_terminal_exit_receipt,
+    classify_terminal_exit_receipt, continue_preparation_context_ready_v1,
 )
 from .normal_exit_process_observer_v1 import (
     Win32ProcessApi, RetainedProcessObserver, SYNCHRONIZE,
@@ -148,6 +148,8 @@ def request_normal_exit_v1(driver, action: str, *, expected_revision: int,
             or context['wire'].source_inventory_sha256 != sources['source_inventory_sha256']):
         raise BridgeUnavailableError('normal-exit signature is not a fresh backend-observed context')
     wire = context['wire']
+    if action == 'continue_preparation' and not continue_preparation_context_ready_v1(context['native']):
+        raise BridgeUnavailableError('normal-exit continuation requires fresh stage 0 consumed, stage 1 available and no confirmation')
     if action == 'confirm_desktop' and not context['native']['confirmation_visible']:
         raise BridgeUnavailableError('desktop confirmation requires a fresh actual official modal query')
     directory = driver._native_driver_state_path().parent / 'normal-exit-map-requests'

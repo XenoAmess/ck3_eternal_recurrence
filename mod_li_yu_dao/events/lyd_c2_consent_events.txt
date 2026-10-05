@@ -74,7 +74,7 @@ lyd.220 = {
         name = lyd_c2_confirm
         trigger = { lyd_c2_initiator_event_context_trigger = yes lyd_c2_ready_to_confirm_trigger = { ACTOR = root } }
         custom_tooltip = lyd_c2_confirm_tt
-        lyd_c2_event_commit_effect = yes
+        hidden_effect = { lyd_c2_event_commit_effect = yes }
     }
     option = {
         name = lyd_c2_native_pending

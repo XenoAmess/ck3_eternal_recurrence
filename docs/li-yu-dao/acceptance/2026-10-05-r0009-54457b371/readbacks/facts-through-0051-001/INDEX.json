@@ -1,0 +1,10 @@
+{
+  "schema": "lyd.r9.c2.facts-index.v1",
+  "files": [
+    {
+      "path": "FACTS.json",
+      "bytes": 9631,
+      "sha256": "5c9b8a9ec8eb5183cbf5243a635662a09831462d0f5fbaae1f35c378a7c45017"
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "0001-profile",
+  "operation": "call_tool",
+  "name": "ck3_query_native_profile_v1",
+  "arguments": {}
+}

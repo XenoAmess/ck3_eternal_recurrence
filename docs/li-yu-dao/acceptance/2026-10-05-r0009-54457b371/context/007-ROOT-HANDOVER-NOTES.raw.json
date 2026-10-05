@@ -1,0 +1,11 @@
+{
+  "schema": "lyd.r9.report-parent-handover-notes.v1",
+  "source_kind": "PARENT_TASK_MESSAGE_ONLY",
+  "source_revision": "54457b371e947edb86903c2ebd578034f02695db",
+  "game_at_handover": "RUNNING; PID20264/create1791179349.2116988/HWND5637378",
+  "root_reported_first_join": "0027 actual formal fee300gold/1500piety; actual0028graph belongs to independentreadback",
+  "fixture_reset": "0033 artificialshortcooldown; do not creditnaturalfiveyears",
+  "failure_boundary": "Wrong-key readonlyquery and no-dispatch helper failures must be preserved. This handover is not manufactured rawstderr, dispatchresponse or SDK evidence.",
+  "future_status": "DETACH and JOIN2 ongoing at handover; no future success or whole acceptance asserted",
+  "native_game_tracked_git_ci_calls": 0
+}

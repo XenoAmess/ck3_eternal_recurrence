@@ -1,0 +1,21 @@
+{
+  "time_utc": "2026-10-05T06:48:11.671628+00:00",
+  "scope": "Exact snapshot.py + 003 key only",
+  "game_pid_excluded": 20264,
+  "matched_workers": 1,
+  "old_artifacts_deleted": false,
+  "old_partial_raw_error_sha256": "2603033cd62be7676a86213c9b27dd8bd357f18e71f2b5a9370bebacc4224158",
+  "worker_pid": 6456,
+  "worker_create_time": 1791182141.871248,
+  "worker_argv": [
+    "C:/Users/Administrator/AppData/Local/Programs/Python/Python313/python.exe",
+    "-B",
+    "C:/workspace/ck3_lyd_runtime_20261004/r9-c2-log-prefix-monitor-20261005-001/snapshot.py",
+    "--snapshot-key",
+    "after-sign-and-first-join-prefix-003",
+    "--phase",
+    "after-root-first-join-commit-and-detach-sign"
+  ],
+  "worker_exit_code": 15,
+  "exact_worker_terminated": true
+}

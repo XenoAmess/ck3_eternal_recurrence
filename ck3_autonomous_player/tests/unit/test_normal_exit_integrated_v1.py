@@ -50,6 +50,7 @@ def native_observation(request, *, modal=False):
         'pump_epoch': 11, **{key: True for key in NATIVE_PROOF_KEYS},
         'context_signature_verified': action != 'query_context',
         'confirmation_visible': modal or action == 'prepare_confirmation',
+        'stage_consumed': [True, True, action == 'confirm_desktop'] if modal or action != 'query_context' else [False, False, False],
         'orderly_exit_verified': False, 'autosave_verified': False,
         'exit_context_signature': 'c' * 64, 'reason': '',
         'targets': [{key: True for key in ['read_complete', 'root_exists', 'root_visible', 'target_exists',

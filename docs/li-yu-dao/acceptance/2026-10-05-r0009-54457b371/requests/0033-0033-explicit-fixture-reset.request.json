@@ -1,0 +1,12 @@
+{
+  "schema": "ck3.lyd.mcp-request.v1",
+  "request_id": "0033-explicit-fixture-reset",
+  "operation": "call_tool",
+  "name": "ck3_confirm_profile_decision_outcome_v1",
+  "arguments": {
+    "expected_revision": 16,
+    "decision_key": "lyd_r4_reset_decision",
+    "expected_outcome": "event_window",
+    "expected_event_definition_key": "lyd_r4_fixture.4"
+  }
+}

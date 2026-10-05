@@ -119,7 +119,8 @@ bool Signature(NormalExitMapContextV1 &ctx,const MainThreadExecutionStampV1 &sta
   for(std::size_t i=0;i<kTargets.size();++i) {
     add(reinterpret_cast<std::uintptr_t>(census.roots[i])); add(reinterpret_cast<std::uintptr_t>(census.targets[i]));
     add(reinterpret_cast<std::uintptr_t>(census.vtables[i])); add(census.observations[i].dispatch_admitted);
-    add(session.claimed[i].load(std::memory_order_acquire));
+    session.queried_stage_consumed[i]=session.claimed[i].load(std::memory_order_acquire);
+    add(session.queried_stage_consumed[i]);
   }
   if(!NormalExitMapSha256V1(text,session.signature)) return false;
   session.queried_snapshot=ctx.expected_snapshot; session.queried_revision=ctx.native_revision;
@@ -136,7 +137,7 @@ bool BoundQuery(const NormalExitMapContextV1 &ctx,const Census &census) noexcept
       s.queried_inventory_sha256==ctx.request.source_inventory_sha256 && s.queried_snapshot==ctx.expected_snapshot &&
       s.queried_gui_context==census.context && s.queried_gui_owner==census.owner &&
       s.queried_roots==census.roots && s.queried_targets==census.targets && s.queried_vtables==census.vtables &&
-      s.queried_observations==census.observations;
+      s.queried_observations==census.observations && NormalExitMapStageConsumptionMatchesQueryV1(s);
 }
 bool DispatchStage(std::size_t index,NormalExitMapContextV1 &ctx,const MainThreadQueryMailboxV1 &mailbox,
     const MainThreadExecutionStampV1 &stamp,const ZhongguoScoreboardNativeEnvironmentV1 &env,
@@ -149,7 +150,8 @@ bool DispatchStage(std::size_t index,NormalExitMapContextV1 &ctx,const MainThrea
   if(!ctx.session->claimed[index].compare_exchange_strong(unclaimed,true,std::memory_order_acq_rel,std::memory_order_acquire)) {
     out.reason="fixed_stage_already_consumed_no_retry"; return false;
   }
-  d.claim_latched=true; out.status=NormalExitMapStatusV1::dispatch_unknown_claimed;
+  d.claim_latched=true; out.stage_consumed=ReadNormalExitMapStageConsumptionV1(*ctx.session);
+  out.status=NormalExitMapStatusV1::dispatch_unknown_claimed;
   out.reason="claimed_native_dispatch_requires_fresh_readback";
   d.dispatch_invoked=DispatchFixedGuiWidgetNativeV1(&dispatch,game::ZhongguoScoreboardActionV1::open,
       fresh.targets[index],fresh.vtables[index],d.native_handled);
@@ -204,6 +206,7 @@ bool ExecuteNormalExitMapV1(NormalExitMapContextV1 &ctx,MainThreadQueryMailboxV1
     if(!ReadCensus(env,dispatch,initial) || !Current(ctx,mailbox,stamp,env,dispatch,verified) || !Same(initial,verified))
       return reject("fresh_fixed_targets_census_changed");
     out.targets=initial.observations; out.confirmation_visible=initial.observations[2].root_visible;
+    out.stage_consumed=ReadNormalExitMapStageConsumptionV1(session);
     if(ctx.request.action==NormalExitMapActionV1::query_context) {
       session.signature.clear();
       if(!Signature(ctx,stamp,initial)) return reject("backend_context_signature_unavailable");
@@ -218,6 +221,19 @@ bool ExecuteNormalExitMapV1(NormalExitMapContextV1 &ctx,MainThreadQueryMailboxV1
     if(ctx.request.action==NormalExitMapActionV1::confirm_desktop) {
       if(!initial.observations[2].dispatch_admitted) return reject("fresh_official_desktop_confirmation_not_admitted");
       Census after{}; DispatchStage(2,ctx,mailbox,stamp,env,dispatch,initial,after); return true;
+    }
+    if(ctx.request.action==NormalExitMapActionV1::continue_preparation) {
+      // Only the unsubmitted confirmation-opening stage can be continued.
+      // A fresh signed query binds lifetime CAS bits and this exact census;
+      // stage zero and the previous prepare claim are never replayed or cleared.
+      if(!NormalExitMapContinuePreparationAdmittedV1(out.stage_consumed,
+          initial.observations,out.confirmation_visible))
+        return reject("fresh_consumed_menu_unsubmitted_entry_not_admitted");
+      Census confirmation{};
+      if(!DispatchStage(1,ctx,mailbox,stamp,env,dispatch,initial,confirmation)) return true;
+      out.status=NormalExitMapStatusV1::confirmation_observed;
+      out.confirmation_visible=true; out.reason="continued_official_resign_confirmation_freshly_observed";
+      return true;
     }
     if(initial.observations[2].dispatch_admitted) {
       out.status=NormalExitMapStatusV1::confirmation_observed; out.reason="official_confirmation_already_visible_observed"; return true;

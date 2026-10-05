@@ -1,0 +1,42 @@
+{
+  "schema": "lyd.r8.c2.increment-request.v1",
+  "phase": "source-signed",
+  "label": "R9 actual0051 DETACH source signed",
+  "native_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-profile-with-exit-inventory.json",
+    "bytes": 1148,
+    "sha256": "862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5"
+  },
+  "before": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0046-detach-votes-save\\checkpoint.ck3",
+      "bytes": 91464505,
+      "sha256": "9a4d06456255dcd16e8bd20140de5b066c36a610dbd1d9bb977fc004232115bf"
+    },
+    "checkpoint_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0046-0046-detach-votes-save.sdk-result.json",
+      "bytes": 23557523,
+      "sha256": "e9021170e5fd129c2f83df7a2bbbeed15b3a6d99b58f325982469fa1bdfe2719"
+    },
+    "cached_readback": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0046\\REPORT.json",
+      "bytes": 439847,
+      "sha256": "0159083b5d33d139de167c99e763b54b33eb10724614ddd0d80ac234f0fd9b9e"
+    }
+  },
+  "after": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0051-detach-signed-save\\checkpoint.ck3",
+      "bytes": 91464704,
+      "sha256": "cbc3a50e24a0bfd72d362ae72d9c32cfa605f6bc4e984c0dded3c19809063629"
+    },
+    "checkpoint_sdk": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0051-0051-detach-signed-save.sdk-result.json",
+      "bytes": 50972763,
+      "sha256": "ed55a1d6a0d1b555d8b768ecfffbaa5498928d5bc93b0202f06eb51158cf546f"
+    },
+    "cached_readback": null
+  },
+  "ordinary_query_sdk": null,
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0051"
+}

@@ -1,0 +1,18 @@
+{
+  "status": "ROOT_INTEGRATED_SOURCE_L0_PASS",
+  "source_baseline": "54457b371e947edb86903c2ebd578034f02695db",
+  "sdk_tests": 169,
+  "c2_preview_cases": 62,
+  "c2_preview_mutants": 11,
+  "c2_consent_tests": 106,
+  "generator_check": true,
+  "static_runtime_files": 70,
+  "reproducible_build": true,
+  "python_policy": true,
+  "wrong_baseline_failure_preserved": true,
+  "report_import_max_path_failure_preserved": true,
+  "native_cold_acceptance": "NOT_RUN",
+  "R9_full_cycle": false,
+  "source_payload_files": 1511,
+  "source_archive_sha256": "5d2893f29e71c0a4ef7d5b9583c95dafb5221bf74dd8a8f4b12379c217283368"
+}

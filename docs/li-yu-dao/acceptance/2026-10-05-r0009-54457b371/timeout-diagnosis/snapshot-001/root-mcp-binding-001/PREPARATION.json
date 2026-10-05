@@ -1,0 +1,26 @@
+{
+  "schema": "ck3-r9-consumer21-binding-preparation-v1",
+  "prepared_at_utc": "2026-10-05T05:58:43.904119+00:00",
+  "request": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-mcp-binding-request-001\\ROOT-BINDING-REQUEST.json",
+    "sha256": "4be080030b1f6c7ae069ebed33e7b1835ba68acda927416ae211dedb1ec1475f"
+  },
+  "binding": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\root-mcp-binding-001\\ROOT-BINDING.json",
+    "sha256": "4be080030b1f6c7ae069ebed33e7b1835ba68acda927416ae211dedb1ec1475f"
+  },
+  "epoch_id": "r9-root-consumer-001",
+  "source_revision": "54457b371e947edb86903c2ebd578034f02695db",
+  "target": {
+    "pid": 20264,
+    "process_create_time": 1791179349.2116988
+  },
+  "read_only_file_verification": true,
+  "live_process_verified": false,
+  "Client_started": false,
+  "guard_created": false,
+  "native_pipe_connected": false,
+  "old_claims_read_or_modified": false,
+  "actual_Client_inventory": null,
+  "game_acceptance": "NOT_RUN"
+}

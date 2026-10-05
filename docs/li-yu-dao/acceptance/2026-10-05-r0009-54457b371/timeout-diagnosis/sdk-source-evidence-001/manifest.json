@@ -1,0 +1,80 @@
+[
+  {
+    "source": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\client\\stdio.py",
+    "copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-mcp-timeout-diagnosis-20261005-001\\sdk-source-evidence-001\\00-stdio.py",
+    "sha256": "bc987925a3da72f4ca59ccd627a6fc6ba258582d50515a532503abe6d1b9dbab",
+    "ranges": [
+      [
+        141,
+        157
+      ],
+      [
+        218,
+        225
+      ]
+    ]
+  },
+  {
+    "source": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\client\\session.py",
+    "copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-mcp-timeout-diagnosis-20261005-001\\sdk-source-evidence-001\\01-session.py",
+    "sha256": "77a6c7ebdd1a72b65048ada72e7da744de0f57d8dfcb3076b1127207953a2395",
+    "ranges": [
+      [
+        539,
+        546
+      ],
+      [
+        1050,
+        1061
+      ]
+    ]
+  },
+  {
+    "source": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\server\\stdio.py",
+    "copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-mcp-timeout-diagnosis-20261005-001\\sdk-source-evidence-001\\02-stdio.py",
+    "sha256": "2a3e73aee57056a05def81cbad210458437de97b4da0c9993325b19636bca9ec",
+    "ranges": [
+      [
+        199,
+        205
+      ]
+    ]
+  },
+  {
+    "source": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\mcp\\server\\mcpserver\\utilities\\func_metadata.py",
+    "copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-mcp-timeout-diagnosis-20261005-001\\sdk-source-evidence-001\\03-func_metadata.py",
+    "sha256": "07dd28576e983b854b83d4728d182ed6f9064ce26781cc6d70e7e3479c4c06ea",
+    "ranges": [
+      [
+        119,
+        165
+      ],
+      [
+        420,
+        470
+      ]
+    ]
+  },
+  {
+    "source": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\anyio\\_backends\\_asyncio.py",
+    "copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-mcp-timeout-diagnosis-20261005-001\\sdk-source-evidence-001\\04-_asyncio.py",
+    "sha256": "56acbb3b5ca6984a714e23f37a14ae042553ce21802cd57e05bb0845a297b20e",
+    "ranges": [
+      [
+        1140,
+        1153
+      ]
+    ]
+  },
+  {
+    "source": "C:\\Users\\Administrator\\AppData\\Local\\Programs\\Python\\Python313\\Lib\\site-packages\\anyio\\streams\\text.py",
+    "copy": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-mcp-timeout-diagnosis-20261005-001\\sdk-source-evidence-001\\05-text.py",
+    "sha256": "05c540189c35551bed22a9effa8d116f4a701fba7cbf096f976d711eae76d9a8",
+    "ranges": [
+      [
+        50,
+        65
+      ]
+    ]
+  }
+]

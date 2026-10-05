@@ -1,0 +1,60 @@
+{
+  "schema": "lyd.r9.c2.increment-request.v2",
+  "phase": "detach-result",
+  "label": "R9 actual0058 DETACH saved AST; SDK timeout preserved, direct native receipt",
+  "native_profile": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-profile-with-exit-inventory.json",
+    "bytes": 1148,
+    "sha256": "862ac05f7c6fc0619b3836a2e5cfcb830aff2480c8a225122fa1c9ec700a1de5"
+  },
+  "before": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0051-detach-signed-save\\checkpoint.ck3",
+      "bytes": 91464704,
+      "sha256": "cbc3a50e24a0bfd72d362ae72d9c32cfa605f6bc4e984c0dded3c19809063629"
+    },
+    "checkpoint_evidence": {
+      "kind": "SDK_SAVE_RECEIPT",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0051-0051-detach-signed-save.sdk-result.json",
+        "bytes": 50972763,
+        "sha256": "ed55a1d6a0d1b555d8b768ecfffbaa5498928d5bc93b0202f06eb51158cf546f"
+      },
+      "preservation": null,
+      "sdk_failure": null
+    },
+    "cached_readback": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0051\\REPORT.json",
+      "bytes": 392965,
+      "sha256": "1247736456eb662cd17754526b1b776720fa020322604a05095de2f4c553722f"
+    }
+  },
+  "after": {
+    "save": {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\checkpoint.ck3",
+      "bytes": 91530739,
+      "sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539"
+    },
+    "checkpoint_evidence": {
+      "kind": "NATIVE_PROFILE_SAVE_RECEIPT",
+      "artifact": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\native-evidence\\8ffcb8420953481eade4610f3ff61781\\0057-checkpoint.json",
+        "bytes": 52847501,
+        "sha256": "4d367e72b16827621d577567c94eff1d98ccd2a85766f03b2e788387ab6c4cd5"
+      },
+      "preservation": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\checkpoints\\0058-post-detach-save\\PRESERVED.json",
+        "bytes": 1177,
+        "sha256": "d27ad9fb5c0b5ae6ff27cd5e4d7cec6420c7971ef4c81919c76efcfc84fa7c03"
+      },
+      "sdk_failure": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-client-evidence-001\\0058-0058-post-detach-save.response.json",
+        "bytes": 529,
+        "sha256": "7f81dd2d6412e4083f16676dfce5376bdac22f36570debc446b5bd938cc32117"
+      }
+    },
+    "cached_readback": null
+  },
+  "ordinary_query_sdk": null,
+  "output": "C:\\workspace\\ck3_lyd_runtime_20261004\\r9-c2-readback-20261005-001\\observed-0058-native-002"
+}

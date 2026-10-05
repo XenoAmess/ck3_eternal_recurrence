@@ -69,20 +69,30 @@ lyd_c2_source_retirement_trigger = {
     var:lyd_c2_source_singleton = 1
     var:lyd_c2_source_main = var:lyd_c2_moving_rite
     var:lyd_c2_source_faith = { lyd_c2_single_rite_faith_trigger = yes }
-    exists = var:lyd_c2_source_head
-    exists = var:lyd_c2_source_head_title
-    var:lyd_c2_source_faith.religious_head_title = var:lyd_c2_source_head_title
-    var:lyd_c2_source_head = { is_alive = yes rite = $ACTOR$.var:lyd_c2_moving_rite }
-    var:lyd_c2_source_head_title = {
-        has_variable = lyd_c2_owned_head_title
-        var:lyd_c2_owner_faith = $ACTOR$.var:lyd_c2_source_faith
-        holder = $ACTOR$.var:lyd_c2_source_head
+    trigger_if = {
+        limit = {
+            exists = var:lyd_c2_source_head
+            exists = var:lyd_c2_source_head_title
+            var:lyd_c2_source_faith = { exists = religious_head_title }
+        }
+        var:lyd_c2_source_faith.religious_head_title = var:lyd_c2_source_head_title
+        var:lyd_c2_source_head = { is_alive = yes rite = $ACTOR$.var:lyd_c2_moving_rite }
+        var:lyd_c2_source_head_title = {
+            has_variable = lyd_c2_owned_head_title
+            trigger_if = { limit = { has_variable = lyd_c2_owner_faith exists = holder }
+                var:lyd_c2_owner_faith = $ACTOR$.var:lyd_c2_source_faith
+                holder = $ACTOR$.var:lyd_c2_source_head
+            }
+            trigger_else = { always = no }
+        }
+        trigger_if = { limit = { var:lyd_c2_target_faith = { exists = religious_head_title } }
+            NOT = { var:lyd_c2_source_head_title = var:lyd_c2_target_faith.religious_head_title }
+        }
     }
-    trigger_if = { limit = { var:lyd_c2_target_faith = { exists = religious_head_title } }
-        NOT = { var:lyd_c2_source_head_title = var:lyd_c2_target_faith.religious_head_title }
-    }
+    trigger_else = { always = no }
 }
 lyd_c2_retirement_postcondition_trigger = {
+    trigger_if = { limit = { has_variable = lyd_c2_source_head_retired }
     trigger_if = { limit = { var:lyd_c2_source_head_retired = 1 }
         var:lyd_c2_source_head = { is_alive = yes }
         var:lyd_c2_source_faith = { NOT = { exists = religious_head_title } }
@@ -94,6 +104,7 @@ lyd_c2_retirement_postcondition_trigger = {
             NOT = { holder = $ACTOR$.var:lyd_c2_source_head }
         } }
     }
+    }
 }
 # Faith root. This is LYD's conservative equality gate for the effective main
 # rites' doctrine sets, using native global Doctrine enumeration. It does not
@@ -104,16 +115,19 @@ lyd_c2_same_main_doctrines_trigger = {
     $TARGET$ = { exists = main_rite }
     save_temporary_scope_as = lyd_c2_native_source_faith
     $TARGET$ = { save_temporary_scope_as = lyd_c2_native_target_faith }
-    NOT = {
-        any_doctrine = {
-            OR = {
-                AND = {
-                    scope:lyd_c2_native_source_faith.main_rite = { rite_has_doctrine = prev }
-                    scope:lyd_c2_native_target_faith.main_rite = { NOT = { rite_has_doctrine = prev } }
-                }
-                AND = {
-                    scope:lyd_c2_native_source_faith.main_rite = { NOT = { rite_has_doctrine = prev } }
-                    scope:lyd_c2_native_target_faith.main_rite = { rite_has_doctrine = prev }
+    custom_tooltip = {
+        text = lyd_c2_same_main_doctrines_tt
+        NOT = {
+            any_doctrine = {
+                OR = {
+                    AND = {
+                        scope:lyd_c2_native_source_faith.main_rite = { rite_has_doctrine = prev }
+                        scope:lyd_c2_native_target_faith.main_rite = { NOT = { rite_has_doctrine = prev } }
+                    }
+                    AND = {
+                        scope:lyd_c2_native_source_faith.main_rite = { NOT = { rite_has_doctrine = prev } }
+                        scope:lyd_c2_native_target_faith.main_rite = { rite_has_doctrine = prev }
+                    }
                 }
             }
         }
@@ -314,8 +328,11 @@ lyd_c2_receiver_rite_quorum_trigger = {
             var:lyd_c2_target_total = 0
             NOT = { lyd_c2_dormant_receiving_rite_trigger = yes }
             exists = head_of_rite
-            head_of_rite = var:lyd_c2_endorser
-            head_of_rite = { is_alive = yes is_adult = yes NOT = { has_trait = incapable } rite = prev }
+            trigger_if = { limit = { has_variable = lyd_c2_endorser exists = head_of_rite }
+                head_of_rite = var:lyd_c2_endorser
+                head_of_rite = { is_alive = yes is_adult = yes NOT = { has_trait = incapable } rite = prev }
+            }
+            trigger_else = { always = no }
             var:lyd_c2_holder_endorsed = 1
             $ACTOR$ = { var:lyd_c2_player_yes = var:lyd_c2_player_total }
         }
@@ -347,15 +364,19 @@ lyd_c2_source_mandate_trigger = {
 }
 lyd_c2_ready_to_confirm_trigger = {
     lyd_c2_source_mandate_trigger = { ACTOR = $ACTOR$ }
-    var:lyd_c2_source_signed = 1
-    var:lyd_c2_snapshot_valid = 1
+    trigger_if = { limit = { has_variable = lyd_c2_source_signed } var:lyd_c2_source_signed = 1 }
+    trigger_else = { always = no }
+    trigger_if = { limit = { has_variable = lyd_c2_snapshot_valid } var:lyd_c2_snapshot_valid = 1 }
+    trigger_else = { always = no }
     lyd_c2_native_admitted_trigger = yes
     trigger_if = {
         limit = { var:lyd_c2_kind = 1 }
         lyd_c2_receiving_mandates_trigger = { ACTOR = $ACTOR$ }
-        var:lyd_c2_target_signed = 1
+        trigger_if = { limit = { has_variable = lyd_c2_target_signed } var:lyd_c2_target_signed = 1 }
+    trigger_else = { always = no }
         lyd_c2_native_join_rules_trigger = { ACTOR = $ACTOR$ }
-        trigger_if = { limit = { has_variable = lyd_c2_target_head } var:lyd_c2_target_head_yes = 1 }
+        trigger_if = { limit = { has_variable = lyd_c2_target_head } trigger_if = { limit = { has_variable = lyd_c2_target_head_yes } var:lyd_c2_target_head_yes = 1 }
+    trigger_else = { always = no } }
         gold >= @JOIN_GOLD@
         piety >= @JOIN_PIETY@
     }

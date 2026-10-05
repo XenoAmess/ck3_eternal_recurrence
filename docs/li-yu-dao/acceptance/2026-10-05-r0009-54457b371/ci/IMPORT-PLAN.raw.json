@@ -1,0 +1,66 @@
+{
+  "schema": "lyd.r9.ci-source.import-plan.v1",
+  "status": "PREPARED_NOT_EXECUTED",
+  "source_head": "54457b371e947edb86903c2ebd578034f02695db",
+  "workspace": "C:/workspace/ck3_eternal_recurrence",
+  "target_root": "docs/li-yu-dao/acceptance/2026-10-05-r0009-54457b371/ci-source-001",
+  "root_unique_writer": true,
+  "ROOT_import_timing": "After actual R9 runtime closure, under ROOT control. This preparer did not import.",
+  "source_CI_only": true,
+  "file_count": 5,
+  "files": [
+    {
+      "src": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-54457b371-import-plan-20261005-001\\review-package-001\\INDEX.json",
+      "dst": "docs/li-yu-dao/acceptance/2026-10-05-r0009-54457b371/ci-source-001/INDEX.json",
+      "bytes": 755,
+      "sha256": "f35d907e3dc1c30eea81e8740f84cc2dd1b8bd24fabcb864f445d5701d595eab"
+    },
+    {
+      "src": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-54457b371-import-plan-20261005-001\\review-package-001\\raw\\ci-evidence.tar.gz",
+      "dst": "docs/li-yu-dao/acceptance/2026-10-05-r0009-54457b371/ci-source-001/raw/ci-evidence.tar.gz",
+      "bytes": 369577,
+      "sha256": "37841fb937dc91cb86cd46ececac8882c16491b7a1214f2152b61871de7e62d3"
+    },
+    {
+      "src": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-54457b371-import-plan-20261005-001\\review-package-001\\RAW-MAPPINGS.json",
+      "dst": "docs/li-yu-dao/acceptance/2026-10-05-r0009-54457b371/ci-source-001/RAW-MAPPINGS.json",
+      "bytes": 100750,
+      "sha256": "c078fb59ddac9be49bddf7a3fd42fa9bcdfa33e06563c4dc6cc697bdaec88b35"
+    },
+    {
+      "src": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-54457b371-import-plan-20261005-001\\review-package-001\\REPORT.md",
+      "dst": "docs/li-yu-dao/acceptance/2026-10-05-r0009-54457b371/ci-source-001/REPORT.md",
+      "bytes": 1271,
+      "sha256": "8173eddc8813cce6bce0d89d5cdbd85f1f3be2cbf51adf18e4b53bc5b258caa8"
+    },
+    {
+      "src": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-54457b371-import-plan-20261005-001\\review-package-001\\STATUS.json",
+      "dst": "docs/li-yu-dao/acceptance/2026-10-05-r0009-54457b371/ci-source-001/STATUS.json",
+      "bytes": 2165,
+      "sha256": "f9a0d38fe0f143a9d764e2105e8f4486dffe31c78882916878581ea6112db275"
+    }
+  ],
+  "source_mappings_preserved": 134,
+  "unique_src": true,
+  "unique_dst": true,
+  "candidate_INDEX": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-54457b371-import-plan-20261005-001\\review-package-001\\INDEX.json",
+    "bytes": 755,
+    "sha256": "f35d907e3dc1c30eea81e8740f84cc2dd1b8bd24fabcb864f445d5701d595eab"
+  },
+  "prior_style_INDEX": {
+    "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-05-r0008-followup-source-l0\\INDEX.json",
+    "bytes": 720,
+    "sha256": "f732560356c416681fc088c9eb45abb417c3f60ce7d6fd4c986e3450f6530197"
+  },
+  "original_raw_INDEX": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-54457b371-20261005-001\\INDEX.json",
+    "bytes": 22867,
+    "sha256": "7c49fc49f285760a636d947a26be7f22ff23b12e04cdd8fe92959a2774bb58ba"
+  },
+  "original_projection_INDEX": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\ci-54457b371-20261005-001-gzip-projection\\INDEX.json",
+    "bytes": 18699,
+    "sha256": "08e5236a972a50f122a9c4886e52935c23645a163f05c0b30ce7a6030035da6a"
+  }
+}

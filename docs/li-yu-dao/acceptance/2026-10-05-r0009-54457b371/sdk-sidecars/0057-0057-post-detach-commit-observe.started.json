@@ -1,0 +1,7 @@
+{
+  "schema": "ck3.lyd.mcp-dispatch.v1",
+  "sequence": 57,
+  "request_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-009\\mcp-queue-001\\0057-post-detach-commit-observe.request.json",
+  "request_sha256": "db0576f883f609ae2aecaa8d8a0c2e150547f22df11f731849c9116bfe42a943",
+  "started_at_utc": "2026-10-05T06:40:38.958865+00:00"
+}

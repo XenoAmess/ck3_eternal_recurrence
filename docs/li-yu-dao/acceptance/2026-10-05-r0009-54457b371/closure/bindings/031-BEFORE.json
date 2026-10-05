@@ -1,0 +1,15 @@
+{
+  "utc": "2026-10-05T07:18:12.172304+00:00",
+  "pid": 20264,
+  "hwnd": 5637378,
+  "owner_thread": 14852,
+  "process_creation_filetime_100ns": 134356529492116987,
+  "retained_original_process_handle": 380,
+  "save_sha256": "2abd208d9387b33aff5bb41fb5ea8f2cbe843b1b48df37a5f9a5bb4d87642539",
+  "route": "maintenance-standard-WM_CLOSE",
+  "reason": "MCP preparation consumed stage0; current official action schema cannot continue unsubmitted stage1. Old claims preserved; future cold-only source repair is separate.",
+  "mcp_normal_exit_acceptance_credit": false,
+  "uses_ocr": false,
+  "uses_coordinates": false,
+  "uses_keyboard": false
+}
