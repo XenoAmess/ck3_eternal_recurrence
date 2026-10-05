@@ -10394,6 +10394,12 @@ bool ExecuteTypedQuery12002(
       auto province = xar::ck3_12002::BindProvinceImage(query.image_base, sha);
       auto bindings = xar::ck3_12002::BindBattleImage(query.image_base, sha);
       if constexpr (Kind == QueryKind12002::battle_control ||
+                    Kind == QueryKind12002::battle_transition) {
+        if (xar::game::IsCk3_12003Descriptor(envelope->game->descriptor()))
+          xar::ck3_12002::EnableBattleRetainedRuleEffects12003(
+              bindings, query.image_base, envelope->game->descriptor().executable_sha256);
+      }
+      if constexpr (Kind == QueryKind12002::battle_control ||
                     Kind == QueryKind12002::battle_terminal) {
         if (xar::game::IsCk3_12003Descriptor(envelope->game->descriptor()))
           xar::ck3_12002::EnableBattleCurrentPerson12003(

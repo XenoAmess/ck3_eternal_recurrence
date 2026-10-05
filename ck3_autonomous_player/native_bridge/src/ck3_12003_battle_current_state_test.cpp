@@ -8,6 +8,7 @@
 #include <string>
 #include "xar_bridge/battle_transition_v1_mailbox.hpp"
 #include "xar_bridge/ck3_12003_battle_current_state.hpp"
+#include "xar_bridge/ck3_12003.hpp"
 #include <charconv>
 #include <vector>
 #include <cstring>
@@ -737,6 +738,122 @@ struct ActualGeographyFixture : ForeignFixture {
 };
 ActualGeographyFixture *ActualGeographyFixture::current = nullptr;
 
+struct LoadedEffectMemory {
+  Bytes<0x1000> rules{};
+  std::array<Bytes<0x48>, 3> effects{};
+  const char *keys[3]{"atk_custom", "def_custom", "holding_defender_advantage"};
+  int rules_queries = 0;
+  bool missing_rules = false;
+  static LoadedEffectMemory *current;
+  static void *Rules() {
+    ++current->rules_queries;
+    return current->missing_rules ? nullptr : current->rules.data();
+  }
+  explicit LoadedEffectMemory(std::int32_t kind) {
+    current = this;
+    const std::int32_t points[]{0, -37, 123};
+    for (std::size_t i = 0; i < effects.size(); ++i) {
+      auto &effect = effects[i];
+      const auto length = std::strlen(keys[i]);
+      if (length < 16) std::memcpy(effect.data() + 0x18, keys[i], length);
+      else Put(effect, 0x18, keys[i]);
+      Put<std::size_t>(effect, 0x28, length);
+      Put<std::size_t>(effect, 0x30, length < 16 ? 15 : length);
+      Put<std::uint32_t>(effect, 0x38, 0x4744624F);
+      Put(effect, 0x40, points[i]);
+    }
+    Put(rules, 0xF70 + 8ULL * kind, effects[0].data());
+    Put(rules, 0xFA0 + 8ULL * kind, effects[1].data());
+    Put(rules, 0xF10, effects[2].data());
+  }
+};
+LoadedEffectMemory *LoadedEffectMemory::current = nullptr;
+
+int RunRetainedRuleEffectFixtures(const char *output_directory) {
+  try {
+    BattleBindings binding;
+    binding.enabled = true;
+    EnableBattleRetainedRuleEffects12003(binding, 0x140000000,
+                                         xar::ck3_12003::kExecutableSha256);
+    Require(reinterpret_cast<std::uintptr_t>(binding.retained_constructor_effect_rules) ==
+                0x1408FC3E0, "exact .3 must bind PhaseEffect database");
+    binding.retained_constructor_effect_rules = nullptr;
+    EnableBattleRetainedRuleEffects12003(binding, 0x140000000, kExecutableSha256);
+    Require(!binding.retained_constructor_effect_rules, "older build must not bind .3 leaf");
+    for (std::int32_t kind = 0; kind <= 3; ++kind) {
+      ActualGeographyFixture foreign;
+      LoadedEffectMemory memory(kind);
+      foreign.b.retained_constructor_effect_rules = LoadedEffectMemory::Rules;
+      Put(foreign.combat, 0x6F8, kind);
+      Put<std::uint8_t>(foreign.combat, 0x6FE, static_cast<std::uint8_t>(kind % 2));
+      BattleTransitionSnapshot transition;
+      Require(ReadBattleTransitionSnapshot(foreign.b, foreign.scope, {kActualCombat}, transition) ==
+                  BattleTransitionSnapshotStatus::available && transition.battle_transition_ready,
+              "loaded values changed foreign transition readiness");
+      const auto &leaf = *transition.actual_geography_v1->constructor_rule_effects_v1;
+      Require(leaf.available && leaf.rows.size() == 3 && memory.rules_queries == 2,
+              "loaded DB must be read once per sample");
+      Require(leaf.rows[0].advantage_points == 0 && leaf.rows[0].key == "atk_custom" &&
+                  leaf.rows[1].advantage_points == -37 && leaf.rows[2].advantage_points == 123 &&
+                  leaf.rows[0].rules_pointer_offset == 0xF70U + 8U * kind &&
+                  leaf.rows[1].rules_pointer_offset == 0xFA0U + 8U * kind &&
+                  transition.actual_geography_v1->holding_defender == (kind % 2 != 0),
+              "actual signed points, loaded key or retained selector lost");
+      transition.snapshot_revision = 2;
+      const auto wire = xar::ck3_11906::SerializeBattleTransitionV1(transition);
+      Require(!wire.empty() && wire.find("\"points_scale\":1") != std::string::npos,
+              "loaded point scale missing from production wire");
+      if (*output_directory) WriteWire(output_directory,
+          ("foreign-kind-" + std::to_string(kind) + ".json").c_str(), wire);
+      BattleControlSnapshot forbidden;
+      Require(ReadBattleControlSnapshot(foreign.b, foreign.scope, {251658381}, forbidden) !=
+                  BattleControlSnapshotStatus::available, "foreign control ownership changed");
+      if (kind == 0) {
+        Put<void *>(memory.rules, 0xF70, nullptr);
+        Require(ReadBattleTransitionSnapshot(foreign.b, foreign.scope, {kActualCombat}, transition) ==
+                    BattleTransitionSnapshotStatus::available &&
+                    transition.actual_geography_v1->constructor_rule_effects_v1->available &&
+                    transition.actual_geography_v1->constructor_rule_effects_v1->rows[0].status == "not_selected" &&
+                    !transition.actual_geography_v1->constructor_rule_effects_v1->rows[0].advantage_points,
+                "native absent adjacency must not synthesize zero effect points");
+        transition.snapshot_revision = 2;
+        if (*output_directory) WriteWire(output_directory, "foreign-adjacency-absent.json",
+            xar::ck3_11906::SerializeBattleTransitionV1(transition));
+        memory.missing_rules = true;
+        Require(ReadBattleTransitionSnapshot(foreign.b, foreign.scope, {kActualCombat}, transition) ==
+                    BattleTransitionSnapshotStatus::available && transition.battle_transition_ready &&
+                    !transition.actual_geography_v1->constructor_rule_effects_v1->available,
+                "missing DB lowered existing transition readiness");
+        transition.snapshot_revision = 2;
+        if (*output_directory) WriteWire(output_directory, "foreign-rules-unavailable.json",
+            xar::ck3_11906::SerializeBattleTransitionV1(transition));
+      }
+    }
+    SelectedRollFixture owned;
+    LoadedEffectMemory memory(2);
+    owned.battle.b.retained_constructor_effect_rules = LoadedEffectMemory::Rules;
+    Put<std::int32_t>(owned.battle.combat, 0x6F8, 2);
+    Put<std::uint8_t>(owned.battle.combat, 0x6FE, 1);
+    BattleControlSnapshot control;
+    Require(ReadBattleControlSnapshot(owned.battle.b, owned.battle.scope, {0x1000001}, control) ==
+                BattleControlSnapshotStatus::available && control.battle_control_ready &&
+                control.actual_geography_v1->constructor_rule_effects_v1->available &&
+                memory.rules_queries == 2,
+            "owned control did not preserve sampled loaded rules");
+#ifdef XAR_SELECTED_ROLL_WIRE_FIXTURE
+    control.snapshot_revision = 2;
+    const auto wire = xar::ck3_11906::SerializeBattleControlSnapshotV1(control);
+    Require(!wire.empty(), "loaded rules owned serializer failed");
+    if (*output_directory) WriteWire(output_directory, "owned-kind-2.json", wire);
+#endif
+    std::cout << "Current loaded retained-rule effects focused fixtures GREEN; actual=0\n";
+    return 0;
+  } catch (const std::exception &error) {
+    std::cerr << "Current loaded retained-rule effect fixture RED: " << error.what() << '\n';
+    return 1;
+  }
+}
+
 int RunActualGeographyFixtures(const char *output_directory) {
   try {
     ActualGeographyFixture foreign;
@@ -924,6 +1041,9 @@ int RunSelectedCommanderRollFixtures(const char *output_directory) {
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc > 1 && std::string_view(argv[1]) == "--retained-rule-effects-only") {
+    return RunRetainedRuleEffectFixtures(argc > 2 ? argv[2] : "");
+  }
   if (argc > 1 && std::string_view(argv[1]) == "--actual-geography-only") {
     return RunActualGeographyFixtures(argc > 2 ? argv[2] : "");
   }

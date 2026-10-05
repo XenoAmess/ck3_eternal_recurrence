@@ -98,6 +98,8 @@ struct BattleBindings {
   // Independently nullable leaf: existing control observations remain useful
   // when selected next-roll inputs were not bound in a fixture or build.
   CombatBindings commander_roll_context{};
+  // Exact .3 loaded PhaseEffect DB, distinct from the men-at-arms type DB.
+  GetCombatRules retained_constructor_effect_rules = nullptr;
   // Current read-only loss operands; independent of the existing control gate.
   const std::int64_t *damage_scaling = nullptr;
   // Independent exact .3 leaf: null means unavailable; zero is observed.
@@ -145,6 +147,9 @@ struct BattleBindings {
 
 BattleBindings BindBattleImage(std::uintptr_t image_base,
                                std::string_view executable_sha256) noexcept;
+
+void EnableBattleRetainedRuleEffects12003(BattleBindings &, std::uintptr_t image_base,
+                                        std::string_view executable_sha256) noexcept;
 
 // Installs only the reviewed current-person leaves for the exact .3 image.
 void EnableBattleCurrentPerson12003(BattleBindings &, std::uintptr_t image_base,

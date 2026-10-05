@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/ck3_12002_battle_journal.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
+#include "xar_bridge/battle_retained_rule_effects_reader.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -133,6 +134,10 @@ bool TransitionSample(const BattleBindings &b,
       At<std::int32_t>(combat, 0x6F8);
   out.actual_geography_v1->holding_defender =
       At<std::uint8_t>(combat, 0x6FE) != 0;
+  if (b.retained_constructor_effect_rules)
+    out.actual_geography_v1->constructor_rule_effects_v1 =
+        ReadRetainedConstructorRuleEffects(b.retained_constructor_effect_rules,
+            *out.actual_geography_v1->constructor_adjacency_kind_raw);
   out.phase_raw = At<std::int32_t>(combat, kBattlePhaseOffset);
   out.phase = Phase(out.phase_raw);
   out.phase_day = At<std::int32_t>(combat, kBattlePhaseDayOffset);
@@ -1860,6 +1865,13 @@ bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
   return true;
 }
 } // namespace
+
+void EnableBattleRetainedRuleEffects12003(BattleBindings &b, std::uintptr_t base,
+                                        std::string_view sha) noexcept {
+  if (b.enabled && base && sha == ck3_12003::kExecutableSha256)
+    b.retained_constructor_effect_rules =
+        reinterpret_cast<GetCombatRules>(base + kAdvantageRuleDatabaseRva);
+}
 
 void EnableBattleFullBacking12003(BattleBindings &b, std::uintptr_t base,
                                   std::string_view sha) noexcept {

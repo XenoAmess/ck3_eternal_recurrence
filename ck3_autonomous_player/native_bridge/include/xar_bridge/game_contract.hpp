@@ -618,12 +618,34 @@ struct CombatTerrainSnapshot {
                          const CombatTerrainSnapshot &) = default;
 };
 
+struct BattleRetainedRuleEffectV1 {
+  std::string stage;
+  std::int32_t side_index = 0;
+  std::uint32_t rules_pointer_offset = 0;
+  std::string status = "unavailable";
+  std::optional<std::string> key;
+  std::optional<std::int32_t> advantage_points;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleRetainedRuleEffectV1 &,
+                         const BattleRetainedRuleEffectV1 &) = default;
+};
+
+// Current loaded values selected by retained slots, not historical append rows.
+struct BattleRetainedRuleEffectsV1 {
+  bool available = false;
+  std::vector<BattleRetainedRuleEffectV1> rows;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleRetainedRuleEffectsV1 &,
+                         const BattleRetainedRuleEffectsV1 &) = default;
+};
+
 // Current actual Combat geography; the outer battle query supplies identity and
 // frame. Retained constructor fields do not reconstruct a historical entry.
 struct BattleActualGeographyInputsV1 {
   CombatTerrainSnapshot terrain;
   std::optional<std::int32_t> constructor_adjacency_kind_raw;
   std::optional<bool> holding_defender;
+  std::optional<BattleRetainedRuleEffectsV1> constructor_rule_effects_v1;
 
   friend bool operator==(const BattleActualGeographyInputsV1 &,
                          const BattleActualGeographyInputsV1 &) = default;
