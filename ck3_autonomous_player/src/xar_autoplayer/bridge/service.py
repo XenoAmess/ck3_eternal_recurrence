@@ -100,6 +100,7 @@ from .battle_transition_contract import (
     normalize_battle_transition_v1,
     query_battle_transition_v1_step,
 )
+from .battle_retained_geometry import retained_constructor_geometry_fields
 from .battle_terminal_transition_contract import (
     QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY,
     normalize_battle_terminal_transition_v1,
@@ -12506,6 +12507,7 @@ class GameplayBridgeService:
             **copy.deepcopy(retreat_mirrors),
             "battle_control_ready": True,
             "battle_control_snapshot": normalized,
+            **retained_constructor_geometry_fields(normalized, hello),
             **(
                 {"active_combat_resume_inputs_v1": resume_inputs}
                 if resume_inputs is not None
@@ -12731,6 +12733,7 @@ class GameplayBridgeService:
             },
             **lifecycle_mirrors,
             "battle_transition_snapshot": normalized,
+            **retained_constructor_geometry_fields(normalized, hello),
         }
 
     def query_battle_terminal_transition_v1(

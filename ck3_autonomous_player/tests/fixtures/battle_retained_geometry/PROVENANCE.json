@@ -1,0 +1,25 @@
+{
+  "kind": "compiled production native fixture JSON; synthetic native memory, not CK3 live",
+  "producer_source": "4733655173e65be99c9ffaafbe2d9275940df4d6",
+  "fixture": "xar_ck3_12003_battle_current_state_test --actual-geography-only",
+  "version": "1.20.0.3",
+  "steam_build": 25652598,
+  "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "files": [
+    {
+      "name": "foreign-available.json",
+      "bytes": 793,
+      "sha256": "d8f1e4541e5020719d732527a3570d93be7e510bd5ee9844ee6c7636391dcbcd"
+    },
+    {
+      "name": "foreign-unavailable.json",
+      "bytes": 811,
+      "sha256": "7f6ad150ba3f096ed9fda34055481ab660a75d3d2a9055207bad1bd2d5aee3e3"
+    },
+    {
+      "name": "owned-available.json",
+      "bytes": 5402,
+      "sha256": "9863ba0ba7b33295a6d6bca4493d45a4e0f73e9b454b78b4477a83b6e00610a6"
+    }
+  ]
+}

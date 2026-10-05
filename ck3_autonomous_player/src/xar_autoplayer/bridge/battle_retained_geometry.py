@@ -1,0 +1,120 @@
+"""Consume current Combat geometry without constructing a contact preview.
+
+Inputs are an existing normalized actual battle frame and its observed build.
+The retained holding byte is used directly; no current holder predicate runs.
+"""
+
+from __future__ import annotations
+
+import copy
+from typing import Mapping
+
+
+EXACT_GAME_VERSION = "1.20.0.3"
+EXACT_EXECUTABLE_SHA256 = "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+_CROSSING_BY_RETAINED_KIND = {0: "none", 1: "strait", 2: "river", 3: "large_river"}
+
+
+def retained_constructor_geometry_fields(
+    snapshot: Mapping[str, object], build_source: object,
+) -> dict[str, object]:
+    """Add the diagnostic only when the original optional leaf is present.
+
+    This independent ready flag covers geometry operands, not constructor
+    effects, historical participants, initial advantage or a future battle.
+    """
+    if "actual_geography_v1" not in snapshot:
+        return {}
+    build = build_source if isinstance(build_source, Mapping) else {}
+    sha = build.get("executable_sha256")
+    exact_build = (
+        build.get("game_version") == EXACT_GAME_VERSION
+        and isinstance(sha, str) and sha.lower() == EXACT_EXECUTABLE_SHA256
+    )
+    is_control = snapshot.get("contract_stage") == "production_exact_ongoing_combat"
+    is_transition = snapshot.get("contract_stage") == "production_exact_combat_lifecycle"
+    actual = snapshot.get("status") == "available" and (is_control or is_transition)
+    missing: list[str] = []
+    if not exact_build:
+        missing.append("exact_1_20_0_3_build_binding")
+    if not actual:
+        missing.append("available_actual_combat_frame")
+    sides: list[dict[str, object]] = []
+    if actual:
+        for side_index, role in enumerate(("attacker", "defender")):
+            side = {
+                "side_index": side_index,
+                "role": role,
+                "public_cunit_ids_in_stored_order": (
+                    [row["public_cunit_id"] for row in snapshot[role]["ordered_armies"]]
+                    if is_control else list(snapshot[f"{role}_public_cunit_ids_in_stored_order"])
+                ),
+                "source": "actual_combat_side_stored_order",
+            }
+            if is_control:
+                side["primary_participant_character_id"] = snapshot[role]["primary_participant_character_id"]
+                side["primary_source"] = "actual_combat_side_70"
+            sides.append(side)
+    geometry = snapshot.get("actual_geography_v1")
+    terrain = None
+    raw_kind = None
+    holding = None
+    if geometry is None:
+        missing.append("actual_geography_v1")
+    else:
+        terrain = copy.deepcopy(geometry["terrain"])
+        raw_kind = geometry["constructor_adjacency_kind_raw"]
+        holding = geometry["holding_defender"]
+        if terrain["status"] != "available":
+            missing.append("actual_terrain")
+        if raw_kind is None:
+            missing.append("retained_constructor_adjacency_kind")
+        elif raw_kind not in _CROSSING_BY_RETAINED_KIND:
+            missing.append("supported_retained_constructor_kind_0_to_3")
+        if holding is None:
+            missing.append("retained_holding_defender")
+    crossing = _CROSSING_BY_RETAINED_KIND.get(raw_kind)
+    # These are the closed constructor's rule slots, not captured effect values.
+    # Commander exclusions, scale modifiers and initial contexts stay separate.
+    rule_plan = None
+    if exact_build and actual and crossing is not None and holding is not None:
+        rule_plan = {
+            "attacker_adjacency": {"side_index": 0, "rules_pointer_offset": 0xF70 + 8 * raw_kind},
+            "defender_adjacency": {"side_index": 1, "rules_pointer_offset": 0xFA0 + 8 * raw_kind},
+            "holding_defender": {
+                "side_index": 1, "rules_pointer_offset": 0xF10,
+                "enabled": holding, "predicate_source": "retained_combat_6FE",
+            },
+            "effect_values_observed": False,
+            "commander_exclusion_and_scale_inputs_observed": False,
+        }
+    diagnostic = {
+        "schema_version": 1,
+        "status": "available" if not missing else "unavailable",
+        "retained_geometry_ready": not missing,
+        "geometry_mode": "actual_current_combat_retained_constructor_inputs",
+        "source": {
+            "game_version": build.get("game_version"),
+            "executable_sha256": sha,
+            "snapshot_revision": snapshot["snapshot_revision"],
+            "observed_date_raw": snapshot["observed_date_raw"],
+            "combat_id": snapshot["combat_id"], "province_id": snapshot["province_id"],
+            "query": "battle_control_snapshot_v1" if is_control else "battle_transition_v1",
+        },
+        "actual_sides_in_stored_order": sides,
+        "terrain": terrain,
+        "constructor_adjacency_kind_raw": raw_kind,
+        "crossing_kind": crossing,
+        "adjacency_source": "retained_combat_6F8",
+        "holding_defender": holding,
+        "holding_source": "retained_combat_6FE",
+        "constructor_rule_plan": rule_plan,
+        "missing_inputs": missing,
+        "complete_constructor_ready": False,
+        "future_contact_preview": False,
+        "unobserved_historical_inputs": [
+            "original_initiator_identity_and_role", "original_attacker_entry_province",
+            "initial_participant_contexts_and_roster", "initial_loaded_effect_and_scale_operands",
+        ],
+    }
+    return {"retained_constructor_geometry_v1": diagnostic}
