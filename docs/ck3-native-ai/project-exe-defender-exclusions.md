@@ -137,3 +137,12 @@ ShellExecuteEx 的启动成功只证明进程启动；上面另外要求 child e
 ## 2026-10-05 04:56 UTC 追加：固定任务与初四项已实际生效
 
 上述候选之后，Root 完成同 UUID 的固定恢复安装。实际 `project-broker-root-resume-a01/installer-receipt.json` 为 1,367,505 字节，SHA `4157fec4c9e66aeaae73b04dee5fcaa6f78f5f1245da188e0c331743096fe9ae`，状态 `installed_initial_outputs_verified`；固定 SYSTEM 任务与首批两份清单中的四个项目 EXE 设置读回已验。普通 token 为第五个新路径取得 SYSTEM 设置回执的免重复 UAC 验收仍待独立实际结果。本追加不改写上文候选时点与旧失败记录。兼容故障、保护源码、精确恢复器与复现边界见 [已安装 broker 专题](project-exe-defender-broker.md)。
+
+
+## 2026-10-05：普通请求原子发布的写共享修复
+
+首次普通 token 的第五路径验收在请求发布阶段失败，尚未调用固定任务：`future-no-uac-net-build-a01/ordinary-client-registration-a01/receipt.json` 为 4,845 字节，SHA `1afd79db6e2a80fb0f59b4f8723c50579a37e8cbc6b3efe3dfb9adc59946c06a`，记录 `WinError 32`。临时请求文件已写入，但持有的 inbox 目录句柄仅允许读共享，阻止了临时文件到最终 JSON 名称的重命名。原临时文件、失败 receipt 和所有尝试均保留。
+
+普通 token 的独立小文件实测在外置夹具目录重现了故障：目录句柄共享值 1（READ）失败，3（READ|WRITE）成功，5（READ|DELETE）仍失败。成功前后请求字节、文件标识和目录标识相同。修复仅对固定受保护 inbox 的发布操作允许 WRITE 共享；没有加入 DELETE 共享，受保护运行时、文件和其他目录的锁定策略保持原样。发布操作结束时再次检查同一目录文件标识、无 reparse、句柄最终路径以及实际保护 ACL，检查失败即停止，不能继续调用任务。
+
+证据位于 `project-exe-broker-client-publication-fix-a01/`：`tiny-rename-probe-a02/result.json` 为 6,149 字节，SHA `dc43a59280e37c19c9975a32f30b72211834908e95d170e0c02f1aaa901c9725`；`ROOT-DELIVERY-a01.json` 为 4,517 字节，SHA `e5799ca6ed878709e131327aca491bb1d24765344f50ed858f14f8f4b08ac294`。固定安装 inbox 的实际只读 lease 及四个针对性 fake 场景也通过。本轮测试没有提交真实请求、调用任务或更改 Defender 设置；第五个新路径的普通 token → SYSTEM 设置回执仍须由新的实际 attempt 验收。六个已接入 producer、两种已知清单格式及 161 个未自动接入旧生产器的覆盖边界不变。

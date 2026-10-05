@@ -396,5 +396,81 @@ class ProtectionPredicateTest(unittest.TestCase):
         self.check(aces, task_owner_sid=OWNER)
 
 
+class InboxPublicationLeaseTest(unittest.TestCase):
+    def fake_native(self, directory=True, mutate=None):
+        from contextlib import contextmanager
+        constants = NS(GENERIC_READ=0x80000000, FILE_SHARE_READ=1, FILE_SHARE_WRITE=2,
+                       OPEN_EXISTING=3, FILE_FLAG_BACKUP_SEMANTICS=0x02000000,
+                       FILE_ATTRIBUTE_REPARSE_POINT=0x400, FILE_ATTRIBUTE_DIRECTORY=0x10,
+                       FILE_TYPE_DISK=1)
+        self.opens = []
+        leaf_path = c.INSTALL_ROOT + (r"\inbox" if directory else r"\policy.json")
+        state = {"post": False}
+        def create(path, access, sharing, security, disposition, flags, template):
+            handle = NS(path=path, sharing=sharing, Close=lambda: None)
+            self.opens.append(handle)
+            return handle
+        def info(handle):
+            leaf = c._same_path(handle.path, leaf_path)
+            attrs = 0x10 if directory or not leaf else 0
+            value = (attrs, 0, 0, 0, 100, 0, 0, 1, 0, 200)
+            if leaf and state["post"] and mutate == "identity":
+                value = (*value[:9], 201)
+            if leaf and state["post"] and mutate == "reparse":
+                value = (value[0] | 0x400, *value[1:])
+            return value
+        def final(handle, flags):
+            if state["post"] and mutate == "path":
+                return c.INSTALL_ROOT + r"\changed-inbox"
+            return "\\\\?\\" + handle.path
+        fileapi = NS(CreateFile=create, GetFileInformationByHandle=info, GetFileType=lambda h: 1,
+                     GetFinalPathNameByHandle=final, FILE_FLAG_OPEN_REPARSE_POINT=0x00200000)
+        security = NS(SE_FILE_OBJECT=1, OWNER_SECURITY_INFORMATION=1, DACL_SECURITY_INFORMATION=4,
+                      GetSecurityInfo=lambda *args: NS())
+        @contextmanager
+        def context():
+            with patch.dict("sys.modules", {"win32con": constants, "win32file": fileapi, "win32security": security}), patch.object(c.WindowsBackend, "_validate_acl"):
+                yield state
+        return context(), leaf_path
+
+    def test_write_share_only_fixed_inbox_and_default_files_remain_readonly(self):
+        backend = c.WindowsBackend()
+        fixture, inbox = self.fake_native()
+        with fixture as state:
+            with backend._locked(inbox, write_sid=OWNER, directory=True, inbox_publication=True):
+                self.assertEqual(self.opens[-1].sharing, 3)
+                self.assertTrue(all(handle.sharing == 3 for handle in self.opens[:-1]))
+                self.assertTrue(all(not handle.sharing & 4 for handle in self.opens))
+                state["post"] = True
+        fixture, file_path = self.fake_native(directory=False)
+        with fixture:
+            with backend._locked(file_path):
+                self.assertEqual(self.opens[-1].sharing, 1)
+
+    def test_publication_flag_cannot_relax_runtime_or_other_directory(self):
+        fixture, _ = self.fake_native()
+        with fixture:
+            for path, kwargs in ((c.INSTALL_ROOT + r"\runtime", {"write_sid": OWNER, "directory": True}),
+                                 (c.POLICY_PATH, {"write_sid": OWNER, "directory": False}),
+                                 (c.INSTALL_ROOT + r"\inbox", {"directory": True})):
+                with self.subTest(path=path), self.assertRaisesRegex(ValueError, "restricted to fixed inbox"):
+                    with c.WindowsBackend()._locked(path, inbox_publication=True, **kwargs):
+                        self.fail("Must reject before any open")
+            self.assertEqual(self.opens, [])
+
+    def test_publication_revalidates_directory_identity_before_task_can_run(self):
+        fixture, path = self.fake_native(mutate="identity")
+        with fixture as state, self.assertRaisesRegex(ValueError, "identity/type changed"):
+            with c.WindowsBackend()._locked(path, write_sid=OWNER, directory=True, inbox_publication=True):
+                state["post"] = True
+
+    def test_publication_rejects_post_reparse_and_final_path_change(self):
+        for mutation in ("reparse", "path"):
+            fixture, path = self.fake_native(mutate=mutation)
+            with self.subTest(mutation=mutation), fixture as state, self.assertRaises(ValueError):
+                with c.WindowsBackend()._locked(path, write_sid=OWNER, directory=True, inbox_publication=True):
+                    state["post"] = True
+
+
 if __name__ == "__main__":
     unittest.main()

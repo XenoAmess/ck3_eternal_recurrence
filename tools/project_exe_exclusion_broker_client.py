@@ -382,11 +382,13 @@ class WindowsBackend:
             raise ValueError("Task ACL lacks fixed SYSTEM/admin/owner read-run grants")
 
     @contextmanager
-    def _locked(self, path, *, write_sid=None, directory=False):
+    def _locked(self, path, *, write_sid=None, directory=False, inbox_publication=False):
         import win32con
         import win32file
         import win32security
         canonical = _canonical_path(path)
+        if inbox_publication and (not directory or not write_sid or not _same_path(path, INSTALL_ROOT + r"\inbox")):
+            raise ValueError("Write sharing is restricted to fixed inbox publication directory")
         root = _canonical_path(INSTALL_ROOT)
         if canonical != root and not canonical.startswith(root + "\\"):
             raise ValueError("Protected read outside fixed installation")
@@ -407,7 +409,10 @@ class WindowsBackend:
                     sd = win32security.GetSecurityInfo(handle, win32security.SE_FILE_OBJECT, win32security.OWNER_SECURITY_INFORMATION | win32security.DACL_SECURITY_INFORMATION)
                     self._validate_acl(sd, write_sid=write_sid if _same_path(ancestor, INSTALL_ROOT + r"\inbox") else None)
             flags = win32file.FILE_FLAG_OPEN_REPARSE_POINT | (win32con.FILE_FLAG_BACKUP_SEMANTICS if directory else 0)
-            handle = win32file.CreateFile(path, win32con.GENERIC_READ, win32con.FILE_SHARE_READ, None, win32con.OPEN_EXISTING, flags, None)
+            # Child rename needs WRITE sharing on its parent directory. Keep
+            # DELETE unshared and every protected file/default lease unchanged.
+            sharing = win32con.FILE_SHARE_READ | (win32con.FILE_SHARE_WRITE if inbox_publication else 0)
+            handle = win32file.CreateFile(path, win32con.GENERIC_READ, sharing, None, win32con.OPEN_EXISTING, flags, None)
             stack.callback(handle.Close)
             info = win32file.GetFileInformationByHandle(handle)
             if info[0] & win32con.FILE_ATTRIBUTE_REPARSE_POINT or bool(info[0] & win32con.FILE_ATTRIBUTE_DIRECTORY) != directory:
@@ -422,6 +427,17 @@ class WindowsBackend:
             sd = win32security.GetSecurityInfo(handle, win32security.SE_FILE_OBJECT, win32security.OWNER_SECURITY_INFORMATION | win32security.DACL_SECURITY_INFORMATION)
             self._validate_acl(sd, write_sid=write_sid)
             yield handle
+            if inbox_publication:
+                current = win32file.GetFileInformationByHandle(handle)
+                if tuple(current[i] for i in (4, 8, 9)) != tuple(info[i] for i in (4, 8, 9)) or current[0] & win32con.FILE_ATTRIBUTE_REPARSE_POINT or not current[0] & win32con.FILE_ATTRIBUTE_DIRECTORY:
+                    raise ValueError("Inbox directory identity/type changed during publication")
+                final_after = win32file.GetFinalPathNameByHandle(handle, 0)
+                if final_after.startswith("\\\\?\\"):
+                    final_after = final_after[4:]
+                if _canonical_path(final_after) != canonical:
+                    raise ValueError("Inbox final path changed during publication")
+                sd_after = win32security.GetSecurityInfo(handle, win32security.SE_FILE_OBJECT, win32security.OWNER_SECURITY_INFORMATION | win32security.DACL_SECURITY_INFORMATION)
+                self._validate_acl(sd_after, write_sid=write_sid)
 
     def read_protected(self, path, limit):
         import win32file
@@ -490,7 +506,7 @@ class WindowsBackend:
             raise ValueError("Request path outside fixed UUID inbox")
         if self.current_sid() != owner_sid:
             raise ValueError("Request publisher owner SID changed")
-        with self._locked(inbox, write_sid=owner_sid, directory=True):
+        with self._locked(inbox, write_sid=owner_sid, directory=True, inbox_publication=True):
             temporary = Path(path + "." + uuid.uuid4().hex + ".tmp")
             with temporary.open("xb") as handle:
                 handle.write(raw)
