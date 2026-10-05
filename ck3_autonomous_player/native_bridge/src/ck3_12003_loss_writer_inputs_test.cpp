@@ -1,4 +1,4 @@
-#include "xar_bridge/ck3_12002_army.hpp"
+﻿#include "xar_bridge/ck3_12002_army.hpp"
 #include "xar_bridge/ck3_12003_army_replenishment_records.hpp"
 #include "xar_bridge/army_strength_v1_serializer.hpp"
 
