@@ -2629,6 +2629,45 @@ if(BUILD_TESTING)
     endif()
   endforeach()
 
+  add_executable(xar_ck3_12003_pending_self_ransom_quote_test
+    src/ck3_12003_pending_self_ransom_quote_test.cpp
+    src/current_first_heir_relationship_v1.cpp
+    src/observed_heir_marriage_private_v1.cpp)
+  target_link_libraries(xar_ck3_12003_pending_self_ransom_quote_test PRIVATE
+    xar_ck3_12002_runtime)
+  target_include_directories(xar_ck3_12003_pending_self_ransom_quote_test PRIVATE
+    src research)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_pending_self_ransom_quote_test PRIVATE
+      /UNDEBUG /W4 /WX /permissive- /EHsc)
+  else()
+    target_compile_options(xar_ck3_12003_pending_self_ransom_quote_test PRIVATE
+      -UNDEBUG)
+  endif()
+  add_test(NAME ck3_12003_pending_self_ransom_quote
+    COMMAND xar_ck3_12003_pending_self_ransom_quote_test
+      "${CMAKE_CURRENT_BINARY_DIR}/ck3_12003_pending_self_ransom_quote_wire.json")
+
+  add_executable(xar_ck3_12003_person_diac_literal_numeric_test
+    src/diac_literal_numeric_inputs_12003.cpp
+    tests/person_diac_literal_numeric_12003_test.cpp)
+  target_include_directories(xar_ck3_12003_person_diac_literal_numeric_test PRIVATE
+    include)
+  target_compile_features(xar_ck3_12003_person_diac_literal_numeric_test PRIVATE
+    cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_person_diac_literal_numeric_test PRIVATE
+    NOMINMAX)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_person_diac_literal_numeric_test PRIVATE
+      /UNDEBUG /W4 /WX /permissive- /EHsc)
+  else()
+    target_compile_options(xar_ck3_12003_person_diac_literal_numeric_test PRIVATE
+      -UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_12003_person_diac_literal_numeric_test
+    COMMAND xar_ck3_12003_person_diac_literal_numeric_test
+      "${CMAKE_CURRENT_BINARY_DIR}/ck3_12003_person_diac_literal_numeric_wire")
+
   # Dispatcher spies cover only the production routing seam; they deliberately
   # do not link the runtime's actual domain executors or adapter implementation.
   foreach(router_variant IN ITEMS default selected)
