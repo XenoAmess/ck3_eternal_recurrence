@@ -206,3 +206,10 @@ actual launcher/wrapper0，SDK/keeper已退出；CK3实际exit1、managed exit_r
 后续Root独立屏幕交接回执补充索引冻结时尚未声称的CAS事实：旧a09在seq4680释放过期自有声明，a10在seq4687同样释放，均resources=[]、retirement.business_status=unresolved_red；seq4688登记新broker-a11。只授这些时点的释放/登记，不将释放写成业务恢复、broker安装成功或本轮镜头完成。回执位于 `C:/ck3-war-episode04-research-20261004-a01/`：`root-broker-screen-transition-a01/release.stdout`（1426B、SHA-256 `1961cd51adfdd9d262a0769dd3db5efe8ba1037366e7d85fbf19ad56ee5a64dc`、seq4680）；`root-broker-screen-transition-a01/register.stdout`（1382B、SHA-256 `7c35326074deb56ff84ca74fc465e03481c18cf3154415a153a6b1c9f4325a4c`、seq4681）；`root-broker-screen-transition-a02/release.stdout`（1438B、SHA-256 `8580a237995fb85eae835c0eb5be3433bea6297bccd4e6eb5a46e5e60d0a13e3`、seq4687）；`root-broker-screen-transition-a02/register.stdout`（1382B、SHA-256 `aad61bbb3935b57d3a0b4eb9504f66efe8e2965754a458b3a7d3c16131dccf71`、seq4688）。
 
 当前证据计分不因R0166改变：P0-TERM完整PNG4/11，七项整项待补；实际merge、同档A/B/C0/3、连续clean镜头、句稿/TTS/成片及完整人工审阅仍待完成。整体约30%/研究约70%沿用此前Root规划估算，正式研究加权比例和分母仍null；本轮零日尝试与停机分钟数不转成完成度。
+
+
+## 2026-10-05 R0168：当前完整月净额实机闭合
+
+本节更新前文费用勘误及R0165“新 DLL NET待验”切点，历史无标记payload仍只证明收入侧。Root用ffc29e7c/a07取得原Jan11 William33388 paused前后配对，raw53147160/public3/native2/角色存活与mapready均相同，新增游戏日0。actual gross469417−完整expenses439469=NET29948（/100000，即+0.29948金币/月），month/个人金币scope、新v2语义标记及militaryincluded=true全部实际读回。当前军费3.88749/月、all-raised反事实替代4.87050/月各自保留；不能相加，也不能从NET再减军费。
+
+Root实际两项focused CTest及注册in-memory MCP 6cases/52checks通过，门禁与raw source/wire pins见[R0168费用研究](../../../docs/ck3-native-ai/war-cash-net-live-r0168-2026-10-05.md)及[当前费用专题追加](../../../docs/ck3-native-ai/war-cash-current-resources-12003.md)。新完整月净率primitive已实际验收；登船/累计实际付款ledger、逐军费用、余额差的独立收支事件对账、未来上界/风险预算和完整战争预算loop仍待证。这个暂停费用读取不改变TERM、actual合军、同档A/B/C、影片/TTS/1×签核/交付的各自完成事实，不重算研究或影片百分比。

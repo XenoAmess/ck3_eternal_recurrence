@@ -117,3 +117,10 @@ Exact `.3` HUD 原生 writer `DF1C70..DF20C9`（1113B / SHA `e5b02e7831555c2edcb
 外置候选基于主树 `c77734c9c11a90b8080139d4658e9bd27b2b8464`，来源和 focused 验证包在 `C:/ck3-war-episode04-research-20261004-a01/cash-net-fix-candidate-20261005-a01/`。实际生产 reader/serializer 配 fake native bindings 的严格 MSVC Release/NDEBUG 构建已通过，六份实际序列化 wire 经注册的 in-memory MCP、实际 driver 和生产 normalizer 完整往返；新增 Python 合同8项通过。Focused CMake target及两项 CTest也实际通过。提醒前测试 EXE 曾在新路径排除回读前运行，流程缺口与待登记 target manifest 如实保存在 `defender-registration-pending-a01/PENDING.json`，随后停止 EXE 重跑；不把此前执行说成已符合新路径排除门禁。所有测试为 offline/static，未执行 CK3 原生 getter、游戏、屏幕或 live SDK。
 
 Root 仍需按顺序审核/集成源码、用已正式登记的构建输出生成新 DLL，冻结新来源后取得一次实际暂停 current-cash packet，核对 gross、完整 total、NET、语义标记和 same-frame。R0165 旧 a06 只用已证余额，不消费旧 NET 做费用计算。当前仍无实际累计行军费用、登船付款流水、逐军维护分摊或完整战争预算 loop；净率不等于实付，也不能从新 NET 再扣一次军事维护。
+
+
+## 2026-10-05 R0168：新标记完整月净额已暂停实机验收
+
+本节更新上一勘误的“新 DLL 实读待验”，保留所有旧原始包、误标文字及纠正记录。Root 已用 ffc29e7c/a07 在原 Jan11 William33388同 paused/alive/map_ready、public3/native2/date53147160 前后状态间实读：gross469417、完整expenses439469、NET29948，scale100000，即4.69417−4.39469=+0.29948金币/月。新 `native-income-minus-total-expenses-v2` 标记、month/个人金币scope、military_expenses_included=true及全部7readiness为真；原费用current3.88749/月、all-raised替代4.87050/月独立保持。NET已含军费，不再扣一次；两种军费不相加。
+
+Root在实际已登记a07 test EXE门禁之后完成两项focused CTest，六actual wire与注册in-memory MCP的6cases/52checks通过。原始回包、独立暂停配对及完整 source/wire pins见[有限R0168研究记录](war-cash-net-live-r0168-2026-10-05.md)。这闭合新完整月净率primitive，不将同日净率升级为累计支付、纯行军费用、逐军分摊、未来费用上界、安全置信或正式战争预算loop；actual `formal_action_ready=false` 与future upper未ready仍保持。当前任务未操作Root独占现场，也不为TERM/ABC/影片增加信用。
