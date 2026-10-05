@@ -988,3 +988,59 @@ that default guard/PC. External
 the source pins, ordered input plan and actual next dependency. This
 research increment does not change preCC71 readiness, run tests/builds,
 or claim later preparation/Entry completion.
+
+## Genuine2920B50 joined with whole-vector admission
+
+The final raw schema/sourcebeaf4c3b and genuine pure/shared-normalizer commit
+`750cbb886a2cce2f35fadd415ec9cc879f667d1b` now release the actual
+`following_2920b50` whole/family/attribute APIs. The consumer calls those
+APIs instead of interpreting ranked vectors again. `through_stage="following_2920b50"`
+can reach `post2920B50_pre291CC76` from the explicit pre467 chain input.
+First-family whole-vector admission precedes every attribute; only an
+all-valid occurrence can release a ranked-PC prefix. Known invalid admission
+advances with zero requests for that entire occurrence. Unknown preflight
+releases no earlier attributes, while later independently ready sources remain
+separate. Once preflight succeeds, a missing ranked PC preserves only earlier
+verified attributes. Empty/duplicate source requests and unit weights remain
+distinct from materialized weighted rows.
+
+```mermaid
+flowchart TD
+  A[Verified pre291CC71 context] --> G[All-vector preflight for each list occurrence]
+  G -->|known invalid| Z[Entire occurrence emits zero requests]
+  G -->|all valid| P[Ordered unitweight owner-PC attributes]
+  G -. unknown preflight .-> U[Retain prior context; no attributes released]
+  P -. selected ranked PC missing .-> Q[Verified earlier attribute prefix only]
+  Z --> O[Own Acco admission and whole-vector preflight]
+  P --> O
+  O --> R[Ordered unitweight peer-PC attributes]
+  R --> F[post2920B50_pre291CC76]
+  F -. next source producer lane .-> N[2BCA620 classifier then provider family]
+```
+
+The one new compound production-normalizer→chain→six-skill case in
+`test_battle_person_following_stage_chain_12003.py` is GREEN1/1 at
+2026-10-06 04:43:41CST (0.042s), external
+`following2920b50-attempt-02.json`. Attempt01 is preserved as harness RED:
+its expected final skill omitted the fixture's existing120 cap. Production
+logic was unchanged; only the assertion was corrected and extended to retain
+raw213/141 alongside the actual capped120. No old or sibling passing case
+was repeated.
+
+Complete list6/own2 requests produce context20707450/weighted73, raw skills
+`[6,6,6,6,6,213]` and final`[6,6,6,6,6,120]`. A later invalid Definition in
+each repeated selected vector suppresses all list contributions, including
+earlier valid attributes; only own2 remains, context13507450/weighted67,
+raw141/final120. Unknown preflight keeps `postCarrierWeighted630_pre291CC71`,
+context9007450/weighted65/final96 with independent own2. An all-valid vector
+with cold ranked attr1 stops at
+`post2920B50_list_1c8_50_occurrence0_attribute0_preAttribute1`,
+context10107450/weighted66/final107; later attr2, the repeated occurrence's
+ready attributes and own2 are independent. No cold PC is fabricated.
+
+This remains conditional pure stage assembly from an explicit prior and held
+observed inputs; native initialization/fresh rebuild equivalence, full person
+preparation and Entry remain false. Native producer fixtures are separately
+owned and qualified centrally. The next named source/observer dependency is
+`291CC76_provider_classifier2BCA620`; the producer source lane is active.
+This consumer adds zero EXE reads, native builds or game operations.

@@ -364,6 +364,81 @@ def _provider192_prefix(section: Mapping, module: str, outputs: dict):
     return prefix, ledger, missing, frontier
 
 
+def _following2920b50_prefix(section: Mapping, module: str, outputs: dict):
+    """Use whole-vector admission before exposing any ranked attribute prefix."""
+    name = "following_2920b50"
+    api = "emit_following_2920b50_"
+    suffix = "_requests_from_current_source_inputs_12003"
+    leaf = section.get(name)
+    prefix, ledger, missing, frontier, contiguous = (), [], [], None, True
+    families = ("list_1c8_50", "own_1b0_570")
+    frontiers = ("post2920B50_list1C8_preOwn1B0", "post2920B50_pre291CC76")
+
+    def emit(kind, indices):
+        try:
+            return tuple(_tail_emit(section, module, api + kind + suffix, indices)), ()
+        except (ValueError, ModuleNotFoundError, AttributeError) as error:
+            return (), (str(error),)
+
+    for family, after in zip(families, frontiers):
+        requests, gaps = emit("family", family)
+        parts, family_prefix, family_frontier = [], (), None
+        if gaps:
+            branch = leaf.get(family) if isinstance(leaf, Mapping) else None
+            if isinstance(branch, Mapping):
+                if family == "list_1c8_50":
+                    rows, count, selection = branch.get("rows"), branch.get("numeric_count"), branch.get("header_selection")
+                    guard = branch.get("default_init_guard_raw")
+                    header_ready = (selection == "current_1c8_50"
+                        or selection == "inline_default_5d67e80" and guard not in {None, 0, -1}
+                        or selection == "modeled_empty_default_5d67e80" and guard in {0, -1} and count == 0)
+                    family_contiguous = (header_ready and type(count) is int and count >= 0
+                        and isinstance(rows, list) and (count == 0 or branch.get("array_present") is True))
+                else:
+                    occurrence = branch.get("occurrence")
+                    rows = [occurrence] if isinstance(occurrence, Mapping) else []
+                    family_contiguous = bool(rows)
+                for occurrence in rows or ():
+                    occurrence_index = occurrence["native_index"]
+                    occurrence_label = f"{family}.occurrence{occurrence_index}"
+                    if occurrence["ready"] and occurrence["preflight_all_valid"] is False:
+                        if family_contiguous:
+                            family_frontier = f"post2920B50_{occurrence_label.replace('.', '_')}_preOccurrence{occurrence_index + 1}"
+                        parts.append({"part": occurrence_label, "requests_ready": True, "request_count": 0,
+                            "known_entire_occurrence_skip": True, "in_contiguous_family_prefix": family_contiguous})
+                        continue
+                    family_contiguous = (family_contiguous and occurrence["preflight_ready"]
+                                         and occurrence["preflight_all_valid"] is True)
+                    for attribute in occurrence.get("attributes") or ():
+                        attribute_index = attribute["native_index"]
+                        label = f"{occurrence_label}.attribute{attribute_index}"
+                        attribute_requests, attribute_gaps = emit("attribute", (family, occurrence_index, attribute_index))
+                        outputs[name + "." + label] = attribute_requests
+                        family_contiguous = family_contiguous and not attribute_gaps
+                        if family_contiguous:
+                            family_prefix += attribute_requests
+                            family_frontier = f"post2920B50_{label.replace('.', '_')}_preAttribute{attribute_index + 1}"
+                        parts.append({"part": label, "requests_ready": not attribute_gaps,
+                            "request_count": len(attribute_requests), "in_contiguous_family_prefix": family_contiguous,
+                            "entire_preflight_ready": occurrence["preflight_ready"],
+                            "entire_preflight_all_valid": occurrence["preflight_all_valid"],
+                            "missing_inputs": attribute_gaps})
+                    if family_contiguous and occurrence["ready"]:
+                        family_frontier = f"post2920B50_{occurrence_label.replace('.', '_')}_preOccurrence{occurrence_index + 1}"
+                    family_contiguous = family_contiguous and occurrence["ready"]
+            requests = family_prefix
+        outputs[name + "." + family] = requests
+        if contiguous:
+            prefix += requests
+            frontier = after if not gaps else (family_frontier or frontier)
+        ledger.append({"family": family, "requests_ready": not gaps,
+            "request_count": len(requests), "in_contiguous_family_prefix": contiguous and not gaps,
+            "verified_parts": tuple(parts), "missing_inputs": gaps})
+        missing.extend(family + ":" + gap for gap in gaps)
+        contiguous = contiguous and not gaps
+    return prefix, ledger, missing, frontier
+
+
 def continue_person_stage_chain_tail_12003(
     previous: PersonStageChainResult12003, source_inputs: Mapping | None, *,
     through_stage: str = "2753860",
@@ -384,6 +459,7 @@ def continue_person_stage_chain_tail_12003(
     gated_module = "battle_person_gated_temporary_tail_contract"
     after_gated_module = "battle_person_after_gated_tail_contract"
     provider192_module = "battle_person_provider192_and2920850_contract"
+    following_module = "battle_person_following_2920b50_contract"
     stages = (
         ("2753860", "post2753860_pre291C4D2", prefix_module,
          "emit_helper_2753860_requests_from_current_source_inputs_12003", None),
@@ -413,6 +489,8 @@ def continue_person_stage_chain_tail_12003(
          "emit_provider192_and2920850_requests_from_current_source_inputs_12003", None),
         ("carrier_weighted630", "postCarrierWeighted630_pre291CC71", direct_module,
          "emit_tail_direct_family_requests_from_current_source_inputs_12003", "carrier_weighted630"),
+        ("following_2920b50", "post2920B50_pre291CC76", following_module,
+         "emit_following_2920b50_requests_from_current_source_inputs_12003", None),
         ("remaining_later_preparation", "remaining_caller_unclosed", None, None, None),
     )
     names = tuple(item[0] for item in stages)
@@ -466,6 +544,8 @@ def continue_person_stage_chain_tail_12003(
         after_gated_family_ledger = []
         provider192_family_ledger = []
         provider192_frontier = None
+        following_family_ledger = []
+        following_frontier = None
         qualifier_definition_ledger = []
         list_row_ledger = []
         try:
@@ -475,6 +555,10 @@ def continue_person_stage_chain_tail_12003(
                 raise ValueError("native_source_stage_unclosed")
             if name == "provider192_and2920850":
                 requests, provider192_family_ledger, missing, provider192_frontier = _provider192_prefix(
+                    source_inputs, module, outputs)
+                ready = not missing
+            elif name == "following_2920b50":
+                requests, following_family_ledger, missing, following_frontier = _following2920b50_prefix(
                     source_inputs, module, outputs)
                 ready = not missing
             elif name in ("conference24B1D00", "gated_temporary_tail", "after_gated_tail"):
@@ -573,6 +657,8 @@ def continue_person_stage_chain_tail_12003(
                 stage = after_stage
             elif name == "provider192_and2920850" and provider192_frontier is not None:
                 stage = provider192_frontier
+            elif name == "following_2920b50" and following_frontier is not None:
+                stage = following_frontier
             elif name == "qualifier_repeated_contribution" and any(
                     row["in_contiguous_definition_prefix"] for row in qualifier_definition_ledger):
                 completed = sum(row["in_contiguous_definition_prefix"] for row in qualifier_definition_ledger)
@@ -607,6 +693,7 @@ def continue_person_stage_chain_tail_12003(
             "gated_temporary_family_stages": tuple(gated_family_ledger),
             "after_gated_family_stages": tuple(after_gated_family_ledger),
             "provider192_family_stages": tuple(provider192_family_ledger),
+            "following_2920b50_family_stages": tuple(following_family_ledger),
             "qualifier_definition_stages": tuple(qualifier_definition_ledger),
             "list_predicate_row_stages": tuple(list_row_ledger)})
         if required:
@@ -620,8 +707,8 @@ def continue_person_stage_chain_tail_12003(
         "future_tail_missing_inputs": tuple(future_missing),
         "first_contiguous_observation_dependency": next(
             (row["stage"] for row in ledger_rows if not row["requests_ready"]), None),
-        "next_native_source_leaf": "291CC71_2920B50", "all_tail_source_stream_ready": False,
-        "next_native_source_leaf_status": "source_closed_minimum_contract_pending",
+        "next_native_source_leaf": "291CC76_provider_classifier2BCA620", "all_tail_source_stream_ready": False,
+        "next_native_source_leaf_status": "source_research_in_progress",
         "provider_291c5b2_operand_scope": "held_current_character_1b0_2f8",
         "provider_291c5b2_return_edges": "all selection branches rejoin291C5B7",
         "qualifier_28bc0d0_operand_scope": "held_current_character_1b0_scratch_object_relationships",
@@ -638,6 +725,10 @@ def continue_person_stage_chain_tail_12003(
         "provider192_list_order": "each_occurrence_four_direct_slots_then_four_nested_headers",
         "provider192_mapped_default_guard_scope": "unused_default_guard_does_not_invalidate_actual_mapped_PC",
         "provider192_native_evaluation_equivalence_claimed": False,
+        "following_2920b50_operand_scope": "held_current_accolade_preflight_ranked_vectors_and_selected_PCs",
+        "following_2920b50_preflight_scope": "entire_occurrence_before_any_attribute_request",
+        "following_2920b50_cold_ranked_default_assumed_empty": False,
+        "following_2920b50_native_initialization_equivalence_claimed": False,
         "source_operand_scope": "held_current_same_query_inputs",
         "conditional_on_observed_source_values": True,
         "291f260_weight_source_scope": "held_current_evaluated_values",
