@@ -54,3 +54,19 @@ More Tenets Slots(XA) v10 发布完成后，屏幕独占 root 多次点击官方
 成功的 `fresh_frame` 事件回执额外记录 `foreground_activation`，包含方法、前台变化和已核验的 Steam HWND/PID；原生拒绝时保留 `native_error`。原有 `steam-frame-freshness.json` 的图像证据合同保持不变，离线状态仍必须直接审阅新图。
 
 此补丁只完成离线模拟校验，没有再次聚焦窗口、采集桌面、切换 Steam 模式或运行 CK3。`tools/.venv/Scripts/python.exe tools/test_desktop_steam_offline_recovery.py` 的 29 项测试通过，其中新增覆盖原生拒绝后的 UIA 成功、缺少 UIA、目标 PID 变化、UIA 根 HWND/PID 不符、解析期间身份变化、正确根聚焦，以及 UIA ACK 后前台仍错误时拒绝采集。上述当次实机成功发生于独立脚本；不能将模拟通过写成新补丁已在游戏运行期间实机复验。
+
+## 2026-10-06 R0048 启动前 Steam 黑屏与正常 UI 恢复
+
+R0048 的 g79/v74 正常准备期间，旧 Steam 窗口 `HWND8852312/PID69276` 的内容区持续全黑，无法审阅当前离线状态。Root 保留了 `steam-offline-fresh-01/02` 的置前失败、03 的移动截图、`steam-recovery-04` 的移动截图及 `steam-render-05` 的恢复／调整尺寸／`RedrawWindow` 尝试。04 工具报告 `fresh_frame_needs_offline_visual_review`，但 Root 直接看到的内容区仍全黑；窗口边缘或画面像素移动没有闭合离线确认。05 的 `render-operation.json` 只记录正常最小化、恢复、调整尺寸和重绘，没有按键、点击、账号模式命令或重启。
+
+04、06、08 的既有预检均记录 CK3 进程为空、OBS PID114680 仍存在、ToDesk 服务 PID41260 正在运行。本次没有重启 ToDesk，也没有操作 OBS。准备期间未启动 CK3；后续正常 Operator 启动属于另外的 R0048 运行记录。
+
+Root 复用本专题已记录的正常 Steam 退出与 `-cef-disable-gpu` 重开路径。`STEAM-NORMAL-UI-RESTART-01.json` 记录 `2026-10-05T23:36:16Z` 开始，官方 `steam.exe -shutdown` 退出码0，随后同一账号环境执行官方 `steam.exe -cef-disable-gpu`；23:36:21Z 的状态仍是 `RELAUNCHED_OFFLINE_UI_PENDING`。收据明确 `mode_changed=false`、`todesk_restarted=false`、`OBS_touched=false`。这时并未以重开命令的返回值确认离线。
+
+随后 `steam-recovery-06/recovery.json` 记录没有可见 Steam 窗口，结果为 `blocked`。Root 再于23:38:41Z 执行官方 `steam.exe steam://open/library`，`STEAM-OPEN-LIBRARY-UI.json` 记录退出码0；该 URI 只打开正常客户端资料库界面，没有游戏启动或账号模式命令。
+
+`steam-recovery-08/probe-1/steam-frame-freshness.json` 于23:38:48Z 记录新的 `HWND3082894/PID44240`、原始2560×1440桌面及真实窗口移动后的新图。`steam-moved.png` 为 **1,037,741字节**，SHA-256 **`545F7EB08CFA16F468ADECB338A115A13414C282E4361B4DC93A0C2D516CB8E5`**。Root 对这张原图直接审阅，读到 Steam 资料库底栏的**“离线模式”**和任务栏当时的 **7:38 AM**；`STEAM-OFFLINE-VISUAL-REVIEW.json` 独立记录 `current_offline_ui_observed=true`。08 工具自身的 `offline_status_observed`／`steam_offline_status_observed` 仍为null，离线结论来自这次人工直接复核，不来自窗口移动或哈希变化。
+
+本次闭合的是“正常退出 → 保留账号环境重开 → 官方资料库 URI 显示 → 新原图直接审阅”的组合恢复路径。没有隔离A/B，Steam 黑屏的单一根因仍未查明，不能归因于 GPU、ToDesk 或 OBS 中的某一项。所有旧失败／黑屏尝试保留；没有新增自动模式控制、桌面恢复代码或额外门禁。后台文档执行者只读既有收据，未执行 Steam、桌面、CK3、SDK、原生查询、构建或测试。
+
+本段收据和原图统一位于 `Z:/ck3_mod_rewrite_process_assets/g2-runtime-next-20261006/`；报告合并字段位于该目录的 `steam-black-ui-normal-recovery-documentation-01/REPORT-FIELDS.json`。

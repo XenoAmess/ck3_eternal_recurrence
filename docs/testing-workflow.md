@@ -3020,3 +3020,9 @@ CTest 的 target 名可能不同于 `add_test(NAME ...)`。本次 supply 名误�
 ### 新native fixture的unsigned literal编译修复（2026-10-05）
 
 本次remaining-helper fixture把optional<uint32_t>与signed literal0比较，MSVC在/WX下以C4389→C2220终止。最小修复为0U；生产reader未改。原144.2888s RED保留，必要增量full DLL/新target GREEN8.350974s后才执行两项新CTest与新wire消费者；不把增量耗时称为clean build耗时，也不重跑此前passed路径。回执见外置g2-background-round2-20261005/native-final-frontiers-{01,02,ctest-01}.json。
+
+## 2026-10-06 R0048：原 Robert checkpoint 冷恢复的独立读回
+
+2026-10-06 R0048 正常准备的当前实证：Steam 旧窗口全黑时，移动／恢复／调整尺寸／重绘未使当前离线标识可读；Root 在 CK3 尚未运行期间复用官方 `steam.exe -shutdown`（退出码0）及 `-cef-disable-gpu` 重开，并用官方 `steam://open/library` 显示正常 UI。恢复08的新窗口 `HWND3082894/PID44240` 原图由 Root 直接读到“离线模式”及7:38 AM；截图1,037,741字节/SHA `545F7EB08CFA16F468ADECB338A115A13414C282E4361B4DC93A0C2D516CB8E5`。OBS114680与ToDesk41260保持，未发账号模式命令。仅窗口移动不作离线实证，组合成功不作单一黑屏根因。收据见 `Z:/ck3_mod_rewrite_process_assets/g2-runtime-next-20261006/STEAM-OFFLINE-VISUAL-REVIEW.json`；知识专题见 [Steam 离线预检／恢复](ck3-native-ai/desktop-steam-offline-recovery-2026-09-27.md)。
+
+后续 R0048 使用正常 Operator/profile `789E15F23299C5B613D006782BF818029772500936DCE6D5872049C57016E153`、job `480e5d18-ac10-4ab1-a269-eb1e7c550f95`，CK3 PID4692。首次可用冷快照751为paused public2/native1但actor/episode尚为null；第二次752已在paused public3/native2绑定原Robert29829、原episode、raw53286360／累计5918日。这是加载期间的瞬态，未重置或重播seed。独立755 composition另确认 Steward32440、stewardship11、非空席位和全部readiness true，证明当前冷恢复的holder/skill材料；它没有任务字段，不增加独立任务效益、税收收益或formal下一回合消费证明。后台 owner 只读保存的751/752/755与Steam收据；本段不计后台新增游戏日，不代替 source715 资格报告或后续真实 self-ransom 动作／回执。
