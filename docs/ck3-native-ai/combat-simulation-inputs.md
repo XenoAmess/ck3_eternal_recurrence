@@ -2001,3 +2001,24 @@ Known absent/invalid knight link keeps the component sums. Missing final qualifi
 The single focused run passed two production adapter→new helper→unchanged terminal cases in about 0.07 seconds. It covers selected versus untouched backing, exact kind3 zero/current behavior, valid/absent/invalid/unavailable qualifier states, legitimate zero versus missing input, signed32 aggregation, native order, unchanged component/soft/owner accounts and Q conversion at output. The helper SHA-256 is `2ac76ff97e71f7c52c8ebb748534560bde6e77f9f5becea7c159b3137107b183`. Evidence is frozen under `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/battle-phase3-backing-reaggregation-v60/{source,model,fixture}/`; `fixture/ROOT-DELIVERY.json` pins the sole two-case receipt, source dependencies and reusable test.
 
 Integration readiness is **static-ready**. No SDK, game, window, native build or old-suite operation ran; new normal days and live samples are zero. The helper computes current count reaggregation from supplied actual membership and qualifier facts. It does not predict outer knight death/join, run ordinary result finalization, prove a complete terminal transition, or complete Monte Carlo/win odds. Full terminal capability remains partial.
+
+## 2026-10-05：实际战场 geography 的现有查询发布入口
+
+复用 exact 1.20.0.3 / Steam25652598 / EXE SHA94B55397…02A6 的既有树与小缓存，未扫描或重新 hash EXE。实际 Combat+6B8 指向 province，按 Province+10 绑定 ID；已绑定的 GetProvinceTerrain RVA247E590 返回实际 terrain，其原生 key+18 与 signed Q100000 width+60 已用于 v2 target terrain，当前 actual battle query 尚未发布。Combat+6F8 的 constructor adjacency raw 和+6FE 的 retained holding bool 可独立复制；0/false 是观测值，历史 attacker-entry ProvinceID 不从这些字段或当前路线补造。
+
+~~~mermaid
+flowchart TD
+  Q["既有 transition(fullCombatID, revision)"] --> C["实际 CCombat"]
+  C --> P["6B8 Province；strict10 ID"]
+  P --> T["247E590 terrain getter；key18 / width60"]
+  C --> R["retained6F8 kind /6FE holding"]
+  T --> G["optional actual_geography_v1"]
+  R --> G
+  G --> F["transition 正式 DTO / normalizer"]
+  F --> O["owned control 复用同一采样"]
+  G -.-> D["retained constructor diagnostics：现 v2需 kind 与 holding 最小扩展"]
+~~~
+
+R46 实际远方敌军 control query 因 ownership 被拒绝，既有 ck3_query_battle_transition_v1(combat_id, expected_revision) 成功；候选沿该现有可达入口发布同一 optional leaf，owned control 保留原权限。leaf 仅有 terrain（复用现有五字段 shape）、constructor_adjacency_kind_raw、holding_defender，身份与 frame 仍由原外层绑定。原始 terrain unavailable 不降低旧 lifecycle/control readiness，旧没有该字段的归档保持原 shape。
+
+当前 v2 仅接受 ctor0/null-entry，ReadContactDefenderContext 还实时按显式 defender 首军 owner 调用 holding predicate，未消费 retained6FE；故非零 kind 的最小 classifier 扩展仍须配合明确 retained holding/provenance，才可标 retained-geometry diagnostics。raw0 自身不能证明 original initiator 或 native-defender 角色；未来新玩家接战继续使用其 fresh preview/projectedroles。source合同、候选与输入配方见 Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/battle-terrain/ROOT-DELIVERY.json。此轮仅 research：未编译、测试、调用 SDK/pipe/进程或窗口，也未读取新的 paused artifact，不记 live、游戏日、完整 MC 或胜率。

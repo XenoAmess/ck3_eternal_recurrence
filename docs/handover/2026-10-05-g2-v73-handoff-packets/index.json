@@ -1,0 +1,294 @@
+{
+  "schema": "g2-v73-vacation-handoff-v1",
+  "registered_at": "2026-10-05T18:41:11+08:00",
+  "authorization": {
+    "registered_at": "2026-10-05T18:41:11+08:00",
+    "user_instruction": "你现在可以使用ck3和界面了。用吧。我去休息了。",
+    "ck3_and_ui_authorized": true,
+    "supersedes_user_reserved_release_authorization_only": true,
+    "new_game_or_ui_actions": 0,
+    "last_run_closed": "R0046 / managed47337 CLOSED0 at 2026-10-05T15:22:48+08:00",
+    "next_action": "vacation handover; successor may resume under current authorization"
+  },
+  "handover": "../2026-10-05-g2-v73-war-background-maintainer-vacation-handoff.md",
+  "source_freeze": {
+    "path": "Z:/g78",
+    "head": "d22e9a1cd3fb1062f6c66282f044daafa016718a",
+    "runtime": "v73"
+  },
+  "normal_saved_days": 5035,
+  "new_game_days": 0,
+  "new_compilation_or_tests": 0,
+  "background_lanes": [
+    {
+      "key": "movement-eta",
+      "topic": "完整路线ETA",
+      "canonical_doc": "../../ck3-native-ai/army-current-movement-progress-observer-12003.md",
+      "readiness": "research"
+    },
+    {
+      "key": "siege-engine-arrival",
+      "topic": "独立器械军参围资格",
+      "canonical_doc": "../../ck3-native-ai/siege-efficiency-inputs-12003.md",
+      "readiness": "research"
+    },
+    {
+      "key": "replenishment-numeric",
+      "topic": "chunk数值补员",
+      "canonical_doc": "../../ck3-native-ai/army-regiment-replenishment-raised-reserve-12003.md",
+      "readiness": "research"
+    },
+    {
+      "key": "attrition-loss-model",
+      "topic": "损耗预算分配",
+      "canonical_doc": "../../ck3-native-ai/army-attrition-soldier-writeback-12003.md",
+      "readiness": "research"
+    },
+    {
+      "key": "battle-entry",
+      "topic": "首次接战人物构造",
+      "canonical_doc": "../../ck3-native-ai/battle-first-contact-person-preparation-frontier-12003.md",
+      "readiness": "research"
+    },
+    {
+      "key": "battle-terrain",
+      "topic": "实际战场geography",
+      "canonical_doc": "../../ck3-native-ai/combat-simulation-inputs.md",
+      "readiness": "research"
+    },
+    {
+      "key": "call-ally-reason",
+      "topic": "盟友拒绝原因consumer",
+      "canonical_doc": "../../ck3-native-ai/call-ally-blocked-submit-diagnostic-consumer-12003.md",
+      "readiness": "research"
+    },
+    {
+      "key": "holy-order-hire",
+      "topic": "普通holy-order hire构造",
+      "canonical_doc": "../../ck3-native-ai/religion-holy-order-hire-command-construction-12003.md",
+      "readiness": "research"
+    }
+  ],
+  "packets": [
+    {
+      "name": "movement-eta-delivery",
+      "archive": "movement-eta-delivery.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/movement-eta/ROOT-DELIVERY.json",
+      "bytes": 8648,
+      "sha256": "c32f1172670ce520cf54c4e1d217e96e8d8036c619a5a8cdb64330b2c03e5bdf",
+      "gzip_bytes": 3427,
+      "gzip_sha256": "397d7bd1e4576d007d24f6bb0263311670bba0786d94892e8f4bd1d46017d569",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "siege-engine-arrival-delivery",
+      "archive": "siege-engine-arrival-delivery.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/siege-engine-arrival/ROOT-DELIVERY.json",
+      "bytes": 19728,
+      "sha256": "86e0bc9e8a1f7bdb548eca1cbe3f42e49e0fa73b59f2e3121911a589ccd8c4a7",
+      "gzip_bytes": 6602,
+      "gzip_sha256": "1ace9666dcd303d79d383011edd6c493c2a159639ec3172f4c45718788b63854",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "replenishment-numeric-delivery",
+      "archive": "replenishment-numeric-delivery.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/replenishment-numeric/ROOT-DELIVERY.json",
+      "bytes": 9795,
+      "sha256": "e2d22201bfb686ec680847f3cd4c9728ae697853e529109cbc12e5165018559b",
+      "gzip_bytes": 3405,
+      "gzip_sha256": "bb3733826bcad9e66240aaafc76ac78fe33ab0c9d542d9cb2a2baa9dca61ed5c",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "attrition-loss-model-delivery",
+      "archive": "attrition-loss-model-delivery.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/attrition-loss-model/ROOT-DELIVERY.json",
+      "bytes": 3245,
+      "sha256": "1452b95cbf79c0351fba537309d31dd0603609f69b8ad23d6018ded81e9b59f1",
+      "gzip_bytes": 1431,
+      "gzip_sha256": "35e74bf2cd294bcab01775c87f1c61290c04bde1aefa6549d12e29d3b1393666",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "battle-entry-delivery",
+      "archive": "battle-entry-delivery.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/battle-entry/ROOT-DELIVERY.json",
+      "bytes": 4615,
+      "sha256": "d1ccb2031a6e2fa4718fbc4b1b02de067fd99b8860e5af72c2283dfb9a1e17e8",
+      "gzip_bytes": 1721,
+      "gzip_sha256": "3520c5d6513cea11bac36d58a6b375d4180313dbacaea232b7424e8384990778",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "battle-terrain-delivery",
+      "archive": "battle-terrain-delivery.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/battle-terrain/ROOT-DELIVERY.json",
+      "bytes": 6214,
+      "sha256": "5f26efe6affc9d6078b2dfe839e17f735e3e74b590e41867ea43d19ab4f33811",
+      "gzip_bytes": 2162,
+      "gzip_sha256": "8307c1da668657576896fe9e57a30a03ad3d8d0ca298cd180b1ca973da63f0a2",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "call-ally-reason-delivery",
+      "archive": "call-ally-reason-delivery.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/call-ally-reason/ROOT-DELIVERY.json",
+      "bytes": 5211,
+      "sha256": "1f1bbb671da7504e5a8ce632579c5c4c15d3ce8ba5f9e7d901b68489fcc78880",
+      "gzip_bytes": 1955,
+      "gzip_sha256": "5396e688705c8f5193ff3fbac13fec1f134fdfead434b42cd5dcc4ddbb4ddcdd",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "holy-order-hire-delivery",
+      "archive": "holy-order-hire-delivery.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/holy-order-hire/ROOT-DELIVERY.json",
+      "bytes": 5227,
+      "sha256": "031f5f866b25d20cc4fdb018c9c02feb990ed1e2a479af838c831c7bc8a03f65",
+      "gzip_bytes": 2468,
+      "gzip_sha256": "92a39528b76b20712e509fb14e3043416c28bf5fa5ca730e2c9d9ed6e9bd2cbf",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "movement-eta-contract",
+      "archive": "movement-eta-contract.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/movement-eta/SOURCE-CONTRACT.md",
+      "bytes": 5978,
+      "sha256": "622c7bd4d4e781ffbd69921b00a56148cd5927c96a2dca975aacab5710f5b546",
+      "gzip_bytes": 2763,
+      "gzip_sha256": "1fdaf741ef4d39b835a632c8c44c7a3bd0d8d5401ca5e7ca2c6841a3ebda401a",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "siege-engine-arrival-contract",
+      "archive": "siege-engine-arrival-contract.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/siege-engine-arrival/SHORT-TOPIC-APPEND.md",
+      "bytes": 2235,
+      "sha256": "d08eefd998fb42c7067965758bace5d86e62013ec7b3d6f6f147bbbb64805dc3",
+      "gzip_bytes": 1612,
+      "gzip_sha256": "f42fd1140173d9dca4a17f01f3237c21efa0fae8b680b55e7cea49c671d0f416",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "replenishment-numeric-candidate",
+      "archive": "replenishment-numeric-candidate.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/replenishment-numeric/B-numeric-contract/replenishment_numeric_candidate.py",
+      "bytes": 4608,
+      "sha256": "ebb6945cf8f9d678e674625a359d53e6dd4226618bfebeaa68e78936d64a9bb4",
+      "gzip_bytes": 1539,
+      "gzip_sha256": "2f829f1a0fc27902b79868ee9b1486ac9161136dae1e852c09ebe0da00f36c8b",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "attrition-allocation-candidate",
+      "archive": "attrition-allocation-candidate.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/attrition-loss-model/candidate/army_loss_allocation_projection.py",
+      "bytes": 3720,
+      "sha256": "4c0788acf2d0c3ebdffbcb9a9e5551a6580860364c9e581de000156548d5d72d",
+      "gzip_bytes": 1395,
+      "gzip_sha256": "028061403d9314a5c452a9fdc6f9ef45da2d8e006f6e5f9e72743294ad89965a",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "battle-entry-observer-contract",
+      "archive": "battle-entry-observer-contract.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/battle-entry/OBSERVER-CONSTRUCTION-PACKAGE.json",
+      "bytes": 6041,
+      "sha256": "b7183b84165f50b339a0e11042b37838cdc6a64625af6a94b3561d6689940fd8",
+      "gzip_bytes": 2521,
+      "gzip_sha256": "d0195e687d9e76fe9eb759a2140fd399fd48d3bbfa8d99eb075f389f19b72f3e",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "battle-entry-native-read-recipe",
+      "archive": "battle-entry-native-read-recipe.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/battle-entry/branch-a/NATIVE-READ-PSEUDOCODE.md",
+      "bytes": 2363,
+      "sha256": "73d3ab0b93c332a227377daff613c60433be59278c9aab16ab2e3292a1c09fbe",
+      "gzip_bytes": 1147,
+      "gzip_sha256": "8b474897aec99136f7b1713f0111a29850e6fe93be1ee33d3559d7001a67e397",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "battle-entry-person-map",
+      "archive": "battle-entry-person-map.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/battle-entry/branch-b-person/OBSERVER-MAP.md",
+      "bytes": 5066,
+      "sha256": "95f567c9d0a60d22bd513421d54b5e02cac57807345689734f535e5fdd26eb0c",
+      "gzip_bytes": 2407,
+      "gzip_sha256": "bb8006e0bca375e93a4fed7a28c779fb561d48f0216ad21286f3d86c32313deb",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "terrain-native-helper-candidate",
+      "archive": "terrain-native-helper-candidate.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/battle-terrain/minimal-terrain-candidate/TERRAIN-READ-ONCE-CANDIDATE-LF.patch",
+      "bytes": 2612,
+      "sha256": "60458651291b5bbcb45f0bcc1946fafbb41adf5177d54d82c9cd1acf17cad458",
+      "gzip_bytes": 930,
+      "gzip_sha256": "9b15bc9e83ab50ba8988c7034d9048f5067817d754543f634559d7bebcfb6373",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "terrain-python-candidate",
+      "archive": "terrain-python-candidate.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/battle-terrain/wire-candidate/PYTHON-ACTUAL-GEOGRAPHY-CANDIDATE-LF.patch",
+      "bytes": 6794,
+      "sha256": "c29517913c69e0575a1f2e2cade2b5d6e58c816883c0301fbd8b03008462f85b",
+      "gzip_bytes": 1837,
+      "gzip_sha256": "ffd8fe1386b99de1e55f0a629e683980a5156c9a9531ed3c4143af08f60cbc84",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "terrain-native-publication-sections",
+      "archive": "terrain-native-publication-sections.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/battle-terrain/terrain-source/ROOT-INTEGRATION-SECTIONS.cpp.txt",
+      "bytes": 1747,
+      "sha256": "6c23332e4315da08b14adef7562b0b54c1df49f174531b0ca50414cbcbffa6cb",
+      "gzip_bytes": 819,
+      "gzip_sha256": "66140499beb0113288f05d24dbad702bf5f6bde9725e5e1db457c8d8a6efcf77",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "terrain-constructor-recipe",
+      "archive": "terrain-constructor-recipe.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/battle-terrain/CONSTRUCTOR-INPUT-RECIPE.md",
+      "bytes": 4024,
+      "sha256": "327c05c970ae28d302f06ca163cc0b1c1b4329ee0adfd50137a17b081ed7e887",
+      "gzip_bytes": 1867,
+      "gzip_sha256": "7301d790fec666a633ac686594d96d89289387e1affd1b31b940fa32a5482c3f",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "call-ally-refusal-candidate",
+      "archive": "call-ally-refusal-candidate.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/call-ally-reason/python/ROOT-ONLY-OBSERVED-CALL-ALLY-REFUSAL.patch",
+      "bytes": 2495,
+      "sha256": "87705dfb6fdfd65c7b162db75440bd513508f57692d18bb8725c010d19ae0829",
+      "gzip_bytes": 963,
+      "gzip_sha256": "9a9ee0f7b29cf62c17ebcb535a81821b686d1739c9641d35e453370d36343d47",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "holy-order-source-layout-candidate",
+      "archive": "holy-order-source-layout-candidate.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/holy-order-hire/holy_order_hire_mode3_source_layout.hpp",
+      "bytes": 3328,
+      "sha256": "4f03be4f209848133ee9f2eaa4379de8d2989f4ddd1a4031e6cc86f1e9d88d24",
+      "gzip_bytes": 1202,
+      "gzip_sha256": "0a91da315939cadb059463afc52d005dec2b3dc769acfebbd2d3d774cebb66b7",
+      "qualification": "research; code candidates untested and not applied"
+    },
+    {
+      "name": "holy-order-handoff",
+      "archive": "holy-order-handoff.gz",
+      "external_original": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/background-user-session-round02/holy-order-hire/HANDOFF-SUMMARY.md",
+      "bytes": 6112,
+      "sha256": "22e54ba69f1be7313f4ffc68bc8fdda5e736af11adeddcab3b8be3bdbc42b84d",
+      "gzip_bytes": 3574,
+      "gzip_sha256": "eaceaa9c45527b84be0dd56349ba787d6ca1319a8073f80abfa1c9cc8ab3631f",
+      "qualification": "research; code candidates untested and not applied"
+    }
+  ]
+}
