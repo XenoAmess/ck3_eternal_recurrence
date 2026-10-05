@@ -26,6 +26,8 @@ struct ContextSourceTokenCursorV1 { void *node = nullptr; };
 #include "xar_bridge/ck3_12003_absent_recipient_sources.inc.hpp"
 #include "xar_bridge/ck3_12003_uncached_recipient_sources.inc.hpp"
 #include "xar_bridge/ck3_12003_conference_sources.inc.hpp"
+#include "xar_bridge/ck3_12003_provider_bucket_bindings.inc.hpp"
+#include "xar_bridge/ck3_12003_qualifier_28bc0d0_sources.inc.hpp"
 static_assert(sizeof(ContextSourceTokenSliceV1) == 16);
 static_assert(offsetof(ContextSourceTokenSliceV1, length) == 8);
 static_assert(offsetof(ContextSourceTokenSliceV1, flag) == 0xC);
@@ -84,6 +86,8 @@ struct ContextSourceBindingsV1 {
   const void *helper_2922070_membership_fallback_slot = nullptr;
   const void *helper_2922070_membership_fallback_header = nullptr;
   ContextSourceConferenceBindingsV1 conference_24b1d00{};
+  ProviderBucket291c5b2BindingsV1 provider_bucket_291c5b2{};
+  ContextSourceQualifier28bc0d0BindingsV1 qualifier_28bc0d0{};
   void *(*provider)() = nullptr;
   bool post_291d7e0_sources_enabled = false;
   const void *post_ab_object_fallback_slot = nullptr;

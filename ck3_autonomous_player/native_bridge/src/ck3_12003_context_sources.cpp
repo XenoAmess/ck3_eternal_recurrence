@@ -1149,6 +1149,8 @@ game::ContextSource291d7e0V1 BranchB(const ContextSourceBindingsV1 &b,
 #include "ck3_12003_person_uncached_recipient.inc.hpp"
 #include "ck3_12003_person_helper_2922070.inc.hpp"
 #include "ck3_12003_person_conference_24b1d00.inc.hpp"
+#include "ck3_12003_provider_bucket.inc.hpp"
+#include "ck3_12003_person_qualifier_28bc0d0.inc.hpp"
 
 game::ContextSourceLaterDirectV1 LaterDirect(
     const ContextSourceBindingsV1 &b, const void *character,
@@ -1347,6 +1349,8 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   b.helper_2922070_membership_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1DAE0);
   b.helper_2922070_membership_fallback_header = reinterpret_cast<const void *>(base + 0x5459C88);
   b.conference_24b1d00 = BindConferenceSources12003(base);
+  b.provider_bucket_291c5b2 = BindProviderBucket291c5b2Sources12003(base);
+  b.qualifier_28bc0d0 = BindQualifier28bc0d0Sources12003(base);
   b.provider = reinterpret_cast<void *(*)()>(base + 0x8FD4E0);
   b.post_291d7e0_sources_enabled = true;
   b.post_ab_object_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E308);
@@ -1424,6 +1428,10 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.helper_2922070 = Helper2922070(b, character, character_id);
   if (b.conference_24b1d00.enabled)
     out.conference_24b1d00 = Conference24b1d00(b, character, character_id);
+  if (b.provider_bucket_291c5b2.enabled)
+    out.provider_bucket_291c5b2 = ReadProviderBucket291c5b2(b, character, character_id);
+  if (b.qualifier_28bc0d0.enabled)
+    out.qualifier_28bc0d0 = Qualifier28bc0d0Inputs(b, character, character_id);
   out.branch_291e210 = BranchA(b, character);
   out.branch_291d7e0 = BranchB(b, character);
   if (b.post_291d7e0_sources_enabled)
@@ -1458,6 +1466,10 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.ready = out.ready && out.helper_2922070->ready;
   if (out.conference_24b1d00)
     out.ready = out.ready && out.conference_24b1d00->ready;
+  if (out.provider_bucket_291c5b2)
+    out.ready = out.ready && out.provider_bucket_291c5b2->ready;
+  if (out.qualifier_28bc0d0)
+    out.ready = out.ready && out.qualifier_28bc0d0->ready;
   out.status = out.ready ? "available" : "partial";
   if (!out.ready) out.reason = "context_source_reads_unavailable";
   return out;
