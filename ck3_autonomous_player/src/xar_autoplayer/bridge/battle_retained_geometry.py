@@ -171,4 +171,6 @@ def retained_constructor_geometry_fields(
     fields.update(current_dynamic_component_fields(snapshot, diagnostic["source"], bool(exact_build and actual)))
     from .battle_opposite_effect_eligibility_fields import opposite_effect_eligibility_fields
     fields.update(opposite_effect_eligibility_fields(snapshot, diagnostic["source"], bool(exact_build and actual)))
+    from .battle_current_own_nested_modifier_fields import current_own_nested_modifier_fields
+    fields.update(current_own_nested_modifier_fields(snapshot, diagnostic["source"], bool(exact_build and actual)))
     return fields

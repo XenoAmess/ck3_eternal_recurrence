@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/battle_context_source_inputs_v1.hpp"
+#include "xar_bridge/battle_current_own_nested_modifier_dto.hpp"
 
 #include "xar_bridge/ck3_12003_maa_recruitment.hpp"
 #include "xar_bridge/owned_regiments.hpp"
@@ -1001,6 +1002,7 @@ struct BattleActualGeographyInputsV1 {
   std::optional<BattleStoredAdvantageSourcesV1> stored_advantage_sources_v1;
   std::optional<BattleCurrentDynamicAdvantageV1> current_dynamic_advantage_v1;
   std::optional<BattleCurrentDynamicComponentsV1> current_dynamic_components_v1;
+  std::optional<BattleCurrentOwnNestedModifierV1> current_own_nested_modifier_v1;
 
   friend bool operator==(const BattleActualGeographyInputsV1 &,
                          const BattleActualGeographyInputsV1 &) = default;

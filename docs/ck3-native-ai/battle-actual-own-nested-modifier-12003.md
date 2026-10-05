@@ -101,3 +101,48 @@ the smallest amount leaf is implemented,it can close current nested contribution
 per named aggregate. Future target/roster/selected-stage construction still
 requires explicit future aggregates/effects,not a relabeled current amount.
 Full battle forecast,quality conclusion and live qualification remain separate.
+
+## Minimal actual input and contribution implementation, 2026-10-06
+
+The source tree and minimal query plan were frozen before code. Existing
+same-query actual geography now has optional `current_own_nested_modifier_v1`:
+two native side rows, Q100000, modifier_id415, actual selected raw/resolved ID
+and fallback lineage, and independent `combat_side_aggregate` /
+`selected_character_aggregate` amount/status/reason objects. Exclusive DTO,
+reader and serializer headers contain the extension. Exact .3 admission binds
+the existing2303700 and28C3AE0 ABI; the collector passes whole aggregate+68 to
+the sparse getter with a local qword and19F. A returned0 is available,including
+native missing-key zero; no cache-presence inference is made. Missing selected
+storage/fallback or Character aggregate affects only the Character scope.
+Combat side+110 remains independently useful. Owned control reuses its existing
+actual geography copy and ownership gate.
+
+Strict normalization copies signed64 values and explicit nullable status.
+The immutable current model reuses the existing opposite eligibility/sum
+model and Root-published `knight_effectiveness_fixed_mul_12003` from exact
+commit `a684cab20a170702a3899854f11735ff4e9fe07e`; no second fixed multiply
+implementation was added. Child dependency commit `28d13615` restores that
+tracked module byte-for-byte solely for the detached lane. Root already has
+the module and should adopt only this implementation commit.
+
+Each named scope publishes its actual raw19F independently. Observed0 produces
+a ready nested0 before requiring opposite membership or ledger availability.
+Nonzero consumes the observed wrapped eligible opposite retained row8 sum,
+wrapped negation and exact MAX/Q product. Missing operands remain explicit;
+no total residual,current effect40,per-side sign flip or historical cross-side
+clamp is used. This closes the current25895A0 numeric term per aggregate scope,
+not the complete25899C0 group,full battle forecast or future contact stage.
+
+One new Python case/four service subcases passed once at
+2026-10-06T02:56:47+08:00:0.007s unittest /1.6158367s process,actual=0.
+It covers distinct scopes,ordinary and slow MAX/Q current products,observed0
+short-circuit with missing opposite flags,missing selected scope with useful
+Combat scope,owned parent gate,immutable copies and signed-value normalization.
+No prior helper test or old producer sample was rerun. New native target/CTest
+`xar_ck3_12003_own_nested_modifier_test` uses only
+`--own-nested-modifier-only` and four fresh production frames in
+`ck3_12003_own_nested_modifier_wire`; central build and first wire replay are
+pending Root. New EXE bytes and all game/runtime operations remain0.
+
+External source,plan,dependency and focused receipt:
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/retained-advantage/actual-dynamic-getter/group-decomposition/nested-19F-inputs/own-modifier-source/`.

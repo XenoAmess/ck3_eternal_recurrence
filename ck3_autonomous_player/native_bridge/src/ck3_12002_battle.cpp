@@ -221,6 +221,10 @@ bool TransitionSample(const BattleBindings &b,
   if (b.current_dynamic_components.enabled)
     out.actual_geography_v1->current_dynamic_components_v1 =
         ReadCurrentDynamicComponents12003(combat, b.current_dynamic_components);
+  if (b.current_own_nested_modifier.enabled)
+    out.actual_geography_v1->current_own_nested_modifier_v1 =
+        ReadCurrentOwnNestedModifier12003(combat, b.current_own_nested_modifier,
+                                        b.current_dynamic_components);
   out.phase_raw = At<std::int32_t>(combat, kBattlePhaseOffset);
   out.phase = Phase(out.phase_raw);
   out.phase_day = At<std::int32_t>(combat, kBattlePhaseDayOffset);
@@ -2013,6 +2017,11 @@ void EnableBattleRetainedRuleEffects12003(BattleBindings &b, std::uintptr_t base
     b.current_dynamic_components.relation = reinterpret_cast<PhaseRelationKind>(base + kPhaseRelationKindRva);
     b.current_dynamic_components.commander = reinterpret_cast<PhaseCommanderDynamic>(base + kPhaseCommanderDynamicRva);
     b.current_dynamic_components.side_aggregate = reinterpret_cast<PhaseSideModifier>(base + kPhaseSideModifierRva);
+    b.current_own_nested_modifier.enabled = true;
+    b.current_own_nested_modifier.character_aggregate =
+        reinterpret_cast<GetCharacterModifierAggregator>(base + 0x28C3AE0);
+    b.current_own_nested_modifier.modifier =
+        reinterpret_cast<ReadCharacterModifier>(base + 0x2303700);
     b.retained_constructor_effect_rules =
         reinterpret_cast<GetCombatRules>(base + kAdvantageRuleDatabaseRva);
     b.retained_read_province_multiplier = reinterpret_cast<ReadAdvantageProvinceModifier>(

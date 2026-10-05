@@ -9,6 +9,7 @@
 #include "xar_bridge/ck3_12002_phase_advantage.hpp"
 #include "xar_bridge/ck3_12002_phase.hpp"
 #include "xar_bridge/battle_current_dynamic_components_reader.hpp"
+#include "xar_bridge/battle_current_own_nested_modifier_reader.hpp"
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/ck3_12002_phase_character.hpp"
 
@@ -106,6 +107,7 @@ struct BattleBindings {
   bool current_dynamic_advantage_enabled = false;
   ReadPhaseDynamic current_read_side_dynamic = nullptr;
   BattleCurrentDynamicComponentBindings12003 current_dynamic_components{};
+  BattleCurrentOwnModifierBindings12003 current_own_nested_modifier{};
   ReadAdvantageProvinceModifier retained_read_province_multiplier = nullptr;
   ReadAdvantageModifierValue retained_read_holding_modifier = nullptr;
   AdvantageModifierFlag retained_has_modifier_flag = nullptr;

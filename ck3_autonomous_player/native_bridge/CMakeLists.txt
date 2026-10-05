@@ -7879,6 +7879,19 @@ if(BUILD_TESTING)
   add_test(NAME xar_ck3_12003_opposite_effect_eligibility_test
     COMMAND xar_ck3_12003_opposite_effect_eligibility_test --opposite-effect-eligibility-only
       "${CMAKE_BINARY_DIR}/ck3_12003_opposite_effect_eligibility_wire")
+  add_executable(xar_ck3_12003_own_nested_modifier_test ${XAR_CURRENT_RULE_CONTEXT_SOURCES})
+  target_include_directories(xar_ck3_12003_own_nested_modifier_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_own_nested_modifier_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_own_nested_modifier_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE XAR_SELECTED_ROLL_WIRE_FIXTURE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_own_nested_modifier_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  target_link_libraries(xar_ck3_12003_own_nested_modifier_test PRIVATE kernel32)
+  file(MAKE_DIRECTORY "${CMAKE_BINARY_DIR}/ck3_12003_own_nested_modifier_wire")
+  add_test(NAME xar_ck3_12003_own_nested_modifier_test
+    COMMAND xar_ck3_12003_own_nested_modifier_test --own-nested-modifier-only
+      "${CMAKE_BINARY_DIR}/ck3_12003_own_nested_modifier_wire")
 endif()
 
 # Focused current knight effectiveness context reader and literal bridge wire.

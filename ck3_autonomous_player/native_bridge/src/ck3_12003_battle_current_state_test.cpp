@@ -834,6 +834,7 @@ CurrentRuleContextMemory *CurrentRuleContextMemory::current = nullptr;
 #include "ck3_12003_current_dynamic_advantage_fixture.inc"
 #include "ck3_12003_current_dynamic_components_fixture.inc"
 #include "ck3_12003_opposite_effect_eligibility_fixture.inc"
+#include "ck3_12003_own_nested_modifier_fixture.inc"
 
 int RunCurrentRuleContextFixtures(const char *directory) {
   try {
@@ -1170,6 +1171,9 @@ int RunSelectedCommanderRollFixtures(const char *output_directory) {
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc > 1 && std::string_view(argv[1]) == "--own-nested-modifier-only") {
+    return RunOwnNestedModifierFixtures(argc > 2 ? argv[2] : "");
+  }
   if (argc > 1 && std::string_view(argv[1]) == "--opposite-effect-eligibility-only") {
     return RunOppositeEffectEligibilityFixtures(argc > 2 ? argv[2] : "");
   }

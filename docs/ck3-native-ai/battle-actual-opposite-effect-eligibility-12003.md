@@ -142,3 +142,28 @@ Root central build and that unique new producer replay are pending. This
 independent current input value is static-ready; nested19F contribution still
 requires an explicit observed own modifier and complete future/live remain
 unqualified. Source cost for this flag extension is0 new EXE bytes.
+
+## Central producer and first consumer qualification, 2026-10-06
+
+Root preserved the first central harness RED:source540d5a16,/WX C4244 from
+the fixture's optional uint8 value initialized with untyped int3,
+185.9697s. Root applied the exact uint8_t3 fixture fix and centrally built
+the full DLL plus new gated/opposite targets at exact source
+`93ee1bd6504b0a15db69d54f0fdf86bcd34eec5e`,GREEN8.85209s.
+First two new CTests were2/2 GREEN,total1.72s,wall1.7496s at
+2026-10-05T18:52:23UTC. This was a harness failure,not an observed gameplay
+capability RED. No previous Python/native test or sample was rerun.
+
+The four newly emitted opposite wires were copied into Root's immutable
+source93ee1bd6 archive. One production normalizer/service/immutable consumer
+replay was4/4 GREEN,processing0.0173485000s /process0.4823549s,actual=0.
+It closes ordered raw flag membership and observed retained contribution sums
+through the real production serializer boundary,including empty opposite ledger,
+independent null key,missing flags and the owned copy. The capability remains
+static-ready; future contact aggregates,full forecast and game/live are not
+qualified by these synthetic native-memory fixtures.
+
+Producer archive:
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/source93ee1bd6-gated-and-opposite-native-artifacts/`.
+Consumer receipt and pinned new wire/module bytes:
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/retained-advantage/actual-dynamic-getter/group-decomposition/nested-19F-inputs/implementation/NATIVE-WIRE-CONSUMER.json`.

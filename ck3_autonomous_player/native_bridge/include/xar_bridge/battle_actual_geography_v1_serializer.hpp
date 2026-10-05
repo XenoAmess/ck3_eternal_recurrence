@@ -2,6 +2,7 @@
 
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/battle_current_dynamic_components_serializer.hpp"
+#include "xar_bridge/battle_current_own_nested_modifier_serializer.hpp"
 #include "xar_bridge/battle_stored_effect_flags_serializer.hpp"
 
 #include <string>
@@ -175,6 +176,10 @@ inline std::string SerializeBattleActualGeographyV1(
   if (inputs.current_dynamic_components_v1) {
     out += ",\"current_dynamic_components_v1\":";
     out += SerializeCurrentDynamicComponentsV1(*inputs.current_dynamic_components_v1);
+  }
+  if (inputs.current_own_nested_modifier_v1) {
+    out += ",\"current_own_nested_modifier_v1\":";
+    out += SerializeCurrentOwnNestedModifierV1(*inputs.current_own_nested_modifier_v1);
   }
   out += '}';
   return out;
