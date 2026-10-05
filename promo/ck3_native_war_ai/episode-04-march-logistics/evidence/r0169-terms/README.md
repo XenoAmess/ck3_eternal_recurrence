@@ -19,3 +19,5 @@ Root仅直接看过本轮八张decodedPNG，另十六张内容权限为null。24
 该脚本只读取本目录JSON/文档，复核copyhash、八项编码review来源、锁定同暂停身份及27团向量/37DATA范围；不打开媒体、SDK、游戏、Git或总线。缺外置媒体不影响此数字复核，也不冒充媒体重新验收。
 
 旧原生归档也随包保全：exact EXE下0x24AA750的128B跨度及原版define locator，可复核bytes/SHA与jle分支。它证明static严格比较及stock0.5，不填当前runtime loadedcutoff。
+
+本目录`.gitattributes`明确关闭行尾转换，保留复制证据的原始字节；规则仅作用于本证据目录。跨机器复核以Git提交导出内容为准，首个310bd9251提交的行尾归一化问题由随后修复提交保留勘误。
