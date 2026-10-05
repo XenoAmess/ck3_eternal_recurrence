@@ -209,3 +209,13 @@ CommanderObserver 独占原始军力读取；军需只消费其 v69 比较派生
 当前 day index394262/selected phase2，三军 bucket0/28/6；last_supply_update_date_raw 主军 `53262240`（距当前48 raw小时）、守军 `53262192`（96小时）、敌军 `53260224`（2064小时）。只记录 updater 锚点；旧 R41 的 budget/clock 未另读、不猜值，不由锚点归因人员变化。主军 ETA null；守军与敌军当前首边 remaining 为 `5.26667 / 4.82347` native days，不冒充整条路线 ETA。
 
 compact：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/army-loss-v69-cached-trend/COMPACT-V69-SUPPLY-LOSS-CLOCK.json`（SHA `6c0a01de034bd1da59b51c5b5949d7d5aefd80dff88d1ab25c277e20a86d8349`）。保留旧错误 archive 与既有生产回归；本包新增0游戏日、0 SDK、0测试、0窗口操作，未读取 ACTIVE `79783` 或授予其未来日信用。当前供给/损耗观测资格为 production-live primitive，未发布损耗因果预测。
+
+### 2026-10-05 R45：器械到470后的实际兵力与供给
+
+R45/g77/v72，paused raw53263896/native144/public2/queryseq4，健康四军available。器械268435481在470为7/11（mangonel Regi50347099↔ArRg184549917当前6/10、observed tier2）；主军301989997为3024/3873，守军184549452在3711为2941/3000，敌268435597为2809/4702。库存/容量/月供给变化依次为300/300/0、290.00001/300/0、90.90910/100/−4.54545、100/100/+20；attr fraction依次为.01/.01/.01/0。
+
+当前supply loss整数预算四军均0、raid均false且预算0；器械/主军/守军siege_active=true，围城预算依次0/30/29。相对已消费R44 day08 raw53263080，净兵数差0/−30/−29/+69仅是实际变化，不能把本帧预算归因过去损兵或预测下一20日已应用损失。主军40条DATA全部chunkCanReplenish=false（24条prepared fraction正），守军24条与器械1条也false；两许可bool保持独立。
+
+独立围城owner同帧已资格化470的actual K=2、Mraw=94350、Draw=247620，来源为`siege-arrival-engine470-g76-readiness/actual-r45-engine470-arrival01/ROOT-DELIVERY.json`（SHA `58b9d88760339d545d9cc94055a13c9b9d3d8141a557acba0058534dee64a9e6`）；没有从库存tier反填省K/M/D。现有供给源树与实际预算支持延续普通双围城，继续复用健康LOSS/clock与occupation richrow观测；当前没有必要新增读口、搬军或拆军门禁。Root随后普通20日已closed GREEN、raw53264376，由军域独立消费；本段健康仍是到场截面，未取得20日后新健康，后继planned20日无结果信用。
+
+外置完整字段与源树：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/engine-arrival-r45/ROOT-DELIVERY.json`。本consumer只读Commander健康派生一次，原006/004、旧缓存、SDK、窗口、测试、共享源码/Git与新增游戏日均0；native version/EXE SHA字段null保真。能力记录为production-live primitive，真实日推进信用由Root/军域账本登记。
