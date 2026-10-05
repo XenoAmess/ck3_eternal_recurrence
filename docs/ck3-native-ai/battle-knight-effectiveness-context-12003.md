@@ -427,3 +427,25 @@ central compilation. No CK3 launch/connection/query/SDK/pipe/attach, UI/Steam,
 process inspection, profile/save/game-cache, runtime preparation/deployment or
 game-day advance occurred. Full first-contact initialization/final preparation,
 forecast and live remain incomplete.
+### Initial-Province observer central qualification, 2026-10-06
+
+The Root central build qualified the new initialization-context target once
+under source89cb683dbed31bad3bc0c008ea525faf1db08db0. Its new CTest passed
+in 0.09 seconds inside the first successful four-target batch; the batch build
+passed in 9.400365 seconds. A preceding batch harness RED was caused by
+the parallel person's typed-constant fixture under /WX, not this observer.
+The failed central attempt remains archived; this owner ran no native compiler.
+
+At 2026-10-06 00:16:20 Asia/Shanghai, the three newly emitted Regiment wires
+different_current, equal_current and unavailable_initial were consumed exactly
+once by the production strict normalizer and adopted initial-entry adapter
+under `--source-root Z:/gb0`. All three passed. The independent unavailable
+initial tuple retains available target stats, while equality uses the existing
+tuple. Receipt `first-contact-initial-stats/NEW-NATIVE-WIRE-CONSUMER-OCT6.json`
+records wire and source SHA256, source commit and exact completion time.
+The wire folder is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261005/native-build/ck3_12003_initialization_context_stats_wire/`.
+The production serializer projection metadata is a separate build artifact.
+No old Python case, old wire, game query or live validation was performed.
+This closes synthetic native-reader/serializer/production-adapter qualification;
+runtime and first-contact full construction readiness retain their existing limits.
