@@ -26,3 +26,12 @@
 历史日账维持 **5035/36524 正常保存日、resume1882、10-05 +377、G2 5/8、NW2 2/4、自然继承0**。末 whole h9048 和零日 normal h9052 同为 raw53265168；用户自己的游戏进度不计入自动任务。本轮新增自动游戏日为 0，War117 的实际结算、3711 攻占、完整战斗 forecast 和原战役长期目标仍未完成。
 
 结果、测试及提交随每包交付追加在下方，并同步至当天日报和 W41 周报。
+
+
+### BG-1 盟友拒绝 consumer 完成（2026-10-05 后台接手）
+
+完成：已观测 CanSend=false 经 registered MCP → service → driver 返回 typed rejected，完整保留 C88、first-failed、报价和战争关系；零提交、无 command ACK，unknown 继续原异常。解决旧 helper 丢弃已采样拒绝原因的真实消费缺口。源提交 e2ef3c8d，Root 线性采用 99329688；本报告随该包普通 push。
+
+验证：`python Z:/ck3_mod_rewrite_process_assets/g2-background-20261005/call-ally-diagnostics-gb7/run_validation.py` 两个聚焦用例一次 GREEN，1.576 秒；diff check GREEN。回执与原日志位于同目录 ROOT-DELIVERY.json / VALIDATION.json / validation.log，未重跑旧测试。Readiness 为 Python consumer static-ready，仍无新 live、邀请/参战/扣款或游戏日信用；5035 历史日账不变。下一步为其他后台包整合；动态 C88 和真实邀请独立后态等待用户实机授权。
+
+并行拓扑追加：在八个实现 owner 之外，新增两条仅消费缓存/冻结窄窗口的功能研究，分别闭合最终兵损 setter2657EA0..2657F0E 和 Entry post-A/B291C2B3..291C334。必要性是这两个已知原生输入缺口仍阻碍完整数值/接战消费；不重复已闭树，不接触运行游戏。Root 合并其知识和报告，原实现不等待研究结果。
