@@ -374,3 +374,44 @@ separate functional input connection. This metadata-only clarification changes
 no arithmetic and reruns no successful case. Native/provider source ownership
 remains with the native owner; the next signed2F8 packet must also preserve its
 real control-flow bypasses before extending the chain.
+
+The dispatcher identity seam is now source-closed for its serial paired
+construction binding. The packet is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/person-stage-chain/model-assignment-timing/SOURCE-TREE.md`
+with `SOURCE-READ-RECEIPT.json`. Cached2A3EF00 binds closure40 to primary78's
+pair descriptor and closure48 to the primary manager. First stage2A41560's
+serial call2A41944 reaches2A41F80, whose actual LEA2A41FBE pins callback2A43BE0.
+The wrapper supplies `{indirect closure48, closure40, signed index pointer}`.
+
+That callback selects newmodel=pair.data[index*16]+8 and
+oldmodel=primary98.data[index*8]. At2A43C20 it copies oldmodel8 to newmodel8,
+then tail2A43C91 invokes291C0D0 with the new paired model. Nonzero oldmodel1C
+only requests storage reservation on the new model's context and aggregate
+headers; no copied numeric postimage is inferred. There is no direct
+carrier258 assignment in this captured binding callback. Its fresh evolving
+R13+10 is therefore a separately constructed receiver. Same Character owner
+alone cannot identify it with the already closed current28C3AE0 source.
+
+The distinct2A3DB50 direct remaining-old-model branch, external queued-model
+association, parallel execute slot and storage/constructor side effects stay
+separate. This result supports retaining the held-current conditional scope;
+it does not authorize automatic preceding-stage key45/44/46/47 substitution.
+No arithmetic or query interface changed. New narrow frozen I/O was1616B:
+1592code bytes including one necessary instruction-boundary overlap,24pdata
+bytes,70reused metadata consults and no new handler/unwind read or full scan/
+hash. The current getter cache was reused once before capture and never read
+again during it; it receives no new research credit. No tests, native builds
+or game operations ran. This source seam is not a live blocker; the real
+signed2F8 provider input remains the next useful independently owned work.
+
+```mermaid
+flowchart TD
+  P[Cached primary78 paired model / primary98 old model] --> S[2A41560 serial stage]
+  S --> W[2A41F80 actual payload and code producer]
+  W --> B[2A43BE0 new8=old8]
+  B --> R[291C0D0 new paired model / evolving R13+10]
+  R --> H[291F260]
+  H --> G[Current getter source carrier258 model10 / fallback]
+  G -.-> I[Owner equality does not establish receiver/source identity]
+  S -.-> J[Parallel execute-slot association not followed]
+```
