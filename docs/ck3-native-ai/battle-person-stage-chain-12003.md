@@ -1139,3 +1139,52 @@ remain false; next caller family is
 `291CCD7_bit29_land_source_312A950`. The consumer performs no old/sibling
 test reruns, native build, EXE read or game operation. Native producer scenes
 and their separate first qualification remain the central owner's work.
+
+## Next source-first connection plan:government/Land312A950
+
+The exclusive producer source lane sealed
+`person-tail/following312a950-source/` before any next consumer code.
+Its219 new EXE bytes (148 demanded function bytes within those captures)
+are that lane's credit; this consumer reuses the tree/query plan with zero
+new binary reads. The concrete next frontier is
+`postGovernmentLand312A950_pre291CD92`, followed by separate2920D60 atCD98.
+`following_government_land_312a950` and its whole emitter remain proposals
+until Root authorizes and the actual schema/contract is released.
+
+Source order is selected28C2E10 flags40 decimalbit29/mask0x20000000,
+actual Character1B0 presence, living-first firstLand ID, exact09D6DF0
+resolution, selected Land magic14/fullID10, then signed318. Living count0
+choosesFFFFFFFF without a death read; only absent living demands death.
+This is distinct from the reused government getter's death-first selection.
+Falsebit29, absent1B0, invalid Land or nonnegative318 are independently
+known zero-request branches and can advance a future stage without changing
+the earlier context. Unreadable selected/fallback Land cannot be invented as
+invalid or empty.
+
+```mermaid
+flowchart TD
+  A[Explicit post2BCA620_pre291CCD7 context] --> G[Actual selected government flags40 bit29]
+  G -->|false| Z[Knownzero stage]
+  G -->|true| C{Actual1B0 present?}
+  C -->|false| Z
+  C -->|true| L[Living-first firstLand; death only when living absent]
+  L --> R[Actual09D6DF0 registry/fallback resolution]
+  R --> V{Land magic/fullID valid and signed318 negative?}
+  V -->|false| Z
+  V -->|true| P[312A950 mode3 classifier then provider selection]
+  P -. actual mode3 income missing .-> U[2BCA580; not gold accounting or cached2B0]
+  P -->|actual result available in a future contract| PC[One ObDG PC40 unit request evenempty]
+  Z -. actual contract pending .-> F[Proposed pre291CD92 frontier]
+  PC --> F
+  F -. next separate helper .-> N[2920D60 at291CD98]
+```
+
+The admitted negative path needs actual mode3 income2BCA580 and threshold
+5450898, independent of gold2BCA4E0/5450728.312A950's closed shell compares
+signedindex with provider12D4 first (equality1690), then valid indexed12C8,
+else actual5D1E0B0; returned ObDG magic gates one PC40 outer100000 request,
+includingempty. No arbitrary income or unknown-as-empty substitution is
+planned. External `FOLLOWING312A950-CHAIN-SOURCE-PLAN.json` pins the source
+and input order. This research increment leaves qualified preCCD7 readiness
+unchanged and runs no case/build/game action. Full preparation/Entry remains
+false.
