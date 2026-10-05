@@ -1566,3 +1566,47 @@ header/fullscan/fullhash, old185B reread, tests/builds/runtime operations and
 game days are all0. The minimal query/source plan identifies the actual
 pending-record constructor/vtable0 locator before any new provider/kernel;
 the existing whole-CArmy/Regi manifest is not that inline-record type proof.
+
+### Oct6 first native point-store qualification
+
+The current point-store family is now **static-ready** through its actual
+producer and production service consumer, with no live claim. Root's frozen
+source `a0956b80de9bde0248e0b736ae50f4ff60d2ee57` built the full intended DLL
+and two new targets in8.5540492s on the first GREEN attempt04. First new
+CTest was2/2 GREEN (total0.30s/wall0.3298416s); point-store target passed0.09s.
+The preceding unmerged attempt01 was canceled, and02/03 fixture signedness
+`/WX` RED attempts are retained in the archive. They are harness/fixture
+failures, not an actual game or model outcome.
+
+At Oct6 03:47:00.398723 Asia/Shanghai, only the four newly produced archived
+point-store wires were first consumed once through `Z:/gb0` production
+normalizer/kernel/service at the same exacta095 source: **4/4 GREEN**,
+0.5840082s. Older tests and samples were not rerun. All original input rows
+remained unchanged and each case made one existing query invocation.
+
+| New native case | Verified production behavior |
+| --- | --- |
+| nonempty-aliases | ALL erase removes rawDATA8 target duplicates2/1/0 in stored order, ending[9,11]; cross-group DATA/header/B8 aliases carry earlier conditional values; fallback receiver's actual RegiID is not substituted for raw target. |
+| partial-membership | Captured native traversal is ready; missing nonempty member vector contents leaves member/combined projection partial while DATA clears and child constants are independently ready. |
+| negative-character-traversal | Native traversal and character family remain partial; observed record operands still enable DATA/member families. A negative end never becomes a legal empty character loop. |
+| empty-groups | Source zero-group point branch is independently ready and issues no point effects. |
+
+Frozen archive:
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/sourcea0956b80-own-and-point-stores-native-artifacts/`.
+The actual DLL is10446848B/SHA
+`37b37dfb74b4501e9d8fb5c93757768b1fdbf41a1a55d0c8c2dbbad68c184769`;
+point fixture executable264192B/SHA
+`d0aa4bdbe4270dd6048cbb0f9dad998102a10ec4f4f431fbdbec3bbaf7423b0e`.
+Root's binary/hash qualification is reused without another build/hash pass.
+External `current-helper-point-stores/NATIVE-WIRE-CONSUMER-RECEIPT.json`
+records each actual wire's bytes/SHA, exact source and first completion time;
+`QUALIFICATION-DELIVERY.json` and `DAY-WEEK-QUALIFICATION-2026-10-06.json`
+carry the final evidence and rolling report fields.
+
+This qualifies the current-frame three point families and their explicit
+ordinary-return/source-continuation basis. It does not observe actual native
+writes, invoke helper/virtual functions, or read a new late caller frame.
+Actual effects/loss remainfalse, poststate staysnull, full helper/physical
+Army lifecycle/full monthly application remainfalse. New game days/runtime
+operations are0. The source-only post-group EBA050 virtual-record frontier
+above remains the next concrete source dependency.
