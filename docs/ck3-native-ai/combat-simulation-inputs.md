@@ -2077,3 +2077,72 @@ Root集中离线验收已于2026-10-05完成，整合源码 `4733655173e65be99c9
 本次是默认配置的离线bridge/fixture资格，G2 capability flags未从v73运行配置采用，宗教private query仍OFF；不是可直接部署的v74，也未进行runtime prepare/stage/attach。未来实机须采用实际所需flags并另冻候选。用户独占CK3期间game/SDK/attach/query/pipe/UI/Steam/profile操作均0；没有新paused artifact、live资格或游戏日。
 
 `xar_ck3_12003_actual_battle_geography` 通过后，三份production序列化原字节通过Root exact源码的Python normalizer与GameplayBridgeService一次3/3 GREEN：foreign合法width0/kind0/holdingfalse，terrain unavailable但lifecycle ready，以及owned signed width−123456/kind2/holdingtrue与transition顶层镜像。回执 [compiled-consumer replay](Z:/ck3_mod_rewrite_process_assets/g2-background-20261005/battle-terrain-consumer-replay/ROOT-DELIVERY.json) 保留producer SHA与脚本。Root接入production control serializer、fixture宏和现成phase_character.cpp，解决真实未接线/链接问题，未扩查询权限。当前geography observer及consumer为static-ready；retained字段依旧只描述当前combat，不补未来constructor provenance、完整战斗模拟或win odds。
+
+
+## 2026-10-05: actual retained constructor geometry diagnostic consumption
+
+The source-first tree is frozen at
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/retained-geometry/SOURCE-TREE.md`.
+Exact CK3 1.20.0.3 / Steam25652598 / EXE SHA256
+`94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`.
+The closed cached source and current constructor port were sufficient; there
+was no new EXE seek, scan or hash.
+
+```mermaid
+flowchart TD
+ Q[Existing actual transition or owned control] --> B[Explicit exact .3 build and normalized frame]
+ B --> G[Actual terrain plus retained6F8 kind and6FE holding]
+ Q --> S[Actual stored side0 attacker and side1 defender order]
+ G --> K{Kind0..3 observed?}
+ K -->|yes| C[none / strait / river / large_river]
+ C --> R[Side0 RulesF70+8kind and side1 RulesFA0+8kind]
+ G --> H[Retained holding directly enables F10 plan]
+ S --> D[retained_constructor_geometry_v1]
+ R --> D
+ H --> D
+ D --> A[Immutable RetainedConstructorGeometryInput]
+ K -. unsupported or missing .-> U[Raw input and reason preserved]
+ D -. original initiator and entry not retained .-> X[Full historical constructor identity unknown]
+ D -. effect values and commander exclusions absent .-> E[Complete constructor evaluation remains separate]
+ D -. future geometry requires fresh preview .-> P[Future contact]
+```
+
+The existing `ck3_query_battle_transition_v1` and owned
+`ck3_query_battle_control_snapshot_v1` service replies now add a derived
+`retained_constructor_geometry_v1` when their native `actual_geography_v1`
+exists. `retained_geometry_ready` is an independent geometry-input boundary.
+The diagnostic preserves outer Combat/province/date/revision and exact build,
+classifies all closed kinds0..3, copies actual side order and consumes retained
+holding directly. Owned control copies actual side+70 primary identities;
+transition has no such published identity and does not fabricate one.
+
+The rule plan exposes side0 `F70+8*kind`, side1 `FA0+8*kind`, and holding stage
+`F10` enabled by the retained byte. These are constructor rule-selection
+operands, not effect values or a computed advantage. The new immutable
+`simulation/battle_retained_constructor_geometry.py` adapter consumes only a
+ready diagnostic. Historical attacker entry and initiator identity/role are
+not fields of this retained input. Raw0 cannot imply the separately observed
+native-defender-create branch. The existing v2 ctor0 and positive-entry future
+query modes remain their own hypothetical interfaces.
+
+One focused **4/4 GREEN** test run consumes the previously compiled native
+fixture DTOs through production service and the new adapter. Controlled kind1/2/3
+and retained false/true variants cover every supported slot mapping and holding
+selection. Native zero/false and signed terrain width survive, actual role/order
+and known owned primary IDs survive, and immutable operands cannot be changed.
+Missing terrain/kind/holding, unsupported raw and an unqualified build preserve
+partial inputs/reasons without changing existing battle readiness. Old frames
+without geography keep their service shape. The portable fixture provenance
+records the earlier producer commit47336551 and original bytes/SHA; these are
+synthetic native-memory fixtures, not new CK3 paused evidence.
+
+Readiness: **static-ready retained geometry diagnostic/adapter**. No new native
+code or target is required, and no native build, old test suite, runtime/cache
+preparation, CK3/SDK/pipe/process, UI or Steam operation ran. Live credit,
+normal/saved days, MC and win odds remain0. Full historical constructor requires
+initial person contexts/roster, commander exclusions, loaded effect values and
+province scale/modifier operands; this helper does not evaluate those stages
+or claim future-preview readiness.
+
+Receipt:
+`Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/retained-geometry/ROOT-DELIVERY.json`.
