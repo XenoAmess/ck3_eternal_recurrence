@@ -426,3 +426,67 @@ same flow. No production branch or readiness claim used the incorrect bypass.
 The corrected native stage order remains bucket40 then government/qualifier/
 291FB10. Original interpretation and correction are preserved in the external
 `SIGNED2F8-CALLER-SEAM.md`; no test, native build or new EXE read was needed.
+
+## Actual provider source connected to the government bound
+
+The genuine optional same-query leaf `provider_bucket_291c5b2` and production
+normalizer are committed as `9929e545abad505cab3a2b3dc67f1ec9b6886d1f`.
+The chain now calls
+`battle_person_provider_bucket_contract.emit_provider_bucket_requests_from_current_source_inputs_12003`.
+It retains the actual selected PC object, its identity, unit100000 weight and
+actual nonnegative bucket index (fallback occurrence index0), before the
+existing government870 and governmentA30 contributions. It does not copy the
+current-final context into the explicit prior.
+
+The native provider getter requires loaded slot5C670F8 before the carrier
+branch. Missing loaded state remains unavailable; no initializer is invoked.
+Absent Character1B0 gives index0 without demanding numerator/denominator.
+Otherwise its held signed2F8 and denominator5C68CE8 use the already closed
+signed low32 factor result; denominator0 produces42949. A negative index or
+signed count miss selects actual fallback5D1E0B0. An in-range index selects
+the actual QWORD from provider11F8. Definition38 magic4744624F admits its PC40;
+a wrong magic is a known skip. All selection paths rejoin291C5B7.
+
+```mermaid
+flowchart TD
+  P[Explicit verified post291F260 context] --> L[Loaded provider5C670F8]
+  L --> C{Character1B0 present?}
+  C -->|no| Z[Index0; factor operands unused]
+  C -->|yes| I[Held signed2F8 / denominator; low32 result]
+  Z --> S[Actual bucket or native fallback selection]
+  I --> S
+  S --> M{Definition38 magic admitted?}
+  M -->|yes| A[Actual PC40; one unit100000 append]
+  M -->|no| R[Known skip]
+  A --> G[Government870 then governmentA30]
+  R --> G
+  G --> B[postGovernmentA30_pre291C620]
+  B -.-> Q[Next observer dependency: qualifier28BC0D0 / repeated291C68D]
+  L -.-> U[Missing actual input: preserve last verified context]
+```
+
+`through_stage="government_870_a30"` can now be independently ready under an
+explicit baseline and observed source values. Missing provider data leaves the
+last verified `post291F260_pre291C558` context and independently emitted
+government requests. The next unknown chain slot is qualifier28BC0D0/repeated
+append291C68D, owned by the separate qualifier work package; its source is
+closed and its actual producer/contract are being implemented. Later lists,
+flags, temporary helpers, thresholds and final preparation remain unclosed.
+Held-current260 weights and provider2F8 operands remain conditional source
+inputs; this connection supplies neither future reevaluation nor full Entry.
+
+The new focused production-normalizer -> bounded stage fold -> six-skill case
+is `test_battle_person_provider_stage_chain_12003.py`. Its first qualification
+receipt is stored separately in the external stage-chain packet. Previous
+successful cases are not rerun for this extension.
+
+The first new case passed once on2026-10-06 01:38:36 Asia/Shanghai (1/1,
+0.014s). The selected denominator-zero bucket42949 and null-carrier bucket0
+both reach `postGovernmentA30_pre291C620`, six skills `[6,6,6,6,6,40]`.
+The signed negative-index fallback reaches the same bound with skills
+`[6,6,6,6,6,29]`. Missing selected PC preserves `post291F260_pre291C558`,
+skills `[6,6,6,6,6,30]` and the two independent government requests.
+Receipt `provider-attempt-01.json` identifies the exact consumed source files.
+This is static-ready pure source assembly, using synthetic source-shaped input
+through production code; it does not qualify the native collector or any live
+frame. No old case, native build, fresh EXE read or game operation was run.
