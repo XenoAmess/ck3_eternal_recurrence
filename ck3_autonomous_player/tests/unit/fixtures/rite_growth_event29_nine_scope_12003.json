@@ -1,0 +1,288 @@
+{
+  "context": {
+    "schema": "current-event-window-context-v1",
+    "schema_version": 1,
+    "status": "available",
+    "snapshot_revision": 18,
+    "date_raw": 53265288,
+    "current_event_instance_id": 29,
+    "window_match_count": 1,
+    "unavailable_reason": null,
+    "event_definition_key": "rite_growth.0010",
+    "calculated_event_id": 4350010,
+    "runtime_stats_ordinal": 6859,
+    "root_scope": {
+      "status": "available",
+      "raw_type_index": 4,
+      "type_key": "character",
+      "subtype": 0,
+      "typed_identity": {
+        "status": "available",
+        "kind": "character",
+        "character_id": 29829
+      }
+    },
+    "saved_scopes": [
+      {
+        "name": "origin_faith",
+        "name_identifier": 20357,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 13,
+          "type_key": "faith",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "source_rite",
+        "name_identifier": 20372,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 42,
+          "type_key": "rite",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "founder",
+        "name_identifier": 160,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 38699
+          }
+        }
+      },
+      {
+        "name": "bg_override_char",
+        "name_identifier": 9733,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 38699
+          }
+        }
+      },
+      {
+        "name": "rite_growth_target_share",
+        "name_identifier": 27489,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 1,
+          "type_key": "value",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "new_rite",
+        "name_identifier": 87,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 42,
+          "type_key": "rite",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "differing_tenet",
+        "name_identifier": 20387,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 40,
+          "type_key": "tenet",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "unavailable",
+            "reason": "generic_scope_payload_identity_not_closed"
+          }
+        }
+      },
+      {
+        "name": "founder_clerical_title",
+        "name_identifier": 20373,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 5,
+          "type_key": "landed_title",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "landed_title",
+            "title_id": 18382
+          }
+        }
+      },
+      {
+        "name": "convert_ruler",
+        "name_identifier": 20396,
+        "scope": {
+          "status": "available",
+          "raw_type_index": 4,
+          "type_key": "character",
+          "subtype": 0,
+          "typed_identity": {
+            "status": "available",
+            "kind": "character",
+            "character_id": 34092
+          }
+        }
+      }
+    ],
+    "options": [
+      {
+        "rendered_index": 0,
+        "native_option_index": 0,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "与天主教同在，我的灵魂方得安全。",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+          "complete_effect_set": false,
+          "rows": [
+            {
+              "kind": "fulfillment",
+              "direction": "increase",
+              "magnitude": {
+                "status": "unavailable"
+              },
+              "affected_by_trait": false,
+              "critical": false
+            }
+          ]
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 1,
+        "native_option_index": 1,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "我应该信奉吉尔礼！",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      },
+      {
+        "rendered_index": 2,
+        "native_option_index": 2,
+        "shown": true,
+        "enabled": true,
+        "fallback": false,
+        "cancel": false,
+        "resolved_name": "似乎像是异端……",
+        "unavailable_reason": "",
+        "effect_indicators": {
+          "status": "available",
+          "coverage": "played-character-event-icon-indicators-1.20.0.3-v1",
+          "complete_effect_set": false,
+          "rows": []
+        },
+        "effect_preview": {
+          "status": "unavailable",
+          "reason": "indicator_subset_has_no_completeness_signal"
+        },
+        "resource_deltas": {
+          "status": "unavailable"
+        },
+        "relationship_deltas": {
+          "status": "unavailable"
+        }
+      }
+    ],
+    "readiness": {
+      "event_definition_identity_ready": true,
+      "root_scope_ready": true,
+      "saved_scopes_ready": true,
+      "option_presentation_ready": true,
+      "effect_indicators_ready": true,
+      "effect_preview_ready": false,
+      "semantic_decision_ready": false
+    },
+    "provenance": {
+      "root": "module+0x5C6A520->+0x10",
+      "idler_vtable_rva": "0x44BC408",
+      "manager_offset": "+0x28",
+      "backend_id": "ck3-1.20.0.3-native-event-window-v1"
+    }
+  },
+  "played_character_id": 29829,
+  "snapshot_option_count": 3,
+  "ck3_build": "1.20.0.3",
+  "ck3_exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "frozen_sources": {
+    "context": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261006\\gameplay-responses\\022-event29-context-after-save.json",
+      "sha256": "4065d46c03fc7ae2c4cdfb0ca8204d00ee7546c0f958b76cdf7470fd0eeb5f2b",
+      "native_revision": 18,
+      "public_revision": 19
+    },
+    "authored_option_count": {
+      "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261006\\gameplay-responses\\010-movement-day-04.json",
+      "sha256": "eb136d3131137e45cdc26b08da3e19adf9114f8fcdfcd37e96c6a184e5d1607d",
+      "actor": 29829,
+      "event_instance_id": 29,
+      "date_raw": 53265288,
+      "native_revision": 17,
+      "public_revision": 18,
+      "option_count": 3,
+      "boundary": "Original earlier frame. Root then saved h9060 without selecting an option; context022 is native18/public19. This is not exact same-query evidence."
+    },
+    "same_query_binding": false,
+    "boundary": "Exact observed nine-scope context, with original bindings and opaque identities unchanged. Count3 is an adjacent genuine same-event frame before a normal save. No snapshot or material result is synthesized. Only offline policy recognition is evaluated."
+  }
+}

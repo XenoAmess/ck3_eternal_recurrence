@@ -169,3 +169,28 @@ getter 的结构与 default 分支旧研究见 [religion-context](ck3-1.20.0.2-r
 本工作包只新增此文档：没有代码、Git、build、cache、flags、fixture/tests、SDK、游戏、pipe、窗口或共享索引修改。已发布 religion context 的历史成功属于 **production-live primitive**；本页新 effect / AI 研究本身保持 **research**。当前 `.0010` before / after、实机选择结果和后续 normal run 由 ROOT/M2 保存，本页不宣称已完成宗教 OODA、M2、M7、G2 或整局游玩。
 
 当前可施工小 scope 是 **零 native publisher 改动，M2 leaf 消费现有 fulfillment query 的实际 before / after**。后续如出现真实 outcome 差异，再针对具体失败扩充同一 observer；本次不提前展开未影响这次可选事件的系统。
+
+## 2026-10-06：实际 event29 的九 scope 变体
+
+本次仍绑定 CK3 **1.20.0.3 / Steam25652598** 与上文 EXE SHA，复用已冻结 stock；不新增 PE 研究。ROOT 的原 Robert29829 普通战役 R0047 在 paused raw53265288 出现 `rite_growth.0010` / instance29 / calculated4350010 / runtime6859。保存 h9060 后的 [022 typed context](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/022-event29-context-after-save.json) 是 native18/public19，实际九 scope 为 `origin_faith:faith`、`source_rite:rite`、`founder:character38699`、`bg_override_char:character38699`、`rite_growth_target_share:value`、`new_rite:rite`、`differing_tenet:tenet`、`founder_clerical_title:landed_title18382`、`convert_ruler:character34092`。三项 native0/1/2 均 shown/enabled。Faith、Rite、Tenet 和 value 的 identity 仍 opaque，角色/头衔 ID 只记录该次实读，不成为固定匹配值。
+
+`static-confirmed`：冻结 `.0010` immediate 的源码240行调用 `rite_growth_resolve_differences_effect`；该 helper 先清除 `differing_tenet`/`differing_doctrine`，按 prohibited → known → 其它的顺序寻找新 Rite 独有 tenet，找到时保存 `differing_tenet`，只有未找到才进入 founder doctrine 分支。源码242–249的 archbishop/clerical-region 条件保存 `founder_clerical_title`；283–291的 clerical-region county-holder 传播分支保存 `convert_ruler`。这些是通知前的 founder immediate，不是玩家选项效果。实际九 scope 与这些生产分支相容，但单次 scope 快照不证明原生随机 roll 或全部传播结果。
+
+原 native0/API1 保持原有含义：326–332行只有 `change_spiritual_fulfillment=5` 与 `ai_chance.base=100`，没有 dereference 上述 scope，也没有 authored `after`。因此现有三选项选择可复用；新合同只增加这次已观测的精确九名九型变体，保留原七名七型 `differing_doctrine` 基础合同，使用现有 scope-variant resolver。Rite/Faith 的真实身份、fulfillment 实际 delta 与旧事件消失继续由 ROOT 的独立读回判断；opaque extras 不用于选择 native0。
+
+```mermaid
+flowchart TD
+    I["static: frozen .0010 immediate"] --> D["static: differences helper saves tenet, otherwise doctrine"]
+    I --> C["static: optional clerical title and convert_ruler"]
+    D --> N["live reused: Root event29 nine names/types"]
+    C --> N
+    N --> O["static: native0 reads no saved scopes; fulfillment base5"]
+    O --> P["counter-policy: existing resolver plus exact observed nine-scope variant"]
+    P -. "offline replay gives no actual outcome" .-> R["ROOT: independent fulfillment, Rite/Faith and event consumption"]
+```
+
+施工前 [SOURCE-QUERY-PLAN-02.json](Z:/ck3_mod_rewrite_process_assets/g2-background-round5-20261006/rite-growth-observed-scope/SOURCE-QUERY-PLAN-02.json)、[native plan](Z:/ck3_mod_rewrite_process_assets/g2-background-round5-20261006/rite-growth-observed-scope/native-research-plan-02.json) 与工具生成的 [研究树](Z:/ck3_mod_rewrite_process_assets/g2-background-round5-20261006/rite-growth-observed-scope/source-research-graph-02.md) 已落盘；工具只核对记录和文件，不证明语义或授予实机权限。初始 plan 将 differences helper 锚点误写为230，已在02改为240，原 attempt 保留；策略修改前完成更正。
+
+新回放使用022的原 context，不伪造 opaque payload 或 snapshot。真实 authored `option_count=3` 来自 [010 movement result](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/010-movement-day-04.json)，同事件29/actor/raw但 native17/public18；其后 ROOT 正常保存而未选择，再查询022。这是相邻真实观察，**不是同一个 native revision 的证据**。回放仅证明新合同能消费该实际形状；本包不执行游戏、动作或物质验收，不增加游戏日、完整宗教能力或新 live 信用。
+
+离线资格：唯一新增 `test_actual_event29_nine_scope_replay_keeps_native0_and_opaque_payloads` 于 2026-10-06T02:27:59+08:00 首次 **1/1 GREEN**（unittest 0.172s，进程0.647852s）。新8596B夹具从022原 context直接提取，标注010的相邻 authored count；现有 `tools/replay_vanilla_event_research.py` 调生产 policy/registry，返回 `recommended`、native0/API1、failed_checks空，material_plan因未提供 snapshot保持 `not_evaluated`。测试也确认原七 scope基础合同仍在；没有重跑其旧回放。实际命令、输入来源与日志哈希见 [new-case-01.json](Z:/ck3_mod_rewrite_process_assets/g2-background-round5-20261006/rite-growth-observed-scope/new-case-01.json)。新识别合同为 **static-ready**，不将 ROOT 独立手选结果记作新策略实机验收。

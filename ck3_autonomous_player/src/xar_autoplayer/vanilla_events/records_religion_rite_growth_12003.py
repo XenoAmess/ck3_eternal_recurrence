@@ -38,6 +38,20 @@ RELIGION_RITE_GROWTH_12003_RECORDS: Final = {
                 "rite_growth_target_share", "new_rite", "differing_doctrine",
             ),),
             "saved_scope_count": 7,
+            "scope_variants": ({
+                "saved_scope_names": (
+                    "origin_faith", "source_rite", "founder", "bg_override_char",
+                    "rite_growth_target_share", "new_rite", "differing_tenet",
+                    "founder_clerical_title", "convert_ruler",
+                ),
+                "saved_scope_count": 9,
+                "scope_types": {
+                    "origin_faith": "faith", "source_rite": "rite", "founder": "character",
+                    "bg_override_char": "character", "rite_growth_target_share": "value",
+                    "new_rite": "rite", "differing_tenet": "tenet",
+                    "founder_clerical_title": "landed_title", "convert_ruler": "character",
+                },
+            },),
             "option_count": 3,
             "snapshot_option_count": 3,
             "native_option_indices": (0, 1, 2),
@@ -84,7 +98,7 @@ RELIGION_RITE_GROWTH_12003_RECORDS: Final = {
             "after_effect": None,
             "follow_up_event": None,
             "pre_selection_scheduled_event": "rite_growth.0011 is scheduled by founding immediate, not the selected player option",
-            "scope_boundary": "only actual seven-scope three-enabled-option shape; dynamic founder IDs are not fixed and non-character generic scope identities remain opaque",
+            "scope_boundary": "actual seven-scope doctrine shape and nine-scope tenet/clerical-title/conversion-recipient shape; three enabled options; dynamic IDs are not fixed and generic Faith/Rite/Tenet/value identities remain opaque",
             "selected_choice_effect_profile": {
                 "schema": "xar.ck3.vanilla-event-choice-effect",
                 "schema_version": 1,

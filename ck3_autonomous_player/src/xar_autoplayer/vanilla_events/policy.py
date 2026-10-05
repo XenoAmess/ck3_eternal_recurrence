@@ -970,7 +970,7 @@ _DIRECT_RELATIONAL_SCOPE_EVENT_KEYS: Final = frozenset(
     }
 )
 _DIRECT_SCOPE_VARIANT_EVENT_KEYS: Final = frozenset(
-    {"feast.2001", "health.1101", "health.3001", "health.3101", "health.3103"}
+    {"feast.2001", "health.1101", "health.3001", "health.3101", "health.3103", "rite_growth.0010"}
 )
 _SCOPE_VARIANT_FIELDS: Final = frozenset(
     {
