@@ -213,3 +213,11 @@ actual launcher/wrapper0，SDK/keeper已退出；CK3实际exit1、managed exit_r
 本节更新前文费用勘误及R0165“新 DLL NET待验”切点，历史无标记payload仍只证明收入侧。Root用ffc29e7c/a07取得原Jan11 William33388 paused前后配对，raw53147160/public3/native2/角色存活与mapready均相同，新增游戏日0。actual gross469417−完整expenses439469=NET29948（/100000，即+0.29948金币/月），month/个人金币scope、新v2语义标记及militaryincluded=true全部实际读回。当前军费3.88749/月、all-raised反事实替代4.87050/月各自保留；不能相加，也不能从NET再减军费。
 
 Root实际两项focused CTest及注册in-memory MCP 6cases/52checks通过，门禁与raw source/wire pins见[R0168费用研究](../../../docs/ck3-native-ai/war-cash-net-live-r0168-2026-10-05.md)及[当前费用专题追加](../../../docs/ck3-native-ai/war-cash-current-resources-12003.md)。新完整月净率primitive已实际验收；登船/累计实际付款ledger、逐军费用、余额差的独立收支事件对账、未来上界/风险预算和完整战争预算loop仍待证。这个暂停费用读取不改变TERM、actual合军、同档A/B/C、影片/TTS/1×签核/交付的各自完成事实，不重算研究或影片百分比。
+
+## 2026-10-05 R0168：当前损耗输入与完整组成实读
+
+[R0168损耗准入专题](../../../docs/ck3-native-ai/army-episode04-current-loss-readiness-r0168.md)绑定同场ffc29e7c/a07、William33388、raw53147160/public3/native2/native:2、paused初末身份及owner/province/route/combat/state一致，新增游戏日0。实际 strength query accepted=true/statuspartial，Main0与Sea16777220均取得 `loss_application_inputs_v1`、完整27 actual团组成/人数/上限、13+24条完整 DATA与clock。Main5660/5660、当前供给预算0、围城预算56；Sea1086/1087、三预算0。ghost166 native_carmy_not_found，loss/composition缺失，不能填预算0。57080B实读回执SHA `200171c6b8123b5c4e5d1a639491b9b7733e05405ec328e2728b68bf6776f64e`，原始来源和源码pins均在专题。
+
+**预算56只是当前getter整数输入，不是实际扣56。** initial尚无strength rows，after兵数为query缓存，不制造独立before/after人数loss对。本次关闭William当前字段可读性缺口；不增加applied-loss/starvation/film完成信用，历史R0163/R0165/R0166缺字段仍按原source保留。Main全部13 DATA当前两can谓词false/prepared0；Sea22条persistent can=true但所有chunk=false/prepared0，不能泛称海军不补员或端点无抵消补员。commander尚缺本窗口独立绑定。
+
+仍缺真实饥饿threshold crossing与非零整数供给扣兵、county-entry budget/完整进入条件DTO、逐actual团supply-eligibility/特殊writer条件及loss/refill/death区间流水。现字段已足够用同军完整人数/records与+188/+190观察下一条件桶机会（此帧Main+25日/Sea+15日），不能把机会等于成功结算；Root仍按有限safe sampler、实际interval、事件/战斗/编成/月历补员边界拒绝或降因果强度。R0162既有围城−31和arrival−127保留原scope，均不当本场饥饿。此次纯文件沉淀不改变术语、actual合军、同档A/B/C、成片/1×审阅/交付状态，不重算完成百分比。
