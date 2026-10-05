@@ -3353,6 +3353,14 @@ void AppendCombatKnights(std::string &result,
   result += ",\"unavailable_reason\":";
   AppendUnavailableReason(result, !knights.available,
                           knights.unavailable_reason);
+  if (knights.loaded_damage_multiplier.has_value()) {
+    result += ",\"loaded_damage_multiplier\":";
+    result += SignedNumber(*knights.loaded_damage_multiplier);
+  }
+  if (knights.loaded_toughness_multiplier.has_value()) {
+    result += ",\"loaded_toughness_multiplier\":";
+    result += SignedNumber(*knights.loaded_toughness_multiplier);
+  }
   result += '}';
 }
 

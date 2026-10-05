@@ -711,6 +711,12 @@ bool ReadCombatKnights(
     std::vector<std::int32_t> &seen_knight_regiment_ids,
     game::CombatKnightsSnapshot &output) noexcept {
   output = {};
+  if (bindings.knight_damage_per_prowess != nullptr) {
+    output.loaded_damage_multiplier = *bindings.knight_damage_per_prowess;
+  }
+  if (bindings.knight_toughness_per_prowess != nullptr) {
+    output.loaded_toughness_multiplier = *bindings.knight_toughness_per_prowess;
+  }
   for (const auto &regiment_row : regiments) {
     void *const regiment = ResolveStoredComponent(
         bindings.regiment_storage_slot, regiment_row.regiment_id,
@@ -806,10 +812,10 @@ bool ReadCombatKnights(
     if (!CheckedMultiplySigned(knight.knight_effectiveness_raw,
                                effective_prowess, per_prowess_raw) ||
         !CheckedMultiplySigned(per_prowess_raw,
-                               *bindings.knight_damage_per_prowess,
+                               *output.loaded_damage_multiplier,
                                expected_damage_raw) ||
         !CheckedMultiplySigned(per_prowess_raw,
-                               *bindings.knight_toughness_per_prowess,
+                               *output.loaded_toughness_multiplier,
                                expected_toughness_raw)) {
       output.unavailable_reason = "knight_effectiveness_overflow";
       return false;

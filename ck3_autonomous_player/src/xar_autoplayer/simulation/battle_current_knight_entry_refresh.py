@@ -9,10 +9,11 @@ from __future__ import annotations
 
 import copy
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any, Mapping, Sequence
 
 from .battle_current_adapter import CurrentBattleCondition, CurrentBattleEntry
 from .battle_current_refresh import DynamicRefreshContext
+from .combat_core import wrap_int64
 
 
 @dataclass(frozen=True, slots=True)
@@ -91,6 +92,57 @@ def _binding(
     }
 
 
+_ENTRY_ATTRIBUTE_FIELDS = (
+    "effective_max_size", "effective_siege_raw", "effective_damage_raw",
+    "effective_toughness_raw", "effective_pursuit_raw", "effective_screen_raw",
+)
+
+
+def _current_knight_evaluation(entry, character_id, armies, query_source):
+    """Join normalized current observations; this selects no refresh callback."""
+    matches = []
+    for army in armies or ():
+        if (army.get("native_carmy_id") != entry.native_carmy_id
+                or army.get("army_id") != entry.public_cunit_id):
+            continue
+        leaf = army.get("knights")
+        if not isinstance(leaf, Mapping) or leaf.get("status") != "available":
+            continue
+        for member in leaf.get("members") or ():
+            if (member.get("character_id") == character_id
+                    and member.get("source_regiment_id") == entry.state.regiment_id
+                    and member.get("army_id") == entry.native_carmy_id):
+                matches.append((leaf, member))
+    if len(matches) != 1:
+        return {"status": "unavailable", "unavailable_reason": "current_knight_identity_not_uniquely_observed",
+                "observation": None, "source_context": copy.deepcopy(query_source),
+                "refresh_boundary_selected": None, "selected_effect_receiver_granted": False}
+    leaf, member = matches[0]
+    multipliers = {name: copy.deepcopy(leaf[name]) for name in
+                  ("loaded_damage_multiplier", "loaded_toughness_multiplier") if name in leaf}
+    operands = {"after_effective_prowess_points": member["prowess"],
+                "effectiveness_raw": member["knight_effectiveness_raw"], **multipliers}
+    formula = {"effective_damage_raw": None, "effective_toughness_raw": None}
+    p = max(1, member["prowess"])
+    common = wrap_int64(p * member["knight_effectiveness_raw"])
+    for target, multiplier in (("effective_damage_raw", "loaded_damage_multiplier"),
+                               ("effective_toughness_raw", "loaded_toughness_multiplier")):
+        if multipliers.get(multiplier) is not None:
+            formula[target] = wrap_int64(common * multipliers[multiplier])
+    stored = entry.source_entry
+    fresh = {"effective_damage_raw": member["effective_damage_raw"],
+             "effective_toughness_raw": member["effective_toughness_raw"]}
+    return {"status": "available", "unavailable_reason": None,
+            "observation": copy.deepcopy(member), "loaded_multipliers": multipliers,
+            "literal_current_numeric_operands": operands,
+            "current_formula_attributes": formula, "province_evaluated_attributes": fresh,
+            "stored_matches_current_evaluation": {key: stored.get(key) == value for key, value in fresh.items()},
+            "source_context": copy.deepcopy(query_source),
+            "origin": "existing_12003_combat_inputs_current_knight_read",
+            "refresh_boundary_selected": None, "selected_effect_receiver_granted": False,
+            "native_queue_admission_observed": False, "requested_effects_committed": False}
+
+
 def associate_current_knight_entries(
     refreshed: DynamicRefreshContext,
     *,
@@ -98,6 +150,8 @@ def associate_current_knight_entries(
     current_person_observation: Mapping[str, object] | None = None,
     person_query_source: Mapping[str, object] | None = None,
     control_query_source: Mapping[str, object] | None = None,
+    current_combat_armies: Sequence[Mapping[str, object]] | None = None,
+    combat_query_source: Mapping[str, object] | None = None,
 ) -> KnightEntryRefreshAssociation:
     """Attach existing normalized current-character rows without changing state.
 
@@ -146,6 +200,13 @@ def associate_current_knight_entries(
                 "knight_identity_change": change,
                 "person_row_present": person is not None,
                 "current_person_observation": copy.deepcopy(person),
+                "stored_combat_entry_attributes": {key: copy.deepcopy(entry.source_entry.get(key))
+                    for key in _ENTRY_ATTRIBUTE_FIELDS},
+                "stored_entry_attribute_presence": {key: key in entry.source_entry
+                    for key in _ENTRY_ATTRIBUTE_FIELDS},
+                "current_knight_evaluation": _current_knight_evaluation(
+                    entry, knight["raw"], current_combat_armies, combat_query_source)
+                    if knight["kind"] == "occupied_positive_full_character_id" else None,
                 "person_attribution": ("same_paused_native_sample" if binding["status"] == "same_paused_native_sample_coordinates"
                                        else "independent_current_character_observation") if person is not None else None,
             })
@@ -165,6 +226,10 @@ def associate_current_knight_entries(
         "person_leaf_observed_date_raw": current_person_observation.get("observed_date_raw") if current_person_observation is not None else None,
         "person_query_source": copy.deepcopy(person_query_source),
         "control_query_source": copy.deepcopy(control_query_source), "binding": binding,
+        "current_combat_armies_supplied": current_combat_armies is not None,
+        "combat_query_source": copy.deepcopy(combat_query_source),
+        "current_knight_read_grants_selected_receiver": False,
+        "current_knight_read_selects_refresh_boundary": False,
         "fresh_condition_modified": False, "draw_consumed": False,
         "previous_predicted_losses_reapplied": False,
         "person_state_used_to_remove_entry": False,

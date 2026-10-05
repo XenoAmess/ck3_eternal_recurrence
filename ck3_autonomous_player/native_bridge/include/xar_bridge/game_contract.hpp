@@ -501,6 +501,10 @@ struct CombatKnightSnapshot {
 
 struct CombatKnightsSnapshot {
   bool available = false;
+  // Exact .3 runtime signed DWORD coefficients; these are unscaled integers.
+  // Legacy providers retain absence instead of supplying a guessed value.
+  std::optional<std::int32_t> loaded_damage_multiplier;
+  std::optional<std::int32_t> loaded_toughness_multiplier;
   std::vector<CombatKnightSnapshot> members;
   std::string unavailable_reason = "combat_side_knight_list_unavailable";
 

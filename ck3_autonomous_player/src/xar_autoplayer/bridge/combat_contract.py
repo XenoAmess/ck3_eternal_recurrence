@@ -3305,9 +3305,14 @@ def _normalize_knights(
     seen_knight_ids: set[int],
     seen_knight_regiment_ids: set[int],
 ) -> dict[str, object]:
+    multiplier_keys = ("loaded_damage_multiplier", "loaded_toughness_multiplier")
+    optional_keys = {key for key in multiplier_keys
+                     if isinstance(value, dict) and key in value}
     row = _exact_object(
-        value, {"status", "members", "unavailable_reason"}, name
+        value, {"status", "members", "unavailable_reason"} | optional_keys, name
     )
+    multipliers = {key: None if row[key] is None else _signed_int32(row[key], f"{name}.{key}")
+                   for key in multiplier_keys if key in row}
     status = _available_status(row.get("status"), f"{name}.status")
     if status == "unavailable":
         if row.get("members") is not None:
@@ -3390,10 +3395,13 @@ def _normalize_knights(
                 f"{member_name}.effective_toughness_raw",
             )
             effective_prowess = max(1, prowess)
-            if (
-                damage != effective_prowess * effectiveness * 50
-                or toughness != effective_prowess * effectiveness * 10
-            ):
+            # Preserve the legacy carrier contract when neither additive
+            # runtime coefficient was published. Present null stays unknown.
+            damage_multiplier = multipliers.get("loaded_damage_multiplier", 50 if not multipliers else None)
+            toughness_multiplier = multipliers.get("loaded_toughness_multiplier", 10 if not multipliers else None)
+            if (damage_multiplier is not None and toughness_multiplier is not None
+                    and (damage != effective_prowess * effectiveness * damage_multiplier
+                         or toughness != effective_prowess * effectiveness * toughness_multiplier)):
                 raise ValueError(f"native {member_name} knight stats disagree")
             _fixed_scale(member.get("scale"), f"{member_name}.scale")
             normalized_member = {
@@ -3438,6 +3446,7 @@ def _normalize_knights(
     return {
         "status": status,
         "members": members,
+        **multipliers,
         "unavailable_reason": _status_reason(
             status, row.get("unavailable_reason"), name
         ),
