@@ -1095,3 +1095,7 @@ GEN-034 子包进度另按 `4/4` 汇报：A/B/C/D 均已完成；
 
 ## 2026-10-05T08:21:02+08:00 R40 当前4876日：正常24日围城延续
 当前4876/36524日、resume1723、Oct5+218；4852后新增24个正常 whole/calendar/bounded 保存日（576h），批次已关闭、全部GREEN、partial0/无失败。末native100/pub97：主军301989997@470 sieging3/route[]，守军184549452@2619 regular，owncombat0、Robert alive、event/interactionclear；470未占，Siege503316504 work9832460/55000000、ETA445仅估计，War117440524 active/+25。继续实际围城OODA与正常保存验收；本批未新增capability family、攻占或全战胜利，G2 5/8、NW2 2/4、自然终态0不变。normal h8483/raw53261352/98360179B/SHA256 8c38025b22a8e75766eba48f752b9b020ea63473d493d05fa715df0b6c78b95c；军事封存SHA256 275eb8e7ce6380572cf731abe0aa5818fd3701adfa7828ae6bdc9ab6d558d2c3。
+
+## 2026-10-05T08:58:13+08:00 R40 当前4903日：独立恢复后继续普通战争OODA
+
+当前4903/36524日、resume1750、Oct5+245；4876后新增27=22+独立恢复1+独立4个正常保存日（648h）。原requested24仅完成22后failed23零推进、第24未计；75745 closed exit0 GREEN的4日/96h/partial0与独立1日只证明有限恢复，未闭根因。同actor/episode、eventnull，运行仍R40/g72/frozen564/PID110616；本cut绑定新日与保存，新4日军事末帧尚在sole解码，不用旧22日pose授新到达/第二围城/攻占。Guard preview→选择3711→move→独立readback/save的0日有限production-live OODA保留；TrueRegular正确新2case/5TU及owned observer attempt03仅static-ready，trait79 carrier static而paused新inputs/future context/Entry待闭。下一P0继续真实战争OODA与必需观测，G2 5/8、NW2 2/4、自然终态0不变。最新normal h8573/raw53262000/98381165B/SHA256 b77a87104c7d3fdcb9b2e606cdefd227b73793b9448e6b3f1ff16e331ba33ef3；whole22 h8555、failed23零日 h8558、fresh1 h8561、新4日 h8573四帧分列。
