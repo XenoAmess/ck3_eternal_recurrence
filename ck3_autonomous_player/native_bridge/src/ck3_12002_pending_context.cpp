@@ -1,6 +1,9 @@
 ﻿#include "xar_bridge/ck3_12002_pending_context.hpp"
 
 #include <windows.h>
+#include "xar_bridge/ck3_12002_gift_opinion.hpp"
+#include "xar_bridge/ck3_12002_prisoner_abi.hpp"
+#include "xar_bridge/ck3_11906.hpp"
 
 #include <algorithm>
 #include <array>
@@ -1093,6 +1096,138 @@ bool ReadSpecialWarBinding(
   return true;
 }
 
+constexpr std::array<std::string_view, 9> kPayRansomFlags{
+    "extortionate_gold", "extortionate_current_gold", "gold", "current_gold",
+    "favor", "influence_send_option", "herd_send_option", "current_herd",
+    "hook"};
+
+bool ReadRansomFlagDirect(void *, std::uintptr_t module,
+                          std::string_view key,
+                          std::int32_t &identifier) noexcept {
+  if (module == 0) return false;
+  struct StringView { const char *data; std::int32_t size; std::int32_t pad; };
+  const StringView view{key.data(), static_cast<std::int32_t>(key.size()), 0};
+#if defined(_MSC_VER)
+  __try {
+#endif
+    const auto getter = reinterpret_cast<ck3_11906::GetScriptIdentifierTable>(
+        module + kPrisonerGetScriptIdentifierTableRva);
+    const auto lookup = reinterpret_cast<ck3_11906::LookupScriptIdentifierId>(
+        module + kPrisonerLookupScriptIdentifierIdRva);
+    void *table = getter();
+    return table != nullptr && lookup(table, &identifier, &view) != nullptr &&
+           identifier >= 0;
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+#endif
+}
+
+bool ReadRansomGoldDirect(void *, std::uintptr_t module, const void *scope,
+                          std::int32_t actor, std::int32_t jailer,
+                          std::int32_t prisoner, std::int64_t &raw) noexcept {
+  if (module == 0) return false;
+  constexpr std::string_view key = "normal_ransom_cost_value";
+#if defined(_MSC_VER)
+  __try {
+#endif
+    const auto hash = reinterpret_cast<ck3_11906::HashStableKey>(
+        module + kPrisonerHashStableKeyRva)(nullptr, key.data(),
+            static_cast<std::uint32_t>(key.size()));
+    return ReadNamedInteractionFixedExact12002(
+        module, scope, static_cast<std::uint32_t>(prisoner),
+        static_cast<std::uint32_t>(actor), static_cast<std::uint32_t>(jailer),
+        key, static_cast<std::uint32_t>(hash), raw);
+#if defined(_MSC_VER)
+  } __except (EXCEPTION_EXECUTE_HANDLER) { return false; }
+#endif
+}
+
+void ReadReceivedRansomQuote(
+    const PendingCharacterInteractionNativeEnvironmentV1 &environment,
+    const PendingCharacterInteractionAccessV1 &access,
+    ObservationV1 &output) noexcept {
+  if (output.definition.canonical_key != "pay_ransom_interaction") return;
+  output.terms.ransom_quote.emplace();
+  auto &quote = *output.terms.ransom_quote;
+  quote.reason = "ransom_option_mapping_unavailable";
+  if (output.send_options.rows.size() != kPayRansomFlags.size()) return;
+  auto lookup = access.read_ransom_flag_identifier;
+  if (lookup == nullptr && !environment.offline_fixture_function_overrides)
+    lookup = &ReadRansomFlagDirect;
+  if (lookup == nullptr) return;
+  for (std::size_t i = 0; i < kPayRansomFlags.size(); ++i) {
+    std::int32_t identifier = -1;
+    if (!lookup(access.context, environment.module_base, kPayRansomFlags[i],
+                identifier) ||
+        identifier != output.send_options.rows[i].numeric_flag_identifier)
+      return;
+  }
+  for (std::size_t i = 0; i < kPayRansomFlags.size(); ++i) {
+    auto &row = output.send_options.rows[i];
+    row.canonical_flag_status =
+        game::PendingCharacterInteractionSemanticStatusV1::available;
+    row.canonical_flag_key = std::string(kPayRansomFlags[i]);
+    row.canonical_flag_reason.clear();
+  }
+  quote.reason = "ransom_payment_option_not_supported";
+  const auto &gold = output.send_options.rows[2];
+  if (!gold.selected) return;
+  // hook is independent; all other rows are alternative payments.
+  for (std::size_t i = 0; i < 8; ++i)
+    if (i != 2 && output.send_options.rows[i].selected) return;
+  quote.reason = "ransom_roles_unavailable";
+  const auto &roles = output.roles;
+  if (roles.recipient_character_id != output.routing.played_character_id ||
+      roles.actor_character_id == roles.recipient_character_id ||
+      roles.secondary_recipient_character_id <= 0 ||
+      roles.secondary_actor_character_id != -1 ||
+      roles.intermediary_character_id != -1) return;
+  FailureV1 failure{};
+  void *actor = ResolveComponent(access, environment.character_storage_slot,
+      roles.actor_character_id, kCharacterIdentityOffset,
+      "ransom_roles_unavailable", "ransom_roles_unavailable", failure);
+  void *prisoner = ResolveComponent(access, environment.character_storage_slot,
+      roles.secondary_recipient_character_id, kCharacterIdentityOffset,
+      "ransom_roles_unavailable", "ransom_roles_unavailable", failure);
+  if (actor == nullptr || prisoner == nullptr) return;
+  void *extension = nullptr;
+  void *relation = nullptr;
+  std::int32_t jailer = -1;
+  quote.reason = "ransom_custody_unavailable";
+  if (!ReadValue(access, prisoner, 0x1B0, extension) || extension == nullptr ||
+      !ReadValue(access, extension, 0x288, relation) || relation == nullptr ||
+      !ReadValue(access, relation, 0, jailer)) return;
+  if (jailer != roles.recipient_character_id) {
+    quote.reason = "ransom_custody_changed";
+    return;
+  }
+  quote.reason = "ransom_named_gold_unavailable";
+  auto read_gold = access.read_ransom_named_gold;
+  if (read_gold == nullptr && !environment.offline_fixture_function_overrides)
+    read_gold = &ReadRansomGoldDirect;
+  const void *scope = nullptr;
+  std::int64_t raw = 0;
+  if (read_gold == nullptr ||
+      !CheckedAddress(output.pending, kPendingPrimaryScopeOffset, scope) ||
+      !read_gold(access.context, environment.module_base, scope,
+                 roles.actor_character_id, roles.recipient_character_id,
+                 roles.secondary_recipient_character_id, raw) || raw < 0)
+    return;
+  quote.status = game::PendingCharacterInteractionSemanticStatusV1::available;
+  quote.actor_character_id = roles.actor_character_id;
+  quote.jailer_character_id = roles.recipient_character_id;
+  quote.prisoner_character_id = roles.secondary_recipient_character_id;
+  quote.selected_option_index = 2;
+  quote.gold_raw = raw;
+  quote.selected_option_shown = gold.is_shown;
+  quote.selected_option_valid = gold.is_valid;
+  quote.custody_matches_recipient = true;
+  quote.hook_selected = output.send_options.rows[8].selected;
+  quote.decision_input_ready = gold.is_shown && gold.is_valid &&
+                               !quote.hook_selected;
+  quote.reason.clear();
+}
+
 bool ReadObservation(
     const PendingCharacterInteractionNativeEnvironmentV1 &environment,
     const PendingCharacterInteractionAccessV1 &access,
@@ -1136,6 +1271,7 @@ bool ReadObservation(
       !ReadSpecialWarBinding(environment, access, output)) {
     return false;
   }
+  ReadReceivedRansomQuote(environment, access, output);
   return true;
 }
 

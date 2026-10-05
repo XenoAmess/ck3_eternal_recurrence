@@ -198,6 +198,39 @@ bool ValidSpecialWarBinding(
           binding.absolute_outcome == "attacker_defeat");
 }
 
+constexpr std::array<std::string_view, 9> kPayRansomFlags{
+    "extortionate_gold", "extortionate_current_gold", "gold", "current_gold",
+    "favor", "influence_send_option", "herd_send_option", "current_herd",
+    "hook"};
+
+bool ValidRansomQuote(const game::PendingCharacterInteractionContextV1 &context) {
+  const auto &term = context.terms->ransom_quote;
+  if (!term.has_value()) return true;
+  if (context.definition->canonical_key != "pay_ransom_interaction") return false;
+  const auto &quote = *term;
+  if (quote.status == game::PendingCharacterInteractionSemanticStatusV1::unavailable)
+    return !quote.reason.empty() && !quote.decision_input_ready;
+  const auto &roles = *context.roles;
+  const auto &rows = context.send_options->rows;
+  if (quote.status != game::PendingCharacterInteractionSemanticStatusV1::available ||
+      !quote.reason.empty() || rows.size() != 9 ||
+      quote.actor_character_id != roles.actor_character_id ||
+      quote.jailer_character_id != roles.recipient_character_id ||
+      quote.prisoner_character_id != roles.secondary_recipient_character_id ||
+      quote.jailer_character_id != context.routing->played_character_id ||
+      quote.selected_option_index != 2 || quote.gold_raw < 0 ||
+      !quote.custody_matches_recipient || !rows[2].selected ||
+      quote.selected_option_shown != rows[2].is_shown ||
+      quote.selected_option_valid != rows[2].is_valid ||
+      quote.hook_selected != rows[8].selected ||
+      quote.decision_input_ready != (rows[2].is_shown && rows[2].is_valid &&
+                                     !rows[8].selected)) return false;
+  for (std::size_t i = 0; i < rows.size(); ++i)
+    if (rows[i].canonical_flag_key != kPayRansomFlags[i] ||
+        (i < 8 && i != 2 && rows[i].selected)) return false;
+  return true;
+}
+
 bool ValidAvailable(
     const game::PendingCharacterInteractionContextV1 &context) noexcept {
   if (!context.reason.empty() || !context.definition.has_value() ||
@@ -249,7 +282,8 @@ bool ValidAvailable(
       !ValidUnavailableTerm(terms.recipient_ai_acceptance_score,
                             "recipient_ai_acceptance_score_unavailable") ||
       !ValidUnavailableTerm(terms.recipient_ai_final_decision,
-                            "recipient_ai_final_decision_unavailable")) {
+                            "recipient_ai_final_decision_unavailable") ||
+      !ValidRansomQuote(context)) {
     return false;
   }
   if (target.present) {
@@ -278,13 +312,17 @@ bool ValidAvailable(
   std::int32_t selected_count = 0;
   for (std::size_t index = 0; index < options.rows.size(); ++index) {
     const auto &row = options.rows[index];
+    const bool mapped = definition.canonical_key == "pay_ransom_interaction" &&
+        options.rows.size() == kPayRansomFlags.size() &&
+        row.canonical_flag_status == game::PendingCharacterInteractionSemanticStatusV1::available &&
+        row.canonical_flag_key == kPayRansomFlags[index] &&
+        row.canonical_flag_reason.empty();
+    const bool unmapped = row.canonical_flag_status ==
+        game::PendingCharacterInteractionSemanticStatusV1::unavailable &&
+        !row.canonical_flag_key.has_value() && row.canonical_flag_reason ==
+        "numeric_flag_identifier_string_mapping_not_closed";
     if (row.native_index != static_cast<std::int32_t>(index) ||
-        row.numeric_flag_identifier < 0 ||
-        row.canonical_flag_status !=
-            game::PendingCharacterInteractionSemanticStatusV1::unavailable ||
-        row.canonical_flag_key.has_value() ||
-        row.canonical_flag_reason !=
-            "numeric_flag_identifier_string_mapping_not_closed") {
+        row.numeric_flag_identifier < 0 || (!mapped && !unmapped)) {
       return false;
     }
     selected_count += row.selected ? 1 : 0;
@@ -373,6 +411,36 @@ void AppendUnavailableTerm(
   output += ",\"value\":null,\"reason\":";
   AppendOptionalReason(output, term.reason);
   output.push_back('}');
+}
+
+void AppendRansomQuote(std::string &output,
+    const game::PendingCharacterInteractionRansomQuoteV1 &quote) {
+  output += "{\"status\":";
+  AppendJsonString(output, SemanticStatusName(quote.status));
+  output += ",\"value\":";
+  if (quote.status != game::PendingCharacterInteractionSemanticStatusV1::available) {
+    output += "null,\"reason\":";
+    AppendOptionalReason(output, quote.reason);
+    output.push_back('}');
+    return;
+  }
+  output += "{\"actor_character_id\":" + SignedNumber(quote.actor_character_id);
+  output += ",\"jailer_character_id\":" + SignedNumber(quote.jailer_character_id);
+  output += ",\"prisoner_character_id\":" + SignedNumber(quote.prisoner_character_id);
+  output += ",\"selected_option_index\":" + SignedNumber(quote.selected_option_index);
+  output += ",\"selected_option_key\":\"gold\",\"gold_raw\":" + SignedNumber(quote.gold_raw);
+  output += ",\"raw_scale\":100000,\"amount_source_key\":\"normal_ransom_cost_value\","
+            "\"payer_scope\":\"puppet_or_actor\",\"receiver_scope\":\"recipient\","
+            "\"application_timing\":\"on_accept\",\"payment_state\":\"pending\","
+            "\"amount_is_current_quote\":true,\"selected_option_shown\":";
+  output += quote.selected_option_shown ? "true" : "false";
+  output += ",\"selected_option_valid\":";
+  output += quote.selected_option_valid ? "true" : "false";
+  output += ",\"custody_matches_recipient\":true,\"hook_selected\":";
+  output += quote.hook_selected ? "true" : "false";
+  output += ",\"decision_input_ready\":";
+  output += quote.decision_input_ready ? "true" : "false";
+  output += "},\"reason\":null}";
 }
 
 void AppendStructuredCosts(
@@ -606,6 +674,10 @@ std::string SerializePendingCharacterInteractionContextV1(
     AppendStructuredCosts(output, terms.structured_costs);
     output += ",\"structured_exchanges\":";
     AppendUnavailableTerm(output, terms.structured_exchanges);
+    if (terms.ransom_quote.has_value()) {
+      output += ",\"ransom_quote\":";
+      AppendRansomQuote(output, *terms.ransom_quote);
+    }
     output += ",\"structured_effect_preview\":";
     AppendUnavailableTerm(output, terms.structured_effect_preview);
     output += ",\"recipient_ai_acceptance_score\":";

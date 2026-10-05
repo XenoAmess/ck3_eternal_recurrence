@@ -203,6 +203,25 @@ struct PendingCharacterInteractionSpecialWarBindingV1 {
              const PendingCharacterInteractionSpecialWarBindingV1 &) = default;
 };
 
+struct PendingCharacterInteractionRansomQuoteV1 {
+  PendingCharacterInteractionSemanticStatusV1 status =
+      PendingCharacterInteractionSemanticStatusV1::unavailable;
+  std::int32_t actor_character_id = -1;
+  std::int32_t jailer_character_id = -1;
+  std::int32_t prisoner_character_id = -1;
+  std::int32_t selected_option_index = -1;
+  std::int64_t gold_raw = 0;
+  bool selected_option_shown = false;
+  bool selected_option_valid = false;
+  bool custody_matches_recipient = false;
+  bool hook_selected = false;
+  bool decision_input_ready = false;
+  std::string reason;
+  friend bool operator==(const PendingCharacterInteractionRansomQuoteV1 &,
+                         const PendingCharacterInteractionRansomQuoteV1 &) =
+      default;
+};
+
 struct PendingCharacterInteractionTermsV1 {
   bool special_data_present = false;
   PendingCharacterInteractionSpecialWarBindingV1 special_war_binding;
@@ -211,6 +230,7 @@ struct PendingCharacterInteractionTermsV1 {
   PendingCharacterInteractionUnavailableTermV1 structured_effect_preview;
   PendingCharacterInteractionUnavailableTermV1 recipient_ai_acceptance_score;
   PendingCharacterInteractionUnavailableTermV1 recipient_ai_final_decision;
+  std::optional<PendingCharacterInteractionRansomQuoteV1> ransom_quote;
 
   friend bool operator==(const PendingCharacterInteractionTermsV1 &,
                          const PendingCharacterInteractionTermsV1 &) = default;

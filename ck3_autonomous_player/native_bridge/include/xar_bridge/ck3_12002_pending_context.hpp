@@ -141,6 +141,14 @@ using InvokePendingCharacterInteractionScriptIdentifierNameV1 = bool (*)(
     void *context, NativePendingInteractionScriptIdentifierNameV1 function,
     std::int32_t identifier, const std::string *&output) noexcept;
 
+using ReadPendingRansomFlagIdentifierV1 = bool (*)(
+    void *context, std::uintptr_t module_base, std::string_view key,
+    std::int32_t &identifier) noexcept;
+using ReadPendingRansomNamedGoldV1 = bool (*)(
+    void *context, std::uintptr_t module_base, const void *borrowed_scope,
+    std::int32_t actor_id, std::int32_t jailer_id, std::int32_t prisoner_id,
+    std::int64_t &gold_raw) noexcept;
+
 struct PendingCharacterInteractionAccessV1 {
   void *context = nullptr;
   CapturePendingCharacterInteractionFrameV1 capture_frame = nullptr;
@@ -163,6 +171,8 @@ struct PendingCharacterInteractionAccessV1 {
       invoke_target_type_registry = nullptr;
   InvokePendingCharacterInteractionScriptIdentifierNameV1
       invoke_script_identifier_name = nullptr;
+  ReadPendingRansomFlagIdentifierV1 read_ransom_flag_identifier = nullptr;
+  ReadPendingRansomNamedGoldV1 read_ransom_named_gold = nullptr;
 };
 
 struct PendingCharacterInteractionContextRequestV1 {

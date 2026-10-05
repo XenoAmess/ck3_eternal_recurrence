@@ -157,6 +157,18 @@ _TERMS_KEYS: Final = (
 )
 _UNAVAILABLE_TERMS_KEYS: Final = _TERMS_KEYS[2:]
 _TERMS_FIELDS: Final = {"special_data_present", *_TERMS_KEYS}
+_PAY_RANSOM_FLAGS: Final = (
+    "extortionate_gold", "extortionate_current_gold", "gold", "current_gold",
+    "favor", "influence_send_option", "herd_send_option", "current_herd", "hook",
+)
+_RANSOM_QUOTE_FIELDS: Final = {
+    "actor_character_id", "jailer_character_id", "prisoner_character_id",
+    "selected_option_index", "selected_option_key", "gold_raw", "raw_scale",
+    "amount_source_key", "payer_scope", "receiver_scope", "application_timing",
+    "payment_state", "amount_is_current_quote", "selected_option_shown",
+    "selected_option_valid", "custody_matches_recipient", "hook_selected",
+    "decision_input_ready",
+}
 _READINESS_BOOL_KEYS: Final = (
     "stable_definition_ready",
     "roles_ready",
@@ -595,6 +607,54 @@ def _normalize_readiness(
     return result
 
 
+def _normalize_ransom_quote(
+    value: object, *, definition_key: str, roles: dict[str, object],
+    routing: dict[str, object], rows: list[dict[str, object]],
+) -> dict[str, object]:
+    term = _exact_object(value, _STATUS_VALUE_REASON_FIELDS, "terms.ransom_quote")
+    if definition_key != "pay_ransom_interaction":
+        raise ValueError("ransom quote requires the received pay-ransom definition")
+    if term.get("status") == "unavailable":
+        if term.get("value") is not None:
+            raise ValueError("unavailable ransom quote contains a value")
+        return {"status": "unavailable", "value": None,
+                "reason": _reason(term.get("reason"), "terms.ransom_quote.reason")}
+    if term.get("status") != "available" or term.get("reason") is not None:
+        raise ValueError("ransom quote status is invalid")
+    quote = _exact_object(term.get("value"), _RANSOM_QUOTE_FIELDS,
+                          "terms.ransom_quote.value")
+    fixed = {
+        "actor_character_id": roles["actor_character_id"],
+        "jailer_character_id": roles["recipient_character_id"],
+        "prisoner_character_id": roles["secondary_recipient_character_id"],
+        "selected_option_index": 2, "selected_option_key": "gold",
+        "raw_scale": 100_000, "amount_source_key": "normal_ransom_cost_value",
+        "payer_scope": "puppet_or_actor", "receiver_scope": "recipient",
+        "application_timing": "on_accept", "payment_state": "pending",
+        "amount_is_current_quote": True, "custody_matches_recipient": True,
+    }
+    if any(quote.get(key) != expected for key, expected in fixed.items()):
+        raise ValueError("ransom quote roles or payment semantics disagree")
+    if (len(rows) != 9 or not rows[2]["selected"] or
+        any(rows[i]["selected"] for i in range(8) if i != 2) or
+        tuple(row["canonical_flag_key"] for row in rows) != _PAY_RANSOM_FLAGS or
+        roles["recipient_character_id"] != routing["played_character_id"] or
+        roles["secondary_recipient_character_id"] <= 0):
+        raise ValueError("ransom quote requires verified ordinary-gold selection")
+    _int(quote.get("gold_raw"), "ransom_quote.gold_raw", minimum=0, maximum=2**63-1)
+    expected_bools = {
+        "selected_option_shown": rows[2]["is_shown"],
+        "selected_option_valid": rows[2]["is_valid"],
+        "hook_selected": rows[8]["selected"],
+        "decision_input_ready": rows[2]["is_shown"] and rows[2]["is_valid"]
+                                and not rows[8]["selected"],
+    }
+    for key, expected in expected_bools.items():
+        if _bool(quote.get(key), "ransom_quote."+key) != expected:
+            raise ValueError("ransom quote conditions disagree with native options")
+    return {"status": "available", "value": dict(quote), "reason": None}
+
+
 def _normalize_available_frame(
     frame: dict[str, object],
 ) -> dict[str, object]:
@@ -802,12 +862,20 @@ def _normalize_available_frame(
             row.get("selected"), f"send_options.rows[{index}].selected"
         )
         selected_count += int(selected)
-        if (
-            row.get("canonical_flag_status") != "unavailable"
-            or row.get("canonical_flag_key") is not None
-            or row.get("canonical_flag_reason")
-            != "numeric_flag_identifier_string_mapping_not_closed"
-        ):
+        mapped = (
+            normalized_definition["canonical_key"] == "pay_ransom_interaction"
+            and definition_count == 9
+            and row.get("canonical_flag_status") == "available"
+            and row.get("canonical_flag_key") == _PAY_RANSOM_FLAGS[index]
+            and row.get("canonical_flag_reason") is None
+        )
+        unmapped = (
+            row.get("canonical_flag_status") == "unavailable"
+            and row.get("canonical_flag_key") is None
+            and row.get("canonical_flag_reason")
+                == "numeric_flag_identifier_string_mapping_not_closed"
+        )
+        if not mapped and not unmapped:
             raise ValueError("send-option canonical flag identity was invented")
         rows.append(
             {
@@ -827,11 +895,9 @@ def _normalize_available_frame(
                     row.get("is_valid"),
                     f"send_options.rows[{index}].is_valid",
                 ),
-                "canonical_flag_status": "unavailable",
-                "canonical_flag_key": None,
-                "canonical_flag_reason": (
-                    "numeric_flag_identifier_string_mapping_not_closed"
-                ),
+                "canonical_flag_status": row["canonical_flag_status"],
+                "canonical_flag_key": row["canonical_flag_key"],
+                "canonical_flag_reason": row["canonical_flag_reason"],
             }
         )
     if exclusive and selected_count > 1:
@@ -942,7 +1008,12 @@ def _normalize_available_frame(
     ):
         raise ValueError("self interaction cannot permit reject or block")
 
-    terms = _exact_object(frame.get("terms"), _TERMS_FIELDS, "terms")
+    raw_terms = frame.get("terms")
+    terms_fields = _TERMS_FIELDS | (
+        {"ransom_quote"} if isinstance(raw_terms, dict) and "ransom_quote" in raw_terms
+        else set()
+    )
+    terms = _exact_object(raw_terms, terms_fields, "terms")
     normalized_terms: dict[str, object] = {
         "special_data_present": _bool(
             terms.get("special_data_present"), "terms.special_data_present"
@@ -1031,6 +1102,13 @@ def _normalize_available_frame(
             "value": None,
             "reason": _reason(item.get("reason"), f"terms.{key}.reason"),
         }
+
+    if "ransom_quote" in terms:
+        normalized_terms["ransom_quote"] = _normalize_ransom_quote(
+            terms["ransom_quote"],
+            definition_key=normalized_definition["canonical_key"],
+            roles=normalized_roles, routing=normalized_routing, rows=rows,
+        )
 
     readiness = _normalize_readiness(
         frame.get("readiness"),
