@@ -1099,3 +1099,7 @@ GEN-034 子包进度另按 `4/4` 汇报：A/B/C/D 均已完成；
 ## 2026-10-05T08:58:13+08:00 R40 当前4903日：独立恢复后继续普通战争OODA
 
 当前4903/36524日、resume1750、Oct5+245；4876后新增27=22+独立恢复1+独立4个正常保存日（648h）。原requested24仅完成22后failed23零推进、第24未计；75745 closed exit0 GREEN的4日/96h/partial0与独立1日只证明有限恢复，未闭根因。同actor/episode、eventnull，运行仍R40/g72/frozen564/PID110616；本cut绑定新日与保存，新4日军事末帧尚在sole解码，不用旧22日pose授新到达/第二围城/攻占。Guard preview→选择3711→move→独立readback/save的0日有限production-live OODA保留；TrueRegular正确新2case/5TU及owned observer attempt03仅static-ready，trait79 carrier static而paused新inputs/future context/Entry待闭。下一P0继续真实战争OODA与必需观测，G2 5/8、NW2 2/4、自然终态0不变。最新normal h8573/raw53262000/98381165B/SHA256 b77a87104c7d3fdcb9b2e606cdefd227b73793b9448e6b3f1ff16e331ba33ef3；whole22 h8555、failed23零日 h8558、fresh1 h8561、新4日 h8573四帧分列。
+
+## 2026-10-05T09:33:54+08:00 R41 当前4911日：普通MAA报价与许可已实测
+
+当前4911/36524日、resume1758、Oct5+253；4903后新增8个正常 whole/calendar/bounded 保存日（192h）、partial0。R41/g73/PID45628：主军301989997仍在470围城、目标未占；守军184549452@1038 embarked4/route[3711]未到，P3711无siege，owncombat0/eventnull/War117 active+25。普通CCreate的9类资源报价可读，onager48 Gold54、mangonel50 Gold59.4许可true（native qty10），另7类false；这是只读production-live primitive，未Create或购买loop。下一P0将合法siege MAA观测接入实际创建→独立编成读回→保存，并持续战争OODA；新trait request只static-ready，G2 5/8、NW2 2/4、自然终态0不变。normal h8602/raw53262192/98341434B/SHA256 29d07e0ff930bfbc2f81822a623783615814b8117588224c72d2f8decb472cff；[8日军事封存](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v68/root-results/ordinary-r41-first-eight01-consumed01/ROOT-DELIVERY.json)。
