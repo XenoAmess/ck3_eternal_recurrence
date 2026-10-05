@@ -113,3 +113,10 @@
 当前已核对Jan11登陆候选SHA `d94be518cc52fefb62d896de8fabc8bd560f49674925049dab863cef77a1e14b`，尚待新冷载检查后保存第4期A/B/C出发档。真实补给时钟及`army_update_clock_v1`已在主线，复用现原语；逐团actual人数与Halt最小增量已入源码，Root负责严格构建、部署和当前案例后读。原生构建收据built不等于新实读；截至Root文件研究切点尚无本期SDK/新游戏日/录像，Halt f853官方CI失败待修，其他研究包不因该CI等待而停止。
 
 后续先取得当次新鲜Steam离线及当前运行输入，再闭合总账的六项P0门槛与11项真实tooltip；同档独立拍A/B/C后才冻结全文、配音和成片。旧原片、失败候选、环境RED及既有存档原样保留。Root另存本批文档真实commit/push与exact SHA官方CI；本增量不预填影片或交付完成事实。
+
+
+## 2026-10-05 R0169接手增量：原始术语齐，继续先筛正值B
+
+后续从[研究总账](../../promo/ck3_native_war_ai/episode-04-march-logistics/research-status-20261004.md)及[R0169 portable索引](../../promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0169-terms/index.json)继续。按原定义，十一项术语原始研究已齐，各自编码绑定10/11；移动锁定Jan25同paused首边61.875%两原图在rawfinish后保持encoded=null。不要再重复已闭getter或把Root八个实际编码单帧扩大为24全审/连续clean/1×签核。库内小JSON与只读脚本可跨机器复算数字，外置PNG/录像仍按原path/hash保全。
+
+本地B到Arun1508实际+9日仍无正月补给，两半current/max/27FullID保持，总6746/6747；不是ABC回放，完成仍0/3。下一独立有限warmup先核实际友好资格和whole正月值，再保存新的共同出发档，不沿用静态titlehistory或预览当抵达/友好证明。Dfullkeeper失败与已完成媒体PASS各自保留；Root已证明SDK/游戏树收口。未响应route probe、付款流水、饥饿阈值/独立归因、clean段、全文/TTS/成片/1×/签核/指定OneDrive视频交付仍待各自真实证据。

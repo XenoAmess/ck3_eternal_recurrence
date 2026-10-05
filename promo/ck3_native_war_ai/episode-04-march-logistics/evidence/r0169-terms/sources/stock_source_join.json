@@ -1,0 +1,2273 @@
+{
+  "schema": "xar.war-episode04.r0168.stock-text-GUI-join/v1",
+  "game_identity": {
+    "install": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+    "exe_path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "exe_bytes": 101039736,
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "manifest_path": "C:\\SteamLibrary\\steamapps\\appmanifest_1158310.acf",
+    "manifest_sha256": "9614e8716dbbf8083c3bef37c2d9ff93b71bb541abd4721cfda2aa8227fdbc71",
+    "manifest_identity": {
+      "StateFlags": "4",
+      "buildid": "25652598"
+    }
+  },
+  "original_term_evidence": {
+    "path": "D:/ck3-war-episode04-research-20261004-a01/terms/terminology-evidence.json",
+    "bytes": 107836,
+    "sha256": "7e9296a754ec274d62d2434b4a6e44474a24a609d24942fe0739ec016e51d437"
+  },
+  "selected_bilingual_entries": {
+    "SUPPLY_LIMIT_TOOLTIP": {
+      "simp_chinese": {
+        "value_raw": "#T [supply_limit|E]：$VALUE|V$#!",
+        "relative_game_path": "localization/simp_chinese/holdings_l_simp_chinese.yml",
+        "line": 34,
+        "source_line_raw": " SUPPLY_LIMIT_TOOLTIP: \"#T [supply_limit|E]：$VALUE|V$#!\""
+      },
+      "english": {
+        "value_raw": "#T [supply_limit|E]: $VALUE|V$#!",
+        "relative_game_path": "localization/english/holdings_l_english.yml",
+        "line": 37,
+        "source_line_raw": " SUPPLY_LIMIT_TOOLTIP:0 \"#T [supply_limit|E]: $VALUE|V$#!\""
+      }
+    },
+    "SUPPLY_LIMIT": {
+      "simp_chinese": {
+        "value_raw": "[supply_limit|E]：",
+        "relative_game_path": "localization/simp_chinese/gui/holding_view_l_simp_chinese.yml",
+        "line": 77,
+        "source_line_raw": " SUPPLY_LIMIT: \"[supply_limit|E]：\""
+      },
+      "english": {
+        "value_raw": "[supply_limit|E]:",
+        "relative_game_path": "localization/english/gui/holding_view_l_english.yml",
+        "line": 77,
+        "source_line_raw": " SUPPLY_LIMIT:0 \"[supply_limit|E]:\""
+      }
+    },
+    "game_concept_supplies": {
+      "simp_chinese": {
+        "value_raw": "补给",
+        "relative_game_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+        "line": 1150,
+        "source_line_raw": " game_concept_supplies: \"补给\""
+      },
+      "english": {
+        "value_raw": "Supplies",
+        "relative_game_path": "localization/english/game_concepts_l_english.yml",
+        "line": 1173,
+        "source_line_raw": " game_concept_supplies:0 \"Supplies\""
+      }
+    },
+    "game_concept_supply_limit": {
+      "simp_chinese": {
+        "value_raw": "补给上限",
+        "relative_game_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+        "line": 1152,
+        "source_line_raw": " game_concept_supply_limit: \"补给上限\""
+      },
+      "english": {
+        "value_raw": "Supply Limit",
+        "relative_game_path": "localization/english/game_concepts_l_english.yml",
+        "line": 1175,
+        "source_line_raw": " game_concept_supply_limit:0 \"Supply Limit\""
+      }
+    },
+    "game_concept_supply_limit_desc": {
+      "simp_chinese": {
+        "value_raw": "$game_concept_supply_limit$指代你在一个[barony|E]能有的[soldiers|E]数量，由男爵领的[terrain|E]和[development|E]决定。\\n\\n如果你的[army|E]规模超过$game_concept_supply_limit$，这支$game_concept_armies$将失去[supply|E]并最终遭受[attrition|E]。",
+        "relative_game_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+        "line": 1153,
+        "source_line_raw": " game_concept_supply_limit_desc: \"$game_concept_supply_limit$指代你在一个[barony|E]能有的[soldiers|E]数量，由男爵领的[terrain|E]和[development|E]决定。\\n\\n如果你的[army|E]规模超过$game_concept_supply_limit$，这支$game_concept_armies$将失去[supply|E]并最终遭受[attrition|E]。\""
+      },
+      "english": {
+        "value_raw": "The $game_concept_supply_limit$ dictates the amount of [soldiers|E] you may have in a [barony|E], as determined by the Barony's [terrain|E] and [development|E].\\n\\nShould your total [army|E] size go above the $game_concept_supply_limit$, your $game_concept_armies$ will lose [supply|E] and eventually suffer from [attrition|E].",
+        "relative_game_path": "localization/english/game_concepts_l_english.yml",
+        "line": 1176,
+        "source_line_raw": " game_concept_supply_limit_desc:0 \"The $game_concept_supply_limit$ dictates the amount of [soldiers|E] you may have in a [barony|E], as determined by the Barony's [terrain|E] and [development|E].\\n\\nShould your total [army|E] size go above the $game_concept_supply_limit$, your $game_concept_armies$ will lose [supply|E] and eventually suffer from [attrition|E].\""
+      }
+    },
+    "PROVINCE_TOOLTIP_ETA": {
+      "simp_chinese": {
+        "value_raw": "#I ——预期抵达时间：[DATE.GetTimeDiffFromNow]后（[DATE.GetStringShortNoYear]）#!",
+        "relative_game_path": "localization/simp_chinese/gui/map_l_simp_chinese.yml",
+        "line": 68,
+        "source_line_raw": " PROVINCE_TOOLTIP_ETA: \"#I ——预期抵达时间：[DATE.GetTimeDiffFromNow]后（[DATE.GetStringShortNoYear]）#!\""
+      },
+      "english": {
+        "value_raw": "#I - Predicted arrival: [DATE.GetTimeDiffFromNow] ([DATE.GetStringShortNoYear])#!",
+        "relative_game_path": "localization/english/gui/map_l_english.yml",
+        "line": 69,
+        "source_line_raw": " PROVINCE_TOOLTIP_ETA:1 \"#I - Predicted arrival: [DATE.GetTimeDiffFromNow] ([DATE.GetStringShortNoYear])#!\""
+      }
+    },
+    "PROVINCE_TOOLTIP_CLICK_TO_GO": {
+      "simp_chinese": {
+        "value_raw": "\\n#I 右键点击向此处进军#!",
+        "relative_game_path": "localization/simp_chinese/gui/map_l_simp_chinese.yml",
+        "line": 65,
+        "source_line_raw": " PROVINCE_TOOLTIP_CLICK_TO_GO: \"\\n#I 右键点击向此处进军#!\""
+      },
+      "english": {
+        "value_raw": "\\n#I Right-click to march here#!",
+        "relative_game_path": "localization/english/gui/map_l_english.yml",
+        "line": 66,
+        "source_line_raw": " PROVINCE_TOOLTIP_CLICK_TO_GO:1 \"\\n#I Right-click to march here#!\""
+      }
+    },
+    "PROVINCE_TOOLTIP_EMBARKING_IMPLIED": {
+      "simp_chinese": {
+        "value_raw": "#I 会支付登船费#!",
+        "relative_game_path": "localization/simp_chinese/gui/map_l_simp_chinese.yml",
+        "line": 58,
+        "source_line_raw": " PROVINCE_TOOLTIP_EMBARKING_IMPLIED: \"#I 会支付登船费#!\""
+      },
+      "english": {
+        "value_raw": "#I Will pay Embarking Fees#!",
+        "relative_game_path": "localization/english/gui/map_l_english.yml",
+        "line": 59,
+        "source_line_raw": " PROVINCE_TOOLTIP_EMBARKING_IMPLIED:0 \"#I Will pay Embarking Fees#!\""
+      }
+    },
+    "game_concept_movement_lock": {
+      "simp_chinese": {
+        "value_raw": "移动锁定",
+        "relative_game_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+        "line": 1823,
+        "source_line_raw": " game_concept_movement_lock: \"移动锁定\""
+      },
+      "english": {
+        "value_raw": "Movement Lock",
+        "relative_game_path": "localization/english/game_concepts_l_english.yml",
+        "line": 1931,
+        "source_line_raw": " game_concept_movement_lock:0 \"Movement Lock\""
+      }
+    },
+    "game_concept_movement_locked": {
+      "simp_chinese": {
+        "value_raw": "移动锁定",
+        "relative_game_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+        "line": 1824,
+        "source_line_raw": " game_concept_movement_locked: \"移动锁定\""
+      },
+      "english": {
+        "value_raw": "Movement Locked",
+        "relative_game_path": "localization/english/game_concepts_l_english.yml",
+        "line": 1932,
+        "source_line_raw": " game_concept_movement_locked:0 \"Movement Locked\""
+      }
+    },
+    "game_concept_movement_locked_desc": {
+      "simp_chinese": {
+        "value_raw": "如果一支[army|E]已经完成了移动指令的一半进度，那么指令在其到达目的地之前无法变更。",
+        "relative_game_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+        "line": 1825,
+        "source_line_raw": " game_concept_movement_locked_desc: \"如果一支[army|E]已经完成了移动指令的一半进度，那么指令在其到达目的地之前无法变更。\""
+      },
+      "english": {
+        "value_raw": "After an [army|E] has completed more than half of a given move order, it will not be possible to change it until they arrive at their destination.",
+        "relative_game_path": "localization/english/game_concepts_l_english.yml",
+        "line": 1933,
+        "source_line_raw": " game_concept_movement_locked_desc:0 \"After an [army|E] has completed more than half of a given move order, it will not be possible to change it until they arrive at their destination.\""
+      }
+    },
+    "ARMY_TOOLTIP_IS_MOVEMENT_LOCKED": {
+      "simp_chinese": {
+        "value_raw": "[movement_locked|E]",
+        "relative_game_path": "localization/simp_chinese/gui/mapicons_l_simp_chinese.yml",
+        "line": 11,
+        "source_line_raw": " ARMY_TOOLTIP_IS_MOVEMENT_LOCKED: \"[movement_locked|E]\""
+      },
+      "english": {
+        "value_raw": "[movement_locked|E]",
+        "relative_game_path": "localization/english/gui/mapicons_l_english.yml",
+        "line": 11,
+        "source_line_raw": " ARMY_TOOLTIP_IS_MOVEMENT_LOCKED:1 \"[movement_locked|E]\""
+      }
+    },
+    "MONTHLY_REINFORCEMENT_COST_LABEL": {
+      "simp_chinese": {
+        "value_raw": "每月补员",
+        "relative_game_path": "localization/simp_chinese/gui/militaryview_l_simp_chinese.yml",
+        "line": 50,
+        "source_line_raw": " MONTHLY_REINFORCEMENT_COST_LABEL: \"每月补员\""
+      },
+      "english": {
+        "value_raw": "Monthly Reinforcement",
+        "relative_game_path": "localization/english/gui/militaryview_l_english.yml",
+        "line": 50,
+        "source_line_raw": " MONTHLY_REINFORCEMENT_COST_LABEL:1 \"Monthly Reinforcement\""
+      }
+    },
+    "TT_REINFORCING_MAA_YES_TITLE": {
+      "simp_chinese": {
+        "value_raw": "#T 补员[men_at_arms|E]#!",
+        "relative_game_path": "localization/simp_chinese/gui/militaryview_l_simp_chinese.yml",
+        "line": 67,
+        "source_line_raw": " TT_REINFORCING_MAA_YES_TITLE: \"#T 补员[men_at_arms|E]#!\""
+      },
+      "english": {
+        "value_raw": "#T Reinforcing [men_at_arms|E]#!",
+        "relative_game_path": "localization/english/gui/militaryview_l_english.yml",
+        "line": 67,
+        "source_line_raw": " TT_REINFORCING_MAA_YES_TITLE:0 \"#T Reinforcing [men_at_arms|E]#!\""
+      }
+    },
+    "ARMY_COMPOSITION_ENTRY_REINFORCE": {
+      "simp_chinese": {
+        "value_raw": "（$REINFORCE|0V=$/月）",
+        "relative_game_path": "localization/simp_chinese/gui/armyview_l_simp_chinese.yml",
+        "line": 104,
+        "source_line_raw": " ARMY_COMPOSITION_ENTRY_REINFORCE: \"（$REINFORCE|0V=$/月）\""
+      },
+      "english": {
+        "value_raw": "($REINFORCE|0V=$/month)",
+        "relative_game_path": "localization/english/gui/armyview_l_english.yml",
+        "line": 104,
+        "source_line_raw": " ARMY_COMPOSITION_ENTRY_REINFORCE:0 \"($REINFORCE|0V=$/month)\""
+      }
+    },
+    "MONTHLY_MAINTENANCE_LABEL": {
+      "simp_chinese": {
+        "value_raw": "每月维护费：",
+        "relative_game_path": "localization/simp_chinese/gui/militaryview_l_simp_chinese.yml",
+        "line": 45,
+        "source_line_raw": " MONTHLY_MAINTENANCE_LABEL: \"每月维护费：\""
+      },
+      "english": {
+        "value_raw": "Monthly Maintenance:",
+        "relative_game_path": "localization/english/gui/militaryview_l_english.yml",
+        "line": 45,
+        "source_line_raw": " MONTHLY_MAINTENANCE_LABEL:0 \"Monthly Maintenance:\""
+      }
+    },
+    "TT_MAINTENANCE_TITLE": {
+      "simp_chinese": {
+        "value_raw": "#T 维护费：$VALUE$/月#!",
+        "relative_game_path": "localization/simp_chinese/gui/militaryview_l_simp_chinese.yml",
+        "line": 63,
+        "source_line_raw": " TT_MAINTENANCE_TITLE: \"#T 维护费：$VALUE$/月#!\""
+      },
+      "english": {
+        "value_raw": "#T Maintenance: $VALUE$/month#!",
+        "relative_game_path": "localization/english/gui/militaryview_l_english.yml",
+        "line": 63,
+        "source_line_raw": " TT_MAINTENANCE_TITLE:0 \"#T Maintenance: $VALUE$/month#!\""
+      }
+    },
+    "TT_MAINTENANCE_RAISED_ARMIES": {
+      "simp_chinese": {
+        "value_raw": "已集结军队：@gold_icon!$VALUE|1$/月",
+        "relative_game_path": "localization/simp_chinese/gui/militaryview_l_simp_chinese.yml",
+        "line": 64,
+        "source_line_raw": " TT_MAINTENANCE_RAISED_ARMIES: \"已集结军队：@gold_icon!$VALUE|1$/月\""
+      },
+      "english": {
+        "value_raw": "Raised armies: @gold_icon!$VALUE|1$/month",
+        "relative_game_path": "localization/english/gui/militaryview_l_english.yml",
+        "line": 64,
+        "source_line_raw": " TT_MAINTENANCE_RAISED_ARMIES:1 \"Raised armies: @gold_icon!$VALUE|1$/month\""
+      }
+    },
+    "SPLIT_ARMY_IN_HALF": {
+      "simp_chinese": {
+        "value_raw": "#T 平分#!\\n将这支军队平分为规模大致相等的两支[armies|E]",
+        "relative_game_path": "localization/simp_chinese/gui/armyview_l_simp_chinese.yml",
+        "line": 3,
+        "source_line_raw": " SPLIT_ARMY_IN_HALF: \"#T 平分#!\\n将这支军队平分为规模大致相等的两支[armies|E]\""
+      },
+      "english": {
+        "value_raw": "#T Split in half#!\\nSplit this army into two roughly equal [armies|E]",
+        "relative_game_path": "localization/english/gui/armyview_l_english.yml",
+        "line": 3,
+        "source_line_raw": " SPLIT_ARMY_IN_HALF:0 \"#T Split in half#!\\nSplit this army into two roughly equal [armies|E]\""
+      }
+    },
+    "SPLIT_ARMY_CUSTOM": {
+      "simp_chinese": {
+        "value_raw": "#T 分出新军队#!\\n从这支[army|E]中分出[regiments|E]创建新军队",
+        "relative_game_path": "localization/simp_chinese/gui/armyview_l_simp_chinese.yml",
+        "line": 5,
+        "source_line_raw": " SPLIT_ARMY_CUSTOM: \"#T 分出新军队#!\\n从这支[army|E]中分出[regiments|E]创建新军队\""
+      },
+      "english": {
+        "value_raw": "#T Split off new Army#!\\nDetach [regiments|E] from this [army|E] in order to create a new one",
+        "relative_game_path": "localization/english/gui/armyview_l_english.yml",
+        "line": 5,
+        "source_line_raw": " SPLIT_ARMY_CUSTOM:1 \"#T Split off new Army#!\\nDetach [regiments|E] from this [army|E] in order to create a new one\""
+      }
+    },
+    "SPLIT_ARMY_CUSTOM_TWO": {
+      "simp_chinese": {
+        "value_raw": "#T 整编#!\\n整编这两支[armies|E]中的编制",
+        "relative_game_path": "localization/simp_chinese/gui/armyview_l_simp_chinese.yml",
+        "line": 6,
+        "source_line_raw": " SPLIT_ARMY_CUSTOM_TWO: \"#T 整编#!\\n整编这两支[armies|E]中的编制\""
+      },
+      "english": {
+        "value_raw": "#T Reorganize#!\\nReorganize the regiments of two [armies|E]",
+        "relative_game_path": "localization/english/gui/armyview_l_english.yml",
+        "line": 6,
+        "source_line_raw": " SPLIT_ARMY_CUSTOM_TWO:1 \"#T Reorganize#!\\nReorganize the regiments of two [armies|E]\""
+      }
+    },
+    "MERGE_ARMY": {
+      "simp_chinese": {
+        "value_raw": "#T 合并[armies|E]#!\\n将所有选中军队合并成一支",
+        "relative_game_path": "localization/simp_chinese/gui/armyview_l_simp_chinese.yml",
+        "line": 10,
+        "source_line_raw": " MERGE_ARMY: \"#T 合并[armies|E]#!\\n将所有选中军队合并成一支\""
+      },
+      "english": {
+        "value_raw": "#T Merge [armies|E]#!\\nCombine all selected armies into one",
+        "relative_game_path": "localization/english/gui/armyview_l_english.yml",
+        "line": 10,
+        "source_line_raw": " MERGE_ARMY:0 \"#T Merge [armies|E]#!\\nCombine all selected armies into one\""
+      }
+    }
+  },
+  "source_files": [
+    {
+      "relative_game_path": "gui/shared/cooltip.gui",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/gui/shared/cooltip.gui",
+        "bytes": 232159,
+        "sha256": "6d698dc58c09386016042680dd171956ac8da5ddd108e3d94a55c6b9ea22f7c9"
+      },
+      "selected_original_lines": [
+        {
+          "line": 2389,
+          "source_line_raw": "\t\t\t\t\t}"
+        },
+        {
+          "line": 2390,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2391,
+          "source_line_raw": "\t\t\t\t\tdynamicgridbox = {"
+        },
+        {
+          "line": 2392,
+          "source_line_raw": "\t\t\t\t\t\tname = \"troops\""
+        },
+        {
+          "line": 2393,
+          "source_line_raw": "\t\t\t\t\t\tdatamodel = \"[CalculateBreakdownItems(Army.Self)]\""
+        },
+        {
+          "line": 2394,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2395,
+          "source_line_raw": "\t\t\t\t\t\tdatamodel_wrap = 4"
+        },
+        {
+          "line": 2396,
+          "source_line_raw": "\t\t\t\t\t\tflipdirection = yes"
+        },
+        {
+          "line": 2397,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2684,
+          "source_line_raw": "\t\t\t\t\t\ttext_single = {"
+        },
+        {
+          "line": 2685,
+          "source_line_raw": "\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+        },
+        {
+          "line": 2686,
+          "source_line_raw": "\t\t\t\t\t\t\ttext = \"[Army.GetSupplyInfoForTooltip]\""
+        },
+        {
+          "line": 2687,
+          "source_line_raw": "\t\t\t\t\t\t\ttooltip = \"[Army.GetSupplyStateTooltip]\""
+        },
+        {
+          "line": 2688,
+          "source_line_raw": "\t\t\t\t\t\t\talign = nobaseline"
+        },
+        {
+          "line": 2689,
+          "source_line_raw": "\t\t\t\t\t\t\tfonttintcolor = \"[TooltipInfo.GetTintColor]\""
+        },
+        {
+          "line": 2690,
+          "source_line_raw": "\t\t\t\t\t\t}"
+        },
+        {
+          "line": 2691,
+          "source_line_raw": "\t\t\t\t\t}"
+        },
+        {
+          "line": 2692,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2715,
+          "source_line_raw": "\t\t\t\t\t\t}"
+        },
+        {
+          "line": 2716,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2717,
+          "source_line_raw": "\t\t\t\t\t\thbox = {"
+        },
+        {
+          "line": 2718,
+          "source_line_raw": "\t\t\t\t\t\t\tname = \"involved_army_movement_lock\""
+        },
+        {
+          "line": 2719,
+          "source_line_raw": "\t\t\t\t\t\t\tvisible = \"[UnitItem.IsMovementLocked]\""
+        },
+        {
+          "line": 2720,
+          "source_line_raw": "\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+        },
+        {
+          "line": 2721,
+          "source_line_raw": "\t\t\t\t\t\t\tspacing = 2"
+        },
+        {
+          "line": 2722,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2723,
+          "source_line_raw": "\t\t\t\t\t\t\ticon = {"
+        },
+        {
+          "line": 2727,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2728,
+          "source_line_raw": "\t\t\t\t\t\t\ttext_single = {"
+        },
+        {
+          "line": 2729,
+          "source_line_raw": "\t\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+        },
+        {
+          "line": 2730,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttext = \"ARMY_TOOLTIP_IS_MOVEMENT_LOCKED\""
+        },
+        {
+          "line": 2731,
+          "source_line_raw": "\t\t\t\t\t\t\t\talign = nobaseline"
+        },
+        {
+          "line": 2732,
+          "source_line_raw": "\t\t\t\t\t\t\t\tfonttintcolor = \"[TooltipInfo.GetTintColor]\""
+        },
+        {
+          "line": 2733,
+          "source_line_raw": "\t\t\t\t\t\t\t}"
+        },
+        {
+          "line": 2734,
+          "source_line_raw": "\t\t\t\t\t\t}"
+        },
+        {
+          "line": 2735,
+          "source_line_raw": "\t\t\t\t\t}"
+        },
+        {
+          "line": 9778,
+          "source_line_raw": "\tusing = domicile_building_tooltip"
+        },
+        {
+          "line": 9779,
+          "source_line_raw": "}"
+        },
+        {
+          "line": 9780,
+          "source_line_raw": ""
+        },
+        {
+          "line": 9781,
+          "source_line_raw": "template title_troops_tooltip {"
+        },
+        {
+          "line": 9782,
+          "source_line_raw": "\tcontainer = {"
+        },
+        {
+          "line": 9783,
+          "source_line_raw": "\t\talwaystransparent = yes"
+        },
+        {
+          "line": 9784,
+          "source_line_raw": "\t\tposition = { 25 25 }"
+        },
+        {
+          "line": 9785,
+          "source_line_raw": "\t\tvisible = \"[SelectTitleTroopAssignmentView.IsHoveringValidTitle]\""
+        },
+        {
+          "line": 9786,
+          "source_line_raw": "\t\tdatacontext = \"[SelectTitleTroopAssignmentView.GetHoveredTitle]\""
+        },
+        {
+          "line": 9927,
+          "source_line_raw": "\talwaystransparent = yes"
+        },
+        {
+          "line": 9928,
+          "source_line_raw": "\tfilter_mouse = none"
+        },
+        {
+          "line": 9929,
+          "source_line_raw": "\tname = \"TitleTroopsTooltip\""
+        },
+        {
+          "line": 9930,
+          "source_line_raw": "\tvisible = \"[IsMapMode( 'title_troops' )]\""
+        },
+        {
+          "line": 9931,
+          "source_line_raw": "\tusing = title_troops_tooltip"
+        },
+        {
+          "line": 9932,
+          "source_line_raw": "}"
+        },
+        {
+          "line": 9933,
+          "source_line_raw": ""
+        },
+        {
+          "line": 9934,
+          "source_line_raw": "template subject_contract_group_tooltip {"
+        },
+        {
+          "line": 9935,
+          "source_line_raw": "\tcontainer = {"
+        },
+        {
+          "line": 9936,
+          "source_line_raw": "\t\talwaystransparent = no"
+        }
+      ]
+    },
+    {
+      "relative_game_path": "gui/window_army.gui",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/gui/window_army.gui",
+        "bytes": 57924,
+        "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb"
+      },
+      "selected_original_lines": [
+        {
+          "line": 389,
+          "source_line_raw": ""
+        },
+        {
+          "line": 390,
+          "source_line_raw": "\t\t\t\thbox = {"
+        },
+        {
+          "line": 391,
+          "source_line_raw": "\t\t\t\t\tname = \"supplies\""
+        },
+        {
+          "line": 392,
+          "source_line_raw": "\t\t\t\t\ttooltip = \"[Army.GetSupplyStateTooltip]\""
+        },
+        {
+          "line": 393,
+          "source_line_raw": ""
+        },
+        {
+          "line": 394,
+          "source_line_raw": "\t\t\t\t\ticon = {"
+        },
+        {
+          "line": 395,
+          "source_line_raw": "\t\t\t\t\t\tname = \"supply_icon\""
+        },
+        {
+          "line": 396,
+          "source_line_raw": "\t\t\t\t\t\tsize = { 40 40 }"
+        },
+        {
+          "line": 397,
+          "source_line_raw": "\t\t\t\t\t\tframesize = { 60 60 }"
+        },
+        {
+          "line": 506,
+          "source_line_raw": ""
+        },
+        {
+          "line": 507,
+          "source_line_raw": "\t\t\t\t\thbox = {"
+        },
+        {
+          "line": 508,
+          "source_line_raw": "\t\t\t\t\t\tname = \"supplies\""
+        },
+        {
+          "line": 509,
+          "source_line_raw": "\t\t\t\t\t\ttooltip = \"[Army.GetSupplyStateTooltip]\""
+        },
+        {
+          "line": 510,
+          "source_line_raw": ""
+        },
+        {
+          "line": 511,
+          "source_line_raw": "\t\t\t\t\t\ticon = {"
+        },
+        {
+          "line": 512,
+          "source_line_raw": "\t\t\t\t\t\t\tname = \"supply_icon\""
+        },
+        {
+          "line": 513,
+          "source_line_raw": "\t\t\t\t\t\t\tsize = { 40 40 }"
+        },
+        {
+          "line": 514,
+          "source_line_raw": "\t\t\t\t\t\t\tframesize = { 60 60 }"
+        },
+        {
+          "line": 874,
+          "source_line_raw": ""
+        },
+        {
+          "line": 875,
+          "source_line_raw": "\t\t\t\t\t\t\t\t### Hired Troops"
+        },
+        {
+          "line": 876,
+          "source_line_raw": "\t\t\t\t\t\t\t\thbox = {"
+        },
+        {
+          "line": 877,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\tname = \"hired_and_event_troops\""
+        },
+        {
+          "line": 878,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\tvisible = \"[Or( DataModelHasItems(ArmyWindow.GetHiredTroopItems), Army.HasEventTroops )]\""
+        },
+        {
+          "line": 879,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\tignoreinvisible = yes"
+        },
+        {
+          "line": 880,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+        },
+        {
+          "line": 881,
+          "source_line_raw": ""
+        },
+        {
+          "line": 882,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\twidget = {"
+        },
+        {
+          "line": 884,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\tsize = { 36 30 }"
+        },
+        {
+          "line": 885,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\tallow_outside = yes"
+        },
+        {
+          "line": 886,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\ticon = {"
+        },
+        {
+          "line": 887,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\t\tname = \"event_troops\""
+        },
+        {
+          "line": 888,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\t\ttexture = \"gfx/interface/icons/icon_special_troops.dds\""
+        },
+        {
+          "line": 889,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\t\tsize = { 36 36 }"
+        },
+        {
+          "line": 890,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\t\ttooltip = \"ARMY_VIEW_ARMY_HAS_EVENT_TROOPS\""
+        },
+        {
+          "line": 891,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\t\tusing = tooltip_ne"
+        },
+        {
+          "line": 892,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\t}"
+        },
+        {
+          "line": 893,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t}"
+        },
+        {
+          "line": 894,
+          "source_line_raw": ""
+        },
+        {
+          "line": 895,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\toverlappingitembox = {"
+        },
+        {
+          "line": 896,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\tsize = { 350 42 }"
+        },
+        {
+          "line": 897,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\tname = \"hired_troops\""
+        },
+        {
+          "line": 898,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\tdatamodel = \"[ArmyWindow.GetHiredTroopItems]\""
+        },
+        {
+          "line": 899,
+          "source_line_raw": ""
+        },
+        {
+          "line": 900,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\titem = {"
+        },
+        {
+          "line": 901,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\t\tcontainer = {"
+        },
+        {
+          "line": 902,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\t\t\tignoreinvisible = yes"
+        },
+        {
+          "line": 942,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+        },
+        {
+          "line": 943,
+          "source_line_raw": ""
+        },
+        {
+          "line": 944,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\tdynamicgridbox = {"
+        },
+        {
+          "line": 945,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\t\tname = \"troops\""
+        },
+        {
+          "line": 946,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\t\tdatamodel = \"[ArmyWindow.GetTroopItems]\""
+        },
+        {
+          "line": 947,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\t\tdatamodel_wrap = 4"
+        },
+        {
+          "line": 948,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\t\tflipdirection = yes"
+        },
+        {
+          "line": 949,
+          "source_line_raw": ""
+        },
+        {
+          "line": 950,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\t\t\titem = {"
+        },
+        {
+          "line": 1340,
+          "source_line_raw": ""
+        },
+        {
+          "line": 1341,
+          "source_line_raw": "\t\t\t\t\tbutton_army_create = {"
+        },
+        {
+          "line": 1342,
+          "source_line_raw": "\t\t\t\t\t\tparentanchor = center"
+        },
+        {
+          "line": 1343,
+          "source_line_raw": "\t\t\t\t\t\ttooltip = \"[ArmyWindow.BuildSplitCustomTooltip]\""
+        },
+        {
+          "line": 1344,
+          "source_line_raw": "\t\t\t\t\t\tusing = tooltip_ne"
+        },
+        {
+          "line": 1345,
+          "source_line_raw": "\t\t\t\t\t\tonclick = \"[ArmyWindow.ToggleSplitArmyWindow]\""
+        },
+        {
+          "line": 1346,
+          "source_line_raw": "\t\t\t\t\t\tshortcut = army_create_new"
+        },
+        {
+          "line": 1347,
+          "source_line_raw": "\t\t\t\t\t}"
+        },
+        {
+          "line": 1348,
+          "source_line_raw": "\t\t\t\t}"
+        },
+        {
+          "line": 1355,
+          "source_line_raw": "\t\t\t\t\t\tparentanchor = center"
+        },
+        {
+          "line": 1356,
+          "source_line_raw": "\t\t\t\t\t\tonclick = [ArmyWindow.SplitHalfSelected]"
+        },
+        {
+          "line": 1357,
+          "source_line_raw": "\t\t\t\t\t\tshortcut = army_split_half"
+        },
+        {
+          "line": 1358,
+          "source_line_raw": "\t\t\t\t\t\ttooltip = [ArmyWindow.BuildSplitHalfTooltip]"
+        },
+        {
+          "line": 1359,
+          "source_line_raw": "\t\t\t\t\t\tusing = tooltip_ne"
+        },
+        {
+          "line": 1360,
+          "source_line_raw": "\t\t\t\t\t}"
+        },
+        {
+          "line": 1361,
+          "source_line_raw": "\t\t\t\t\tenabled = [ArmyWindow.CanSplitHalfSelected]"
+        },
+        {
+          "line": 1362,
+          "source_line_raw": "\t\t\t\t}"
+        },
+        {
+          "line": 1363,
+          "source_line_raw": ""
+        },
+        {
+          "line": 1368,
+          "source_line_raw": "\t\t\t\t\tenabled = \"[ArmyWindow.CanSplitSelectedHiredAndEventTroops]\""
+        },
+        {
+          "line": 1369,
+          "source_line_raw": "\t\t\t\t\tusing = tooltip_ne"
+        },
+        {
+          "line": 1370,
+          "source_line_raw": ""
+        },
+        {
+          "line": 1371,
+          "source_line_raw": "\t\t\t\t\tbutton_army_split_off_special_troops = {"
+        },
+        {
+          "line": 1372,
+          "source_line_raw": "\t\t\t\t\t\tparentanchor = center"
+        },
+        {
+          "line": 1373,
+          "source_line_raw": "\t\t\t\t\t\talwaystransparent = yes"
+        },
+        {
+          "line": 1374,
+          "source_line_raw": "\t\t\t\t\t}"
+        },
+        {
+          "line": 1375,
+          "source_line_raw": "\t\t\t\t}"
+        },
+        {
+          "line": 1376,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2315,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2316,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2317,
+          "source_line_raw": "\t\ticon = {"
+        },
+        {
+          "line": 2318,
+          "source_line_raw": "\t\t\tname = \"event_troops\""
+        },
+        {
+          "line": 2319,
+          "source_line_raw": "\t\t\tvisible = \"[ArmyRegiment.IsEventTroops]\""
+        },
+        {
+          "line": 2320,
+          "source_line_raw": "\t\t\ttexture = \"gfx/interface/icons/icon_special_troops.dds\""
+        },
+        {
+          "line": 2321,
+          "source_line_raw": "\t\t\tsize = { 36 36 }"
+        },
+        {
+          "line": 2322,
+          "source_line_raw": "\t\t\ttooltip = \"TT_REORG_EVENT_TROOPS\""
+        },
+        {
+          "line": 2323,
+          "source_line_raw": "\t\t}"
+        },
+        {
+          "line": 2324,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2325,
+          "source_line_raw": "\t\ttext_single = {"
+        }
+      ]
+    },
+    {
+      "relative_game_path": "gui/window_county_view.gui",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/gui/window_county_view.gui",
+        "bytes": 105929,
+        "sha256": "4e932366e397b06347d4296c05f3c4c5850e995b010eecda7d5a3b5a7c48675c"
+      },
+      "selected_original_lines": [
+        {
+          "line": 1563,
+          "source_line_raw": "\t\t\t\t\t\thbox = {"
+        },
+        {
+          "line": 1564,
+          "source_line_raw": "\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+        },
+        {
+          "line": 1565,
+          "source_line_raw": ""
+        },
+        {
+          "line": 1566,
+          "source_line_raw": "\t\t\t\t\t\t\ttooltip = \"[HoldingView.GetSupplyLimitTooltip]\""
+        },
+        {
+          "line": 1567,
+          "source_line_raw": ""
+        },
+        {
+          "line": 1568,
+          "source_line_raw": "\t\t\t\t\t\t\ttext_single = {"
+        },
+        {
+          "line": 1569,
+          "source_line_raw": "\t\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+        },
+        {
+          "line": 1570,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttext = \"SUPPLY_LIMIT\""
+        },
+        {
+          "line": 1571,
+          "source_line_raw": "\t\t\t\t\t\t\t\tdefault_format = \"#high\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "gui/window_military.gui",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/gui/window_military.gui",
+        "bytes": 111608,
+        "sha256": "4f5523d249c2e0a4d3c328d789ca375f154c2e102544782480936b4206c57eac"
+      },
+      "selected_original_lines": [
+        {
+          "line": 101,
+          "source_line_raw": ""
+        },
+        {
+          "line": 102,
+          "source_line_raw": "\t\t\t\t# Provincial Armies tab"
+        },
+        {
+          "line": 103,
+          "source_line_raw": "\t\t\t\tvbox_military_provincial_armies_tab = {"
+        },
+        {
+          "line": 104,
+          "source_line_raw": "\t\t\t\t\tvisible = \"[MilitaryView.IsTabActive( 'title_troops' )]\""
+        },
+        {
+          "line": 105,
+          "source_line_raw": "\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+        },
+        {
+          "line": 106,
+          "source_line_raw": "\t\t\t\t\tlayoutpolicy_vertical = expanding"
+        },
+        {
+          "line": 107,
+          "source_line_raw": "\t\t\t\t}"
+        },
+        {
+          "line": 108,
+          "source_line_raw": ""
+        },
+        {
+          "line": 109,
+          "source_line_raw": "\t\t\t\t# Mercenaries tab"
+        },
+        {
+          "line": 157,
+          "source_line_raw": ""
+        },
+        {
+          "line": 158,
+          "source_line_raw": ""
+        },
+        {
+          "line": 159,
+          "source_line_raw": "\t\tbutton_primary = {"
+        },
+        {
+          "line": 160,
+          "source_line_raw": "\t\t\tname = \"tutorial_highlight_raise_troops_button\""
+        },
+        {
+          "line": 161,
+          "source_line_raw": ""
+        },
+        {
+          "line": 162,
+          "source_line_raw": "\t\t\tdatacontext = \"[GetPlayer]\""
+        },
+        {
+          "line": 163,
+          "source_line_raw": "\t\t\tonclick = \"[PlayerRaiseAllRegiments]\""
+        },
+        {
+          "line": 164,
+          "source_line_raw": "\t\t\tenabled = \"[PlayerCanRaiseAnyRallyPoint]\""
+        },
+        {
+          "line": 165,
+          "source_line_raw": "\t\t\tonrightclick = \"[PlayerRaiseAllRegimentsAtLocation]\""
+        },
+        {
+          "line": 301,
+          "source_line_raw": "\t\t\tvisible = \"[MilitaryView.GetCharacter.GetGovernment.HasMechanic( 'administrative' )]\""
+        },
+        {
+          "line": 302,
+          "source_line_raw": ""
+        },
+        {
+          "line": 303,
+          "source_line_raw": "\t\t\tshortcut = \"tab_2\""
+        },
+        {
+          "line": 304,
+          "source_line_raw": "\t\t\tonclick = \"[MilitaryView.SetActiveTab( 'title_troops' )]\""
+        },
+        {
+          "line": 305,
+          "source_line_raw": "\t\t\tdown = \"[MilitaryView.IsTabActive( 'title_troops' )]\""
+        },
+        {
+          "line": 306,
+          "source_line_raw": ""
+        },
+        {
+          "line": 307,
+          "source_line_raw": "\t\t\talwaystransparent = \"[MilitaryView.IsTabActive( 'title_troops' )]\""
+        },
+        {
+          "line": 308,
+          "source_line_raw": ""
+        },
+        {
+          "line": 309,
+          "source_line_raw": "\t\t\tblockoverride \"tab_label\""
+        },
+        {
+          "line": 310,
+          "source_line_raw": "\t\t\t{"
+        },
+        {
+          "line": 311,
+          "source_line_raw": "\t\t\t\ttext = \"MV_ARMIES_SELECTION_IMPERIAL\""
+        },
+        {
+          "line": 312,
+          "source_line_raw": "\t\t\t\tmax_width = 130"
+        },
+        {
+          "line": 316,
+          "source_line_raw": ""
+        },
+        {
+          "line": 317,
+          "source_line_raw": "\t\t\tblockoverride \"tab_icon\""
+        },
+        {
+          "line": 318,
+          "source_line_raw": "\t\t\t{"
+        },
+        {
+          "line": 319,
+          "source_line_raw": "\t\t\t\ttexture = \"gfx/interface/icons/flat_icons/title_troops.dds\""
+        },
+        {
+          "line": 320,
+          "source_line_raw": "\t\t\t\tdown = \"[MilitaryView.IsTabActive( 'title_troops' )]\""
+        },
+        {
+          "line": 321,
+          "source_line_raw": "\t\t\t}"
+        },
+        {
+          "line": 322,
+          "source_line_raw": "\t\t}"
+        },
+        {
+          "line": 323,
+          "source_line_raw": ""
+        },
+        {
+          "line": 324,
+          "source_line_raw": "\t\tbutton_tab = {"
+        },
+        {
+          "line": 325,
+          "source_line_raw": "\t\t\tonclick = \"[MilitaryView.SetActiveTab( 'mercenary' )]\""
+        },
+        {
+          "line": 353,
+          "source_line_raw": "\t\tusing = Animation_Tab_Switch"
+        },
+        {
+          "line": 354,
+          "source_line_raw": ""
+        },
+        {
+          "line": 355,
+          "source_line_raw": "\t\tscrollbox = {"
+        },
+        {
+          "line": 356,
+          "source_line_raw": "\t\t\tname = \"scrollbox_troops\""
+        },
+        {
+          "line": 357,
+          "source_line_raw": "\t\t\tlayoutpolicy_horizontal = expanding"
+        },
+        {
+          "line": 358,
+          "source_line_raw": "\t\t\tlayoutpolicy_vertical = expanding"
+        },
+        {
+          "line": 359,
+          "source_line_raw": ""
+        },
+        {
+          "line": 360,
+          "source_line_raw": "\t\t\tbackground = {"
+        },
+        {
+          "line": 361,
+          "source_line_raw": "\t\t\t\ttexture = \"gfx/interface/skinned/illustrations/moving.dds\""
+        },
+        {
+          "line": 486,
+          "source_line_raw": ""
+        },
+        {
+          "line": 487,
+          "source_line_raw": "\t\t\t\t\tbutton_checkbox_label = {"
+        },
+        {
+          "line": 488,
+          "source_line_raw": "\t\t\t\t\t\tonclick = \"[MilitaryView.OnMilitaryReinforcementClick]\""
+        },
+        {
+          "line": 489,
+          "source_line_raw": "\t\t\t\t\t\ttooltip = \"[MilitaryView.GetMilitaryReinforcementCostTooltip]\""
+        },
+        {
+          "line": 490,
+          "source_line_raw": ""
+        },
+        {
+          "line": 491,
+          "source_line_raw": "\t\t\t\t\t\tblockoverride \"checkbox\""
+        },
+        {
+          "line": 492,
+          "source_line_raw": "\t\t\t\t\t\t{"
+        },
+        {
+          "line": 493,
+          "source_line_raw": "\t\t\t\t\t\t\tchecked = \"[MilitaryView.IsMilitaryReinforcementsEnabled]\""
+        },
+        {
+          "line": 494,
+          "source_line_raw": "\t\t\t\t\t\t}"
+        },
+        {
+          "line": 530,
+          "source_line_raw": "\t\t\t\t\t\tspacing = 5"
+        },
+        {
+          "line": 531,
+          "source_line_raw": ""
+        },
+        {
+          "line": 532,
+          "source_line_raw": "\t\t\t\t\t\ttext_single = {"
+        },
+        {
+          "line": 533,
+          "source_line_raw": "\t\t\t\t\t\t\ttext = \"MONTHLY_MAINTENANCE_LABEL\""
+        },
+        {
+          "line": 534,
+          "source_line_raw": "\t\t\t\t\t\t\tmax_width = 200"
+        },
+        {
+          "line": 535,
+          "source_line_raw": "\t\t\t\t\t\t}"
+        },
+        {
+          "line": 536,
+          "source_line_raw": ""
+        },
+        {
+          "line": 537,
+          "source_line_raw": "\t\t\t\t\t\texpand = {"
+        },
+        {
+          "line": 538,
+          "source_line_raw": "\t\t\t\t\t\t\tsize = { 28 28 }"
+        },
+        {
+          "line": 720,
+          "source_line_raw": "\ttype vbox_military_provincial_armies_tab = vbox {"
+        },
+        {
+          "line": 721,
+          "source_line_raw": "\t\tname = imperial_armies_ra_uses_this"
+        },
+        {
+          "line": 722,
+          "source_line_raw": "\t\twidgetid = imperial_armies_ra_uses_this"
+        },
+        {
+          "line": 723,
+          "source_line_raw": "\t\tvisible = \"[MilitaryView.IsTabActive( 'title_troops' )]\""
+        },
+        {
+          "line": 724,
+          "source_line_raw": "\t\tlayoutpolicy_horizontal = expanding"
+        },
+        {
+          "line": 725,
+          "source_line_raw": "\t\tlayoutpolicy_vertical = expanding"
+        },
+        {
+          "line": 726,
+          "source_line_raw": ""
+        },
+        {
+          "line": 727,
+          "source_line_raw": "\t\tusing = Animation_Tab_Switch"
+        },
+        {
+          "line": 728,
+          "source_line_raw": ""
+        },
+        {
+          "line": 762,
+          "source_line_raw": "\t\t}"
+        },
+        {
+          "line": 763,
+          "source_line_raw": ""
+        },
+        {
+          "line": 764,
+          "source_line_raw": "\t\tscrollbox = {"
+        },
+        {
+          "line": 765,
+          "source_line_raw": "\t\t\tname = \"scrollbox_troops\""
+        },
+        {
+          "line": 766,
+          "source_line_raw": "\t\t\tlayoutpolicy_horizontal = expanding"
+        },
+        {
+          "line": 767,
+          "source_line_raw": "\t\t\tlayoutpolicy_vertical = expanding"
+        },
+        {
+          "line": 768,
+          "source_line_raw": ""
+        },
+        {
+          "line": 769,
+          "source_line_raw": "\t\t\tbackground = {"
+        },
+        {
+          "line": 770,
+          "source_line_raw": "\t\t\t\ttexture = \"gfx/interface/skinned/illustrations/moving.dds\""
+        },
+        {
+          "line": 896,
+          "source_line_raw": ""
+        },
+        {
+          "line": 897,
+          "source_line_raw": "\t\t\t\t\tbutton_checkbox_label = {"
+        },
+        {
+          "line": 898,
+          "source_line_raw": "\t\t\t\t\t\tonclick = \"[MilitaryView.OnMilitaryReinforcementClick]\""
+        },
+        {
+          "line": 899,
+          "source_line_raw": "\t\t\t\t\t\ttooltip = \"[MilitaryView.GetMilitaryReinforcementCostTooltip]\""
+        },
+        {
+          "line": 900,
+          "source_line_raw": ""
+        },
+        {
+          "line": 901,
+          "source_line_raw": "\t\t\t\t\t\tblockoverride \"checkbox\""
+        },
+        {
+          "line": 902,
+          "source_line_raw": "\t\t\t\t\t\t{"
+        },
+        {
+          "line": 903,
+          "source_line_raw": "\t\t\t\t\t\t\tchecked = \"[MilitaryView.IsMilitaryReinforcementsEnabled]\""
+        },
+        {
+          "line": 904,
+          "source_line_raw": "\t\t\t\t\t\t}"
+        },
+        {
+          "line": 939,
+          "source_line_raw": "\t\t\t\t\t\tspacing = 5"
+        },
+        {
+          "line": 940,
+          "source_line_raw": ""
+        },
+        {
+          "line": 941,
+          "source_line_raw": "\t\t\t\t\t\ttext_single = {"
+        },
+        {
+          "line": 942,
+          "source_line_raw": "\t\t\t\t\t\t\ttext = \"MONTHLY_MAINTENANCE_LABEL\""
+        },
+        {
+          "line": 943,
+          "source_line_raw": "\t\t\t\t\t\t\tmaximumsize = { 400 -1 }"
+        },
+        {
+          "line": 944,
+          "source_line_raw": "\t\t\t\t\t\t}"
+        },
+        {
+          "line": 945,
+          "source_line_raw": ""
+        },
+        {
+          "line": 946,
+          "source_line_raw": "\t\t\t\t\t\texpand = {"
+        },
+        {
+          "line": 947,
+          "source_line_raw": "\t\t\t\t\t\t\tsize = { 28 28 }"
+        },
+        {
+          "line": 1349,
+          "source_line_raw": "\t\t\t\t\t\tusing = Animation_Tab_Switch"
+        },
+        {
+          "line": 1350,
+          "source_line_raw": ""
+        },
+        {
+          "line": 1351,
+          "source_line_raw": "\t\t\t\t\t\ttext_label_center = {"
+        },
+        {
+          "line": 1352,
+          "source_line_raw": "\t\t\t\t\t\t\tname = \"hired_troops_view_holy_orders_header_item\""
+        },
+        {
+          "line": 1353,
+          "source_line_raw": "\t\t\t\t\t\t\ttext = \"HIRED_TROOPS_VIEW_LIST_HO_HEADER\""
+        },
+        {
+          "line": 1354,
+          "source_line_raw": "\t\t\t\t\t\t\tmax_width = 400"
+        },
+        {
+          "line": 1355,
+          "source_line_raw": "\t\t\t\t\t\t}"
+        },
+        {
+          "line": 1356,
+          "source_line_raw": ""
+        },
+        {
+          "line": 1357,
+          "source_line_raw": "\t\t\t\t\t\ttext_single = {"
+        },
+        {
+          "line": 1378,
+          "source_line_raw": "\t\t\t\t\t\t}"
+        },
+        {
+          "line": 1379,
+          "source_line_raw": ""
+        },
+        {
+          "line": 1380,
+          "source_line_raw": "\t\t\t\t\t\tbutton_standard = {"
+        },
+        {
+          "line": 1381,
+          "source_line_raw": "\t\t\t\t\t\t\tname = \"hired_troops_view_create_holy_order_item\""
+        },
+        {
+          "line": 1382,
+          "source_line_raw": "\t\t\t\t\t\t\tdatacontext = \"[GetDecisionWithKey('create_holy_order_decision')]\""
+        },
+        {
+          "line": 1383,
+          "source_line_raw": "\t\t\t\t\t\t\tvisible = \"[Decision.IsShownForPlayer]\""
+        },
+        {
+          "line": 1384,
+          "source_line_raw": "\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+        },
+        {
+          "line": 1385,
+          "source_line_raw": ""
+        },
+        {
+          "line": 1386,
+          "source_line_raw": "\t\t\t\t\t\t\tsize = { 504 55 }"
+        },
+        {
+          "line": 2451,
+          "source_line_raw": "\t\t\t\t\t\t\t\tsize = { 22 22 }"
+        },
+        {
+          "line": 2452,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2453,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2454,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttexture = \"gfx/interface/icons/title_troops/call_on_troops.dds\""
+        },
+        {
+          "line": 2455,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2456,
+          "source_line_raw": "\t\t\t\t\t\t\t\tonclick = \"[HiredTroopItem.Hire]\""
+        },
+        {
+          "line": 2457,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2458,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttooltip = \"TITLE_TROOPS_CALL_ON_TROOPS\""
+        },
+        {
+          "line": 2459,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttooltip_when_disabled = \"[HiredTroopItem.GetHireTooltip]\""
+        },
+        {
+          "line": 2472,
+          "source_line_raw": "\t\t\t\t\t\t\t\tparentanchor = center"
+        },
+        {
+          "line": 2473,
+          "source_line_raw": "\t\t\t\t\t\t\t\tsize = { 22 22 }"
+        },
+        {
+          "line": 2474,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2475,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttexture = \"gfx/interface/icons/title_troops/reassign_troops.dds\""
+        },
+        {
+          "line": 2476,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2477,
+          "source_line_raw": "\t\t\t\t\t\t\t\tblock \"reassign_troops_on_click\""
+        },
+        {
+          "line": 2478,
+          "source_line_raw": "\t\t\t\t\t\t\t\t{"
+        },
+        {
+          "line": 2479,
+          "source_line_raw": "\t\t\t\t\t\t\t\t\tonclick = \"[MilitaryView.Close]\""
+        },
+        {
+          "line": 2480,
+          "source_line_raw": "\t\t\t\t\t\t\t\t}"
+        },
+        {
+          "line": 2481,
+          "source_line_raw": "\t\t\t\t\t\t\t\tonclick = \"[OpenGameViewData( 'select_title_troop_assignment', HiredTroopItem.GetAdministrativeTitle.GetID )]\""
+        },
+        {
+          "line": 2482,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2488,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2489,
+          "source_line_raw": "\t\t\t\t\t\t## Action: \"Ask Liege for Troops\""
+        },
+        {
+          "line": 2490,
+          "source_line_raw": "\t\t\t\t\t\tbutton_round = {"
+        },
+        {
+          "line": 2491,
+          "source_line_raw": "\t\t\t\t\t\t\tname = \"request_admin_troops_from_emperor\""
+        },
+        {
+          "line": 2492,
+          "source_line_raw": "\t\t\t\t\t\t\tvisible = \"[And( Not( Title.IsAdministrativeArmyHiredByLocalPlayer ), And( Not( Character.IsPlayer ), Character.IsPlayerInteractionShown( 'request_emperor_title_troops_interaction' ) ) )]\""
+        },
+        {
+          "line": 2493,
+          "source_line_raw": "\t\t\t\t\t\t\tsize = { 35 35 }"
+        },
+        {
+          "line": 2494,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2495,
+          "source_line_raw": "\t\t\t\t\t\t\tbutton_icon = {"
+        },
+        {
+          "line": 2496,
+          "source_line_raw": "\t\t\t\t\t\t\t\tparentanchor = center"
+        },
+        {
+          "line": 2497,
+          "source_line_raw": "\t\t\t\t\t\t\t\tsize = { 22 22 }"
+        },
+        {
+          "line": 2498,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2499,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttexture = \"gfx/interface/icons/title_troops/ask_liege_for_troops.dds\""
+        },
+        {
+          "line": 2500,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2501,
+          "source_line_raw": "\t\t\t\t\t\t\t\tonclick = \"[Character.OpenPlayerInteractionWithTargetTitle('request_emperor_title_troops_interaction', HiredTroopItem.GetTitle)]\""
+        },
+        {
+          "line": 2502,
+          "source_line_raw": "\t\t\t\t\t\t\t\tenabled = \"[Character.IsPlayerInteractionValid('request_emperor_title_troops_interaction')]\""
+        },
+        {
+          "line": 2503,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2504,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttooltip = \"[Character.GetPlayerInteractionTooltip('request_emperor_title_troops_interaction')]\""
+        },
+        {
+          "line": 2505,
+          "source_line_raw": "\t\t\t\t\t\t\t\tusing = tooltip_se"
+        },
+        {
+          "line": 2506,
+          "source_line_raw": "\t\t\t\t\t\t\t}"
+        },
+        {
+          "line": 2507,
+          "source_line_raw": "\t\t\t\t\t\t}"
+        },
+        {
+          "line": 2508,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2509,
+          "source_line_raw": "\t\t\t\t\t\t## Action: \"Request Troops\""
+        },
+        {
+          "line": 2510,
+          "source_line_raw": "\t\t\t\t\t\tbutton_round = {"
+        },
+        {
+          "line": 2511,
+          "source_line_raw": "\t\t\t\t\t\t\tname = \"hire_peer_admin_vassal\" #tutorial uses this"
+        },
+        {
+          "line": 2512,
+          "source_line_raw": "\t\t\t\t\t\t\tvisible = \"[And( Not( Title.IsAdministrativeArmyHiredByLocalPlayer ), Character.IsPlayerInteractionShown( 'request_ally_title_troops_interaction' ) )]\""
+        },
+        {
+          "line": 2513,
+          "source_line_raw": "\t\t\t\t\t\t\tsize = { 35 35 }"
+        },
+        {
+          "line": 2514,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2515,
+          "source_line_raw": "\t\t\t\t\t\t\tbutton_icon = {"
+        },
+        {
+          "line": 2516,
+          "source_line_raw": "\t\t\t\t\t\t\t\tparentanchor = center"
+        },
+        {
+          "line": 2517,
+          "source_line_raw": "\t\t\t\t\t\t\t\tsize = { 22 22 }"
+        },
+        {
+          "line": 2518,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2519,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttexture = \"gfx/interface/icons/title_troops/request_troops.dds\""
+        },
+        {
+          "line": 2520,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2521,
+          "source_line_raw": "\t\t\t\t\t\t\t\tenabled = \"[Character.IsPlayerInteractionValid('request_ally_title_troops_interaction')]\""
+        },
+        {
+          "line": 2522,
+          "source_line_raw": "\t\t\t\t\t\t\t\tonclick = \"[Character.OpenPlayerInteractionWithTargetTitle('request_ally_title_troops_interaction', HiredTroopItem.GetTitle)]\""
+        },
+        {
+          "line": 2523,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2524,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttooltip = \"[Character.GetPlayerInteractionTooltip('request_ally_title_troops_interaction')]\""
+        },
+        {
+          "line": 2525,
+          "source_line_raw": "\t\t\t\t\t\t\t\tusing = tooltip_se"
+        },
+        {
+          "line": 2526,
+          "source_line_raw": "\t\t\t\t\t\t\t}"
+        },
+        {
+          "line": 2527,
+          "source_line_raw": "\t\t\t\t\t\t}"
+        },
+        {
+          "line": 2528,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2529,
+          "source_line_raw": "\t\t\t\t\t\t## Action: \"Return Troops\""
+        },
+        {
+          "line": 2536,
+          "source_line_raw": "\t\t\t\t\t\t\t\tparentanchor = center"
+        },
+        {
+          "line": 2537,
+          "source_line_raw": "\t\t\t\t\t\t\t\tsize = { 22 22 }"
+        },
+        {
+          "line": 2538,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2539,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttexture = \"gfx/interface/icons/title_troops/return_troops.dds\""
+        },
+        {
+          "line": 2540,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2541,
+          "source_line_raw": "\t\t\t\t\t\t\t\tonclick = \"[HiredTroopItem.GetTitle.ReturnTitleMaaToOwner]\""
+        },
+        {
+          "line": 2542,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2543,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttooltip = \"TITLE_TROOPS_RETURN\""
+        },
+        {
+          "line": 2544,
+          "source_line_raw": "\t\t\t\t\t\t\t\tusing = tooltip_se"
+        },
+        {
+          "line": 2548,
+          "source_line_raw": "\t\t\t\t\t\t## Action: \"Reclaim Troops\""
+        },
+        {
+          "line": 2549,
+          "source_line_raw": "\t\t\t\t\t\tbutton_round = {"
+        },
+        {
+          "line": 2550,
+          "source_line_raw": "\t\t\t\t\t\t\tname = \"take_back_button\""
+        },
+        {
+          "line": 2551,
+          "source_line_raw": "\t\t\t\t\t\t\tvisible = \"[Character.IsPlayerInteractionShown('request_title_troops_back_interaction')]\""
+        },
+        {
+          "line": 2552,
+          "source_line_raw": "\t\t\t\t\t\t\tsize = { 35 35 }"
+        },
+        {
+          "line": 2553,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2554,
+          "source_line_raw": "\t\t\t\t\t\t\tbutton_icon = {"
+        },
+        {
+          "line": 2555,
+          "source_line_raw": "\t\t\t\t\t\t\t\tparentanchor = center"
+        },
+        {
+          "line": 2556,
+          "source_line_raw": "\t\t\t\t\t\t\t\tsize = { 22 22 }"
+        },
+        {
+          "line": 2557,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2558,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttexture = \"gfx/interface/icons/title_troops/reclaim_troops.dds\""
+        },
+        {
+          "line": 2559,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2560,
+          "source_line_raw": "\t\t\t\t\t\t\t\tenabled = \"[Character.IsPlayerInteractionValid('request_title_troops_back_interaction')]\""
+        },
+        {
+          "line": 2561,
+          "source_line_raw": "\t\t\t\t\t\t\t\tonclick = \"[Character.OpenPlayerInteractionWithTargetTitle('request_title_troops_back_interaction', HiredTroopItem.GetTitle)]\""
+        },
+        {
+          "line": 2562,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2563,
+          "source_line_raw": "\t\t\t\t\t\t\t\ttooltip = \"[Character.GetPlayerInteractionTooltip('request_title_troops_back_interaction')]\""
+        },
+        {
+          "line": 2564,
+          "source_line_raw": "\t\t\t\t\t\t\t\tusing = tooltip_se"
+        },
+        {
+          "line": 2565,
+          "source_line_raw": "\t\t\t\t\t\t\t}"
+        },
+        {
+          "line": 2566,
+          "source_line_raw": "\t\t\t\t\t\t}"
+        },
+        {
+          "line": 2567,
+          "source_line_raw": "\t\t\t\t\t}"
+        },
+        {
+          "line": 2568,
+          "source_line_raw": "\t\t\t\t}"
+        },
+        {
+          "line": 2794,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2795,
+          "source_line_raw": "\t\t\t\t\t\tbutton_standard = {"
+        },
+        {
+          "line": 2796,
+          "source_line_raw": "\t\t\t\t\t\t\tname = \"take_back_button\""
+        },
+        {
+          "line": 2797,
+          "source_line_raw": "\t\t\t\t\t\t\tvisible = \"[Character.IsPlayerInteractionShown('request_title_troops_back_interaction')]\""
+        },
+        {
+          "line": 2798,
+          "source_line_raw": "\t\t\t\t\t\t\tdatacontext = \"[Title.GetHolder]\""
+        },
+        {
+          "line": 2799,
+          "source_line_raw": "\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding"
+        },
+        {
+          "line": 2800,
+          "source_line_raw": "\t\t\t\t\t\t\tmax_width = 175"
+        },
+        {
+          "line": 2801,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2802,
+          "source_line_raw": "\t\t\t\t\t\t\tenabled = \"[Character.IsPlayerInteractionValid('request_title_troops_back_interaction')]\""
+        },
+        {
+          "line": 2803,
+          "source_line_raw": "\t\t\t\t\t\t\tonclick = \"[Character.OpenPlayerInteractionWithTargetTitle('request_title_troops_back_interaction', Title.Self)]\""
+        },
+        {
+          "line": 2804,
+          "source_line_raw": "\t\t\t\t\t\t\ttooltip = \"[Character.GetPlayerInteractionTooltip('request_title_troops_back_interaction')]\""
+        },
+        {
+          "line": 2805,
+          "source_line_raw": "\t\t\t\t\t\t\tusing = tooltip_sw"
+        },
+        {
+          "line": 2806,
+          "source_line_raw": ""
+        },
+        {
+          "line": 2807,
+          "source_line_raw": "\t\t\t\t\t\t\ttext = \"HIRED_TROOPS_VIEW_RECLAIM\""
+        },
+        {
+          "line": 2808,
+          "source_line_raw": "\t\t\t\t\t\t}"
+        },
+        {
+          "line": 2809,
+          "source_line_raw": "\t\t\t\t\t}"
+        },
+        {
+          "line": 3350,
+          "source_line_raw": "\t\t\t\t}"
+        },
+        {
+          "line": 3351,
+          "source_line_raw": ""
+        },
+        {
+          "line": 3352,
+          "source_line_raw": "\t\t\t\ticon = {"
+        },
+        {
+          "line": 3353,
+          "source_line_raw": "\t\t\t\t\tname = \"event_troops\""
+        },
+        {
+          "line": 3354,
+          "source_line_raw": "\t\t\t\t\ttexture = \"gfx/interface/icons/icon_special_troops.dds\""
+        },
+        {
+          "line": 3355,
+          "source_line_raw": "\t\t\t\t\tsize = { 36 36 }"
+        },
+        {
+          "line": 3356,
+          "source_line_raw": "\t\t\t\t}"
+        },
+        {
+          "line": 3357,
+          "source_line_raw": ""
+        },
+        {
+          "line": 3358,
+          "source_line_raw": "\t\t\t\tspacer = {"
+        },
+        {
+          "line": 3359,
+          "source_line_raw": "\t\t\t\t\tsize = { 5 0 }"
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/english/game_concepts_l_english.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/english/game_concepts_l_english.yml",
+        "bytes": 382068,
+        "sha256": "ae7ebd881fe5b4222220c5dd9cf4b56b5d848202af2e5db9f5c90b479f455dd7"
+      },
+      "selected_original_lines": [
+        {
+          "line": 1173,
+          "source_line_raw": " game_concept_supplies:0 \"Supplies\""
+        },
+        {
+          "line": 1175,
+          "source_line_raw": " game_concept_supply_limit:0 \"Supply Limit\""
+        },
+        {
+          "line": 1176,
+          "source_line_raw": " game_concept_supply_limit_desc:0 \"The $game_concept_supply_limit$ dictates the amount of [soldiers|E] you may have in a [barony|E], as determined by the Barony's [terrain|E] and [development|E].\\n\\nShould your total [army|E] size go above the $game_concept_supply_limit$, your $game_concept_armies$ will lose [supply|E] and eventually suffer from [attrition|E].\""
+        },
+        {
+          "line": 1931,
+          "source_line_raw": " game_concept_movement_lock:0 \"Movement Lock\""
+        },
+        {
+          "line": 1932,
+          "source_line_raw": " game_concept_movement_locked:0 \"Movement Locked\""
+        },
+        {
+          "line": 1933,
+          "source_line_raw": " game_concept_movement_locked_desc:0 \"After an [army|E] has completed more than half of a given move order, it will not be possible to change it until they arrive at their destination.\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/english/gui/armyview_l_english.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/english/gui/armyview_l_english.yml",
+        "bytes": 19676,
+        "sha256": "f56003f0898ff6b3ad50838de5a60b18b13da6494f72fae59312383637a4f569"
+      },
+      "selected_original_lines": [
+        {
+          "line": 3,
+          "source_line_raw": " SPLIT_ARMY_IN_HALF:0 \"#T Split in half#!\\nSplit this army into two roughly equal [armies|E]\""
+        },
+        {
+          "line": 5,
+          "source_line_raw": " SPLIT_ARMY_CUSTOM:1 \"#T Split off new Army#!\\nDetach [regiments|E] from this [army|E] in order to create a new one\""
+        },
+        {
+          "line": 6,
+          "source_line_raw": " SPLIT_ARMY_CUSTOM_TWO:1 \"#T Reorganize#!\\nReorganize the regiments of two [armies|E]\""
+        },
+        {
+          "line": 10,
+          "source_line_raw": " MERGE_ARMY:0 \"#T Merge [armies|E]#!\\nCombine all selected armies into one\""
+        },
+        {
+          "line": 104,
+          "source_line_raw": " ARMY_COMPOSITION_ENTRY_REINFORCE:0 \"($REINFORCE|0V=$/month)\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/english/gui/holding_view_l_english.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/english/gui/holding_view_l_english.yml",
+        "bytes": 24361,
+        "sha256": "9d8c9e98f7b4e6459f0b6cc690b5cf6773ed64a9a5ef4b433e96126d0a95539d"
+      },
+      "selected_original_lines": [
+        {
+          "line": 77,
+          "source_line_raw": " SUPPLY_LIMIT:0 \"[supply_limit|E]:\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/english/gui/map_l_english.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/english/gui/map_l_english.yml",
+        "bytes": 28584,
+        "sha256": "aafe7159be18e6dd3c64e7ea22d6f6c3770677a8fad218c42b41bf0330901f99"
+      },
+      "selected_original_lines": [
+        {
+          "line": 59,
+          "source_line_raw": " PROVINCE_TOOLTIP_EMBARKING_IMPLIED:0 \"#I Will pay Embarking Fees#!\""
+        },
+        {
+          "line": 66,
+          "source_line_raw": " PROVINCE_TOOLTIP_CLICK_TO_GO:1 \"\\n#I Right-click to march here#!\""
+        },
+        {
+          "line": 69,
+          "source_line_raw": " PROVINCE_TOOLTIP_ETA:1 \"#I - Predicted arrival: [DATE.GetTimeDiffFromNow] ([DATE.GetStringShortNoYear])#!\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/english/gui/mapicons_l_english.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/english/gui/mapicons_l_english.yml",
+        "bytes": 6978,
+        "sha256": "12d972ea64c7a186b20a0c28a91654ebd1c7d70cfe9b14aaa6152f6db9bc417d"
+      },
+      "selected_original_lines": [
+        {
+          "line": 11,
+          "source_line_raw": " ARMY_TOOLTIP_IS_MOVEMENT_LOCKED:1 \"[movement_locked|E]\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/english/gui/militaryview_l_english.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/english/gui/militaryview_l_english.yml",
+        "bytes": 14736,
+        "sha256": "33f8ab26af7e0890b9f86655f0efd8a1545bb0cfba120c4eb38c10d8fb7d1202"
+      },
+      "selected_original_lines": [
+        {
+          "line": 45,
+          "source_line_raw": " MONTHLY_MAINTENANCE_LABEL:0 \"Monthly Maintenance:\""
+        },
+        {
+          "line": 50,
+          "source_line_raw": " MONTHLY_REINFORCEMENT_COST_LABEL:1 \"Monthly Reinforcement\""
+        },
+        {
+          "line": 63,
+          "source_line_raw": " TT_MAINTENANCE_TITLE:0 \"#T Maintenance: $VALUE$/month#!\""
+        },
+        {
+          "line": 64,
+          "source_line_raw": " TT_MAINTENANCE_RAISED_ARMIES:1 \"Raised armies: @gold_icon!$VALUE|1$/month\""
+        },
+        {
+          "line": 67,
+          "source_line_raw": " TT_REINFORCING_MAA_YES_TITLE:0 \"#T Reinforcing [men_at_arms|E]#!\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/english/holdings_l_english.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/english/holdings_l_english.yml",
+        "bytes": 5279,
+        "sha256": "3a46804087b0475dc19f33e378e099addda3d0e6c08729c181a35b4f321851b7"
+      },
+      "selected_original_lines": [
+        {
+          "line": 37,
+          "source_line_raw": " SUPPLY_LIMIT_TOOLTIP:0 \"#T [supply_limit|E]: $VALUE|V$#!\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/game_concepts_l_simp_chinese.yml",
+        "bytes": 350826,
+        "sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86"
+      },
+      "selected_original_lines": [
+        {
+          "line": 1150,
+          "source_line_raw": " game_concept_supplies: \"补给\""
+        },
+        {
+          "line": 1152,
+          "source_line_raw": " game_concept_supply_limit: \"补给上限\""
+        },
+        {
+          "line": 1153,
+          "source_line_raw": " game_concept_supply_limit_desc: \"$game_concept_supply_limit$指代你在一个[barony|E]能有的[soldiers|E]数量，由男爵领的[terrain|E]和[development|E]决定。\\n\\n如果你的[army|E]规模超过$game_concept_supply_limit$，这支$game_concept_armies$将失去[supply|E]并最终遭受[attrition|E]。\""
+        },
+        {
+          "line": 1823,
+          "source_line_raw": " game_concept_movement_lock: \"移动锁定\""
+        },
+        {
+          "line": 1824,
+          "source_line_raw": " game_concept_movement_locked: \"移动锁定\""
+        },
+        {
+          "line": 1825,
+          "source_line_raw": " game_concept_movement_locked_desc: \"如果一支[army|E]已经完成了移动指令的一半进度，那么指令在其到达目的地之前无法变更。\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/simp_chinese/gui/armyview_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/gui/armyview_l_simp_chinese.yml",
+        "bytes": 19125,
+        "sha256": "6109fe5408ea50c2a3bd29e91c81000e3a8a6523264f01c6f9d108448ed013f3"
+      },
+      "selected_original_lines": [
+        {
+          "line": 3,
+          "source_line_raw": " SPLIT_ARMY_IN_HALF: \"#T 平分#!\\n将这支军队平分为规模大致相等的两支[armies|E]\""
+        },
+        {
+          "line": 5,
+          "source_line_raw": " SPLIT_ARMY_CUSTOM: \"#T 分出新军队#!\\n从这支[army|E]中分出[regiments|E]创建新军队\""
+        },
+        {
+          "line": 6,
+          "source_line_raw": " SPLIT_ARMY_CUSTOM_TWO: \"#T 整编#!\\n整编这两支[armies|E]中的编制\""
+        },
+        {
+          "line": 10,
+          "source_line_raw": " MERGE_ARMY: \"#T 合并[armies|E]#!\\n将所有选中军队合并成一支\""
+        },
+        {
+          "line": 104,
+          "source_line_raw": " ARMY_COMPOSITION_ENTRY_REINFORCE: \"（$REINFORCE|0V=$/月）\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/simp_chinese/gui/holding_view_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/gui/holding_view_l_simp_chinese.yml",
+        "bytes": 23294,
+        "sha256": "4e87d59ab012ccbc6dc80af5195c5417e6bc31def20799827018e904a9638a1d"
+      },
+      "selected_original_lines": [
+        {
+          "line": 77,
+          "source_line_raw": " SUPPLY_LIMIT: \"[supply_limit|E]：\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/simp_chinese/gui/map_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/gui/map_l_simp_chinese.yml",
+        "bytes": 27840,
+        "sha256": "ce39619b5bd56d2bb3ab34ad99df6c4bb35bc823910e8e53d5afa676a21f5d56"
+      },
+      "selected_original_lines": [
+        {
+          "line": 58,
+          "source_line_raw": " PROVINCE_TOOLTIP_EMBARKING_IMPLIED: \"#I 会支付登船费#!\""
+        },
+        {
+          "line": 65,
+          "source_line_raw": " PROVINCE_TOOLTIP_CLICK_TO_GO: \"\\n#I 右键点击向此处进军#!\""
+        },
+        {
+          "line": 68,
+          "source_line_raw": " PROVINCE_TOOLTIP_ETA: \"#I ——预期抵达时间：[DATE.GetTimeDiffFromNow]后（[DATE.GetStringShortNoYear]）#!\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/simp_chinese/gui/mapicons_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/gui/mapicons_l_simp_chinese.yml",
+        "bytes": 6871,
+        "sha256": "b836a25fd66bdc0013000a223ae71a21a91cc8609c24983e79c2afdc5706d4c5"
+      },
+      "selected_original_lines": [
+        {
+          "line": 11,
+          "source_line_raw": " ARMY_TOOLTIP_IS_MOVEMENT_LOCKED: \"[movement_locked|E]\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/simp_chinese/gui/militaryview_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/gui/militaryview_l_simp_chinese.yml",
+        "bytes": 14166,
+        "sha256": "a98564e8880500045a8fc35674fb828b082252ea4b4c5993946b832a705f3009"
+      },
+      "selected_original_lines": [
+        {
+          "line": 45,
+          "source_line_raw": " MONTHLY_MAINTENANCE_LABEL: \"每月维护费：\""
+        },
+        {
+          "line": 50,
+          "source_line_raw": " MONTHLY_REINFORCEMENT_COST_LABEL: \"每月补员\""
+        },
+        {
+          "line": 63,
+          "source_line_raw": " TT_MAINTENANCE_TITLE: \"#T 维护费：$VALUE$/月#!\""
+        },
+        {
+          "line": 64,
+          "source_line_raw": " TT_MAINTENANCE_RAISED_ARMIES: \"已集结军队：@gold_icon!$VALUE|1$/月\""
+        },
+        {
+          "line": 67,
+          "source_line_raw": " TT_REINFORCING_MAA_YES_TITLE: \"#T 补员[men_at_arms|E]#!\""
+        }
+      ]
+    },
+    {
+      "relative_game_path": "localization/simp_chinese/holdings_l_simp_chinese.yml",
+      "source": {
+        "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/localization/simp_chinese/holdings_l_simp_chinese.yml",
+        "bytes": 5170,
+        "sha256": "39a4ad552a31ae18cdd92a55cd19e55a0284926215d147097b97cb73363ee343"
+      },
+      "selected_original_lines": [
+        {
+          "line": 34,
+          "source_line_raw": " SUPPLY_LIMIT_TOOLTIP: \"#T [supply_limit|E]：$VALUE|V$#!\""
+        }
+      ]
+    }
+  ],
+  "scope": "Existing stock localization and GUI bindings verified against earlier frozen hashes; text existence is separate from Root PNG content; no native getters executed."
+}

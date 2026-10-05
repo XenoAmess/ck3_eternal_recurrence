@@ -1,0 +1,643 @@
+{
+  "schema": "xar.ck3.episode04.r0169.locked-original-native-join/v1",
+  "task": "ck3-e04-r0169-day5-lock-original-refill-20261005-a01",
+  "scope": "Original PNG and saved native response only; captured after R0169 raw finish",
+  "environment": {
+    "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "open_kaishek": "not applicable: existing exact native topic, saved packets and PNG hashes only",
+    "powershell": false
+  },
+  "native_research_plan": {
+    "mode": "file-only evidence consumption",
+    "hypothesis": "Jan25 lock label and concept show the same paused child whose native current-edge progress is61.875%",
+    "inputs": [
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-hover-a02/before-body.json",
+        "bytes": 38677,
+        "sha256": "91fa8d58289a52a55adc14dbc81c9c965fd2f671b0a258ddd20be89d575fcf6c"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-hover-a02/after-body.json",
+        "bytes": 38677,
+        "sha256": "e2ae4368de679cee9ac26b81d3f44ddffc2aeee942521334f649bb0a3f6c375b"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-concept-hover-a01/before-body.json",
+        "bytes": 238855,
+        "sha256": "b42c11000c05bcb5b6094f92d9cf1202e2cfa83fd726fab78d7155ee9bd84389"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-concept-hover-a01/after-body.json",
+        "bytes": 238855,
+        "sha256": "8d232afcab50909987429764874358b187e1b4d833a0f3805bacb2b1168ebe3c"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-strength-a01/before-body.json",
+        "bytes": 38677,
+        "sha256": "fc1ba7d3417d98ad9ee91338cbdd8cc549048a70e2c2071a35b16dde2eb74b9f"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-strength-a01/after-body.json",
+        "bytes": 238855,
+        "sha256": "87f40c956a5e1051d1a46856f65aa3746a2b15c3d2a42c34350be2994057c343"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-strength-a01/strength-body.json",
+        "bytes": 93442,
+        "sha256": "5b95f943c39935f065067105f074fed525ab4840cb918826de8440feec076db5"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-hover-a02/stable.png",
+        "bytes": 3262551,
+        "sha256": "b0b99906fdef657b01f220dee5d500958b07a14ea4cf98759eacadc6550b0628"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-concept-hover-a01/stable.png",
+        "bytes": 3243852,
+        "sha256": "a4550734209eb2bc6d4db41577b7aace914070564ce51bab7a3bb1dcf345f3a3"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-hover-a02/intent.json",
+        "bytes": 1413,
+        "sha256": "9ee1fd760aeb93df543b8e3a3d8f7b340a8e5bc81201ac2fb2ad5cb257770784"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-hover-a02/result.json",
+        "bytes": 501,
+        "sha256": "2376276c408b77b19546bfe3c2611e1098156fd69752a5b83178f4b3adc7d16c"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-concept-hover-a01/intent.json",
+        "bytes": 1412,
+        "sha256": "cdd9a34a407cda8201166b2b4d8a796fa4600f76b827ac7ebbcdb27bf19e153d"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-concept-hover-a01/result.json",
+        "bytes": 509,
+        "sha256": "4fef7cfce83c761afd640bd10c844cf1c5695812919a4ad6bee575d6320e4a17"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-strength-a01/summary.json",
+        "bytes": 1792,
+        "sha256": "e64a06a765982a80664608504d877d83bd4a981c34abedf51c18a0bcdfc9ca47"
+      },
+      {
+        "path": "C:/w/e4t168a01/docs/ck3-native-ai/army-halt-native-command-12003.md",
+        "bytes": 7624,
+        "sha256": "29f59a9ac877325161630b0513ad46a985bf3e89fad68c6c7c0e4ef059dac4a4"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-term08-field-readonly-a01/CURRENT-MOVEMENT-FIELD-CONTRACT-a04.json",
+        "bytes": 35379,
+        "sha256": "e56f702bd455d8b26f5f39d3772757ef682efdcb6ba5d20c5dfa7127b705ebc6"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-term-gates-readonly-a01/ROOT-GATE-REVIEW-a01.json",
+        "bytes": 22251,
+        "sha256": "dc855952a0409534d4165d2c058db7090c87362761c975f3bc473ef0b02d2645"
+      },
+      {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-reorganize-selected-hover-a01/stable.png",
+        "bytes": 3322167,
+        "sha256": "1aef3c29cba734c15837fccb56edac8fae53f22b3bec45a596c953c9ddf830c9"
+      }
+    ],
+    "method": "Hash exact originals, compare six snapshot identities/full Army row and query source/revisions; compare full query row to postread cached row; retain existing exact-build Halt predicate separately",
+    "sdk_calls": 0,
+    "screen_calls": 0,
+    "media_calls": 0,
+    "exe_reads": 0,
+    "tracked_tree_writes": 0,
+    "git_mutations": 0
+  },
+  "original_frame_join": {
+    "identity": {
+      "date_raw": 53147496,
+      "paused": true,
+      "map_ready": true,
+      "snapshot_id": "native:16",
+      "revision": 17,
+      "native_revision": 16,
+      "episode_run_id": "native-33388-06e1bad08e3a",
+      "episode_character_id": 33388
+    },
+    "army_id": 33554436,
+    "actor_owner": 33388,
+    "frames": [
+      {
+        "role": "lock",
+        "phase": "before-body.json",
+        "pin": {
+          "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-hover-a02/before-body.json",
+          "bytes": 38677,
+          "sha256": "91fa8d58289a52a55adc14dbc81c9c965fd2f671b0a258ddd20be89d575fcf6c"
+        },
+        "identity": {
+          "date_raw": 53147496,
+          "paused": true,
+          "map_ready": true,
+          "snapshot_id": "native:16",
+          "revision": 17,
+          "native_revision": 16,
+          "episode_run_id": "native-33388-06e1bad08e3a",
+          "episode_character_id": 33388
+        },
+        "actor": {
+          "character_id": 33388,
+          "alive": true,
+          "source": "native",
+          "stress_points": 25,
+          "betrothed_id": null,
+          "primary_spouse_id": 34290,
+          "spouse_ids": [
+            34290
+          ]
+        },
+        "army": {
+          "army_id": 33554436,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1506,
+          "move_target_province_id": 1508,
+          "move_target_observable": true,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [
+            1508
+          ],
+          "route_read_status": "complete_nonempty",
+          "route_source_count": 1,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        },
+        "runtime_diagnostic_fields": {
+          "connection_generation": 1,
+          "hello.pid": 20904,
+          "hello.connection_generation": 1,
+          "last_heartbeat.pid": 20904,
+          "last_pong.pid": 20904
+        }
+      },
+      {
+        "role": "lock",
+        "phase": "after-body.json",
+        "pin": {
+          "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-hover-a02/after-body.json",
+          "bytes": 38677,
+          "sha256": "e2ae4368de679cee9ac26b81d3f44ddffc2aeee942521334f649bb0a3f6c375b"
+        },
+        "identity": {
+          "date_raw": 53147496,
+          "paused": true,
+          "map_ready": true,
+          "snapshot_id": "native:16",
+          "revision": 17,
+          "native_revision": 16,
+          "episode_run_id": "native-33388-06e1bad08e3a",
+          "episode_character_id": 33388
+        },
+        "actor": {
+          "character_id": 33388,
+          "alive": true,
+          "source": "native",
+          "stress_points": 25,
+          "betrothed_id": null,
+          "primary_spouse_id": 34290,
+          "spouse_ids": [
+            34290
+          ]
+        },
+        "army": {
+          "army_id": 33554436,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1506,
+          "move_target_province_id": 1508,
+          "move_target_observable": true,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [
+            1508
+          ],
+          "route_read_status": "complete_nonempty",
+          "route_source_count": 1,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        },
+        "runtime_diagnostic_fields": {
+          "connection_generation": 1,
+          "hello.pid": 20904,
+          "hello.connection_generation": 1,
+          "last_heartbeat.pid": 20904,
+          "last_pong.pid": 20904
+        }
+      },
+      {
+        "role": "concept",
+        "phase": "before-body.json",
+        "pin": {
+          "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-concept-hover-a01/before-body.json",
+          "bytes": 238855,
+          "sha256": "b42c11000c05bcb5b6094f92d9cf1202e2cfa83fd726fab78d7155ee9bd84389"
+        },
+        "identity": {
+          "date_raw": 53147496,
+          "paused": true,
+          "map_ready": true,
+          "snapshot_id": "native:16",
+          "revision": 17,
+          "native_revision": 16,
+          "episode_run_id": "native-33388-06e1bad08e3a",
+          "episode_character_id": 33388
+        },
+        "actor": {
+          "character_id": 33388,
+          "alive": true,
+          "source": "native",
+          "stress_points": 25,
+          "betrothed_id": null,
+          "primary_spouse_id": 34290,
+          "spouse_ids": [
+            34290
+          ]
+        },
+        "army": {
+          "army_id": 33554436,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1506,
+          "move_target_province_id": 1508,
+          "move_target_observable": true,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [
+            1508
+          ],
+          "route_read_status": "complete_nonempty",
+          "route_source_count": 1,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        },
+        "runtime_diagnostic_fields": {
+          "connection_generation": 1,
+          "hello.pid": 20904,
+          "hello.connection_generation": 1,
+          "last_heartbeat.pid": 20904,
+          "last_pong.pid": 20904
+        }
+      },
+      {
+        "role": "concept",
+        "phase": "after-body.json",
+        "pin": {
+          "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-concept-hover-a01/after-body.json",
+          "bytes": 238855,
+          "sha256": "8d232afcab50909987429764874358b187e1b4d833a0f3805bacb2b1168ebe3c"
+        },
+        "identity": {
+          "date_raw": 53147496,
+          "paused": true,
+          "map_ready": true,
+          "snapshot_id": "native:16",
+          "revision": 17,
+          "native_revision": 16,
+          "episode_run_id": "native-33388-06e1bad08e3a",
+          "episode_character_id": 33388
+        },
+        "actor": {
+          "character_id": 33388,
+          "alive": true,
+          "source": "native",
+          "stress_points": 25,
+          "betrothed_id": null,
+          "primary_spouse_id": 34290,
+          "spouse_ids": [
+            34290
+          ]
+        },
+        "army": {
+          "army_id": 33554436,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1506,
+          "move_target_province_id": 1508,
+          "move_target_observable": true,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [
+            1508
+          ],
+          "route_read_status": "complete_nonempty",
+          "route_source_count": 1,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        },
+        "runtime_diagnostic_fields": {
+          "connection_generation": 1,
+          "hello.pid": 20904,
+          "hello.connection_generation": 1,
+          "last_heartbeat.pid": 20904,
+          "last_pong.pid": 20904
+        }
+      },
+      {
+        "role": "strength",
+        "phase": "before-body.json",
+        "pin": {
+          "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-strength-a01/before-body.json",
+          "bytes": 38677,
+          "sha256": "fc1ba7d3417d98ad9ee91338cbdd8cc549048a70e2c2071a35b16dde2eb74b9f"
+        },
+        "identity": {
+          "date_raw": 53147496,
+          "paused": true,
+          "map_ready": true,
+          "snapshot_id": "native:16",
+          "revision": 17,
+          "native_revision": 16,
+          "episode_run_id": "native-33388-06e1bad08e3a",
+          "episode_character_id": 33388
+        },
+        "actor": {
+          "character_id": 33388,
+          "alive": true,
+          "source": "native",
+          "stress_points": 25,
+          "betrothed_id": null,
+          "primary_spouse_id": 34290,
+          "spouse_ids": [
+            34290
+          ]
+        },
+        "army": {
+          "army_id": 33554436,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1506,
+          "move_target_province_id": 1508,
+          "move_target_observable": true,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [
+            1508
+          ],
+          "route_read_status": "complete_nonempty",
+          "route_source_count": 1,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        },
+        "runtime_diagnostic_fields": {
+          "connection_generation": 1,
+          "hello.pid": 20904,
+          "hello.connection_generation": 1,
+          "last_heartbeat.pid": 20904,
+          "last_pong.pid": 20904
+        }
+      },
+      {
+        "role": "strength",
+        "phase": "after-body.json",
+        "pin": {
+          "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-strength-a01/after-body.json",
+          "bytes": 238855,
+          "sha256": "87f40c956a5e1051d1a46856f65aa3746a2b15c3d2a42c34350be2994057c343"
+        },
+        "identity": {
+          "date_raw": 53147496,
+          "paused": true,
+          "map_ready": true,
+          "snapshot_id": "native:16",
+          "revision": 17,
+          "native_revision": 16,
+          "episode_run_id": "native-33388-06e1bad08e3a",
+          "episode_character_id": 33388
+        },
+        "actor": {
+          "character_id": 33388,
+          "alive": true,
+          "source": "native",
+          "stress_points": 25,
+          "betrothed_id": null,
+          "primary_spouse_id": 34290,
+          "spouse_ids": [
+            34290
+          ]
+        },
+        "army": {
+          "army_id": 33554436,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1506,
+          "move_target_province_id": 1508,
+          "move_target_observable": true,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [
+            1508
+          ],
+          "route_read_status": "complete_nonempty",
+          "route_source_count": 1,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        },
+        "runtime_diagnostic_fields": {
+          "connection_generation": 1,
+          "hello.pid": 20904,
+          "hello.connection_generation": 1,
+          "last_heartbeat.pid": 20904,
+          "last_pong.pid": 20904
+        }
+      }
+    ],
+    "query_pin": {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-strength-a01/strength-body.json",
+      "bytes": 93442,
+      "sha256": "5b95f943c39935f065067105f074fed525ab4840cb918826de8440feec076db5"
+    },
+    "query_source": {
+      "game_version": null,
+      "executable_sha256": null,
+      "snapshot_id": "native:16",
+      "revision": 17,
+      "native_revision": 16,
+      "date_raw": 53147496,
+      "paused": true,
+      "backend_id": "native-headless"
+    },
+    "query_sequence": 5,
+    "movement": {
+      "status": "available",
+      "source": "native_current_route_edge",
+      "unit_state_raw": 3,
+      "accumulated_movement_weight_raw": 1650000,
+      "cached_edge_speed_raw": 330000,
+      "normalized_edge_progress": {
+        "raw": 61875,
+        "scale": 100000
+      },
+      "first_route_edge_remaining_duration": {
+        "raw": 308080,
+        "scale": 100000
+      },
+      "unavailable_reason": null
+    },
+    "native_clock": {
+      "status": "available",
+      "ready": true,
+      "current_date_raw": 53147496,
+      "native_day_index": 389479,
+      "selected_bucket_phase": 19,
+      "observed_army_bucket_phase": 6,
+      "last_supply_update_date_storage_raw64": 300333821678253472,
+      "last_supply_update_date_raw": 53147040,
+      "grace_anchor_date_storage_raw64": 300061168564366016,
+      "grace_anchor_date_raw": 53144256,
+      "loaded_grace_days": 30,
+      "unavailable_reason": null
+    },
+    "progress_percent": "61.875%",
+    "first_edge_remaining_days": "3.08080",
+    "full_postread_strength_equal": true
+  },
+  "visual_authority": {
+    "reviewer": "Root",
+    "child_viewed": false,
+    "lock": {
+      "original_png": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-hover-a02/stable.png",
+        "bytes": 3262551,
+        "sha256": "b0b99906fdef657b01f220dee5d500958b07a14ea4cf98759eacadc6550b0628"
+      },
+      "content_reported_by_root": "HUD1067年1月25日；child33554436显示移动锁定；ETA1067年1月29日/剩余4天",
+      "encoded": null
+    },
+    "concept": {
+      "original_png": {
+        "path": "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-concept-hover-a01/stable.png",
+        "bytes": 3243852,
+        "sha256": "a4550734209eb2bc6d4db41577b7aace914070564ce51bab7a3bb1dcf345f3a3"
+      },
+      "content_reported_by_root": "外层仍移动锁定；嵌套全文：如果一支军队已经完成了移动指令的一半进度，那么指令在其到达目的地之前无法变更。",
+      "encoded": null
+    },
+    "recording_boundary": "Root explicitly reported both new lock originals were captured after R0169 raw finish. They are not bound to that raw file."
+  },
+  "native_theorem": {
+    "existing_exact_build_topic": {
+      "path": "C:/w/e4t168a01/docs/ck3-native-ai/army-halt-native-command-12003.md",
+      "bytes": 7624,
+      "sha256": "29f59a9ac877325161630b0513ad46a985bf3e89fad68c6c7c0e4ef059dac4a4"
+    },
+    "line": 11,
+    "text": "Halt destination `0x24AA750` reads native normalized current-edge progress with `0x24AB2F0`, compares it to loaded global `0x5C699E8`, and uses **strict greater-than**. The `jle` branch uses the current province; the greater-than branch resolves the first stored path province. The exact installed stock define is `MOVEMENT_LOCKED = 0.5` at common/defines/00_defines.txt:641, SHA-256 `8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982`. The simplified Chinese concept's wording is less precise than the native branch. A statement about exactly 50% must follow the native predicate, rather than the translation.",
+    "static_predicate": "0x24AA750 reads0x24AB2F0, compares loaded5C699E8; jle uses current province, strictly greater resolves first path province",
+    "installed_stock_define": "MOVEMENT_LOCKED=0.5; prior exact source hash8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982 at defines641",
+    "current_loaded_cutoff_observed": false,
+    "exact_50_percent_tested": false,
+    "archived_span_directly_read_this_attempt": false,
+    "source_reuse_boundary": "This attempt consumes the published exact-build theorem and its pinned document; it did not reopen EXE or fabricate a new native-span audit."
+  },
+  "can_say": [
+    "这支军队当前路段的原生进度是61.875%，同一暂停画面已经显示移动锁定。",
+    "原版中文概念用一半进度说明移动锁定；停止/改道保留当前段的行为以既有独立P0-MOVE动作证据为准。",
+    "当前首边原生剩余时量为3.08080天；画面显示ETA1月29日/剩余4天，两种显示分别保留。"
+  ],
+  "cannot_say": [
+    "本次读取到loaded cutoff=0.5。",
+    "这次证明正好50%就锁定，或任何军队都在>=50%锁定。",
+    "61.875%是整条任意多边路线进度。",
+    "原生3.08080天必然等于GUI剩余整数4天，或已实际到达1月29日。",
+    "这两张新图在R0169raw中有可用PTS、clean span或完整审片信用。"
+  ],
+  "term_gates": {
+    "08": "Original research gate satisfied: actual locked label+full concept+same-paused native ratio; original-only, encoded=null",
+    "04_09_10": "Earlier Root-reviewed original packages satisfy their original gates; do not invent numeric monetary or action-performance evidence",
+    "formal_ledger": "7/11 unchanged; append/integration awaits Root raw review authorization",
+    "candidate_after_future_ledger_review": "All11 original TERM definitions can be accounted for with earlier7 plus04/08/09/10; this is original research coverage, not media completeness or episode completion"
+  },
+  "failed_attempt": "Root reports prior desktop action a01 rejected pendingfinish before any input; preserved separately. Existing r0169-day5-lock-hover-a01 directory is empty; success is a02, not a rewritten a01. No failed metadata fabricated.",
+  "checks": [
+    {
+      "check": "lock/before-body.json paused identity and full selected Army route",
+      "result": "PASS"
+    },
+    {
+      "check": "lock/after-body.json paused identity and full selected Army route",
+      "result": "PASS"
+    },
+    {
+      "check": "concept/before-body.json paused identity and full selected Army route",
+      "result": "PASS"
+    },
+    {
+      "check": "concept/after-body.json paused identity and full selected Army route",
+      "result": "PASS"
+    },
+    {
+      "check": "strength/before-body.json paused identity and full selected Army route",
+      "result": "PASS"
+    },
+    {
+      "check": "strength/after-body.json paused identity and full selected Army route",
+      "result": "PASS"
+    },
+    {
+      "check": "full selected Army roster row unchanged across all six snapshots",
+      "result": "PASS"
+    },
+    {
+      "check": "query source and both revisions match all six paused snapshots",
+      "result": "PASS"
+    },
+    {
+      "check": "native independent movement operands present with exact raw and scale",
+      "result": "PASS"
+    },
+    {
+      "check": "independent after snapshot cached full Strength row equals actual query row",
+      "result": "PASS"
+    },
+    {
+      "check": "concept intent source is exact locked original PNG bytes/SHA",
+      "result": "PASS"
+    }
+  ],
+  "media_and_delivery": {
+    "encoded_binding": null,
+    "clean_span": false,
+    "complete_1x_review": false,
+    "signoff": false,
+    "external_delivery": false
+  }
+}

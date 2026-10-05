@@ -163,3 +163,12 @@ Root正常请求受管停止：launcher/wrapper返回0，SDK与keeper退出，CK
 [新增单帧索引](evidence/r0168-terms/index.json)与[逐帧入口](evidence/r0168-terms/README.md)保全 Root 已直接读图的九个中心及三个尾帧：Holding当地上限/breakdown、Brest预期路线/登船警告、月维护、兵种人数、当地上限与移动锁定概念，以及postmerge6746/116/300/将领portrait/Jan20。TERM-03/06/11完整新增，累计7/11约64%，只计固定术语清单，未提高整体影片或正式研究加权比例。
 
 下一轮补TERM-04携带补给child、TERM-09每月补员勾选框/费用、TERM-08锁定同帧native进度、TERM-10完整平分/整编/可用合并提示。day4画面HUD为Jan15/raw53147256，Jan20为ETA剩5天，不能作实际到达；射石机9/10与野驴炮3×20/20不混称。费用与登船警告可读，但累计实付仍缺。当前十二帧只作可定位单帧素材，连续clean spans、同档A/B/C三回放、全文/TTS/成片、完整人工1×与签核/交付仍各自待完成。
+
+
+## 2026-10-05 R0169：术语原始研究齐，编码与B资格保持边界
+
+[R0169可复用索引](evidence/r0169-terms/index.json)及[读回入口](evidence/r0169-terms/README.md)新增实际携带补给concept、补员checkbox/补员兵士与9/10、平分/可用合并/整编。沿用R0168分出新军队及当地上限concept，按原11门槛现原始术语研究11/11；各自编码绑定10/11。Jan25新锁定与完整concept原图同pausednative首边61.875%闭合，但在R0169raw结束后，encoded保持null，不嫁接R0168旧编码帧。
+
+Root本轮仅直接审了八张编码单帧，另十六张未授内容，媒体完整decode/PTS PASS不授clean镜头、完整1×或signoff。Dfull keeper OSError28及自动收口失败保留，bootstrap另证SDK线程结束/cleanup_proven/GameJob0。
+
+本地B实际+9日到达Arun1508后仍月补给−8.77192，1506 Main−4.38596；完整27团current/max与FullID不变，总6746/6747，37DATA完整可读。不赋冬/holder/到达将领因果，不启动ABC；共同正值hub与三同档独立回放0/3保持。下一轮先用实际友好/正值准入核B，再冻结共同出发SHA；全文、TTS、连续clean段、成片与交付仍待完成。

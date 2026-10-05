@@ -1,0 +1,191 @@
+{
+  "status": "FULL_MEDIA_AUDIT_PASS_ACTUAL_PTS_EXTRACTION_PASS_CONTENT_REVIEW_PENDING",
+  "completed_utc": "2026-10-05T09:25:00.231425+00:00",
+  "raw_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-raw-terms-b-qualification-a01\\raw.mkv",
+    "bytes": 5187713679,
+    "sha256": "d9e4249d88d2f3cb42c2f9238915a4a554de87a0e778bbe832e10d83918987ab"
+  },
+  "finish_response": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0169-a01\\responses\\r0169-recorder-finish-a01.json",
+    "bytes": 1346,
+    "sha256": "3d520c7c15752fc167174e0eba27eaf0153baf65591d3e403d46cca79e0e5922"
+  },
+  "audit_report": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-tools-a01\\audit-attempt-a01\\report.json",
+    "bytes": 11503,
+    "sha256": "8ff29220c259fd0d9dc8581e89e9fcacc27f339a628af71fd97c4c73b6e269b2"
+  },
+  "audit_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-tools-a01\\audit-attempt-a01\\delivery.json",
+    "bytes": 800,
+    "sha256": "b7aa1fe1928c58ccae20c3f34d63828a99fed98943a9bcc5124922a4e01587ce"
+  },
+  "audit_source_bindings": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-tools-a01\\audit-attempt-a01\\source-bindings.json",
+    "bytes": 1910,
+    "sha256": "a6e4129867fda298a5f87976ab5b9035d0f97ea0b89c5756868025f6412a370e"
+  },
+  "machine_media_conditions": {
+    "actual_duration_seconds": "3599.966000",
+    "frames": 107999,
+    "packets": 107999,
+    "video_streams": 1,
+    "audio_streams": 0,
+    "codec": "h264",
+    "resolution": [
+      1920,
+      1080
+    ],
+    "avg_frame_rate": "30/1",
+    "time_base": "1/1000",
+    "frame_pts": {
+      "field": "pts",
+      "count": 107999,
+      "present": 107999,
+      "missing": 0,
+      "equal_adjacent": 0,
+      "regression_examples": [],
+      "non_decreasing": true,
+      "strictly_increasing": true,
+      "first_raw": 0,
+      "last_raw": 3599933,
+      "first_seconds": "0",
+      "last_seconds": "3599.933",
+      "minimum_adjacent_delta_raw": 33,
+      "maximum_adjacent_delta_raw": 34,
+      "span_seconds": "3599.933",
+      "sum_declared_duration_seconds": "3563.967000",
+      "time_base": "1/1000"
+    },
+    "strict_full_decode": {
+      "reached_progress_end": true,
+      "final_decoded_frames": 107999,
+      "errors_on_stderr": 0,
+      "ffmpeg_identity": {
+        "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+        "bytes": 222229504,
+        "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+      }
+    },
+    "source_stat_stable_during_audit_and_extraction": true,
+    "independent_full_raw_hash_passes_by_this_lane": 1,
+    "full_media_audit_attempts": 1
+  },
+  "actual_dependencies": {
+    "ffmpeg_version": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-execution-a01\\ffmpeg-version.result.json",
+      "bytes": 594,
+      "sha256": "55fe1b44c0b18e310e091c52a47c19adb91b9943cc7fa85e32f78aa9d3714c0a"
+    },
+    "ffprobe_version": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-execution-a01\\ffprobe-version.result.json",
+      "bytes": 597,
+      "sha256": "c07cfd41bd9ea6c9d263d0b98008c72060e483b9e8825cab8811bef75b0c6636"
+    },
+    "toolchain_fresh_preparation_receipt_not_used_for_decoder_runtime": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-capture-preparation-a01\\report.json",
+      "bytes": 8984,
+      "sha256": "798b8e440fd1282b5753ca6fde60db2f81311589e95909a26fdc48a38b77aefd"
+    }
+  },
+  "source_provenance": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-tools-a01\\SOURCE-PROVENANCE.json",
+    "bytes": 1806,
+    "sha256": "585597d3e69b20298398d8b7dc307470614c94650d208870a3772b99b3ee1603"
+  },
+  "execution_sources": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-execution-a01\\prepare_audit_once.py",
+      "bytes": 2908,
+      "sha256": "56ff7b364f8f412f20ac9ac7eefb0dd2e00266bc9bba96067fa049083e8a547f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-execution-a01\\run_audit_once.py",
+      "bytes": 5206,
+      "sha256": "d40314ee736cd662a8778dcf3c5b0109b9834cafaa6abc99d55e13c160de01b4"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-execution-a01\\prepare_extract_a01.py",
+      "bytes": 5761,
+      "sha256": "d3f43738095fb60240e44f8f530de1362b0539cc6e52cd5bbbd346229a0dcd3a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-execution-a01\\run_extract_a01.py",
+      "bytes": 3507,
+      "sha256": "ff24aae2600d627ef279763ec64b72cf4c3f8cba60ac00d6697efed2a37c3134"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-execution-a01\\freeze_delivery_a01.py",
+      "bytes": 9732,
+      "sha256": "b960f319654d53079eaebb8d5e360b9afb4ecae26ed6753844c01c20021418dd"
+    }
+  ],
+  "audit_argv": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-execution-a01\\audit.argv.json",
+    "bytes": 580,
+    "sha256": "0c4536d4384410851d72eaa88cbcd422eb5a5f60246c73396eee5a51a30820c7"
+  },
+  "extract_argv": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-execution-a01\\extract.argv.json",
+    "bytes": 1475,
+    "sha256": "7093cf02d7d1b44945bd281efb8976af1d10bd1a9af3901da16cc2d8190028f2"
+  },
+  "candidate_index": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\candidate-index.json",
+    "bytes": 36025,
+    "sha256": "767f2c58e77bef2e400d67d2ce9d86f521ea9fbd7e5316110634564fd64f081c"
+  },
+  "candidate_bindings": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\bindings.json",
+    "bytes": 1648,
+    "sha256": "0bda58f84b7c98a612fc38a840df5f77ababe1796abbad3d732ed03f1b06d681"
+  },
+  "actual_PTS_selections": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-execution-a01\\actual-PTS-selections-a01.json",
+    "bytes": 13994,
+    "sha256": "26193f5a5f43fd5ffc7b13b303871c849170068fb1ac934641b2c9550209e918"
+  },
+  "compact_Root_review_JSON": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-execution-a01\\ROOT-PNG-REVIEW-COMPACT-a01.json",
+    "bytes": 16983,
+    "sha256": "3eb281fadab8211c9c40d344324168eb105ef719b3b20216e39a708bf713f283"
+  },
+  "compact_Root_review_markdown": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-execution-a01\\ROOT-PNG-REVIEW-COMPACT-a01.md",
+    "bytes": 4897,
+    "sha256": "c7d9dbe7a6852fb091f3a4c336a831d08ddaef125270c96996eef461243e2430"
+  },
+  "candidate_frame_count": 24,
+  "candidate_group_count": 8,
+  "saved_action_summary": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-action-packets-a01\\seven-action-summary-a01.json",
+    "bytes": 29204,
+    "sha256": "9ec5d98ab0e78eae8d281ae56c7282b689e0c6a27bbfa324afb9f9fa2081fe78"
+  },
+  "saved_action_full_index": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-action-packets-a01\\seven-action-index-a01.json",
+    "bytes": 75810,
+    "sha256": "e30375f1b38831d882c885745a00a7a9400ba28b5224307ff717c73657aa2b81"
+  },
+  "limitations": [
+    "Twenty-four decoded PNGs require Root actual pixel review before screenshot equivalence or TERM credit",
+    "Wall/monotonic labels remain search hints and are not PTS",
+    "Finite before/after packets lack independent UI.subject and tooltip text/body/source joins",
+    "Tail candidates have no event, game-date or qualification binding",
+    "Buttons/checkbox views do not prove split/merge/reorganization or army replenishment outcomes",
+    "Machine audit and finite single-frame extraction grant no continuous clean span, human 1x review, narration, final film or signoff"
+  ],
+  "media_process_clear": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-execution-a01\\MEDIA-ALL-CLEAR-a01.json",
+    "bytes": 1076,
+    "sha256": "ca865f2de7bc5013e044ebea1ca9458b5e834f8084288e4933ce2793c9163364"
+  },
+  "new_TERM_credit_by_this_lane": 0,
+  "clean_spans_certified": false,
+  "full_human_1x_review": false,
+  "human_signoff": false,
+  "SDK_or_game_or_desktop_or_recorders_started": 0,
+  "master_Cf_Git_bus_security_changes": 0,
+  "all_assets_preserved": true
+}

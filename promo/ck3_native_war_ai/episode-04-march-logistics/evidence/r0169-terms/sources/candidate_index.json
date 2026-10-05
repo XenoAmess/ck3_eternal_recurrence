@@ -1,0 +1,928 @@
+{
+  "state": "PASS_EXTRACTION_CONTENT_PENDING",
+  "raw": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-raw-terms-b-qualification-a01\\raw.mkv",
+    "bytes": 5187713679,
+    "sha256": "d9e4249d88d2f3cb42c2f9238915a4a554de87a0e778bbe832e10d83918987ab"
+  },
+  "raw_stat_stable": true,
+  "results": [
+    {
+      "state": "PASS_EXTRACTION_CONTENT_PENDING",
+      "errors": [],
+      "label": "r0169-army-supplies-hover-a01",
+      "term_candidates": [
+        "TERM-04"
+      ],
+      "raw": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-raw-terms-b-qualification-a01\\raw.mkv",
+        "bytes": 5187713679,
+        "sha256": "d9e4249d88d2f3cb42c2f9238915a4a554de87a0e778bbe832e10d83918987ab"
+      },
+      "started_utc": "2026-10-05T09:21:43.935739+00:00",
+      "finished_utc": "2026-10-05T09:21:44.938136+00:00",
+      "returncode": 0,
+      "candidates": [
+        {
+          "frame_index": 4516,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 150533,
+            "pts_time": "150.533000",
+            "pkt_dts": 150533,
+            "pkt_dts_time": "150.533000",
+            "best_effort_timestamp": 150533,
+            "best_effort_timestamp_time": "150.533000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 150533,
+          "time_base": "1/1000",
+          "seconds": "150.533",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-army-supplies-hover-a01\\decoded-01.png",
+            "bytes": 2727876,
+            "sha256": "b16ce6e501f26b70333e43a9093a150d192a75e30c6c806f8bcfb77ac47b5200"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 4636,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 154533,
+            "pts_time": "154.533000",
+            "pkt_dts": 154533,
+            "pkt_dts_time": "154.533000",
+            "best_effort_timestamp": 154533,
+            "best_effort_timestamp_time": "154.533000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 154533,
+          "time_base": "1/1000",
+          "seconds": "154.533",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-army-supplies-hover-a01\\decoded-02.png",
+            "bytes": 2753543,
+            "sha256": "fe1bf49f0f0d18d6228c667bc54bcf205d414001c3dc97174d9ba67e878e425e"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 4756,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 158533,
+            "pts_time": "158.533000",
+            "pkt_dts": 158533,
+            "pkt_dts_time": "158.533000",
+            "best_effort_timestamp": 158533,
+            "best_effort_timestamp_time": "158.533000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 158533,
+          "time_base": "1/1000",
+          "seconds": "158.533",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-army-supplies-hover-a01\\decoded-03.png",
+            "bytes": 2732090,
+            "sha256": "79bb8c6611447d754162e8ccd42e9517fe84f91db6c5ce137f3a5fdcc4931f11"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        }
+      ],
+      "argv": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-army-supplies-hover-a01\\argv.json",
+        "bytes": 2817,
+        "sha256": "150646cb73b645fd214a72cf04a0e2eff2549d756302cb1f4debf3b82aa31502"
+      },
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-army-supplies-hover-a01\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-army-supplies-hover-a01\\stderr.txt",
+        "bytes": 2626,
+        "sha256": "626d0380bbd46f36464411eae88c8f9587f760829f25e06c56801d1ad7c33e0c"
+      }
+    },
+    {
+      "state": "PASS_EXTRACTION_CONTENT_PENDING",
+      "errors": [],
+      "label": "r0169-merge-enabled-hover-a01",
+      "term_candidates": [
+        "TERM-10"
+      ],
+      "raw": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-raw-terms-b-qualification-a01\\raw.mkv",
+        "bytes": 5187713679,
+        "sha256": "d9e4249d88d2f3cb42c2f9238915a4a554de87a0e778bbe832e10d83918987ab"
+      },
+      "started_utc": "2026-10-05T09:21:45.102417+00:00",
+      "finished_utc": "2026-10-05T09:21:46.374829+00:00",
+      "returncode": 0,
+      "candidates": [
+        {
+          "frame_index": 21445,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 714833,
+            "pts_time": "714.833000",
+            "pkt_dts": 714833,
+            "pkt_dts_time": "714.833000",
+            "best_effort_timestamp": 714833,
+            "best_effort_timestamp_time": "714.833000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 714833,
+          "time_base": "1/1000",
+          "seconds": "714.833",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-merge-enabled-hover-a01\\decoded-01.png",
+            "bytes": 2754059,
+            "sha256": "db23b3b75743845b69fce359bff117033583bbbe2bf69f78887920655e9241d6"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 21565,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 718833,
+            "pts_time": "718.833000",
+            "pkt_dts": 718833,
+            "pkt_dts_time": "718.833000",
+            "best_effort_timestamp": 718833,
+            "best_effort_timestamp_time": "718.833000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 718833,
+          "time_base": "1/1000",
+          "seconds": "718.833",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-merge-enabled-hover-a01\\decoded-02.png",
+            "bytes": 2770535,
+            "sha256": "30695d695359d10ba5a5f4bf16c11523ff7c0b498d4221fb13010f124d4c166d"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 21685,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 722833,
+            "pts_time": "722.833000",
+            "pkt_dts": 722833,
+            "pkt_dts_time": "722.833000",
+            "best_effort_timestamp": 722833,
+            "best_effort_timestamp_time": "722.833000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 722833,
+          "time_base": "1/1000",
+          "seconds": "722.833",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-merge-enabled-hover-a01\\decoded-03.png",
+            "bytes": 2785508,
+            "sha256": "93f369beb5873abe978369beeba8838183be77a9df54424624c99f42657711a4"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        }
+      ],
+      "argv": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-merge-enabled-hover-a01\\argv.json",
+        "bytes": 2816,
+        "sha256": "60de40ed575a8ba5a94a34f3ec9b7ec652c6df6e03c876c6b21a6f3318c11278"
+      },
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-merge-enabled-hover-a01\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-merge-enabled-hover-a01\\stderr.txt",
+        "bytes": 2715,
+        "sha256": "b8df9093fbd1dbf441d6008b78869cda9b030d21bd987dbe8bff70dd1a084161"
+      }
+    },
+    {
+      "state": "PASS_EXTRACTION_CONTENT_PENDING",
+      "errors": [],
+      "label": "r0169-military-open-a01",
+      "term_candidates": [
+        "TERM-09"
+      ],
+      "raw": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-raw-terms-b-qualification-a01\\raw.mkv",
+        "bytes": 5187713679,
+        "sha256": "d9e4249d88d2f3cb42c2f9238915a4a554de87a0e778bbe832e10d83918987ab"
+      },
+      "started_utc": "2026-10-05T09:21:43.935952+00:00",
+      "finished_utc": "2026-10-05T09:21:44.918537+00:00",
+      "returncode": 0,
+      "candidates": [
+        {
+          "frame_index": 6019,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 200633,
+            "pts_time": "200.633000",
+            "pkt_dts": 200633,
+            "pkt_dts_time": "200.633000",
+            "best_effort_timestamp": 200633,
+            "best_effort_timestamp_time": "200.633000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 200633,
+          "time_base": "1/1000",
+          "seconds": "200.633",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-military-open-a01\\decoded-01.png",
+            "bytes": 2542468,
+            "sha256": "810080219f04432f60b8fa8b863e1eebf8adb19280f96e55b246ea8cde9ca295"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 6139,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 204633,
+            "pts_time": "204.633000",
+            "pkt_dts": 204633,
+            "pkt_dts_time": "204.633000",
+            "best_effort_timestamp": 204633,
+            "best_effort_timestamp_time": "204.633000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 204633,
+          "time_base": "1/1000",
+          "seconds": "204.633",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-military-open-a01\\decoded-02.png",
+            "bytes": 2331731,
+            "sha256": "c8225495cc8358e88c0bf3ea0e66a570d49835000102c5a010e727719d65f4c1"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 6259,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 208633,
+            "pts_time": "208.633000",
+            "pkt_dts": 208633,
+            "pkt_dts_time": "208.633000",
+            "best_effort_timestamp": 208633,
+            "best_effort_timestamp_time": "208.633000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 208633,
+          "time_base": "1/1000",
+          "seconds": "208.633",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-military-open-a01\\decoded-03.png",
+            "bytes": 2400065,
+            "sha256": "c685f5a126a0dffc5350b6c4583acb3430bee897def0d8d115ebad0ef9f40306"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        }
+      ],
+      "argv": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-military-open-a01\\argv.json",
+        "bytes": 2793,
+        "sha256": "3a3d754fe08c8ced19d62247e04e58115420adaa8bf8f90dd58c7c0ebe596dea"
+      },
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-military-open-a01\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-military-open-a01\\stderr.txt",
+        "bytes": 2617,
+        "sha256": "52aeb72c28ce7751025f66f7f617eb63672051e8ca8e66932ac9fcb5e81272c9"
+      }
+    },
+    {
+      "state": "PASS_EXTRACTION_CONTENT_PENDING",
+      "errors": [],
+      "label": "r0169-monthly-refill-checkbox-hover-a01",
+      "term_candidates": [
+        "TERM-09"
+      ],
+      "raw": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-raw-terms-b-qualification-a01\\raw.mkv",
+        "bytes": 5187713679,
+        "sha256": "d9e4249d88d2f3cb42c2f9238915a4a554de87a0e778bbe832e10d83918987ab"
+      },
+      "started_utc": "2026-10-05T09:21:44.940209+00:00",
+      "finished_utc": "2026-10-05T09:21:45.977868+00:00",
+      "returncode": 0,
+      "candidates": [
+        {
+          "frame_index": 7288,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 242933,
+            "pts_time": "242.933000",
+            "pkt_dts": 242933,
+            "pkt_dts_time": "242.933000",
+            "best_effort_timestamp": 242933,
+            "best_effort_timestamp_time": "242.933000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 242933,
+          "time_base": "1/1000",
+          "seconds": "242.933",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-monthly-refill-checkbox-hover-a01\\decoded-01.png",
+            "bytes": 2417038,
+            "sha256": "881bd262367dcc036eb5e5789746d0a87f58693c64f8f7434d8bfd5f10906d71"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 7408,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 246933,
+            "pts_time": "246.933000",
+            "pkt_dts": 246933,
+            "pkt_dts_time": "246.933000",
+            "best_effort_timestamp": 246933,
+            "best_effort_timestamp_time": "246.933000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 246933,
+          "time_base": "1/1000",
+          "seconds": "246.933",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-monthly-refill-checkbox-hover-a01\\decoded-02.png",
+            "bytes": 2421456,
+            "sha256": "c661ca00616cb750268535816564e115dfb41ca5a666c70d025f8bf573f0fe35"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 7528,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 250933,
+            "pts_time": "250.933000",
+            "pkt_dts": 250933,
+            "pkt_dts_time": "250.933000",
+            "best_effort_timestamp": 250933,
+            "best_effort_timestamp_time": "250.933000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 250933,
+          "time_base": "1/1000",
+          "seconds": "250.933",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-monthly-refill-checkbox-hover-a01\\decoded-03.png",
+            "bytes": 2722171,
+            "sha256": "d69d74966f332007ddbbfbed2d50c26b0ab4ce549778e879d10a8d63366a7173"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        }
+      ],
+      "argv": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-monthly-refill-checkbox-hover-a01\\argv.json",
+        "bytes": 2871,
+        "sha256": "397d6533f5bd1ad34fbb330c0619e7ccd03076280b84535ef9d6d00cd507ed1a"
+      },
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-monthly-refill-checkbox-hover-a01\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-monthly-refill-checkbox-hover-a01\\stderr.txt",
+        "bytes": 2634,
+        "sha256": "c471cf1493295b135398be8ab633b8c0a906a32f4250e6d8b6404dc9b6044b2d"
+      }
+    },
+    {
+      "state": "PASS_EXTRACTION_CONTENT_PENDING",
+      "errors": [],
+      "label": "r0169-reorganize-selected-hover-a01",
+      "term_candidates": [
+        "TERM-10"
+      ],
+      "raw": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-raw-terms-b-qualification-a01\\raw.mkv",
+        "bytes": 5187713679,
+        "sha256": "d9e4249d88d2f3cb42c2f9238915a4a554de87a0e778bbe832e10d83918987ab"
+      },
+      "started_utc": "2026-10-05T09:21:45.997262+00:00",
+      "finished_utc": "2026-10-05T09:21:47.267376+00:00",
+      "returncode": 0,
+      "candidates": [
+        {
+          "frame_index": 27208,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 906933,
+            "pts_time": "906.933000",
+            "pkt_dts": 906933,
+            "pkt_dts_time": "906.933000",
+            "best_effort_timestamp": 906933,
+            "best_effort_timestamp_time": "906.933000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 906933,
+          "time_base": "1/1000",
+          "seconds": "906.933",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-reorganize-selected-hover-a01\\decoded-01.png",
+            "bytes": 2783485,
+            "sha256": "655053683b621978167b1ca91514ec609d1e058d7991e045596685132c9e251e"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 27328,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 910933,
+            "pts_time": "910.933000",
+            "pkt_dts": 910933,
+            "pkt_dts_time": "910.933000",
+            "best_effort_timestamp": 910933,
+            "best_effort_timestamp_time": "910.933000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 910933,
+          "time_base": "1/1000",
+          "seconds": "910.933",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-reorganize-selected-hover-a01\\decoded-02.png",
+            "bytes": 2779826,
+            "sha256": "2d9f3384b22995e29b214f5338cd8b376af7f8714ace5ecce7f9d5d45479932e"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 27448,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 914933,
+            "pts_time": "914.933000",
+            "pkt_dts": 914933,
+            "pkt_dts_time": "914.933000",
+            "best_effort_timestamp": 914933,
+            "best_effort_timestamp_time": "914.933000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 914933,
+          "time_base": "1/1000",
+          "seconds": "914.933",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-reorganize-selected-hover-a01\\decoded-03.png",
+            "bytes": 2786509,
+            "sha256": "4811a623cdfe3e6fb9af42449ec7a00ea3fb17632e8eace941055065fef8ffaf"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        }
+      ],
+      "argv": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-reorganize-selected-hover-a01\\argv.json",
+        "bytes": 2845,
+        "sha256": "3c11537a215bd05a3591d3d0728933acc505eda3c8d37f728c9caaa017a07792"
+      },
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-reorganize-selected-hover-a01\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-reorganize-selected-hover-a01\\stderr.txt",
+        "bytes": 2721,
+        "sha256": "2103fe3930de57c483b05eb4a22438b36f5f40105bbeedf4a94a422f7740d419"
+      }
+    },
+    {
+      "state": "PASS_EXTRACTION_CONTENT_PENDING",
+      "errors": [],
+      "label": "r0169-split-half-hover-a01",
+      "term_candidates": [
+        "TERM-10"
+      ],
+      "raw": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-raw-terms-b-qualification-a01\\raw.mkv",
+        "bytes": 5187713679,
+        "sha256": "d9e4249d88d2f3cb42c2f9238915a4a554de87a0e778bbe832e10d83918987ab"
+      },
+      "started_utc": "2026-10-05T09:21:44.956990+00:00",
+      "finished_utc": "2026-10-05T09:21:46.162626+00:00",
+      "returncode": 0,
+      "candidates": [
+        {
+          "frame_index": 3153,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 105100,
+            "pts_time": "105.100000",
+            "pkt_dts": 105100,
+            "pkt_dts_time": "105.100000",
+            "best_effort_timestamp": 105100,
+            "best_effort_timestamp_time": "105.100000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 105100,
+          "time_base": "1/1000",
+          "seconds": "105.1",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-split-half-hover-a01\\decoded-01.png",
+            "bytes": 2707737,
+            "sha256": "d24bcee93c2555b887102fbc975d363ac2cd8141f014fef6238e98d842f3f12d"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 3273,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 109100,
+            "pts_time": "109.100000",
+            "pkt_dts": 109100,
+            "pkt_dts_time": "109.100000",
+            "best_effort_timestamp": 109100,
+            "best_effort_timestamp_time": "109.100000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 109100,
+          "time_base": "1/1000",
+          "seconds": "109.1",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-split-half-hover-a01\\decoded-02.png",
+            "bytes": 2764645,
+            "sha256": "7e4068be98b626e2858d3dbe43f04b1c110f805d2f0e26e574367d859fc04185"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 3393,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 113100,
+            "pts_time": "113.100000",
+            "pkt_dts": 113100,
+            "pkt_dts_time": "113.100000",
+            "best_effort_timestamp": 113100,
+            "best_effort_timestamp_time": "113.100000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 113100,
+          "time_base": "1/1000",
+          "seconds": "113.1",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-split-half-hover-a01\\decoded-03.png",
+            "bytes": 2772912,
+            "sha256": "f816a31c690e73d4a4beb633c44ee8f85e41bc6ac1b3ae8dcc2ea07574d5d62a"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        }
+      ],
+      "argv": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-split-half-hover-a01\\argv.json",
+        "bytes": 2793,
+        "sha256": "6addd6580764d75f15610c54915073db824d24ef714797589d3ac5b0d9f54d2d"
+      },
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-split-half-hover-a01\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-split-half-hover-a01\\stderr.txt",
+        "bytes": 2712,
+        "sha256": "4b8684dd72540cc7fd05386253d1dcc2d188657112ff9002025215293dfc95ae"
+      }
+    },
+    {
+      "state": "PASS_EXTRACTION_CONTENT_PENDING",
+      "errors": [],
+      "label": "r0169-supplies-concept-hover-a01",
+      "term_candidates": [
+        "TERM-04"
+      ],
+      "raw": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-raw-terms-b-qualification-a01\\raw.mkv",
+        "bytes": 5187713679,
+        "sha256": "d9e4249d88d2f3cb42c2f9238915a4a554de87a0e778bbe832e10d83918987ab"
+      },
+      "started_utc": "2026-10-05T09:21:43.935592+00:00",
+      "finished_utc": "2026-10-05T09:21:45.072321+00:00",
+      "returncode": 0,
+      "candidates": [
+        {
+          "frame_index": 5838,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 194600,
+            "pts_time": "194.600000",
+            "pkt_dts": 194600,
+            "pkt_dts_time": "194.600000",
+            "best_effort_timestamp": 194600,
+            "best_effort_timestamp_time": "194.600000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 194600,
+          "time_base": "1/1000",
+          "seconds": "194.6",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-supplies-concept-hover-a01\\decoded-01.png",
+            "bytes": 2680680,
+            "sha256": "a204159f65c917dcaf59d26e13f0be3466884af632f2efa8a258d5b8611dc18a"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 5958,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 198600,
+            "pts_time": "198.600000",
+            "pkt_dts": 198600,
+            "pkt_dts_time": "198.600000",
+            "best_effort_timestamp": 198600,
+            "best_effort_timestamp_time": "198.600000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 198600,
+          "time_base": "1/1000",
+          "seconds": "198.6",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-supplies-concept-hover-a01\\decoded-02.png",
+            "bytes": 2690408,
+            "sha256": "f2325fcdbacdab5274ef9782a9ae27fa0ac6c0b5578cd99a40f3ddb11728ffcd"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 6078,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 202600,
+            "pts_time": "202.600000",
+            "pkt_dts": 202600,
+            "pkt_dts_time": "202.600000",
+            "best_effort_timestamp": 202600,
+            "best_effort_timestamp_time": "202.600000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 202600,
+          "time_base": "1/1000",
+          "seconds": "202.6",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-supplies-concept-hover-a01\\decoded-03.png",
+            "bytes": 2327383,
+            "sha256": "131eb15da20b0f96cbf483b60d3ac3aa28aa755899aa605053407d04859285d0"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        }
+      ],
+      "argv": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-supplies-concept-hover-a01\\argv.json",
+        "bytes": 2815,
+        "sha256": "09ecfc83132dbf26b509b036b18da224cdd1849691679ef8a078b37fbb361ab8"
+      },
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-supplies-concept-hover-a01\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-supplies-concept-hover-a01\\stderr.txt",
+        "bytes": 2628,
+        "sha256": "d70952e1d15600964cc0daea9af58bd9b76ce0434ee029c39d01506f563a7e86"
+      }
+    },
+    {
+      "state": "PASS_EXTRACTION_CONTENT_PENDING",
+      "errors": [],
+      "label": "r0169-unmapped-raw-tail-search-a01",
+      "term_candidates": [],
+      "raw": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-raw-terms-b-qualification-a01\\raw.mkv",
+        "bytes": 5187713679,
+        "sha256": "d9e4249d88d2f3cb42c2f9238915a4a554de87a0e778bbe832e10d83918987ab"
+      },
+      "started_utc": "2026-10-05T09:21:46.190914+00:00",
+      "finished_utc": "2026-10-05T09:21:52.781479+00:00",
+      "returncode": 0,
+      "candidates": [
+        {
+          "frame_index": 104398,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 3479933,
+            "pts_time": "3479.933000",
+            "pkt_dts": 3479933,
+            "pkt_dts_time": "3479.933000",
+            "best_effort_timestamp": 3479933,
+            "best_effort_timestamp_time": "3479.933000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 3479933,
+          "time_base": "1/1000",
+          "seconds": "3479.933",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-unmapped-raw-tail-search-a01\\decoded-01.png",
+            "bytes": 2784533,
+            "sha256": "5517e8445113994cbbd6277672931ec6cecbad6bdda0a03031313bd56963089b"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 106198,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 3539933,
+            "pts_time": "3539.933000",
+            "pkt_dts": 3539933,
+            "pkt_dts_time": "3539.933000",
+            "best_effort_timestamp": 3539933,
+            "best_effort_timestamp_time": "3539.933000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 3539933,
+          "time_base": "1/1000",
+          "seconds": "3539.933",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-unmapped-raw-tail-search-a01\\decoded-02.png",
+            "bytes": 2787933,
+            "sha256": "d3cb117da23853746631c8d06e98d594e1d72d7dbf8c1cfca2e492ae3c63d93b"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        },
+        {
+          "frame_index": 107698,
+          "actual_frame": {
+            "stream_index": 0,
+            "key_frame": 0,
+            "pts": 3589933,
+            "pts_time": "3589.933000",
+            "pkt_dts": 3589933,
+            "pkt_dts_time": "3589.933000",
+            "best_effort_timestamp": 3589933,
+            "best_effort_timestamp_time": "3589.933000",
+            "duration": 33,
+            "duration_time": "0.033000",
+            "pict_type": "P"
+          },
+          "pts": 3589933,
+          "time_base": "1/1000",
+          "seconds": "3589.933",
+          "decoded_png": {
+            "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-unmapped-raw-tail-search-a01\\decoded-03.png",
+            "bytes": 2786633,
+            "sha256": "373fc618f70d2dafd825d64151889ab74818ec297cf7f34ea75b3514ee1be0a1"
+          },
+          "Root_actual_image_review": "PENDING",
+          "clean_span_certified": false,
+          "human_signoff": false
+        }
+      ],
+      "argv": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-unmapped-raw-tail-search-a01\\argv.json",
+        "bytes": 1654,
+        "sha256": "e07c9d84c75f4583e7539dc061c8511a3d407b50597b910b98c68053600779d0"
+      },
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-unmapped-raw-tail-search-a01\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-unmapped-raw-tail-search-a01\\stderr.txt",
+        "bytes": 3743,
+        "sha256": "6e0babbb433b9dcbf819e0f72013f82d529dd59800b599bb68305961e18a7383"
+      }
+    }
+  ],
+  "wall_or_monotonic_binding": null,
+  "new_TERM_credit": 0,
+  "Root_content_review_pending": true,
+  "full_1x_review": false,
+  "clean_spans_certified": false,
+  "human_signoff": false,
+  "SDK_or_desktop_or_recorders_started": 0
+}

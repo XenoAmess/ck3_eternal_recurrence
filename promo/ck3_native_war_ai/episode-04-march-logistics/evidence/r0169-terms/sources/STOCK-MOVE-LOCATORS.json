@@ -1,0 +1,998 @@
+[
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 213,
+    "context": "210: \t\t\t\t\t\tvisible = \"[GreaterThan_int32(GetDataModelSize(ArmyWindow.GetSelectedUnitItems), '(int32)1')]\"\n211: \t\t\t\t\t\t\n212: \t\t\t\t\t\tbutton_round = {\n213: \t\t\t\t\t\t\tname = \"halt_button\"\n214: \t\t\t\t\t\t\tvisible = \"[IsValidCommand( ArmyWindow.GetOrders.GetHalt )]\"\n215: \t\t\t\t\t\t\tonclick = \"[PostCommand( ArmyWindow.GetOrders.GetHalt )]\"\n216: \t\t\t\t\t\t\ttooltip = \"ARMY_HALT_ALL\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 214,
+    "context": "211: \t\t\t\t\t\t\n212: \t\t\t\t\t\tbutton_round = {\n213: \t\t\t\t\t\t\tname = \"halt_button\"\n214: \t\t\t\t\t\t\tvisible = \"[IsValidCommand( ArmyWindow.GetOrders.GetHalt )]\"\n215: \t\t\t\t\t\t\tonclick = \"[PostCommand( ArmyWindow.GetOrders.GetHalt )]\"\n216: \t\t\t\t\t\t\ttooltip = \"ARMY_HALT_ALL\"\n217: \t\t\t\t\t\t\tshortcut = army_halt"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 215,
+    "context": "212: \t\t\t\t\t\tbutton_round = {\n213: \t\t\t\t\t\t\tname = \"halt_button\"\n214: \t\t\t\t\t\t\tvisible = \"[IsValidCommand( ArmyWindow.GetOrders.GetHalt )]\"\n215: \t\t\t\t\t\t\tonclick = \"[PostCommand( ArmyWindow.GetOrders.GetHalt )]\"\n216: \t\t\t\t\t\t\ttooltip = \"ARMY_HALT_ALL\"\n217: \t\t\t\t\t\t\tshortcut = army_halt\n218: \t\t\t\t\t\t\tparentanchor = bottom"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 216,
+    "context": "213: \t\t\t\t\t\t\tname = \"halt_button\"\n214: \t\t\t\t\t\t\tvisible = \"[IsValidCommand( ArmyWindow.GetOrders.GetHalt )]\"\n215: \t\t\t\t\t\t\tonclick = \"[PostCommand( ArmyWindow.GetOrders.GetHalt )]\"\n216: \t\t\t\t\t\t\ttooltip = \"ARMY_HALT_ALL\"\n217: \t\t\t\t\t\t\tshortcut = army_halt\n218: \t\t\t\t\t\t\tparentanchor = bottom\n219: "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 217,
+    "context": "214: \t\t\t\t\t\t\tvisible = \"[IsValidCommand( ArmyWindow.GetOrders.GetHalt )]\"\n215: \t\t\t\t\t\t\tonclick = \"[PostCommand( ArmyWindow.GetOrders.GetHalt )]\"\n216: \t\t\t\t\t\t\ttooltip = \"ARMY_HALT_ALL\"\n217: \t\t\t\t\t\t\tshortcut = army_halt\n218: \t\t\t\t\t\t\tparentanchor = bottom\n219: \n220: \t\t\t\t\t\t\tbutton_pause = {"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 1109,
+    "context": "1106: \t\t\t\t\t\t\tbutton_round = {\n1107: \t\t\t\t\t\t\t\tname = \"stop_gathering_button\"\n1108: \t\t\t\t\t\t\t\tsize = { 30 30 }\n1109: \t\t\t\t\t\t\t\tvisible = \"[ArmyWindow.CanStopGathering]\"\n1110: \n1111: \t\t\t\t\t\t\t\tbutton_cancel_small = {\n1112: \t\t\t\t\t\t\t\t\tparentanchor = center"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 1119,
+    "context": "1116: \t\t\t\t\t\t\t}\n1117: \t\t\t\t\t\t\t\n1118: \t\t\t\t\t\t\tbutton_round = {\n1119: \t\t\t\t\t\t\t\tname = \"halt_button\"\n1120: \t\t\t\t\t\t\t\tsize = { 30 30 }\n1121: \t\t\t\t\t\t\t\tvisible = \"[And(Army.IsMoving, Not(Army.IsGathering))]\"\n1122: \t\t\t\t\t\t\t\tenabled = \"[IsValidCommand( Army.GetOrders.GetHalt )]\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 1122,
+    "context": "1119: \t\t\t\t\t\t\t\tname = \"halt_button\"\n1120: \t\t\t\t\t\t\t\tsize = { 30 30 }\n1121: \t\t\t\t\t\t\t\tvisible = \"[And(Army.IsMoving, Not(Army.IsGathering))]\"\n1122: \t\t\t\t\t\t\t\tenabled = \"[IsValidCommand( Army.GetOrders.GetHalt )]\"\n1123: \t\t\t\t\t\t\t\ttooltip = \"ARMY_HALT\"\n1124: \t\t\t\t\t\t\t\tshortcut = army_halt\n1125: \t\t\t\t\t\t\t\tonclick = \"[PostCommand( Army.GetOrders.GetHalt )]\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 1123,
+    "context": "1120: \t\t\t\t\t\t\t\tsize = { 30 30 }\n1121: \t\t\t\t\t\t\t\tvisible = \"[And(Army.IsMoving, Not(Army.IsGathering))]\"\n1122: \t\t\t\t\t\t\t\tenabled = \"[IsValidCommand( Army.GetOrders.GetHalt )]\"\n1123: \t\t\t\t\t\t\t\ttooltip = \"ARMY_HALT\"\n1124: \t\t\t\t\t\t\t\tshortcut = army_halt\n1125: \t\t\t\t\t\t\t\tonclick = \"[PostCommand( Army.GetOrders.GetHalt )]\"\n1126: "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 1124,
+    "context": "1121: \t\t\t\t\t\t\t\tvisible = \"[And(Army.IsMoving, Not(Army.IsGathering))]\"\n1122: \t\t\t\t\t\t\t\tenabled = \"[IsValidCommand( Army.GetOrders.GetHalt )]\"\n1123: \t\t\t\t\t\t\t\ttooltip = \"ARMY_HALT\"\n1124: \t\t\t\t\t\t\t\tshortcut = army_halt\n1125: \t\t\t\t\t\t\t\tonclick = \"[PostCommand( Army.GetOrders.GetHalt )]\"\n1126: \n1127: \t\t\t\t\t\t\t\tbutton_pause = {"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 1125,
+    "context": "1122: \t\t\t\t\t\t\t\tenabled = \"[IsValidCommand( Army.GetOrders.GetHalt )]\"\n1123: \t\t\t\t\t\t\t\ttooltip = \"ARMY_HALT\"\n1124: \t\t\t\t\t\t\t\tshortcut = army_halt\n1125: \t\t\t\t\t\t\t\tonclick = \"[PostCommand( Army.GetOrders.GetHalt )]\"\n1126: \n1127: \t\t\t\t\t\t\t\tbutton_pause = {\n1128: \t\t\t\t\t\t\t\t\tparentanchor = center"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 1152,
+    "context": "1149: \t\t\t\t}\n1150: \t\t\t\tbutton = {\n1151: \t\t\t\t\t# so the shortcut takes priority\n1152: \t\t\t\t\tvisible = \"[IsValidCommand( ArmyWindow.GetOrders.GetHalt )]\"\n1153: \t\t\t\t\tonclick = \"[PostCommand( ArmyWindow.GetOrders.GetHalt )]\"\n1154: \t\t\t\t\tshortcut = army_halt\n1155: \t\t\t\t}"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 1153,
+    "context": "1150: \t\t\t\tbutton = {\n1151: \t\t\t\t\t# so the shortcut takes priority\n1152: \t\t\t\t\tvisible = \"[IsValidCommand( ArmyWindow.GetOrders.GetHalt )]\"\n1153: \t\t\t\t\tonclick = \"[PostCommand( ArmyWindow.GetOrders.GetHalt )]\"\n1154: \t\t\t\t\tshortcut = army_halt\n1155: \t\t\t\t}\n1156: \t\t\t}"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\window_army.gui",
+    "sha256": "439da247fa53ea9ddef63f35e84305af4b2e849e8614b4751ba76de440c2feeb",
+    "line": 1154,
+    "context": "1151: \t\t\t\t\t# so the shortcut takes priority\n1152: \t\t\t\t\tvisible = \"[IsValidCommand( ArmyWindow.GetOrders.GetHalt )]\"\n1153: \t\t\t\t\tonclick = \"[PostCommand( ArmyWindow.GetOrders.GetHalt )]\"\n1154: \t\t\t\t\tshortcut = army_halt\n1155: \t\t\t\t}\n1156: \t\t\t}\n1157: "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\shared\\cooltip.gui",
+    "sha256": "6d698dc58c09386016042680dd171956ac8da5ddd108e3d94a55c6b9ea22f7c9",
+    "line": 2718,
+    "context": "2715: \t\t\t\t\t\t}\n2716: \n2717: \t\t\t\t\t\thbox = {\n2718: \t\t\t\t\t\t\tname = \"involved_army_movement_lock\"\n2719: \t\t\t\t\t\t\tvisible = \"[UnitItem.IsMovementLocked]\"\n2720: \t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding\n2721: \t\t\t\t\t\t\tspacing = 2"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\shared\\cooltip.gui",
+    "sha256": "6d698dc58c09386016042680dd171956ac8da5ddd108e3d94a55c6b9ea22f7c9",
+    "line": 2719,
+    "context": "2716: \n2717: \t\t\t\t\t\thbox = {\n2718: \t\t\t\t\t\t\tname = \"involved_army_movement_lock\"\n2719: \t\t\t\t\t\t\tvisible = \"[UnitItem.IsMovementLocked]\"\n2720: \t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding\n2721: \t\t\t\t\t\t\tspacing = 2\n2722: "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\shared\\cooltip.gui",
+    "sha256": "6d698dc58c09386016042680dd171956ac8da5ddd108e3d94a55c6b9ea22f7c9",
+    "line": 2724,
+    "context": "2721: \t\t\t\t\t\t\tspacing = 2\n2722: \n2723: \t\t\t\t\t\t\ticon = {\n2724: \t\t\t\t\t\t\t\ttexture = \"gfx/interface/icons/map_icons/movement_locked.dds\"\n2725: \t\t\t\t\t\t\t\tsize = { 24 24 }\n2726: \t\t\t\t\t\t\t}\n2727: "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\gui\\shared\\cooltip.gui",
+    "sha256": "6d698dc58c09386016042680dd171956ac8da5ddd108e3d94a55c6b9ea22f7c9",
+    "line": 2730,
+    "context": "2727: \n2728: \t\t\t\t\t\t\ttext_single = {\n2729: \t\t\t\t\t\t\t\tlayoutpolicy_horizontal = expanding\n2730: \t\t\t\t\t\t\t\ttext = \"ARMY_TOOLTIP_IS_MOVEMENT_LOCKED\"\n2731: \t\t\t\t\t\t\t\talign = nobaseline\n2732: \t\t\t\t\t\t\t\tfonttintcolor = \"[TooltipInfo.GetTintColor]\"\n2733: \t\t\t\t\t\t\t}"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\buildings_l_english.yml",
+    "sha256": "fe3a4417ae48b8bfbceb7da7feda631b8c49704d7203ac2f92495a510a9b5202",
+    "line": 2617,
+    "context": "2614:  building_type_dunhuang_market_01: \"$building_dunhuang_market_01$\"\n2615:  building_type_dunhuang_market_01_desc: \"$building_dunhuang_market_01_desc$\"\n2616:  building_dunhuang_market_01: \"Marketplace of Dūnhuáng\"\n2617:  building_dunhuang_market_01_desc: \"Sat on the glistening banks of the Shule river, the city of Dūnhuáng marks the gateway between the Hexi Corridor and the Tarim basin, and is a key stopping point for all travelers between them.\"\n2618:  building_dunhuang_market_02: \"Sprawling Marketplace of Dūnhuáng\"\n2619:  building_dunhuang_market_02_desc: \"The sun-bleached streets of Dūnhuáng know only the steady, languid march of countless laden camels, mules, and men, and their ever-crossing paths east and west.\"\n2620: "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\council_tasks_l_english.yml",
+    "sha256": "cb7293794fdcd1417fc73ab9e1a4ac15210869ef48256013da3523c6b330288e",
+    "line": 542,
+    "context": "539: \n540:  liege_converting_county_title: \"Liege Converting [county.GetNameNoTierNoTooltip|V]\"\n541:  liege_converting_county_desc: \"[councillor_liege.GetShortUINamePossessive] [councillor.GetCouncilTitle] is [converting|E] the [county.GetName] to [councillor_liege.GetRite.GetName] #weak ([old_rite.GetAdjective])#!\"\n542:  liege_stopped_converting_county_title: \"Liege Conversion Halted\"\n543:  liege_stopped_converting_county_desc: \"[councillor_liege.GetShortUINamePossessive] [councillor.GetCouncilTitle] has stopped [converting|E] the [county.GetName] to [councillor_liege.GetRite.GetName] #weak ([old_rite.GetAdjective])#!\"\n544:  liege_converted_county_title: \"Liege Converted [county.GetNameNoTierNoTooltip|V]\"\n545:  liege_converted_county_desc: \"[councillor_liege.GetShortUINamePossessive] [councillor.GetCouncilTitle] has [converted|E] the [county.GetName] to [councillor_liege.GetRite.GetName] #weak ([old_rite.GetAdjective])#!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\court_positions_l_english.yml",
+    "sha256": "8e0aaa1e6de19ec66b366fed1ac74e5d2fca9e3eb364ef3cb7105f3023f649a7",
+    "line": 421,
+    "context": "418:  high_almoner_court_position:0 \"High Almoner\"\n419:  high_almoner_court_position_desc:1 \"The $high_almoner_court_position$ is in charge of distributing alms to the deserving poor and other subjects in need.\"\n420:  cupbearer_court_position:0 \"Cup-Bearer\"\n421:  cupbearer_employer_custom_effect_description:3 \"$BULLET$Chance of stopping Poison [GetScheme('murder').GetTypeName] [schemes|E]#!\"\n422:  cupbearer_court_position_desc:1 \"A $cupbearer_court_position$ is responsible for pouring drinks at the royal table and to make sure that no one's cup ever runs dry.\"\n423: \n424:  seneschal_court_position:0 \"Seneschal\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\court_positions_l_english.yml",
+    "sha256": "8e0aaa1e6de19ec66b366fed1ac74e5d2fca9e3eb364ef3cb7105f3023f649a7",
+    "line": 498,
+    "context": "495:  court_musician_employer_custom_effect_description:2 \"$BULLET$Increases [opinion|E] gain when hosting a [GetActivityType('activity_feast').GetName]\"\n496:  court_musician_court_position_desc:1 \"A $court_musician_court_position$ is an artist who sings and plays instruments to entertain their Liege and the court.\"\n497:  food_taster_court_position:0 \"Food Taster\"\n498:  food_taster_employer_custom_effect_description:3 \"$BULLET$Chance of stopping Poison [GetScheme('murder').GetTypeName] [schemes|E]#!\"\n499:  food_taster_court_position_desc:1 \"A $food_taster_court_position$ has the solemn duty to ensure that their Liege's plate never is touched by poison, and if some nefarious powder or liquid nevertheless makes it into the meal... Well, that's why the food taster has to taste the food before the meal begins.\"\n500:  lady_in_waiting_court_position:0 \"Lady-in-waiting\"\n501:  lady_in_waiting_court_position_desc:1 \"A $lady_in_waiting_court_position$ is an assistant and companion to a Queen or Empress, attending to her every need and fulfilling every whim.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\game_concepts_l_english.yml",
+    "sha256": "ae7ebd881fe5b4222220c5dd9cf4b56b5d848202af2e5db9f5c90b479f455dd7",
+    "line": 1931,
+    "context": "1928:  game_concept_execute_reasons:0 \"Execution Reasons\"\n1929:  game_concept_execute_reason_desc:1 \"A $game_concept_execute_reason$ gives a [liege|E] the opportunity to freely [execute|E] a subject they have in their [dungeon|E]. They are most often gained from the subject being a [criminal|E].\"\n1930: \n1931:  game_concept_movement_lock:0 \"Movement Lock\"\n1932:  game_concept_movement_locked:0 \"Movement Locked\"\n1933:  game_concept_movement_locked_desc:0 \"After an [army|E] has completed more than half of a given move order, it will not be possible to change it until they arrive at their destination.\"\n1934:  "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\game_concepts_l_english.yml",
+    "sha256": "ae7ebd881fe5b4222220c5dd9cf4b56b5d848202af2e5db9f5c90b479f455dd7",
+    "line": 1932,
+    "context": "1929:  game_concept_execute_reason_desc:1 \"A $game_concept_execute_reason$ gives a [liege|E] the opportunity to freely [execute|E] a subject they have in their [dungeon|E]. They are most often gained from the subject being a [criminal|E].\"\n1930: \n1931:  game_concept_movement_lock:0 \"Movement Lock\"\n1932:  game_concept_movement_locked:0 \"Movement Locked\"\n1933:  game_concept_movement_locked_desc:0 \"After an [army|E] has completed more than half of a given move order, it will not be possible to change it until they arrive at their destination.\"\n1934:  \n1935:  game_concept_extramarital_sex:0 \"Extramarital Sex\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\game_concepts_l_english.yml",
+    "sha256": "ae7ebd881fe5b4222220c5dd9cf4b56b5d848202af2e5db9f5c90b479f455dd7",
+    "line": 1933,
+    "context": "1930: \n1931:  game_concept_movement_lock:0 \"Movement Lock\"\n1932:  game_concept_movement_locked:0 \"Movement Locked\"\n1933:  game_concept_movement_locked_desc:0 \"After an [army|E] has completed more than half of a given move order, it will not be possible to change it until they arrive at their destination.\"\n1934:  \n1935:  game_concept_extramarital_sex:0 \"Extramarital Sex\"\n1936:  game_concept_extramarital_sex_sleeping_with:0 \"sleeping with\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\laamp_contract_schemes_l_english.yml",
+    "sha256": "bff088242b37a0ec005eb5cf06a8a960532f27c6748b58620f005a6623f4b32a",
+    "line": 377,
+    "context": "374:  laamp_base_contract_schemes.6021.t: \"$laamp_base_6021_contract_scheme$\"\n375:  laamp_base_contract_schemes.6021.desc.intro: \"The market square of [ROOT.Char.GetCurrentLocation.GetName] is busier than ever, with a troupe of singers doing preparations.\\n\\n\"A #EMP wooden#! sword?\" one of the children leans over the dais, making a disgusted face.\\n\\n\"\n376:  laamp_base_contract_schemes.6021.desc.employer_child: \"\"[employer_child.GetFirstName], that's enough.\" [employer.GetTitledFirstName] urges [employer_child.GetHerHim] to return to [employer.GetHerHis] side. \"I told you I would find a real hero for the play and... look who just turned up.\" [employer.GetFirstNameNoTooltip] looks directly at me.\"\n377:  laamp_base_contract_schemes.6021.desc.random_child: \"The alerted peasants quickly join [dummy_gender.GetHerHim]: \"Is this the best that our [employer.GetLadyLord]ship has to offer?\"\\n\\nBut the mumbling ends as soon as [employer.GetTitledFirstName] enters the square, stopping [employer.GetHerHis] horse before me:\"\n378:  laamp_base_contract_schemes.6021.desc.outro: \"\"An easy windfall, wouldn't you say? You just need to impress these peasants.\"\"\n379:  laamp_base_contract_schemes.6021.a: \"Let's make it the #EMP easiest#! windfall.\"\n380:  laamp_base_contract_schemes.6021.b: \"The sooner, the better.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\laamp_contract_schemes_l_english.yml",
+    "sha256": "bff088242b37a0ec005eb5cf06a8a960532f27c6748b58620f005a6623f4b32a",
+    "line": 447,
+    "context": "444:  laamp_base_contract_schemes.0011.d.tt: \"$laamp_base_contract_schemes.0000.d.no_starting_bonus$\"\n445: \n446:  laamp_base_contract_schemes.0012.t: \"$laamp_base_contract_schemes.0011.t$: Success!\"\n447:  laamp_base_contract_schemes.0012.desc: \"It's surprising how much a few little words in quiet corners can change a situation. A whisper here, a comment there, an action defended at dinner...\\n\\nIt wouldn't have nearly the same meaning coming from a landed magnate, of course. Too much power, too much at stake, too much risk of insincerity — but a humble [ROOT.Char.Custom('GetLaampDescribeTypeSelf')], stopping at court briefly as [ROOT.Char.GetSheHe] and [ROOT.Char.GetHerHis] band wend their way around the world, well.\\n\\nNow that's an entirely different game.\\n\\nNeedless to say [employer.GetTitledFirstName] is more than happy with our efforts, and we must be on our way.\"\n448:  laamp_base_contract_schemes.0012.a: \"$laamp_base_contract_schemes.0000.generic_option.proceed.neutral$\"\n449: \n450:  laamp_base_contract_schemes.0013.t: \"$laamp_base_contract_schemes.0011.t$: Failure!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\relationship_reasons_l_english.yml",
+    "sha256": "3441fb756e042abe66c23b171839b303acc68da5096a0973201f82bdcbb4d50f",
+    "line": 2998,
+    "context": "2995:  friend_moved_estate: \"At [CHARACTER.GetShortUINamePossessive] invitation, [TARGET_CHARACTER.GetShortUIName] moved the [TARGET_CHARACTER.GetHouse.GetName] family estate to [CHARACTER.GetShortUINamePossessive] capital and became a most valuable confidant.\"\n2996:  friend_moved_estate_corresponding: \"At [TARGET_CHARACTER.GetShortUINamePossessive] invitation, [CHARACTER.GetShortUIName] moved the [CHARACTER.GetHouse.GetName] family estate to [TARGET_CHARACTER.GetShortUINamePossessive] capital and became a most valuable confidant.\"\n2997: \n2998:  lover_chariot_races_rendezvous: \"[CHARACTER.GetShortUIName|U] and [TARGET_CHARACTER.GetShortUIName] slunk away together during the imperial chariot races, becoming lovers as the crowd roared in exhaltation.\"\n2999:  lover_chariot_races_rendezvous_corresponding: \"[TARGET_CHARACTER.GetShortUIName|U] and [CHARACTER.GetShortUIName] slunk away together during the imperial chariot races, becoming lovers as the crowd roared in exhaltation.\"\n3000:  \n3001:  cid_lover_refused_to_left_behind: \"[CHARACTER.GetShortUIName|U] refused to leave behind [TARGET_CHARACTER.GetShortUIName] disobeying the orders of [CHARACTER.GetHerHis] liege.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\relationship_reasons_l_english.yml",
+    "sha256": "3441fb756e042abe66c23b171839b303acc68da5096a0973201f82bdcbb4d50f",
+    "line": 2999,
+    "context": "2996:  friend_moved_estate_corresponding: \"At [TARGET_CHARACTER.GetShortUINamePossessive] invitation, [CHARACTER.GetShortUIName] moved the [CHARACTER.GetHouse.GetName] family estate to [TARGET_CHARACTER.GetShortUINamePossessive] capital and became a most valuable confidant.\"\n2997: \n2998:  lover_chariot_races_rendezvous: \"[CHARACTER.GetShortUIName|U] and [TARGET_CHARACTER.GetShortUIName] slunk away together during the imperial chariot races, becoming lovers as the crowd roared in exhaltation.\"\n2999:  lover_chariot_races_rendezvous_corresponding: \"[TARGET_CHARACTER.GetShortUIName|U] and [CHARACTER.GetShortUIName] slunk away together during the imperial chariot races, becoming lovers as the crowd roared in exhaltation.\"\n3000:  \n3001:  cid_lover_refused_to_left_behind: \"[CHARACTER.GetShortUIName|U] refused to leave behind [TARGET_CHARACTER.GetShortUIName] disobeying the orders of [CHARACTER.GetHerHis] liege.\"\n3002:  cid_lover_refused_to_left_behind_corresponding: \"$cid_lover_refused_to_left_behind$\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\schemes_l_english.yml",
+    "sha256": "abb50fdcf1813c2d8414d0a30f2fc78c5449731db424df6f6378c89c2fe288de",
+    "line": 1090,
+    "context": "1087:  scheme_apa_positive_0371_modifier: \"$scheme_apa_positive.0371.t$\"\n1088:  scheme_apa_positive_0371_modifier_desc: \"No door, gate, or passage cannot be overcome, or strengthened against that eventuality.\"\n1089:  scheme_apa_positive_0381_modifier: \"$scheme_apa_positive.0381.t$\"\n1090:  scheme_apa_positive_0381_modifier_desc: \"A malignant plan is most easily halted if disrupted before it can grow legs.\"\n1091:  scheme_apa_positive_0391_modifier: \"$scheme_apa_positive.0391.t$\"\n1092:  scheme_apa_positive_0391_modifier_desc: \"Unknown weaknesses might only be revealed if you plan, plan, and plan again.\"\n1093:  scheme_apa_positive_0401_modifier: \"$scheme_apa_positive.0401.t$\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\single_combat_events_l_english.yml",
+    "sha256": "561d02b61566cb88fdc0944cae3bae17108e43d32f5f3fa1c55aa28bf7e24206",
+    "line": 442,
+    "context": "439:  single_combat.0031.desc.opponent_response.desert_warrior.fatality:0 \"deftly kicking my knees out from under me.\\n\\nTossed into the [sc_defender.Custom('GroundType')], I struggle to get up, totally out of breath.\\n\\n[sc_victor.GetFirstNamePossessiveNoTooltip] [sc_victor.Custom('signature_weapon')] [sc_victor.Custom('SignatureWeaponWoundVerb2ThirdPersonPresent')] into my chest from above, and, just like that, it's over. My limbs twitch pathetically, but the fight has left my body.\"\n440:  single_combat.0031.desc.opponent_response.jungle_stalker.fatality:0 \"whacking me square in the eye with the [sc_victor.Custom('SignatureWeaponEndType')] of [sc_victor.GetHerHis] [sc_victor.Custom('signature_weapon')].\\n\\nSurprised and already struggling against the foliage, my own [sc_loser.Custom('signature_weapon')] comes loose from my grasp.\\n\\nUndefended, I'm easy prey for [sc_victor.GetFirstNameNoTooltip], and a series of [sc_victor.Custom('SignatureWeaponAttemptedHeavyPlural')] steadily eviscerate me.\"\n441:  single_combat.0031.desc.opponent_response.open_terrain_expert.fatality:0 \"It's not till I overextend that I see what [sc_victor.GetSheHe]'s doing. My [sc_loser.Custom('signature_weapon')] flung too far in front of me, [sc_victor.GetFirstNameNoTooltip] whirls [sc_victor.GetHerHis] [sc_victor.Custom('signature_weapon')] back around, and white-hot pain explodes in my side.\\n\\nI crumple, wheezing and coughing, gulping down strangulated gasps of air. It's all pointless.\\n\\n[sc_victor.GetFirstNameNoTooltip] [sc_victor.Custom('SignatureWeaponActionThirdPerson')] [sc_victor.GetHerHis] [sc_victor.Custom('signature_weapon')] for the death-blow.\"\n442:  single_combat.0031.desc.opponent_response.rough_terrain_expert.fatality.rocky:0 \"I trip, slip, and fall down the slope, limbs akimbo.\\n\\nSomething sharp, rock or weapon, catches me in the spine, and my lower half goes numb while my upper half screams in agony. The world spins to a sudden halt. My arm is bending the wrong way, blood is filling up my eye, and I'm just so cold.\\n\\n[sc_victor.GetFirstNameNoTooltip] looms above me, ready to end my misery.\"\n443:  single_combat.0031.desc.opponent_response.rough_terrain_expert.fatality.boggy:0 \"I slip and trip into a deep pool of brackish water.\\n\\nMy [sc_loser.Custom('signature_weapon')] is lost immediately, and as I flounder, a heavy boot comes down on the back of my neck, holding me beneath the foetid pool.\\n\\nMy every struggle is met with a casual swing of [sc_victor.GetFirstNamePossessiveNoTooltip] [sc_victor.Custom('signature_weapon')], till I lack the strength to even try to force [sc_victor.GetHerHim] away from me.\"\n444:  single_combat.0031.desc.opponent_response.forest_fighter.fatality:0 \"the tree branch before I trip over it, tumbling into the undergrowth.\\n\\nThorns and brambles scrape my [sc_loser.Custom('MaskFace')], something tough tugs my [sc_loser.Custom('signature_weapon')] almost from my grasp. I fight to free it, bent double on the ground, when something cold as death [sc_victor.Custom('SignatureWeaponKillTypeRearTorsoThirdPersonActive')].\\n\\nMy collapse is immediate, dirt and rotting plants filling my mouth. I can't feel my legs and my arms have turned to mallow.\\n\\n[sc_victor.GetFirstNameNoTooltip] kicks me onto my back for the killing blow.\"\n445:  single_combat.0031.desc.opponent_response.raaargh.fatality:0 \"[sc_loser.Custom('SignatureWeaponBreaksVerbPresentParticiple')] of my [sc_loser.Custom('signature_weapon')] with a single [sc_victor.Custom('SignatureWeaponAttemptedHeavy')].\\n\\n[sc_victor.GetFirstNameNoTooltip] charges forwards, punching me so hard in the [sc_loser.Custom('MaskFace')] that I swallow several teeth and fly backwards, pivoting about my head.\\n\\nI hit the [sc_defender.Custom('GroundType')] hard, totally unable to process what's happening. By the time I've returned to my senses, there's a boot descending viciously-fast on my [sc_loser.Custom('MaskFace')].\\n\\nAnd again and again and again...\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\single_combat_events_l_english.yml",
+    "sha256": "561d02b61566cb88fdc0944cae3bae17108e43d32f5f3fa1c55aa28bf7e24206",
+    "line": 703,
+    "context": "700: \n701:  ## Defender Won, Opponent Finishing Move Injury\n702:  single_combat.0041.desc.opponent_response.wait_and_hope.injury:0 \"No parry meets me, no dodge evades me, and I have to pull myself back at the last instant to avoid [sc_victor.Custom2('SignatureWeaponKillTypeHeadThirdPersonPresentGendered',SCOPE.sC('sc_loser'))].\\n\\nInstead, I simply rest my [sc_victor.Custom('signature_weapon')] against it. Once more, [sc_loser.GetFirstNameNoTooltip] freezes, but it's clear I've won.\"\n703:  single_combat.0041.desc.opponent_response.unsure_attack.injury:0 \"Gambling on [sc_loser.GetFirstNamePossessiveNoTooltip] timidness, I lunge forward with a [sc_victor.Custom('SignatureWeaponAttemptedHeavy')] that knocks [sc_loser.GetHerHim] totally off-balance. Not stopping to breath, I boot [sc_loser.GetHerHim], hard, in the knee, and [sc_loser.GetFirstNameNoTooltip] falls with a heavy #EMP thud#!\\n\\n This gives me ample time to position myself for a gruesome kill. [sc_loser.GetSheHe|U] yields within seconds.\"\n704:  single_combat.0041.desc.opponent_response.enthusiastic_onslaught.injury:0 \"Picking my moment, I manage to get in a sharp crack across [sc_loser.GetHerHis] temple with my [sc_victor.Custom('signature_weapon')]'s [sc_victor.Custom('SignatureWeaponEndType')], and [sc_loser.GetSheHe] goes down like a brained sheep.\\n\\nI take a second or two to take in the pitiable sight of the [sc_loser.GetWomanMan] groaning in the [sc_defender.Custom('GroundType')] before me, then ready myself for the killing stroke.\\n\\n[sc_loser.GetFirstNameNoTooltip] croaks out a yield with seconds left to spare.\"\n705:  single_combat.0041.desc.opponent_response.hail_mary.injury:0 \"desperation and ineptitude make awkward bedfellows. [sc_loser.GetHerHis|U] strikes mostly miss, and those that don't are easily parried or off of my [sc_victor.Custom('signature_weapon')], causing [sc_loser.GetFirstNameNoTooltip] to rapidly lose [sc_loser.GetHerHis] footing.\\n\\nWhen [sc_loser.GetSheHe] accidentally smacks [sc_loser.GetHerselfHimself] in the [sc_loser.Custom('MaskFace')] with [sc_loser.GetHerHis] own flailing hand, I take pity and knock the weapon from [sc_loser.GetHerHis] hand.\\n\\nThe yield comes quickly.\"\n706:  single_combat.0041.desc.opponent_response.pocket_sand.injury:0 \"[sc_loser.GetSheHe|U]'s too busy spluttering to notice or avoid my [sc_victor.Custom('signature_weapon')]'s [sc_victor.Custom('SignatureWeaponEndType')] as I drive it into [sc_loser.GetHerHis] throat, and topples into the [sc_defender.Custom('GroundType')] immediately.\\n\\nI leave my weapon resting gently on [sc_loser.GetFirstNamePossessiveNoTooltip] stomach, waiting patiently for [sc_loser.GetHerHim] to notice and yield. It doesn't take long.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\single_combat_events_l_english.yml",
+    "sha256": "561d02b61566cb88fdc0944cae3bae17108e43d32f5f3fa1c55aa28bf7e24206",
+    "line": 890,
+    "context": "887:  single_combat.0041.desc.sc_attacker.strict_guard.fatality:0 \"The first strike smashes a gaping hole in [sc_loser.GetFirstNamePossessiveNoTooltip] guard, the second robs [sc_loser.GetHerHim] of the use of [sc_loser.GetHerHis] [sc_loser.Custom('signature_weapon')]-arm. My opponent stumbles, lucidity fading amidst an avalanche of pain.\\n\\nI take my time lining up the next blow, [sc_victor.Custom('SignatureWeaponWoundVerb1PresentParticiple')] deep into the [sc_loser.GetWomanMan]'s chest with my [sc_victor.Custom('signature_weapon')].\\n\\nThe next attack simply cuts the pain short.\"\n888:  single_combat.0041.desc.sc_attacker.confident_attack.fatality:0 \"When I judge the time to be right, I switch up my pattern with a surprise side-swipe that takes [sc_loser.GetFirstNameNoTooltip] right in the belly.\\n\\nThe strike hurls my foe backwards, something red and vital looking sliding limply out of the new hole as [sc_loser.GetSheHe] topples to the ground.\\n\\nI approach with some caution, but it soon becomes clear that shock is setting in. Taking a moment to kick away [sc_loser.GetHerHis] [sc_loser.Custom('signature_weapon')] just in case, I prepare to put [sc_loser.GetFirstNameNoTooltip] out of [sc_loser.GetHerHis] misery.\"\n889:  single_combat.0041.desc.sc_attacker.expert_onslaught.fatality:0 \"Honestly, it's admirable that [sc_loser.GetFirstNameNoTooltip] is able to withstand as many [sc_victor.Custom('signature_weapon')]-blows as [sc_loser.GetSheHe] does, as I rain down on [sc_loser.GetHerHim] with all the fury of a thunderous storm.\\n\\nIt takes a minute or two, but I eventually beat [sc_loser.GetHerHim] into a bloody, twisted, #EMP screaming#! heap.\\n\\nOnly when I'm satisfied there'll be no last-second chance for revenge do I administer the killing blow.\"\n890:  single_combat.0041.desc.sc_attacker.attempt_disarm.fatality:0 \"Giving no quarter, I throw myself into a [sc_victor.Custom('SignatureWeaponAttemptedHeavy')] that [sc_victor.Custom('SignatureWeaponWoundVerb4ThirdPersonPresent')] clean through [sc_loser.GetHerHis] rib cage.\\n\\nI continue to attack [sc_loser.GetFirstNameNoTooltip] as [sc_loser.GetSheHe] staggers to the ground, sluggish and listless, stopping only when the only movements the corpse makes are from my blows.\"\n891:  ### No need for a lightning_assault, as you can't end the duel in the first round.\n892:  single_combat.0041.desc.sc_attacker.tire_opponent.fatality:0 \"It's quite a while before a suitable gap opens in [sc_loser.GetFirstNamePossessiveNoTooltip] guard, but when it does, it's all I need. With a single [sc_victor.Custom('SignatureWeaponAttemptedHeavy')] from my [sc_victor.Custom('signature_weapon')], I tear through [sc_loser.GetHerHis] belly and into [sc_loser.GetHerHis] stomach.\\n\\nGore, bile, and my opponent's last meal flood out, showering my lower half, and [sc_loser.GetSheHe] lets out an ear-splitting scream.\\n\\nIt is, perhaps, a kindness when I end [sc_loser.GetFirstNamePossessiveNoTooltip] suffering early.\"\n893:  single_combat.0041.desc.sc_attacker.reason_you_suck_speech.fatality:0 \"[sc_loser.GetHerHis|U] strikes grow increasingly hurried, frustrating building visibly in the sloppiness of [sc_loser.GetHerHis] blows, till [sc_loser.GetFirstNameNoTooltip] lets loose a scream of frustration.\\n\\nAt that exact moment, I brush past [sc_loser.GetHerHis] guard, [sc_victor.Custom('SignatureWeaponWoundVerb5PresentParticiple')] my [sc_victor.Custom('signature_weapon')] deep into [sc_loser.GetHerHis] throat.\\n\\nThe bloody, torn mess left afterwards is painful just to look at. Thankfully, [sc_loser.GetFirstNameNoTooltip] falls dead face-down, sparing us both the misery.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\single_combat_events_l_english.yml",
+    "sha256": "561d02b61566cb88fdc0944cae3bae17108e43d32f5f3fa1c55aa28bf7e24206",
+    "line": 895,
+    "context": "892:  single_combat.0041.desc.sc_attacker.tire_opponent.fatality:0 \"It's quite a while before a suitable gap opens in [sc_loser.GetFirstNamePossessiveNoTooltip] guard, but when it does, it's all I need. With a single [sc_victor.Custom('SignatureWeaponAttemptedHeavy')] from my [sc_victor.Custom('signature_weapon')], I tear through [sc_loser.GetHerHis] belly and into [sc_loser.GetHerHis] stomach.\\n\\nGore, bile, and my opponent's last meal flood out, showering my lower half, and [sc_loser.GetSheHe] lets out an ear-splitting scream.\\n\\nIt is, perhaps, a kindness when I end [sc_loser.GetFirstNamePossessiveNoTooltip] suffering early.\"\n893:  single_combat.0041.desc.sc_attacker.reason_you_suck_speech.fatality:0 \"[sc_loser.GetHerHis|U] strikes grow increasingly hurried, frustrating building visibly in the sloppiness of [sc_loser.GetHerHis] blows, till [sc_loser.GetFirstNameNoTooltip] lets loose a scream of frustration.\\n\\nAt that exact moment, I brush past [sc_loser.GetHerHis] guard, [sc_victor.Custom('SignatureWeaponWoundVerb5PresentParticiple')] my [sc_victor.Custom('signature_weapon')] deep into [sc_loser.GetHerHis] throat.\\n\\nThe bloody, torn mess left afterwards is painful just to look at. Thankfully, [sc_loser.GetFirstNameNoTooltip] falls dead face-down, sparing us both the misery.\"\n894:  single_combat.0041.desc.sc_attacker.technique_from_legend.fatality:0 \"With more hope than belief, I charge [sc_loser.GetFirstNameNoTooltip], [sc_victor.Custom('signature_weapon')] out in perfect imitation of the stories, eyes screwed shut by reflex.\\n\\nThere's a sudden stone-hard force to my [sc_victor.Custom('signature_weapon')], the sound of wet flesh sheared in half, and a spasm passes up my arm. I open my eyes, almost certain I'll see my own doom, only to be met with the #EMP annihilated#! neck stump of [sc_loser.GetFirstNameNoTooltip], fountaining blood into the air with reckless abandon.\\n\\nBy the time I've located [sc_loser.GetHerHis] head, the light has long since gone from the [sc_loser.GetWomanMan]'s [sc_loser.Custom('EyeEyes')].\"\n895:  single_combat.0041.desc.sc_attacker.like_a_viper.fatality:0 \"[sc_loser.GetFirstNameNoTooltip] rushes to parry, but isn't even close to stopping me.\\n\\nI sail straight past [sc_loser.GetHerHis] feeble block, [sc_victor.Custom('signature_weapon')]-[sc_victor.Custom('SignatureWeaponTipType')] plunging into the [sc_loser.GetWomanMan]'s chest.\\n\\nHard cracks and wet pops mark bones breaking and organs puncturing for what feels like an eternity, till my weapon punches clean through to the other side.\\n\\nIt's almost impossible to tell at which point in the blow [sc_loser.GetFirstNameNoTooltip] died.\"\n896:  single_combat.0041.desc.sc_attacker.pocket_silver.fatality:0 \"[sc_loser.GetFirstNameNoTooltip] dodges the purse, but doesn't see my follow-up blow.\\n\\nThe [sc_victor.Custom('SignatureWeaponAttemptedHeavy')] takes [sc_loser.GetHerHim] right in the jaw, ripping loose flesh, teeth, and bone. [sc_loser.GetSheHe|U] tries to scream, but can't through [sc_loser.GetHerHis] ruin of a mouth.\\n\\nIt's arguably a kindness when I put [sc_loser.GetHerHim] out of [sc_loser.GetHerHis] misery.\"\n897:  single_combat.0041.desc.sc_attacker.martial_voice.fatality:0 \"\\n\\nWith zero forewarning, my screamed obscenities turn to a [sc_victor.Custom('SignatureWeaponAttemptedHeavy')]. [sc_loser.GetFirstNameNoTooltip] is still so lost in horror at my words that [sc_loser.GetSheHe] doesn't even try to parry the blow.\\n\\nMetal meets flesh and bone, [sc_victor.Custom('SignatureWeaponWoundVerb2PresentParticiple')] deep into my foe's shoulder. We both know the blood flow that results is too heavy to be survived.\"\n898:  single_combat.0041.desc.sc_attacker.mocking_boast.fatality:0 \"kill them. [sc_loser.GetFirstNameNoTooltip] is so stunned by my remarks that [sc_loser.GetSheHe] fails to stop me wrenching the [sc_loser.Custom('signature_weapon')] from [sc_loser.GetHerHis] grip.\\n\\nMy foe has just enough time to register exactly how things are going to end before I [sc_victor.Custom2('SignatureWeaponKillTypeThirdPersonFutureGendered',SCOPE.sC('sc_loser'))].\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 277,
+    "context": "274:  b_akermoud:0 \"Akermoud\"\n275:  b_akershus:0 \"Akershus\"\n276:  b_akespe:0 \"Akespe\"\n277:  b_akhaltsikhe:0 \"Akhaltsikhe\"\n278:  b_akhfennir:0 \"Akhfennir\"\n279:  b_akhlamad:0 \"Akhlamad\"\n280:  b_akhlat:0 \"Akhlat\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 4000,
+    "context": "3997:  b_halmstad:0 \"Halmstad\"\n3998:  b_halmyros:0 \"Halmyros\"\n3999:  b_halsstein:0 \"Halsstein\"\n4000:  b_haltalen:0 \"Haltålen\"\n4001:  b_halton:0 \"Halton\"\n4002:  b_haluza:0 \"Haluza\"\n4003:  b_halvad:0 \"Halvad\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 4001,
+    "context": "3998:  b_halmyros:0 \"Halmyros\"\n3999:  b_halsstein:0 \"Halsstein\"\n4000:  b_haltalen:0 \"Haltålen\"\n4001:  b_halton:0 \"Halton\"\n4002:  b_haluza:0 \"Haluza\"\n4003:  b_halvad:0 \"Halvad\"\n4004:  b_hama:0 \"Hama\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 9264,
+    "context": "9261:  b_skara:0 \"Skara\"\n9262:  b_skawina:0 \"Skawina\"\n9263:  b_skelleftea:0 \"Skellefteå\"\n9264:  b_skhalta:0 \"Skhalta\"\n9265:  b_skien:0 \"Skien\"\n9266:  b_skikda:0 \"Skikda\"\n9267:  b_skinnskatteberg:0 \"Skinnskatteberg\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 9756,
+    "context": "9753:  b_tafalla:0 \"Tafalla\"\n9754:  b_tafila:0 \"Tafila\"\n9755:  b_tafilalt:0 \"Tafilalt\"\n9756:  b_tafoughalt:0 \"Tafoughalt\"\n9757:  b_tafraoua-sebdou:0 \"Tafraoua-Sebdou\"\n9758:  b_taft:0 \"Taft\"\n9759:  b_tagadur:0 \"Tagadur\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 9767,
+    "context": "9764:  b_taghmut:0 \"Taghmut\"\n9765:  b_taghyart:0 \"Taghyart\"\n9766:  b_tagmadart:0 \"Tagmadart\"\n9767:  b_tagoughalt:0 \"Tagoughalt\"\n9768:  b_tagragra:0 \"Tagragra\"\n9769:  b_tagrit:0 \"Tagrit\"\n9770:  b_tagta:0 \"Tagta\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 11129,
+    "context": "11126:  b_yaroslavl:0 \"Yaroslavl\"\n11127:  b_yartsevo:0 \"Yartsevo\"\n11128:  b_yarymtyk:0 \"Yarymtyk\"\n11129:  b_yashalta:0 \"Yashalta\"\n11130:  b_yashbum:0 \"Yashbum\"\n11131:  b_yashkan:0 \"Yashkan\"\n11132:  b_yashkul:0 \"Yashkul\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 11534,
+    "context": "11531:  c_angouleme_adj:1 \"Angoulêmian\"\n11532:  c_angus:0 \"Angus\"\n11533:  c_angus_adj:0 \"Angusian\"\n11534:  c_anhalt:0 \"Anhalt\"\n11535:  c_anhalt_adj:0 \"Anhaltian\"\n11536:  c_ani:0 \"Ani\"\n11537:  c_ani_adj:0 \"Anian\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 11535,
+    "context": "11532:  c_angus:0 \"Angus\"\n11533:  c_angus_adj:0 \"Angusian\"\n11534:  c_anhalt:0 \"Anhalt\"\n11535:  c_anhalt_adj:0 \"Anhaltian\"\n11536:  c_ani:0 \"Ani\"\n11537:  c_ani_adj:0 \"Anian\"\n11538:  c_anjou:0 \"Anjou\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 15053,
+    "context": "15050:  d_ancona_adj:0 \"Anconitan\"\n15051:  d_angria:0 \"Angria\"\n15052:  d_angria_adj:0 \"Angarian\"\n15053:  d_anhalt:0 \"Anhalt\"\n15054:  d_anhalt_adj:0 \"Anhalter\"\n15055:  d_anjou:0 \"Anjou\"\n15056:  d_anjou_adj:0 \"Angevin\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 15054,
+    "context": "15051:  d_angria:0 \"Angria\"\n15052:  d_angria_adj:0 \"Angarian\"\n15053:  d_anhalt:0 \"Anhalt\"\n15054:  d_anhalt_adj:0 \"Anhalter\"\n15055:  d_anjou:0 \"Anjou\"\n15056:  d_anjou_adj:0 \"Angevin\"\n15057:  d_antioch:0 \"Antioch\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 17396,
+    "context": "17393:  b_chelykla:0 \"Chelykla\"\n17394:  b_kalmikovsky:1 \"Zhankala\"\n17395:  b_yaitsk:0 \"Yaitsk\"\n17396:  b_zhaltyr:0 \"Zhaltyr\"\n17397:  b_tasqala:0 \"Tasqala\"\n17398:  b_oskol:0 \"Oskol\"\n17399:  b_khorsydan:0 \"Khorsydan\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 20907,
+    "context": "20904:  c_aksay_adj:0 \"Aksay\"\n20905:  b_aksay_tibet:0 \"Aksay\"\n20906:  b_hahaeci:0 \"Hahaéci\"\n20907:  c_haltang:0 \"Haltang\"\n20908:  c_haltang_adj:0 \"Haltang\"\n20909:  b_haltang:0 \"Haltang\"\n20910:  b_takoerpasitao:0 \"Takoerpasitao\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 20908,
+    "context": "20905:  b_aksay_tibet:0 \"Aksay\"\n20906:  b_hahaeci:0 \"Hahaéci\"\n20907:  c_haltang:0 \"Haltang\"\n20908:  c_haltang_adj:0 \"Haltang\"\n20909:  b_haltang:0 \"Haltang\"\n20910:  b_takoerpasitao:0 \"Takoerpasitao\"\n20911:  b_anxi_old:0 \"Anxi\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\titles_l_english.yml",
+    "sha256": "2f4bc3c65acc482c85e80042ebb375a659ba8a012bb8f1f8b4017c6e7b237c33",
+    "line": 20909,
+    "context": "20906:  b_hahaeci:0 \"Hahaéci\"\n20907:  c_haltang:0 \"Haltang\"\n20908:  c_haltang_adj:0 \"Haltang\"\n20909:  b_haltang:0 \"Haltang\"\n20910:  b_takoerpasitao:0 \"Takoerpasitao\"\n20911:  b_anxi_old:0 \"Anxi\"\n20912:  "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\activities\\coronation_events_1_l_english.yml",
+    "sha256": "51df5b1f41371298c96b454ea6543c5093a7a2b98836c55f5bcecd6e4ba1cac5",
+    "line": 289,
+    "context": "286:  coronation_events.1031.t: \"The Choir Rises\"\n287:  coronation_events.1031.exalt.desc: \"While the great hall echoes with the bustle of preparation, [priest.GetFirstName], my [ROOT.Char.Custom2('RelationToMe', SCOPE.sC('priest'))], approaches me with a collection of worn hymnals tucked under [priest.GetHerHis] arm.\\n\\n\"Your Majesty,\" [priest.GetSheHe] says with quiet pride, \"the choir awaits your guidance. Shall their voices rise to proclaim your divine right and the splendor of the [ROOT.Char.GetPrimaryTitle.GetNameNoTooltip]?\"\\n\\nI picture the coming ceremony — every note lifting the realm higher in the eyes of the audience.\"\n288:  coronation_events.1031.impress.desc: \"As servants adjust decorations and squires rehearse their cues, [priest.GetFirstName], my [ROOT.Char.Custom2('RelationToMe', SCOPE.sC('priest'))], finds me amid the preparations.\\n\\n\"The realm will be listening closely,\" [priest.GetSheHe] says with a knowing smile. \"Let the choir sing a hymn that moves hearts, and wins over your foolish naysayers.\"\\n\\nIt is a pleasing thought: the hall filled with sound, and every voice a part of my performance.\"\n289:  coronation_events.1031.supporters.desc: \"Among the tangle of scribes and cooks rushing through the corridors, [priest.GetFirstName], my [ROOT.Char.Custom2('RelationToMe', SCOPE.sC('priest'))], halts me with a gentle gesture.\\n\\n\"Your loyal supporters will be watching,\" [priest.GetSheHe] says. \"Let the hymns remind them why they follow you: songs that bind willing hearts together, and deepens faith in your rule.\"\\n\\nThe choir waits for my choices, eager to begin rehearsals.\"\n290:  coronation_events.1031.detractors.desc: \"[priest.GetFirstName], my [ROOT.Char.Custom2('RelationToMe', SCOPE.sC('priest'))], approaches with lowered voice and a cautious glance around.\\n\\n\"Not all who gather will cheer your name,\" [priest.GetSheHe] warns. \"When the hymns come, let them carry weight — authority the devils opposing you can't ignore. Fill those creatures' ears with the power of your crown!\"\\n\\nThe choirmaster stands ready, awaiting my choice of tone and message.\"\n291:  coronation_events.1031.a: \"\"Sing of my glory!\"\"\n292:  coronation_events.1031.b: \"\"Let the hymn call for peace and unity.\"\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\activities\\roaming_activity_l_english.yml",
+    "sha256": "648f536ae669bb81a36a20f2361c77e74ba0feccaa1eebdfe35f8e7ce0e6a44b",
+    "line": 146,
+    "context": "143:  breathtaking_view_key: \"[host.GetShortUIName] came to the top point of [province.GetName], which provided the view of a beautiful vista, and decided it was time to start heading home.\"\n144: \n145:  bp3_roaming.0060.t: \"The Small Oasis\"\n146:  bp3_roaming.0060.desc: \"After walking through the golden wasteland for hours, we start seeing the signs of an oasis in the distance. At first I worry it might be a mirage, but as we get closer we can see some animals grazing around it.\\n\\nI find a small place in the shade, one where my guards and I can finally have a chance to rest our feet. A place to rest, for now. It is the perfect stopping point before we start looking for a way home.\"\n147:  bp3_roaming.0060.a: \"What a beautiful little place out here in the wilds.\"\n148: \n149:  the_oasis_key_title: \"$bp3_roaming.0060.t$\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\activities\\roaming_activity_l_english.yml",
+    "sha256": "648f536ae669bb81a36a20f2361c77e74ba0feccaa1eebdfe35f8e7ce0e6a44b",
+    "line": 170,
+    "context": "167: \n168:  bp3_roaming.0090.t: \"The River at Journey's End\"\n169:  bp3_roaming.0090.desc: \"It is getting late in the day, when we finally arrive at a small river, with no bridge in sight. I look as best I can, but there is nothing to be seen on the other side. In some ways, it feels like the border between the last vestiges of civilization, and the unknown wilderness on the other side.\\n\\nI take a moment to sit down, and rest my feet. Occasionally I feel like I can see something moving on the other side of the water, or like someone is watching me, but I cannot make anything out.\"\n170:  bp3_roaming.0090.a: \"A good stopping point, I think.\"\n171: \n172:  river_journeys_end_key_title: \"$bp3_roaming.0090.t$\"\n173:  river_journeys_end_key: \"[host.GetShortUIName] came across an impassable river in the hinterlands of [province.GetName], where [host.GetSheHe] stopped to rest before starting the journey home.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\contracts\\laamp_base_learning_contract_events_l_english.yml",
+    "sha256": "6239755711798f74fb0038144553b92fb0969e204abe6e5248b9434bb4023315",
+    "line": 225,
+    "context": "222: \n223: #Conclusion\n224:  laamp_base_learning_contract_events.4027.t: \"$laamp_base_learning_contract_events_prefix.4021$: Conclusion\"\n225:  laamp_base_learning_contract_events.4027.desc.success.critical: \"[employer.GetTitledFirstName] flips through the pages of the manuscript, stopping to contemplate a piece from each page. \"I'll say...\"\\n\\n[employer.GetSheHe|U] turns and gently hands the manuscript to [employer.GetHerHis] attendant. \"Have you seen this? I may just put this on #EMP display#!. Such a mind-boggling piece of scripture.\"\\n\\nSoftly applauding, [employer.GetSheHe] leans in, mischievously. \"I particularly liked #EMP that#! piece of marginalia. Well done! Enjoy your rewards, and do let me know if ever you find yourself back in [employer.GetCapitalLocation.GetTitle.GetNameNoTierNoTooltip].\"\\n\\nI proudly stretch and nod.\"\n226:  laamp_base_learning_contract_events.4027.desc.success.standard: \"Curiously eyeing the manuscript, [employer.GetTitledFirstName] hums and nods. \"Overall a job well done — I shall have it put up in my shelf with the rest of the works.\"\\n\\n[employer.GetSheHe|U] hands over a respectably-sized satchel. \"I trust this should compensate you for your time.\"\\n\\n\"Do let me know if you'd like to try again sometime,\" [employer.GetSheHe] finishes, as [employer.GetSheHe] turns to leave.\\n\\nI accept the satchel and nod courteously.\"\n227:  laamp_base_learning_contract_events.4027.desc.success.qualified: \"\"Not... quite what I had in mind. Certainly #EMP a piece of work#! but... \" [employer.GetTitledFirstName] wrinkles [employer.GetHerHis] nose a bit as [employer.GetSheHe] hands off the manuscript to [employer.GetHerHis] attendant.\\n\\n\"...maybe I'll put it in one of the stacks. I trust you can see yourself out?\" Not waiting for my answer, [employer.GetSheHe] has already left the room.\\n\\nI pick up the meager satchel by the door and start wandering the halls in search for a way out.\"\n228:  laamp_base_learning_contract_events.4027.desc.failure: \"\"What kind of...\"\" [employer.GetTitledFirstName] stops for a moment before tossing the manuscript to [employer.GetHerHis] attendant.\\n\\n\"You had the gall to spend my hard-come-by ink and sheets on this... #EMP drivel#!?\"\\n\\nNow wandering in small, frantic circles, [employer.GetSheHe] rubs [employer.GetHerHis] temples: \"I invited you to my home. My #EMP study#!! And #EMP this#! is what you come up with? I have half a mind to call the guards on this betrayal!\"\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\contracts\\task_contracts_l_english.yml",
+    "sha256": "dd73bd8158e09b05a0a41371e39806c98570d730fb6169b0c51b2a43b0c61c21",
+    "line": 591,
+    "context": "588:  ep3_contract_event.0080.a: \"Let me see what I can do.\"\n589:  ep3_contract_event.0082.t: \"$contract_event_prefix$ $laamp_fight_faith_conversion_contract_contract$\"\n590:  ep3_contract_event.0082.desc: \"A delegation of faithful [task_contract_employer.GetFaith.GetAdherentNamePluralNoTooltip] visit my camp, presenting a plea to rile the blood.\\n\\n\"O, mighty [ROOT.Char.GetTitledFirstNameNoTooltip]!\" they say. \"We are just a collection of poor [task_contract_employer.GetFaith.DevoteeNeuterPlural]. \"Day and night, we are harangued by missionaries sent from [task_contract_councillor_liege.GetCapitalLocation.GetName] by [task_contract_councillor_liege.GetTitledFirstName]! We've been forced to flee here — for in our home, the [task_contract_councillor.GetCouncilTitleFirstName] [task_contract_councillor.GetHerselfHimself] works evils! [task_contract_councillor.GetSheHe|U] converts those [task_contract_councillor.GetSheHe] nabs by force!\"\\n\\nThe ragged refugees are on their knees in desperation.\\n\\n\"In [task_contract_employer.GetTitledFirstNamePossessive] name — in [task_contract_employer.GetFaith.HighGodNamePossessive] — save us!\"\"\n591:  ep3_contract_event.0082.a: \"I'll try halting [task_contract_councillor.GetCouncilTitleFirstNameNoTooltip]!\"\n592:  ep3_contract_event.0082.b: \"I'll speak with [task_contract_councillor_liege.GetTitledFirstNameNoTooltip] in [task_contract_councillor_liege.GetCapitalLocation.GetNameNoTooltip], [task_contract_councillor_liege.GetHerHis] capital.\"\n593:  ep3_contract_event.0082.to_destination: \"You will travel to [task_contract_destination.GetName] to stop [task_contract_target.GetCouncilTitleFirstNamePossessive] missionary work\"\n594:  ep3_contract_event.0082.to_liege: \"You will travel to [task_contract_councillor_liege.GetName] to convince [task_contract_councillor_liege.GetHerHim] to recall [task_contract_councillor.GetCouncilTitleFirstName]\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dynasties\\dynasty_names_l_english.yml",
+    "sha256": "4d5b2396a78e5ed219bdbaaf22dd757ac6f11f0c231efb8a4fdfac20e9b58162",
+    "line": 368,
+    "context": "365:  dynn_Angouleme:0 \"Angouleme\"\n366:  dynn_Angoures:0 \"Angoures\"\n367:  dynn_Angus:0 \"Angus\"\n368:  dynn_Anhalt:0 \"Anhalt\"\n369:  dynn_Anini:0 \"Anini\"\n370:  dynn_Aniort:0 \"Aniort\"\n371:  dynn_Anjou:0 \"Anjou\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\harm_events_l_english.yml",
+    "sha256": "5217f1a1256e872ed28685867cddf5cd7c0b5e63d0c7ed98a35220d62c7a4f6c",
+    "line": 518,
+    "context": "515:  harm.1101.c.tt.failure:0 \"$harm.0000.tt.death.failure$\"\n516: \n517:  harm.1102.t:0 \"$harm.1101.t.prefix$: Street Safety\"\n518:  harm.1102.desc:0 \"Riding with my entourage through the streets of [ROOT.Char.GetCurrentLocation.GetName], I maintain an austere manner. It's important to be seen, sometimes, but it's just as important to remain a figure of some authority.\\n\\nWe pull to a halt as a cart goes rattling past us at a busy cross-section, entirely too fast to be at all safe.\\n\\nLucky thing for the driver, too — it's not wise to cut the [ROOT.Char.GetTitleAsNameNoTooltip] off, but their horse carries them too fast to see, let alone stop.\"\n519:  harm.1102.a:0 \"The commoners do need to see their [ROOT.Char.GetTitleAsNameNoTooltip].\"\n520:  harm.1102.a.tt:0 \"#WEAK Even if it's just whilst riding past their dwellings...#!\"\n521: "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\harm_events_l_english.yml",
+    "sha256": "5217f1a1256e872ed28685867cddf5cd7c0b5e63d0c7ed98a35220d62c7a4f6c",
+    "line": 602,
+    "context": "599:  harm.2041.c.tt.failure:0 \"$harm.0000.tt.death.failure$\"\n600: \n601:  harm.2051.t:0 \"Starvation\"\n602:  harm.2051.desc:0 \"Few things destroy an army as thoroughly as hunger — no shield can ward it, no blade can turn it aside, no maille may mute its pangs.\\n\\nWithout food, without water, without anything to keep us going save the pack animals that spur our progress, my troops are slowly grinding to a halt.\\n\\nEven... even I... am withering without sustenance...\"\n603:  harm.2051.a:0 \"My skin... like paper...\"\n604:  harm.2051.a.tt.success:0 \"$harm.0000.tt.death.success$\"\n605:  harm.2051.a.tt.failure:0 \"$harm.0000.tt.death.failure$\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\health_events_l_english.yml",
+    "sha256": "8ce6677752505f3730d19204772f73e8bb2f91609df266ac689036c19fa38671",
+    "line": 587,
+    "context": "584: \n585:  # Infirm events\n586:  health.7000.t:0 \"A Prisoner In My Own Body\"\n587:  health.7000.desc:0 \"I knew that getting older would mean doing everything slower, but I didn't think it would all come to a halt until my death. Lately, I feel a constant malaise and everything takes more effort than before. I'm worried that if I lie down, I might not be able to get up again. There is no doubt that my time is running out.\"\n588:  health.7000.desc_collapse:0 \"I know I was pushing it – I should've just listened to what my body was telling me, but I chose to ignore it. \"I'll finish this before going to bed; just a couple more, then I'll rest.\" Suddenly I felt light-headed, and as I got up, my vision went black.\\n\\nThe next day, I awoke in my bed, unable to get up as my body refuses to listen to me. Perhaps [ROOT.Char.GetFaith.HighGodName] decided to punish me for not treating this vessel meant to serve [ROOT.Char.GetFaith.HighGodNameAlternate] with respect.\"\n589:  health.7000.desc_closing:0 \"\\n\\nI feel like I can do naught but to await death's sweet embrace to claim me.\"\n590:  health.7000.a:0 \"How long will I have to wait?\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\laamp_events_l_english.yml",
+    "sha256": "2eb116c9216be49566ba7f1271fdca85a7d783755b3432bd79d55299bff0b264",
+    "line": 609,
+    "context": "606:  ep3_laamp_flavour_ewan.0051.desc.followers.notable_char.patient: \"nodding along and making affirmative noises as a local tells a long-winded story.\"\n607:  ep3_laamp_flavour_ewan.0051.desc.followers.notable_char.impatient: \"interrupting someone's story to tell them to get to the damned point.\"\n608:  ep3_laamp_flavour_ewan.0051.desc.followers.notable_char.arrogant: \"casually grabbing several lesser followers to sort some petty chore for [notable_char.GetHerHim].\"\n609:  ep3_laamp_flavour_ewan.0051.desc.followers.notable_char.humble: \"stopping to help someone else put up their tent.\"\n610:  ep3_laamp_flavour_ewan.0051.desc.followers.notable_char.deceitful: \"in the middle of telling a long, dubious story to a credulous local.\"\n611:  ep3_laamp_flavour_ewan.0051.desc.followers.notable_char.honest: \"explaining some awkward problem to an irritated local.\"\n612:  ep3_laamp_flavour_ewan.0051.desc.followers.notable_char.gregarious: \"laughing and joking with some of the lesser followers.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\laamp_events_l_english.yml",
+    "sha256": "2eb116c9216be49566ba7f1271fdca85a7d783755b3432bd79d55299bff0b264",
+    "line": 786,
+    "context": "783:  ep3_laamp_flavour_ewan.1071.desc.plains: \"a mock cavalry charge across an even patch of ground, battering small sticks and branches at imaginary foes as they send an illusory foe skittering away in fear.\"\n784:  ep3_laamp_flavour_ewan.1071.desc.farmlands: \"climbing a lone, gnarled tree standing crookedly in the middle of a farmer's field. The older children have made it much farther up, whilst the younger ones dally around the base.\"\n785:  ep3_laamp_flavour_ewan.1071.desc.hills: \"rolling fiercely, end over end, down a grassy hill. There doesn't appear to be much skill involved, but the children are competing over who can go fastest all the same.\"\n786:  ep3_laamp_flavour_ewan.1071.desc.mountains: \"hurling small rocks and stones off of a ridge, seeing how far out into the valleys below they can cast their little missiles. They whoop when one goes further than the rest, and giggle at those that skitter to a halt where they can still be seen.\"\n787:  ep3_laamp_flavour_ewan.1071.desc.desert: \"hurling themselves down a tall dune, sending sprays of sand everywhere. Giggles and spits of #EMP ptth#!, #EMP ptth#! follow whenever a child gets some in their mouth. Which is often.\"\n788:  ep3_laamp_flavour_ewan.1071.desc.desert_mountains: \"$ep3_laamp_flavour_ewan.1071.desc.mountains$\"\n789:  ep3_laamp_flavour_ewan.1071.desc.oasis: \"building... little parcels of sand using leaves and grass? It's unclear what those would even be used f— another child creeps over a nearby dune, and suddenly a barrage of sand-bags go flying out like fire pots.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\laamp_events_l_english.yml",
+    "sha256": "2eb116c9216be49566ba7f1271fdca85a7d783755b3432bd79d55299bff0b264",
+    "line": 1059,
+    "context": "1056:  ep3_laamp_flavour_ewan.2091.desc: \"Around the campfire, a few followers share their evening meal.\\n\\nOddly, my [ROOT.Char.Custom2('RelationToMeShort', SCOPE.sC('attacker'))] [attacker.GetFirstName] and my [ROOT.Char.Custom2('RelationToMeShort', SCOPE.sC('defender'))] [defender.GetFirstName] sit among them — despite their mutual dislike.\\n\\n[defender.GetFirstNameNoTooltip|U] mutters something under [defender.GetHerHis] breath. Whatever it is, it sends [attacker.GetFirstNameNoTooltip] into a blind rage. Steel flashes. Blood is about to spill.\"\n1057:  ep3_laamp_flavour_ewan.2091.tt.duel_commences: \"[attacker.GetFirstName] and [defender.GetFirstName] will immediately duel to the death\"\n1058:  ep3_laamp_flavour_ewan.2091.a: \"Intervene.\"\n1059:  ep3_laamp_flavour_ewan.2091.a.tt.success: \"You put a halt to this\"\n1060:  ep3_laamp_flavour_ewan.2091.a.tt.failure: \"Some blows are thrown regardless\"\n1061:  ep3_laamp_flavour_ewan.2091.b: \"Why not settle this with a proper duel?\"\n1062:  ep3_laamp_flavour_ewan.2091.c: \"Arrest [attacker.GetFirstNameNoTooltip]! To the stocks!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\laamp_events_l_english.yml",
+    "sha256": "2eb116c9216be49566ba7f1271fdca85a7d783755b3432bd79d55299bff0b264",
+    "line": 1303,
+    "context": "1300:  ep3_laamp_flavour_ewan.4041.desc.weather_type.wild_fires.treeline: \"With so much foliage to burn through, the wild fire is catching up in leaps and bounds — the occasional detonation of particularly dry, sap-heavy trees a grim, startling reminder of the grisly fate that awaits anything and anyone too slow to get away.\\n\\nOily tendrils of perversely fragrant smoke chase us ahead of the blaze, choking the weak and leaving\"\n1301:  ep3_laamp_flavour_ewan.4041.desc.weather_type.wild_fires.fallback: \"The wild fire's moving faster than we are, finding #EMP just#! enough fuel to burn rapaciously towards our convoy. Anyone and anything too slow to get away will be burnt alive — laden mule and lingering child alike.\\n\\nWorse yet, vast gouts of smoke billow out ahead of the blaze, occasionally washing over us to choke the life from the vulnerable, leaving\"\n1302:  ep3_laamp_flavour_ewan.4041.desc.weather_type.avalanche: \"It's a surprisingly soft sound that heralds imminent danger: a vast, gentle #EMP whumph#! from far above.\\n\\nDozens of eyes amidst the convoy rise to the peaks towering over us, before the peal of a thunderbolt greater than that wielded by any storm rings out across the range.\\n\\n\"#BER AVALANCHE!#!\" screams someone. Suddenly, all is chaos, men and animals alike breaking rapidly for even the slightest shelter from the cascade of white death now rushing towards us, leaving\"\n1303:  ep3_laamp_flavour_ewan.4041.desc.weather_type.flood: \"The fog seems to set in from almost nowhere — one moment the air is humid, then it's thickened to near-soup.\\n\\nFrom above, a few droplets of rain fall, and a nearby stream starts to rapidly swell its banks. Tension strikes the convoy, causing the men and carts alike to trundle to a gradual halt. No one can quite say what the issue is, but #EMP something#! is wrong.\\n\\nWithin a minute, the once-steady ground beneath has turned to thick mud, and water everywhere begins to swell from below. \"Flood, #EMP flash flood#!!\" goes the cry from someone, leaving\"\n1304:  ep3_laamp_flavour_ewan.4041.desc.weather_type.frozen_water: \"The snow here is persistent but not harsh enough to pose a problem, just enough to blanket the world in a thick carpet of white. Our convoy passes through a clear spot in the forest, relishing the break from the tree cover, a little chance to appreciate the wonderland around.\\n\\n#BER Crack.#!\\n\\nDozens of eyes are cast downwards, seeing with mounting horror a vast split opening in the grou- no, the surface of the #EMP frozen lake#!! There's no time to lose, no time to think, as one we flee — even with\"\n1305:  ep3_laamp_flavour_ewan.4041.desc.weather_type.earthquake: \"The world shifts beneath our feet. Men and mules stagger, babies raise a unified wail, and several cart wheels snap as they are lifted up then slammed back down or shunted sideways.\\n\\nA half second of panic settles in convoy-wide after the jolt: what was that? Will there be more, or was that i-\\n\\n#EMP The earth itself begins to shake#!. In the middle distance, a fissure opens and begins snaking, faster than a man can run, directly for us. The sight immediately leaves\"\n1306:  ep3_laamp_flavour_ewan.4041.desc.outro: \"my followers on the edge of breaking.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\laamp_events_l_english.yml",
+    "sha256": "2eb116c9216be49566ba7f1271fdca85a7d783755b3432bd79d55299bff0b264",
+    "line": 1639,
+    "context": "1636:  ep3_laamps.7001.b: \"\"We are full, I'm afraid.\"\"\n1637: \n1638:  ep3_laamps.7002.t: \"A New England\"\n1639:  ep3_laamps.7002.desc: \"[siward.GetFirstName], my loyal [ROOT.Char.Custom2('RelationToMeShort', SCOPE.sC('siward'))], approaches me with something of a glint in [siward.GetHerHis] eye.\\n\\n\"I've come to say goodbye.\" [siward.GetSheHe|U] cuts off my forthcoming protests with a raised hand. \"I've made my decision, there's no stopping me.\" [siward.GetSheHe|U] gestures for me to sit.\\n\\n\"There are whispers coming from Constantinople. [emperor.GetTitledFirstName] offers safe passage to any refugees from [king_england.GetTitledFirstNamePossessive] wrath, and a chance to rebuild.\" [siward.GetFirstNameNoTooltip] slaps [siward.GetHerHis] thighs and looks around.\\n\\n\"I'll miss this place. Goodbye, my [ROOT.Char.Custom('SisterBrother')].\"\"\n1640:  ep3_laamps.7002.a: \"\"Safe journeys. May you find your peace.\"\"\n1641:  ep3_laamps.7002.b: \"Now that sounds #EMP very#! interesting...\"\n1642:  ep3_laamps.7002.c.success: \"[siward.GetFirstNameNoTooltip] stays\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\armyview_l_english.yml",
+    "sha256": "f56003f0898ff6b3ad50838de5a60b18b13da6494f72fae59312383637a4f569",
+    "line": 41,
+    "context": "38:  DISBAND_GATHERING_ARMY:1 \"Disband Gathering Army\"\n39:  DISBAND_GATHERING_ARMY_DISABLED:0 \"\\n$DESC$\"\n40:  STOP_GATHERING:0 \"Stop Gathering\"\n41:  ARMY_HALT: \"Halt movement\"\n42:  ARMY_HALT_ALL: \"#T Halt all Armies#!\"\n43:  DISBAND_RETURN_HOME_TIME:1 \"@warning_icon! #X [soldiers|E] will take up to $TIME$ to return home, making it take longer to raise them again.#!\"\n44:  CANNOT_SPLIT_ARMY_NOT_OWNER:0 \"@warning_icon! #X Cannot split Army belonging to someone else#!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\armyview_l_english.yml",
+    "sha256": "f56003f0898ff6b3ad50838de5a60b18b13da6494f72fae59312383637a4f569",
+    "line": 42,
+    "context": "39:  DISBAND_GATHERING_ARMY_DISABLED:0 \"\\n$DESC$\"\n40:  STOP_GATHERING:0 \"Stop Gathering\"\n41:  ARMY_HALT: \"Halt movement\"\n42:  ARMY_HALT_ALL: \"#T Halt all Armies#!\"\n43:  DISBAND_RETURN_HOME_TIME:1 \"@warning_icon! #X [soldiers|E] will take up to $TIME$ to return home, making it take longer to raise them again.#!\"\n44:  CANNOT_SPLIT_ARMY_NOT_OWNER:0 \"@warning_icon! #X Cannot split Army belonging to someone else#!\"\n45:  CANNOT_SPLIT_ARMY_WHILE_IN_COMBAT:0 \"@warning_icon! #X Cannot split Army while in [battle|E]#!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\armyview_l_english.yml",
+    "sha256": "f56003f0898ff6b3ad50838de5a60b18b13da6494f72fae59312383637a4f569",
+    "line": 46,
+    "context": "43:  DISBAND_RETURN_HOME_TIME:1 \"@warning_icon! #X [soldiers|E] will take up to $TIME$ to return home, making it take longer to raise them again.#!\"\n44:  CANNOT_SPLIT_ARMY_NOT_OWNER:0 \"@warning_icon! #X Cannot split Army belonging to someone else#!\"\n45:  CANNOT_SPLIT_ARMY_WHILE_IN_COMBAT:0 \"@warning_icon! #X Cannot split Army while in [battle|E]#!\"\n46:  CANNOT_SPLIT_ARMY_WHILE_MOVEMENT_LOCKED:0 \"@warning_icon! #X Cannot split Army while movement is locked#!\"\n47:  CANNOT_SPLIT_ARMY_CUSTOM_WHILE_MOVING:0 \"@warning_icon! #X Cannot reorganize Army while moving#!\"\n48:  CANNOT_SPLIT_ARMY_WHILE_RETREATING:0 \"@warning_icon! #X Cannot split Army while in [retreat|E]#!\"\n49:  CANNOT_MERGE_WHILE_IN_COMBAT:0 \"@warning_icon! #X Cannot merge while in [battle|E]#!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\armyview_l_english.yml",
+    "sha256": "f56003f0898ff6b3ad50838de5a60b18b13da6494f72fae59312383637a4f569",
+    "line": 54,
+    "context": "51:  CANNOT_SPLIT_RAID_ARMY:0 \"@warning_icon! #X Cannot split [raid|E] armies outside own territory#!\"\n52:  CANNOT_SPLIT_BARTER_ARMY:0 \"@warning_icon! #X Cannot split [barter|E] armies outside own territory#!\"\n53:  CANNOT_MERGE_WHILE_RETREATING:0 \"@warning_icon! #X Cannot merge while retreating#!\"\n54:  CANNOT_MERGE_WHILE_MOVEMENT_LOCKED:0 \"@warning_icon! #X Cannot merge while movement is locked#!\"\n55:  CANNOT_MERGE_NAVAL_AND_LAND:0 \"@warning_icon! #X Cannot merge [fleets|E] with unembarked [armies|E]#!\"\n56:  CANNOT_MERGE_NO_ARMIES:0 \"@warning_icon! #X No selected [armies|E] that can be merged#!\"\n57:  CANNOT_MERGE_NO_UNITS:0 \"@warning_icon! #X No selected [armies|E] or [fleets|E] that can be merged#!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\mapicons_l_english.yml",
+    "sha256": "12d972ea64c7a186b20a0c28a91654ebd1c7d70cfe9b14aaa6152f6db9bc417d",
+    "line": 11,
+    "context": "8:  POTENTIAL_COMMANDER_IS_LEADER_TOOLTIP:1 \"#T Ruler#!\\nBeing [commander|E] of your own [army|E] would give:\\n[GetLeadingTroopsBonus]\"\n9:  RP_TOOLTIP_CLICK:1 \"#T [RallyPoint.GetName]#!\\n$CLICK_TO_VIEW$\"\n10:  ARMY_TOOLTIP_IS_GATHERING:1 \"Gathering ([Army.GetGatheringDaysLeft] days)\"\n11:  ARMY_TOOLTIP_IS_MOVEMENT_LOCKED:1 \"[movement_locked|E]\"\n12:  UNIT_ITEMS:1 \"([UnitMapIcon.GetShownCount])\"\n13:  RAID_ARMY_TOOLTIP: \"#T Raider#!\\nThis Army is on a [raid|E].\\nIt is carrying [loot_i][Army.GetRaidLoot|V0].\"\n14:  ARMY_AT_LOOT_CAP:1 \"Cannot carry any more [loot|E]\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\gui\\map_l_english.yml",
+    "sha256": "aafe7159be18e6dd3c64e7ea22d6f6c3770677a8fad218c42b41bf0330901f99",
+    "line": 5,
+    "context": "2:  ONMAP_ARMY_UNIT_TOOLTIP:0 \"$NAME$ ($CONTROLLER$)\\n($MORALE|V$%)(morale)\\nReinforcements/month: $REINFORCEMENTS|V$\\nLevies: $LEVIES$ / $MAX_LEVIES|V$\\nMen-at-Arms: $MEN_AT_ARMS$ / $MAX_MEN_AT_ARMS|V$\\nRegiments: $REGIMENTS|V$\\nMaintenance: $MAINTENANCE$\\nSupply: $SUPPLY|V$ / $MAX_SUPPLY|V$\\nSupply Limit: $SUPPLY_LIMIT|V$\"\n3:  UNIT_WILL_ARRIVE:0 \"$NAME$, [DATE.GetTimeToDate] left ([DATE.GetStringShort|V])\"\n4:  UNIT_WILL_ARRIVE_RETREAT:1 \"Retreating to $NAME$, [DATE.GetTimeToDate] left ([DATE.GetStringShort|V])\"\n5:  UNIT_WILL_MOVEMENT_LOCK:0 \"[movement_lock|E] in [DATE.GetTimeToDate]\"\n6:  UNIT_IS_EMBARKED:0 \"Embarked\"\n7:  UNIT_WILL_EMBARK:0 \"Will embark\"\n8:  UNIT_IS_EMBARKING:0 \"Embarking\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\modifiers\\martial_lifestyle_modifiers_l_english.yml",
+    "sha256": "ef2dae94fb041d2939502f08e673d9cc9f569759a0b50ff4f12fb84767778923",
+    "line": 42,
+    "context": "39:  respected_by_mercenaries:0 \"Respected by Mercenaries\"\n40:  warfare_expunged_bandits_modifier:0 \"Expunged Bandits\"\n41:  warfare_ferocious_reputation_modifier:0 \"Ferocious Reputation\"\n42:  warfare_ferocious_reputation_modifier_desc:1 \"This character has a reputation for not stopping their attack until their foes have been crushed beneath their boots.\"\n43:  warfare_unshakable_reputation_modifier:0 \"Unshakable Reputation\"\n44:  warfare_unshakable_reputation_modifier_desc:0 \"This character has a reputation for standing strong even when outnumbered and overwhelmed.\"\n45:  warfare_cunning_gambit_succeeded_modifier:0 \"Practiced Manipulative Tactics\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\names\\character_names_l_english.yml",
+    "sha256": "205266cb95ac4284b0c76c1ba0a6e66005f93e83a61162c884a3bbb9a5545c89",
+    "line": 4574,
+    "context": "4571:  ComgA_n:0 \"Comgán\"\n4572:  Comgal:0 \"Comgal\"\n4573:  Comgall:0 \"Comgall\"\n4574:  Comhaltan:0 \"Comhaltan\"\n4575:  Comita:0 \"Comita\"\n4576:  Commodus:0 \"Commodus\"\n4577:  Commundus:0 \"Commundus\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\names\\character_names_l_english.yml",
+    "sha256": "205266cb95ac4284b0c76c1ba0a6e66005f93e83a61162c884a3bbb9a5545c89",
+    "line": 12790,
+    "context": "12787:  Mahakala:0 \"Mahakala\"\n12788:  Mahalakshmi:0 \"Mahalakshmi\"\n12789:  Mahalla:0 \"Mahalla\"\n12790:  Mahalta:0 \"Mahalta\"\n12791:  Mahamed:0 \"Mahamed\"\n12792:  Mahammad:0 \"Mahammad\"\n12793:  Mahamoud:0 \"Mahamoud\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\travel\\oltner_travel_l_english.yml",
+    "sha256": "17da3eef7bcf6eb2d667220196ae33829b966cd56391eedd766d0a27754b2cac",
+    "line": 31,
+    "context": "28:  war_camel_modifier_desc: \"This character has a particularly impressive war camel.\"\n29: \n30:  travel_events_oltner_2.1030.t: \"A Laden Caravan\"\n31:  travel_events_oltner_2.1030.desc: \"Journeying across the sands of [location.GetName], a caravan of laden camels crosses our path. The caravan master notices our entourage and halts the procession.\\n\\n\"Noble travelers,\" [local_character.GetSheHe] calls out with a shrewd glint in [local_character.GetHerHis] eye, \"perhaps you'd fancy a glance at the treasures these sturdy beasts carry? For the right price, the wonders of the desert could accompany you on your travels.\"\"\n32:  travel_events_oltner_2.1030.a: \"\"I am keen to see your wares, let us barter.\"\"\n33:  travel_events_oltner_2.1030.b: \"\"No need, but perhaps we can travel together for a while?\"\"\n34:  travel_events_oltner_2.1030.c: \"\"Show me something unique, a true treasure of [location.GetNameNoTooltip].\"\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\travel\\oltner_travel_l_english.yml",
+    "sha256": "17da3eef7bcf6eb2d667220196ae33829b966cd56391eedd766d0a27754b2cac",
+    "line": 147,
+    "context": "144:  toll_payed: \"Travel Toll Paid\"\n145:  \n146:  travel_events_oltner_2.1140.t: \"Diminutive Defenders\"\n147:  travel_events_oltner_2.1140.desc: \"At the foot of a particularly imposing hill fort in [location.GetName], a group of children play at warriors, their laughter a counterpoint to the solemnity of the stone.\\n\\nOne child, bold and bright-eyed, approaches with a wooden sword. \"Halt! No one may pass the fort of [local_character.GetFirstName] and [local_character.GetHerHis] [local_character.Custom('ComplimentAdjective')] band!\" the child exclaims gleefully. \"Oh wait, a... are you a [ROOT.Char.GetTitleAsNameNoTooltip]!?\"\"\n148:  travel_events_oltner_2.1140.a: \"\"That's right! Now go tell your village all about me!\"\"\n149:  travel_events_oltner_2.1140.b: \"\"Brave defenders, tell us the quickest way through these [location.Custom('TerrainTypeProvince')].\"\"\n150:  travel_events_oltner_2.1140.c: \"\"#EMP *Draw your weapon and scare the children off*#!\"\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\travel\\tourism_destinations_l_english.yml",
+    "sha256": "d22acf3daf47428cca111ebd758d5c9a7ade0cd585e9c779701014f34042fde4",
+    "line": 25,
+    "context": "22:  building_confucius_temple_destination_desc: \"It is hard to not feel a great reverence at the [GetBuilding('confucius_temple_01').GetName]. This is the oldest sanctuary of the great teacher and role model that has so shaped the world. Soon I find myself quietly line up with the other pilgrims to see the tombs of him and his disciples.\"\n23:  building_citadel_linan_destination_desc: \"On the slopes of Phoenix hill the [GetBuilding('citadel_linan_01').GetName] is the center of administrative power for not just this city but also the surrounding region. Entering through its gates I am surrounded by dignitaries and scholar officials, all fulfilling the ceremonial roles that their positions entail.\"\n24:  building_sanchi_stupa_destination_desc: \"The dome of the [GetBuilding('sanchi_stupa_01').GetName] is the main focal point on a hill outside of the settlement of Sanchi itself. Among the many pilgrims and monks I run into at this location many claim that the temple complex has been in use for thousands of years.\"\n25:  building_boudhanath_destination_desc: \"The enormous dome of the [GetBuilding('boudhanath_01').GetName] Stupa houses remains and relics related to many historical buddhas, it is also by far the tallest building of Kathmandu. Towering over the rest of the city it is a clear indicator of the importance of Buddhism to the history of this city. As I approach I find myself surrounded by travellers, pilgrims and merchants, all stopping to rest and pray.\"\n26:  building_mont_st_michel_destination_desc: \"Approaching the tidal island of [GetBuilding('mont_st_michel_01').GetName] at ebb sees its magnificent church and walls towering on the horizon, a reminder of God's power above Heaven and Earth. The site is both an important religious center and a fortified stronghold for the local monks and fishermen.\"\n27:  building_holy_site_st_peters_basilica_destination_desc: \"Towering over Vatican hill, on the site of Saint Peters tomb, [GetBuilding('holy_site_st_peters_basilica_01').GetName] is a reminder of the power of the western church and its popes. Priests and nuns can be seen all over this part of the eternal city, along with beggars hoping for donations from the many pilgrims.\"\n28:  building_holy_site_imam_ali_mosque_destination_desc: \"Entering the city, the golden dome of the [GetBuilding('holy_site_imam_ali_mosque_01').GetName] shines like a beacon. This holy site, where Imam [ali.GetFirstName] is laid to rest, is filled with pilgrims paying their respects. The air is thick with devotion, and the intricate calligraphy on the walls speaks of a deep reverence for the divine.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\feast_default_events_l_english.yml",
+    "sha256": "f93dfc48ce2d0d45947afb0e918855b6cbc2cbbbeec7578fe3e894bdd82f3004",
+    "line": 401,
+    "context": "398:  feast_default.6003.guard:0 \"\\nOne of my guards is close to the brawl, and looks to me for the order to intervene.\"\n399:  feast_default.6003.a:0 \"Throw [fighter_2.GetFirstNameNoTooltip] out to cool off.\"\n400:  feast_default.6003.b:0 \"Restrain [fighter_1.GetFirstNameNoTooltip] until things calm down.\"\n401:  feast_default.6003.c:0 \"\"Halt! We will talk about this later.\"\"\n402: \n403: \n404:  feast_default.6101.t:1 \"Troubled [ROOT.Char.Custom2('RelationToMe', SCOPE.sC('troubled_guest'))|U]\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\hunt_events_l_english.yml",
+    "sha256": "61835a59d2685e44f1f85d4f3ca87c45770a81e632fee35377b29791d30d2ba8",
+    "line": 160,
+    "context": "157:  hunt.1003.desc:1 \"After hours of riding, we are finally cornering the wily beast — our chase has not been in vain!\\n\\n\"\n158:  hunt.1003.bay:1 \"The exhausted, panicked animal has turned to bay, struggling to stand and [activity.Custom('GetAnimalSoundParticiple')] in panic.\"\n159:  hunt.1003.dogs:1 \"The weary [activity.Custom('GetAnimalMale')] is spent: already bitten by a hound, it squats in terror as the dogs close in, held in check by the fewterers.\"\n160:  hunt.1003.dangerous:0 \"Whether tired or defiant, the [activity.Custom('GetAnimalType')] at last halts, turns toward us, and lets out an almighty [activity.Custom('GetAnimalSound')].\"\n161:  hunt.1003.injured:1 \"\\n\\n[wounded_courtier.GetTitledFirstName] will be livid [wounded_courtier.GetSheHe] missed this!\"\n162:  hunt.1003.bison:1 \"\\n\\nFacing a mighty [activity.Custom('GetAnimalType')] so close, especially one [activity.Custom('GetAnimalStrikeParticiple')] violently, is enough to evoke terror in even the bravest [ROOT.Char.GetWomanMan], but the dogs and hunters duly surround it.\"\n163:  hunt.1003.boar:1 \"\\n\\nThe proud [activity.Custom('GetAnimalType')] squeals terribly, sharpened tusks ready to cleave in twain any who approach, as it is surrounded by sheepish hounds and huntsmen.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\hunt_events_l_english.yml",
+    "sha256": "61835a59d2685e44f1f85d4f3ca87c45770a81e632fee35377b29791d30d2ba8",
+    "line": 336,
+    "context": "333:  hunt.1060.water:0 \"\\n\\nThere is a clear sight-line to a [activity.Custom('GetAnimalGroup')] of [activity.Custom('GetAnimalColor')] [activity.Custom('GetAnimalPlural')], watering themselves in a pond up ahead.\"\n334:  hunt.1060.ground:0 \"\\n\\nFrom our vantage point, we can see several [activity.Custom('GetAnimalColor')] [activity.Custom('GetAnimalPlural')] strutting about the [host.GetCurrentLocation.Custom('GetProvinceFoliageDesc')] ahead.\"\n335:  hunt.1060.hare:0 \"\\n\\nFrom our vantage point, we can see several [activity.Custom('GetAnimalColor')] [activity.Custom('GetAnimalPlural')] in the [host.GetCurrentLocation.Custom('GetTerrainType')] up ahead.\"\n336:  hunt.1060.closing:0 \"\\n\\nThe party halts as we prepare to remove our birds' hoods and set them, one by one, to their sport!\"\n337:  hunt.1060.beaters:0 \"The beaters will soon be in position, ready to spook the game to flight.\"\n338:  hunt.1060.a:0 \"Fly true, little one.\"\n339:  hunt.1060.b:0 \"I just want to watch.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\hunt_events_l_english.yml",
+    "sha256": "61835a59d2685e44f1f85d4f3ca87c45770a81e632fee35377b29791d30d2ba8",
+    "line": 588,
+    "context": "585:  hunt.3020.beating:1 \"the [activity.Custom('GetAnimalMale')] has been beating up and foiling down the brooks of the [host.GetCurrentLocation.Custom('GetTerrainType')], trying to throw off its scent.\"\n586:  hunt.3020.squatting:0 \"the [activity.Custom('GetAnimalMale')] has been standing perfectly still in the [host.GetCurrentLocation.Custom('GetProvinceFoliageDesc')], unflinchingly getting behind us, even under the dog's noses\"\n587:  hunt.3020.rusing:0 \"the [activity.Custom('GetAnimalMale')] has been rusing by turns, running hither and thither in mad patterns to confuse its scent and confound attempts to follow it\"\n588:  hunt.3020.desc_courtier:0 \"My [ROOT.Char.Custom2('RelationToMe', hunt_participant)], [hunt_participant.GetTitledFirstName], has halted the party:\"\n589:  hunt.3020.desc_fallback:0 \"My [ROOT.Char.Custom('GetGameKeepers')] have halted ahead:\"\n590:  hunt.3020.desc:1 \"The tracks become muddled: the wily [activity.Custom('GetAnimalType')] has been doubling to and fro, retraced their steps to throw us off.\"\n591:  hunt.3020.closing:0 \"\\n\\nThere is no agreement over which course to follow, and each moment we tarry puts us further from our prize.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\hunt_events_l_english.yml",
+    "sha256": "61835a59d2685e44f1f85d4f3ca87c45770a81e632fee35377b29791d30d2ba8",
+    "line": 589,
+    "context": "586:  hunt.3020.squatting:0 \"the [activity.Custom('GetAnimalMale')] has been standing perfectly still in the [host.GetCurrentLocation.Custom('GetProvinceFoliageDesc')], unflinchingly getting behind us, even under the dog's noses\"\n587:  hunt.3020.rusing:0 \"the [activity.Custom('GetAnimalMale')] has been rusing by turns, running hither and thither in mad patterns to confuse its scent and confound attempts to follow it\"\n588:  hunt.3020.desc_courtier:0 \"My [ROOT.Char.Custom2('RelationToMe', hunt_participant)], [hunt_participant.GetTitledFirstName], has halted the party:\"\n589:  hunt.3020.desc_fallback:0 \"My [ROOT.Char.Custom('GetGameKeepers')] have halted ahead:\"\n590:  hunt.3020.desc:1 \"The tracks become muddled: the wily [activity.Custom('GetAnimalType')] has been doubling to and fro, retraced their steps to throw us off.\"\n591:  hunt.3020.closing:0 \"\\n\\nThere is no agreement over which course to follow, and each moment we tarry puts us further from our prize.\"\n592:  hunt.3020.a:0 \"Patience, this should be easy to solve.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\hunt_events_l_english.yml",
+    "sha256": "61835a59d2685e44f1f85d4f3ca87c45770a81e632fee35377b29791d30d2ba8",
+    "line": 697,
+    "context": "694:  hunt.4007.f:0 \"#EMP Run away!#!\"\n695:  \n696:  hunt.4900.t:1 \"Rampaging [activity.Custom('GetAnimalTypeKill')|U]\"\n697:  hunt.4900.desc:1 \"The great beast halts just before reaching us, [activity.Custom('GetAnimalSoundParticipleKill')] and [activity.Custom('GetAnimalStrikeParticipleKill')] wildly.\"\n698:  hunt.4900.hunter:1 \"\\n\\nI draw my knife from my belt and put myself between the [activity.Custom('GetAnimalTypeKill')] and [similar_participant.GetFirstName] just before the animal suddenly [activity.Custom('GetAnimalChargePresentKill')] forward.\\n\\nMy blade finds its heart,\"\n699:  hunt.4900.hunter_wound:1 \"but not before I am knocked aside, narrowly avoiding its [activity.Custom('GetAnimalDangerKill')]...\"\n700:  hunt.4900.hunter_dead:1 \"but, looking down, its [activity.Custom('GetAnimalDangerKill')] have found mine.\\n\\nThe light dims as I lie in a tangle of fur, warm flesh, and blood, with [similar_participant.GetFirstNameNoTooltip] calling my name...\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\hunt_events_l_english.yml",
+    "sha256": "61835a59d2685e44f1f85d4f3ca87c45770a81e632fee35377b29791d30d2ba8",
+    "line": 706,
+    "context": "703:  hunt.4900.assist_wound:0 \"but [similar_participant.GetFirstNameNoTooltip] is clearly wounded...\"\n704:  hunt.4900.assist_dead:0 \"but so does [similar_participant.GetFirstNameNoTooltip]...\"\n705:  hunt.4900.assist_kill:0 \"and [similar_participant.GetFirstNameNoTooltip] stands over it smugly wiping [similar_participant.GetHerHis] blade...\"\n706:  hunt.4900.befriend:2 \"\\n\\nI calmly hold out my hand. The [activity.Custom('GetAnimalTypeKill')] relaxes, confused, before tentatively halting just out of reach, sniffing at my digits suspiciously.\"\n707:  hunt.4900.befriend_success:1 \"\\n\\nSeemingly content, it yawns widely, before laying at my feet, as if to sleep.\"\n708:  hunt.4900.befriend_wound:1 \"\\n\\nWithout warning, it charges forward once more, knocking me to the ground heavily, before sprinting off out of view.\"\n709:  hunt.4900.befriend_dead:1 \"\\n\\nThe beast suddenly tenses, almost seeming to grimace. I stand frozen, shutting my eyes as the beast charges forward, [activity.Custom('GetAnimalSoundParticipleKill')] horribly.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\hunt_events_l_english.yml",
+    "sha256": "61835a59d2685e44f1f85d4f3ca87c45770a81e632fee35377b29791d30d2ba8",
+    "line": 1091,
+    "context": "1088:  hunt_murder_accomplice_tt:1 \"[THIS.Char.GetShortUIName|U] will attempt to murder [murder_target.GetShortUIName]\"\n1089: \n1090:  hunt.7210.opening:0 \"Galloping through the [host.GetCurrentLocation.Custom('GetProvinceFoliageDesc')], following the calls of the horns and baying of the dogs, [murder_target.GetTitledFirstName] at last separates [murder_target.GetHerselfHimself] from the rest of the party.\\n\\n\"\n1091:  hunt.7210.desc:0 \"[murder_target.GetSheHe|U] halts a moment, pondering which course to take.\"\n1092:  hunt.7210.accomplice:0 \"I glance over at [accomplice.GetFirstName], who nods grimly, brow knitted with determination, awaiting my move.\"\n1093:  hunt.7210.a:0 \"And a tragic accident it shall be.\"\n1094:  hunt.7210.a.tt:0 \"#EMP Hyah!#!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\pilgrimage_events_l_english.yml",
+    "sha256": "6c940c76dd6998ddd247df0a2e73ed72b4784b532c6c91f4988e1e127c777405",
+    "line": 265,
+    "context": "262:  #pilgrimage_joe_0200_army: \"[ROOT.Char.GetFaith.WarGodPossessive] Fury\"\n263:  pilgrimage.1110.t:0 \"$pilgrimage_header$ [ROOT.Char.Custom2('GetUnbelieverTerm', heathen_raider)|U] Brigandage\"\n264:  pilgrimage.1110.desc:0 \"Crossing the [ROOT.Char.GetCurrentLocation.Custom('GetTerrainTypePlural')] of [heathen_raider_county.GetNameNoTierNoTooltip], we spot the banners of a small host, emblazoned with the [heathen_raider.GetFaith.GetAdjective] [heathen_raider.GetFaith.ReligiousSymbol]. They are ragged vagabonds, preying on pilgrims headed to [ROOT.Char.GetInvolvedActivity.GetCurrentPhase.GetLocation.GetName].\\n\\nThe leader swiftly blocks our route, rearing [ROOT.Char.GetHerHis] horse and announcing [heathen_raider.GetHerselfHimself] as [heathen_raider.GetFirstName].\"\n265:  pilgrimage.1110.shared_target_heathen_hajj:0 \"\"Halt [ROOT.Char.Custom2('GetUnbelieverTerm', heathen_raider)]! By [ROOT.Char.GetFaith.HighGodName], the [ROOT.Char.GetFaith.GetAdherentNamePlural] must pay the Kaaba toll.\"\"\n266:  pilgrimage.1110.shared_target_controlled_hajj:0 \"\"A small payment to see the Kaaba is all I ask from its [heathen_raider.Custom2('GetUnbelieverTermAdjective', ROOT.Char)] [ROOT.Char.GetFaith.GetAdjective] stewards.\"\"\n267:  pilgrimage.1110.shared_target_heathen_jerusalem:0 \"\"Fear not [heathen_raider.Custom2('GetUnbelieverTermPlural', ROOT.Char)], the marvels of our holy city await, for a small fee.\"\"\n268:  pilgrimage.1110.shared_target_controlled_jerusalem:0 \"\"If you truly wish to see your coveted holy city, my small fee is little umbrage.\"\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\pilgrimage_events_l_english.yml",
+    "sha256": "6c940c76dd6998ddd247df0a2e73ed72b4784b532c6c91f4988e1e127c777405",
+    "line": 272,
+    "context": "269:  pilgrimage.1110.shared_target_heathen:0 \"\"Don't you [ROOT.Char.GetFaith.GetAdjective] dogs know? [ROOT.Char.Custom2('GetUnbelieverTermPlural', heathen_raider)|U] must offer tribute to see the sacred [heathen_raider.GetFaith.HouseOfWorshipPlural].\"\"\n270:  pilgrimage.1110.shared_target_controlled:0 \"\"Your [ROOT.Char.GetFaith.HouseOfWorshipPlural] will still be there once you pay our humble toll.\"\"\n271:  pilgrimage.1110.shared_heathen_controlled:0 \"\"Our [heathen_raider.GetFaith.HouseOfWorshipPlural] are wondrous to see, as you will find once you pay your dues.\"\"\n272:  pilgrimage.1110.fallback:0 \"\"Halt, [ROOT.Char.Custom2('GetUnbelieverTerm', heathen_raider)]. I, keep the peace on these paths, and you must pay like all the rest.\"\"\n273:  pilgrimage.1110.a:0 \"If you want my gold, come and take it.\"\n274:  pilgrimage.1110.a.fled:0 \"The bandits think better of it\"\n275:  pilgrimage.1110.a.skirmish:0 \"You fend off the first wave\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\pilgrimage_events_l_english.yml",
+    "sha256": "6c940c76dd6998ddd247df0a2e73ed72b4784b532c6c91f4988e1e127c777405",
+    "line": 357,
+    "context": "354:  pilgrimage.2005.c:0 \"Perhaps it is time I found others to travel with.\"\n355:  #You have gotten lost\n356:  pilgrimage.2006.t:1 \"$pilgrimage_header$ the Scenic Route\"\n357:  pilgrimage.2006.intro:1 \"The spiritual journey has grind to a literal halt.\"\n358:  pilgrimage.2006.desc_alone:0 \"I keep my eyes peeled, trying to recognize the way forward — but coming up with bupkis — and am becoming slightly concerned. It #EMP was#!\\n\\nthis direction, wasn't it... ? I hesitantly look over yonder to a local peasant involved in chores a bit further ahead.\"\n359:  pilgrimage.2006.desc_travel_leader:1 \"My $travel_leader_court_position$ [caravan_master.GetTitledFirstName] is looking around, frantically searching for the way forward, and people are starting to notice.\\n\\n[caravan_master.GetTitledFirstNamePossessiveNoTooltip] face shifts to a gray nuance as [caravan_master.GetSheHe] turns [caravan_master.GetHerHis] gaze towards me, looking for answers as to what to do next.\"\n360:  pilgrimage.2006.a:1 \"I know the way to [ROOT.Char.GetTravelPlan.GetData.GetNextDestination.GetProvince.GetNameNoTooltip] like the back of my hand!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\pilgrimage_events_l_english.yml",
+    "sha256": "6c940c76dd6998ddd247df0a2e73ed72b4784b532c6c91f4988e1e127c777405",
+    "line": 502,
+    "context": "499:  pilgrimage.6005.b:0 \"\"We should pay for our misfortunes!\"\"\n500:  pilgrimage.6005.c:0 \"\"Is it a crime to have a good time?\"\"\n501:  #You find out your friend is a Non-Believer\n502:  pilgrimage.6006.desc:0 \"[friend.GetFirstName] and I are nearing the end of today's journey. We are slowly making our way toward the determined stopping point, when suddenly someone ahead shouts, \"Look! What a #EMP marvelous#! sunset!\"\\n\\nEveryone surges ahead with the last bit of their strength to get a glimpse of the majestic site. \"What wonders we are privileged to see in this mortal life! This is a perfect time to meditate on our faith,\" I say to [friend.GetFirstNameNoTooltip], but [friend.GetSheHe] seems not at all impressed, letting a harsh scoff escape [friend.GetHerHis] lips.\\n\\n\"It is but a sunset!\" [friend.GetSheHe] yells. \"Must everything we do on this trip concern [ROOT.Char.GetFaith.HighGodName]? I just want to travel and see the world — I'm not even convinced [ROOT.Char.GetFaith.HighGodName] exists #EMP at all!#!\"\"\n503:  pilgrimage.6006.a:0 \"\"Your secret is safe with me, friend.\"\"\n504:  pilgrimage.6006.b:0 \"\"I shall not abide a friend who does not believe.\"\"\n505:  pilgrimage.6006.c:0 \"\"You make some good points...\"\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\pilgrimage_events_l_english.yml",
+    "sha256": "6c940c76dd6998ddd247df0a2e73ed72b4784b532c6c91f4988e1e127c777405",
+    "line": 837,
+    "context": "834:  pilgrimage.6530.e:0 \"I'll pass.\"\n835:  #Fishy guide not so fishy actually\n836:  pilgrimage.6531.t:0 \"Hidden Divinity\"\n837:  pilgrimage.6531.desc_wellspring:0 \"Quite a distance outside of [ROOT.Char.GetCurrentLocation.GetCounty.GetTitle.GetNameNoTierNoTooltip], we come to a sudden halt. Our guide [local_guide.GetTitledFirstName] shows us a hidden passage and we end up in a small cavern, illuminated by the daylight falling through a hole in the roof.\\n\\nThrough that very same hole, a truly remarkable wellspring pours, serenely. The flowing water glows with a divine splendor and faint misty rainbows color the air around it.\"\n838:  pilgrimage.6531.desc_crystal_cavern:0 \"As I start to wonder if we'll ever arrive, our guide [local_guide.GetTitledFirstName] suddenly takes a sharp left and before we know it we enter a cavern, hidden in the countryside.\\n\\nA faint glow, that steadily grows stronger, starts reflecting over our gear as we stumble into a large grotto covered in hundreds of crystals. The crystals catch the light from the hole in the ceiling and the entourage, including myself, fawns in astonishment at the sight.\"\n839:  pilgrimage.6531.desc_non_cynical:0 \"\\n\\nI have never felt [ROOT.Char.GetFaith.HighGodNamePossessive] presence stronger than in this very spot.\"\n840:  pilgrimage.6531.desc_cynical:0 \"\\n\\nThis is a very impressive feat of nature, I'll give it that.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\tour_events_l_english.yml",
+    "sha256": "896c8c1429fad19ad870defba6c011bc5b7735e6330d66440caecd1dc7aa3f4b",
+    "line": 18,
+    "context": "15:  tour_travel.1001.c:0 \"Oh I simply look like [ROOT.Char.GetNameNoTooltip]!\"\n16: \n17:  tour_travel.1002.title:1 \"The [ROOT.Char.GetCurrentLocation.Custom('get_region_flower_type')|U] Among the Weeds\"\n18:  tour_travel.1002.desc:1 \"As we ride through [pretty_peasant_county_scope.GetName], I find myself becoming infatuated with the scenery. Truly the [pretty_peasant_county_scope.GetProvince.Custom('TerrainTypeProvince')] of [ROOT.Char.GetCurrentLocation.GetNameNoTooltip] must be the fairest in all of [ROOT.Char.GetPrimaryTitle.GetNameNoTierNoTooltip], and fairer still are the [pretty_peasant.GetWomenMen] who call it home.\\n\\nAs my entourage escorts me through yet another lowly village, I find a particularly fair young [pretty_peasant.GetWomanMan] going about [pretty_peasant.GetHerHis] lowly duties and I feel my heart grow aflutter. Watching this [pretty_peasant.Custom('LoverPetName')] in [pretty_peasant.GetHerHis] mundanity is like seeing poetry made flesh, and before I can even think, my heart has already commanded me to call my entourage to a halt.\"\n19:  tour_travel.1002.a:0 \"I must make my feelings known.\"\n20:  tour_travel.1002.b:0 \"Oh I thought I saw something... keep moving.\"\n21: "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\tour_events_l_english.yml",
+    "sha256": "896c8c1429fad19ad870defba6c011bc5b7735e6330d66440caecd1dc7aa3f4b",
+    "line": 46,
+    "context": "43:  tour_travel.1005.c:0 \"They get nothing!\"\n44: \n45:  tour_travel.1006.title:1 \"$altruism_intent_header$ Alms for the Poor\"\n46:  tour_travel.1006.desc:0 \"As we ride by the great [county_holder_to_bless_scope.GetFaith.HouseOfWorship] at [church_barony_scope.GetNameNoTooltip], I order my procession to a halt to admire this holy place which services the spiritual needs of so many here in [county_to_bless_scope.GetNameNoTooltip].\\n\\nThe grounds of the [county_holder_to_bless_scope.GetFaith.HouseOfWorship] are crowded with the destitute come to pray for the betterment of their circumstances. This is perhaps an opportunity to show the people of [county_to_bless_scope.GetNameNoTooltip] just how magnanimous and kind I can be.\"\n47:  tour_travel.1006.a:0 \"Alms for the poor!\"\n48:  tour_travel.1006.b:0 \"If they wanted money, they shouldn't have been born poor.\"\n49:  tour_travel.1006.c:0 \"Remove these vermin from the steps!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\tour_events_l_english.yml",
+    "sha256": "896c8c1429fad19ad870defba6c011bc5b7735e6330d66440caecd1dc7aa3f4b",
+    "line": 149,
+    "context": "146: \n147: #Liege: Rejected at the gates\n148:  tour_general.0501.title:0 \"Turned Away\"\n149:  tour_general.0501.desc:1 \"As my entourage comes to a halt at the gates of [stop_host_scope.GetCapitalLocation.GetTitle.GetBaseNameNoTier], the call is made for [stop_host_scope.GetName] to receive me, but after a time that is more than generous, not even a lowly servant appears to greet me. The call is made many times more, but we receive no answers save for the chirps of wild birds and whistle of gentle winds.\\n\\nIt's become clear that I've been turned away at the gates, and the [stop_host_scope.Custom2('InsultAdjective', ROOT.Char)] [stop_host_scope.GetTitleAsNameNoTooltip] has in so doing insulted the crown!\"\n150:  tour_general.0501.a:0 \"Let's just move along.\"\n151:  tour_general.0501.b:0 \"This insult will not soon be forgotten.\"\n152:  tour_general.0501.c:0 \"Break down the bloody gates!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\tour_events_l_english.yml",
+    "sha256": "896c8c1429fad19ad870defba6c011bc5b7735e6330d66440caecd1dc7aa3f4b",
+    "line": 483,
+    "context": "480:  tour_grounds.trampled_child_nemesis:0 \"[stop_host_scope.GetNameNoTooltip] Swore [stop_host_scope.GetHerHis|U] Vengeance\"\n481: \n482:  tour_grounds_events.3010.title:0 \"An Unreliable Steed\"\n483:  tour_grounds_events.3010.desc.intro:0 \"My ride through the grounds of [touring_grounds_scope.GetNameNoTooltip] is brought to a sudden jolting halt as I feel my prized horse stumble over a rock. Though it is quick to recover, and I am only momentarily thrown off balance, I can hear members of my procession snickering behind me.\\n\\n\"\n484:  tour_grounds_events.3010.desc.mid.irritable:0 \"I have been failed by my allegedly prized steed, and I feel a stew of humiliation and rage bubbling in my guts.\"\n485:  tour_grounds_events.3010.desc.mid.calm:0 \"I feel a little embarrassed, but I know really it isn't the animal's fault.\"\n486:  tour_grounds_events.3010.desc.outro:0 \"A [ROOT.Char.GetTitleAsNameNoTooltip|U] is meant to give off an air of untouchable regality, and command the respect of all of [ROOT.Char.GetHerHis] subjects, and this incident has thrown off my image of perfection.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\activities\\tour_events_l_english.yml",
+    "sha256": "896c8c1429fad19ad870defba6c011bc5b7735e6330d66440caecd1dc7aa3f4b",
+    "line": 588,
+    "context": "585:  tour_grounds_events.3060.d:0 \"Perhaps I could learn something here.\"\n586:  tour_grounds_events.3070.title:0 \"A Moment of Silence\"\n587:  tour_grounds_events.3070.desc.intro:0 \"I find myself wandering with my entourage around the wonderful sights outside of [ROOT.Char.GetCurrentLocation.GetName] proper, and\"\n588:  tour_grounds_events.3070.desc.royal_garden:0 \"around [stop_host_scope.GetNamePossessive] magnificent royal garden.\\n\\nWithin the walls of the garden, there is nothing but myself, a few lesser nobles, and a precise and intricately arranged garden. Stopping for a moment to be here fills me with a tranquility I rarely get the chance to experience.\"\n589:  tour_grounds_events.3070.desc.royal_forest:0 \"around [stop_host_scope.GetNamePossessive] enchanting royal forest.\\n\\nThis forest is completely void of any peasants or lesser nobility; just me, my closest confidants, and [ROOT.Char.GetFaith.CreatorNamePossessive|U] creation. I feel transported to a realm of pure calm, a time before the calamitous hearts of men tainted the earth with vice and weakness.\"\n590:  tour_grounds_events.3070.desc.leisure_palace:0 \"around [stop_host_scope.GetNamePossessive] summer palace.\\n\\nThe palace exterior is decorated with gorgeous sculptures and local flora arranged to meticulous detail, and the interior is just as grand and extravagant. Everything about the sights and sensations of being in this palace exist to calm a strained soul.\"\n591:  tour_grounds_events.3070.desc.outro:0 \"\\n\\nI could stay here forever.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\childhood\\childhood_events_oltner_l_english.yml",
+    "sha256": "9ed1e1fc3d27121bd6db5d7dd798d4afaddd9b33104244803d19fc006ad21160",
+    "line": 15,
+    "context": "12:  childhood.7001.desc_helper:0 \"Success! [child_helper.GetFirstName] distracted [stolen_clothes.GetFirstName] by letting [ROOT.Char.Custom('GetLivestockFowlIndef')] loose in [stolen_clothes.GetHerHis] bedchamber early this morning – meanwhilst I pilfered every garment I could find!\"\n13:  childhood.7001.desc_nohelper:0 \"Success! I managed to sneak into [stolen_clothes.GetFirstNamePossessiveNoTooltip] bedchamber and grab all of [stolen_clothes.GetHerHis] clothes before [stolen_clothes.GetSheHe] woke up! \"\n14:  childhood.7001.desc_angry:0 \"[stolen_clothes.GetFirstNameNoTooltip] rose in a fury and gave chase down the corridor, without a thread on [stolen_clothes.GetHerHis] body!\\n\\n\"You annoying brat! Hand me my clothes immediately, or I'll wring your neck!\" [stolen_clothes.GetSheHe|U] screams, fuming through the nose.\\n\\n[stolen_clothes.GetFirstNameNoTooltip] might not have liked my clever prank, but everyone else thought it was #EMP hilarious!#!\"\n15:  childhood.7001.desc_funny:0 \"[stolen_clothes.GetFirstNameNoTooltip] rose quickly and gave chase down the corridor, without a thread on [stolen_clothes.GetHerHis] body!\\n\\n\"Child! Give me my clothes back, I do not have time for this!\" [stolen_clothes.GetSheHe|U] shouts, running all the way into the main hall before stopping and realizing what [stolen_clothes.GetSheHe] has done!\\n\\nEveryone, including [stolen_clothes.GetFirstNameNoTooltip] found the situation #EMP very#! funny, and laughed until their faces turned red.\"\n16:  childhood.7001.a:0 \"And I'll do it again! And again! And #EMP again!#!\"\n17:  childhood.7001.b:0 \"I couldn't have done it without you, [child_helper.GetFirstNameNoTooltip]!\"\n18:  childhood.7001.c:0 \"A good prank goes a long way!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\court_events\\court_events_bianca_l_english.yml",
+    "sha256": "7d1ac7823a2ea233b9a3861280dfeaff9292414ec13fe289a2d039c63967d187",
+    "line": 81,
+    "context": "78:  #Lady-in-waiting \n79:  court.3030.t:0 \"Fussy with Fashion\"\n80:  court.3030.desc.intro:0 \"Ever so attentive, my $lady_in_waiting_court_position$, [fussy_liw.GetFirstName], is at my heels to ensure I both conduct and present myself appropriately at court.\\n\\n\"[ROOT.Char.Custom('FormOfAddressForLiege')|U]! Please, stand still for but a moment so that I may adjust your clothes!\"\\n\\n\"\n81:  court.3030.desc.lovers:1 \"I instinctively lean into [fussy_liw.GetHerHis] touch before stopping myself as I realize we're in public. While it's not uncommon for my dearest [fussy_liw.GetFirstNameNoTooltip] to be so fussy with my garb,\"\n82:  court.3030.desc.generic:1 \"[fussy_liw.GetFirstNameNoTooltip] doesn't seem to mind that we're in public while [fussy_liw.GetSheHe] adjusts my garb,\"\n83:  court.3030.desc.ending:0 \"I cannot help but feel as if [fussy_liw.GetSheHe]'s treating me like a rowdy child!\\n\\nAs I'm silently ruminating, I notice we have onlookers whispering among themselves and I feel the need to speak up for myself!\"\n84:  court.3030.a:0 \"Make a scene: \"How #EMP dare you#! lay your hands on #EMP me#!!?\"\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\court_events\\court_events_isabella_l_english.yml",
+    "sha256": "5a88f69e6e9abd5892fe4c19931bf8f9f76db67b64cb90bd463d39a6311898ae",
+    "line": 210,
+    "context": "207:  court.4701.trepanning_incapable_injury:0 \"A glow flows over me. I feel a rush, and I see sights of the days and years of the past all appear at once. Where am I? Why do I have a headache? What is my name? What is my favorite pie filling?\"\n208:  court.4701.trepanning_possessed_injury:0 \"Though I was promised I was releasing spirits from my head, I suddenly witness a spirit for the first time. A handsome winged shade is dancing from shadow to shadow in the room and grinning at me.\"\n209:  court.4701.trepanning_deviant_injury:0 \"As the hole begins to be dug, I start to relish the sound of my squelching innards. After some spinning of my mind, I am hit with sudden rushes of genius! I must become nocturnal and consume only bread crusts! Why have I never made love while pretending to be a horse?\"\n210:  court.4701.trepanning_learning_penalty:0 \"As the scalpel swirls around and around, I realize I am struggling to so much as cry #EMP halt! #!When the motion at last ceases, my poor swimming mind feels it must wade through mud to form a sentence.\"\"\n211:  court.4701.trepanning_physical_injury:0 \"At first the picks clipping my skull send such pain through my body my very spine feels sawn in two. As the excavation goes deeper,\"\n212:  court.4701.trepanning_no_result:0 \"I get ahold of myself. When the pick is at last removed, and I feel no different beyond a mild draft blowing onto my exposed brain.\"\n213:  court.4701.trepanning_coordination_penalty:0 \"I start to feel nothing at all. When the pick is at last removed, I cannot feel it. As I attempt to stand, my body barely complies.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\court_events\\court_events_joe_l_english.yml",
+    "sha256": "b95996d81d1cc2e4e0fb0ec2b668e108679d9a4fb7c48d8ac171dc4a906ae40d",
+    "line": 301,
+    "context": "298:  plenty_to_donate_almoner_desc: \"Plenty to Donate\"\n299:  # # Foremost Knight\n300:  court.8160.t:0 \"Foremost [ROOT.Char.Custom('MountedWarriorTerm')|U]\"\n301:  court.8160.desc.intro:0 \"A healthy rivalry between mettlesome fighters is to be expected, but the growing discord between [knight_1.GetFirstName] and [knight_2.GetFirstName] is souring the mood at court. \\n\\n[knight_1.GetTitledFirstNameNoTooltip] is widely regarded to be more skilled, but [knight_2.GetTitledFirstNameNoTooltip] clearly takes issue with the assertion. \\n\\nIn the middle of an audience, the latter bursts into my throne room, and, clutching [knight_2.GetHerHis] sword-hilt, cries \"[knight_1.GetFirstNameNoTooltip]! Only one of us can claim to be the [ROOT.Char.GetTitleAsNamePossessiveNoTooltip] most skilled [ROOT.Char.Custom('MountedWarriorTerm')], meet me outside and I will settle the question!\"\\n\\n[knight_1.GetTitledFirstNameNoTooltip] replies [knight_2.Custom('quirk_neg_adverb')], \"I would cut you to pieces where you stand if it was not for the presence of my [ROOT.Char.GetTitleAsNameNoTooltip], you [knight_2.Custom('quirk_neg_adjective')] [knight_2.Custom2('InsultNoun', SCOPE.sC('knight_1'))]! Apologize and I may spare your life!\" \\n\\nI better act quickly if this escalation is to be halted...\"\n302:  court.8160.a:0 \"You shall both serve me directly.\"\n303:  court.8160.a.tt: \"[knight_1.GetFirstNameNoTooltip] and [knight_2.GetFirstNamePossessiveNoTooltip] rivalry ensures that, as long as they are both employed, they will give their very best in their positions: [aptitude|E] Increased.\"\n304:  competing_knight_position_desc: \"Competing Knights\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\education\\chinese_disciple_events_l_english.yml",
+    "sha256": "3ad18bfe47e3f8f0f3a8de61231ee1c0a3330250cfe534f11134d3b898a3b03b",
+    "line": 347,
+    "context": "344:   chinese_students.0031.desc.improve.stewardship.failure: \"[mentee.GetHerHis|U] sums falter and the ink smudges, yet humble effort to approach mastery merits guidance.\"\n345:   chinese_students.0031.desc.improve.intrigue.success: \"Ruse unfolds with surprising finesse, hinting at surprising insight into hidden currents.\"\n346:   chinese_students.0031.desc.improve.intrigue.failure: \"[mentee.GetHerHis|U] clumsy deception is transparent, but honesty about one's shortcomings is the rarest coin.\"\n347:   chinese_students.0031.desc.improve.learning.success: \"Verses flowed halting yet correct, seeds of scholarship taking firm root.\"\n348:   chinese_students.0031.desc.improve.learning.failure: \"[mentee.GetSheHe|U] stumbled over the Analects, yet hunger for knowledge still kindled bright within [mentee.GetHerHis] eyes.\"\n349: \n350:   chinese_students.0031.desc.conclusion: \"\\n\\nI clear my throat, and the courtyard stills. My judgment is ready to be heard.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\hold_court_events\\hold_court_events_joe_l_english.yml",
+    "sha256": "89be82f0560d1e0c94fda3ccd7993b5241df563658d47ededc9002c74114d986",
+    "line": 79,
+    "context": "76:  hold_court.8221.imprison_alone:0 \"[assassin.GetTitledFirstName] is imprisoned\"\n77:  # # Special Treatment\n78:  hold_court.8040.t:0 \"Special Treatment\"\n79:  hold_court.8040.desc:0 \"The unrepentant [infidel_vassal.GetTitledFirstName] graces you with [infidel_vassal.GetHerHis] presence. \\n\\nHaltingly, [infidel_vassal.GetSheHe] begins: \"My [ROOT.Char.GetTitleTierName], I am a loyal and willing subject – let me practice my faith in peace.\" \\n\\n\"\n80:  hold_court.8040.desc.intro_same_religion:0 \"\"We [infidel_vassal.GetFaith.GetAdherentNamePlural] worship [infidel_vassal.GetFaith.CreatorName] just as the [ROOT.Char.GetFaith.GetAdherentNamePlural] do. Leave your [ROOT.Char.GetFaith.GetReligion.GetAdjective] [ROOT.Char.Custom('SisterBrother')]s to worship as they please, united instead against the wicked [ROOT.Char.Custom('GetUnbelieverNamePlural')] who follow false demons and allow [infidel_vassal.GetFaith.DevilName] to corrupt their hearts.\"\"\n81:  hold_court.8040.desc.intro_fallback:0 \"\"Why can't a [ROOT.Char.GetFaith.GetReligion.GetAdjective] and a [infidel_vassal.GetFaith.GetReligion.GetAdjective] live in harmony, separated by the teachings of [ROOT.Char.GetFaith.HighGodName] and [infidel_vassal.GetFaith.HighGodName] but united in piety? Let us follow our [infidel_vassal.GetFaith.ReligiousText] and you your [ROOT.Char.GetFaith.ReligiousText] side by side.\"\n82:  hold_court.8040.a:0 \"Judgment is reserved for [ROOT.Char.GetFaith.HighGodName] alone.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\hold_court_events\\hold_court_events_joe_l_english.yml",
+    "sha256": "89be82f0560d1e0c94fda3ccd7993b5241df563658d47ededc9002c74114d986",
+    "line": 376,
+    "context": "373:  hold_court.8120.d:0 \"[ROOT.Char.GetFaith.DevilName] awaits you, [ROOT.Char.Custom2('GetUnbelieverTerm', SCOPE.sC('peasant'))].\"\n374:  hold_court.8120.e:0 \"No.\"\n375:  # Modifiers\n376:  hold_court_8120_stopped_modifier:0 \"Integration Halted\"\n377:  hold_court_8120_stopped_modifier_desc:0 \"At the people's request, conversion and integration has been abandoned here.\"\n378:  hold_court_8120_tax_modifier:0 \"Religious Taxation\"\n379:  hold_court_8120_tax_modifier_desc:0 \"A special tithe is levied on the infidels who dwell here.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\religion_events\\holy_order_events_l_english.yml",
+    "sha256": "82302d980e19c3e1fbb13a3f0ccf94dd3a2948d3f54603b6f349973ed3704535",
+    "line": 83,
+    "context": "80:  holy_order.2002.b:0 \"Oh, you are absolutely #EMP not#! doing that!\"\n81: \n82:  holy_order.2003.opening:0 \"[grandmaster.Custom2('AppropriateGreetingPositive', ROOT.Char)|U]\"\n83:  holy_order.2003.desc:1 \"There will always be a need for true warriors to halt any threat to the [grandmaster.GetFaith.GetAdjective] faith.\\nWith many aptitudes and few prospects of inheritance, I believe your [child.Custom('DaughterSon')], [child.GetTitledFirstName], could lead a better life serving [holy_order_scope.GetName]. With us, [child.GetSheHe] will train, learn and bring great honor upon your name.\"\n84:  holy_order.2003.a:0 \"[child.GetHersHis|U] will be the life of a true [child.GetFaith.GetAdherentName].\"\n85:  holy_order.2003.child_joins_order:0 \"[child.GetFirstName] gains [GetTrait('order_member').GetName( child.Self )] and joins the court of [grandmaster.GetTitledFirstNameNoTooltip]\"\n86:  holy_order.2003.b:0 \"Perhaps you could train [alternative_child.GetFirstNameNoTooltip] instead?\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\schemes\\study_scripture_l_english.yml",
+    "sha256": "348a8e7daf6a1533321328ab32a155fbff0c200aa4afc301d45bcc7cf274c8b0",
+    "line": 189,
+    "context": "186:  study_scripture_outcome.1020.c: \"Or perhaps supper, bed, and a fresh start tomorrow.\"\n187: \n188:  study_scripture_outcome.1030.t: \"$study_scripture_title$Retreat to the Cloister\"\n189:  study_scripture_outcome.1030.desc: \"My studies have halted. The same desk, same candle, same defeats. So I seek out my [ROOT.Char.Custom2( 'RelationToMeShort', counselor )], [counselor.GetTitledFirstName], whose devotion asks nothing of rank.\\n\\n\"\n190:  study_scripture_outcome.1030.desc_hermitage: \"\"You bring too many walls with you,\" [counselor.GetFirstNameNoTooltip] says, with a gesture to the bare cell, the lamp, the silence. \"The hermits of old knew: strip everything away, and what is left is what you sought.\"\"\n191:  study_scripture_outcome.1030.desc_monastery: \"\"You study like a ruler,\" [counselor.GetFirstNameNoTooltip] says, not unkindly. \"Conquering pages, counting them like taxes. In this house we sit with one line for a week, and by the end it is the line that studies us.\"\"\n192:  study_scripture_outcome.1030.a: \"Arrange a blessing for my study.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\travel_events\\travel_danger_events_oltner_l_english.yml",
+    "sha256": "710e47b3c7d7e2fe198903e1c3d3ccaa8095cbb6108590cdc7935a8b9810e172",
+    "line": 55,
+    "context": "52:  travel_danger_events.9060.t: \"$travel_danger_prefix$ Fragile Passenger\"\n53:  travel_danger_events.9060.desc: \"\"Ow, ow! Please, stop the carriage — I beg you!\" my [ROOT.Char.Custom2('RelationToMeShort', SCOPE.sC('victim'))] [victim.GetFirstName] cries to the coachman. \"My [elder_trait.GetName(GetNullCharacter)] can't take the bumps, rocks, and shaking anymore!\"\\n\\nThe rough roads of [location.GetName] are wearing down [victim.GetHerHis] frail body.\\n\\nPerhaps we ought to slow the pace, just a bit.\"\n54:  travel_danger_events.9060.sadistic: \"#EMP ...we need to go faster.#!\"\n55:  travel_danger_events.9060.a: \"We're not stopping.\"\n56:  travel_danger_events.9060.b: \"We must consider [victim.GetFirstNamePossessiveNoTooltip] comfort.\"\n57:  traveling_slowly_modifier: \"Painfully Slow Travel\"\n58:  traveling_slowly_modifier_desc: \"This entourage is travelling very slowly, making them an easy target for highwaymen.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\travel_events\\travel_events_cultural_traditions_l_english.yml",
+    "sha256": "73b7e4242fb124782fa4e3011c343c10232488c8449a56757b15c26fabc63381",
+    "line": 72,
+    "context": "69:  travel_events.1209.a.tt:1 \"Reduces the cost of establishing the [GetCultureTradition('tradition_storytellers').GetName] tradition by [prestige_i]#P [EmptyScope.ScriptValue('tradition_travel_discount')|-0] [prestige|E]\"\n70: \n71:  travel_events.1210.t:0 \"[ROOT.Char.GetCurrentLocation.GetCulture.GetNameNoTooltip|U] Music\"\n72:  travel_events.1210.desc:0 \"As I travel through the [ROOT.Char.GetCurrentLocation.GetTerrain.GetNameNoTooltip|l] of [ROOT.Char.GetCurrentLocation.GetNameNoTooltip] I hear a melody drifting gently across the landscape.\\n\\nA quick diversion off the path brings me to a group of musicians playing their hearts out to what must be some local [ROOT.Char.GetCurrentLocation.GetCulture.GetNameNoTooltip] music. Stopping to listen to the beautiful music I find my heart filling with joy.\"\n73:  travel_events.1210.a:0 \"We should take this tradition home.\"\n74:  travel_events.1210.b:0 \"I want to learn to play!\"\n75:  travel_events.1210.a.tt:1 \"Reduces the cost of establishing the [GetCultureTradition('tradition_music_theory').GetName] tradition by [prestige_i]#P [EmptyScope.ScriptValue('tradition_travel_discount')|-0] [prestige|E]\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\travel_events\\travel_events_filippa_l_english.yml",
+    "sha256": "6189c279be643b7e2c27b6d5ba10895091775a978f622ea4f489a349842e6e35",
+    "line": 48,
+    "context": "45: \n46: #Crossing an ant path - Ignore or don't ignore your guide\n47:  travel_events.2002.t:0 \"The Trodden Path\"\n48:  travel_events.2002.desc:0 \"The procession has ground to a halt a stone's throw away from [ROOT.Char.GetCurrentLocation.GetName]. I look over to see my [ROOT.Char.Custom2('RelationToMe', SCOPE.sC('guide_leader'))] [guide_leader.GetFirstName], dismounted and intently staring at something on the ground. The other entourage members have gathered around [guide_leader.GetHerHim].\\n\\n[guide_leader.GetFirstNameNoTooltip] looks up as I approach. \"[ROOT.Char.Custom('FormOfAddressForLiege')|U], there is an ant path here. I may be a tad superstitious, but you should never cross an ant path.\"\\n\\n[guide_leader.GetSheHe|U] pauses. \"My great-grand[great_grand_parent.Custom('MotherFather')] did, and [great_grand_parent.GetSheHe] never returned home.\"\"\n49:  travel_events.2002.a:0 \"#EMP Fine#!. We'll find another path.\"\n50:  travel_events.2002.b:1 \"This is nonsense. I'll take over as guide!\"\n51:  travel_events.2002.c:0 \"I have just the cure for your superstition.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\travel_events\\travel_events_filippa_l_english.yml",
+    "sha256": "6189c279be643b7e2c27b6d5ba10895091775a978f622ea4f489a349842e6e35",
+    "line": 135,
+    "context": "132: \n133: #Visit an elephant pen, your rival is on site - Attempt to crush your rival?\n134:  travel_events.2008.t:0 \"Have a Seat\"\n135:  travel_events.2008.desc:0 \"Beads of sweat keep pour down my face as the heat of the jungle catches up with me. Stopping to wipe my brow, I spot my [elephant_rival.Custom2('InsultNoun', ROOT.Char)] [ROOT.Char.Custom2('RelationToMeShort', SCOPE.sC('elephant_rival'))], [elephant_rival.GetTitledFirstName], over by the local elephant pens of [ROOT.Char.GetCurrentLocation.GetName].\\n\\n[elephant_rival.GetSheHe|U] makes a rude gesture in my direction and lets out a boisterous laugh, no doubt mocking me. I clench my jaw.\\n\\nThat's when I notice [elephant_rival.GetTitledFirstNameNoTooltip] is standing #EMP right behind the elephant#!, and the beast is on the move. I manage to catch the attention of its mahout.\"\n136:  travel_events.2008.a:0 \"[ROOT.Char.Custom('RandomElephantName')], #EMP sit.#!\"\n137:  travel_events.2008.a_success_tt:0 \"Elephant Crush\"\n138:  travel_events.2008.a_crushed_tt:0 \"[elephant_rival.GetShortUIName] is crushed by the elephant\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\travel_events\\travel_events_filippa_l_english.yml",
+    "sha256": "6189c279be643b7e2c27b6d5ba10895091775a978f622ea4f489a349842e6e35",
+    "line": 410,
+    "context": "407: \n408: #Visit a ramparts/forest fort - Encounter a herbalist/physician\n409:  travel_events.2032.t:0 \"One Herb for You...\"\n410:  travel_events.2032.desc:0 \"The impressive defensive structure at the peak of [ROOT.Char.GetCurrentLocation.GetName] [ROOT.Char.GetCurrentLocation.GetTerrain.GetNameNoTooltip|l] is quite something. As I wander along the outer perimeter, I notice a peculiar person in the distance.\\n\\n[herbalist_character.GetSheHe|U] appears to be mumbling to [herbalist_character.GetHerselfHimself], all the while stopping to crouch and collect what appears to be herbs of various kinds. It's almost as if [herbalist_character.GetSheHe] is talking to... the #EMP herbs#!?\\n\\nI approach [herbalist_character.GetHerHim] carefully, and [herbalist_character.GetSheHe] looks up, various herbs displayed in [herbalist_character.GetHerHis] palm. I notice a spark of curiosity behind [herbalist_character.GetHerHis] eyes, proposing an unspoken question.\"\n411:  travel_events.2032.a: \"\"So what does this herb do?\"\"\n412:  travel_events.2032.a_poisonous.tt:1 \"You procure some poisonous herbs that you can apply to your next [GetScheme('murder').GetTypeName] [scheme|E]\"\n413:  travel_events.2032.a_poisonous.t:0 \"Herbs Procured\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\travel_events\\travel_events_l_english.yml",
+    "sha256": "8eb9022538fcd852ff3fff27c54f09cde6b21a6688e0f4620bb0e1597c508a19",
+    "line": 200,
+    "context": "197:  travel_events.4018.d:0 \"A good heretic burning is in order!\"\n198: \n199:  travel_events.4019.t:0 \"A Lowly Delicacy\"\n200:  travel_events.4019.desc:0 \"On our way through [ROOT.Char.GetCurrentLocation.GetName], we appear to have stumbled into a local food market! Everywhere, peasants and nobles of every culture and tongue clamor around exotic food stalls, the air thick with fragrances I never had imagined.\\n\\nMy nose is drawn to a lowly stall stacked with a dish I could only dream of. I am pulled out of my haze by the halting grasp of [pompous_courtier.GetName].\\n\\n\"Do not waste your palate on this slop, [ROOT.Char.Custom('FormOfAddressForLiege')]. [ROOT.Char.Custom('GetLocalStreetFoodPlural')|U] are for peasants, we have much finer foods at home.\"\"\n201:  travel_events.4019.a:0 \"I am the [ROOT.Char.GetTitleAsNameNoTooltip] and I want my [ROOT.Char.Custom('GetLocalStreetFood')]!\"\n202:  travel.good_food:0 \"The food was amazing\"\n203:  travel.bad_food:0 \"The food was disgusting\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\yearly_events\\yearly_events_sahara_l_english.yml",
+    "sha256": "d52c29f7bcca859933403f4f5806472cb7c933c0e99d5db997baf09a401bb1c8",
+    "line": 52,
+    "context": "49:  yearly_saharan.0031.a:0 \"How profitable! Send soldiers to join them!!\"\n50:  yearly_saharan.0031.a.tt_success:0 \"[raided_county.GetNameNoTierNoTooltip] is heavily pillaged for slaves\"\n51:  yearly_saharan.0031.a.tt_fail:0 \"[raided_character_marshal.GetTitledFirstNameNoTooltip] throws back the slavers\"\n52:  yearly_saharan.0031.b:0 \"Halt this barbarism!\"\n53:  yearly_saharan.0031.c:0 \"This really does not concern me.\"\n54:  yearly_saharan.0031.c.raided_hurt:0 \"[raided_county.GetNameNoTierNoTooltip] is pillaged\"\n55:  yearly_saharan.0031.c.raiders_hurt:0 \"Many [slave_raider_county.GetAdjectiveNoTooltip] raiders are hurt\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\schemes\\fabricate_hook\\fabricate_hook_outcome_events_l_english.yml",
+    "sha256": "b8131d2217717d220b55349a7f38791be266d08d8d47e54a7d86b2f9280ccf67",
+    "line": 19,
+    "context": "16:  fabricate_hook_outcome.1001.c:0 \"This has all been a big mistake.\"\n17: \n18:  fabricate_hook_outcome.1002.t:1 \"$fabricate_hook_header$ An Incriminating Missive\"\n19:  fabricate_hook_outcome.1002.desc:1 \"By halting a messenger from the court of [target.GetTitledFirstName], an opportunity has presented itself.\\n\\n\"\n20:  fabricate_hook_outcome.1002.desc.vassals:0 \"By copying the [target.GetTitleAsNamePossessive] seal, I can fabricate a letter threatening increased taxes and circulate it among [target.GetHerHis] vassals. Or at least threaten to...\"\n21:  fabricate_hook_outcome.1002.desc.no_vassals:0 \"By copying the [target.GetTitleAsNamePossessive] seal, I can fabricate a letter threatening increased taxes and circulate it among [target.GetHerHis] courtiers. Or at least threaten to...\"\n22:  fabricate_hook_outcome.1002.a:0 \"\"That #EMP is#! your signature, is it not?\"\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\event_localization\\lifestyle\\wanderer\\internal_affairs_l_english.yml",
+    "sha256": "9cb387fa7114dedf332ab95e9fd388ce9eafd1ad90fb612e2a7e3dbe506efb82",
+    "line": 46,
+    "context": "43: \n44:  internal_affairs.40.t: \"Loose Threads\"\n45:  internal_affairs.40.follower_intro: \"Acting as a messenger, [secret_giver.GetFirstName] conveys from news around the area, keeping me in the loop while I am otherwise occupied with other things. Though most of what [secret_giver.GetSheHe] mentions is nothing out of the ordinary, there is a note of concern in [secret_giver.GetHerHis] voice whenever [secret_haver.GetNamePossessive] name is mentioned.\\n\\nEventually, \"\n46:  internal_affairs.40.courtier_intro: \"While pacing throughout camp, an unfamiliar voice reaches my ears, conversing with one of my companions nearby. I halt and listen in. The exchange seems dull at first, but then [secret_haver.GetName] is suddenly mentioned.\\n\\n\"\n47:  internal_affairs.40.desc: \"[secret_giver.GetFirstName] delves into more sensitive topics involving [secret_haver.GetFirstNameNoTooltip], disclosing matters that could very well tarnish [secret_haver.GetHerHis] reputation...\"\n48:  internal_affairs.40.a: \"Perhaps you may prove of use to me, [secret_giver.GetFirstName].\"\n49:  internal_affairs.40.blackmail: \"I can definitely make this work in my favor.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\bp1\\dlc_bp1_filippa_yearly_events_l_english.yml",
+    "sha256": "3eca9a7dcc024cc42f4db9501b4847ff5b0225d221ef9ff4b2807d8c03469bdb",
+    "line": 140,
+    "context": "137:  bp1_yearly.2060.tt_failure:0 \"The tutoring is unsuccessful\"\n138:  #Childless older spouse ponders your relationship\n139:  bp1_yearly.2070.t:0 \"The Story So Far\"\n140:  bp1_yearly.2070.desc:0 \"I had noticed [bp1_yearly_2070_soulmate.GetFirstName] being distraught and distant as of late. On our traditional hike through the scenery bordering our home, I work up the courage to confront [bp1_yearly_2070_soulmate.GetHerHim].\\n\\n\"So you noticed, huh.\" [bp1_yearly_2070_soulmate.GetSheHe|U] walks slower, eventually coming to a halt, taking in the view. The sunlight sparkles on [bp1_yearly_2070_soulmate.GetHerHis] skin.\\n\\n\"I do love you. And I do love our life together.\" [bp1_yearly_2070_soulmate.GetHerHis|U] eyes grow misty. \"My one regret is that I was never able to afford you, or well, us, any child to leave after us for this world.\"\\n\\n[bp1_yearly_2070_soulmate.GetHerHis|U] words resonate in my eardrums. To carry that burden alone, my sweet, strong [bp1_yearly_2070_soulmate.GetFirstName]!\"\n141:  bp1_yearly.2070.a:0 \"Sweet [bp1_yearly_2070_soulmate.GetFirstNameNoTooltip] - I got to spend all of this time with #EMP you#!.\"\n142:  bp1_yearly.2070.a_tt:0 \"You embrace [bp1_yearly_2070_soulmate.GetFirstNameNoTooltip].\"\n143:  bp1_yearly.2070.b:0 \"It was simply not [ROOT.Char.GetFaith.HighGodNamePossessive] will.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\bp2\\dlc_bp2_eccentric_events_l_english.yml",
+    "sha256": "9c6ed6134e32d67d04ea5187139adbd54bbf6f82b34ef331759b1cc4eeea3acf",
+    "line": 9,
+    "context": "6:  child_personality.7300.c: \"A beast is a tool, nothing more.\"\n7:  child_personality.7301.t: \"$child_personality.7300.t$\"\n8:  child_personality.7301.desc: \"[child.GetFirstName] has been spending an unusual amount of time at the stables as late and has begun to neglect [child.GetHerHis] peers at court. The child seems fixated on one specific horse\"\n9:  child_personality.7301.eccentric.desc: \"and has even begun to claim that [child.GetSheHe] \"speaks horse\".\\n\\nThe child then proceeded to blow raspberries with [child.GetHerHis] lips and make whinnying noises, occasionally stopping to inform me what [child.GetSheHe] and the horse were talking about.\"\n10:  child_personality.7301.eccentric.obligatory_glitterhoof_reference: \"Apparently, this beast has ambitions of rising to the rank of [child.GetFaith.ReligiousHeadName].\"\n11:  child_personality.7301.eccentric.fallback: \"Apparently, this beast wishes to sit the council.\"\n12:  child_personality.7301.compassionate.desc: \"and claims that even beasts are deserving of care and dignity.\\n\\nThe horse is immaculately groomed to perfection, unlike [child.GetFirstNameNoTooltip] who has evidently been doing stablehand's work.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\bp2\\dlc_bp2_yearly_1_events_l_english.yml",
+    "sha256": "5a1c8ac0f6aff5dc2d6813f582af639daff3ba38228ebdb27af8bc440a9814d7",
+    "line": 58,
+    "context": "55:  bp2_yearly.1001.desc_inappetetic: \"At supper, my [ROOT.Char.Custom2('RelationToMeShort', SCOPE.sC('appropriate_child'))] [appropriate_child.GetFirstName] always seems impatient, gesturing at tray-bearing servants to leave her alone.\\n\\n Perhaps [appropriate_child.GetSheHe] is simply eager to leave for other activities? Or — if I'm not imagining things — are [appropriate_child.GetHerHis] cheeks getting a bit... pale and thin?\"\n56:  bp2_yearly.1001.desc_journaller: \"There has been an influx of hand-scribbled notes strewn about my [ROOT.Char.Custom('GetCourt')] recently. The source? My [ROOT.Char.Custom2('RelationToMeShort', SCOPE.sC('appropriate_child'))] [appropriate_child.GetFirstName], hunched over in an empty [ROOT.Char.Custom('GetChamber')], scribbling to [appropriate_child.GetHerHis] heart's content.\\n\\nI consider my own writing habit, my journal rich with my reflections. Perhaps I've shared a worthwhile practice.\"\n57:  bp2_yearly.1001.desc_confider: \"I have noticed a subtle change in my [ROOT.Char.Custom2('RelationToMeShort', SCOPE.sC('appropriate_child'))] [appropriate_child.GetFirstName] recently. [appropriate_child.GetSheHe|U] is spending more time with [appropriate_child.GetHerHis] close friends, whispering and laughing.\\n\\nI swear those [appropriate_child.Custom('GirlBoyPlural')] know more about [appropriate_child.GetHerHim] than I do, and their bond seems strong. Friends like these, trusted friends that can be spoken with plainly, are truly a gift.\"\n58:  bp2_yearly.1001.desc_athletic: \"Stepping outside, children swoosh by: one is clearly faster and more agile than [appropriate_child.GetHerHis] peers.\\n\\n'Tis my very own [ROOT.Char.Custom2('RelationToMeShort', SCOPE.sC('appropriate_child'))] [appropriate_child.GetFirstName] outpacing the rest!\\n\\nI grin encouragingly, impressed by [appropriate_child.GetHerHis] unexpected show of will and perseverance. Soon, the other runners stumble to an early halt. Pride for [appropriate_child.GetFirstNameNoTooltip] burns in my heart!\"\n59:  bp2_yearly.1001.outro_bad: \"\\n\\nI stagger away from the sight. Is this how #EMP I#! act?\"\n60:  bp2_yearly.1001.outro: \"\\n\\nMaybe not such a terrible habit after all?\"\n61:  bp2_yearly.1001.a: \"[appropriate_child.GetFirstNameNoTooltip], come here.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\ce1\\ce1_epidemic_events_l_english.yml",
+    "sha256": "f995f218d64796c1b9cbdec7e3dadc2be44a81266f29f13fbbbd94eb4974b1da",
+    "line": 465,
+    "context": "462: \n463:  epidemic_events.5900.t: \"The Black Death\"\n464:  epidemic_events.5900.desc: \"Pestilence stalks the land.\\n\\nGrisly, bubbling buboes grow upon the victims, whose pitiful calls for help are slowly stifled as they gutter and drown in their own pus-filled throats.\\n\\nFrom the lowliest urchin to the most fêted emperor, all dread the indiscriminate scythe of the merciless plague. Those that survive must watch helplessly as all around them perish.\\n\\nThe devoted look to the divine for a savior, and the powerful their riches, but none can truly be safe. Dreadful tendrils spread across the land, constricting it until it no longer breathes.\\n\\nThe Black Death is upon us. [ROOT.Char.GetFaith.HighGodName] save us all.\"\n465:  epidemic_events.5900.desc_asia: \"Pestilence walks among us.\\n\\nThe afflicted bloat with sores, their cries fading to gurgles as breath fails. In death, even the loudest are made quiet.\\n\\nNo one is spared. From the barefoot laborer to the cloistered prince, the wheel of suffering turns for all. The living are left to sweep ash from thresholds and count the empty mats.\\n\\nSome chant sutras, others cling to ritual and rank — but no decree halts decay, no merit offsets the toll. Like mist in a valley, the plague spreads unseen, yet felt in every still morning.\\n\\nThe Black Death is here. Heaven avert its gaze.\"\n466:  epidemic_events.5900.christian: \"\"Our Father, who art in heaven, hallowed be thy name...\"\"\n467:  epidemic_events.5900.fallback: \"May we persevere in these grim times.\"\n468: "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\ce1\\ce1_legend_spread_events_l_english.yml",
+    "sha256": "eddb40de8a71da1a5c4d52f8109255707d57262c6273455040c2e6ff78c8cd28",
+    "line": 802,
+    "context": "799:  legend_spread_events.5410.a.success: \"News of your discovery spreads like wildfire\"\n800:  legend_spread_events.5410.a.failure: \"[chronicler.GetFirstNameNoTooltip] looks uncertain at the revelation\"\n801:  legend_spread_events.5410.b: \"Ferocious monsters make their abode in those capricious depths!\"\n802:  legend_spread_events.5410.c: \"Our exploration was halted by battles with fierce pirates.\"\n803:  legend_spread_events.5410.d: \"\"Out there? Naught but more ocean and death.\"\"\n804: \n805:  sea_monsters_modifier: \"Sea Monsters\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\ep1\\dlc_ep1_fund_inspiration_events_l_english.yml",
+    "sha256": "2bcd178f48a3fd017d4eecaa685facb4646e966ae0f844092508e761c249d82e",
+    "line": 532,
+    "context": "529:  fund_inspiration.2120.desc.them_into:1 \"In [inspiration_owner.GetHerHim], I find the same desperate passion: [inspiration_owner.GetSheHe] falls into my warm embrace...\"\n530:  fund_inspiration.2120.desc.me_zealous_homosexuality:0 \"This is wrong, by [ROOT.Char.GetFaith.HighGodName], I cannot give in to these sinful temptations...\"\n531:  fund_inspiration.2120.desc.me_zealous_adultery:0 \"No, the [ROOT.Char.GetFaith.ReligiousText] is clear! Adultery is a sin! This is the temptation of [ROOT.Char.GetFaith.DevilName]!\"\n532:  fund_inspiration.2120.desc.me_unattracted:0 \"Suddenly, [inspiration_owner.GetFirstNameNoTooltip] steps forward, embracing me! My arms quickly halt [inspiration_owner.GetHerHim], perhaps too forcefully... [inspiration_owner.GetHerHis|U] warmth instantly chills, hardening to confusion and fear.\"\n533:  fund_inspiration.2120.desc.me_chaste:0 \"[inspiration_owner.GetSheHe|U] steps forward, drawing me into [inspiration_owner.GetHerHis] warm embrace. My body says yes, but my heart screams no...\"\n534:  fund_inspiration.2120.desc.me_into:0 \"I can't deny something stirs in me, my heart quickens and I find myself holding [inspiration_owner.GetHerHim] in my arms as [inspiration_owner.GetSheHe] embraces me in return... what is #EMP happening#!?\"\n535:  fund_inspiration.2120.desc.me_into_alot:0 \"There can be no doubt of [inspiration_owner.GetHerHis] intentions! I can barely contain myself as I sweep [inspiration_owner.GetHerHis] [inspiration_owner.Custom('GetInspirationTypeStation')] aside.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\ep1\\dlc_ep1_fund_inspiration_events_l_english.yml",
+    "sha256": "2bcd178f48a3fd017d4eecaa685facb4646e966ae0f844092508e761c249d82e",
+    "line": 578,
+    "context": "575:  fund_inspiration.2131.desc_antiquarian:0 \"[second.GetTitledFirstName] insisted on coming and watches from afar, wincing each time an object is improperly handled or misidentified.\\n\\n\"\n576:  fund_inspiration.2131.artificer:0 \"[second.GetTitledFirstName] tags along happily, always interested in the creative processes of [second.GetHerHis] peers.\\n\\n\"\n577:  fund_inspiration.2131.desc_equipped:0 \"The [inspiration_owner.Custom('GetInspirationOwnerType')] pauses, as though awestruck, examining my [artifact_1.GetName]. \"Ah, very fine my liege... Could... Could I use its [inspiration_owner.Custom('GetInspirationMaterialType')]?\"\"\n578:  fund_inspiration.2131.desc_unequipped:0 \"It is in the store that [inspiration_owner.Custom('GetInspirationOwnerType')] suddenly halts, closely examining my [artifact_1.GetName]. \"Yes... [inspiration_owner.Custom('GetInspirationMaterialType')] should do the trick... Do you... still want this? My liege?\"\"\n579:  fund_inspiration.2131.desc_fallback:1 \"[inspiration_owner.GetSheHe|U] does a few rounds of the room before returning to me, crestfallen. \"My liege, there is nothing here that stands out to me... is there anything else?\"\"\n580:  fund_inspiration.2131.a:0 \"\"The [artifact_1.GetNameNoTooltip]? Very well...\"\"\n581:  fund_inspiration.2131.b:0 \"\"What about my [artifact_2.GetNameNoTooltip]?\"\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\ep2\\dlc_ep2_tournament_events_l_english.yml",
+    "sha256": "5301966def9604a77ed4bc3ee3d2b8fd0a4d5e6c0a26dd92c6f652a176379806",
+    "line": 557,
+    "context": "554:  ep2_tournament_events.5502.start:0 \"It only takes a line of verse before the murmurs start. [contestant.GetFirstName] is up on the stage quite #EMP brazenly#! reciting lines from a popular local ditty! Discontented grumbles amongst the crowd begin as [contestant.GetSheHe] continues.\\n\\n\"\n555:  ep2_tournament_events.5502.culture:0 \"Something doesn't quite add up, I muse. Surely [contestant.GetFirstNameNoTooltip] wouldn't be familiar with that song, being as [contestant.GetSheHe] is of [contestant.GetCulture.GetName] stock. A small memory jumps to forefront of my mind, unbidden: the laborer who had constructed the dais had been whistling that very tune earlier!\"\n556:  ep2_tournament_events.5502.friend:0 \"I realize instantly what has occurred, even as the crowd's haranguing of my friend [contestant.GetFirstNameNoTooltip] continues. [contestant.GetSheHe|U] is of [contestant.GetCulture.GetName] stock, and would surely have just overheard this tune without realizing how widespread it is!\"\n557:  ep2_tournament_events.5502.end:0 \"\\n\\nBack on stage, [contestant.GetFirstNameNoTooltip] meanders to a verbal halt as the crowd explodes with jeers, a few choice vegetables raining down on [contestant.GetHerHim] as [contestant.GetSheHe] shields [contestant.GetHerHim]self from the projectiles.\"\n558:  ep2_tournament_events.5502.a:0 \"Enough! This is not [contestant.GetHerHis] fault!\"\n559:  ep2_tournament_events.5502.c.success:0 \"You successfully persuade the crowd\"\n560:  ep2_tournament_events.5502.c.failure:0 \"The crowd ignore your pleas\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\ep2\\dlc_ep2_tournament_events_l_english.yml",
+    "sha256": "5301966def9604a77ed4bc3ee3d2b8fd0a4d5e6c0a26dd92c6f652a176379806",
+    "line": 598,
+    "context": "595:  ep2_tournament_events.5505.start.fallback:0 \"[enemy.Custom2('InsultAdjective', ROOT.Char)] [enemy.Custom2('InsultNoun', ROOT.Char)]\"\n596:  ep2_tournament_events.5505.end:0 \"needs a line prepared #EMP especially#! for [enemy.GetHerHim]!\\n\\n\"If [ROOT.Char.GetFaith.HighGodName] [ROOT.Char.GetFaith.HighGodHerselfHimself|U] were here, surely [ROOT.Char.GetFaith.HighGodNameSheHe|U] would say...\"\"\n597:  ep2_tournament_events.5505.maidenless:0 \"...[enemy.GetFirstNameNoTooltip] is a truly #EMP tragic#! lay!\"\n598:  ep2_tournament_events.5505.old:0 \"...even [ROOT.Char.GetFaith.HighGodNameSheHe] couldn't halt [enemy.GetFirstNamePossessiveNoTooltip] decay!\"\n599:  ep2_tournament_events.5505.torturer:0 \"...[enemy.GetFirstNamePossessive] flesh is ripe to flay!\"\n600:  ep2_tournament_events.5505.fat:0 \"...even [ROOT.Char.GetFaith.HighGodNameSheHe] couldn't haul [enemy.GetFirstNamePossessiveNoTooltip] away!\"\n601:  ep2_tournament_events.5505.idiot:0 \"...[enemy.GetFirstNameNoTooltip] smells!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\ep3\\dlc_ep3_decisions_l_english.yml",
+    "sha256": "4ca73145fcc9290087a94039527ec68ed8dd3c6ea2a74aa479e74d8e2bcef83f",
+    "line": 522,
+    "context": "519:  consolidate_rule_decision_confirm: \"Gather the people!\"\n520:  ep3_decisions_event.4050.t: \"Rule: Consolidated\"\n521:  ep3_decisions_event.4050.desc.intro: \"The calmness of the [ROOT.Char.GetFaith.HouseOfWorship] has been disturbed by a horde of courtiers, governors and peasants, all gathered here to celebrate... #EMP me!#!\\n\\n\"\n522:  ep3_decisions_event.4050.desc.hate: \"[head_of_faith.GetTitledFirstName] looks at me with great displeasure — the only thing stopping the roaring insults from leaving [head_of_faith.GetHerHis] mouth is the most basic decorum.\"\n523:  ep3_decisions_event.4050.desc.other: \"The [head_of_faith.GetTitledFirstName] gestures towards me, a welcoming smile on [head_of_faith.GetHerHis] face, and I approach [head_of_faith.GetHerHim]. \"My most dear [ROOT.Char.GetTitleAsNameNoTooltip],\" [head_of_faith.GetSheHe] greets me.\"\n524:  ep3_decisions_event.4050.desc.outro: \"\\n\\n\"Today we thank [ROOT.Char.GetFaith.HighGodName] for having such a kind protector watching over us,\" [head_of_faith.GetSheHe] continues, addressing the crowd, \"may [ROOT.Char.GetHerHis] reign be long and prosperous!\"\"\n525:  ep3_decisions_event.4050.a: \"I'd like it to be #EMP long#!.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\ep3\\ep3_emperor_yearly_2_l_english.yml",
+    "sha256": "39b550fc26c175cd814398d2b46795d5a9f2db66f4c4b1f5e31ec78dc8e683d3",
+    "line": 92,
+    "context": "89:  constantinople_birthday_flag_tt: \"Hosting a [GetActivityType('activity_chariot_race').GetName] Activity in the next 5 years is 50% cheaper\"\n90:  # Exotic Gifts\n91:  ep3_emperor_yearly.2070.t: \"Exotic Gifts\"\n92:  ep3_emperor_yearly.2070.desc: \"The [ambassador.GetWomanMan] in front of me seems to come from very far away, judging from the exotic attire and the nature of the gifts [ambassador.GetSheHe] brings: gold, ivory, salt...\\n\\nAs the last offering walks through the door, however, all my rational thoughts grind to a halt — #EMP what in the name of [ROOT.Char.GetFaith.HealthGodName] is that animal?!#! I can only describe it as a giant spotted #EMP horse#! with a long neck...\\n\\n\"Great [ROOT.Char.GetTitleAsNameNoTooltip], I bring gifts from the land of [ambassador_liege.GetPrimaryTitle.GetBaseNameNoTier], including this majestic animal we call a #EMP giraffe#!. Please accept the humble homages of my [ambassador_liege.GetLadyLord].\"\"\n93:  ep3_emperor_yearly.2070.a: \"All gifts are welcome.\"\n94:  ep3_emperor_yearly.2070.b: \"Why don't #EMP you#! stay instead?\"\n95:  ep3_emperor_yearly.2070.b.tt: \"[ambassador.GetFirstNameNoTooltip|U] is an excellent diplomat who could serve me well!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\ep3\\ep3_landless_admin_l_english.yml",
+    "sha256": "caa9925eb0f39a8697c64ac684a3c0645561e3462f2df2da5b24450d8fe8e93c",
+    "line": 45,
+    "context": "42:  ep3_landless_admin.1020.j: \"\"Good tea is the true sign of refinement.\"\" # Brit maxxing 101\n43:  ep3_landless_admin.1030.t: \"A Secret for a Secret\"\n44:  ep3_landless_admin.1030.desc: \"A guest arrived directly from [liege.GetTitledFirstNamePossessive] court, no less! A [courtier.GetWomanMan] stands in front of me, [courtier.Custom('quirk_pos_pp')].\\n\\n\"A word, [ROOT.Char.Custom('FormOfAddressForLiege')]. It has been said that you hold an interest in our common liege... I know [liege.GetHerHim]. Everyone at court knows [liege.GetHerHim]. A secret is only as strong as its weakest link,\" [courtier.GetSheHe] smirks.\\n\\n\"A secret for a secret, I propose.\"\" \n45:  ep3_landless_admin.1030.a: \"\"What's stopping you from divulging #EMP my#! secrets!?\"\" \n46:  ep3_landless_admin.1030.b: \"\"A [courtier.GetWomanMan] of no honor deserves no reward.\"\" \n47:  ep3_landless_admin.1030.c: \"\"What an interesting offer...\"\" \n48:  ep3_landless_admin.1030.d: \"\"My gratitude should be pay enough.\"\" "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\fp1\\dlc_fp1_trial_by_combat_events_l_english.yml",
+    "sha256": "0bae5e6fa9f96e9d73e0daceec8a1aa3ae97bc364211044a779b14da4975107b",
+    "line": 79,
+    "context": "76:  fp1_tbc.0121.desc.intro:0 \"[recipient.GetFaith.PantheonTerm|U] did not smile on me yesterday.\"\n77:  fp1_tbc.0121.desc.champion_lives.recipient_fighting:0 \"The aches and cuts riddling my body stand testament to that, each one a gift from [actor.GetFirstNamePossessive] [actor.Custom('signature_weapon')]. I'm lucky to be alive.\"\n78:  fp1_tbc.0121.desc.champion_lives.recipient_has_champion:0 \"When I chose [champion.GetTitledFirstName], I felt so sure that [champion.GetSheHe]'d trounce [actor.GetTitledFirstName], but [champion.GetSheHe]'s just lucky to be alive.\"\n79:  fp1_tbc.0121.desc.reward.gold:0 \"\\n\\nWhen [actor.GetFirstNameNoTooltip] took [actor.GetHerHis] silver, [actor.GetSheHe] insisted on stopping to count it, coin by coin, forcing us to watch while luxuriating in the chagrin of my retinue.\"\n80:  fp1_tbc.0121.desc.reward.weak_hook:0 \"\\n\\nIt felt like an hour before the last of the oaths of debt were sworn and sealed in front of our assembled witnesses. Some day, [actor.GetFirstNameNoTooltip] will be back to call in the debt.\"\n81:  fp1_tbc.0121.desc.reward.humiliation:0 \"\\n\\nReading through [actor.GetFirstNamePossessiveNoTooltip] rambling \"apology\" took an age, my teeth grinding the whole time as I choked out the words. [actor.GetHerHis|U] hired poets simply giggled in the background, committing my every expression to memory.\"\n82:  fp1_tbc.0121.desc.outro:0 \"\\n\\nVictory has gone to a fool and a beggar.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\fp2\\dlc_fp2_events_amalgamated_l_english.yml",
+    "sha256": "1f7a32ccbee1f033e165fc06416fab321c9697f5007fcbdc91ce582a95664451",
+    "line": 101,
+    "context": "98:  fp2_struggle.0501.t:1 \"The $iberian_struggle$\"\n99:  fp2_struggle.0501.desc:1 \"The Iberian peninsula is in turmoil, a conflict born of its storied past. Outsiders covet the land and the great Muslim and Christian powers seek to sway its people. But those who live and die on its soil will ultimately determine its fate.\\n\\n\"\n100:  fp2_struggle.0501.desc.involved:0 \"I will not let slip my vision for my homeland. By [ROOT.Char.GetFaith.HighGodName], House [ROOT.Char.GetHouse.GetNameNoTooltip] will weather the storm and see my will fulfilled.\\n\\n\"\n101:  fp2_struggle.0501.desc.interloper:0 \"The time has come for me to take hold of the situation and my destiny. I see all the pieces laid out on the board. I know the way forward, and there will be no stopping House [ROOT.Char.GetHouse.GetNameNoTooltip].\\n\\n\"\n102:  fp2_struggle.0501.desc.mottocall:0 \"[ROOT.Char.GetHouse.GetMotto]!\"\n103:  fp2_struggle.0501.a:0 \"Take hold of fate!\"\n104: "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\mpo\\mpo_decisions_l_english.yml",
+    "sha256": "00e5f6da9c9e9b0107f61110c41df2c3805233d6073081b964dd2189d686fe6c",
+    "line": 296,
+    "context": "293:  mpo_decisions_events.0202.none_situation_2: \"Evacuate the civilians, and let the walls fall.\"\n294:  mpo_decisions_events.0202.none_situation_2_flavor: \"You explain to [situation_alerter.GetFirstNameNoTooltip] that you would have saved the people, and let the enemy have the fortress\"\n295:  mpo_decisions_events.0202.martial_situation_3: \"Gather the loyal, and bring the fight to them!\"\n296:  mpo_decisions_events.0202.martial_situation_3_flavor: \"You explain to [situation_alerter.GetFirstNameNoTooltip] that you would have wasted no time in stopping the traitors\"\n297:  mpo_decisions_events.0202.learning_situation_3: \"Learn their plan, and make sure it fails.\"\n298:  mpo_decisions_events.0202.learning_situation_3_flavor: \"You suggest to [situation_alerter.GetFirstNameNoTooltip] that you would have dissected the enemy's plan, and found a way to stop it from afar\"\n299:  mpo_decisions_events.0202.intrigue_situation_3: \"Feign alliance with the traitors, and break them from within.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\mpo\\mpo_nomad_events_l_english.yml",
+    "sha256": "1fdecfd3df2324b47587793c10fd8c95efa39c43b55e6fde1392e86b23b83689",
+    "line": 106,
+    "context": "103:  nomad_events.0009.b: \"To the dust with you! And give me that.\"\n104:  nomad_events.0009.c: \"This is the #EMP last#! time they catch me off guard.\"\n105:  mpo_eyes_everywhere_modifier: \"Eyes Everywhere\"\n106:  mpo_eyes_everywhere_modifier_desc: \"This character has decided to put all their efforts into stopping schemes targetting them.\"\n107:  \n108:  nomad_events.0010.t: \"$nomad_events.ill_advised.header$: A Knife in the Dark\"\n109:  nomad_events.0010.desc.intro: \"I dream of the endless sky, clouds swirling, disappearing, rain, and endless thunder. I feel a drop of water down my chest and the cold wakes me up.\\n\\n\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\pam\\pam_character_interactions_l_english.yml",
+    "sha256": "98fb985488e4a1d6e1c89ce5d494c2924005b5e94b7e8124b079f7eb4b58c25e",
+    "line": 433,
+    "context": "430: \n431: request_white_peace_interaction: \"Request White Peace\"\n432: request_white_peace_interaction_desc: \"Ask [recipient.GetShortUINameNoTooltip] to mediate a [white_peace|E] with another [christian|E] [ruler|E]\"\n433: request_white_peace_interaction_notification: \"I beg you, as shepherd of [recipient.GetPrimaryTitle.GetDefinitiveName], to call a halt to my war with [secondary_recipient.GetShortUIName]. Let [secondary_recipient.GetFaith.HighGodName] witness a peace that honors the Church.\"\n434: request_white_peace_interaction_toast_title: \"White Peace Enforced\"\n435: request_white_peace_interaction_toast: \"[recipient.GetShortUIName|U] [CharHaveHas(recipient)] mediated a [white_peace|E] with [secondary_recipient.GetShortUIName]\"\n436: request_white_peace_interaction_toast_puppeteer: \"[recipient.GetShortUINameNoTooltip|U] mediated a [white_peace|E] with [secondary_recipient.GetShortUIName] at [puppet_or_actor.GetShortUINamePossessive] behest\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\pam\\pam_christian_situation_events_l_english.yml",
+    "sha256": "0f5372a40931e94e6c0dc76d6ac722c7df36e0c53b9238201fb6d7322fb6f4a1",
+    "line": 91,
+    "context": "88:  pam_the_christian_church.0057.t: \"$situation_the_christian_church$ — [GetSituation('the_christian_church').GetTopCurrentPhase.GetType.GetNameNoTooltip]\"\n89:  pam_the_christian_church.0057.desc.intro.head: \"$pam_the_christian_church.0057.desc.intro.common$ under [christianity.GetReligiousHeadTitle.GetNamePossessive|U] attentive watch.\\n\\n\"\n90:  pam_the_christian_church.0057.desc.intro.no_head: \"$pam_the_christian_church.0057.desc.intro.common$.\\n\\nEven without one undisputed shepherd, faith is bound to reason anew.\\n\\n\"\n91:  pam_the_christian_church.0057.desc.intro.common: \"The Church's quarrels are put to a halt. [GetSituation('the_christian_church').GetTopSubRegion.GetName] welcomes an age of peace and communion\"\n92: \n93:  pam_the_christian_church.0057.desc.unreformed_pagan: \"$pam_the_christian_church.0054.desc.unreformed_pagan$\"\n94:  pam_the_christian_church.0057.desc.heathen_rulers: \"$pam_the_christian_church.0054.desc.heathen_rulers$\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\pam\\pam_effects_l_english.yml",
+    "sha256": "059825e8ed184d2893baef89dafcf32c3f074cba0436bbdf51d808853a89cc6f",
+    "line": 248,
+    "context": "245:  pam_tenet_events.0005.b.tt: \"Your coffers stay as they are, and your [counties|E] receive nothing\"\n246:  pam_tenet_events.0006.t: \"The Hidden Teachings\"\n247:  pam_tenet_events.0006.desc_intro: \"The unmarked books are spread on my table, their diagrams laid bare, their names unfit for any mouth to shape. This is the learning the plainly devout are warned against, and I have bought myself a night with it.\"\n248:  pam_tenet_events.0006.desc_witness: \"\\n\\n[mystic_witness.GetTitledFirstName] halts on the threshold and will not cross. \"These things are locked away and prayed over for a reason,\" [mystic_witness.GetSheHe] murmurs. \"Once you have looked, you cannot unknow what is there.\"\"\n249:  pam_tenet_events.0006.desc_alone: \"\\n\\nNot a soul among my courtiers will sit with me over these pages. Their contents I face alone, and uncounseled.\"\n250:  pam_tenet_events.0006.a: \"Nothing in these pages is above me. Read on.\"\n251:  pam_tenet_events.0006.b: \"Go as far as the lamp burns, and no further.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\tgp\\dlc_tgp_natural_disasters_l_english.yml",
+    "sha256": "db772e19e103134ac8ab906efd3412ee572d5b4916181197201e0c394c1b87c3",
+    "line": 12,
+    "context": "9:  warning: \"Warning\"\n10:  warning_desc: \"Before many [natural_disasters|E], signs often precede the event. Whether obvious or subtle, these changes in the environment can offer warning. A vigilant ruler who pays attention may be able to act in time to minimize losses.\"\n11:  impact: \"Impact\"\n12:  impact_desc: \"As disaster strikes, the ruler's preparations will be put to the test. Regardless of efforts, fatalities are likely, halting progress in the area. The region will enter a period of instability due to the loss of [development|E] and damage to existing infrastructure.\"\n13:  recovery: \"Recovery\"\n14:  recovery_desc: \"After the impact, rebuilding the region, sometimes through a [great_project|E] is imperative. A perceptive overlord will also take measures to aid in prevention, lest another [natural_disaster|E] strike again.\"\n15: "
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\tgp\\tgp_china_career_events_l_english.yml",
+    "sha256": "2f880f31ca6572afb25ad8564a65694b37cc003dde001bd16d6b01c0423c5163",
+    "line": 48,
+    "context": "45:  merit_rank_1_gloss: \"[Glossary('upper-upper','MERIT_UPPER_UPPER_GLOSS')]\"\n46: \n47:  tgp_china_career.0030.t: \"The Passing of a Sage\"\n48:  tgp_china_career.0030.desc: \"My elder, [deceased_elder.GetFirstName], has passed from this world: I am told [deceased_elder.GetSheHe] [deceased_elder.GetDeathReason]. Already I begin to feel [deceased_elder.GetHerHis] absence; the reflexive rise of a question halted a half-breath from my tongue when I realize there is no one left to answer it.\\n\\nYet such fleeting sentiments must inevitably give way to the worldly weight of more practical concerns; the burial and mourning rites, as well as the question of who shall assume my [deceased_elder.Custom('MistressMasterPossessive')|U] mantle and carry on in [deceased_elder.GetHerHis] stead.\"\n49:  tgp_china_career.0030.a: \"[deceased_elder.GetFirstNamePossessiveNoTooltip] journey has ended, but mine must continue.\"\n50:  tgp_china_career.0030.a.tt: \"You will seek a new [elder|U] among the great and influential\"\n51:  tgp_china_career.0030.b: \"Send [deceased_elder.GetHerHis] kin my condolences, and a token of my respect.\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\tgp\\tgp_japan_yearly_events_l_english.yml",
+    "sha256": "41494605d2a32e3afe78d81af09cecd28f93edb4a1aeb6a98f817d0448916ba0",
+    "line": 331,
+    "context": "328:  tgp_japan_yearly_events.1160.d: \"[new_concubine.GetSheHe|U] will make fine meal.\"\n329: \n330:  tgp_japan_yearly_events.1200.t: \"Congestion in the Capital\"\n331:  tgp_japan_yearly_events.1200.desc: \"It's been a long morning of meetings in [kampaku.GetCurrentLocation.GetBaronyNameExplicitly], the work of a [kampaku.GetTitleAsName] is never done! My party sets off for the [GetBuilding('heian_palace_01').GetName] to attend a ceremony in which the [emperor.GetTitleAsName] will be present.\\n\\nFor many, the hustle and bustle of the capital is a challenge to navigate, but as the [kampaku.GetTitleAsNameNoTooltip] the people part like sardines in the presence of a shark.\\n\\nSuddenly my party's progress is brought to a halt. My attendants alert me that the upstart [upstart.GetName] has cut ahead of us on the road and will not move [upstart.GetHerHis] horse aside to let us pass. The obstinate swine!\"\n332:  tgp_japan_yearly_events.1200.a: \"Drag him from his horse!\"\n333:  tgp_japan_yearly_events.1200.b: \"Let him think he can get away with this.\"\n334:  tgp_japan_yearly_events.1200.b.tt: \"Your [GetScheme('slander').GetTypeName] [scheme|E] gains the [GetModifier('bided_my_time').GetNameWithTooltip] modifier\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\tgp\\tgp_natural_disaster_events_l_english.yml",
+    "sha256": "62a321b97bf84e75d0143993ac5dae0d47596fb04d30b77276f609e1978b6cf6",
+    "line": 122,
+    "context": "119:  natural_disaster.7021.desc: \"Wind pushes foreign waters into the nearby [river_region.GetNameNoTooltip], pushing the bank far beyond its limits. Some collect the excess water for their own needs, but the water continues to overflow.\\n\\nThe surrounding countryside becomes a marsh, and mud collects on the buildings around town.\"\n120:  natural_disaster.7021.a: \"These waters are unbound.\"\n121:  natural_disaster.7031.t: \"[river_region.GetNameNoTooltip]: Torrential Downpours\"\n122:  natural_disaster.7031.desc: \"A much needed precipitation falls upon the lands nearing the [river_region.GetNameNoTooltip], ensuring the harvest will continue as cultivated.\\n\\nThough the earth is more than sated, the rain grows in intensity and shows no sign of stopping. The sun is nowhere to be seen, and the river begins to overflow inland.\"\n123:  natural_disaster.7031.a: \"May the skies show mercy.\"\n124: \n125:  # JOIN"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\tgp\\tgp_natural_disaster_events_l_english.yml",
+    "sha256": "62a321b97bf84e75d0143993ac5dae0d47596fb04d30b77276f609e1978b6cf6",
+    "line": 129,
+    "context": "126:  natural_disaster.8001.t.earthquake: \"[epicenter_county.GetNameNoTierNoTooltip]: Rumblings in the Deep\"\n127:  natural_disaster.8001.t.flood: \"[river_region.GetNameNoTooltip]: High Water Mark\"\n128:  natural_disaster.8001.desc.earthquake: \"Word reaches me of a great disturbance in the [epicenter_county.GetName]. The earth beneath the region shakes and trembles, with cracks forming in the surface. Small structures have begun to topple over.\\n\\nDenizens of the [epicenter_county.GetTierAsNameNoTooltip] grow restless, harming organizational efforts. In spite of their panic, I must endeavor to minimize the damage done, and prepare for the oncoming destruction.\"\n129:  natural_disaster.8001.desc.flood: \"The waters of the [river_region.GetName] have risen above normal levels, wetting the soil in the surrounding areas. While it could help to bolster the harvest, the water continues to rise without rest.\\n\\nIt would be wise to halt all construction in the region until the floodwaters have settled, and to ensure as many people as possible can reach safety.\"\n130:  natural_disaster.8001.a: \"This can only mean one thing...\"\n131:  natural_disaster.8001.a.tt.earthquake: \"An [earthquake|E] will soon strike [epicenter_county.GetNameNoTier]\"\n132:  natural_disaster.8001.a.tt.flood: \"The [river_region.GetName] will soon [flood|E]\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\ep2\\tournament\\dlc_ep2_contest_events_l_english.yml",
+    "sha256": "7a89fb84c2805632e871f6ac42f221770391b2d47e54249d03c0a094c0a1376b",
+    "line": 777,
+    "context": "774:  contest_events.0910.b:0 \"Get up, you runt!\"\n775:  contest_events.0911.t:0 \"$contest_events.0910.t$\"\n776:  contest_events.0911.wrathful:0 \"I give in my to rage, relentlessly pummeling [wrathful_victim.GetFirstName] as [wrathful_victim.GetSheHe] tries to weather my blows.\\n\\n\"\n777:  contest_events.0911.melee:0 \"The [activity.GetCurrentPhase.GetPhase.GetName|l] halts suddenly, as all involved stop to gape as [wrathful_contestant.GetFirstName] knocks [wrathful_victim.GetFirstName] to the floor with a roar, pummeling [wrathful_victim.GetHerHim] furiously.\\n\\n\"\n778:  contest_events.0911.wrestling:0 \"Not long into their [activity.GetCurrentPhase.GetPhase.GetName|l] bout, [wrathful_contestant.GetTitledFirstName] becomes exasperated with [wrathful_victim.GetTitledFirstName], losing all self-control and tackling [wrathful_victim.GetHerHim] to the ground.\\n\\n\"\n779:  contest_events.0911.duel:0 \"$contest_events.0911.melee$\"\n780:  contest_events.0911.dead:0 \"It's not until I am pulled away and the red mist has faded, that I see I have gone too far...\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\english\\dlc\\ep2\\tournament\\dlc_ep2_tournament_events_l_english.yml",
+    "sha256": "ecce468d9ec09f11ea7c3a40765bc06bd2f5d8fa575fdca7a572cbd954e401b3",
+    "line": 342,
+    "context": "339:  tournament_events.1322.a:0 \"I'm... I'm sure it will be fine.\"\n340: \n341:  tournament_events.1330.t:0 \"The Next Generation\"\n342:  tournament_events.1330.desc:0 \"\"Good luck, [ROOT.Char.Custom('FormOfAddressForLiege')]!\" I acknowledge the shout from a member of the gathering crowd with a grateful wave. \"And good luck to you too, [heir.GetFirstName]!\"\\n\\n\"What did they mean by that?\" I ask [heir.GetFirstNameNoTooltip], striding along beside me. \"Why would they need to wish you luck?\" [heir.GetHerHis|U] nervous look quickly gave the answer to that question.\\n\\n\"I... I want to compete!\" [heir.GetSheHe|U] insists. \"You're participating, why can't I?\" I stop dead, [heir.GetFirstNameNoTooltip] stumbling to halt alongside me uncertainly, [heir.GetHerHis] bravado crumbling somewhat in the face of my reaction.\"\n343:  tournament_events.1330.a:0 \"You need to understand. You are far too precious to risk.\"\n344:  tournament_events.1330.b:0 \"What a privilege it is to have such a [heir.Custom('GetDaughterSon')]!\"\n345:  tournament_events.1330.c:0 \"I forbid this! Go and resign right now!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\game_concepts_l_simp_chinese.yml",
+    "sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+    "line": 1823,
+    "context": "1820:  game_concept_execute_reason: \"处决理由\"\n1821:  game_concept_execute_reasons: \"处决理由\"\n1822:  game_concept_execute_reason_desc: \"$game_concept_execute_reason$让[liege|E]可以无所顾忌地[execute|E]关在其[dungeon|E]中的臣民。通常来说，领主获得处决理由是因为这个臣民犯下了[criminal|E]。\"\n1823:  game_concept_movement_lock: \"移动锁定\"\n1824:  game_concept_movement_locked: \"移动锁定\"\n1825:  game_concept_movement_locked_desc: \"如果一支[army|E]已经完成了移动指令的一半进度，那么指令在其到达目的地之前无法变更。\"\n1826:  game_concept_extramarital_sex: \"婚外性行为\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\game_concepts_l_simp_chinese.yml",
+    "sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+    "line": 1824,
+    "context": "1821:  game_concept_execute_reasons: \"处决理由\"\n1822:  game_concept_execute_reason_desc: \"$game_concept_execute_reason$让[liege|E]可以无所顾忌地[execute|E]关在其[dungeon|E]中的臣民。通常来说，领主获得处决理由是因为这个臣民犯下了[criminal|E]。\"\n1823:  game_concept_movement_lock: \"移动锁定\"\n1824:  game_concept_movement_locked: \"移动锁定\"\n1825:  game_concept_movement_locked_desc: \"如果一支[army|E]已经完成了移动指令的一半进度，那么指令在其到达目的地之前无法变更。\"\n1826:  game_concept_extramarital_sex: \"婚外性行为\"\n1827:  game_concept_extramarital_sex_sleeping_with: \"私通\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\game_concepts_l_simp_chinese.yml",
+    "sha256": "66f9adef09db299f100c3b28ffbcd37d675c746c4ff1aa05927af8d66ac8de86",
+    "line": 1825,
+    "context": "1822:  game_concept_execute_reason_desc: \"$game_concept_execute_reason$让[liege|E]可以无所顾忌地[execute|E]关在其[dungeon|E]中的臣民。通常来说，领主获得处决理由是因为这个臣民犯下了[criminal|E]。\"\n1823:  game_concept_movement_lock: \"移动锁定\"\n1824:  game_concept_movement_locked: \"移动锁定\"\n1825:  game_concept_movement_locked_desc: \"如果一支[army|E]已经完成了移动指令的一半进度，那么指令在其到达目的地之前无法变更。\"\n1826:  game_concept_extramarital_sex: \"婚外性行为\"\n1827:  game_concept_extramarital_sex_sleeping_with: \"私通\"\n1828:  game_concept_extramarital_sex_desc: \"一旦被发现，根据他们[faithpossessive|E]的[doctrines|E]，两个有婚外性行为的角色会遭受不同的结果。\\n\\n$EFFECT_LIST_BULLET$根据其婚姻状态，两名角色会成为众所周知的[GetTrait('fornicator').GetName( GetNullCharacter )]或[GetTrait('adulterer').GetName( GetNullCharacter )]。\\n$EFFECT_LIST_BULLET$如果一个男人和一个女人发生关系，这可能导致怀上[bastard|E]\\n$EFFECT_LIST_BULLET$如果两名角色为同性，他们[faithpossessive|E]的$doctrine_homosexuality_name$[doctrine|E]会裁决他们的下场\\n$EFFECT_LIST_BULLET$一名角色患有的性传播[diseases|E]可能会传染给另一名角色\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 276,
+    "context": "273:  b_akermoud: \"阿盖尔穆德\"\n274:  b_akershus: \"阿克什胡斯\"\n275:  b_akespe: \"阿克斯佩\"\n276:  b_akhaltsikhe: \"阿哈尔齐赫\"\n277:  b_akhfennir: \"阿赫费尼尔\"\n278:  b_akhlamad: \"阿赫拉马德\"\n279:  b_akhlat: \"阿赫拉特\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 3999,
+    "context": "3996:  b_halmstad: \"哈尔姆斯塔德\"\n3997:  b_halmyros: \"哈尔密罗斯\"\n3998:  b_halsstein: \"哈尔斯斯泰因\"\n3999:  b_haltalen: \"霍尔托伦\"\n4000:  b_halton: \"霍尔顿\"\n4001:  b_haluza: \"哈卢察\"\n4002:  b_halvad: \"赫尔沃德\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 4000,
+    "context": "3997:  b_halmyros: \"哈尔密罗斯\"\n3998:  b_halsstein: \"哈尔斯斯泰因\"\n3999:  b_haltalen: \"霍尔托伦\"\n4000:  b_halton: \"霍尔顿\"\n4001:  b_haluza: \"哈卢察\"\n4002:  b_halvad: \"赫尔沃德\"\n4003:  b_hama: \"哈马\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 9263,
+    "context": "9260:  b_skara: \"斯卡拉\"\n9261:  b_skawina: \"斯卡维纳\"\n9262:  b_skelleftea: \"谢莱夫特奥\"\n9263:  b_skhalta: \"斯哈尔塔\"\n9264:  b_skien: \"希恩\"\n9265:  b_skikda: \"斯基克达\"\n9266:  b_skinnskatteberg: \"欣斯卡特贝里\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 9755,
+    "context": "9752:  b_tafalla: \"塔法利亚\"\n9753:  b_tafila: \"塔菲拉\"\n9754:  b_tafilalt: \"塔菲拉勒特\"\n9755:  b_tafoughalt: \"塔富加勒特\"\n9756:  b_tafraoua-sebdou: \"塔夫拉瓦‑塞卜杜\"\n9757:  b_taft: \"塔夫特\"\n9758:  b_tagadur: \"多伽头罗\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 9766,
+    "context": "9763:  b_taghmut: \"塔格穆特\"\n9764:  b_taghyart: \"塔吉亚尔特\"\n9765:  b_tagmadart: \"塔克马达尔特\"\n9766:  b_tagoughalt: \"塔古格哈\"\n9767:  b_tagragra: \"塔杰拉杰拉\"\n9768:  b_tagrit: \"提克里特\"\n9769:  b_tagta: \"塔赫塔\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 11128,
+    "context": "11125:  b_yaroslavl: \"雅罗斯拉夫尔\"\n11126:  b_yartsevo: \"亚尔采沃\"\n11127:  b_yarymtyk: \"亚勒姆特克\"\n11128:  b_yashalta: \"亚沙尔塔\"\n11129:  b_yashbum: \"耶什布姆\"\n11130:  b_yashkan: \"亚什坎\"\n11131:  b_yashkul: \"亚什库尔\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 11533,
+    "context": "11530:  c_angouleme_adj: \"昂古莱姆\"\n11531:  c_angus: \"安格斯\"\n11532:  c_angus_adj: \"安格斯\"\n11533:  c_anhalt: \"安哈尔特\"\n11534:  c_anhalt_adj: \"安哈尔特\"\n11535:  c_ani: \"阿尼\"\n11536:  c_ani_adj: \"阿尼\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 11534,
+    "context": "11531:  c_angus: \"安格斯\"\n11532:  c_angus_adj: \"安格斯\"\n11533:  c_anhalt: \"安哈尔特\"\n11534:  c_anhalt_adj: \"安哈尔特\"\n11535:  c_ani: \"阿尼\"\n11536:  c_ani_adj: \"阿尼\"\n11537:  c_anjou: \"安茹\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 15052,
+    "context": "15049:  d_ancona_adj: \"安科纳\"\n15050:  d_angria: \"盎格利亚\"\n15051:  d_angria_adj: \"盎格利亚\"\n15052:  d_anhalt: \"安哈尔特\"\n15053:  d_anhalt_adj: \"安哈尔特\"\n15054:  d_anjou: \"安茹\"\n15055:  d_anjou_adj: \"安茹\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 15053,
+    "context": "15050:  d_angria: \"盎格利亚\"\n15051:  d_angria_adj: \"盎格利亚\"\n15052:  d_anhalt: \"安哈尔特\"\n15053:  d_anhalt_adj: \"安哈尔特\"\n15054:  d_anjou: \"安茹\"\n15055:  d_anjou_adj: \"安茹\"\n15056:  d_antioch: \"安条克\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 17390,
+    "context": "17387:  b_chelykla: \"切雷克拉\"\n17388:  b_kalmikovsky: \"扎纳卡拉\"\n17389:  b_yaitsk: \"亚伊茨克\"\n17390:  b_zhaltyr: \"扎尔特尔\"\n17391:  b_tasqala: \"塔斯卡拉\"\n17392:  b_oskol: \"奥斯科尔\"\n17393:  b_khorsydan: \"霍尔瑟旦\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 20872,
+    "context": "20869:  c_aksay_adj: \"阿克塞\"\n20870:  b_aksay_tibet: \"阿克塞\"\n20871:  b_hahaeci: \"花海子\"\n20872:  c_haltang: \"哈勒腾\"\n20873:  c_haltang_adj: \"哈勒腾\"\n20874:  b_haltang: \"哈勒腾\"\n20875:  b_takoerpasitao: \"塔合尔巴斯陶\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 20873,
+    "context": "20870:  b_aksay_tibet: \"阿克塞\"\n20871:  b_hahaeci: \"花海子\"\n20872:  c_haltang: \"哈勒腾\"\n20873:  c_haltang_adj: \"哈勒腾\"\n20874:  b_haltang: \"哈勒腾\"\n20875:  b_takoerpasitao: \"塔合尔巴斯陶\"\n20876:  b_anxi_old: \"安西\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\titles_l_simp_chinese.yml",
+    "sha256": "02007f6ae10dc4c6417cfd0577b801696b95ab4d9bfdbfe7e0ba0e086ee5b6ab",
+    "line": 20874,
+    "context": "20871:  b_hahaeci: \"花海子\"\n20872:  c_haltang: \"哈勒腾\"\n20873:  c_haltang_adj: \"哈勒腾\"\n20874:  b_haltang: \"哈勒腾\"\n20875:  b_takoerpasitao: \"塔合尔巴斯陶\"\n20876:  b_anxi_old: \"安西\"\n20877:  #Tibet"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\dynasties\\dynasty_names_l_simp_chinese.yml",
+    "sha256": "91a5f1d12cd263baa3070db17e7a6412c101f1840d38380945ad0f90ed3299a7",
+    "line": 367,
+    "context": "364:  dynn_Angouleme: \"昂古莱姆\"\n365:  dynn_Angoures: \"昂古雷斯\"\n366:  dynn_Angus: \"安格斯\"\n367:  dynn_Anhalt: \"安哈尔特\"\n368:  dynn_Anini: \"安尼尼\"\n369:  dynn_Aniort: \"阿尼奥尔特\"\n370:  dynn_Anjou: \"安茹\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\gui\\armyview_l_simp_chinese.yml",
+    "sha256": "6109fe5408ea50c2a3bd29e91c81000e3a8a6523264f01c6f9d108448ed013f3",
+    "line": 41,
+    "context": "38:  DISBAND_GATHERING_ARMY: \"解散正在集结的军队\"\n39:  DISBAND_GATHERING_ARMY_DISABLED: \"\\n$DESC$\"\n40:  STOP_GATHERING: \"停止集结\"\n41:  ARMY_HALT: \"停止移动\"\n42:  ARMY_HALT_ALL: \"#T 停止所有军队#!\"\n43:  DISBAND_RETURN_HOME_TIME: \"@warning_icon! #X [soldiers|E]会花费至多$TIME$返回家乡，再次集结需要花费更多时间。#!\"\n44:  CANNOT_SPLIT_ARMY_NOT_OWNER: \"@warning_icon! #X 不能分割属于他人的军队#!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\gui\\armyview_l_simp_chinese.yml",
+    "sha256": "6109fe5408ea50c2a3bd29e91c81000e3a8a6523264f01c6f9d108448ed013f3",
+    "line": 42,
+    "context": "39:  DISBAND_GATHERING_ARMY_DISABLED: \"\\n$DESC$\"\n40:  STOP_GATHERING: \"停止集结\"\n41:  ARMY_HALT: \"停止移动\"\n42:  ARMY_HALT_ALL: \"#T 停止所有军队#!\"\n43:  DISBAND_RETURN_HOME_TIME: \"@warning_icon! #X [soldiers|E]会花费至多$TIME$返回家乡，再次集结需要花费更多时间。#!\"\n44:  CANNOT_SPLIT_ARMY_NOT_OWNER: \"@warning_icon! #X 不能分割属于他人的军队#!\"\n45:  CANNOT_SPLIT_ARMY_WHILE_IN_COMBAT: \"@warning_icon! #X 不能分割处于[battle|E]中的军队#!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\gui\\armyview_l_simp_chinese.yml",
+    "sha256": "6109fe5408ea50c2a3bd29e91c81000e3a8a6523264f01c6f9d108448ed013f3",
+    "line": 46,
+    "context": "43:  DISBAND_RETURN_HOME_TIME: \"@warning_icon! #X [soldiers|E]会花费至多$TIME$返回家乡，再次集结需要花费更多时间。#!\"\n44:  CANNOT_SPLIT_ARMY_NOT_OWNER: \"@warning_icon! #X 不能分割属于他人的军队#!\"\n45:  CANNOT_SPLIT_ARMY_WHILE_IN_COMBAT: \"@warning_icon! #X 不能分割处于[battle|E]中的军队#!\"\n46:  CANNOT_SPLIT_ARMY_WHILE_MOVEMENT_LOCKED: \"@warning_icon! #X 不能分割移动已经锁定的军队#!\"\n47:  CANNOT_SPLIT_ARMY_CUSTOM_WHILE_MOVING: \"@warning_icon! #X 不能整编正在移动的军队#!\"\n48:  CANNOT_SPLIT_ARMY_WHILE_RETREATING: \"@warning_icon! #X 不能分割正在[retreat|E]的军队#!\"\n49:  CANNOT_MERGE_WHILE_IN_COMBAT: \"@warning_icon! #X 不能合并处于[battle|E]中的军队#!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\gui\\armyview_l_simp_chinese.yml",
+    "sha256": "6109fe5408ea50c2a3bd29e91c81000e3a8a6523264f01c6f9d108448ed013f3",
+    "line": 54,
+    "context": "51:  CANNOT_SPLIT_RAID_ARMY: \"@warning_icon! #X 不能在自己领土之外分离[raid|E]军队#!\"\n52:  CANNOT_SPLIT_BARTER_ARMY: \"@warning_icon! #X 不能在自己领土之外分离[barter|E]军队#!\"\n53:  CANNOT_MERGE_WHILE_RETREATING: \"@warning_icon! #X 撤退时不能合并#!\"\n54:  CANNOT_MERGE_WHILE_MOVEMENT_LOCKED: \"@warning_icon! #X 不能合并移动已被锁定的军队#!\"\n55:  CANNOT_MERGE_NAVAL_AND_LAND: \"@warning_icon! #X 不能将[fleets|E]与未登船的[armies|E]合并#!\"\n56:  CANNOT_MERGE_NO_ARMIES: \"@warning_icon! #X 选中的[armies|E]没有可以被合并的#!\"\n57:  CANNOT_MERGE_NO_UNITS: \"@warning_icon! #X 选中的[armies|E]或[fleets|E]没有可以被合并的#!\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\gui\\mapicons_l_simp_chinese.yml",
+    "sha256": "b836a25fd66bdc0013000a223ae71a21a91cc8609c24983e79c2afdc5706d4c5",
+    "line": 11,
+    "context": "8:  POTENTIAL_COMMANDER_IS_LEADER_TOOLTIP: \"#T 统治者#!\\n成为你自己[army|E]的[commander|E]会给予：\\n[GetLeadingTroopsBonus]\"\n9:  RP_TOOLTIP_CLICK: \"#T [RallyPoint.GetName]#!\\n$CLICK_TO_VIEW$\"\n10:  ARMY_TOOLTIP_IS_GATHERING: \"正在集结（[Army.GetGatheringDaysLeft]天）\"\n11:  ARMY_TOOLTIP_IS_MOVEMENT_LOCKED: \"[movement_locked|E]\"\n12:  UNIT_ITEMS: \"（[UnitMapIcon.GetShownCount]）\"\n13:  RAID_ARMY_TOOLTIP: \"#T 劫掠者#!\\n这支军队正在进行[raid|E]。\\n它正携带[loot_i][Army.GetRaidLoot|V0]。\"\n14:  ARMY_AT_LOOT_CAP: \"无法再携带更多[loot|E]\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\gui\\map_l_simp_chinese.yml",
+    "sha256": "ce39619b5bd56d2bb3ab34ad99df6c4bb35bc823910e8e53d5afa676a21f5d56",
+    "line": 5,
+    "context": "2:  ONMAP_ARMY_UNIT_TOOLTIP: \"$NAME$ （$CONTROLLER$）\\n（$MORALE|V$%）（士气）\\n补员/月：$REINFORCEMENTS|V$\\n征召兵：$LEVIES$ / $MAX_LEVIES|V$\\n兵士：$MEN_AT_ARMS$ / $MAX_MEN_AT_ARMS|V$\\n军团：$REGIMENTS|V$\\n维护费：$MAINTENANCE$\\n补给：$SUPPLY|V$ / $MAX_SUPPLY|V$\\n补给上限：$SUPPLY_LIMIT|V$\"\n3:  UNIT_WILL_ARRIVE: \"抵达$NAME$，剩余[DATE.GetTimeToDate]（[DATE.GetStringShort|V]）\"\n4:  UNIT_WILL_ARRIVE_RETREAT: \"向$NAME$撤退，剩余[DATE.GetTimeToDate]（[DATE.GetStringShort|V]）\"\n5:  UNIT_WILL_MOVEMENT_LOCK: \"[DATE.GetTimeToDate]后[movement_lock|E]\"\n6:  UNIT_IS_EMBARKED: \"已登船\"\n7:  UNIT_WILL_EMBARK: \"准备登船\"\n8:  UNIT_IS_EMBARKING: \"正在登船\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\names\\character_names_l_simp_chinese.yml",
+    "sha256": "f99c08e7bfa4b9abf50fc61407a8aebfb5b8544c1ca640517cdbb4e12c943c62",
+    "line": 4574,
+    "context": "4571:  ComgA_n: \"库姆甘\"\n4572:  Comgal: \"康杰尔\"\n4573:  Comgall: \"克温吉尔\"\n4574:  Comhaltan: \"科瓦尔坦\"\n4575:  Comita: \"科米塔\"\n4576:  Commodus: \"康茂德\"\n4577:  Commundus: \"科蒙杜斯\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\localization\\simp_chinese\\names\\character_names_l_simp_chinese.yml",
+    "sha256": "f99c08e7bfa4b9abf50fc61407a8aebfb5b8544c1ca640517cdbb4e12c943c62",
+    "line": 12790,
+    "context": "12787:  Mahakala: \"摩诃迦罗\"\n12788:  Mahalakshmi: \"摩诃洛讫瑟弭\"\n12789:  Mahalla: \"摩曷罗\"\n12790:  Mahalta: \"马奥塔\"\n12791:  Mahamed: \"穆罕默德\"\n12792:  Mahammad: \"穆罕默德\"\n12793:  Mahamoud: \"马哈茂德\""
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\00_defines.txt",
+    "sha256": "8e430d77eb6e8767030f34b1c53d5dae84277fb354bd73cc42f93dc500be8982",
+    "line": 641,
+    "context": "638: \tGOLD_COST_PER_SOLDIER = 0.003\t\t\t\t\t# Gold maintenance cost per soldier\n639: \tRAID_ARMY_COST_MULT = 0.5\t\t\t\t\t\t# Maintenance of raid armies is multiplied by this\n640: \tBARTER_ARMY_COST_MULT = 0.5 \t\t\t\t\t# Maintenance of barter armies is multiplied by this\n641: \tMOVEMENT_LOCKED = 0.5\t\t\t\t\t\t\t# Percentage after which movement is locked\n642: \tCOUNTY_MOVEMENT_ATTRITION_PERCENTAGE = 0.05\n643: \tMINIMUM_COUNTY_MOVEMENT_ATTRITION = 100\n644: \tREGIMENT_DEFAULT_STACK_SIZE = 100"
+  },
+  {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\game\\common\\defines\\ai\\00_ai.txt",
+    "sha256": "3af5d4100789bad56570e05c5852f35783605813957de7a5129d23142a116120",
+    "line": 1937,
+    "context": "1934: \n1935: \t### Brief: MAX_SCORE_TO_STOP_COURT_POSITION_TASK ( int32 )\n1936: \t# Threshold for \"ai_will_do\" in Court Positions Task types for the\n1937: \t# AI to begin stopping tasks. Active tasks with scores below or\n1938: \t# equal to this will be stopped.\n1939: \t#\n1940: \tMAX_SCORE_TO_STOP_COURT_POSITION_TASK = -10"
+  }
+]

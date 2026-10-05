@@ -1,0 +1,41 @@
+{
+  "at": "2026-10-05T09:10:36.229670+00:00",
+  "request": {
+    "request_id": "r0169-recorder-finish-a01",
+    "tool": "gameplay_recorder",
+    "arguments": {
+      "operation": "finish"
+    }
+  },
+  "request_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0169-a01\\requests\\r0169-recorder-finish-a01.json",
+    "bytes": 127,
+    "sha256": "a5895208749540e24a171599e1a53a85233f3703a5c630c52266bc98fb51dfcb"
+  },
+  "is_error": false,
+  "body": {
+    "state": "NORMAL_TREE_EMPTY",
+    "job": {
+      "schema": "xar.promo.recorder-job/v1",
+      "state": "NORMAL_TREE_EMPTY",
+      "pid": 20500,
+      "returncode": 0,
+      "job_active_processes": 0,
+      "error": null,
+      "at_utc": "2026-10-05T09:10:36.399818+00:00"
+    },
+    "raw": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-raw-terms-b-qualification-a01\\raw.mkv",
+      "bytes": 5187713679,
+      "sha256": "d9e4249d88d2f3cb42c2f9238915a4a554de87a0e778bbe832e10d83918987ab"
+    },
+    "started_at_utc": "2026-10-05T08:08:33.894140+00:00",
+    "completed_at_utc": "2026-10-05T09:10:57.666114+00:00",
+    "start_monotonic_ns": 410764512087800,
+    "end_monotonic_ns": 414508284095800,
+    "partial_assets_retained": true,
+    "clean_spans_certified": false,
+    "human_approval": false,
+    "media_probe_pending": true
+  }
+}

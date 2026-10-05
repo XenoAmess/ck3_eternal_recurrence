@@ -241,3 +241,12 @@ Root明确直接审阅九个decoded-02中心及三个encoded-tail帧，共十二
 按原TERM定义，完整新增03（Holding3680/breakdown）、06（Brest下令前52天/3月4日及登船费警告）、11（维护breakdown、同raw53147160/pub3/native2的actualcash与登船费警告）；现01/02/03/05/06/07/11共7/11约64%。04仅当地上限child，仍欠supplies child；09仅具体团20/20及9/10，欠补员勾选框/费用提示；08已锁定/概念可读但欠该帧nativeprogress；10有分出新军队与原平分拒绝，欠完整整编/可用合并文字。门槛不因预期10/11而降低。
 
 day4实际pausedraw53147256/public14/native13，HUDJan15，正文Jan20为ETA剩5天；snapshot未有Strength行，不挪Jan11progress。3524.9s/3574.9s仅授postmerge6746、116/300、将领portrait及Jan20界面；独立numericmerge既有信用保留，不由单帧生造action时间码。旧三十候选内容pending报告不重写，另十八帧未授。clean_spans_certified、完整人类1×及signoff仍false；正式研究加权比例与分母null、ABC0/3及影片制作未增加。军费已含trueNET，登船警告不作实付流水。
+
+
+## 2026-10-05 R0169：术语原始门槛11/11与失败B归档
+
+[新增portable小JSON/index](evidence/r0169-terms/index.json)精确绑定Root八张实际编码frame review，24候选中另十六张权限null；原始pending候选文件保留原字节。04携带补给child、09实际勾选每月补员/补员兵士及具体9/10、10四种词齐；08Jan25原始锁定和concept同暂停raw53147496/public17/native16首边61.875%/剩3.08080天闭合。原始固定清单11/11（100%），各自编码绑定10/11（约90.91%）；08两新图在raw结束后，encoded=null，loadedcutoff/正好50%均未实测。其他研究加权分母/比例仍null，不能把固定TERM百分比作为整体。
+
+本地B筛选失败是有用负例：+9实际日/raw53147592/public27/native26，Main0在1506为3371/3371、stock116.51751/cap300、month−4.38596；child33554436实际到1508/regular1/空路为3375/3376、同stock/cap100、month−8.77192、当前attrition0。27actualFullIDs disjointunion及current/max完整保持，总6746/6747；37DATA完整并不表示所有record字段未变。attrition0或抵达本身不证明正补给休整；到达将领/冬季/holder/友好因果未赋，ABC0/3保持。
+
+raw5187713679B/SHA d9e4249d88d2f3cb42c2f9238915a4a554de87a0e778bbe832e10d83918987ab、3599.966s/107999帧媒体PASS与Dfull keeper OSError28失败分别归档；bootstrap实读SDKthreadexited、cleanup_proven=true/GameJob0。未响应的return-route probe不填route/ETA。本包只复制小JSON/知识/复核code，零raw读取重hash、SDK、桌面、媒体或游戏；clean spans、完整人类1×、signoff与影片/交付仍未完成。

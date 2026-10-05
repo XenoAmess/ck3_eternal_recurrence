@@ -1,0 +1,56 @@
+{
+  "at_utc": "2026-10-05T09:12:55.692521+00:00",
+  "monotonic_ns": 414626310489000,
+  "source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-day5-lock-hover-a02\\stable.png",
+    "bytes": 3262551,
+    "sha256": "b0b99906fdef657b01f220dee5d500958b07a14ea4cf98759eacadc6550b0628"
+  },
+  "root_reviewed_region": [
+    951,
+    577,
+    139,
+    26
+  ],
+  "focus_before": {
+    "foreground_hwnd": 46860620,
+    "foreground_pid": 20904,
+    "foreground_thread_id": 21460,
+    "focus_hwnd": 46860620,
+    "title": "Crusader Kings III"
+  },
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:/w/e4a02/tools/desktop_coordinate_map.py",
+    "--source-image",
+    "C:/ck3-war-episode04-research-20261004-a01/r0169-day5-lock-hover-a02/stable.png",
+    "--preview-left",
+    "0",
+    "--preview-top",
+    "0",
+    "--preview-width",
+    "1920",
+    "--preview-height",
+    "1080",
+    "--observed-x",
+    "1013",
+    "--observed-y",
+    "590",
+    "--move",
+    "--receipt",
+    "C:\\ck3-war-episode04-research-20261004-a01\\r0169-day5-lock-concept-hover-a01\\immediate.png",
+    "--reviewed-left",
+    "951",
+    "--reviewed-top",
+    "577",
+    "--reviewed-width",
+    "139",
+    "--reviewed-height",
+    "26",
+    "--expected-foreground-hwnd",
+    "46860620"
+  ]
+}

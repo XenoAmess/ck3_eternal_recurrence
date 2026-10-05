@@ -1,0 +1,827 @@
+{
+  "schema": "xar.e04.r0169.local-b-fail-readonly.v1",
+  "at_utc": "2026-10-05T09:20:41.526111+00:00",
+  "status": "LOCAL_B_QUALIFICATION_FAIL_NOT_ABC",
+  "checks": {
+    "baseline_27_full_unique": true,
+    "after_disjoint_union_exact": true,
+    "all_actual_current_max_unchanged": true,
+    "after_27_actual_rows": true,
+    "after_total_6746_6747": true,
+    "health_same_pause_frame_bracket": true,
+    "actual_roster_two_stationary_locations": true,
+    "both_monthly_nonpositive": true,
+    "both_stock_initial_copy_unchanged": true,
+    "all_record_groups_available_complete": true
+  },
+  "required_numeric_identity_checks_pass": true,
+  "actor": 33388,
+  "episode": "native-33388-06e1bad08e3a",
+  "date_raw": 53147592,
+  "qualification_elapsed_days": 9,
+  "baseline_actual_regiments": {
+    "0": [
+      1000,
+      1000
+    ],
+    "1": [
+      800,
+      800
+    ],
+    "2": [
+      100,
+      100
+    ],
+    "3": [
+      20,
+      20
+    ],
+    "4": [
+      800,
+      800
+    ],
+    "5": [
+      400,
+      400
+    ],
+    "6": [
+      20,
+      20
+    ],
+    "7": [
+      800,
+      800
+    ],
+    "8": [
+      100,
+      100
+    ],
+    "9": [
+      20,
+      20
+    ],
+    "10": [
+      800,
+      800
+    ],
+    "11": [
+      400,
+      400
+    ],
+    "12": [
+      400,
+      400
+    ],
+    "50": [
+      277,
+      277
+    ],
+    "51": [
+      38,
+      38
+    ],
+    "52": [
+      200,
+      200
+    ],
+    "53": [
+      9,
+      10
+    ],
+    "54": [
+      321,
+      321
+    ],
+    "55": [
+      6,
+      6
+    ],
+    "56": [
+      1,
+      1
+    ],
+    "57": [
+      1,
+      1
+    ],
+    "58": [
+      1,
+      1
+    ],
+    "59": [
+      1,
+      1
+    ],
+    "60": [
+      1,
+      1
+    ],
+    "61": [
+      71,
+      71
+    ],
+    "62": [
+      70,
+      70
+    ],
+    "82": [
+      89,
+      89
+    ]
+  },
+  "actual_split_armies": [
+    {
+      "army_id": 0,
+      "native_carmy_id": 0,
+      "status": "available",
+      "regiment_count": 15,
+      "current_soldiers": 3371,
+      "maximum_soldiers": 3371,
+      "current_supply_raw": 11651751,
+      "current_supply_capacity_raw": 30000000,
+      "current_supply_change_monthly_raw": -438596,
+      "current_attrition_fraction_raw": 1000,
+      "army_update_clock_v1": {
+        "status": "available",
+        "ready": true,
+        "current_date_raw": 53147592,
+        "native_day_index": 389483,
+        "selected_bucket_phase": 23,
+        "observed_army_bucket_phase": 0,
+        "last_supply_update_date_storage_raw64": 300333821678253472,
+        "last_supply_update_date_raw": 53147040,
+        "grace_anchor_date_storage_raw64": 300061168564366016,
+        "grace_anchor_date_raw": 53144256,
+        "loaded_grace_days": 30,
+        "unavailable_reason": null
+      },
+      "actual_regiment_ids": [
+        4,
+        5,
+        6,
+        8,
+        9,
+        10,
+        12,
+        50,
+        54,
+        58,
+        59,
+        60,
+        61,
+        62,
+        82
+      ],
+      "full_record_group_count": 15,
+      "native_data_record_count": 25,
+      "record_group_read_complete": true,
+      "rows_sum_current": 3371,
+      "rows_sum_max": 3371
+    },
+    {
+      "army_id": 33554436,
+      "native_carmy_id": 33554436,
+      "status": "available",
+      "regiment_count": 12,
+      "current_soldiers": 3375,
+      "maximum_soldiers": 3376,
+      "current_supply_raw": 11651751,
+      "current_supply_capacity_raw": 10000000,
+      "current_supply_change_monthly_raw": -877192,
+      "current_attrition_fraction_raw": 0,
+      "army_update_clock_v1": {
+        "status": "available",
+        "ready": true,
+        "current_date_raw": 53147592,
+        "native_day_index": 389483,
+        "selected_bucket_phase": 23,
+        "observed_army_bucket_phase": 6,
+        "last_supply_update_date_storage_raw64": 300333821678253472,
+        "last_supply_update_date_raw": 53147040,
+        "grace_anchor_date_storage_raw64": 300061168564366016,
+        "grace_anchor_date_raw": 53144256,
+        "loaded_grace_days": 30,
+        "unavailable_reason": null
+      },
+      "actual_regiment_ids": [
+        11,
+        52,
+        2,
+        3,
+        53,
+        0,
+        7,
+        1,
+        51,
+        55,
+        56,
+        57
+      ],
+      "full_record_group_count": 12,
+      "native_data_record_count": 12,
+      "record_group_read_complete": true,
+      "rows_sum_current": 3375,
+      "rows_sum_max": 3376
+    }
+  ],
+  "frames": {
+    "r0169-post-half-frame-a01-snapshot.json": {
+      "date_raw": 53147376,
+      "paused": true,
+      "map_ready": true,
+      "played_character": {
+        "character_id": 33388,
+        "alive": true,
+        "source": "native",
+        "stress_points": 25,
+        "betrothed_id": null,
+        "primary_spouse_id": 34290,
+        "spouse_ids": [
+          34290
+        ]
+      },
+      "active_event": null,
+      "snapshot_id": "native:3",
+      "revision": 4,
+      "native_revision": 3,
+      "episode_run_id": "native-33388-06e1bad08e3a",
+      "source": "injected-dll-named-pipe",
+      "player_armies": [
+        {
+          "army_id": 0,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1506,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        },
+        {
+          "army_id": 33554436,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1506,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        }
+      ]
+    },
+    "r0169-local-b-arrival-strength-a01-before.json": {
+      "date_raw": 53147592,
+      "paused": true,
+      "map_ready": true,
+      "played_character": {
+        "character_id": 33388,
+        "alive": true,
+        "source": "native",
+        "stress_points": 25,
+        "betrothed_id": null,
+        "primary_spouse_id": 34290,
+        "spouse_ids": [
+          34290
+        ]
+      },
+      "active_event": null,
+      "snapshot_id": "native:26",
+      "revision": 27,
+      "native_revision": 26,
+      "episode_run_id": "native-33388-06e1bad08e3a",
+      "source": "injected-dll-named-pipe",
+      "player_armies": [
+        {
+          "army_id": 0,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1506,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        },
+        {
+          "army_id": 33554436,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1508,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "regular",
+          "army_state_code": 1,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        }
+      ]
+    },
+    "r0169-local-b-arrival-strength-a01-after.json": {
+      "date_raw": 53147592,
+      "paused": true,
+      "map_ready": true,
+      "played_character": {
+        "character_id": 33388,
+        "alive": true,
+        "source": "native",
+        "stress_points": 25,
+        "betrothed_id": null,
+        "primary_spouse_id": 34290,
+        "spouse_ids": [
+          34290
+        ]
+      },
+      "active_event": null,
+      "snapshot_id": "native:26",
+      "revision": 27,
+      "native_revision": 26,
+      "episode_run_id": "native-33388-06e1bad08e3a",
+      "source": "injected-dll-named-pipe",
+      "player_armies": [
+        {
+          "army_id": 0,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1506,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        },
+        {
+          "army_id": 33554436,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1508,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "regular",
+          "army_state_code": 1,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        }
+      ]
+    },
+    "r0169-local-b-arrival-frame-a01-snapshot.json": {
+      "date_raw": 53147592,
+      "paused": true,
+      "map_ready": true,
+      "played_character": {
+        "character_id": 33388,
+        "alive": true,
+        "source": "native",
+        "stress_points": 25,
+        "betrothed_id": null,
+        "primary_spouse_id": 34290,
+        "spouse_ids": [
+          34290
+        ]
+      },
+      "active_event": null,
+      "snapshot_id": "native:26",
+      "revision": 27,
+      "native_revision": 26,
+      "episode_run_id": "native-33388-06e1bad08e3a",
+      "source": "injected-dll-named-pipe",
+      "player_armies": [
+        {
+          "army_id": 0,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1506,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "sieging",
+          "army_state_code": 3,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        },
+        {
+          "army_id": 33554436,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 1508,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "regular",
+          "army_state_code": 1,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        }
+      ]
+    }
+  },
+  "source_pins": [
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-baseline-strength-a02.json",
+      "bytes": 339913,
+      "sha256": "00fc38c8d6e66f7932e58e7fd090615d479c1f170cc1b77e14168d145ebcbe19"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-local-b-arrival-strength-a01-strength.json",
+      "bytes": 394040,
+      "sha256": "978b660de09b34eb5bf0d639867c975f82635534ecb1c37e4a9b271fa3228d21"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-post-half-frame-a01-snapshot.json",
+      "bytes": 998742,
+      "sha256": "b1344a6ae34bb6fc95ff1d5feeddb276b4f0b901490333e9195fdf82a39604d4"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-local-b-arrival-strength-a01-before.json",
+      "bytes": 164012,
+      "sha256": "fd538892b6ddb89454745065322b717e903aa0cae5e619da22ae23e354690416"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-local-b-arrival-strength-a01-after.json",
+      "bytes": 1004946,
+      "sha256": "911e795f6aaa9d7dd6b8cddf0788806762091f3fa7262c5c875cd2e8630c9043"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-local-b-arrival-frame-a01-snapshot.json",
+      "bytes": 1004946,
+      "sha256": "78ce10f096269a5904e203b627df066918f2b16d39cfcdc2e43ca880b3e7c8a0"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-child-arun-preview-a01.json",
+      "bytes": 6776,
+      "sha256": "cd7e3f3fa237ab830389ca5a51164916e7d6d6b418e8d97738eb419bf7aa0966"
+    }
+  ],
+  "commander_evidence": [
+    {
+      "receipt": "r0169-child-arun-preview-a01.json",
+      "accepted": true,
+      "status": "available",
+      "queried_revision": 4,
+      "queried_native_revision": 3,
+      "route_preview": {
+        "status": "available",
+        "army_id": 33554436,
+        "origin_province_id": 1506,
+        "target_province_id": 1508,
+        "route_province_ids": [
+          1508
+        ],
+        "province_supply": {
+          "status": "available",
+          "unavailable_reason": null,
+          "army_id": 33554436,
+          "native_carmy_id": 33554436,
+          "owner_character_id": 33388,
+          "commander_character_id": 33388,
+          "current": {
+            "status": "available",
+            "unavailable_reason": null,
+            "role": "current",
+            "province_id": 1506,
+            "native_supply_limit_soldiers": 3680,
+            "native_supply_usage_soldiers": 6746,
+            "scale": 1
+          },
+          "target": {
+            "status": "available",
+            "unavailable_reason": null,
+            "role": "target",
+            "province_id": 1508,
+            "native_supply_limit_soldiers": 5600,
+            "native_supply_usage_soldiers": 0,
+            "scale": 1
+          }
+        },
+        "previewed_date_raw": 53147376
+      }
+    }
+  ],
+  "available_named_commander_receipts": [],
+  "commander_current_arrival_independent_read_pending": true,
+  "no_causal_reason_assigned": {
+    "winter": "unknown_without_current_raw_policy_inputs_or_actual_tooltip",
+    "province_legal_holder_and_occupation": "not_published_by_these_arrival_health_frames",
+    "underlimit": "not_inferred_from_attrition_zero",
+    "why_monthly_diff": "unknown_without_actual_modifier_and_territory_inputs"
+  },
+  "static_history_source": {
+    "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/history/titles/k_france.txt",
+    "bytes": 75935,
+    "sha256": "a370ab10b1ea67a12cd62dfd49c8d8f3ec0762af495107a78b9f1a75054f7858",
+    "encoding": "cp1252"
+  },
+  "selected_static_mapping": [
+    {
+      "province_id": 2179,
+      "barony_key": "b_rouen",
+      "title_key_line": 44501,
+      "province_line": 44502,
+      "title_ancestry": [
+        "e_france",
+        "k_france",
+        "d_normandy",
+        "c_rouen",
+        "b_rouen"
+      ]
+    },
+    {
+      "province_id": 2174,
+      "barony_key": "b_lisieux",
+      "title_key_line": 44600,
+      "province_line": 44601,
+      "title_ancestry": [
+        "e_france",
+        "k_france",
+        "d_normandy",
+        "c_lisieux",
+        "b_lisieux"
+      ]
+    },
+    {
+      "province_id": 2176,
+      "barony_key": "b_fecamp",
+      "title_key_line": 44620,
+      "province_line": 44621,
+      "title_ancestry": [
+        "e_france",
+        "k_france",
+        "d_normandy",
+        "c_eu",
+        "b_fecamp"
+      ]
+    }
+  ],
+  "static_title_history_only": {
+    "d_normandy": {
+      "bookmark": {
+        "liege": {
+          "date": [
+            911,
+            1,
+            1
+          ],
+          "field": "liege",
+          "value": "k_france",
+          "line": 1405,
+          "text": "liege = \"k_france\""
+        },
+        "holder": {
+          "date": [
+            1035,
+            7,
+            3
+          ],
+          "field": "holder",
+          "value": "140",
+          "line": 1433,
+          "text": "holder = 140 #Guillaume II le Conquérant"
+        }
+      },
+      "calendar_Jan20": {
+        "liege": {
+          "date": [
+            1066,
+            10,
+            14
+          ],
+          "field": "liege",
+          "value": "k_england",
+          "line": 1436,
+          "text": "liege = \"k_england\""
+        },
+        "holder": {
+          "date": [
+            1035,
+            7,
+            3
+          ],
+          "field": "holder",
+          "value": "140",
+          "line": 1433,
+          "text": "holder = 140 #Guillaume II le Conquérant"
+        }
+      }
+    },
+    "c_lisieux": {
+      "bookmark": {
+        "liege": {
+          "date": [
+            989,
+            1,
+            1
+          ],
+          "field": "liege",
+          "value": "d_normandy",
+          "line": 1900,
+          "text": "liege = \"d_normandy\""
+        },
+        "holder": {
+          "date": [
+            1037,
+            1,
+            1
+          ],
+          "field": "holder",
+          "value": "20112",
+          "line": 1904,
+          "text": "holder = 20112 #Richard d'Évreux"
+        }
+      },
+      "calendar_Jan20": {
+        "liege": {
+          "date": [
+            989,
+            1,
+            1
+          ],
+          "field": "liege",
+          "value": "d_normandy",
+          "line": 1900,
+          "text": "liege = \"d_normandy\""
+        },
+        "holder": {
+          "date": [
+            1067,
+            1,
+            1
+          ],
+          "field": "holder",
+          "value": "10016",
+          "line": 1907,
+          "text": "holder = 10016 #Guillaume d'Évreux"
+        }
+      }
+    },
+    "c_eu": {
+      "bookmark": {
+        "liege": {
+          "date": [
+            996,
+            1,
+            1
+          ],
+          "field": "liege",
+          "value": "d_normandy",
+          "line": 1977,
+          "text": "liege = \"d_normandy\""
+        },
+        "holder": {
+          "date": [
+            1058,
+            1,
+            1
+          ],
+          "field": "holder",
+          "value": "6818",
+          "line": 1987,
+          "text": "holder = 6818 #Guillaume Busac"
+        }
+      },
+      "calendar_Jan20": {
+        "liege": {
+          "date": [
+            996,
+            1,
+            1
+          ],
+          "field": "liege",
+          "value": "d_normandy",
+          "line": 1977,
+          "text": "liege = \"d_normandy\""
+        },
+        "holder": {
+          "date": [
+            1058,
+            1,
+            1
+          ],
+          "field": "holder",
+          "value": "6818",
+          "line": 1987,
+          "text": "holder = 6818 #Guillaume Busac"
+        }
+      }
+    },
+    "c_rouen": {
+      "bookmark": {
+        "liege": {
+          "date": [
+            989,
+            1,
+            1
+          ],
+          "field": "liege",
+          "value": "d_normandy",
+          "line": 1522,
+          "text": "liege = \"d_normandy\""
+        },
+        "holder": {
+          "date": [
+            1037,
+            1,
+            1
+          ],
+          "field": "holder",
+          "value": "20112",
+          "line": 1526,
+          "text": "holder = 20112 #Richard d'Évreux"
+        }
+      },
+      "calendar_Jan20": {
+        "liege": {
+          "date": [
+            989,
+            1,
+            1
+          ],
+          "field": "liege",
+          "value": "d_normandy",
+          "line": 1522,
+          "text": "liege = \"d_normandy\""
+        },
+        "holder": {
+          "date": [
+            1067,
+            1,
+            1
+          ],
+          "field": "holder",
+          "value": "10016",
+          "line": 1529,
+          "text": "holder = 10016 #Guillaume d'Évreux"
+        }
+      }
+    }
+  },
+  "runtime_holder_or_friendly_proof": false,
+  "new_sdk_or_game_actions": 0,
+  "new_media_or_abc_credit": 0
+}

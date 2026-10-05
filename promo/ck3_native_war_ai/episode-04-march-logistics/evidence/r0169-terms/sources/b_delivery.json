@@ -1,0 +1,125 @@
+{
+  "schema": "xar.e04.r0169.local-b-fail-normandy-next.v1",
+  "at_utc": "2026-10-05T09:24:58.096590+00:00",
+  "status": "LOCAL_B_FAILED_NEXT_WARMUP_PENDING_ROOT_NEW_RUN",
+  "plan": {
+    "path": "C:/ck3-war-episode04-research-20261004-a01/case-r0169-local-b-fail-normandy-a01/ROOT-NEXT-WARMUP-a01.md",
+    "bytes": 6111,
+    "sha256": "7f821299d8a5349f71cd63d94c9b8fd2c3185edc75818c2aa890420ae4cbb24c"
+  },
+  "actual_failure_review": {
+    "path": "C:/ck3-war-episode04-research-20261004-a01/case-r0169-local-b-fail-normandy-a01/local-b-fail-review-a01.json",
+    "bytes": 21561,
+    "sha256": "964d5daa2413d8de620a6291cdec227da9cea981b6e840f0a1a92c7847e702aa"
+  },
+  "actual_identity_checks": {
+    "baseline_27_full_unique": true,
+    "after_disjoint_union_exact": true,
+    "all_actual_current_max_unchanged": true,
+    "after_27_actual_rows": true,
+    "after_total_6746_6747": true,
+    "health_same_pause_frame_bracket": true,
+    "actual_roster_two_stationary_locations": true,
+    "both_monthly_nonpositive": true,
+    "both_stock_initial_copy_unchanged": true,
+    "all_record_groups_available_complete": true
+  },
+  "full27_actual_current_max_unchanged": true,
+  "arrival_source_pins": [
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-baseline-strength-a02.json",
+      "bytes": 339913,
+      "sha256": "00fc38c8d6e66f7932e58e7fd090615d479c1f170cc1b77e14168d145ebcbe19"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-local-b-arrival-strength-a01-strength.json",
+      "bytes": 394040,
+      "sha256": "978b660de09b34eb5bf0d639867c975f82635534ecb1c37e4a9b271fa3228d21"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-post-half-frame-a01-snapshot.json",
+      "bytes": 998742,
+      "sha256": "b1344a6ae34bb6fc95ff1d5feeddb276b4f0b901490333e9195fdf82a39604d4"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-local-b-arrival-strength-a01-before.json",
+      "bytes": 164012,
+      "sha256": "fd538892b6ddb89454745065322b717e903aa0cae5e619da22ae23e354690416"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-local-b-arrival-strength-a01-after.json",
+      "bytes": 1004946,
+      "sha256": "911e795f6aaa9d7dd6b8cddf0788806762091f3fa7262c5c875cd2e8630c9043"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-local-b-arrival-frame-a01-snapshot.json",
+      "bytes": 1004946,
+      "sha256": "78ce10f096269a5904e203b627df066918f2b16d39cfcdc2e43ca880b3e7c8a0"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/native-live-r0169-a01/responses/r0169-child-arun-preview-a01.json",
+      "bytes": 6776,
+      "sha256": "cd7e3f3fa237ab830389ca5a51164916e7d6d6b418e8d97738eb419bf7aa0966"
+    }
+  ],
+  "warmup_source": {
+    "path": "C:/ck3-war-episode04-research-20261004-a01/r0168-postmerge-common-start-a01/common-t0.ck3",
+    "bytes": 72572576,
+    "sha256": "dcd54f1270e4c5e18af2d2a8adb5b9d2af2cd5af60ae3d71330b782adf122260",
+    "rehashed_this_attempt": false,
+    "W0_raw": 53147376,
+    "Wend_30_actual_days_raw": 53148096
+  },
+  "finite_target_order": [
+    2174,
+    2176,
+    2179
+  ],
+  "source_pins": [
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/root-r0168-postmerge-route-previews-a01/report.json",
+      "bytes": 12218,
+      "sha256": "19428fc57927d4a517e265eab3461610ffc9ad52778b70a86f2e234e28688f55"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/case-positive-prep-a01/frozen-normandy-barony-mapping-a01.json",
+      "bytes": 9204,
+      "sha256": "11cbba3105da133237a60f81261cf552a6fa2da4b47a088c1e5cf699d1f0d0d2"
+    },
+    {
+      "path": "C:/SteamLibrary/steamapps/common/Crusader Kings III/game/history/titles/k_france.txt",
+      "bytes": 75935,
+      "sha256": "a370ab10b1ea67a12cd62dfd49c8d8f3ec0762af495107a78b9f1a75054f7858",
+      "encoding": "cp1252"
+    },
+    {
+      "path": "C:/ck3-war-episode04-research-20261004-a01/case-r0169-abc-term10-checklist-a01/ROOT-DELIVERY-a01.json",
+      "bytes": 4588,
+      "sha256": "520b971ed270b97f8d0be07b540af74cf53663d8c689dc32cf5ebd62af8d1f5b"
+    }
+  ],
+  "unknowns": [
+    "new source/build/run fresh admission after D disk OSError28",
+    "actual stationary whole positive province among three",
+    "current runtime holder/occupation/eligibility and winter modifier",
+    "fresh ETA/contact scope and routes from actual current position",
+    "arrival commander independent read",
+    "new qualified common SHA",
+    "both half recovery rules including capacity overstock",
+    "full A/C distinct route and B rendezvous before ABC"
+  ],
+  "abc_start_admitted": false,
+  "whole_positive_hub_proven": false,
+  "new_common_sha_selected": false,
+  "new_actions": {
+    "sdk": 0,
+    "game": 0,
+    "ui": 0,
+    "save": 0,
+    "git": 0,
+    "task_or_security_settings": 0,
+    "media_audit": 0,
+    "new_abc_credit": 0,
+    "new_media_signoff_credit": 0
+  }
+}

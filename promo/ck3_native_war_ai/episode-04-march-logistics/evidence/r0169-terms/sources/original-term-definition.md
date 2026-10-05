@@ -96,12 +96,3 @@
 TERM-04 已有当地上限概念 child，携带补给概念 child仍缺；TERM-09已有野驴炮3×20/20与Sea射石机9/10，军事页补员勾选框/费用提示仍缺。TERM-08的锁标与“一半进度”概念已可读，但原门槛要求同帧native进度：day4 hover raw53147256/public14/native13的snapshot无Strength行，不能复用Jan11进度，因此整项仍pending。其HUD是Jan15，Jan20是正文ETA、剩5天。TERM-10有既有平分拒绝图和本轮分出新军队tooltip，完整平分/整编/可用合并提示仍pending；实际numeric merge不代按钮文字。
 
 Root十二单帧只授这些PNG，未授全部三十候选、连续clean spans、完整1×观看或signoff。3524.9s/3574.9s的postmerge6746、116/300、将领portrait/Jan20可用于界面说明，合军写回另依独立索引；海上额外维护和“会支付登船费”不证明实际已付款。军费已含于本轮true NET，不能再扣。正式研究加权比例与分母仍null。
-
-
-## 2026-10-05 R0169：按原定义闭合11项原始术语研究
-
-[可跨机器复核的R0169索引](../../promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0169-terms/index.json)保全八张Root实际编码单帧authority、十六张未审候选null、原始小JSON及只读复核脚本。04补携带补给supplieschild并与R0168当地上限concept组合；09实际已勾选每月补员，hover“补员兵士，1月达到满员，点击停止补员”，同画面射石机9/10满足原始具体current/max门槛。原定义无需虚构一个费用金额；本frame不授金额、付款或toggle。10的平分F、整编两军编制、可用合并G与R0168分出新军队齐，动态动作仍另看P0。
-
-08在pausedJan25/raw53147496/public17/native16、actor33388/同epoch/child33554436路[1508]取得实际“移动锁定”和完整中文concept两张原图；六个snapshot与nativequery同身份，首边61875/100000=61.875%、剩余308080/100000=3.08080天。原生Halt定理为progress严格大于loadedcutoff，stock0.5；本frame未读loadedcutoff、未测正好50%。HUDJan25、GUIETAJan29剩4天分别保留，不写成已经抵达。
-
-因此固定清单原始术语研究11/11（100%），各自完整编码绑定10/11（约90.91%）。08新两图拍在R0169rawfinish后，encoded=null；旧R0168锁定编码概念不能与新nativeframe合成同帧。该比例不代表加权研究或影片完成率，clean spans/完整人工1×/signoff仍未完成。原先7/11时间截面保持。

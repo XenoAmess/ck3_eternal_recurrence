@@ -1,0 +1,57 @@
+{
+  "at_utc": "2026-10-05T09:11:57.218727+00:00",
+  "monotonic_ns": 414567836700200,
+  "date_raw": 53147496,
+  "public_revision": 17,
+  "native_revision": 16,
+  "rows": [
+    {
+      "army_id": 0,
+      "current_soldiers": 3371,
+      "maximum_soldiers": 3371,
+      "current_province_id": null,
+      "current_supply_raw": 11651751,
+      "current_supply_capacity_raw": 30000000,
+      "current_supply_change_monthly_raw": -877192,
+      "commander_character_id": null,
+      "current_movement_progress": {
+        "status": "not_applicable",
+        "source": "native_current_route_edge",
+        "unit_state_raw": 3,
+        "accumulated_movement_weight_raw": 0,
+        "cached_edge_speed_raw": 405000,
+        "normalized_edge_progress": null,
+        "first_route_edge_remaining_duration": null,
+        "unavailable_reason": null
+      },
+      "county_entry_inputs_v1": null
+    },
+    {
+      "army_id": 33554436,
+      "current_soldiers": 3375,
+      "maximum_soldiers": 3376,
+      "current_province_id": null,
+      "current_supply_raw": 11651751,
+      "current_supply_capacity_raw": 10000000,
+      "current_supply_change_monthly_raw": -877192,
+      "commander_character_id": null,
+      "current_movement_progress": {
+        "status": "available",
+        "source": "native_current_route_edge",
+        "unit_state_raw": 3,
+        "accumulated_movement_weight_raw": 1650000,
+        "cached_edge_speed_raw": 330000,
+        "normalized_edge_progress": {
+          "raw": 61875,
+          "scale": 100000
+        },
+        "first_route_edge_remaining_duration": {
+          "raw": 308080,
+          "scale": 100000
+        },
+        "unavailable_reason": null
+      },
+      "county_entry_inputs_v1": null
+    }
+  ]
+}

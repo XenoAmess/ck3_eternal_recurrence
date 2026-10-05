@@ -1,0 +1,137 @@
+{
+  "at": "2026-10-05T08:38:06.070565+00:00",
+  "request": {
+    "request_id": "r0169-child-arun-preview-a01",
+    "tool": "ck3_execute_step",
+    "arguments": {
+      "step": "preview-move-army-33554436-to-1508",
+      "expected_revision": 4
+    }
+  },
+  "request_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0169-a01\\requests\\r0169-child-arun-preview-a01.json",
+    "bytes": 180,
+    "sha256": "42e8f8f7db28d4bc201b248813b1eaf829d35a912042188d8fbaf37b0ae5463d"
+  },
+  "is_error": false,
+  "body": {
+    "step": "preview-move-army-33554436-to-1508",
+    "accepted": true,
+    "status": "available",
+    "route_preview": {
+      "status": "available",
+      "army_id": 33554436,
+      "origin_province_id": 1506,
+      "target_province_id": 1508,
+      "route_province_ids": [
+        1508
+      ],
+      "province_supply": {
+        "status": "available",
+        "unavailable_reason": null,
+        "army_id": 33554436,
+        "native_carmy_id": 33554436,
+        "owner_character_id": 33388,
+        "commander_character_id": 33388,
+        "current": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "current",
+          "province_id": 1506,
+          "native_supply_limit_soldiers": 3680,
+          "native_supply_usage_soldiers": 6746,
+          "scale": 1
+        },
+        "target": {
+          "status": "available",
+          "unavailable_reason": null,
+          "role": "target",
+          "province_id": 1508,
+          "native_supply_limit_soldiers": 5600,
+          "native_supply_usage_soldiers": 0,
+          "scale": 1
+        }
+      },
+      "previewed_date_raw": 53147376
+    },
+    "backend_id": "native-headless",
+    "queried_snapshot_id": "native:3",
+    "queried_revision": 4,
+    "queried_native_revision": 3,
+    "queried_connection_generation": 1,
+    "queried_episode_run_id": "native-33388-06e1bad08e3a"
+  },
+  "sdk_result": {
+    "meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "Xar CK3 Gameplay Bridge",
+        "version": "0.1.0"
+      }
+    },
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"step\": \"preview-move-army-33554436-to-1508\",\n  \"accepted\": true,\n  \"status\": \"available\",\n  \"route_preview\": {\n    \"status\": \"available\",\n    \"army_id\": 33554436,\n    \"origin_province_id\": 1506,\n    \"target_province_id\": 1508,\n    \"route_province_ids\": [\n      1508\n    ],\n    \"province_supply\": {\n      \"status\": \"available\",\n      \"unavailable_reason\": null,\n      \"army_id\": 33554436,\n      \"native_carmy_id\": 33554436,\n      \"owner_character_id\": 33388,\n      \"commander_character_id\": 33388,\n      \"current\": {\n        \"status\": \"available\",\n        \"unavailable_reason\": null,\n        \"role\": \"current\",\n        \"province_id\": 1506,\n        \"native_supply_limit_soldiers\": 3680,\n        \"native_supply_usage_soldiers\": 6746,\n        \"scale\": 1\n      },\n      \"target\": {\n        \"status\": \"available\",\n        \"unavailable_reason\": null,\n        \"role\": \"target\",\n        \"province_id\": 1508,\n        \"native_supply_limit_soldiers\": 5600,\n        \"native_supply_usage_soldiers\": 0,\n        \"scale\": 1\n      }\n    },\n    \"previewed_date_raw\": 53147376\n  },\n  \"backend_id\": \"native-headless\",\n  \"queried_snapshot_id\": \"native:3\",\n  \"queried_revision\": 4,\n  \"queried_native_revision\": 3,\n  \"queried_connection_generation\": 1,\n  \"queried_episode_run_id\": \"native-33388-06e1bad08e3a\"\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "step": "preview-move-army-33554436-to-1508",
+      "accepted": true,
+      "status": "available",
+      "route_preview": {
+        "status": "available",
+        "army_id": 33554436,
+        "origin_province_id": 1506,
+        "target_province_id": 1508,
+        "route_province_ids": [
+          1508
+        ],
+        "province_supply": {
+          "status": "available",
+          "unavailable_reason": null,
+          "army_id": 33554436,
+          "native_carmy_id": 33554436,
+          "owner_character_id": 33388,
+          "commander_character_id": 33388,
+          "current": {
+            "status": "available",
+            "unavailable_reason": null,
+            "role": "current",
+            "province_id": 1506,
+            "native_supply_limit_soldiers": 3680,
+            "native_supply_usage_soldiers": 6746,
+            "scale": 1
+          },
+          "target": {
+            "status": "available",
+            "unavailable_reason": null,
+            "role": "target",
+            "province_id": 1508,
+            "native_supply_limit_soldiers": 5600,
+            "native_supply_usage_soldiers": 0,
+            "scale": 1
+          }
+        },
+        "previewed_date_raw": 53147376
+      },
+      "backend_id": "native-headless",
+      "queried_snapshot_id": "native:3",
+      "queried_revision": 4,
+      "queried_native_revision": 3,
+      "queried_connection_generation": 1,
+      "queried_episode_run_id": "native-33388-06e1bad08e3a"
+    },
+    "is_error": false,
+    "result_type": "complete"
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"step\": \"preview-move-army-33554436-to-1508\",\n  \"accepted\": true,\n  \"status\": \"available\",\n  \"route_preview\": {\n    \"status\": \"available\",\n    \"army_id\": 33554436,\n    \"origin_province_id\": 1506,\n    \"target_province_id\": 1508,\n    \"route_province_ids\": [\n      1508\n    ],\n    \"province_supply\": {\n      \"status\": \"available\",\n      \"unavailable_reason\": null,\n      \"army_id\": 33554436,\n      \"native_carmy_id\": 33554436,\n      \"owner_character_id\": 33388,\n      \"commander_character_id\": 33388,\n      \"current\": {\n        \"status\": \"available\",\n        \"unavailable_reason\": null,\n        \"role\": \"current\",\n        \"province_id\": 1506,\n        \"native_supply_limit_soldiers\": 3680,\n        \"native_supply_usage_soldiers\": 6746,\n        \"scale\": 1\n      },\n      \"target\": {\n        \"status\": \"available\",\n        \"unavailable_reason\": null,\n        \"role\": \"target\",\n        \"province_id\": 1508,\n        \"native_supply_limit_soldiers\": 5600,\n        \"native_supply_usage_soldiers\": 0,\n        \"scale\": 1\n      }\n    },\n    \"previewed_date_raw\": 53147376\n  },\n  \"backend_id\": \"native-headless\",\n  \"queried_snapshot_id\": \"native:3\",\n  \"queried_revision\": 4,\n  \"queried_native_revision\": 3,\n  \"queried_connection_generation\": 1,\n  \"queried_episode_run_id\": \"native-33388-06e1bad08e3a\"\n}",
+      "annotations": null,
+      "meta": null
+    }
+  ]
+}

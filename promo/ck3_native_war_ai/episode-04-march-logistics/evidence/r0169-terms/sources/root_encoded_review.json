@@ -1,0 +1,120 @@
+{
+  "schema": "xar.episode04.root-encoded-single-frame-review/v1",
+  "at_utc": "2026-10-05T09:28:19.452299+00:00",
+  "reviewer": "Root assistant direct original PNG inspection",
+  "mode": "actual ffmpeg-decoded frame PNGs individually viewed, not full video review",
+  "frames": [
+    {
+      "group": "r0169-army-supplies-hover-a01",
+      "frame": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-army-supplies-hover-a01\\decoded-02.png",
+        "bytes": 2753543,
+        "sha256": "fe1bf49f0f0d18d6228c667bc54bcf205d414001c3dc97174d9ba67e878e425e"
+      },
+      "actual_encoded_pts_seconds": 154.533,
+      "content_review": "directly-reviewed",
+      "observation": "Jan20 paused Army6746; supplies116/300, localusage6746/3680; wilderness+200%; UI monthly -9 rounded, winter-5/overlimit-5/commander-12%.",
+      "continuous_span_credit": false
+    },
+    {
+      "group": "r0169-supplies-concept-hover-a01",
+      "frame": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-supplies-concept-hover-a01\\decoded-02.png",
+        "bytes": 2690408,
+        "sha256": "f2325fcdbacdab5274ef9782a9ae27fa0ac6c0b5578cd99a40f3ddb11728ffcd"
+      },
+      "actual_encoded_pts_seconds": 198.6,
+      "content_review": "directly-reviewed",
+      "observation": "Jan20 paused sameArmy; outer116/300 and nested supplies concept food/equipment, overlimitloss, lowSupplyadvantage/exhaustionattrition, recoveryinfriendterritoryunderlimit.",
+      "continuous_span_credit": false
+    },
+    {
+      "group": "r0169-monthly-refill-checkbox-hover-a01",
+      "frame": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-monthly-refill-checkbox-hover-a01\\decoded-02.png",
+        "bytes": 2421456,
+        "sha256": "c661ca00616cb750268535816564e115dfb41ca5a666c70d025f8bf573f0fe35"
+      },
+      "actual_encoded_pts_seconds": 246.933,
+      "content_review": "directly-reviewed",
+      "observation": "Jan20 paused military page; checked monthlyrefill, hover title 补员兵士, 1月达到满员, 点击停止补员;射石机9/10; no toggle or payment.",
+      "continuous_span_credit": false
+    },
+    {
+      "group": "r0169-split-half-hover-a01",
+      "frame": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-split-half-hover-a01\\decoded-02.png",
+        "bytes": 2764645,
+        "sha256": "7e4068be98b626e2858d3dbe43f04b1c110f805d2f0e26e574367d859fc04185"
+      },
+      "actual_encoded_pts_seconds": 109.1,
+      "content_review": "directly-reviewed",
+      "observation": "Jan20 paused Main6746; 平分 hover 将这支军队平分为规模大致相等的两支军队 shortcutF; noactionexecutionclaimfromthisframe.",
+      "continuous_span_credit": false
+    },
+    {
+      "group": "r0169-merge-enabled-hover-a01",
+      "frame": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-merge-enabled-hover-a01\\decoded-02.png",
+        "bytes": 2770535,
+        "sha256": "30695d695359d10ba5a5f4bf16c11523ff7c0b498d4221fb13010f124d4c166d"
+      },
+      "actual_encoded_pts_seconds": 718.833,
+      "content_review": "directly-reviewed",
+      "observation": "Jan20 paused two selected own shields3.37K each; currentpanel3371/116/300; bright合并军队 hover 将所有选中军队合并成一支 shortcutG; no mergeclicked.",
+      "continuous_span_credit": false
+    },
+    {
+      "group": "r0169-reorganize-selected-hover-a01",
+      "frame": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-reorganize-selected-hover-a01\\decoded-02.png",
+        "bytes": 2779826,
+        "sha256": "2d9f3384b22995e29b214f5338cd8b376af7f8714ace5ecce7f9d5d45479932e"
+      },
+      "actual_encoded_pts_seconds": 910.933,
+      "content_review": "directly-reviewed",
+      "observation": "Jan20 paused same2selected; 整编 hover 整编这两支军队中的编制; no actual transferclaim.",
+      "continuous_span_credit": false
+    },
+    {
+      "group": "r0169-military-open-a01",
+      "frame": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-military-open-a01\\decoded-02.png",
+        "bytes": 2331731,
+        "sha256": "c8225495cc8358e88c0bf3ea0e66a570d49835000102c5a010e727719d65f4c1"
+      },
+      "actual_encoded_pts_seconds": 204.633,
+      "content_review": "directly-reviewed",
+      "observation": "Jan20 paused military page context total6753/unraised7/knights12/12, checked每月补员 and射石机9/10; generic军事F3hover.",
+      "continuous_span_credit": false
+    },
+    {
+      "group": "r0169-unmapped-raw-tail-search-a01",
+      "frame": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\r0169-unmapped-raw-tail-search-a01\\decoded-02.png",
+        "bytes": 2787933,
+        "sha256": "d3cb117da23853746631c8d06e98d594e1d72d7dbf8c1cfca2e492ae3c63d93b"
+      },
+      "actual_encoded_pts_seconds": 3539.933,
+      "content_review": "directly-reviewed",
+      "observation": "Jan25 paused child3375/116/100 and commanderWilliam30; twoownedlabels3371/3375, childpathvisible; no tooltip/lock/numericalnativequeryjoin from this coarse tail.",
+      "continuous_span_credit": false
+    }
+  ],
+  "unreviewed_other_candidates": 16,
+  "clean_spans_certified": false,
+  "human_1x_full_review": false,
+  "signoff": false,
+  "single_frame_content_only": true,
+  "clock_is_PTS": false,
+  "candidate_index": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-encoded-candidates-a01\\candidate-index.json",
+    "bytes": 36025,
+    "sha256": "767f2c58e77bef2e400d67d2ce9d86f521ea9fbd7e5316110634564fd64f081c"
+  },
+  "audit_report": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0169-media-tools-a01\\audit-attempt-a01\\report.json",
+    "bytes": 11503,
+    "sha256": "8ff29220c259fd0d9dc8581e89e9fcacc27f339a628af71fd97c4c73b6e269b2"
+  }
+}
