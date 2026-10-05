@@ -300,3 +300,13 @@ Military 同 raw 部署前 h8573 派生 cache 与本帧21字段相同，work del
 - 最后War117440524仍active/player-relative +25；三支当前玩家军队均非combat/retreat，active_event及pending_character_interaction为null。M7每轮先实际plan priming再单日推进，未将计划结果当作已执行动作。
 - 四互斥physical组各两日共64原JSON once（56 GREEN工具叶＋8 GREEN结果）；TOP及独立末SAVE为Root独占，actual-main004/006/008、专军力查询、旧包和共享专题均未重读。仅限本段实际正常围城观察loop；历史map-unavailable根因未由本段成功证明已修复。
 - 原始输出：`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v68/root-results/ordinary-r41-first-eight01`。母账/日周字段：同输出 `-consumed01/ROOT-DELIVERY.json`（SHA77a43ee318e91e85fe9704b1c236a83e2865887c25c74b7b049f5dfa2fbe8914）及 `ROOT-DAY-WEEK-FIELDS.json`（SHA10d267ebd8b51c0371a76d1a32887e9232b3e5608374fffa57b5ae1cd3407c08）。
+
+### R41 v68：随后四个实际正常围城日
+
+- Root SDK61256正常关闭，独立新增4个完整保存单日、96 raw小时、partial0/failed0：`53262192 → 53262288`，累计 `4915 / resumed1762 / Oct5+257（W41）`。前一8日仍是独立192小时段，本段只加4日，不重复计数。
+- 末帧 `native53 / public17 / raw53262288`，正常锚点 `h8614 / 98,332,739B / SHA256 65e4a9b432d7ad53c992cfeb45ebed54fe709d308406db203213e2ea70065c5b`；Robert29829 alive、原episode不变，War117440524仍active/player-relative+25，active_event及pending_character_interaction为null。
+- P470仍未占领，Siege503316504由main301989997持续围城：`C22540939 / T55000000 / remain32459061 / Q100000 / progress40.983% / B3085 / nativeETA321`，`CanStart=false / breach0 / assaultinactive`。ETA仍为当帧估计，不授予收复、突击或胜利信用。
+- 本段首次大work增量发生day01：before `raw53262192/native38/public2/C13885163/B3116`，after `raw53262216/native41/public5/C22236651/B3116`，实际Δ8351488；随后三日Δ为101488、101400、101400，末端C22540939。B在day02末由3116到3085。generic ordinary daily progress、phase length/counter/event-state等均null，不能将工作跳变归因于未采阶段事件、MAA动作或兵力变化；B也不冒充whole军力。
+- guard184549452仍在1038、`embarked4 / target3711 / route[3711]`，第三玩家CUnit285212713仍在1038 regular1/空route；main301989997在470 sieging3/空route。P3711仍未占领、`active_siege=null / B0`，三支玩家军队均非combat/retreat，没有到达或新围城信用。
+- 唯一physical消费者完成32原JSON once（28 GREEN工具叶＋4 GREEN日结果）；Root独占TOP和独立末SAVE，专用actual-main004/006/008、前8日原包及共享专题未重读；本段只形成四个实际正常围城观察loop。
+- 原始输出 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v68/root-results/ordinary-r41-next-four02`；`-consumed01/ROOT-DELIVERY.json` SHAc78e8d0c036da3090918b599af76751990dd0404ad541b0256c248c3496e7949；`ROOT-DAY-WEEK-FIELDS.json` SHA8675f866bfec7c3c5b36b937e1b6ce94768b86206609212c69810b104fb1b36a。
