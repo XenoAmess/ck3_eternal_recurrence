@@ -2431,15 +2431,510 @@
         "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
       },
       "effect_ast": {
-        "op": "call_transition",
-        "key": "unavailable_current_script_effect",
-        "args": {
-          "event_key": "knight_shieldmaiden_attack",
-          "source_boundary": [
-            "shieldmaiden random death reason and full side feedback not modeled"
+        "op": "if",
+        "condition": {
+          "op": "state_ref",
+          "path": "derived.enemy_alive_knight_at_or_below_root_opponent_threshold_exists",
+          "value_type": "bool"
+        },
+        "then": {
+          "op": "sequence",
+          "steps": [
+            {
+              "op": "select_side_knight",
+              "side": "enemy",
+              "filter": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "state_ref",
+                    "path": "candidate.alive",
+                    "value_type": "bool"
+                  },
+                  {
+                    "op": "compare",
+                    "operator": "<=",
+                    "left": {
+                      "op": "state_ref",
+                      "path": "candidate.skills.prowess_raw",
+                      "value_type": "fixed_q100000"
+                    },
+                    "right": {
+                      "op": "multiply",
+                      "left": {
+                        "op": "state_ref",
+                        "path": "root.skills.prowess_raw",
+                        "value_type": "fixed_q100000"
+                      },
+                      "right": {
+                        "op": "const_fixed",
+                        "raw": 80000,
+                        "scale": 100000
+                      },
+                      "rounding": "truncate_toward_zero"
+                    }
+                  }
+                ]
+              },
+              "weight": {
+                "op": "modifier_sequence",
+                "initial": {
+                  "op": "const_fixed",
+                  "raw": 10000000,
+                  "scale": 100000
+                },
+                "rounding": "q100000_truncate_toward_zero_after_each_operation",
+                "modifiers": [
+                  {
+                    "op": "modifier",
+                    "mode": "factor",
+                    "value": {
+                      "op": "const_fixed",
+                      "raw": 75000,
+                      "scale": 100000
+                    },
+                    "condition": {
+                      "op": "state_ref",
+                      "path": "candidate.is_acclaimed",
+                      "value_type": "bool"
+                    }
+                  },
+                  {
+                    "op": "modifier",
+                    "mode": "factor",
+                    "value": {
+                      "op": "const_fixed",
+                      "raw": 75000,
+                      "scale": 100000
+                    },
+                    "condition": {
+                      "op": "state_ref",
+                      "path": "candidate.perks.stalwart_leader",
+                      "value_type": "bool"
+                    }
+                  },
+                  {
+                    "op": "modifier",
+                    "mode": "factor",
+                    "value": {
+                      "op": "const_fixed",
+                      "raw": 75000,
+                      "scale": 100000
+                    },
+                    "condition": {
+                      "op": "state_ref",
+                      "path": "candidate.dynasty.perks.warfare_legacy_3",
+                      "value_type": "bool"
+                    }
+                  }
+                ],
+                "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+              },
+              "order_policy": "native_random_side_knight_candidate_order_unresolved",
+              "on_selected": {
+                "op": "call_transition",
+                "key": "no_op",
+                "args": {},
+                "dependencies": []
+              }
+            },
+            {
+              "op": "if",
+              "condition": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "state_ref",
+                    "path": "root.alive",
+                    "value_type": "bool"
+                  },
+                  {
+                    "op": "state_ref",
+                    "path": "selected_enemy_knight.alive",
+                    "value_type": "bool"
+                  }
+                ]
+              },
+              "then": {
+                "op": "sequence",
+                "steps": [
+                  {
+                    "op": "call_transition",
+                    "key": "request_kill_prestige_12003",
+                    "args": {
+                      "target": "root",
+                      "source_event_key": "knight_shieldmaiden_attack"
+                    },
+                    "dependencies": [
+                      "selected_enemy_knight.primary_title.exists",
+                      "selected_enemy_knight.primary_title.tier_raw",
+                      "selected_enemy_knight.is_lowborn"
+                    ]
+                  },
+                  {
+                    "op": "call_transition",
+                    "key": "request_knight_growth_12003",
+                    "args": {
+                      "target": "root",
+                      "source_event_key": "knight_shieldmaiden_attack"
+                    },
+                    "dependencies": [
+                      "root.skills.learning_raw",
+                      "root.traits_and_culture_for_blademaster",
+                      "root.dynasty.perks.warfare_legacy_3",
+                      "root.liege.exists",
+                      "root.liege.is_ai",
+                      "root.flags.was_the_target_of_event_court_5060",
+                      "root.variables.number_of_impressive_knight_things.exists",
+                      "root.flags.is_schedueled_for_court_5061_maintenance"
+                    ]
+                  },
+                  {
+                    "op": "random_list",
+                    "order_policy": "source_order",
+                    "branches": [
+                      {
+                        "op": "random_branch",
+                        "key": "death_decapitated",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 1000000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "const_bool",
+                          "value": true
+                        },
+                        "weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_shieldmaiden_attack",
+                                "payload": {
+                                  "key": "shieldmaiden_skill_killed_enemy_no_trait_v1",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_shieldmaiden_attack",
+                                "payload": {
+                                  "reason_key": "death_decapitated"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "op": "random_branch",
+                        "key": "death_cloven_in_half",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 1000000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "const_bool",
+                          "value": true
+                        },
+                        "weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_shieldmaiden_attack",
+                                "payload": {
+                                  "key": "shieldmaiden_skill_killed_enemy_no_trait_v2",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_shieldmaiden_attack",
+                                "payload": {
+                                  "reason_key": "death_cloven_in_half"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "op": "random_branch",
+                        "key": "death_viciously_dismembered",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 1000000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "const_bool",
+                          "value": true
+                        },
+                        "weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_shieldmaiden_attack",
+                                "payload": {
+                                  "key": "shieldmaiden_skill_killed_enemy_no_trait_v3",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_shieldmaiden_attack",
+                                "payload": {
+                                  "reason_key": "death_viciously_dismembered"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "op": "random_branch",
+                        "key": "death_piteously_cut_down",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 1000000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "const_bool",
+                          "value": true
+                        },
+                        "weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_shieldmaiden_attack",
+                                "payload": {
+                                  "key": "shieldmaiden_skill_killed_enemy_no_trait_v4",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_shieldmaiden_attack",
+                                "payload": {
+                                  "reason_key": "death_piteously_cut_down"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "op": "random_branch",
+                        "key": "death_chopped_to_pieces",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 1000000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "const_bool",
+                          "value": true
+                        },
+                        "weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_shieldmaiden_attack",
+                                "payload": {
+                                  "key": "shieldmaiden_skill_killed_enemy_no_trait_v5",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_shieldmaiden_attack",
+                                "payload": {
+                                  "reason_key": "death_chopped_to_pieces"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "op": "if",
+                    "condition": {
+                      "op": "state_ref",
+                      "path": "selected_enemy_knight.accolade.exists",
+                      "value_type": "bool"
+                    },
+                    "then": {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "add_glory",
+                        "target": "selected_enemy_knight.accolade",
+                        "source_event_key": "knight_shieldmaiden_attack",
+                        "payload": {
+                          "value_raw": 2500000,
+                          "scale": 100000
+                        },
+                        "refs": {
+                          "accolade_id": "selected_enemy_knight.accolade_id"
+                        }
+                      },
+                      "dependencies": [
+                        "selected_enemy_knight.accolade_id"
+                      ]
+                    },
+                    "else": {
+                      "op": "call_transition",
+                      "key": "no_op",
+                      "args": {},
+                      "dependencies": []
+                    }
+                  }
+                ]
+              },
+              "else": {
+                "op": "call_transition",
+                "key": "no_op",
+                "args": {},
+                "dependencies": []
+              }
+            }
           ]
         },
-        "dependencies": []
+        "else": {
+          "op": "call_transition",
+          "key": "no_op",
+          "args": {},
+          "dependencies": []
+        }
       },
       "transition_tags": [
         "enemy_knight_death",
@@ -2449,16 +2944,36 @@
         "same_day_recompute_unverified"
       ],
       "state_dependencies": [
+        "candidate.alive",
+        "candidate.dynasty.perks.warfare_legacy_3",
+        "candidate.is_acclaimed",
+        "candidate.perks.stalwart_leader",
+        "candidate.skills.prowess_raw",
         "derived.enemy_alive_knight_at_or_below_root_opponent_threshold_exists",
         "derived.root_has_any_maim_injury",
         "derived.root_has_any_wounded_rank_1_2_3",
+        "root.alive",
         "root.dynasty.perks.warfare_legacy_3",
+        "root.flags.is_schedueled_for_court_5061_maintenance",
+        "root.flags.was_the_target_of_event_court_5060",
         "root.is_acclaimed",
         "root.is_ai",
+        "root.liege.exists",
+        "root.liege.is_ai",
         "root.perks.stalwart_leader",
+        "root.skills.learning_raw",
+        "root.skills.prowess_raw",
         "root.traits.giant",
         "root.traits.shieldmaiden",
-        "root.traits.wrathful"
+        "root.traits.wrathful",
+        "root.traits_and_culture_for_blademaster",
+        "root.variables.number_of_impressive_knight_things.exists",
+        "selected_enemy_knight.accolade.exists",
+        "selected_enemy_knight.accolade_id",
+        "selected_enemy_knight.alive",
+        "selected_enemy_knight.is_lowborn",
+        "selected_enemy_knight.primary_title.exists",
+        "selected_enemy_knight.primary_title.tier_raw"
       ]
     },
     {
@@ -4410,5 +4925,5 @@
       "current_12003_inventory_rows_without_bounded_effect_implementation"
     ]
   },
-  "canonical_manifest_sha256": "88C2DDA5691B7D3A910BA716196786EEA7517D642C36BD8DBC8F0B01009F948C"
+  "canonical_manifest_sha256": "4991A7DD79EF1453EFC69838DBAE762308D0DF79E66F67E0D283DB8B482491F9"
 }
