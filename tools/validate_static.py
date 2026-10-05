@@ -1259,7 +1259,7 @@ def mechanic_checks(errors):
         "Not( SuccessionEventWindow.GetDeadCharacter.IsAlive )",
         "Not( SuccessionEventWindow.GetPlayerHeir.IsValid )",
         "GetTrait( 'xar_glassfire_gaze' )",
-        "GetPlayer.MakeScope.Var('xar_no_heir_score').GetValue",
+        "GetGlobalVariable('xa_settlement_final_score').GetValue",
         "Localize('xar.no_heir.footer')", "SuccessionEventWindow.GoToMenu",
     )
     if any(token not in no_heir_gui for token in no_heir_gui_requirements):
@@ -1510,6 +1510,17 @@ def mechanic_checks(errors):
         ) not in compact_script(score_snapshot_event):
             errors.append(
                 f"no-heir UI no longer consumes committed settlement field {source}")
+    no_heir_formats = {"score": "1", "subtotal": "1", "delta": "+0"}
+    for target, source in no_heir_projection.items():
+        expression = (
+            f"[GetGlobalVariable('{source}').GetValue|"
+            f"{no_heir_formats.get(target, '0')}]")
+        if no_heir_gui.count(expression) != 1:
+            errors.append(
+                f"no-heir GUI must read committed global {source} exactly once")
+    if ("GetPlayer.MakeScope.Var('xar_no_heir_" in no_heir_gui
+            or "GetDeadCharacter.MakeScope.Var(" in no_heir_gui):
+        errors.append("no-heir GUI must not depend on terminal character variables")
     visible_projection = {
         "xar_bless_n": "xa_settlement_blessing_count",
         "xar_reject_n": "xa_settlement_refusal_count",

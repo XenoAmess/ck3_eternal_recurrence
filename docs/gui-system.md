@@ -35,7 +35,8 @@ GUI 数据函数并非全局可用，很多上下文由代码只注入到特定�
 - 结论：要动教程窗口的东西，就 override `gui/window_tutorial.gui` 本体（mod 同路径文件整体覆盖），不要试图在外部窗口遥控。
 - 2026-08-18 CK3 1.19.0.6 实测：`SuccessionEventWindow.*` 的可见性 getter 在注册的外部窗口可求值，但其文字 getter、鼠标输入和 `GoToMenu` action 不具备完整上下文。无继承人结算因此由 `tools/gen_no_heir_gui.py` 把 `xar_no_heir_settlement_widget` 注入原生 `window_succession_event.gui`；只有原生窗口内的按钮能可靠打开退出确认。
 - 原生窗口被 `.gitignore` 排除，clean checkout 不能把本机游戏文件当校验 fixture。跟踪投影可先移除唯一注入并恢复原版正文，再用当前 CK3 1.20.0.2 canonical text SHA-256 `80132a0b5bb2c3e8c8f7b676c964b2c2eafec731ca5e25b98092aa437564d438` 固定其语义；该摘要基于移除 UTF-8 BOM、把换行规范化为 LF 后的 UTF-8 正文。随后重新注入并逐字比对投影；本机存在原版源时再追加两份正文完全相等的强校验。该可逆契约由 `tools/test_gen_no_heir_gui.py` 覆盖，不需要提交第二份 Paradox 原版 fixture。此前 1.19.0.6 摘要为 `322971347711308a51bcb16e3c34a7bd9eae5e7938243699ec8fe3691d8c7406`；本次刷新保留教会政体的两个新原生继承按钮，运行期验证状态见 [新版兼容候选记录](ck3-1.20.0.2-eternal-recurrence-compatibility.md)。
-- 死亡后的自定义数值用 `GetPlayer.MakeScope.Var(...).GetValue` 可读；直接从 `SuccessionEventWindow.GetDeadCharacter.MakeScope` 读取会显示空白。写值必须在可见窗口初始化前经过隐藏事件提交边界。
+- 历史 CK3 1.19.0.6 场景曾用 `GetPlayer.MakeScope.Var(...).GetValue` 读取死亡后的角色影子变量；该观察不能外推到新版本或保证隐藏 UI 递送事件可达。2026-10-05 的 CK3 1.20.0.3 R18 中，native 已读取完整 `xa_settlement_*` 全局提交并确认 tutorial 纪录落盘，但原生无继承结算 widget 的八个角色变量 getter 全显示 0。现候选改用 `GetGlobalVariable('xa_settlement_...').GetValue` 直接读取既有 save-global payload，保留原格式、可见性与退出动作；不再依赖当前 `GetPlayer` 或隐藏 `xar.1002` 的角色影子副本。静态/构建通过不等于修改后的实机八值通过，需新冷轮验证。
+- `GetGlobalVariable` 是 CK3 官方提供的脚本全局变量 GUI 数据函数，见 [官方 modding changelog](https://store.steampowered.com/news/posts/?appids=1158310&enddate=1623139446&feed=steam_community_announcements)。本机 1.20.0.3 EXE（SHA `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`）保留该函数名；字符串存在只证明静态名称存在，死亡窗口的实际求值仍由新实机验证。直接从 `SuccessionEventWindow.GetDeadCharacter.MakeScope` 读取曾显示空白，不能用它替代稳定全局投影。
 
 ## scripted_gui 执行链
 

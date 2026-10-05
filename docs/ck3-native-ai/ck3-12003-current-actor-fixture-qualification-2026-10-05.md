@@ -106,3 +106,27 @@ R16 harness 于 `06:48:47.400146Z` 真实 RED 关闭；managed thread finished /
 NoHeir 的原01→43业务、真实死亡及八项渲染值仍未跑，旧 R15 原生退出0及随后 HRED、R14 GUI16/16、writer33/reader12 等各自范围保留，不增加本场产品或发布信用。
 
 证据：[R16 原00失败及受管退场](C:/workspace/ck3-upgrade-20261005/main-noheir-r16-readonly-monitor-agent-01/actual-R16-original00-failed-pact-event-and-closed-thin-02.json)，SHA `3f728f4df7d98c2d5f87794fa19317e21400f6e8a133f2bb3809d83e85a0a6be`；[独立 caller/source 与 CAS3146 补记](C:/workspace/ck3-upgrade-20261005/main-noheir-r16-readonly-monitor-agent-01/actual-R16-CAS3146-and-caller-source-addendum-03.json)；[Root 实际 release](C:/workspace/ck3-upgrade-20261005/main-r16-root-closeout-01/screen-release-01.json)。
+
+## 2026-10-05：Main R17 真实 full18、D17 与受管闭合
+
+R17 的 Root physical Start 实际一次，原生产86与 NoHeir fixture12 未借用旧1.19信用。pact实例1在新只读稳定门禁中实际两次一致；原00随后真实通过18项readiness，原生规则实际89项，D0/date raw53144328、角色31254、PID10748/gen1、episode `native-31254-a66de846d6b9`。89是本场campaign-root真实条数，不是R14 Main GUI90，旧R16 original00 RED及未唯一归因的竞态仍保留。[开局资格薄核](C:/workspace/ck3-upgrade-20261005/main-noheir-r17-readonly-monitor-agent-01/actual-R17-startup-gate2-original00-full18-rules89-thin-02.json)。
+
+最终实际100/100 finished/ok、harness GREEN仅覆盖已执行步骤与管理清场。17次自然日各+24并暂停，末次D16/date53144712→D17/date53144736。真实log取得 `cca120.13 / NO_HEIR_DEATH_OPTION_READY`、`cca120.2 / PASS no_heir_precondition`；原生快照为instance5/两项enabled options，尚无typed event-definition身份，未执行`cca120.12`、death、结算八值或正常GUI退出。fixed hold到期使原06b15后的单独after观察未入队，不能宣称原43阶段全部完成。[关闭及业务边界](C:/workspace/ck3-upgrade-20261005/main-noheir-r17-readonly-monitor-agent-01/actual-R17-managed-closed-and-predeath-boundary-thin-05.json)、[有限推进薄包](C:/workspace/ck3-upgrade-20261005/main-r17-finite-delegate-agent-01/delegated-R17-final-stop-thin-packet-01.json)。
+
+D16 checkpoint 68,894,815 B/SHA `01ae0701a7d30ef5c657d602171145b098abfdd43073f9cb58f6534449d30951`，不包含原场D17；后续R18仅是新epoch冷加载并自然重建一天的计划，不预填通过。writer33/reader12、Creator16、ColdR15已赚取的范围继续保留，不因本场未死亡而重复。
+
+实际native受管stop/exit1，harness10:14:09.006399 UTC finished/error null/thread finished/cleanup_ok；treegone/job0/库存空。旧a56 keeper3335/thread_exited后，Root CAS3336于10:20:02.841015 UTC done/resources[]，不能称GUI自退0。[Root最终回读](C:/workspace/ck3-upgrade-20261005/main-r17-root-closeout-01/actual-final-readback-01.json)、[CAS3336](C:/workspace/ck3-upgrade-20261005/main-r17-root-closeout-01/screen-release-01.json)。
+
+关闭后error.log实际4,900 B/38条`[E]`，SHA `38ad254a198784715466f043e7ebfc7b8979d4603e9b06c050a35a1dfdfa3840`；10条变量提示加28条formatter控制字节错误。原Main `project_error_lines` AST实际命中0，仅证明原`xar`/trait-star门禁未命中，不授予全局零错误或vanilla豁免；新增28条继续UNKNOWN_NOT_WAIVED。[精确原日志判定](C:/workspace/ck3-upgrade-20261005/main-r17-three-doc-append-prep-agent-01/original-project-error-lines-receipt-01.json)。原发布条款未把court58首caller调查列为必跑硬门禁，历史UNKNOWN保留，不据此扩成无止境验收；确定性新production错误仍须修复后另起验证。Main正式发布仍pending，累计 **4/10＝40%**，原完整Notes匿名回读、fresh-cache、正式构建及changelog master闭环不可省略。详情见[Main专题](../ck3-1.20.0.3-eternal-recurrence-readiness-2026-10-05.md)与[原门禁核证](C:/workspace/ck3-upgrade-20261005/main-release-hard-gates-readonly-agent-01/ROOT-CARD-01.md)。
+
+## 2026-10-05：Main R18 death-once与exit0成立，生产八值GUI失败
+
+R18冷加载R17的D16，在新PID15912/gen1、episode `native-31254-df4dce89cee9`重新取得原00/full18/89规则，再实际自然推进53144712→53144736、精确一天+24。旧R17 planned段保留历史，不重放旧epoch动作。[新资格](C:/workspace/ck3-upgrade-20261005/main-noheir-r18-readonly-monitor-agent-01/actual-R18-new-epoch-original00-full18-D16-rules89-thin-02.json)、[实际一天](C:/workspace/ck3-upgrade-20261005/main-noheir-r18-readonly-monitor-agent-01/actual-R18-saved-D16-D17-natural-day-and-new-ready-03.json)。
+
+Typed query实际识别instance5=`cca120.12`/source角色31254，death-submit-once一次成功。原生公开结算ready、terminal played_character_dead、commit1/record_written=true；八值按最终分量/拒绝前分量/交易/拒绝/契约/旧纪录/候选/差值依次 **2.97/3/0/1/0/0/2/2**。这些native字段不能冒充渲染值。[真实死亡与结算](C:/workspace/ck3-upgrade-20261005/main-noheir-r18-readonly-monitor-agent-01/actual-R18-typed-death-once-and-public-settlement-thin-04.json)。
+
+Root直接原图确认唯一widget/summary、死者31254、无玩家继承人及可用退出；实际八值全部显示0，三项零值一致、五项非零源值失配，结果为 **生产GUI RED**。原08两树仅结构413/65控件，无rendered-text信用；harness或native数据不能冲销这项故障。[原图判定](C:/workspace/ck3-upgrade-20261005/main-r18-terminal-original-root-01/actual-eight-values-root-observation-01.json)，SHA `0bed132c385c8eec548a92902d6015be6e258fe76b3ceb84f5d1c3cdcf050d9e`；[两树边界](C:/workspace/ck3-upgrade-20261005/main-noheir-r18-readonly-monitor-agent-01/actual-R18-terminal-trees-and-Root-GUI-native-difference-05.json)。
+
+Root实际GUI两次点击后，OS/native于11:29:34Z正常exit0；最终harness14/14 GREEN/error null/thread finished/cleanup_ok，全树gone、job0及库存空。旧a57 keeper3393后CAS3394于11:33:24Z done/resources[]。死亡后运行中及退出后tutorial各两读，全部75 B/SHA `56300fb968e34e3383e5ecbd103face48efd05f15d54aa8966e17750a5166a64`、含`xar_hs_ge_2`，不授八值或新冷加载信用。[最终薄核](C:/workspace/ck3-upgrade-20261005/main-noheir-r18-readonly-monitor-agent-01/actual-R18-final14-native-exit0-HGREEN-with-GUI_RED-06.json)、[Root闭合](C:/workspace/ck3-upgrade-20261005/main-r18-root-closeout-01/actual-final-readback-01.json)、[CAS3394](C:/workspace/ck3-upgrade-20261005/main-r18-root-closeout-01/screen-release-01.json)。
+
+现八getter读取GetPlayer角色shadow，修复路线改读已提交global源；GetPlayer是否null未实证。owner与独审后，R19计划冷加载同D16只复验受影响GUI/terminal/正常exit，尚无PASS，不重复writer33/reader12、Creator16或ColdR15。确定性显示故障仍是正式发布阻断；Main发布新增0，累计 **4/10＝40%**。详见[Main专题](../ck3-1.20.0.3-eternal-recurrence-readiness-2026-10-05.md)。

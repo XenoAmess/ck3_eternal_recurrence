@@ -1,4 +1,6 @@
 ﻿# Widget type injected into the native succession window by gen_no_heir_gui.py.
+# Read the committed save-global payload: the player scope and the delayed
+# no-heir character snapshot are not authoritative after the terminal boundary.
 types XARNoHeirTypes {
 	type xar_no_heir_settlement_widget = widget {
 		name = "xar_no_heir_settlement_widget"
@@ -43,49 +45,49 @@ types XARNoHeirTypes {
 					layoutpolicy_horizontal = expanding
 					text_single = { text = "[Localize('xar.no_heir.score')]" default_format = "#high" }
 					expand = {}
-					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_score').GetValue|1]" default_format = "#V" }
+					text_single = { raw_text = "[GetGlobalVariable('xa_settlement_final_score').GetValue|1]" default_format = "#V" }
 				}
 				hbox = {
 					layoutpolicy_horizontal = expanding
 					text_single = { text = "[Localize('xar.no_heir.subtotal')]" default_format = "#high" }
 					expand = {}
-					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_subtotal').GetValue|1]" default_format = "#high" }
+					text_single = { raw_text = "[GetGlobalVariable('xa_settlement_score_before_reject').GetValue|1]" default_format = "#high" }
 				}
 				hbox = {
 					layoutpolicy_horizontal = expanding
 					text_single = { text = "[Localize('xar.no_heir.pairs')]" default_format = "#high" }
 					expand = {}
-					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_pairs').GetValue|0]" default_format = "#high" }
+					text_single = { raw_text = "[GetGlobalVariable('xa_settlement_blessing_count').GetValue|0]" default_format = "#high" }
 				}
 				hbox = {
 					layoutpolicy_horizontal = expanding
 					text_single = { text = "[Localize('xar.no_heir.refusals')]" default_format = "#high" }
 					expand = {}
-					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_refusals').GetValue|0]" default_format = "#high" }
+					text_single = { raw_text = "[GetGlobalVariable('xa_settlement_refusal_count').GetValue|0]" default_format = "#high" }
 				}
 				hbox = {
 					layoutpolicy_horizontal = expanding
 					text_single = { text = "[Localize('xar.no_heir.contract')]" default_format = "#high" }
 					expand = {}
-					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_contract').GetValue|0]" default_format = "#high" }
+					text_single = { raw_text = "[GetGlobalVariable('xa_settlement_contract_progress').GetValue|0]" default_format = "#high" }
 				}
 				hbox = {
 					layoutpolicy_horizontal = expanding
 					text_single = { text = "[Localize('xar.no_heir.old')]" default_format = "#high" }
 					expand = {}
-					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_old').GetValue|0]" default_format = "#high" }
+					text_single = { raw_text = "[GetGlobalVariable('xa_settlement_old_record').GetValue|0]" default_format = "#high" }
 				}
 				hbox = {
 					layoutpolicy_horizontal = expanding
 					text_single = { text = "[Localize('xar.no_heir.candidate')]" default_format = "#high" }
 					expand = {}
-					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_candidate').GetValue|0]" default_format = "#V" }
+					text_single = { raw_text = "[GetGlobalVariable('xa_settlement_record_candidate').GetValue|0]" default_format = "#V" }
 				}
 				hbox = {
 					layoutpolicy_horizontal = expanding
 					text_single = { text = "[Localize('xar.no_heir.delta')]" default_format = "#high" }
 					expand = {}
-					text_single = { raw_text = "[GetPlayer.MakeScope.Var('xar_no_heir_delta').GetValue|+0]" default_format = "#high" }
+					text_single = { raw_text = "[GetGlobalVariable('xa_settlement_record_delta').GetValue|+0]" default_format = "#high" }
 				}
 
 				expand = {}
