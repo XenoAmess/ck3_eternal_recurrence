@@ -75,3 +75,9 @@ advantage, original constructor attribution, historical cross-side clamp order
 and future forecast remain separate. External implementation receipt and the
 prepared production replay are under
 `Z:/ck3_mod_rewrite_process_assets/g2-background-round4-20261005/retained-advantage/next-constructor-inputs/implementation/`.
+
+## Exact compiled-producer qualification (2026-10-06T00:48:39+08:00)
+
+Source-firstd46b27c3, implementation12fd84e8→Root621bcf3f and fixture-onlyc32b3d1e→247ddf1b. Native-next-effects-01 atf89fad9b harnessRED171.6032096s called undeclared TransitionWire from newfixture; fix uses real production SerializeBattleTransitionV1 and fixture revision2, with no provider/model changes. Exact9d3461e4 fullDLL+two newtargets necessaryincrementalGREEN7.598313s. Firstnewonly CTests2/2GREENtotal.29s, stored.13s. Four actualnewproducerJSON frames once productionnormalizer/service/frozenadapter/signconsumerGREEN.0014874s(process.53773), no oldcase rerun. Foreignretained/empty/unavailable side andownedcopy preserve row+8amounts, order, legalnegative/zero, unknownkeyamount and side sign. Wholeadvantage, historicalstage/scale/cross-sideclamp andforecast remainfalse/unobserved.
+
+Sealed source/test/artifact/Oct6W41fields in `retained-advantage/next-constructor-inputs/implementation/ROOT-DELIVERY.json` SHA47a789505a92553821ed38bf09aec7eb388cd940a4263550f772817ff62bfd7d. Originalsource/Pythonreceipt preserved, newnative consumer pins4wire/5module SHA. Currentreadiness boundedstatic-ready; actualgame0. Nextconcreteinput is258A470 dynamic directgetter source, not mutating258B510 wrapper.

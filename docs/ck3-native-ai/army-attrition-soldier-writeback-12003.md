@@ -1117,3 +1117,29 @@ The newnative target `xar_ck3_12003_daily_queue_inputs_test` / CTest
 Rootcentralfirstqualification: invalid-prefix-first-call, empty-queue,
 partial-prefix and valid-fallback-first-call, underdaily-queue-inputs-wire.
 Currentreadiness is static-ready/PythonGREEN; no newlive/newgamedays.
+
+## Next daily queue production qualification adopted (2026-10-06T00:48:39+08:00)
+
+#2026-10-06 daily queue compiled-producer qualification
+
+At exactproduction source9d3461e4fe31c57d04824c331edda54d7a2fd8c2,
+necessaryincremental fullDLL+twoNEWtarget build GREEN7.598313s; firsttwo
+newonlyCTest2/2GREEN total.29s, queue target.08s. The firstcentralbatch
+storedfixtureTransitionWire undeclared/C3861 harnessRED171.6032s isretained,
+followedbyminimalactualserializer fix. QueuereaderTU alreadycompiled then,
+butno wirewasconsumed untilwholebatchGREEN.
+
+FourNEWactualC++productionserializer wires wereconsumedonce throughZ:/gb0
+productionnormalizer/kernel/service,4/4GREEN; consumerelapsed.033556700s,
+process1.623987s. Allfourpaths/bytes/SHA arein theconsumerreceipt. Initial
+requestindices1/none/none/0 preserve validfallback andunknownprefix branches.
+Logicalsource[]/temporaryorder are independentlyready; afterthefirstcall,
+remainingoccurrences stayexplicitlypost-removalstage ratherthanreusing
+initialgenerationpredicates. Sourceclosed GameState+8 datepointer metadata
+passes theproductionpath whileeventtime date remainsnull.
+
+Readiness is static-ready withfirstofflinecompiledproducerqualification.
+Actualtransfer/removal/poststate/fullorderedremoval/fullmonthlylifecycle
+stayfalse/null. Oldcases/oldsamples/old6callerwire reruns0; gamequeries/actions/
+newdays/runtimechanges0. Nextconcretefrontier is2A978A0's first2A98200 call
+footprint beforeitsownArmyidentity/registrygates, cachefirst/sourceonly.
