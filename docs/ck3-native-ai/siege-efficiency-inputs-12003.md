@@ -255,3 +255,9 @@ flowchart TD
 ```
 
 A/C source lanes now own the alternate constructor/class and executor/price closure. The concrete next source entry is the alternate `296F9F0` chain, followed by its real command and quote producer; no policy is designed from the wrong-domain values. Source metadata and correction receipts are retained at `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-engine-catalog-current/normal-create-action-source/` and `domain-correction/`.
+
+## 2026-10-05：R40 冷帧的守军逃亡与当前阶段输入
+
+Root MAIN21717 CLOSED0 GREEN后的sole新occupation006数据available，R40/PID110616/raw53260776、native:3/native3/public2/generation2/queryseq1，P470/holding1334/county1333/Siege503316504/main301989997仍active；fort6/G550/B3178，C4847152/T55000000=8.813%、ETA536，M60900/Q100000=.609、K0、D93732/Q100000=.93732，can_advance=true、CanStartAssault=false，未占领或完成。完整368rows派生cache保留原生occurrences，其它lane无需重读原叶。
+fresh phase为1800000=18天、counter12，cold prepared cache为可用真实0；event state breach0/starvation0/disease1/desertion_count1/stalemate0、prepared enum5。缓存0不代表立即due，K0只指本省当前合格tier，不代表库存或完整军团类型absence。原生desertion enum3写入一次5work并cap至当时T；与已交after24端相比，18日两端work差2187176恰好等于18×93732+500000，吻合当前count1，但不声明读取中间tick或具体事件日期，也不新增日信用。
+继续当前目标普通围城，等待已并行current roster/type/tier、stock/CanCreate与mercenary正式可用器械来源；动作后M/K/D独立读回才授改善收益。Root既有累计4852/接续1699/10月5日194保持，部署/消费新增0日，无强攻、城破或战争胜利信用。完整cache、compact和Oct5/W41字段见`Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/siege-efficiency-current-fort6-v65/r40-fresh-occupation/ROOT-DELIVERY.json`；原006 SHA`610e044a57789144ccb5c91d92497e9a7402f4e0aae3064c1e968ccc219ec5fe`。
