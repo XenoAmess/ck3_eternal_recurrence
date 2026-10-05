@@ -245,7 +245,8 @@ def apply_selected_phase_event_feedback_12003(
             gaps.append(_gap(index, "selected_phase_script_unknown", f"unsupported selected SCRIPT row {item.event_key}"))
             executions.append(None); consumed.append(False)
             continue
-        if item.event_key == ACCOLADE_QUALIFICATION_EVENT_KEY_12003:
+        if (item.event_key == ACCOLADE_QUALIFICATION_EVENT_KEY_12003
+                and item.one_seam_inputs is not None):
             result = execute_selected_accolade_qualification_12003(
                 item.context, script_outcomes=item.script_outcomes, inputs=item.one_seam_inputs,
                 source_context=item.source_context, manifest=item.manifest,
@@ -270,7 +271,7 @@ def apply_selected_phase_event_feedback_12003(
             gaps.extend(missing)
             if projection is not None:
                 caches.append(projection); refreshed_ids.add(refresh.knight_character_id)
-        if item.event_key == ACCOLADE_QUALIFICATION_EVENT_KEY_12003:
+        if "condition_feedback_ready" in result:
             for pending in result.get('feedback_pending', ()):
                 gaps.append(_gap(index, 'selected_accolade_condition',
                     str(pending), 'knight_qualify_for_accolade direct source / selected3765780'))
@@ -294,8 +295,7 @@ def apply_selected_phase_event_feedback_12003(
                 gaps.append(_gap(index, "selected_phase_script_callback", "nonempty selected event full callback closure"))
     ready = all(consumed) and not gaps and all(
         item.event_key in _EMPTY_EVENTS or item.event_key is None or
-        item.event_key == ACCOLADE_QUALIFICATION_EVENT_KEY_12003
-        and executions[index] is not None
+        executions[index] is not None
         and executions[index].get('condition_feedback_ready') is True
         for index, item in enumerate(selected))
     ledger = {"scope_kind": "caller_conditioned_selected_12003_primary_and_literal_cache_feedback",

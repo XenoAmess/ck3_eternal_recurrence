@@ -1561,16 +1561,767 @@
         "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
       },
       "effect_ast": {
-        "op": "call_transition",
-        "key": "unavailable_current_script_effect",
-        "args": {
-          "event_key": "knight_berserker_attack",
-          "source_boundary": [
-            "optional accolade scope changed",
-            "berserker random reason and full glory feedback not modeled"
+        "op": "if",
+        "condition": {
+          "op": "state_ref",
+          "path": "derived.enemy_alive_knight_at_or_below_root_opponent_threshold_exists",
+          "value_type": "bool"
+        },
+        "then": {
+          "op": "sequence",
+          "steps": [
+            {
+              "op": "select_side_knight",
+              "side": "enemy",
+              "filter": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "state_ref",
+                    "path": "candidate.alive",
+                    "value_type": "bool"
+                  },
+                  {
+                    "op": "compare",
+                    "operator": "<=",
+                    "left": {
+                      "op": "state_ref",
+                      "path": "candidate.skills.prowess_raw",
+                      "value_type": "fixed_q100000"
+                    },
+                    "right": {
+                      "op": "multiply",
+                      "left": {
+                        "op": "state_ref",
+                        "path": "root.skills.prowess_raw",
+                        "value_type": "fixed_q100000"
+                      },
+                      "right": {
+                        "op": "const_fixed",
+                        "raw": 80000,
+                        "scale": 100000
+                      },
+                      "rounding": "truncate_toward_zero"
+                    }
+                  }
+                ]
+              },
+              "weight": {
+                "op": "modifier_sequence",
+                "initial": {
+                  "op": "const_fixed",
+                  "raw": 10000000,
+                  "scale": 100000
+                },
+                "rounding": "q100000_truncate_toward_zero_after_each_operation",
+                "modifiers": [
+                  {
+                    "op": "modifier",
+                    "mode": "factor",
+                    "value": {
+                      "op": "const_fixed",
+                      "raw": 75000,
+                      "scale": 100000
+                    },
+                    "condition": {
+                      "op": "state_ref",
+                      "path": "candidate.is_acclaimed",
+                      "value_type": "bool"
+                    }
+                  },
+                  {
+                    "op": "modifier",
+                    "mode": "factor",
+                    "value": {
+                      "op": "const_fixed",
+                      "raw": 75000,
+                      "scale": 100000
+                    },
+                    "condition": {
+                      "op": "state_ref",
+                      "path": "candidate.perks.stalwart_leader",
+                      "value_type": "bool"
+                    }
+                  },
+                  {
+                    "op": "modifier",
+                    "mode": "factor",
+                    "value": {
+                      "op": "const_fixed",
+                      "raw": 75000,
+                      "scale": 100000
+                    },
+                    "condition": {
+                      "op": "state_ref",
+                      "path": "candidate.dynasty.perks.warfare_legacy_3",
+                      "value_type": "bool"
+                    }
+                  }
+                ],
+                "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+              },
+              "order_policy": "native_random_side_knight_candidate_order_unresolved",
+              "on_selected": {
+                "op": "call_transition",
+                "key": "no_op",
+                "args": {},
+                "dependencies": []
+              }
+            },
+            {
+              "op": "if",
+              "condition": {
+                "op": "all",
+                "args": [
+                  {
+                    "op": "state_ref",
+                    "path": "root.alive",
+                    "value_type": "bool"
+                  },
+                  {
+                    "op": "state_ref",
+                    "path": "selected_enemy_knight.alive",
+                    "value_type": "bool"
+                  }
+                ]
+              },
+              "then": {
+                "op": "sequence",
+                "steps": [
+                  {
+                    "op": "call_transition",
+                    "key": "request_kill_prestige_12003",
+                    "args": {
+                      "target": "root",
+                      "source_event_key": "knight_berserker_attack"
+                    },
+                    "dependencies": [
+                      "selected_enemy_knight.primary_title.exists",
+                      "selected_enemy_knight.primary_title.tier_raw",
+                      "selected_enemy_knight.is_lowborn"
+                    ]
+                  },
+                  {
+                    "op": "call_transition",
+                    "key": "request_knight_growth_12003",
+                    "args": {
+                      "target": "root",
+                      "source_event_key": "knight_berserker_attack"
+                    },
+                    "dependencies": [
+                      "root.skills.learning_raw",
+                      "root.traits_and_culture_for_blademaster",
+                      "root.dynasty.perks.warfare_legacy_3",
+                      "root.liege.exists",
+                      "root.liege.is_ai",
+                      "root.flags.was_the_target_of_event_court_5060",
+                      "root.variables.number_of_impressive_knight_things.exists",
+                      "root.flags.is_schedueled_for_court_5061_maintenance"
+                    ]
+                  },
+                  {
+                    "op": "random_list",
+                    "order_policy": "source_order",
+                    "branches": [
+                      {
+                        "op": "random_branch",
+                        "key": "death_head_ripped_off",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 1000000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "const_bool",
+                          "value": true
+                        },
+                        "weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "key": "berserker_rage_killed_enemy_no_trait",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "reason_key": "death_head_ripped_off"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "op": "random_branch",
+                        "key": "death_cloven_in_half",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 1000000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "const_bool",
+                          "value": true
+                        },
+                        "weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "key": "berserker_rage_killed_enemy_no_trait_v2",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "reason_key": "death_cloven_in_half"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "op": "random_branch",
+                        "key": "death_viciously_dismembered",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 1000000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "const_bool",
+                          "value": true
+                        },
+                        "weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "key": "berserker_rage_killed_enemy_no_trait_v3",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "reason_key": "death_viciously_dismembered"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "op": "random_branch",
+                        "key": "death_ripped_apart_limb_by_limb",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 1000000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "const_bool",
+                          "value": true
+                        },
+                        "weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "key": "berserker_rage_killed_enemy_no_trait_v4",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "reason_key": "death_ripped_apart_limb_by_limb"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "op": "random_branch",
+                        "key": "death_chopped_to_pieces",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 1000000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "const_bool",
+                          "value": true
+                        },
+                        "weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "key": "berserker_rage_killed_enemy_no_trait_v5",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "reason_key": "death_chopped_to_pieces"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "op": "random_branch",
+                        "key": "death_heart_ripped_out",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 1000000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "const_bool",
+                          "value": true
+                        },
+                        "weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "key": "berserker_rage_killed_enemy_no_trait_v6",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "reason_key": "death_heart_ripped_out"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "op": "random_branch",
+                        "key": "death_fear",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "not",
+                          "arg": {
+                            "op": "state_ref",
+                            "path": "selected_enemy_knight.traits.brave",
+                            "value_type": "bool"
+                          }
+                        },
+                        "weight": {
+                          "op": "modifier_sequence",
+                          "initial": {
+                            "op": "const_fixed",
+                            "raw": 100000,
+                            "scale": 100000
+                          },
+                          "rounding": "q100000_truncate_toward_zero_after_each_operation",
+                          "modifiers": [
+                            {
+                              "op": "modifier",
+                              "mode": "add",
+                              "value": {
+                                "op": "const_fixed",
+                                "raw": 9900000,
+                                "scale": 100000
+                              },
+                              "condition": {
+                                "op": "state_ref",
+                                "path": "selected_enemy_knight.traits.craven",
+                                "value_type": "bool"
+                              }
+                            }
+                          ],
+                          "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "key": "berserker_rage_killed_enemy_no_trait_v7",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "reason_key": "death_fear"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "op": "random_branch",
+                        "key": "death_skull_cracked_open",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 1000000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "const_bool",
+                          "value": true
+                        },
+                        "weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "key": "berserker_rage_killed_enemy_no_trait_v8",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "reason_key": "death_skull_cracked_open"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "op": "random_branch",
+                        "key": "death_strangled_with_own_intestines",
+                        "base_weight": {
+                          "op": "const_fixed",
+                          "raw": 1000000,
+                          "scale": 100000
+                        },
+                        "validity": {
+                          "op": "const_bool",
+                          "value": true
+                        },
+                        "weight": {
+                          "op": "const_fixed",
+                          "raw": 100000,
+                          "scale": 100000
+                        },
+                        "effect": {
+                          "op": "sequence",
+                          "steps": [
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "battle_event",
+                                "target": "combat_side",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "key": "berserker_rage_killed_enemy_no_trait_v9",
+                                  "type": "death",
+                                  "target_right": true
+                                },
+                                "refs": {
+                                  "left_portrait": "@root_character_id",
+                                  "right_portrait": "@selected_enemy_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            },
+                            {
+                              "op": "call_transition",
+                              "key": "request_effect_12003",
+                              "args": {
+                                "operation": "death",
+                                "target": "selected_enemy_knight",
+                                "source_event_key": "knight_berserker_attack",
+                                "payload": {
+                                  "reason_key": "death_strangled_with_own_intestines"
+                                },
+                                "refs": {
+                                  "killer_character_id": "@root_character_id"
+                                }
+                              },
+                              "dependencies": []
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "op": "if",
+                    "condition": {
+                      "op": "state_ref",
+                      "path": "selected_enemy_knight.accolade.exists",
+                      "value_type": "bool"
+                    },
+                    "then": {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "add_glory",
+                        "target": "selected_enemy_knight.accolade",
+                        "source_event_key": "knight_berserker_attack",
+                        "payload": {
+                          "value_raw": 1000000,
+                          "scale": 100000
+                        },
+                        "refs": {
+                          "accolade_id": "selected_enemy_knight.accolade_id"
+                        }
+                      },
+                      "dependencies": [
+                        "selected_enemy_knight.accolade_id"
+                      ]
+                    },
+                    "else": {
+                      "op": "call_transition",
+                      "key": "no_op",
+                      "args": {},
+                      "dependencies": []
+                    }
+                  }
+                ]
+              },
+              "else": {
+                "op": "call_transition",
+                "key": "no_op",
+                "args": {},
+                "dependencies": []
+              }
+            }
           ]
         },
-        "dependencies": []
+        "else": {
+          "op": "call_transition",
+          "key": "no_op",
+          "args": {},
+          "dependencies": []
+        }
       },
       "transition_tags": [
         "enemy_knight_death",
@@ -1580,16 +2331,38 @@
         "same_day_recompute_unverified"
       ],
       "state_dependencies": [
+        "candidate.alive",
+        "candidate.dynasty.perks.warfare_legacy_3",
+        "candidate.is_acclaimed",
+        "candidate.perks.stalwart_leader",
+        "candidate.skills.prowess_raw",
         "derived.enemy_alive_knight_at_or_below_root_opponent_threshold_exists",
         "derived.root_has_any_maim_injury",
         "derived.root_has_any_wounded_rank_1_2_3",
+        "root.alive",
         "root.dynasty.perks.warfare_legacy_3",
+        "root.flags.is_schedueled_for_court_5061_maintenance",
+        "root.flags.was_the_target_of_event_court_5060",
         "root.is_acclaimed",
         "root.is_ai",
+        "root.liege.exists",
+        "root.liege.is_ai",
         "root.perks.stalwart_leader",
+        "root.skills.learning_raw",
+        "root.skills.prowess_raw",
         "root.traits.berserker",
         "root.traits.giant",
-        "root.traits.wrathful"
+        "root.traits.wrathful",
+        "root.traits_and_culture_for_blademaster",
+        "root.variables.number_of_impressive_knight_things.exists",
+        "selected_enemy_knight.accolade.exists",
+        "selected_enemy_knight.accolade_id",
+        "selected_enemy_knight.alive",
+        "selected_enemy_knight.is_lowborn",
+        "selected_enemy_knight.primary_title.exists",
+        "selected_enemy_knight.primary_title.tier_raw",
+        "selected_enemy_knight.traits.brave",
+        "selected_enemy_knight.traits.craven"
       ]
     },
     {
@@ -4847,16 +5620,1077 @@
         "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
       },
       "effect_ast": {
-        "op": "call_transition",
-        "key": "unavailable_current_script_effect",
-        "args": {
-          "event_key": "knight_qualify_for_accolade",
-          "source_boundary": [
-            "accolade progress value now requires is_alive",
-            "full attribute unlock feedback not modeled"
-          ]
-        },
-        "dependencies": []
+        "op": "sequence",
+        "steps": [
+          {
+            "op": "call_transition",
+            "key": "request_effect_12003",
+            "args": {
+              "operation": "set_variable",
+              "target": "root.liege",
+              "source_event_key": "knight_qualify_for_accolade",
+              "payload": {
+                "name": "accolade_progress",
+                "value_raw": 0,
+                "scale": 100000
+              },
+              "refs": {
+                "receiver_character_id": "root.liege.full_character_id"
+              }
+            },
+            "dependencies": [
+              "root.liege.full_character_id"
+            ]
+          },
+          {
+            "op": "random_list",
+            "order_policy": "source_order",
+            "branches": [
+              {
+                "op": "random_branch",
+                "key": "skirmisher",
+                "base_weight": {
+                  "op": "const_fixed",
+                  "raw": 1000000,
+                  "scale": 100000
+                },
+                "validity": {
+                  "op": "all",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "root.knight_army.any_unit_type.skirmishers",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "not",
+                      "arg": {
+                        "op": "state_ref",
+                        "path": "root.accolade_attribute_triggers.skirmisher",
+                        "value_type": "bool"
+                      }
+                    }
+                  ]
+                },
+                "weight": {
+                  "op": "state_ref",
+                  "path": "root.knight_army.maa_regiment_base_type_counts_raw.skirmishers",
+                  "value_type": "fixed_q100000"
+                },
+                "effect": {
+                  "op": "sequence",
+                  "steps": [
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "name": "skirmisher_attribute_unlock",
+                          "value": true
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "send_interface_message",
+                        "target": "root.liege",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "type": "msg_accolade_eligibility",
+                          "title": "maa_accolade_unlock.t",
+                          "left_icon": "scope:acclaimed_knight",
+                          "custom_tooltip": "skirmisher_attribute.battle_message_tt"
+                        },
+                        "refs": {
+                          "left_icon_character_id": "@root_character_id",
+                          "receiver_character_id": "root.liege.full_character_id"
+                        }
+                      },
+                      "dependencies": [
+                        "root.liege.full_character_id"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "op": "random_branch",
+                "key": "archer",
+                "base_weight": {
+                  "op": "const_fixed",
+                  "raw": 1000000,
+                  "scale": 100000
+                },
+                "validity": {
+                  "op": "all",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "root.knight_army.any_non_crossbow_archer",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "not",
+                      "arg": {
+                        "op": "state_ref",
+                        "path": "root.accolade_attribute_triggers.archer",
+                        "value_type": "bool"
+                      }
+                    }
+                  ]
+                },
+                "weight": {
+                  "op": "subtract",
+                  "left": {
+                    "op": "subtract",
+                    "left": {
+                      "op": "subtract",
+                      "left": {
+                        "op": "state_ref",
+                        "path": "root.knight_army.maa_regiment_base_type_counts_raw.archers",
+                        "value_type": "fixed_q100000"
+                      },
+                      "right": {
+                        "op": "state_ref",
+                        "path": "root.knight_army.maa_regiment_exact_type_counts_raw.crossbowmen",
+                        "value_type": "fixed_q100000"
+                      }
+                    },
+                    "right": {
+                      "op": "state_ref",
+                      "path": "root.knight_army.maa_regiment_exact_type_counts_raw.shenbigong",
+                      "value_type": "fixed_q100000"
+                    }
+                  },
+                  "right": {
+                    "op": "state_ref",
+                    "path": "root.knight_army.maa_regiment_exact_type_counts_raw.accolade_maa_crossbowers",
+                    "value_type": "fixed_q100000"
+                  }
+                },
+                "effect": {
+                  "op": "sequence",
+                  "steps": [
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "name": "archer_attribute_unlock",
+                          "value": true
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "send_interface_message",
+                        "target": "root.liege",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "type": "msg_accolade_eligibility",
+                          "title": "maa_accolade_unlock.t",
+                          "left_icon": "scope:acclaimed_knight",
+                          "custom_tooltip": "archer_attribute.battle_message_tt"
+                        },
+                        "refs": {
+                          "left_icon_character_id": "@root_character_id",
+                          "receiver_character_id": "root.liege.full_character_id"
+                        }
+                      },
+                      "dependencies": [
+                        "root.liege.full_character_id"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "op": "random_branch",
+                "key": "crossbowmen",
+                "base_weight": {
+                  "op": "const_fixed",
+                  "raw": 1000000,
+                  "scale": 100000
+                },
+                "validity": {
+                  "op": "all",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "root.knight_army.any_crossbow_variant",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "not",
+                      "arg": {
+                        "op": "state_ref",
+                        "path": "root.accolade_attribute_triggers.crossbowmen",
+                        "value_type": "bool"
+                      }
+                    }
+                  ]
+                },
+                "weight": {
+                  "op": "modifier_sequence",
+                  "initial": {
+                    "op": "state_ref",
+                    "path": "root.knight_army.maa_regiment_exact_type_counts_raw.crossbowmen",
+                    "value_type": "fixed_q100000"
+                  },
+                  "rounding": "q100000_truncate_toward_zero_after_each_operation",
+                  "modifiers": [
+                    {
+                      "op": "modifier",
+                      "mode": "add",
+                      "value": {
+                        "op": "state_ref",
+                        "path": "root.knight_army.maa_regiment_exact_type_counts_raw.shenbigong",
+                        "value_type": "fixed_q100000"
+                      },
+                      "condition": {
+                        "op": "const_bool",
+                        "value": true
+                      }
+                    },
+                    {
+                      "op": "modifier",
+                      "mode": "add",
+                      "value": {
+                        "op": "state_ref",
+                        "path": "root.knight_army.maa_regiment_exact_type_counts_raw.accolade_maa_crossbowers",
+                        "value_type": "fixed_q100000"
+                      },
+                      "condition": {
+                        "op": "const_bool",
+                        "value": true
+                      }
+                    }
+                  ],
+                  "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
+                },
+                "effect": {
+                  "op": "sequence",
+                  "steps": [
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "name": "crossbowmen_attribute_unlock",
+                          "value": true
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "send_interface_message",
+                        "target": "root.liege",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "type": "msg_accolade_eligibility",
+                          "title": "maa_accolade_unlock.t",
+                          "left_icon": "scope:acclaimed_knight",
+                          "custom_tooltip": "crossbowmen_attribute.battle_message_tt"
+                        },
+                        "refs": {
+                          "left_icon_character_id": "@root_character_id",
+                          "receiver_character_id": "root.liege.full_character_id"
+                        }
+                      },
+                      "dependencies": [
+                        "root.liege.full_character_id"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "op": "random_branch",
+                "key": "pike",
+                "base_weight": {
+                  "op": "const_fixed",
+                  "raw": 1000000,
+                  "scale": 100000
+                },
+                "validity": {
+                  "op": "all",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "root.knight_army.any_unit_type.pikemen",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "not",
+                      "arg": {
+                        "op": "state_ref",
+                        "path": "root.accolade_attribute_triggers.pike",
+                        "value_type": "bool"
+                      }
+                    }
+                  ]
+                },
+                "weight": {
+                  "op": "state_ref",
+                  "path": "root.knight_army.maa_regiment_base_type_counts_raw.pikemen",
+                  "value_type": "fixed_q100000"
+                },
+                "effect": {
+                  "op": "sequence",
+                  "steps": [
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "name": "pike_attribute_unlock",
+                          "value": true
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "send_interface_message",
+                        "target": "root.liege",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "type": "msg_accolade_eligibility",
+                          "title": "maa_accolade_unlock.t",
+                          "left_icon": "scope:acclaimed_knight",
+                          "custom_tooltip": "pike_attribute.battle_message_tt"
+                        },
+                        "refs": {
+                          "left_icon_character_id": "@root_character_id",
+                          "receiver_character_id": "root.liege.full_character_id"
+                        }
+                      },
+                      "dependencies": [
+                        "root.liege.full_character_id"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "op": "random_branch",
+                "key": "vanguard",
+                "base_weight": {
+                  "op": "const_fixed",
+                  "raw": 1000000,
+                  "scale": 100000
+                },
+                "validity": {
+                  "op": "all",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "root.knight_army.any_unit_type.heavy_infantry",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "not",
+                      "arg": {
+                        "op": "state_ref",
+                        "path": "root.accolade_attribute_triggers.vanguard",
+                        "value_type": "bool"
+                      }
+                    }
+                  ]
+                },
+                "weight": {
+                  "op": "state_ref",
+                  "path": "root.knight_army.maa_regiment_base_type_counts_raw.heavy_infantry",
+                  "value_type": "fixed_q100000"
+                },
+                "effect": {
+                  "op": "sequence",
+                  "steps": [
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "name": "vanguard_attribute_unlock",
+                          "value": true
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "send_interface_message",
+                        "target": "root.liege",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "type": "msg_accolade_eligibility",
+                          "title": "maa_accolade_unlock.t",
+                          "left_icon": "scope:acclaimed_knight",
+                          "custom_tooltip": "vanguard_attribute.battle_message_tt"
+                        },
+                        "refs": {
+                          "left_icon_character_id": "@root_character_id",
+                          "receiver_character_id": "root.liege.full_character_id"
+                        }
+                      },
+                      "dependencies": [
+                        "root.liege.full_character_id"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "op": "random_branch",
+                "key": "outrider",
+                "base_weight": {
+                  "op": "const_fixed",
+                  "raw": 1000000,
+                  "scale": 100000
+                },
+                "validity": {
+                  "op": "all",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "root.knight_army.any_unit_type.light_cavalry",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "not",
+                      "arg": {
+                        "op": "state_ref",
+                        "path": "root.accolade_attribute_triggers.outrider",
+                        "value_type": "bool"
+                      }
+                    }
+                  ]
+                },
+                "weight": {
+                  "op": "state_ref",
+                  "path": "root.knight_army.maa_regiment_base_type_counts_raw.light_cavalry",
+                  "value_type": "fixed_q100000"
+                },
+                "effect": {
+                  "op": "sequence",
+                  "steps": [
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "name": "outrider_attribute_unlock",
+                          "value": true
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "send_interface_message",
+                        "target": "root.liege",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "type": "msg_accolade_eligibility",
+                          "title": "maa_accolade_unlock.t",
+                          "left_icon": "scope:acclaimed_knight",
+                          "custom_tooltip": "outrider_attribute.battle_message_tt"
+                        },
+                        "refs": {
+                          "left_icon_character_id": "@root_character_id",
+                          "receiver_character_id": "root.liege.full_character_id"
+                        }
+                      },
+                      "dependencies": [
+                        "root.liege.full_character_id"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "op": "random_branch",
+                "key": "lancer",
+                "base_weight": {
+                  "op": "const_fixed",
+                  "raw": 1000000,
+                  "scale": 100000
+                },
+                "validity": {
+                  "op": "all",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "root.knight_army.any_unit_type.heavy_cavalry",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "not",
+                      "arg": {
+                        "op": "state_ref",
+                        "path": "root.accolade_attribute_triggers.lancer",
+                        "value_type": "bool"
+                      }
+                    }
+                  ]
+                },
+                "weight": {
+                  "op": "state_ref",
+                  "path": "root.knight_army.maa_regiment_base_type_counts_raw.heavy_cavalry",
+                  "value_type": "fixed_q100000"
+                },
+                "effect": {
+                  "op": "sequence",
+                  "steps": [
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "name": "lancer_attribute_unlock",
+                          "value": true
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "send_interface_message",
+                        "target": "root.liege",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "type": "msg_accolade_eligibility",
+                          "title": "maa_accolade_unlock.t",
+                          "left_icon": "scope:acclaimed_knight",
+                          "custom_tooltip": "lancer_attribute.battle_message_tt"
+                        },
+                        "refs": {
+                          "left_icon_character_id": "@root_character_id",
+                          "receiver_character_id": "root.liege.full_character_id"
+                        }
+                      },
+                      "dependencies": [
+                        "root.liege.full_character_id"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "op": "random_branch",
+                "key": "camelry",
+                "base_weight": {
+                  "op": "const_fixed",
+                  "raw": 1000000,
+                  "scale": 100000
+                },
+                "validity": {
+                  "op": "all",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "root.knight_army.any_unit_type.camel_cavalry",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "not",
+                      "arg": {
+                        "op": "state_ref",
+                        "path": "root.accolade_attribute_triggers.camelry",
+                        "value_type": "bool"
+                      }
+                    }
+                  ]
+                },
+                "weight": {
+                  "op": "state_ref",
+                  "path": "root.knight_army.maa_regiment_base_type_counts_raw.camel_cavalry",
+                  "value_type": "fixed_q100000"
+                },
+                "effect": {
+                  "op": "sequence",
+                  "steps": [
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "name": "camelry_attribute_unlock",
+                          "value": true
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "send_interface_message",
+                        "target": "root.liege",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "type": "msg_accolade_eligibility",
+                          "title": "maa_accolade_unlock.t",
+                          "left_icon": "scope:acclaimed_knight",
+                          "custom_tooltip": "camelry_attribute.battle_message_tt"
+                        },
+                        "refs": {
+                          "left_icon_character_id": "@root_character_id",
+                          "receiver_character_id": "root.liege.full_character_id"
+                        }
+                      },
+                      "dependencies": [
+                        "root.liege.full_character_id"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "op": "random_branch",
+                "key": "elephantry",
+                "base_weight": {
+                  "op": "const_fixed",
+                  "raw": 1000000,
+                  "scale": 100000
+                },
+                "validity": {
+                  "op": "all",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "root.knight_army.any_unit_type.elephant_cavalry",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "not",
+                      "arg": {
+                        "op": "state_ref",
+                        "path": "root.accolade_attribute_triggers.elephantry",
+                        "value_type": "bool"
+                      }
+                    }
+                  ]
+                },
+                "weight": {
+                  "op": "state_ref",
+                  "path": "root.knight_army.maa_regiment_base_type_counts_raw.elephant_cavalry",
+                  "value_type": "fixed_q100000"
+                },
+                "effect": {
+                  "op": "sequence",
+                  "steps": [
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "name": "elephantry_attribute_unlock",
+                          "value": true
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "send_interface_message",
+                        "target": "root.liege",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "type": "msg_accolade_eligibility",
+                          "title": "maa_accolade_unlock.t",
+                          "left_icon": "scope:acclaimed_knight",
+                          "custom_tooltip": "elephantry_attribute.battle_message_tt"
+                        },
+                        "refs": {
+                          "left_icon_character_id": "@root_character_id",
+                          "receiver_character_id": "root.liege.full_character_id"
+                        }
+                      },
+                      "dependencies": [
+                        "root.liege.full_character_id"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "op": "random_branch",
+                "key": "horse_archer",
+                "base_weight": {
+                  "op": "const_fixed",
+                  "raw": 1000000,
+                  "scale": 100000
+                },
+                "validity": {
+                  "op": "all",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "root.knight_army.any_unit_type.archer_cavalry",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "not",
+                      "arg": {
+                        "op": "state_ref",
+                        "path": "root.accolade_attribute_triggers.horse_archer",
+                        "value_type": "bool"
+                      }
+                    }
+                  ]
+                },
+                "weight": {
+                  "op": "state_ref",
+                  "path": "root.knight_army.maa_regiment_base_type_counts_raw.archer_cavalry",
+                  "value_type": "fixed_q100000"
+                },
+                "effect": {
+                  "op": "sequence",
+                  "steps": [
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "name": "horse_archer_attribute_unlock",
+                          "value": true
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "send_interface_message",
+                        "target": "root.liege",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "type": "msg_accolade_eligibility",
+                          "title": "maa_accolade_unlock.t",
+                          "left_icon": "scope:acclaimed_knight",
+                          "custom_tooltip": "horse_archer_attribute.battle_message_tt"
+                        },
+                        "refs": {
+                          "left_icon_character_id": "@root_character_id",
+                          "receiver_character_id": "root.liege.full_character_id"
+                        }
+                      },
+                      "dependencies": [
+                        "root.liege.full_character_id"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "op": "random_branch",
+                "key": "gunpowder",
+                "base_weight": {
+                  "op": "const_fixed",
+                  "raw": 1000000,
+                  "scale": 100000
+                },
+                "validity": {
+                  "op": "all",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "root.knight_army.any_unit_type.gunpowder",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "not",
+                      "arg": {
+                        "op": "state_ref",
+                        "path": "root.accolade_attribute_triggers.gunpowder",
+                        "value_type": "bool"
+                      }
+                    }
+                  ]
+                },
+                "weight": {
+                  "op": "state_ref",
+                  "path": "root.knight_army.maa_regiment_base_type_counts_raw.gunpowder",
+                  "value_type": "fixed_q100000"
+                },
+                "effect": {
+                  "op": "sequence",
+                  "steps": [
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "name": "gunpowder_attribute_unlock",
+                          "value": true
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "send_interface_message",
+                        "target": "root.liege",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "type": "msg_accolade_eligibility",
+                          "title": "maa_accolade_unlock.t",
+                          "left_icon": "scope:acclaimed_knight",
+                          "custom_tooltip": "gunpowder_attribute.battle_message_tt"
+                        },
+                        "refs": {
+                          "left_icon_character_id": "@root_character_id",
+                          "receiver_character_id": "root.liege.full_character_id"
+                        }
+                      },
+                      "dependencies": [
+                        "root.liege.full_character_id"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "op": "random_branch",
+                "key": "fanatic",
+                "base_weight": {
+                  "op": "const_fixed",
+                  "raw": 1000000,
+                  "scale": 100000
+                },
+                "validity": {
+                  "op": "all",
+                  "args": [
+                    {
+                      "op": "state_ref",
+                      "path": "enemy_side.any_participant_faith_hostility_at_least_evil",
+                      "value_type": "bool"
+                    },
+                    {
+                      "op": "not",
+                      "arg": {
+                        "op": "state_ref",
+                        "path": "root.accolade_attribute_triggers.fanatic",
+                        "value_type": "bool"
+                      }
+                    }
+                  ]
+                },
+                "weight": {
+                  "op": "divide",
+                  "left": {
+                    "op": "state_ref",
+                    "path": "root.knight_army.maa_regiment_count_raw",
+                    "value_type": "fixed_q100000"
+                  },
+                  "right": {
+                    "op": "const_fixed",
+                    "raw": 200000,
+                    "scale": 100000
+                  },
+                  "rounding": "truncate_toward_zero"
+                },
+                "effect": {
+                  "op": "sequence",
+                  "steps": [
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "name": "fanatic_attribute_unlock",
+                          "value": true
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "send_interface_message",
+                        "target": "root.liege",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "type": "msg_accolade_eligibility",
+                          "title": "maa_accolade_unlock.t",
+                          "left_icon": "scope:acclaimed_knight",
+                          "custom_tooltip": "fanatic_attribute.battle_message_tt"
+                        },
+                        "refs": {
+                          "left_icon_character_id": "@root_character_id",
+                          "receiver_character_id": "root.liege.full_character_id"
+                        }
+                      },
+                      "dependencies": [
+                        "root.liege.full_character_id"
+                      ]
+                    }
+                  ]
+                }
+              },
+              {
+                "op": "random_branch",
+                "key": "valiant",
+                "base_weight": {
+                  "op": "const_fixed",
+                  "raw": 5000000,
+                  "scale": 100000
+                },
+                "validity": {
+                  "op": "all",
+                  "args": [
+                    {
+                      "op": "compare",
+                      "operator": ">=",
+                      "left": {
+                        "op": "state_ref",
+                        "path": "combat_side.army_size_raw",
+                        "value_type": "fixed_q100000"
+                      },
+                      "right": {
+                        "op": "multiply",
+                        "left": {
+                          "op": "state_ref",
+                          "path": "enemy_side.army_size_raw",
+                          "value_type": "fixed_q100000"
+                        },
+                        "right": {
+                          "op": "const_fixed",
+                          "raw": 66000,
+                          "scale": 100000
+                        },
+                        "rounding": "truncate_toward_zero"
+                      }
+                    },
+                    {
+                      "op": "not",
+                      "arg": {
+                        "op": "state_ref",
+                        "path": "root.accolade_attribute_triggers.valiant",
+                        "value_type": "bool"
+                      }
+                    }
+                  ]
+                },
+                "weight": {
+                  "op": "divide",
+                  "left": {
+                    "op": "state_ref",
+                    "path": "root.knight_army.maa_regiment_count_raw",
+                    "value_type": "fixed_q100000"
+                  },
+                  "right": {
+                    "op": "const_fixed",
+                    "raw": 200000,
+                    "scale": 100000
+                  },
+                  "rounding": "truncate_toward_zero"
+                },
+                "effect": {
+                  "op": "sequence",
+                  "steps": [
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "set_variable",
+                        "target": "root",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "name": "valiant_attribute_unlock",
+                          "value": true
+                        }
+                      },
+                      "dependencies": []
+                    },
+                    {
+                      "op": "call_transition",
+                      "key": "request_effect_12003",
+                      "args": {
+                        "operation": "send_interface_message",
+                        "target": "root.liege",
+                        "source_event_key": "knight_qualify_for_accolade",
+                        "payload": {
+                          "type": "msg_accolade_eligibility",
+                          "title": "maa_accolade_unlock.t",
+                          "left_icon": "scope:acclaimed_knight",
+                          "custom_tooltip": "valiant_attribute.battle_message_tt"
+                        },
+                        "refs": {
+                          "left_icon_character_id": "@root_character_id",
+                          "receiver_character_id": "root.liege.full_character_id"
+                        }
+                      },
+                      "dependencies": [
+                        "root.liege.full_character_id"
+                      ]
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
       },
       "transition_tags": [
         "accolade_progress_reset",
@@ -4865,15 +6699,56 @@
         "future_eligibility_feedback"
       ],
       "state_dependencies": [
+        "combat_side.army_size_raw",
         "derived.accolade_qualification_wound_factor_raw",
         "derived.root_ai_stalwart",
         "derived.root_is_wounded",
         "derived.root_player_stalwart",
+        "enemy_side.any_participant_faith_hostility_at_least_evil",
+        "enemy_side.army_size_raw",
+        "root.accolade_attribute_triggers.archer",
+        "root.accolade_attribute_triggers.camelry",
+        "root.accolade_attribute_triggers.crossbowmen",
+        "root.accolade_attribute_triggers.elephantry",
+        "root.accolade_attribute_triggers.fanatic",
+        "root.accolade_attribute_triggers.gunpowder",
+        "root.accolade_attribute_triggers.horse_archer",
+        "root.accolade_attribute_triggers.lancer",
+        "root.accolade_attribute_triggers.outrider",
+        "root.accolade_attribute_triggers.pike",
+        "root.accolade_attribute_triggers.skirmisher",
+        "root.accolade_attribute_triggers.valiant",
+        "root.accolade_attribute_triggers.vanguard",
         "root.can_be_acclaimed",
         "root.dynasty.perks.warfare_legacy_3",
         "root.is_acclaimed",
+        "root.knight_army.any_crossbow_variant",
+        "root.knight_army.any_non_crossbow_archer",
+        "root.knight_army.any_unit_type.archer_cavalry",
+        "root.knight_army.any_unit_type.camel_cavalry",
+        "root.knight_army.any_unit_type.elephant_cavalry",
+        "root.knight_army.any_unit_type.gunpowder",
+        "root.knight_army.any_unit_type.heavy_cavalry",
+        "root.knight_army.any_unit_type.heavy_infantry",
+        "root.knight_army.any_unit_type.light_cavalry",
+        "root.knight_army.any_unit_type.pikemen",
+        "root.knight_army.any_unit_type.skirmishers",
+        "root.knight_army.maa_regiment_base_type_counts_raw.archer_cavalry",
+        "root.knight_army.maa_regiment_base_type_counts_raw.archers",
+        "root.knight_army.maa_regiment_base_type_counts_raw.camel_cavalry",
+        "root.knight_army.maa_regiment_base_type_counts_raw.elephant_cavalry",
+        "root.knight_army.maa_regiment_base_type_counts_raw.gunpowder",
+        "root.knight_army.maa_regiment_base_type_counts_raw.heavy_cavalry",
+        "root.knight_army.maa_regiment_base_type_counts_raw.heavy_infantry",
+        "root.knight_army.maa_regiment_base_type_counts_raw.light_cavalry",
+        "root.knight_army.maa_regiment_base_type_counts_raw.pikemen",
+        "root.knight_army.maa_regiment_base_type_counts_raw.skirmishers",
         "root.knight_army.maa_regiment_count_raw",
+        "root.knight_army.maa_regiment_exact_type_counts_raw.accolade_maa_crossbowers",
+        "root.knight_army.maa_regiment_exact_type_counts_raw.crossbowmen",
+        "root.knight_army.maa_regiment_exact_type_counts_raw.shenbigong",
         "root.liege.accolade_progress_raw",
+        "root.liege.full_character_id",
         "root.skills.prowess_raw",
         "root.traits.ambitious",
         "root.traits.brave",
@@ -4921,9 +6796,8 @@
       "noncombat_observational_side_effects",
       "current_12003_full_wound_piety_stress_and_treatment_feedback",
       "current_12003_delayed_epilepsy_and_health_callbacks",
-      "current_12003_full_injury_reward_and_noncombat_feedback",
-      "current_12003_inventory_rows_without_bounded_effect_implementation"
+      "current_12003_full_injury_reward_and_noncombat_feedback"
     ]
   },
-  "canonical_manifest_sha256": "4991A7DD79EF1453EFC69838DBAE762308D0DF79E66F67E0D283DB8B482491F9"
+  "canonical_manifest_sha256": "974AABDC003066335F14A376B128AF55AA2CAB8E121F998CB3EB586A0E595952"
 }

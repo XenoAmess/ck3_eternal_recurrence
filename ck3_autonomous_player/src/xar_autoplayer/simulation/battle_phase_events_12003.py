@@ -68,9 +68,9 @@ EXECUTABLE_SHA256_12003 = (
     "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
 )
 STOCK_PHASE_EVENT_MANIFEST_SHA256_12003 = (
-    "4991A7DD79EF1453EFC69838DBAE762308D0DF79E66F67E0D283DB8B482491F9"
+    "974AABDC003066335F14A376B128AF55AA2CAB8E121F998CB3EB586A0E595952"
 )
-PHASE_EVENT_TRANSITION_VERSION_12003 = "ck3-1.20.0.3-caller-selected-primary-and-requested-effects-v5"
+PHASE_EVENT_TRANSITION_VERSION_12003 = "ck3-1.20.0.3-caller-selected-primary-and-requested-effects-v6"
 _MANIFEST_RESOURCE = "data/ck3_1_20_0_3_stock_combat_phase_events.json"
 SUPPORTED_SELECTED_EVENT_KEYS_12003 = (
     "commander_none",
@@ -78,12 +78,14 @@ SUPPORTED_SELECTED_EVENT_KEYS_12003 = (
     "commander_maimed",
     "commander_killed",
     "knight_none",
+    "knight_berserker_attack",
     "knight_becomes_incapable",
     "knight_become_berserker",
     "knight_shieldmaiden_attack",
     "knight_wounded",
     "knight_maimed",
     "knight_killed",
+    "knight_qualify_for_accolade",
 )
 _CALLER_TARGET_POLICY = "caller_explicit_character_targets_no_native_order_claim"
 _CONTEXT_KEYS = frozenset(
@@ -411,6 +413,7 @@ _REQUEST_TRANSITIONS_12003 = frozenset((
 KNIGHT_KILLED_SOURCE_API_SHA256_12003 = "8120F8760091DE225CACF0FED2EFBEC0AB0A09E111EF823CC139FBD62FBE4FA7"
 KNIGHT_BECOME_BERSERKER_SOURCE_API_SHA256_12003 = "DF07DA498EA68E64CE2754B831A341EEE983E3BAD75D9E3B2E141B3EFF5BE6AC"
 KNIGHT_SHIELDMAIDEN_SOURCE_API_SHA256_12003 = "CA3DC05906297D9F229AC350621A22F9B55200DD42AE0CD93FA292FA7D0893F6"
+FINAL_SELECTED_EFFECTS_SOURCE_API_SHA256_12003 = "DE88E5F1EF68FCDA836AB3A1C880596E913D177F7DE3CDFFA05A05BFDF4E3790"
 
 
 def _audit_selected_effect_12003(node, *, name, dependencies):
@@ -450,7 +453,8 @@ def _request_effect_12003(state, *, operation, target, payload=None, refs=None,
         if value is None and not path.startswith("@"):
             missing.append(path)
     character_id = (state.root_character_id if target == "root" else
-                    state.selected_enemy_character_id if target == "selected_enemy_knight" else None)
+                    state.selected_enemy_character_id if target == "selected_enemy_knight" else
+                    state.refs.get("root.liege.full_character_id") if target == "root.liege" else None)
     record = {"transition": "selected_effect_request", "stage": "requested",
         "operation": operation, "source_event_key": source_event_key,
         "target_scope": target, "target_character_id": character_id,
@@ -593,7 +597,8 @@ def _execute_selected_effect_12003(node_value: object, *, state: PhaseEventTrial
             if int(candidate["character_id"]) in state.enemy_membership
             and _eval_bool(node["filter"], state=state, candidate=candidate, name=f"{name}.filter")
         ]
-        if name.startswith(("knight_become_berserker.", "knight_shieldmaiden_attack.")):
+        if name.startswith(("knight_become_berserker.", "knight_shieldmaiden_attack.",
+                            "knight_berserker_attack.")):
             purpose = name.split(".", 1)[0] + ":enemy_knight"
             candidate_weights = [
                 {"character_id": int(candidate["character_id"]),
@@ -624,8 +629,14 @@ def _execute_selected_effect_12003(node_value: object, *, state: PhaseEventTrial
                 _eval_fixed(branch["base_weight"], state=state, name=f"{name}.branches[{index}].base_weight"),
                 _eval_fixed(branch["weight"], state=state, name=f"{name}.branches[{index}].weight"),
             ) if valid else 0)
-        purpose = ("shieldmaiden_kill_version_randomisation:source_order"
-                   if name.startswith("knight_shieldmaiden_attack.") else f"{name}:random_list")
+        if name.startswith("knight_shieldmaiden_attack."):
+            purpose = "shieldmaiden_kill_version_randomisation:source_order"
+        elif name.startswith("knight_berserker_attack."):
+            purpose = "berserker_kill_version_randomization:source_order"
+        elif name.startswith("knight_qualify_for_accolade."):
+            purpose = "knight_qualify_for_accolade:attribute_unlock:source_order"
+        else:
+            purpose = f"{name}:random_list"
         selected = tape.take(purpose, weights)
         if selected >= 0:
             _execute_selected_effect_12003(branches[selected]["effect"], state=state, tape=tape, name=f"{name}.branches[{selected}].effect")
@@ -697,7 +708,7 @@ def execute_selected_phase_event_12003(
                 <= fixed_mul(_signed_int64(state.refs["root.skills.prowess_raw"], "root prowess"), 80000)
                 for row in state.candidates if row["character_id"] in state.enemy_membership
             )
-        if key == "knight_shieldmaiden_attack":
+        if key in ("knight_shieldmaiden_attack", "knight_berserker_attack"):
             state.refs["derived.enemy_alive_knight_at_or_below_root_opponent_threshold_exists"] = any(
                 _bool(row["candidate_refs"]["candidate.alive"], "candidate alive")
                 and _signed_int64(row["candidate_refs"]["candidate.skills.prowess_raw"], "candidate prowess")
@@ -736,6 +747,7 @@ def execute_selected_phase_event_12003(
             "knight_killed_source_api_sha256": KNIGHT_KILLED_SOURCE_API_SHA256_12003,
             "knight_become_berserker_source_api_sha256": KNIGHT_BECOME_BERSERKER_SOURCE_API_SHA256_12003,
             "knight_shieldmaiden_source_api_sha256": KNIGHT_SHIELDMAIDEN_SOURCE_API_SHA256_12003,
+            "final_selected_effects_source_api_sha256": FINAL_SELECTED_EFFECTS_SOURCE_API_SHA256_12003,
             "stock_source_closure_sha256": "76F752C0A794346D4FDCD29FB8721B1A878ED6108B6C2DBA226CFDDD3D797E58",
             "primary_feedback_source_ledger_sha256": "AC7BC5B9D2928E191B0EDCE8AAA9F4C2E645EBC162B7DC8D3869BB1419DBDB9E",
         },
