@@ -3015,3 +3015,8 @@ CTest 的 target 名可能不同于 `add_test(NAME ...)`。本次 supply 名误�
 
 
 2026-10-05 新 census fake-memory fixture 实证：`ReadBattleTerminalTransitionV1` 为稳定性比较连续执行两个 TerminalSample，模拟getter必须逐sample重复原返回序列。原fixture仅首call返回false，第二sample误进入UndemandedIndex并throw穿过noexcept，表现0xc0000409、wire0bytes；每帧Provider重置局部government序列后总2provider/10government，newtarget一次修复后GREEN。另仅补此fixture已有query必读的scratch288 operand。该故障属于夹具，不更改生产双采样、不放宽compiler flags，也不据此扫描或重跑旧fixture。consumer只在目标GREEN且真实wire产生后执行；本次失败后的empty JSONDecodeError消费0份，原日志/receipt保留。
+
+
+### 新native fixture的unsigned literal编译修复（2026-10-05）
+
+本次remaining-helper fixture把optional<uint32_t>与signed literal0比较，MSVC在/WX下以C4389→C2220终止。最小修复为0U；生产reader未改。原144.2888s RED保留，必要增量full DLL/新target GREEN8.350974s后才执行两项新CTest与新wire消费者；不把增量耗时称为clean build耗时，也不重跑此前passed路径。回执见外置g2-background-round2-20261005/native-final-frontiers-{01,02,ctest-01}.json。

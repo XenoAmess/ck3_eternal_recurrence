@@ -1154,3 +1154,8 @@ R45 当前补录（2026-10-05T13:10:11+08:00）：4950 后新增 21 个实际正
 ### 2026-10-05 晚间后台增量
 
 source49131256已推送：post-A/B、laterdirect、auxiliaryscratch、knight实际effectiveness Character context、holy-order当前战争资格，5个newnative tests与28真实fixture字节消费GREEN，均static-ready。2633340 conditional raised refresh随后已实现，九cachebyte已交付源码待newnative验收；helper291F0A0四族与retained实际Rules effect继续source-first施工。完整人物/Entry/fullmonthly loss/释放触发仍partial，新增游戏日0与5035冻结指标不变。详情及原生专题/receipt回链见[后台续行交接](../handover/2026-10-05-g2-background-successor.md)、[当天日报](daily/2026-10-05.md)、[W41](weekly/2026-W41.md)。游戏仍由用户使用，所有后台包均没有启动或连接CK3。
+
+
+## 后台人物阶段与损耗预算增量（2026-10-05T23:06:01+08:00）
+
+本机用户占用期间完成explicit postreset logical baseline/prefix/291D1D0、有序291F550/291F940贡献和post-updater条件monthly预算；只读provider/normalizer/kernel有界static-ready。累计13个新native CTests与70份实际生产serializer fake-memory JSON的生产消费GREEN，详见[后台交接](../handover/2026-10-05-g2-background-successor.md)。这些结果没有改变本机5035/36524、G2 5/8、NW2 2/4、natural0或actual false/null边界。下一source/model依赖为2BFAC30、291C467后的caller、post291D1D0逐stage连接与actualEntry关联及其他monthly effects；新的真实post-updater/post-writer/Entry paused验收等待用户结束本机占用。

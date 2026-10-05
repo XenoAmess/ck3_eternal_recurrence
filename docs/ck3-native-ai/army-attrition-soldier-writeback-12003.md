@@ -609,3 +609,122 @@ flowchart TD
 ### A0 large-product implementation distinction
 
 The sealed24E5103..5139 source divides MAX(base,multiplier) by100000 and multiplies the remainder byMIN. The trait-context helper divides the other operand. Sharing the Q unit does not make the two overflow models identical; the monthly budget kernel implements its own source-defined MAX/MIN sequence. No existing trait helper is changed or retested. This implementation correction uses already captured A0 source, without new EXE reads or a modifier-tree audit.
+
+
+## 2026-10-05 monthly budget construction: source-closed consumer and readonly candidate
+
+The caller computes supply only when24E4D10 returns true, using its newly
+written stock. A current readonly24E32E0 output alone therefore cannot serve
+as that caller budget. The new source-closed construction uses actual current
+admission operands, stock/rate/capacity, loaded state tables, fleet-date
+suppression and the actual current commander context/ordinal, then rounds
+siege and raid separately against original current before any troop write.
+The correct associations remain siege24E8560/rate5C69618 and raidArmy+1E8/
+rate5C69098. Their whole integer sum wraps signed32 after supply allocation.
+
+`monthly_loss_budget_inputs_v1` is additive on the existing same-query
+ArmyStrength row, exact1.20.0.3 only. It publishes nullable nativeUnit+170,
+24AC3E0 combat and24AC160 gathering predicates, Army+5C, complete ordered
+loaded state level/fraction arrays, exact24E8460 fleet/date/sentinel result,
+and actual commander validity/current Province modifier ordinal/raw value.
+False and zero remain known; absent commander has modifier ID/rawnull;
+read failures remain distinguishable. Strict existing Unit/Army/backlink
+validation owns the receiver. Two new-block samples must agree. No24E4D10,
+26341B0, soldier setter or gameplay command is invoked by this provider.
+
+The existing Python query result now independently exposes
+`same_input_conditional_monthly_loss_budgets_v1` in each allocation row. Its
+kernel reports source-ordered updater rejection witnesses, derived post-stock,
+derived table selection/component and supply/siege/raid whole budgets with
+separate readiness. Known rejection and fleet suppression give supply0
+without requiring irrelevant later component inputs. Valid commander clamps
+the exact A0 product; invalid commander returns the selected base unclamped.
+The slow A0 HIGH-operand decomposition is retained locally because the old
+trait helper has a different overflow contract, as recorded in the correction
+receipt. Negative updater sums become0; other sums cap at actual capacity;
+native low32/low64 wrap and truncation toward0 are preserved.
+
+Ready conditional budgets feed a copied army frame into the existing four-
+pass loss/writer/current-max refresh subsystem. That nested sequence is
+explicitly `derived_budget_and_loss_subsystem`; the previous current-budget
+sequence and original current readonly budget are not replaced. The result
+describes conditional caller entry at the current observed date. It does not
+predict a future bucket entry or advance the calendar. All intermediate
+frames are derived. `actual_loss=false`, `actual_post_stage_current=null`
+and `full_monthly_applied_loss_ready=false` remain mandatory.
+
+One new Python production-service case passed once: stock10.5 plus change-1
+crosses a level to9.5, leaving current readonly budget0 and its old sequence
+final12 intact, while derived supply budget1 yields conditional final11. The
+case includes independently rounded siege/raid, rawUnit170 versus public
+D19140 state, strict grace boundary, fleet suppression, invalid commander,
+partial inputs, empty tables, ordinary/slow commander products, query
+immutability and actual-null boundaries. No old passed C/D/sequence/trait
+case was rerun. The new native fake-memory reader/wire target is
+`xar_ck3_12003_monthly_loss_budget_inputs_test`, CTest name
+`xar_ck3_12003_monthly_loss_budget_inputs`; coordinator owns its offline
+compile/CTest and retained wire-consumer result. Native results are pending
+at this child receipt, not declared GREEN here.
+
+Readiness: source formulas and pure production consumer are static-ready;
+the additive native observer is an implemented exact-build candidate pending
+central compile/fixture verification. There is no new paused snapshot/live
+transition, no new played day, and no upgrade to the full monthly live loop.
+Later actual post-updater/post-writer observations and other monthly effects
+remain a runtime acceptance gap. The user's CK3 session remains untouched.
+
+Delivery: external monthly-budget-source/ROOT-DELIVERY.json, frozen source
+plan receipt e3a24b52eb379566e06cf01d6c3bbe8eedd3e1f46902ab936fe01ed8d7ea57e3,
+and local English child commit recorded in the final receipt. Root owns the
+canonical topic/report/index merge and push.
+
+
+## 2026-10-05 final offline qualification of monthly budget provider/consumer
+
+The implemented candidate now has central offline verification. Root adopted
+child0e64b517 as8620dbc9 and the minimal table-cap correction7bf52472 as
+e6b4219d. That correction removes an unrelated regiment-count ceiling from
+the loaded supply table reader; it retains actual missing bindings/pointers
+and the source's nonpositive-count branch. No added cap/audit/test matrix or
+repeat Python test was introduced.
+
+Central source64bb7db9054fc155839c7c30528405c6b8f4addd built the full DLL and
+the two new targets with/WX, jobs4, exit0 in8.350974s incremental build.
+Initial batch01 RED was in the other new helper fixture's signed/unsigned
+C4389 literal; Root preserved that attempt and applied the minimal literalU
+fix. The first new-only CTest invocation then passed2/2; the monthly budget
+target took0.09s (total CTest wall receipt0.533938s). Old passed tests were
+not rerun. Root build/CTest JSON receipts remain in external
+g2-background-round2-20261005/native-final-frontiers-{02,ctest-01}.json.
+
+Only the seven newly generated C++ production-serializer fake-memory rows
+were consumed, once, by Z:/gb0's actual GameplayBridgeService, authority
+normalizer and monthly budget kernel at that same64bb7db9 source. All7/7
+passed in0.034064s consumer time. Derived supply budgets were4,0,6,0,0,0,null
+for admitted-commander, fleet-future, invalid-commander, admission-rejected,
+empty-tables, partial-inputs and changed-inputs. Siege and raid each retained
+their independently rounded original-current budget1, combined2. Original
+current supply budget0 remained unchanged in every row. The changed sample
+kept supply unknown and independent siege/raid ready; the partial later
+combat input did not erase the earlier known rawUnit170 rejection.
+
+These native rows intentionally leave composition/DATA unbound because this
+new target verifies the newly added budget input block. Their nested copied
+loss sequence keeps its own missing-tier readiness boundary. The one new
+Python service case separately supplies the existing normalized tier/DATA
+inputs and verifies derived budget1 -> conditional final current11, while
+the original current-budget sequence remains12. Neither fixture substitutes
+for a new live sample or promotes absent tier/DATA into readiness.
+
+Final readiness is static-ready for this exact .3 readonly provider and
+production conditional budget consumer. It remains a source-bound conditional
+caller-entry model at the current frame, with derived intermediate states.
+`actual_loss=false`, `actual_post_stage_current=null`,
+`full_monthly_applied_loss_ready=false`; new played days0, CK3/runtime/UI/
+profile/save/cache contacts0. Actual post-updater/post-writer observations
+and other monthly effects remain the concrete full-live-loop acceptance gap.
+
+Qualification receipts and SHA-pinned seven wires are indexed in the final
+monthly-budget-source/ROOT-DELIVERY.json. Root owns canonical/report/index
+integration and push. The first source plan and implementation receipt are
+preserved alongside this follow-on qualification.

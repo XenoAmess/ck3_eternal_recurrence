@@ -775,3 +775,39 @@ correct positional plan check passed. This harness failure remains in receipt.
 
 两条原生observer包继续施工：291F550/291F940 ordered source与monthly post-updater budget，source均已闭合并同步native专题，尚不抢记其native/consumer GREEN。前一census提交74f60838的官方CI37322176165/37322176711已SUCCESS，11个新增native tests和60份新真实fixture consumer资格仍保持，未重复运行。各包完成即普通commit/push；后台入口没有耗尽。CK3/SDK/realpipe/UI/Steam/profile/save/cache/runtime prepare/stage/deploy与新增游戏日0，游戏留给用户，历史5035/36524、G2 5/8、NW2 2/4、natural0保持；日报/周报rolling不倒填午夜收口。
 
+
+
+## 2026-10-05 later helper 291F550/291F940 static qualification
+
+Exact CK3 1.20.0.3 / Steam 25652598 / frozen EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. Source-first tree, Mermaid and query plan were sealed before implementation. Their original source-only receipt is unchanged: `Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/remaining-two-helper/SOURCE-ONLY-RECEIPT.json`. This task's EXE I/O remains **2064 B including the recorded redundant 274 B**, lane total 5173 B; no implementation or validation reread the EXE.
+
+Caller 291C457 invokes 291F550, then 291C462 invokes 291F940. Both append to the same actor's model+10 recipient. The optional **later_helpers_291f550_291f940** lives in the existing current source query. It publishes three independently available 550 families (government indexed, culture direct, culture mapped) and independently available 940 direct/mapped families. Pure emitters retain every occurrence, each unit weight 100000, and native 940 order **outer0 direct160 -> outer0 inner450 -> outer1 direct160 -> outer1 inner450**.
+
+The new fake-memory target double-reads and compares the complete source snapshot on a fixed frame, then serializes actual production DTOs. Its three genuine wires were consumed once through the adopted production normalizer and emitters at `64bb7db9054fc155839c7c30528405c6b8f4addd`. Full output is `[101,201,201,301,301,301,401,501,501,601,701]` (11 occurrences). The selected lazy-default partial case retains 550 direct2 + mapped3 + 940 direct2 (7 independently usable occurrences). The whole-Culture skip plus empty inner spans emits `[401]` (1 occurrence), without demanding skipped source operands.
+
+Full QWORD membership and first full-ID mapping preserve pointer distinctions and duplicates. Actual unused default guards 0/-1 do not reduce readiness of valid selected mapped PCs. When an uninitialized default is selected, the observer retains its actual empty PC bytes, guard and partial status; it performs no initializer, native callback, mutation or contribution append. The source receipt does not invent a 550 no-match native fallback.
+
+Validation: one new compound Python case **1 passed / 1.56 s**, once. Initial central `/WX` build `native-final-frontiers-01` was **harness RED 144.29 s**, due to a fixture `optional<uint32_t> == 0` signedness warning; the original JSON/log are retained. Child fix `c28d683ad62183e95d4827972a5b8a18f94bf402` changes only that literal to `0U`. Necessary central incremental `native-final-frontiers-02` then passed full DLL and both new targets **8.351 s**. The two new CTests first ran **2/2 GREEN / 0.49 s** (helper **0.14 s**). New genuine-wire consumer **3/3 GREEN / 0.292 s**, exit0. No old tests or Python case were repeated.
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/remaining-two-helper/FINAL-QUALIFICATION.json`; consumer `Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/person-later-suffix/remaining-two-helper/native-wire-integration-attempt01/RECEIPT.json` SHA `5676fa37b13a67c605137b5f5209d3641025e64f4f3eeb58e04342dc1f36550d`. Source-only child `e3dc8920755bc4ddd612c6241d1028ea661543a2`; implementation child `cb57a5a319a37620e24a7c094f7d38d7c49643b0` adopted as `69a36e5b`; final native/consumer source `64bb7db9054fc155839c7c30528405c6b8f4addd`. Root owns shared canonical/report merge and push.
+
+Readiness is **static-ready** for these two independent source stages, using native fake-memory and adopted production consumers. Whole current-person source remains partial. Earlier absent1C8 -> **2BFAC30**, remaining caller beginning **291C467**, and full baseline/actualEntry/downstream replay remain concrete next inputs. No CK3/game/SDK/pipe/UI/Steam/runtime activity occurred. Campaign stays **R0046/h9052/raw53265168/campaign5035/36524**, **0 new game days**; no live or complete-person/Entry/forecast claim.
+
+
+### 后台三个功能包完成：人物后缀、显式阶段基线、月度预算
+
+实际采用时间：2026-10-05T23:06:01+08:00。逐项核对22:02实际追加计划：291F550/291F940 source/observer/consumer包完成；explicit baseline/prefix/291D1D0包完成（此前497319d0/8b01a769）；monthly post-updater budget包完成。没有倒填00:00计划，本日/本周报告仍为rolling。这些包解决当前人物贡献与扣兵预算所缺的可施工输入，依原生source账本/Mermaid先封存再实现。
+
+人物同查询新增`later_helpers_291f550_291f940`，保留550政府/文化direct/mapped和940每个outer的direct→inner原生顺序、FullQWORD membership、firstFullID mapping与重复项。3份新原生序列化输出一次走生产normalizer/emitter GREEN，完整11条、partial独立7条、known skip/zero span1条；未使用的lazy default未初始化不影响已选有效PC，实际选中未初始化default保持partial，未调用initializer。source子提交e3dc8920、实现cb57a5a3→Root69a36e5b、fixture修复c28d683a→Root64bb7db9。一个新Python case1/1 GREEN1.56s，不重复旧case。
+
+月度同查询新增`monthly_loss_budget_inputs_v1`，采集admission、loaded vectors、fleet/date、实际commander/Province ordinal；新条件kernel先计算post-stock，再按source选table/modifier，最后独立取整siege/raid，对已提供tier/DATA的复制frame连接既有四轮writer/refresh。新Python生产service case验证current budget0/原序列final12保持，derived budget1/条件final11成立。7份新原生生产serializer输出一次走实际service/normalizer/kernel GREEN0.034064s，供给预算为4/0/6/0/0/0/null，siege与raid各1保持。该新native fixture未绑定旧tier/DATA，预算ready不冒充nested sequence ready；Python新增case单独验证这些现有输入的连接。实现0e64b517→8620dbc9；7bf52472→e6b4219d移除与loaded table无关的regiment数量限制，仅保留source非正count与实际读失败。
+
+中央native-final-frontiers-01 /WX初次harness RED144.2888s为helper fixture的optional<uint32_t>==signed0引发C4389/C2220；原receipt/log已保留，最小修复为0U，未改生产helper。source64bb7db9054fc155839c7c30528405c6b8f4addd必要增量完整DLL+两新target GREEN8.350974s（此值不是clean build耗时）；两项新CTest首次2/2 GREEN，helper0.14s、budget0.09s，总0.49s。随后仅消费新增3+7份wire，没有重跑此前passed路径。本次后续累计13项不同新增native CTests、70份新actual production fixture JSON消费GREEN，旧资格直接复用；原stage baseline新integration也已1/1 GREEN。8b01a769的Official Runner CI37325149320已SUCCESS。
+
+完整DLL9807360B，SHA256`72a070cddb334f875a391d3f9dc48c25df559ccd897925751f4abb83bb424c54`。两个新fixture EXE、10份原生wire、CMakeCache、native-msvc-result、初次RED/后续GREEN与两consumer receipt已归档到`Z:/ck3_mod_rewrite_process_assets/g2-background-round2-20261005/source64bb7db9-final-frontiers-qualified-binaries/`，索引HASHES-AND-QUALIFICATION.json。构建使用只读已保存v73 115 feature flags、/WX、jobs4 below-normal，是普通离线编译；没有runtime prepare/stage/deploy。归档首次metadata的Windows separator assertion失败保留在索引，使用Path.parts恢复既有拷贝，没有重跑编译、测试或消费者。
+
+最终资格为各有界查询/纯kernel的static-ready。actual_loss=false、actual_post_stage_current=null、full_monthly_applied_loss_ready=false，人物whole-source仍partial。接续后台入口明确保留：earlier absent1C8→2BFAC30、caller291C467以后、post291D1D0逐stage接到已闭A/B/后缀并关联actualEntry、其他monthly effects；实际post-updater/post-writer读取与整套paused/live验收继续等用户结束占用。无需以缺少实机停止这些source/model施工，也没有宣称后台工作耗尽。
+
+game/SDK/realpipe/UI/Steam/profile/save/cache/runtime部署操作0、新增游戏日0。Z机器历史R0046关闭、v73 h9052/raw53265168与5035/36524、G2 5/8、NW2 2/4、natural0保持；其他机器单独授权的日报记录保留，不外推本机live。相关实现与本次专题/报告一起普通commit/push到master；最终发布SHA、archive tag和CI回执保存于外置FINAL-PUBLICATION.json。
+
+专题：[人物阶段基线](battle-person-stage-baseline-12003.md)、[人物后缀与frontier](battle-first-contact-person-preparation-frontier-12003.md)、[月度budget/writer](army-attrition-soldier-writeback-12003.md)。最终子包资格：第二批person-later-suffix/remaining-two-helper/FINAL-QUALIFICATION.json SHA97eece0edbdfc89ee1b4881611a33e4c94cdc9fc4bbd51580372e1627caa53aa；第三批monthly-budget-source/ROOT-DELIVERY.json SHAbc88d0aad351fef88342cf1f76e5f82bf1108b815c03a34e2cbca4c5ad0b93ba。日周fields已分别由工作包代理封存，由Root合并，没有漏报。

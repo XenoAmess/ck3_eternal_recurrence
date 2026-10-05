@@ -1,5 +1,10 @@
 # CK3 自动游玩智能体进度中心
 
+## 人物与月度预算继续完成离线交付（2026-10-05T23:06:01+08:00）
+
+显式postreset baseline→prefix→291D1D0、291F550/291F940原生贡献、monthly post-updater条件预算已达到有界static-ready。后续累计13项新native CTests、70份新原生fixture JSON生产消费通过；完整DLL与失败/通过回执已归档。原current budget与actual false/null边界保留。详见[后台交接](../handover/2026-10-05-g2-background-successor.md)、[人物阶段](../ck3-native-ai/battle-person-stage-baseline-12003.md)、[损耗专题](../ck3-native-ai/army-attrition-soldier-writeback-12003.md)。本机未接触CK3，新增游戏日0；整套Entry/monthly live仍未完成，具体后台续接入口见交接。
+
+
 ## 显式人物阶段基线继续交付（2026-10-05T22:28:23+08:00）
 
 postreset logical baseline→provider prefix→291D1D0已接通，production normalizer/assembler/six-skill新integration1/1 GREEN；支持保留aggregate而不伪造current-final历史prior。native/consumer上一census资格继续复用（11newtests、60新wire），完整Entry/fullmonthly/live仍未完。两later helper和monthly预算observer正在后台施工，source已闭合。详见[阶段基线专题](../ck3-native-ai/battle-person-stage-baseline-12003.md)与[后台交接](../handover/2026-10-05-g2-background-successor.md)。新增游戏日0，CK3与现场由用户使用。

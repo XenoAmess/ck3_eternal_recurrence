@@ -1,5 +1,10 @@
 # CK3 原生 AI 决策树索引
 
+## 人物后缀与月度caller预算离线资格（2026-10-05T23:06:01+08:00）
+
+原生source先封存后实现：同查询291F550/291F940贡献、explicit person baseline/prefix/291D1D0、24E4D10后stock对应的条件monthly预算已static-ready。后续13个新增native CTests、70份新原生fixture JSON生产消费者GREEN；无新paused/live样本或游戏日。[人物frontier](battle-first-contact-person-preparation-frontier-12003.md)、[显式阶段](battle-person-stage-baseline-12003.md)、[budget/writer](army-attrition-soldier-writeback-12003.md)记录实际source、失败与资格。完整人物Entry/其他monthly effects继续有可施工入口；运行时freeze不变。
+
+
 ## 后台接手已完成八包离线交付（2026-10-05T19:48:26+08:00）
 
 用户当前自行使用CK3，本轮游戏/SDK/attach/query/UI/Steam操作0、新自动游戏日0。八包已接入生产路径并完成一次相称验证：完整路线ETA、实际参围成员、补员/损耗数值consumer、pre1640接战输入、当前战场geography、盟友拒绝diagnostics、普通holy hire。生产bridge及五native目标编译、5/5CTest与必要compiled-byte consumer均GREEN，资格为有限static-ready；final setter/post-A/B新增source研究已入canonical，完整loss/Entry/forecast仍partial。两处真实编译RED及最小修复保全。
