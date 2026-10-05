@@ -1510,3 +1510,59 @@ negative character traversal and legal zero groups. Root owns their first
 central compilation/CTest/wire qualification. Previous Domain tests/wires
 are reused, not rerun. Actual effects/loss/poststate, real late caller,
 complete helper and full Army/monthly lifecycle remainfalse/null; game days0.
+
+### Oct6 post-group read clock and actual EBA050 element callback
+
+The source-only follow-on is sealed under external
+`later-manager-removal-stage/post-group-stage/ROOT-DELIVERY.json` (SHA
+`b83ec65dd4567bb667d308e158f74d7edea272436d7bc0421aefaee52728d86d`).
+It reuses the complete2A98590/24E9940 caches and the qualified Domain/point
+families, with no previous test or185B leaf read repeated.
+
+At2A988AD,2A98590 rereads resolvedArmy5C after record/character effects, then
+Army50 for ordered24E9940 release calls if positive. Only after ordinary
+returns does2A988EB write resolvedArmy5C=0. The managerC8/D4 inputs are read
+after these calls; stable all-match removal uses the original supplied
+FullID, not a fallback object's actual ID. Exactly zero entryArmy5C returns
+without any count or C8 effect; negative nonzero skips positive visits but
+continues to the count0/list branch. Initial values are not actual late reads.
+
+The actual24E9985 direct dependency **EBA050** is now source-body closed:
+`[EBA050,EBA0AD)`,93B/three verified chained fragments, SHA
+`b661d886ff1f3017ad68fb3f8248c3287759c4c573b3451720d798ee0cc773dd`.
+Both returns and all direct branches are included. The intermediate first
+RET's still-external zero exit was preserved as partial before its necessary
+third fragment was read; no saved code was reread from the EXE.
+
+EBA050 captures signed vector count+C. Positive count loads data once and
+visits actual16B elements, loading each physical record's vtable and invoking
+slot0 with RCX=record and EDX=0. After ordinary returns it writes count0.
+Count<=0 also writes count0. In this call, vector=`&group+8`, count=group14;
+these are the pending records whose+8/C supplied RegiID/chunkIndex earlier.
+The first qword is therefore a real virtual receiver input, not a spare
+integer. The whole-call footprint remains partial until that concrete slot0
+body is identified. EDX0 alone does not identify a class or its field effects.
+
+24E9940's actual group18/group30 allocator slot10 receivers also remain
+distinct source dependencies. It does not null outerArmy50 slots, and its
+cleared group fields are transient before group38 release. No durable freed
+object poststate or complete positive lifecycle is derived.
+
+```mermaid
+flowchart TD
+  P[Closed current record and child point families] --> G[Re-read Army5C/50]
+  G --> R[24E9940 current slot releases]
+  R --> V[EBA050 capturedcount and16B record loop]
+  V --> I[Each actual record slot0 with EDX0]
+  I -. concrete virtual body unknown .-> U[Actual post-release inputs partial]
+  R -. actual allocator slot10 .-> U
+  U --> S[After ordinary returns: Army5C=0]
+  S --> M[Fresh managerC8/D4 stable supplied-ID erase]
+  M -. actual late frame absent .-> X[Actual lifecycle/loss still false/null]
+```
+
+New necessary cost is365 frozen bytes: code93, pdata240, unwind32; new
+header/fullscan/fullhash, old185B reread, tests/builds/runtime operations and
+game days are all0. The minimal query/source plan identifies the actual
+pending-record constructor/vtable0 locator before any new provider/kernel;
+the existing whole-CArmy/Regi manifest is not that inline-record type proof.
