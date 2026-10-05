@@ -319,7 +319,7 @@ void RunAbsentRecipientFixture(const std::filesystem::path &directory) {
     f.memory.Deny(f.aggregate_guard, 0, 4);
     const auto s = f.Observe();
     AbsentRequire(!s.absent_recipient_inputs->ready && !s.absent_recipient_inputs->calculated_recipient_q64 &&
-        s.absent_recipient_inputs->associated_cache_440 == 0 && !s.absent_recipient_inputs->cached_map_430.count,
+        s.absent_recipient_inputs->associated_cache_440 == 0U && !s.absent_recipient_inputs->cached_map_430.count,
         "uncached branch read stale cached maps");
     AbsentSave(directory, "absent-cache-zero-derived-partial", s);
   }
