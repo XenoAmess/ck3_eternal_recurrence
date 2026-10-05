@@ -1,6 +1,14 @@
 """Current-person2753860 and2922530 receipts, without a complete-tail claim."""
 from __future__ import annotations
 
+
+def emit_helper_2922070_requests_from_current_source_inputs_12003(section):
+    """Forward the required intervening helper to its dedicated observed leaf."""
+    from .battle_person_helper_2922070_contract import (
+        emit_helper_2922070_requests_from_current_source_inputs_12003 as emit,
+    )
+    return emit(section)
+
 from .battle_context_source_inputs_contract import (
     _availability, _boolean, _dict, _integer, _number, _properties,
     _properties_ready, _string,
