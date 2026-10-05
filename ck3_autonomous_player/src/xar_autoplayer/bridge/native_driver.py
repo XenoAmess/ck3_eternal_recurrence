@@ -8,6 +8,10 @@ semantic driver interface used by the visual and data-Mod backends.
 from __future__ import annotations
 
 from .public_unit_contract import is_public_cunit_id
+from .current_actor_stress_adjustment_contract import (
+    CAPABILITY as CURRENT_ACTOR_STRESS_ADJUSTMENT_V1_CAPABILITY,
+    STEP as CURRENT_ACTOR_STRESS_ADJUSTMENT_V1_STEP,
+)
 
 from collections.abc import Callable, Mapping
 import copy
@@ -1311,7 +1315,7 @@ class NativeNamedPipeServer:
     def transport_error(self) -> str | None:
         return self._fatal_error
 
-    def send(self, frame: dict[str, object]) -> None:
+    def send(self, frame: dict[str, object], *, packet_evidence_path: Path | None = None) -> None:
         payload = json.dumps(
             frame, ensure_ascii=False, separators=(",", ":")
         ).encode("utf-8")
@@ -1322,6 +1326,13 @@ class NativeNamedPipeServer:
             handle = self._current_handle()
             if handle is None:
                 raise BridgeUnavailableError("native DLL is not connected")
+            if packet_evidence_path is not None:
+                # Preserve the exact production-encoded packet before its one
+                # write attempt. Existence does not prove consumption or success.
+                with packet_evidence_path.open("xb") as evidence:
+                    evidence.write(packet)
+                    evidence.flush()
+                    os.fsync(evidence.fileno())
             if not _write_all(handle, packet):
                 raise BridgeUnavailableError("native bridge pipe write failed")
 
@@ -10621,6 +10632,8 @@ class NativeHeadlessGameplayDriver:
         internal_semantic_snapshot: bool = False,
         allow_frontend_revision_zero: bool = False,
         protocol_request_id: str | None = None,
+        protocol_packet_evidence_path: Path | None = None,
+        protocol_result_evidence_path: Path | None = None,
         pause_recovery_source: dict[str, object] | None = None,
     ) -> dict[str, object]:
         if not isinstance(step, str) or not step:
@@ -10735,7 +10748,10 @@ class NativeHeadlessGameplayDriver:
         if private_trace_step:
             (self._native_driver_state_path().parent / "combat-trace-native-results").mkdir(
                 parents=True, exist_ok=True)
-        self.endpoint.send(request)
+        if protocol_packet_evidence_path is None:
+            self.endpoint.send(request)
+        else:
+            self.endpoint.send(request, packet_evidence_path=protocol_packet_evidence_path)
         command_timeout_seconds = (
             self.command_timeout_seconds
             if timeout_seconds is None
@@ -10756,6 +10772,13 @@ class NativeHeadlessGameplayDriver:
             raise BridgeUnavailableError(
                 f"native command_result timed out for gameplay step {step}"
             )
+        if protocol_result_evidence_path is not None:
+            # Preserve even a native rejection/malformed return before parsing.
+            with protocol_result_evidence_path.open("x", encoding="utf-8", newline="\n") as evidence:
+                json.dump(frame, evidence, ensure_ascii=False, indent=2)
+                evidence.write("\n")
+                evidence.flush()
+                os.fsync(evidence.fileno())
         ui_raw_receipt = None
         if step in {"navigate-ingame-ui-v1", "query-ingame-ui-window-v1"}:
             # Persist even unavailable/RED returns. No retry or normalization
@@ -18254,6 +18277,141 @@ class NativeHeadlessGameplayDriver:
             "queried_native_revision": native_revision,
         }
 
+    def query_character_interaction_ordinary_v1(
+        self, interaction_key: str, recipient_id: int, *, expected_revision: int,
+    ) -> dict[str, object]:
+        from .ordinary_interaction_contract import (
+            QUERY_STEP, QUERY_CAPABILITY, validate_interaction_key, validate_recipient_id,
+            interaction_binding, same_query_frame, project_query,
+        )
+        validate_interaction_key(interaction_key)
+        validate_recipient_id(recipient_id)
+        before = self.take_snapshot()
+        try:
+            binding = interaction_binding(before, expected_revision)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        raw = self._execute_primitive_step(QUERY_STEP, expected_revision=expected_revision,
+            required_capability=QUERY_CAPABILITY,
+            request_fields={"interaction_key": interaction_key, "recipient_id": recipient_id,
+                "expected_player_character_id": binding["played_character_id"],
+                "expected_game_pid": binding["game_pid"],
+                "expected_connection_generation": binding["connection_generation"]})
+        after = self.take_snapshot()
+        if not same_query_frame(before, after, binding):
+            raise BridgeUnavailableError("ordinary interaction query crossed its actual frame")
+        try:
+            return project_query(raw, binding, interaction_key, recipient_id)
+        except ValueError as error:
+            raise BridgeUnavailableError(f"malformed ordinary interaction query: {error}") from error
+
+    def initiate_character_interaction_ordinary_v1(
+        self, interaction_key: str, recipient_id: int, *, expected_revision: int,
+    ) -> dict[str, object]:
+        from .ordinary_interaction_contract import (
+            INITIATE_STEP, INITIATE_CAPABILITY, validate_interaction_key, validate_recipient_id,
+            interaction_binding, same_query_frame, after_control_binding,
+            create_once_claim, project_initiation, preserve_receipt,
+        )
+        validate_interaction_key(interaction_key)
+        validate_recipient_id(recipient_id)
+        before = self.take_snapshot()
+        try:
+            binding = interaction_binding(before, expected_revision, initiating=True)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        if INITIATE_CAPABILITY not in set(_string_list(self.capabilities().get("bridge_capabilities"))):
+            raise UnsupportedStepError("native DLL lacks ordinary interaction initiation")
+        # Read actual final terms before creating a durable one-send claim.
+        terms = self.query_character_interaction_ordinary_v1(interaction_key, recipient_id,
+            expected_revision=expected_revision)
+        if terms["character_interaction_ordinary_context"]["ready_to_initiate"] is not True:
+            raise BridgeUnavailableError("ordinary interaction is not currently ready to initiate")
+        current = self.take_snapshot()
+        if not same_query_frame(before, current, binding):
+            raise BridgeUnavailableError("ordinary interaction preflight crossed its actual frame")
+        request_id = f"ordinary-interaction-{uuid.uuid4().hex}"
+        try:
+            claim = create_once_claim(self._native_driver_state_path().parent / "ordinary-interaction-actions",
+                binding, interaction_key, recipient_id, request_id,
+                host_provenance=getattr(self, "_ordinary_interaction_host_provenance", None))
+        except (ValueError, FileExistsError) as error:
+            raise BridgeUnavailableError(str(error)) from error
+        try:
+            raw = self._execute_primitive_step(INITIATE_STEP, expected_revision=expected_revision,
+                required_capability=INITIATE_CAPABILITY, protocol_request_id=request_id,
+                protocol_packet_evidence_path=claim.with_suffix(".packet.bin"),
+                protocol_result_evidence_path=claim.with_suffix(".native-result.json"),
+                request_fields={"interaction_key": interaction_key, "recipient_id": recipient_id,
+                    "expected_player_character_id": binding["played_character_id"],
+                    "expected_game_pid": binding["game_pid"],
+                    "expected_connection_generation": binding["connection_generation"]})
+        except Exception as error:
+            # This is host diagnostic evidence, never a fabricated native ACK.
+            with claim.with_suffix(".unknown.json").open("x", encoding="utf-8", newline="\n") as evidence:
+                json.dump({"schema": "ck3-ordinary-interaction-host-unknown-v1",
+                    "request_id": request_id, "claim_path": str(claim),
+                    "error_type": type(error).__name__, "error": str(error),
+                    "native_result_available": claim.with_suffix(".native-result.json").is_file()}, evidence, ensure_ascii=False, indent=2)
+                evidence.write("\n")
+                evidence.flush()
+                os.fsync(evidence.fileno())
+            raise
+        after = self.take_snapshot()
+        try:
+            later = after_control_binding(before, after, binding)
+            result = project_initiation(raw, binding, interaction_key, recipient_id, later, request_id, claim)
+            preserve_receipt(claim, request_id, result)
+            return result
+        except ValueError as error:
+            # The original claim remains unresolved even when normalization or
+            # the after read fails. This path never sends a second request.
+            raise BridgeUnavailableError(f"ordinary initiation remains unverified: {error}") from error
+
+    def observe_normal_exit_v1(self) -> dict[str, object]:
+        from .normal_exit_pending_observer_v1 import observe_normal_exit_v1
+        return observe_normal_exit_v1(self)
+
+    def query_normal_exit_context_v1(self, *, expected_revision: int) -> dict[str, object]:
+        from .normal_exit_map_driver_v1 import query_normal_exit_context_v1
+        return query_normal_exit_context_v1(self, expected_revision=expected_revision)
+
+    def request_normal_exit_v1(self, action: str, *, expected_revision: int,
+                               expected_exit_context_signature: str) -> dict[str, object]:
+        from .normal_exit_map_driver_v1 import request_normal_exit_v1
+        return request_normal_exit_v1(self, action, expected_revision=expected_revision,
+                                      expected_exit_context_signature=expected_exit_context_signature)
+
+    def query_current_actor_stress_adjustment_v1(
+        self, base_amount: int, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Read actual current-actor adjustment; do not apply stress or predict a cost."""
+        from .current_actor_stress_adjustment_contract import (
+            validate_base_amount, stress_query_binding, same_stress_query_frame, project_stress_query,
+        )
+        validate_base_amount(base_amount)
+        starting = self.take_snapshot()
+        try:
+            binding = stress_query_binding(starting, expected_revision)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        raw = self._execute_primitive_step(
+            CURRENT_ACTOR_STRESS_ADJUSTMENT_V1_STEP,
+            expected_revision=expected_revision,
+            required_capability=CURRENT_ACTOR_STRESS_ADJUSTMENT_V1_CAPABILITY,
+            request_fields={"base_amount": base_amount,
+                            "expected_player_character_id": binding["played_character_id"],
+                            "expected_game_pid": binding["game_pid"],
+                            "expected_connection_generation": binding["connection_generation"]},
+        )
+        current = self.take_snapshot()
+        if not same_stress_query_frame(starting, current, binding):
+            raise BridgeUnavailableError("native stress query crossed its actual paused player frame")
+        try:
+            return project_stress_query(raw, binding, base_amount)
+        except ValueError as error:
+            raise BridgeUnavailableError(f"malformed native stress query: {error}") from error
+
     def query_current_event_window_context_v1(
         self,
         event_instance_id: int,
@@ -22294,6 +22452,8 @@ class NativeHeadlessGameplayDriver:
         return self.take_snapshot()
 
     def close(self) -> None:
+        from .normal_exit_pending_observer_v1 import dispose_normal_exit_observer_v1
+        dispose_normal_exit_observer_v1(self)
         while True:
             with self._driver_state_lock:
                 flush_driver_state = bool(
@@ -28395,6 +28555,10 @@ def _action_steps(
             continue
         if capability == ASSIGN_COUNCILLOR_V1_CAPABILITY:
             advertise_assign_councillor = True
+            continue
+        if capability == "game.command.initiate-character-interaction-ordinary-v1":
+            # Its exact key/full recipient and durable claim belong to the
+            # explicit typed endpoint, never a parameterless planner action.
             continue
         if capability == "game.command.hire-mercenary-v1":
             # This typed action requires an explicit company full ID. The

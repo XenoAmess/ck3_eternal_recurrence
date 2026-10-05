@@ -143,6 +143,18 @@ def mouse_button_state() -> dict[str, bool]:
                              ("x1", 0x05), ("x2", 0x06))}
 
 
+def validate_receipt_path(receipt_path: Path, *, sidecar: bool = False) -> None:
+    """Reject unusable PNG destinations before sending any desktop input."""
+    if receipt_path.suffix.lower() != ".png":
+        raise ValueError("--receipt must be a PNG screenshot path ending in .png, not a JSON path")
+    if receipt_path.exists():
+        raise ValueError("receipt already exists; use a new PNG path")
+    if sidecar and receipt_path.with_name(receipt_path.name + ".json").exists():
+        raise ValueError("pointer receipt sidecar already exists; use a new PNG path")
+    if receipt_path.parent.exists() and not receipt_path.parent.is_dir():
+        raise ValueError("receipt parent path must be a directory")
+
+
 def move_pointer(
     *, mapping: Mapping, reviewed_bounds: tuple[float, float, int, int],
     source_image: Path, receipt_path: Path, desktop: object,
@@ -150,9 +162,8 @@ def move_pointer(
 ) -> dict[str, object]:
     """Perform one immediate move and preserve exact actual readback."""
     validate_reviewed_region(mapping, reviewed_bounds)
+    validate_receipt_path(receipt_path, sidecar=True)
     sidecar = receipt_path.with_name(receipt_path.name + ".json")
-    if receipt_path.exists() or sidecar.exists():
-        raise ValueError("pointer receipt or sidecar already exists; use a new path")
     before_size = tuple(desktop.size())
     if before_size != mapping.live_screen_size:
         raise ValueError("live screen size changed before pointer move")
@@ -225,7 +236,7 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
     parser.add_argument("--reviewed-height", type=int)
     parser.add_argument("--expected-foreground-hwnd", type=lambda value: int(value, 0))
     parser.add_argument("--receipt", type=Path,
-                        help="Post-action screenshot path, for example receipt.png; mapping JSON is printed separately")
+                        help="New PNG screenshot path ending in .png (not JSON); parent directories are created before input; mapping JSON is printed separately")
     args = parser.parse_args(argv)
     if args.click and args.receipt is None:
         parser.error("--click requires --receipt")
@@ -242,6 +253,11 @@ def parse_args(argv: list[str] | None = None) -> argparse.Namespace:
         parser.error("--move requires an explicit reviewed left/top/width/height region")
     if not args.move and (any(value is not None for value in reviewed) or args.expected_foreground_hwnd is not None):
         parser.error("reviewed region and expected HWND are only valid with --move")
+    if args.receipt is not None and not args.dry_run:
+        try:
+            validate_receipt_path(args.receipt, sidecar=args.move)
+        except ValueError as error:
+            parser.error(str(error))
     return args
 
 
@@ -301,6 +317,7 @@ def main(argv: list[str] | None = None) -> int:
         return 0 if args.dry_run or not output["failures"] else 3
 
     if args.click:
+        validate_receipt_path(args.receipt)
         args.receipt.parent.mkdir(parents=True, exist_ok=True)
         if args.button == "left":
             pyautogui.click(*screen_point)

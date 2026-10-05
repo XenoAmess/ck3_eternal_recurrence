@@ -1,5 +1,8 @@
 * text=auto eol=lf
 
+# Preserve the file-only generator's exact reviewed CRLF code-prefix projection.
+ck3_autonomous_player/native_bridge/src/ordinary_interaction_code_pins_v1.inc -text whitespace=cr-at-eol
+
 # Preserve Superman Qiang's hash-bound raw build, live and publication evidence.
 mod_superman_qiang/docs/build-evidence-*/** -text whitespace=cr-at-eol
 mod_superman_qiang/docs/live-R*/** -text whitespace=cr-at-eol

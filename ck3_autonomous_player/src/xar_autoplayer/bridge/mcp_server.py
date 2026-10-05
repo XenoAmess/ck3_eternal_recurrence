@@ -12,6 +12,11 @@ from pydantic import Field
 
 IngameUiHandleV1 = Annotated[int, Field(strict=True, gt=0, lt=2**32 - 1)]
 PublicCUnitId = Annotated[int, Field(strict=True, ge=0, le=2**31 - 1)]
+NormalExitRevisionV1 = Annotated[int, Field(strict=True, gt=0, lt=2**64)]
+NormalExitSignatureV1 = Annotated[str, Field(strict=True, min_length=64, max_length=64, pattern=r"^[0-9a-f]{64}$")]
+StressBaseAmountV1 = Annotated[int, Field(strict=True, ge=-300, le=300)]
+OrdinaryInteractionKeyV1 = Annotated[str, Field(strict=True, min_length=1, max_length=128, pattern=r"^[A-Za-z0-9_]+$")]
+OrdinaryRecipientIdV1 = Annotated[int, Field(strict=True, ge=1, le=2**32 - 2)]
 IngameUiRevisionV1 = Annotated[int, Field(strict=True, ge=0, lt=2**64)]
 ArmyTooltipReceiptV1 = Annotated[str, Field(strict=True, min_length=32, max_length=32, pattern=r"^[0-9a-f]{32}$")]
 
@@ -3580,6 +3585,52 @@ def create_server(
             expected_revision,
         )
 
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_character_interaction_ordinary_v1(
+        interaction_key: OrdinaryInteractionKeyV1, recipient_id: OrdinaryRecipientIdV1,
+        expected_revision: IngameUiRevisionV1,
+    ) -> dict[str, object]:
+        """Read actual ordinary interaction terms for the current actor and full recipient ID."""
+        return service.query_character_interaction_ordinary_v1(interaction_key, recipient_id,
+            expected_revision=expected_revision)
+
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, idempotentHint=False, openWorldHint=False))
+    def ck3_initiate_character_interaction_ordinary_v1(
+        interaction_key: OrdinaryInteractionKeyV1, recipient_id: OrdinaryRecipientIdV1,
+        expected_revision: IngameUiRevisionV1,
+    ) -> dict[str, object]:
+        """Submit one ordinary interaction; a pending receipt is not a business outcome."""
+        return service.initiate_character_interaction_ordinary_v1(interaction_key, recipient_id,
+            expected_revision=expected_revision)
+
+    @server.tool(annotations=read_only_tool)
+    def ck3_observe_normal_exit_v1() -> dict[str, object]:
+        """Read the backend-owned pending original process handle; never redispatch."""
+        return service.observe_normal_exit_v1()
+
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_normal_exit_context_v1(expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+        """Observe the actual map exit context and backend signature; no dispatch."""
+        return service.query_normal_exit_context_v1(expected_revision=expected_revision)
+
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True, idempotentHint=False, openWorldHint=False))
+    def ck3_request_normal_exit_v1(
+        action: Literal["prepare_confirmation", "confirm_desktop"],
+        expected_revision: NormalExitRevisionV1,
+        expected_exit_context_signature: NormalExitSignatureV1,
+    ) -> dict[str, object]:
+        """Claim one stock map exit phase; confirmation preserves native save policy."""
+        return service.request_normal_exit_v1(action, expected_revision=expected_revision,
+            expected_exit_context_signature=expected_exit_context_signature)
+
+    @server.tool(annotations=read_only_tool)
+    def ck3_query_current_actor_stress_adjustment_v1(
+        base_amount: StressBaseAmountV1, expected_revision: IngameUiRevisionV1,
+    ) -> dict[str, object]:
+        """Read current native stress adjustment; no option-cost or final-stress prediction."""
+        return service.query_current_actor_stress_adjustment_v1(
+            base_amount, expected_revision=expected_revision)
+
     @server.tool()
     def ck3_query_current_event_window_context_v1(
         event_instance_id: int,
@@ -4011,6 +4062,12 @@ def create_server(
     _forbid_unknown_tool_arguments_v1(server, "ck3_select_ingame_decision_item_v1")
     _forbid_unknown_tool_arguments_v1(server, "ck3_confirm_ingame_decision_item_v1")
     _forbid_unknown_tool_arguments_v1(server, "ck3_confirm_ingame_decision_outcome_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_observe_normal_exit_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_query_normal_exit_context_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_request_normal_exit_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_query_current_actor_stress_adjustment_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_query_character_interaction_ordinary_v1")
+    _forbid_unknown_tool_arguments_v1(server, "ck3_initiate_character_interaction_ordinary_v1")
     _forbid_unknown_tool_arguments_v1(
         server, "ck3_inspect_gui_window_tree_v1"
     )

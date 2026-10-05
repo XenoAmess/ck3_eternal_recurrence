@@ -11,7 +11,7 @@
 3. 对当前一次预览显式记录实际图像内容矩形：`left`、`top`、`width`、`height`。不得把查看器窗口、留白或裁切区误算进图像内容矩形。
 4. 在同一预览坐标系内记录目标点 `x`、`y`。
 5. 运行 `tools/desktop_coordinate_map.py`。脚本先扣除内容矩形原点，再分别按宽度和高度映射 X/Y；它不假定屏幕或图片宽高比相同。
-6. 真正点击必须加 `--click --receipt <path>`。回执图必须是点击后的当前桌面原尺寸截图。
+6. 真正点击必须加 `--click --receipt <new-path.png>`。`--receipt` 是点击后的当前桌面原尺寸 **PNG 截图路径**，必须以 `.png` 结尾，不能填写 `.json`。动作前拒绝已有回执或非目录父路径；缺少的父目录会在输入前创建，创建失败则不发送点击。
 7. 用回执图验证焦点或界面状态，再决定下一次动作。不同点击必须分别换算，不沿用前一次的裸桌面坐标。
 
 ## 命令
@@ -22,7 +22,7 @@
 "tools\.venv\Scripts\python.exe" "tools\desktop_coordinate_map.py" --source-image "D:\artifacts\before.png" --preview-left 0 --preview-top 0 --preview-width 1600 --preview-height 900 --observed-x 800 --observed-y 450 --click --receipt "D:\artifacts\after.png"
 ```
 
-脚本输出 machine-readable JSON，包括预览内容矩形、观察点、源图尺寸、当前桌面尺寸和最终桌面点位。
+脚本输出 machine-readable JSON，包括预览内容矩形、观察点、源图尺寸、当前桌面尺寸和最终桌面点位。 JSON 输出到 stdout，与 `--receipt` 指定的 PNG 文件不同；需要保存 JSON 时单独重定向 stdout。
 
 右键点击使用 `--click --button right --receipt <path>`；`--button` 默认为 `left`，`right` 只允许用于点击。右键仍须提供本轮原始截图、实际预览内容矩形和点击后回执，并遵守相同的尺寸与越界拒绝条件。
 
@@ -33,7 +33,7 @@
 - 目标点不在显式内容矩形内；
 - 原始截图尺寸与当前桌面尺寸不一致；
 - 无法判断预览是否裁切、旋转、加透视或非线性变形；
-- 点击模式未提供回执路径；
+- 点击模式未提供回执 PNG 路径，扩展名不是 `.png`，目标已经存在，或父路径是普通文件；
 - 点击后回执尺寸与点击时桌面尺寸不一致。
 
 若预览存在无法精确定位的裁切或非线性变形，应回到原始 PNG 上用 PIL/OpenCV/OCR 定位，不能猜坐标。
@@ -72,8 +72,8 @@ UIA 通过精确 HWND、Name、AutomationId 定位的语义动作不经过截图
 可加 `--expected-foreground-hwnd <本轮实际HWND>`，前台不匹配时拒绝移动。指针未到达目标、
 屏幕或回执尺寸改变、前台窗口/焦点改变时保留失败回执并返回非零，不能凭输入 ACK 称移动已验。
 移动前读取五种鼠标按钮状态；任一仍按下时拒绝位移，避免把 pointer-only 动作变成拖动；回执也记录移动后按钮状态。
-已有 PNG 或 JSON 回执拒绝覆盖；重新尝试须用新路径。
+`--receipt` 同样必须是新的 `.png` 截图路径；移动模式另写同名 `.png.json` sidecar，不能把该 JSON 路径传给 `--receipt`。已有 PNG 或 JSON 回执在输入前拒绝覆盖；重新尝试须用新路径。
 
 在相同命令加 `--dry-run` 可只验证尺寸、几何与区域，输出计划 JSON；不发指针输入、不读焦点、
 不生成截图或回执。dry-run 仍读取当前 `pyautogui.size()` 作实际尺寸核对；它不证明实际移动完成。
-`--move` 与 `--click` 互斥，原有点击与回执流程保持原样。
+`--move` 与 `--click` 互斥；两种输入均先验证 PNG 回执路径，坐标、尺寸与各自焦点约束保持原样。

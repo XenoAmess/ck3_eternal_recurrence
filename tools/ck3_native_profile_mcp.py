@@ -12,7 +12,15 @@ import sys
 import threading
 import time
 import uuid
-from typing import Literal
+from typing import Annotated, Literal
+from pydantic import Field
+
+NormalExitRevisionV1 = Annotated[int, Field(strict=True, gt=0, lt=2**64)]
+NormalExitSignatureV1 = Annotated[str, Field(strict=True, min_length=64, max_length=64, pattern=r"^[0-9a-f]{64}$")]
+StressBaseAmountV1 = Annotated[int, Field(strict=True, ge=-300, le=300)]
+StressQueryRevisionV1 = Annotated[int, Field(strict=True, ge=0, lt=2**64)]
+OrdinaryInteractionKeyV1 = Annotated[str, Field(strict=True, min_length=1, max_length=128, pattern=r"^[A-Za-z0-9_]+$")]
+OrdinaryRecipientIdV1 = Annotated[int, Field(strict=True, ge=1, le=2**32 - 2)]
 
 import desktop_semantic_action_mcp as desktop
 
@@ -51,7 +59,17 @@ def load_clock_profile(path: Path) -> dict:
 
 
 def load_profile(path: Path) -> dict:
-    profile = _load_profile_common(path, {"state_directory", "dll", "injector"})
+    raw_profile = json.loads(path.read_text(encoding="utf-8-sig"))
+    optional_fields = {"normal_exit_source_inventory"} & set(raw_profile)
+    profile = _load_profile_common(path, {"state_directory", "dll", "injector"} | optional_fields)
+    if "normal_exit_source_inventory" in profile:
+        reference = desktop.exact_fields(profile["normal_exit_source_inventory"], {"path", "sha256"}, "normal exit source inventory")
+        fixed_path = (Path(profile["userdir"]) / "normal-exit-source-inventory-v1.json").resolve()
+        if (not isinstance(reference["path"], str) or not Path(reference["path"]).is_absolute()
+                or Path(reference["path"]).resolve() != fixed_path
+                or not isinstance(reference["sha256"], str)
+                or not re.fullmatch(r"[0-9a-f]{64}", reference["sha256"])):
+            raise ValueError("normal exit inventory must identify the fixed userdir file and exact SHA-256")
     if not isinstance(profile["state_directory"], str) or not Path(profile["state_directory"]).is_absolute():
         raise ValueError("state_directory must be an absolute target-side path")
     for name, expected in (("dll", "xar_ck3_bridge.dll"), ("injector", "xar_ck3_bridge_injector.exe")):
@@ -372,6 +390,122 @@ class NativeProfileService:
             raise RuntimeError("this native operation requires a paused frame")
         return frame
 
+    def query_ordinary_interaction(self, interaction_key: str, recipient_id: int, expected_revision: int) -> dict:
+        from xar_autoplayer.bridge.ordinary_interaction_contract import (
+            validate_interaction_key, validate_recipient_id, interaction_binding,
+            same_query_frame, normalize_public_query,
+        )
+        validate_interaction_key(interaction_key)
+        validate_recipient_id(recipient_id)
+        with self._lock:
+            before = self._bound_frame(expected_revision, paused=True)
+            binding = interaction_binding(before, expected_revision)
+            result = self._gameplay_service().query_character_interaction_ordinary_v1(
+                interaction_key, recipient_id, expected_revision=expected_revision)
+            after = self._bound_frame(expected_revision, paused=True)
+            if not same_query_frame(before, after, binding):
+                raise RuntimeError("profile ordinary query changed its actual frame")
+            result = normalize_public_query(result, binding, interaction_key, recipient_id)
+            return self._receipt("ordinary-interaction-query", {
+                "status": ("native_ordinary_interaction_observed" if result["ordinary_interaction_context_ready"]
+                           else "native_ordinary_interaction_unavailable"), "result": result,
+                "business_effects_verified": False, "full_product_acceptance_credit": False})
+
+    def initiate_ordinary_interaction(self, interaction_key: str, recipient_id: int, expected_revision: int) -> dict:
+        from xar_autoplayer.bridge.ordinary_interaction_contract import (
+            validate_interaction_key, validate_recipient_id, interaction_binding,
+            after_control_binding, normalize_public_initiation,
+        )
+        validate_interaction_key(interaction_key)
+        validate_recipient_id(recipient_id)
+        with self._lock:
+            before = self._bound_frame(expected_revision, paused=True)
+            binding = interaction_binding(before, expected_revision, initiating=True)
+            self.backend.poll(self.profile)
+            self.guard()
+            if binding["game_pid"] != self.profile["guard"]["target"]["pid"]:
+                raise RuntimeError("ordinary initiation process is not the actual frozen profile target")
+            self.driver._ordinary_interaction_host_provenance = {
+                "process_create_time": self.profile["guard"]["target"]["process_create_time"],
+                "profile_sha256": self.profile["profile_sha256"].lower(), "session_id": self.session_id,
+                "pipe_name": self.pipe_name, "guard_profile_sha256": self.profile["guard_profile_sha256"].lower()}
+            result = self._gameplay_service().initiate_character_interaction_ordinary_v1(
+                interaction_key, recipient_id, expected_revision=expected_revision)
+            # Never reuse _ordinary_action's verified gameplay postcondition.
+            self.guard()
+            after = self._snapshot()
+            later = after_control_binding(before, after, binding)
+            result = normalize_public_initiation(result, binding, interaction_key, recipient_id, later)
+            self.backend.poll(self.profile)
+            self.guard()
+            return self._receipt("ordinary-interaction-initiate", {
+                "status": ("native_ordinary_interaction_pending" if result["status"] == "pending"
+                           else "native_ordinary_interaction_not_dispatched"), "result": result,
+                "snapshot": after, "business_effects_verified": False, "full_product_acceptance_credit": False})
+
+    def observe_normal_exit(self) -> dict:
+        with self._lock:
+            if self.driver is None or self._gameplay is None:
+                raise RuntimeError("profile has no backend-owned pending exit observer")
+            # Guard/snapshot/poll would require a live game after terminal dispatch.
+            # The driver owns the original retained handle and frozen request binding.
+            result = self._gameplay.observe_normal_exit_v1()
+            return self._receipt("normal-exit-observe", {"status": result["status"],
+                "result": result, "snapshot_after_required": False,
+                "uses_ocr": False, "uses_desktop_input": False, "uses_injection": False})
+
+    def query_normal_exit_context(self, expected_revision: int) -> dict:
+        from xar_autoplayer.bridge.normal_exit_contract_v1 import normalize_query_arguments
+        normalize_query_arguments({"expected_revision": expected_revision})
+        with self._lock:
+            before = self._bound_frame(expected_revision, paused=True)
+            gameplay = self._gameplay_service()
+            self.driver.normal_exit_managed_profile = self.profile
+            result = gameplay.query_normal_exit_context_v1(expected_revision=expected_revision)
+            after = self._bound_frame(expected_revision, paused=True)
+            return self._receipt("normal-exit-query", {"status": result["status"], "result": result,
+                "snapshot_before": before, "snapshot_after": after,
+                "uses_ocr": False, "uses_desktop_input": False, "uses_injection": False})
+
+    def request_normal_exit(self, action: str, expected_revision: int,
+                            expected_exit_context_signature: str) -> dict:
+        from xar_autoplayer.bridge.normal_exit_contract_v1 import normalize_request_arguments
+        normalize_request_arguments({"action": action, "expected_revision": expected_revision,
+                                     "expected_exit_context_signature": expected_exit_context_signature})
+        with self._lock:
+            before = self._bound_frame(expected_revision, paused=True)
+            gameplay = self._gameplay_service()
+            self.driver.normal_exit_managed_profile = self.profile
+            self.backend.poll(self.profile)
+            self._bound_frame(expected_revision, paused=True)
+            result = gameplay.request_normal_exit_v1(action, expected_revision=expected_revision,
+                expected_exit_context_signature=expected_exit_context_signature)
+            # Terminal process facts remain readable after the pipe disappears.
+            # Do not call guard/snapshot/ordinary-action after this submission.
+            return self._receipt("normal-exit-" + action, {"status": result["status"],
+                "result": result, "snapshot_before": before, "snapshot_after_required": False,
+                "uses_ocr": False, "uses_desktop_input": False, "uses_injection": False})
+
+    def query_stress_adjustment(self, base_amount: int, expected_revision: int) -> dict:
+        from xar_autoplayer.bridge.current_actor_stress_adjustment_contract import (
+            validate_base_amount, stress_query_binding, same_stress_query_frame, normalize_public_stress_query,
+        )
+        validate_base_amount(base_amount)
+        with self._lock:
+            before = self._bound_frame(expected_revision, paused=True)
+            binding = stress_query_binding(before, expected_revision)
+            result = self._gameplay_service().query_current_actor_stress_adjustment_v1(
+                base_amount, expected_revision=expected_revision)
+            after = self._bound_frame(expected_revision, paused=True)
+            if not same_stress_query_frame(before, after, binding):
+                raise RuntimeError("profile stress getter changed its actual player/frame")
+            result = normalize_public_stress_query(result, binding, base_amount)
+            return self._receipt("stress-adjustment-query", {
+                "status": ("native_stress_adjustment_observed" if result["current_actor_stress_adjustment_ready"]
+                           else "native_stress_adjustment_unavailable"),
+                "result": result, "business_effects_verified": False, "full_product_acceptance_credit": False,
+            })
+
     def query_event(self, event_instance_id: int, expected_revision: int) -> dict:
         with self._lock:
             self._bound_frame(expected_revision, paused=True)
@@ -639,6 +773,36 @@ def create_server(service: NativeProfileService):
     @server.tool(annotations=ToolAnnotations(readOnlyHint=True))
     def ck3_take_profile_native_snapshot_v1() -> dict[str, object]:
         return service.snapshot()
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+    def ck3_query_profile_character_interaction_ordinary_v1(
+        interaction_key: OrdinaryInteractionKeyV1, recipient_id: OrdinaryRecipientIdV1,
+        expected_revision: StressQueryRevisionV1,
+    ) -> dict[str, object]:
+        return service.query_ordinary_interaction(interaction_key, recipient_id, expected_revision)
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, idempotentHint=False, openWorldHint=False))
+    def ck3_initiate_profile_character_interaction_ordinary_v1(
+        interaction_key: OrdinaryInteractionKeyV1, recipient_id: OrdinaryRecipientIdV1,
+        expected_revision: StressQueryRevisionV1,
+    ) -> dict[str, object]:
+        return service.initiate_ordinary_interaction(interaction_key, recipient_id, expected_revision)
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+    def ck3_observe_profile_normal_exit_v1() -> dict[str, object]:
+        return service.observe_normal_exit()
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+    def ck3_query_normal_exit_context_v1(expected_revision: NormalExitRevisionV1) -> dict[str, object]:
+        return service.query_normal_exit_context(expected_revision)
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=False, destructiveHint=True, idempotentHint=False, openWorldHint=False))
+    def ck3_request_normal_exit_v1(
+        action: Literal["prepare_confirmation", "confirm_desktop"], expected_revision: NormalExitRevisionV1,
+        expected_exit_context_signature: NormalExitSignatureV1,
+    ) -> dict[str, object]:
+        return service.request_normal_exit(action, expected_revision, expected_exit_context_signature)
+    @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+    def ck3_query_profile_current_actor_stress_adjustment_v1(
+        base_amount: StressBaseAmountV1, expected_revision: StressQueryRevisionV1,
+    ) -> dict[str, object]:
+        """Read actual current-player stress adjustment without applying stress."""
+        return service.query_stress_adjustment(base_amount, expected_revision)
     @server.tool(annotations=ToolAnnotations(readOnlyHint=True))
     def ck3_query_profile_event_window_v1(event_instance_id: int, expected_revision: int) -> dict[str, object]:
         return service.query_event(event_instance_id, expected_revision)
@@ -678,7 +842,12 @@ def create_server(service: NativeProfileService):
     ) -> dict[str, object]:
         return service.decision_action("confirm_outcome", expected_revision, decision_key=decision_key,
             expected_outcome=expected_outcome, expected_event_definition_key=expected_event_definition_key)
-    for name in ("ck3_query_profile_decision_item_v1", "ck3_open_profile_decisions_v1",
+    for name in ("ck3_query_profile_character_interaction_ordinary_v1",
+                  "ck3_initiate_profile_character_interaction_ordinary_v1",
+                  "ck3_observe_profile_normal_exit_v1",
+                  "ck3_query_normal_exit_context_v1", "ck3_request_normal_exit_v1",
+                  "ck3_query_profile_current_actor_stress_adjustment_v1",
+                 "ck3_query_profile_decision_item_v1", "ck3_open_profile_decisions_v1",
                  "ck3_select_profile_decision_item_v1", "ck3_confirm_profile_decision_outcome_v1",
                  "ck3_query_native_profile_v1", "ck3_attach_profile_bridge_v1", "ck3_resume_profile_bridge_v1", "ck3_take_profile_native_snapshot_v1",
                  "ck3_query_profile_event_window_v1", "ck3_set_profile_simulation_v1",

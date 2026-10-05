@@ -1,0 +1,124 @@
+{
+  "schema": "lyd.r7.final-closure-facts.v1",
+  "status": "CLOSED_NOT_GREEN",
+  "consumer_close": {
+    "status": "CLIENT_CLOSE_REQUESTED",
+    "closed_at_utc": "2026-10-05T01:27:31.964248+00:00",
+    "consumer_exit0": {
+      "value": 0,
+      "source": "ROOT-REPORTED-TOOL-RESULTS raw; exec84150"
+    },
+    "response": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\mcp-client-evidence-001\\0111-0112-mcp-resume-client-close.response.json",
+      "raw_sha256": "53acb324b898fc8a4a0702b7a8a4e5c9cfac4481eb81d9eabbbc95fd629df29c",
+      "member": "raw/53acb324b898fc8a4a0702b7a8a4e5c9cfac4481eb81d9eabbbc95fd629df29c.bin",
+      "archive": "raw/text-evidence.tar.gz"
+    },
+    "session_closed": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\mcp-client-evidence-001\\session-closed.json",
+      "raw_sha256": "f5eeaacf6be5232fd1811b90c9b8b4f8e89d3c9698c953ab72c70af209522697",
+      "member": "raw/f5eeaacf6be5232fd1811b90c9b8b4f8e89d3c9698c953ab72c70af209522697.bin",
+      "archive": "raw/text-evidence.tar.gz"
+    }
+  },
+  "WM_CLOSE_first": {
+    "status": "STILL_ACTIVE_NO_EXIT_CREDIT",
+    "wait_result": 258,
+    "code259_means_still_active": true,
+    "evidence": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\maintenance-close-001\\EXIT-OBSERVATION.json",
+      "raw_sha256": "01bc89389c4884ae098d39b32ba35e8219482105b85a4bd6ad8276057bfa6057",
+      "member": "raw/01bc89389c4884ae098d39b32ba35e8219482105b85a4bd6ad8276057bfa6057.bin",
+      "archive": "raw/text-evidence.tar.gz"
+    }
+  },
+  "maintenance_confirm1": {
+    "status": "RED_BEFORE_CLICK_ARGUMENT_REJECTION",
+    "returncode": 2,
+    "click_credit": false,
+    "evidence": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\maintenance-close-001\\CONFIRM-CALL.json",
+      "raw_sha256": "d9b1e2ef805c5300e74a0c4502ad3e753789ce7cf9c5d83e7bffa24f61d9ce0a",
+      "member": "raw/d9b1e2ef805c5300e74a0c4502ad3e753789ce7cf9c5d83e7bffa24f61d9ce0a.bin",
+      "archive": "raw/text-evidence.tar.gz"
+    }
+  },
+  "maintenance_confirm2": {
+    "status": "RED_POST_CLICK_RECEIPT_FAILURE",
+    "returncode": 1,
+    "official_desktop_quit_clicked_root_observed": true,
+    "post_click_failure": "Image save destination had .json extension; no second click",
+    "exit_credit_from_this_helper": false,
+    "evidence": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\maintenance-close-002\\CONFIRM-CALL.json",
+      "raw_sha256": "dbd583d75dae3164265635b57a67765757d1a698bcfbbbfa3ea6a80dfa3ff15e",
+      "member": "raw/dbd583d75dae3164265635b57a67765757d1a698bcfbbbfa3ea6a80dfa3ff15e.bin",
+      "archive": "raw/text-evidence.tar.gz"
+    }
+  },
+  "game_absence": {
+    "actual_target_pid": 10992,
+    "actual_target_create_time": 1791148051.8962712,
+    "target_absent": true,
+    "all_ck3_processes": [],
+    "exit_code": null,
+    "forced_termination": false,
+    "official_close_effect_probe": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\official-close-effect-probe-003.json",
+      "raw_sha256": "3c23e138276486ef2c176a68186e5e465850464828c6b2a47d7b1dfd5f2b2c5f",
+      "member": "raw/3c23e138276486ef2c176a68186e5e465850464828c6b2a47d7b1dfd5f2b2c5f.bin",
+      "archive": "raw/text-evidence.tar.gz"
+    },
+    "terminal_fact": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\terminal-closure-001\\TERMINAL-FACTS.json",
+      "raw_sha256": "4c0b5a004097725f2de4b53eae16f4765aea1243ef8c8ffb26f5ddbce61eea51",
+      "member": "raw/4c0b5a004097725f2de4b53eae16f4765aea1243ef8c8ffb26f5ddbce61eea51.bin",
+      "archive": "raw/text-evidence.tar.gz"
+    },
+    "crash_files_count": 0
+  },
+  "exit_save_external": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\terminal-closure-001\\autosave_exit.ck3",
+    "bytes": 90677633,
+    "sha256": "ce7b9352de4bd69e2011772598d953695b0068e06967b10e1f6da9e8a6bfc698",
+    "scope": "Exact immutable external exit-save; not embedded or rehashed by report author"
+  },
+  "keeper": {
+    "stop_request": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0007\\STOP.request",
+      "raw_sha256": "44dc4a29d4235113b999b316809e33c08e7df32d629352588f0888a5d9df89be",
+      "member": "raw/44dc4a29d4235113b999b316809e33c08e7df32d629352588f0888a5d9df89be.bin",
+      "archive": "raw/text-evidence.tar.gz"
+    },
+    "final": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\screen-lease-live-r0007\\FINAL.json",
+      "raw_sha256": "1f9436ccbe6de0d07cc89a81014a488085168a67f06945a8b5448ccf4157f773",
+      "member": "raw/1f9436ccbe6de0d07cc89a81014a488085168a67f06945a8b5448ccf4157f773.bin",
+      "archive": "raw/text-evidence.tar.gz"
+    },
+    "last_sequence": 2920,
+    "thread_exited": true,
+    "failure": null,
+    "entry_error": null,
+    "keeper_exit0": {
+      "value": 0,
+      "source": "ROOT-REPORTED-TOOL-RESULTS raw; exec91447"
+    }
+  },
+  "CAS_release": {
+    "expected_sequence": 2920,
+    "actual_release_sequence": 2921,
+    "state": "done",
+    "resources": [],
+    "no_screen_holder": true,
+    "released": {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\terminal-closure-001\\RELEASED.json",
+      "raw_sha256": "f996b512ca718aa6a6d3986c3d96630c23cf6523b5a770474119b99721dae7c8",
+      "member": "raw/f996b512ca718aa6a6d3986c3d96630c23cf6523b5a770474119b99721dae7c8.bin",
+      "archive": "raw/text-evidence.tar.gz"
+    }
+  },
+  "whole_mod_green": false,
+  "full_repeat_cycle_pass": false,
+  "normal_exit_returncode_zero_claim": false
+}

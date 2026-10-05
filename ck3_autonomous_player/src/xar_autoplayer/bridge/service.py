@@ -11451,6 +11451,103 @@ class GameplayBridgeService:
             )
         return result
 
+    def query_character_interaction_ordinary_v1(
+        self, interaction_key: str, recipient_id: int, *, expected_revision: int,
+    ) -> dict[str, object]:
+        from .ordinary_interaction_contract import (
+            validate_interaction_key, validate_recipient_id, interaction_binding,
+            same_query_frame, normalize_public_query,
+        )
+        validate_interaction_key(interaction_key)
+        validate_recipient_id(recipient_id)
+        method = getattr(self.driver, "query_character_interaction_ordinary_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks ordinary interaction query")
+        before = self.driver.take_snapshot()
+        binding = interaction_binding(before, expected_revision)
+        result = method(interaction_key, recipient_id, expected_revision=expected_revision)
+        after = self.driver.take_snapshot()
+        if not same_query_frame(before, after, binding):
+            raise BridgeUnavailableError("ordinary interaction query changed its actual frame")
+        return normalize_public_query(result, binding, interaction_key, recipient_id)
+
+    def initiate_character_interaction_ordinary_v1(
+        self, interaction_key: str, recipient_id: int, *, expected_revision: int,
+    ) -> dict[str, object]:
+        from .ordinary_interaction_contract import (
+            validate_interaction_key, validate_recipient_id, interaction_binding,
+            after_control_binding, normalize_public_initiation,
+        )
+        validate_interaction_key(interaction_key)
+        validate_recipient_id(recipient_id)
+        method = getattr(self.driver, "initiate_character_interaction_ordinary_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks ordinary interaction initiation")
+        before = self.driver.take_snapshot()
+        binding = interaction_binding(before, expected_revision, initiating=True)
+        result = method(interaction_key, recipient_id, expected_revision=expected_revision)
+        after = self.driver.take_snapshot()
+        later = after_control_binding(before, after, binding)
+        return normalize_public_initiation(result, binding, interaction_key, recipient_id, later)
+
+    def observe_normal_exit_v1(self) -> dict[str, object]:
+        from .normal_exit_contract_v1 import normalize_public_exit_observation_result
+        method = getattr(self.driver, "observe_normal_exit_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks its owned normal-exit process observer")
+        # Only the existing backend-owned original handle; no live game reads.
+        return normalize_public_exit_observation_result(method())
+
+    def query_normal_exit_context_v1(self, *, expected_revision: int) -> dict[str, object]:
+        from .normal_exit_contract_v1 import normalize_query_arguments
+        normalize_query_arguments({"expected_revision": expected_revision})
+        method = getattr(self.driver, "query_normal_exit_context_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks map normal-exit context")
+        from .normal_exit_contract_v1 import normalize_public_exit_result
+        return normalize_public_exit_result(method(expected_revision=expected_revision),
+                                            action="query_context", expected_revision=expected_revision)
+
+    def request_normal_exit_v1(self, action: str, *, expected_revision: int,
+                               expected_exit_context_signature: str) -> dict[str, object]:
+        from .normal_exit_contract_v1 import normalize_request_arguments
+        normalize_request_arguments({"action": action, "expected_revision": expected_revision,
+                                     "expected_exit_context_signature": expected_exit_context_signature})
+        method = getattr(self.driver, "request_normal_exit_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks map normal-exit request")
+        # The driver retains its original process handle across terminal dispatch.
+        # A final live snapshot would discard valid evidence when the process exits.
+        from .normal_exit_contract_v1 import normalize_public_exit_result
+        result = method(action, expected_revision=expected_revision,
+                        expected_exit_context_signature=expected_exit_context_signature)
+        return normalize_public_exit_result(result, action=action, expected_revision=expected_revision)
+
+    def query_current_actor_stress_adjustment_v1(
+        self, base_amount: int, *, expected_revision: int,
+    ) -> dict[str, object]:
+        """Return fresh actual native adjustment inputs without option or business credit."""
+        from .current_actor_stress_adjustment_contract import (
+            validate_base_amount, stress_query_binding, same_stress_query_frame, normalize_public_stress_query,
+        )
+        validate_base_amount(base_amount)
+        method = getattr(self.driver, "query_current_actor_stress_adjustment_v1", None)
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks the current-actor stress getter")
+        before = self.driver.take_snapshot()
+        try:
+            binding = stress_query_binding(before, expected_revision)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        result = method(base_amount, expected_revision=expected_revision)
+        after = self.driver.take_snapshot()
+        if not same_stress_query_frame(before, after, binding):
+            raise BridgeUnavailableError("stress getter changed its actual player/revision frame")
+        try:
+            return normalize_public_stress_query(result, binding, base_amount)
+        except ValueError as error:
+            raise BridgeUnavailableError(f"malformed backend stress read: {error}") from error
+
     def query_current_event_window_context_v1(
         self,
         event_instance_id: int,

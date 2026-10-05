@@ -1,0 +1,215 @@
+{
+  "schema": "ordinary-generic-MCP-permanent-source-report-status-v1",
+  "status": "OFFLINE_SOURCE_ONLY",
+  "created_at_utc": "2026-10-05T02:58:19.919613+00:00",
+  "scope": "ROOT actual directed source apply + offline tests and independent production-code interop; no business/MCP-exit acceptance",
+  "immutable_inputs": [
+    {
+      "label": "native_final002",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-ordinary-interaction-native-20261005-001\\review-package-002-final-002",
+      "INDEX_sha256": "94ba76d3f5b98b7558b6a8610cdebc6f281117835955b88c33529ebc336ee21b",
+      "indexed_payload_count": 79,
+      "archive_policy": "lossless selected text plus exact source references"
+    },
+    {
+      "label": "Python_final002",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-generic-ordinary-interaction-python-20261005-001\\review-package-002",
+      "INDEX_sha256": "44dd6a46a8789bb1b1d7261051104687adf403329121afa8a97b6f717d2d78fc",
+      "indexed_payload_count": 46,
+      "archive_policy": "lossless selected text plus exact source references"
+    },
+    {
+      "label": "independent_final",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\generic-mcp-interaction-independent-review-20261005-001\\final-review-package-001",
+      "INDEX_sha256": "f39c72529199f6b5e2c2f38d77fa0936e00bccec4f3edda6341599be0f34b3ea",
+      "indexed_payload_count": 128,
+      "archive_policy": "lossless selected text plus exact source references"
+    },
+    {
+      "label": "native_compiled001_preserved",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-ordinary-interaction-native-20261005-001\\review-package-001",
+      "INDEX_sha256": "3483cb85207447e1bf4910b0696a418ccdc69d8f33157cd0e471e322a44834f5",
+      "indexed_payload_count": 267,
+      "archive_policy": "lossless selected text plus exact source references"
+    },
+    {
+      "label": "Python_original001_RED_preserved",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-generic-ordinary-interaction-python-20261005-001\\review-package-001",
+      "INDEX_sha256": "c6359d406d95cc094123d2eab5ebc517da57fc4e1f57f2c869b43ec32572290a",
+      "indexed_payload_count": 294,
+      "archive_policy": "lossless selected text plus exact source references"
+    },
+    {
+      "label": "actual_leaf_serializer",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-ordinary-interaction-native-20261005-001\\ordinary-leaf-author-002\\serializer-closure-review-package-001",
+      "INDEX_sha256": "512d467a1ae7a93e1aad8f19d63ac7e4c7e9d764db52ea05b3b64347f2bd076e",
+      "indexed_payload_count": 564,
+      "archive_policy": "lossless selected text plus exact source references"
+    },
+    {
+      "label": "production_parser",
+      "root": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-ordinary-interaction-native-20261005-001\\ordinary-parser-author-001\\review-package-001",
+      "INDEX_sha256": "b3c34f95a740ff84fd960dbbaf8b03a03197d3f6968c1177b98971a313aa858c",
+      "indexed_payload_count": 14,
+      "archive_policy": "lossless selected text plus exact source references"
+    }
+  ],
+  "ROOT_actual_checks": {
+    "ordinary": {
+      "utc": "2026-10-05T02:40:27.946424+00:00",
+      "case": "ordinary",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "147e90aac3a60b1593aac2cdcdfbc3247230ca82949b29d0a64bc1db50133854",
+      "actual_unittest_count": 24,
+      "RESULT_sha256": "52a6eefd22051557b2351ccc54d8f17b07b4440888ce77e292022b98a26e0d16",
+      "INPUTS_sha256": "dfa02f0a396f9eda4d99629da9a1234ac5168137f6e5a10986a12e114d9dfeda",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-ordinary-integrated-checks-20261005-001\\ordinary"
+    },
+    "host": {
+      "utc": "2026-10-05T02:40:28.103514+00:00",
+      "case": "host",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "15bd529617566104eb946458ef8558cb0375208b49995fda99bb34a0dd1d6c7e",
+      "actual_unittest_count": 13,
+      "RESULT_sha256": "675da7a7845b02585f95dfec8c7c817438d8a4a1279be411f68c16831c547028",
+      "INPUTS_sha256": "2dc507416cb960346bc1ad3a6e104bef3089931f1bf99c447618eb495d2ecaed",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-ordinary-integrated-checks-20261005-001\\host"
+    },
+    "profile": {
+      "utc": "2026-10-05T02:40:30.900665+00:00",
+      "case": "profile",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "444a0f859d44ce2dbffec8c953430068309a78faf70cbac127e2fb2ee33f5d4f",
+      "actual_unittest_count": 18,
+      "RESULT_sha256": "c21b735246d902550242233fb197f60f9ef03103f6db5a4aeb856bf7067d0045",
+      "INPUTS_sha256": "1ba70ab35be6bb46df747d92eac7cbe38eec6617ea80c11b3a1ae27a5b6309b7",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-ordinary-integrated-checks-20261005-001\\profile"
+    },
+    "stress": {
+      "utc": "2026-10-05T02:40:29.777725+00:00",
+      "case": "stress",
+      "status": "FAIL",
+      "exit_code": 1,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "6ff7cddadc07fc402bdba368b5828b76d11efa748df9bd4441e72c4e1e6abff8",
+      "actual_unittest_count": 23,
+      "RESULT_sha256": "e11ff9ef69870ca1d4bd20c28a32bf461ebf366979f74e9fe256ec7c3cf67179",
+      "INPUTS_sha256": "ac61e29cbd138e049dc0d92dfe7af77b806cb3d335c3f2d711a1a2f23659e689",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-ordinary-integrated-checks-20261005-001\\stress"
+    },
+    "outcomes": {
+      "utc": "2026-10-05T02:40:31.399434+00:00",
+      "case": "outcomes",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "f2b44bf683f8b675a5510d1a8480bf8991663101d5df915c686a3b1431bee64a",
+      "actual_unittest_count": 29,
+      "RESULT_sha256": "48bdc9bd3a8d9db9d319d84840e51440f8568307d7d795ec8fb1b1b770cd0481",
+      "INPUTS_sha256": "6844230f03843c3103fe4d908cda1cd0a80ccdda9b3d2ebf39f6226eefb819d1",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-ordinary-integrated-checks-20261005-001\\outcomes"
+    },
+    "python-only": {
+      "utc": "2026-10-05T02:41:39.351523+00:00",
+      "case": "python-only",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout_sha256": "c38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_unittest_count": null,
+      "RESULT_sha256": "b2be0713a962306af7b046298393aedfb88a727b305a45df2ceda0d5587a8dbd",
+      "INPUTS_sha256": "19e11a0caaa0d11b0a17e1c3a1faf4957826eefbfdd0c2a158739dca6415e8dc",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-ordinary-integrated-checks-20261005-001\\python-only"
+    },
+    "diff": {
+      "utc": "2026-10-05T02:40:24.578327+00:00",
+      "case": "diff",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "actual_unittest_count": null,
+      "RESULT_sha256": "a06f4d112005b9e7a259ca2c7dddeeb9606089b15a1e51dc75936b46e6d6707b",
+      "INPUTS_sha256": "c8282f58e707535a99531729751ec8cfd43b32ef3c6590159e7e35675b243e7f",
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-ordinary-integrated-checks-20261005-001\\diff"
+    },
+    "stress_corrected_append": {
+      "utc": "2026-10-05T02:52:36.531328+00:00",
+      "case": "stress",
+      "status": "PASS",
+      "exit_code": 0,
+      "stdout_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "stderr_sha256": "09aceed3c83463491211cae819bd6683a756436bc7a5d39a697781166bb8f081",
+      "actual_unittest_count": 23,
+      "origin": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-stress-coexistence-corrected-checks-20261005-001\\stress",
+      "RESULT_sha256": "f45ddc38378b80f24b5f5e346d4503604697c9f3c618c5834d42b55a0b270644",
+      "INPUTS_sha256": "ecf1f2a37b217d0eb529bbdd04ac6c1e6fdef3a014c8f2863bc0f3d0a62dbf9a"
+    }
+  },
+  "initial_stress_status": {
+    "status": "FAIL",
+    "ran": 23,
+    "errors": 2,
+    "actual_reasons": [
+      "SDK gameplay total160 != stale expected158",
+      "SDK profile total18 != stale expected16"
+    ],
+    "original_stdio_preserved": true
+  },
+  "superseding_stress_repair": {
+    "status": "PASS_TEST_ONLY_CORRECTION",
+    "actual_applied_by_ROOT": true,
+    "later_receipt_target": "docs/ck3-native-ai/evidence/ordinary-character-interaction-generic-mcp-source-only-2026-10-05.root-stress-correction-025236.json",
+    "later_receipt_sha256": "c58b66bf6abe607915c8e2b27f65a7a30a858f7374b27e513a3f57bf7dea06d4",
+    "old_FAIL_preserved": true,
+    "production_changed": false
+  },
+  "later_ROOT_build_or_source_CHECK_receipts": {
+    "status": "PENDING_ROOT_APPEND",
+    "later_receipt": null
+  },
+  "old_DebugDLL": {
+    "origin": "C:\\lgi1\\build-on-001\\xar_ck3_bridge.dll",
+    "bytes": 15034880,
+    "sha256": "2674227def2f758716c611a27e620724fe71095696b599686f3313c700b2b3b5",
+    "retained_external": true,
+    "qualification": "exact compiled original001 inputs only; no final002 Release/runtime credit"
+  },
+  "native_gate": "CLOSED",
+  "native_game_business": "NOT_RUN",
+  "MCP_exit_business": "NOT_RUN",
+  "new_ROOT_HEAD_Release_profile_guard_PID_session_HELLO": "NOT_YET_RECORDED",
+  "reviewer_tests_rerun_in_this_document_task": false,
+  "main_Git_game_pipe_lease_MCP_calls": 0,
+  "history_policy": "immutable imported snapshot; corrections and later checks append new dated receipt/report, never replace RED originals",
+  "snapshot_status": "OFFLINE_SOURCE_ONLY",
+  "current_focused_source_checks": {
+    "status": "PASS",
+    "test_counts": {
+      "ordinary": 24,
+      "host": 13,
+      "profile": 18,
+      "outcomes": 29,
+      "stress_corrected": 23
+    },
+    "total": 107,
+    "python_only": {
+      "status": "PASS",
+      "exit_code": 0,
+      "ROOT_reported_count": 13485
+    },
+    "diff": {
+      "status": "PASS",
+      "exit_code": 0
+    },
+    "does_not_include_author39_in_107": true,
+    "does_not_claim_all_repo_tests_PASS": true
+  },
+  "archive_initial_status_semantics": "Base archive STATUS is original FAIL/PENDING historical snapshot; this current status incorporates exact independent appended ROOT stress receipt."
+}

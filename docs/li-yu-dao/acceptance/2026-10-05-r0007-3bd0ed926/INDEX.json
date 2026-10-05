@@ -1,0 +1,67 @@
+{
+  "schema": "lyd.r7.permanent-payload-index.v1",
+  "status": "CLOSED_NOT_GREEN",
+  "source_revision": "3bd0ed926fef86f2660f2ed80c231dd9682ee877",
+  "files": [
+    {
+      "path": "CASE-STATUS.json",
+      "bytes": 48665,
+      "sha256": "b0ca2aa32653532a233d463f1b91f47d9c4368631e18c783724a6f765a11cd74"
+    },
+    {
+      "path": "CHECK.json",
+      "bytes": 672,
+      "sha256": "4a81171ddaf95c7393307431791872d8da86924a7e9138af914ab432b4f3a7fa"
+    },
+    {
+      "path": "CLOSURE.json",
+      "bytes": 5708,
+      "sha256": "8e8e431ad4ea03937f549a0a9836c1575314e3f16f8132ac36b72884c8eff373"
+    },
+    {
+      "path": "EXTERNAL-ASSETS.json",
+      "bytes": 28355,
+      "sha256": "0e5354e825258d1206a8952f31aa6751c82fdbbb305cbb6cdd64eec022d8bf6f"
+    },
+    {
+      "path": "LOG-DIAGNOSTICS.json",
+      "bytes": 1125,
+      "sha256": "cdaeead688bc62a7102818644b0720a8fe96dda1e62ed54cf06c37d558bb0e3d"
+    },
+    {
+      "path": "media/18f033c1e8acbc67c7799907e04e000d9cd003022088c2c88f5139438850eb72.png",
+      "bytes": 1541335,
+      "sha256": "18f033c1e8acbc67c7799907e04e000d9cd003022088c2c88f5139438850eb72"
+    },
+    {
+      "path": "media/1c128880680603bbc4a0ab5897f50de991ac23b78e6d3f43de589b86e2b85616.png",
+      "bytes": 2294162,
+      "sha256": "1c128880680603bbc4a0ab5897f50de991ac23b78e6d3f43de589b86e2b85616"
+    },
+    {
+      "path": "media/6492dcdc1b9c48682b089ef7b8e5e5df7c27f77ba5f83bc9437419f9b4dc3384.png",
+      "bytes": 1540143,
+      "sha256": "6492dcdc1b9c48682b089ef7b8e5e5df7c27f77ba5f83bc9437419f9b4dc3384"
+    },
+    {
+      "path": "raw/text-evidence.tar.gz",
+      "bytes": 19985264,
+      "sha256": "c9f097150925e04bf1d5737f945c8f37564cfb1360b59c2ffa1e8085917a6752"
+    },
+    {
+      "path": "RAW-MAPPINGS.json",
+      "bytes": 3811155,
+      "sha256": "15515d1486dc6773dc9af2a16c1fdae19eb975bc28602ce4a667fcd8c1884b8f"
+    },
+    {
+      "path": "REPORT.md",
+      "bytes": 4781,
+      "sha256": "b40d00ced8764a796e54f1cc7828ec54ce2d6be7842a1cfbefbf9f5f6a33e7b7"
+    },
+    {
+      "path": "STATUS.json",
+      "bytes": 1942,
+      "sha256": "3138935b492c77724a1b75836149662011aea120067fe119bdf54d3b6d126236"
+    }
+  ]
+}

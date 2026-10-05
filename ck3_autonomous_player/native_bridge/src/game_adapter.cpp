@@ -1,5 +1,6 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/ordinary_interaction_request_v1.hpp"
 #include "xar_bridge/ck3_12003.hpp"
 #include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
 #include "xar_bridge/title_holder_v1_serializer.hpp"
@@ -25,6 +26,7 @@
 #include "xar_bridge/coat_of_arms_designer_probe_v1.hpp"
 #include "xar_bridge/event_window_context_v1.hpp"
 #include "xar_bridge/frontend_gui_route_v1.hpp"
+#include "xar_bridge/ingame_decision_item_v1.hpp"
 #include "xar_bridge/loaded_feature_manifest_v1_mailbox.hpp"
 #include "xar_bridge/pending_character_interaction_context_v1_mailbox.hpp"
 #include "xar_bridge/set_played_character_v1_mailbox.hpp"
@@ -321,7 +323,9 @@ bool GameAdapter::supports_snapshot() const noexcept {
 
 bool GameAdapter::supports_step(std::string_view step) const noexcept {
   std::string_view capability;
-  if (step == "pause-map") {
+  if (step == "query-current-actor-stress-adjustment-v1") {
+    capability = "game.query.current-actor-stress-adjustment.v1";
+  } else if (step == "pause-map") {
     capability = "game.command.pause-map";
   } else if (step == "resume-map") {
     capability = "game.command.resume-map";
@@ -460,6 +464,10 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kWhiteRenderedTextV1Capability;
   } else if (step == ck3_11906::kWhitePlayerBusinessVariablesV1Step) {
     capability = ck3_11906::kWhitePlayerBusinessVariablesV1Capability;
+  } else if (step == ck3_12003::kNormalExitMapV1Step) {
+    if (descriptor().game_version != ck3_12003::kGameVersion ||
+        descriptor().executable_sha256 != ck3_12003::kExecutableSha256) return false;
+    capability = ck3_12003::kNormalExitMapV1Capability;
   } else if (step == ck3_11906::kIngameDecisionsOpenV1Step) {
     capability = ck3_11906::kIngameDecisionsOpenV1Capability;
   } else if (step == ck3_11906::kIngameDecisionItemQueryV1Step) {
@@ -468,6 +476,12 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
     capability = ck3_11906::kIngameDecisionItemSelectV1Capability;
   } else if (step == ck3_11906::kIngameDecisionItemConfirmV1Step) {
     capability = ck3_11906::kIngameDecisionItemConfirmV1Capability;
+  } else if (step == ck3_11906::kIngameDecisionOutcomeConfirmV1Step) {
+    capability = ck3_11906::kIngameDecisionOutcomeConfirmV1Capability;
+  } else if (step == ck3_12003::kOrdinaryInteractionQueryV1Step) {
+    capability = ck3_12003::kOrdinaryInteractionQueryV1Capability;
+  } else if (step == ck3_12003::kOrdinaryInteractionInitiateV1Step) {
+    capability = ck3_12003::kOrdinaryInteractionInitiateV1Capability;
   } else if (step == ck3_11906::kGuiWindowTreeInspectionV1Step) {
     capability = ck3_11906::kGuiWindowTreeInspectionV1Capability;
   } else if (step == ck3_11906::kFrontendGuiTreeInspectionV1Step) {

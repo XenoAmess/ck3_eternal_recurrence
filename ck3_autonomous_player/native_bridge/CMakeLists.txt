@@ -394,6 +394,14 @@ if(XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1 AND
   message(FATAL_ERROR "Frontend rules candidate requires existing FEUDAL frontend admission")
 endif()
 
+option(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1
+  "Admit exact .3 map-only fixed stock normal exit with actual source inventory and independent process observation" OFF)
+if(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1 AND
+   (NOT XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1 OR
+    NOT XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1))
+  message(FATAL_ERROR "Map normal exit requires existing exact-build frontend owner admission")
+endif()
+
 option(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1
   "Admit exact .3 fixed HUD Decisions button through the original GUI callback" OFF)
 if(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1 AND
@@ -1199,6 +1207,7 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1
     XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1
     XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1
+    XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1
     XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1
     XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1
     XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1
@@ -1361,6 +1370,9 @@ add_library(xar_ck3_bridge SHARED
   src/frontend_bookmark_model_probe_v1.cpp
   src/frontend_gui_route_v1.cpp
   src/ingame_decisions_opener_v1.cpp
+  src/normal_exit_map_v1.cpp
+  src/normal_exit_map_request_v1.cpp
+  src/normal_exit_map_source_v1.cpp
   src/ingame_decision_item_v1.cpp
   src/white_player_business_variables_v1.cpp
   src/white_rendered_text_v1.cpp
@@ -1939,6 +1951,9 @@ if(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE
     XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1=1
   )
+endif()
+if(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1=1)
 endif()
 if(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)
   target_compile_definitions(xar_ck3_bridge PRIVATE XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1=1)
@@ -7891,4 +7906,114 @@ if(BUILD_TESTING AND WIN32)
     FIXTURES_SETUP war_cash_net_income_wire)
   set_tests_properties(xar_ck3_12003_war_cash_net_income_registered_mcp PROPERTIES
     FIXTURES_REQUIRED war_cash_net_income_wire)
+endif()
+
+# Independent next-epoch current-player stress observation. OFF never advertises it.
+option(XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1
+  "Admit exact .3 owner-bound readonly stress aggregate and delta consumer" OFF)
+if(XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/current_actor_stress_adjustment_v1.cpp
+    src/current_actor_stress_adjustment_v1_mailbox.cpp)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1=1)
+  # The exact .3 descriptor belongs to the separately compiled runtime target.
+  target_compile_definitions(xar_ck3_12002_runtime PRIVATE
+    XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1=1)
+endif()
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_current_actor_stress_adjustment_v1_test
+    tests/current_actor_stress_adjustment_v1_test.cpp
+    src/current_actor_stress_adjustment_v1.cpp
+    src/current_actor_stress_adjustment_v1_mailbox.cpp
+    src/main_thread_query_mailbox_v1.cpp
+    src/ck3_12002_query_mailbox.cpp
+    src/ck3_12003_abi_profile.cpp)
+  target_link_libraries(xar_ck3_current_actor_stress_adjustment_v1_test PRIVATE user32)
+  target_include_directories(xar_ck3_current_actor_stress_adjustment_v1_test PRIVATE include)
+  target_compile_features(xar_ck3_current_actor_stress_adjustment_v1_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_current_actor_stress_adjustment_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_current_actor_stress_adjustment_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_current_actor_stress_adjustment_v1
+    COMMAND xar_ck3_current_actor_stress_adjustment_v1_test)
+endif()
+
+
+option(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1
+  "Admit exact .3 ordinary key/full-recipient context query and single owned send" OFF)
+if(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
+  target_sources(xar_ck3_bridge PRIVATE
+    src/ordinary_interaction_request_v1.cpp
+    src/ordinary_character_interaction_v1.cpp
+    src/ordinary_interaction_mailbox_v1.cpp)
+  target_compile_definitions(xar_ck3_12002_runtime PRIVATE
+    XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=1)
+endif()
+if(BUILD_TESTING)
+  add_executable(xar_ck3_ordinary_interaction_request_v1_test
+    src/ordinary_interaction_request_v1.cpp
+    src/ordinary_interaction_request_v1_test.cpp)
+  target_include_directories(xar_ck3_ordinary_interaction_request_v1_test PRIVATE include)
+  target_compile_features(xar_ck3_ordinary_interaction_request_v1_test PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(xar_ck3_ordinary_interaction_request_v1_test PRIVATE /W4 /WX /permissive-)
+  endif()
+  add_test(NAME xar_ck3_ordinary_interaction_request_v1
+    COMMAND xar_ck3_ordinary_interaction_request_v1_test)
+endif()
+
+if(BUILD_TESTING AND WIN32)
+  if(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
+    target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
+      XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1=1)
+  endif()
+  if(XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1)
+    target_compile_definitions(xar_ck3_adapter_registry_test PRIVATE
+      XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1=1)
+  endif()
+  add_test(NAME xar_ck3_ordinary_interaction_production_registry_v1
+    COMMAND xar_ck3_adapter_registry_test --ordinary-interaction-capabilities-only)
+  add_executable(xar_ck3_ordinary_character_interaction_v1_test
+    src/ordinary_character_interaction_v1_test.cpp
+    src/ordinary_character_interaction_v1.cpp
+    src/ordinary_interaction_request_v1.cpp
+    src/ck3_12002.cpp
+    src/ck3_12002_commands.cpp)
+  target_include_directories(xar_ck3_ordinary_character_interaction_v1_test PRIVATE include)
+  target_compile_features(xar_ck3_ordinary_character_interaction_v1_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_ordinary_character_interaction_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_ordinary_character_interaction_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_ordinary_character_interaction_v1
+    COMMAND xar_ck3_ordinary_character_interaction_v1_test)
+  add_executable(xar_ck3_ordinary_interaction_mailbox_v1_test
+    tests/ordinary_interaction_mailbox_v1_test.cpp
+    src/ordinary_interaction_mailbox_v1.cpp
+    src/ordinary_character_interaction_v1.cpp
+    src/ordinary_interaction_request_v1.cpp
+    src/ck3_12002.cpp
+    src/ck3_12002_commands.cpp
+    src/main_thread_query_mailbox_v1.cpp
+    src/ck3_12002_query_mailbox.cpp
+    src/ck3_12003_abi_profile.cpp)
+  target_link_libraries(xar_ck3_ordinary_interaction_mailbox_v1_test PRIVATE user32)
+  target_include_directories(xar_ck3_ordinary_interaction_mailbox_v1_test PRIVATE include)
+  target_compile_features(xar_ck3_ordinary_interaction_mailbox_v1_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_ordinary_interaction_mailbox_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_ordinary_interaction_mailbox_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_ordinary_interaction_mailbox_v1
+    COMMAND xar_ck3_ordinary_interaction_mailbox_v1_test)
 endif()

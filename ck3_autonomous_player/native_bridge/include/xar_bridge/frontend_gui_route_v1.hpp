@@ -7,6 +7,7 @@
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 #include "xar_bridge/ingame_ui_navigation_v1.hpp"
 #include "xar_bridge/ingame_decisions_opener_v1.hpp"
+#include "xar_bridge/normal_exit_map_v1.hpp"
 #include "xar_bridge/ingame_decision_item_v1.hpp"
 #include "xar_bridge/white_player_business_variables_v1.hpp"
 #include "xar_bridge/white_rendered_text_v1.hpp"
@@ -238,6 +239,7 @@ enum class FrontendGuiRouteOperationV1 : std::uint32_t {
   aub_confirm = 37,
   aub_policy_options = 34, // query and source OnSelect share one fixed private operation.
   action_white_control = 35,
+  normal_exit_map = 38, // Fixed map-only normal-exit provider; no new mailbox slot.
 };
 
 enum class FrontendGuiRouteV1 : std::uint32_t {
@@ -292,6 +294,9 @@ struct FrontendGuiRouteMailboxContextV1 {
   ck3_12003::AubBusinessStateContextV1 aub_business_state{};
   ck3_12003::AubConfirmContextV1 aub_confirm{};
   WhiteControlActionContextV1 white_control_action{};
+#if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
+  ck3_12003::NormalExitMapContextV1 normal_exit_map{};
+#endif
 };
 
 bool ExecuteFrontendGuiRouteMailboxV1(

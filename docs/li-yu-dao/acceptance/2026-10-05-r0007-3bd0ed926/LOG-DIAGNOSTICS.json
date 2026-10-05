@@ -1,0 +1,26 @@
+{
+  "schema": "lyd.r7.final-log-classification.v1",
+  "status": "RED_UNRESOLVED_RUNTIME_DIAGNOSTICS",
+  "startup_product_diagnostic_lines": 6,
+  "startup_fixture_im_lines": 578,
+  "runtime_primary_header_counts": {
+    "explicit_other_script": 1,
+    "i4_single_event": 578,
+    "observer": 35496,
+    "production": 63921,
+    "unattributed_engine": 4
+  },
+  "raw_line_count": 546329,
+  "engine_header_count": 100000,
+  "producer_log_cap": "UNKNOWN",
+  "collector_truncation": false,
+  "scope": "Primary timestamp headers are records; stack mention count228289 is not error count. Tooltip-marked unset/scope/invalid are separated from wrong-type headers6249 lacking tooltip field.",
+  "saved_split_result1_negated": false,
+  "new_fix_loaded_into_R7": false,
+  "independent_report": {
+    "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-c2-runtime-log-diagnosis-20261005-001\\REPORT.json",
+    "raw_sha256": "8e4fe4e6e398955d1e14e5978a0fb67db8959db56c7719f59c2358db259b1f47",
+    "member": "raw/8e4fe4e6e398955d1e14e5978a0fb67db8959db56c7719f59c2358db259b1f47.bin",
+    "archive": "raw/text-evidence.tar.gz"
+  }
+}

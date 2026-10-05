@@ -378,6 +378,8 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_player_mercenary_context12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_player_mercenary_hire12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_regular_maa_create12003 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_current_actor_stress_adjustment12003 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_ordinary_interaction12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_sway_outcome_opinion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_ai_reform_inputs12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_draft_doctrine_choices12002 = nullptr;
@@ -610,6 +612,8 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_player_mercenary_context12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_player_mercenary_hire12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_regular_maa_create12003 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_current_actor_stress_adjustment12003 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_ordinary_interaction12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_sway_outcome_opinion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_ai_reform_inputs12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_draft_doctrine_choices12002 = nullptr;

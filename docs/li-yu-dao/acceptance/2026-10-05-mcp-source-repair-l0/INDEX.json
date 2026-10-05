@@ -1,0 +1,336 @@
+{
+  "schema": "lyd.root-source-l0-evidence.v1",
+  "observed_at_utc": "2026-10-05T02:13:41.557031+00:00",
+  "baseline_head": "3bd0ed926fef86f2660f2ed80c231dd9682ee877",
+  "scope": "Actual author application and pre-rebase focused L0; no newly loaded native DLL or engine-clean credit",
+  "archive_sha256": "ccd41129f283ff249e871cd5e53db63abd10d46a82d9cc5b40c626a25cbeb71a",
+  "archive_bytes": 28188,
+  "source_mappings": [
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\BASELINE-VALIDATION.json",
+      "bytes": 13561,
+      "sha256": "d9ae49b2ebcfb0d4024126210d7afaac249b341714a2c7027b7eeb014ddcbdde",
+      "member": "raw/d9ae49b2ebcfb0d4024126210d7afaac249b341714a2c7027b7eeb014ddcbdde.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\CANDIDATE-VALIDATION.json",
+      "bytes": 14694,
+      "sha256": "4828b97ffbbef20a3fa88d0fd188259bda83308d712b267309947f669d5824cb",
+      "member": "raw/4828b97ffbbef20a3fa88d0fd188259bda83308d712b267309947f669d5824cb.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\c2\\INPUTS.json",
+      "bytes": 704,
+      "sha256": "d59a376b95f5119d422768df03fcee12f4bc56913f4f66cdde3eaf3e29c9c7c1",
+      "member": "raw/d59a376b95f5119d422768df03fcee12f4bc56913f4f66cdde3eaf3e29c9c7c1.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\c2\\RESULT.json",
+      "bytes": 297,
+      "sha256": "95709ebf8e1e4f3f6772d1ba3a43101cfae8a82a93b8e3288024122c5bf2995f",
+      "member": "raw/95709ebf8e1e4f3f6772d1ba3a43101cfae8a82a93b8e3288024122c5bf2995f.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\c2\\stderr.bin",
+      "bytes": 16671,
+      "sha256": "ad9db22880f7f55aec4843dd9b986d0927323a58cfc9d8b01dee83cdba719c3b",
+      "member": "raw/ad9db22880f7f55aec4843dd9b986d0927323a58cfc9d8b01dee83cdba719c3b.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\c2\\stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "member": "raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\diff\\INPUTS.json",
+      "bytes": 573,
+      "sha256": "acd2ad378bd50fbdc2a570a942ee76ef0d81701002d278319bf8940d4930f1a3",
+      "member": "raw/acd2ad378bd50fbdc2a570a942ee76ef0d81701002d278319bf8940d4930f1a3.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\diff\\RESULT.json",
+      "bytes": 299,
+      "sha256": "c7e248479768039ddfa7a5208cd0ffea4fbb7701bc6438bd2f01d696cf3a74f4",
+      "member": "raw/c7e248479768039ddfa7a5208cd0ffea4fbb7701bc6438bd2f01d696cf3a74f4.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\diff\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "member": "raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\diff\\stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "member": "raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\generated\\INPUTS.json",
+      "bytes": 726,
+      "sha256": "466ddf4afe281f5b721682a30b1f1007765937e102b29528d867dbc465453940",
+      "member": "raw/466ddf4afe281f5b721682a30b1f1007765937e102b29528d867dbc465453940.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\generated\\RESULT.json",
+      "bytes": 304,
+      "sha256": "19329d136e0be014b1af2338e1718d720c59eb82b9ef60414c71e17ec8a6b635",
+      "member": "raw/19329d136e0be014b1af2338e1718d720c59eb82b9ef60414c71e17ec8a6b635.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\generated\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "member": "raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\generated\\stdout.bin",
+      "bytes": 50,
+      "sha256": "acb08e5fc71ef6894b6e78c9fd013dd7b7825f26a549402bc84aeddad9fbc30c",
+      "member": "raw/acb08e5fc71ef6894b6e78c9fd013dd7b7825f26a549402bc84aeddad9fbc30c.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\generated-bytes\\RESULT.json",
+      "bytes": 894,
+      "sha256": "c82391267a54e5cb6f05fe13f2eadbb9475c6ff1c5b8cf80344ca26847bce0b9",
+      "member": "raw/c82391267a54e5cb6f05fe13f2eadbb9475c6ff1c5b8cf80344ca26847bce0b9.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\institution\\INPUTS.json",
+      "bytes": 729,
+      "sha256": "82b72e8c2884680da2e73b66d1feed22fba44f861e0363f7c64e14aebf4c6949",
+      "member": "raw/82b72e8c2884680da2e73b66d1feed22fba44f861e0363f7c64e14aebf4c6949.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\institution\\RESULT.json",
+      "bytes": 306,
+      "sha256": "a14432c464afaaa1722ddec266f6edee538b47b8824a82452fe1853ceedb9834",
+      "member": "raw/a14432c464afaaa1722ddec266f6edee538b47b8824a82452fe1853ceedb9834.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\institution\\stderr.bin",
+      "bytes": 4273,
+      "sha256": "90a8d2f38adb2ef7cf2da395baa461e43ad800db60c9a86a07f5674c691e0625",
+      "member": "raw/90a8d2f38adb2ef7cf2da395baa461e43ad800db60c9a86a07f5674c691e0625.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\institution\\stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "member": "raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\outcomes\\INPUTS.json",
+      "bytes": 814,
+      "sha256": "eb69a14715cae2a359ffbb21de3a6338e0a8f543de7561896c8a90a43712f0ae",
+      "member": "raw/eb69a14715cae2a359ffbb21de3a6338e0a8f543de7561896c8a90a43712f0ae.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\outcomes\\RESULT.json",
+      "bytes": 303,
+      "sha256": "9f09d1432564d2226573dc31f01379bd9cfc8e4b987df151efe2d71e10660dda",
+      "member": "raw/9f09d1432564d2226573dc31f01379bd9cfc8e4b987df151efe2d71e10660dda.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\outcomes\\stderr.bin",
+      "bytes": 1479,
+      "sha256": "afbf7d1ee14a77cca586afebc7a6bd5d8e073afde3a9719dc0663d11317ed4cb",
+      "member": "raw/afbf7d1ee14a77cca586afebc7a6bd5d8e073afde3a9719dc0663d11317ed4cb.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\outcomes\\stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "member": "raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\product-static\\INPUTS.json",
+      "bytes": 724,
+      "sha256": "c8a1187465268e43791a2db3d48ed0661d31c7c37ab8242ce756ac0516c928ef",
+      "member": "raw/c8a1187465268e43791a2db3d48ed0661d31c7c37ab8242ce756ac0516c928ef.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\product-static\\RESULT.json",
+      "bytes": 309,
+      "sha256": "edbcd4178c90ba489b3b92be4680853f432e99f4012e7b805abae7f6b10db42c",
+      "member": "raw/edbcd4178c90ba489b3b92be4680853f432e99f4012e7b805abae7f6b10db42c.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\product-static\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "member": "raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\product-static\\stdout.bin",
+      "bytes": 9254,
+      "sha256": "82868577806baacf019a6695cd9b1b5c80b5b68e001f353a2c607a96ef1adaca",
+      "member": "raw/82868577806baacf019a6695cd9b1b5c80b5b68e001f353a2c607a96ef1adaca.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\profile\\INPUTS.json",
+      "bytes": 708,
+      "sha256": "83df4df1a5b1808edc217d23eb4d0d2e4f3d7a078349726b55aa18835ca3c4bd",
+      "member": "raw/83df4df1a5b1808edc217d23eb4d0d2e4f3d7a078349726b55aa18835ca3c4bd.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\profile\\RESULT.json",
+      "bytes": 302,
+      "sha256": "4bb3aa9fc1552cfca74316d6870cdda9b5070014f6a537c41349cd35290f16c3",
+      "member": "raw/4bb3aa9fc1552cfca74316d6870cdda9b5070014f6a537c41349cd35290f16c3.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\profile\\stderr.bin",
+      "bytes": 4950,
+      "sha256": "e4cae72e87d8dbc30bca6287304e363afe63743237670d9ab16f94f9640adaee",
+      "member": "raw/e4cae72e87d8dbc30bca6287304e363afe63743237670d9ab16f94f9640adaee.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\profile\\stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "member": "raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\python-only\\INPUTS.json",
+      "bytes": 709,
+      "sha256": "5dd1e3f02113c96b4d49d82ad64d1b41eebd3fee3ef04a0e938b2796f3ad939f",
+      "member": "raw/5dd1e3f02113c96b4d49d82ad64d1b41eebd3fee3ef04a0e938b2796f3ad939f.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\python-only\\RESULT.json",
+      "bytes": 306,
+      "sha256": "f1a5cd9d9e6d2d3731524e6aaabe0b07467e029ad0d8969bb7ddc3db96f79a7e",
+      "member": "raw/f1a5cd9d9e6d2d3731524e6aaabe0b07467e029ad0d8969bb7ddc3db96f79a7e.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\python-only\\stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "member": "raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\python-only\\stdout.bin",
+      "bytes": 19,
+      "sha256": "c38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490",
+      "member": "raw/c38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\stress\\INPUTS.json",
+      "bytes": 817,
+      "sha256": "2250300d6a458e11801ddc0c89811ab704cb21fc0c3070fe49f9417afe1081b8",
+      "member": "raw/2250300d6a458e11801ddc0c89811ab704cb21fc0c3070fe49f9417afe1081b8.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\stress\\RESULT.json",
+      "bytes": 301,
+      "sha256": "a230abdec5cb1cd97afa339c61268a2b45d619e13b03a0a4a31b61e07f865d88",
+      "member": "raw/a230abdec5cb1cd97afa339c61268a2b45d619e13b03a0a4a31b61e07f865d88.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\stress\\stderr.bin",
+      "bytes": 788,
+      "sha256": "f3091802db8ed28c323821cba0ea79e2b4c95ab54b1cd62488274aa4e2d83fc2",
+      "member": "raw/f3091802db8ed28c323821cba0ea79e2b4c95ab54b1cd62488274aa4e2d83fc2.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\checks\\stress\\stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "member": "raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\corrected-checks\\profile\\INPUTS.json",
+      "bytes": 708,
+      "sha256": "92ac641383dfbfc1484f23fee8b455ab74fdb42abf5a5f2d66e290da8816d16a",
+      "member": "raw/92ac641383dfbfc1484f23fee8b455ab74fdb42abf5a5f2d66e290da8816d16a.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\corrected-checks\\profile\\RESULT.json",
+      "bytes": 302,
+      "sha256": "83232aab4ca6cc47b8aa3b91f05b362cc5a1323f0c107772e3fcb08bcef51570",
+      "member": "raw/83232aab4ca6cc47b8aa3b91f05b362cc5a1323f0c107772e3fcb08bcef51570.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\corrected-checks\\profile\\stderr.bin",
+      "bytes": 749,
+      "sha256": "12b12c428a7e6d1e4a031afcdd50a29353745190f916db63ac23fdd81b7c59a5",
+      "member": "raw/12b12c428a7e6d1e4a031afcdd50a29353745190f916db63ac23fdd81b7c59a5.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\corrected-checks\\profile\\stdout.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "member": "raw/e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\RECEIPT-GUARD-APPLY-INTENT.json",
+      "bytes": 2572,
+      "sha256": "1b3f6db0ac0de25851b3c5d70ddbddd41ac993743318a8fe69745db8c4e9c065",
+      "member": "raw/1b3f6db0ac0de25851b3c5d70ddbddd41ac993743318a8fe69745db8c4e9c065.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\ROOT-APPLIED-AUTHORS.json",
+      "bytes": 2197,
+      "sha256": "757aeeb9e553cf8b8949a5ccb5f9f37418279df74a825c53e0479fb98a8a40e0",
+      "member": "raw/757aeeb9e553cf8b8949a5ccb5f9f37418279df74a825c53e0479fb98a8a40e0.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root-author-integration-20261005-001\\ROOT-APPLY-INTENT.json",
+      "bytes": 14098,
+      "sha256": "9743433ae421260954adf0c293764bdafab051d02a91a5620115cd36fd4daa7c",
+      "member": "raw/9743433ae421260954adf0c293764bdafab051d02a91a5620115cd36fd4daa7c.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_apply_reviewed_authors_20261005.py",
+      "bytes": 4612,
+      "sha256": "1c4b05108074dbe7eff664fe3fefe2c2102794c999574ab23192b716d7ba14fb",
+      "member": "raw/1c4b05108074dbe7eff664fe3fefe2c2102794c999574ab23192b716d7ba14fb.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_integrated_check_20261005.py",
+      "bytes": 3116,
+      "sha256": "bc9651844346c1e50b424c1c3b6326a6ed0552e362d63bf39fefb1822da1d011",
+      "member": "raw/bc9651844346c1e50b424c1c3b6326a6ed0552e362d63bf39fefb1822da1d011.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_corrected_check_runner_20261005.py",
+      "bytes": 3175,
+      "sha256": "2f8cc19747ce0f70cfd5b4848f1fca0d6a9085c65cc2180dfe3e5b05267796ee",
+      "member": "raw/2f8cc19747ce0f70cfd5b4848f1fca0d6a9085c65cc2180dfe3e5b05267796ee.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\root_apply_receipt_guard_20261005.py",
+      "bytes": 1885,
+      "sha256": "01998a7ff2e041d291ddb1315152b0452ba72deaf6171a204d8df46fdde1b6ed",
+      "member": "raw/01998a7ff2e041d291ddb1315152b0452ba72deaf6171a204d8df46fdde1b6ed.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_lyd_runtime_20261004\\lyd-mcp-decision-python-20261005-001\\review-package-003\\candidate\\tools\\test_ck3_native_profile_mcp.py",
+      "bytes": 23978,
+      "sha256": "4d2c66b23a55f9e73a4eef28c866dd71d175f1a9e980e09ffd6d30ed65e495aa",
+      "member": "raw/4d2c66b23a55f9e73a4eef28c866dd71d175f1a9e980e09ffd6d30ed65e495aa.bin"
+    },
+    {
+      "source": "C:\\workspace\\ck3_eternal_recurrence\\tools\\test_ck3_native_profile_mcp.py",
+      "bytes": 24054,
+      "sha256": "1e5e18a4f23591c4b80510e5c395e4ec16238f5c2220d33b6c17d728f20f876f",
+      "member": "raw/1e5e18a4f23591c4b80510e5c395e4ec16238f5c2220d33b6c17d728f20f876f.bin"
+    }
+  ],
+  "unique_members": 42,
+  "actual_focused_tests": {
+    "school_consent": 106,
+    "institution": 25,
+    "stress": 23,
+    "decision_outcomes": 29,
+    "profile_corrected": 18
+  },
+  "focused_total": 201,
+  "coordinate_tests": {
+    "count": 16,
+    "provenance": "Root actual exec_command tool result, exit_code=0; not fabricated as a subprocess stdout file"
+  },
+  "new_game_calls": 0
+}

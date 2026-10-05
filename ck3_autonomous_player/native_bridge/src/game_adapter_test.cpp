@@ -3,6 +3,10 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/combat_simulation_inputs_v3_mailbox.hpp"
 #include "xar_bridge/game_adapter.hpp"
+#include "xar_bridge/ingame_decision_item_v1.hpp"
+#include "xar_bridge/ordinary_interaction_request_v1.hpp"
+#include "xar_bridge/frontend_gui_route_v1.hpp"
+#include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
 #include <algorithm>
 #include <array>
@@ -270,7 +274,186 @@ int TestCrozierFrontendPrivateCapabilities() {
   return 0;
 }
 
+
+int TestOrdinaryInteractionProductionAdmission() {
+  using namespace xar::ck3_12003;
+  using namespace xar::ck3_11906;
+  const auto &actual = xar::game::Ck3_12003AdapterDescriptor();
+#if defined(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
+  constexpr bool enabled = true;
+#else
+  constexpr bool enabled = false;
+#endif
+  std::size_t checks = 0;
+  StubAdapter current(actual, true);
+  for (const auto pair : {
+      std::pair{kOrdinaryInteractionQueryV1Step, kOrdinaryInteractionQueryV1Capability},
+      std::pair{kOrdinaryInteractionInitiateV1Step, kOrdinaryInteractionInitiateV1Capability}}) {
+    if (Contains(actual.capabilities, pair.second) != enabled ||
+        current.supports_step(pair.first) != enabled)
+      return Fail("ordinary actual .3 descriptor/production supports_step differs from private flag");
+    checks += 2;
+  }
+  for (const auto *d : {&xar::game::Ck3_12002AdapterDescriptor(),
+                         &xar::game::Ck3_11906AdapterDescriptor()}) {
+    StubAdapter old(*d, true);
+    if (old.supports_step(kOrdinaryInteractionQueryV1Step) ||
+        old.supports_step(kOrdinaryInteractionInitiateV1Step))
+      return Fail("ordinary feature leaked across actual build descriptors");
+    checks += 2;
+  }
+  auto identity = actual;
+  constexpr std::array<std::string_view, 1> query_only{kOrdinaryInteractionQueryV1Capability};
+  identity.capabilities = query_only;
+  StubAdapter query(identity, true);
+  if (!query.supports_step(kOrdinaryInteractionQueryV1Step) ||
+      query.supports_step(kOrdinaryInteractionInitiateV1Step))
+    return Fail("ordinary query-only capability authorized sending or lost exact map");
+  checks += 2;
+  constexpr std::array<std::string_view, 1> initiate_only{kOrdinaryInteractionInitiateV1Capability};
+  identity.capabilities = initiate_only;
+  StubAdapter initiate(identity, true);
+  if (!initiate.supports_step(kOrdinaryInteractionInitiateV1Step) ||
+      initiate.supports_step(kOrdinaryInteractionQueryV1Step))
+    return Fail("ordinary initiate-only capability authorized query or lost exact map");
+  checks += 2;
+  for (const auto step : {"query-character-interaction-ordinary-v1-extra",
+       "initiate-character-interaction-ordinary-v1-extra", "initiate-character-interaction-ordinary-v2",
+       "query-character-interaction-ordinary-v1 ", "lyd-join-interaction", ""}) {
+    if (current.supports_step(step)) return Fail("ordinary exact step map widened");
+    ++checks;
+  }
+  StubAdapter disabled(actual, false);
+  if (disabled.supports_step(kOrdinaryInteractionQueryV1Step) ||
+      disabled.supports_step(kOrdinaryInteractionInitiateV1Step))
+    return Fail("ordinary disabled adapter admitted step");
+  checks += 2;
+  // Preserve both previously composed production mappings.
+  constexpr std::array<std::string_view, 2> prior{
+      "game.command.confirm-ingame-decision-outcome-v1",
+      "game.query.current-actor-stress-adjustment.v1"};
+  identity.capabilities = prior;
+  StubAdapter preserved(identity, true);
+  if (!preserved.supports_step("confirm-ingame-decision-outcome-v1") ||
+      !preserved.supports_step("query-current-actor-stress-adjustment-v1"))
+    return Fail("ordinary delta rolled back composed decision/stress admission");
+  checks += 2;
+  const auto callback = +[](void *, const MainThreadExecutionStampV1 &) noexcept { return false; };
+  const auto other = +[](void *, const MainThreadExecutionStampV1 &) noexcept { return true; };
+  const auto existing = +[](void *context, const MainThreadExecutionStampV1 &) noexcept { return context != nullptr; };
+  MainThreadQueryMailboxV1 mailbox{};
+  mailbox.state.store(MainThreadQueryMailboxStateV1::idle);
+  mailbox.executor_submission_enabled = true;
+  // Production installation already has other exact allowed executors. The
+  // legacy all-null fixture mode deliberately has no identity allowlist.
+  mailbox.permitted_executor = existing;
+  mailbox.owner_thread_id.store(GetCurrentThreadId());
+  mailbox.paused_owner_verified_pump_epochs.store(2);
+  MainThreadQueryTicketV1 ticket{}; int fixture = 1;
+  if (TrySubmitMainThreadQueryV1(mailbox, callback, &fixture, ticket) !=
+      MainThreadQuerySubmitResultV1::invalid_request)
+    return Fail("ordinary unregistered executor admitted");
+  ++checks;
+  mailbox.permitted_executor_ordinary_interaction12003 = callback;
+  if (TrySubmitMainThreadQueryV1(mailbox, other, &fixture, ticket) !=
+      MainThreadQuerySubmitResultV1::invalid_request)
+    return Fail("ordinary slot admitted different callback");
+  ++checks;
+  if (TrySubmitMainThreadQueryV1(mailbox, callback, &fixture, ticket) !=
+      MainThreadQuerySubmitResultV1::submitted || ticket.sequence == 0)
+    return Fail("ordinary actual executor whitelist rejected registered callback");
+  ++checks;
+  if (CancelMainThreadQueryV1(mailbox, ticket) != MainThreadQueryCancelResultV1::cancelled ||
+      ReclaimMainThreadQueryV1(mailbox, ticket) != MainThreadQueryReclaimResultV1::reclaimed)
+    return Fail("ordinary test-local admission could not cancel/reclaim");
+  ++checks;
+  std::cout << "ORDINARY_PRODUCTION_REGISTRY_CHECKS " << checks << " PASS flag=" << enabled << '\n';
+  return 0;
+}
+
+int TestDecisionOutcomeProductionAdmission() {
+  using namespace xar::ck3_11906;
+  constexpr std::array<std::string_view, 5> capabilities{
+      kIngameDecisionsOpenV1Capability, kIngameDecisionItemQueryV1Capability,
+      kIngameDecisionItemSelectV1Capability, kIngameDecisionItemConfirmV1Capability,
+      kIngameDecisionOutcomeConfirmV1Capability};
+  auto descriptor = xar::game::Ck3_12003AdapterDescriptor();
+  descriptor.capabilities = capabilities;
+  StubAdapter enabled(descriptor, true);
+  if (!enabled.supports(kIngameDecisionOutcomeConfirmV1Capability) ||
+      !enabled.supports_step(kIngameDecisionOutcomeConfirmV1Step))
+    return Fail("actual production supports_step rejected advertised outcome capability");
+  std::size_t checks = 2;
+  for (const auto step : {kIngameDecisionsOpenV1Step, kIngameDecisionItemQueryV1Step,
+                         kIngameDecisionItemSelectV1Step, kIngameDecisionItemConfirmV1Step}) {
+    if (!enabled.supports_step(step)) return Fail("old decision admission regressed");
+    ++checks;
+  }
+  for (const auto invalid : {"confirm-ingame-decision-outcome-v1-0",
+       "confirm-ingame-decision-outcome-v1-extra", "prefix-confirm-ingame-decision-outcome-v1",
+       "confirm-ingame-decision-outcome-v2", "confirm-ingame-decision-event-v1",
+       "confirm-ingame-decision-outcome-v1 ", ""}) {
+    if (enabled.supports_step(invalid)) return Fail("outcome admission widened beyond exact step");
+    ++checks;
+  }
+  StubAdapter disabled(descriptor, false);
+  if (disabled.supports_step(kIngameDecisionOutcomeConfirmV1Step))
+    return Fail("disabled adapter admitted outcome step");
+  ++checks;
+  descriptor.capabilities = std::span(capabilities.data(), 4);
+  StubAdapter old_only(descriptor, true);
+  if (old_only.supports_step(kIngameDecisionOutcomeConfirmV1Step) ||
+      !old_only.supports_step(kIngameDecisionItemConfirmV1Step))
+    return Fail("outcome required capability gate or old confirm changed");
+  checks += 2;
+  descriptor.capabilities = std::span(capabilities.data() + 4, 1);
+  StubAdapter new_only(descriptor, true);
+  if (!new_only.supports_step(kIngameDecisionOutcomeConfirmV1Step) ||
+      new_only.supports_step(kIngameDecisionItemConfirmV1Step))
+    return Fail("outcome capability grants wrong confirm kind");
+  checks += 2;
+  // Same already-registered frontend executor identity serves both select and
+  // outcome. This fixture submits/cancels without executing its callable.
+  const auto executor = +[](void *, const MainThreadExecutionStampV1 &) noexcept { return false; };
+  const auto unknown = +[](void *, const MainThreadExecutionStampV1 &) noexcept { return true; };
+  std::cout << "offline_executor_identity_distinct=" << (executor != unknown) << '\n';
+  MainThreadQueryMailboxV1 mailbox{};
+  mailbox.state.store(MainThreadQueryMailboxStateV1::idle);
+  mailbox.executor_submission_enabled = true;
+  mailbox.permitted_frontend_executor = executor;
+  mailbox.owner_thread_id.store(GetCurrentThreadId());
+  mailbox.owner_verified_pump_epochs.store(2);
+  MainThreadQueryTicketV1 ticket{};
+  int context = 1;
+  if (TrySubmitMainThreadQueryV1(mailbox, unknown, &context, ticket) !=
+      MainThreadQuerySubmitResultV1::invalid_request)
+    return Fail("unknown executor bypassed fixed admission");
+  ++checks;
+  mailbox.owner_verified_pump_epochs.store(1);
+  if (TrySubmitMainThreadQueryV1(mailbox, executor, &context, ticket) !=
+      MainThreadQuerySubmitResultV1::application_main_not_observed)
+    return Fail("frontend executor bypassed owner epoch gate");
+  ++checks;
+  mailbox.owner_verified_pump_epochs.store(2);
+  if (TrySubmitMainThreadQueryV1(mailbox, executor, &context, ticket) !=
+      MainThreadQuerySubmitResultV1::submitted || ticket.sequence == 0)
+    return Fail("existing registered frontend executor refused valid offline ticket");
+  ++checks;
+  if (CancelMainThreadQueryV1(mailbox, ticket) != MainThreadQueryCancelResultV1::cancelled ||
+      ReclaimMainThreadQueryV1(mailbox, ticket) != MainThreadQueryReclaimResultV1::reclaimed)
+    return Fail("offline unexecuted ticket was not cancelled/reclaimed");
+  checks += 2;
+  std::cout << "PASS: production decision-outcome admission checks=" << checks
+            << " actual GameAdapter and mailbox; no game/GUI call or native outcome claimed\n";
+  return 0;
+}
+
 int main(int argc, char **argv) {
+  if (argc == 2 && std::string_view(argv[1]) == "--ordinary-interaction-capabilities-only")
+    return TestOrdinaryInteractionProductionAdmission();
+  if (argc == 2 && std::string_view(argv[1]) == "--decision-outcome-admission-only") {
+    return TestDecisionOutcomeProductionAdmission();
+  }
   if (argc == 2 && std::string_view(argv[1]) == "--frontend-private-capabilities-only") {
     return TestCrozierFrontendPrivateCapabilities();
   }

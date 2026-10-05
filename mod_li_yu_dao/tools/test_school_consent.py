@@ -1265,5 +1265,122 @@ class GeneratedGraphTests(unittest.TestCase):
                 validate_portable(path, record, CHECKOUT)
 
 
+
+class TooltipPresenceRegressionTests(unittest.TestCase):
+    """Generated AST projection checks; no assertion of CK3 runtime execution."""
+
+    @classmethod
+    def setUpClass(cls):
+        outputs = build_outputs(include_shared=False)
+        cls.setup = parse_clausewitz(outputs["common/scripted_effects/lyd_c2_setup_effects.txt"].decode("utf-8-sig"))
+        cls.vote = parse_clausewitz(outputs["common/scripted_effects/lyd_c2_vote_effects.txt"].decode("utf-8-sig"))
+
+    @staticmethod
+    def definition(ast, key):
+        return next(e.value for e in ast.entries if e.key == key)
+
+    @staticmethod
+    def child(block, key):
+        return next(e.value for e in block.entries if e.key == key)
+
+    @staticmethod
+    def presence_fields(block):
+        limit = TooltipPresenceRegressionTests.child(block, "limit")
+        if limit.entries and all(e.key == "has_variable" and e.operator == "=" and isinstance(e.value, str) for e in limit.entries):
+            return tuple(e.value for e in limit.entries)
+        return ()
+
+    def start_gate(self):
+        outer = self.child(self.definition(self.setup, "lyd_c2_start_round_effect"), "if")
+        return next(e.value for e in outer.entries if e.key == "if" and isinstance(e.value, Block)
+                    and "lyd_c2_serial" in self.presence_fields(e.value))
+
+    def test_start_gate_rejects_every_missing_postwrite_field_without_reading_it(self):
+        gate = self.start_gate()
+        fields = self.presence_fields(gate)
+        self.assertEqual(set(fields), {"lyd_c2_" + f for f in
+            ("active", "serial", "terms_revision", "callback_nonce", "kind", "source_faith", "source_main", "moving_rite")})
+        full = {name: object() for name in fields}
+        # Actual gate conditions read only presence. An empty tooltip projection
+        # and every incomplete saved state skip all late captures and delivery.
+        for missing in (None, *fields):
+            state = {} if missing is None else {k: v for k, v in full.items() if k != missing}
+            self.assertFalse(all(name in state for name in fields))
+        self.assertTrue(all(name in full for name in fields))
+        names = {e.key for e in gate.entries if e.key != "limit"}
+        self.assertTrue({"save_scope_value_as", "lyd_c2_collect_source_effect", "lyd_c2_snapshot_terms_effect", "trigger_event"} <= names)
+        self.assertEqual([e.key for e in gate.entries].count("trigger_event"), 2)
+
+    def vote_projection(self, name, yes, allowed, preview=False, initial_yes=None):
+        """Execute the changed actual AST subset; callback policy is a supplied gate.
+
+        Scripted calls are trace entries, not fake native execution. The existing
+        callback/model tests separately exercise stale, duplicate and wrong actors.
+        """
+        state = {} if initial_yes is None else {"lyd_c2_vote_yes": str(initial_yes)}
+        reads = []; changes = []; calls = []
+        def scalar(block, key):
+            return next(e.value for e in block.entries if e.key == key)
+        def limit(block):
+            for e in block.entries:
+                if e.key in ("lyd_c2_source_ballot_trigger", "lyd_c2_target_ballot_trigger"):
+                    if not allowed: return False
+                elif e.key == "has_variable":
+                    if e.value not in state: return False
+                elif e.key.startswith("var:"):
+                    key = e.key[4:]; reads.append(key)
+                    if state[key] != e.value: return False
+                else:
+                    self.fail("Unexpected changed-AST predicate: " + e.key)
+            return True
+        def execute(block, scope=()):
+            for e in block.entries:
+                if e.key == "if":
+                    if limit(self.child(e.value, "limit")): execute(e.value, scope)
+                elif e.key == "limit":
+                    continue
+                elif e.key == "set_variable":
+                    if not preview:
+                        key = scalar(e.value, "name"); value = scalar(e.value, "value")
+                        state[key] = str(yes) if value == "$YES$" else value
+                elif e.key in ("scope:lyd_c2_actor", "rite"):
+                    execute(e.value, scope + (e.key,))
+                elif e.key == "change_variable":
+                    changes.append((scope, scalar(e.value, "name"), scalar(e.value, "add")))
+                elif e.key == "lyd_c2_request_target_consent_effect":
+                    calls.append((scope, e.key, e.value))
+                else:
+                    self.fail("Unexpected changed-AST operation: " + e.key)
+        execute(self.definition(self.vote, name))
+        return state, reads, changes, calls
+
+    def test_fresh_vote_tooltip_skips_unset_yes_read(self):
+        for name in ("lyd_c2_source_vote_effect", "lyd_c2_target_vote_effect"):
+            state, reads, changes, calls = self.vote_projection(name, 1, True, preview=True)
+            self.assertEqual((state, reads, changes, calls), ({}, [], [], []))
+
+    def test_real_yes_and_no_preserve_exact_counter_scope_and_amount(self):
+        for name in ("lyd_c2_source_vote_effect", "lyd_c2_target_vote_effect"):
+            for yes in (0, 1):
+                state, reads, changes, calls = self.vote_projection(name, yes, True)
+                self.assertEqual(state["lyd_c2_vote_yes"], str(yes))
+                self.assertEqual(reads, ["lyd_c2_vote_yes"])
+                if not yes:
+                    self.assertEqual((changes, calls), ([], []))
+                elif name == "lyd_c2_source_vote_effect":
+                    self.assertEqual(changes, [(("scope:lyd_c2_actor",), "lyd_c2_source_yes", "1")])
+                    self.assertEqual(calls, [])
+                else:
+                    self.assertEqual(changes, [(("rite",), "lyd_c2_target_yes", "1"),
+                        (("scope:lyd_c2_actor",), "lyd_c2_target_yes", "1")])
+                    self.assertEqual(calls, [(("scope:lyd_c2_actor",), "lyd_c2_request_target_consent_effect", "yes")])
+
+    def test_callback_refusal_preserves_state_and_counters(self):
+        for name in ("lyd_c2_source_vote_effect", "lyd_c2_target_vote_effect"):
+            for prior in (None, 0, 1):
+                state, reads, changes, calls = self.vote_projection(name, 1, False, initial_yes=prior)
+                self.assertEqual(state, {} if prior is None else {"lyd_c2_vote_yes": str(prior)})
+                self.assertEqual((reads, changes, calls), ([], [], []))
+
 if __name__ == "__main__":
     unittest.main(verbosity=2)

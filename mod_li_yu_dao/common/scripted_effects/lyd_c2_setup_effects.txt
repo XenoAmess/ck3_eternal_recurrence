@@ -91,32 +91,46 @@ lyd_c2_start_round_effect = {
         set_variable = { name = lyd_c2_proposal_owner value = scope:lyd_c2_actor days = 365 }
         scope:lyd_c2_actor = { set_variable = { name = lyd_c2_serial value = prev.var:lyd_c2_proposal_serial } }
     }
-    save_scope_value_as = { name = lyd_c2_event_serial value = var:lyd_c2_serial }
-    save_scope_value_as = { name = lyd_c2_event_terms value = var:lyd_c2_terms_revision }
-    save_scope_value_as = { name = lyd_c2_event_nonce value = var:lyd_c2_callback_nonce }
-    set_variable = { name = lyd_c2_source_total value = 0 }
-    set_variable = { name = lyd_c2_target_total value = 0 }
-    set_variable = { name = lyd_c2_target_rite_total value = 0 }
-    set_variable = { name = lyd_c2_dormant_total value = 0 }
-    set_variable = { name = lyd_c2_source_yes value = 0 }
-    set_variable = { name = lyd_c2_target_yes value = 0 }
-    set_variable = { name = lyd_c2_player_total value = 0 }
-    set_variable = { name = lyd_c2_player_yes value = 0 }
+    # Tooltip projection does not execute the preceding assignments.
+    # Read and deliver this round only after its actual variables exist.
     if = {
-        limit = { var:lyd_c2_kind = 1 }
-        set_variable = { name = lyd_c2_target_rep value = scope:recipient }
-        set_variable = { name = lyd_c2_target_faith value = scope:recipient.faith }
-        set_variable = { name = lyd_c2_target_main value = scope:recipient.faith.main_rite }
-        if = {
-            limit = { exists = scope:recipient.faith.religious_head }
-            set_variable = { name = lyd_c2_target_head value = scope:recipient.faith.religious_head }
+        limit = {
+            has_variable = lyd_c2_active
+            has_variable = lyd_c2_serial
+            has_variable = lyd_c2_terms_revision
+            has_variable = lyd_c2_callback_nonce
+            has_variable = lyd_c2_kind
+            has_variable = lyd_c2_source_faith
+            has_variable = lyd_c2_source_main
+            has_variable = lyd_c2_moving_rite
         }
-        lyd_c2_collect_target_effect = yes
+        save_scope_value_as = { name = lyd_c2_event_serial value = var:lyd_c2_serial }
+        save_scope_value_as = { name = lyd_c2_event_terms value = var:lyd_c2_terms_revision }
+        save_scope_value_as = { name = lyd_c2_event_nonce value = var:lyd_c2_callback_nonce }
+        set_variable = { name = lyd_c2_source_total value = 0 }
+        set_variable = { name = lyd_c2_target_total value = 0 }
+        set_variable = { name = lyd_c2_target_rite_total value = 0 }
+        set_variable = { name = lyd_c2_dormant_total value = 0 }
+        set_variable = { name = lyd_c2_source_yes value = 0 }
+        set_variable = { name = lyd_c2_target_yes value = 0 }
+        set_variable = { name = lyd_c2_player_total value = 0 }
+        set_variable = { name = lyd_c2_player_yes value = 0 }
+        if = {
+            limit = { var:lyd_c2_kind = 1 }
+            set_variable = { name = lyd_c2_target_rep value = scope:recipient }
+            set_variable = { name = lyd_c2_target_faith value = scope:recipient.faith }
+            set_variable = { name = lyd_c2_target_main value = scope:recipient.faith.main_rite }
+            if = {
+                limit = { exists = scope:recipient.faith.religious_head }
+                set_variable = { name = lyd_c2_target_head value = scope:recipient.faith.religious_head }
+            }
+            lyd_c2_collect_target_effect = yes
+        }
+        lyd_c2_collect_source_effect = yes
+        lyd_c2_snapshot_terms_effect = yes
+        trigger_event = lyd.200
+        trigger_event = { id = lyd.229 days = 365 }
     }
-    lyd_c2_collect_source_effect = yes
-    lyd_c2_snapshot_terms_effect = yes
-    trigger_event = lyd.200
-    trigger_event = { id = lyd.229 days = 365 }
     }
 }
 lyd_c2_begin_join_effect = {

@@ -1,0 +1,15 @@
+{
+  "schema": "lyd.r7.final-projection-check.v1",
+  "status": "PASS_LOSSLESS_REPORT_PROJECTION_ONLY",
+  "mapped_source_captures": 5512,
+  "unique_text_members": 1985,
+  "text_archive_bytes": 19985264,
+  "text_archive_sha256": "c9f097150925e04bf1d5737f945c8f37564cfb1360b59c2ffa1e8085917a6752",
+  "selected_original_PNG_count": 3,
+  "selected_PNG_bytes": 5375640,
+  "source_changed_during_read_count": 0,
+  "runtime_or_Git_or_main_operations": 0,
+  "large_save_imported": false,
+  "full_acceptance_credit": false,
+  "closure_source_checks": "Actual consumer file close/target absence/keeperFINAL2920/CAS2921/DONE/resources[]; root exec returncodes attributed separately"
+}

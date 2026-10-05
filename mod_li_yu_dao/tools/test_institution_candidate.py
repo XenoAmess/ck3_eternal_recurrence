@@ -302,8 +302,8 @@ class ActualScriptTests(unittest.TestCase):
         writes={scalar(e.value,'name'):scalar(e.value,'value') for e in body.entries if e.key=='set_variable'}
         self.assertEqual(writes['lyd_i3b_result_serial'],'var:lyd_i3b_serial')
         self.assertEqual(writes['lyd_i3b_result_nonce'],'var:lyd_i3b_nonce')
-        self.assertEqual(writes['lyd_i3b_result_faith'],'var:lyd_i3b_faith')
-        self.assertEqual(writes['lyd_i3b_result_main'],'var:lyd_i3b_main')
+        self.assertNotIn('lyd_i3b_result_faith',writes)
+        self.assertNotIn('lyd_i3b_result_main',writes)
         post=one(body,'if');failure=one(body,'else')
         self.assertTrue(has(post,'set_variable'))
         self.assertTrue(has(post,'faith.religious_head','this'))

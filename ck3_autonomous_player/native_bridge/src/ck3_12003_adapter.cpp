@@ -1,7 +1,11 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ordinary_interaction_request_v1.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
+#if defined(XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1)
+#include "xar_bridge/current_actor_stress_adjustment_v1_mailbox.hpp"
+#endif
 #include "xar_bridge/ck3_12003_default_raise_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_hire_mailbox.hpp"
@@ -28,12 +32,22 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
   static const std::vector<std::string_view> capabilities = [] {
     const auto existing = Ck3_12002AdapterDescriptor().capabilities;
     std::vector<std::string_view> result(existing.begin(), existing.end());
+#if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
+    result.push_back(ck3_12003::kNormalExitMapV1Capability);
+#endif
     // Existing public UI family is implemented only for Army query/select on
     // exact .3; bridge/provider reject every other role before native dispatch.
     result.push_back(ck3_11906::kIngameUiNavigationV1Capability);
     result.push_back(ck3_11906::kIngameUiWindowQueryV1Capability);
     result.push_back(ck3_11906::kStewardDevelopCountyCandidatesV1Capability);
     result.push_back(ck3_12003::kArmyCommanderCandidatesCapability);
+#if defined(XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1)
+    result.push_back(ck3_12003::kCurrentActorStressAdjustmentV1Capability);
+#endif
+#if defined(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
+    result.push_back(ck3_12003::kOrdinaryInteractionQueryV1Capability);
+    result.push_back(ck3_12003::kOrdinaryInteractionInitiateV1Capability);
+#endif
     result.push_back(ck3_12003::kPlayerDefaultRaiseCapabilityV1);
     result.push_back(ck3_12003::kPlayerMercenaryContextCapabilityV1);
     result.push_back(ck3_12003::kMercenaryHireCapabilityV1);

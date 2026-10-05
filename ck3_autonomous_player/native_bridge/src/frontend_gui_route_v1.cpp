@@ -798,6 +798,14 @@ bool ExecuteFrontendGuiRouteMailboxV1(
   if (query->operation == FrontendGuiRouteOperationV1::inspect_gui_window_tree) {
     return InspectGuiWindowTree(*query);
   }
+#if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
+  if (query->operation == FrontendGuiRouteOperationV1::normal_exit_map) {
+    query->normal_exit_map.ticket = query->ticket;
+    query->normal_exit_map.owner_executor_context = query;
+    return ck3_12003::ExecuteNormalExitMapV1(query->normal_exit_map, *query->mailbox,
+        stamp, query->environment, query->dispatch_environment);
+  }
+#endif
   if (query->operation == FrontendGuiRouteOperationV1::open_ingame_decisions) {
     return ExecuteIngameDecisionsOpenV1(query->ingame_decisions, *query->mailbox, stamp,
         query->environment, query->dispatch_environment);

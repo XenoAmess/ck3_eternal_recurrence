@@ -1,12 +1,18 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/game_adapter.hpp"
+#if defined(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
+#include "xar_bridge/ordinary_interaction_mailbox_v1.hpp"
+#endif
 #include "xar_bridge/combat_hypothetical_scenario_v2_serializer.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12003_maa_create_private_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
+#if defined(XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1)
+#include "xar_bridge/current_actor_stress_adjustment_v1_mailbox.hpp"
+#endif
 #include "xar_bridge/war_occupation_targets_v1_serializer.hpp"
 #include "xar_bridge/title_holder_v1_serializer.hpp"
 #include "xar_bridge/army_strength_v1_serializer.hpp"
@@ -395,6 +401,10 @@ std::atomic<long> g_lifecycle{0}; // 0 stopped, 1 starting/running, 2 stopping
 // original IAT entry but never permits unloading this DLL before process exit.
 static xar::ck3_11906::MainThreadQueryMailboxV1
     g_main_thread_query_mailbox_v1{};
+#if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
+// Retained across connection/revision changes; claimed native stages never reset.
+static xar::ck3_12003::NormalExitMapSessionV1 g_normal_exit_map_session_v1{};
+#endif
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 // The native slots and copied execution records share this pinned DLL lifetime.
 static xar::ck3_12002::SwayExecutionRecorder12002
@@ -10534,11 +10544,19 @@ public:
       // owned command submitter, followed by a separate read-only observer.
       environment.permitted_executor_sexdenary =
           &xar::ck3_12003::ExecuteArmyCommanderAssignmentMailbox;
+#if defined(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
+      environment.permitted_executor_ordinary_interaction12003 =
+          &xar::ck3_12003::ExecuteOrdinaryInteractionMailboxV1;
+#endif
       xar::ck3_12003::RegisterPlayerDefaultRaiseMailboxExecutorV1(environment);
       xar::ck3_12003::RegisterPlayerMercenaryMailboxExecutorV1(environment);
       xar::ck3_12003::RegisterPlayerMercenaryHireMailboxExecutorV1(environment);
       environment.permitted_executor_regular_maa_create12003 =
           &xar::ck3_12002::ExecuteRegularMaaCreateMailbox12003;
+#if defined(XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1)
+      environment.permitted_executor_current_actor_stress_adjustment12003 =
+          &xar::ck3_12003::ExecuteCurrentActorStressAdjustmentMailboxV1;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
       environment.permitted_executor_quattuorquadragintary =
           &xar::ck3_11906::ExecuteCurrentTimelineBlockerContextMailboxQueryV1;
@@ -12119,6 +12137,138 @@ std::string RunArmyCommanderCandidatesQuery12003(
   return response;
 }
 
+
+#if defined(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
+std::string RunOrdinaryInteractionV1(
+    const xar::game::GameAdapter &game, WorkerState &state,
+    std::string_view request_id, std::string_view step,
+    std::string_view payload) {
+  using namespace xar::ck3_12003;
+  OrdinaryInteractionMailboxContextV1 query{};
+  query.initiate = step == kOrdinaryInteractionInitiateV1Step;
+  query.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);
+  query.envelope.mailbox = &g_main_thread_query_mailbox_v1;
+  query.envelope.typed_context = &query;
+  query.image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+      !game.supports_step(step) ||
+      !ParseOrdinaryInteractionRequestV1(payload, query.initiate, query.request) ||
+      query.request.expected_revision != state.state_revision ||
+      query.request.expected_game_pid != GetCurrentProcessId() ||
+      query.request.expected_connection_generation != state.connection_generation ||
+      state.state_revision == 0 || !state.previous_snapshot.has_value() ||
+      !xar::game::ReadSnapshot(game, query.envelope.expected_snapshot) ||
+      query.envelope.expected_snapshot != *state.previous_snapshot)
+    return CommandResultFrame(request_id, step, false,
+                              "ordinary_interaction_identity_or_revision_changed");
+  query.envelope.expected_snapshot_revision = query.request.expected_revision;
+  const auto &before = query.envelope.expected_snapshot;
+  if (!before.paused || !before.map_ready || !before.has_played_character ||
+      !before.played_character_alive || before.played_character_id <= 0 ||
+      before.played_character_id != query.request.expected_player_character_id ||
+      (query.initiate && (before.has_active_event || before.has_pending_character_interaction)))
+    return CommandResultFrame(request_id, step, false,
+                              "ordinary_interaction_requires_current_alive_paused_actor");
+  const auto submitted = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, &ExecuteOrdinaryInteractionMailboxV1,
+      &query.envelope, query.envelope.ticket);
+  if (submitted != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted)
+    return CommandResultFrame(request_id, step, false,
+                              "ordinary_interaction_owner_unavailable_or_busy");
+  auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.envelope.ticket, 8'000);
+  while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+    wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, query.envelope.ticket, 2'000);
+  xar::game::Snapshot after{};
+  const bool stable = wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+      query.completed && query.envelope.frame_stable &&
+      state.state_revision == query.request.expected_revision &&
+      state.connection_generation == query.request.expected_connection_generation &&
+      query.request.expected_game_pid == GetCurrentProcessId() &&
+      xar::game::ReadSnapshot(game, after) &&
+      (query.initiate ? OrdinaryInteractionControlFrameMatchesV1(before, after) : after == before);
+  const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.envelope.ticket);
+  if (!stable || reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)
+    return CommandResultFrame(request_id, step, false,
+                              "ordinary_interaction_owner_or_completion_frame_changed");
+  const auto result = SerializeOrdinaryInteractionV1(query, query.envelope.ticket.sequence);
+  std::string response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(response, request_id);
+  response += ",\"ok\":true,\"result\":";
+  response += result;
+  response += '}';
+  return response;
+}
+#endif
+
+#if defined(XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1)
+std::string RunCurrentActorStressAdjustmentQueryV1(
+    const xar::game::GameAdapter &game, WorkerState &state,
+    std::string_view request_id, std::string_view payload) {
+  using namespace xar::ck3_12003;
+  CurrentActorStressAdjustmentMailboxContextV1 query{};
+  query.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);
+  query.envelope.mailbox = &g_main_thread_query_mailbox_v1;
+  query.envelope.typed_context = &query;
+  query.image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  const auto step = kCurrentActorStressAdjustmentV1Step;
+  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+      !ParseCurrentActorStressAdjustmentRequestV1(payload, query.request) ||
+      query.request.expected_revision != state.state_revision ||
+      query.request.expected_game_pid != GetCurrentProcessId() ||
+      query.request.expected_connection_generation != state.connection_generation ||
+      state.state_revision == 0 || !state.previous_snapshot.has_value() ||
+      !xar::game::ReadSnapshot(game, query.envelope.expected_snapshot) ||
+      query.envelope.expected_snapshot != *state.previous_snapshot) {
+    return CommandResultFrame(request_id, step, false,
+                              "stress_query_identity_or_revision_changed");
+  }
+  query.envelope.expected_snapshot_revision = query.request.expected_revision;
+  const auto &before = query.envelope.expected_snapshot;
+  if (!before.paused || !before.map_ready || !before.has_played_character ||
+      !before.played_character_alive || before.played_character_id <= 0 ||
+      before.played_character_id != query.request.expected_player_character_id) {
+    return CommandResultFrame(request_id, step, false,
+                              "stress_query_requires_current_alive_paused_actor");
+  }
+  const auto submitted = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, &ExecuteCurrentActorStressAdjustmentMailboxV1,
+      &query.envelope, query.envelope.ticket);
+  if (submitted != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted)
+    return CommandResultFrame(request_id, step, false,
+                              "stress_query_owner_unavailable_or_busy");
+  auto wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.envelope.ticket, 8'000);
+  while (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::
+                     timeout_executor_already_running)
+    wait = xar::ck3_11906::WaitForMainThreadQueryV1(
+        g_main_thread_query_mailbox_v1, query.envelope.ticket, 2'000);
+  xar::game::Snapshot after{};
+  const bool stable = wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
+      query.completed && query.envelope.frame_stable &&
+      state.state_revision == query.request.expected_revision &&
+      state.connection_generation == query.request.expected_connection_generation &&
+      query.request.expected_game_pid == GetCurrentProcessId() &&
+      xar::game::ReadSnapshot(game, after) && after == before;
+  const auto reclaimed = xar::ck3_11906::ReclaimMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, query.envelope.ticket);
+  if (!stable || reclaimed != xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed)
+    return CommandResultFrame(request_id, step, false,
+                              "stress_query_owner_or_completion_frame_changed");
+  const auto result = SerializeCurrentActorStressAdjustmentV1(
+      query.observation, query.envelope.ticket.sequence);
+  std::string response =
+      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(response, request_id);
+  response += ",\"ok\":true,\"result\":";
+  response += result;
+  response += '}';
+  return response;
+}
+#endif
+
 std::string RunPlayerDefaultRaiseQuery12003(
     const xar::game::GameAdapter &game, WorkerState &state,
     std::string_view request_id, std::string_view step,
@@ -13029,6 +13179,17 @@ void RunConnectedSession(
             response += "}}";
             connected = write_frame(pipe, response);
           }
+#if defined(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
+        } else if (step == xar::ck3_12003::kOrdinaryInteractionQueryV1Step ||
+                   step == xar::ck3_12003::kOrdinaryInteractionInitiateV1Step) {
+          connected = write_frame(pipe, RunOrdinaryInteractionV1(
+              game, state, request_id, step, incoming.payload));
+#endif
+#if defined(XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1)
+        } else if (step == xar::ck3_12003::kCurrentActorStressAdjustmentV1Step) {
+          connected = write_frame(pipe, RunCurrentActorStressAdjustmentQueryV1(
+              game, state, request_id, incoming.payload));
+#endif
         } else if (xar::game::IsCk3_12003Descriptor(game.descriptor()) &&
                    (step.starts_with(xar::ck3_12003::
                                          kArmyCommanderAssignmentStepPrefix) ||
@@ -15668,6 +15829,80 @@ void RunConnectedSession(
               }
               if(response.empty())response=CommandResultFrame(request_id,step,false,"white_control_owner_submission_or_completion_failed_no_retry");
               connected=write_frame(pipe,response);
+            }
+#endif
+#if defined(XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1)
+          } else if (step == xar::ck3_12003::kNormalExitMapV1Step) {
+            xar::ck3_12003::NormalExitMapRequestV1 request{};
+            std::string parse_reason;
+            xar::game::Snapshot current{};
+            if (!xar::ck3_12003::ParseNormalExitMapRequestV1(incoming.payload, request, parse_reason) ||
+                request.request_id != request_id || request.expected_revision != state_revision ||
+                request.expected_connection_generation != connection_generation ||
+                request.expected_game_pid != GetCurrentProcessId() || !previous_snapshot.has_value() ||
+                !xar::game::ReadSnapshot(game, current) || current != *previous_snapshot ||
+                !current.paused || !current.map_ready || !current.has_played_character ||
+                !current.played_character_alive || current.played_character_id <= 0 ||
+                request.expected_player_character_id != static_cast<std::uint32_t>(current.played_character_id) ||
+                game.descriptor().game_version != xar::ck3_12003::kGameVersion ||
+                game.descriptor().executable_sha256 != xar::ck3_12003::kExecutableSha256) {
+              connected = write_frame(pipe, CommandResultFrame(request_id, step, false,
+                  parse_reason.empty() ? "normal_exit_map_exact_episode_binding_changed" : parse_reason));
+            } else {
+              xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
+              query.mailbox = &g_main_thread_query_mailbox_v1;
+              query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::normal_exit_map;
+              auto &exit = query.normal_exit_map;
+              exit.game = &game; exit.request = std::move(request); exit.expected_snapshot = current;
+              exit.native_revision = state_revision; exit.connection_generation = connection_generation;
+              exit.session = &g_normal_exit_map_session_v1;
+              const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+              query.environment = xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(base, true,
+                  xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+              query.dispatch_environment = xar::ck3_11906::BindZhongguoScoreboardActionDispatchEnvironmentV1(base, true,
+                  xar::ck3_11906::GuiAbiRevisionV1::crozier12003);
+              const auto submitted = xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
+                  &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1, &query, query.ticket);
+              std::string response;
+              if (submitted == xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+                auto waited = xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1, query.ticket, 8'000);
+                while (waited == xar::ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+                  waited = xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1, query.ticket, 2'000);
+                // If synchronous teardown changes the enclosing execution stamp,
+                // preserve the claimed unknown instead of clearing it into a retry.
+                bool claimed = false;
+                for (const auto &stage : exit.observation.dispatches) claimed = claimed || stage.claim_latched;
+                const bool completed = waited == xar::ck3_11906::MainThreadQueryWaitResultV1::completed;
+                if (completed || claimed) {
+                  if (!completed) {
+                    exit.observation.status = xar::ck3_12003::NormalExitMapStatusV1::dispatch_unknown_claimed;
+                    exit.observation.frame_verified = false;
+                    exit.observation.reason = "normal_exit_map_mailbox_completion_unknown_claimed_no_retry";
+                  } else if (exit.request.action != xar::ck3_12003::NormalExitMapActionV1::confirm_desktop) {
+                    xar::game::Snapshot completion{};
+                    if (!xar::game::ReadSnapshot(game, completion) || completion != current ||
+                        state_revision != exit.request.expected_revision ||
+                        connection_generation != exit.request.expected_connection_generation) {
+                      exit.observation.status = claimed ? xar::ck3_12003::NormalExitMapStatusV1::dispatch_unknown_claimed
+                          : xar::ck3_12003::NormalExitMapStatusV1::unavailable;
+                      exit.observation.frame_verified = false;
+                      exit.observation.exit_context_signature.clear();
+                      g_normal_exit_map_session_v1.signature.clear();
+                      exit.observation.reason = "normal_exit_map_completion_binding_changed_no_retry";
+                    }
+                  }
+                  response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+                  AppendJsonString(response, request_id);
+                  response += ",\"ok\":true,\"result\":";
+                  response += xar::ck3_12003::SerializeNormalExitMapObservationV1(exit.observation);
+                  response += '}';
+                }
+                if (xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1, query.ticket) !=
+                    xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) response.clear();
+              }
+              if (response.empty()) response = CommandResultFrame(request_id, step, false,
+                  "normal_exit_map_owner_submission_or_completion_failed_no_retry");
+              connected = write_frame(pipe, response);
             }
 #endif
 #if defined(XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1)

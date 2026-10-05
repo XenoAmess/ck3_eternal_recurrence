@@ -8,11 +8,9 @@ lyd_i3b_commit_effect = {
         lyd_i3b_ready_trigger = { ACTOR = scope:lyd_i3b_actor }
         lyd_i3b_native_admitted_trigger = yes
     }
-        # A typed receipt survives close; it records this exact attempted round.
+        # Serial and nonce bind the result event to this exact attempted round.
         set_variable = { name = lyd_i3b_result_serial value = var:lyd_i3b_serial }
         set_variable = { name = lyd_i3b_result_nonce value = var:lyd_i3b_nonce }
-        set_variable = { name = lyd_i3b_result_faith value = var:lyd_i3b_faith }
-        set_variable = { name = lyd_i3b_result_main value = var:lyd_i3b_main }
         set_variable = { name = lyd_i3b_result_code value = 0 }
         remove_variable = lyd_i3b_result_head_title
         # Every currently captured rite, including dormant templates, is a signed term.
@@ -29,7 +27,7 @@ lyd_i3b_commit_effect = {
             NOT = { any_in_list = { variable = lyd_i3b_rites NOT = { rite_has_doctrine = doctrine_temporal_head faith = scope:lyd_i3b_actor.var:lyd_i3b_faith } } }
             NOT = { any_in_list = { variable = lyd_i3b_political_titles NOT = { holder = scope:lyd_i3b_actor } } }
         }
-            faith = { set_variable = { name = lyd_c3_recognized_leader value = scope:lyd_i3b_actor } remove_variable = lyd_c3_vacancy }
+            faith = { set_variable = { name = lyd_c3_recognized_leader value = scope:lyd_i3b_actor } }
             set_variable = { name = lyd_c3_office_faith value = faith }
             set_variable = { name = lyd_i3b_result_code value = 1 }
             set_variable = { name = lyd_i3b_result_head_title value = faith.religious_head_title }

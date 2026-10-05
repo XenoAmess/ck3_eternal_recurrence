@@ -237,6 +237,11 @@ class McpTests(unittest.IsolatedAsyncioTestCase):
                     "ck3_query_profile_pending_interaction_v1", "ck3_reply_profile_pending_interaction_v1",
                     "ck3_pause_profile_simulation_v1",
                     "ck3_select_profile_event_option_v1", "ck3_save_profile_checkpoint_v1",
+                    "ck3_query_profile_current_actor_stress_adjustment_v1",
+                    "ck3_query_profile_character_interaction_ordinary_v1",
+                    "ck3_initiate_profile_character_interaction_ordinary_v1",
+                            "ck3_query_normal_exit_context_v1", "ck3_request_normal_exit_v1",
+                            "ck3_observe_profile_normal_exit_v1",
                     "ck3_query_profile_decision_item_v1", "ck3_open_profile_decisions_v1",
                     "ck3_select_profile_decision_item_v1", "ck3_confirm_profile_decision_outcome_v1"})
                 for tool in tools:

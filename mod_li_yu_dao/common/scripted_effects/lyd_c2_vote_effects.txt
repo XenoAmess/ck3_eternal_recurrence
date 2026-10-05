@@ -8,7 +8,10 @@ lyd_c2_source_vote_effect = {
         set_variable = { name = lyd_c2_vote_serial value = scope:lyd_c2_event_serial }
         set_variable = { name = lyd_c2_vote_nonce value = scope:lyd_c2_event_nonce }
         set_variable = { name = lyd_c2_vote_yes value = $YES$ }
-        if = { limit = { var:lyd_c2_vote_yes = 1 } scope:lyd_c2_actor = { change_variable = { name = lyd_c2_source_yes add = 1 } } }
+        # Preview does not set vote_yes; real execution has just stored it.
+        if = { limit = { has_variable = lyd_c2_vote_yes }
+            if = { limit = { var:lyd_c2_vote_yes = 1 } scope:lyd_c2_actor = { change_variable = { name = lyd_c2_source_yes add = 1 } } }
+        }
     }
 }
 lyd_c2_target_vote_effect = {
@@ -18,12 +21,15 @@ lyd_c2_target_vote_effect = {
         set_variable = { name = lyd_c2_vote_serial value = scope:lyd_c2_event_serial }
         set_variable = { name = lyd_c2_vote_nonce value = scope:lyd_c2_event_nonce }
         set_variable = { name = lyd_c2_vote_yes value = $YES$ }
-        if = {
-            limit = { var:lyd_c2_vote_yes = 1 }
-            rite = { change_variable = { name = lyd_c2_target_yes add = 1 } }
-            scope:lyd_c2_actor = {
-                change_variable = { name = lyd_c2_target_yes add = 1 }
-                lyd_c2_request_target_consent_effect = yes
+        # Same post-write presence gate for receiving-school ballots.
+        if = { limit = { has_variable = lyd_c2_vote_yes }
+            if = {
+                limit = { var:lyd_c2_vote_yes = 1 }
+                rite = { change_variable = { name = lyd_c2_target_yes add = 1 } }
+                scope:lyd_c2_actor = {
+                    change_variable = { name = lyd_c2_target_yes add = 1 }
+                    lyd_c2_request_target_consent_effect = yes
+                }
             }
         }
     }

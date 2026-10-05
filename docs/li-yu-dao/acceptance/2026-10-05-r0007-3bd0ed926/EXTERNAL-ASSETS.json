@@ -1,0 +1,416 @@
+{
+  "schema": "lyd.r7.external-permanent-asset-bindings.v1",
+  "full_save_and_game_binary_in_Git": false,
+  "saves": [
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\terminal-closure-001\\autosave_exit.ck3",
+      "bytes": 90677633,
+      "sha256": "ce7b9352de4bd69e2011772598d953695b0068e06967b10e1f6da9e8a6bfc698",
+      "scope": "Exact immutable external exit-save; not embedded or rehashed by report author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0004-baseline-save\\checkpoint.ck3",
+      "bytes": 91300945,
+      "sha256": "4404d8796c71fc8dc7447f75dede0f5c424bf05f2e2a2a7ed93557587b820cb4",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0012-confucian-baseline-save\\checkpoint.ck3",
+      "bytes": 91306277,
+      "sha256": "b22b26736704ddcecde3c22011b33c2c63bc09e70ac6bceadd3f4f6975268f74",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0017-formal-kongmen-save\\checkpoint.ck3",
+      "bytes": 91308716,
+      "sha256": "ec02c917a54841f0d5f1e635226f81925eb1b86dad287c98159b2f67103fc20c",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0022-zhuxi-baseline-save\\checkpoint.ck3",
+      "bytes": 91310177,
+      "sha256": "61d05c0a48f25e8173d2ab885408e3d807c610d99e378f03efaef6e7bf03a7a4",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0031-qualified-zhuxi-save\\checkpoint.ck3",
+      "bytes": 90479804,
+      "sha256": "4867564e92d426cc1fff5a14481ff123f3fafd7369179bb396e04e20f9357c17",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0036-c2-world-baseline-save\\checkpoint.ck3",
+      "bytes": 90491020,
+      "sha256": "a20912dedc9e061ce2c5940380a25fd2267752a980850b7c88bc3a64afb7c90d",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0041-c2-funded-baseline-save\\checkpoint.ck3",
+      "bytes": 90493401,
+      "sha256": "a44a4a5de0c1aff5a28926c6d14a8fb5d64f427531c5ce0d187ead6df5e0d135",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0050-first-detach-ballots-save\\checkpoint.ck3",
+      "bytes": 90501556,
+      "sha256": "3641ccd54fb2408f0730cc60814da235b98e3d2fc175a6687c3228cc6116c7f7",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0057-first-cancelled-save\\checkpoint.ck3",
+      "bytes": 90501649,
+      "sha256": "95eea48f5120da25154f28c02bda536fd4e6338a5554e9887a9c91345b989129",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0066-second-detach-ballots-save\\checkpoint.ck3",
+      "bytes": 90502428,
+      "sha256": "63c6352a46d0eb8cfd35accccd57574c528045d45a2001e9109d449e0ddabb2b",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0073-second-cancelled-save\\checkpoint.ck3",
+      "bytes": 90502325,
+      "sha256": "96c13952eaf54f967aab0a70d343a8f99fe29f2e0eddf5842611a62cff3a0f89",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0082-third-detach-ballots-save\\checkpoint.ck3",
+      "bytes": 90503127,
+      "sha256": "ea384e14e177593a9f2a9d02a0da4a61a80a1d3780eea0a331d41bd0b7129093",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0087-third-detach-after-time-save\\checkpoint.ck3",
+      "bytes": 90577667,
+      "sha256": "5be3dbc7e87017784dd237d800b38b5cfd06488c09c9867bf4838a763bebef7a",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0095-third-source-signed-save\\checkpoint.ck3",
+      "bytes": 90577866,
+      "sha256": "d90d1f7263d1b6e86cf1dd1678219bf4e6166418872393d2f4540ba70d042f8a",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0100-first-formal-detach-result-save\\checkpoint.ck3",
+      "bytes": 90644495,
+      "sha256": "fa1c107155809dc98ac434661ccc5963aab1cd143b91beec4f26f1131adc273e",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0107-first-reset-save\\checkpoint.ck3",
+      "bytes": 90643722,
+      "sha256": "75e634fc314406c08ce43100390fb44d39f6da860ec53c84d321cb92d60e0d74",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    },
+    {
+      "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0111-mcp-resume-preclose-save\\checkpoint.ck3",
+      "bytes": 90677633,
+      "sha256": "d32c771f22edac74db1c0297cb1fe5c9579eb66846232a4c5f696ea3fe0ff06c",
+      "scope": "External preserved checkpoint; no copy or save rehash by final author"
+    }
+  ],
+  "complete_GUI_frames_preserved": [
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\confirm-first-detach-reset-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\11163c50e733dfab650c25f4c8a04c5ced8a4291afd48f311106495c2435b250.png",
+      "bytes": 2155304,
+      "sha256": "11163c50e733dfab650c25f4c8a04c5ced8a4291afd48f311106495c2435b250"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\first-detach-map-post-ack-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\1c128880680603bbc4a0ab5897f50de991ac23b78e6d3f43de589b86e2b85616.png",
+      "bytes": 2294162,
+      "sha256": "1c128880680603bbc4a0ab5897f50de991ac23b78e6d3f43de589b86e2b85616"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\first-detach-reset-detail-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\36b51963146cf8ec1e1e1a586b69e810c33d811f928adce60c9e614f15af8751.png",
+      "bytes": 2230356,
+      "sha256": "36b51963146cf8ec1e1e1a586b69e810c33d811f928adce60c9e614f15af8751"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-army-panel-open-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\e45b3d1493919b2a5dff43d24bb004d4180b0cf041c27458b57c39a3ea117f30.png",
+      "bytes": 2245619,
+      "sha256": "e45b3d1493919b2a5dff43d24bb004d4180b0cf041c27458b57c39a3ea117f30"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-character-finder-menu-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\ac4cad9d7be21e95c86218227d08e7151ed1a675b1a073d697b092fbf81424ed.png",
+      "bytes": 2089623,
+      "sha256": "ac4cad9d7be21e95c86218227d08e7151ed1a675b1a073d697b092fbf81424ed"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-courtiers-learning-sort-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\fe9487027cd127f70d933695aed3d0409bbc3ead678bc0f0d32db0b08bf2c0aa.png",
+      "bytes": 2238109,
+      "sha256": "fe9487027cd127f70d933695aed3d0409bbc3ead678bc0f0d32db0b08bf2c0aa"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-courtiers-sort-menu-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\3aa0572c2287cc890c79fa940d7d17b4e325b7259f239ba4037f52743c79bbc8.png",
+      "bytes": 2206866,
+      "sha256": "3aa0572c2287cc890c79fa940d7d17b4e325b7259f239ba4037f52743c79bbc8"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-courtiers-tab-open-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\6987397cfb4fae5a9720ecf01985977d072e2f0fa21ba112b7f71a899b215ac3.png",
+      "bytes": 2225552,
+      "sha256": "6987397cfb4fae5a9720ecf01985977d072e2f0fa21ba112b7f71a899b215ac3"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-extra-menu-open-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\3513780e7c494c34c5327b7a3aa7196017f1185b1b9844f6c02acd59adf95fad.png",
+      "bytes": 2143209,
+      "sha256": "3513780e7c494c34c5327b7a3aa7196017f1185b1b9844f6c02acd59adf95fad"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-global-character-finder-open-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\ba27dfd6c32945f28016894f1299383242abbfb9306ae26314a6dd8518983249.png",
+      "bytes": 2121313,
+      "sha256": "ba27dfd6c32945f28016894f1299383242abbfb9306ae26314a6dd8518983249"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-knights-list-bottom-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\5b2ccc9c80e48578603de0931dbbff9410ea0d09bd8df36dadd167f8a12601e5.png",
+      "bytes": 2141145,
+      "sha256": "5b2ccc9c80e48578603de0931dbbff9410ea0d09bd8df36dadd167f8a12601e5"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-knights-list-bottom-002.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\bc69e6ebcc1671489d8173542a77c453964187b847bebc513e464aa3555115b4.png",
+      "bytes": 2132094,
+      "sha256": "bc69e6ebcc1671489d8173542a77c453964187b847bebc513e464aa3555115b4"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-knights-list-bottom-003.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\f5469f2b2e881eb37689a139adeab18f2994ee2edfc1972e177be4dd799e2afb.png",
+      "bytes": 2128859,
+      "sha256": "f5469f2b2e881eb37689a139adeab18f2994ee2edfc1972e177be4dd799e2afb"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-knights-list-bottom-004.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\44346a6f0d024c8da567d9c64e292be83e7369811ba4f09222f36d4e54606c7c.png",
+      "bytes": 2139704,
+      "sha256": "44346a6f0d024c8da567d9c64e292be83e7369811ba4f09222f36d4e54606c7c"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-knights-list-bottom-005.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\aabd5f3a31c95981e27657d17d268656e8da8cd5c5fdd03629c57917ffe3aa37.png",
+      "bytes": 2122655,
+      "sha256": "aabd5f3a31c95981e27657d17d268656e8da8cd5c5fdd03629c57917ffe3aa37"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-knights-list-open-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\fb4d576d8294b3cbd4a71ac8018cc2b52e4c69f05d2b36735d2fab95e3e5dfb1.png",
+      "bytes": 2137255,
+      "sha256": "fb4d576d8294b3cbd4a71ac8018cc2b52e4c69f05d2b36735d2fab95e3e5dfb1"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-knights-list-scroll-track-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\5fe25f5b2c6fd15ef0cd9ab6735c7816496684be9920e3452a6f517016fa92de.png",
+      "bytes": 2144471,
+      "sha256": "5fe25f5b2c6fd15ef0cd9ab6735c7816496684be9920e3452a6f517016fa92de"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-people-panel-open-002.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\5bcb99bedf98cb0f30f19297dcd8add59e075a3e999faadb62894167b8956063.png",
+      "bytes": 2226079,
+      "sha256": "5bcb99bedf98cb0f30f19297dcd8add59e075a3e999faadb62894167b8956063"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-recipient-locate-map-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\fbd8e3dce5035e3abf8d9a1d01d041096484ed5224b6cd3dbf5d7c37b73a5280.png",
+      "bytes": 2296057,
+      "sha256": "fbd8e3dce5035e3abf8d9a1d01d041096484ed5224b6cd3dbf5d7c37b73a5280"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-recipient-name-filter-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\3b8ba8af987170204ec5f6fe609b9feba88cfa0885f66754515f7d80890e7dd8.png",
+      "bytes": 1942629,
+      "sha256": "3b8ba8af987170204ec5f6fe609b9feba88cfa0885f66754515f7d80890e7dd8"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-recipient-relation-all-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\2ed60bca40c923f1d44ac59bf9f70db2a889821c9470b5654bac9ce87c7feae6.png",
+      "bytes": 1942594,
+      "sha256": "2ed60bca40c923f1d44ac59bf9f70db2a889821c9470b5654bac9ce87c7feae6"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-recipient-relation-filter-menu-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\7bb6686e6ed9581dd9a87f31baa4c832943a48a2c2a6b216b9c1a04d0bee822f.png",
+      "bytes": 1933581,
+      "sha256": "7bb6686e6ed9581dd9a87f31baa4c832943a48a2c2a6b216b9c1a04d0bee822f"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-recipient-search-focus-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\b026fdf46f20eb6ddbb329626e443179b0bb70532efaebbc39c5b7bdadb0d47a.png",
+      "bytes": 2086389,
+      "sha256": "b026fdf46f20eb6ddbb329626e443179b0bb70532efaebbc39c5b7bdadb0d47a"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-recipient-search-paste-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\a14596274d6968814d79bc51d577c39d9f9df79567f88b521b1e2b4f4bf532f6.png",
+      "bytes": 2086959,
+      "sha256": "a14596274d6968814d79bc51d577c39d9f9df79567f88b521b1e2b4f4bf532f6"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-recipient-search-refocus-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\707c5ed7d79904c769ac1b9478abe58f2eff9ee6b9bffb9c2a5c5aa4fea56e64.png",
+      "bytes": 2089418,
+      "sha256": "707c5ed7d79904c769ac1b9478abe58f2eff9ee6b9bffb9c2a5c5aa4fea56e64"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\join-recipient-search-scancode-paste-001.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\432fb9f1381ebc88f9456a57610dbc14e5c5330db5f08ab8b5efa4f329016201.png",
+      "bytes": 2114686,
+      "sha256": "432fb9f1381ebc88f9456a57610dbc14e5c5330db5f08ab8b5efa4f329016201"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\confirm-first-detach-reset-001\\post-click.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\4ad8a51144193affaf1d7e7c93226ce502d5d4d82a3ef3bfe69a463819f2dd1b.png",
+      "bytes": 2046832,
+      "sha256": "4ad8a51144193affaf1d7e7c93226ce502d5d4d82a3ef3bfe69a463819f2dd1b"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-army-panel-open-001\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\b51612253c1c445c2b4374e285a6bc4bb028581ff9b5faaabae0c252f1bce5b2.png",
+      "bytes": 2249924,
+      "sha256": "b51612253c1c445c2b4374e285a6bc4bb028581ff9b5faaabae0c252f1bce5b2"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-character-finder-menu-001\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\0249450648d9ab41b933bdba5e0643d31fa6a6d9baeb4505586c188d62ba4054.png",
+      "bytes": 2075322,
+      "sha256": "0249450648d9ab41b933bdba5e0643d31fa6a6d9baeb4505586c188d62ba4054"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-courtiers-learning-sort-001\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\4a7c1a651cd6ee8ef48b179626323f1ddbb3f88451e7441ac74bb806a15a0022.png",
+      "bytes": 2225225,
+      "sha256": "4a7c1a651cd6ee8ef48b179626323f1ddbb3f88451e7441ac74bb806a15a0022"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-courtiers-sort-menu-001\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\43dab8d00d7c92e0caf4b920109c62f0bc5419e1022507b1756f63a6bbdea270.png",
+      "bytes": 2207078,
+      "sha256": "43dab8d00d7c92e0caf4b920109c62f0bc5419e1022507b1756f63a6bbdea270"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-courtiers-tab-open-001\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\f916357550837793c86577303c7949f969467f47e140b98c1c197966dfe7bd43.png",
+      "bytes": 2181876,
+      "sha256": "f916357550837793c86577303c7949f969467f47e140b98c1c197966dfe7bd43"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-extra-menu-open-001\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\bc7e4f7b98fd658e532d0fa540b8a7ea2d1088c5dfea1e16380c3f9d59ef7e9a.png",
+      "bytes": 2138354,
+      "sha256": "bc7e4f7b98fd658e532d0fa540b8a7ea2d1088c5dfea1e16380c3f9d59ef7e9a"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-bottom-001\\mapped-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\f0cc7433c0fc456ee42bb815ca9de8d167b227aebe357855a9d4576781698226.png",
+      "bytes": 2139908,
+      "sha256": "f0cc7433c0fc456ee42bb815ca9de8d167b227aebe357855a9d4576781698226"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-bottom-002\\mapped-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\a7f9226fd0c0312658442e85ad29a74d856269c0ab14233f78a5d45fd1265b87.png",
+      "bytes": 2145449,
+      "sha256": "a7f9226fd0c0312658442e85ad29a74d856269c0ab14233f78a5d45fd1265b87"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-bottom-003\\mapped-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\cdecd70eebe082fdd96544c491e07d75aba9f3ce3d116e5704a5bc8a54beb13c.png",
+      "bytes": 2129892,
+      "sha256": "cdecd70eebe082fdd96544c491e07d75aba9f3ce3d116e5704a5bc8a54beb13c"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-bottom-004\\mapped-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\209dc1845c040bbc6cc947faa699b8e8e40fabe59b298f49f07cc0f316e648ab.png",
+      "bytes": 2137647,
+      "sha256": "209dc1845c040bbc6cc947faa699b8e8e40fabe59b298f49f07cc0f316e648ab"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-bottom-005\\mapped-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\da5c8685b0b8fc3c2e1987a4a6bdbdd7588085ca3b8481553a2c3086b0d1c878.png",
+      "bytes": 2141368,
+      "sha256": "da5c8685b0b8fc3c2e1987a4a6bdbdd7588085ca3b8481553a2c3086b0d1c878"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-open-001\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\fcd7cf77eeba9e1e158a5e3bba8578f298fcf4724b7e12768ec0cf9bf0b8da48.png",
+      "bytes": 2232107,
+      "sha256": "fcd7cf77eeba9e1e158a5e3bba8578f298fcf4724b7e12768ec0cf9bf0b8da48"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-scroll-track-001\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\2f9bb91cafcfdbd282813189616e83462ca79b22bb04f94cd1a4e23e5c61ccb2.png",
+      "bytes": 2148968,
+      "sha256": "2f9bb91cafcfdbd282813189616e83462ca79b22bb04f94cd1a4e23e5c61ccb2"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-people-panel-open-002\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\5f9bfb080bb20651c3646ddad350ba257ee3217bc44f5289546f93f087da2cc3.png",
+      "bytes": 2288063,
+      "sha256": "5f9bfb080bb20651c3646ddad350ba257ee3217bc44f5289546f93f087da2cc3"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-recipient-name-filter-001\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\e7cb3331ecbd87d9042735d7597a69baa650538ae846d1444ed1372e66ef9788.png",
+      "bytes": 1938543,
+      "sha256": "e7cb3331ecbd87d9042735d7597a69baa650538ae846d1444ed1372e66ef9788"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-recipient-relation-all-001\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\87238a34f09bc5791698645f34d3611f55232a22792930f98e7f344ff60876c7.png",
+      "bytes": 1942281,
+      "sha256": "87238a34f09bc5791698645f34d3611f55232a22792930f98e7f344ff60876c7"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-recipient-relation-filter-menu-001\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\2296ce66067de633453bbb64cf5138788c1fb8354fbefb0ddb755c9ca46a973a.png",
+      "bytes": 1933182,
+      "sha256": "2296ce66067de633453bbb64cf5138788c1fb8354fbefb0ddb755c9ca46a973a"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-recipient-search-focus-001\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\9fb25f0b5aaee047f02de007535d232426524e4bf1c0dfd1dc7fc6441cad4c22.png",
+      "bytes": 2089307,
+      "sha256": "9fb25f0b5aaee047f02de007535d232426524e4bf1c0dfd1dc7fc6441cad4c22"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-recipient-search-refocus-001\\post-pointer.png",
+      "preserved_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003\\media\\fca150a03624e1ed8b6c861d896dc9681cad1d70bfd6b67022c2758447cf2cc5.png",
+      "bytes": 2089126,
+      "sha256": "fca150a03624e1ed8b6c861d896dc9681cad1d70bfd6b67022c2758447cf2cc5"
+    }
+  ],
+  "selected_imported_media": [
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\first-detach-map-post-ack-001.png",
+      "path": "media/1c128880680603bbc4a0ab5897f50de991ac23b78e6d3f43de589b86e2b85616.png",
+      "bytes": 2294162,
+      "sha256": "1c128880680603bbc4a0ab5897f50de991ac23b78e6d3f43de589b86e2b85616",
+      "caption": "After split-result ACK map context; saved Faith105 is proved by parser, not this frame"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\maintenance-os-close-after-001.png",
+      "path": "media/6492dcdc1b9c48682b089ef7b8e5e5df7c27f77ba5f83bc9437419f9b4dc3384.png",
+      "bytes": 1540143,
+      "sha256": "6492dcdc1b9c48682b089ef7b8e5e5df7c27f77ba5f83bc9437419f9b4dc3384",
+      "caption": "WM_CLOSE opened confirmation; this frame proves no process exit"
+    },
+    {
+      "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\maintenance-confirm-preclick-002.png",
+      "path": "media/18f033c1e8acbc67c7799907e04e000d9cd003022088c2c88f5139438850eb72.png",
+      "bytes": 1541335,
+      "sha256": "18f033c1e8acbc67c7799907e04e000d9cd003022088c2c88f5139438850eb72",
+      "caption": "Reviewed official desktop-quit confirmation before clicked maintenance002"
+    }
+  ],
+  "large_asset_policy": "External originals remain preserved. Selected original PNG only is in report payload. No complete save/media/source tree imported."
+}

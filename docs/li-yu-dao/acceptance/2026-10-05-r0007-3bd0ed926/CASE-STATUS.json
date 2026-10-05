@@ -1,0 +1,1134 @@
+{
+  "schema": "lyd.r7.final-case-status.v1",
+  "cases": [
+    {
+      "case": "ENTRY-0017",
+      "phase": "formal-entry",
+      "status": "REQUIRED_POSTCONDITIONS_AND_PRIMARY_PROTECTION_CONFIRMED",
+      "actual": {
+        "id": 31254,
+        "history_lookup": [
+          {
+            "history_id": "1128",
+            "actual_id": "31254",
+            "raw_line": "\t1128=31254"
+          }
+        ],
+        "rite_id": "150",
+        "rite_type": "lyd_rite_kongmen",
+        "faith_id": "32",
+        "faith_type": "lyd_common_faith",
+        "lyd_enabled_character_flag_present": true,
+        "lyd_enabled_saved_row": {
+          "present": true,
+          "type": null,
+          "identity": null,
+          "tick": null
+        },
+        "lyd_enabled_typed_boolean": null
+      },
+      "required_checks_passed": 13,
+      "graph_activation": {
+        "faiths": {
+          "added_ids": [],
+          "removed_ids": [],
+          "changed_records": {
+            "32": [
+              {
+                "path": "/historical[0]",
+                "before_present": true,
+                "before": "no",
+                "after_present": true,
+                "after": "yes"
+              }
+            ]
+          }
+        },
+        "rites": {
+          "added_ids": [],
+          "removed_ids": [],
+          "changed_records": {}
+        }
+      },
+      "initial_report_gap": "Extra every-Faith/Rite-unchanged assumption retained false; historical=no→yes is explicit activation, no Rite graph change.",
+      "evidence": [
+        {
+          "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-formal-entry-readback-review-20261005-001\\GRAPH-ACTIVATION.json",
+          "raw_path": "raw/f4fcf6cf16fcae551ea8f2d00624358b26fcd4e75a0e234cf7b6930cd337d876.gz",
+          "bytes": 4669,
+          "sha256": "f4fcf6cf16fcae551ea8f2d00624358b26fcd4e75a0e234cf7b6930cd337d876"
+        },
+        {
+          "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-formal-entry-readback-review-20261005-001\\INDEX-closure.json",
+          "raw_path": "raw/0e919f9aae75c8ed7a2354b5325783c6c97b1535cf2b496ff8cb0853a5c1b478.gz",
+          "bytes": 4794,
+          "sha256": "0e919f9aae75c8ed7a2354b5325783c6c97b1535cf2b496ff8cb0853a5c1b478"
+        }
+      ],
+      "full_C2_C3_charter_pass": false
+    },
+    {
+      "case": "SCHOOL-0022",
+      "phase": "formal-school-choice-before-qualification",
+      "status": "ACTUAL_ZHUXI_SCHOOL_POSTCONDITIONS_AND_PRIMARY_PROTECTION_CONFIRMED",
+      "actor_id": 31254,
+      "faith_id": "32",
+      "rite_id": "169",
+      "rite_type": "lyd_rite_zhuxi",
+      "checks_passed": 11,
+      "actual_total_learning": null,
+      "evidence": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-zhuxi-baseline-review-20261005-001\\REPORT.json",
+        "raw_path": "raw/0a85bde5a5554fbbaf2cccd5665322ec95d5fca2f6997f14b68ce34131dd4b50.gz",
+        "bytes": 42909,
+        "sha256": "0a85bde5a5554fbbaf2cccd5665322ec95d5fca2f6997f14b68ce34131dd4b50"
+      }
+    },
+    {
+      "case": "QUALIFICATION-0031",
+      "phase": "fixture-preparation",
+      "status": "ACTUAL_DEFERRED_LEARNING15_QUALIFICATION_FIXTURE_CONFIRMED",
+      "checks_passed": 11,
+      "script_learning_getter_before": "4",
+      "immediate": "4",
+      "Dplus2": "15",
+      "saved_base_learning_delta": "11",
+      "quantity_model_qualified": false,
+      "expected_stress_delta": null,
+      "formal_product_practice_pass": false,
+      "evidence": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-qualified-zhuxi-review-20261005-001\\REPORT.json",
+        "raw_path": "raw/f68a66dbbd9aee56cbfdce6880e13c862ba2f881a0d4e77c7907ce80f3cf6fb3.gz",
+        "bytes": 30310,
+        "sha256": "f68a66dbbd9aee56cbfdce6880e13c862ba2f881a0d4e77c7907ce80f3cf6fb3"
+      }
+    },
+    {
+      "case": "C2-CANCEL-1-0057",
+      "phase": "formal-callback",
+      "status": "ACTUAL_RESULT3_ACTIVE_OWNER_RELEASED_NO_FEE",
+      "actual": {
+        "actor_id": 31254,
+        "faith_id": "32",
+        "rite_id": "169",
+        "saved_calendar": "1066.9.17"
+      },
+      "result": {
+        "present": true,
+        "type": "value",
+        "identity": "300000",
+        "number": "3",
+        "tick": null
+      },
+      "serial": {
+        "present": true,
+        "type": "value",
+        "identity": "100000",
+        "number": "1",
+        "tick": null
+      },
+      "callback_nonce": {
+        "present": true,
+        "type": "value",
+        "identity": "100000",
+        "number": "1",
+        "tick": null
+      },
+      "fee_delta": {
+        "gold": "0",
+        "piety": "0",
+        "prestige": "0",
+        "stress": null,
+        "learning_lifestyle_xp": "0"
+      },
+      "old_vote_ticket_rows_erased": false,
+      "stale_callback_native_actuation": "NOT_ATTEMPTED",
+      "evidence": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-world-readback-20261005-001\\observed-0057\\REPORT.json",
+        "raw_path": "raw/9f55a327c4048e37456515cc7c88b66e9b7af0a6097fbc4c5589a99c4fc99d81.gz",
+        "bytes": 462712,
+        "sha256": "9f55a327c4048e37456515cc7c88b66e9b7af0a6097fbc4c5589a99c4fc99d81"
+      },
+      "successful_detach_credit": false
+    },
+    {
+      "case": "C2-CANCEL-2-0073",
+      "phase": "formal-callback",
+      "status": "ACTUAL_CANCEL_RESULT3_NO_FEE_ACTIVE_AND_OWNER_RELEASED",
+      "actual": {
+        "actor_id": 31254,
+        "faith_id": "32",
+        "rite_id": "169",
+        "saved_calendar": "1066.9.17"
+      },
+      "result": {
+        "present": true,
+        "type": "value",
+        "identity": "300000",
+        "number": "3",
+        "tick": null
+      },
+      "serial": {
+        "present": true,
+        "type": "value",
+        "identity": "200000",
+        "number": "2",
+        "tick": null
+      },
+      "callback_nonce": {
+        "present": true,
+        "type": "value",
+        "identity": "200000",
+        "number": "2",
+        "tick": null
+      },
+      "fee_delta": {
+        "gold": {
+          "before": "2243",
+          "after": "2243",
+          "delta": "0"
+        },
+        "piety": {
+          "before": "9150",
+          "after": "9150",
+          "delta": "0"
+        },
+        "prestige": {
+          "before": "2200",
+          "after": "2200",
+          "delta": "0"
+        },
+        "stress": {
+          "before": null,
+          "after": null,
+          "delta": null
+        },
+        "learning_lifestyle_xp": {
+          "before": "0",
+          "after": "0",
+          "delta": "0"
+        }
+      },
+      "active_present": false,
+      "proposal_owner_present": false,
+      "old_vote_ticket_rows_erased": false,
+      "cancel_increments_nonce": false,
+      "persistent_serial_metadata_is_live_lock": false,
+      "stale_callback_native_actuation": "NOT_ATTEMPTED",
+      "evidence": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-world-readback-20261005-001\\CANCEL-0073.json",
+        "raw_path": "raw/125de1132999b236c6df2d671993f0a22c8a0bf60bc6beaa0c0b234086d9d9aa.gz",
+        "bytes": 6676,
+        "sha256": "125de1132999b236c6df2d671993f0a22c8a0bf60bc6beaa0c0b234086d9d9aa"
+      },
+      "successful_detach_credit": false
+    },
+    {
+      "case": "C2-THIRD-BALLOTS-0082",
+      "phase": "formal-business-before-signature",
+      "status": "SOURCE_QUORUM_SAVED_ARITHMETIC_MET_NOT_FORMAL_COMPLETION",
+      "serial": "3",
+      "nonce": "3",
+      "source_total": 2,
+      "source_yes": 2,
+      "human_total": 1,
+      "human_yes": 1,
+      "source_signed_present": false,
+      "NPC_yes_already_saved": true,
+      "native_NPC_action_attributed": false,
+      "fee_delta": {
+        "gold": {
+          "before": "2243",
+          "after": "2243",
+          "delta": "0"
+        },
+        "piety": {
+          "before": "9150",
+          "after": "9150",
+          "delta": "0"
+        },
+        "prestige": {
+          "before": "2200",
+          "after": "2200",
+          "delta": "0"
+        },
+        "stress": {
+          "before": null,
+          "after": null,
+          "delta": null
+        },
+        "learning_lifestyle_xp": {
+          "before": "0",
+          "after": "0",
+          "delta": "0"
+        }
+      },
+      "formal_completion": false,
+      "evidence": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-world-readback-20261005-001\\C2-0082.json",
+        "raw_path": "raw/3a1ab6f421b277380ad79af1dab574cc57ca9c998271da53c198d90322eae826.gz",
+        "bytes": 10458,
+        "sha256": "3a1ab6f421b277380ad79af1dab574cc57ca9c998271da53c198d90322eae826"
+      }
+    },
+    {
+      "case": "C2-THIRD-POSTTIME-0087",
+      "phase": "formal-callback",
+      "status": "SOURCE_NPC_YES_ALREADY_PRESENT_BEFORE_TIME_UNCHANGED_AFTER13DAYS",
+      "elapsed_days": 13,
+      "active_ttl_before_after": [
+        365,
+        352
+      ],
+      "source_total_yes": [
+        2,
+        2
+      ],
+      "human_total_yes": [
+        1,
+        1
+      ],
+      "source_signed_present": false,
+      "NPC_vote_first_appeared_after_wait": false,
+      "formal_completion": false,
+      "evidence": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-world-readback-20261005-001\\POSTTIME-0087.json",
+        "raw_path": "raw/241ccf6e21d1427102dee36f73f269de81ff96eb00832e7bafef51c03cc3aba8.gz",
+        "bytes": 3527,
+        "sha256": "241ccf6e21d1427102dee36f73f269de81ff96eb00832e7bafef51c03cc3aba8"
+      }
+    },
+    {
+      "case": "C2-THIRD-SOURCE-SIGNED-0095",
+      "phase": "formal-review",
+      "status": "ACTUAL_SOURCE_SIGNED1_SERIAL3_NONCE3_TERMS1_NO_FEE",
+      "source_signed": {
+        "present": true,
+        "type": "value",
+        "identity": "100000",
+        "number": "1",
+        "tick": null
+      },
+      "current_context": {
+        "lyd_c2_serial": {
+          "present": true,
+          "type": "value",
+          "identity": "300000",
+          "number": "3",
+          "tick": null
+        },
+        "lyd_c2_callback_nonce": {
+          "present": true,
+          "type": "value",
+          "identity": "300000",
+          "number": "3",
+          "tick": null
+        },
+        "lyd_c2_terms_revision": {
+          "present": true,
+          "type": "value",
+          "identity": "100000",
+          "number": "1",
+          "tick": null
+        },
+        "lyd_c2_kind": {
+          "present": true,
+          "type": "value",
+          "identity": "200000",
+          "number": "2",
+          "tick": null
+        },
+        "lyd_c2_moving_rite": {
+          "present": true,
+          "type": "rite",
+          "identity": "169",
+          "tick": null
+        },
+        "lyd_c2_source_faith": {
+          "present": true,
+          "type": "faith",
+          "identity": "32",
+          "tick": null
+        },
+        "lyd_c2_active": {
+          "present": true,
+          "type": "value",
+          "identity": "100000",
+          "number": "1",
+          "tick": "352"
+        }
+      },
+      "separate_signed_serial_nonce_terms_fields": "NOT_DEFINED_NOT_FABRICATED",
+      "fee_delta": {
+        "gold": {
+          "before": "2243",
+          "after": "2243",
+          "delta": "0"
+        },
+        "piety": {
+          "before": "9150",
+          "after": "9150",
+          "delta": "0"
+        },
+        "prestige": {
+          "before": "2200",
+          "after": "2200",
+          "delta": "0"
+        },
+        "stress": {
+          "before": null,
+          "after": null,
+          "delta": null
+        },
+        "learning_lifestyle_xp": {
+          "before": "0",
+          "after": "0",
+          "delta": "0"
+        }
+      },
+      "formal_commit": false,
+      "evidence": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-world-readback-20261005-001\\SOURCE-SIGNED-0095.json",
+        "raw_path": "raw/1cbc49bd6e51759b2fc41fa4fc4319a393b32e60efbf4013f9cb58825effd883.gz",
+        "bytes": 3488,
+        "sha256": "1cbc49bd6e51759b2fc41fa4fc4319a393b32e60efbf4013f9cb58825effd883"
+      }
+    },
+    {
+      "case": "C2-FIRST-FORMAL-DETACH-0100",
+      "phase": "formal-business",
+      "status": "ACTUAL_FORMAL_DETACH_RESULT1_FEES200G1000P_WITH_BOUNDED_PROTECTION",
+      "actual": {
+        "actor_id": 31254,
+        "faith_id": "105",
+        "rite_id": "169",
+        "saved_calendar": "1066.9.30"
+      },
+      "result": {
+        "present": true,
+        "type": "value",
+        "identity": "100000",
+        "number": "1",
+        "tick": null
+      },
+      "completed_detaches": {
+        "present": true,
+        "type": "value",
+        "identity": "100000",
+        "number": "1",
+        "tick": null
+      },
+      "fee_delta": {
+        "gold": "-200",
+        "piety": "-1000",
+        "prestige": "0",
+        "stress": null,
+        "learning_lifestyle_xp": "0"
+      },
+      "new_faith_id": "105",
+      "moved_rite_id": "169",
+      "source_faith_remaining_rites": 34,
+      "new_faith_rite_count": 1,
+      "unchanged_fixture_faith104_rite_count": 1,
+      "active_present": false,
+      "proposal_owner_present": false,
+      "serial_nonce_retained": [
+        3,
+        3
+      ],
+      "transition_cooldown": {
+        "present": true,
+        "type": "value",
+        "identity": "100000",
+        "number": "1",
+        "tick": "1825"
+      },
+      "same_date_person_title_court_protection": "SEALED_BOUNDED_PROTECTION_OBSERVED",
+      "protected_characters": [
+        {
+          "actual_id": "31254",
+          "rite_before_after": [
+            "169",
+            "169"
+          ],
+          "faith_before_after": [
+            "32",
+            "105"
+          ],
+          "complete_raw_character_AST_same": false,
+          "family_dynasty_court_identity_skills_claims_protected": true
+        },
+        {
+          "actual_id": "40526",
+          "rite_before_after": [
+            "169",
+            "169"
+          ],
+          "faith_before_after": [
+            "32",
+            "105"
+          ],
+          "complete_raw_character_AST_same": true,
+          "family_dynasty_court_identity_skills_claims_protected": true
+        },
+        {
+          "actual_id": "58477",
+          "rite_before_after": [
+            "0",
+            "0"
+          ],
+          "faith_before_after": [
+            "13",
+            "13"
+          ],
+          "complete_raw_character_AST_same": true,
+          "family_dynasty_court_identity_skills_claims_protected": true
+        },
+        {
+          "actual_id": "65865",
+          "rite_before_after": [
+            "169",
+            "169"
+          ],
+          "faith_before_after": [
+            "32",
+            "105"
+          ],
+          "complete_raw_character_AST_same": true,
+          "family_dynasty_court_identity_skills_claims_protected": true
+        },
+        {
+          "actual_id": "65866",
+          "rite_before_after": [
+            "159",
+            "159"
+          ],
+          "faith_before_after": [
+            "104",
+            "104"
+          ],
+          "complete_raw_character_AST_same": true,
+          "family_dynasty_court_identity_skills_claims_protected": true
+        }
+      ],
+      "owned_head_title_projection_same": true,
+      "bounded_whole_landed_titles_hashes": [
+        {
+          "save_sha256": "d90d1f7263d1b6e86cf1dd1678219bf4e6166418872393d2f4540ba70d042f8a",
+          "normalized_section_bytes": 6608107,
+          "normalized_section_sha256": "b913332425e41e207ed7f313c2174bbf068bec5281d4a363cc3bb4c8e024b448"
+        },
+        {
+          "save_sha256": "fa1c107155809dc98ac434661ccc5963aab1cd143b91beec4f26f1131adc273e",
+          "normalized_section_bytes": 6608107,
+          "normalized_section_sha256": "b913332425e41e207ed7f313c2174bbf068bec5281d4a363cc3bb4c8e024b448"
+        }
+      ],
+      "actor_native_factory_side_effect": "Observed new_faith_legend holy/famed seed added to actor landed_data; rest of landed_data including title and claim fields same. Do not assert all landed_data unchanged.",
+      "all_landed_data_unchanged": false,
+      "full_formal_scenario_pass": null,
+      "repeat_split_join_cycle_pass": null,
+      "evidence": [
+        {
+          "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-world-readback-20261005-001\\observed-0100\\REPORT.json",
+          "raw_path": "raw/e00470cb21b199b5a3df3f88e5438bdafef4c196dcd02140200fd31e58cf2eea.gz",
+          "bytes": 489681,
+          "sha256": "e00470cb21b199b5a3df3f88e5438bdafef4c196dcd02140200fd31e58cf2eea"
+        },
+        {
+          "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-world-readback-20261005-001\\observed-0100\\INDEX.json",
+          "raw_path": "raw/042931f0f9423bf57d655c1e58141714da30938be3fcaca2e641b5b18076e6ad.gz",
+          "bytes": 5906,
+          "sha256": "042931f0f9423bf57d655c1e58141714da30938be3fcaca2e641b5b18076e6ad"
+        },
+        {
+          "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-world-readback-20261005-001\\FORMAL-DETACH-0100.json",
+          "raw_path": "raw/e834ed3d68c0eaba77714e0e02f181973a7704e4356eecff4b902e81e604ce6b.gz",
+          "bytes": 10937,
+          "sha256": "e834ed3d68c0eaba77714e0e02f181973a7704e4356eecff4b902e81e604ce6b"
+        }
+      ]
+    },
+    {
+      "case": "C2-RESULT-ACK-0102",
+      "phase": "native-event-ack",
+      "status": "EVENT_INSTANCE_ADVANCED_ONLY",
+      "old_instance": 22,
+      "new_instance": null,
+      "option_index": 0,
+      "evidence": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\mcp-client-evidence-001\\0101-0102-first-detach-result-ack.sdk-result.json",
+        "raw_path": "raw/b09f82a821fe688fa685733de7f2777de343b02ed23f9c4ebbc1f7b79f1f810e.gz",
+        "bytes": 3403601,
+        "sha256": "b09f82a821fe688fa685733de7f2777de343b02ed23f9c4ebbc1f7b79f1f810e"
+      },
+      "business_protection_or_cycle_credit": false
+    },
+    {
+      "case": "C2-EXPLICIT-FIXTURE-RESET-0107",
+      "status": "EXPLICIT_FIXTURE_RESET_COUNT1_NO_FEE_HISTORY_PRESERVED_NOT_NATURAL_EXPIRY",
+      "phase": "fixture-reset",
+      "reset_count": {
+        "present": true,
+        "type": "value",
+        "identity": "100000",
+        "number": "1",
+        "tick": null
+      },
+      "cooldowns": {
+        "transition_before": {
+          "present": true,
+          "type": "value",
+          "identity": "100000",
+          "number": "1",
+          "tick": "1825"
+        },
+        "transition_after_present": false,
+        "retry_before_present": false,
+        "retry_after_present": false
+      },
+      "fee_delta": {
+        "gold": {
+          "before": "2043",
+          "after": "2043",
+          "delta": "0"
+        },
+        "piety": {
+          "before": "8150",
+          "after": "8150",
+          "delta": "0"
+        },
+        "prestige": {
+          "before": "2200",
+          "after": "2200",
+          "delta": "0"
+        },
+        "stress": {
+          "before": null,
+          "after": null,
+          "delta": null
+        },
+        "learning_lifestyle_xp": {
+          "before": "0",
+          "after": "0",
+          "delta": "0"
+        }
+      },
+      "history_and_vote_tickets_preserved": true,
+      "natural_time_expiry": false,
+      "formal_repeat_cycle_pass": false,
+      "ACK_chain": {
+        "receipts": [
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\mcp-client-evidence-001\\0100-0101-first-detach-result-query.sdk-result.json",
+            "bytes": 29653,
+            "sha256": "884e76acf2f931fbd58f772a2c8e34f8d44a7d021b5b705fdb416649469be2d5"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\mcp-client-evidence-001\\0101-0102-first-detach-result-ack.sdk-result.json",
+            "bytes": 3403601,
+            "sha256": "b09f82a821fe688fa685733de7f2777de343b02ed23f9c4ebbc1f7b79f1f810e"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\mcp-client-evidence-001\\0104-0105-first-reset-success-query.sdk-result.json",
+            "bytes": 24601,
+            "sha256": "39c27e635307e7e19d1cf95564e0ab12737d42ba7f01afb7d073e5e8a9d7deae"
+          },
+          {
+            "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\mcp-client-evidence-001\\0105-0106-first-reset-ack.sdk-result.json",
+            "bytes": 3517757,
+            "sha256": "efc766b9bca6b322001162a3d1166aac0496821c1797421ce5461b0b0f7180f8"
+          }
+        ],
+        "formal_result_definition": "lyd.228",
+        "formal_result_instance": 22,
+        "formal_result_ACK_ordinal": 1,
+        "fixture_reset_definition": "lyd_r4_fixture.4",
+        "fixture_reset_instance": 23,
+        "fixture_reset_ACK_ordinal": 1,
+        "selection_boundary": "EVENT_INSTANCE_ADVANCED_ONLY; business result and reset fields independently saved"
+      },
+      "evidence": [
+        {
+          "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-world-readback-20261005-001\\RESET-0107.json",
+          "raw_bytes": 4211,
+          "raw_sha256": "8e965106a8d6e94b7adaa361dc0eac70e22a6b34730c8522bb86d8439664b1c4",
+          "storage": "BASE_PACKAGE_REFERENCE",
+          "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+          "stored_path": "raw/8e965106a8d6e94b7adaa361dc0eac70e22a6b34730c8522bb86d8439664b1c4.gz",
+          "stored_sha256": "6de3c68525665caf8d2442f10e98f6626abaf70a31f9015c0ba479f4ffaedd85"
+        },
+        {
+          "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-world-readback-20261005-001\\SNAPSHOT-0082-0107-INDEX.json",
+          "raw_bytes": 38124,
+          "raw_sha256": "a253d5942a675932305f50e26f2445793a62bbdee231e8c8b75049cdc773993e",
+          "storage": "BASE_PACKAGE_REFERENCE",
+          "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+          "stored_path": "raw/a253d5942a675932305f50e26f2445793a62bbdee231e8c8b75049cdc773993e.gz",
+          "stored_sha256": "5bc3c9e52e821e54573f4ba7b911dd6f500d7f1ca5a3dfdd625dc707f1e15041"
+        }
+      ]
+    },
+    {
+      "case": "GUI-RECIPIENT-LOOKUP",
+      "status": "LOOKUP_NOT_COMPLETED_USER_STOPPED_GUI_WORK",
+      "route": "Official GUI panel/filter/search assistance; independent from MCP",
+      "outgoing_join_interaction_confirmed": false,
+      "recipient_saved_identity_proved_by_GUI": false,
+      "GUI_result_rows": [
+        {
+          "action": "confirm-first-detach-reset-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\confirm-first-detach-reset-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-army-panel-open-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-army-panel-open-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-character-finder-menu-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-character-finder-menu-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-court-icon-hover-001",
+          "returncode": 2,
+          "receipt_exists": false,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-court-icon-hover-001\\result.json",
+            "raw_bytes": 84,
+            "raw_sha256": "77f31962ddc91ddea1085f2a7f19eb7d9b2741fbecb5aba25a818ac49c51ea2f",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/77f31962ddc91ddea1085f2a7f19eb7d9b2741fbecb5aba25a818ac49c51ea2f.gz",
+            "stored_sha256": "0bced1c9a098ae35022c509510bb54ea38c9e16b0f803b2ad55dfe3a847d855c"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-courtiers-learning-sort-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-courtiers-learning-sort-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-courtiers-sort-menu-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-courtiers-sort-menu-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-courtiers-tab-open-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-courtiers-tab-open-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-extra-menu-open-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-extra-menu-open-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-knights-list-bottom-001",
+          "returncode": null,
+          "receipt_exists": null,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-bottom-001\\result.json",
+            "raw_bytes": 2358,
+            "raw_sha256": "254d148f12f126c621267deef131ab80ef9775c3a3599d10b419b0b5569b1411",
+            "storage": "NEW_LOSSLESS_GZIP",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003",
+            "stored_path": "raw/254d148f12f126c621267deef131ab80ef9775c3a3599d10b419b0b5569b1411.gz",
+            "stored_sha256": "d8be8a044c8a9f25449bf99e807f1730849f3b344a59ec70dbb92db59fc5a66d"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-knights-list-bottom-002",
+          "returncode": null,
+          "receipt_exists": null,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-bottom-002\\result.json",
+            "raw_bytes": 2349,
+            "raw_sha256": "ef81ededfac8d2fefccd5e491f36a35ae56bd3ff3ce5c4194ac9e5d4d3a124c7",
+            "storage": "NEW_LOSSLESS_GZIP",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003",
+            "stored_path": "raw/ef81ededfac8d2fefccd5e491f36a35ae56bd3ff3ce5c4194ac9e5d4d3a124c7.gz",
+            "stored_sha256": "d1a2e82cc5b8163e1d4bd5d6e6c5a9cec90bd6dc5d9f1ad80bd14021aa6e0af4"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-knights-list-bottom-003",
+          "returncode": null,
+          "receipt_exists": null,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-bottom-003\\result.json",
+            "raw_bytes": 2348,
+            "raw_sha256": "a344a7220d32cf016dd16c60ad14e339519359acbf14e2fa7052402c406f399c",
+            "storage": "NEW_LOSSLESS_GZIP",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003",
+            "stored_path": "raw/a344a7220d32cf016dd16c60ad14e339519359acbf14e2fa7052402c406f399c.gz",
+            "stored_sha256": "db6554f6297c9aa4a71132a6af5afa9575a9d3f991b63021a98551e65d374e5c"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-knights-list-bottom-004",
+          "returncode": null,
+          "receipt_exists": null,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-bottom-004\\result.json",
+            "raw_bytes": 2351,
+            "raw_sha256": "7aed69472080663b36336fd55a9f68815b9c2984f29be45bcb3177f946be2994",
+            "storage": "NEW_LOSSLESS_GZIP",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003",
+            "stored_path": "raw/7aed69472080663b36336fd55a9f68815b9c2984f29be45bcb3177f946be2994.gz",
+            "stored_sha256": "3740eac1d35c97a4524f830e4695ad35f0f9eb2b501cb275bd6bd97821ad54f7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-knights-list-bottom-005",
+          "returncode": null,
+          "receipt_exists": null,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-bottom-005\\result.json",
+            "raw_bytes": 2352,
+            "raw_sha256": "c44a363b3b318577c4f57ece78bfc4be1084949369259b9bc4226eaa5e6d45a9",
+            "storage": "NEW_LOSSLESS_GZIP",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003",
+            "stored_path": "raw/c44a363b3b318577c4f57ece78bfc4be1084949369259b9bc4226eaa5e6d45a9.gz",
+            "stored_sha256": "7aa1fb77baf33b0695893d728ad9cfb3758b1826b5326ae53e906c21c31228c7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-knights-list-open-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-open-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-knights-list-scroll-track-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-knights-list-scroll-track-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-people-panel-open-001",
+          "returncode": 2,
+          "receipt_exists": false,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-people-panel-open-001\\result.json",
+            "raw_bytes": 84,
+            "raw_sha256": "77f31962ddc91ddea1085f2a7f19eb7d9b2741fbecb5aba25a818ac49c51ea2f",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/77f31962ddc91ddea1085f2a7f19eb7d9b2741fbecb5aba25a818ac49c51ea2f.gz",
+            "stored_sha256": "0bced1c9a098ae35022c509510bb54ea38c9e16b0f803b2ad55dfe3a847d855c"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-people-panel-open-002",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-people-panel-open-002\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-recipient-name-filter-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-recipient-name-filter-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-recipient-relation-all-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-recipient-relation-all-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-recipient-relation-filter-menu-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-recipient-relation-filter-menu-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-recipient-search-focus-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-recipient-search-focus-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        },
+        {
+          "action": "join-recipient-search-refocus-001",
+          "returncode": 0,
+          "receipt_exists": true,
+          "evidence": {
+            "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\ui-actions\\join-recipient-search-refocus-001\\result.json",
+            "raw_bytes": 83,
+            "raw_sha256": "baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174",
+            "storage": "BASE_PACKAGE_REFERENCE",
+            "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-002-revision-002",
+            "stored_path": "raw/baea57f41034573be8814d6243b4578b5b043241129f247fce2bd8510f3a8174.gz",
+            "stored_sha256": "5701f34d0de2b87d4bea05e644cbe8cde7e9cecdddde04f1c2ef9d296ae15ff7"
+          },
+          "business_transition_credit": false
+        }
+      ],
+      "OCR_actually_used": false,
+      "OCR_absence_basis": "Root instruction expressly confirms no actual OCR; native0108/0109 route also reports uses_ocr=false.",
+      "user_steering_provenance": "Root task instruction: user requested stop GUI lookup and implement missing MCP capability.",
+      "stop_request_raw_user_timestamp": null,
+      "native_interaction_initiation_credit": false,
+      "helper_source_paths": [
+        "C:\\workspace\\ck3_eternal_recurrence\\tools\\desktop_coordinate_map.py"
+      ],
+      "partial_or_argparse_failures_count_as_product_bug": false
+    },
+    {
+      "case": "NATIVE-DECISIONS-OPEN-0108",
+      "status": "VISIBLE_DECISIONS_ROUTE_VERIFIED_ONLY",
+      "confirmed_decision_effect": false,
+      "evidence": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\mcp-client-evidence-001\\0107-0108-open-decisions-recipient-portrait.sdk-result.json",
+        "raw_bytes": 4163605,
+        "raw_sha256": "7188096b959a2e09d7a5cc8be96b12afde9ef92e1181dd69408929957d940159",
+        "storage": "NEW_LOSSLESS_GZIP",
+        "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003",
+        "stored_path": "raw/7188096b959a2e09d7a5cc8be96b12afde9ef92e1181dd69408929957d940159.gz",
+        "stored_sha256": "a3572ba3632d340b5e9bc3c0ccd6d0ecfab6daebdba20ab76a5e9ed52d270146"
+      }
+    },
+    {
+      "case": "NATIVE-STATUS-DETAIL-0109",
+      "status": "SELECTED_DETAIL_VERIFIED_NOT_CONFIRMED",
+      "decision_key": "lyd_r4_status_decision",
+      "action": "select",
+      "confirmed": false,
+      "dialog_or_status_event_emitted_credit": false,
+      "effect_or_observer_mutation_credit": false,
+      "evidence": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\mcp-client-evidence-001\\0108-0109-recipient-status-detail-select.sdk-result.json",
+        "raw_bytes": 4265957,
+        "raw_sha256": "7f42ae36b998bd5f8179e0533a52ab7a0fd1654d97793bac61cbac56476c2595",
+        "storage": "NEW_LOSSLESS_GZIP",
+        "package_root": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-permanent-report-draft-20261005-001\\snapshot-003",
+        "stored_path": "raw/7f42ae36b998bd5f8179e0533a52ab7a0fd1654d97793bac61cbac56476c2595.gz",
+        "stored_sha256": "1445e359610fa6958fd27947b0da106d0fdcb1cdd3ca5787cb4f7f9d3e259d5f"
+      }
+    },
+    {
+      "case": "NATIVE-RESUMED-PRECLOSE-0110",
+      "status": "SNAPSHOT_VERIFIED_ONLY",
+      "revision": 75,
+      "date_raw": 53144688,
+      "paused": true,
+      "active_event": null,
+      "pending_character_interaction": null,
+      "general_outgoing_interaction_or_cycle_business_credit": false,
+      "evidence": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\mcp-client-evidence-001\\0109-0110-mcp-resume-final-snapshot.sdk-result.json",
+        "raw_bytes": 2137345,
+        "raw_sha256": "4c17156dfe5da3cee2652e8ef252652d7cb8bce29d2e1b1009ae0f6eb56e37aa",
+        "stored_path": "raw/4c17156dfe5da3cee2652e8ef252652d7cb8bce29d2e1b1009ae0f6eb56e37aa.gz",
+        "stored_bytes": 90386,
+        "stored_sha256": "9b9517d0832ff10958fff8824497be84d88f2171044bbe317c729691d96ba9b2",
+        "source_size_before": 2137345,
+        "source_size_after": 2137345,
+        "source_mtime_ns_before": 1791163447947354300,
+        "source_mtime_ns_after": 1791163447947354300,
+        "source_changed_during_read": false
+      }
+    },
+    {
+      "case": "PRECLOSE-CHECKPOINT-0111",
+      "status": "EXACT_SAVE_PRESERVED_INDEPENDENT_READBACK_PENDING",
+      "bytes": 90677633,
+      "sha256": "d32c771f22edac74db1c0297cb1fe5c9579eb66846232a4c5f696ea3fe0ff06c",
+      "revision": 76,
+      "date_raw": 53144688,
+      "paused": true,
+      "full_save_copied": false,
+      "business_readback_result": null,
+      "saved_identity_or_graph_protection": null,
+      "save_evidence": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\checkpoints\\0111-mcp-resume-preclose-save\\PRESERVED.json",
+        "raw_bytes": 921,
+        "raw_sha256": "94b6750232144b8aed3668807c789bef259f7424c90516d82e5b431972416f6d",
+        "stored_path": "raw/94b6750232144b8aed3668807c789bef259f7424c90516d82e5b431972416f6d.gz",
+        "stored_bytes": 496,
+        "stored_sha256": "045cf6b6d199ba1ef1a9503e4d11df948de2bce4b3b7fb697de6b30a6ff49d2b",
+        "source_size_before": 921,
+        "source_size_after": 921,
+        "source_mtime_ns_before": 1791163562482862800,
+        "source_mtime_ns_after": 1791163562482862800,
+        "source_changed_during_read": false
+      },
+      "sdk_evidence": {
+        "source_path": "C:\\workspace\\ck3_lyd_runtime_20261004\\live-attempt-007\\mcp-client-evidence-001\\0110-0111-mcp-resume-preclose-save.sdk-result.json",
+        "raw_bytes": 4274727,
+        "raw_sha256": "c1fcd1b68a1d78e19085d56f18d54c8fd68fd180729f26a6325443ab88e27da0",
+        "stored_path": "raw/c1fcd1b68a1d78e19085d56f18d54c8fd68fd180729f26a6325443ab88e27da0.gz",
+        "stored_bytes": 179001,
+        "stored_sha256": "b246c4da5c0930d52d85230629fb1399f5a20a32728409f80ceb11659347a52f",
+        "source_size_before": 4274727,
+        "source_size_after": 4274727,
+        "source_mtime_ns_before": 1791163518530448900,
+        "source_mtime_ns_after": 1791163518530448900,
+        "source_changed_during_read": false
+      }
+    },
+    {
+      "case": "PRECLOSE-INDEPENDENT-READBACK-0111",
+      "status": "NO_CHECKED_C2_BUSINESS_MUTATION_DNA_ADDITIONS_DISCLOSED",
+      "phase": "bounded-preclose-observation",
+      "evidence": {
+        "fact": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-world-readback-20261005-001\\PRECLOSE-0111.json",
+        "fact_sha256": "e071e6ef119e2a78d0e8ba4ae4c1e0e6f282904ff9346306bde71232701619f8",
+        "report": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-world-readback-20261005-001\\observed-0111\\REPORT.json",
+        "report_sha256": "d86c4a9f34a608b04ac0897407346ce23705f211e69d38e4e8e458ccfac66a10",
+        "index": "C:\\workspace\\ck3_lyd_runtime_20261004\\r7-world-readback-20261005-001\\observed-0111\\INDEX.json",
+        "index_sha256": "2739d569f0fa3bf725ac39f5b4f588ee15a63ba3b21245e17996557acffeafc3"
+      },
+      "exact_scope_source": "Entire exact scoped fact is preserved losslessly; original004PENDING remains immutable.",
+      "business_or_save_mutation_protection": "Faith/Rite graph, actor wallet, checkedC2/reset/count/tickets, five selected family/court/skills/claims,21titleprojection preserved relative0107.",
+      "disclosed_other_saved_changes": "Only58477 and65865 added DNA strings; lengths/hashes disclosed in exactfact, do not claim entire character records identical.",
+      "source_world_reparsed_by_report_author": false,
+      "complete_cycle_credit": false,
+      "normal_game_exit_credit": false
+    }
+  ],
+  "interpretation": "Historical interim PENDING values are not overwritten. Later explicit CASE supersedes their pending observation only; no whole cycle PASS."
+}

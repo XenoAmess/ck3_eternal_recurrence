@@ -216,6 +216,47 @@ class PointerMoveTests(unittest.TestCase):
                 with self.assertRaises(SystemExit):
                     mapper.parse_args(argv)
 
+    def test_non_png_receipts_refuse_click_and_move_before_input(self):
+        for action in ("--click", "--move"):
+            for filename in ("after.json", "after.jpg"):
+                with self.subTest(action=action, filename=filename):
+                    desktop = FakeDesktop()
+                    receipt = self.directory / filename
+                    extra = self.reviewed_argv() if action == "--move" else []
+                    with patch.dict(sys.modules, {"pyautogui": desktop}), \
+                         patch.object(mapper, "foreground_state", side_effect=AssertionError("focus queried before receipt refusal")), \
+                         contextlib.redirect_stderr(io.StringIO()) as errors:
+                        with self.assertRaises(SystemExit) as error:
+                            mapper.main(self.argv(action, "--receipt", str(receipt), *extra))
+                    self.assertEqual(error.exception.code, 2)
+                    self.assertIn("PNG screenshot path ending in .png", errors.getvalue())
+                    self.assertEqual((desktop.inputs, desktop.screenshots), ([], []))
+                    self.assertFalse(receipt.exists())
+
+    def test_existing_receipts_or_file_parent_refuse_before_input(self):
+        existing = self.directory / "existing.png"
+        existing.write_bytes(b"existing evidence")
+        file_parent = self.directory / "file-parent"
+        file_parent.write_bytes(b"file, not directory")
+        sidecar_receipt = self.directory / "sidecar-only.png"
+        Path(str(sidecar_receipt) + ".json").write_text("existing sidecar", encoding="utf-8")
+        cases = [(action, receipt) for action in ("--click", "--move")
+                 for receipt in (existing, file_parent / "after.png")]
+        cases.append(("--move", sidecar_receipt))
+        for action, receipt in cases:
+            with self.subTest(action=action, receipt=receipt):
+                desktop = FakeDesktop()
+                extra = self.reviewed_argv() if action == "--move" else []
+                with patch.dict(sys.modules, {"pyautogui": desktop}), \
+                     contextlib.redirect_stderr(io.StringIO()):
+                    with self.assertRaises(SystemExit) as error:
+                        mapper.main(self.argv(action, "--receipt", str(receipt), *extra))
+                self.assertEqual(error.exception.code, 2)
+                self.assertEqual((desktop.inputs, desktop.screenshots), ([], []))
+        self.assertEqual(existing.read_bytes(), b"existing evidence")
+        self.assertEqual(file_parent.read_bytes(), b"file, not directory")
+        self.assertEqual(Path(str(sidecar_receipt) + ".json").read_text(encoding="utf-8"), "existing sidecar")
+
     def test_click_keeps_existing_action_and_receipt_behavior(self):
         desktop = FakeDesktop()
         with patch.dict(sys.modules, {"pyautogui": desktop}), \
