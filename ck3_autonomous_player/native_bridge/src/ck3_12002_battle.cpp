@@ -907,9 +907,126 @@ bool ReinforcementSample(const BattleBindings &b, const game::Snapshot &scope,
   out.battle_reinforcement_assignment_ready = true;
   return true;
 }
+
+game::BattleCurrentPersonRawPropertiesSnapshotV1 CurrentRawProperties(
+    const void *container) {
+  game::BattleCurrentPersonRawPropertiesSnapshotV1 out{};
+  if (!container) return out;
+  const auto count = At<std::int32_t>(container, 0xC);
+  out.count = count;
+  if (count <= 0) {
+    out.keys_u16.emplace();
+    out.values_q64.emplace();
+    return out;
+  }
+  const auto *keys = At<const std::uint16_t *>(container, 0);
+  const auto *values = At<const std::int64_t *>(container, 0x68);
+  if (keys) out.keys_u16.emplace(keys, keys + count);
+  if (values) out.values_q64.emplace(values, values + count);
+  return out;
+}
+bool CurrentRawPropertiesReady(
+    const game::BattleCurrentPersonRawPropertiesSnapshotV1 &p) {
+  return p.count.has_value() && p.keys_u16.has_value() &&
+      p.values_q64.has_value();
+}
+game::BattleCurrentPersonRawContextSnapshotV1 CurrentRawContext(
+    const void *context) {
+  game::BattleCurrentPersonRawContextSnapshotV1 out{};
+  if (!context) return out;
+  // +68 is an embedded PropertyContainer, not a pointer to that container.
+  out.aggregate_properties = CurrentRawProperties(
+      static_cast<const std::byte *>(context) + 0x68);
+  const auto count = At<std::int32_t>(context, 0xC);
+  out.weighted_count = count;
+  if (count <= 0) {
+    out.weighted_rows.emplace();
+    return out;
+  }
+  const auto *data = At<const std::byte *>(context, 0);
+  if (!data) return out;
+  out.weighted_rows.emplace();
+  out.weighted_rows->reserve(static_cast<std::size_t>(count));
+  for (std::int32_t i = 0; i < count; ++i) {
+    const auto *row = data + static_cast<std::size_t>(i) * 16;
+    game::BattleCurrentPersonRawWeightedRowSnapshotV1 copied{};
+    copied.native_index = i;
+    copied.weight_q64 = At<std::int64_t>(row, 8);
+    if (const auto *properties = At<const void *>(row, 0))
+      copied.properties = CurrentRawProperties(properties);
+    out.weighted_rows->push_back(std::move(copied));
+  }
+  return out;
+}
+bool CurrentRawContextReady(
+    const game::BattleCurrentPersonRawContextSnapshotV1 &context) {
+  if (!context.aggregate_properties ||
+      !CurrentRawPropertiesReady(*context.aggregate_properties) ||
+      !context.weighted_count || !context.weighted_rows) return false;
+  for (const auto &row : *context.weighted_rows)
+    if (!row.weight_q64 || !row.properties ||
+        !CurrentRawPropertiesReady(*row.properties)) return false;
+  return true;
+}
+game::BattleCurrentPersonRawNumericInputsSnapshotV1 CurrentRawNumericInputs(
+    const BattleBindings &b, void *character, std::int32_t character_id) {
+  game::BattleCurrentPersonRawNumericInputsSnapshotV1 out{};
+  out.character_id = character_id;
+  if (!character || !b.current_person_raw_numeric_inputs_enabled) {
+    out.unavailable_reason = character ? "raw_numeric_inputs_reader_unbound"
+                                       : "character_unresolved";
+    return out;
+  }
+  bool complete = true;
+  for (std::size_t i = 0; i < out.base_points.size(); ++i) {
+    out.base_points[i] = At<std::int32_t>(character, 0xC0 + 4 * i);
+    if (b.current_person_raw_skill_caps[i])
+      out.caps[i] = *b.current_person_raw_skill_caps[i];
+    else complete = false;
+  }
+  out.prowess_adjustment = At<std::int32_t>(character, 0xF0);
+  if (b.current_person_raw_factor_denominator)
+    out.scratch_factor_denominator = *b.current_person_raw_factor_denominator;
+  else complete = false;
+  const auto *scratch = At<const void *>(character, 0x1B0);
+  out.scratch_present = scratch != nullptr;
+  for (std::size_t i = 0; i < out.category_counts.size(); ++i) {
+    if (b.current_person_raw_category_getters[i])
+      out.category_counts[i] = b.current_person_raw_category_getters[i](character);
+    else complete = false;
+  }
+  if (!scratch) {
+    // F60's null-scratch branch does not consume the ratio/context operands.
+    out.context_source = "not_required_no_scratch";
+    out.status = "available";
+    out.raw_numeric_inputs_ready = true;
+    return out;
+  }
+  out.scratch_factor_numerator = At<std::int32_t>(scratch, 0x2F8);
+  const void *context = b.current_person_raw_fallback_context;
+  out.context_source = context ? "fallback_static" : "unavailable";
+  const auto *model = At<const void *>(scratch, 0x258);
+  if (model && At<const void *>(model, 8) == character) {
+    // AE0 returns ADDRESS model+10, not QWORD[model+10].
+    context = static_cast<const std::byte *>(model) + 0x10;
+    out.context_source = "model_inline";
+  }
+  if (context) {
+    // Read actual current fallback contents too; do not run its lazy initializer.
+    out.context = CurrentRawContext(context);
+    complete = complete && CurrentRawContextReady(*out.context);
+  } else complete = false;
+  out.raw_numeric_inputs_ready = complete;
+  out.status = complete ? "available" : "partial";
+  if (!complete) out.unavailable_reason = "raw_numeric_input_reads_unavailable";
+  return out;
+}
+
 game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
-    const BattleBindings &b, void *character) noexcept {
+    const BattleBindings &b, void *character, std::int32_t character_id) noexcept {
   game::BattleCurrentPersonStateSnapshotV1 observed{};
+  if (b.current_person_raw_numeric_inputs_enabled)
+    observed.raw_numeric_inputs = CurrentRawNumericInputs(b, character, character_id);
   auto &death = observed.death_record;
   if (!character) {
     death.unavailable_reason = "character_unresolved";
@@ -1008,7 +1125,7 @@ game::BattleTerminalCharacterCustodySnapshotV1 CharacterObservationSample(
   observed.character_id = id;
   void *const character = Resolve(b.character_storage_slot, id, 0x18);
   if (include_current_person && b.current_person_state_enabled)
-    observed.current_person_state = CurrentPersonSample(b, character);
+    observed.current_person_state = CurrentPersonSample(b, character, id);
   if (!character) return observed;
   // Exact .3 native 0x28EE9BA compares this eight-byte death-data pointer.
   // Missing strict identity remains null; nonnull is an observed dead object.
@@ -1342,6 +1459,23 @@ void EnableBattleCurrentPerson12003(BattleBindings &b, std::uintptr_t base,
   b.current_battle_knight_identity_enabled = true;
   b.current_person_state_enabled = true;
   b.current_person_effective_prowess_enabled = true;
+  b.current_person_raw_numeric_inputs_enabled = true;
+  constexpr std::array<std::uintptr_t, 6> cap_rvas{
+      0x05C6A0D8, 0x05C6A0D4, 0x05C6A0BC,
+      0x05C6A0B8, 0x05C6A0C0, 0x05C6A0C4};
+  for (std::size_t i = 0; i < cap_rvas.size(); ++i)
+    b.current_person_raw_skill_caps[i] =
+        reinterpret_cast<const std::int32_t *>(base + cap_rvas[i]);
+  b.current_person_raw_factor_denominator =
+      reinterpret_cast<const std::int32_t *>(base + 0x05C68CE8);
+  b.current_person_raw_fallback_context =
+      reinterpret_cast<const void *>(base + 0x05D67B90);
+  constexpr std::array<std::uintptr_t, 4> category_rvas{
+      0x028BE0D0, 0x028BE130, 0x028BE190, 0x028BE1F0};
+  for (std::size_t i = 0; i < category_rvas.size(); ++i)
+    b.current_person_raw_category_getters[i] =
+        reinterpret_cast<std::int32_t (*)(void *)>(base + category_rvas[i]);
+
   b.current_person_traits.enabled = true;
   b.current_person_traits.get_trait_database =
       reinterpret_cast<phase_character::GetTraitDatabase>(

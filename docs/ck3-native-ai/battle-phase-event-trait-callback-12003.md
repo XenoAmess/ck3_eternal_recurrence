@@ -666,3 +666,45 @@ Given an actual refreshed context, the bounded numeric operation is source-ready
 - [D sole affected-case plan](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-effective-attribute-callback-v77/focused-fixture/CASE-PLAN.json) is unexecuted; it predates the final raw-input closure and retains that historical dependency state. No synthetic value is presented as a native parity sample.
 - New frozen EXE input: **16 logical entries / 26 physical code captures / 4956 bytes** =3432 code windows +132 exact operand data +1032 pdata +360 unwind. Cached D80 reuse192 bytes; embedded24-byte cap table is already counted in code. No repeated EXE reads, whole scan or full hash. An earlier logical-count17 was corrected to16 with its attempt metadata retained.
 - Oct5/W41: completed bounded current numeric source and input/API plans; readiness remains **research with this source unit ready**, with no implementation/static-ready/live upgrade. Tests0, old cases0, native parity0, game days0, SDK/RPM/window/Git0. Adoption/push belongs to Root after this EOF increment, sequential to adopted v76 `80f281b86ce47b606ec88dbb26f6b6a59337875a`.
+
+
+## v79 — actual native-input numeric primitive and same-query reader (2026-10-05)
+
+The v77 source contract now has a callable pure implementation and an external native-reader/wire candidate. `compute_six_skill_cache_from_native_inputs_12003` accepts `NativeSkillCacheInputs12003` or the normalized `current_person_state.raw_numeric_inputs` mapping. It returns six raw points, first-clipped points and final cache points, preserving signed native arithmetic and explicit partial inputs. Null scratch is the named source no-op, not a performed refresh. This package does not insert the primitive into a horizon or execute a Character/Entry write.
+
+The existing `ck3_query_battle_terminal_transition_v1` gains an optional leaf at `character_observations[*].current_person_state.raw_numeric_inputs`. The external reader copies actual Character signed32 bases C0/C4/C8/CC/D0/D4, six bound runtime caps, F0, scratch factor numerator/current denominator, four source-closed readonly category getter outputs, and source-ordered aggregate/weighted property data. Matching-owner model+10 is an address; otherwise current fallback contents are copied. The fallback lazy initializer is not executed. Legal zero/negative values remain values, and unavailable nonempty storage remains partial. The tool name, existing current EC field, and public normalizer signature remain the same.
+
+The source-only trait preparation work also made an independent local advance. Actual `291C0D0 -> 291D460` traverses Character trait IDs at F8/104, obtains resolved definitions and growth metadata, composes properties through `30E49F0 -> 30E7A30`, retains the composed container at model+248 and appends its weighted row through `2438850`. That writer updates aggregate context+68 through `2303120`. Unit-Q contributions to existing keys are native wrap64 additions. Selector A/B are bound to actual Character+B4/B0 ID reads; their business names are not inferred. Growth selection, extra classification, paired preparation, generic new-key storage/copy postimages and other preparation sources are still partial. No trait name or Boolean supplies an invented numeric effect.
+
+```mermaid
+flowchart TD
+  Traits["actual Character traitIDs F8/104"] --> TraitLeaf["291D460 -> resolved definitions/current growth metadata"]
+  TraitLeaf --> Definition["30E49F0 -> 30E7A30: base/conditional/track properties"]
+  Definition --> Store["composed property container retained model+248"]
+  Store --> Append["2438850 append weighted row; 2303120 aggregate write"]
+  Append --> Context["actual current model+10 context"]
+  Definition -. "growth/selector/classification leaves and complete prep partial" .-> FutureContext["future trait context builder"]
+  Query["existing battle terminal MCP current_person_state"] --> Reader["candidate raw_numeric_inputs reader + DTO + wire"]
+  Context --> Reader
+  Operands["actual base6/caps/F0/factor/category inputs; actual fallback contents"] --> Reader
+  Reader --> Normalize["existing production normalizer, optional raw leaf"]
+  Normalize --> Numeric["compute_six_skill_cache_from_native_inputs_12003"]
+  Numeric --> Result["raw6 / first_clipped6 / finalcache6 + partial input ledger"]
+  Result -. "no native commit, Entry/date closure or horizon integration" .-> Horizon["complete future battle"]
+```
+
+Exactly one new production-path test method was executed once: existing selected incapable request and independent current-person reader -> same-query production normalizer -> pure numeric primitive. Source-shaped synthetic inputs yield `raw=(-3,7,4,9,8,200)`, `first=(0,-5,4,9,8,120)`, `final=(0,-5,4,9,8,100)`. This distinguishes negative-raw zero from nonnegative-raw/negative-cap output, and the two prowess clamp stages from a single clamp. Current observed EC0/-3 is retained independently; failed current EC and a null raw prowess operand remain partial while five known modeled slots survive. Actor/date/revision and remaining Primary/Entry gaps are preserved. The case is not native parity or a fresh observed frame.
+
+Validation: **GREEN 1/1**, 0 failures/errors/skips, elapsed **2.2829933s** including external overlay/import. First attempt was an import harness RED (`build_release` missing, tests0, 1.081532s); only the owned runner's readonly g72/tools path was corrected. B/C/test bytes were unchanged. No old case, SDK, RPM, window, game day, native build or horizon was executed by this pod.
+
+Readiness: the pure carrier primitive is **static-ready** after that focused case. Native reader/serializer candidates require Root's native build and a real paused observation before any production-live claim. Current actual-input calculations do not construct hypothetical future trait context. Full callbacks/lifecycle/memory, Entry refresh timing, outer calendar cadence, fallback initialization and complete battle/Monte Carlo remain partial.
+
+Delivery is eight repository paths: one new pure module, five reader/DTO/binding/wire/normalizer modifications, one new test, and this canonical EOF append. Code preimages are readonly g72 head `56423709cc9608f0b3b2e1b9533207f35622146b`; this topic follows v77 adopted commit `be347e99fb897f4af5c6c6adb525b964f048fba6` with its 77145-byte prefix preserved. Source A read **9 logical /16 physical /7921 new frozen EXE bytes** (7053 code+528 pdata+340 unwind), with no repeated EXE reads/whole scan/full hash.
+
+Artifact entries:
+
+- [A local trait source receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-native-input-primitive-v79/context-source/ROOT-DELIVERY.json); source SHA `c889894f2af3b27605f8df60d0334ca1110260703c818a110a5bdd504c082a66`, TREE SHA `9f6d7ef44a2b6ae76ba78cb12f28cbf0e271dd354465c7bd159a24455ae686d5`.
+- [B primitive qualification](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-native-input-primitive-v79/pure-numeric/QUALIFICATION-DELIVERY.json); module SHA `ae974dd51678fec9f05ea40c4991de30678ca356d30df298b97b88bb92a1810a`.
+- [C observer qualification](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-native-input-primitive-v79/raw-input-observer/QUALIFICATION-ROOT.json); normalizer SHA `500db71a844e8689dd859bf2d7371195275ca26de5b1e3c0902a5b048e2b2b60`.
+- [D sole production case receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-native-input-primitive-v79/focused-fixture/ROOT-DELIVERY.json); execution receipt SHA `3afe297d45cc0ecbb40b859f4a4b1a48efaf90c8ebd37bf39053065e8209344c`.
+- [Joint publication and Oct5/W41 fields](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-native-input-primitive-v79/publication/ROOT-DELIVERY.json). Root owns adoption/build/paused verification/Git; this pod used external projections only.

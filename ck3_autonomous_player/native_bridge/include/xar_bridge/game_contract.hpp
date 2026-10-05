@@ -2517,10 +2517,52 @@ struct BattleCurrentPersonDeathRecordSnapshotV1 {
   friend bool operator==(const BattleCurrentPersonDeathRecordSnapshotV1 &,
                          const BattleCurrentPersonDeathRecordSnapshotV1 &) = default;
 };
+
+// Current .3 raw property operands; observation does not construct future traits.
+struct BattleCurrentPersonRawPropertiesSnapshotV1 {
+  std::optional<std::int32_t> count;
+  std::optional<std::vector<std::uint16_t>> keys_u16;
+  std::optional<std::vector<std::int64_t>> values_q64;
+  friend bool operator==(const BattleCurrentPersonRawPropertiesSnapshotV1 &,
+                         const BattleCurrentPersonRawPropertiesSnapshotV1 &) = default;
+};
+struct BattleCurrentPersonRawWeightedRowSnapshotV1 {
+  std::int32_t native_index = 0;
+  std::optional<std::int64_t> weight_q64;
+  std::optional<BattleCurrentPersonRawPropertiesSnapshotV1> properties;
+  friend bool operator==(const BattleCurrentPersonRawWeightedRowSnapshotV1 &,
+                         const BattleCurrentPersonRawWeightedRowSnapshotV1 &) = default;
+};
+struct BattleCurrentPersonRawContextSnapshotV1 {
+  std::optional<BattleCurrentPersonRawPropertiesSnapshotV1> aggregate_properties;
+  std::optional<std::int32_t> weighted_count;
+  std::optional<std::vector<BattleCurrentPersonRawWeightedRowSnapshotV1>> weighted_rows;
+  friend bool operator==(const BattleCurrentPersonRawContextSnapshotV1 &,
+                         const BattleCurrentPersonRawContextSnapshotV1 &) = default;
+};
+struct BattleCurrentPersonRawNumericInputsSnapshotV1 {
+  std::string status = "unavailable";
+  bool raw_numeric_inputs_ready = false;
+  std::int32_t character_id = -1;
+  std::optional<bool> scratch_present;
+  std::string context_source = "unavailable";
+  std::array<std::optional<std::int32_t>, 6> base_points{};
+  std::array<std::optional<std::int32_t>, 6> caps{};
+  std::optional<std::int32_t> prowess_adjustment;
+  std::array<std::optional<std::int32_t>, 4> category_counts{};
+  std::optional<std::int32_t> scratch_factor_numerator;
+  std::optional<std::int32_t> scratch_factor_denominator;
+  std::optional<BattleCurrentPersonRawContextSnapshotV1> context;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleCurrentPersonRawNumericInputsSnapshotV1 &,
+                         const BattleCurrentPersonRawNumericInputsSnapshotV1 &) = default;
+};
+
 struct BattleCurrentPersonStateSnapshotV1 {
   BattleCurrentPersonEffectiveProwessSnapshotV1 effective_prowess;
   BattleCurrentPersonInjuryTraitsSnapshotV1 injury_traits;
   BattleCurrentPersonDeathRecordSnapshotV1 death_record;
+  std::optional<BattleCurrentPersonRawNumericInputsSnapshotV1> raw_numeric_inputs;
   friend bool operator==(const BattleCurrentPersonStateSnapshotV1 &,
                          const BattleCurrentPersonStateSnapshotV1 &) = default;
 };

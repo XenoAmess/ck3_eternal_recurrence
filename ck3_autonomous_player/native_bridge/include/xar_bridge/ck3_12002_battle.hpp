@@ -111,6 +111,13 @@ struct BattleBindings {
   bool current_person_state_enabled = false;
   bool current_person_effective_prowess_enabled = false;
   phase_character::Bindings current_person_traits{};
+  // Exact .3 source operands; category getters have closed readonly RET windows.
+  bool current_person_raw_numeric_inputs_enabled = false;
+  std::array<const std::int32_t *, 6> current_person_raw_skill_caps{};
+  const std::int32_t *current_person_raw_factor_denominator = nullptr;
+  const void *current_person_raw_fallback_context = nullptr;
+  std::array<std::int32_t (*)(void *), 4> current_person_raw_category_getters{};
+
 };
 
 BattleBindings BindBattleImage(std::uintptr_t image_base,

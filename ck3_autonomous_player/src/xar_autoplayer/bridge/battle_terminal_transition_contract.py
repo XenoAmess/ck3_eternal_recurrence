@@ -272,6 +272,112 @@ def _requested_character_ids(value: object, field: str) -> list[int]:
     return list(dict.fromkeys(_ordered_positive_ids(value, field, unique=False)))
 
 
+
+def _normalize_raw_numeric_inputs(value: object, field: str) -> dict[str, object] | None:
+    """Preserve actual native operands, independently from cached current EC."""
+    if value is None:
+        return None
+    raw = _exact_dict(value, field, {
+        "status", "raw_numeric_inputs_ready", "character_id", "scratch_present",
+        "context_source", "base_points", "caps", "prowess_adjustment",
+        "category_counts", "scratch_factor_numerator", "scratch_factor_denominator",
+        "context", "unavailable_reason",
+    })
+
+    def optional_i32(item: object, name: str) -> int | None:
+        return _optional_integer(item, name, minimum=-(2**31), maximum=2**31 - 1)
+
+    def array_i32(item: object, name: str, size: int) -> list[int | None]:
+        if not isinstance(item, list) or len(item) != size:
+            raise ValueError(f"{name} must contain {size} native entries")
+        return [optional_i32(v, f"{name}[{i}]") for i, v in enumerate(item)]
+
+    def properties(item: object, name: str) -> tuple[dict[str, object] | None, bool]:
+        if item is None:
+            return None, False
+        p = _exact_dict(item, name, {"count", "keys_u16", "values_q64"})
+        count = optional_i32(p["count"], f"{name}.count")
+        keys, values = p["keys_u16"], p["values_q64"]
+        if keys is not None:
+            if not isinstance(keys, list):
+                raise ValueError(f"{name}.keys_u16 must be a list or null")
+            keys = [_integer(v, f"{name}.keys_u16[{i}]", minimum=0, maximum=65535)
+                    for i, v in enumerate(keys)]
+        if values is not None:
+            if not isinstance(values, list):
+                raise ValueError(f"{name}.values_q64 must be a list or null")
+            values = [_integer(v, f"{name}.values_q64[{i}]",
+                               minimum=-(2**63), maximum=2**63 - 1)
+                      for i, v in enumerate(values)]
+        for vector in (keys, values):
+            if count is not None and vector is not None and len(vector) != max(0, count):
+                raise ValueError(f"{name} native count disagrees with copied entries")
+        return {"count": count, "keys_u16": keys, "values_q64": values}, (
+            count is not None and keys is not None and values is not None)
+
+    context = raw["context"]
+    context_complete = False
+    if context is not None:
+        ctx = _exact_dict(context, f"{field}.context", {
+            "aggregate_properties", "weighted_count", "weighted_rows",
+        })
+        aggregate, aggregate_complete = properties(
+            ctx["aggregate_properties"], f"{field}.context.aggregate_properties")
+        count = optional_i32(ctx["weighted_count"], f"{field}.context.weighted_count")
+        rows = ctx["weighted_rows"]
+        rows_complete = rows is not None
+        if rows is not None:
+            if not isinstance(rows, list):
+                raise ValueError(f"{field}.context.weighted_rows must be a list or null")
+            if count is not None and len(rows) != max(0, count):
+                raise ValueError(f"{field}.context weighted count disagrees")
+            copied = []
+            for i, row in enumerate(rows):
+                row_field = f"{field}.context.weighted_rows[{i}]"
+                row = _exact_dict(row, row_field, {"native_index", "properties", "weight_q64"})
+                index = _integer(row["native_index"], f"{row_field}.native_index",
+                                 minimum=i, maximum=i)
+                weight = _optional_integer(row["weight_q64"], f"{row_field}.weight_q64",
+                                           minimum=-(2**63), maximum=2**63 - 1)
+                prop, prop_complete = properties(row["properties"], f"{row_field}.properties")
+                rows_complete = rows_complete and prop_complete and weight is not None
+                copied.append({"native_index": index, "properties": prop, "weight_q64": weight})
+            rows = copied
+        context = {"aggregate_properties": aggregate, "weighted_count": count,
+                   "weighted_rows": rows}
+        context_complete = aggregate_complete and count is not None and rows_complete
+    scratch = _optional_boolean(raw["scratch_present"], f"{field}.scratch_present")
+    normalized = {
+        **raw,
+        "character_id": _positive_int32(raw["character_id"], f"{field}.character_id"),
+        "scratch_present": scratch,
+        "base_points": array_i32(raw["base_points"], f"{field}.base_points", 6),
+        "caps": array_i32(raw["caps"], f"{field}.caps", 6),
+        "category_counts": array_i32(raw["category_counts"], f"{field}.category_counts", 4),
+        "context": context,
+    }
+    for key in ("prowess_adjustment", "scratch_factor_numerator", "scratch_factor_denominator"):
+        normalized[key] = optional_i32(raw[key], f"{field}.{key}")
+    if raw["context_source"] not in {
+        "model_inline", "fallback_static", "not_required_no_scratch", "unavailable",
+    }:
+        raise ValueError(f"{field}.context_source is invalid")
+    ready = _boolean(raw["raw_numeric_inputs_ready"], f"{field}.raw_numeric_inputs_ready")
+    complete = scratch is False or (scratch is True and context_complete
+        and all(v is not None for key in ("base_points", "caps", "category_counts")
+                for v in normalized[key])
+        and all(normalized[k] is not None for k in (
+            "prowess_adjustment", "scratch_factor_numerator", "scratch_factor_denominator")))
+    status, reason = raw["status"], raw["unavailable_reason"]
+    if status not in {"available", "partial", "unavailable"} or ready is not (status == "available"):
+        raise ValueError(f"{field} raw numeric availability disagrees")
+    if ready is not complete or (ready and reason is not None) or (
+        not ready and (not isinstance(reason, str) or not reason)
+    ):
+        raise ValueError(f"{field} raw numeric completeness disagrees")
+    return normalized
+
+
 def _normalize_current_person_state(
     value: object, field: str,
 ) -> dict[str, object]:
@@ -279,6 +385,8 @@ def _normalize_current_person_state(
     fields = {"scope", "effective_prowess", "injury_traits"}
     if isinstance(value, dict) and "death_record" in value:
         fields.add("death_record")
+    if isinstance(value, dict) and "raw_numeric_inputs" in value:
+        fields.add("raw_numeric_inputs")
     state = _exact_dict(value, field, fields)
     if state["scope"] != "current_character":
         raise ValueError(f"{field}.scope must be current_character")
@@ -357,6 +465,9 @@ def _normalize_current_person_state(
         else:
             raise ValueError(f"{field} death record status is invalid")
         normalized["death_record"] = dict(death)
+    if "raw_numeric_inputs" in state:
+        normalized["raw_numeric_inputs"] = _normalize_raw_numeric_inputs(
+            state["raw_numeric_inputs"], f"{field}.raw_numeric_inputs")
     return normalized
 
 
@@ -395,6 +506,9 @@ def _normalize_character_custody_rows(
             normalized["current_person_state"] = _normalize_current_person_state(
                 row["current_person_state"], f"{field}[{index}].current_person_state"
             )
+            raw = normalized["current_person_state"].get("raw_numeric_inputs")
+            if raw is not None and raw["character_id"] != character_id:
+                raise ValueError(f"{field}[{index}] raw numeric CharacterID disagrees")
         result.append(normalized)
     return result
 
