@@ -2762,12 +2762,16 @@ class NativeHeadlessGameplayDriver:
             query_player_prisoner_collection_private_v1,
         )
 
-        return query_player_prisoner_collection_private_v1(
+        result = query_player_prisoner_collection_private_v1(
             self,
             expected_revision=expected_revision,
             ransom_ordinal=ransom_ordinal,
             timeout_seconds=self.command_timeout_seconds,
         )
+        # The transport validates the complete readonly result and its paused
+        # frame. Retain that returned observation for the ordinary planner.
+        self._record_command(result["step"], ok=True, result=result)
+        return result
 
     def query_active_scheme_sway_target_private_v1(
         self, *, expected_revision: int, target_character_id: int,

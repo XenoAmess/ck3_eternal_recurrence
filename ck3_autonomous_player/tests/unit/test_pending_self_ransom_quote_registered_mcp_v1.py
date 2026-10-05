@@ -1,4 +1,4 @@
-"""Exercise one new native self-ransom wire and ordinary planner consumer through the actual registered MCP."""
+"""Consume one new self-ransom wire and readonly custody query through registered MCP planning."""
 from __future__ import annotations
 import argparse
 import asyncio
@@ -23,7 +23,45 @@ def main() -> int:
     raw = args.native_fixture.read_bytes()
     native = json.loads(raw)
     step = "query-pending-character-interaction-context-v1"
+    collection_step = "query-player-prisoner-collection-private-v1"
+    reply = "accept-pending-character-interaction"
     capability = "game.command." + step
+    # Captured721 schema-v6 metadata, replayed as a native response. The
+    # transport, rather than this fixture, must produce queried_* fields.
+    custody_rows = [
+        (54235, None, None, None), (56063, None, None, None),
+        (61540, 2237, 2237, None), (70766, 12690, 12077, 3),
+    ]
+    collection_native = {
+        "step": collection_step, "accepted": True, "status": "available",
+        "query_sequence": 3, "observation_revision": 1926335,
+        "snapshot_revision": 1014, "private_build": True,
+        "read_only": True, "advertised": False, "backend_id": "native-headless",
+        "player_prisoner_collection": {
+            "schema": "player-prisoner-collection-private-v1", "schema_version": 6,
+            "snapshot_revision": 1014, "status": "available", "unavailable_reason": None,
+            "date_raw": 53286360, "played_character_id": 29829,
+            "played_house_id": 174, "played_dynasty_id": 174, "played_dread_raw": 1680000,
+            "total_count": 4, "returned_count": 4, "collection_complete": True,
+            "prisoners": [{
+                "source_ordinal": ordinal, "prisoner_character_id": character_id,
+                "collection_owner_character_id": 29829, "jailer_character_id": 29829,
+                "custody_relation_verified": True, "house_id": house_id,
+                "dynasty_id": dynasty_id, "same_house": False, "same_dynasty": False,
+                "is_child_of_played_character": False, "primary_title_tier_raw": tier,
+                "unconditional_release_preview": {
+                    "private_build": True, "read_only": True, "advertised": False,
+                    "action_surface_present": False, "status": "unavailable",
+                    "unavailable_reason": "release_preview_not_enabled_for_12002_ransom",
+                },
+                "ransom_quote_preview": {
+                    "private_build": True, "read_only": True, "advertised": False,
+                    "action_surface_present": False, "status": "unavailable",
+                    "unavailable_reason": "role_unavailable" if ordinal == 0 else "not_evaluated",
+                },
+            } for ordinal, (character_id, house_id, dynasty_id, tier) in enumerate(custody_rows)],
+        },
+    }
     checks = 0
     def check(condition: bool, message: str) -> None:
         nonlocal checks
@@ -43,10 +81,11 @@ def main() -> int:
         def send(self, request: dict) -> None:
             if request.get("type") == "ping":
                 return
-            check(request["type"] == "execute_step" and request["step"] == step,
-                  "only the existing readonly query is dispatched")
-            check(request["pending_interaction_id"] == 1107296271,
-                  "full actual pending720 identity")
+            check(request["type"] == "execute_step" and request["step"] in (step, collection_step),
+                  "only the two existing readonly queries are dispatched")
+            if request["step"] == step:
+                check(request["pending_interaction_id"] == 1107296271,
+                      "full actual pending720 identity")
             check("played_character_id" not in request,
                   "player role comes from the native current frame")
             self.frames.append(copy.deepcopy(request))
@@ -58,7 +97,7 @@ def main() -> int:
                     "query_sequence": 1, "snapshot_revision": native["snapshot_revision"],
                     "pending_character_interaction_context": native,
                     "backend_id": "native-headless",
-                },
+                } if request["step"] == step else collection_native,
             })
         def close(self) -> None:
             pass
@@ -69,13 +108,14 @@ def main() -> int:
         endpoint = Endpoint()
         driver = NativeHeadlessGameplayDriver(endpoint.pipe_name, endpoint=endpoint,
                                               command_timeout_seconds=0.1)
+        driver.allow_private_prisoner_collection_query = True
         endpoint.publish({
             "type": "hello", "protocol_version": 1, "bridge_version": "0.1.0",
             "pid": 7878, "session_generation": 0,
             "game_version": native["build"]["version"],
             "expected_ck3_version": native["build"]["version"],
             "executable_sha256": native["build"]["exe_sha256"],
-            "capabilities": ["game.state.snapshot", capability],
+            "capabilities": ["game.state.snapshot", capability, "game.command." + reply],
         })
         endpoint.publish({
             "type": "state_snapshot", "protocol_version": 1,
@@ -131,32 +171,26 @@ def main() -> int:
               "self prisoner resolves from actor despite absent secondary recipient")
         check(quote["ordinary_gold_decision_ready"] is True,
               "independent financial input is available despite global semantic false")
+        collection_name = "ck3_query_player_prisoner_collection_private_v1"
+        check(collection_name in {tool.name for tool in await server.list_tools()},
+              "existing private collection query is registered")
+        collection_response = await server.call_tool(collection_name, {
+            "expected_revision": driver.take_snapshot()["revision"],
+        })
+        check(not collection_response.is_error, "actual private transport accepts captured721 metadata")
+        metadata = collection_response.structured_content
         snapshot = driver.take_snapshot()
-        metadata = {
-            "step": "query-player-prisoner-collection-private-v1",
-            "accepted": True, "status": "available", "query_sequence": 3,
-            "snapshot_revision": snapshot["native_revision"],
-            "queried_snapshot_id": snapshot["snapshot_id"],
-            "queried_revision": snapshot["revision"],
-            "queried_native_revision": snapshot["native_revision"],
-            "player_prisoner_collection": {
-                "status": "available", "snapshot_revision": snapshot["native_revision"],
-                "date_raw": snapshot["date_raw"], "played_character_id": 29829,
-                "played_house_id": 174, "played_dynasty_id": 174,
-                "total_count": 1, "returned_count": 1, "collection_complete": True,
-                "prisoners": [{
-                    "source_ordinal": 0, "prisoner_character_id": 70766,
-                    "collection_owner_character_id": 29829, "jailer_character_id": 29829,
-                    "custody_relation_verified": True, "house_id": 12690, "dynasty_id": 12077,
-                    "same_house": False, "same_dynasty": False,
-                    "is_child_of_played_character": False, "primary_title_tier_raw": 3,
-                }],
-            },
-        }
-        reply = "accept-pending-character-interaction"
-        commands = [{"command": step, "ok": True, "result": actual},
-                    {"command": metadata["step"], "ok": True, "result": metadata}]
-        planned = choose_one_life_turn(commands, snapshot=snapshot, action_steps=[step, reply])
+        commands = snapshot["native_command_history"]
+        check(len(commands) == 2 and commands[1]["command"] == collection_step,
+              "both readonly queries reach the real driver history")
+        check(commands[1]["result"] == metadata
+              and metadata["queried_revision"] == snapshot["revision"]
+              and metadata["queried_native_revision"] == snapshot["native_revision"]
+              and metadata["queried_snapshot_id"] == snapshot["snapshot_id"],
+              "validated transport wrapper is retained by the production recording hook")
+        planned_response = await server.call_tool("ck3_plan_turn", {})
+        check(not planned_response.is_error, "registered planner consumes actual recorded observations")
+        planned = planned_response.structured_content["plan"]
         check(planned["selected_step"] == reply
               and planned["phase"] == "pending_received_ransom_ordinary_gold_accept",
               "existing ordinary planner consumes independent input and accepts")
@@ -175,7 +209,7 @@ def main() -> int:
               and missing["required_mcp_tool"] == "ck3_query_player_prisoner_collection_private_v1",
               "actual missing metadata names the existing observation dependency")
         own = copy.deepcopy(commands)
-        own[1]["result"]["player_prisoner_collection"]["prisoners"][0]["same_dynasty"] = True
+        own[1]["result"]["player_prisoner_collection"]["prisoners"][3]["same_dynasty"] = True
         own_plan = choose_one_life_turn(own, snapshot=snapshot, action_steps=[step, reply])
         check(own_plan["selected_step"] is None,
               "existing dynasty qualification prevents accepting own-dynasty release")
@@ -185,7 +219,8 @@ def main() -> int:
         zero_plan = choose_one_life_turn(zero, snapshot=snapshot, action_steps=[step, reply])
         check(zero_plan["selected_step"] is None, "zero quote adds no monetary accept value")
         actual["new_ordinary_ransom_planner_fixture"] = planned
-        check(len(endpoint.frames) == 1, "one readonly registered query and no action")
+        actual["recorded_prisoner_collection_fixture"] = metadata
+        check(len(endpoint.frames) == 2, "two readonly registered queries and no action")
         driver.close()
         return actual
 
@@ -197,7 +232,8 @@ def main() -> int:
             json.dumps(observed, ensure_ascii=False, indent=2)+"\n", encoding="utf-8")
         report.update(status="GREEN", samples=1, checks=checks, native_fixture=str(args.native_fixture),
                       native_fixture_sha256=hashlib.sha256(raw).hexdigest(),
-                      source_root=str(args.source_root), live_queries=0, game_actions=0, planner_cases=4,
+                       source_root=str(args.source_root), live_queries=0, game_actions=0, planner_cases=4,
+                       readonly_mcp_queries=2, registered_planner_calls=1,
                       amount_kind="synthetic-native-fixture", output_file_count=2)
     except Exception as error:
         report.update(checks=checks, error=str(error))
