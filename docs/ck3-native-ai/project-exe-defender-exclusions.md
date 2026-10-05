@@ -146,3 +146,14 @@ ShellExecuteEx 的启动成功只证明进程启动；上面另外要求 child e
 普通 token 的独立小文件实测在外置夹具目录重现了故障：目录句柄共享值 1（READ）失败，3（READ|WRITE）成功，5（READ|DELETE）仍失败。成功前后请求字节、文件标识和目录标识相同。修复仅对固定受保护 inbox 的发布操作允许 WRITE 共享；没有加入 DELETE 共享，受保护运行时、文件和其他目录的锁定策略保持原样。发布操作结束时再次检查同一目录文件标识、无 reparse、句柄最终路径以及实际保护 ACL，检查失败即停止，不能继续调用任务。
 
 证据位于 `project-exe-broker-client-publication-fix-a01/`：`tiny-rename-probe-a02/result.json` 为 6,149 字节，SHA `dc43a59280e37c19c9975a32f30b72211834908e95d170e0c02f1aaa901c9725`；`ROOT-DELIVERY-a01.json` 为 4,517 字节，SHA `e5799ca6ed878709e131327aca491bb1d24765344f50ed858f14f8f4b08ac294`。固定安装 inbox 的实际只读 lease 及四个针对性 fake 场景也通过。本轮测试没有提交真实请求、调用任务或更改 Defender 设置；第五个新路径的普通 token → SYSTEM 设置回执仍须由新的实际 attempt 验收。六个已接入 producer、两种已知清单格式及 161 个未自动接入旧生产器的覆盖边界不变。
+
+
+## 2026-10-05 05:57 UTC 追加：第五个新路径的普通调用已实际验收
+
+写共享修复之后，Root 使用同一原始 CMake 清单在独立 `ordinary-client-registration-a02` 运行普通 helper。调用方前后实际 SID 相同，`admin_token=false`，wrapper 的 UAC API 调用数为 0，前后进程快照中没有 `consent.exe`，wrapper 退出码为 0。本次通过已安装的固定 SYSTEM 任务处理，没有再次请求用户确认。原先 a01 的 `WinError 32` receipt 和临时请求文件保持原样，成功结果不覆盖或重新解释失败尝试。
+
+实际 caller receipt 与已取得的受保护 SYSTEM receipt 原 bytes 完全相同：`future-no-uac-net-build-a01/ordinary-client-registration-a02/receipt.json` 为 169,778 字节，SHA `e357376db6412c1ce3176369e3bf134696e3c079e29b31e54ec4a1c036cde740`。request UUID 为 `abac40ef-6e58-4658-b2f1-79766dc017f2`，原 manifest bytes SHA 为 `9ecba6186a06818f3b58dc168c7a3b9cb800dcbad0ecaed64f227042f31c12b9`；request bytes、安装 UUID、owner SID、策略和运行时的绑定均通过。SYSTEM 回执实际 token SID 为 `S-1-5-18`，`admin_token=true`、`runtime_verified=true`、`protected_code=true`，状态为 `verified`。
+
+本次实际前后设置唯一新增 `future-no-uac-net-build-a01/build/xar_ck3_12003_war_cash_net_income_test.exe`，117,760 字节，SHA `f7f27d0a99a50022d7cb13f98dd2e253af693972783a80e0dc1c34cffb340649`。`missing_requested_paths=[]`，所有旧 ExclusionPath 保留，ExclusionExtension 和 ExclusionProcess 集合未变，`partial_mutation=false`。只读逐字节及集合复核保存在 `project-exe-broker-client-publication-fix-a01/ordinary-a02-readonly-review-a02/result.json`；复核没有重跑任务或设置操作。修复源提交 `a601cde4701e86551aa66352f01f0f5f0c1aa87b` 的 [Official Runner CI](https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37269955420) 也已实际完成并通过。
+
+这项实测闭合的是首次管理员安装之后，为本项目允许来源 CMake 产出的一个新完整 EXE 路径进行普通调用登记。固定任务不接受任意命令或任务参数，不能据此运行通用管理员操作。六个 producer 的公共 helper 与两种已知清单合同范围继续适用；未接入的旧生产器仍须先接入来源合同。此次 CMake 路径实测不能替代其他 producer 的未来现场结果，也不证明该 EXE 运行可信或完成发布签核。
