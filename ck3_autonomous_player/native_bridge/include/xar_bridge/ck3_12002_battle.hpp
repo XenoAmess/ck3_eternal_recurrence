@@ -125,6 +125,7 @@ struct BattleBindings {
   // Character1A1 chooses index0 for zero and index1 for any nonzero byte.
   std::array<const std::int32_t *, 2> current_person_auxiliary_low_thresholds{};
   std::array<const std::int32_t *, 2> current_person_auxiliary_high_thresholds{};
+  void **current_person_nine_cache_definition_fallback_slot = nullptr;
   // Independent exact .3 preparation operands for the same Character query.
   bool current_person_context_branch_inputs_enabled = false;
   // Exact .3 current selector observation; never invokes model preparation.

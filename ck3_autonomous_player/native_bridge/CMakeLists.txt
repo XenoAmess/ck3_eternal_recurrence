@@ -7885,6 +7885,31 @@ if(BUILD_TESTING AND WIN32)
       "${CMAKE_BINARY_DIR}/person_auxiliary_scratch_12003.json")
 endif()
 
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12003_person_nine_cache_bytes_test
+    src/ck3_12002_phase_character.cpp
+    src/ck3_12003_context_sources.cpp
+    src/ck3_12003_task_position_inputs.cpp
+    src/ck3_12002_battle.cpp
+    src/ck3_12002_combat.cpp
+    src/ck3_12002_battle_journal.cpp
+    src/ck3_12002_routes.cpp
+    src/ck3_12003_battle_current_state.cpp
+    tests/person_nine_cache_bytes_12003_test.cpp)
+  target_include_directories(xar_ck3_12003_person_nine_cache_bytes_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_person_nine_cache_bytes_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_person_nine_cache_bytes_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12003_person_nine_cache_bytes_test PRIVATE
+      /W4 /WX /permissive- /EHsc)
+  endif()
+  target_link_libraries(xar_ck3_12003_person_nine_cache_bytes_test PRIVATE kernel32)
+  add_test(NAME xar_ck3_12003_person_nine_cache_bytes_test
+    COMMAND xar_ck3_12003_person_nine_cache_bytes_test
+      "${CMAKE_BINARY_DIR}/person_nine_cache_bytes_12003.json")
+endif()
+
 # Selected-unit total rates: new focused production reader/serializer/MCP cases.
 if(BUILD_TESTING AND WIN32)
   add_executable(xar_ck3_12003_commander_movement_speed_test

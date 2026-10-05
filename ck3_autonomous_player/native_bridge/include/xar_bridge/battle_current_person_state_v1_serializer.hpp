@@ -139,6 +139,31 @@ inline std::string SerializeRawNumericInputs(
     }
     out += '}';
   }
+  if (p.nine_cache_byte_inputs) {
+    const auto &nine = *p.nine_cache_byte_inputs;
+    const auto append_bool = [&out](const std::optional<bool> &value) {
+      out += value ? (*value ? "true" : "false") : "null";
+    };
+    out += ",\"nine_cache_byte_inputs\":{\"status\":";
+    AppendString(out, nine.status);
+    out += ",\"ready\":"; out += nine.ready ? "true" : "false";
+    out += ",\"model_present\":"; append_bool(nine.model_present);
+    out += ",\"aggregate_properties\":";
+    if (nine.aggregate_properties) AppendRawProperties(out, *nine.aggregate_properties);
+    else out += "null";
+    out += ",\"carrier278_present\":"; append_bool(nine.carrier278_present);
+    out += ",\"carrier278_magic_raw\":"; AppendRawNumber(out, nine.carrier278_magic_raw);
+    out += ",\"linked20_present\":"; append_bool(nine.linked20_present);
+    out += ",\"used_native_definition_fallback\":"; append_bool(nine.used_native_definition_fallback);
+    out += ",\"selected_definition_present\":"; append_bool(nine.selected_definition_present);
+    out += ",\"selected_definition_magic_raw\":"; AppendRawNumber(out, nine.selected_definition_magic_raw);
+    out += ",\"selected_definition_keys_u16\":"; AppendRawVector(out, nine.selected_definition_keys_u16);
+    out += ",\"current_cache_present\":"; append_bool(nine.current_cache_present);
+    out += ",\"current_cache_bytes\":"; AppendRawVector(out, nine.current_cache_bytes);
+    out += ",\"unavailable_reason\":";
+    AppendReason(out, nine.ready, nine.unavailable_reason, "nine_cache_byte_source_inputs_unavailable");
+    out += '}';
+  }
   if (p.auxiliary_scratch_inputs) {
     const auto &aux = *p.auxiliary_scratch_inputs;
     out += ",\"auxiliary_scratch_inputs\":{\"status\":";
