@@ -276,7 +276,7 @@ def project_stage_chain_six_skills_12003(
         "full_entry_ready": False, "conditional_stage_projection": True})
 
 
-def _tail_emit(section: Mapping | None, module_name: str, function: str, family: str | None = None):
+def _tail_emit(section: Mapping | None, module_name: str, function: str, family: str | int | None = None):
     module = import_module("xar_autoplayer.bridge." + module_name)
     emit = getattr(module, function)
     return emit(section) if family is None else emit(section, family)
@@ -297,6 +297,7 @@ def continue_person_stage_chain_tail_12003(
     middle_module = "battle_person_middle_helpers_contract"
     direct_module = "battle_person_tail_direct_contract"
     provider_module = "battle_person_provider_bucket_contract"
+    qualifier_module = "battle_person_qualifier_28bc0d0_contract"
     stages = (
         ("2753860", "post2753860_pre291C4D2", prefix_module,
          "emit_helper_2753860_requests_from_current_source_inputs_12003", None),
@@ -312,7 +313,8 @@ def continue_person_stage_chain_tail_12003(
          "emit_provider_bucket_requests_from_current_source_inputs_12003", None),
         ("government_870_a30", "postGovernmentA30_pre291C620", direct_module,
          "emit_tail_direct_family_requests_from_current_source_inputs_12003", "government_870_a30"),
-        ("qualifier_repeated_contribution", "postQualifierContribution_pre291C6CF", None, None, None),
+        ("qualifier_repeated_contribution", "postQualifierContribution_pre291C6CF", qualifier_module,
+         "emit_qualifier_28bc0d0_requests_from_current_source_inputs_12003", None),
         ("291FB10", "post291FB10_pre291C6D4", middle_module,
          "emit_helper_291fb10_requests_from_current_source_inputs_12003", None),
         ("intervening_lists_flags_temp_helpers_thresholds", "preCarrierWeighted630", None, None, None),
@@ -367,6 +369,7 @@ def continue_person_stage_chain_tail_12003(
         required = index <= bound_index
         missing, requests, ready = [], (), True
         conference_family_ledger = []
+        qualifier_definition_ledger = []
         try:
             if not actor_matches:
                 raise ValueError("matching_character_source_unavailable")
@@ -391,6 +394,34 @@ def continue_person_stage_chain_tail_12003(
                         "request_count": len(family_requests), "in_contiguous_family_prefix": family_contiguous,
                         "missing_inputs": tuple(family_missing)})
                 ready = not missing
+            elif name == "qualifier_repeated_contribution":
+                try:
+                    requests = _tail_emit(source_inputs, module, function)
+                except (ValueError, ModuleNotFoundError, AttributeError) as error:
+                    ready, missing = False, [str(error)]
+                leaf = source_inputs.get("qualifier_28bc0d0")
+                definitions = leaf.get("definitions") if isinstance(leaf, Mapping) else None
+                definition_contiguous = True
+                for definition in definitions or ():
+                    native_index = definition["native_index"]
+                    definition_requests, definition_missing = (), []
+                    if ready:
+                        definition_requests = tuple(row for row in requests if row.first_row_index == native_index)
+                    else:
+                        try:
+                            definition_requests = _tail_emit(source_inputs, module,
+                                "emit_qualifier_28bc0d0_definition_requests_from_current_source_inputs_12003", native_index)
+                        except (ValueError, ModuleNotFoundError, AttributeError) as error:
+                            definition_missing.append(str(error))
+                    definition_ready = not definition_missing
+                    outputs[name + "." + str(native_index)] = tuple(definition_requests)
+                    definition_contiguous = definition_contiguous and definition_ready
+                    if not ready and definition_contiguous:
+                        requests += tuple(definition_requests)
+                    qualifier_definition_ledger.append({"native_index": native_index,
+                        "requests_ready": definition_ready, "request_count": len(definition_requests),
+                        "in_contiguous_definition_prefix": definition_contiguous,
+                        "missing_inputs": tuple(definition_missing)})
             else:
                 requests = _tail_emit(source_inputs, module, function, family)
         except (ValueError, ModuleNotFoundError, AttributeError) as error:
@@ -421,6 +452,10 @@ def continue_person_stage_chain_tail_12003(
                          "source_ordinal": request.source_ordinal, "first_row_index": request.first_row_index}, updates)
             if ready:
                 stage = after_stage
+            elif name == "qualifier_repeated_contribution" and any(
+                    row["in_contiguous_definition_prefix"] for row in qualifier_definition_ledger):
+                completed = sum(row["in_contiguous_definition_prefix"] for row in qualifier_definition_ledger)
+                stage = "postQualifierDefinition" + str(completed - 1) + "_pre291C655"
             elif validated:
                 if name == "conference24B1D00":
                     completed = sum(row["in_contiguous_family_prefix"] for row in conference_family_ledger)
@@ -434,7 +469,8 @@ def continue_person_stage_chain_tail_12003(
         ledger_rows.append({"stage": name, "after_stage": after_stage, "required_for_requested_bound": required,
             "requests_ready": ready, "request_count": len(validated),
             "folded_into_contiguous_context": folded, "missing_inputs": tuple(missing),
-            "conference_family_stages": tuple(conference_family_ledger)})
+            "conference_family_stages": tuple(conference_family_ledger),
+            "qualifier_definition_stages": tuple(qualifier_definition_ledger)})
         if required:
             contiguous = contiguous and ready
             if index == bound_index:
@@ -446,9 +482,10 @@ def continue_person_stage_chain_tail_12003(
         "future_tail_missing_inputs": tuple(future_missing),
         "first_contiguous_observation_dependency": next(
             (row["stage"] for row in ledger_rows if not row["requests_ready"]), None),
-        "next_native_source_leaf": "291C68D_qualifier_28BC0D0", "all_tail_source_stream_ready": False,
+        "next_native_source_leaf": "291C6D4_intervening_lists_flags_temp_helpers_thresholds", "all_tail_source_stream_ready": False,
         "provider_291c5b2_operand_scope": "held_current_character_1b0_2f8",
         "provider_291c5b2_return_edges": "all selection branches rejoin291C5B7",
+        "qualifier_28bc0d0_operand_scope": "held_current_character_1b0_scratch_object_relationships",
         "source_operand_scope": "held_current_same_query_inputs",
         "conditional_on_observed_source_values": True,
         "291f260_weight_source_scope": "held_current_evaluated_values",
