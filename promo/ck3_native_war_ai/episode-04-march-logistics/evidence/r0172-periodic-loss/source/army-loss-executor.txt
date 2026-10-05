@@ -1,0 +1,418 @@
+Exact CK3 1.20.0.3 SHA256 94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6
+RVA 0x24e3430..0x24e3a5c; bytes SHA256 7fda4144c5b8015aad9cac8ff059ee79e4895a9e4d5f1da155efc04f24db5bed
+Preserved source D:\ck3-war-episode04-research-20261004-a01\loss-cause\span-024e3430-640.bin; source SHA256 ff400ff8cf3ea7ad78a1c8eb93818f300241de161fe2f24db31ca7dcad9fd63a
+0024E3430 48 89 4c 24 08                   mov      qword ptr [rsp + 8], rcx
+0024E3435 48 83 ec 68                      sub      rsp, 0x68
+0024E3439 48 89 5c 24 78                   mov      qword ptr [rsp + 0x78], rbx
+0024E343E 48 89 74 24 58                   mov      qword ptr [rsp + 0x58], rsi
+0024E3443 48 8b f1                         mov      rsi, rcx
+0024E3446 4c 89 64 24 48                   mov      qword ptr [rsp + 0x48], r12
+0024E344B 4c 89 7c 24 30                   mov      qword ptr [rsp + 0x30], r15
+0024E3450 e8 bb 18 00 00                   call     0x1424e4d10
+0024E3455 33 db                            xor      ebx, ebx
+0024E3457 84 c0                            test     al, al
+0024E3459 74 0d                            je       0x1424e3468
+0024E345B 48 8b ce                         mov      rcx, rsi
+0024E345E e8 7d fe ff ff                   call     0x1424e32e0
+0024E3463 44 8b f8                         mov      r15d, eax
+0024E3466 eb 03                            jmp      0x1424e346b
+0024E3468 44 8b fb                         mov      r15d, ebx
+0024E346B 48 8b ce                         mov      rcx, rsi
+0024E346E 44 89 7c 24 20                   mov      dword ptr [rsp + 0x20], r15d
+0024E3473 e8 e8 50 00 00                   call     0x1424e8560
+0024E3478 84 c0                            test     al, al
+0024E347A 74 18                            je       0x1424e3494
+0024E347C 48 8b 0d 95 61 78 03             mov      rcx, qword ptr [rip + 0x3786195]
+0024E3483 48 8b d6                         mov      rdx, rsi
+0024E3486 e8 f5 a0 ff ff                   call     0x1424dd580
+0024E348B 89 84 24 80 00 00 00             mov      dword ptr [rsp + 0x80], eax
+0024E3492 eb 07                            jmp      0x1424e349b
+0024E3494 89 9c 24 80 00 00 00             mov      dword ptr [rsp + 0x80], ebx
+0024E349B 83 be e8 01 00 00 ff             cmp      dword ptr [rsi + 0x1e8], -1
+0024E34A2 74 18                            je       0x1424e34bc
+0024E34A4 48 8b 0d ed 5b 78 03             mov      rcx, qword ptr [rip + 0x3785bed]
+0024E34AB 48 8b d6                         mov      rdx, rsi
+0024E34AE e8 cd a0 ff ff                   call     0x1424dd580
+0024E34B3 89 84 24 88 00 00 00             mov      dword ptr [rsp + 0x88], eax
+0024E34BA eb 07                            jmp      0x1424e34c3
+0024E34BC 89 9c 24 88 00 00 00             mov      dword ptr [rsp + 0x88], ebx
+0024E34C3 4c 8b 1d 76 be 83 03             mov      r11, qword ptr [rip + 0x383be76]
+0024E34CA 48 89 6c 24 60                   mov      qword ptr [rsp + 0x60], rbp
+0024E34CF 48 89 7c 24 50                   mov      qword ptr [rsp + 0x50], rdi
+0024E34D4 48 8b 3d 5d be 83 03             mov      rdi, qword ptr [rip + 0x383be5d]
+0024E34DB 4c 89 6c 24 40                   mov      qword ptr [rsp + 0x40], r13
+0024E34E0 4c 89 74 24 38                   mov      qword ptr [rsp + 0x38], r14
+0024E34E5 45 85 ff                         test     r15d, r15d
+0024E34E8 0f 8e 78 01 00 00                jle      0x1424e3666
+0024E34EE 4c 8b 46 38                      mov      r8, qword ptr [rsi + 0x38]
+0024E34F2 4c 8d 6e 38                      lea      r13, [rsi + 0x38]
+0024E34F6 49 63 4d 0c                      movsxd   rcx, dword ptr [r13 + 0xc]
+0024E34FA 44 8b f3                         mov      r14d, ebx
+0024E34FD 4d 8d 0c 88                      lea      r9, [r8 + rcx*4]
+0024E3501 4d 3b c1                         cmp      r8, r9
+0024E3504 74 6b                            je       0x1424e3571
+0024E3506 4d 85 db                         test     r11, r11
+0024E3509 74 29                            je       0x1424e3534
+0024E350B 41 8b 10                         mov      edx, dword ptr [r8]
+0024E350E 8b c2                            mov      eax, edx
+0024E3510 25 ff ff ff 00                   and      eax, 0xffffff
+0024E3515 41 3b 43 2c                      cmp      eax, dword ptr [r11 + 0x2c]
+0024E3519 73 19                            jae      0x1424e3534
+0024E351B 8b c8                            mov      ecx, eax
+0024E351D 49 8b 43 20                      mov      rax, qword ptr [r11 + 0x20]
+0024E3521 48 03 c9                         add      rcx, rcx
+0024E3524 4c 8b 54 c8 08                   mov      r10, qword ptr [rax + rcx*8 + 8]
+0024E3529 4d 85 d2                         test     r10, r10
+0024E352C 74 06                            je       0x1424e3534
+0024E352E 41 39 52 10                      cmp      dword ptr [r10 + 0x10], edx
+0024E3532 74 03                            je       0x1424e3537
+0024E3534 4c 8b d7                         mov      r10, rdi
+0024E3537 41 81 7a 14 67 52 72 41          cmp      dword ptr [r10 + 0x14], 0x41725267
+0024E353F 75 23                            jne      0x1424e3564
+0024E3541 41 83 7a 10 ff                   cmp      dword ptr [r10 + 0x10], -1
+0024E3546 74 1c                            je       0x1424e3564
+0024E3548 49 8b 42 18                      mov      rax, qword ptr [r10 + 0x18]
+0024E354C 39 98 a0 02 00 00                cmp      dword ptr [rax + 0x2a0], ebx
+0024E3552 7f 10                            jg       0x1424e3564
+0024E3554 49 8b ca                         mov      rcx, r10
+0024E3557 e8 74 21 5b 00                   call     0x142a956d0
+0024E355C 84 c0                            test     al, al
+0024E355E 74 04                            je       0x1424e3564
+0024E3560 45 03 72 38                      add      r14d, dword ptr [r10 + 0x38]
+0024E3564 49 83 c0 04                      add      r8, 4
+0024E3568 4d 3b c1                         cmp      r8, r9
+0024E356B 75 99                            jne      0x1424e3506
+0024E356D 41 8b 4d 0c                      mov      ecx, dword ptr [r13 + 0xc]
+0024E3571 45 3b fe                         cmp      r15d, r14d
+0024E3574 45 8b e7                         mov      r12d, r15d
+0024E3577 41 8b ee                         mov      ebp, r14d
+0024E357A 41 0f 4c ef                      cmovl    ebp, r15d
+0024E357E 4c 63 f9                         movsxd   r15, ecx
+0024E3581 44 2b e5                         sub      r12d, ebp
+0024E3584 85 c9                            test     ecx, ecx
+0024E3586 0f 8e b9 00 00 00                jle      0x1424e3645
+0024E358C 48 8b f3                         mov      rsi, rbx
+0024E358F 90                               nop      
+0024E3590 85 ed                            test     ebp, ebp
+0024E3592 0f 8e a6 00 00 00                jle      0x1424e363e
+0024E3598 45 85 f6                         test     r14d, r14d
+0024E359B 0f 8e 9d 00 00 00                jle      0x1424e363e
+0024E35A1 4d 85 db                         test     r11, r11
+0024E35A4 74 2d                            je       0x1424e35d3
+0024E35A6 49 8b 45 00                      mov      rax, qword ptr [r13]
+0024E35AA 8b 14 b0                         mov      edx, dword ptr [rax + rsi*4]
+0024E35AD 8b c2                            mov      eax, edx
+0024E35AF 25 ff ff ff 00                   and      eax, 0xffffff
+0024E35B4 41 3b 43 2c                      cmp      eax, dword ptr [r11 + 0x2c]
+0024E35B8 73 19                            jae      0x1424e35d3
+0024E35BA 8b c8                            mov      ecx, eax
+0024E35BC 49 8b 43 20                      mov      rax, qword ptr [r11 + 0x20]
+0024E35C0 48 03 c9                         add      rcx, rcx
+0024E35C3 4c 8b 44 c8 08                   mov      r8, qword ptr [rax + rcx*8 + 8]
+0024E35C8 4d 85 c0                         test     r8, r8
+0024E35CB 74 06                            je       0x1424e35d3
+0024E35CD 41 39 50 10                      cmp      dword ptr [r8 + 0x10], edx
+0024E35D1 74 03                            je       0x1424e35d6
+0024E35D3 4c 8b c7                         mov      r8, rdi
+0024E35D6 41 81 78 14 67 52 72 41          cmp      dword ptr [r8 + 0x14], 0x41725267
+0024E35DE 75 52                            jne      0x1424e3632
+0024E35E0 41 83 78 10 ff                   cmp      dword ptr [r8 + 0x10], -1
+0024E35E5 74 4b                            je       0x1424e3632
+0024E35E7 49 8b 40 18                      mov      rax, qword ptr [r8 + 0x18]
+0024E35EB 83 b8 a0 02 00 00 00             cmp      dword ptr [rax + 0x2a0], 0
+0024E35F2 7f 3e                            jg       0x1424e3632
+0024E35F4 49 8b c8                         mov      rcx, r8
+0024E35F7 e8 d4 20 5b 00                   call     0x142a956d0
+0024E35FC 84 c0                            test     al, al
+0024E35FE 74 32                            je       0x1424e3632
+0024E3600 41 8b 78 38                      mov      edi, dword ptr [r8 + 0x38]
+0024E3604 49 8b c8                         mov      rcx, r8
+0024E3607 8b c7                            mov      eax, edi
+0024E3609 0f af c5                         imul     eax, ebp
+0024E360C 99                               cdq      
+0024E360D 41 f7 fe                         idiv     r14d
+0024E3610 48 63 d8                         movsxd   rbx, eax
+0024E3613 48 69 d3 a0 86 01 00             imul     rdx, rbx, 0x186a0
+0024E361A e8 91 0b 15 00                   call     0x1426341b0
+0024E361F 4c 8b 1d 1a bd 83 03             mov      r11, qword ptr [rip + 0x383bd1a]
+0024E3626 2b eb                            sub      ebp, ebx
+0024E3628 44 2b f7                         sub      r14d, edi
+0024E362B 48 8b 3d 06 bd 83 03             mov      rdi, qword ptr [rip + 0x383bd06]
+0024E3632 48 ff c6                         inc      rsi
+0024E3635 49 3b f7                         cmp      rsi, r15
+0024E3638 0f 8c 52 ff ff ff                jl       0x1424e3590
+0024E363E 48 8b 74 24 70                   mov      rsi, qword ptr [rsp + 0x70]
+0024E3643 33 db                            xor      ebx, ebx
+0024E3645 45 85 e4                         test     r12d, r12d
+0024E3648 7e 1c                            jle      0x1424e3666
+0024E364A 41 b0 02                         mov      r8b, 2
+0024E364D 41 8b d4                         mov      edx, r12d
+0024E3650 49 8b cd                         mov      rcx, r13
+0024E3653 e8 a8 21 5b 00                   call     0x142a95800
+0024E3658 4c 8b 1d e1 bc 83 03             mov      r11, qword ptr [rip + 0x383bce1]
+0024E365F 48 8b 3d d2 bc 83 03             mov      rdi, qword ptr [rip + 0x383bcd2]
+0024E3666 44 8b 94 24 88 00 00 00          mov      r10d, dword ptr [rsp + 0x88]
+0024E366E 44 03 94 24 80 00 00 00          add      r10d, dword ptr [rsp + 0x80]
+0024E3676 44 89 94 24 88 00 00 00          mov      dword ptr [rsp + 0x88], r10d
+0024E367E 45 85 d2                         test     r10d, r10d
+0024E3681 0f 8e 5a 01 00 00                jle      0x1424e37e1
+0024E3687 48 8b 46 38                      mov      rax, qword ptr [rsi + 0x38]
+0024E368B 4c 8d 6e 38                      lea      r13, [rsi + 0x38]
+0024E368F 4c 63 66 44                      movsxd   r12, dword ptr [rsi + 0x44]
+0024E3693 8b eb                            mov      ebp, ebx
+0024E3695 4a 8d 0c a0                      lea      rcx, [rax + r12*4]
+0024E3699 48 3b c1                         cmp      rax, rcx
+0024E369C 74 61                            je       0x1424e36ff
+0024E369E 66 90                            nop      
+0024E36A0 4d 85 db                         test     r11, r11
+0024E36A3 74 2c                            je       0x1424e36d1
+0024E36A5 44 8b 08                         mov      r9d, dword ptr [rax]
+0024E36A8 41 8b d1                         mov      edx, r9d
+0024E36AB 81 e2 ff ff ff 00                and      edx, 0xffffff
+0024E36B1 41 3b 53 2c                      cmp      edx, dword ptr [r11 + 0x2c]
+0024E36B5 73 1a                            jae      0x1424e36d1
+0024E36B7 44 8b c2                         mov      r8d, edx
+0024E36BA 49 8b 53 20                      mov      rdx, qword ptr [r11 + 0x20]
+0024E36BE 4d 03 c0                         add      r8, r8
+0024E36C1 4e 8b 44 c2 08                   mov      r8, qword ptr [rdx + r8*8 + 8]
+0024E36C6 4d 85 c0                         test     r8, r8
+0024E36C9 74 06                            je       0x1424e36d1
+0024E36CB 45 39 48 10                      cmp      dword ptr [r8 + 0x10], r9d
+0024E36CF 74 03                            je       0x1424e36d4
+0024E36D1 4c 8b c7                         mov      r8, rdi
+0024E36D4 41 81 78 14 67 52 72 41          cmp      dword ptr [r8 + 0x14], 0x41725267
+0024E36DC 75 18                            jne      0x1424e36f6
+0024E36DE 41 83 78 10 ff                   cmp      dword ptr [r8 + 0x10], -1
+0024E36E3 74 11                            je       0x1424e36f6
+0024E36E5 49 8b 50 18                      mov      rdx, qword ptr [r8 + 0x18]
+0024E36E9 83 ba a0 02 00 00 00             cmp      dword ptr [rdx + 0x2a0], 0
+0024E36F0 7f 04                            jg       0x1424e36f6
+0024E36F2 41 03 68 38                      add      ebp, dword ptr [r8 + 0x38]
+0024E36F6 48 83 c0 04                      add      rax, 4
+0024E36FA 48 3b c1                         cmp      rax, rcx
+0024E36FD 75 a1                            jne      0x1424e36a0
+0024E36FF 44 3b d5                         cmp      r10d, ebp
+0024E3702 44 8b f5                         mov      r14d, ebp
+0024E3705 45 8b fa                         mov      r15d, r10d
+0024E3708 45 0f 4c f2                      cmovl    r14d, r10d
+0024E370C 45 2b fe                         sub      r15d, r14d
+0024E370F 4d 85 e4                         test     r12, r12
+0024E3712 0f 8e a8 00 00 00                jle      0x1424e37c0
+0024E3718 48 8b f3                         mov      rsi, rbx
+0024E371B 0f 1f 44 00 00                   nop      dword ptr [rax + rax]
+0024E3720 45 85 f6                         test     r14d, r14d
+0024E3723 0f 8e 92 00 00 00                jle      0x1424e37bb
+0024E3729 85 ed                            test     ebp, ebp
+0024E372B 0f 8e 8a 00 00 00                jle      0x1424e37bb
+0024E3731 4d 85 db                         test     r11, r11
+0024E3734 74 2c                            je       0x1424e3762
+0024E3736 49 8b 45 00                      mov      rax, qword ptr [r13]
+0024E373A 8b 14 b0                         mov      edx, dword ptr [rax + rsi*4]
+0024E373D 8b c2                            mov      eax, edx
+0024E373F 25 ff ff ff 00                   and      eax, 0xffffff
+0024E3744 41 3b 43 2c                      cmp      eax, dword ptr [r11 + 0x2c]
+0024E3748 73 18                            jae      0x1424e3762
+0024E374A 8b c8                            mov      ecx, eax
+0024E374C 49 8b 43 20                      mov      rax, qword ptr [r11 + 0x20]
+0024E3750 48 03 c9                         add      rcx, rcx
+0024E3753 48 8b 4c c8 08                   mov      rcx, qword ptr [rax + rcx*8 + 8]
+0024E3758 48 85 c9                         test     rcx, rcx
+0024E375B 74 05                            je       0x1424e3762
+0024E375D 39 51 10                         cmp      dword ptr [rcx + 0x10], edx
+0024E3760 74 03                            je       0x1424e3765
+0024E3762 48 8b cf                         mov      rcx, rdi
+0024E3765 81 79 14 67 52 72 41             cmp      dword ptr [rcx + 0x14], 0x41725267
+0024E376C 75 41                            jne      0x1424e37af
+0024E376E 83 79 10 ff                      cmp      dword ptr [rcx + 0x10], -1
+0024E3772 74 3b                            je       0x1424e37af
+0024E3774 48 8b 41 18                      mov      rax, qword ptr [rcx + 0x18]
+0024E3778 83 b8 a0 02 00 00 00             cmp      dword ptr [rax + 0x2a0], 0
+0024E377F 7f 2e                            jg       0x1424e37af
+0024E3781 8b 79 38                         mov      edi, dword ptr [rcx + 0x38]
+0024E3784 8b c7                            mov      eax, edi
+0024E3786 41 0f af c6                      imul     eax, r14d
+0024E378A 99                               cdq      
+0024E378B f7 fd                            idiv     ebp
+0024E378D 48 63 d8                         movsxd   rbx, eax
+0024E3790 48 69 d3 a0 86 01 00             imul     rdx, rbx, 0x186a0
+0024E3797 e8 14 0a 15 00                   call     0x1426341b0
+0024E379C 4c 8b 1d 9d bb 83 03             mov      r11, qword ptr [rip + 0x383bb9d]
+0024E37A3 44 2b f3                         sub      r14d, ebx
+0024E37A6 2b ef                            sub      ebp, edi
+0024E37A8 48 8b 3d 89 bb 83 03             mov      rdi, qword ptr [rip + 0x383bb89]
+0024E37AF 48 ff c6                         inc      rsi
+0024E37B2 49 3b f4                         cmp      rsi, r12
+0024E37B5 0f 8c 65 ff ff ff                jl       0x1424e3720
+0024E37BB 48 8b 74 24 70                   mov      rsi, qword ptr [rsp + 0x70]
+0024E37C0 45 85 ff                         test     r15d, r15d
+0024E37C3 7e 1c                            jle      0x1424e37e1
+0024E37C5 45 33 c0                         xor      r8d, r8d
+0024E37C8 41 8b d7                         mov      edx, r15d
+0024E37CB 49 8b cd                         mov      rcx, r13
+0024E37CE e8 2d 20 5b 00                   call     0x142a95800
+0024E37D3 4c 8b 1d 66 bb 83 03             mov      r11, qword ptr [rip + 0x383bb66]
+0024E37DA 48 8b 3d 57 bb 83 03             mov      rdi, qword ptr [rip + 0x383bb57]
+0024E37E1 44 8b bc 24 80 00 00 00          mov      r15d, dword ptr [rsp + 0x80]
+0024E37E9 44 8b 64 24 20                   mov      r12d, dword ptr [rsp + 0x20]
+0024E37EE 45 03 fc                         add      r15d, r12d
+0024E37F1 45 85 ff                         test     r15d, r15d
+0024E37F4 0f 8e 8e 01 00 00                jle      0x1424e3988
+0024E37FA 4c 8b 0d 7f ab 83 03             mov      r9, qword ptr [rip + 0x383ab7f]
+0024E3801 48 8b 15 70 ab 83 03             mov      rdx, qword ptr [rip + 0x383ab70]
+0024E3808 4d 85 c9                         test     r9, r9
+0024E380B 74 2e                            je       0x1424e383b
+0024E380D 44 8b 86 24 01 00 00             mov      r8d, dword ptr [rsi + 0x124]
+0024E3814 41 8b c0                         mov      eax, r8d
+0024E3817 25 ff ff ff 00                   and      eax, 0xffffff
+0024E381C 41 3b 41 2c                      cmp      eax, dword ptr [r9 + 0x2c]
+0024E3820 73 19                            jae      0x1424e383b
+0024E3822 8b c8                            mov      ecx, eax
+0024E3824 49 8b 41 20                      mov      rax, qword ptr [r9 + 0x20]
+0024E3828 48 03 c9                         add      rcx, rcx
+0024E382B 48 8b 44 c8 08                   mov      rax, qword ptr [rax + rcx*8 + 8]
+0024E3830 48 85 c0                         test     rax, rax
+0024E3833 74 06                            je       0x1424e383b
+0024E3835 44 39 40 10                      cmp      dword ptr [rax + 0x10], r8d
+0024E3839 74 03                            je       0x1424e383e
+0024E383B 48 8b c2                         mov      rax, rdx
+0024E383E 4c 8b 05 23 3d 78 03             mov      r8, qword ptr [rip + 0x3783d23]
+0024E3845 4d 85 c0                         test     r8, r8
+0024E3848 74 2e                            je       0x1424e3878
+0024E384A 44 8b 90 74 01 00 00             mov      r10d, dword ptr [rax + 0x174]
+0024E3851 41 8b c2                         mov      eax, r10d
+0024E3854 25 ff ff ff 00                   and      eax, 0xffffff
+0024E3859 41 3b 40 2c                      cmp      eax, dword ptr [r8 + 0x2c]
+0024E385D 73 19                            jae      0x1424e3878
+0024E385F 8b c8                            mov      ecx, eax
+0024E3861 49 8b 40 20                      mov      rax, qword ptr [r8 + 0x20]
+0024E3865 48 03 c9                         add      rcx, rcx
+0024E3868 48 8b 44 c8 08                   mov      rax, qword ptr [rax + rcx*8 + 8]
+0024E386D 48 85 c0                         test     rax, rax
+0024E3870 74 06                            je       0x1424e3878
+0024E3872 44 39 50 18                      cmp      dword ptr [rax + 0x18], r10d
+0024E3876 74 07                            je       0x1424e387f
+0024E3878 48 8b 05 f1 3c 78 03             mov      rax, qword ptr [rip + 0x3783cf1]
+0024E387F 48 8b 80 c0 01 00 00             mov      rax, qword ptr [rax + 0x1c0]
+0024E3886 48 85 c0                         test     rax, rax
+0024E3889 74 08                            je       0x1424e3893
+0024E388B 48 05 18 03 00 00                add      rax, 0x318
+0024E3891 eb 07                            jmp      0x1424e389a
+0024E3893 48 8d 05 9e 64 f7 02             lea      rax, [rip + 0x2f7649e]
+0024E389A 48 8b 18                         mov      rbx, qword ptr [rax]
+0024E389D 48 63 40 0c                      movsxd   rax, dword ptr [rax + 0xc]
+0024E38A1 4c 8b 6c 24 70                   mov      r13, qword ptr [rsp + 0x70]
+0024E38A6 48 8d 34 83                      lea      rsi, [rbx + rax*4]
+0024E38AA 48 3b de                         cmp      rbx, rsi
+0024E38AD 0f 84 da 00 00 00                je       0x1424e398d
+0024E38B3 4c 8b 05 9e a5 83 03             mov      r8, qword ptr [rip + 0x383a59e]
+0024E38BA 4d 85 c0                         test     r8, r8
+0024E38BD 74 2a                            je       0x1424e38e9
+0024E38BF 44 8b 13                         mov      r10d, dword ptr [rbx]
+0024E38C2 41 8b c2                         mov      eax, r10d
+0024E38C5 25 ff ff ff 00                   and      eax, 0xffffff
+0024E38CA 41 3b 40 2c                      cmp      eax, dword ptr [r8 + 0x2c]
+0024E38CE 73 19                            jae      0x1424e38e9
+0024E38D0 8b c8                            mov      ecx, eax
+0024E38D2 49 8b 40 20                      mov      rax, qword ptr [r8 + 0x20]
+0024E38D6 48 03 c9                         add      rcx, rcx
+0024E38D9 4c 8b 74 c8 08                   mov      r14, qword ptr [rax + rcx*8 + 8]
+0024E38DE 4d 85 f6                         test     r14, r14
+0024E38E1 74 06                            je       0x1424e38e9
+0024E38E3 45 39 56 08                      cmp      dword ptr [r14 + 8], r10d
+0024E38E7 74 07                            je       0x1424e38f0
+0024E38E9 4c 8b 35 50 a5 83 03             mov      r14, qword ptr [rip + 0x383a550]
+0024E38F0 4d 85 c9                         test     r9, r9
+0024E38F3 74 31                            je       0x1424e3926
+0024E38F5 45 8b 95 24 01 00 00             mov      r10d, dword ptr [r13 + 0x124]
+0024E38FC 41 8b c2                         mov      eax, r10d
+0024E38FF 25 ff ff ff 00                   and      eax, 0xffffff
+0024E3904 41 3b 41 2c                      cmp      eax, dword ptr [r9 + 0x2c]
+0024E3908 73 1c                            jae      0x1424e3926
+0024E390A 8b c8                            mov      ecx, eax
+0024E390C 49 8b 41 20                      mov      rax, qword ptr [r9 + 0x20]
+0024E3910 48 03 c9                         add      rcx, rcx
+0024E3913 4c 8b 44 c8 08                   mov      r8, qword ptr [rax + rcx*8 + 8]
+0024E3918 4d 85 c0                         test     r8, r8
+0024E391B 74 09                            je       0x1424e3926
+0024E391D 45 39 50 10                      cmp      dword ptr [r8 + 0x10], r10d
+0024E3921 75 03                            jne      0x1424e3926
+0024E3923 49 8b d0                         mov      rdx, r8
+0024E3926 8b ba 74 01 00 00                mov      edi, dword ptr [rdx + 0x174]
+0024E392C 49 8d 6e 20                      lea      rbp, [r14 + 0x20]
+0024E3930 48 8b cd                         mov      rcx, rbp
+0024E3933 8b d7                            mov      edx, edi
+0024E3935 e8 26 12 fb ff                   call     0x142494b60
+0024E393A 84 c0                            test     al, al
+0024E393C 75 15                            jne      0x1424e3953
+0024E393E 49 8d ae 80 00 00 00             lea      rbp, [r14 + 0x80]
+0024E3945 8b d7                            mov      edx, edi
+0024E3947 48 8b cd                         mov      rcx, rbp
+0024E394A e8 11 12 fb ff                   call     0x142494b60
+0024E394F 84 c0                            test     al, al
+0024E3951 74 09                            je       0x1424e395c
+0024E3953 48 85 ed                         test     rbp, rbp
+0024E3956 74 04                            je       0x1424e395c
+0024E3958 44 01 7d 30                      add      dword ptr [rbp + 0x30], r15d
+0024E395C 48 83 c3 04                      add      rbx, 4
+0024E3960 48 3b de                         cmp      rbx, rsi
+0024E3963 74 13                            je       0x1424e3978
+0024E3965 4c 8b 0d 14 aa 83 03             mov      r9, qword ptr [rip + 0x383aa14]
+0024E396C 48 8b 15 05 aa 83 03             mov      rdx, qword ptr [rip + 0x383aa05]
+0024E3973 e9 3b ff ff ff                   jmp      0x1424e38b3
+0024E3978 4c 8b 1d c1 b9 83 03             mov      r11, qword ptr [rip + 0x383b9c1]
+0024E397F 48 8b 3d b2 b9 83 03             mov      rdi, qword ptr [rip + 0x383b9b2]
+0024E3986 eb 05                            jmp      0x1424e398d
+0024E3988 4c 8b 6c 24 70                   mov      r13, qword ptr [rsp + 0x70]
+0024E398D 8b 84 24 88 00 00 00             mov      eax, dword ptr [rsp + 0x88]
+0024E3994 4c 8b 7c 24 30                   mov      r15, qword ptr [rsp + 0x30]
+0024E3999 41 03 c4                         add      eax, r12d
+0024E399C 4c 8b 74 24 38                   mov      r14, qword ptr [rsp + 0x38]
+0024E39A1 4c 8b 64 24 48                   mov      r12, qword ptr [rsp + 0x48]
+0024E39A6 48 8b 74 24 58                   mov      rsi, qword ptr [rsp + 0x58]
+0024E39AB 48 8b 6c 24 60                   mov      rbp, qword ptr [rsp + 0x60]
+0024E39B0 48 8b 5c 24 78                   mov      rbx, qword ptr [rsp + 0x78]
+0024E39B5 85 c0                            test     eax, eax
+0024E39B7 0f 8e 90 00 00 00                jle      0x1424e3a4d
+0024E39BD 49 8b 45 38                      mov      rax, qword ptr [r13 + 0x38]
+0024E39C1 49 63 4d 44                      movsxd   rcx, dword ptr [r13 + 0x44]
+0024E39C5 48 8d 0c 88                      lea      rcx, [rax + rcx*4]
+0024E39C9 48 3b c1                         cmp      rax, rcx
+0024E39CC 74 58                            je       0x1424e3a26
+0024E39CE 45 33 d2                         xor      r10d, r10d
+0024E39D1 4d 85 db                         test     r11, r11
+0024E39D4 74 2c                            je       0x1424e3a02
+0024E39D6 44 8b 08                         mov      r9d, dword ptr [rax]
+0024E39D9 41 8b d1                         mov      edx, r9d
+0024E39DC 81 e2 ff ff ff 00                and      edx, 0xffffff
+0024E39E2 41 3b 53 2c                      cmp      edx, dword ptr [r11 + 0x2c]
+0024E39E6 73 1a                            jae      0x1424e3a02
+0024E39E8 44 8b c2                         mov      r8d, edx
+0024E39EB 49 8b 53 20                      mov      rdx, qword ptr [r11 + 0x20]
+0024E39EF 4d 03 c0                         add      r8, r8
+0024E39F2 4a 8b 54 c2 08                   mov      rdx, qword ptr [rdx + r8*8 + 8]
+0024E39F7 48 85 d2                         test     rdx, rdx
+0024E39FA 74 06                            je       0x1424e3a02
+0024E39FC 44 39 4a 10                      cmp      dword ptr [rdx + 0x10], r9d
+0024E3A00 74 03                            je       0x1424e3a05
+0024E3A02 48 8b d7                         mov      rdx, rdi
+0024E3A05 81 7a 14 67 52 72 41             cmp      dword ptr [rdx + 0x14], 0x41725267
+0024E3A0C 75 0a                            jne      0x1424e3a18
+0024E3A0E 83 7a 10 ff                      cmp      dword ptr [rdx + 0x10], -1
+0024E3A12 74 04                            je       0x1424e3a18
+0024E3A14 44 03 52 38                      add      r10d, dword ptr [rdx + 0x38]
+0024E3A18 48 83 c0 04                      add      rax, 4
+0024E3A1C 48 3b c1                         cmp      rax, rcx
+0024E3A1F 75 b0                            jne      0x1424e39d1
+0024E3A21 45 85 d2                         test     r10d, r10d
+0024E3A24 7f 27                            jg       0x1424e3a4d
+0024E3A26 41 8b 45 10                      mov      eax, dword ptr [r13 + 0x10]
+0024E3A2A 48 8d 54 24 70                   lea      rdx, [rsp + 0x70]
+0024E3A2F 89 44 24 70                      mov      dword ptr [rsp + 0x70], eax
+0024E3A33 48 8b 05 16 52 78 03             mov      rax, qword ptr [rip + 0x3785216]
+0024E3A3A 48 8b 88 a0 00 00 00             mov      rcx, qword ptr [rax + 0xa0]
+0024E3A41 48 81 c1 a8 a5 02 00             add      rcx, 0x2a5a8
+0024E3A48 e8 c3 f2 61 fe                   call     0x140b02d10
+0024E3A4D 4c 8b 6c 24 40                   mov      r13, qword ptr [rsp + 0x40]
+0024E3A52 48 8b 7c 24 50                   mov      rdi, qword ptr [rsp + 0x50]
+0024E3A57 48 83 c4 68                      add      rsp, 0x68
+0024E3A5B c3                               ret      

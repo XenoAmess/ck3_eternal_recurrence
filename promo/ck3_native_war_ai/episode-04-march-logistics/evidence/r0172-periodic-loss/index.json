@@ -1,0 +1,365 @@
+{
+  "schema": "r0172-periodic-loss-evidence-v1",
+  "created_utc": "2026-10-05T11:54:31.098587+00:00",
+  "source_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+  "inputs": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\raw\\before\\strength.json",
+      "size_bytes": 79196,
+      "sha256": "68ae8ba95c91708d2bbed88daa3177958d98da63a43830fe706ea5ab21756c0d",
+      "relative_path": "raw/before/strength.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\raw\\before\\strength.json",
+        "size_bytes": 79196,
+        "sha256": "68ae8ba95c91708d2bbed88daa3177958d98da63a43830fe706ea5ab21756c0d"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\raw\\before\\after.json",
+      "size_bytes": 36233,
+      "sha256": "984c040345a7448686dfd43659f7e57dba581f09f1cab668dcf9c2861b82a1d1",
+      "relative_path": "raw/before/after.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\raw\\before\\after.json",
+        "size_bytes": 36233,
+        "sha256": "984c040345a7448686dfd43659f7e57dba581f09f1cab668dcf9c2861b82a1d1"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\raw\\before\\before.json",
+      "size_bytes": 36233,
+      "sha256": "b683ff1cbb38791dae6a29b884bc20594d48c2bcc57c433c7bf7a3ada40c9499",
+      "relative_path": "raw/before/before.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\raw\\before\\before.json",
+        "size_bytes": 36233,
+        "sha256": "b683ff1cbb38791dae6a29b884bc20594d48c2bcc57c433c7bf7a3ada40c9499"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\raw\\before\\summary.json",
+      "size_bytes": 3572,
+      "sha256": "fb7a0670ed92b1e48137b836ab4332638e3ea3cfa257534c145bfb3aa1678e11",
+      "relative_path": "raw/before/summary.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\raw\\before\\summary.json",
+        "size_bytes": 3572,
+        "sha256": "fb7a0670ed92b1e48137b836ab4332638e3ea3cfa257534c145bfb3aa1678e11"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\raw\\after\\strength.json",
+      "size_bytes": 79183,
+      "sha256": "12044ebdc8c48bc4e9c7284aa010c91c5f2d42497a376197af46666820345b35",
+      "relative_path": "raw/after/strength.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\raw\\after\\strength.json",
+        "size_bytes": 79183,
+        "sha256": "12044ebdc8c48bc4e9c7284aa010c91c5f2d42497a376197af46666820345b35"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\raw\\after\\after.json",
+      "size_bytes": 36233,
+      "sha256": "ff04dfa90f9087a51b125cadc8efc130b5c43048e0a576fcadbedc8e52150be5",
+      "relative_path": "raw/after/after.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\raw\\after\\after.json",
+        "size_bytes": 36233,
+        "sha256": "ff04dfa90f9087a51b125cadc8efc130b5c43048e0a576fcadbedc8e52150be5"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\raw\\after\\before.json",
+      "size_bytes": 36233,
+      "sha256": "1dc98b77e2ddb275dff72f3ef8ca32bffb17e78c561dbfff5c1c0a6fe7444db5",
+      "relative_path": "raw/after/before.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\raw\\after\\before.json",
+        "size_bytes": 36233,
+        "sha256": "1dc98b77e2ddb275dff72f3ef8ca32bffb17e78c561dbfff5c1c0a6fe7444db5"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\raw\\after\\summary.json",
+      "size_bytes": 3572,
+      "sha256": "211f12e5d4c429aec720e14291823597241d6b983deb0b28d26110fc27a696c3",
+      "relative_path": "raw/after/summary.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\raw\\after\\summary.json",
+        "size_bytes": 3572,
+        "sha256": "211f12e5d4c429aec720e14291823597241d6b983deb0b28d26110fc27a696c3"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\source\\a08-build-ROOT-DELIVERY.json",
+      "size_bytes": 9367,
+      "sha256": "36a28c850b4f3bf31e68b60528bea89deee12f00e34115f658c756a7f5ce4e91",
+      "relative_path": "source/a08-build-ROOT-DELIVERY.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\source\\a08-build-ROOT-DELIVERY.json",
+        "size_bytes": 9367,
+        "sha256": "36a28c850b4f3bf31e68b60528bea89deee12f00e34115f658c756a7f5ce4e91"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\source\\army-attrition-soldier-writeback-12003.md",
+      "size_bytes": 11882,
+      "sha256": "75d85c2385de939c454111cb2cb99111bcf287f736ac3670accc875897b88241",
+      "relative_path": "source/army-attrition-soldier-writeback-12003.md",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\source\\army-attrition-soldier-writeback-12003.md",
+        "size_bytes": 11882,
+        "sha256": "75d85c2385de939c454111cb2cb99111bcf287f736ac3670accc875897b88241"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\source\\army-loss-executor.txt",
+      "size_bytes": 29327,
+      "sha256": "da53c3c777d69aca2f52108de56d5807f4eb49776f13ff8cf9b7d8353a4f8ff4",
+      "relative_path": "source/army-loss-executor.txt",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\source\\army-loss-executor.txt",
+        "size_bytes": 29327,
+        "sha256": "da53c3c777d69aca2f52108de56d5807f4eb49776f13ff8cf9b7d8353a4f8ff4"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\source\\army-supply-depletion-update-and-state-12003.md",
+      "size_bytes": 5493,
+      "sha256": "d21960a44df01a3553280f879cc80be30b01e1111d71a55991b03b75989d9e68",
+      "relative_path": "source/army-supply-depletion-update-and-state-12003.md",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\source\\army-supply-depletion-update-and-state-12003.md",
+        "size_bytes": 5493,
+        "sha256": "d21960a44df01a3553280f879cc80be30b01e1111d71a55991b03b75989d9e68"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\source\\regiment-loss-writer.txt",
+      "size_bytes": 13876,
+      "sha256": "117ae7d2e10b38b0acefd1a3cc9e3a5267a448ee3281cb3fa87bdd567dc32eff",
+      "relative_path": "source/regiment-loss-writer.txt",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\source\\regiment-loss-writer.txt",
+        "size_bytes": 13876,
+        "sha256": "117ae7d2e10b38b0acefd1a3cc9e3a5267a448ee3281cb3fa87bdd567dc32eff"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\periodic-analysis.json",
+      "size_bytes": 49959,
+      "sha256": "40a8b4ee9e3690555c517b9ce07c142a469aef56f82287da1a6812df03b4e1c5",
+      "relative_path": "periodic-analysis.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\periodic-pair-a01\\REPORT.json",
+        "size_bytes": 49959,
+        "sha256": "40a8b4ee9e3690555c517b9ce07c142a469aef56f82287da1a6812df03b4e1c5"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\boundaries\\boarding\\before\\strength.json",
+      "size_bytes": 79179,
+      "sha256": "ac61969cf6810812b5789a5d4edcce7a9b470016054299a530e5fec1335de985",
+      "relative_path": "boundaries/boarding/before/strength.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch02-a01-i07-inspect\\strength.json",
+        "size_bytes": 79179,
+        "sha256": "ac61969cf6810812b5789a5d4edcce7a9b470016054299a530e5fec1335de985"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\boundaries\\boarding\\before\\after.json",
+      "size_bytes": 36174,
+      "sha256": "59118b20e42496f0badf375384b432180ff36783cc52491961d27da09ad3b05d",
+      "relative_path": "boundaries/boarding/before/after.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch02-a01-i07-inspect\\after.json",
+        "size_bytes": 36174,
+        "sha256": "59118b20e42496f0badf375384b432180ff36783cc52491961d27da09ad3b05d"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\boundaries\\boarding\\after\\strength.json",
+      "size_bytes": 79181,
+      "sha256": "e6a80555829ef34d734c92cb2d5fa9f116f73d5815f0ac040496ff871d5c3a14",
+      "relative_path": "boundaries/boarding/after/strength.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-day32-main-only-a01\\strength.json",
+        "size_bytes": 79181,
+        "sha256": "e6a80555829ef34d734c92cb2d5fa9f116f73d5815f0ac040496ff871d5c3a14"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\boundaries\\boarding\\after\\after.json",
+      "size_bytes": 231147,
+      "sha256": "d4dbc044c6e9d62c5c6c95e5e96695f41564be1bb714f3c43bda33fe6d88d3f5",
+      "relative_path": "boundaries/boarding/after/after.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-day32-main-only-a01\\after.json",
+        "size_bytes": 231147,
+        "sha256": "d4dbc044c6e9d62c5c6c95e5e96695f41564be1bb714f3c43bda33fe6d88d3f5"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\boundaries\\landing\\before\\strength.json",
+      "size_bytes": 79180,
+      "sha256": "394f2d71ca277e5e846fc6a34faec2d1ea332afc720ec86ddf9f6a763b9054f0",
+      "relative_path": "boundaries/landing/before/strength.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch03-a01-i05-inspect\\strength.json",
+        "size_bytes": 79180,
+        "sha256": "394f2d71ca277e5e846fc6a34faec2d1ea332afc720ec86ddf9f6a763b9054f0"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\boundaries\\landing\\before\\after.json",
+      "size_bytes": 36171,
+      "sha256": "ec2246ea2f4b3a21bcc3dfa46becb44e5c5dea5cb78db8549ae44c59bcc7f028",
+      "relative_path": "boundaries/landing/before/after.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch03-a01-i05-inspect\\after.json",
+        "size_bytes": 36171,
+        "sha256": "ec2246ea2f4b3a21bcc3dfa46becb44e5c5dea5cb78db8549ae44c59bcc7f028"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\boundaries\\landing\\after\\strength.json",
+      "size_bytes": 79048,
+      "sha256": "fca0d7fd18cab8fa932baa0826d37f0c34f87ca0040136a38c646846d2b467b9",
+      "relative_path": "boundaries/landing/after/strength.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch03-a01-i06-inspect\\strength.json",
+        "size_bytes": 79048,
+        "sha256": "fca0d7fd18cab8fa932baa0826d37f0c34f87ca0040136a38c646846d2b467b9"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\boundaries\\landing\\after\\after.json",
+      "size_bytes": 34821,
+      "sha256": "6d0f8fbb91d822ffca5252649a1cb019ef77298bbebb615ac458257ca6de274f",
+      "relative_path": "boundaries/landing/after/after.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch03-a01-i06-inspect\\after.json",
+        "size_bytes": 34821,
+        "sha256": "6d0f8fbb91d822ffca5252649a1cb019ef77298bbebb615ac458257ca6de274f"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\source\\r0172-sdk-ready.json",
+      "size_bytes": 40072,
+      "sha256": "22937b1fabe81120ef05382a2cb87761a346296a307b48e80ecb779ed76f0593",
+      "relative_path": "source/r0172-sdk-ready.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0172-a01\\sdk-ready.json",
+        "size_bytes": 40072,
+        "sha256": "22937b1fabe81120ef05382a2cb87761a346296a307b48e80ecb779ed76f0593"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\source\\r0172-bootstrap-result.json",
+      "size_bytes": 13796,
+      "sha256": "d80fe060915ddcb69589b744791399912ea3451151cf37d83c3dc7910f5057fe",
+      "relative_path": "source/r0172-bootstrap-result.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0172-a01\\bootstrap-result.json",
+        "size_bytes": 13796,
+        "sha256": "d80fe060915ddcb69589b744791399912ea3451151cf37d83c3dc7910f5057fe"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\source\\r0172-protocol.json",
+      "size_bytes": 4729,
+      "sha256": "4c78679fee6f75fe1d5ad2a846fc910cd565c0771fbe59081ab5d84c0f0a6017",
+      "relative_path": "source/r0172-protocol.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-protocol-freeze-a01\\protocol.json",
+        "size_bytes": 4729,
+        "sha256": "4c78679fee6f75fe1d5ad2a846fc910cd565c0771fbe59081ab5d84c0f0a6017"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\source\\r0172-final-snapshot.json",
+      "size_bytes": 34941,
+      "sha256": "a324059730fcfd1bb0b3a1d50329eef9c24c2a93d108b20ad87f50cbb16d6b88",
+      "relative_path": "source/r0172-final-snapshot.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-finish-and-stop-a01\\final-snapshot.json",
+        "size_bytes": 34941,
+        "sha256": "a324059730fcfd1bb0b3a1d50329eef9c24c2a93d108b20ad87f50cbb16d6b88"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\source\\r0172-batch02-result.json",
+      "size_bytes": 17846,
+      "sha256": "bb5213cdd29c576e408c0f69c2659e82e016aecaccfc7d8afed401c9d66e6202",
+      "relative_path": "source/r0172-batch02-result.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch02-a01\\result.json",
+        "size_bytes": 17846,
+        "sha256": "bb5213cdd29c576e408c0f69c2659e82e016aecaccfc7d8afed401c9d66e6202"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\source\\r0172-day32-original-query-with-unavailable190.json",
+      "size_bytes": 89428,
+      "sha256": "1c063918d042b2230fcd24c472b2aa2cee28dd68f330b4210117f29fa6833a62",
+      "relative_path": "source/r0172-day32-original-query-with-unavailable190.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch02-a01-i08-inspect\\strength.json",
+        "size_bytes": 89428,
+        "sha256": "1c063918d042b2230fcd24c472b2aa2cee28dd68f330b4210117f29fa6833a62"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\source\\arrival-actual-checkpoint-pin.json",
+      "size_bytes": 388,
+      "sha256": "b68bfb5ce26275280a2146899efa2089b6004401a89b4f03b0cabf4971852970",
+      "relative_path": "source/arrival-actual-checkpoint-pin.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0172-a01\\attempts\\r0172-whole-arrival-common-checkpoint-a01\\actual-checkpoint-pin.json",
+        "size_bytes": 388,
+        "sha256": "b68bfb5ce26275280a2146899efa2089b6004401a89b4f03b0cabf4971852970"
+      }
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\source\\arrival-checkpoint-result.json",
+      "size_bytes": 2563,
+      "sha256": "ec95ec6e50325530760b7e3ae4dc260a1b3243b2120915da240bdc99d3bbb5ef",
+      "relative_path": "source/arrival-checkpoint-result.json",
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0172-a01\\attempts\\r0172-whole-arrival-common-checkpoint-a01\\result.json",
+        "size_bytes": 2563,
+        "sha256": "ec95ec6e50325530760b7e3ae4dc260a1b3243b2120915da240bdc99d3bbb5ef"
+      }
+    },
+    {
+      "relative_path": "neutral-boundaries.json",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\neutral-boundaries.json",
+      "size_bytes": 10786,
+      "sha256": "b34ed8c78f746aa3ebc2fd3d868a9462e23576be52a51eba0cb5bfd53ecb493c"
+    },
+    {
+      "relative_path": "verify_evidence.py",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\verify_evidence.py",
+      "size_bytes": 12903,
+      "sha256": "9f5106aab822b2bb5b700bff0c3122e7e9e4b2e2e7e2daae710c5ba7f5a73d57"
+    },
+    {
+      "relative_path": "README.md",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0172-live-loss-analysis-a01\\portable-candidate-a01\\package\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\README.md",
+      "size_bytes": 1627,
+      "sha256": "df0310854b08047a4cf5a69454b889392f4205f7c33a34920d187d6a31083335"
+    }
+  ],
+  "claim_boundaries": {
+    "actual_net_soldier_loss": 67,
+    "source_informed_conditional_replay_matches": true,
+    "applied_loss_ledger": false,
+    "zero_hidden_refill": false,
+    "death_count": false,
+    "starvation": false,
+    "county_loss_applied": false,
+    "film_signoff": false
+  }
+}

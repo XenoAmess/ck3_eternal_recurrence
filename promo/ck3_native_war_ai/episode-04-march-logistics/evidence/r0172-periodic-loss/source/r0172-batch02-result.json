@@ -1,0 +1,1008 @@
+{
+  "status": "STOP",
+  "reason": "STOP:KeyError:'regiment_strengths'",
+  "observations": [
+    {
+      "i": 1,
+      "directory": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch02-a01-i01-inspect",
+      "actual_raw": 53147832,
+      "actual_days_used": 19.0,
+      "army_shapes": {
+        "0": {
+          "army_id": 0,
+          "regiments": [
+            [
+              0,
+              1000
+            ],
+            [
+              1,
+              800
+            ],
+            [
+              2,
+              100
+            ],
+            [
+              3,
+              20
+            ],
+            [
+              4,
+              800
+            ],
+            [
+              5,
+              400
+            ],
+            [
+              6,
+              20
+            ],
+            [
+              7,
+              800
+            ],
+            [
+              8,
+              100
+            ],
+            [
+              9,
+              20
+            ],
+            [
+              10,
+              800
+            ],
+            [
+              11,
+              400
+            ],
+            [
+              12,
+              400
+            ],
+            [
+              50,
+              277
+            ],
+            [
+              51,
+              38
+            ],
+            [
+              52,
+              200
+            ],
+            [
+              53,
+              10
+            ],
+            [
+              54,
+              321
+            ],
+            [
+              55,
+              6
+            ],
+            [
+              56,
+              1
+            ],
+            [
+              57,
+              1
+            ],
+            [
+              58,
+              1
+            ],
+            [
+              59,
+              1
+            ],
+            [
+              60,
+              1
+            ],
+            [
+              61,
+              71
+            ],
+            [
+              62,
+              70
+            ],
+            [
+              82,
+              89
+            ]
+          ],
+          "current_soldiers": 6679,
+          "supply": 11037716,
+          "anchors": [
+            [
+              "army_update_clock_v1",
+              53147760
+            ]
+          ]
+        }
+      },
+      "locations": [
+        {
+          "army_id": 0,
+          "current_province_id": 1506,
+          "route_province_ids": [
+            725,
+            1009,
+            2174
+          ],
+          "army_state": "sieging",
+          "in_combat": false,
+          "retreating": false
+        }
+      ]
+    },
+    {
+      "i": 2,
+      "directory": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch02-a01-i02-inspect",
+      "actual_raw": 53147880,
+      "actual_days_used": 21.0,
+      "army_shapes": {
+        "0": {
+          "army_id": 0,
+          "regiments": [
+            [
+              0,
+              1000
+            ],
+            [
+              1,
+              800
+            ],
+            [
+              2,
+              100
+            ],
+            [
+              3,
+              20
+            ],
+            [
+              4,
+              800
+            ],
+            [
+              5,
+              400
+            ],
+            [
+              6,
+              20
+            ],
+            [
+              7,
+              800
+            ],
+            [
+              8,
+              100
+            ],
+            [
+              9,
+              20
+            ],
+            [
+              10,
+              800
+            ],
+            [
+              11,
+              400
+            ],
+            [
+              12,
+              400
+            ],
+            [
+              50,
+              277
+            ],
+            [
+              51,
+              38
+            ],
+            [
+              52,
+              200
+            ],
+            [
+              53,
+              10
+            ],
+            [
+              54,
+              321
+            ],
+            [
+              55,
+              6
+            ],
+            [
+              56,
+              1
+            ],
+            [
+              57,
+              1
+            ],
+            [
+              58,
+              1
+            ],
+            [
+              59,
+              1
+            ],
+            [
+              60,
+              1
+            ],
+            [
+              61,
+              71
+            ],
+            [
+              62,
+              70
+            ],
+            [
+              82,
+              89
+            ]
+          ],
+          "current_soldiers": 6679,
+          "supply": 11037716,
+          "anchors": [
+            [
+              "army_update_clock_v1",
+              53147760
+            ]
+          ]
+        }
+      },
+      "locations": [
+        {
+          "army_id": 0,
+          "current_province_id": 1506,
+          "route_province_ids": [
+            725,
+            1009,
+            2174
+          ],
+          "army_state": "sieging",
+          "in_combat": false,
+          "retreating": false
+        }
+      ]
+    },
+    {
+      "i": 3,
+      "directory": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch02-a01-i03-inspect",
+      "actual_raw": 53147928,
+      "actual_days_used": 23.0,
+      "army_shapes": {
+        "0": {
+          "army_id": 0,
+          "regiments": [
+            [
+              0,
+              1000
+            ],
+            [
+              1,
+              800
+            ],
+            [
+              2,
+              100
+            ],
+            [
+              3,
+              20
+            ],
+            [
+              4,
+              800
+            ],
+            [
+              5,
+              400
+            ],
+            [
+              6,
+              20
+            ],
+            [
+              7,
+              800
+            ],
+            [
+              8,
+              100
+            ],
+            [
+              9,
+              20
+            ],
+            [
+              10,
+              800
+            ],
+            [
+              11,
+              400
+            ],
+            [
+              12,
+              400
+            ],
+            [
+              50,
+              277
+            ],
+            [
+              51,
+              38
+            ],
+            [
+              52,
+              200
+            ],
+            [
+              53,
+              10
+            ],
+            [
+              54,
+              321
+            ],
+            [
+              55,
+              6
+            ],
+            [
+              56,
+              1
+            ],
+            [
+              57,
+              1
+            ],
+            [
+              58,
+              1
+            ],
+            [
+              59,
+              1
+            ],
+            [
+              60,
+              1
+            ],
+            [
+              61,
+              71
+            ],
+            [
+              62,
+              70
+            ],
+            [
+              82,
+              89
+            ]
+          ],
+          "current_soldiers": 6679,
+          "supply": 11037716,
+          "anchors": [
+            [
+              "army_update_clock_v1",
+              53147760
+            ]
+          ]
+        }
+      },
+      "locations": [
+        {
+          "army_id": 0,
+          "current_province_id": 1506,
+          "route_province_ids": [
+            725,
+            1009,
+            2174
+          ],
+          "army_state": "sieging",
+          "in_combat": false,
+          "retreating": false
+        }
+      ]
+    },
+    {
+      "i": 4,
+      "directory": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch02-a01-i04-inspect",
+      "actual_raw": 53147952,
+      "actual_days_used": 24.0,
+      "army_shapes": {
+        "0": {
+          "army_id": 0,
+          "regiments": [
+            [
+              0,
+              1000
+            ],
+            [
+              1,
+              800
+            ],
+            [
+              2,
+              100
+            ],
+            [
+              3,
+              20
+            ],
+            [
+              4,
+              800
+            ],
+            [
+              5,
+              400
+            ],
+            [
+              6,
+              20
+            ],
+            [
+              7,
+              800
+            ],
+            [
+              8,
+              100
+            ],
+            [
+              9,
+              20
+            ],
+            [
+              10,
+              800
+            ],
+            [
+              11,
+              400
+            ],
+            [
+              12,
+              400
+            ],
+            [
+              50,
+              277
+            ],
+            [
+              51,
+              38
+            ],
+            [
+              52,
+              200
+            ],
+            [
+              53,
+              10
+            ],
+            [
+              54,
+              321
+            ],
+            [
+              55,
+              6
+            ],
+            [
+              56,
+              1
+            ],
+            [
+              57,
+              1
+            ],
+            [
+              58,
+              1
+            ],
+            [
+              59,
+              1
+            ],
+            [
+              60,
+              1
+            ],
+            [
+              61,
+              71
+            ],
+            [
+              62,
+              70
+            ],
+            [
+              82,
+              89
+            ]
+          ],
+          "current_soldiers": 6679,
+          "supply": 11037716,
+          "anchors": [
+            [
+              "army_update_clock_v1",
+              53147760
+            ]
+          ]
+        }
+      },
+      "locations": [
+        {
+          "army_id": 0,
+          "current_province_id": 1506,
+          "route_province_ids": [
+            725,
+            1009,
+            2174
+          ],
+          "army_state": "sieging",
+          "in_combat": false,
+          "retreating": false
+        }
+      ]
+    },
+    {
+      "i": 5,
+      "directory": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch02-a01-i05-inspect",
+      "actual_raw": 53148000,
+      "actual_days_used": 26.0,
+      "army_shapes": {
+        "0": {
+          "army_id": 0,
+          "regiments": [
+            [
+              0,
+              1000
+            ],
+            [
+              1,
+              800
+            ],
+            [
+              2,
+              100
+            ],
+            [
+              3,
+              20
+            ],
+            [
+              4,
+              800
+            ],
+            [
+              5,
+              400
+            ],
+            [
+              6,
+              20
+            ],
+            [
+              7,
+              800
+            ],
+            [
+              8,
+              100
+            ],
+            [
+              9,
+              20
+            ],
+            [
+              10,
+              800
+            ],
+            [
+              11,
+              400
+            ],
+            [
+              12,
+              400
+            ],
+            [
+              50,
+              277
+            ],
+            [
+              51,
+              38
+            ],
+            [
+              52,
+              200
+            ],
+            [
+              53,
+              10
+            ],
+            [
+              54,
+              321
+            ],
+            [
+              55,
+              6
+            ],
+            [
+              56,
+              1
+            ],
+            [
+              57,
+              1
+            ],
+            [
+              58,
+              1
+            ],
+            [
+              59,
+              1
+            ],
+            [
+              60,
+              1
+            ],
+            [
+              61,
+              71
+            ],
+            [
+              62,
+              70
+            ],
+            [
+              82,
+              89
+            ]
+          ],
+          "current_soldiers": 6679,
+          "supply": 11037716,
+          "anchors": [
+            [
+              "army_update_clock_v1",
+              53147760
+            ]
+          ]
+        }
+      },
+      "locations": [
+        {
+          "army_id": 0,
+          "current_province_id": 1506,
+          "route_province_ids": [
+            725,
+            1009,
+            2174
+          ],
+          "army_state": "sieging",
+          "in_combat": false,
+          "retreating": false
+        }
+      ]
+    },
+    {
+      "i": 6,
+      "directory": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch02-a01-i06-inspect",
+      "actual_raw": 53148048,
+      "actual_days_used": 28.0,
+      "army_shapes": {
+        "0": {
+          "army_id": 0,
+          "regiments": [
+            [
+              0,
+              1000
+            ],
+            [
+              1,
+              800
+            ],
+            [
+              2,
+              100
+            ],
+            [
+              3,
+              20
+            ],
+            [
+              4,
+              800
+            ],
+            [
+              5,
+              400
+            ],
+            [
+              6,
+              20
+            ],
+            [
+              7,
+              800
+            ],
+            [
+              8,
+              100
+            ],
+            [
+              9,
+              20
+            ],
+            [
+              10,
+              800
+            ],
+            [
+              11,
+              400
+            ],
+            [
+              12,
+              400
+            ],
+            [
+              50,
+              277
+            ],
+            [
+              51,
+              38
+            ],
+            [
+              52,
+              200
+            ],
+            [
+              53,
+              10
+            ],
+            [
+              54,
+              321
+            ],
+            [
+              55,
+              6
+            ],
+            [
+              56,
+              1
+            ],
+            [
+              57,
+              1
+            ],
+            [
+              58,
+              1
+            ],
+            [
+              59,
+              1
+            ],
+            [
+              60,
+              1
+            ],
+            [
+              61,
+              71
+            ],
+            [
+              62,
+              70
+            ],
+            [
+              82,
+              89
+            ]
+          ],
+          "current_soldiers": 6679,
+          "supply": 11037716,
+          "anchors": [
+            [
+              "army_update_clock_v1",
+              53147760
+            ]
+          ]
+        }
+      },
+      "locations": [
+        {
+          "army_id": 0,
+          "current_province_id": 1506,
+          "route_province_ids": [
+            725,
+            1009,
+            2174
+          ],
+          "army_state": "sieging",
+          "in_combat": false,
+          "retreating": false
+        }
+      ]
+    },
+    {
+      "i": 7,
+      "directory": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0172-batch02-a01-i07-inspect",
+      "actual_raw": 53148096,
+      "actual_days_used": 30.0,
+      "army_shapes": {
+        "0": {
+          "army_id": 0,
+          "regiments": [
+            [
+              0,
+              1000
+            ],
+            [
+              1,
+              800
+            ],
+            [
+              2,
+              100
+            ],
+            [
+              3,
+              20
+            ],
+            [
+              4,
+              800
+            ],
+            [
+              5,
+              400
+            ],
+            [
+              6,
+              20
+            ],
+            [
+              7,
+              800
+            ],
+            [
+              8,
+              100
+            ],
+            [
+              9,
+              20
+            ],
+            [
+              10,
+              800
+            ],
+            [
+              11,
+              400
+            ],
+            [
+              12,
+              400
+            ],
+            [
+              50,
+              277
+            ],
+            [
+              51,
+              38
+            ],
+            [
+              52,
+              200
+            ],
+            [
+              53,
+              10
+            ],
+            [
+              54,
+              321
+            ],
+            [
+              55,
+              6
+            ],
+            [
+              56,
+              1
+            ],
+            [
+              57,
+              1
+            ],
+            [
+              58,
+              1
+            ],
+            [
+              59,
+              1
+            ],
+            [
+              60,
+              1
+            ],
+            [
+              61,
+              71
+            ],
+            [
+              62,
+              70
+            ],
+            [
+              82,
+              89
+            ]
+          ],
+          "current_soldiers": 6679,
+          "supply": 11037716,
+          "anchors": [
+            [
+              "army_update_clock_v1",
+              53147760
+            ]
+          ]
+        }
+      },
+      "locations": [
+        {
+          "army_id": 0,
+          "current_province_id": 1506,
+          "route_province_ids": [
+            725,
+            1009,
+            2174
+          ],
+          "army_state": "sieging",
+          "in_combat": false,
+          "retreating": false
+        }
+      ]
+    }
+  ],
+  "blind_retry_allowed": false
+}

@@ -1,0 +1,433 @@
+{
+  "schema": "r0172-neutral-route-boundaries-v1",
+  "boundaries": [
+    {
+      "name": "boarding",
+      "before_date_raw": 53148096,
+      "after_date_raw": 53148144,
+      "before_native_revision": 72,
+      "after_native_revision": 76,
+      "before_army": {
+        "army_id": 0,
+        "owner_character_id": 33388,
+        "soldiers": null,
+        "current_province_id": 1506,
+        "move_target_province_id": 2174,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          725,
+          1009,
+          2174
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 3,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "sieging",
+        "army_state_code": 3,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      "after_army": {
+        "army_id": 0,
+        "owner_character_id": 33388,
+        "soldiers": null,
+        "current_province_id": 725,
+        "move_target_province_id": 2174,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          1009,
+          2174
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 2,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "embarked",
+        "army_state_code": 4,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      "soldiers": 6679,
+      "maximum": 6747,
+      "actual_reg_rows_exact_same": true,
+      "data_identity_order_same": true,
+      "data_current_effective_max_same": true,
+      "before_supply": 11037716,
+      "after_supply": 11037716,
+      "before_anchor": 53147760,
+      "after_anchor": 53147760,
+      "before_condition": {
+        "status": "available",
+        "source": "current_stored_route_first_province",
+        "unavailable_reason": null,
+        "actor_character_id": 33388,
+        "source_province_id": 1506,
+        "target_province_id": 725,
+        "mode": 1,
+        "passes": false
+      },
+      "after_condition": {
+        "status": "available",
+        "source": "current_stored_route_first_province",
+        "unavailable_reason": null,
+        "actor_character_id": 33388,
+        "source_province_id": 725,
+        "target_province_id": 1009,
+        "mode": 1,
+        "passes": false
+      },
+      "data_other_field_changes": [],
+      "boundary": "Neutral unchanged endpoint integers; not a trace proving no executor/refill inside interval. Landing changes replenishment permissions."
+    },
+    {
+      "name": "landing",
+      "before_date_raw": 53148384,
+      "after_date_raw": 53148432,
+      "before_native_revision": 97,
+      "after_native_revision": 102,
+      "before_army": {
+        "army_id": 0,
+        "owner_character_id": 33388,
+        "soldiers": null,
+        "current_province_id": 1009,
+        "move_target_province_id": 2174,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          2174
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 1,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "embarked",
+        "army_state_code": 4,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      "after_army": {
+        "army_id": 0,
+        "owner_character_id": 33388,
+        "soldiers": null,
+        "current_province_id": 2174,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "regular",
+        "army_state_code": 1,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      "soldiers": 6679,
+      "maximum": 6747,
+      "actual_reg_rows_exact_same": true,
+      "data_identity_order_same": true,
+      "data_current_effective_max_same": true,
+      "before_supply": 11037716,
+      "after_supply": 11037716,
+      "before_anchor": 53147760,
+      "after_anchor": 53147760,
+      "before_condition": {
+        "status": "available",
+        "source": "current_stored_route_first_province",
+        "unavailable_reason": null,
+        "actor_character_id": 33388,
+        "source_province_id": 1009,
+        "target_province_id": 2174,
+        "mode": 1,
+        "passes": false
+      },
+      "after_condition": {
+        "status": "unavailable",
+        "source": "current_stored_route_first_province",
+        "unavailable_reason": "no_stored_route",
+        "actor_character_id": null,
+        "source_province_id": null,
+        "target_province_id": null,
+        "mode": null,
+        "passes": null
+      },
+      "data_other_field_changes": [
+        {
+          "identity": [
+            0,
+            0,
+            15158,
+            0
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            1,
+            0,
+            15159,
+            0
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            2,
+            0,
+            15160,
+            0
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            4,
+            0,
+            15162,
+            0
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            5,
+            0,
+            15163,
+            0
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            7,
+            0,
+            15165,
+            0
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            8,
+            0,
+            15166,
+            0
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            10,
+            0,
+            15168,
+            0
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            11,
+            0,
+            15169,
+            0
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            12,
+            0,
+            15170,
+            0
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            50,
+            0,
+            2624,
+            1
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            52,
+            0,
+            17948,
+            0
+          ],
+          "fields": {
+            "native_can_replenish": {
+              "before": false,
+              "after": true
+            },
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            53,
+            0,
+            16793680,
+            0
+          ],
+          "fields": {
+            "native_can_replenish": {
+              "before": false,
+              "after": true
+            },
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            54,
+            0,
+            2610,
+            0
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            61,
+            0,
+            10178,
+            1
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            62,
+            0,
+            2620,
+            1
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            82,
+            0,
+            2604,
+            1
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        },
+        {
+          "identity": [
+            82,
+            1,
+            2602,
+            1
+          ],
+          "fields": {
+            "native_chunk_can_replenish": {
+              "before": false,
+              "after": true
+            }
+          }
+        }
+      ],
+      "boundary": "Neutral unchanged endpoint integers; not a trace proving no executor/refill inside interval. Landing changes replenishment permissions."
+    }
+  ],
+  "extra_unit190": "Original query unavailable native_carmy_not_found; main-only query used for exactMain0. Unknown unit not counted as zero.",
+  "claimed_causal_loss_events": 0
+}

@@ -1,0 +1,219 @@
+{
+  "schema": "xar.episode04.county-offline-build.v1",
+  "status": "offline-build-passed; not-deployed",
+  "time_utc": "2026-10-05T09:32:23.958722+00:00",
+  "source_head": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+  "worktree": "C:\\w\\e4countybuilda01",
+  "configuration": "Release",
+  "jobs": 16,
+  "targets": [
+    "xar_ck3_bridge",
+    "xar_ck3_bridge_injector",
+    "xar_ck3_bridge_host"
+  ],
+  "baseline_argv": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-build-a06\\root-argv.json",
+    "bytes": 729,
+    "sha256": "a55f3dd06239f11a66a65f4819721424b10fd8b41ac830c85fd783a25cbe7dc7"
+  },
+  "argv": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\root-argv.json",
+    "bytes": 745,
+    "sha256": "2270d77f0ccd4d9773733eb99bc6291c69782f953c3eda32b4fbd86b8d5de2e5"
+  },
+  "invocation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\build-invocation-a01.json",
+    "bytes": 1917,
+    "sha256": "d38abba92de7425378b6291a48a100515a5250c1e59f27908996dbc284335902"
+  },
+  "source_clean_sha": "40f6a9b63a43e8c3bb023704f13dd17d0129f3c027cb0a76db3ffd54e1f2bd62",
+  "source_tree": "6a224b82107b413171a8135eb57f225ac8159b8b",
+  "source_pins": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\SOURCE-PINS-a01.json",
+    "bytes": 1052697,
+    "sha256": "8fddb0436ad2f23646bb1c15fb97d335fd71158c5a8b449a298f253bd7541186"
+  },
+  "msvc_metadata": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\native-msvc-result.json",
+    "bytes": 1441,
+    "sha256": "275e2a421ce094862118290e9d116c056381b76a5a9b21c37cdae8432e2e7299"
+  },
+  "worktree_create": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\WORKTREE-CREATE-a01.json",
+    "bytes": 1006,
+    "sha256": "1f094255aca7f2fc62e4cef95f7226b5c0a67a0c24903513836a6509f57f7e6c"
+  },
+  "preflight": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\PREFLIGHT-a01.json",
+    "bytes": 1474,
+    "sha256": "6beb2cd517356297ef25c181c05153455697816cccb65c3654fdf5daa553819c"
+  },
+  "external_helpers": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\run_offline_build.py",
+      "bytes": 5180,
+      "sha256": "2f2ff143ed0147fe0ba09285f7c784f3ec586698bf370dafe09720b27bc7c061"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\finish_build_delivery.py",
+      "bytes": 9616,
+      "sha256": "64af7f1f3b9c8a89a4499df2d76c087d818d89d630b10a9752cc7865811f8744"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\create_build_worktree.py",
+      "bytes": 1612,
+      "sha256": "97e6c38d44003f97145da739d48644b17bdca331acde58d28b3773787cf2f663"
+    }
+  ],
+  "free_space_after_bytes": {
+    "C:/": 20661764096,
+    "D:/": 735813632
+  },
+  "process_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\BUILD-PROCESS-RECEIPT-a01.json",
+    "bytes": 657,
+    "sha256": "455410cc573d1182ead2703a42e3abca0678da77be655ff236a26cb19123e6e8"
+  },
+  "logs": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\root-stdout.bin",
+      "bytes": 44422,
+      "sha256": "93b9ec70ed23c425b72fe3f6b6aceaf6ee42c1c968997282f389f02db358283c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\root-stderr.bin",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\msvc-configure.log",
+      "bytes": 618,
+      "sha256": "90a4ccb23a18a871f998bf30bc6123e207fdcac6dac9a9252f245efa1e1ec054"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\msvc-build.log",
+      "bytes": 40876,
+      "sha256": "f9c752420ee424ee607f046df314f861b72b9b3ded760916fb2f67d13666609d"
+    }
+  ],
+  "cmake": {
+    "cache": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\CMakeCache.txt",
+      "bytes": 34096,
+      "sha256": "34710b552a76c4268a2fed24f57b999903349e1af929d7f27a4a29a5e6704e84"
+    },
+    "ninja": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\build.ninja",
+      "bytes": 503076,
+      "sha256": "67e9c96e5ab7329a9df7c15b1d0a26129f3be975460295b09951f92e6e82ee9b"
+    },
+    "index": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\.cmake\\api\\v1\\reply\\index-2026-10-05T09-28-52-0923.json",
+      "bytes": 1265,
+      "sha256": "e5540f9183ac3b3e404818517f5c5fdbf81ae483ca6f29deee80a2021e7cbd42"
+    },
+    "codemodel": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\.cmake\\api\\v1\\reply\\codemodel-v2-b6031d9a62d03e86bd52.json",
+      "bytes": 4662,
+      "sha256": "0fc2be51bffc8eabd5d7996febf119c651f3d79f0fde129d6f7b1c8746a5fe2c"
+    },
+    "targets": [
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge-Release-f0cc84c5564457e06e31.json",
+        "bytes": 41548,
+        "sha256": "d3128110b0a792805e5f08bac5ef2af287555f78fd5a856c9e4b97c7779f963b"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_injector-Release-4b0a2fa00d7512ffbd59.json",
+        "bytes": 3195,
+        "sha256": "40f17de497eb6cff4fb1c775ef9a8a64ade2e819eb689a85a3b0606e61bd6201"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\.cmake\\api\\v1\\reply\\target-xar_ck3_bridge_host-Release-056672cc7d139fa46d90.json",
+        "bytes": 3166,
+        "sha256": "87e4b1f0e441bbeae6e96b4c01f7593341b7d4eb3908d63ec51d51194441ef7d"
+      }
+    ],
+    "actual_cache_required_flags": {
+      "BUILD_TESTING": "OFF",
+      "CMAKE_BUILD_TYPE": "Release",
+      "CMAKE_HOME_DIRECTORY": "C:/w/e4countybuilda01/ck3_autonomous_player/native_bridge",
+      "XAR_CK3_EXECUTABLE_PATH": "C:/SteamLibrary/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+      "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1": "ON"
+    }
+  },
+  "artifacts": [
+    {
+      "target": "xar_ck3_bridge",
+      "target_type": "SHARED_LIBRARY",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\xar_ck3_bridge.dll",
+      "bytes": 5558784,
+      "sha256": "8d4d80249ccdfed0954181df38d81daec9740f809fe59dc6c3e7b6708872cc28",
+      "machine": 34404,
+      "is_dll": true
+    },
+    {
+      "target": "xar_ck3_bridge_injector",
+      "target_type": "EXECUTABLE",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "e2593a71317dbd1697bb9bd5b6ed2dd81c102119c5bd0e232657fcf29dd8d6e1",
+      "machine": 34404,
+      "is_dll": false
+    },
+    {
+      "target": "xar_ck3_bridge_host",
+      "target_type": "EXECUTABLE",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\xar_ck3_bridge_host.exe",
+      "bytes": 71680,
+      "sha256": "1f1dfeaf677706075c2bc9910cd8dd7b2b1a712f98d0fc8df9eeac5d249da4c7",
+      "machine": 34404,
+      "is_dll": false
+    }
+  ],
+  "exe_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\EXE-REGISTRATION-MANIFEST-a01.json",
+    "bytes": 2597,
+    "sha256": "e428b06efe0fa5192c5fcf7e86f0acd6514dd490690c4637095e41d03bdeb0dd"
+  },
+  "prepared_inputs": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\NEXT-SESSION-PREPARED-INPUTS-a01.json",
+    "bytes": 2302,
+    "sha256": "f9ec5e5a34c17256eb2b16edd0a237284004f3dd7c86bdca72b799e8c4a52d3c"
+  },
+  "registration": {
+    "status": "not-called",
+    "production_hook_result": {
+      "status": "disabled",
+      "reason": "Local Git opt-in absent/false or CI environment"
+    },
+    "per_process_CI_override": "1",
+    "git_local_optin_changed": false,
+    "Root_registration_required": true
+  },
+  "task_bus": {
+    "task_id": "war-e04-county-offline-build-20261005-a01",
+    "stored_claim_sequence": 4853,
+    "writes_held_by_Root": true,
+    "reason": "Root is repairing the preserved actual journal gap; no retry or fabricated release/completion.",
+    "actual_common_git_worktree_mutation_finished": true
+  },
+  "boundary": {
+    "SDK": false,
+    "game": false,
+    "DLL_load": false,
+    "native_project_EXE_execution": false,
+    "screen": false,
+    "security_broker": false,
+    "WMI": false,
+    "system_settings": false,
+    "old_Cf2_changed": false,
+    "D_main_tracked_changed": false,
+    "Git_push": false,
+    "fixtures_repeated": false,
+    "applied_loss_ledger_closed": false,
+    "filming_credit": false
+  },
+  "open_kaishek": "not-applicable: this is an MSVC binary build of already-verified exact native ABI; no script/parser semantic subset newly exercised.",
+  "preservation": "All input snapshots, commands, logs, complete build tree and any failed attempts retained."
+}

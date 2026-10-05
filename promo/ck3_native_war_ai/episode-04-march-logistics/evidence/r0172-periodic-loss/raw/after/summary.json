@@ -1,0 +1,115 @@
+{
+  "date_raw": 53147784,
+  "actual_days_used": 17.0,
+  "revision": 45,
+  "native_revision": 44,
+  "army_snapshot": [
+    {
+      "army_id": 0,
+      "owner_character_id": 33388,
+      "soldiers": null,
+      "current_province_id": 1506,
+      "move_target_province_id": 2174,
+      "move_target_observable": true,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [
+        725,
+        1009,
+        2174
+      ],
+      "route_read_status": "complete_nonempty",
+      "route_source_count": 3,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "sieging",
+      "army_state_code": 3,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    }
+  ],
+  "strength": [
+    {
+      "status": "available",
+      "army_id": 0,
+      "native_carmy_id": 0,
+      "scope_role": "player",
+      "regiment_count": 27,
+      "current_soldiers": 6679,
+      "maximum_soldiers": 6747,
+      "ai_base_power_raw": 18206200000,
+      "ai_base_power_scale": 100000,
+      "unavailable_reason": null,
+      "current_supply_raw": 11037716,
+      "current_supply_scale": 100000,
+      "merge_supply_destination_weight_raw": 667400000,
+      "merge_supply_destination_weight_scale": 100000,
+      "current_supply_capacity_raw": 30000000,
+      "current_supply_capacity_scale": 100000,
+      "current_attrition_fraction_raw": 1000,
+      "current_attrition_fraction_scale": 100000,
+      "current_supply_change_monthly_raw": -614035,
+      "current_supply_change_monthly_scale": 100000,
+      "loss_application_inputs_v1": {
+        "status": "available",
+        "unavailable_reason": null,
+        "raid_association_id": -1,
+        "siege_active": true,
+        "raid_active": false,
+        "siege_rate_raw": 1000,
+        "raid_rate_raw": 1000,
+        "whole_soldiers": 6679,
+        "definition_le_zero_soldiers": 6610,
+        "supply_eligible_soldiers": 6679,
+        "definition_le_zero_supply_eligible_soldiers": 6610,
+        "current_supply_loss_budget": 0,
+        "siege_loss_budget": 66,
+        "raid_loss_budget": 0,
+        "fraction_scale": 100000,
+        "soldier_scale": 1
+      },
+      "county_entry_inputs_v1": {
+        "status": "available",
+        "source": "native_current_county_entry_inputs",
+        "unavailable_reason": null,
+        "whole_soldiers": 6679,
+        "current_loss_budget": 233,
+        "effective_fraction_raw": 3500,
+        "minimum_multiplier_raw": 70000,
+        "loaded_minimum_soldiers": 5,
+        "fraction_scale": 100000,
+        "soldier_scale": 1,
+        "condition": {
+          "status": "available",
+          "source": "current_stored_route_first_province",
+          "unavailable_reason": null,
+          "actor_character_id": 33388,
+          "source_province_id": 1506,
+          "target_province_id": 725,
+          "mode": 1,
+          "passes": false
+        }
+      },
+      "gathering_days_left": null,
+      "gathering_days_status": "not_gathering",
+      "gathering_days_ready": true,
+      "current_movement_progress": {
+        "status": "available",
+        "source": "native_current_route_edge",
+        "unit_state_raw": 3,
+        "accumulated_movement_weight_raw": 1700000,
+        "cached_edge_speed_raw": 100000,
+        "normalized_edge_progress": {
+          "raw": 56666,
+          "scale": 100000
+        },
+        "first_route_edge_remaining_duration": {
+          "raw": 1300000,
+          "scale": 100000
+        },
+        "unavailable_reason": null
+      }
+    }
+  ]
+}

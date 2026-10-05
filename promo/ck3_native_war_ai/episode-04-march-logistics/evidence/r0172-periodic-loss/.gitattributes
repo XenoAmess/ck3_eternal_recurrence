@@ -1,0 +1,5 @@
+# Only this bounded R0172 evidence package retains exact source bytes.
+* -text whitespace=trailing-space,space-before-tab,cr-at-eol
+# Original operand-empty disassembly lines retain padded formatting.
+source/army-loss-executor.txt whitespace=-blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+source/regiment-loss-writer.txt whitespace=-blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

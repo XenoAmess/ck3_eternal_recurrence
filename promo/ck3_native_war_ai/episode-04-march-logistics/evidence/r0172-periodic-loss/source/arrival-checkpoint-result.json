@@ -1,0 +1,68 @@
+{
+  "status": "passed",
+  "mode": "checkpoint",
+  "episode_run_id": "native-33388-a329bf767116",
+  "proof": {
+    "date_raw": 53148432,
+    "actual_real_days_used": 44.0,
+    "remaining_raw_hours": 1104,
+    "absolute_end_raw": 53149536,
+    "episode_run_id": "native-33388-a329bf767116",
+    "actor_id": 33388,
+    "revision": 104,
+    "native_revision": 103,
+    "before_date_raw": 53148432,
+    "actual_raw_hours_delta": 0,
+    "actual_real_days_delta": 0.0,
+    "stop_before_next_resume": false,
+    "future_pause_overshoot_excluded": false,
+    "checkpoint": {
+      "status": "saved",
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\state-r0172-a01\\profile\\save games\\xar_checkpoint.ck3",
+      "name": "xar_checkpoint.ck3",
+      "size": 73795635,
+      "sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a",
+      "date_raw": 53148432,
+      "overwrite_confirmed": false,
+      "strategy": "native-autosave-command-v1",
+      "succession_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": "xar_off",
+        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+        "source": "pure-vanilla-enabled-mods-empty",
+        "environment_sha256": "3af87dafe6f56855cbe6f412610a2d106de2f622876f19134875ffacfcf66279"
+      },
+      "history_index": 84,
+      "episode_character_id": 33388,
+      "episode_run_id": "native-33388-a329bf767116"
+    },
+    "budget_reset": false,
+    "raw_file_copy_and_actual_bytes_verification_required_by_root": true
+  },
+  "error": null,
+  "after_observed": true,
+  "actual_after_date_raw": 53148432,
+  "actual_after_actor": {
+    "character_id": 33388,
+    "alive": true,
+    "source": "native",
+    "stress_points": 25,
+    "betrothed_id": null,
+    "primary_spouse_id": 34290,
+    "spouse_ids": [
+      34290
+    ]
+  },
+  "preserved_actual_checkpoint": {
+    "source": "C:\\ck3-war-episode04-research-20261004-a01\\state-r0172-a01\\profile\\save games\\xar_checkpoint.ck3",
+    "preserved_path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0172-a01\\attempts\\r0172-whole-arrival-common-checkpoint-a01\\actual-checkpoint.ck3",
+    "bytes": 73795635,
+    "sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a"
+  },
+  "start_raw_never_reset": 53147376,
+  "absolute_end_raw": 53149536,
+  "budget_measure": "actual game raw hours /24; not successful supply updates",
+  "future_pause_overshoot_excluded": false,
+  "blind_retry_allowed": false
+}
