@@ -314,3 +314,201 @@ def compose_context_branch_12003(
         "computed" if ready else "partial", combined, not context_missing,
         context_missing, ledger,
     )
+
+
+@dataclass(frozen=True, slots=True)
+class CurrentPriorContextInputs12003:
+    """Current native provider blocks and actual selected-source observation."""
+
+    available: bool | None = None
+    reason: str | None = None
+    character_full_id: int | None = None
+    base_property_block: PropertyContainer12003 | None = None
+    common_property_blocks: tuple[PropertyContainer12003 | None, ...] | None = None
+    selector: Mapping[str, object] | None = None
+    selected_property_blocks: tuple[PropertyContainer12003 | None, ...] | None = None
+    source_provenance: Mapping[str, object] | None = None
+
+
+@dataclass(frozen=True, slots=True)
+class CurrentPriorContextContribution12003:
+    source_group: str
+    native_index: int
+    native_order: int | None
+    weight_q64: int
+    properties: PropertyContainer12003
+
+
+@dataclass(frozen=True, slots=True)
+class CurrentPriorContextPrefixResult12003:
+    character_full_id: int | None
+    contributions: tuple[CurrentPriorContextContribution12003, ...]
+    contributions_ready: bool
+    missing_inputs: tuple[str, ...]
+    status: str
+    ledger: Mapping[str, object]
+    full_pre291C204_materialized_context_ready: bool = False
+    full_future_context_ready: bool = False
+    native_write_performed: bool = False
+    actual_game_days_advanced: int = 0
+
+    @property
+    def ready(self) -> bool:
+        return self.contributions_ready
+
+
+def _current_prior_block(value: object) -> PropertyContainer12003 | None:
+    if isinstance(value, PropertyContainer12003):
+        return value
+    if not isinstance(value, Mapping):
+        return None
+    rows = _tuple(value.get("rows"))
+    if rows is None:
+        return PropertyContainer12003(None, None, None)
+    return PropertyContainer12003(
+        tuple(row.get("key") if isinstance(row, Mapping) else None for row in rows),
+        tuple(row.get("value_raw") if isinstance(row, Mapping) else None for row in rows),
+        len(rows),
+    )
+
+
+def from_current_prior_context_inputs_12003(
+    payload: Mapping[str, object] | None, *,
+    source_provenance: Mapping[str, object] | None = None,
+) -> CurrentPriorContextInputs12003:
+    """Consume current_person_state.current_prior_context_inputs without writers.
+
+    A null block/group is missing; rows=[] is an observed native count zero.
+    Group null entries and every original property row retain their positions.
+    """
+    raw = payload if isinstance(payload, Mapping) else {}
+    common = _tuple(raw.get("common_property_blocks"))
+    selected = _tuple(raw.get("selected_property_blocks"))
+    selector = raw.get("selector")
+    provenance = {
+        "carrier_presence": "value" if isinstance(payload, Mapping) else "null_or_absent",
+        "available": raw.get("available"),
+        "reason": raw.get("reason"),
+        "character_full_id": raw.get("character_full_id"),
+        "external_source": deepcopy(source_provenance),
+    }
+    return CurrentPriorContextInputs12003(
+        available=raw.get("available"),
+        reason=raw.get("reason"),
+        character_full_id=raw.get("character_full_id"),
+        base_property_block=_current_prior_block(raw.get("base_property_block")),
+        common_property_blocks=(
+            tuple(_current_prior_block(block) for block in common)
+            if common is not None else None),
+        selector=deepcopy(selector) if isinstance(selector, Mapping) else None,
+        selected_property_blocks=(
+            tuple(_current_prior_block(block) for block in selected)
+            if selected is not None else None),
+        source_provenance=provenance,
+    )
+
+
+def compose_current_prior_context_prefix_12003(
+    inputs: CurrentPriorContextInputs12003 | Mapping[str, object] | None,
+) -> CurrentPriorContextPrefixResult12003:
+    """Return known base/common/actual-selected requests with fixed Q weights.
+
+    This reads the observed selector output, including any native opaque path.
+    It does not reimplement equality-find, aggregate math, reset or cleanup.
+    The output is a prefix request ledger, never a materialized prior context.
+    """
+    if not isinstance(inputs, CurrentPriorContextInputs12003):
+        inputs = from_current_prior_context_inputs_12003(inputs)
+    missing: list[str] = []
+    contributions: list[CurrentPriorContextContribution12003] = []
+    branches: list[Mapping[str, object]] = []
+    if inputs.available is not True:
+        _gap(missing, "current_prior_context_inputs.available")
+
+    selector = inputs.selector
+    if selector is None:
+        _gap(missing, "selector")
+    else:
+        if selector.get("available") is not True:
+            _gap(missing, "selector.available")
+        if type(selector.get("uses_18f8_source")) is not bool:
+            _gap(missing, "selector.uses_18f8_source")
+        if type(selector.get("selected_header_offset")) is not int:
+            _gap(missing, "selector.selected_header_offset")
+
+    def append(group: str, index: int, order: int | None,
+               block: PropertyContainer12003 | None, path: str) -> None:
+        state = _inspect_container(block, path, missing)
+        branches.append({
+            "source_group": group, "native_index": index,
+            "native_order": order, "weight_q64": Q_12003,
+            "property_state": state,
+            "branch": "native_count_zero_skip" if state == "empty" else
+                      "known_weighted_request" if state == "nonempty" else
+                      "partial_property_request" if state == "partial" else
+                      "source_unavailable",
+        })
+        if state in ("nonempty", "partial"):
+            contributions.append(CurrentPriorContextContribution12003(
+                group, index, order, Q_12003, block))
+
+    append("base", 0, 0, inputs.base_property_block, "base_property_block")
+    common = inputs.common_property_blocks
+    if common is None:
+        _gap(missing, "common_property_blocks")
+        branches.append({"source_group": "common", "branch": "group_unavailable"})
+    else:
+        for index, block in enumerate(common):
+            append("common", index, index + 1, block,
+                   "common_property_blocks[" + str(index) + "]")
+
+    selected = inputs.selected_property_blocks
+    if selected is None:
+        _gap(missing, "selected_property_blocks")
+        branches.append({"source_group": "selected", "branch": "group_unavailable"})
+    else:
+        selected_start = 1 + len(common) if common is not None else None
+        for index, block in enumerate(selected):
+            append("selected", index,
+                   selected_start + index if selected_start is not None else None,
+                   block, "selected_property_blocks[" + str(index) + "]")
+
+    ledger = {
+        "source_scope": "current_native_prior_prefix_input_requests",
+        "source_api_sha256":
+            "56afe4418913f525af97fd2556aeffc99b9eb106eeea7b0a1b1eeb82f3e976b4",
+        "character_full_id": inputs.character_full_id,
+        "input_source": deepcopy(inputs.source_provenance),
+        "carrier_available": inputs.available,
+        "carrier_reason": inputs.reason,
+        "actual_selector_observation": deepcopy(selector),
+        "source_order": ("provider1530_base", "provider1A48_common", "actual18F8_or19A0_selected"),
+        "branches": tuple(branches),
+        "all_weights_q64": Q_12003,
+        "original_provider_row_second_qword_used_as_weight": False,
+        "ffff_key_rows_preserved": True,
+        "selector_membership_recomputed": False,
+        "opaque_native_selector_path_used_as_extra_gate": False,
+        "native_order_meaning":
+            "Source block ordinal, including empty/missing blocks; group and "
+            "native index retained. Selected ordinal unknown if common count missing.",
+        "current_final_context_used_as_prior_baseline": False,
+        "aggregate_reconstructed": False,
+        "reset_counts_or_cleanup_executed": False,
+        "full_materialized_context_missing_inputs": (
+            "actual_reset_branch_and_materialized_pre_prefix_state",
+            "complete_native_aggregate_storage_postimage",
+        ),
+        "full_pre291C204_materialized_context_ready": False,
+        "full_future_context_ready": False,
+        "future_trait_changed_provider_or_selector_inferred": False,
+        "Entry_refresh_claim": False,
+        "health_RNG_date_claim": False,
+        "native_write_performed": False,
+        "actual_game_days_advanced": 0,
+    }
+    ready = not missing
+    return CurrentPriorContextPrefixResult12003(
+        inputs.character_full_id, tuple(contributions), ready, tuple(missing),
+        "computed" if ready else "partial", ledger,
+    )

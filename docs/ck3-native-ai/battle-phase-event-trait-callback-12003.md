@@ -873,3 +873,58 @@ The frozen production `compose_context_branch_12003` was called once on this act
 The packet exposes game_version/executable_sha256=null. The exact game SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`, episode `native-29829-2bc2d599f7f9`, R44/PID54844 and .3 identity come from Root's already frozen deployment environment, not an independent fingerprint in this domain packet. Root independently closed normal checkpoint h8713 at the same date, SHA `dfbb55ca31ad04cc65c55be21eb3ec58460017996e3acb0456cf020cbabe003e`,98360917 bytes, with0 additional simulation days for this query cut. That is a historical anchor: its normal save path was later overwritten, so the h8713 hash must not be asserted as the current file's hash.
 
 Actual domain receipt: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-future-context-branch-v82/battle-context-v71-r44-actual-01/ROOT-DELIVERY.json`, SHAe015d2db6d3b8a74479a70fb3850d1c19196938313d72808097f9409a2eaa5d6. The sole original211083-byte read was sealed as `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-future-context-branch-v82/battle-context-v71-r44-actual-01/FULL-CACHE.json`, SHA278494071d5f7e51b2fc8b78685ef3c6448b7e8949690be8ef3e942934297934; each of two useful cached lanes read it once. Root retains TOP/save ownership. This domain performed0 SDK/process/window/native-write/simulation/Git/shared edits; its source observation and actual-derived-contribution qualification do not close the missing prior baseline. Independent v83 prior-context source work remains separate.
+
+## v83: observed prior provider inputs and keyed insertion source
+
+2026-10-05 / ISO 2026-W41. This increment uses the frozen 1.20.0.3 EXE (recorded SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`) and the v82 source/code adopted in `cd14f96c446b382ad286f75cb8f546bd68459f68`. The implementation preimage is frozen `Z:/g76`, with no shared-source or game mutation by this pod.
+
+The actual pre-`291C204` contribution sources are now pinned. `291C0D0` first calls the existing reset `291C010`, then appends the block at `QWORD[provider+1530]+40`, every 16-byte pointer row in the `provider+1A48/+1A54` header, and one selected header. Every append uses Q100000. The second qword of a provider row is not the weight input. A source block has U16 property keys and signed Q64 values; an empty source does not become a missing observation, and zero or negative property values remain valid.
+
+The selected header is an actual native lookup result, rather than a guessed interpretation of the identity list. `880430` receives the original owner identity-array begin, its signed-count-derived end, and the address of a copied DWORD from `Character+18`. The caller then rereads the same owner's begin and count, compares the returned pointer to that fresh end, and normalizes equality to null. A non-null normalized result selects `provider+18F8/+1904`; null selects `provider+19A0/+19AC`. The local helper body is an exact DWORD first-match scan. Its feature-dispatch branch to `3F90890` remains an unclosed pure leaf, while calling the actual readonly getter can observe the current selector outcome without pretending that alternate implementation is reproduced.
+
+These sources are current provider inputs and a contribution prefix. Current final model rows, aggregate values, and counts are not a materialized pre-`291C204` baseline. In particular, reset clears three counts only when its weighted-row count is nonzero; the skip branch does not independently prove zero aggregate state. Full reset cleanup, all storage paths, later preparation branches, future event admission and dates, and Combat Entry updates retain their separate boundaries.
+
+```mermaid
+flowchart TD
+  Prep["291C0D0: model +8 Character; context +10"] --> Reset["291C010: reset condition and three direct count stores"]
+  Reset --> Single["provider +1530: one Def +40 block at Q100000"]
+  Single --> Common["provider +1A48/+1A54: native row order at Q100000"]
+  Common --> Find["880430: original begin/end and copied Character +18 key"]
+  Find --> Fresh["reload owner begin/count; compare return with fresh end; equality becomes null"]
+  Find --> Local["local DWORD exact first-match body"]
+  Find -. "feature high32 >= 0x4EE8" .-> Alternate["unknown: 3F90890 pure alternate"]
+  Fresh --> Found["normalized non-null: +18F8/+1904 blocks"]
+  Fresh --> End["normalized null: +19A0/+19AC blocks"]
+  Found --> Requests["source-ordered prefix contribution requests"]
+  End --> Requests
+  Requests --> Append["2438850 / 2303120: weighted rows and aggregate"]
+  Append --> Existing["existing key: signed Q64 term and wrap64 add"]
+  Append --> New["local nonempty/spare capacity: U16 lower_bound; key insert; Q64 zero insert; weighted add"]
+  New --> Reverse["actual U16/Q64 reversal bodies and shuffle masks closed"]
+  Append -.-> OtherStorage["unknown: key grow / empty destination copy"]
+  Requests -.-> Full["partial: full materialized and future context"]
+```
+
+The new-key source closure is deliberately specific: for a nonempty destination with the actual required spare capacities, the native unsigned-U16 lower-bound position receives the new key and a corresponding zero Q64 value. Source keys are processed in their stored order, FFFF is skipped by the aggregate helper, and the subsequent fixed-point term uses the existing native multiplication and wrap64-add contract. The key-grow and empty-destination copy callees remain concrete unclosed paths. This source result does not invent capacities or make all materialized context paths complete.
+
+The Full-ID census used by `291D1D0` is also identified using cached exact .3 Title ABI and `28AC6B0` evidence: the character's carrier `+1E0` contains held-Title Full IDs, resolved against `5D1DAF8` with the actual `5D1DAE0` fallback. Qualifiers consume Title `+1D8` U8, `+130` U8, `+12C` signed32, and template `QWORD[Title+48]+64` signed32 tier, plus the actual fresh government flag. Title `+128` holder is not a native qualifier here. Seven signed32 counters are zeroed, built, emitted and freed inside this call; they are not a persistent count cache. Future held-title membership and qualifier writes remain unclosed. Explicit future records and government inputs can support conditional counting, but current records do not establish future stability.
+
+Source artifacts are under `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-trait-future-context-inputs-v83/`:
+
+- `source-prior-context/FINAL-ROOT-DELIVERY.json`: 1491 B, SHA-256 `e7713836019ccd1a0a0ab13e4a4a43f281fbd18f82fc61d35a49367f301d283e`; the separate selector observation recipe preserves its exact ABI and post-search reload order.
+- `source-new-key-aggregate/ROOT-DELIVERY.json`: 5096 B, SHA-256 `42f436650bc5114b3fd65d28b76ec0c877de93df662edb92a936a89f7a2c48ad`.
+- `source-eligible-records/ROOT-DELIVERY.json`: 5393 B, SHA-256 `dc1b97638e85265ac7b3d97082e2478b356305fad2c90b24ba1439c8ba6db982`.
+
+This source work added 2383 bytes of frozen physical input: A's 288-byte helper body plus 124 bytes of metadata, and B's 1095 bytes of code windows, 48 bytes of shuffle masks, 756 bytes of pdata and 72 bytes of unwind. B decoded 993 reachable code bytes; its windows are not mislabeled as function extents. D reused existing exact .3 cache with no new EXE reads. A metadata-only no-runtime-row locator attempt in B is retained, with zero code read on that attempt. No SDK, RPM, foreground window, old case, whole EXE hash or shared mutation was used.
+
+Implementation and focused-case qualification for the new readonly current selector field are recorded in this package's final delivery, separately from this source ledger. No new paused observation, native selector parity, future cache/Entry parity, full battle simulation, Monte Carlo or win odds is implied by these source findings.
+
+The minimal published field is `current_person_state.current_prior_context_inputs` in the existing character query. It contains the base property block, ordered common blocks, actual selected blocks, and selector availability/header choice. A block contains ordered `{key: U16, value_raw: signed Q64}` rows. `rows=[]` is an observed empty block; null blocks, groups or group members retain missing reads. Existing raw numeric and government/title branch inputs keep their independent status. The native source-order correction returns an empty block immediately when its key count is zero, without requiring unused parallel values to be present.
+
+The public consumer is `compose_current_prior_context_prefix_12003(inputs)`, with a `from_current_prior_context_inputs_12003(payload, *, source_provenance=None)` builder. It returns known ordered contribution requests at Q100000, preserving zero/negative values, FFFF-only nonempty source blocks, and known rows beside missing groups. It consumes the actual observed selector choice and does not replace the opaque alternate with a pure membership guess. `contributions_ready` is source-request readiness; full materialized pre-context and full future context remain false.
+
+Qualification is one new production-path test, C normalizer to B public prefix consumer: FIRST GREEN, 1 test, zero failures/errors/skips, 2.3443714000168256 seconds including the external frozen-g76 overlay/import, with 0.001 seconds in unittest. The test covers actual-selected-header carriers for 18F8 and 19A0, native empty block/group semantics, zero/negative values, FFFF preservation, missing group-member positions, and older absent versus explicit-null optional fields. It is a synthetic current API fixture, not execution or parity of native 880430.
+
+The five necessary layout-sensitive native translation units also compiled FIRST GREEN under actual `/c /W4 /WX` commands: collector 4.0277765 s, terminal-transition serializer consumer 3.7588294 s, query mailbox 2.8665333 s, 12003 adapter 3.3125016 s and semantic adapter 4.0383489 s. B's two and D's three commands ran in parallel; D's three took 4.07177480001701 s collectively. Source/compiler/object/log pins are in `native-compile/ROOT-DELIVERY.json` and its B/D receipts. The latest g76 include tree and per-target actual runtime64/bridge66 definitions were retained. There were zero compiler faults, REDs, compile-triggered source fixes or retries. The one empty-source correction happened before compilation and is retained separately from the original candidate.
+
+This increment is `static-ready` for the Python request primitive and compile-qualified for its new native observer. Root deployment and one fresh paused actor observation are pending; no new SDK, native getter execution, live frame, game day or game-loop credit comes from this pod. The same existing character query supports Robert 29829 with null prior BattleID and CUnit, using a fresh public revision; `source-api-call-recipe/QUERY-RECIPE.json` gives the exact parameters. A materialized prefix writer, future title/state changes, later preparation branches, event callback/cache admission and Entry timing remain separate source/data dependencies. Peers' v84 branch emitters are recorded as future input dependencies, rather than appended again to current final context.

@@ -119,6 +119,11 @@ struct BattleBindings {
   std::array<std::int32_t (*)(void *), 4> current_person_raw_category_getters{};
   // Independent exact .3 preparation operands for the same Character query.
   bool current_person_context_branch_inputs_enabled = false;
+  // Exact .3 current selector observation; never invokes model preparation.
+  bool current_person_prior_context_inputs_enabled = false;
+  const std::uint32_t *(*current_person_prior_find_key)(
+      const std::uint32_t *, const std::uint32_t *, const std::uint32_t *) = nullptr;
+  void **current_person_prior_owner_slot = nullptr;
   void *(*current_person_context_government)(void *) = nullptr;
   std::int32_t (*current_person_context_selected_index)(void *) = nullptr;
   void *(*current_person_context_provider)() = nullptr;

@@ -176,6 +176,54 @@ inline std::string SerializeContextBranchInputs(
   return out;
 }
 
+inline void AppendCurrentPriorPropertyBlock(
+    std::string &out,
+    const std::optional<xar::game::BattleCurrentPersonPriorPropertyBlockSnapshotV1> &block) {
+  if (!block) { out += "null"; return; }
+  out += "{\"rows\":[";
+  for (std::size_t i = 0; i < block->rows.size(); ++i) {
+    if (i) out += ',';
+    const auto &row = block->rows[i];
+    out += "{\"key\":" + std::to_string(row.key)
+        + ",\"value_raw\":" + std::to_string(row.value_raw) + '}';
+  }
+  out += "]}";
+}
+inline void AppendCurrentPriorPropertyBlocks(
+    std::string &out,
+    const std::optional<std::vector<std::optional<
+        xar::game::BattleCurrentPersonPriorPropertyBlockSnapshotV1>>> &blocks) {
+  if (!blocks) { out += "null"; return; }
+  out += '[';
+  for (std::size_t i = 0; i < blocks->size(); ++i) {
+    if (i) out += ',';
+    AppendCurrentPriorPropertyBlock(out, (*blocks)[i]);
+  }
+  out += ']';
+}
+inline std::string SerializeCurrentPriorContextInputs(
+    const xar::game::BattleCurrentPersonPriorContextInputsSnapshotV1 &p) {
+  std::string out = "{\"available\":";
+  out += p.available ? "true" : "false";
+  out += ",\"reason\":";
+  AppendReason(out, p.available, p.reason, "current_prior_context_input_reads_unavailable");
+  out += ",\"character_full_id\":" + std::to_string(p.character_full_id)
+      + ",\"base_property_block\":";
+  AppendCurrentPriorPropertyBlock(out, p.base_property_block);
+  out += ",\"common_property_blocks\":";
+  AppendCurrentPriorPropertyBlocks(out, p.common_property_blocks);
+  out += ",\"selector\":{\"available\":";
+  out += p.selector.available ? "true" : "false";
+  out += ",\"uses_18f8_source\":";
+  out += p.selector.uses_18f8_source ? (*p.selector.uses_18f8_source ? "true" : "false") : "null";
+  out += ",\"selected_header_offset\":";
+  AppendRawNumber(out, p.selector.selected_header_offset);
+  out += "},\"selected_property_blocks\":";
+  AppendCurrentPriorPropertyBlocks(out, p.selected_property_blocks);
+  out += '}';
+  return out;
+}
+
 }  // namespace battle_current_person_state_v1_detail
 
 // A current-character read; it does not project historical injury causality.
@@ -238,6 +286,10 @@ inline std::string SerializeBattleCurrentPersonStateV1(
   if (state.context_branch_inputs) {
     output += ",\"context_branch_inputs\":";
     output += SerializeContextBranchInputs(*state.context_branch_inputs);
+  }
+  if (state.current_prior_context_inputs) {
+    output += ",\"current_prior_context_inputs\":";
+    output += SerializeCurrentPriorContextInputs(*state.current_prior_context_inputs);
   }
   output += '}';
   return output;

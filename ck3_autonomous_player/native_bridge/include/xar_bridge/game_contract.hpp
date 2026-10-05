@@ -2584,12 +2584,46 @@ struct BattleCurrentPersonContextBranchInputsSnapshotV1 {
                          const BattleCurrentPersonContextBranchInputsSnapshotV1 &) = default;
 };
 
+// Current .3 provider-prefix operands, not a materialized pre/future context.
+struct BattleCurrentPersonPriorPropertyRowSnapshotV1 {
+  std::uint16_t key = 0;
+  std::int64_t value_raw = 0;
+  friend bool operator==(const BattleCurrentPersonPriorPropertyRowSnapshotV1 &,
+                         const BattleCurrentPersonPriorPropertyRowSnapshotV1 &) = default;
+};
+struct BattleCurrentPersonPriorPropertyBlockSnapshotV1 {
+  std::vector<BattleCurrentPersonPriorPropertyRowSnapshotV1> rows;
+  friend bool operator==(const BattleCurrentPersonPriorPropertyBlockSnapshotV1 &,
+                         const BattleCurrentPersonPriorPropertyBlockSnapshotV1 &) = default;
+};
+struct BattleCurrentPersonPriorSelectorSnapshotV1 {
+  bool available = false;
+  std::optional<bool> uses_18f8_source;
+  std::optional<std::int32_t> selected_header_offset;
+  friend bool operator==(const BattleCurrentPersonPriorSelectorSnapshotV1 &,
+                         const BattleCurrentPersonPriorSelectorSnapshotV1 &) = default;
+};
+struct BattleCurrentPersonPriorContextInputsSnapshotV1 {
+  bool available = false;
+  std::string reason;
+  std::int32_t character_full_id = -1;
+  std::optional<BattleCurrentPersonPriorPropertyBlockSnapshotV1> base_property_block;
+  std::optional<std::vector<std::optional<BattleCurrentPersonPriorPropertyBlockSnapshotV1>>>
+      common_property_blocks;
+  BattleCurrentPersonPriorSelectorSnapshotV1 selector;
+  std::optional<std::vector<std::optional<BattleCurrentPersonPriorPropertyBlockSnapshotV1>>>
+      selected_property_blocks;
+  friend bool operator==(const BattleCurrentPersonPriorContextInputsSnapshotV1 &,
+                         const BattleCurrentPersonPriorContextInputsSnapshotV1 &) = default;
+};
+
 struct BattleCurrentPersonStateSnapshotV1 {
   BattleCurrentPersonEffectiveProwessSnapshotV1 effective_prowess;
   BattleCurrentPersonInjuryTraitsSnapshotV1 injury_traits;
   BattleCurrentPersonDeathRecordSnapshotV1 death_record;
   std::optional<BattleCurrentPersonRawNumericInputsSnapshotV1> raw_numeric_inputs;
   std::optional<BattleCurrentPersonContextBranchInputsSnapshotV1> context_branch_inputs;
+  std::optional<BattleCurrentPersonPriorContextInputsSnapshotV1> current_prior_context_inputs;
   friend bool operator==(const BattleCurrentPersonStateSnapshotV1 &,
                          const BattleCurrentPersonStateSnapshotV1 &) = default;
 };

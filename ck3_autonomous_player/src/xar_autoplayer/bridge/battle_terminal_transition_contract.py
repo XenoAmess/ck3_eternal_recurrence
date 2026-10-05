@@ -443,6 +443,70 @@ def _normalize_context_branch_inputs(value: object, field: str) -> dict[str, obj
         "group_property_blocks": blocks, "unavailable_reason": reason}
 
 
+def _normalize_current_prior_context_inputs(value: object, field: str) -> dict[str, object] | None:
+    """Copy current native provider-prefix sources, independently of final context."""
+    if value is None:
+        return None
+    raw = _exact_dict(value, field, {
+        "available", "reason", "character_full_id", "base_property_block",
+        "common_property_blocks", "selector", "selected_property_blocks",
+    })
+
+    def block(value: object, name: str) -> dict[str, object] | None:
+        if value is None:
+            return None
+        value = _exact_dict(value, name, {"rows"})
+        rows = value["rows"]
+        if not isinstance(rows, list):
+            raise ValueError(name + ".rows must be a list")
+        copied = []
+        for i, row in enumerate(rows):
+            row_name = name + f".rows[{i}]"
+            row = _exact_dict(row, row_name, {"key", "value_raw"})
+            copied.append({
+                "key": _integer(row["key"], row_name + ".key", minimum=0, maximum=65535),
+                "value_raw": _integer(row["value_raw"], row_name + ".value_raw",
+                                      minimum=-(2**63), maximum=2**63 - 1),
+            })
+        return {"rows": copied}
+
+    def blocks(value: object, name: str) -> list[dict[str, object] | None] | None:
+        if value is None:
+            return None
+        if not isinstance(value, list):
+            raise ValueError(name + " must be a list or null")
+        return [block(item, name + f"[{i}]") for i, item in enumerate(value)]
+
+    base = block(raw["base_property_block"], field + ".base_property_block")
+    common = blocks(raw["common_property_blocks"], field + ".common_property_blocks")
+    selected = blocks(raw["selected_property_blocks"], field + ".selected_property_blocks")
+    selector = _exact_dict(raw["selector"], field + ".selector", {
+        "available", "uses_18f8_source", "selected_header_offset",
+    })
+    selector_available = _boolean(selector["available"], field + ".selector.available")
+    uses_18f8 = _optional_boolean(selector["uses_18f8_source"], field + ".selector.uses_18f8_source")
+    offset = _optional_integer(selector["selected_header_offset"], field + ".selector.selected_header_offset",
+                               minimum=-(2**31), maximum=2**31 - 1)
+    if selector_available:
+        if uses_18f8 is None or offset != (0x18F8 if uses_18f8 else 0x19A0):
+            raise ValueError(field + " native selector/header disagrees")
+    elif uses_18f8 is not None or offset is not None:
+        raise ValueError(field + " unavailable selector has a selection")
+    available = _boolean(raw["available"], field + ".available")
+    complete = (base is not None and common is not None and all(item is not None for item in common)
+                and selector_available and selected is not None and all(item is not None for item in selected))
+    reason = raw["reason"]
+    if (available != complete or (available and reason is not None)
+            or (not available and (not isinstance(reason, str) or not reason))):
+        raise ValueError(field + " availability disagrees with observed prefix sources")
+    return {"available": available, "reason": reason,
+            "character_full_id": _positive_int32(raw["character_full_id"], field + ".character_full_id"),
+            "base_property_block": base, "common_property_blocks": common,
+            "selector": {"available": selector_available, "uses_18f8_source": uses_18f8,
+                         "selected_header_offset": offset},
+            "selected_property_blocks": selected}
+
+
 def _normalize_current_person_state(
     value: object, field: str,
 ) -> dict[str, object]:
@@ -454,6 +518,8 @@ def _normalize_current_person_state(
         fields.add("raw_numeric_inputs")
     if isinstance(value, dict) and "context_branch_inputs" in value:
         fields.add("context_branch_inputs")
+    if isinstance(value, dict) and "current_prior_context_inputs" in value:
+        fields.add("current_prior_context_inputs")
     state = _exact_dict(value, field, fields)
     if state["scope"] != "current_character":
         raise ValueError(f"{field}.scope must be current_character")
@@ -538,6 +604,9 @@ def _normalize_current_person_state(
     if "context_branch_inputs" in state:
         normalized["context_branch_inputs"] = _normalize_context_branch_inputs(
             state["context_branch_inputs"], f"{field}.context_branch_inputs")
+    if "current_prior_context_inputs" in state:
+        normalized["current_prior_context_inputs"] = _normalize_current_prior_context_inputs(
+            state["current_prior_context_inputs"], f"{field}.current_prior_context_inputs")
     return normalized
 
 
@@ -582,6 +651,9 @@ def _normalize_character_custody_rows(
             branch = normalized["current_person_state"].get("context_branch_inputs")
             if branch is not None and branch["character_id"] != character_id:
                 raise ValueError(f"{field}[{index}] context branch CharacterID disagrees")
+            prior = normalized["current_person_state"].get("current_prior_context_inputs")
+            if prior is not None and prior["character_full_id"] != character_id:
+                raise ValueError(f"{field}[{index}] prior context CharacterID disagrees")
         result.append(normalized)
     return result
 

@@ -1166,6 +1166,95 @@ game::BattleCurrentPersonContextBranchInputsSnapshotV1 CurrentContextBranchInput
   return out;
 }
 
+std::optional<game::BattleCurrentPersonPriorPropertyBlockSnapshotV1>
+CurrentPriorPropertyBlock(const void *definition) {
+  if (!definition) return std::nullopt;
+  const auto *container = static_cast<const std::byte *>(definition) + 0x40;
+  const auto count = At<std::int32_t>(container, 0xC);
+  if (count < 0) return std::nullopt;
+  game::BattleCurrentPersonPriorPropertyBlockSnapshotV1 block{};
+  if (count == 0) return block;
+  const auto value_count = At<std::int32_t>(container, 0x74);
+  if (value_count != count) return std::nullopt;
+  const auto *keys = At<const std::uint16_t *>(container, 0);
+  const auto *values = At<const std::int64_t *>(container, 0x68);
+  if (!keys || !values) return std::nullopt;
+  block.rows.reserve(static_cast<std::size_t>(count));
+  for (std::int32_t i = 0; i < count; ++i)
+    block.rows.push_back({keys[i], values[i]});
+  return block;
+}
+using CurrentPriorBlocks =
+    std::vector<std::optional<game::BattleCurrentPersonPriorPropertyBlockSnapshotV1>>;
+std::optional<CurrentPriorBlocks> CurrentPriorPropertyBlocks(
+    const void *provider, std::size_t data_offset, std::size_t count_offset) {
+  if (!provider) return std::nullopt;
+  const auto count = At<std::int32_t>(provider, count_offset);
+  if (count < 0) return std::nullopt;
+  CurrentPriorBlocks blocks{};
+  if (count == 0) return blocks;
+  const auto *data = At<const std::byte *>(provider, data_offset);
+  if (!data) return std::nullopt;
+  blocks.reserve(static_cast<std::size_t>(count));
+  for (std::int32_t i = 0; i < count; ++i) {
+    // Native 291C0D0 consumes only row+0; every contribution has weight Q.
+    const auto *definition = At<const void *>(data, static_cast<std::size_t>(i) * 16);
+    blocks.push_back(CurrentPriorPropertyBlock(definition));
+  }
+  return blocks;
+}
+bool CurrentPriorBlocksReady(const std::optional<CurrentPriorBlocks> &blocks) {
+  return blocks.has_value() && std::all_of(blocks->begin(), blocks->end(),
+      [](const auto &block) { return block.has_value(); });
+}
+game::BattleCurrentPersonPriorContextInputsSnapshotV1 CurrentPriorContextInputs(
+    const BattleBindings &b, void *character, std::int32_t character_id) {
+  game::BattleCurrentPersonPriorContextInputsSnapshotV1 out{};
+  out.character_full_id = character_id;
+  if (!character) {
+    out.reason = "character_unresolved";
+    return out;
+  }
+  const void *provider = b.current_person_context_provider
+      ? b.current_person_context_provider() : nullptr;
+  if (provider) {
+    out.base_property_block = CurrentPriorPropertyBlock(At<const void *>(provider, 0x1530));
+    out.common_property_blocks = CurrentPriorPropertyBlocks(provider, 0x1A48, 0x1A54);
+  }
+  const std::uint32_t copied_key = At<std::uint32_t>(character, 0x18);
+  const void *owner = b.current_person_prior_owner_slot && *b.current_person_prior_owner_slot
+      ? At<const void *>(*b.current_person_prior_owner_slot, 0xA0) : nullptr;
+  if (owner && b.current_person_prior_find_key) {
+    const auto *begin = At<const std::uint32_t *>(owner, 0x22358);
+    const auto count = At<std::int32_t>(owner, 0x22364);
+    if (count >= 0 && (count == 0 || begin)) {
+      const auto *end = reinterpret_cast<const std::uint32_t *>(
+          reinterpret_cast<std::uintptr_t>(begin) + static_cast<std::uintptr_t>(count) * 4);
+      const auto *returned = b.current_person_prior_find_key(begin, end, &copied_key);
+      // Native C194..C1AC reload both header operands after the actual search.
+      const auto fresh_count = At<std::int32_t>(owner, 0x22364);
+      const auto *fresh_begin = At<const std::uint32_t *>(owner, 0x22358);
+      if (fresh_count >= 0 && (fresh_count == 0 || fresh_begin)) {
+        const auto *fresh_end = reinterpret_cast<const std::uint32_t *>(
+            reinterpret_cast<std::uintptr_t>(fresh_begin)
+            + static_cast<std::uintptr_t>(fresh_count) * 4);
+        const auto *normalized = returned == fresh_end ? nullptr : returned;
+        const bool uses_18f8 = normalized != nullptr;
+        out.selector.available = true;
+        out.selector.uses_18f8_source = uses_18f8;
+        out.selector.selected_header_offset = uses_18f8 ? 0x18F8 : 0x19A0;
+        out.selected_property_blocks = CurrentPriorPropertyBlocks(
+            provider, uses_18f8 ? 0x18F8 : 0x19A0, uses_18f8 ? 0x1904 : 0x19AC);
+      }
+    }
+  }
+  out.available = out.base_property_block.has_value()
+      && CurrentPriorBlocksReady(out.common_property_blocks)
+      && out.selector.available && CurrentPriorBlocksReady(out.selected_property_blocks);
+  if (!out.available) out.reason = "current_prior_context_input_reads_unavailable";
+  return out;
+}
+
 game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
     const BattleBindings &b, void *character, std::int32_t character_id) noexcept {
   game::BattleCurrentPersonStateSnapshotV1 observed{};
@@ -1173,6 +1262,8 @@ game::BattleCurrentPersonStateSnapshotV1 CurrentPersonSample(
     observed.raw_numeric_inputs = CurrentRawNumericInputs(b, character, character_id);
   if (b.current_person_context_branch_inputs_enabled)
     observed.context_branch_inputs = CurrentContextBranchInputs(b, character, character_id);
+  if (b.current_person_prior_context_inputs_enabled)
+    observed.current_prior_context_inputs = CurrentPriorContextInputs(b, character, character_id);
   auto &death = observed.death_record;
   if (!character) {
     death.unavailable_reason = "character_unresolved";
@@ -1607,6 +1698,10 @@ void EnableBattleCurrentPerson12003(BattleBindings &b, std::uintptr_t base,
   b.current_person_effective_prowess_enabled = true;
   b.current_person_raw_numeric_inputs_enabled = true;
   b.current_person_context_branch_inputs_enabled = true;
+  b.current_person_prior_context_inputs_enabled = true;
+  b.current_person_prior_find_key = reinterpret_cast<const std::uint32_t *(*)(
+      const std::uint32_t *, const std::uint32_t *, const std::uint32_t *)>(base + 0x00880430);
+  b.current_person_prior_owner_slot = reinterpret_cast<void **>(base + 0x05C68C50);
   b.current_person_context_government =
       reinterpret_cast<void *(*)(void *)>(base + 0x028C2E10);
   b.current_person_context_selected_index =
