@@ -1,0 +1,93 @@
+{
+  "schema": "xar.e04.portable-production-source-manifest.v1",
+  "repo_relative_root": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01",
+  "files": [
+    {
+      "path": "assemble_A_only.py",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/assemble_A_only.py",
+      "bytes": 9325,
+      "sha256": "39530005e6bcf93625a769f7d9095f904c292a354d0f28ed7cc9ae15f347df75"
+    },
+    {
+      "path": "e4_picture_producer.py",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/e4_picture_producer.py",
+      "bytes": 26226,
+      "sha256": "c53449b86fe8abad90b07f3ce237528241fdf88f00feee69a5da39c031b88fca"
+    },
+    {
+      "path": "project/actual-A-only-result.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/project/actual-A-only-result.json",
+      "bytes": 2402,
+      "sha256": "b5274150d987a5675ba233d1a17383fa533e6404ed47a5c9194f34c82b6a51e4"
+    },
+    {
+      "path": "project/config-projection-notes.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/project/config-projection-notes.json",
+      "bytes": 1358,
+      "sha256": "545df67302876ff061cc1f76d474ed0b8ebead6f889960b2bc588d4cbd2bb48d"
+    },
+    {
+      "path": "project/paragraph-state-and-clock.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/project/paragraph-state-and-clock.json",
+      "bytes": 46977,
+      "sha256": "8e4a37af9099d18c4b5d172c58bd55674952bcedc749c86e8dc927f95f51d315"
+    },
+    {
+      "path": "project/promo-project.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/project/promo-project.json",
+      "bytes": 80035,
+      "sha256": "f0b591e7da04c39a4143c3721352845c64a6738fde1a7de75957709d59dc750b"
+    },
+    {
+      "path": "provenance/actual-assembler-a01.py",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/provenance/actual-assembler-a01.py",
+      "bytes": 8549,
+      "sha256": "72a3cee58efb6c817199d11b3ba51f9fe3854f9ba08e0bc826dc10ab0676f426"
+    },
+    {
+      "path": "provenance/actual-formal-validate-result-a01.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/provenance/actual-formal-validate-result-a01.json",
+      "bytes": 149,
+      "sha256": "834ad3dfa890af6d92e961e95a63cf6e0a2f7fbc6c787d7c4339117cd185c13f"
+    },
+    {
+      "path": "provenance/actual-full-bound-probe-a01.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/provenance/actual-full-bound-probe-a01.json",
+      "bytes": 4128,
+      "sha256": "11649da233873ffc2e5a0cb8910555305e5839c21d9447f9fcf6f680ddfb8e20"
+    },
+    {
+      "path": "provenance/actual-render-release-probe-a01.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/provenance/actual-render-release-probe-a01.json",
+      "bytes": 14149,
+      "sha256": "d33ff102cbfd573b332be325156c35676b73547e5fb0d8111491079d0a7183ed"
+    },
+    {
+      "path": "provenance/actual-root-delivery-a01.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/provenance/actual-root-delivery-a01.json",
+      "bytes": 2811,
+      "sha256": "3f165509c3737d9a1eb66da4712f5f8ad8dcd655be3d7b4f99b416745841b329"
+    },
+    {
+      "path": "provenance/package-release-probe-a01.json",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/provenance/package-release-probe-a01.json",
+      "bytes": 14023,
+      "sha256": "5f3e3cf5f675939e756f7ef04364ba9af88a41993908a42ae9cfb59e5e5de78b"
+    },
+    {
+      "path": "README.md",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/README.md",
+      "bytes": 2963,
+      "sha256": "a0fd494cb61720848e993e327d5443246571bc9aa4c6723356be5bab172b7a03"
+    },
+    {
+      "path": "verify_portable.py",
+      "repo_relative_path": "promo/ck3_native_war_ai/episode-04-march-logistics/picture-production-a01/verify_portable.py",
+      "bytes": 4509,
+      "sha256": "7c7fe138da1bb6ecd485ea2ae0cbe6da031ed7ce0b183f00b72b1305f6ca7e8d"
+    }
+  ],
+  "metadata_and_code_only": true,
+  "media_not_included": true,
+  "Git_scope_pending_Root_and_sole_integrator": true
+}

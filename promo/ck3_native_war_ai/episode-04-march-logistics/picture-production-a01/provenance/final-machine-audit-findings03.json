@@ -1,0 +1,186 @@
+{
+  "schema": "episode04-new-A-only-full-film-machine-findings-v1",
+  "state": "DECODE_COUNTS_PASS_EXACT_AUDIO_PTS_CONTINUITY_RED",
+  "at_utc": "2026-10-05T19:17:53.000978+00:00",
+  "final_movie_identity_reused": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\actual-full-assembly-a01\\picture-A-only-review.mp4",
+    "bytes": 1116131421,
+    "sha256": "fcd1f8587aabafbec2412e505f373795818ddd488c0b2d2b8b8f4428b16d78eb"
+  },
+  "whole_decode_returncode": 0,
+  "progress_end_reached": true,
+  "expected_video_frames": 47376,
+  "actual_video_frames": 47376,
+  "video_frame_count_delta": 0,
+  "expected_audio_decoded_sample_frames_per_channel": 75801600,
+  "actual_audio_decoded_sample_frames_per_channel": 75801600,
+  "audio_sample_count_delta": 0,
+  "actual_audio_decoded_frames": 74025,
+  "actual_audio_seconds": "1579.2",
+  "expected_video_seconds_from_existing_bound_probe": "1579.200000",
+  "source_narration_PCM_seconds": "1579.176",
+  "planned_grid_tail_vs_source_PCM_seconds": "0.024",
+  "audio_rate": 48000,
+  "audio_channels": 2,
+  "audio_NaN_Inf_counters_zero": true,
+  "decoded_float_peak_over_0dBFS": false,
+  "audio_peak_dBFS_channel_and_overall": [
+    -3.226876,
+    -3.098868,
+    -3.098868
+  ],
+  "audio_RMS_dBFS_channel_and_overall": [
+    -22.342259,
+    -22.372319,
+    -22.357263
+  ],
+  "audio_timing": {
+    "audio_pts_strictly_increasing": true,
+    "audio_pts_exact_contiguous": false,
+    "audio_frame_ordinal_sequence_complete": true,
+    "decoded_sample_frames_exact_expected": true,
+    "absolute_offset_samples_distribution": {
+      "-1": 20,
+      "0": 74005
+    },
+    "adjacent_boundary_delta_samples_distribution": {
+      "-1": 5,
+      "0": 74014,
+      "1": 5
+    },
+    "nonzero_adjacent_boundaries": [
+      {
+        "next_frame": 12172,
+        "actual_next_pts": 12464127,
+        "previous_frame_end_pts": 12464128,
+        "delta_samples": -1
+      },
+      {
+        "next_frame": 12176,
+        "actual_next_pts": 12468224,
+        "previous_frame_end_pts": 12468223,
+        "delta_samples": 1
+      },
+      {
+        "next_frame": 24208,
+        "actual_next_pts": 24788991,
+        "previous_frame_end_pts": 24788992,
+        "delta_samples": -1
+      },
+      {
+        "next_frame": 24212,
+        "actual_next_pts": 24793088,
+        "previous_frame_end_pts": 24793087,
+        "delta_samples": 1
+      },
+      {
+        "next_frame": 48184,
+        "actual_next_pts": 49340415,
+        "previous_frame_end_pts": 49340416,
+        "delta_samples": -1
+      },
+      {
+        "next_frame": 48188,
+        "actual_next_pts": 49344512,
+        "previous_frame_end_pts": 49344511,
+        "delta_samples": 1
+      },
+      {
+        "next_frame": 48716,
+        "actual_next_pts": 49885183,
+        "previous_frame_end_pts": 49885184,
+        "delta_samples": -1
+      },
+      {
+        "next_frame": 48720,
+        "actual_next_pts": 49889280,
+        "previous_frame_end_pts": 49889279,
+        "delta_samples": 1
+      },
+      {
+        "next_frame": 49684,
+        "actual_next_pts": 50876415,
+        "previous_frame_end_pts": 50876416,
+        "delta_samples": -1
+      },
+      {
+        "next_frame": 49688,
+        "actual_next_pts": 50880512,
+        "previous_frame_end_pts": 50880511,
+        "delta_samples": 1
+      }
+    ],
+    "absolute_offset_runs": [
+      {
+        "first_frame": 12172,
+        "last_frame": 12175,
+        "offset_samples": -1
+      },
+      {
+        "first_frame": 24208,
+        "last_frame": 24211,
+        "offset_samples": -1
+      },
+      {
+        "first_frame": 48184,
+        "last_frame": 48187,
+        "offset_samples": -1
+      },
+      {
+        "first_frame": 48716,
+        "last_frame": 48719,
+        "offset_samples": -1
+      },
+      {
+        "first_frame": 49684,
+        "last_frame": 49687,
+        "offset_samples": -1
+      }
+    ],
+    "one_sample_duration_seconds": "0.00002083333333333333333333333333",
+    "one_sample_duration_microseconds": "20.83333333333333333333333333",
+    "cause_verified": false,
+    "audible_effect_verified": false,
+    "no_timing_error_was_hidden_or_tolerated_into_exact_continuity_PASS": true
+  },
+  "source_PCM_equals_mixed_lossy_AAC": false,
+  "source_boundary_PCM_and_decoded_mix_boundary_WAVs_preserved": true,
+  "actual_audio_findings": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-final-machine-audit-a01\\attempt-a01\\decoded-audio-findings03.json",
+    "bytes": 21203,
+    "sha256": "f455221e401521dde6a48d87e46c5fb989b6f64c243d27c123210a0e6269d113"
+  },
+  "actual_process_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-final-machine-audit-a01\\attempt-a01\\process-result.json",
+    "bytes": 817,
+    "sha256": "75a7ae559ce288183a208311060583c8aaeb1fa812f40f4ed19cd451da88ce03"
+  },
+  "prior_bound_probe_reused": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\actual-full-assembly-a01\\picture.bound-probe.json",
+    "bytes": 4128,
+    "sha256": "11649da233873ffc2e5a0cb8910555305e5839c21d9447f9fcf6f680ddfb8e20"
+  },
+  "original_prefix_parse_RED_preserved": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-final-machine-audit-a01\\attempt-a01\\report.json",
+    "bytes": 3511,
+    "sha256": "f681b53c8616f4310d6020b38e5a28d9fa902a2838efca8eb96a62eb812a730c"
+  },
+  "failed_exact_continuity_reparse02_stdio_preserved": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-final-machine-audit-a01\\reparse02-stderr.txt",
+    "bytes": 376,
+    "sha256": "b27c2ea7438a30d21be15ddc3e024bb148fb0b9acf0fd005ca711affce83a24c"
+  },
+  "medium_check_processes_total": 1,
+  "configured_codec_filter_threads_each": 1,
+  "new_media_processes_for_postanalysis": 0,
+  "movie_SHA_reads": 0,
+  "new_ffprobe_executions": 0,
+  "old_raw_or_B_live_reads": 0,
+  "human_listening_performed": false,
+  "full_human_1x_review_completed": false,
+  "human_signoff": false,
+  "continuous_clean_source_review": false,
+  "film_approved": false,
+  "audio_perceptual_quality_verdict": null,
+  "SDK_UI_Game_bus_Git_operations": 0
+}

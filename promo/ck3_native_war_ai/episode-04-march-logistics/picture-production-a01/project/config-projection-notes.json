@@ -1,0 +1,30 @@
+{
+  "source_project_snapshot": {
+    "bytes": 79807,
+    "sha256": "c87f40a1cd5f875bba6c3a842ab4bb42c483f5973222d4dae40347149294e07f"
+  },
+  "new_intent_only": true,
+  "actual_rendered_ASS_unchanged": true,
+  "project_id_projection": "Relative new intent identifies A-only review. Original project ID and all original snapshot bytes preserved externally.",
+  "changed_fields": [
+    {
+      "cue_id": "C05-03",
+      "field": "subtitles.zh",
+      "old_text_sha256": "a5c8242a663783641c7fe6ca8c9c0dea4436249ea1dc2d9dc744a8f18b339c07",
+      "new_text_sha256": "1f3393c5227a71a0616b425d90b34c8b634193a1eaf755e811fdc058f1dae1a2"
+    },
+    {
+      "cue_id": "C05-15",
+      "field": "subtitles.zh",
+      "old_text_sha256": "af2c36b1212d8740cfb8feb073dc72b543b95da300d69246e7d90f4afef00b93",
+      "new_text_sha256": "12abbbc28e9b1b50416d7adae1131aeadf1348169812ca288da85260c2dc8aa9"
+    },
+    {
+      "cue_id": "C05-16",
+      "field": "subtitles.zh",
+      "old_text_sha256": "55c75ec2c8785d9d0fadd2db84aef502106abf9e29fdef88410342c493e8fb69",
+      "new_text_sha256": "2c800741737172ee989759020bcf16d6b8e4156133f24cee9c7b694bf4d9db07"
+    }
+  ],
+  "code_projection": "e4_picture_producer.py is exact executed a06; assemble_A_only.py is the new parameterized path projection, metadata plan checked only; actual-assembler-a01.py is exact executed source."
+}

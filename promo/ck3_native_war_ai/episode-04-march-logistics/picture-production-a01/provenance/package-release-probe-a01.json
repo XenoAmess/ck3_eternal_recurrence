@@ -1,0 +1,284 @@
+{
+  "status": "LATEST_FORMAL_RELEASE_MATCHES_INSTALLED_AND_PINNED",
+  "started_utc": "2026-10-05T19:08:51.495784+00:00",
+  "finished_utc": "2026-10-05T19:08:56.315661+00:00",
+  "official_latest_API": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/latest",
+  "release_id": 381034850,
+  "tag_name": "v0.2.1",
+  "published_at": "2026-09-02T06:57:15Z",
+  "draft": false,
+  "prerelease": false,
+  "wheel": {
+    "asset_id": 540761475,
+    "filename": "xar_promo_toolchain-0.2.1-py3-none-any.whl",
+    "URL": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl",
+    "bytes_declared": 190405,
+    "sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "sha256_source": "Latest formal GitHub release asset digest"
+  },
+  "explicit_python": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+    "distribution_version": "0.2.1",
+    "distribution_location": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages",
+    "module_path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Lib\\site-packages\\xar_promo\\__init__.py",
+    "module_version_attribute": "0.2.1",
+    "actual_CLI_version_stdout": "xar-promo 0.2.1"
+  },
+  "requirements": {
+    "path": "D:\\workspace\\ck3_eternal_recurrence\\tools\\requirements-promo-toolchain.txt",
+    "bytes": 598,
+    "sha256": "14fbbd946e101f45d350472ebe865b531f9145a18e8ae2a17aa84d01aa48a523"
+  },
+  "installed_formal_wheel_provenance": {
+    "direct_url": {
+      "archive_info": {
+        "hash": "sha256=f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+        "hashes": {
+          "sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621"
+        }
+      },
+      "url": "https://github.com/XenoAmess/xar_promo_toolchain/releases/download/v0.2.1/xar_promo_toolchain-0.2.1-py3-none-any.whl"
+    },
+    "archive_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+    "installer_URL_matches_latest": true,
+    "installer_SHA_matches_latest": true,
+    "receipt": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\installed-wheel-provenance.json",
+      "bytes": 780,
+      "sha256": "0911ab8f11f86e7bebf1d0f6b091b86ba07089dea47420d0d47545e55ad897d9"
+    }
+  },
+  "actual_help_commands": [
+    "top-level",
+    "plan",
+    "build",
+    "audit",
+    "review",
+    "preserve",
+    "start-run",
+    "validate"
+  ],
+  "capture_CLI_scope": "No capture command invented; saved capture media supports existing audit/review/preserve contracts. This probe did not invoke those operations.",
+  "proxy_clear": {
+    "scope": "HTTP opener and child environment only; parent/global environment unchanged",
+    "loopback_variables_removed": [
+      {
+        "variable": "HTTPS_PROXY",
+        "host": "127.0.0.1"
+      },
+      {
+        "variable": "HTTP_PROXY",
+        "host": "127.0.0.1"
+      }
+    ]
+  },
+  "installs_or_Git_or_bus_or_SDK_or_UI_or_EXE_or_security_mutations": 0,
+  "evidence": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-audit-help.argv.json",
+      "bytes": 493,
+      "sha256": "90a2bb848f7081ffa36d7def73e508558d473784f3d208ac05a60ca3873e40f7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-audit-help.result.json",
+      "bytes": 541,
+      "sha256": "314f1f30be82d30d88ddc63ab7fb1136de4103f33733f7daf95da911a9adf541"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-audit-help.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-audit-help.stdout",
+      "bytes": 621,
+      "sha256": "a627dd85599a7409615f697051cf02ce90c23fa532985231741b6f6288496b26"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-build-help.argv.json",
+      "bytes": 493,
+      "sha256": "59d5efaccf1d7880465dbe83e21883d43d26692197b469789701d191053aa57c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-build-help.result.json",
+      "bytes": 541,
+      "sha256": "e332ec550cc8875202a8bdb0cc78f75d2dae531accea2370c92e96f48c0d668a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-build-help.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-build-help.stdout",
+      "bytes": 616,
+      "sha256": "206bcbb5dbe5cb08ea30cbb027eb28e4d407d52b7494a8f505b7515daaee5cc9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-plan-help.argv.json",
+      "bytes": 492,
+      "sha256": "93e853e5f2124ea34646af7d2ad55e694833ab01bf523e405caa28a4b1006647"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-plan-help.result.json",
+      "bytes": 539,
+      "sha256": "dc8a871c64ce6d34057122a55329d1e41179930cc9ccba219a2ed4d8acd59419"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-plan-help.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-plan-help.stdout",
+      "bytes": 547,
+      "sha256": "8152b542eaf3446230db42cbea65fcdef18520d2492120e73dd57d8702383a2e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-preserve-help.argv.json",
+      "bytes": 496,
+      "sha256": "1ebc618363b8dcb3d059623cd2b84e830f369a39d70f9a4cec8e971e0eb3e840"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-preserve-help.result.json",
+      "bytes": 547,
+      "sha256": "324160e18b6592a101c3f8558ec3d39076aeec402467a27263308d9d8135b9f8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-preserve-help.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-preserve-help.stdout",
+      "bytes": 635,
+      "sha256": "fb81cc976e6a76a6c48aa8a5f0ab7847e18031a6835ab31c008d5ff863b6bd51"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-review-help.argv.json",
+      "bytes": 494,
+      "sha256": "58a905f14630dce7441343533430557e545078eabe381adc803a024b0d705324"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-review-help.result.json",
+      "bytes": 543,
+      "sha256": "c3e77c42ed1bdfe8c85dcfd2b83c820de1522316c8e98a4830a0ab86a5f05334"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-review-help.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-review-help.stdout",
+      "bytes": 922,
+      "sha256": "38ffb21427e60ee3f75369e31854b2b5cc30a9c981c3d31a8627a95aeeae8660"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-start-run-help.argv.json",
+      "bytes": 497,
+      "sha256": "c1b51ecc9e1b079dd4f3be16fbc2d0a1708eacc68632114a6a680ac1bb3b4573"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-start-run-help.result.json",
+      "bytes": 549,
+      "sha256": "c0d1b736e9a543928694b0221196924037cf75cdb53e80be75cb945481099d65"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-start-run-help.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-start-run-help.stdout",
+      "bytes": 435,
+      "sha256": "8d2d846e1429e64bc5cc89290bb98f6c5ef71c077cc264dc015141bdd4a4bfde"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-top-help.argv.json",
+      "bytes": 479,
+      "sha256": "9d8c466ef92c00bac05d6c7b48254b95bc5a3e0525d4980a0a322f0d27cdf0eb"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-top-help.result.json",
+      "bytes": 538,
+      "sha256": "100e22c7adecded9d94994e5d7a8eaf847fb7abebe46939395470ed756e7092e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-top-help.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-top-help.stdout",
+      "bytes": 1660,
+      "sha256": "2dc84cf0d0a49b8e2a61b184ec0536a84cfaea1554d119a33308dd56cd2345bb"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-validate-help.argv.json",
+      "bytes": 496,
+      "sha256": "ffc17a7ce4e2c0afabc2a3046726e966346aae3fc32a7be3400971fdb49bb986"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-validate-help.result.json",
+      "bytes": 547,
+      "sha256": "ee0412d38b2e92ca4b119fc8f1fa52d3768dfb5d715583da2d54f9b185d6af49"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-validate-help.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-validate-help.stdout",
+      "bytes": 418,
+      "sha256": "631bb14f1ef797670ddb94c4b3405ed700666fa4b87824935932b4cad9c2097c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-version.argv.json",
+      "bytes": 482,
+      "sha256": "7eb961eb7cd0ef49281567f63e5da0e4d6a2fd88e984a9d1264ad50e0e489b14"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-version.result.json",
+      "bytes": 534,
+      "sha256": "9c1bc274f957e6cb5f8cdd78366e00354ecf4203fdda2a97f7d506a74d66e15a"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-version.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\cli-version.stdout",
+      "bytes": 17,
+      "sha256": "87a7f345d832e733239a23ed568cb0e95d6c34af34ca5b3d55b76a3781c8993c"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\installed-wheel-provenance.json",
+      "bytes": 780,
+      "sha256": "0911ab8f11f86e7bebf1d0f6b091b86ba07089dea47420d0d47545e55ad897d9"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\latest-release.argv.json",
+      "bytes": 477,
+      "sha256": "5e040678e0d0c80752d0e1538d698fd6e6d654aab7a4faee0c06e340c4777c97"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\latest-release.body",
+      "bytes": 7123,
+      "sha256": "f8fc87e58ebe66fe255fa254056afeca47bf2d3d6e9d84b02a61c0bb5c9bf97e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\latest-release.http.json",
+      "bytes": 2125,
+      "sha256": "0f83c61ea88fc828ccba1608af8f0c399e625e6927a5e0ed8bad39b627ceb2d3"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\release-probe-a01\\probe_release_a01.py",
+      "bytes": 8050,
+      "sha256": "fb7b5bfa82de6beabaccf8a81eedb4a59b5b1ce644caa7e8c6f91f52de5c5942"
+    }
+  ]
+}

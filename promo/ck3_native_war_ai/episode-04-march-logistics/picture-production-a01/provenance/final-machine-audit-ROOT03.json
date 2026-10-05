@@ -1,0 +1,40 @@
+{
+  "state": "DECODE_COUNTS_PASS_EXACT_AUDIO_PTS_CONTINUITY_RED",
+  "report": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-final-machine-audit-a01\\attempt-a01\\report-findings03.json",
+    "bytes": 6155,
+    "sha256": "867a9e87999a722394487d956336844d8ee538a77c84e36607a1294320613d1a"
+  },
+  "audio_findings": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-final-machine-audit-a01\\attempt-a01\\decoded-audio-findings03.json",
+    "bytes": 21203,
+    "sha256": "f455221e401521dde6a48d87e46c5fb989b6f64c243d27c123210a0e6269d113"
+  },
+  "final_movie_exact_identity_reused": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\actual-full-assembly-a01\\picture-A-only-review.mp4",
+    "bytes": 1116131421,
+    "sha256": "fcd1f8587aabafbec2412e505f373795818ddd488c0b2d2b8b8f4428b16d78eb"
+  },
+  "original_prefix_parse_RED_delivery_preserved": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-final-machine-audit-a01\\ROOT-DELIVERY01.json",
+    "bytes": 1554,
+    "sha256": "55fe8e62164737bda911eccd485d0d1e17d8a95fe834cd651b048cb2695a295c"
+  },
+  "actual_unique_decoder_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-final-machine-audit-a01\\audit_final_A_only01.py",
+    "bytes": 14426,
+    "sha256": "4b46b52436fdbcd11a08d62c428ab0ee7f9f01e83b08a60213ce2a523ad462e2"
+  },
+  "actual_postanalysis_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-final-machine-audit-a01\\append_decode_findings03.py",
+    "bytes": 7397,
+    "sha256": "103d6c44ec67b8be3d1ad2b78c9f3b5377686e069fbfd66a5c5b379737e44278"
+  },
+  "medium_decode_processes_total": 1,
+  "new_movie_hash_or_ffprobe": false,
+  "old_raw_or_B_live_reads": false,
+  "whole_decode_and_counts_pass": true,
+  "exact_audio_pts_continuity_pass": false,
+  "human_1x_listening_signoff_or_film_approval": false,
+  "continuous_source_clean_review": false
+}

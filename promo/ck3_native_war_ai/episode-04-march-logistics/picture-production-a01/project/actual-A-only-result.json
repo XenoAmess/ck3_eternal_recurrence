@@ -1,0 +1,82 @@
+{
+  "schema": "xar.e04.portable-A-only-actual-picture-result.v1",
+  "source_generation": "A-only a05 six-chapter review",
+  "source_movie": {
+    "external_file_name": "picture-A-only-review.mp4",
+    "bytes": 1116131421,
+    "sha256": "fcd1f8587aabafbec2412e505f373795818ddd488c0b2d2b8b8f4428b16d78eb",
+    "included_in_package": false
+  },
+  "source_receipts": {
+    "actual_root_delivery": "../provenance/actual-root-delivery-a01.json",
+    "actual_probe": "../provenance/actual-full-bound-probe-a01.json",
+    "formal_validate": "../provenance/actual-formal-validate-result-a01.json",
+    "render_release_probe": "../provenance/actual-render-release-probe-a01.json"
+  },
+  "toolchain": {
+    "actual_version": "0.2.1",
+    "official_release": "v0.2.1",
+    "wheel_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621"
+  },
+  "A": {
+    "first_observed_elapsed_days": 51,
+    "observed_arrival_interval_days": [
+      49,
+      51
+    ],
+    "observed_arrival_interval_endpoint_inclusion": "(49,51]",
+    "exact_arrival_tick": null,
+    "current_soldiers": {
+      "initial": 6679,
+      "terminal": 6689,
+      "net": 10
+    },
+    "maximum_soldiers": 6747,
+    "supply_raw": {
+      "initial": 11037716,
+      "terminal": 10613988,
+      "net": -423728,
+      "scale": 100000
+    },
+    "treasury_raw": {
+      "initial": 63754562,
+      "terminal": 62148329,
+      "net": -1606233,
+      "scale": 100000
+    },
+    "payment_ledger": null,
+    "source_key": "r177-A2-values"
+  },
+  "B": null,
+  "C": null,
+  "winner": null,
+  "chapters": 6,
+  "cues": 69,
+  "actual_samples": 37900224,
+  "actual_audio_seconds": 1579.176,
+  "actual_video_seconds": 1579.2,
+  "actual_picture_frames": 47376,
+  "old_53_dry_MOV_exact_reuse": 53,
+  "new_C05_rendered_cues": 16,
+  "geometry": [
+    1920,
+    1080,
+    30
+  ],
+  "music": {
+    "title": "Quiet Courtly Tension",
+    "gain_db": -17,
+    "ducking": false,
+    "normalize": false
+  },
+  "actual_render_and_probe_pass": true,
+  "whole_strict_video_audio_decode_at_this_cut": null,
+  "whole_decode_producer": "move_control owns separate unique final-movie audit; later receipt required",
+  "continuous_source_clean_review": false,
+  "human_full_1x_review": false,
+  "listening_signoff": false,
+  "film_signoff": false,
+  "final_film_ready": false,
+  "uploaded": false,
+  "portable_assembler_projection_has_actual_render_credit": false
+}
