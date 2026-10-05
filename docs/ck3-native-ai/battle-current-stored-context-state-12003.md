@@ -51,3 +51,12 @@ The public `project_current_stored_context_state_12003(payload, *, source_proven
 The sole new production-path case is GREEN, 1 test, 0 failures, 0 errors, 2.163869699987117 seconds including the private overlay. It exercises the current stored field through the public normalizer and new consumer, then the existing six-skill kernel with explicit other operands. The fixture and qualification receipts preserve actual import paths and modeled values. A reviewed the new collector and its integration once against the sealed native source; no mismatch or code correction was needed for that review.
 
 The five existing integration files were privately frozen from Root head `213d90028c5a1027137d2baaec8fbf9040e4b2a2`, preserving the adopted Knight observer. The only new native file is an independent header collector; existing changes are person-only insertion hunks. Later Death observer hunks belong to another pod and must be preserved when Root adopts this patch. Native compilation, deployment and a fresh paused observation are pending Root. No native observer execution, SDK action, game day, old fixture or current/future native parity comes from this package. Actual historical reset admission, a pre-prefix frame, physical allocation lifecycle and complete future context remain distinct from this current stored-state primitive.
+
+
+## 2026-10-05 R46 paused current-person readback
+
+Stored context is available for owner 29829, bound true, pending_raw=0 and owned_count_raw=38. All 71 weighted rows and 160 paired aggregate key/value rows are complete: numeric_context_ready=true, missing_inputs=[]. The actual data retains four zero aggregate Q values, forty-five negative values and one negative weight. The observed nonzero weighted-count predicate supports a conditional direct-after counts (0,0,0); it does not prove reset, refresh or cleanup ran. This verifies nonzero stored numeric primitives, not history/future or full Entry.
+
+Frame: query sequence 1, native 3/public 2, raw date 53264472, saved-day cut 5006; this readonly query adds zero days. Actual query game version/EXE SHA remain null; external g78/R0046 exact binding is recorded separately.
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/current-person-fieldset-r46-consumption-preparation/actual-r46-once/parent-delivery/ROOT-DELIVERY.json`.

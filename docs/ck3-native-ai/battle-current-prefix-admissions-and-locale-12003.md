@@ -86,3 +86,12 @@ The corrected attempt02 is GREEN with 30 explicit checks, 251 injected native re
 The outer tooling initially returned exit1 after the successful second crossing because its success comparison still expected the older `FIRST_GREEN` label. That tooling comparison alone was corrected with no rerun. The actual native process exit0, public crossing exit0 and GREEN result remain frozen in attempt02; the retained outer exit1 is documented separately.
 
 Fixture results and candidate pins are maintained in the V86 `ROOT-DELIVERY.json` and `OCT5-W41-FIELDS.json` at `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-current-prefix-admissions-v86`. Readiness is `static-ready` with an offline native fixture. No CK3 process, window, game-day advance or live snapshot is claimed by this work package.
+
+
+## 2026-10-05 R46 paused current-person readback
+
+The source and branch inputs are available/ready, base inputs ready, with 21 sources. Every source has A/B conditional count 0 and empty rows; no native A/B admission boolean record was observed. Selector/resolution fields remain explicit nulls and A selected source remains empty. Registry guard is -2147483464, fallback null, government tokens [22151,22465,24075,24076,24077], selected source component+220. No current_B_prefix result was published or composer rerun. This verifies current source/base inputs, not nonempty admission paths or full prefix/Entry. Legal nullable/empty inputs do not block the current strategy.
+
+Frame: query sequence 1, native 3/public 2, raw date 53264472, saved-day cut 5006; this readonly query adds zero days. Actual query game version/EXE SHA remain null; external g78/R0046 exact binding is recorded separately.
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/current-person-fieldset-r46-consumption-preparation/actual-r46-once/parent-delivery/ROOT-DELIVERY.json`.

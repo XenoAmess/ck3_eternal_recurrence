@@ -52,3 +52,12 @@ The scenario covers raw date zero and values above 2^53, signed ID zero/-1/bound
 Source: [sealed source contract](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-death-metadata-pending-observer-v85/source/SOURCE-CONTRACT.md), [source tree](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-death-metadata-pending-observer-v85/source/TREE.md), [API and field pins](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-death-metadata-pending-observer-v85/source/API.json). Verification: [sole fixture receipt](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-death-metadata-pending-observer-v85/fixture/ROOT-DELIVERY.json), [preserved attempt 01](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-death-metadata-pending-observer-v85/fixture/attempt-01/RESULT.json), [corrected attempt 02](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-death-metadata-pending-observer-v85/fixture/attempt-02/RESULT.json).
 
 Root owns shared adoption, combined native build, deployment and a future real paused observation. This package adds zero SDK calls, windows, native flushes/writes or game days. Knight-v85 commit `213d90028c5a1027137d2baaec8fbf9040e4b2a2` is a separate adopted increment; these death-only local hunks preserve it.
+
+
+## 2026-10-05 R46 paused current-person readback
+
+Robert 29829 is alive. death_record.status=none and the new date-object, killer and artifact values are actual nulls: this is no DeathData. The independent pending queue is available, source/manager pointers present, mode 0, data pointer absent, capacity/count 0 and rows empty. These are current no-record/empty-queue production-live primitives; nonzero records, queue rows and flush/commit were not exercised.
+
+Frame: query sequence 1, native 3/public 2, raw date 53264472, saved-day cut 5006; this readonly query adds zero days. Actual query game version/EXE SHA remain null; external g78/R0046 exact binding is recorded separately.
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/current-person-fieldset-r46-consumption-preparation/actual-r46-once/parent-delivery/ROOT-DELIVERY.json`.

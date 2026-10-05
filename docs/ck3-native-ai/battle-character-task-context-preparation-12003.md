@@ -114,3 +114,12 @@ flowchart TD
 最小原生变更只调整 A 的声明集合并撤掉对应 source partial，原始 type/position passive、独立31ABE10 owner aggregate、实际 scopes32、B terminal400 与公开 DTO/API 均保留。声明 scale 仍为未单独观测的 null，properties 已由原生完成 scale/finalization，不再相乘；当前 fullcontext 不充当 before/post 前缀。源树、输入账本及最小 patch 见 Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-task-owner-clone-contributions-v86/source/ROOT-DELIVERY.json；生产运行资格由本包独立聚焦 receipt 记录。新 paused/live、游戏日、完整 future context、MC 与胜率均不由源闭合产生。
 
 唯一新 clone-chain 离线生产路径夹具已获 GREEN：真实 helper→serializer→正式 normalizer/parser 输出 terminal438 的321000、-432000，再输出原 Position passive55000；owner aggregate 的 key530=777000 单独保留，original/intermediate438 与 terminal400 decoys 均未混入。A vectorsready 在该夹具变为 true，声明 scale 保持 null，causal prefix/post 仍缺。两个必要 TU 严格编译通过；首次原生运行的 B fallbacktask 指针 mock 断言 RED 保留，只修该夹具边界后重试，生产 helper 没有改变；正式 Python consumer 首次 GREEN。未重跑 V85 或六stat案例，状态 static-ready，实机 paused 资格待 Root 新 native 候选观测。
+
+
+## 2026-10-05 R46 paused current-person readback
+
+Task inputs are available, raw-input/vector readiness true: six owned tasks, twenty task-owner declarations tagged terminal_task_type_438, ten passive declarations and twelve evaluated A task-owner rows. Native order/sparse indices and independent owner aggregates are retained. B has native councillor default -1, gate false, empty declarations/evaluated rows and complete_no_contribution=true; numeric terminal400 remains source provenance, not an explicit actual field. Declaration scales and prefix/post-aggregate remain null/unobserved. This verifies nonzero task primitives and the current empty B contribution, not full Entry or battle prediction.
+
+Frame: query sequence 1, native 3/public 2, raw date 53264472, saved-day cut 5006; this readonly query adds zero days. Actual query game version/EXE SHA remain null; external g78/R0046 exact binding is recorded separately.
+
+Evidence: `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/current-person-fieldset-r46-consumption-preparation/actual-r46-once/parent-delivery/ROOT-DELIVERY.json`.
