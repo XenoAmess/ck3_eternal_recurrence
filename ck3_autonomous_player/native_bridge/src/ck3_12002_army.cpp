@@ -383,7 +383,7 @@ std::optional<std::vector<T>> LoadedBudgetVector(
   const auto count = *count_pointer;
   // Native nonpositive counts select the invalid-index/zero component branch.
   if (count <= 0) return std::vector<T>{};
-  if (count > kMaximumRegiments || *slot == nullptr) return std::nullopt;
+  if (*slot == nullptr) return std::nullopt;
   return std::vector<T>(*slot, *slot + count);
 }
 
