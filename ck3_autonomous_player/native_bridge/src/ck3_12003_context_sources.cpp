@@ -1146,6 +1146,8 @@ game::ContextSource291d7e0V1 BranchB(const ContextSourceBindingsV1 &b,
 #include "ck3_12003_person_tail_prefix.inc.hpp"
 #include "ck3_12003_person_trait_stage_291d460.inc.hpp"
 #include "ck3_12003_person_absent_recipient.inc.hpp"
+#include "ck3_12003_person_helper_2922070.inc.hpp"
+#include "ck3_12003_person_conference_24b1d00.inc.hpp"
 
 game::ContextSourceLaterDirectV1 LaterDirect(
     const ContextSourceBindingsV1 &b, const void *character,
@@ -1335,6 +1337,14 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   b.absent_recipient = BindAbsentRecipientSources12003(base);
   b.tail_prefix_enabled = true;
   b.tail_prefix_default_relation_slot = reinterpret_cast<const void *>(base + 0x5D26D50);
+  b.helper_2922070_enabled = true;
+  b.helper_2922070_descendant_storage_slot = reinterpret_cast<const void *>(base + 0x5D1EB88);
+  b.helper_2922070_descendant_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1EB40);
+  b.helper_2922070_descendant_fallback_header = reinterpret_cast<const void *>(base + 0x54596D8);
+  b.helper_2922070_membership_storage_slot = reinterpret_cast<const void *>(base + 0x5D1DAF8);
+  b.helper_2922070_membership_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1DAE0);
+  b.helper_2922070_membership_fallback_header = reinterpret_cast<const void *>(base + 0x5459C88);
+  b.conference_24b1d00 = BindConferenceSources12003(base);
   b.provider = reinterpret_cast<void *(*)()>(base + 0x8FD4E0);
   b.post_291d7e0_sources_enabled = true;
   b.post_ab_object_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E308);
@@ -1399,6 +1409,10 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.tail_prefix_2753860_2922530 = TailPrefix(b, character, character_id);
   if (b.trait_stage.enabled)
     out.trait_stage_291d460 = TraitStage291d460(b, character, character_id);
+  if (b.helper_2922070_enabled)
+    out.helper_2922070 = Helper2922070(b, character, character_id);
+  if (b.conference_24b1d00.enabled)
+    out.conference_24b1d00 = Conference24b1d00(b, character, character_id);
   out.branch_291e210 = BranchA(b, character);
   out.branch_291d7e0 = BranchB(b, character);
   if (b.post_291d7e0_sources_enabled)
@@ -1424,6 +1438,10 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.ready = out.ready && out.trait_stage_291d460->ready;
   if (out.absent_recipient_inputs)
     out.ready = out.ready && out.absent_recipient_inputs->ready;
+  if (out.helper_2922070)
+    out.ready = out.ready && out.helper_2922070->ready;
+  if (out.conference_24b1d00)
+    out.ready = out.ready && out.conference_24b1d00->ready;
   out.status = out.ready ? "available" : "partial";
   if (!out.ready) out.reason = "context_source_reads_unavailable";
   return out;
