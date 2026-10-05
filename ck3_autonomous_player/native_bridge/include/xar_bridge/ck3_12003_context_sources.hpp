@@ -24,6 +24,7 @@ struct ContextSourceTokenCursorV1 { void *node = nullptr; };
 #include "xar_bridge/ck3_12003_middle_helper_sources.inc.hpp"
 #include "xar_bridge/ck3_12003_trait_stage_sources.inc.hpp"
 #include "xar_bridge/ck3_12003_absent_recipient_sources.inc.hpp"
+#include "xar_bridge/ck3_12003_uncached_recipient_sources.inc.hpp"
 #include "xar_bridge/ck3_12003_conference_sources.inc.hpp"
 static_assert(sizeof(ContextSourceTokenSliceV1) == 16);
 static_assert(offsetof(ContextSourceTokenSliceV1, length) == 8);
@@ -72,6 +73,7 @@ struct ContextSourceBindingsV1 {
   ContextSourceMiddleHelpersBindingsV1 middle_helpers{};
   ContextSourceTraitStageBindingsV1 trait_stage{};
   ContextSourceAbsentRecipientBindingsV1 absent_recipient{};
+  ContextSourceUncachedRecipientBindingsV1 uncached_recipient{};
   bool tail_prefix_enabled = false;
   const void *tail_prefix_default_relation_slot = nullptr;
   bool helper_2922070_enabled = false;

@@ -212,7 +212,8 @@ const void *HelperRangePc(
 game::ContextSourceHelper291f0a0V1 Helper291f0a0(
     const ContextSourceBindingsV1 &b, const void *character,
     std::int32_t character_id,
-    std::optional<std::int64_t> absent_recipient_q64 = std::nullopt) {
+    std::optional<std::int64_t> absent_recipient_q64 = std::nullopt,
+    std::string_view absent_recipient_source = "absent_1c8_2bfac30_cached") {
   game::ContextSourceHelper291f0a0V1 out{};
   out.character_id = character_id;
   std::vector<const void *> identities;
@@ -243,7 +244,7 @@ game::ContextSourceHelper291f0a0V1 Helper291f0a0(
         if (!carrier) range.reason = "helper_recipient_carrier_unavailable";
         else if (!*carrier) {
           if (absent_recipient_q64) {
-            out.recipient_source = "absent_1c8_2bfac30_cached";
+            out.recipient_source = std::string(absent_recipient_source);
             out.recipient_q64 = absent_recipient_q64;
           } else {
             out.recipient_source = "absent_1c8_2bfac30_unobserved";

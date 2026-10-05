@@ -1146,6 +1146,7 @@ game::ContextSource291d7e0V1 BranchB(const ContextSourceBindingsV1 &b,
 #include "ck3_12003_person_tail_prefix.inc.hpp"
 #include "ck3_12003_person_trait_stage_291d460.inc.hpp"
 #include "ck3_12003_person_absent_recipient.inc.hpp"
+#include "ck3_12003_person_uncached_recipient.inc.hpp"
 #include "ck3_12003_person_helper_2922070.inc.hpp"
 #include "ck3_12003_person_conference_24b1d00.inc.hpp"
 
@@ -1335,6 +1336,7 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   b.middle_helpers = BindMiddleHelperSources12003(base);
   b.trait_stage = BindTraitStage291d46012003(base);
   b.absent_recipient = BindAbsentRecipientSources12003(base);
+  b.uncached_recipient = BindUncachedRecipientSources12003(base);
   b.tail_prefix_enabled = true;
   b.tail_prefix_default_relation_slot = reinterpret_cast<const void *>(base + 0x5D26D50);
   b.helper_2922070_enabled = true;
@@ -1394,11 +1396,20 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.later_direct_291c3fb_44c = LaterDirect(b, character, character_id);
   if (b.absent_recipient.enabled)
     out.absent_recipient_inputs = AbsentRecipientInputs(b, character, character_id);
+  if (b.uncached_recipient.enabled)
+    out.uncached_recipient_inputs = UncachedRecipientInputs(b, character, character_id);
+  std::optional<std::int64_t> recipient_q64;
+  std::string_view recipient_source = "absent_1c8_2bfac30_cached";
+  if (out.absent_recipient_inputs)
+    recipient_q64 = out.absent_recipient_inputs->calculated_recipient_q64;
+  if (!recipient_q64 && out.uncached_recipient_inputs &&
+      out.uncached_recipient_inputs->calculated_recipient_q64) {
+    recipient_q64 = out.uncached_recipient_inputs->calculated_recipient_q64;
+    recipient_source = "absent_1c8_2bfac30_uncached";
+  }
   if (b.helper_291f0a0_enabled)
     out.helper_291f0a0 = Helper291f0a0(b, character, character_id,
-        out.absent_recipient_inputs
-            ? out.absent_recipient_inputs->calculated_recipient_q64
-            : std::nullopt);
+        recipient_q64, recipient_source);
   if (b.remaining_helpers_enabled)
     out.later_helpers_291f550_291f940 = RemainingHelpers(b, character, character_id);
   if (b.tail_direct_enabled)
@@ -1436,8 +1447,13 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.ready = out.ready && out.tail_prefix_2753860_2922530->ready;
   if (out.trait_stage_291d460)
     out.ready = out.ready && out.trait_stage_291d460->ready;
-  if (out.absent_recipient_inputs)
-    out.ready = out.ready && out.absent_recipient_inputs->ready;
+  if (out.absent_recipient_inputs) {
+    const bool uncached_alternative = out.absent_recipient_inputs->associated_cache_440 == 0U &&
+        out.uncached_recipient_inputs && out.uncached_recipient_inputs->ready;
+    out.ready = out.ready && (out.absent_recipient_inputs->ready || uncached_alternative);
+  }
+  if (out.uncached_recipient_inputs)
+    out.ready = out.ready && out.uncached_recipient_inputs->ready;
   if (out.helper_2922070)
     out.ready = out.ready && out.helper_2922070->ready;
   if (out.conference_24b1d00)
