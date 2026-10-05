@@ -928,3 +928,48 @@ Qualification is one new production-path test, C normalizer to B public prefix c
 The five necessary layout-sensitive native translation units also compiled FIRST GREEN under actual `/c /W4 /WX` commands: collector 4.0277765 s, terminal-transition serializer consumer 3.7588294 s, query mailbox 2.8665333 s, 12003 adapter 3.3125016 s and semantic adapter 4.0383489 s. B's two and D's three commands ran in parallel; D's three took 4.07177480001701 s collectively. Source/compiler/object/log pins are in `native-compile/ROOT-DELIVERY.json` and its B/D receipts. The latest g76 include tree and per-target actual runtime64/bridge66 definitions were retained. There were zero compiler faults, REDs, compile-triggered source fixes or retries. The one empty-source correction happened before compilation and is retained separately from the original candidate.
 
 This increment is `static-ready` for the Python request primitive and compile-qualified for its new native observer. Root deployment and one fresh paused actor observation are pending; no new SDK, native getter execution, live frame, game day or game-loop credit comes from this pod. The same existing character query supports Robert 29829 with null prior BattleID and CUnit, using a fresh public revision; `source-api-call-recipe/QUERY-RECIPE.json` gives the exact parameters. A materialized prefix writer, future title/state changes, later preparation branches, event callback/cache admission and Entry timing remain separate source/data dependencies. Peers' v84 branch emitters are recorded as future input dependencies, rather than appended again to current final context.
+
+# .3 unit-Q materialized prior-prefix source
+
+Exact frozen input is CK3 1.20.0.3, EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. This increment consumes the previously sealed pre-291C204 source order and the newly bounded empty-copy/reserve and key-copy helpers. The historical `1E1180` short label is corrected to actual RVA `11E1180` from cached call VA `1411E1180`; no wrong-RVA body was captured.
+
+```mermaid
+flowchart TD
+    R[Explicit admitted completed reset: weighted/key/value active counts 0] --> P[Base then common then actual selected blocks; unit Q100000]
+    PR[Observed pre-reset three counts] --> PE[weighted !=0: three count stores 0; else preserve]
+    PE -. cleanup completion not derived .-> R
+    P --> W{Source key count is 0?}
+    W -->|yes| SK[No weighted request or aggregate fold]
+    W -->|no| WR[Retain ordered weighted source row]
+    WR --> E{Aggregate destination key count is 0?}
+    E -->|yes| KC[2303120 -> 11E1180: copy complete U16 keys including FFFF]
+    KC --> VC[B73F50: copy complete Q64 values in forward source order]
+    KC --> KR[11E10F0 reserve: normal growth retains data/count; width2]
+    VC --> VR[B73FD0 reserve: normal growth retains data/count; width8]
+    KR -. allocator body and lifetime opaque; admitted normal success .-> AS[Physical allocation]
+    VR -. allocator body and lifetime opaque; admitted normal success .-> AS
+    E -->|no| M[Source-order merge; FFFF skips aggregate update]
+    M --> LB[2303920: unsigned U16 lower_bound]
+    LB -->|existing| ADD[Signed Q64 wrap addition]
+    LB -->|absent| KG[Insert key at native index; normal growth uses 4226880]
+    KG --> COPY[4226880 + 4226860 + four actual tables: equivalent normal byte copy]
+    KG --> VG[C8E7E0: insert explicit Q64 zero at parallel index]
+    VG --> ADD
+    VC --> OUT[Actual logical keys/values/counts and ordered weighted rows]
+    ADD --> OUT
+    OUT --> SIX[Existing six-skill actual-input arithmetic primitive]
+    OUT -. later preparation branches and future actor state .-> FUT[Full future context remains partial]
+    VC -. non-unit scale 23033BC .-> SCALE[Not implemented in this unit-Q prefix]
+```
+
+Copy helpers preserve an independent signed source count. Zero causes no allocation; a negative count is written back as negative rather than clamped to zero. The minimum paired-array model supports complete nonnegative source arrays; missing or negative array inputs remain partial. `FFFF` remains in the first empty-destination copy; only later nonempty merge skips that key. Capacities select storage paths and do not change the normal logical copy/insertion postimage, so they are diagnostic inputs rather than skill caps or a new numeric availability requirement.
+
+The explicit completed-reset input is a conditional logical starting state. Pre-reset direct count stores do not prove that cleanup completed, and the current final context is not substituted for that earlier state. This package makes no native writes and does not establish an actual future frame, Character cache write, Entry update, calendar date, RNG sequence or full battle parity.
+
+The new public `materialize_current_prior_context_prefix_12003` consumer materializes the observed ordered prior-source requests only after explicit completed-reset admission with weighted/key/value active counts all zero. Optional pre-reset direct count effects remain independent. It exposes logical aggregate arrays/counts and weighted rows in the existing raw numeric context shape, allowing the existing six-skill arithmetic primitive to consume this bounded conditional prefix. Unknown source operands retain partial status; physical capacities do not become skill caps or a numeric gate.
+
+Qualification is one new production-path case, public prefix composer to materializer to the existing six-skill primitive, against a private frozen-g76 overlay with the exact adopted v83 composer. FIRST GREEN: 1 test, zero failures/errors, 0.9228602999937721 seconds including the private overlay. The explicit synthetic aggregate is keys[4,5,7,FFFF], Q values[-1,4,0,7], weighted count3; the numerical raw/final cache is[6,6,6,6,5,10], including prowess base6 to10. These are modeled conditional values and do not replace the independently observed current EC8. No old cases were rerun. Native/wire files remain unchanged in this package; their next source observer belongs to the separate Knight pod.
+
+New frozen .3 input cost is 3099 bytes: A 1134 (518 code, 372 pdata, 244 unwind) and B 1965 (1669 code, 172 tables, 108 pdata, 16 unwind). Fourteen A physical spans belong to four logical copy/reserve functions. There were no generic scans, full EXE hashes, new PE headers, allocator body reads, SDK/game/window actions, native compiles, shared edits or Git actions. The A quick mental subtotal 1234 is superseded by its sealed machine ledger 1134.
+
+Readiness is a source-qualified conditional pure prefix primitive, not an observed pre-reset model or full future context. Later preparation branches, non-unit empty-copy scale at 23033BC, allocator/reset lifecycle, future actor changes, Character writes, Entry timing and calendar/RNG remain independent gaps.
