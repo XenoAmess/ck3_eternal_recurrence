@@ -324,3 +324,13 @@ Military 同 raw 部署前 h8573 派生 cache 与本帧21字段相同，work del
 - Root-owned MAA实际失败已定位为registration缺slot、invalidrequest-before-worker，未执行native创建；不把本16日、第二围城或工作跳变归到尚未发生的器械动作。该source修复另包施工，不构成新增普通日执行门禁。
 - 四互斥physical组各4日，共128原JSON once（112 GREEN工具叶＋16 GREEN结果）；TOP/独立末SAVE由Root消费，MAA/专军力原件、旧R41包及共享专题未重读。本段实际16日正常观察loop与新3711围城primitive闭合，战争结束与目标占领仍未完成。
 - 原输出 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v69/rebind-cold/recovery-attempt-02/root-results/ordinary-r42-sixteen01`；派生 `-consumed01/ROOT-DELIVERY.json` SHA26e847d78276249676a0663110a5d45e97d9d353999e3a408e2d618f799c1a11、`ROOT-DAY-WEEK-FIELDS.json` SHA7e548642e4885b9b812efb6bf46a6ceaaae7271eddacbdc8f60e2ea43a179c71；首次到达cache SHA70936c1afcacd9a5f5b8e33a886e1b11ac5ff4c4be221cca6959f41b52aa850c。
+
+### R42 v69：双围城随后八个实际保存日
+
+- Root SDK78619正常关闭，本段实际 `53262672 → 53262864` 共8calendar/bounded/whole日、192 raw小时、partial0/failed0，累计 `4939 / resumed1786 / Oct5+281（W41）`。前16日已封存，本段不重计到达、旧日或器械动作。
+- 末帧 `native101 / public33 / raw53262864`，正常 `h8690 / 98,452,081B / SHA0e23047a3f4e2f3bccdcf329ddc9a8b70d3a7f70413d61f8950e503e4c7920ce`；Robert29829 alive/episode不变，event及pending interaction均null，War117440524仍active/player-relative+25。
+- main301989997@470与guard184549452@3711均实际sieging3、完整空route、非combat/retreat；P470 Siege503316504为 `C25474539/T55000000/rem29525461/progress46.317%/B3085/ETA292估计`，P3711 Siege486539314为 `C4630620/T55000000/rem50369380/progress8.419%/B3000/ETA509估计`，两处仍未占、breach0/CanStartfalse。
+- P470本8日每日实际Δ101400/B3085不变。P3711前6日各Δ98980，第7日 before `raw53262816/native94/public26/C1682660` 到 after `raw53262840/native97/public29/C4531640`，实际Δ2848980/B3000不变；第8日Δ98980。阶段/ordinaryDaily/counter/event字段在generic日快照仍null，保留工作量变化，不归因于phase或未执行的MAA动作。
+- 当前玩家scope只含184549452、301989997，generic soldiers/supply null保持；besieging strength不替代whole军力。此段为八个真实双围城普通观察loop，ETA不保证未来占领，未授siege/war胜利或自然继承信用。
+- 四互斥physical组各两日，共64原JSON once（56 GREEN工具叶＋8 GREEN结果）；TOP与独立末SAVE为Root独占，前16日原包、MAA/专军力原件及共享专题均未重读。
+- 原输出 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v69/rebind-cold/recovery-attempt-02/root-results/ordinary-r42-next-eight02`；母账 `-consumed01/ROOT-DELIVERY.json` SHAd77e47ff6503c12a5bc3038690c1947faeb4c0959f8b6126f8430d9f04503bc5，`ROOT-DAY-WEEK-FIELDS.json` SHAd3b4ecd9e8dd204ccf2ac18074fab334225131942822c1b12085c49331fbdb62；逐日双目标deltas已同包缓存。
