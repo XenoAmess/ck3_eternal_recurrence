@@ -27,7 +27,8 @@ struct Fixture {
   Bytes<0x20> character_slots{};
   Bytes<0x80> title_slots{};
   Bytes<0x210> character{}, other_owner{};
-  Bytes<0x260> scratch{};
+  // The same production query also reads the custody pointer at scratch+288.
+  Bytes<0x290> scratch{};
   Bytes<0x300> model{};
   Bytes<0x200> landed{};
   Bytes<0x10> static_header{};
@@ -41,7 +42,7 @@ struct Fixture {
   std::array<std::int32_t, 7> ids{0,0,0x1000002,0x1000003,0x1000004,0x1000005,0x2000002};
   void *game_state = gs.data(), *jomini = js.data(), *characters = characters_store.data();
   void *title_storage = title_store.data(), *fallback_title = fallback.data();
-  int government_calls = 0;
+  int government_calls = 0, sample_government_calls = 0, provider_calls = 0;
   bool missing_government = false, missing_provider = false;
   BattleBindings bindings{};
   xar::game::Snapshot scope{};
@@ -123,10 +124,18 @@ struct Fixture {
     return *(*out.character_observations)[0].current_person_state->context_branch_inputs;
   }
 };
-void *Provider() { return active->missing_provider ? nullptr : active->provider.data(); }
+void *Provider() {
+  // ReadBattleTerminalTransitionV1 takes two complete samples. Each branch
+  // starts with this provider read, so the per-sample government sequence must
+  // start at initial-false again while the total call count remains observable.
+  active->sample_government_calls = 0;
+  ++active->provider_calls;
+  return active->missing_provider ? nullptr : active->provider.data();
+}
 void *Government(void *character) {
   Require(character == active->character.data(), "government getter receiver changed to Title owner");
-  const auto call = active->government_calls++;
+  ++active->government_calls;
+  const auto call = active->sample_government_calls++;
   if (active->missing_government) return nullptr;
   return call == 0 ? active->government_false.data() : active->government_true.data();
 }
@@ -161,7 +170,8 @@ int main(int argc, char **argv) {
       if (index == 0 || index == 1 || index == 6 || index == 8) {
         Require(branch.group_counts == std::array<std::optional<std::int32_t>, 7>{2,0,1,0,0,0,1},
             "old group counts changed or duplicate/fallback was dropped");
-        Require(f.government_calls == 5, "observer repeated census/government calls");
+        Require(f.provider_calls == 2 && f.government_calls == 10,
+            "two stable production samples repeated census/government calls");
         const auto &rows = *raw.title_occurrences;
         Require(rows.size() == 7 && rows[0].requested_full_title_id_raw_i32 == 0 &&
             rows[1].requested_full_title_id_raw_i32 == 0 && rows[6].resolution == "fallback" &&
@@ -175,7 +185,8 @@ int main(int argc, char **argv) {
           raw.model_owner_full_character_id_raw_i32 == -2147483647 && !raw.model_magic_raw_u32,
           "model mismatch substituted queried actor or demanded magic");
       if (index == 2) Require(raw.header_source == "static" && raw.title_occurrences->empty() &&
-          f.government_calls == 1, "empty static census demanded body operands");
+          f.provider_calls == 2 && f.government_calls == 2,
+          "empty static census demanded body operands");
       if (index == 4) Require((*raw.title_occurrences)[0].template_tier_raw_i32 == 7 &&
           !branch.group_counts[0], "outside tier was clamped or lost");
       if (index == 6) Require(raw.model_present == false && !raw.model_owner_present,
