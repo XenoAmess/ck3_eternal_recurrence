@@ -3,8 +3,8 @@
 24E3430 applies supply first, then the original siege + raid budgets. Each
 residual pass recounts current soldiers after the preferred writer calls.
 These helpers never synthesize that current by subtracting requested losses.
-The independent associated-DATA replay is exposed only for an initial-frame
-preferred pass; later-stage current still needs its own actual observation.
+The initial associated-DATA replay and an independent derived four-pass
+replay stay separate from the actual-stage observation requirement.
 """
 
 from __future__ import annotations
@@ -13,6 +13,7 @@ from dataclasses import dataclass
 from typing import Literal, Mapping, Sequence
 
 from .army_chunk_loss_writeback_projection import project_observed_writer_chunk_changes
+from .army_loss_sequence_replay import project_conditional_army_loss_sequence
 
 
 FRACTION_SCALE = 100_000
@@ -254,6 +255,9 @@ def project_observed_army_loss_requests(
                 projection["missing_inputs"].append("post_supply_current_soldiers")
         projection["same_input_conditional_chunk_writeback_v1"] = (
             _project_initial_preferred_chunk_changes(army, projection)
+        )
+        projection["same_input_conditional_loss_sequence_v1"] = (
+            project_conditional_army_loss_sequence(army)
         )
         result.append({
             "army_id": army["army_id"], **projection,
