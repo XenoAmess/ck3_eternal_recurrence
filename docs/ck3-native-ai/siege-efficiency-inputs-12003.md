@@ -334,3 +334,10 @@ Military 同 raw 部署前 h8573 派生 cache 与本帧21字段相同，work del
 - 当前玩家scope只含184549452、301989997，generic soldiers/supply null保持；besieging strength不替代whole军力。此段为八个真实双围城普通观察loop，ETA不保证未来占领，未授siege/war胜利或自然继承信用。
 - 四互斥physical组各两日，共64原JSON once（56 GREEN工具叶＋8 GREEN结果）；TOP与独立末SAVE为Root独占，前16日原包、MAA/专军力原件及共享专题均未重读。
 - 原输出 `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261003/runtime-preparation/v69/rebind-cold/recovery-attempt-02/root-results/ordinary-r42-next-eight02`；母账 `-consumed01/ROOT-DELIVERY.json` SHAd77e47ff6503c12a5bc3038690c1947faeb4c0959f8b6126f8430d9f04503bc5，`ROOT-DAY-WEEK-FIELDS.json` SHAd3b4ecd9e8dd204ccf2ac18074fab334225131942822c1b12085c49331fbdb62；逐日双目标deltas已同包缓存。
+
+## 2026-10-05 R44 planned22：实际2日后失败零日
+
+- 请求22日实际只完成2 whole/calendar/bounded日、48h（53263080→53263128），累计4950/resumed1797/Oct5+292/W41；剩余预算不信用，failed03实际0h/0日。
+- day02 LASTWHOLE为native47/public9/raw53263128、normalh8745/98368344 bytes/SHA `28e1bbead87270d209f7750a699d73bd489b7f23cbd69ce4cc0237c9dd4b6fe5`；失败零日normalh8748/SHA `1740fd6d4183127c7ac7a21acd68b7b6d0e9110fc70f91dc4b101ce746d30166`另列，不能替代whole SAVE。
+- 器械军268435481仍2619 moving7→470/route[8651,8652,470]，未到470，不信用器械围城贡献；main301@470与guard184@3711仍sieging。P470 C26589323/T55000000/B3054/ETA281估计，P3711 C5714765/T55000000/B2970/ETA501估计，两处未占/CanStartAssault=false；owncombat0/eventnull/War117440524 active/+25。
+- 父sole原件消费者提供失败literal：004 `life-advance-one-day(expected_revision10)` → `native gameplay step failed: CK3 map state is unavailable`；before001/primed003/after005同raw53263128/native48/public10、paused/mapready=true。根因未知，此lane未重发动作；Generic兵供及phase null保留，无共享专题读取或补丁生成。
