@@ -1232,3 +1232,73 @@ person/Entry result. The tuple/result API is unchanged. No prior/sibling case,
 native test/build, binary read or game action ran. Native producer qualification
 remains separate. Next minimum input work is the already sealed2920D60
 selection/rule43/produced-vector seam; it is not inferred empty.
+
+## Next bounded dependency: mutually exclusive Diac2920D60
+
+The exclusive source lane has already sealed
+`person-tail/following2920d60-source/`. Its708 new bytes (696 code,12 pdata)
+belong to that lane. This consumer reuses the tree and query plan with zero
+new binary reads and no further source expansion. The proposed next stage is
+`post2920D60_pre291CD9D`; the following2921350 at291CDA3 remains outside
+this bounded plan. Proposed leaf `following_diac_2920d60` and emitter
+`emit_following_2920d60_requests_from_current_source_inputs_12003` await
+authorization and a genuine final producer contract.
+
+The primary Diac is resolved from current Character1C8+30 through5D20318
+and fallback5D20310. Its owner DWORD24 Character is resolved before primary
+Diac magic/fullID admission. A valid primary demands actual scripted rule43
+on the resolved owner's fullID. True selects definition block620 and
+325B080's ordered temporary vector, appends it through291B4F0, then returns.
+This suppresses the secondary even if the primary vector is empty.
+
+Only invalid primary or actual false primary rule reaches the secondary.
+28BFC70 chooses its actual immediate-context Character; it must not be
+forced to self or top liege. Secondary Diac admission then requires owner24
+equal to the current Character fullID. Owner mismatch is known zero; a match
+demands rule43 on the current Character, then selected block658/325B080.
+No rule result, callback execution or temporary vector is invented.
+
+```mermaid
+flowchart TD
+  A[Verified pre291CD92 context] --> P[Resolve primary Diac and its owner Character]
+  P --> V{Primary Diac valid?}
+  V -->|true| R[Actual rule43 on owner]
+  R -->|true| B[Selected block620 and ordered325B080 vector]
+  B --> W[291B4F0 unit requests then return; secondary suppressed]
+  R -. rule unknown .-> U[Retain preCD92; exact loader1D65660/predicate372DF30 gap]
+  V -->|false| S[Actual28BFC70 immediate context and secondary Diac]
+  R -->|false| S
+  S --> Q{Secondary valid and owner24 equals current fullID?}
+  Q -->|false| Z[Known zero source stage]
+  Q -->|true| T[Actual rule43 on current Character]
+  T -->|false| Z
+  T -. rule unknown .-> U
+  T -->|true| C[Selected block658 and ordered325B080 vector]
+  B -. produced numeric vector unknown .-> U
+  C -. produced numeric vector unknown .-> U
+  W --> F[Proposed post2920D60_pre291CD9D]
+  Z --> F
+  C --> SW[291B4F0 secondary unit requests then return]
+  SW --> F
+  F -. remaining actual caller .-> N[2921350 at291CDA3; outside this plan]
+```
+
+The smallest source-closed implementation can observe primary invalid plus
+secondary invalid/owner mismatch as known-zero branches. A valid primary with
+unknown rule cannot use an independently invalid secondary to advance. Actual
+empty outer vector produces zero requests; an actual empty PropertyContainer
+element produces one unit100000 source occurrence. Outer stride1C0 and
+numeric source+68 remain the captured291B4F0 contract. Negative outer count
+is not empty. External `FOLLOWING2920D60-CHAIN-SOURCE-PLAN.json` records the
+order, proposed inputs and precise remaining gates; no consumer code or case
+is supplied before the genuine contract.
+
+For immediate bounded Entry-stat value, the unchanged declared-stage result
+and same-Character six-skill projection already connect to the final-stat
+adapter's selected C1..C9/carrier operands and linked Character prowess. Fresh
+first-contact modeling still needs the explicit stage-start/model identity,
+source-stage association, and only the first actually demanded unresolved
+branch. Held291F260 ranks, qualifier/list scratch and dynamic/cold/negative
+branches remain conditional; known-zero branches release their undemanded
+inputs. Full final preparation also needs the remaining actual caller. This
+is an input plan, not an exhaustive person-field catalog or a new live gate.
