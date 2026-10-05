@@ -918,10 +918,18 @@ struct BattleCurrentRuleContextV1 {
 
 // Retained append rows use a 16-byte native record, unlike participant hard
 // casualties. Amounts are stored Q100000 contributions before the side sign.
+struct BattleStoredEffectFlagsV1 {
+  std::optional<std::uint8_t> flag88_raw;
+  std::optional<std::uint8_t> flag89_raw;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleStoredEffectFlagsV1 &,
+                         const BattleStoredEffectFlagsV1 &) = default;
+};
 struct BattleStoredAdvantageRowV1 {
   std::optional<std::string> effect_key;
   std::string key_unavailable_reason;
   std::int64_t contribution_raw = 0;
+  std::optional<BattleStoredEffectFlagsV1> effect_flags_v1;
   friend bool operator==(const BattleStoredAdvantageRowV1 &,
                          const BattleStoredAdvantageRowV1 &) = default;
 };

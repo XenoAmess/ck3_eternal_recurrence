@@ -169,4 +169,6 @@ def retained_constructor_geometry_fields(
         fields["current_dynamic_advantage_v1"] = current_diagnostic
     from .battle_current_dynamic_components_fields import current_dynamic_component_fields
     fields.update(current_dynamic_component_fields(snapshot, diagnostic["source"], bool(exact_build and actual)))
+    from .battle_opposite_effect_eligibility_fields import opposite_effect_eligibility_fields
+    fields.update(opposite_effect_eligibility_fields(snapshot, diagnostic["source"], bool(exact_build and actual)))
     return fields

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_combat_effect_reader.hpp"
+#include "xar_bridge/battle_stored_effect_flags_reader.hpp"
 #include "xar_bridge/game_contract.hpp"
 
 #include <utility>
@@ -34,6 +35,7 @@ inline game::BattleStoredAdvantageSourcesV1 ReadStoredAdvantageSources12003(
       game::BattleStoredAdvantageRowV1 row;
       row.contribution_raw = Load<std::int64_t>(data, row_offset + 8);
       auto *effect = Load<void *>(data, row_offset);
+      row.effect_flags_v1 = ReadStoredEffectFlags12003(effect);
       std::string key;
       if (combat_effect_detail::ValidEffect(effect) &&
           combat_effect_detail::ReadKey(effect, key)) {

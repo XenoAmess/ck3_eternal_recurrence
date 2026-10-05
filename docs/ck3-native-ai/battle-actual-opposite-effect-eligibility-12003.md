@@ -107,3 +107,38 @@ commander or future aggregate is inferred from the present slots. Source
 ledger0/null is a legitimate observed value only when its branch/input is
 actually observed. The work remains research until the minimal current flag
 field is implemented and centrally validated. No production-live/game claim.
+
+
+## Minimal current flag/value implementation, 2026-10-06T02:20:28.558500+08:00
+
+Existing stored rows now add optional `effect_flags_v1` with observed raw
+uint8 flag88/89 and their independent status/reason. The exact .3 collector
+reads loaded nonnull effect pointers at88/89 independently of key decoding;
+missing pointer gives null flags,without dropping the observed row+8 amount.
+Exclusive reader/serializer headers contain the leaf. Fixture effect storage
+was extended from48 to90 bytes because the new actual native fields are88/89;
+this is required memory backing for those fields,not another producer model.
+
+Strict normalization accepts older rows without the additive leaf and preserves
+absence as unobserved flags. The frozen same-query consumer publishes native
+ordered opposite rows,each eligible when either observed raw byte is nonzero,
+and signed64 wrapped eligible retained sums. Available empty ledger gives0;
+unknown membership of a nonzero amount leaves sum unavailable. Unknown
+membership on a zero amount stays unknown while its numeric contribution is
+exactly0: membership readiness and sum readiness are separate. Null key does
+not block observed flags or numeric eligibility. No current40 value,per-side
+sign flip,cross-side constructor clamp or missing19F amount is invented.
+
+One necessary new Python case/four service subcases passed once,0.008s unittest,
+1.7594671s process,actual=0,completed2026-10-06T02:17:56+08. It covers OR
+membership/native order,raw uint8 values2/3/255,key-independent flags,
+missing flag availability,empty opposite sum,owned parent gate,immutable copy
+and legacy absence on a retained zero. No old stored/direct/components wire
+consumer or old Python case was rerun.
+
+New target/CTest `xar_ck3_12003_opposite_effect_eligibility_test` runs only
+`--opposite-effect-eligibility-only` and emits four new production wires.
+Root central build and that unique new producer replay are pending. This
+independent current input value is static-ready; nested19F contribution still
+requires an explicit observed own modifier and complete future/live remain
+unqualified. Source cost for this flag extension is0 new EXE bytes.

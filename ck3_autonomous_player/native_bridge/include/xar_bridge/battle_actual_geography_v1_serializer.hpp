@@ -2,6 +2,7 @@
 
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/battle_current_dynamic_components_serializer.hpp"
+#include "xar_bridge/battle_stored_effect_flags_serializer.hpp"
 
 #include <string>
 #include <string_view>
@@ -138,7 +139,10 @@ inline std::string SerializeBattleActualGeographyV1(
           out += ",\"key_unavailable_reason\":";
           if (row.effect_key) out += "null";
           else String(out, row.key_unavailable_reason);
-          out += ",\"contribution_raw\":" + std::to_string(row.contribution_raw) + '}';
+          out += ",\"contribution_raw\":" + std::to_string(row.contribution_raw);
+          if (row.effect_flags_v1)
+            out += ",\"effect_flags_v1\":" + SerializeStoredEffectFlagsV1(*row.effect_flags_v1);
+          out += '}';
         }
         out += ']';
       }

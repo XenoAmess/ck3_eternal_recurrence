@@ -741,7 +741,7 @@ ActualGeographyFixture *ActualGeographyFixture::current = nullptr;
 
 struct LoadedEffectMemory {
   Bytes<0x1000> rules{};
-  std::array<Bytes<0x48>, 3> effects{};
+  std::array<Bytes<0x90>, 3> effects{};
   const char *keys[3]{"atk_custom", "def_custom", "holding_defender_advantage"};
   int rules_queries = 0;
   bool missing_rules = false;
@@ -833,6 +833,7 @@ CurrentRuleContextMemory *CurrentRuleContextMemory::current = nullptr;
 #include "ck3_12003_stored_advantage_fixture.inc"
 #include "ck3_12003_current_dynamic_advantage_fixture.inc"
 #include "ck3_12003_current_dynamic_components_fixture.inc"
+#include "ck3_12003_opposite_effect_eligibility_fixture.inc"
 
 int RunCurrentRuleContextFixtures(const char *directory) {
   try {
@@ -1169,6 +1170,9 @@ int RunSelectedCommanderRollFixtures(const char *output_directory) {
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc > 1 && std::string_view(argv[1]) == "--opposite-effect-eligibility-only") {
+    return RunOppositeEffectEligibilityFixtures(argc > 2 ? argv[2] : "");
+  }
   if (argc > 1 && std::string_view(argv[1]) == "--current-dynamic-components-only") {
     return RunCurrentDynamicComponentFixtures(argc > 2 ? argv[2] : "");
   }

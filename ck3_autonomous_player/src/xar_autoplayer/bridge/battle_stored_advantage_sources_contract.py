@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .battle_stored_effect_flags_contract import normalize_stored_effect_flags_v1
+
 
 def _i64(value: object, field: str) -> int:
     if type(value) is not int or not -(1 << 63) <= value < (1 << 63):
@@ -37,9 +39,8 @@ def normalize_stored_advantage_sources_v1(value: object, *, field: str) -> dict[
             raise ValueError(f"{field}.sides available ledger is invalid")
         copied_rows = []
         for row in rows:
-            if not isinstance(row, dict) or set(row) != {
-                "effect_key", "key_unavailable_reason", "contribution_raw",
-            }:
+            required = {"effect_key", "key_unavailable_reason", "contribution_raw"}
+            if not isinstance(row, dict) or not required <= set(row) or set(row) - required - {"effect_flags_v1"}:
                 raise ValueError(f"{field}.rows has invalid retained source fields")
             key, key_reason = row["effect_key"], row["key_unavailable_reason"]
             if key is None:
@@ -48,8 +49,12 @@ def normalize_stored_advantage_sources_v1(value: object, *, field: str) -> dict[
             elif not isinstance(key, str) or not 1 <= len(key) <= 512 or key_reason is not None:
                 raise ValueError(f"{field}.rows decoded key is invalid")
             amount = _i64(row["contribution_raw"], f"{field}.rows.contribution_raw")
-            copied_rows.append({"effect_key": key, "key_unavailable_reason": key_reason,
-                                "contribution_raw": amount})
+            copied = {"effect_key": key, "key_unavailable_reason": key_reason, "contribution_raw": amount}
+            if "effect_flags_v1" in row:
+                copied["effect_flags_v1"] = normalize_stored_effect_flags_v1(
+                    row["effect_flags_v1"], field=f"{field}.rows.effect_flags_v1",
+                )
+            copied_rows.append(copied)
         normalized.append({"side_index": index, "status": status,
                            "unavailable_reason": None, "rows": copied_rows})
     return {"scale": 100000, "base_advantage_raw": base,
