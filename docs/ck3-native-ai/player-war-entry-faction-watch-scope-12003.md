@@ -1,6 +1,6 @@
 # CK3 1.20.0.3：派系 watch 与一般战争 prior 的输入范围
 
-2026-10-06，研究与最小施工方案。现有策略把任何 targeting faction 都排除在一般战争 prior 之外；已有原生告警查询能够区分当前 watch 与 dangerous，因此可以用真实同帧威胁替换这个过粗的数量条件。此包尚未修改策略；新的当前 applicability 由 Root 下一批保存的 campaign-root／faction query 决定。历史 512 的 false 不沿用到后帧。
+2026-10-06，source-first 方案及随后完成的有限消费者，当前 **static-ready**。一般战争 prior 已接入现有真实同帧告警，watch行不再因数量非零被统一排除；原生危险和不可用有独立说明。下文保留提案时的来源与缺口，新applicability及唯一测试见后两节。历史512的false不沿用到后帧，当前实机仍使用Root冻结旧planner，没有新增宣战或游戏日信用。
 
 冻结源码为 700d0a79c53326ba1c99bc9cecde353104b0837e，独立 checkout Z:/gfp1。冻结 CK3 1.20.0.3／Steam25652598，EXE SHA-256 94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6。复用 [exact .3 ABI reuse 合同](../../ck3_autonomous_player/native_bridge/research/ck3_1_20_0_3_abi_reuse.json) 的 war_entry 与 faction alerts／layout／metrics／county 四个 PASS 包；没有新 EXE 读取、hash、构建、测试或游戏操作。旧合同的 nonwar group 是迁移分类，不能恢复已撤销的战争授权限制。
 
@@ -54,8 +54,26 @@ query-player-faction-alerts-v1／ck3_query_player_faction_alerts_v1 已发布。
 2. 非零且现有 ready planner_projection.dangerous=false 时，记录 watch IDs、每行 power/threshold/discontent/growth/months，进入已有 general-native-war-entry-battle-prior-v1。当前dangerous分支使用现有延期/治理选择并明确实际原因；at-war继续现有战争路径。使用原生final危险值，power与动态threshold作为真实质量输入/解释，不新增固定75/80阈值、不把不同派系百分比加成敌军人数或新风险预算。
 3. 现有 _forecast_required_war_entry_plan 直接运行 forecast_prewar_power_battle：256 trials、120日、uncalibrated aggregate surrogate。其既有 admission 是 Wilson lower≥0.95 且 unresolved≤5%；可返回现有 typed DECLARE，也可 NO_DECLARE。数量替换因此影响现有整体选择，不能说仅多读一次输入或自身保证宣战成功。该提议没有新增自动宣战授权门。
 4. 这一步解除的是现有 aggregate prior 的输入范围。prewar_scope_contract 仍 advertised=false，declaration-bound regiment-v3／arrival输入另缺；required_capabilities 中的名字不代表查询已可用。不能据此发布 prewar native parity、完整battle forecast、完整OODA或live信用。
-5. 源树和新 actual same-frame pair封存后，再写一个新的 focused production planner case：同帧count2/watch进入aggregate evaluation；保持危险/缺叶路径的实际选择并验证old512不被消费。只执行这一个必要case一次，不重跑旧war-entry矩阵。当前阶段测试执行0，策略修改0。
+5. 源树和新 actual same-frame pair封存后，再写一个新的 focused production planner case：同帧count2/watch进入aggregate evaluation；保持危险/缺叶路径的实际选择并验证old512不被消费。只执行这一个必要case一次，不重跑旧war-entry矩阵。提案阶段测试执行0，策略修改0；随后施工及首次结果见下节。
 
-Root负责提供最新保存的 snapshot、campaign-root与faction-alert实际叶；当前新同帧 applicability尚未取得。本包可交付 source-closed 方案与下一项owned改动，readiness=research；完整人物准备、Entry、未来派系危机／军力耗减后的反应、长期战争策略仍是质量缺口，不因此阻断已有可用aggregate模型施工。
+提案封存时新同帧applicability尚未取得，方案提交d5335e13仅research，Root已采用为d675。完整人物准备、Entry、未来派系危机／军力耗减后的反应、长期战争策略仍是质量缺口，不因此阻断已有可用aggregate模型施工。
+
+## 新同帧 applicability 与授权施工输入
+
+Root随后提供 [673 campaign-root](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/673-current-campaign-root.json) 与 [674 faction alerts](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/674-current-faction-alerts.json)，二者的 source/binding 均为 paused native:1001／public1002／raw53286000／player29829。Root的gameplay继续使用冻结旧planner；此后台实现不热应用。
+
+实际root independent=true、feudal、domain5/6、income528566/Q100000、targeting2。两个非peasant均 stock危险false、at-warfalse、discontent0、growth−300000/Q100000；populist33554465 power3304900／threshold7500000，liberty50331692 power3879200／threshold7500000。完整alert现有readiness除精确ultimatum外均true，planner watch两ID、dangerous=false。surrender_impact独立不可用不影响该watch输入。本帧闭合当前watch applicability，允许按上列最小计划接线；它不预测宣战后动员/耗损导致的阈值或增长变化。
+
+聚焦fixture只保留这两个实际包的必要frame/root字段与完整已发布faction结果；宣战候选和军力assessment另标synthetic，不能把测试的typed选择当作此实机曾宣战。先封存本段实际来源，再修改策略和写唯一新复合case。
+
+## 有限消费者与唯一新验证
+
+strategy.py新增同帧恢复与派系说明两个helper。它复用既有生产normalizer、command/auto-turn result形状及查询envelope身份；不把旧revision/date或public查询绑定当当前。一般branch把经济条件与派系说明分开：count0保留原行为；count>0的当前ready watch进入既有aggregate prior；当前dangerous保留stock理由并延期。缺同帧叶先选择已存在的query；当前部分不可用则保留组件说明并使用现有bounded defer，不在同帧反复查询。当前查询step不可用时仍给出明确current_faction_alert_unavailable，而不冒称经济失败。
+
+输出war_entry_faction_context记录当前stage/frame、watch/danger/war-handoff/县exposure ID及每行原生power/动态threshold/discontent/growth/months。没有新增固定派系阈值、风险预算、native/schema/serializer/permit，也没有改旧窄canary或prewar模型公式。
+
+[唯一新复合case](../../ck3_autonomous_player/tests/unit/test_war_entry_faction_watch_scope_12003.py) 首次 **1/1 GREEN**，unittest0.015s／完整wall2.6610141s。它使用 [673/674必要实际字段fixture](../../ck3_autonomous_player/tests/fixtures/faction_watch_current_673_674.json)，完整经过现有faction normalizer→同帧history恢复→production choose_one_life_turn→existing aggregate prior。实际watch输入＋明确synthetic4:1军力的返回是既有typed DECLARE选择；synthetic边际军力仍NO_DECLARE。changed native danger、缺叶、旧native845/public846叶、当前county组件部分不可用与query不可用均保持明确已有延期/观测路径。所有这些是静态合成决策，无实机宣战/后态信用，完整regiment-v3仍未发布。
+
+首次receipt位于外置consumer-first-case-attempt01/RESULT.json与stderr.txt，旧case/wire重跑0、测试retry0、nativebuild0、EXE新读0、SDK/pipe/game/UI/runtime操作0。隔离checkout曾有tracked静态兼容性registry为skip-worktree，施工前仅从本checkout相同HEAD materialize其src，让生产import可用；未改其代码、未触碰Root/runtime，未产生测试harness RED。本包只授该有限Python消费者static-ready；采用后新进程实际planner、宣战/战争结果由Root另行验证和计账。
 
 外置字段与封存来源：Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/faction-battle-prior-scope/。Root合并当天/W41，不编辑shared reports、g78或gb0。

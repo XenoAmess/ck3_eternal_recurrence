@@ -1,0 +1,231 @@
+{
+  "source_packets": [
+    "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261006\\gameplay-responses\\673-current-campaign-root.json",
+    "Z:\\ck3_mod_rewrite_process_assets\\g2-resume-20261006\\gameplay-responses\\674-current-faction-alerts.json"
+  ],
+  "scope": "actual source/root/alerts; test declaration and power assessment are synthetic",
+  "source": {
+    "game_version": "1.20.0.3",
+    "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "snapshot_id": "native:1001",
+    "revision": 1002,
+    "native_revision": 1001,
+    "date_raw": 53286000,
+    "paused": true,
+    "backend_id": "native-headless"
+  },
+  "campaign_root_context": {
+    "schema_version": 1,
+    "status": "available",
+    "snapshot_revision": 1001,
+    "date_raw": 53286000,
+    "player_character_id": 29829,
+    "independent": true,
+    "government": {
+      "key": "feudal_government",
+      "flags": [
+        "government_is_feudal",
+        "government_is_settled",
+        "government_uses_crown_authority",
+        "government_uses_domain_limit",
+        "may_elevate_co_monarch"
+      ],
+      "native_flag_count": 5
+    },
+    "player_monthly_gold_income": {
+      "raw": 528566,
+      "scale": 100000
+    },
+    "player_domain_size": 5,
+    "player_domain_limit": 6,
+    "player_targeting_faction_count": 2,
+    "readiness": {
+      "ready": true
+    }
+  },
+  "faction_query_result": {
+    "step": "query-player-faction-alerts-v1",
+    "accepted": true,
+    "status": "available",
+    "snapshot_revision": 1001,
+    "query_sequence": 2,
+    "player_faction_alerts_ready": true,
+    "player_faction_alerts": {
+      "schema_version": 1,
+      "status": "available",
+      "snapshot_revision": 1001,
+      "date_raw": 53286000,
+      "player_character_id": 29829,
+      "targeting_faction_count": 2,
+      "targeting_factions": [
+        {
+          "faction_id": 33554465,
+          "faction_type_key": "populist_faction",
+          "target_character_id": 29829,
+          "leader_character_id": null,
+          "leader_is_human": false,
+          "special_character_id": null,
+          "special_title_id": null,
+          "faction_at_war": false,
+          "faction_war_id": null,
+          "power": {
+            "raw": 3304900,
+            "scale": 100000
+          },
+          "power_threshold": {
+            "raw": 7500000,
+            "scale": 100000
+          },
+          "discontent": {
+            "raw": 0,
+            "scale": 100000
+          },
+          "discontent_per_month": {
+            "raw": -300000,
+            "scale": 100000
+          },
+          "months_until_max_discontent": 0,
+          "character_member_ids": [],
+          "county_member_title_ids": [
+            2111
+          ],
+          "dangerous_by_stock_rule": false,
+          "danger_reason": "non_peasant_discontent_not_increasing",
+          "county_member_observations": [
+            {
+              "county_title_id": 2111,
+              "capital_province_id": 2638,
+              "holder_character_id": 29829,
+              "county_opinion": {
+                "raw": -22,
+                "scale": 1
+              },
+              "native_county_join_score": {
+                "raw": 3100000,
+                "scale": 100000
+              },
+              "can_add_county": true,
+              "removal_queued": false,
+              "native_leave_score_threshold": {
+                "raw": 5,
+                "scale": 1
+              },
+              "opinion_status": "available",
+              "native_final_status": "available"
+            }
+          ],
+          "surrender_impact": {
+            "status": "unavailable",
+            "unavailable_reason": "surrender_title_collection_unavailable",
+            "kingdom_outcome_complete": false,
+            "ordinary_branch_title_sets_ready": false,
+            "county_loss_complete": false,
+            "leader_at_war_with_target": null,
+            "government_allows_state_faith": null,
+            "player_remaining_direct_county_title_ids": [],
+            "player_direct_title_loss_ids": [],
+            "player_subrealm_county_title_ids": [],
+            "seized_counties": [],
+            "seized_duchies": [],
+            "member_counties": [],
+            "kingdoms": [],
+            "unresolved_branches": []
+          }
+        },
+        {
+          "faction_id": 50331692,
+          "faction_type_key": "liberty_faction",
+          "target_character_id": 29829,
+          "leader_character_id": 33435,
+          "leader_is_human": false,
+          "special_character_id": null,
+          "special_title_id": null,
+          "faction_at_war": false,
+          "faction_war_id": null,
+          "power": {
+            "raw": 3879200,
+            "scale": 100000
+          },
+          "power_threshold": {
+            "raw": 7500000,
+            "scale": 100000
+          },
+          "discontent": {
+            "raw": 0,
+            "scale": 100000
+          },
+          "discontent_per_month": {
+            "raw": -300000,
+            "scale": 100000
+          },
+          "months_until_max_discontent": 0,
+          "character_member_ids": [
+            33435
+          ],
+          "county_member_title_ids": [],
+          "dangerous_by_stock_rule": false,
+          "danger_reason": "non_peasant_discontent_not_increasing"
+        }
+      ],
+      "county_exposures": [],
+      "planner_projection": {
+        "status": "available",
+        "present": true,
+        "dangerous": false,
+        "dangerous_faction_ids": [],
+        "watch_faction_ids": [
+          33554465,
+          50331692
+        ],
+        "war_handoff_faction_ids": [],
+        "exposed_county_title_ids": [],
+        "exact_ultimatum_timing_ready": false
+      },
+      "readiness": {
+        "exact_ultimatum_timing_ready": false,
+        "alert_ready": true,
+        "identity_ready": true,
+        "targeting_rows_ready": true,
+        "county_exposure_ready": true,
+        "stock_dangerous_predicate_ready": true,
+        "targeting_count_ready": true,
+        "same_frame_ready": true
+      },
+      "component_unavailable_reasons": {
+        "county_exposure": null,
+        "targeting_rows": null
+      },
+      "unavailable_reason": null,
+      "provenance": {
+        "game_version": "1.20.0.3",
+        "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+        "backend_id": "ck3-1.20.0.3-native-player-faction-alerts-v1"
+      }
+    },
+    "backend_id": "native-headless",
+    "queried_snapshot_id": "native:1001",
+    "queried_revision": 1002,
+    "queried_native_revision": 1001,
+    "schema_version": 1,
+    "scope": "exact-player-faction-alerts",
+    "build": {
+      "version": "1.20.0.3",
+      "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+    },
+    "source": {
+      "snapshot_id": "native:1001",
+      "revision": 1002,
+      "native_revision": 1001,
+      "date_raw": 53286000,
+      "paused": true,
+      "backend_id": "native-headless"
+    },
+    "binding": {
+      "snapshot_id": "native:1001",
+      "revision": 1002,
+      "native_revision": 1001,
+      "date_raw": 53286000,
+      "expected_revision": 1002
+    }
+  }
+}

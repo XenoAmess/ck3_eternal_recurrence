@@ -42,6 +42,11 @@ from .bridge.war_entry_contract import (
     normalize_war_entry_assessments,
     query_war_entry_assessments_step,
 )
+from .bridge.player_faction_alerts_contract import (
+    QUERY_PLAYER_FACTION_ALERTS_V1_CAPABILITY,
+    QUERY_PLAYER_FACTION_ALERTS_V1_STEP,
+    normalize_player_faction_alerts_v1,
+)
 from .bridge.marriage_contract import (
     QUERY_ARRANGE_MARRIAGE_CHOICES_STEP,
     arrange_marriage_step,
@@ -692,6 +697,92 @@ def _same_frame_campaign_root_context(
         ):
             return payload
     return None
+
+
+def _same_frame_player_faction_alerts(
+    rows: list[dict[str, object]],
+    snapshot: dict[str, object] | None,
+) -> dict[str, object] | None:
+    """Recover the existing normalized alert without carrying a prior frame."""
+
+    if not isinstance(snapshot, dict) or snapshot.get("paused") is not True:
+        return None
+    played = snapshot.get("played_character")
+    actor_id = played.get("character_id") if isinstance(played, dict) else None
+    native_revision = snapshot.get("native_revision")
+    date_raw = snapshot.get("date_raw")
+    if not all(isinstance(value, int) and not isinstance(value, bool)
+               for value in (actor_id, native_revision, date_raw)):
+        return None
+    payloads: list[object] = [snapshot.get("player_faction_alerts")]
+    for row in rows:
+        if (_effective_command(row) != QUERY_PLAYER_FACTION_ALERTS_V1_STEP
+                or row.get("ok") is not True):
+            continue
+        result = _effective_command_result(row)
+        if not isinstance(result, dict):
+            continue
+        if any(key in result and result[key] != snapshot.get(expected)
+               for key, expected in (
+                   ("queried_snapshot_id", "snapshot_id"),
+                   ("queried_revision", "revision"),
+                   ("queried_native_revision", "native_revision"),
+               )):
+            continue
+        payloads.append(result.get("player_faction_alerts"))
+    for payload in reversed(payloads):
+        try:
+            alert = normalize_player_faction_alerts_v1(
+                payload, expected_date_raw=date_raw,
+                expected_snapshot_revision=native_revision,
+            )
+        except ValueError:
+            continue
+        if alert.get("player_character_id") == actor_id:
+            return alert
+    return None
+
+
+def _general_war_entry_faction_context(
+    campaign_root: dict[str, object] | None,
+    alert: dict[str, object] | None,
+) -> dict[str, object]:
+    """Distinguish actual watch rows from the old any-faction exclusion."""
+
+    count = campaign_root.get("player_targeting_faction_count") if isinstance(campaign_root, dict) else None
+    if count == 0:
+        return {"status": "known_empty_targeting", "prior_scope_eligible": True,
+                "targeting_faction_count": 0, "source": "same_frame_campaign_root_count"}
+    unavailable = {"status": "unavailable", "prior_scope_eligible": False,
+                   "targeting_faction_count": count,
+                   "reason": "same_frame_faction_alert_unavailable"}
+    if alert is None:
+        return unavailable
+    readiness = alert.get("readiness")
+    projection = alert.get("planner_projection")
+    if not (
+        alert.get("status") == "available"
+        and alert.get("targeting_faction_count") == count
+        and isinstance(readiness, dict) and readiness.get("alert_ready") is True
+        and isinstance(projection, dict) and projection.get("status") == "available"
+    ):
+        return {**unavailable, "reason": "faction_alert_components_unavailable",
+                "component_unavailable_reasons": copy.deepcopy(alert.get("component_unavailable_reasons"))}
+    status = ("war_handoff" if projection["war_handoff_faction_ids"]
+              else "dangerous" if projection["dangerous"] else "watch")
+    fields = ("faction_id", "faction_type_key", "dangerous_by_stock_rule",
+              "danger_reason", "faction_at_war", "power", "power_threshold",
+              "discontent", "discontent_per_month", "months_until_max_discontent")
+    return {
+        "prior_scope_eligible": status == "watch",
+        "source": QUERY_PLAYER_FACTION_ALERTS_V1_STEP,
+        "snapshot_revision": alert["snapshot_revision"], "date_raw": alert["date_raw"],
+        "targeting_faction_count": count,
+        **copy.deepcopy(projection),
+        "status": status,
+        "factions": [{key: copy.deepcopy(row[key]) for key in fields}
+                     for row in alert["targeting_factions"]],
+    }
 
 
 def _complete_player_held_county_capital_province_ids(
@@ -14276,7 +14367,6 @@ def _choose_one_life_turn_core(
             and campaign_root.get("independent") is True
             and isinstance(government, dict)
             and government.get("key") == "feudal_government"
-            and campaign_root.get("player_targeting_faction_count") == 0
             and isinstance(campaign_root.get("player_domain_size"), int)
             and isinstance(campaign_root.get("player_domain_limit"), int)
             and campaign_root["player_domain_size"] <= campaign_root["player_domain_limit"]
@@ -14294,7 +14384,11 @@ def _choose_one_life_turn_core(
                 and isinstance(claimant, int) and claimant > 0
             )
         )
-        if (
+        faction_alert = _same_frame_player_faction_alerts(
+            rows, snapshot if isinstance(snapshot, dict) else None
+        )
+        faction_context = _general_war_entry_faction_context(campaign_root, faction_alert)
+        general_prior_inputs_ready = bool(
             at_peace
             and fresh_assessment
             and same_frame_general_scope
@@ -14304,8 +14398,21 @@ def _choose_one_life_turn_core(
             and declaration.get("source") == "native"
             and isinstance(typed_declaration_step, str)
             and typed_declaration_step in available_steps
-        ):
-            return _forecast_required_war_entry_plan(
+        )
+        if (general_prior_inputs_ready and faction_context["status"] == "unavailable"
+                and faction_alert is None and QUERY_PLAYER_FACTION_ALERTS_V1_STEP in available_steps):
+            return {
+                "policy": "one-life-turn-v1",
+                "phase": "native_war_entry_faction_assessment",
+                "selected_step": QUERY_PLAYER_FACTION_ALERTS_V1_STEP,
+                "reason": "read current faction danger and strength before treating targeting presence as a battle-prior exclusion",
+                "declaration": declaration,
+                "war_entry_assessment": dict(assessment_row),
+                "war_entry_faction_context": faction_context,
+                "required_capabilities": [QUERY_PLAYER_FACTION_ALERTS_V1_CAPABILITY],
+            }
+        if general_prior_inputs_ready and faction_context["prior_scope_eligible"]:
+            plan = _forecast_required_war_entry_plan(
                 declaration,
                 assessment_row,
                 {
@@ -14317,6 +14424,7 @@ def _choose_one_life_turn_core(
                 campaign_root if isinstance(campaign_root, dict) else {},
                 available_steps,
             )
+            return {**plan, "war_entry_faction_context": faction_context}
         # A legal declaration can still lack the independent, same-frame
         # identity/economy/action scope used by this bounded prior.  Report
         # that concrete mismatch rather than treating imperfect native combat
@@ -14326,6 +14434,7 @@ def _choose_one_life_turn_core(
                 ("at_peace", at_peace),
                 ("fresh_power_assessment", fresh_assessment),
                 ("independent_feudal_economic_scope", same_frame_general_scope),
+                ("current_faction_alert_" + str(faction_context["status"]), faction_context["prior_scope_eligible"]),
                 ("claimant_identity", claimant_valid),
                 ("actor_power_without_unbounded_allies", assessment_row.get("actor_network_contribution_raw") == 0
                  and assessment_row.get("actor_power_total_raw") == assessment_row.get("actor_power_base_raw")),
@@ -14342,6 +14451,7 @@ def _choose_one_life_turn_core(
         shared_evidence = {
             "required_capabilities": required_capabilities,
             "general_battle_prior_scope_blockers": prior_scope_blockers,
+            "war_entry_faction_context": faction_context,
             "declaration": declaration,
             "war_entry_assessment": (
                 dict(assessment_row) if fresh_assessment else None
@@ -14354,6 +14464,11 @@ def _choose_one_life_turn_core(
                 "phase": "native_war_entry_no_declare",
                 "selected_step": "life-advance",
                 "reason": (
+                    "the current faction alert reports a dangerous threat; defer the bounded battle prior"
+                    if general_prior_inputs_ready and faction_context["status"] == "dangerous"
+                    else "current faction-alert inputs are unavailable; choose NO_DECLARE and refresh after one bounded interval"
+                    if general_prior_inputs_ready and faction_context["status"] == "unavailable"
+                    else
                     "the native declaration is legal but does not satisfy "
                     "the bounded battle prior's same-frame strategy scope; "
                     "choose NO_DECLARE and reassess after one bounded interval"
