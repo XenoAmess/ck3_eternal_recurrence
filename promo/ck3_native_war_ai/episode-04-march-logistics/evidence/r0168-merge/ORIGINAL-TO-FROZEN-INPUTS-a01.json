@@ -1,0 +1,181 @@
+{
+  "at_utc": "2026-10-05T07:04:50.620783+00:00",
+  "ten_public_receipts": {
+    "before_snapshot": {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-before-snapshot-a01.json",
+        "bytes": 164176,
+        "sha256": "e7366d7f70f6448136dd67afb8a539b86e4f6aa7bad2f6477e88ce861abbcb06"
+      },
+      "frozen_copy": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-snapshot-a01.json",
+        "bytes": 164176,
+        "sha256": "e7366d7f70f6448136dd67afb8a539b86e4f6aa7bad2f6477e88ce861abbcb06"
+      }
+    },
+    "before_strength": {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-before-strength-a01.json",
+        "bytes": 394056,
+        "sha256": "24619c48a44b2cc71ba81f8f820ad7e3f0d4dee752d8a873ccd59ef30b49194c"
+      },
+      "frozen_copy": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-strength-a01.json",
+        "bytes": 394056,
+        "sha256": "24619c48a44b2cc71ba81f8f820ad7e3f0d4dee752d8a873ccd59ef30b49194c"
+      }
+    },
+    "before_d_commander": {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-before-d-commander-a01.json",
+        "bytes": 51223,
+        "sha256": "53616252d36d25a5eac63911b7284fe0e72192a842650fe676945105a7351a65"
+      },
+      "frozen_copy": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-d-commander-a01.json",
+        "bytes": 51223,
+        "sha256": "53616252d36d25a5eac63911b7284fe0e72192a842650fe676945105a7351a65"
+      }
+    },
+    "before_s_commander": {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-before-s-commander-a01.json",
+        "bytes": 51390,
+        "sha256": "7cbbc108d976e707d0af08241747f445b52e2ead52aefa19df882fc6fc3e9ad8"
+      },
+      "frozen_copy": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-s-commander-a01.json",
+        "bytes": 51390,
+        "sha256": "7cbbc108d976e707d0af08241747f445b52e2ead52aefa19df882fc6fc3e9ad8"
+      }
+    },
+    "before_bracket": {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-before-bracket-a01.json",
+        "bytes": 1005126,
+        "sha256": "223c71ac22baf6ad82d4b482a8cc0ee4f55eecaca035d249b9f352f316acd685"
+      },
+      "frozen_copy": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-bracket-a01.json",
+        "bytes": 1005126,
+        "sha256": "223c71ac22baf6ad82d4b482a8cc0ee4f55eecaca035d249b9f352f316acd685"
+      }
+    },
+    "action": {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-action-a01.json",
+        "bytes": 5447,
+        "sha256": "90170007a2df52dadf009677a915512aa1288aeab9fbbb749a7513adbbc73ef8"
+      },
+      "frozen_copy": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-action-a01.json",
+        "bytes": 5447,
+        "sha256": "90170007a2df52dadf009677a915512aa1288aeab9fbbb749a7513adbbc73ef8"
+      }
+    },
+    "after_snapshot": {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-after-snapshot-a01.json",
+        "bytes": 158446,
+        "sha256": "c935f5f325aa2015d3d35e975c5fa1fe03ec2cbefa5df0d0c4cda73f16b1b777"
+      },
+      "frozen_copy": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-after-snapshot-a01.json",
+        "bytes": 158446,
+        "sha256": "c935f5f325aa2015d3d35e975c5fa1fe03ec2cbefa5df0d0c4cda73f16b1b777"
+      }
+    },
+    "after_strength": {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-after-strength-a01.json",
+        "bytes": 339984,
+        "sha256": "35054e97ed025442437f4f6ed315f9cf184ee892bb84f06b249eb25a0a41d5e6"
+      },
+      "frozen_copy": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-after-strength-a01.json",
+        "bytes": 339984,
+        "sha256": "35054e97ed025442437f4f6ed315f9cf184ee892bb84f06b249eb25a0a41d5e6"
+      }
+    },
+    "after_d_commander": {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-after-d-commander-a01.json",
+        "bytes": 51241,
+        "sha256": "143c2f175ad35847ac5949bdd50910d9b907cae62b81dcb6bfb58f69b007863d"
+      },
+      "frozen_copy": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-after-d-commander-a01.json",
+        "bytes": 51241,
+        "sha256": "143c2f175ad35847ac5949bdd50910d9b907cae62b81dcb6bfb58f69b007863d"
+      }
+    },
+    "after_bracket": {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-after-bracket-a01.json",
+        "bytes": 945472,
+        "sha256": "5efcab06b99af5782884a7bc6c73bb1bebbf98f0a0c9a4bdb178f7dd7f067e35"
+      },
+      "frozen_copy": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-after-bracket-a01.json",
+        "bytes": 945472,
+        "sha256": "5efcab06b99af5782884a7bc6c73bb1bebbf98f0a0c9a4bdb178f7dd7f067e35"
+      }
+    }
+  },
+  "separate_exactbuild": [
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0168-a07-admission-a01\\root-gates.json",
+        "bytes": 1576,
+        "sha256": "bd5d090109f184d448f56db4b6e4f1f3bb466fcf60e72c580566291831be815f"
+      },
+      "frozen_copy": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\exact-build-evidence\\root-gates.json",
+        "bytes": 1576,
+        "sha256": "bd5d090109f184d448f56db4b6e4f1f3bb466fcf60e72c580566291831be815f"
+      }
+    },
+    {
+      "original": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\sdk-ready.json",
+        "bytes": 36312,
+        "sha256": "21d1f703ce0262fd67a4262f75cfb0cfb525b2ccef4e527d2aa784202f596d0b"
+      },
+      "frozen_copy": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\exact-build-evidence\\sdk-ready.json",
+        "bytes": 36312,
+        "sha256": "21d1f703ce0262fd67a4262f75cfb0cfb525b2ccef4e527d2aa784202f596d0b"
+      }
+    }
+  ],
+  "Root_independent_result": {
+    "original": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-actual-merge-a01\\result.json",
+      "bytes": 542,
+      "sha256": "fc1bc384d64d7f3ff23131556d8db2312ce3cceb9efefead3005a93c55f60c53"
+    },
+    "frozen_copy": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\independent-context\\Root-result.json",
+      "bytes": 542,
+      "sha256": "fc1bc384d64d7f3ff23131556d8db2312ce3cceb9efefead3005a93c55f60c53"
+    }
+  },
+  "extra_action_before": {
+    "original": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-action-before-a01.json",
+      "bytes": 1005124,
+      "sha256": "707e04b65b49720aac10c9367194a07d2ece9367e7b64a98e803e5d511dc9f42"
+    },
+    "frozen_copy": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\independent-context\\r0168-merge-action-before-a01.json",
+      "bytes": 1005124,
+      "sha256": "707e04b65b49720aac10c9367194a07d2ece9367e7b64a98e803e5d511dc9f42"
+    }
+  },
+  "analyzer": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\merge-numeric-review-a01\\review_actual_merge.py",
+    "bytes": 29608,
+    "sha256": "6afe476eb5ac37fa2559d2fc0e7c51d89e5bc6b865aeb33e9eded675ab066e50"
+  },
+  "SDK_UI_or_raw_recording_access": 0
+}

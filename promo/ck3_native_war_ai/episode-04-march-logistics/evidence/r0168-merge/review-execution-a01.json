@@ -1,0 +1,21 @@
+{
+  "at_utc": "2026-10-05T07:04:51.041791+00:00",
+  "exit_code": 0,
+  "analyzer": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\merge-numeric-review-a01\\review_actual_merge.py",
+    "bytes": 29608,
+    "sha256": "6afe476eb5ac37fa2559d2fc0e7c51d89e5bc6b865aeb33e9eded675ab066e50"
+  },
+  "stdout": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\review.stdout",
+    "bytes": 363,
+    "sha256": "0b138709a60deba8cdc8b19e0580770946ca757fae86c2cf207a97d03e8f1c10"
+  },
+  "stderr": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\review.stderr",
+    "bytes": 0,
+    "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+  },
+  "historical_fake20tests_repeated": false,
+  "SDK_or_UI_or_settings_calls": 0
+}

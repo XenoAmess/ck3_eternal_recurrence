@@ -11,3 +11,8 @@
 离线验证使用实际生产 reader/serializer 的九个合军权重夹具，以及 Python normalizer 的四个拒绝用例；旧补给和补员夹具也通过。Root 集成后的现有 Strength 合同十项测试通过。它们使用合成内存和本地函数桩，没有调用游戏函数。`open_kaishek` 对原生 ABI 和内存读取无可覆盖语义，本项预验为 not-applicable。
 
 冻结过程资产位于 `C:/ck3-war-episode04-research-20261004-a01/merge-supply-weight-source-a01/`；采用补丁 `merge-destination-weight-a02.patch` SHA-256 `63cf6daa22ff4d56983ea357c393886b3cdf1093f0e5c845058c9482fdce982a`。下一项是新正式 DLL 冷载后读取双方 D/S、库存、上限、统帅及全团身份，再对实际合军前后计算，不能以离线夹具闭合实机公式。
+
+
+## 2026-10-05 R0168 actual不同库存合军追加
+
+前文“尚待新冷载实机”保留为当时状态。现[本期R0168同日合军](army-merge-r0168-no-tick-weighted-supply-12003.md)已取得完整paired D/S和post：samepaused raw53147376、public26/native25→27/26，D0原生目的权重566000000；S16777220整军1086×100000=108600000，不能误用S作为目的角色的108100000字段。普通native两阶段截断得到11651751，严格匹配实际poststock；postcapacity30000000、将领27357独立实读。27个实际团完整并集和逐ID current/max守恒，所有所需保存回执检查verified。它是nonclamp正例；actualupperclamp仍待证，不由不同库存或算术吻合自动闭合。

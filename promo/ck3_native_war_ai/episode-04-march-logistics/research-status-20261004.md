@@ -221,3 +221,14 @@ Root实际两项focused CTest及注册in-memory MCP 6cases/52checks通过，门�
 **预算56只是当前getter整数输入，不是实际扣56。** initial尚无strength rows，after兵数为query缓存，不制造独立before/after人数loss对。本次关闭William当前字段可读性缺口；不增加applied-loss/starvation/film完成信用，历史R0163/R0165/R0166缺字段仍按原source保留。Main全部13 DATA当前两can谓词false/prepared0；Sea22条persistent can=true但所有chunk=false/prepared0，不能泛称海军不补员或端点无抵消补员。commander尚缺本窗口独立绑定。
 
 仍缺真实饥饿threshold crossing与非零整数供给扣兵、county-entry budget/完整进入条件DTO、逐actual团supply-eligibility/特殊writer条件及loss/refill/death区间流水。现字段已足够用同军完整人数/records与+188/+190观察下一条件桶机会（此帧Main+25日/Sea+15日），不能把机会等于成功结算；Root仍按有限safe sampler、实际interval、事件/战斗/编成/月历补员边界拒绝或降因果强度。R0162既有围城−31和arrival−127保留原scope，均不当本场饥饿。此次纯文件沉淀不改变术语、actual合军、同档A/B/C、成片/1×审阅/交付状态，不重算完成百分比。
+
+
+## 2026-10-05 R0168：不同库存实际合军与27团完整继承
+
+本节更新前文actualmergepending，旧R0166/R0167失败及R0165补员保持原身份。Root在原7fJan11独立a07/ffc29场景，经正常会合后同省1506、pausedJan20/raw53147376实际提交 `merge-armies-0-with-16777220`；public26/native25→27/native26、同actor33388/episode。十个紧邻原始snapshot/Strength/Commander/bracket/action包及独立exactRoot绑定已由现有只读reviewer校验，exit0、全部requiredchecks verified，见[新增合军索引](evidence/r0168-merge/index.json)与[合军专题](../../../docs/ck3-native-ai/army-merge-r0168-no-tick-weighted-supply-12003.md)。完整pre13+14团disjoint，postD6746/6747/27团逐ID current/max不变，nativeD0保留、S16777220从全己军roster消失。
+
+真实D权重566000000，S整军1086×100000=108600000；两军库存8299737/29122808，经D先S后nativefixed两阶段截断贡献6963562+4688189，预期11651751与actualpost完全相等。post将领27357、容量30000000由独立post实读，D原无将领。**这是实际nonclamp加权正例，上限截断正例仍未完成。** D的+188/+190 storage64/date和bucket原值保留；没有给隐藏更新或宽限重启信用。public原始version/hash null不补值，exactsource/DLL由Root独立证据绑定；review不等于新游戏执行、原片质量或signoff。
+
+Root随后实际保存postmerge共同候选common-t0：72572576B，SHA `dcd54f1270e4c5e18af2d2a8adb5b9d2af2cd5af60ae3d71330b782adf122260`，Jan20/raw53147376、人物33388、27团6746/6747、保存后public28/native27。immutablecopies与receipt保全由Root另收。**它仍是postmerge候选，A/B/C两处正值、两routegates及三独立同档回放均待筛/执行，ABC完成信用保持0/3。**
+
+本包不碰raw；R0168原片已由Root正常收口、完整媒体/PTS抽帧由capturelane独占另验。TERM03/04/06/08/09/10/11、clean镜头、上限截断、路线/费用归因、全文/TTS/成片/完整人工1×签核及指定视频交付仍各走实际证据。研究formal加权比例/分母仍null，素材分钟和本次PASS不自动提高影片百分比；既有Root整体约30%/研究约70%只保留为当时调度估算。

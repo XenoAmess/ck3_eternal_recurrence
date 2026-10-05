@@ -1,0 +1,22 @@
+{
+  "army_id": 0,
+  "native_carmy_id": 0,
+  "current_soldiers": 6746,
+  "maximum_soldiers": 6747,
+  "regiment_count": 27,
+  "current_supply_raw": 11651751,
+  "current_supply_capacity_raw": 30000000,
+  "current_supply_change_monthly_raw": -877192,
+  "same_paused_date": 53147376,
+  "before_counts": [
+    13,
+    14
+  ],
+  "exact_full_identity_and_counts_preserved": true,
+  "actual_army_ui_visible": true,
+  "current_commander": {
+    "status": "available",
+    "character_id": 27357,
+    "unavailable_reason": null
+  }
+}

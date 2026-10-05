@@ -1,0 +1,28 @@
+{
+  "schema": "xar.episode04.actual-merge-review-input.v1",
+  "mode": "saved-live-receipts",
+  "expected_regiment_count": 27,
+  "destination_public_cunit_id": 0,
+  "source_public_cunit_id": 16777220,
+  "receipts": {
+    "before_snapshot": "receipts/r0168-merge-before-snapshot-a01.json",
+    "before_strength": "receipts/r0168-merge-before-strength-a01.json",
+    "before_d_commander": "receipts/r0168-merge-before-d-commander-a01.json",
+    "before_s_commander": "receipts/r0168-merge-before-s-commander-a01.json",
+    "before_bracket": "receipts/r0168-merge-before-bracket-a01.json",
+    "action": "receipts/r0168-merge-action-a01.json",
+    "after_snapshot": "receipts/r0168-merge-after-snapshot-a01.json",
+    "after_strength": "receipts/r0168-merge-after-strength-a01.json",
+    "after_d_commander": "receipts/r0168-merge-after-d-commander-a01.json",
+    "after_bracket": "receipts/r0168-merge-after-bracket-a01.json"
+  },
+  "exact_build": {
+    "version": "1.20.0.3",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "evidence_paths": [
+      "exact-build/root-gates.json",
+      "exact-build/sdk-ready.json"
+    ],
+    "note": "Portable declaration points to exact archived original bytes; original actual manifest/report are retained. This portable declaration was not substituted for the original review inputs."
+  }
+}

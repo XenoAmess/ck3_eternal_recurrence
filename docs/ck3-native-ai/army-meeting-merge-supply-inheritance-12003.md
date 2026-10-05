@@ -77,3 +77,8 @@ Supply是absolute supply-unit raw，不是各自capacity百分比。destination 
 若目标决策必须数值比较实际mergedforce与当地limit，最高优先级增量就是沿同一Strength查询绑定这两个exact leaf、投影当前Province limit/native usage并实机paused实读，不能用长期null的schema代替。需要当前collection外holding的fort/garrison时，最小复用 `native_bridge/src/ck3_12002_province.cpp:126 ReadObjectiveProvince` 及已有holding/rich-siege reader；历史local-siege parser不冒充部署端口。完整record补员覆盖仍沿已有 `0xD14960` data-record stride/遍历入口，首record原生fraction不合成整军净月补兵。
 
 以上缺口是后续实际决策的施工入口；本轮已有health、路线、目标holding与合军后现口回读支持正常会合/移动/解围继续，不因全未来预测、完整AI排序或未采用的质量分支停止实机。按真实outcome再校准，不随意split编组。
+
+
+## 2026-10-05 R0168：本期完整同日合军数值实证
+
+此前Robert/v47摘要及static-only描述均保留原scope。新增[William33388的R0168专题](army-merge-r0168-no-tick-weighted-supply-12003.md)在同pausedJan20/raw53147376、同省1506实际执行D0←S16777220；pre13+14团、5660/5660与1086/1087，postD6746/6747/27团。独立post保留nativeD0、S从完整roster消失，每团current/max正好等于pre disjoint并集。原生D566000000、S108600000与两军库存8299737/29122808按D先S后两阶段fixed分别贡献6963562/4688189，post11651751完全匹配。D原来无将领，post选27357、实容量30000000；未根据quality或旧cap预测。本例低于容量，没有upperclamp信用。post+188/+190完整64/date/bucket都保留preD端点，与preS不同；不由相等反推隐藏更新/宽限重启。十份原始publicpacket、分析器和exit0report已归档，rawversion/hash的null未补造，Root exact运行绑定另存。媒体/TERM/ABC及剩余upperclamp独立验收。

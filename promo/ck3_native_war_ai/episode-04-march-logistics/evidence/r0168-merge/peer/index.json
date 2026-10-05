@@ -1,0 +1,16 @@
+{
+  "independent_saved_receipt_peer_only": true,
+  "new_live_credit": 0,
+  "files": [
+    {
+      "file": "ROOT-DELIVERY.json",
+      "bytes": 2310,
+      "sha256": "b6d590b3c9a87d70c182ea69ddc5ad2481bf03c57257686f6b2c697dea5c65b2"
+    },
+    {
+      "file": "PEER-REPORT-a01.json",
+      "bytes": 27930,
+      "sha256": "3ed08033b86ff3e5218eca03ac2d8a0e3434bc8981320fd2aaffd121b22d5917"
+    }
+  ]
+}

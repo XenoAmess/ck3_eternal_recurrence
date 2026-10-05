@@ -1,0 +1,11 @@
+[
+  "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "-B",
+  "-X",
+  "utf8",
+  "C:\\ck3-war-episode04-research-20261004-a01\\merge-numeric-review-a01\\review_actual_merge.py",
+  "--input",
+  "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\merge-review-input-a01.json",
+  "--output",
+  "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\merge-review-report-a01.json"
+]

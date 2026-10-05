@@ -1,0 +1,32 @@
+{
+  "schema": "xar.e04.r0168.root-launch-gates.v1",
+  "bound_attempt": "native-live-merge-r0168-originaljan11-a01",
+  "root_reviewed_actual_gates": true,
+  "source_commit": "ffc29e7c6f616592c0186f18570759eb36f30206",
+  "prepared_sha256": "5b19c9435733f61fb16df1e760cf1b150da739737063ec54ac3bc23a25486813",
+  "admin_registration_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-broker-installed-initial-readback-a01\\dd7acbd7-59c2-453f-a7aa-0802fa805558.receipt.json",
+    "bytes": 237659,
+    "sha256": "998ea9c2d65fc449fecdf0ffa473cefc027ffe654848ee45aa59585fb90e3618"
+  },
+  "steam_offline_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-steam-offline-r0168-a01\\root-offline-review.json",
+    "bytes": 940,
+    "sha256": "b0a64bb7798b627a7c7b9aad4981b82b4fe8418b0499ac8178294a2185e7218f"
+  },
+  "screen_cas": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0168-a07-admission-a01\\screen-cas.json",
+    "bytes": 535,
+    "sha256": "884f69aa3ec9416a59fffac4247ca44338a0a31f80c2b32ed05c78ddc7029b9a"
+  },
+  "net_fixture_pass": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-net-ctest-a07-a01\\RESULT.json",
+    "bytes": 4665,
+    "sha256": "f170ac3e9a53de77d455a37148bcb577cc03e1b0f36566f26463af77c5eb53bb"
+  },
+  "latest_promo_release_query": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\promo-release-r0167-fresh-a01\\report.json",
+    "bytes": 8031,
+    "sha256": "89ff94f5ebc35833787e68d6bef80b22eb2496e3db01db6455493843e52dde2a"
+  }
+}

@@ -1,0 +1,28 @@
+{
+  "schema": "xar.episode04.actual-merge-review-input.v1",
+  "mode": "saved-live-receipts",
+  "expected_regiment_count": 27,
+  "destination_public_cunit_id": 0,
+  "source_public_cunit_id": 16777220,
+  "receipts": {
+    "before_snapshot": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-snapshot-a01.json",
+    "before_strength": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-strength-a01.json",
+    "before_d_commander": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-d-commander-a01.json",
+    "before_s_commander": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-s-commander-a01.json",
+    "before_bracket": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-bracket-a01.json",
+    "action": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-action-a01.json",
+    "after_snapshot": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-after-snapshot-a01.json",
+    "after_strength": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-after-strength-a01.json",
+    "after_d_commander": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-after-d-commander-a01.json",
+    "after_bracket": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-after-bracket-a01.json"
+  },
+  "exact_build": {
+    "version": "1.20.0.3",
+    "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+    "evidence_paths": [
+      "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\exact-build-evidence\\root-gates.json",
+      "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\exact-build-evidence\\sdk-ready.json"
+    ],
+    "note": "Exact Root admission/sdk-ready original bytes copied; raw public metadata remains null unchanged. Saved-file review does not attest a live process."
+  }
+}

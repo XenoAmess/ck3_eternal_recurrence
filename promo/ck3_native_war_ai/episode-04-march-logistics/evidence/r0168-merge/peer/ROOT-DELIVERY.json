@@ -1,0 +1,51 @@
+{
+  "schema": "xar.e04.r0168.peer-delivery.v1",
+  "at": "2026-10-05T07:12:48.362762+00:00",
+  "status": "PASS-saved-receipt-independent-arithmetic-and-completeness",
+  "peer_report": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\peer-a01\\PEER-REPORT-a01.json",
+    "bytes": 27930,
+    "sha256": "3ed08033b86ff3e5218eca03ac2d8a0e3434bc8981320fd2aaffd121b22d5917"
+  },
+  "root_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\merge-review-report-a01.json",
+    "bytes": 271265,
+    "sha256": "503459aa61f3a92a493dd43e468487ba1b95b4f8fd1edf25f6fe87bb99f5f24e"
+  },
+  "source_bindings": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\ORIGINAL-TO-FROZEN-INPUTS-a01.json",
+    "bytes": 8755,
+    "sha256": "99d49f74bec14afca5e31a50da802e37dbceda61a97ca9897506420cec6db02f"
+  },
+  "checks_passed": 60,
+  "checks_total": 60,
+  "independent_preclamp_raw": 11651751,
+  "actual_post_stock_raw": 11651751,
+  "actual_post_capacity_raw": 30000000,
+  "regiment_union_count": 27,
+  "commander_observed": "D absent, S27357; post D27357",
+  "new_live_execution_credit": 0,
+  "scope": "saved receipts only; declared unknowns retained",
+  "package_file_pins": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\peer-a01\\PEER-REPORT-a01.json",
+      "bytes": 27930,
+      "sha256": "3ed08033b86ff3e5218eca03ac2d8a0e3434bc8981320fd2aaffd121b22d5917"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\peer-a01\\peer_review_actual_a01.py",
+      "bytes": 12903,
+      "sha256": "82f28043e38eb10e09a215bea88f1c220ed44e618684d276736138ac557894fb"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\peer-a01\\read_actual_inputs_a01.py",
+      "bytes": 465,
+      "sha256": "95284bb2a5e275b71b7813c2c4e48f6017c696a2c92d96cf514d97213dd23879"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\peer-a01\\read_schema_a01.py",
+      "bytes": 1887,
+      "sha256": "df4ff093f71a82b6706f2ba5b26a2ce0c5d2bbbe08c6625df7a16bd3244d891a"
+    }
+  ]
+}

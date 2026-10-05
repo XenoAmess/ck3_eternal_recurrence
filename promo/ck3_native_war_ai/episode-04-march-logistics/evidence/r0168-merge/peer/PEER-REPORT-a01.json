@@ -1,0 +1,892 @@
+{
+  "schema": "xar.e04.r0168.saved-receipt-independent-peer.v1",
+  "at": "2026-10-05T07:12:48.357028+00:00",
+  "status": "PASS-saved-receipt-independent-arithmetic-and-completeness",
+  "actual_interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "root_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\merge-review-report-a01.json",
+    "bytes": 271265,
+    "sha256": "503459aa61f3a92a493dd43e468487ba1b95b4f8fd1edf25f6fe87bb99f5f24e"
+  },
+  "source_bindings": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\ORIGINAL-TO-FROZEN-INPUTS-a01.json",
+    "bytes": 8755,
+    "sha256": "99d49f74bec14afca5e31a50da802e37dbceda61a97ca9897506420cec6db02f"
+  },
+  "input_frozen_receipt_pins": [
+    {
+      "label": "before_snapshot",
+      "current_frozen_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-snapshot-a01.json",
+        "bytes": 164176,
+        "sha256": "e7366d7f70f6448136dd67afb8a539b86e4f6aa7bad2f6477e88ce861abbcb06"
+      },
+      "declared_original_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-before-snapshot-a01.json",
+        "bytes": 164176,
+        "sha256": "e7366d7f70f6448136dd67afb8a539b86e4f6aa7bad2f6477e88ce861abbcb06"
+      },
+      "original_live_path_reopened_by_peer": false
+    },
+    {
+      "label": "before_strength",
+      "current_frozen_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-strength-a01.json",
+        "bytes": 394056,
+        "sha256": "24619c48a44b2cc71ba81f8f820ad7e3f0d4dee752d8a873ccd59ef30b49194c"
+      },
+      "declared_original_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-before-strength-a01.json",
+        "bytes": 394056,
+        "sha256": "24619c48a44b2cc71ba81f8f820ad7e3f0d4dee752d8a873ccd59ef30b49194c"
+      },
+      "original_live_path_reopened_by_peer": false
+    },
+    {
+      "label": "before_d_commander",
+      "current_frozen_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-d-commander-a01.json",
+        "bytes": 51223,
+        "sha256": "53616252d36d25a5eac63911b7284fe0e72192a842650fe676945105a7351a65"
+      },
+      "declared_original_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-before-d-commander-a01.json",
+        "bytes": 51223,
+        "sha256": "53616252d36d25a5eac63911b7284fe0e72192a842650fe676945105a7351a65"
+      },
+      "original_live_path_reopened_by_peer": false
+    },
+    {
+      "label": "before_s_commander",
+      "current_frozen_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-s-commander-a01.json",
+        "bytes": 51390,
+        "sha256": "7cbbc108d976e707d0af08241747f445b52e2ead52aefa19df882fc6fc3e9ad8"
+      },
+      "declared_original_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-before-s-commander-a01.json",
+        "bytes": 51390,
+        "sha256": "7cbbc108d976e707d0af08241747f445b52e2ead52aefa19df882fc6fc3e9ad8"
+      },
+      "original_live_path_reopened_by_peer": false
+    },
+    {
+      "label": "before_bracket",
+      "current_frozen_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-before-bracket-a01.json",
+        "bytes": 1005126,
+        "sha256": "223c71ac22baf6ad82d4b482a8cc0ee4f55eecaca035d249b9f352f316acd685"
+      },
+      "declared_original_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-before-bracket-a01.json",
+        "bytes": 1005126,
+        "sha256": "223c71ac22baf6ad82d4b482a8cc0ee4f55eecaca035d249b9f352f316acd685"
+      },
+      "original_live_path_reopened_by_peer": false
+    },
+    {
+      "label": "action",
+      "current_frozen_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-action-a01.json",
+        "bytes": 5447,
+        "sha256": "90170007a2df52dadf009677a915512aa1288aeab9fbbb749a7513adbbc73ef8"
+      },
+      "declared_original_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-action-a01.json",
+        "bytes": 5447,
+        "sha256": "90170007a2df52dadf009677a915512aa1288aeab9fbbb749a7513adbbc73ef8"
+      },
+      "original_live_path_reopened_by_peer": false
+    },
+    {
+      "label": "after_snapshot",
+      "current_frozen_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-after-snapshot-a01.json",
+        "bytes": 158446,
+        "sha256": "c935f5f325aa2015d3d35e975c5fa1fe03ec2cbefa5df0d0c4cda73f16b1b777"
+      },
+      "declared_original_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-after-snapshot-a01.json",
+        "bytes": 158446,
+        "sha256": "c935f5f325aa2015d3d35e975c5fa1fe03ec2cbefa5df0d0c4cda73f16b1b777"
+      },
+      "original_live_path_reopened_by_peer": false
+    },
+    {
+      "label": "after_strength",
+      "current_frozen_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-after-strength-a01.json",
+        "bytes": 339984,
+        "sha256": "35054e97ed025442437f4f6ed315f9cf184ee892bb84f06b249eb25a0a41d5e6"
+      },
+      "declared_original_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-after-strength-a01.json",
+        "bytes": 339984,
+        "sha256": "35054e97ed025442437f4f6ed315f9cf184ee892bb84f06b249eb25a0a41d5e6"
+      },
+      "original_live_path_reopened_by_peer": false
+    },
+    {
+      "label": "after_d_commander",
+      "current_frozen_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-after-d-commander-a01.json",
+        "bytes": 51241,
+        "sha256": "143c2f175ad35847ac5949bdd50910d9b907cae62b81dcb6bfb58f69b007863d"
+      },
+      "declared_original_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-after-d-commander-a01.json",
+        "bytes": 51241,
+        "sha256": "143c2f175ad35847ac5949bdd50910d9b907cae62b81dcb6bfb58f69b007863d"
+      },
+      "original_live_path_reopened_by_peer": false
+    },
+    {
+      "label": "after_bracket",
+      "current_frozen_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\actual-merge-review-r0168-a01\\saved-live-receipts\\r0168-merge-after-bracket-a01.json",
+        "bytes": 945472,
+        "sha256": "5efcab06b99af5782884a7bc6c73bb1bebbf98f0a0c9a4bdb178f7dd7f067e35"
+      },
+      "declared_original_bytes": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\responses\\r0168-merge-after-bracket-a01.json",
+        "bytes": 945472,
+        "sha256": "5efcab06b99af5782884a7bc6c73bb1bebbf98f0a0c9a4bdb178f7dd7f067e35"
+      },
+      "original_live_path_reopened_by_peer": false
+    }
+  ],
+  "checks": [
+    {
+      "check": "root_review_exact_SHA",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "ten_expected_public_receipt_labels",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "frozen_bytes_and_declared_original_match_before_snapshot",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "root_review_input_hash_matches_before_snapshot",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "receipt_not_error_before_snapshot",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "frozen_bytes_and_declared_original_match_before_strength",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "root_review_input_hash_matches_before_strength",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "receipt_not_error_before_strength",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "frozen_bytes_and_declared_original_match_before_d_commander",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "root_review_input_hash_matches_before_d_commander",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "receipt_not_error_before_d_commander",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "frozen_bytes_and_declared_original_match_before_s_commander",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "root_review_input_hash_matches_before_s_commander",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "receipt_not_error_before_s_commander",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "frozen_bytes_and_declared_original_match_before_bracket",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "root_review_input_hash_matches_before_bracket",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "receipt_not_error_before_bracket",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "frozen_bytes_and_declared_original_match_action",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "root_review_input_hash_matches_action",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "receipt_not_error_action",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "frozen_bytes_and_declared_original_match_after_snapshot",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "root_review_input_hash_matches_after_snapshot",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "receipt_not_error_after_snapshot",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "frozen_bytes_and_declared_original_match_after_strength",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "root_review_input_hash_matches_after_strength",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "receipt_not_error_after_strength",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "frozen_bytes_and_declared_original_match_after_d_commander",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "root_review_input_hash_matches_after_d_commander",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "receipt_not_error_after_d_commander",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "frozen_bytes_and_declared_original_match_after_bracket",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "root_review_input_hash_matches_after_bracket",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "receipt_not_error_after_bracket",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "all_four_snapshots_same_paused_date",
+      "passed": true,
+      "details": [
+        {
+          "date_raw": 53147376,
+          "paused": true,
+          "revision": 26,
+          "native_revision": 25,
+          "snapshot_id": "native:25",
+          "episode_character_id": 33388,
+          "episode_run_id": "native-33388-8baabd4dc94f"
+        },
+        {
+          "date_raw": 53147376,
+          "paused": true,
+          "revision": 26,
+          "native_revision": 25,
+          "snapshot_id": "native:25",
+          "episode_character_id": 33388,
+          "episode_run_id": "native-33388-8baabd4dc94f"
+        },
+        {
+          "date_raw": 53147376,
+          "paused": true,
+          "revision": 27,
+          "native_revision": 26,
+          "snapshot_id": "native:26",
+          "episode_character_id": 33388,
+          "episode_run_id": "native-33388-8baabd4dc94f"
+        },
+        {
+          "date_raw": 53147376,
+          "paused": true,
+          "revision": 27,
+          "native_revision": 26,
+          "snapshot_id": "native:26",
+          "episode_character_id": 33388,
+          "episode_run_id": "native-33388-8baabd4dc94f"
+        }
+      ]
+    },
+    {
+      "check": "same_actor_episode_all_four_snapshots",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "before_and_after_frame_pairs",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "strength_army_ids_D_S_to_D_only",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "army_status_and_native_fullIDs",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "before_strength_bound_to_fresh_snapshot",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "after_strength_bound_to_fresh_snapshot",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "before_snapshot_controllable_set_and_location",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "before_bracket_controllable_set_and_location",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "after_snapshot_controllable_set_and_location",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "after_bracket_controllable_set_and_location",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "correct_single_saved_native_merge_request",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "regiment_IDs_disjoint_13_plus_14_to27",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "every_regiment_current_max_unchanged",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "army_row_counts_and_sums_match",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "soldier_totals_preserved",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "strict_operands_and_actual_scales",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "D566000000_S1086_times100000",
+      "passed": true,
+      "details": {
+        "D_operand": 566000000,
+        "S_operand": 108600000,
+        "S_own_destination_only_field_excluded": 108100000,
+        "post_D_destination_only_field_excluded": 674100000
+      }
+    },
+    {
+      "check": "independent_two_floor_sum_matches11651751",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "actual_nonclamp_below30000000",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "root_review_arithmetic_matches_independent_raw_computation",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "declared_CArmy_0x188_available_same_date",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "declared_CArmy_0x188_post_D_equals_preD_and_differs_preS",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "declared_CArmy_0x190_available_same_date",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "declared_CArmy_0x190_post_D_equals_preD_and_differs_preS",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "before_d_commander_independent_actual_commander_and_frame",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "before_s_commander_independent_actual_commander_and_frame",
+      "passed": true,
+      "details": null
+    },
+    {
+      "check": "after_d_commander_independent_actual_commander_and_frame",
+      "passed": true,
+      "details": null
+    }
+  ],
+  "failed_checks": [],
+  "frames": [
+    {
+      "date_raw": 53147376,
+      "paused": true,
+      "revision": 26,
+      "native_revision": 25,
+      "snapshot_id": "native:25",
+      "episode_character_id": 33388,
+      "episode_run_id": "native-33388-8baabd4dc94f"
+    },
+    {
+      "date_raw": 53147376,
+      "paused": true,
+      "revision": 26,
+      "native_revision": 25,
+      "snapshot_id": "native:25",
+      "episode_character_id": 33388,
+      "episode_run_id": "native-33388-8baabd4dc94f"
+    },
+    {
+      "date_raw": 53147376,
+      "paused": true,
+      "revision": 27,
+      "native_revision": 26,
+      "snapshot_id": "native:26",
+      "episode_character_id": 33388,
+      "episode_run_id": "native-33388-8baabd4dc94f"
+    },
+    {
+      "date_raw": 53147376,
+      "paused": true,
+      "revision": 27,
+      "native_revision": 26,
+      "snapshot_id": "native:26",
+      "episode_character_id": 33388,
+      "episode_run_id": "native-33388-8baabd4dc94f"
+    }
+  ],
+  "arithmetic": {
+    "scale": 100000,
+    "weight_total_raw": 674600000,
+    "terms": [
+      {
+        "role": "D",
+        "actual_weight_raw": 566000000,
+        "actual_stock_raw": 8299737,
+        "divide_numerator": 56600000000000,
+        "divide_denominator": 674600000,
+        "share_after_first_floor": 83901,
+        "division_remainder": 385400000,
+        "multiply_numerator": 696356234037,
+        "multiply_denominator": 100000,
+        "contribution_after_second_floor": 6963562,
+        "multiply_remainder": 34037
+      },
+      {
+        "role": "S",
+        "actual_weight_raw": 108600000,
+        "actual_stock_raw": 29122808,
+        "divide_numerator": 10860000000000,
+        "divide_denominator": 674600000,
+        "share_after_first_floor": 16098,
+        "division_remainder": 289200000,
+        "multiply_numerator": 468818963184,
+        "multiply_denominator": 100000,
+        "contribution_after_second_floor": 4688189,
+        "multiply_remainder": 63184
+      }
+    ],
+    "independently_computed_preclamp_raw": 11651751,
+    "actual_post_capacity_raw": 30000000,
+    "actual_post_stock_raw": 11651751,
+    "independently_expected_post_stock_raw": 11651751,
+    "upper_clamp_instance": false,
+    "nonclamp_observed_case": true,
+    "post_capacity_is_observed_input": true,
+    "quality_to_capacity_prediction_performed": false
+  },
+  "regiment_union_rows": [
+    {
+      "army_regiment_id": 0,
+      "before_role": "D",
+      "before_current": 1000,
+      "before_maximum": 1000,
+      "post_current": 1000,
+      "post_maximum": 1000
+    },
+    {
+      "army_regiment_id": 1,
+      "before_role": "D",
+      "before_current": 800,
+      "before_maximum": 800,
+      "post_current": 800,
+      "post_maximum": 800
+    },
+    {
+      "army_regiment_id": 2,
+      "before_role": "D",
+      "before_current": 100,
+      "before_maximum": 100,
+      "post_current": 100,
+      "post_maximum": 100
+    },
+    {
+      "army_regiment_id": 3,
+      "before_role": "D",
+      "before_current": 20,
+      "before_maximum": 20,
+      "post_current": 20,
+      "post_maximum": 20
+    },
+    {
+      "army_regiment_id": 4,
+      "before_role": "D",
+      "before_current": 800,
+      "before_maximum": 800,
+      "post_current": 800,
+      "post_maximum": 800
+    },
+    {
+      "army_regiment_id": 5,
+      "before_role": "D",
+      "before_current": 400,
+      "before_maximum": 400,
+      "post_current": 400,
+      "post_maximum": 400
+    },
+    {
+      "army_regiment_id": 6,
+      "before_role": "D",
+      "before_current": 20,
+      "before_maximum": 20,
+      "post_current": 20,
+      "post_maximum": 20
+    },
+    {
+      "army_regiment_id": 7,
+      "before_role": "D",
+      "before_current": 800,
+      "before_maximum": 800,
+      "post_current": 800,
+      "post_maximum": 800
+    },
+    {
+      "army_regiment_id": 8,
+      "before_role": "D",
+      "before_current": 100,
+      "before_maximum": 100,
+      "post_current": 100,
+      "post_maximum": 100
+    },
+    {
+      "army_regiment_id": 9,
+      "before_role": "D",
+      "before_current": 20,
+      "before_maximum": 20,
+      "post_current": 20,
+      "post_maximum": 20
+    },
+    {
+      "army_regiment_id": 10,
+      "before_role": "D",
+      "before_current": 800,
+      "before_maximum": 800,
+      "post_current": 800,
+      "post_maximum": 800
+    },
+    {
+      "army_regiment_id": 11,
+      "before_role": "D",
+      "before_current": 400,
+      "before_maximum": 400,
+      "post_current": 400,
+      "post_maximum": 400
+    },
+    {
+      "army_regiment_id": 12,
+      "before_role": "D",
+      "before_current": 400,
+      "before_maximum": 400,
+      "post_current": 400,
+      "post_maximum": 400
+    },
+    {
+      "army_regiment_id": 50,
+      "before_role": "S",
+      "before_current": 277,
+      "before_maximum": 277,
+      "post_current": 277,
+      "post_maximum": 277
+    },
+    {
+      "army_regiment_id": 51,
+      "before_role": "S",
+      "before_current": 38,
+      "before_maximum": 38,
+      "post_current": 38,
+      "post_maximum": 38
+    },
+    {
+      "army_regiment_id": 52,
+      "before_role": "S",
+      "before_current": 200,
+      "before_maximum": 200,
+      "post_current": 200,
+      "post_maximum": 200
+    },
+    {
+      "army_regiment_id": 53,
+      "before_role": "S",
+      "before_current": 9,
+      "before_maximum": 10,
+      "post_current": 9,
+      "post_maximum": 10
+    },
+    {
+      "army_regiment_id": 54,
+      "before_role": "S",
+      "before_current": 321,
+      "before_maximum": 321,
+      "post_current": 321,
+      "post_maximum": 321
+    },
+    {
+      "army_regiment_id": 55,
+      "before_role": "S",
+      "before_current": 6,
+      "before_maximum": 6,
+      "post_current": 6,
+      "post_maximum": 6
+    },
+    {
+      "army_regiment_id": 56,
+      "before_role": "S",
+      "before_current": 1,
+      "before_maximum": 1,
+      "post_current": 1,
+      "post_maximum": 1
+    },
+    {
+      "army_regiment_id": 57,
+      "before_role": "S",
+      "before_current": 1,
+      "before_maximum": 1,
+      "post_current": 1,
+      "post_maximum": 1
+    },
+    {
+      "army_regiment_id": 58,
+      "before_role": "S",
+      "before_current": 1,
+      "before_maximum": 1,
+      "post_current": 1,
+      "post_maximum": 1
+    },
+    {
+      "army_regiment_id": 59,
+      "before_role": "S",
+      "before_current": 1,
+      "before_maximum": 1,
+      "post_current": 1,
+      "post_maximum": 1
+    },
+    {
+      "army_regiment_id": 60,
+      "before_role": "S",
+      "before_current": 1,
+      "before_maximum": 1,
+      "post_current": 1,
+      "post_maximum": 1
+    },
+    {
+      "army_regiment_id": 61,
+      "before_role": "S",
+      "before_current": 71,
+      "before_maximum": 71,
+      "post_current": 71,
+      "post_maximum": 71
+    },
+    {
+      "army_regiment_id": 62,
+      "before_role": "S",
+      "before_current": 70,
+      "before_maximum": 70,
+      "post_current": 70,
+      "post_maximum": 70
+    },
+    {
+      "army_regiment_id": 82,
+      "before_role": "S",
+      "before_current": 89,
+      "before_maximum": 89,
+      "post_current": 89,
+      "post_maximum": 89
+    }
+  ],
+  "clock_relations_observed_only": [
+    {
+      "declared_field": "declared_CArmy_0x188",
+      "storage_field": "last_supply_update_date_storage_raw64",
+      "projected_date_field": "last_supply_update_date_raw",
+      "pre_D": {
+        "last_supply_update_date_storage_raw64": 300333821678253472,
+        "last_supply_update_date_raw": 53147040
+      },
+      "pre_S": {
+        "last_supply_update_date_storage_raw64": 300064531523761328,
+        "last_supply_update_date_raw": 53146800
+      },
+      "post_D": {
+        "last_supply_update_date_storage_raw64": 300333821678253472,
+        "last_supply_update_date_raw": 53147040
+      },
+      "observed_post_equals": "pre_D",
+      "field_offset_source_not_rechecked_in_peer": true
+    },
+    {
+      "declared_field": "declared_CArmy_0x190",
+      "storage_field": "grace_anchor_date_storage_raw64",
+      "projected_date_field": "grace_anchor_date_raw",
+      "pre_D": {
+        "grace_anchor_date_storage_raw64": 300061168564366016,
+        "grace_anchor_date_raw": 53144256
+      },
+      "pre_S": {
+        "grace_anchor_date_storage_raw64": 300061194334169936,
+        "grace_anchor_date_raw": 53144400
+      },
+      "post_D": {
+        "grace_anchor_date_storage_raw64": 300061168564366016,
+        "grace_anchor_date_raw": 53144256
+      },
+      "observed_post_equals": "pre_D",
+      "field_offset_source_not_rechecked_in_peer": true
+    }
+  ],
+  "independent_commander_receipts": [
+    {
+      "receipt_label": "before_d_commander",
+      "army_id": 0,
+      "native_carmy_id": 0,
+      "current_commander": {
+        "status": "absent",
+        "character_id": null,
+        "unavailable_reason": null
+      },
+      "native_revision": 25,
+      "revision": 26
+    },
+    {
+      "receipt_label": "before_s_commander",
+      "army_id": 16777220,
+      "native_carmy_id": 16777220,
+      "current_commander": {
+        "status": "available",
+        "character_id": 27357,
+        "unavailable_reason": null
+      },
+      "native_revision": 25,
+      "revision": 26
+    },
+    {
+      "receipt_label": "after_d_commander",
+      "army_id": 0,
+      "native_carmy_id": 0,
+      "current_commander": {
+        "status": "available",
+        "character_id": 27357,
+        "unavailable_reason": null
+      },
+      "native_revision": 26,
+      "revision": 27
+    }
+  ],
+  "new_live_execution_credit": 0,
+  "SDK_calls": 0,
+  "EXE_runs": 0,
+  "UI_actions": 0,
+  "raw_recording_access": 0,
+  "Git_or_bus_actions": 0,
+  "historical_fake_tests_or_reverse_engineering_rerun": false,
+  "all_mutations": "new external peer package files only",
+  "unknown_scope": [
+    "Peer reviewed frozen receipt bytes and declared source-binding equality; original live response paths were not reopened. Actual capture, loaded binary identity and SDK provenance remain Root-owned evidence.",
+    "Peer did not replay CK3 or observe native code execution. Arithmetic equality and saved-row integrity alone do not independently prove all native causes.",
+    "CArmy 0x188 / 0x190 offsets are supplied field provenance; this peer only compares their saved integer projections/storage, with no source/disassembly recheck.",
+    "This paused same-date observation at raw53147376 is a nonclamp case. It supplies no positive upper-clamp evidence, monthly NET result, further calendar budget behavior, full movie review or signoff.",
+    "Commander D absent then27357 and post capacity30000000 are observed. No new claim is made that this one observed transition exhausts the native commander-selection rules or predicts capacity from quality."
+  ]
+}

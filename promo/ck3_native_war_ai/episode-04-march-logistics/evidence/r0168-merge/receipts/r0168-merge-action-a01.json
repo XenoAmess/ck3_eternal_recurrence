@@ -1,0 +1,111 @@
+{
+  "at": "2026-10-05T06:57:38.864529+00:00",
+  "request": {
+    "request_id": "r0168-merge-action-a01",
+    "tool": "ck3_execute_step",
+    "arguments": {
+      "step": "merge-armies-0-with-16777220",
+      "expected_revision": 26
+    }
+  },
+  "request_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-merge-r0168-originaljan11-a01\\requests\\r0168-merge-action-a01.json",
+    "bytes": 169,
+    "sha256": "7f261be6322f7a04db3c20e236696af4aec0ba79465f61bc7023bb69f9720569"
+  },
+  "is_error": false,
+  "body": {
+    "step": "merge-armies-0-with-16777220",
+    "accepted": true,
+    "status": "merge_submitted",
+    "backend_id": "native-headless",
+    "war_action": {
+      "status": "merge_applied",
+      "destination_army_id": 0,
+      "source_army_id": 16777220,
+      "submitted_date_raw": 53147376,
+      "submitted_snapshot_id": "native:25",
+      "submitted_public_revision": 26,
+      "submitted_native_revision": 25,
+      "submitted_episode_run_id": "native-33388-8baabd4dc94f",
+      "destination_owner_character_id": 33388,
+      "destination_province_id": 1506,
+      "source_owner_character_id": 33388,
+      "source_province_id": 1506,
+      "player_army_ids_before": [
+        0,
+        16777220
+      ],
+      "postcondition_verified": true,
+      "source_army_id_absent": true,
+      "player_army_ids_after": [
+        0
+      ],
+      "observed_snapshot_id": "native:26",
+      "observed_public_revision": 27,
+      "observed_native_revision": 26,
+      "observed_date_raw": 53147376,
+      "observed_episode_run_id": "native-33388-8baabd4dc94f"
+    }
+  },
+  "sdk_result": {
+    "meta": {
+      "io.modelcontextprotocol/serverInfo": {
+        "name": "Xar CK3 Gameplay Bridge",
+        "version": "0.1.0"
+      }
+    },
+    "content": [
+      {
+        "type": "text",
+        "text": "{\n  \"step\": \"merge-armies-0-with-16777220\",\n  \"accepted\": true,\n  \"status\": \"merge_submitted\",\n  \"backend_id\": \"native-headless\",\n  \"war_action\": {\n    \"status\": \"merge_applied\",\n    \"destination_army_id\": 0,\n    \"source_army_id\": 16777220,\n    \"submitted_date_raw\": 53147376,\n    \"submitted_snapshot_id\": \"native:25\",\n    \"submitted_public_revision\": 26,\n    \"submitted_native_revision\": 25,\n    \"submitted_episode_run_id\": \"native-33388-8baabd4dc94f\",\n    \"destination_owner_character_id\": 33388,\n    \"destination_province_id\": 1506,\n    \"source_owner_character_id\": 33388,\n    \"source_province_id\": 1506,\n    \"player_army_ids_before\": [\n      0,\n      16777220\n    ],\n    \"postcondition_verified\": true,\n    \"source_army_id_absent\": true,\n    \"player_army_ids_after\": [\n      0\n    ],\n    \"observed_snapshot_id\": \"native:26\",\n    \"observed_public_revision\": 27,\n    \"observed_native_revision\": 26,\n    \"observed_date_raw\": 53147376,\n    \"observed_episode_run_id\": \"native-33388-8baabd4dc94f\"\n  }\n}",
+        "annotations": null,
+        "meta": null
+      }
+    ],
+    "structured_content": {
+      "step": "merge-armies-0-with-16777220",
+      "accepted": true,
+      "status": "merge_submitted",
+      "backend_id": "native-headless",
+      "war_action": {
+        "status": "merge_applied",
+        "destination_army_id": 0,
+        "source_army_id": 16777220,
+        "submitted_date_raw": 53147376,
+        "submitted_snapshot_id": "native:25",
+        "submitted_public_revision": 26,
+        "submitted_native_revision": 25,
+        "submitted_episode_run_id": "native-33388-8baabd4dc94f",
+        "destination_owner_character_id": 33388,
+        "destination_province_id": 1506,
+        "source_owner_character_id": 33388,
+        "source_province_id": 1506,
+        "player_army_ids_before": [
+          0,
+          16777220
+        ],
+        "postcondition_verified": true,
+        "source_army_id_absent": true,
+        "player_army_ids_after": [
+          0
+        ],
+        "observed_snapshot_id": "native:26",
+        "observed_public_revision": 27,
+        "observed_native_revision": 26,
+        "observed_date_raw": 53147376,
+        "observed_episode_run_id": "native-33388-8baabd4dc94f"
+      }
+    },
+    "is_error": false,
+    "result_type": "complete"
+  },
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"step\": \"merge-armies-0-with-16777220\",\n  \"accepted\": true,\n  \"status\": \"merge_submitted\",\n  \"backend_id\": \"native-headless\",\n  \"war_action\": {\n    \"status\": \"merge_applied\",\n    \"destination_army_id\": 0,\n    \"source_army_id\": 16777220,\n    \"submitted_date_raw\": 53147376,\n    \"submitted_snapshot_id\": \"native:25\",\n    \"submitted_public_revision\": 26,\n    \"submitted_native_revision\": 25,\n    \"submitted_episode_run_id\": \"native-33388-8baabd4dc94f\",\n    \"destination_owner_character_id\": 33388,\n    \"destination_province_id\": 1506,\n    \"source_owner_character_id\": 33388,\n    \"source_province_id\": 1506,\n    \"player_army_ids_before\": [\n      0,\n      16777220\n    ],\n    \"postcondition_verified\": true,\n    \"source_army_id_absent\": true,\n    \"player_army_ids_after\": [\n      0\n    ],\n    \"observed_snapshot_id\": \"native:26\",\n    \"observed_public_revision\": 27,\n    \"observed_native_revision\": 26,\n    \"observed_date_raw\": 53147376,\n    \"observed_episode_run_id\": \"native-33388-8baabd4dc94f\"\n  }\n}",
+      "annotations": null,
+      "meta": null
+    }
+  ]
+}

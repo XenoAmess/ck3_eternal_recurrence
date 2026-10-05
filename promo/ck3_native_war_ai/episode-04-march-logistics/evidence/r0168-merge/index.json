@@ -1,0 +1,139 @@
+{
+  "schema": "xar.episode04.r0168.actual-merge-evidence-index.v1",
+  "at_utc": "2026-10-05T07:13:13.045532+00:00",
+  "source_repo": "C:/w/e4a02",
+  "source_commit": "ffc29e7c6f616592c0186f18570759eb36f30206",
+  "game_version": "1.20.0.3",
+  "exe_sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+  "DLL_sha256": "7fcd53d122c7ee9eeecb1230a7659f7116a9831fd49462caee1589ab3a994d8c",
+  "actual_episode_run_id": "native-33388-8baabd4dc94f",
+  "mode": "saved-live-receipts",
+  "direction": "merge-armies-0-with-16777220",
+  "original_raw_metadata_null_preserved": true,
+  "review_status": "OBSERVED_RECEIPTS_MATCH_WITHIN_DECLARED_ROOT_BINDING",
+  "arithmetic_match": true,
+  "nonclamp_instance": true,
+  "upperclamp_instance": false,
+  "regiment_count": 27,
+  "review_report_sha256": "503459aa61f3a92a493dd43e468487ba1b95b4f8fd1edf25f6fe87bb99f5f24e",
+  "zero_new_live_execution_by_review": true,
+  "raw_media_touched": false,
+  "media_review_and_signoff_claimed": false,
+  "files": [
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/receipts/r0168-merge-action-a01.json",
+      "bytes": 5447,
+      "sha256": "90170007a2df52dadf009677a915512aa1288aeab9fbbb749a7513adbbc73ef8"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/receipts/r0168-merge-after-bracket-a01.json",
+      "bytes": 945472,
+      "sha256": "5efcab06b99af5782884a7bc6c73bb1bebbf98f0a0c9a4bdb178f7dd7f067e35"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/receipts/r0168-merge-after-d-commander-a01.json",
+      "bytes": 51241,
+      "sha256": "143c2f175ad35847ac5949bdd50910d9b907cae62b81dcb6bfb58f69b007863d"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/receipts/r0168-merge-after-snapshot-a01.json",
+      "bytes": 158446,
+      "sha256": "c935f5f325aa2015d3d35e975c5fa1fe03ec2cbefa5df0d0c4cda73f16b1b777"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/receipts/r0168-merge-after-strength-a01.json",
+      "bytes": 339984,
+      "sha256": "35054e97ed025442437f4f6ed315f9cf184ee892bb84f06b249eb25a0a41d5e6"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/receipts/r0168-merge-before-bracket-a01.json",
+      "bytes": 1005126,
+      "sha256": "223c71ac22baf6ad82d4b482a8cc0ee4f55eecaca035d249b9f352f316acd685"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/receipts/r0168-merge-before-d-commander-a01.json",
+      "bytes": 51223,
+      "sha256": "53616252d36d25a5eac63911b7284fe0e72192a842650fe676945105a7351a65"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/receipts/r0168-merge-before-s-commander-a01.json",
+      "bytes": 51390,
+      "sha256": "7cbbc108d976e707d0af08241747f445b52e2ead52aefa19df882fc6fc3e9ad8"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/receipts/r0168-merge-before-snapshot-a01.json",
+      "bytes": 164176,
+      "sha256": "e7366d7f70f6448136dd67afb8a539b86e4f6aa7bad2f6477e88ce861abbcb06"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/receipts/r0168-merge-before-strength-a01.json",
+      "bytes": 394056,
+      "sha256": "24619c48a44b2cc71ba81f8f820ad7e3f0d4dee752d8a873ccd59ef30b49194c"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/exact-build/root-gates.json",
+      "bytes": 1576,
+      "sha256": "bd5d090109f184d448f56db4b6e4f1f3bb466fcf60e72c580566291831be815f"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/exact-build/sdk-ready.json",
+      "bytes": 36312,
+      "sha256": "21d1f703ce0262fd67a4262f75cfb0cfb525b2ccef4e527d2aa784202f596d0b"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/independent-context/r0168-merge-action-before-a01.json",
+      "bytes": 1005124,
+      "sha256": "707e04b65b49720aac10c9367194a07d2ece9367e7b64a98e803e5d511dc9f42"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/independent-context/Root-result.json",
+      "bytes": 542,
+      "sha256": "fc1bc384d64d7f3ff23131556d8db2312ce3cceb9efefead3005a93c55f60c53"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/merge-review-input-a01.json",
+      "bytes": 2383,
+      "sha256": "75dc5309e8972e8ea3c84f7f129cf63b31e6e35cb71ab48832039cf9b4833403"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/merge-review-report-a01.json",
+      "bytes": 271265,
+      "sha256": "503459aa61f3a92a493dd43e468487ba1b95b4f8fd1edf25f6fe87bb99f5f24e"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/ORIGINAL-TO-FROZEN-INPUTS-a01.json",
+      "bytes": 8755,
+      "sha256": "99d49f74bec14afca5e31a50da802e37dbceda61a97ca9897506420cec6db02f"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/review.argv.json",
+      "bytes": 452,
+      "sha256": "3c70c65453e0691dcb119c8dad89d264a3c4f791edee140bdccddb26aa6ef9b1"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/review.stdout",
+      "bytes": 363,
+      "sha256": "0b138709a60deba8cdc8b19e0580770946ca757fae86c2cf207a97d03e8f1c10"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/review.stderr",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/review-execution-a01.json",
+      "bytes": 824,
+      "sha256": "1ce4d783263cdcb710952d9b1009d195fbbc39b1de366b51d8cf1e393f997743"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/review_actual_merge.py",
+      "bytes": 29608,
+      "sha256": "6afe476eb5ac37fa2559d2fc0e7c51d89e5bc6b865aeb33e9eded675ab066e50"
+    },
+    {
+      "path": "promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0168-merge/portable-review-input.json",
+      "bytes": 1369,
+      "sha256": "f3b8adaafee847275cdbc6dad89e624931be416a1056aa49bbb707ed0bc7d879"
+    }
+  ]
+}
