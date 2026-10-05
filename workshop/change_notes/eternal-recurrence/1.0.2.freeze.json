@@ -1,5 +1,5 @@
 {
-  "status": "FROZEN_GUI_RECORD_FIX_CANDIDATE_TEXT_NOT_PUBLISHED",
+  "status": "PUBLISHED_PUBLIC_FULLTEXT_VERIFIED",
   "product": "eternal-recurrence",
   "workshop_item_id": "3784706360",
   "version": "1.0.2",
@@ -14,10 +14,10 @@
   "sha256": "ec2e429a398d1a42d32049bd24e3a8ba1655d3205f7eacfa6ce94d751f5ce3ac",
   "normalization": "UTF-8, LF, no trailing newline",
   "frozen_before_submit": true,
-  "public_entry_id": null,
-  "public_fulltext_verified": false,
-  "publication_date": null,
-  "formal_release_tag": null,
+  "public_entry_id": "1791213961",
+  "public_fulltext_verified": true,
+  "publication_date": "2026-10-05",
+  "formal_release_tag": "v1.0.2",
   "candidate_revision": "gui_record_fix_02",
   "candidate_notes_path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-gui-record-fix-draft-02/1.0.2.full-candidate-02.txt",
   "supersedes_candidate_text_sha256": "c6409bac33ffd2f057a6ebddc39a439f3119604cdfe0e9fc01ce4348771b6794",
@@ -31,7 +31,6 @@
     "bytes": 753,
     "sha256": "aca434e40d6676cd6fabb26f821b595732237651c41b2ca7fd8bd2f9a7aefa3e"
   },
-  "source_public_version_unchanged": "1.0.1",
   "actual_R19_gui_eight_validation": {
     "path": "C:/workspace/ck3-upgrade-20261005/main-r19-eight-values-format-independent-review-agent-01/review-01.json",
     "bytes": 8193,
@@ -47,5 +46,18 @@
     "path": "C:/workspace/ck3-upgrade-20261005/main-r20-terminal-original-root-01/actual-eight-values-root-observation-01.json",
     "bytes": 9342,
     "sha256": "f5f0614a6518c95cc4a6d65e4e775526a0045e1e87ec69c439c30a217377f905"
-  }
+  },
+  "published_at_utc": "2026-10-05T15:26:02.172289+00:00",
+  "formal_release_commit": "36aa60f5aac2ae53bc8fa56db36a7df5a38dd095",
+  "public_readback_receipt": {
+    "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-curl-failed-endpoints-03/verification.json",
+    "bytes": 36873,
+    "sha256": "60fe388c12417bf06788d7b818e610478becf05669fe5d1cac003099105e29ce"
+  },
+  "candidate_freeze_before_publication": {
+    "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/permanent-record-root-01/freeze-before-actual-public-exact.json",
+    "bytes": 2421,
+    "sha256": "a45ce06fe54c3cceed70a47e292255525ae81cddfb80f8120ddd46cf5ee24730"
+  },
+  "candidate_before_release_public_version": "1.0.1"
 }

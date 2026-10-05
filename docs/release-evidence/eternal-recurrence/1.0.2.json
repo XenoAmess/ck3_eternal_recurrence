@@ -1,0 +1,352 @@
+{
+  "schema": "ck3-product-permanent-release-evidence-index-v1",
+  "intended_repository_path": "docs/release-evidence/eternal-recurrence/1.0.2.json",
+  "status": "ACTUAL_UPLOAD_PUBLIC_CACHE_OFFLINE_VERIFIED_MASTER_RECORD_PENDING",
+  "product": "eternal-recurrence",
+  "workshop_item_id": "3784706360",
+  "app_id": 1158310,
+  "current": {
+    "version": "1.0.2",
+    "tag": "v1.0.2",
+    "commit": "36aa60f5aac2ae53bc8fa56db36a7df5a38dd095"
+  },
+  "previous_public": {
+    "version": "1.0.1",
+    "tag": "v1.0.1",
+    "commit": "e9cc6c82aa8c9c24518f4e9c2f118a074b1292f7",
+    "permanent_changelog": {
+      "path": "C:/workspace/ck3_eternal_recurrence/docs/release-changelogs/eternal-recurrence/1.0.1.md",
+      "bytes": 9281,
+      "sha256": "c093e8f91465688222575a2c980b6919fc66c4fa6496ed4090f174b4696000f7"
+    }
+  },
+  "master_record_closeout": {
+    "status": "PENDING_ACTUAL_ROOT_COMMIT_PUSH",
+    "actual_master_record_commit": null,
+    "actual_push_receipt": null,
+    "release_complete": false
+  },
+  "actual_upload": {
+    "steam_result": 1,
+    "submitted_at_utc": "2026-10-05T15:26:02.172289+00:00",
+    "native_receipt": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/native-publish-receipt.json",
+      "bytes": 554,
+      "sha256": "5aff8c4cce9378af771d5e653caebf5a6b6b135810d06a324e27e876ac1eaa94"
+    },
+    "native_result": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/native-publish-result-01.json",
+      "bytes": 769,
+      "sha256": "803fb49787f009359921636e9877ac975e37c85be3d68354f182c21b68d75f98"
+    },
+    "exact_native_plan": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/native-publish-plan.json",
+      "bytes": 3917,
+      "sha256": "ded3ea422543b57aeed450ded0c75424a536102cc341f3b2da93d6635052f3e1"
+    },
+    "frozen_full_notes": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/steam-change-notes.txt",
+      "bytes": 3044,
+      "sha256": "ec2e429a398d1a42d32049bd24e3a8ba1655d3205f7eacfa6ce94d751f5ce3ac"
+    },
+    "notes_freeze": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/steam-change-notes-freeze.json",
+      "bytes": 2421,
+      "sha256": "a45ce06fe54c3cceed70a47e292255525ae81cddfb80f8120ddd46cf5ee24730"
+    }
+  },
+  "formal": {
+    "file_count": 86,
+    "manifest": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/formal/XenoAmess_s_Eternal_Recurrence-v1.0.2.manifest.json",
+      "bytes": 15869,
+      "sha256": "905085a23887afaa4a2588219363ee068b88ca7aba1ff1d757f8c2cf05e6a875"
+    },
+    "zip": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/formal/XenoAmess_s_Eternal_Recurrence-v1.0.2.zip",
+      "bytes": 2725496,
+      "sha256": "5a0408333c45c2221b3987c18ef9192b4a0ae2386013bed6f1cc8b1eef59c177"
+    },
+    "build_receipt": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/formal-build.receipt.json",
+      "bytes": 843,
+      "sha256": "d43ad84cd6b1e466504320ac46fc512eaab8f99b01e47070a85431c861f6bec3"
+    },
+    "verify_receipt": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/formal-verify.receipt.json",
+      "bytes": 992,
+      "sha256": "d941a46e41e5e526fb9a315bb42245d722f69d0fe723f5b134b29e8be9a82b96"
+    },
+    "pristine_rebuild_manifest": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/formal-rebuilt-after-upload-02/XenoAmess_s_Eternal_Recurrence-v1.0.2.manifest.json",
+      "bytes": 15869,
+      "sha256": "905085a23887afaa4a2588219363ee068b88ca7aba1ff1d757f8c2cf05e6a875"
+    },
+    "pristine_rebuild_zip": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/formal-rebuilt-after-upload-02/XenoAmess_s_Eternal_Recurrence-v1.0.2.zip",
+      "bytes": 2725496,
+      "sha256": "5a0408333c45c2221b3987c18ef9192b4a0ae2386013bed6f1cc8b1eef59c177"
+    },
+    "pristine_same_as_formal": true
+  },
+  "public_exact": {
+    "status": "PUBLIC_METADATA_AND_NOTES_EXACT_OBSERVED",
+    "public_exact_observed": true,
+    "observed_at_utc": "2026-10-05T15:41:19.634204+00:00",
+    "verification": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-curl-failed-endpoints-03/verification.json",
+      "bytes": 36873,
+      "sha256": "60fe388c12417bf06788d7b818e610478becf05669fe5d1cac003099105e29ce"
+    },
+    "entry_id": "1791213961",
+    "notes_characters": 2150,
+    "notes_lines": 21,
+    "notes_utf8_bytes": 3044,
+    "notes_sha256": "ec2e429a398d1a42d32049bd24e3a8ba1655d3205f7eacfa6ce94d751f5ce3ac",
+    "normalized_full_notes": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-curl-failed-endpoints-03/entry-01-1791213961.normalized.txt",
+      "bytes": 3044,
+      "sha256": "ec2e429a398d1a42d32049bd24e3a8ba1655d3205f7eacfa6ce94d751f5ce3ac"
+    },
+    "normalized_full_description": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-curl-failed-endpoints-03/public-description.normalized.bbcode",
+      "bytes": 7787,
+      "sha256": "ca33f47fe0bb9ecde525d492ce44f2b85a536dd69b93d5d32eb26ebf6d13584b"
+    },
+    "description_canonical_characters": 5946,
+    "description_canonical_sha256": "ca33f47fe0bb9ecde525d492ce44f2b85a536dd69b93d5d32eb26ebf6d13584b",
+    "public_item": {
+      "result": 1,
+      "publishedfileid": "3784706360",
+      "creator": "76561198273714027",
+      "consumer_app_id": 1158310,
+      "creator_app_id": 1158310,
+      "title": "琉焰卿的永恒轮回",
+      "visibility": 0,
+      "time_updated": 1791213961,
+      "file_size": "6176939"
+    },
+    "all_original_exact_predicates_pass": true,
+    "failed_endpoint_retry_only_provenance": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-curl-failed-endpoints-03/attempt-inputs.json",
+      "bytes": 7795,
+      "sha256": "106ed395e7e8acee6a50269d829667e68d60e912eb66aeffb1c4eda79f0de322"
+    },
+    "raw_HTTP": {
+      "details": {
+        "body": {
+          "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-curl-failed-endpoints-03/details.http-body.raw",
+          "bytes": 96340,
+          "sha256": "149fc53b2f8f2438203652e1e348bc12788130a92df7f43100fe9a7b33976e61"
+        },
+        "receipt": {
+          "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-curl-failed-endpoints-03/details.http-receipt.json",
+          "bytes": 4564,
+          "sha256": "dc77a854ea9067c28d847987ccc7fb64307c1d619480fc333408afe49c66d6bd"
+        }
+      },
+      "metadata": {
+        "body": {
+          "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-curl-failed-endpoints-03/metadata.http-body.raw",
+          "bytes": 8572,
+          "sha256": "28908d798c42d04264a61b660b58b11c54a4fdddefa7a1d9b963b7be2fa3b45b"
+        },
+        "receipt": {
+          "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-curl-failed-endpoints-03/metadata.http-receipt.json",
+          "bytes": 3014,
+          "sha256": "cdd81f517932098ef33e775fb31b01d8a61aed2eaa7c63fdc8c853bc77e19ba6"
+        }
+      },
+      "changelog": {
+        "body": {
+          "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-after-success-02/changelog.http-body.raw",
+          "bytes": 57894,
+          "sha256": "5de659c64fceb60921274d9e3407e64f3030a3d97d509029bcc2502f77ecd4c8"
+        },
+        "receipt": {
+          "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-after-success-02/changelog.http-receipt.json",
+          "bytes": 3163,
+          "sha256": "c581e1db23138ad31fbf50af1b88b4765feb0795f859fe180d667207417dec0b"
+        }
+      }
+    },
+    "curl_raw_headers": {
+      "details": {
+        "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-curl-failed-endpoints-03/details.http-headers.raw",
+        "bytes": 1796,
+        "sha256": "0bbf399852f4f7b226a420418df8614a06490bbb5c55423be86448b252ef0feb"
+      },
+      "metadata": {
+        "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-curl-failed-endpoints-03/metadata.http-headers.raw",
+        "bytes": 243,
+        "sha256": "8719fa5653900552369595778a77b2a0033f1f349ce296e84a096465dff1cf56"
+      }
+    },
+    "changelog_source": "Existing actual anonymous attempt02 successful HTTP200; only details and metadata retried by anonymous TLS-verified curl. All prior timestamps and bytes preserved."
+  },
+  "fresh_subscription_cache": {
+    "started": true,
+    "callback_result": 1,
+    "cache_absent_before_start": true,
+    "subscribed": true,
+    "needs_update": false,
+    "worker_exit_code": 0,
+    "actual_native_download": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/fresh-cache-download-02/native-download-result-01.json",
+      "bytes": 2767,
+      "sha256": "f0497561b09884d253c722575c3b9579f95a621fd001ee9da783b91d38232576"
+    },
+    "actual_formal86_verify_exit_code": 0,
+    "Root_actual_verify_record": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/root-actual-post-upload-results-01.json",
+      "bytes": 3263,
+      "sha256": "1a8f0b56ddeb33d1c0804fc7494b46e631e011c8e027708e5e275cf1de66ee4b"
+    }
+  },
+  "actual_offline_and_publisher_closeout": {
+    "nonce": "05b228296a1a",
+    "Root_reviewed_literal": "离线模式",
+    "frame_captured_at_utc": "2026-10-05T15:35:18.703340Z",
+    "frame": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/offline-after-actual-upload-and-cache-challenge-02/challenge-2.png",
+      "bytes": 996193,
+      "sha256": "78d5be8bc8e6ee7c5d709fb33f38a323313191d476e4f459f9fd88be6f6c1b50"
+    },
+    "recovery": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/steam-restore-after-fresh-cache-complete-04/recovery.json",
+      "bytes": 1571,
+      "sha256": "9f417acccb2980e2f6a2727a73d4a60e4b210a9ccbe6434285bdd009ae2fc5d9"
+    },
+    "challenge": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/offline-after-actual-upload-and-cache-challenge-02/report.json",
+      "bytes": 1409,
+      "sha256": "54c187cb2c62586ac46fbbf25fb440d671c67e1671de0ca5b6c6ca8d6b725df8"
+    },
+    "publisher_screen_release": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/screen-release-a62-01.json",
+      "bytes": 1982,
+      "sha256": "61bc4e5fb0bc7a6a966e6f402bc251e8d3b236883a6d6832384262fede0ba331"
+    }
+  },
+  "actual_R20_and_carried_scope": {
+    "Root_assembled_actual_proof": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/root-actual-proof.json",
+      "bytes": 6744,
+      "sha256": "b5b9c87f78ac42c097bdb0d415e19e8130a67cb213c99533bcbd94818548051d"
+    },
+    "run_id": "4-8e1c2f1861--eternal-recurrence--R0020",
+    "original_episode_run_id": "native-31254-91e6469f3ad9",
+    "original_episode_character_id": 31254,
+    "native_report": {
+      "path": "C:/workspace/ck3-upgrade-20261005/live/4-8e1c2f1861--eternal-recurrence--R0020/native-report.json",
+      "bytes": 3693925,
+      "sha256": "8687bd0f1d663a4f89bdcc06d838e81e0e0f08aae394e300bf72669b23ecd1b3"
+    },
+    "Root_actual_final_readback": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-r20-root-closeout-01/actual-final-readback-01.json",
+      "bytes": 3625,
+      "sha256": "17e645bdc2bcc0b207f342148f9ff1b69353b2ec6bee7f14f51709b22ea8598d"
+    },
+    "actual_eight_values": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-r20-terminal-original-root-01/actual-eight-values-root-observation-01.json",
+      "bytes": 9342,
+      "sha256": "f5f0614a6518c95cc4a6d65e4e775526a0045e1e87ec69c439c30a217377f905"
+    },
+    "actual_same_process_OS0": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-noheir-r20-readonly-monitor-agent-01/actual-exact-process-exit-signaled-code-02.json",
+      "bytes": 2644,
+      "sha256": "5fdb8bd2c3f300603904322bf92b4360e230c77c47d86f8021fb68eed174e8a3"
+    },
+    "same_PID": 18268,
+    "same_creation_time": 1791207926.8413568,
+    "actual_checkpoint_load_evidence": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-r20-publication-root-proof-01/checkpoint-load-actual-Root-evidence-01.json",
+      "bytes": 7276,
+      "sha256": "4e4917997ca82065086c8d4f4a9a2e9c9686ee735e8456c97fc56d63f48ee5bf"
+    },
+    "actual_screen_release": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-r20-root-closeout-01/screen-release-01.json",
+      "bytes": 2389,
+      "sha256": "09383f00d4c0b1272830cd3dafa1cf156fb512684ec420a7b3d730b0f2cee6a9"
+    },
+    "project_releaseproof": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-r20-EOF-project-error-release-proof-agent-01/R20-EOF-original-project-error-gate-release-proof-01.json",
+      "bytes": 7875,
+      "sha256": "7b8d4d3893dea0f61c0f40fe229e6243a48f1e983259ed59e15e30b666a475ba"
+    },
+    "already_earned": {
+      "writer33": {
+        "path": "C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--eternal-recurrence--R0008/native-report.json",
+        "bytes": 13164454,
+        "sha256": "e9baa78ad7afa84b219db865bd0587c3ecfd30e713d5ca156c02d8e678c195ec"
+      },
+      "reader12": {
+        "path": "C:/workspace/ck3-upgrade-20261004/live/4-8e1c2f1861--eternal-recurrence--R0009/native-report.json",
+        "bytes": 6510760,
+        "sha256": "4e4a080b8204a26b08a042d10d74d53dd56c7208d91cf24acb7b1f26e61b6b97"
+      },
+      "creator16": {
+        "path": "C:/workspace/ck3-upgrade-20261005/main-creator-r14-readonly-monitor-agent-01/actual-main-GUI-business16-and-custom348-thin-01.json",
+        "bytes": 7733,
+        "sha256": "b788eb5660c104dfb566fa99ffd6bccf497074d384ca78b896ad3ef382b87c7a"
+      },
+      "cold_R15": {
+        "path": "C:/workspace/ck3-upgrade-20261005/main-cold-r15-readonly-monitor-agent-01/actual-R15-HRED-closed9-and-native-exit0-thin-02.json",
+        "bytes": 5516,
+        "sha256": "32c2716b84cb831c9c1ecda596f26b6a31a4047c564560e75e0e7781555b315e"
+      }
+    },
+    "earned_scope": {
+      "writer33": "R0008 actual 33/33 writer assertions, one original-player death and real tutorial record write; no complete no-heir GUI or native-exit-zero credit.",
+      "reader12": "R0009 actual 12/12 reader assertions in a new process/world/episode naturally imported the real tutorial record; no saved-game cold-load or complete GUI/native-zero extrapolation.",
+      "creator16": "R0014 actual main-ui 16/16: cancel and insufficient 119 have no delivery, default 120 has one delivery/charge, custom 348 retains and reopens its configuration and has one delivery/charge; R14 managed exit was 1.",
+      "cold_R15": "R0015 actual new-process native checkpoint load and Root-reported seven retained design pages plus six NPC trait hovers, with same-process OS exit 0; the original harness RED remains unchanged and this exit does not satisfy R20 exit evidence."
+    },
+    "court58_risk_status": "UNKNOWN",
+    "historical_boundaries_preserved": {
+      "R15_harness_RED_preserved": true,
+      "R19_actual_OS1_and_finish_RED_preserved": true,
+      "R18_actual_allzero_GUI_RED_preserved": true,
+      "court58_impact": "UNKNOWN",
+      "full_subtotal_preview_correctness": "UNKNOWN"
+    }
+  },
+  "preserved_failed_or_UNKNOWN_history": {
+    "Pub01_failed_native_receipt": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-01/native-publish-receipt.json",
+      "bytes": 505,
+      "sha256": "03db5361000d8cee768ad607c7fd7fa3e356b6844a64ec3c40812ec37c9dfb88"
+    },
+    "Pub01_failed_native_result": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-01/native-publish-result-01.json",
+      "bytes": 188,
+      "sha256": "a98e4ca85a8725b21a79518bd15fea16fae12a1812d8e853a2a6aad7379b0ba0"
+    },
+    "Pub01_offline_restoration": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-01/offline-restored-after-submit-failure-01.json",
+      "bytes": 836,
+      "sha256": "b47cb284df34d54ef3095f4cffbccfaf3a93e68bd5035d29b6e8fe0151c4f80f"
+    },
+    "Pub01_screen_release": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-01/screen-release-after-submit-failure-01.json",
+      "bytes": 1942,
+      "sha256": "f6dff77f01349e44e5d516b590fbc010bbeaf2581fce95fe771d5f54aa6a69ee"
+    },
+    "Pub02_anonymous_UNKNOWN01": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-after-success-01/verification.json",
+      "bytes": 23716,
+      "sha256": "05f0eeb3e9939e26348aa831cff5b386d2ecb084b0a4da351bb978707a2a5c59"
+    },
+    "Pub02_anonymous_UNKNOWN02": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/anonymous-readback-after-success-02/verification.json",
+      "bytes": 21396,
+      "sha256": "928e2c96add8ae5cbfa8489d93e98c182bfed6d919eb1c10d3328b60c7ef3c3c"
+    },
+    "Pub02_first_download_CACHE_ALREADY_EXISTS_not_started": {
+      "path": "C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/native-download-result-01.json",
+      "bytes": 1936,
+      "sha256": "fca33342da534b4682a3f39b5b7ffdc7d62b6c51fc202d7a5c343bddf5d74e8c"
+    }
+  },
+  "boundary": "Index of already actual receipts only; no new runtime/API/cache/offline checks and no future master commit/push facts. Original RED and UNKNOWN records remain unchanged."
+}

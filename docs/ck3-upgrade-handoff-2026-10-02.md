@@ -225,3 +225,14 @@ R2 `4-8e1c2f1861--ox-here--R0002` 的实际业务与简体中文 UI 复核为 **
 本轮并发调整：前台运行体验优化付款／宗教；后台同步准备防御、领地读取诊断、原版新冷输入和发布文案、永久知识记录及C盘清理。重整河山、驱策朝贡国、经商贪腐已封存执行卡，等待前台，不重复未变输入的检查；天朝361最后，具体礼仪选择仍在全部翻新维护之后。C盘另完成精确19份已闭文本无损压缩，API尺寸差112.64MiB；全部内容SHA与原mtime保持，详见[清理记录新增](maintenance/c-disk-cleanup-2026-10-04.md#2026-10-05-新闭场文本无损压缩精确19文件)。
 
 **2026-10-05 后续失败与诊断增量：** QOL防御R9真实D1/24小时后仅4/23 required、外置关系夹具FAIL2；partial收尾后harness GREEN且清理完成，a48 CAS2900/resources=[]已释放，产品防御未通过。Main R11已earned真实90规则Apply全映射、strict00、D1及初始化7/16，但Root外置调用错用了实际MCP清单不存在的`ck3_activate_ingame_decisions_v1`，原harness RED与受管cleanup保留，a49 CAS2931/resources=[]释放；不归游戏崩溃或已证mod错误，cancel/119/default/custom348未证。68个engine块中10个与R10完整正文exact，其余58个court/12种正文仍UNKNOWN。新source05 trace-only DLL构建与11纯合同通过只支持下一新冷场诊断，真实held-title branch仍UNKNOWN；queue NEW02的当场工具名预写guard与3纯测试已交付，unknown/mixed零control写。证据集中于[当前角色资格专题新增](ck3-native-ai/ck3-12003-current-actor-fixture-qualification-2026-10-05.md#2026-10-05后续失败边界与工具名守卫)，旧失败和旧输入不改，不能获得额外产品或发布信用。
+
+
+## Main 1.0.2 实际发布与永久记录（2026-10-05 23:26 Asia/Shanghai）
+
+琉焰卿原版 item **3784706360** 已实际上传 **1.0.2 / v1.0.2 / 36aa60f5aac2ae53bc8fa56db36a7df5a38dd095**；上一公开版为 **1.0.1 / v1.0.1 / e9cc6c82aa8c9c24518f4e9c2f118a074b1292f7**。SDK 在 15:26:02.172289 UTC 返回 stage complete / EResult 1。匿名回读新 entry **1791213961** 的完整 Notes 为 **2150 字符 / 21 行 / 3044 UTF-8 B**，SHA `ec2e429a398d1a42d32049bd24e3a8ba1655d3205f7eacfa6ce94d751f5ce3ac`；owner、app、item、公开可见性、标题、描述全部精确，旧条目保持原样。
+
+正式 staging 为 **86 文件**；manifest SHA `905085a23887afaa4a2588219363ee068b88ca7aba1ff1d757f8c2cf05e6a875`，ZIP SHA `5a0408333c45c2221b3987c18ef9192b4a0ae2386013bed6f1cc8b1eef59c177`。旧缓存完整迁移保留后取得 fresh download EResult 1；正式 builder 的 workshop-cache verify 实际通过86文件。上传后重建 pristine 的 manifest/ZIP 一致，内层 descriptor 无 remote_file_id；Steam 恢复离线由 Root 亲审原图 nonce `05b228296a1a`。发布屏幕 a62 的实际 keeper exit0/last3547 后，CAS3548/done/resources[]，已释放。
+
+R20 八值、正常 OS0、16/16、EOF 和已赚 Writer33/Reader12/Creator16/R15cold 只按原范围复用。Pub01 EResult2、网络中断、旧匿名 UNKNOWN、第一次命中旧缓存及其校验失败原件保留；不重传已成功版本，不重跑已经通过的验收。[永久 changelog](release-changelogs/eternal-recurrence/1.0.2.md) 与 [发布证据索引](release-evidence/eternal-recurrence/1.0.2.json) 已作为本次 master 记录；实际 commit/push/远端核对保存于 `C:/workspace/ck3-upgrade-20261005/main-workshop-publish-1.0.2-actual-R20-02/release-closeout-01.json`，该回执实际闭合后累计正式完成 **5/10（50%）**。
+
+体验优化唯一新场 `4-8e1c2f1861--xenoamess-quality-of-life--R0011` 已实际启动，前置只读 observer 在 launch 前运行，尚不授予防御业务或正式发布信用。重整河山 operation03、驱策朝贡国 operation04、经商贪腐 operation12 的 Source05 入口已准备，业务实机仍待前台。天朝361最后；任意具体礼仪选择仍在全部1.20维护之后。另一台机器的窗口保留记录不限制本机验收。
