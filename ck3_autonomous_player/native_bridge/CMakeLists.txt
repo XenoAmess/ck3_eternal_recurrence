@@ -2597,6 +2597,7 @@ if(BUILD_TESTING)
       target_link_libraries(${fixture_target} PRIVATE user32)
     endif()
     if(fixture_name MATCHES "^ck3_12002_family" OR
+        fixture_name STREQUAL "ck3_12002_pending_ransom_quote_test" OR
        (XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1 AND
         fixture_name MATCHES "^ck3_12002_(adapter|semantic_adapter)_test$"))
       target_sources(${fixture_target} PRIVATE
