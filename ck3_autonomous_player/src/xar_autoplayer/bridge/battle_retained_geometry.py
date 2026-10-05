@@ -78,6 +78,7 @@ def retained_constructor_geometry_fields(
     effects_ready = bool(exact_build and actual and crossing is not None
                          and holding is not None and effects is not None
                          and effects["status"] == "available")
+    current_context = copy.deepcopy(geometry.get("current_rule_context_v1")) if geometry is not None else None
     # These are the closed constructor's rule slots, not captured effect values.
     # Commander exclusions, scale modifiers and initial contexts stay separate.
     rule_plan = None
@@ -117,6 +118,8 @@ def retained_constructor_geometry_fields(
         "loaded_selected_rule_effects_ready": effects_ready,
         "loaded_effect_source": "current_frame_phase_effect_database_8FC3E0",
         "loaded_effect_selection_scope": "retained_rule_slots_before_commander_exclusion_and_holding_scale",
+        "current_rule_context": current_context,
+        "current_rule_context_frame_qualified": bool(exact_build and actual and crossing is not None and holding is not None),
         "missing_inputs": missing,
         "complete_constructor_ready": False,
         "future_contact_preview": False,
@@ -125,4 +128,12 @@ def retained_constructor_geometry_fields(
             "initial_participant_contexts_and_roster", "initial_loaded_effect_and_scale_operands",
         ],
     }
+    if current_context is not None:
+        from ..simulation.battle_retained_current_rule_contributions import (
+            adapt_current_retained_rule_contributions, evaluate_current_retained_rule_contributions,
+        )
+        inputs = adapt_current_retained_rule_contributions(diagnostic)
+        diagnostic["current_rule_contributions_v1"] = (
+            evaluate_current_retained_rule_contributions(inputs) if inputs is not None else None
+        )
     return {"retained_constructor_geometry_v1": diagnostic}
