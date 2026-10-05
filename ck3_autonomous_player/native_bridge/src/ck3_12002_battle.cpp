@@ -110,6 +110,75 @@ bool ArmyIds(const BattleBindings &b, const void *combat, std::size_t side_off,
   }
   return true;
 }
+game::BattleCurrentRuleContextV1 CurrentRuleContext(
+    const BattleBindings &b, const void *combat, void *province,
+    const game::BattleActualGeographyInputsV1 &geometry) {
+  game::BattleCurrentRuleContextV1 result;
+  auto &holding = result.holding_multiplier;
+  if (geometry.holding_defender == false) holding.status = "not_applicable";
+  else if (!b.retained_read_province_multiplier || !b.province_has_holding ||
+           !b.retained_read_holding_modifier)
+    holding.unavailable_reason = "current_holding_multiplier_bindings_unavailable";
+  else {
+    std::int64_t province_multiplier = 0;
+    if (b.retained_read_province_multiplier(&province_multiplier, province, 0x1EB,
+                                           0, nullptr) != &province_multiplier)
+      holding.unavailable_reason = "current_province_multiplier_unavailable";
+    else {
+      holding.province_multiplier_raw = province_multiplier;
+      holding.province_has_holding = b.province_has_holding(province);
+      if (!*holding.province_has_holding) holding.status = "available";
+      else {
+        std::int64_t modifier = 0;
+        if (b.retained_read_holding_modifier(&modifier,
+            static_cast<std::byte *>(province) + 0x30, 0x1D6, nullptr, 100'000, 0) != &modifier)
+          holding.unavailable_reason = "current_holding_modifier_unavailable";
+        else {
+          holding.holding_modifier_raw = modifier;
+          holding.status = "available";
+        }
+      }
+    }
+  }
+  auto &commander = result.commander_exclusion;
+  commander.selected_character_id_raw = At<std::int32_t>(combat, 0x94);
+  if (!geometry.constructor_rule_effects_v1 || geometry.constructor_rule_effects_v1->rows.size() != 3 ||
+      geometry.constructor_rule_effects_v1->rows[1].status == "unavailable") {
+    commander.unavailable_reason = "defender_adjacency_effect_selection_unavailable";
+    return result;
+  }
+  if (geometry.constructor_rule_effects_v1->rows[1].status == "not_selected") {
+    commander.status = "not_applicable";
+    return result;
+  }
+  void *character = nullptr;
+  if (b.character_storage_slot && *b.character_storage_slot) {
+    auto *storage = *b.character_storage_slot;
+    const auto id = commander.selected_character_id_raw;
+    const auto index = static_cast<std::uint32_t>(id) & 0xFFFFFFU;
+    auto *data = At<void *>(storage, 0x20);
+    const auto capacity = At<std::uint32_t>(storage, 0x2C);
+    if (data && index < capacity) {
+      character = At<void *>(data, index * 16ULL + 8);
+      if (character && At<std::int32_t>(character, 0x18) != id) character = nullptr;
+    }
+  }
+  commander.used_native_fallback = !character;
+  if (!character && b.retained_null_character_slot) character = *b.retained_null_character_slot;
+  if (!character || !b.commander_roll_context.get_character_modifier_aggregator || !b.retained_has_modifier_flag) {
+    commander.unavailable_reason = "current_selected_commander_flag_bindings_unavailable";
+    return result;
+  }
+  auto *context = b.commander_roll_context.get_character_modifier_aggregator(character);
+  if (!context) commander.unavailable_reason = "current_selected_commander_context_unavailable";
+  else {
+    commander.defender_adjacency_excluded =
+        b.retained_has_modifier_flag(static_cast<std::byte *>(context) + 0x68, 0x1A4);
+    commander.status = "available";
+  }
+  return result;
+}
+
 bool TransitionSample(const BattleBindings &b,
                       const game::BattleTransitionRequest &req,
                       game::BattleTransitionSnapshot &out) {
@@ -138,6 +207,9 @@ bool TransitionSample(const BattleBindings &b,
     out.actual_geography_v1->constructor_rule_effects_v1 =
         ReadRetainedConstructorRuleEffects(b.retained_constructor_effect_rules,
             *out.actual_geography_v1->constructor_adjacency_kind_raw);
+  if (b.retained_read_province_multiplier || b.retained_has_modifier_flag)
+    out.actual_geography_v1->current_rule_context_v1 =
+        CurrentRuleContext(b, combat, province, *out.actual_geography_v1);
   out.phase_raw = At<std::int32_t>(combat, kBattlePhaseOffset);
   out.phase = Phase(out.phase_raw);
   out.phase_day = At<std::int32_t>(combat, kBattlePhaseDayOffset);
@@ -1919,9 +1991,17 @@ bool TerminalSample(const BattleBindings &b, const game::Snapshot &scope,
 
 void EnableBattleRetainedRuleEffects12003(BattleBindings &b, std::uintptr_t base,
                                         std::string_view sha) noexcept {
-  if (b.enabled && base && sha == ck3_12003::kExecutableSha256)
+  if (b.enabled && base && sha == ck3_12003::kExecutableSha256) {
     b.retained_constructor_effect_rules =
         reinterpret_cast<GetCombatRules>(base + kAdvantageRuleDatabaseRva);
+    b.retained_read_province_multiplier = reinterpret_cast<ReadAdvantageProvinceModifier>(
+        base + kAdvantageProvinceModifierRva);
+    b.retained_read_holding_modifier = reinterpret_cast<ReadAdvantageModifierValue>(
+        base + kAdvantageModifierValueRva);
+    b.retained_has_modifier_flag = reinterpret_cast<AdvantageModifierFlag>(
+        base + kAdvantageModifierFlagRva);
+    b.retained_null_character_slot = reinterpret_cast<void **>(base + 0x5C67570);
+  }
 }
 
 void EnableBattleFullBacking12003(BattleBindings &b, std::uintptr_t base,

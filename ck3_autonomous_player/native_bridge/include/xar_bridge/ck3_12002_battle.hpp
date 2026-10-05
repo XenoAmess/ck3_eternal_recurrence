@@ -100,6 +100,10 @@ struct BattleBindings {
   CombatBindings commander_roll_context{};
   // Exact .3 loaded PhaseEffect DB, distinct from the men-at-arms type DB.
   GetCombatRules retained_constructor_effect_rules = nullptr;
+  ReadAdvantageProvinceModifier retained_read_province_multiplier = nullptr;
+  ReadAdvantageModifierValue retained_read_holding_modifier = nullptr;
+  AdvantageModifierFlag retained_has_modifier_flag = nullptr;
+  void **retained_null_character_slot = nullptr;
   // Current read-only loss operands; independent of the existing control gate.
   const std::int64_t *damage_scaling = nullptr;
   // Independent exact .3 leaf: null means unavailable; zero is observed.

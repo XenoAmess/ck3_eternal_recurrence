@@ -660,6 +660,31 @@ struct BattleRetainedRuleEffectsV1 {
                          const BattleRetainedRuleEffectsV1 &) = default;
 };
 
+struct BattleCurrentHoldingMultiplierV1 {
+  std::string status = "unavailable";
+  std::optional<std::int64_t> province_multiplier_raw;
+  std::optional<bool> province_has_holding;
+  std::optional<std::int64_t> holding_modifier_raw;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleCurrentHoldingMultiplierV1 &,
+                         const BattleCurrentHoldingMultiplierV1 &) = default;
+};
+struct BattleCurrentCommanderExclusionV1 {
+  std::string status = "unavailable";
+  std::int32_t selected_character_id_raw = -1;
+  std::optional<bool> used_native_fallback;
+  std::optional<bool> defender_adjacency_excluded;
+  std::string unavailable_reason;
+  friend bool operator==(const BattleCurrentCommanderExclusionV1 &,
+                         const BattleCurrentCommanderExclusionV1 &) = default;
+};
+struct BattleCurrentRuleContextV1 {
+  BattleCurrentHoldingMultiplierV1 holding_multiplier;
+  BattleCurrentCommanderExclusionV1 commander_exclusion;
+  friend bool operator==(const BattleCurrentRuleContextV1 &,
+                         const BattleCurrentRuleContextV1 &) = default;
+};
+
 // Current actual Combat geography; the outer battle query supplies identity and
 // frame. Retained constructor fields do not reconstruct a historical entry.
 struct BattleActualGeographyInputsV1 {
@@ -667,6 +692,7 @@ struct BattleActualGeographyInputsV1 {
   std::optional<std::int32_t> constructor_adjacency_kind_raw;
   std::optional<bool> holding_defender;
   std::optional<BattleRetainedRuleEffectsV1> constructor_rule_effects_v1;
+  std::optional<BattleCurrentRuleContextV1> current_rule_context_v1;
 
   friend bool operator==(const BattleActualGeographyInputsV1 &,
                          const BattleActualGeographyInputsV1 &) = default;

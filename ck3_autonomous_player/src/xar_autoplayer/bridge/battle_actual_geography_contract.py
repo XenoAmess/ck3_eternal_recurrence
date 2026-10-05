@@ -6,6 +6,8 @@ constructor or determine the geometry of a future player contact.
 
 from __future__ import annotations
 
+from .battle_current_rule_context_contract import normalize_current_rule_context_v1
+
 
 def _optional_signed(value: object, field: str, bits: int) -> int | None:
     if value is None:
@@ -25,7 +27,7 @@ def normalize_actual_geography_v1(
         "terrain", "constructor_adjacency_kind_raw", "holding_defender"
     }
     if (not isinstance(value, dict) or not required <= set(value)
-            or set(value) - required - {"constructor_rule_effects_v1"}):
+            or set(value) - required - {"constructor_rule_effects_v1", "current_rule_context_v1"}):
         raise ValueError(f"{field} must contain the actual-geography v1 fields")
     terrain = value["terrain"]
     terrain_field = f"{field}.terrain"
@@ -79,6 +81,11 @@ def normalize_actual_geography_v1(
         result["constructor_rule_effects_v1"] = normalize_retained_rule_effects_v1(
             value["constructor_rule_effects_v1"], kind=kind,
             field=f"{field}.constructor_rule_effects_v1",
+        )
+    if "current_rule_context_v1" in value:
+        result["current_rule_context_v1"] = normalize_current_rule_context_v1(
+            value["current_rule_context_v1"], holding_defender=holding,
+            effects=result.get("constructor_rule_effects_v1"), field=f"{field}.current_rule_context_v1",
         )
     return result
 

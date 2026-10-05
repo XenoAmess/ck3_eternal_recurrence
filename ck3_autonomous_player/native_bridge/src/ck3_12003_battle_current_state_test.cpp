@@ -769,6 +769,129 @@ struct LoadedEffectMemory {
 };
 LoadedEffectMemory *LoadedEffectMemory::current = nullptr;
 
+struct CurrentRuleContextMemory {
+  LoadedEffectMemory effects{2};
+  Bytes<0x210> fallback_character{};
+  Bytes<0x80> context{};
+  void *fallback = fallback_character.data();
+  void *province = nullptr, *selected = nullptr;
+  std::int64_t province_multiplier = 150001, holding_modifier = 49999;
+  bool has_holding = true, excluded = false, missing_multiplier = false;
+  int province_reads = 0, holding_reads = 0, flag_reads = 0;
+  static CurrentRuleContextMemory *current;
+  static std::int64_t *ProvinceMultiplier(std::int64_t *out, void *province,
+      std::int32_t index, std::int32_t zero, void *null) {
+    auto &m = *current;
+    Require(province == m.province && index == 0x1EB && zero == 0 && !null,
+            "current multiplier must use actual Province enum1EB");
+    ++m.province_reads;
+    if (m.missing_multiplier) return nullptr;
+    *out = m.province_multiplier;
+    return out;
+  }
+  static bool HasHolding(void *province) {
+    Require(province == current->province, "current holding predicate province");
+    return current->has_holding;
+  }
+  static std::int64_t *HoldingModifier(std::int64_t *out, void *context,
+      std::int32_t index, void *null, std::int64_t scale, std::int32_t zero) {
+    auto &m = *current;
+    Require(context == static_cast<std::byte *>(m.province) + 0x30 &&
+                index == 0x1D6 && !null && scale == 100000 && zero == 0,
+            "holding modifier must use Province+30 enum1D6");
+    ++m.holding_reads;
+    *out = m.holding_modifier;
+    return out;
+  }
+  static void *Aggregator(void *character) {
+    Require(character == current->selected || character == current->fallback,
+            "exclusion must use selected Character or native fallback");
+    return current->context.data();
+  }
+  static bool Flag(void *flags, std::int32_t index) {
+    Require(flags == current->context.data() + 0x68 && index == 0x1A4,
+            "commander exclusion flag source");
+    ++current->flag_reads;
+    return current->excluded;
+  }
+  CurrentRuleContextMemory(BattleBindings &b, void *actual_province, void *selected_character) {
+    current = this;
+    province = actual_province;
+    selected = selected_character;
+    b.retained_constructor_effect_rules = LoadedEffectMemory::Rules;
+    b.retained_read_province_multiplier = ProvinceMultiplier;
+    b.retained_read_holding_modifier = HoldingModifier;
+    b.province_has_holding = HasHolding;
+    b.retained_has_modifier_flag = Flag;
+    b.retained_null_character_slot = &fallback;
+    b.commander_roll_context.get_character_modifier_aggregator = Aggregator;
+  }
+};
+CurrentRuleContextMemory *CurrentRuleContextMemory::current = nullptr;
+
+int RunCurrentRuleContextFixtures(const char *directory) {
+  try {
+    for (int scenario = 0; scenario < 8; ++scenario) {
+      ActualGeographyFixture f;
+      CurrentRuleContextMemory memory(f.b, f.province.data(), f.char0.data());
+      Put<std::int32_t>(f.combat, 0x6F8, 2);
+      Put<std::uint8_t>(f.combat, 0x6FE, 1);
+      Put<std::int32_t>(f.combat, 0x94, kRebelOwner);
+      const char *names[]{"fractional", "commander-excluded", "no-holding", "holding-inactive",
+                          "native-fallback", "multiplier-unavailable", "adjacency-absent", "nonpositive-scale"};
+      if (scenario == 1) memory.excluded = true;
+      if (scenario == 2) memory.has_holding = false;
+      if (scenario == 3) Put<std::uint8_t>(f.combat, 0x6FE, 0);
+      if (scenario == 4) { Put<std::int32_t>(f.combat, 0x94, -1); memory.excluded = true; }
+      if (scenario == 5) memory.missing_multiplier = true;
+      if (scenario == 6) Put<void *>(memory.effects.rules, 0xFB0, nullptr);
+      if (scenario == 7) { memory.province_multiplier = -5000; memory.holding_modifier = 0; }
+      BattleTransitionSnapshot transition;
+      Require(ReadBattleTransitionSnapshot(f.b, f.scope, {kActualCombat}, transition) ==
+                  BattleTransitionSnapshotStatus::available && transition.battle_transition_ready,
+              "new optional current operands must preserve foreign transition");
+      const auto &context = *transition.actual_geography_v1->current_rule_context_v1;
+      Require(context.holding_multiplier.status == (scenario == 3 ? "not_applicable" :
+                  scenario == 5 ? "unavailable" : "available"), "holding branch status lost");
+      Require(context.commander_exclusion.status == (scenario == 6 ? "not_applicable" : "available"),
+              "commander branch status lost");
+      if (scenario != 6)
+        Require(context.commander_exclusion.defender_adjacency_excluded == memory.excluded &&
+                    context.commander_exclusion.used_native_fallback == (scenario == 4),
+                "observed exclusion/fallback changed");
+      Require(memory.province_reads == (scenario == 3 ? 0 : 2) &&
+                  memory.holding_reads == (scenario == 2 || scenario == 3 || scenario == 5 ? 0 : 2) &&
+                  memory.flag_reads == (scenario == 6 ? 0 : 2), "native conditional read count");
+      transition.snapshot_revision = 2;
+      const auto wire = xar::ck3_11906::SerializeBattleTransitionV1(transition);
+      Require(!wire.empty() && wire.find("\"current_rule_context_v1\"") != std::string::npos,
+              "current context production serializer failed");
+      if (*directory) WriteWire(directory, (std::string(names[scenario])+".json").c_str(), wire);
+    }
+    SelectedRollFixture f;
+    CurrentRuleContextMemory memory(f.battle.b, f.battle.province.data(), f.selected0.data());
+    Put<std::int32_t>(f.battle.combat, 0x6B0, 2);
+    Put<std::int32_t>(f.battle.combat, 0x6F8, 2);
+    Put<std::uint8_t>(f.battle.combat, 0x6FE, 1);
+    BattleControlSnapshot control;
+    Require(ReadBattleControlSnapshot(f.battle.b, f.battle.scope, {0x1000001}, control) ==
+                BattleControlSnapshotStatus::available && control.battle_control_ready &&
+                control.actual_geography_v1->current_rule_context_v1->holding_multiplier.province_multiplier_raw == 150001,
+            "owned control current context copy failed");
+#ifdef XAR_SELECTED_ROLL_WIRE_FIXTURE
+    control.snapshot_revision = 2;
+    const auto wire = xar::ck3_11906::SerializeBattleControlSnapshotV1(control);
+    Require(!wire.empty(), "owned current context serializer failed");
+    if (*directory) WriteWire(directory, "owned.json", wire);
+#endif
+    std::cout << "Current retained-rule context focused fixture GREEN: 9 cases; actual=0\n";
+    return 0;
+  } catch (const std::exception &error) {
+    std::cerr << "Current retained-rule context fixture RED: " << error.what() << '\n';
+    return 1;
+  }
+}
+
 int RunRetainedRuleEffectFixtures(const char *output_directory) {
   try {
     BattleBindings binding;
@@ -1041,6 +1164,9 @@ int RunSelectedCommanderRollFixtures(const char *output_directory) {
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc > 1 && std::string_view(argv[1]) == "--current-rule-context-only") {
+    return RunCurrentRuleContextFixtures(argc > 2 ? argv[2] : "");
+  }
   if (argc > 1 && std::string_view(argv[1]) == "--retained-rule-effects-only") {
     return RunRetainedRuleEffectFixtures(argc > 2 ? argv[2] : "");
   }

@@ -84,6 +84,32 @@ inline std::string SerializeBattleActualGeographyV1(
     }
     out += "]}";
   }
+  if (inputs.current_rule_context_v1) {
+    const auto &holding = inputs.current_rule_context_v1->holding_multiplier;
+    const auto &commander = inputs.current_rule_context_v1->commander_exclusion;
+    out += ",\"current_rule_context_v1\":{\"holding_multiplier\":{\"status\":";
+    String(out, holding.status);
+    out += ",\"scale\":100000,\"province_multiplier_raw\":";
+    out += holding.province_multiplier_raw ? std::to_string(*holding.province_multiplier_raw) : "null";
+    out += ",\"province_has_holding\":";
+    out += !holding.province_has_holding ? "null" : (*holding.province_has_holding ? "true" : "false");
+    out += ",\"holding_modifier_raw\":";
+    out += holding.holding_modifier_raw ? std::to_string(*holding.holding_modifier_raw) : "null";
+    out += ",\"unavailable_reason\":";
+    if (holding.unavailable_reason.empty()) out += "null";
+    else String(out, holding.unavailable_reason);
+    out += "},\"commander_exclusion\":{\"status\":";
+    String(out, commander.status);
+    out += ",\"selected_character_id_raw\":" + std::to_string(commander.selected_character_id_raw);
+    out += ",\"used_native_fallback\":";
+    out += !commander.used_native_fallback ? "null" : (*commander.used_native_fallback ? "true" : "false");
+    out += ",\"defender_adjacency_excluded\":";
+    out += !commander.defender_adjacency_excluded ? "null" : (*commander.defender_adjacency_excluded ? "true" : "false");
+    out += ",\"unavailable_reason\":";
+    if (commander.unavailable_reason.empty()) out += "null";
+    else String(out, commander.unavailable_reason);
+    out += "}}";
+  }
   out += '}';
   return out;
 }
