@@ -424,87 +424,23 @@
         "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
       },
       "effect_ast": {
-        "op": "sequence",
-        "steps": [
-          {
-            "op": "select_side_knight",
-            "side": "enemy",
-            "filter": {
-              "op": "compare",
-              "operator": ">=",
-              "left": {
-                "op": "state_ref",
-                "path": "candidate.skills.prowess_raw",
-                "value_type": "fixed_q100000"
-              },
-              "right": {
-                "op": "multiply",
-                "left": {
-                  "op": "state_ref",
-                  "path": "root.skills.prowess_raw",
-                  "value_type": "fixed_q100000"
-                },
-                "right": {
-                  "op": "const_fixed",
-                  "raw": 80000,
-                  "scale": 100000
-                },
-                "rounding": "truncate_toward_zero"
-              }
-            },
-            "weight": {
-              "op": "const_fixed",
-              "raw": 100000,
-              "scale": 100000
-            },
-            "order_policy": "native_random_side_knight_candidate_order_unresolved",
-            "on_selected": {
-              "op": "call_transition",
-              "key": "knight_increase_prowess_chance",
-              "args": {
-                "target": "selected_enemy_knight"
-              },
-              "dependencies": [
-                "selected_enemy_knight.skills.learning_raw",
-                "selected_enemy_knight.traits_and_culture_for_blademaster"
-              ]
-            }
-          },
-          {
-            "op": "call_transition",
-            "key": "increase_wound_or_die",
-            "args": {
-              "target": "root",
-              "reason": "fight"
-            },
-            "dependencies": [
-              "root.alive",
-              "root.traits.wounded.rank_raw",
-              "root.traits.fragile_bones.rank_raw",
-              "root.traits.fragile_bones.xp_raw"
-            ]
-          },
-          {
-            "op": "call_transition",
-            "key": "observational_only",
-            "args": {
-              "effects": [
-                "battle_event",
-                "toast",
-                "prestige",
-                "glory"
-              ]
-            },
-            "dependencies": []
-          }
-        ]
+        "op": "call_transition",
+        "key": "request_full_injury_event_12003",
+        "args": {
+          "source_event_key": "commander_wounded"
+        },
+        "dependencies": []
       },
       "transition_tags": [
         "wound",
         "may_kill_root",
         "enemy_knight_prowess_or_blademaster",
         "character_stats_recompute",
-        "same_day_recompute_unverified"
+        "same_day_recompute_unverified",
+        "full_authored_injury_and_resource_requests",
+        "requested_not_committed",
+        "explicit_script_resource_operands",
+        "source_ordered_delayed_event_requests"
       ],
       "state_dependencies": [
         "candidate.skills.prowess_raw",
@@ -707,104 +643,23 @@
         "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
       },
       "effect_ast": {
-        "op": "sequence",
-        "steps": [
-          {
-            "op": "select_side_knight",
-            "side": "enemy",
-            "filter": {
-              "op": "compare",
-              "operator": ">=",
-              "left": {
-                "op": "state_ref",
-                "path": "candidate.skills.prowess_raw",
-                "value_type": "fixed_q100000"
-              },
-              "right": {
-                "op": "multiply",
-                "left": {
-                  "op": "state_ref",
-                  "path": "root.skills.prowess_raw",
-                  "value_type": "fixed_q100000"
-                },
-                "right": {
-                  "op": "const_fixed",
-                  "raw": 80000,
-                  "scale": 100000
-                },
-                "rounding": "truncate_toward_zero"
-              }
-            },
-            "weight": {
-              "op": "const_fixed",
-              "raw": 100000,
-              "scale": 100000
-            },
-            "order_policy": "native_random_side_knight_candidate_order_unresolved",
-            "on_selected": {
-              "op": "call_transition",
-              "key": "knight_increase_prowess_chance",
-              "args": {
-                "target": "selected_enemy_knight"
-              },
-              "dependencies": [
-                "selected_enemy_knight.skills.learning_raw",
-                "selected_enemy_knight.traits_and_culture_for_blademaster"
-              ]
-            }
-          },
-          {
-            "op": "call_transition",
-            "key": "maim_random",
-            "args": {
-              "target": "root",
-              "source_order_weights": [
-                400000,
-                200000,
-                400000,
-                400000
-              ],
-              "scale": 100000,
-              "branches": [
-                "one_legged_then_wound",
-                "disfigured_then_wound",
-                "one_eyed_then_wound",
-                "maimed_plus_recently_maimed"
-              ]
-            },
-            "dependencies": [
-              "root.alive",
-              "root.traits.one_legged",
-              "root.traits.disfigured",
-              "root.traits.one_eyed",
-              "root.traits.maimed",
-              "root.traits.wounded.rank_raw",
-              "root.traits.fragile_bones.rank_raw",
-              "root.traits.fragile_bones.xp_raw"
-            ]
-          },
-          {
-            "op": "call_transition",
-            "key": "observational_only",
-            "args": {
-              "effects": [
-                "battle_event",
-                "toast",
-                "prestige",
-                "glory",
-                "delayed_epilepsy_risk"
-              ]
-            },
-            "dependencies": []
-          }
-        ]
+        "op": "call_transition",
+        "key": "request_full_injury_event_12003",
+        "args": {
+          "source_event_key": "commander_maimed"
+        },
+        "dependencies": []
       },
       "transition_tags": [
         "maim",
         "may_wound_or_kill_root",
         "enemy_knight_prowess_or_blademaster",
         "character_stats_recompute",
-        "same_day_recompute_unverified"
+        "same_day_recompute_unverified",
+        "full_authored_injury_and_resource_requests",
+        "requested_not_committed",
+        "explicit_script_resource_operands",
+        "source_ordered_delayed_event_requests"
       ],
       "state_dependencies": [
         "candidate.skills.prowess_raw",
@@ -1073,91 +928,12 @@
         "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
       },
       "effect_ast": {
-        "op": "sequence",
-        "steps": [
-          {
-            "op": "select_side_knight",
-            "side": "enemy",
-            "filter": {
-              "op": "compare",
-              "operator": ">=",
-              "left": {
-                "op": "state_ref",
-                "path": "candidate.skills.prowess_raw",
-                "value_type": "fixed_q100000"
-              },
-              "right": {
-                "op": "multiply",
-                "left": {
-                  "op": "state_ref",
-                  "path": "root.skills.prowess_raw",
-                  "value_type": "fixed_q100000"
-                },
-                "right": {
-                  "op": "const_fixed",
-                  "raw": 80000,
-                  "scale": 100000
-                },
-                "rounding": "truncate_toward_zero"
-              }
-            },
-            "weight": {
-              "op": "const_fixed",
-              "raw": 100000,
-              "scale": 100000
-            },
-            "order_policy": "native_random_side_knight_candidate_order_unresolved",
-            "on_selected": {
-              "op": "call_transition",
-              "key": "knight_increase_prowess_chance",
-              "args": {
-                "target": "selected_enemy_knight"
-              },
-              "dependencies": [
-                "selected_enemy_knight.skills.learning_raw",
-                "selected_enemy_knight.traits_and_culture_for_blademaster"
-              ]
-            }
-          },
-          {
-            "op": "call_transition",
-            "key": "kill_character",
-            "args": {
-              "target": "root",
-              "reason": "death_battle",
-              "killer": "selected_enemy_knight_or_null"
-            },
-            "dependencies": [
-              "root.alive"
-            ]
-          },
-          {
-            "op": "call_transition",
-            "key": "require_participant_detach_recompute",
-            "args": {
-              "target": "root",
-              "timing": "same_day_unverified"
-            },
-            "dependencies": [
-              "combat_side.character_membership",
-              "combat_side.commander"
-            ]
-          },
-          {
-            "op": "call_transition",
-            "key": "observational_only",
-            "args": {
-              "effects": [
-                "battle_death_variables",
-                "battle_event",
-                "toast",
-                "prestige",
-                "house_relation"
-              ]
-            },
-            "dependencies": []
-          }
-        ]
+        "op": "call_transition",
+        "key": "request_full_injury_event_12003",
+        "args": {
+          "source_event_key": "commander_killed"
+        },
+        "dependencies": []
       },
       "transition_tags": [
         "death",
@@ -1165,7 +941,11 @@
         "enemy_knight_prowess_or_blademaster",
         "commander_roll_recompute",
         "participant_detach_unverified",
-        "same_day_recompute_unverified"
+        "same_day_recompute_unverified",
+        "full_authored_injury_and_resource_requests",
+        "requested_not_committed",
+        "explicit_script_resource_operands",
+        "source_ordered_delayed_event_requests"
       ],
       "state_dependencies": [
         "candidate.skills.prowess_raw",
@@ -4031,80 +3811,23 @@
         "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
       },
       "effect_ast": {
-        "op": "sequence",
-        "steps": [
-          {
-            "op": "select_side_knight",
-            "side": "enemy",
-            "filter": {
-              "op": "state_ref",
-              "path": "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter",
-              "value_type": "bool"
-            },
-            "weight": {
-              "op": "const_fixed",
-              "raw": 100000,
-              "scale": 100000
-            },
-            "order_policy": "native_random_side_knight_candidate_order_unresolved",
-            "on_selected": {
-              "op": "call_transition",
-              "key": "knight_increase_prowess_chance",
-              "args": {
-                "target": "selected_enemy_knight"
-              },
-              "dependencies": [
-                "selected_enemy_knight.skills.learning_raw",
-                "selected_enemy_knight.traits_and_culture_for_blademaster"
-              ]
-            }
-          },
-          {
-            "op": "call_transition",
-            "key": "increase_wound_or_die",
-            "args": {
-              "target": "root",
-              "reason": "fight"
-            },
-            "dependencies": [
-              "root.alive",
-              "root.traits.wounded.rank_raw",
-              "root.traits.fragile_bones.rank_raw",
-              "root.traits.fragile_bones.xp_raw"
-            ]
-          },
-          {
-            "op": "call_transition",
-            "key": "require_character_stat_recompute",
-            "args": {
-              "target": "root",
-              "timing": "same_day_unverified"
-            },
-            "dependencies": [
-              "root.traits.wounded.rank_raw"
-            ]
-          },
-          {
-            "op": "call_transition",
-            "key": "observational_only",
-            "args": {
-              "effects": [
-                "battle_event",
-                "prestige",
-                "glory",
-                "delayed_infection_or_treatment"
-              ]
-            },
-            "dependencies": []
-          }
-        ]
+        "op": "call_transition",
+        "key": "request_full_injury_event_12003",
+        "args": {
+          "source_event_key": "knight_wounded"
+        },
+        "dependencies": []
       },
       "transition_tags": [
         "wound",
         "may_kill_root",
         "enemy_knight_prowess_or_blademaster",
         "character_stats_recompute",
-        "same_day_recompute_unverified"
+        "same_day_recompute_unverified",
+        "full_authored_injury_and_resource_requests",
+        "requested_not_committed",
+        "explicit_script_resource_operands",
+        "source_ordered_delayed_event_requests"
       ],
       "state_dependencies": [
         "combat_side.ordered_commanders_and_knights_with_accolade_parameters",
@@ -4306,97 +4029,23 @@
         "final_weight_conversion": "signed_q100000_divide_100000_truncate_toward_zero"
       },
       "effect_ast": {
-        "op": "sequence",
-        "steps": [
-          {
-            "op": "select_side_knight",
-            "side": "enemy",
-            "filter": {
-              "op": "state_ref",
-              "path": "derived.candidate_prowess_at_or_above_root_opponent_threshold_without_alive_filter",
-              "value_type": "bool"
-            },
-            "weight": {
-              "op": "const_fixed",
-              "raw": 100000,
-              "scale": 100000
-            },
-            "order_policy": "native_random_side_knight_candidate_order_unresolved",
-            "on_selected": {
-              "op": "call_transition",
-              "key": "knight_increase_prowess_chance",
-              "args": {
-                "target": "selected_enemy_knight"
-              },
-              "dependencies": [
-                "selected_enemy_knight.skills.learning_raw",
-                "selected_enemy_knight.traits_and_culture_for_blademaster"
-              ]
-            }
-          },
-          {
-            "op": "call_transition",
-            "key": "maim_random",
-            "args": {
-              "target": "root",
-              "source_order_weights": [
-                400000,
-                200000,
-                400000,
-                400000
-              ],
-              "scale": 100000,
-              "branches": [
-                "one_legged_then_wound",
-                "disfigured_then_wound",
-                "one_eyed_then_wound",
-                "maimed_plus_recently_maimed"
-              ]
-            },
-            "dependencies": [
-              "root.alive",
-              "root.traits.one_legged",
-              "root.traits.disfigured",
-              "root.traits.one_eyed",
-              "root.traits.maimed",
-              "root.traits.wounded.rank_raw",
-              "root.traits.fragile_bones.rank_raw",
-              "root.traits.fragile_bones.xp_raw"
-            ]
-          },
-          {
-            "op": "call_transition",
-            "key": "require_character_stat_recompute",
-            "args": {
-              "target": "root",
-              "timing": "same_day_unverified"
-            },
-            "dependencies": [
-              "root.traits.maim_injuries",
-              "root.traits.wounded.rank_raw"
-            ]
-          },
-          {
-            "op": "call_transition",
-            "key": "observational_only",
-            "args": {
-              "effects": [
-                "battle_event",
-                "prestige",
-                "glory",
-                "delayed_epilepsy_risk"
-              ]
-            },
-            "dependencies": []
-          }
-        ]
+        "op": "call_transition",
+        "key": "request_full_injury_event_12003",
+        "args": {
+          "source_event_key": "knight_maimed"
+        },
+        "dependencies": []
       },
       "transition_tags": [
         "maim",
         "may_wound_or_kill_root",
         "enemy_knight_prowess_or_blademaster",
         "character_stats_recompute",
-        "same_day_recompute_unverified"
+        "same_day_recompute_unverified",
+        "full_authored_injury_and_resource_requests",
+        "requested_not_committed",
+        "explicit_script_resource_operands",
+        "source_ordered_delayed_event_requests"
       ],
       "state_dependencies": [
         "combat_side.ordered_commanders_and_knights_with_accolade_parameters",
@@ -6778,7 +6427,8 @@
     "request_effect_12003",
     "request_kill_prestige_12003",
     "request_knight_growth_12003",
-    "request_cranial_trophy_12003"
+    "request_cranial_trophy_12003",
+    "request_full_injury_event_12003"
   ],
   "completeness": {
     "loaded_playset_verified": false,
@@ -6799,5 +6449,5 @@
       "current_12003_full_injury_reward_and_noncombat_feedback"
     ]
   },
-  "canonical_manifest_sha256": "974AABDC003066335F14A376B128AF55AA2CAB8E121F998CB3EB586A0E595952"
+  "canonical_manifest_sha256": "DC36E5D33D5369B6E6F8408A34DB13674B7CAF6B735FF87A3BDEAB5BA2A086A7"
 }

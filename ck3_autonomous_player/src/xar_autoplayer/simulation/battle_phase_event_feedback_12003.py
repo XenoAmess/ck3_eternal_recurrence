@@ -8,7 +8,7 @@ variable subset can close the declared fixed-context event boundary.
 from __future__ import annotations
 
 from copy import deepcopy
-from dataclasses import dataclass, replace
+from dataclasses import asdict, dataclass, replace
 from typing import Any, Mapping, Sequence
 
 from .battle_calendar_admission import CombatScheduleInput, project_daily_battle_schedule
@@ -28,6 +28,10 @@ from .battle_phase_events_12003 import (
 from .battle_phase_event_one_seam_12003 import (
     ACCOLADE_QUALIFICATION_EVENT_KEY_12003, AccoladeQualificationInputs12003,
     execute_selected_accolade_qualification_12003,
+)
+from .battle_phase_event_character_seam_12003 import (
+    CHARACTER_EVENT_KEY_12003, CharacterPhaseEventInputs12003,
+    execute_selected_character_phase_event_12003,
 )
 from .combat_core import DrawState, wrap_int64
 from .phase_event_evaluator import FrozenPhaseEventManifest
@@ -85,6 +89,7 @@ class SelectedPhaseEventInput12003:
     advantage_model: object | None = None
     knight_refreshes: tuple[KnightCachedStatRefresh12003, ...] = ()
     one_seam_inputs: AccoladeQualificationInputs12003 | None = None
+    character_seam_inputs: CharacterPhaseEventInputs12003 | None = None
 
 
 @dataclass(frozen=True, slots=True)
@@ -289,6 +294,7 @@ def apply_selected_phase_event_feedback_12003(
     """
     selected = tuple(selected)
     state, deltas, executions, caches, gaps, consumed = carried, [], [], [], [], []
+    character_seam_projections = []
     side_order = [item.context.get("combat_side_index") for item in selected]
     if any(value not in (0, 1) for value in side_order) or side_order != sorted(side_order):
         raise ValueError("selected events must preserve side0 then side1 order")
@@ -308,6 +314,20 @@ def apply_selected_phase_event_feedback_12003(
                 item.context, script_outcomes=item.script_outcomes, inputs=item.one_seam_inputs,
                 source_context=item.source_context, manifest=item.manifest,
                 advantage_model=item.advantage_model)
+        elif (item.event_key == CHARACTER_EVENT_KEY_12003
+                and item.character_seam_inputs is not None):
+            projection = execute_selected_character_phase_event_12003(
+                item.context, script_outcomes=item.script_outcomes,
+                source_context=item.source_context, inputs=item.character_seam_inputs,
+                manifest=item.manifest)
+            result = projection.execution
+            character_seam_projections.append({
+                "selected_index": index,
+                "current_person_reader": asdict(projection.current_person_reader),
+                "memory_requests": deepcopy(projection.memory_requests),
+                "typed_callback_gaps": tuple(asdict(gap) for gap in projection.typed_callback_gaps),
+                "ledger": deepcopy(projection.ledger),
+            })
         else:
             result = execute_selected_phase_event_12003(
                 item.context, event_key=item.event_key, script_outcomes=item.script_outcomes,
@@ -329,9 +349,13 @@ def apply_selected_phase_event_feedback_12003(
             if projection is not None:
                 caches.append(projection); refreshed_ids.add(refresh.knight_character_id)
         if "condition_feedback_ready" in result:
+            character_route = (item.event_key == CHARACTER_EVENT_KEY_12003
+                               and item.character_seam_inputs is not None)
+            stage = 'selected_character_condition' if character_route else 'selected_accolade_condition'
+            source = ('knight_becomes_incapable direct source / selected3765780'
+                      if character_route else 'knight_qualify_for_accolade direct source / selected3765780')
             for pending in result.get('feedback_pending', ()):
-                gaps.append(_gap(index, 'selected_accolade_condition',
-                    str(pending), 'knight_qualify_for_accolade direct source / selected3765780'))
+                gaps.append(_gap(index, stage, str(pending), source))
         elif item.event_key not in _EMPTY_EVENTS and item.event_key is not None:
             for character_id in sorted(affected):
                 if character_id not in refreshed_ids:
@@ -371,6 +395,8 @@ def apply_selected_phase_event_feedback_12003(
         "native_event_selection_claimed": False, "native_rng_trace_claimed": False,
         "full_script_feedback_ready": False, "complete_transition": False,
         "complete_monte_carlo": False, "actual_game_days_advanced": 0}
+    if character_seam_projections:
+        ledger["character_seam_projections"] = tuple(character_seam_projections)
     return SelectedPhaseEventFeedbackResult12003(state, tuple(deltas), tuple(executions),
         tuple(caches), tuple(gaps), any(consumed), ready, ledger)
 

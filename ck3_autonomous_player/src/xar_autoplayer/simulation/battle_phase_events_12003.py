@@ -68,9 +68,9 @@ EXECUTABLE_SHA256_12003 = (
     "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
 )
 STOCK_PHASE_EVENT_MANIFEST_SHA256_12003 = (
-    "974AABDC003066335F14A376B128AF55AA2CAB8E121F998CB3EB586A0E595952"
+    "DC36E5D33D5369B6E6F8408A34DB13674B7CAF6B735FF87A3BDEAB5BA2A086A7"
 )
-PHASE_EVENT_TRANSITION_VERSION_12003 = "ck3-1.20.0.3-caller-selected-primary-and-requested-effects-v6"
+PHASE_EVENT_TRANSITION_VERSION_12003 = "ck3-1.20.0.3-caller-selected-primary-and-requested-effects-v7"
 _MANIFEST_RESOURCE = "data/ck3_1_20_0_3_stock_combat_phase_events.json"
 SUPPORTED_SELECTED_EVENT_KEYS_12003 = (
     "commander_none",
@@ -409,6 +409,7 @@ def _primary_maim_12003(state: PhaseEventTrialState, tape: _ExplicitOutcomeTape)
 _REQUEST_TRANSITIONS_12003 = frozenset((
     "request_effect_12003", "request_kill_prestige_12003",
     "request_knight_growth_12003", "request_cranial_trophy_12003",
+    "request_full_injury_event_12003",
 ))
 KNIGHT_KILLED_SOURCE_API_SHA256_12003 = "8120F8760091DE225CACF0FED2EFBEC0AB0A09E111EF823CC139FBD62FBE4FA7"
 KNIGHT_BECOME_BERSERKER_SOURCE_API_SHA256_12003 = "DF07DA498EA68E64CE2754B831A341EEE983E3BAD75D9E3B2E141B3EFF5BE6AC"
@@ -454,7 +455,9 @@ def _request_effect_12003(state, *, operation, target, payload=None, refs=None,
             missing.append(path)
     character_id = (state.root_character_id if target == "root" else
                     state.selected_enemy_character_id if target == "selected_enemy_knight" else
-                    state.refs.get("root.liege.full_character_id") if target == "root.liege" else None)
+                    state.refs.get("root.liege.full_character_id") if target == "root.liege" else
+                    state.refs.get("physician.full_character_id") if target == "physician" else
+                    state.refs.get("physician.liege.full_character_id") if target == "physician.liege" else None)
     record = {"transition": "selected_effect_request", "stage": "requested",
         "operation": operation, "source_event_key": source_event_key,
         "target_scope": target, "target_character_id": character_id,
@@ -582,6 +585,292 @@ def _request_cranial_trophy_12003(state):
                 refs={"source_limit_raw": "caller.minor_spiritual_fulfillment_value_raw"})
 
 
+def _effect_ref_12003(state, path):
+    return _request_value_12003(state, path)
+
+
+def _effect_bool_12003(state, path):
+    return _bool(_effect_ref_12003(state, path), path)
+
+
+def _request_numeric_effect_12003(state, *, operation, target, value_raw,
+                                 source_event_key, before_ref=None, source_alias=None):
+    if value_raw is not None:
+        value_raw = _signed_int64(value_raw, operation + " requested amount")
+    _request_effect_12003(state, operation=operation, target=target,
+        source_event_key=source_event_key,
+        payload={"value_raw": value_raw, "scale": 100000,
+                 "unit": "source_SCRIPT_requested_amount_Q100000",
+                 "source_alias": source_alias})
+    record = state.transition_log[-1]
+    before = None if before_ref is None else _effect_ref_12003(state, before_ref)
+    if before is not None:
+        before = _signed_int64(before, "caller supplied before amount")
+    record["requested_literal_projection"] = {
+        "caller_before_raw": before, "requested_delta_raw": value_raw,
+        "conditional_after_raw": None if before is None or value_raw is None else before + value_raw,
+        "unit": "caller_before_and_source_SCRIPT_Q100000",
+        "native_storage_unit_claimed": False, "native_effect_modifier_result_claimed": False,
+        "observed_current_value_rewritten": False, "committed": False,
+    }
+    if value_raw is None:
+        record["unavailable_operands"].append("script_values." + str(source_alias) + "_raw")
+
+
+def _request_injury_prestige_12003(state, *, source_event_key, killed=False):
+    amount = 15000000 if killed else 7500000
+    if _effect_bool_12003(state, "root.primary_title.exists"):
+        tier = _signed_int64(_effect_ref_12003(state, "root.primary_title.tier_raw"), "root title tier")
+        if tier > 0:
+            amount = fixed_mul(amount, tier)
+    if _effect_bool_12003(state, "root.is_lowborn"):
+        amount //= 2
+    _request_numeric_effect_12003(state, operation="add_prestige", target="selected_enemy_knight",
+        value_raw=amount, source_event_key=source_event_key,
+        before_ref="selected_enemy_knight.resources.prestige_raw",
+        source_alias="knight_prestige_gain_on_kill_inverse" if killed else "knight_prestige_gain_on_wound_inverse")
+
+
+def _request_delayed_health_12003(state, tape, *, source_event_key, epilepsy=False):
+    purpose = "epilepsy_brain_trauma:source_order" if epilepsy else "increase_wounds:infection:source_order"
+    chance = 500000 if epilepsy else 1000000
+    branch = tape.take(purpose, (chance, 10000000 - chance))
+    state.transition_log.append({"transition": "authored_random_request_branch",
+        "purpose": purpose, "chance_percent": 5 if epilepsy else 10,
+        "branch_index": branch, "native_rng_trace_claimed": False})
+    if branch == 0:
+        if epilepsy:
+            _request_effect_12003(state, source_event_key=source_event_key,
+                operation="debug_log", target="root", payload={"text": "Epilepsy: brain trauma"})
+        _request_effect_12003(state, source_event_key=source_event_key,
+            operation="trigger_event", target="root",
+            payload={"id": "trait_specific.2001" if epilepsy else "health.0201",
+                     "delay_days_range": [30, 300] if epilepsy else [30, 60],
+                     "selected_schedule_date_raw": None,
+                     "native_scheduler_admission_observed": False})
+
+
+def _request_safe_wound_treatment_12003(state, tape, *, source_event_key, rank_raw):
+    _request_effect_12003(state, source_event_key=source_event_key,
+        operation="custom_tooltip", target="root", payload={"key": "safe_wound_treatment.tt"})
+    candidates = _sequence(_effect_ref_12003(state, "root.treatment.physician_candidates"), "physician candidates")
+    eligible = []
+    if _effect_bool_12003(state, "root.treatment.court_owner_exists"):
+        for row in candidates:
+            row = _mapping(row, "physician candidate")
+            if _bool(row["physically_able"], "physician physically able"):
+                eligible.append(_positive_int(row["character_id"], "physician full CharacterID"))
+    physician = tape.target("safe_wound_treatment:physician", eligible)
+    state.refs["physician.full_character_id"] = physician
+    state.transition_log.append({"transition": "save_scope_as", "name": "physician",
+        "character_id": physician, "origin": "caller_conditioned_court_position_holder"})
+    if physician is None:
+        return
+    if not _effect_bool_12003(state, "root.treatment.court_physician_available"):
+        return
+    has_trait = _effect_bool_12003(state, "physician.traits.lifestyle_physician")
+    xp = _signed_int64(_effect_ref_12003(state, "physician.traits.lifestyle_physician_xp_raw"), "physician XP")
+    if not (has_trait and xp >= 10000000):
+        # The immediate helper adds its own authored alive/NAND guard.
+        if _effect_bool_12003(state, "physician.alive"):
+            growth = tape.take("physician_level_up_chance:source_order", (1000000, 9000000))
+            if growth == 0:
+                if not has_trait:
+                    _request_effect_12003(state, source_event_key=source_event_key,
+                        operation="add_trait", target="physician", payload={"trait": "lifestyle_physician"})
+                    has_trait = True
+                elif xp < 10000000:
+                    _request_effect_12003(state, source_event_key=source_event_key,
+                        operation="add_trait_xp", target="physician",
+                        payload={"trait": "lifestyle_physician", "value_raw": 1000000, "scale": 100000})
+                    xp += 1000000
+                state.transition_log.append({"transition": "conditional_physician_growth_after",
+                    "has_trait": has_trait, "xp_raw": xp,
+                    "origin": "caller_before_and_requested_literal_projection",
+                    "native_post_callback_observed": False})
+                _request_effect_12003(state, source_event_key=source_event_key,
+                    operation="set_variable", target="physician",
+                    payload={"name": "physician_level_up", "value": "flag:physician", "days": 15})
+                if (_effect_bool_12003(state, "physician.liege.exists")
+                        and not _effect_bool_12003(state, "physician.liege.is_sick_character")):
+                    _request_effect_12003(state, source_event_key=source_event_key,
+                        operation="send_interface_message", target="physician.liege",
+                        payload={"type": "event_court_physician_good", "title": "physician_level_up_chance_effect.t",
+                                 "left_icon": physician, "tooltip_helper": "physician_rank_up_tooltip_effect",
+                                 "tooltip_only": True})
+    learning = _signed_int64(_effect_ref_12003(state, "physician.skills.learning_raw"), "physician learning")
+    thresholds = [_signed_int64(_effect_ref_12003(state, "script_values." + key + "_raw"), key)
+                  for key in ("mediocre_skill_rating", "medium_skill_rating", "decent_skill_rating", "high_skill_rating")]
+    success = 1000000
+    for lower, upper, factor in ((thresholds[0], thresholds[1], 2),
+                                  (thresholds[1], thresholds[2], 4),
+                                  (thresholds[2], thresholds[3], 7)):
+        if lower <= learning < upper:
+            success *= factor
+    if learning >= thresholds[3]:
+        success *= 10
+    if has_trait:
+        success *= 2
+        if xp >= 5000000:
+            success *= 2
+        if xp >= 10000000:
+            success *= 4
+    treatment = tape.take("safe_wound_treatment:treatment:source_order", (success, 5000000))
+    state.transition_log.append({"transition": "safe_wound_treatment_selection",
+        "weights_raw": [success, 5000000], "branch_index": treatment})
+    wounded_one = rank_raw == 100000
+    event = (("health.0100" if wounded_one else "health.4101") if treatment == 0 else
+             ("health.0101" if wounded_one else "health.4102"))
+    _request_effect_12003(state, source_event_key=source_event_key,
+        operation="trigger_event", target="root",
+        payload={"id": event, "delay_days_range": [2, 3] if wounded_one else None,
+                 "native_scheduler_admission_observed": False})
+
+
+def _request_full_wound_12003(state, tape, *, source_event_key):
+    before = _signed_int64(state.refs["root.traits.wounded.rank_raw"], "root wounded rank")
+    if before == 300000:
+        _request_effect_12003(state, source_event_key=source_event_key,
+            operation="death", target="root", payload={"reason_key": "death_fight"})
+        return
+    if before >= 300000:
+        return
+    state.transition_log.extend((
+        {"transition": "save_temporary_scope_value_as", "name": "treatment_type", "value": "flag:fight"},
+        {"transition": "save_temporary_scope_value_as", "name": "exaltation_of_pain_wounded_spiritual_fulfillment", "value": False},
+    ))
+    exaltation = _effect_bool_12003(state, "root.personal_tenet_flags.tenet_exaltation_of_pain_wounded_spiritual_fulfillment")
+    if exaltation:
+        state.transition_log.append({"transition": "save_temporary_scope_value_as",
+            "name": "exaltation_of_pain_wounded_spiritual_fulfillment", "value": True})
+    xp = _signed_int64(state.refs["root.traits.fragile_bones.xp_raw"], "fragile bones XP")
+    fragile = _signed_int64(state.refs["root.traits.fragile_bones.rank_raw"], "fragile bones rank") > 0
+    increase = 3 if xp >= 5000000 else 2 if fragile else 1
+    rank = min(before + increase * 100000, 300000)
+    _request_effect_12003(state, source_event_key=source_event_key,
+        operation="change_trait_rank", target="root",
+        payload={"trait": "wounded", "rank": increase, "max": 3,
+                 "before_rank_raw": before, "conditional_after_rank_raw": rank,
+                 "unit": "existing_interpreter_rank_Q100000",
+                 "native_post_write_rank_observed": False})
+    state.transition_log.append({"transition": "conditional_post_wound_rank",
+        "before_rank_raw": before, "after_rank_raw": rank,
+        "origin": "caller_before_and_authored_literal_rank_change",
+        "observed_current_rank_rewritten": False, "committed": False})
+    if exaltation and rank in (100000, 200000, 300000):
+        alias = ("minor", "medium", "major")[rank // 100000 - 1] + "_spiritual_fulfillment_value"
+        if not _effect_bool_12003(state, "root.is_ai"):
+            _request_effect_12003(state, source_event_key=source_event_key,
+                operation="send_interface_toast", target="root",
+                payload={"type": "event_generic_good", "title": "exaltation_of_pain_wounded_spiritual_fulfillment_toast"})
+        _request_numeric_effect_12003(state, operation="change_spiritual_fulfillment", target="root",
+            value_raw=_effect_ref_12003(state, "script_values." + alias + "_raw"),
+            source_event_key=source_event_key, before_ref="root.resources.spiritual_fulfillment_raw", source_alias=alias)
+    if _effect_bool_12003(state, "root.personal_tenet_flags.tenet_mortification_suffering_sanctifies"):
+        if not _effect_bool_12003(state, "root.is_ai"):
+            _request_effect_12003(state, source_event_key=source_event_key,
+                operation="send_interface_toast", target="root",
+                payload={"type": "event_generic_good", "title": "pam_mortification_suffering_sanctifies_toast"})
+        _request_numeric_effect_12003(state, operation="add_piety", target="root", value_raw=5000000,
+            source_event_key=source_event_key, before_ref="root.resources.piety_raw", source_alias="minor_piety_value")
+        _request_numeric_effect_12003(state, operation="add_stress", target="root",
+            value_raw=_effect_ref_12003(state, "script_values.minor_stress_loss_raw"),
+            source_event_key=source_event_key, before_ref="root.resources.stress_raw", source_alias="minor_stress_loss")
+    _request_delayed_health_12003(state, tape, source_event_key=source_event_key)
+    if rank == 100000 and _effect_bool_12003(state, "root.treatment.court_physician_available"):
+        state.transition_log.append({"transition": "save_scope_as", "name": "sick_character",
+                                     "character_id": state.root_character_id})
+        _request_safe_wound_treatment_12003(state, tape, source_event_key=source_event_key, rank_raw=rank)
+    elif rank in (200000, 300000) and not _effect_bool_12003(state, "root.treatment.has_recent_wound_treatment"):
+        _request_effect_12003(state, source_event_key=source_event_key,
+            operation="trigger_event", target="root",
+            payload={"id": "health.0102" if rank == 200000 else "health.0104",
+                     "delay_days_range": [2, 3], "native_scheduler_admission_observed": False})
+        if rank == 300000:
+            _request_delayed_health_12003(state, tape, source_event_key=source_event_key, epilepsy=True)
+
+
+def _request_full_maim_12003(state, tape, *, source_event_key):
+    traits = ("one_legged", "disfigured", "one_eyed", "maimed")
+    weights = [0 if _bool(state.refs["root.traits." + trait], trait) else weight
+               for trait, weight in zip(traits, (400000, 200000, 400000, 400000), strict=True)]
+    branch = tape.take("maim_random:source_order", weights)
+    state.transition_log.append({"transition": "requested_maim_selection", "branch_index": branch,
+        "weights_raw": weights, "committed": False})
+    if branch < 0:
+        return
+    _request_effect_12003(state, source_event_key=source_event_key,
+        operation="add_trait" if branch == 3 else "add_trait_force_tooltip", target="root",
+        payload={"trait": traits[branch]})
+    if branch == 3:
+        _request_effect_12003(state, source_event_key=source_event_key,
+            operation="add_character_modifier", target="root",
+            payload={"modifier": "recently_maimed_modifier", "years": 1})
+    else:
+        _request_full_wound_12003(state, tape, source_event_key=source_event_key)
+    if branch in (1, 2, 3):
+        _request_delayed_health_12003(state, tape, source_event_key=source_event_key, epilepsy=True)
+
+
+def _request_full_injury_event_12003(state, tape, *, source_event_key):
+    commander = source_event_key.startswith("commander_")
+    killed = source_event_key == "commander_killed"
+    maimed = source_event_key.endswith("maimed")
+    state.transition_log.append({"transition": "save_scope_as",
+        "name": "commander" if commander else "knight", "character_id": state.root_character_id})
+    if killed:
+        for name, path in (("enemy", "enemy_side.primary_participant_character_id"),
+                           ("leader", "combat_side.primary_participant_character_id"),
+                           ("location", "combat.location")):
+            _request_effect_12003(state, source_event_key=source_event_key,
+                operation="set_variable", target="root",
+                payload={"name": "battle_death_" + name}, refs={"value": path})
+    threshold = fixed_mul(_signed_int64(state.refs["root.skills.prowess_raw"], "root prowess"), 80000)
+    eligible = [row["character_id"] for row in state.candidates
+        if row["character_id"] in state.enemy_membership
+        and _signed_int64(row["candidate_refs"]["candidate.skills.prowess_raw"], "candidate prowess") >= threshold]
+    target = tape.target(source_event_key + ":enemy_knight", eligible) if eligible else None
+    state.selected_enemy_character_id = target
+    state.transition_log.append({"transition": "select_side_knight", "selected_character_id": target,
+        "selection_origin": "caller_conditional", "native_order_ready": False,
+        "authored_alive_filter": False})
+    if target is not None:
+        _request_injury_prestige_12003(state, source_event_key=source_event_key, killed=killed)
+        _request_knight_growth_12003(state, tape, target="selected_enemy_knight", source_event_key=source_event_key)
+    battle_key = source_event_key + ("_by_enemy" if target is not None else "_no_enemy")
+    portraits = {"left_portrait": "@root_character_id"}
+    if target is not None:
+        portraits["right_portrait"] = "@selected_enemy_character_id"
+    _request_effect_12003(state, source_event_key=source_event_key,
+        operation="battle_event", target="combat_side",
+        payload={"key": battle_key, "type": "death" if killed else "wound"}, refs=portraits)
+    if killed and target is not None and _effect_bool_12003(state, "root.house.exists"):
+        _request_effect_12003(state, source_event_key=source_event_key,
+            operation="change_house_relation_effect", target="root.house",
+            payload={"value_raw": -20000, "scale": 100000, "reason": "killed"},
+            refs={"house": "selected_enemy_knight.house.full_id", "character_id": "@selected_enemy_character_id",
+                  "target_character_id": "@root_character_id", "title": "dummy_gender"})
+    if commander:
+        _request_effect_12003(state, source_event_key=source_event_key,
+            operation="send_interface_toast", target="root",
+            payload={"type": "event_toast_effect_bad", "title": battle_key + "_interface_friendly_player"},
+            refs={"left_icon": "@root_character_id", **({"right_icon": "@selected_enemy_character_id"} if target is not None else {})})
+    if killed:
+        _request_effect_12003(state, source_event_key=source_event_key,
+            operation="death", target="root", payload={"reason_key": "death_battle"},
+            refs={"killer_character_id": "@selected_enemy_character_id"} if target is not None else None)
+    elif maimed:
+        _request_full_maim_12003(state, tape, source_event_key=source_event_key)
+    else:
+        _request_full_wound_12003(state, tape, source_event_key=source_event_key)
+    if not commander and target is not None:
+        gate = "selected_enemy_knight.accolade.exists" if maimed else "selected_enemy_knight.is_acclaimed"
+        if _effect_bool_12003(state, gate):
+            _request_numeric_effect_12003(state, operation="add_glory", target="selected_enemy_knight.accolade",
+                value_raw=1000000, source_event_key=source_event_key, source_alias="minimal_glory_gain")
+            state.transition_log[-1]["payload"]["accolade_id"] = _effect_ref_12003(state, "selected_enemy_knight.accolade_id")
+
+
 def _execute_selected_effect_12003(node_value: object, *, state: PhaseEventTrialState, tape: _ExplicitOutcomeTape, name: str) -> None:
     node = _mapping(node_value, name)
     op = node["op"]
@@ -643,7 +932,9 @@ def _execute_selected_effect_12003(node_value: object, *, state: PhaseEventTrial
     elif op == "call_transition":
         key = str(node["key"])
         args = _mapping(node["args"], f"{name}.args")
-        if key == "request_effect_12003":
+        if key == "request_full_injury_event_12003":
+            _request_full_injury_event_12003(state, tape, **dict(args))
+        elif key == "request_effect_12003":
             _request_effect_12003(state, **dict(args))
         elif key == "request_kill_prestige_12003":
             _request_kill_prestige_12003(state, **dict(args))
@@ -737,6 +1028,11 @@ def execute_selected_phase_event_12003(
         "status": "primary_selected_effect_transition_applied" if event_key is not None else "explicit_no_event_unchanged",
         "transition_version": PHASE_EVENT_TRANSITION_VERSION_12003,
         "effect_requests": effect_requests,
+        "requested_resource_projections": [
+            {"operation": row["operation"], "target_scope": row["target_scope"],
+             "target_character_id": row["target_character_id"],
+             **deepcopy(row["requested_literal_projection"])}
+            for row in effect_requests if "requested_literal_projection" in row],
         "requested_effects_committed": False,
         "native_queue_admission_observed": False,
         "data_provenance": {
@@ -748,6 +1044,8 @@ def execute_selected_phase_event_12003(
             "knight_become_berserker_source_api_sha256": KNIGHT_BECOME_BERSERKER_SOURCE_API_SHA256_12003,
             "knight_shieldmaiden_source_api_sha256": KNIGHT_SHIELDMAIDEN_SOURCE_API_SHA256_12003,
             "final_selected_effects_source_api_sha256": FINAL_SELECTED_EFFECTS_SOURCE_API_SHA256_12003,
+            "full_injury_commander_source_api_sha256": "9A0C4FF5FA3AC0E6205415F400A61E097D55D05272C54A9C59BCCB4469030AAE",
+            "full_injury_knight_source_api_sha256": "ACF724AF6103D9B7E6FE7B90EE674DA9DB5FC0F8F65507FAA7C6AEB4063C4079",
             "stock_source_closure_sha256": "76F752C0A794346D4FDCD29FB8721B1A878ED6108B6C2DBA226CFDDD3D797E58",
             "primary_feedback_source_ledger_sha256": "AC7BC5B9D2928E191B0EDCE8AAA9F4C2E645EBC162B7DC8D3869BB1419DBDB9E",
         },
