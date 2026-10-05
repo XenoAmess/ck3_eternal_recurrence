@@ -555,3 +555,33 @@ test, shared-write, Git, window or gameplay-day operations.
 两个端点仍在2327、moving7、route[2325]，owner33388/controllable且端点无combat/retreat；不是抵达2325后休整。stock/cap均30000000/100000，月贡献1561404/100000、+188解析日期53147520均未变。因此本窗口独立展示兵员补充，而不是一次补给回升。Root bounded runner `observed-boundary-stop` 在真实+3日/5pulses时因 `net-regiment-gain-observed` 停止，无target/hard-bound overshoot；原总终点53147880尚余9日，没有重置30日。
 
 完整数值证据与 source/postread pins 见 `C:/ck3-war-episode04-research-20261004-a01/refill-day15-r0165-a01/integer-positive-pair-a05/actual-integer-positive-pair.json`（125867 bytes，SHA-256 `5d23bee4ac502b580411af88c64bb51db7418f2f21c6e416052856eaf62e2499`）。本追加只授该有界实际整数端点，不穷举全部军队、wholepersistent补员规则，也不替代 Root 的实际像素、录像连续性与人工成片审阅。
+
+## 2026-10-05: R43 regular owned MAA creation, native raise and actual delivery
+
+The existing exact 1.20.0.3 mechanisms are reused: normal creation appends the persistent regiment to Character military +0x108 and writes its owner +0x12C (0x28CA5C0); 0x262B860 observes eligible, unassigned positive chunk stock; 0x25A6790 aggregates all actor categories. Final default-raise legality is an independent native command observation. Dated gathering is processed by the admitted daily CArmyManager path 0x2A9A590 -> 0x2A9AF40. These source inputs do not predict a guaranteed future delivery date or quantity.
+
+```mermaid
+flowchart LR
+  O["Created owned CReg: military +108 / owner +12C"] --> R["262B860: eligible unraised current"]
+  R --> A["25A6790: all actor categories"]
+  V["Native final CanRaise: actor and default province"] --> P["Native raise: selected pending chunks"]
+  P --> G["Dated gathering: daily 2A9A590 -> 2A9AF40"]
+  G --> D["Actual owned ArRg backlink + raised full ID and positive physical current"]
+  D -.-> U["Raised reverse persistent/ordinal not published"]
+```
+
+At raw date 53262864, the actor-29829 legality query was available/ready, native legal=true, default province 2619, and all-category unraised stock 9 (scale 1; native6/public2/query sequence1). The 9 is not a MAA-only count. Existing default raise accepted/submitted and exposed new public CUnit268435481 while retaining the guard and main army. Its first observed CArmy218103809 was gathering state5, current/max0, regiment count0 and remaining gathering days0. Independently, created mangonel persistent50347099/ordinal0 remained physical5/10, pending1 and ArRg backlink -1. This frame proves selection/scheduling, without material delivery credit.
+
+After Root's ordinary one-day admission, raw53262888/native19/public2/query sequence4 was available for all four queried armies. Owned persistent50347099/ordinal0 now had exact ArmyRegiment full ID184549917, physical current5/max10, pending0/state0, mangonel/tier2. In the same frame, new CUnit268435481/CArmy218103809's raised roster contained that exact full ArRg ID, type and physical5/10. Whole new army current6/max11/regiments2 was regular state1, with gathering status not_gathering, ready=true and days=null.
+
+This qualifies the finite **production-live loop**: independent owned creation -> native raise/pending selection -> ordinary admission -> actual raised delivery. Root explicitly accepts same-frame exact full ArRg ID plus positive physical matching for this limited qualification. The raised-row reverse persistent/ordinal fields remain unpublished; this gap does not add a new gate. Only five actual mangonel soldiers receive delivery credit. Whole-army six, capacity10, future filling, arrival at470, province-eligible K/M/D and battle outcomes receive no additional credit.
+
+The delivery checkpoint was normal SAVE h8705, 98360966 bytes, SHA-256 `5c8eaa267eaac15e56c7d7fb536b0b36836ac94f96f870d944ac21c23129e17e`; it is separate from the earlier h8698 pending frame. The one admitted day belongs to Root/military (formal4940); this document lane adds zero days, SDK calls, tests or source-code changes.
+
+A subsequent existing normal move also closed GREEN: new268435481 remained at2619 in moving state7, observable target470 and complete route[8651,8652,470], controllable/noncombat/nonretreat; guard184549452 at3711 and main301989997 at470 remained sieging. Submission native23/public2/gen9 -> post native24/public3 at raw53262888 had postcondition_verified=true. Generic soldier fields remain null, and a native CanMove boolean is not published. This is verified route ordering, without arrival or siege contribution credit; the future g76/R44 deployment is not credited live here.
+
+Evidence metadata reused without new raw/cache reads:
+- A native command ledger: `maa-created-regiment-raise-delivery-v69/A-native-command/ROOT-DELIVERY.json`, 2913 bytes, SHA-256 `4bc77d0c2107518f7e0316d9cce0181efa21083a533c19eadd3184a1ee24bd33`.
+- Commander one-day new-CUnit receipt: `owned-regiments-observer-v72/actual-v70-r43-after-gather-day01/new-cunit-lane/ROOT-DELIVERY.json`, 6800 bytes, SHA-256 `2111b863f01686aa0376b780efaf6997cdf61ef6f8c29ba1dfb174c1f2349a3e`.
+- Existing move receipt: `R43-default-raise/actual-engine-move-consumption/ROOT-DELIVERY.json`, 2098 bytes, SHA-256 `40ae54cd6829f0bb2107c9796e3ce69ed1712bfff88863a84195ae2b89d287d2`.
+All three artifact locators are under `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/`; the move locator is within `maa-created-regiment-raise-delivery-v69/`.
