@@ -83,3 +83,15 @@ Root review确定了一个生产源偏差：初版对已知count0仍附加weight
 统一外置证据：Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-context-preparation-291c-v84/ROOT-DELIVERY.json。分支源树与输入账本位于 branch-291ded0/ 和 branch-291dce0/；A保存414-byte291B4F0与647-byte2872840共享缓存，B保存493-byte291DCE0、382-byte31ABC90、433-byte31B5450。caller唯一共享解释位于 sibling battle-context-preparation-two-branches-v84/SHARED-CALLER.md。
 
 状态为 source-closed branches + static-ready pure primitive。native observer/publication、完整 future context/ScriptValue/new-key callback、Entry refresh、MC和胜率仍未完成。本工作 SDK、pipe、游戏进程／窗口、实机新增日、native fullbuild、共享源码修改和 Git操作均为零；Root独占合入与发布。
+
+## 2026-10-05：task/position 当前输入观测施工
+
+沿用 1.20.0.3 / Steam25652598 / EXE SHA94B55397…02A6；唯一任务字段为 current_person_state.current_context_task_position_inputs，与 Knight 的 current_context_source_inputs 独立。源树、ABI、外置源码及唯一聚焦验证配方见 Z:/ck3_mod_rewrite_process_assets/g2-resume-20261005/battle-context-passive-task-observer-v85/ROOT-DELIVERY.json。
+
+A 由 Character+1C0 取得 owner council，保留 council+230/+23C 的任务原序、完整 key/default 来源与 frozen39；original TaskType+438/+444 owner 声明和 original Position+DD8 passive 分开。B 保留 Character+1B8/F0、原生31B5450 bool，先 original Position+48，再 clone terminal TaskType+400/+40C。31ABE10 owner aggregate 使用独立 align8 scopes32：Task40 incumbent、实际 Character18 owner、zero32/null64/false8；aggregate 与逐条输出独立。
+
+复用既有 pilgrimage 的9F9E20/87E0E0/373A110 构造与析构 caller-owned native scope，再由2872840读取实际声明的 scaled/finalized 属性。声明 scale 不重复求值，未直接观测时保留 null。临时 vector 使用已见 caller0x71E0 保守存储上界、实际 constructor/header/cleanup，不声称该上界是 sizeof。
+
+raw tasks、owner aggregate、逐条贡献 readiness 各自记录；未知 owner-clone 贡献选择仅 A 分支 partial，其他观测保留。beforeA/beforeB 与 postaggregate 未从当前 fullcontext 推造。Dynamic materialized prior-prefix 的精确阶段是291C204→291D1D0之前，还须完成其后至 A/B 的各个实际贡献阶段。
+
+外置代码已通过两个生产 TU 与一个夹具 TU 的首次严格编译；唯一 A+B compound 由真实 ReadInputs12003→serializer 首次 GREEN，再经正式 normalizer→parser→corrected append helper GREEN。Python 首次 build_release 导入路径 harness RED 原样保留，仅补 readonly tools PYTHONPATH 后重试该消费步骤，原生及旧六stat测试未重跑。battle.cpp 只获严格编译信用，本 direct helper fixture 未链接它；actual prefix/postaggregate 仍缺，声明场景索引 A[1,2]、B[3,4,5]/count6 不冒实机观测。详细 receipt 见同包 focused-run-01/ROOT-FOCUSED-RESULT.json；状态 static-ready，Root 后续集成及 paused 实机验收待完成，native live、完整 future context、MC、胜率与新游戏日均为0。SDK/pipe/game/process/window、共享源码/Git、旧测试与全构建均为0。
