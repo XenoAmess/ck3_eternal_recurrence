@@ -293,6 +293,7 @@ def continue_person_stage_chain_tail_12003(
     synthetic empty contributions. A prior partial chain cannot jump to tail.
     """
     prefix_module = "battle_person_tail_prefix_contract"
+    conference_module = "battle_person_conference_24b1d00_contract"
     middle_module = "battle_person_middle_helpers_contract"
     direct_module = "battle_person_tail_direct_contract"
     stages = (
@@ -302,7 +303,8 @@ def continue_person_stage_chain_tail_12003(
          "emit_helper_2922070_requests_from_current_source_inputs_12003", None),
         ("2922530", "post2922530_pre291C4E2", prefix_module,
          "emit_helper_2922530_requests_from_current_source_inputs_12003", None),
-        ("conference24B1D00", "post24B1D00_pre291C553", None, None, None),
+        ("conference24B1D00", "post24B1D00_pre291C553", conference_module,
+         "emit_conference_24b1d00_requests_from_current_source_inputs_12003", None),
         ("291F260", "post291F260_pre291C558", middle_module,
          "emit_helper_291f260_requests_from_current_source_inputs_12003", None),
         ("signed2F8_provider_bucket", "postProvider2F8_pre291C5B7", None, None, None),
@@ -362,12 +364,33 @@ def continue_person_stage_chain_tail_12003(
     for index, (name, after_stage, module, function, family) in enumerate(stages):
         required = index <= bound_index
         missing, requests, ready = [], (), True
+        conference_family_ledger = []
         try:
             if not actor_matches:
                 raise ValueError("matching_character_source_unavailable")
             if module is None:
                 raise ValueError("native_source_stage_unclosed")
-            requests = _tail_emit(source_inputs, module, function, family)
+            if name == "conference24B1D00":
+                family_contiguous = True
+                for family_name in ("classified_owner", "classified_common", "owner_common", "unconditional"):
+                    family_requests, family_missing = (), []
+                    try:
+                        family_requests = _tail_emit(source_inputs, module,
+                            "emit_conference_24b1d00_family_requests_from_current_source_inputs_12003", family_name)
+                    except (ValueError, ModuleNotFoundError, AttributeError) as error:
+                        family_missing.append(str(error))
+                    family_ready = not family_missing
+                    outputs[name + "." + family_name] = tuple(family_requests)
+                    family_contiguous = family_contiguous and family_ready
+                    if family_contiguous:
+                        requests += tuple(family_requests)
+                    missing.extend(family_name + ":" + item for item in family_missing)
+                    conference_family_ledger.append({"family": family_name, "requests_ready": family_ready,
+                        "request_count": len(family_requests), "in_contiguous_family_prefix": family_contiguous,
+                        "missing_inputs": tuple(family_missing)})
+                ready = not missing
+            else:
+                requests = _tail_emit(source_inputs, module, function, family)
         except (ValueError, ModuleNotFoundError, AttributeError) as error:
             ready, missing = False, [str(error)]
         validated = []
@@ -397,13 +420,19 @@ def continue_person_stage_chain_tail_12003(
             if ready:
                 stage = after_stage
             elif validated:
-                stage = "verified_partial_" + name
+                if name == "conference24B1D00":
+                    completed = sum(row["in_contiguous_family_prefix"] for row in conference_family_ledger)
+                    stage = ("post24B1D00_classified_owner_pre24B1E67",
+                             "post24B1E67_pre24B1E87", "post24B1E87_pre24B1E9C")[completed - 1]
+                else:
+                    stage = "verified_partial_" + name
             contexts[stage] = snapshot()
         destination = gaps if required else future_missing
         destination.extend(name + ":" + missing_item for missing_item in missing)
         ledger_rows.append({"stage": name, "after_stage": after_stage, "required_for_requested_bound": required,
             "requests_ready": ready, "request_count": len(validated),
-            "folded_into_contiguous_context": folded, "missing_inputs": tuple(missing)})
+            "folded_into_contiguous_context": folded, "missing_inputs": tuple(missing),
+            "conference_family_stages": tuple(conference_family_ledger)})
         if required:
             contiguous = contiguous and ready
             if index == bound_index:
@@ -415,7 +444,7 @@ def continue_person_stage_chain_tail_12003(
         "future_tail_missing_inputs": tuple(future_missing),
         "first_contiguous_observation_dependency": next(
             (row["stage"] for row in ledger_rows if not row["requests_ready"]), None),
-        "next_native_source_leaf": "24B1D00", "all_tail_source_stream_ready": False,
+        "next_native_source_leaf": "291C5B2_signed2F8_provider_bucket", "all_tail_source_stream_ready": False,
         "current_final_context_used_as_default": False, "unknown_stages_assumed_empty": False,
         "full_person_preparation_ready": False, "full_entry_ready": False, "game_operations": 0}
     return PersonStageChainResult12003(previous.character_full_id, stage,
