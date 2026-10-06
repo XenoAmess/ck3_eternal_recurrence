@@ -155,4 +155,37 @@ This is an implementation/API plan, not a new observer or a static-ready value c
 
 Root approved that metadata-only step. October 6 **19:10:12 CST**, the reader reused the held record at RVA `5F49714` / file `5DE0914`, raw `808165022b83650204342605`, selecting **`[2658180,265832B)` / 443 B** and unwind RVA `5263404`. It read only the selected **4 B header / 1 seek**, raw **`01a20800`**: version 1, flags 0, prologue byte count 162, unwind code count 8, frame byte 0. There is no CHAININFO record to read. Neither the pdata record nor any code byte was reread. `2658180-METADATA-ONLY-READ-RECEIPT.json` keeps this exact selection and its actual cost; the body remains **NOTRUN**.
 
-The next finite body proposal is only that exact **443 B / 1 seek** range, followed by complete control-flow decoding of its actual four-argument contract. Calls and transfers leaving the selected range will be recorded with their exact receivers/arguments; an actually needed callee requires its own cache-first finite source plan. This proposal does not authorize a neighboring window, guessed date formula, generic modifier tree, or new observer implementation. Cumulative actual frozen-file I/O is now **220 metadata B + 290 code B = 510 B / 309 seeks**. The source bool remains closed; selected date output and pending effects remain the concrete gaps.
+The next finite body proposal was that exact range with a planned **443 B / 1 seek** ceiling, followed by complete control-flow decoding of its actual four-argument contract. Calls and transfers leaving the selected range are recorded with their exact receivers/arguments; an actually needed callee requires its own cache-first finite source plan. This proposal does not authorize a neighboring window, guessed date formula, generic modifier tree, or new observer implementation. Cumulative actual frozen-file I/O at the metadata step was **220 metadata B + 290 code B = 510 B / 309 seeks**. The source bool remained closed; selected date output and pending effects remained the concrete gaps.
+
+## Actual four-argument date wrapper and independent equal-date path
+
+Root approved the exact selected body once. October 6 **19:18:40 CST**, actual read cost was **427 B / 1 seek**, reaching its return at `265832A`; all direct control paths remain inside `[2658180,265832B)`. **That address difference is `0x1AB = 427`, not the 443 B previously written in the plan and metadata receipt's derived length field.** The raw record and selected addresses were correct; the historical receipts retain the original arithmetic error, while this actual-body receipt records the physical length. No neighboring 16 B, metadata, old code or padding window was read. Cumulative I/O is **220 metadata B + 717 code B = 937 B / 310 seeks**.
+
+The actual ABI is `2658180(chunk, output_date_buffer, passed_Province, caller_date_pointer)`. Its association `chunk+10` resolves ArRg, then ArRg `+140` resolves Army, then Army `+124` resolves Unit with the same source generation/fallback rules. Separately `chunk+8` resolves **owner Regi** through `5D1EB68/5D1EB58`, exact ID `+10`; it reads that actual Regi's qword `+120` origin pointer and demands DWORD origin `+85C == Prov`.
+
+When origin is not Province-tagged, actual Unit `+174` resolves owner Character with `5C67568/5C67570`, exact Character ID `+18`, then `28B1CD0(Character)` obtains a fallback origin. If that returned object also lacks the Province tag, the wrapper **copies the entire qword caller date to the output buffer and returns it**. The caller's signed-low32 strict-greater test is consequently false: its already stored sentinel remains, `2A9BE60` is skipped and the later association/flag clear can continue. This is a source-defined independent branch; it does not require a guessed travel duration.
+
+For a Province-tagged original or fallback origin, call `2C54340(output_date_buffer, actual_Unit, passed_Province, actual_origin_Province, caller_date_pointer)`, with the fifth argument on the stack. The wrapper has no direct stores to chunk, current/max, registry, Character or pending manager fields. Its direct non-stack store is only the equal-date output write. **The selected `2C54340` output/footprint is still needed**; a copied current date must not replace its actual result.
+
+```mermaid
+flowchart TD
+    W[2658180 physicalchunk outDate passedProvince callerDate] --> U[association generation/fallback ArRg to Army to Unit]
+    W --> R[owner8 generation/fallback Regi]
+    R --> O{Regi120 origin has Prov tag}
+    O -->|yes| D[2C54340 outDate Unit passedProvince origin callerDate]
+    O -->|no| C[Unit174 generation/fallback Character]
+    C --> G[28B1CD0 actual native capital getter]
+    G --> P{Returned object has Prov tag}
+    P -->|yes| D
+    P -->|no| EQ[Copy entire callerDate to outDate]
+    EQ --> SK[Caller strict greater false and no pending call]
+    D -.-> UD[Unknown actual selected date output and effects]
+    UD --> CMP{Caller signed low32 output greater}
+    CMP -->|no| CL[Continue association and flag clear]
+    CMP -->|yes| PC[Store entire date then2A9BE60 primary chunk]
+    PC -.-> UP[Unknown actual pending changes]
+```
+
+Existing capital source is reused from `battle-native-owner-retreat-v62/active-criteria/new-owner-target-28b1cd0.asm.txt`, with the held `new-owner-title-id-28b2220.asm.txt`. It is the existing native Character-capital query entrance, not an arbitrary chosen capital. The available `new-title-province-230f900.asm.txt` is only a partial cache; its presence is not credited as a newly complete transitive footprint. Current whole-DATA inputs can publish the actual getter's selected returned origin when that branch is used; no call to a mutator is proposed.
+
+The next source plan names only two actual dependencies: the numerical date constructor **`2C54340`** and the strictly-later pending callback **`2A9BE60(primary, physical_chunk)`**. No complete body/metadata locator was found in the searched owned date/pending catalogs; only already held pending callsites are credited. `2658180-SELECTED-CALLEE-METADATA-PLAN.json` proposes finite exact-start pdata/unwind selection for those two named entries, reusing any previous selected record bytes. Code capture still requires separate exact-extent review. Whole incoming-DATA DTO implementation remains pending those concrete branch operands, with the false-predicate and equal-date prefixes independently retained in its construction plan.
