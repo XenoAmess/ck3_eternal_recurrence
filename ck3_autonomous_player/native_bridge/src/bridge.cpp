@@ -63,6 +63,9 @@
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
 #include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
 #include "xar_bridge/ck3_12002_nonwar_router.hpp"
+#include "xar_bridge/frontend_bookmark_model_result_v1.hpp"
+#include "xar_bridge/frontend_gui_result_v1.hpp"
+#include "xar_bridge/ingame_ui_mailbox_v1.hpp"
 #include "xar_bridge/ck3_12002_feast_planner_private_transport_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 #include "xar_bridge/ck3_12002_sway_completion_execution_install.hpp"
@@ -6540,172 +6543,16 @@ std::string FrontendGuiTreeInspectionResultFrame(
     std::string_view request_id,
     std::string_view step,
     const xar::ck3_11906::NamedGuiTreeInspectionV1 &inspection) {
-  static_assert(xar::ck3_11906::kNamedGuiTreeInspectionMaximumFrameBytesV1 == xar::bridge::kMaximumFrameBytes);
-  if (inspection.widget_count > inspection.widgets.size() ||
-      inspection.widget_count > xar::ck3_11906::kNamedGuiTreeInspectionMaximumWidgetsV1)
-    return CommandResultFrame(request_id, step, false, "native GUI tree row budget is inconsistent");
-  std::string result =
-      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
-  AppendJsonString(result, request_id);
-  result += ",\"ok\":true,\"result\":{\"step\":";
-  AppendJsonString(result, step);
-  result += ',';
-  result += "\"accepted\":true,\"status\":\"";
-  result += inspection.root_available ? "available" : "unavailable";
-  result += "\",\"scope_root_name\":";
-  AppendJsonString(result, inspection.scope_root_name);
-  result += ",\"root_available\":";
-  result += inspection.root_available ? "true" : "false";
-  result += ",\"truncated\":";
-  result += inspection.truncated ? "true" : "false";
-  result += ",\"widget_count\":";
-  result += Number(inspection.widget_count);
-  result += ",\"widgets\":[";
-  for (std::size_t index = 0; index < inspection.widget_count; ++index) {
-    if (index != 0) result += ',';
-    const auto &widget = inspection.widgets[index];
-    result += "{\"runtime_name\":";
-    AppendJsonString(result, widget.runtime_name);
-    result += ",\"child_path\":";
-    AppendJsonString(result, widget.child_path);
-    result += ",\"depth\":";
-    result += Number(widget.depth);
-    result += ",\"child_count\":";
-    result += Number(widget.child_count);
-    result += ",\"vtable_rva\":";
-    result += Number(widget.vtable_rva);
-    result += ",\"effective_visible\":";
-    result += widget.effective_visible ? "true" : "false";
-    result += ",\"enabled\":";
-    result += widget.enabled ? "true" : "false";
-    result += '}';
-    if (!xar::ck3_11906::NamedGuiTreeInspectionFrameBytesFitV1(result.size() + 3U))
-      return CommandResultFrame(request_id, step, false, "native GUI tree exceeds bounded response byte budget");
-  }
-  result += "]}}";
-  return result;
+  return xar::ck3_11906::FrontendGuiTreeInspectionResultFrameV1(
+      request_id, step, inspection);
 }
 
 #if defined(XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1)
 std::string FrontendBookmarkModelPrivateResultFrame(
     std::string_view request_id, std::string_view step,
     const xar::ck3_11906::FrontendBookmarkModelProbeV1 &probe) {
-  std::string result =
-      "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
-  AppendJsonString(result, request_id);
-  result += ",\"ok\":true,\"result\":{\"step\":";
-  AppendJsonString(result, step);
-  result += ",\"accepted\":true,\"status\":";
-  AppendJsonString(result, probe.candidate_identity_ready
-                               ? "identity_ready" : "unavailable");
-  result += ",\"private_scope\":\"exact-build-bookmarks-model-v1\"";
-  result += ",\"gui_chain_vtable_rvas\":[";
-  for (std::size_t i = 0; i < probe.gui_chain_vtable_rvas.size(); ++i) {
-    if (i != 0) result += ',';
-    result += Number(probe.gui_chain_vtable_rvas[i]);
-  }
-  result += "],\"interface_application_chain_level\":";
-  result += SignedNumber(probe.interface_application_chain_level);
-  result += ",\"owner_chain_vtable_rvas\":[";
-  for (std::size_t i = 0; i < probe.owner_chain_vtable_rvas.size(); ++i) {
-    if (i != 0) result += ',';
-    result += Number(probe.owner_chain_vtable_rvas[i]);
-  }
-  result += "],\"owner_chain_rtti_type_rvas\":[";
-  for (std::size_t i = 0; i < probe.owner_chain_rtti_type_rvas.size(); ++i) {
-    if (i != 0) result += ',';
-    result += Number(probe.owner_chain_rtti_type_rvas[i]);
-  }
-  result += ']';
-  result += ",\"direct_owner_unavailable_reason\":";
-  if (probe.direct_owner_unavailable_reason.empty()) {
-    result += "null";
-  } else {
-    AppendJsonString(result, probe.direct_owner_unavailable_reason);
-  }
-  result += ",\"registry_owner_unavailable_reason\":";
-  if (probe.registry_owner_unavailable_reason.empty()) {
-    result += "null";
-  } else {
-    AppendJsonString(result, probe.registry_owner_unavailable_reason);
-  }
-  result += ",\"registry_owner_match_count\":";
-  if (probe.registry_owner_match_count < 0) {
-    result += "null";
-  } else {
-    result += SignedNumber(probe.registry_owner_match_count);
-  }
-  result += ",\"verified_owner_route\":";
-  if (probe.verified_owner_route.empty()) {
-    result += "null";
-  } else {
-    AppendJsonString(result, probe.verified_owner_route);
-  }
-  result += ",\"setup_view_vtable_rva\":";
-  result += Number(probe.setup_view_vtable_rva);
-  result += ",\"setup_view_matches_bookmarks_root\":";
-  result += probe.setup_view_matches_bookmarks_root ? "true" : "false";
-  result += ",\"selected_bookmark_group_key\":";
-  if (probe.selected_bookmark_group_key_available) {
-    AppendJsonString(result, probe.selected_bookmark_group_key);
-  } else {
-    result += "null";
-  }
-  result += ",\"selected_bookmark_key\":";
-  if (probe.selected_bookmark_key_available) {
-    AppendJsonString(result, probe.selected_bookmark_key);
-  } else {
-    result += "null";
-  }
-  result += ",\"selected_date_raw\":";
-  result += probe.selected_date_raw_available
-                ? Number(probe.selected_date_raw) : "null";
-  result += ",\"selected_date_low_raw\":";
-  result += probe.selected_date_raw_available
-                ? Number(probe.selected_date_low_raw) : "null";
-  result += ",\"selected_character_index\":";
-  result += SignedNumber(probe.selected_character_index);
-  result += ",\"hovered_character_index\":";
-  result += SignedNumber(probe.hovered_character_index);
-  result += ",\"bookmark_character_count\":";
-  result += SignedNumber(probe.bookmark_character_count);
-  result += ",\"bookmark_character_capacity_raw\":";
-  result += Number(probe.bookmark_character_capacity_raw);
-  result += ",\"bookmark_character_allocator_raw\":";
-  result += SignedNumber(probe.bookmark_character_allocator_raw);
-  result += ",\"candidate_keys\":[";
-  if (probe.bookmark_character_keys_available) {
-    for (std::int32_t i = 0; i < probe.bookmark_character_count; ++i) {
-      if (i != 0) result += ',';
-      AppendJsonString(result,
-                       probe.bookmark_character_keys[
-                           static_cast<std::size_t>(i)]);
-    }
-  }
-  result += "],\"supported_1066_candidate_index\":";
-  result += SignedNumber(probe.supported_1066_candidate_index);
-  result += ",\"supported_1066_candidate_present\":";
-  result += probe.supported_1066_candidate_present ? "true" : "false";
-  result += ",\"supported_1066_government_key\":";
-  if (probe.government_type_keys_available &&
-      probe.supported_1066_candidate_index >= 0) {
-    AppendJsonString(
-        result,
-        probe.government_type_keys[static_cast<std::size_t>(
-            probe.supported_1066_candidate_index)]);
-  } else {
-    result += "null";
-  }
-  result += ",\"supported_1066_feudal\":";
-  result += probe.supported_1066_candidate_feudal ? "true" : "false";
-  result += ",\"supported_1066_date_matches\":";
-  result += probe.supported_1066_date_matches ? "true" : "false";
-  result += ",\"candidate_identity_ready\":";
-  result += probe.candidate_identity_ready ? "true" : "false";
-  result += ",\"unavailable_reason\":";
-  AppendJsonString(result, probe.unavailable_reason);
-  result += "}}";
-  return result;
+  return xar::ck3_11906::FrontendBookmarkModelPrivateResultFrameV1(
+      request_id, step, probe);
 }
 #endif
 
@@ -11278,6 +11125,8 @@ public:
     environment.permitted_executor_tertiary =
         &xar::ck3_12002::ExecuteActivityPlannerDiagPrivate12002QueryV1;
 #endif
+    environment.permitted_frontend_executor =
+        &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -16206,44 +16055,16 @@ void RunConnectedSession(
 #endif
           if (step == xar::ck3_11906::kIngameUiNavigationV1Step ||
               step == xar::ck3_11906::kIngameUiWindowQueryV1Step) {
-            std::uint64_t expected_revision = 0;
-            xar::ck3_11906::IngameUiRequestV1 ui_request{};
-            xar::game::Snapshot current_snapshot{};
-            if (!xar::bridge::JsonUnsignedField(incoming.payload, "expected_revision", expected_revision) ||
-                expected_revision != state_revision || !previous_snapshot.has_value() ||
-                !xar::game::ReadSnapshot(game, current_snapshot) || current_snapshot != previous_snapshot.value()) {
-              connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(request_id, step, false, "state_changed"));
-            } else if (!current_snapshot.paused || !current_snapshot.map_ready || !current_snapshot.has_played_character) {
-              connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(request_id, step, false, "requires_paused_map_ready_played_actor"));
-            } else if (!xar::ck3_11906::ParseIngameUiRequestV1(incoming.payload,
-                           step == xar::ck3_11906::kIngameUiWindowQueryV1Step, ui_request)) {
-              connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(request_id, step, false, "invalid_typed_ui_request"));
-            } else if (!((game.descriptor().game_version==xar::ck3_12003::kGameVersion &&
-                           game.descriptor().executable_sha256==xar::ck3_12003::kExecutableSha256) ||
-                          (game.descriptor().game_version=="1.19.0.6" &&
-                           game.descriptor().executable_sha256==xar::ck3_11906::kExecutableSha256))) {
-              connected = xar::bridge::WriteFrame(pipe, CommandResultFrame(request_id, step, false, "typed_ui_exact_build_not_available"));
+            xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
+            const auto admission_error = xar::ck3_11906::PrepareIngameUiMailboxV1(
+                game, previous_snapshot ? &previous_snapshot.value() : nullptr,
+                incoming.payload, step, state_revision, connection_generation,
+                reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+                g_main_thread_query_mailbox_v1, query);
+            if (!admission_error.empty()) {
+              connected = xar::bridge::WriteFrame(pipe,
+                  CommandResultFrame(request_id, step, false, admission_error));
             } else {
-              const bool current_ui=game.descriptor().game_version==xar::ck3_12003::kGameVersion;
-              const auto ui_abi=current_ui?xar::ck3_11906::GuiAbiRevisionV1::crozier12003:xar::ck3_11906::GuiAbiRevisionV1::legacy11906;
-              xar::ck3_11906::FrontendGuiRouteMailboxContextV1 query{};
-              query.mailbox = &g_main_thread_query_mailbox_v1;
-              query.operation = xar::ck3_11906::FrontendGuiRouteOperationV1::ingame_ui;
-              if(current_ui)query.ingame_game=&game;
-              else query.ingame_bindings = xar::ck3_11906::BindCurrentProcess(true);
-              query.ingame_expected_snapshot = current_snapshot;
-              query.ingame_request = ui_request;
-              // Process/connection identity is provider-owned, never parsed
-              // from caller fields; opaque tooltip receipts bind this lifetime.
-              query.ingame_request.connection_generation = connection_generation;
-              query.ingame_request.native_revision = state_revision;
-              query.environment = xar::ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
-                  reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), true, ui_abi);
-              query.ingame_result.gui_abi_revision=ui_abi;
-              if(!xar::ck3_11906::IsIngameUiRequestSupportedV1(ui_abi,ui_request)) {
-                connected=xar::bridge::WriteFrame(pipe,CommandResultFrame(request_id,step,false,"typed_ui_operation_not_available_for_exact_build"));
-                continue;
-              }
               const auto submit = xar::ck3_11906::TrySubmitMainThreadQueryV1(g_main_thread_query_mailbox_v1,
                   &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1, &query, query.ticket);
               std::string response;
@@ -16255,12 +16076,9 @@ void RunConnectedSession(
                   wait = xar::ck3_11906::WaitForMainThreadQueryV1(g_main_thread_query_mailbox_v1, query.ticket, 2'000);
                 xar::game::Snapshot completion{};
                 if (wait == xar::ck3_11906::MainThreadQueryWaitResultV1::completed &&
-                    xar::game::ReadSnapshot(game, completion) && completion == current_snapshot) {
-                  response = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":\"";
-                  response += request_id;
-                  response += "\",\"ok\":true,\"result\":";
-                  response += xar::ck3_11906::SerializeIngameUiResultV1(ui_request, query.ingame_result, state_revision);
-                  response += '}';
+                    xar::game::ReadSnapshot(game, completion) && completion == query.ingame_expected_snapshot) {
+                  response = xar::ck3_11906::IngameUiCommandResultFrameV1(
+                      request_id, query.ingame_request, query.ingame_result, state_revision);
                 }
                 if (xar::ck3_11906::ReclaimMainThreadQueryV1(g_main_thread_query_mailbox_v1, query.ticket) !=
                     xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) response.clear();
@@ -17031,14 +16849,16 @@ void RunConnectedSession(
               const auto module_base = reinterpret_cast<std::uintptr_t>(
                   GetModuleHandleW(nullptr));
               const auto gui_abi_revision =
-                  game.descriptor().game_version == "1.20.0.3" &&
+                  xar::game::IsCk3_12004Descriptor(game.descriptor())
+                      ? xar::ck3_11906::GuiAbiRevisionV1::crozier12004
+                      : game.descriptor().game_version == "1.20.0.3" &&
                           game.descriptor().executable_sha256 ==
                               "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
                       ? xar::ck3_11906::GuiAbiRevisionV1::crozier12003
                       : xar::ck3_11906::GuiAbiRevisionV1::legacy11906;
               query.environment = xar::ck3_11906::
                   BindZhongguoScoreboardNativeEnvironmentV1(
-                      module_base, true, gui_abi_revision);
+                      module_base, true, gui_abi_revision, game.descriptor().executable_sha256);
               query.dispatch_environment = xar::ck3_11906::
                   BindZhongguoScoreboardActionDispatchEnvironmentV1(
                       module_base, true, gui_abi_revision);

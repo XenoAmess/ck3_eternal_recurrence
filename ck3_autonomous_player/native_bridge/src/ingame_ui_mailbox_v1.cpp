@@ -44,8 +44,8 @@ std::string_view PrepareIngameUiMailboxV1(
   query.ingame_request = request;
   query.ingame_request.connection_generation = connection_generation;
   query.ingame_request.native_revision = state_revision;
-  query.environment = BindZhongguoScoreboardNativeEnvironmentV1(module_base, true, revision);
-  query.environment.executable_sha256 = descriptor.executable_sha256;
+  query.environment = BindZhongguoScoreboardNativeEnvironmentV1(
+      module_base, true, revision, descriptor.executable_sha256);
   query.ingame_result.gui_abi_revision = revision;
   return {};
 }

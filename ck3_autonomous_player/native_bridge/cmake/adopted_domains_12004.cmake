@@ -174,3 +174,38 @@ if(BUILD_TESTING AND WIN32)
     COMMAND $<TARGET_FILE:xar_ck3_frontend_bookmark_12004_fixture>
       "${CMAKE_CURRENT_BINARY_DIR}/wire/frontend_bookmark_12004")
 endif()
+
+# Generic GUI actual-.4 production sources from sealed ROOT-DELIVERY8545.
+target_sources(xar_ck3_12002_runtime PRIVATE
+  src/ck3_12004_ingame_ui.cpp
+  src/frontend_gui_result_v1.cpp
+  src/ingame_ui_mailbox_v1.cpp)
+
+# Changed existing model probe references the genuine actual-.4 binder.
+# This is future source/link compatibility, not a historical test replay.
+if(TARGET xar_ck3_frontend_bookmark_model_probe_v1_test)
+  target_sources(xar_ck3_frontend_bookmark_model_probe_v1_test PRIVATE
+    src/ck3_12004_frontend_bookmark.cpp)
+endif()
+
+# Sole new seven-frame producer, using the proven whole-foundation closure.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_generic_gui_12004_fixture
+    src/generic_gui_12004_fixture.cpp
+    $<TARGET_OBJECTS:xar_ck3_bridge>)
+  target_link_libraries(xar_ck3_generic_gui_12004_fixture PRIVATE
+    xar_ck3_12002_runtime xar_bridge_protocol bcrypt
+    $<TARGET_PROPERTY:xar_ck3_bridge,LINK_LIBRARIES>)
+  target_include_directories(xar_ck3_generic_gui_12004_fixture PRIVATE include)
+  target_compile_features(xar_ck3_generic_gui_12004_fixture PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_generic_gui_12004_fixture PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
+    $<TARGET_PROPERTY:xar_ck3_bridge,COMPILE_DEFINITIONS>)
+  if(MSVC)
+    target_compile_options(xar_ck3_generic_gui_12004_fixture PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_generic_gui_12004_fixture
+    COMMAND $<TARGET_FILE:xar_ck3_generic_gui_12004_fixture>
+      "${CMAKE_CURRENT_BINARY_DIR}/wire/ck3_generic_gui_12004")
+endif()
