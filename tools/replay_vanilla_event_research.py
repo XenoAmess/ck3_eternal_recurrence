@@ -140,11 +140,13 @@ def _production_fingerprint(build: str = registry.EXACT_CK3_BUILD) -> dict[str, 
     data_paths = [SOURCE_INDEX_RESOURCE_BY_BUILD[build]]
     if build == "1.20.0.2":
         data_paths.append("data/source_compatibility_1_20_0_2.json")
-    elif build == "1.20.0.3":
+    elif build in {"1.20.0.3", "1.20.0.4"}:
         data_paths.extend([
             "data/source_compatibility_1_20_0_2.json",
             "data/source_compatibility_1_20_0_3.json",
         ])
+        if build == "1.20.0.4":
+            data_paths.append("data/source_compatibility_1_20_0_4.json")
     data_hashes = {
         path: hashlib.sha256((package / path).read_bytes()).hexdigest()
         for path in data_paths

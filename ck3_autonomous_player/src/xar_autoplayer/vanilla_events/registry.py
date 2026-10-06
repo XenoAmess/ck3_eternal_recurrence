@@ -329,6 +329,18 @@ def query_vanilla_event_knowledge_v1(
             observations=None,
             unavailable_reason="invalid_event_definition_key",
         )
+    if ck3_build == "1.20.0.4":
+        from .migration_1_20_0_4 import migrate_event_knowledge
+
+        migrated = migrate_event_knowledge(event_definition_key,
+            previous_knowledge=query_vanilla_event_knowledge_v1(
+                event_definition_key, "1.20.0.3"))
+        return _knowledge_response(
+            status=migrated["status"], event_definition_key=event_definition_key,
+            ck3_build=ck3_build, contract=migrated.get("contract"),
+            analysis=migrated.get("analysis"), observations=migrated.get("observations"),
+            unavailable_reason=migrated.get("unavailable_reason"),
+        )
     if ck3_build == "1.20.0.3":
         from .records_faction_demand1001_12003 import FACTION_DEMAND1001_12003_RECORDS
         from .records_marriage_notice_12003 import MARRIAGE_NOTICE_12003_RECORDS

@@ -22,6 +22,8 @@ SOURCE_INDEX_RESOURCE_BY_BUILD: Final = {
     EXACT_CK3_BUILD: SOURCE_INDEX_RESOURCE,
     "1.20.0.2": "data/source_index_1_20_0_2.json",
     "1.20.0.3": "data/source_index_1_20_0_3.json",
+    # Project the preserved source rows; never relabel their old document hash.
+    "1.20.0.4": "data/source_index_1_20_0_3.json",
 }
 _SHA256_PATTERN: Final = re.compile(r"^[0-9A-F]{64}$")
 
@@ -238,6 +240,14 @@ def load_vanilla_event_source_index(
         raise VanillaEventSourceIndexError(
             f"source index is not valid UTF-8 JSON: {exc}"
         ) from exc
+    if path is None and build == "1.20.0.4":
+        from .migration_1_20_0_4 import source_reuse_metadata
+
+        document = validate_vanilla_event_source_index(document)
+        document.update(ck3_build=build,
+            ck3_exe_sha256=SUPPORTED_CK3_EXE_SHA256[build],
+            source_reuse_1_20_0_4=source_reuse_metadata())
+        document["dataset_sha256"] = compute_source_index_dataset_sha256(document)
     return validate_vanilla_event_source_index(document)
 
 
@@ -263,6 +273,8 @@ def query_vanilla_event_source_v1(
         "ck3_build": document["ck3_build"],
         "ck3_exe_sha256": document["ck3_exe_sha256"],
         "dataset_sha256": document["dataset_sha256"],
+        **({"source_reuse_1_20_0_4": deepcopy(document["source_reuse_1_20_0_4"])}
+           if "source_reuse_1_20_0_4" in document else {}),
         "source": deepcopy(event) if event is not None else None,
         "unavailable_reason": (
             None if event is not None else "event_definition_key_not_indexed"
@@ -347,6 +359,8 @@ def query_vanilla_event_source_provenance_v1(
         "build": build,
         "ck3_exe_sha256": SUPPORTED_CK3_EXE_SHA256[build],
         "dataset_sha256": document["dataset_sha256"],
+        **({"source_reuse_1_20_0_4": deepcopy(document["source_reuse_1_20_0_4"])}
+           if "source_reuse_1_20_0_4" in document else {}),
         "namespace": event["namespace"] if event is not None else None,
         "definition": (
             deepcopy(event["definition"]) if event is not None else None

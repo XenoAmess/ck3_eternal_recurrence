@@ -54,6 +54,7 @@ where = ["src"]
 "xar_autoplayer.simulation" = ["data/*.json"]
 "xar_autoplayer.vanilla_events" = [
   "data/source_index_1_19_0_6.json",
+  "data/*.json",
   "portable_evidence/manifest_v1.json",
   "portable_evidence/blobs/*.gz",
 ]
