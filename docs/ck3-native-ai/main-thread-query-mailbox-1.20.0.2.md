@@ -1,5 +1,7 @@
 # CK3 1.20.0.2：应用主线程查询 mailbox 迁移
 
+2026-10-06 的 `.3` R0048 executor AV 与后续查询 admission 故障、最小回收候选及独立新 fixture 入口见 [typed-query exception reclaim](typed-query-executor-exception-reclaim-12003.md)。该候选的正式 native 构建／新 CTest 由 Root 执行，不改变本文历史 `.2` 验收事实。
+
 2026-10-01 后台迁移结果：`static-ready`。18 组唯一字节签名、1 组 `CPdxEvents` vtable 前缀和合成对象 fixture 已通过；尚未对新版游戏运行安装、读取进程内存或执行 native callback。旧版 live 证据不能替代新版实机验收。
 
 冻结版本为 CK3 **1.20.0.2 (Crozier)**，Steam build `25588574`，EXE SHA-256 `AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D`。离线来源为 `artifacts/migrations/2026-09-30/post-update-1.20.0.2/installation/binaries/ck3.exe`；原始游戏继续由玩家正常游玩。

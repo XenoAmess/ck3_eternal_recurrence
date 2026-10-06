@@ -1699,6 +1699,14 @@ MainThreadQueryReclaimResultV1 ReclaimMainThreadQueryV1(
   mailbox.executor_context = nullptr;
   mailbox.executor_succeeded = false;
   mailbox.execution_stamp = {};
+  if (state == MainThreadQueryMailboxStateV1::executor_failed) {
+    // The completed request owns this exception. Retain its code/image/RVA
+    // for the failure response, without blocking unrelated later requests.
+    mailbox.failure_flags.fetch_and(
+        ~static_cast<std::uint32_t>(
+            main_thread_query_failure_executor_exception),
+        std::memory_order_acq_rel);
+  }
   mailbox.state.store(MainThreadQueryMailboxStateV1::idle,
                       std::memory_order_release);
   return MainThreadQueryReclaimResultV1::reclaimed;
