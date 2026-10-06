@@ -166,6 +166,8 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
         ck3_12003::BindCurrentArmyCondition30Inputs12003(image_base, executable_sha256);
     result.armies.current_army_flag20_bindings =
         ck3_12003::BindCurrentArmyFlag20Inputs12003(image_base, executable_sha256);
+    result.armies.current_army_flag21_bindings =
+        ck3_12003::BindCurrentArmyFlag21Inputs12003(image_base, executable_sha256);
     result.armies.current_candidate_detachment_mapper_bindings =
         ck3_12003::BindCurrentCandidateDetachmentMapper12003(image_base, executable_sha256);
     result.armies.current_pre_date_pending_update_bindings =

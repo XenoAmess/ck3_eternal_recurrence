@@ -14,6 +14,7 @@
 #include "xar_bridge/army_current_post_admission_refresh_serializer_v1.inc.hpp"
 #include "xar_bridge/army_current_condition30_inputs_serializer_v1.inc.hpp"
 #include "xar_bridge/army_current_flag20_inputs_serializer_v1.inc.hpp"
+#include "xar_bridge/army_current_flag21_inputs_serializer_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_pending_update_serializer_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_character_prefix_serializer_v1.inc.hpp"
 #include "xar_bridge/army_ordered_besieging_refill_inputs_v1_serializer.hpp"
@@ -618,6 +619,11 @@ inline void AppendArmyStrengthV1(
   if (strength.current_army_flag20_inputs_v1) {
     result += ",\"current_army_flag20_inputs_v1\":";
     AppendArmyCurrentFlag20InputsV1(result, *strength.current_army_flag20_inputs_v1,
+        number, append_json_string);
+  }
+  if (strength.current_army_flag21_inputs_v1) {
+    result += ",\"current_army_flag21_inputs_v1\":";
+    AppendArmyCurrentFlag21InputsV1(result, *strength.current_army_flag21_inputs_v1,
         number, append_json_string);
   }
   if (strength.current_post_admission_refresh_inputs_v1) {

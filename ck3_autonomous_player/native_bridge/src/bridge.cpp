@@ -1,5 +1,6 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
+#include "xar_bridge/army_strength_result_write_diagnostic_v1.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #if defined(XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1)
 #include "xar_bridge/ordinary_interaction_mailbox_v1.hpp"
@@ -1845,7 +1846,8 @@ std::string HelloFrame(const xar::game::GameAdapter &game,
   return result;
 }
 
-std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter &game) {
+std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter &game,
+    const xar::bridge::ArmyStrengthResultWriteDiagnosticV1 &army_result_write) {
   const auto mailbox =
       xar::ck3_11906::ReadMainThreadQueryMailboxDiagnosticsV1(
           g_main_thread_query_mailbox_v1);
@@ -1967,6 +1969,8 @@ std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter 
   result += Number(GetCurrentProcessId());
   result += ",\"monotonic_ms\":";
   result += Number(GetTickCount64());
+  result += ",\"army_strength_result_write_v1\":";
+  result += xar::bridge::SerializeArmyStrengthResultWriteDiagnosticV1(army_result_write);
   result += ",\"startup_failure_containment_enabled\":";
   result += kStartupFailureContainmentEnabledV1 ? "true" : "false";
   result += ",\"startup_particle2_stage_recorder_enabled\":";
@@ -11416,6 +11420,7 @@ HANDLE ConnectToHost() noexcept {
 }
 
 struct WorkerState {
+  xar::bridge::ArmyStrengthResultWriteDiagnosticV1 army_result_write{};
   xar::ck3_12002::NonwarPrivateState12002 nonwar_private12002{};
   std::uint64_t connection_generation = 0;
   std::uint64_t sequence = 0;
@@ -13276,7 +13281,7 @@ void RunConnectedSession(
           state_revision, state_revision);
 #endif
       ++sequence;
-      connected = write_frame(pipe, HeartbeatFrame(sequence, game));
+      connected = write_frame(pipe, HeartbeatFrame(sequence, game, state.army_result_write));
       if (connected && game.supports_snapshot()) {
         connected = PublishSnapshot(pipe, game, previous_snapshot,
                                     state_revision, checkpoint_submission,
@@ -23911,15 +23916,14 @@ void RunConnectedSession(
           std::vector<xar::game::ArmyStrengthSnapshot> strengths;
           const auto query_result =
               xar::game::ReadArmyStrengths(game, strengths);
+          std::string army_result_frame;
           if (query_result ==
                   xar::game::ReadArmyStrengthsResult::available ||
               query_result ==
                   xar::game::ReadArmyStrengthsResult::partial) {
             ++army_strength_query_sequence;
-            connected = write_frame(
-                pipe, ArmyStrengthsResultFrame(
-                          request_id, army_strength_query_sequence,
-                          query_result, strengths));
+            army_result_frame = ArmyStrengthsResultFrame(
+                request_id, army_strength_query_sequence, query_result, strengths);
           } else {
             std::string error =
                 "CK3 army-strength query is unavailable";
@@ -23933,8 +23937,17 @@ void RunConnectedSession(
             } else {
               error += xar::ck3_12002::g_army_strength_query_diagnostic_v1.FailureSuffix();
             }
-            connected = write_frame(
-                pipe, CommandResultFrame(request_id, step, false, error));
+            army_result_frame = CommandResultFrame(request_id, step, false, error);
+          }
+          const auto rendered = xar::game::RenderCrozierBuildIdentity(
+              std::move(army_result_frame), game.descriptor());
+          connected = xar::bridge::WriteArmyStrengthResultFrameV1(
+              pipe, rendered, army_strength_query_sequence, state.army_result_write);
+          if (!connected && state.army_result_write.frame.stage ==
+                                xar::bridge::FrameWriteStage::size_limit) {
+            connected = write_frame(pipe, CommandResultFrame(
+                request_id, step, false, xar::bridge::ArmyStrengthResultSizeLimitErrorV1(
+                    state.army_result_write.frame)));
           }
         } else if (step.starts_with(
                        xar::ck3_11906::kCombatPhaseEventTraceV1StepPrefix)) {

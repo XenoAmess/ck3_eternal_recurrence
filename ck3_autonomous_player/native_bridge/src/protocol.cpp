@@ -25,7 +25,9 @@ std::uint32_t DecodeLength(const std::byte* bytes) noexcept {
          (static_cast<std::uint32_t>(bytes[3]) << 24U);
 }
 
-bool WriteAll(HANDLE pipe, const void* data, std::size_t size) noexcept {
+bool WriteAll(HANDLE pipe, const void* data, std::size_t size,
+              FrameWriteDiagnostic* diagnostic, FrameWriteStage stage) noexcept {
+  if (diagnostic != nullptr) diagnostic->stage = stage;
   const auto* cursor = static_cast<const std::byte*>(data);
   while (size != 0U) {
     const auto chunk = static_cast<DWORD>(
@@ -33,7 +35,12 @@ bool WriteAll(HANDLE pipe, const void* data, std::size_t size) noexcept {
             ? (std::numeric_limits<DWORD>::max)()
             : size);
     DWORD written = 0;
-    if (!WriteFile(pipe, cursor, chunk, &written, nullptr) || written == 0U) {
+    if (!WriteFile(pipe, cursor, chunk, &written, nullptr)) {
+      const DWORD error = GetLastError();
+      if (diagnostic != nullptr) diagnostic->windows_error = error;
+      return false;
+    }
+    if (written == 0U) {
       return false;
     }
     cursor += written;
@@ -63,14 +70,35 @@ bool ReadAll(HANDLE pipe, void* data, std::size_t size, DWORD& error) noexcept {
 
 }  // namespace
 
-bool WriteFrame(HANDLE pipe, std::string_view payload) noexcept {
-  if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE || payload.empty() ||
-      payload.size() > kMaximumFrameBytes) {
+bool WriteFrame(HANDLE pipe, std::string_view payload,
+                FrameWriteDiagnostic* diagnostic) noexcept {
+  if (diagnostic != nullptr) {
+    *diagnostic = {};
+    diagnostic->payload_bytes = payload.size();
+    diagnostic->limit_bytes = kMaximumFrameBytes;
+  }
+  if (pipe == nullptr || pipe == INVALID_HANDLE_VALUE) {
+    if (diagnostic != nullptr) diagnostic->stage = FrameWriteStage::handle;
+    return false;
+  }
+  if (payload.empty()) {
+    if (diagnostic != nullptr) diagnostic->stage = FrameWriteStage::empty;
+    return false;
+  }
+  if (payload.size() > kMaximumFrameBytes) {
+    if (diagnostic != nullptr) diagnostic->stage = FrameWriteStage::size_limit;
     return false;
   }
   const auto header = EncodeLength(static_cast<std::uint32_t>(payload.size()));
-  return WriteAll(pipe, header.data(), header.size()) &&
-         WriteAll(pipe, payload.data(), payload.size());
+  if (!WriteAll(pipe, header.data(), header.size(), diagnostic, FrameWriteStage::header) ||
+      !WriteAll(pipe, payload.data(), payload.size(), diagnostic, FrameWriteStage::payload)) {
+    return false;
+  }
+  if (diagnostic != nullptr) {
+    diagnostic->stage = FrameWriteStage::complete;
+    diagnostic->success = true;
+  }
+  return true;
 }
 
 bool JsonStringField(std::string_view json, std::string_view key,

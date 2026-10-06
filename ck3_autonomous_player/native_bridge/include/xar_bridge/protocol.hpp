@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/frame_write_diagnostic_v1.hpp"
+
 #include <windows.h>
 
 #include <cstddef>
@@ -31,7 +33,8 @@ struct ReadResult {
 // The transport is a little-endian uint32 byte count followed by one compact
 // UTF-8 JSON document. It deliberately is not MCP: the external daemon owns
 // MCP and translates its typed tools to this small process-local protocol.
-bool WriteFrame(HANDLE pipe, std::string_view payload) noexcept;
+bool WriteFrame(HANDLE pipe, std::string_view payload,
+                FrameWriteDiagnostic* diagnostic = nullptr) noexcept;
 
 // Reads one compact, unescaped JSON string field with a caller-supplied bound.
 // Bridge control fields use kMaximumControlStringBytes; gameplay steps may use
