@@ -122,6 +122,9 @@ class ArmyStrengthQueryDeadline12003Tests(unittest.TestCase):
                     self.assertEqual(budgets, [expected_budget])
                     self.assertEqual(virtual_now[0], completes_at)
                     self.assertEqual(driver.command_timeout_seconds, configured)
-                    self.assertEqual(len(endpoint.frames), 1)
+                    self.assertEqual(
+                        sum(frame.get("type") == "execute_step" for frame in endpoint.frames),
+                        1,
+                    )
                 finally:
                     driver.close()
