@@ -48,6 +48,10 @@
 #include "xar_bridge/ck3_12002_family_projection.hpp"
 #include "xar_bridge/ck3_12002_family_subject.hpp"
 #include "xar_bridge/ck3_12002_family_outbound.hpp"
+#include "xar_bridge/ck3_12004_family.hpp"
+#include "xar_bridge/ck3_12004_family_subject.hpp"
+#include "xar_bridge/ck3_12004_family_actions.hpp"
+#include "xar_bridge/ck3_12004_commands.hpp"
 #include "xar_bridge/ck3_12003_family_terminal_events.hpp"
 #include "xar_bridge/ck3_12002_family_ranked_mailbox.hpp"
 #include "xar_bridge/ck3_12002_family_wire.hpp"
@@ -1775,6 +1779,8 @@ void AppendVfsSettingsLookup(
 
 std::string RenderNativePrivateFrameV1(const xar::game::GameAdapter &game,
     std::string frame) {
+  if (xar::game::IsCk3_12004Descriptor(game.descriptor()))
+    return xar::game::Render12004BuildIdentity(std::move(frame), game.descriptor());
   return xar::game::IsReviewedCrozierAdapter(game)
       ? xar::ck3_12002::RenderQueryBuildIdentity(std::move(frame)) : frame;
 }
@@ -9617,12 +9623,22 @@ bool ExecuteCurrentFirstHeirBetrothalMailboxQueryV1(
 void BindFamilyMailbox12002(CurrentFirstHeirBetrothalMailboxQueryV1 &query,
     const xar::game::GameAdapter &game, const xar::game::Snapshot &expected) {
   const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-  query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
-  query.subject_bindings12002 = xar::ck3_12002::BindFamilySubjectImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
-  query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
-  query.outbound_bindings12002 = xar::ck3_12002::BindFamilyOutboundImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
-  query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
-      xar::game::BindCk3_12002AdapterImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor())));
+  if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+    const auto sha = game.descriptor().executable_sha256;
+    query.family12002 = xar::ck3_12004::BindFamilyImage(base, sha);
+    query.subject_bindings12002 = xar::ck3_12004::BindFamilySubjectImage(base, sha);
+    query.projection12002 = xar::ck3_12004::BindFamilyProjectionImage(base, sha);
+    query.outbound_bindings12002 = xar::ck3_12004::BindFamilyOutboundImage(base, sha);
+    query.adapter12002 = xar::game::CreateCk3_12004AdapterFromBindings(
+        xar::game::BindCk3_12004AdapterImage(base, sha));
+  } else {
+    query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+    query.subject_bindings12002 = xar::ck3_12002::BindFamilySubjectImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+    query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+    query.outbound_bindings12002 = xar::ck3_12002::BindFamilyOutboundImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
+    query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
+        xar::game::BindCk3_12002AdapterImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor())));
+  }
   query.expected_snapshot = expected;
 }
 
@@ -9674,7 +9690,8 @@ ReadPlayerChildOnApplicationMain12002(const xar::game::GameAdapter &game,
 
 xar::ck3_11906::PlayerChildMarriageSubjectReadV1
 ReadPlayerChildForAdapterV1(const xar::game::GameAdapter &game, std::int32_t subject) {
-  if (!xar::game::IsReviewedCrozierAdapter(game)) {
+  if (!xar::game::IsReviewedCrozierAdapter(game) &&
+      !xar::game::IsCk3_12004Descriptor(game.descriptor())) {
     return xar::ck3_11906::ReadPlayerChildMarriageSubjectV1(
         xar::ck3_11906::BindCurrentProcess(true), subject);
   }
@@ -9687,7 +9704,8 @@ xar::bridge::MarriageProposalNativeReadbackResultV1
 ReadMarriageBilateralForAdapterV1(const xar::game::GameAdapter &game,
     const xar::game::Snapshot &expected, std::uint32_t subject,
     std::uint32_t candidate, xar::bridge::MarriageProposalBilateralRelationshipV1 &output) {
-  if (!xar::game::IsReviewedCrozierAdapter(game)) {
+  if (!xar::game::IsReviewedCrozierAdapter(game) &&
+      !xar::game::IsCk3_12004Descriptor(game.descriptor())) {
     return xar::bridge::ReadMarriageProposalBilateralRelationshipFromNativeBinderV1(
         g_marriage_shared_glue_v1.binder, subject, candidate, output);
   }
@@ -9701,7 +9719,8 @@ xar::bridge::MarriageProposalNativeReadbackResultV1
 ReadMarriageAllianceForAdapterV1(const xar::game::GameAdapter &game,
     const xar::game::Snapshot &expected, std::uint32_t first, std::uint32_t second,
     bool &forward, bool &reverse) {
-  if (!xar::game::IsReviewedCrozierAdapter(game)) {
+  if (!xar::game::IsReviewedCrozierAdapter(game) &&
+      !xar::game::IsCk3_12004Descriptor(game.descriptor())) {
     return xar::bridge::ReadMarriageProposalAlliancePairFromNativeBinderV1(
         g_marriage_shared_glue_v1.binder, first, second, forward, reverse);
   }
@@ -9723,7 +9742,8 @@ bool ReadMarriageOutboundForAdapterV1(const xar::game::GameAdapter &game,
     std::int32_t subject, std::int32_t candidate,
     xar::bridge::MarriageOutboundPendingSnapshotV1 &output,
     xar::ck3_12003::FamilyTerminalEventsSnapshotV1 *terminal_events = nullptr) {
-  if (!xar::game::IsReviewedCrozierAdapter(game)) {
+  if (!xar::game::IsReviewedCrozierAdapter(game) &&
+      !xar::game::IsCk3_12004Descriptor(game.descriptor())) {
     return xar::bridge::ReadMarriageOutboundPendingSnapshotV1(
         g_marriage_shared_glue_v1.resolution, actor, recipient, subject, candidate, output);
   }
@@ -9805,12 +9825,19 @@ xar::bridge::MarriageProposalNativeSubmitResultV1
 SubmitMarriageForAdapterV1(const xar::game::GameAdapter &game,
     const xar::game::Snapshot &expected,
     const xar::bridge::MarriageProposalSubmissionV1 &submission) {
-  if (!xar::game::IsReviewedCrozierAdapter(game)) {
+  if (!xar::game::IsReviewedCrozierAdapter(game) &&
+      !xar::game::IsCk3_12004Descriptor(game.descriptor())) {
     return xar::bridge::SubmitMarriageProposalFromNativeBinderV1(
         &g_marriage_shared_glue_v1.binder, submission);
   }
   CurrentFirstHeirBetrothalFulfillmentMailboxV1 action{};
   BindFamilyMailbox12002(action.query, game, expected);
+  if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+    const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    const auto sha = game.descriptor().executable_sha256;
+    action.query.family12002 = xar::ck3_12004::BindFamilyActionImage(
+        base, sha, xar::ck3_12004::BindCommandImage12004(base, sha));
+  }
   action.query.heir_character_id = static_cast<std::int32_t>(submission.subject_character_id);
   action.generic_submission12002 = true;
   action.submission12002 = submission;
@@ -17931,7 +17958,12 @@ void RunConnectedSession(
                     "public_campaign_root_primary_first_heir_absent";
               } else {
                 CurrentFirstHeirBetrothalMailboxQueryV1 query{};
-                if (xar::game::IsReviewedCrozierAdapter(game)) {
+                if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+                  const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+                  query.family12002 = xar::ck3_12004::BindFamilyImage(base, game.descriptor().executable_sha256);
+                  query.adapter12002 = xar::game::CreateCk3_12004AdapterFromBindings(
+                      xar::game::BindCk3_12004AdapterImage(base, game.descriptor().executable_sha256));
+                } else if (xar::game::IsReviewedCrozierAdapter(game)) {
                   const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
                   query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
                   query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
@@ -18026,10 +18058,13 @@ void RunConnectedSession(
                   state.current_first_heir_betrothal_connection_generation = connection_generation;
                 }
 #endif
-                connected = write_frame(
-                    pipe, CurrentFirstHeirRelationshipResultFrameV1(
-                        request_id, state_revision, heir_id, read,
-                        unavailable_reason, xar::game::IsReviewedCrozierAdapter(game)));
+                auto family_frame = CurrentFirstHeirRelationshipResultFrameV1(
+                    request_id, state_revision, heir_id, read,
+                    unavailable_reason, xar::game::IsReviewedCrozierAdapter(game));
+                if (xar::game::IsCk3_12004Descriptor(game.descriptor()))
+                  family_frame = xar::game::Render12004BuildIdentity(
+                      std::move(family_frame), game.descriptor());
+                connected = write_frame(pipe, family_frame);
               }
             }
           }
@@ -18068,7 +18103,8 @@ void RunConnectedSession(
                   diagnose_family_arrays);
               std::optional<xar::ck3_11906::PlayerFamilyArrayProbeV1>
                   family_probe;
-              if (xar::game::IsReviewedCrozierAdapter(game)) {
+              if (xar::game::IsReviewedCrozierAdapter(game) ||
+                  xar::game::IsCk3_12004Descriptor(game.descriptor())) {
                 if (diagnose_family_arrays) family_probe.emplace();
                 child = ReadPlayerChildOnApplicationMain12002(game, before, subject_id,
                     family_probe ? &*family_probe : nullptr);
@@ -18401,7 +18437,13 @@ void RunConnectedSession(
             connected = write_frame(pipe, failure_frame);
           } else {
             query.expected_snapshot = before;
-            if (xar::game::IsReviewedCrozierAdapter(game)) {
+            if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+              const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+              query.family12002 = xar::ck3_12004::BindFamilyImage(base, game.descriptor().executable_sha256);
+              query.projection12002 = xar::ck3_12004::BindFamilyProjectionImage(base, game.descriptor().executable_sha256);
+              query.adapter12002 = xar::game::CreateCk3_12004AdapterFromBindings(
+                  xar::game::BindCk3_12004AdapterImage(base, game.descriptor().executable_sha256));
+            } else if (xar::game::IsReviewedCrozierAdapter(game)) {
               const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
               query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
               query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
@@ -18567,7 +18609,13 @@ void RunConnectedSession(
                           "five distinct current final-legal candidates and same paused revision required"));
           } else {
             query.expected_snapshot = before;
-            if (xar::game::IsReviewedCrozierAdapter(game)) {
+            if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+              const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+              query.family12002 = xar::ck3_12004::BindFamilyImage(base, game.descriptor().executable_sha256);
+              query.projection12002 = xar::ck3_12004::BindFamilyProjectionImage(base, game.descriptor().executable_sha256);
+              query.adapter12002 = xar::game::CreateCk3_12004AdapterFromBindings(
+                  xar::game::BindCk3_12004AdapterImage(base, game.descriptor().executable_sha256));
+            } else if (xar::game::IsReviewedCrozierAdapter(game)) {
               const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
               query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
               query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
@@ -18711,7 +18759,13 @@ void RunConnectedSession(
               query.request_matrilineal_option = !default_child_route;
               query.observed[0] = *matching;
               query.expected_snapshot = before;
-              if (xar::game::IsReviewedCrozierAdapter(game)) {
+              if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+                const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+                query.family12002 = xar::ck3_12004::BindFamilyImage(base, game.descriptor().executable_sha256);
+                query.projection12002 = xar::ck3_12004::BindFamilyProjectionImage(base, game.descriptor().executable_sha256);
+                query.adapter12002 = xar::game::CreateCk3_12004AdapterFromBindings(
+                    xar::game::BindCk3_12004AdapterImage(base, game.descriptor().executable_sha256));
+              } else if (xar::game::IsReviewedCrozierAdapter(game)) {
                 const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
                 query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
                 query.projection12002 = xar::ck3_12002::BindFamilyProjectionImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
@@ -18874,7 +18928,12 @@ void RunConnectedSession(
                 request_id, step, false, "current betrothal fulfillment needs same-frame current pair observation"));
           } else {
             CurrentFirstHeirBetrothalFulfillmentMailboxV1 action{};
-            if (xar::game::IsReviewedCrozierAdapter(game)) {
+            if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+              const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+              action.query.family12002 = xar::ck3_12004::BindFamilyActionImage(base, game.descriptor().executable_sha256, xar::ck3_12004::BindCommandImage12004(base, game.descriptor().executable_sha256));
+              action.query.adapter12002 = xar::game::CreateCk3_12004AdapterFromBindings(
+                  xar::game::BindCk3_12004AdapterImage(base, game.descriptor().executable_sha256));
+            } else if (xar::game::IsReviewedCrozierAdapter(game)) {
               const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
               action.query.family12002 = xar::ck3_12002::BindFamilyImage(base, xar::game::ReviewedCrozierAbiSha256(game.descriptor()));
               action.query.adapter12002 = xar::game::CreateCk3_12002AdapterFromBindings(
@@ -19272,7 +19331,8 @@ void RunConnectedSession(
                 xar::game::ReadSnapshot(game, after) && after == before;
             xar::bridge::MarriageProposalNativeResolutionV1 resolution =
                 xar::bridge::MarriageProposalNativeResolutionV1::pending;
-            if (!cold_recovery && !xar::game::IsReviewedCrozierAdapter(game)) {
+            if (!cold_recovery && !xar::game::IsReviewedCrozierAdapter(game) &&
+                !xar::game::IsCk3_12004Descriptor(game.descriptor())) {
               (void)xar::bridge::ReadMarriageProposalResolutionJournalV1(
                   &g_marriage_shared_glue_v1.resolution,
                   static_cast<std::uint32_t>(pending.heir_character_id),
@@ -19352,7 +19412,8 @@ void RunConnectedSession(
             } else {
               xar::bridge::MarriageCandidateInternalQueryV1 query{};
               xar::bridge::MarriageCandidateWorkerReadResultV1 read{};
-              if (xar::game::IsReviewedCrozierAdapter(game)) {
+              if (xar::game::IsReviewedCrozierAdapter(game) ||
+                  xar::game::IsCk3_12004Descriptor(game.descriptor())) {
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
                 read = xar::ck3_12002::ReadFamilyRankedOnApplicationMainV1(
                             game, g_main_thread_query_mailbox_v1,
