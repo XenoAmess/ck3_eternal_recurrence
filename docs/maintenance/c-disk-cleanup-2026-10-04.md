@@ -74,3 +74,22 @@ R15副本 native-state-003.jsonl 实际9,204B、-004.jsonl实际9,216B；sidecar
 - NVIDIA解包缓存精确470文件于UTC05:46:33.467875完成删除，fresh470独占native DELETE身份guard全PASS，随后实际absent470，逻辑量/API删除前尺寸均3156136199B（2.939GiB）。Root先核plan SHA `edc27cd2727eac41a642259b8aeca237b0808d7a02044a87dea247e0e1ac8ca8`及resolve后的限定根 `C:/ProgramData/NVIDIA Corporation/NVIDIA App/UpdateFramework/ota-artifacts/grd/post-processing/222e3fc2fbb5a311b745b9b47097ca1a`；目录删除0，DriverStore、已安装驱动树、项目和全部过程资产保持。result131254B/SHA `47bf5c9e32406862fff004707aab93b282f9045b574a101efdd65ccf3f1ae9cf`、journal363190B/SHA `fbf199c1b2323431e941b0709a52b9a78428205cad3407accb4fc69c38be8e39`由薄收据绑定。
 
 原下载包 `616.92-notebook-win10-win11-64bit-international-dch-whql-g.exe`（793353272B）保留，前后native identity/size/mtime/creation一致；payload未hash或重新解包，完整性UNKNOWN。已安装驱动581.80，616.92为未消费下载，不归因已消费旧版本。C盘空闲快照129269760→3285487616B（结束3.060GiB），不排他归因物理释放；该时点低盘阻点已解除。页文件约6.27GiB缺少旧同路径size对比，空间下降因果UNKNOWN；Windows Update/服务、DXCache287227904B（同已知基线不变）、未知Temp均保留。其它大清理盘点选项未执行，不宣布剩余可清空间为0。
+
+## 2026-10-06 NoSpace 后闭合文本与旧会话无损压缩（精确61文件）
+
+本轮只处理已闭CCC R0002、已闭Main/TED/RMTM的标准文本及修改时间早于2026-10-02本地日界的4份旧Codex会话。3组实际执行全部完成，错误0；每份原路径、全部原始字节、完整SHA-256、size、mtime、creation和native文件身份保持。原验收RED/强制OS1状态保留，日志完整性通过不等于产品或正常退出验收通过。
+
+| 本轮组别 | 文件数 | 压缩前API尺寸（B） | 压缩后API尺寸（B） | 新增API尺寸差（B） | 实际结束UTC |
+| --- | ---: | ---: | ---: | ---: | --- |
+| CCC R0002 闭合文本 | 4 | 448,804,925 | 132,820,992 | 315,983,933 | 2026-10-06T07:29:19.831944+00:00 |
+| C05 Main/TED/RMTM 闭合文本 | 53 | 1,247,353,366 | 485,838,848 | 761,514,518 | 2026-10-06T07:46:51.846811+00:00 |
+| 10月2日前旧 Codex 会话 | 4 | 7,577,374,180 | 7,344,193,536 | 233,180,644 | 2026-10-06T07:57:35.475345+00:00 |
+| 本轮合计 | 61 | 9,273,532,471 | 7,962,853,376 | 1,310,679,095 | — |
+
+三组新增API差分别为301.35MiB、726.24MiB和222.38MiB，合计1,310,679,095B（1.221GiB）。旧会话逻辑量7,577,374,180B仅产生233,180,644B API差（约3.08%），不以逻辑大小承诺回收量。历史952.17MiB、16.47GiB、19/5文件及此前pip、build361、catalog3、NVIDIA缓存清理均不重复计数。
+
+每份在实际拒绝并发写入/删除的native句柄内，先完整SHA与metadata，再单次FSCTL_SET_COMPRESSION、完整SHA复验及恢复原timestamps；关闭后再次核对原size/mtime/creation/fileid。BelowNormal经读回，逐MiB与逐文件节流；占用或身份变化保留ERROR且不替换范围。本轮删除、移动、重编码0，全部聊天历史、旧失败和过程素材永久保留。
+
+最后一组结束时C盘空闲4,462,964,736B（4.156GiB），为独立实测快照；API差不是物理释放量，不排他归因空闲变化。Native fixed-volume查询当前仅C，caller available与total free相等。CCC原Errno28具体写入对象和失败时空间峰值仍UNKNOWN，小stderr未给文件对象；不以当前快照解释当时故障。另两次pagefile同路径实测05:12:43Z为6,730,995,712B、07:51:27Z为5,100,273,664B，仅记录观察到缩小1,630,722,048B，失败时大小与因果UNKNOWN；没有修改系统文件。
+
+实际薄收据：[ACTUAL61-CLOSED-TEXT-AND-OLD-SESSIONS-THIN-01.json](C:/workspace/ck3-upgrade-20261006/c-drive-closed-large-text-compression-agent-01/ACTUAL61-CLOSED-TEXT-AND-OLD-SESSIONS-THIN-01.json)，5,007B，SHA `f7786e863c55691d6f40ddd93a743952844823fdd1fd6cc669770a47681aa467`；逐组result SHA、原append-only journals、精确计划与runner源码快照保全在同目录各独立attempt，薄收据逐份核对61组前后SHA与native身份/timestamps，没有重新hash大原件。C04的154个标准文本叶均已有压缩属性，本轮新操作/回收0；未继续扩扫或处理小对象文件、active数据库、游戏安装树。
