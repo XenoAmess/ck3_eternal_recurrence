@@ -30,6 +30,8 @@ TRANSLATION_UNITS = (
     "src/ck3_12003_current_province_supply_contributors.cpp",
     "src/ck3_12003_current_land_resupply.cpp",
     "src/ck3_12003_current_land_supply_rate.cpp",
+    "src/ck3_12003_scoped_ordered_refill_core.cpp",
+    "src/ck3_12003_current_province_besieging_contributors.cpp",
     "src/ck3_12002_army_test.cpp",
 )
 INPUTS = (
@@ -40,6 +42,9 @@ INPUTS = (
     "include/xar_bridge/ck3_12003_current_province_supply_contributors.hpp",
     "include/xar_bridge/ck3_12003_current_land_resupply.hpp",
     "include/xar_bridge/ck3_12003_current_land_supply_rate.hpp",
+    "include/xar_bridge/ck3_12003_scoped_ordered_refill_core.hpp",
+    "include/xar_bridge/army_scoped_ordered_refill_inputs_v1.hpp",
+    "include/xar_bridge/ck3_12003_current_province_besieging_contributors.hpp",
     "include/xar_bridge/ck3_12002.hpp",
     "include/xar_bridge/ck3_12003.hpp",
     "include/xar_bridge/game_contract.hpp",
