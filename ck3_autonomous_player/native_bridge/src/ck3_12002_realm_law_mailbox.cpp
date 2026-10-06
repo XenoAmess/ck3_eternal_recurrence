@@ -1,7 +1,9 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12002_realm_law.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
+#include "xar_bridge/realm_law_12004_native.hpp"
 
 #include <windows.h>
 
@@ -29,15 +31,26 @@ bool ExecuteRealmLawPausedPrivateQuery12002(
       !EnterQueryMailbox(*envelope, stamp, &ExecuteRealmLawPausedPrivateQuery12002)) return true;
   auto &query = *static_cast<Query *>(envelope->typed_context);
   private_law::RealmLawActiveCollectionAccess access{};
-  access.admitted_executable_sha256 = private_law::kRealmLawActiveCollectionExeSha25612002;
+  const bool actual_12004 =
+      query.actual_executable_sha256 == ck3_12004::kExecutableSha256;
+  access.admitted_executable_sha256 = actual_12004
+      ? ck3_12004::kExecutableSha256
+      : private_law::kRealmLawActiveCollectionExeSha25612002;
   access.played_character_address = reinterpret_cast<std::uintptr_t>(
-      ResolveCoreCharacter(query.bindings, envelope->expected_snapshot.played_character_id));
+      actual_12004
+          ? ck3_12004::ResolveCoreCharacter(
+                query.bindings, envelope->expected_snapshot.played_character_id)
+          : ResolveCoreCharacter(
+                query.bindings, envelope->expected_snapshot.played_character_id));
   access.read_memory = &ReadMemory;
   const RealmLawReadbackFrame12002 frame{envelope->expected_snapshot_revision,
       envelope->expected_snapshot.date_raw, envelope->expected_snapshot.played_character_id};
   (void)CaptureRealmLawReadback12002(access, query.module_base, frame,
-      private_law::BindRealmLawFinalTermsImage12002(query.module_base,
-          private_law::kRealmLawFinalTermsExecutableSha256), query.readback,
+      actual_12004
+          ? ck3_12004::private_law::BindRealmLawFinalTermsImage12004(
+                query.module_base, query.actual_executable_sha256)
+          : private_law::BindRealmLawFinalTermsImage12002(query.module_base,
+                private_law::kRealmLawFinalTermsExecutableSha256), query.readback,
       query.actual_executable_sha256);
   (void)FinishQueryMailbox(*envelope);
   return true;
@@ -48,8 +61,12 @@ bool ReadRealmLawOnApplicationMain12002(
     const game::Snapshot &published, std::uint64_t revision,
     std::string &serialized, std::string &failure) noexcept {
   serialized.clear(); failure.clear();
-  if (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != private_law::kRealmLawFinalTermsExecutableSha256 ||
+  const bool actual_12004 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  const bool reviewed_12002 =
+      game::ReviewedCrozierAbiVersion(adapter.descriptor()) == "1.20.0.2" &&
+      game::ReviewedCrozierAbiSha256(adapter.descriptor()) ==
+          private_law::kRealmLawFinalTermsExecutableSha256;
+  if ((!actual_12004 && !reviewed_12002) ||
       revision == 0 || !published.paused || !published.map_ready ||
       !published.has_played_character || !published.played_character_alive) {
     failure = "native_law_paused_actor_unavailable"; return false;
@@ -63,7 +80,10 @@ bool ReadRealmLawOnApplicationMain12002(
     query.envelope.expected_snapshot_revision = revision;
     query.envelope.typed_context = &query;
     query.module_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    query.bindings = BindCoreImage(query.module_base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    query.bindings = actual_12004
+        ? ck3_12004::BindCoreImage(query.module_base, query.actual_executable_sha256)
+        : BindCoreImage(query.module_base,
+              game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (!query.bindings.enabled || ck3_11906::TrySubmitMainThreadQueryV1(mailbox,
         &ExecuteRealmLawPausedPrivateQuery12002, &query.envelope,
         query.envelope.ticket) != ck3_11906::MainThreadQuerySubmitResultV1::submitted) {

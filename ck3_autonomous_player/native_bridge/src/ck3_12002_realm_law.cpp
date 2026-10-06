@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_realm_law.hpp"
+#include "xar_bridge/realm_law_12004_native.hpp"
 
 namespace xar::ck3_12002 {
 namespace {
@@ -13,11 +14,13 @@ bool Observe(void *opaque, std::size_t group, std::size_t index,
     const private_law::RealmLawCandidateCollectionRow11906 &row) noexcept {
   auto &context = *static_cast<CaptureContext *>(opaque);
   auto &value = context.output->final[group][index];
-  value = private_law::ReadRealmLawFinalTerms12002(
-      {reinterpret_cast<const void *>(native_law),
-       reinterpret_cast<const void *>(context.access->played_character_address),
-       static_cast<std::uint32_t>(context.output->frame.actor_character_id)},
-      *context.operations);
+  const private_law::RealmLawFinalTerms12002Input input{
+      reinterpret_cast<const void *>(native_law),
+      reinterpret_cast<const void *>(context.access->played_character_address),
+      static_cast<std::uint32_t>(context.output->frame.actor_character_id)};
+  value = context.actual_executable_sha256 == ck3_12004::kExecutableSha256
+      ? ck3_12004::private_law::ReadRealmLawFinalTerms12004(input, *context.operations)
+      : private_law::ReadRealmLawFinalTerms12002(input, *context.operations);
   using Status = private_law::RealmLawFinalTerms12002Status;
   if (!value.terms.cost_available || !value.native_reason_available ||
       value.terms.status == Status::unavailable ||
@@ -27,8 +30,11 @@ bool Observe(void *opaque, std::size_t group, std::size_t index,
   }
   if (group == 1 && context.output->succession_profiles_12003_observed) {
     context.output->succession_profiles_12003[index] =
-        ck3_12003::private_law::ReadRealmLawSuccessionProfile12003(
-            *context.access, native_law, context.actual_executable_sha256);
+        context.actual_executable_sha256 == ck3_12004::kExecutableSha256
+            ? ck3_12004::private_law::ReadRealmLawSuccessionProfile12004(
+                  *context.access, native_law, context.actual_executable_sha256)
+            : ck3_12003::private_law::ReadRealmLawSuccessionProfile12003(
+                  *context.access, native_law, context.actual_executable_sha256);
   }
   return true;
 }
@@ -68,14 +74,19 @@ bool CaptureRealmLawReadback12002(
     output = {};
     output.frame = frame;
     output.succession_profiles_12003_observed =
-        actual_executable_sha256 == ck3_12003::kExecutableSha256;
+        actual_executable_sha256 == ck3_12003::kExecutableSha256 ||
+        actual_executable_sha256 == ck3_12004::kExecutableSha256;
     if (frame.snapshot_revision == 0 || frame.actor_character_id <= 0 || module_base == 0) {
       output.failure = "native_law_frame_unavailable"; return false;
     }
     CaptureContext context{&access, &operations, &output,
         actual_executable_sha256};
-    if (!private_law::ReadRealmLawCandidateCollectionWithObserver12002(
-        access, module_base, &context, &Observe, output.collection)) {
+    const bool collected = actual_executable_sha256 == ck3_12004::kExecutableSha256
+        ? ck3_12004::private_law::ReadRealmLawCandidateCollectionWithObserver12004(
+              access, module_base, &context, &Observe, output.collection)
+        : private_law::ReadRealmLawCandidateCollectionWithObserver12002(
+              access, module_base, &context, &Observe, output.collection);
+    if (!collected) {
       if (output.failure.empty()) {
         output.failure = "native_law_collection_unavailable:";
         output.failure += private_law::RealmLawCandidateCollectionFailureName(output.collection.failure);
