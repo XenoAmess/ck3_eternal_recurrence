@@ -4,6 +4,7 @@
 #include <windows.h>
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/ck3_12003_army_reserve.hpp"
 #include "xar_bridge/ck3_12003_war_occupation.hpp"
 #include "xar_bridge/ck3_12003_title_holder.hpp"
@@ -637,13 +638,15 @@ const AdapterDescriptor &Ck3_12002AdapterDescriptor() noexcept { return kDescrip
 bool ReadCk3_12002TimelineCoreSnapshot(
     const GameAdapter &adapter, Snapshot &output) noexcept {
   output = {};
-  const auto *native = dynamic_cast<const Ck3_12002Adapter *>(&adapter);
+  const auto &source = ck3_12002::NativeAdapter12002(adapter);
+  const auto *native = dynamic_cast<const Ck3_12002Adapter *>(&source);
   return native != nullptr && native->ReadTimelineCoreSnapshot(output);
 }
 
 const ck3_12002::DeclarationsBindings *BorrowOrdinaryHolyWarDeclarations12004(
     const GameAdapter &adapter) noexcept {
-  const auto *native = dynamic_cast<const Ck3_12002Adapter *>(&adapter);
+  const auto &source = ck3_12002::NativeAdapter12002(adapter);
+  const auto *native = dynamic_cast<const Ck3_12002Adapter *>(&source);
   return native != nullptr ? native->BorrowDeclarations12004() : nullptr;
 }
 
