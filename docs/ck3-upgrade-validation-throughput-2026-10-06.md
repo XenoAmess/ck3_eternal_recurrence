@@ -33,3 +33,13 @@
 4. 每个有效工作包一次必要验证后立即 commit/rebase/普通 push；失败事实与通过事实分开保留。记录阶段时间以便以后统计，不虚构总耗时占比或下一产品 ETA。
 
 当前正式发布仍为交接的 5/10；本次写入诊断与启动修复不计作产品发布。下一项仍是 CCC，之后消费已有 QOL18/RMTM10/TED11 入口，361 最后。
+
+## R0006：首次 map-ready 提前于有效通知查询
+
+UI20 / a79 / `4-8e1c2f1861--celestial-commerce-corruption--R0006` 从 committed `13b4942a91fa5459d5dc37bf7de7e95c38cc27b6`、Source18 与原 DLL 开场。当次离线原图 nonce `df0d43bbfea5` 已亲审。12:12:12 UTC 新资源快照 C free20,598,800,384 B、commit20,641,062,912 /39,359,959,040 B、CK3为空，未清理或改系统。
+
+12:17:48.136518 的第一次 typed context query 在30.009秒后失败，server stderr为 `application-main typed query failed or its snapshot changed`。首次 native map-ready 通知帧的原图仍显示载入0%；native observer此前存在 read-in-progress /4859ms读取。没有执行通知选择。原完整失败报告先永久保全；同一PID11412/generation1热现场的三个快照、资格、context共五步实际成功，12:29:16.016312 读到 `.0051`、ROOT34422、native0唯一shown/enabled，证明既有DLL可完成查询。
+
+前两个快照仅相隔0.23秒，同cached pump epoch，观察入口正确拒绝；后取新frame3通过原严格递增要求。准备和前台交接消耗了剩余现场时间，正常选择23入口提交前原900秒hold已结束。报告12:33:20.701318 finished/RED；独立held OS handle在signaled后读到退出1，无GUI0或D0成功。`managed_session_thread_finished=true`、`cleanup_ok=true`、本场进程库存空；keeper退出0/线程退出/末4323，单次CAS4326 done/resources=[]。原报告SHA `d91ad8aa836325f417b3d5906cf6272b95bb77a4487d4fc97ff15020ccb8b1c1`，见[闭场库存](C:/workspace/ck3-upgrade-20261006/resume-root-01/a79-final-inventory-01.json)和[释放](C:/workspace/ck3-upgrade-20261006/resume-root-01/a79-screen-release-01.json)。
+
+这次不是ENOSPC，也不是原政府policy或native capability缺失。下一修复只把通知query放到当前读取完成、同一owner稳定双帧之后，复用Source18/原DLL与原预算；正常通知及D1→D3连续执行，减少现场脚本准备与人工交接。上述热成功不追认旧RED为GREEN。

@@ -1009,7 +1009,8 @@ class FixtureStartupNoticeTests(unittest.TestCase):
                 "hello": {"expected_ck3_version": CK3_12003.game_version, "expected_ck3_sha256": CK3_12003.executable_sha256},
                 "last_heartbeat": {"pid": 12492, "main_thread_query_mailbox_v1": {"ready": True,
                     "stamp_read_success": True, "pump_epochs": 36615, "owner_verified_pump_epochs": 36615,
-                    "owner_tid": 21528, "current_tid": 21528}}}}
+                    "owner_tid": 21528, "current_tid": 21528},
+                    "snapshot_observer_12002": {"started_ms": 1, "completed_ms": 0, "read_in_progress": True}}}}
         self.after = deepcopy(self.before)
         self.after.update(snapshot_id="native:4", revision=5, native_revision=4, active_event=None)
         self.root = {"backend_id": "native-headless", "campaign_root_context_ready": True,
@@ -1034,12 +1035,15 @@ class FixtureStartupNoticeTests(unittest.TestCase):
             def __init__(self):
                 self.calls, self.frames, self.selected = [], 0, False
                 self.args = case.args
+                self.context_query_frame = None
             async def fresh(self):
                 self.frames += 1
                 snap = case.copy(case.after if self.selected else case.before)
-                if self.selected:
-                    mailbox = snap["diagnostics"]["last_heartbeat"]["main_thread_query_mailbox_v1"]
-                    mailbox.update(pump_epochs=125023 + self.frames * 30, owner_verified_pump_epochs=125023 + self.frames * 30)
+                heartbeat = snap["diagnostics"]["last_heartbeat"]
+                epoch = (125023 if self.selected else 36615) + self.frames * 30
+                heartbeat["main_thread_query_mailbox_v1"].update(pump_epochs=epoch, owner_verified_pump_epochs=epoch)
+                heartbeat["snapshot_observer_12002"].update(started_ms=self.frames,
+                    completed_ms=self.frames if self.frames > 1 else 0, read_in_progress=self.frames == 1)
                 return snap
             async def call(self, name, arguments):
                 self.calls.append((name, case.copy(arguments)))
@@ -1048,6 +1052,7 @@ class FixtureStartupNoticeTests(unittest.TestCase):
                         "read_only": True, "case_sensitive": True, "matches": [{"literal": key, "line_count":
                             int(key in case.policy["required_log_markers"])} for key in arguments["literals"]]}
                 if name == "ck3_query_current_event_window_context_v1":
+                    self.context_query_frame = self.frames
                     context = case.copy(case.context)
                     if unknown:
                         context["event_definition_key"] = "unreviewed.actual.event"
@@ -1077,6 +1082,11 @@ class FixtureStartupNoticeTests(unittest.TestCase):
         self.assertLess(names.index("ck3_query_engine_log_literals_v1"), names.index("ck3_query_current_event_window_context_v1"))
         self.assertLess(names.index("ck3_select_event_option"), names.index("ck3_query_campaign_root_context_v1"))
         self.assertEqual(result["startup_notice"]["status"], "NORMAL_OPTION_EVENT_GONE_OBSERVED")
+        self.assertEqual(client.context_query_frame, 3)
+        startup = result["first_startup_query_admission"]
+        self.assertGreater(startup["current_frame"]["pump_epoch"], startup["previous_frame"]["pump_epoch"])
+        self.assertEqual(startup["current_frame"]["owner_tid"], startup["previous_frame"]["owner_tid"])
+        self.assertEqual(startup["current_frame"]["event_instance_id"], 1)
         notice = result["startup_notice"]
         self.assertEqual(self.capture.call_count, 2)
         self.assertEqual(notice["before_evidence"]["screenshot"]["size"], [16, 12])

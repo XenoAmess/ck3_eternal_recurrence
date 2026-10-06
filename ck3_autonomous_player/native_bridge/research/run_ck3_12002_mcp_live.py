@@ -1001,11 +1001,12 @@ async def execute_frontend_rules_plan(client: PlanClient, plan: dict[str, object
 
 
 
-def fixture_whole_root_admission_frame(snapshot: object, submission: dict[str, object]) -> dict[str, object] | None:
-    """Observe a stable owner frame before a query; never qualify product business."""
+def fixture_whole_root_admission_frame(snapshot: object, submission: dict[str, object], *,
+        allow_active_event: bool = False) -> dict[str, object] | None:
+    """Default root gate stays event-free; startup window queries reuse owner checks."""
     if not isinstance(snapshot, dict) or snapshot.get("map_ready") is not True or snapshot.get("paused") is not True:
         return None
-    if snapshot.get("active_event") is not None:
+    if snapshot.get("active_event") is not None and not allow_active_event:
         return None
     if snapshot.get("episode_projection") != "native_campaign":
         raise ValueError("fixture pre-query observation would bind a one-life episode")
@@ -1179,7 +1180,7 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
         "start_resubmitted": False, "episode_projection": "native_campaign"}
     report["frontend_fixture_business_context"] = state
     write()
-    baseline, admission_baseline = None, None
+    baseline, admission_baseline, startup_baseline = None, None, None
     deadline = time.monotonic() + timeout
     try:
         while True:
@@ -1196,8 +1197,41 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
             qualified = all(counts[key] == 1 for key in policy["required_log_markers"])
             if any(counts[key] > 1 for key in policy["required_log_markers"]):
                 raise RuntimeError("fixture initialization was observed more than once")
+            startup_admission = None
             if qualified and snapshot.get("map_ready") is True and snapshot.get("paused") is True and snapshot.get("active_event") is not None:
-                snapshot = await acknowledge_fixture_startup_notice(client, snapshot, submission, state=state, write=write)
+                # R6 published map_ready while the GUI still loaded. Reuse the
+                # owner gate, retaining the actual active event for this query.
+                startup_frame = fixture_whole_root_admission_frame(snapshot, submission, allow_active_event=True)
+                heartbeat = snapshot.get("diagnostics", {}).get("last_heartbeat", {})
+                observer = heartbeat.get("snapshot_observer_12002", {})
+                started, completed = observer.get("started_ms"), observer.get("completed_ms")
+                if (observer.get("read_in_progress") is not False or type(started) is not int
+                        or type(completed) is not int or completed < started):
+                    startup_frame = None
+                if startup_frame is not None:
+                    startup_frame = {**startup_frame, "revision": snapshot["revision"],
+                        "event_instance_id": snapshot["active_event"].get("instance_id"),
+                        "owner_tid": heartbeat["main_thread_query_mailbox_v1"]["owner_tid"]}
+                startup_admission = {"status": "WAITING_FOR_COMPLETED_STABLE_STARTUP_OWNER_FRAMES",
+                    "frame": startup_frame, "product_acceptance_proven": False}
+                if startup_frame is not None:
+                    stable_startup = {key: value for key, value in startup_frame.items() if key != "pump_epoch"}
+                    if (startup_baseline is not None and startup_baseline[0] == stable_startup
+                            and startup_frame["pump_epoch"] > startup_baseline[1]):
+                        startup_admission["status"] = "STABLE_STARTUP_OWNER_FRAMES_QUERY_ADMITTED"
+                        state["first_startup_query_admission"] = {
+                            "previous_frame": {**startup_baseline[0], "pump_epoch": startup_baseline[1]},
+                            "current_frame": startup_frame, "qualification": logs,
+                            "product_acceptance_proven": False}
+                        write()
+                        snapshot = await acknowledge_fixture_startup_notice(client, snapshot, submission, state=state, write=write)
+                        startup_baseline = None
+                    else:
+                        startup_baseline = (stable_startup, startup_frame["pump_epoch"])
+                else:
+                    startup_baseline = None
+            else:
+                startup_baseline = None
             admission_frame = fixture_whole_root_admission_frame(snapshot, submission) if qualified else None
             admission = {"status": "WAITING_FOR_ORIGINAL_QUALIFICATION_LOGS" if not qualified else "WAITING_FOR_PAUSED_EVENT_FREE_OWNER_FRAMES",
                 "frame": admission_frame, "product_acceptance_proven": False}
@@ -1222,7 +1256,7 @@ async def wait_for_fixture_business_context(client: PlanClient, policy: dict[str
             else:
                 admission_baseline = None
             row = {"snapshot": snapshot, "campaign_root": root, "binding": binding, "qualification": logs,
-                "root_query_admission": admission}
+                "root_query_admission": admission, "startup_query_admission": startup_admission}
             state["observations"].append(row)
             if binding is not None and qualified:
                 stable = {key: value for key, value in binding.items() if key != "pump_epoch"}
