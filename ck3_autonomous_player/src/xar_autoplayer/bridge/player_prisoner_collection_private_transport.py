@@ -13,6 +13,7 @@ from .prisoner_negotiated_preview_contract_12003 import (
     normalize_prisoner_negotiated_preview_12003, release_option_mask_12003,
 )
 from .timeline_blocker_private_transport import _binding
+from .version_identity import CK3_12003, CK3_12004
 
 
 STEP = "query-player-prisoner-collection-private-v1"
@@ -205,7 +206,10 @@ def query_player_prisoner_collection_private_v1(
                 raise BridgeUnavailableError("private prisoner title tier is malformed")
             if preview_version:
                 preview = row["unconditional_release_preview"]
-                if provenance.get("exact_ck3_build") == "1.20.0.3":
+                if (provenance.get("exact_ck3_build"), provenance.get("exe_sha256")) in {
+                    (CK3_12003.game_version, CK3_12003.executable_sha256),
+                    (CK3_12004.game_version, CK3_12004.executable_sha256),
+                }:
                     try:
                         preview = normalize_prisoner_release_preview_12003(
                             preview, native_revision=native_revision, date_raw=date_raw,
