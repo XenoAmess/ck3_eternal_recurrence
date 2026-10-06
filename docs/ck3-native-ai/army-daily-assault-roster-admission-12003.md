@@ -291,3 +291,64 @@ other signed literal. No production logic, DTO, expected values or Python
 qualification changed. Root owns the necessary repaired fixture/remaining-link
 build and first CTest; neither compiled byte consumption nor a successful full
 native qualification is claimed before those receipts exist.
+
+## First compiled whole-wire complete-service qualification
+
+The corrected fixture and retained production objects are now qualified once.
+Runtime/Python source remains immutable
+`da887a09e679065ebea1d13700d7c117932934c8`; corrected fixture source is Root
+`1df308abb9b5ba72088e7dcbe274f716f29b088b` (candidate repair084cc495).
+Original first full build RED123.89342s remains unchanged. Root completed the
+four formal runtime binaries from the retained original objects in2.681649s,
+with zero new native producer TUs; original closure is593TUs/590unique and1320
+source inputs. The one corrected fixture compiled in4.4208953s and linked to
+that actual runtime library in0.1012322s. It did not rebuild the runtime at the
+corrected fixture head. First new CTest passed1/1 in0.1747213s and emitted the
+nine new whole ArmyStrength JSON frames.
+
+At2026-10-06 16:20:10 CST / W41 the first actual nine-frame consumer passed
+9/307 checks,2.964643s consumer elapsed. It imported complete production
+`GameplayBridgeService`, the whole ArmyStrength normalizer, strict new leaf
+normalizer and pure admission projector exclusively from immutableg97. Every
+native wire was consumed through the actual service method exactly once. The
+receipt validates distinct `runtime_source_commit` and `fixture_source_commit`
+metadata, CTest wire bytes/hashes and all imported module pins. It preserves
+nine complete returned outputs and the old available strength/native readiness.
+
+Seven frames have complete conditional admission, including a genuinely
+nonempty three-request stream with repeated original Army and ArRg occurrences.
+The partial pending frame retains known Army append facts, null incomplete
+ArRg results, a stopped continuous prefix and one independent later request.
+Requested War sentinel remains precisely partial; selected fallback War whose
+own ID isFFFFFFFF remains ready. A complete same-Character rejection tolerates
+its independent partial removal queue, and count0 requires no unused pointers.
+The shared queue frame demonstrates actual existing signed raw list reuse as
+full u32 occurrences without adding a second callback element scan.
+
+Artifacts under the external packet are
+`compiled-service-first01/RECEIPT.json`, its nine `*-complete-service.json`
+outputs and `EXECUTION-ARGV.json`. Actual Root build receipts are
+`C:/codex-ck3-background/roster-admission-batch/runtime-completion01/BUILD-RESULT.json`,
+`fixture-repair01/FIXTURE-ONLY-BUILD-RECEIPT.json` and
+`fixture-repair01/CORRECTED-NEW-CTEST.json`; original strict01 RED is retained.
+The consumer's own elapsed does not replace the separately recorded build and
+CTest durations. No Python case, former native fixture or old wire was replayed.
+
+Qualification is compiled static-ready for actual current standalone admission
+and its typed ordered requests. Each native frame is independent offline fake
+memory, not a coherent paused/live artifact. This fixture deliberately omits
+`current_daily_assault_table_v1`; compiled conditional placement is not inferred
+from the separately qualified source-shaped explicit-stage test. Actual next
+callback, tomorrow roster, whole future placement and full daily assault stay
+false. Local CK3/Steam/process/SDK/pipe/UI/live-pointer operations are0.
+
+The concrete next stream replacement is the separately owned actual
+`current_pre_date_pending_update_inputs_v1`:2A92320 mutates pending130 before
+returning its list-count comparison, preserving prior counts and duplicate
+effects. It cannot be invoked as a readonly predicate. The peer source-only
+pre-date preparation package `f2fe42b6` independently closes2A9A360 as original
+primaryC8/D4 request appends to158/164 under its Combat/date predicates. Under
+fixed input and normal allocator return it preserves removal68/74, pending130
+and original50/5C;158 is not the admission removal queue. These source inputs
+and other preceding Character/Unit branches remain separate from this current
+standalone qualification.
