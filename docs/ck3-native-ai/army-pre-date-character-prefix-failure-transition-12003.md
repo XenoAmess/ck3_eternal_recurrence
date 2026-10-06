@@ -97,3 +97,37 @@ sentinel/pass的**无helper**边与早期knownskip仍可独立说明order，不�
 后续取得named body后，才记录direct writes与receiver／scalar对象身份、normal-return logical count/order，并与既有admission load sites求交。若具体directcallee阻断决策必需logical effect，只报告名字和有限缺口，不自动展开generic destructor／allocator或whole-EXE审计。
 
 在本source tree与 **216 B metadata-only plan** 被Root审阅前：**model/code/tests/build/new EXE reads0**。此页与外置 `METADATA-ONLY-PLAN.json / REPORT-FIELDS.json`是下一可施工入口，Root负责采用、共享Oct6/W41报告与push。
+
+## 2026-10-06：有限metadata与首个62B片段已取得，actual continuations单独待选择
+
+Root审阅并批准metadata-only lookup之后，实际读取 **17 unique records／204 B**，candidate未重读；得到index **35818**，`[B02D10,B02D4E)`／**62 B**，UnwindRVA **`510E3D0`**，record RVA **`5E2BEF8`**／file **`5CC30F8`**。所有PE／function／unwind header、body和chain当时仍0B。完整ledger为外置 `METADATA-LOOKUP-RESULT.json`。
+
+Root再单独批准62B body后，本lane仅一次读取file **`B02110..B0214E`**，由held code ledger的RVA→file delta **`C00`**映射；连续decode **62/62 B／16 instructions**，无新hash／header／chain／neighbor。保存 `SOURCE-00B02D10.{json,asm.txt,bin}`。**Containing `.pdata` interval不是完整normal-return函数tree**：本片尚无ret或logical vector写入，存在两个明确的outside control-flow edges，不能把62B decode完成误称为append效果已闭合。
+
+| Instruction | 实际operand／效果 | failure80输入seam |
+| --- | --- | --- |
+| `B02D25` | sign-extend DWORD `[receiver+C]` 到RAX | raw primary8C count；qualified prefix initial80已经读取 |
+| `B02D2C..34` | DWORD `[receiver+8]` capacity；`count != capacity` 时**JNE B02DC8**，不是`count < capacity` | primary88；current prefix DTO尚不发布此值 |
+| `B02D3A` | `ESI = lowDWORD(count+1)` | 局部寄存器运算，尚未写logical count |
+| `B02D41` | count==capacity路径读pointer `[receiver+10]` | primary90 growth-context，尚不证明其callee或physical效果 |
+| `B02D4B` | capacity转换为float后fallthrough **B02D4E** | actual continuation，尚未读取 |
+
+本片直接写入仅stack保存区；**direct calls0／direct tracked Army或Character或logical-vector writes0**。这只描述本片，不推出剩余body没有这些effect，admission-load交集目前也只能对本片记为无tracked write；normal-return transition未闭合，仍不设计model/code或授予post-effect readiness。
+
+```mermaid
+flowchart TD
+    A[B02D10 receiver primary80 / scalar actual Army10] --> B[read count primary8C and capacity primary88]
+    B --> C{count equals capacity}
+    C -->|false explicit JNE| F[B02DC8 actual fast-path target]
+    C -->|true fallthrough| G[B02D4E growth-path target / read primary90]
+    F -. exact continuation body unknown .-> N[normal-return logical80 and tracked effects]
+    G -. cached extent / body unknown .-> N
+    N --> D[2A99B40 admission]
+    D --> E[24DF3C0 callback / other owner]
+```
+
+从**已读204B metadata ledger**直接复用index **35819**：`[B02D4E,B02DC8)`／**122 B**，UnwindRVA `5129518`，record RVA `5E2BF04`／file `5CC3104`；其body仍0B。explicit JNE target **B02DC8** 的containing record尚未held，最小后续metadata请求仅 **index35820 一个12B record**（RVA **`5E2BF10`**／file **`5CC3110`**），检验它是否包含actualtarget；若不包含就把precise gap交Root，不自动搜邻body。actual continuation的body与unwind headers仍分别选择，不把unused12B initial budget外推成新授权。
+
+若Root先选择独立no-growth路径，具体current native输入seam已存在：同query `b.common.game_state_slot -> GS+A0 -> data+2A540` 得到manager，现collector用 `Read`／`At`取primary80／8C；可按需读取同manager **primary88 capacity DWORD**，不重新扫描Army或Character。**只有后续source确实需要按capacity分支交付时才增加该field**；若正常返回两路都证明仅logical append，优先复用既有initial80＋actual请求，不创建重复observer/kernel。current prefix仍是原stage观测，不等于growth／append／callback后的实际状态。
+
+外置 `ACTUAL-CONTINUATION-GAP.json`与 `CONTINUATION-METADATA-PLAN.json`记录上述actual branch／缓存extent／最小剩余source入口；已通过source5/native8未重放，新tests/build/model/game0。下一项是Root选择这些具体source范围，绝非generic allocator/destructor研究。
