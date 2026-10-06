@@ -1,7 +1,9 @@
 // FIRST_NOTRUN: seven complete actual mailbox/serializer/renderer packets.
 // Reuse the already-frozen memory helpers, without invoking its older tests.
 #define main TargetTenetLibraryFixtureMain
+#define f target_tenet_library_fixture_context
 #include "religion_doctrine12002_tenet_rows_test.cpp"
+#undef f
 #undef main
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/religion_doctrine12002_tenet_rows_mailbox.hpp"
@@ -224,7 +226,7 @@ void RequestCases() {
   std::optional<std::uint32_t> id; std::string key;
   Assert(c::ParsePlayerReligionTenetsComparisonRequest12003("{}", id, key) && !id && key.empty(), "old request");
   Assert(c::ParsePlayerReligionTenetsComparisonRequest12003(
-      "{\"target_rite_id\":0,\"tenet_key\":\"tenet_4\"}", id, key) && id == 0 && key == "tenet_4", "paired zero ref");
+      "{\"target_rite_id\":0,\"tenet_key\":\"tenet_4\"}", id, key) && id == std::uint32_t{0} && key == "tenet_4", "paired zero ref");
   for (const auto payload : {
       "{\"target_rite_id\":0}", "{\"tenet_key\":\"tenet_4\"}",
       "{\"target_rite_id\":0,\"tenet_key\":\"\"}",
