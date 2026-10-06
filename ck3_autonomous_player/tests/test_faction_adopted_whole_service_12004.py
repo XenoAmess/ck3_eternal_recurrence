@@ -330,7 +330,7 @@ class FactionAdoptedWholeService12004Tests(unittest.TestCase):
                                 self.assertIs(value, name != "exact_ultimatum_timing_ready")
                         elif case == "unavailable":
                             self.assertEqual(raw["status"], "unavailable")
-                            self.assertEqual(raw["date_raw"], 0)
+                            self.assertIsNone(raw["date_raw"])
                             self.assertIsNone(raw["player_character_id"])
                             self.assertIsNone(raw["targeting_faction_count"])
                             self.assertEqual(raw["targeting_factions"], [])
