@@ -38,6 +38,8 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.state.player-armies", "game.state.army-routes",
       "game.command.query-army-strengths-v1",
       ck3_12003::kArmyCommanderCandidatesCapability,
+      "game.command.query-player-mercenary-context-v1",
+      "game.command.hire-mercenary-v1", "game.command.hire-holy-order-v1",
       "game.command.pause-map", "game.command.resume-map",
       "game.command.set-speed-1", "game.command.set-speed-2",
       "game.command.set-speed-3", "game.command.set-speed-4",

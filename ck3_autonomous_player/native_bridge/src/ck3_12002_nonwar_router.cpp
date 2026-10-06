@@ -240,6 +240,9 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
 }
 
 void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept {
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+  out.holy_order_context = &ck3_12003::ExecutePlayerHolyOrderContextMailbox12003;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   out.prisoner_collection = &ck3_12004::ExecutePlayerPrisonerCollection12004;
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
@@ -344,6 +347,9 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
   if (!adapter.enabled() ||
       !game::IsCk3_12004Descriptor(adapter.descriptor())) return false;
   (void)step;
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+  if (ck3_12003::IsPlayerHolyOrderContextPrivateStep12003(step)) return true;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   std::uint32_t prisoner_ordinal = 0;
   if (ck3_11906::ParsePlayerPrisonerCollectionPrivateStepV1(step, prisoner_ordinal))

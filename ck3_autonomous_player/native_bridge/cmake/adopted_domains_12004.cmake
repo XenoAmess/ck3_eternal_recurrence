@@ -22,11 +22,16 @@ target_sources(xar_ck3_12002_runtime PRIVATE
   src/ck3_12004_family_break_penalty.cpp
   src/ck3_12004_family_actions.cpp
   src/ck3_12004_phase_character.cpp
-  src/ck3_12004_gift_opinion.cpp
   src/ck3_12004_epidemic.cpp
   src/ck3_12004_succession_modal.cpp
   src/ck3_12004_frontend_bookmark.cpp
   src/frontend_bookmark_model_result_v1.cpp)
+
+# Faction's owned leaf registers this shared binder when its adopted flag is ON.
+# Keep the Activity binder available when that flag is OFF, without a duplicate.
+if(NOT XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1)
+  target_sources(xar_ck3_12002_runtime PRIVATE src/ck3_12004_gift_opinion.cpp)
+endif()
 
 # Keep the literal owned registration/fixture declarations, in dependency order.
 include("${CMAKE_CURRENT_LIST_DIR}/religion_adopted_observers_12004.cmake")
@@ -208,4 +213,51 @@ if(BUILD_TESTING AND WIN32)
   add_test(NAME xar_ck3_generic_gui_12004_fixture
     COMMAND $<TARGET_FILE:xar_ck3_generic_gui_12004_fixture>
       "${CMAKE_CURRENT_BINARY_DIR}/wire/ck3_generic_gui_12004")
+endif()
+
+# Ready adopted LBF/addon/Default/Council/Government source closure.
+# Council delivery declares no new fixture or consumer; register its five real TUs.
+target_sources(xar_ck3_12002_runtime PRIVATE
+  src/ck3_12004_religion_context_addons.cpp
+  src/ck3_12004_doctrine_catalogue_bindings.cpp
+  src/ck3_12004_religion_parameter_bindings.cpp
+  src/ck3_12004_government_runtime_binder.cpp
+  src/ck3_12004_council_candidates.cpp
+  src/ck3_12004_council_gates.cpp
+  src/ck3_12004_council_assign.cpp
+  src/ck3_12004_council_action_runtime.cpp
+  src/ck3_12004_council_runtime.cpp)
+
+# Reuse the owned registrations and literal fixture targets in these ready leaves.
+# construction_12004.cmake is production-source-only and adds no fixture target.
+include("${CMAKE_CURRENT_LIST_DIR}/construction_12004.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/lifestyle_12004.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/faction_adopted_12004.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/default_manifest_sentinel_12004.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/ck3_12004_government_whole_first.cmake")
+
+# Sole new religion-addon whole producer from ROOT-INTEGRATION-AND-FIRST-RECIPE.
+# Existing Runtime PUBLIC feature definitions remain the real compile inputs.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12004_religion_adopted_addons_whole_test
+    src/ck3_12004_religion_adopted_addons_whole_test.cpp)
+  target_link_libraries(xar_ck3_12004_religion_adopted_addons_whole_test PRIVATE
+    xar_ck3_12002_runtime)
+  target_include_directories(xar_ck3_12004_religion_adopted_addons_whole_test PRIVATE include)
+  target_compile_features(xar_ck3_12004_religion_adopted_addons_whole_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12004_religion_adopted_addons_whole_test PRIVATE
+    NOMINMAX
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1=1
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1=1
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1=1
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1=1
+    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1=1
+    XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1=1)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_religion_adopted_addons_whole_test PRIVATE
+      /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_12004_religion_adopted_addons_whole_test
+    COMMAND $<TARGET_FILE:xar_ck3_12004_religion_adopted_addons_whole_test>
+      "${CMAKE_CURRENT_BINARY_DIR}/wire/ck3_12004_religion_adopted_addons_native.json")
 endif()

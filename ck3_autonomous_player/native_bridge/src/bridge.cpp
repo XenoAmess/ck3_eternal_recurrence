@@ -43,6 +43,7 @@
 #include "xar_bridge/ck3_12003_player_mercenary_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_hire_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_holy_order_hire_mailbox.hpp"
+#include "xar_bridge/ck3_12004_holy_order_bindings.hpp"
 #include "xar_bridge/ck3_12002_lifestyle.hpp"
 #include "xar_bridge/ck3_12002_family.hpp"
 #include "xar_bridge/ck3_12002_family_projection.hpp"
@@ -11119,6 +11120,9 @@ public:
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
     xar::ck3_12002::PopulateNonwarRouterExecutors12004(nonwar);
     xar::ck3_12002::RegisterNonwarMailboxExecutorsV1(environment, nonwar);
+    xar::ck3_12003::RegisterPlayerMercenaryMailboxExecutorV1(environment);
+    xar::ck3_12003::RegisterPlayerMercenaryHireMailboxExecutorV1(environment);
+    xar::ck3_12003::RegisterPlayerHolyOrderHireMailboxExecutorV1(environment);
     environment.permitted_executor_quindenary =
         &xar::ck3_12003::ExecuteArmyCommanderCandidatesMailbox;
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1)
@@ -12703,10 +12707,12 @@ std::string RunPlayerMercenaryContextQuery12003(
     std::string_view request_id, std::string_view step,
     std::string_view payload) {
   xar::ck3_12003::PlayerMercenaryMailboxContextV1 query{};
-  query.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);
+  const bool actual4 = xar::game::IsCk3_12004Descriptor(game.descriptor());
+  query.envelope.game = actual4
+      ? &game : &xar::ck3_12002::NativeAdapter12002(game);
   query.envelope.mailbox = &g_main_thread_query_mailbox_v1;
   query.envelope.typed_context = &query;
-  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+  if ((!actual4 && !xar::game::IsCk3_12003Descriptor(game.descriptor())) ||
       step != xar::ck3_12003::mercenary::kPlayerMercenaryContextStep12003 ||
       !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
           payload, query.envelope.expected_snapshot_revision)) {
@@ -12759,9 +12765,12 @@ std::string RunPlayerMercenaryContextQuery12003(
     return CommandResultFrame(request_id, step, false,
         "application-main player-mercenary query failed or its snapshot changed");
   }
-  return xar::ck3_12003::mercenary::SerializePlayerMercenaryContextResultV1(
+  auto frame = xar::ck3_12003::mercenary::SerializePlayerMercenaryContextResultV1(
       query.observation, request_id, ++state.player_mercenary_query_sequence,
       query.envelope.expected_snapshot_revision);
+  return actual4
+      ? xar::game::Render12004BuildIdentity(std::move(frame), game.descriptor())
+      : frame;
 }
 
 std::string RunPlayerMercenaryHire12003(
@@ -12769,11 +12778,13 @@ std::string RunPlayerMercenaryHire12003(
     std::string_view request_id, std::string_view step,
     std::string_view payload) {
   xar::ck3_12003::PlayerMercenaryHireMailboxContextV1 action{};
-  action.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);
+  const bool actual4 = xar::game::IsCk3_12004Descriptor(game.descriptor());
+  action.envelope.game = actual4
+      ? &game : &xar::ck3_12002::NativeAdapter12002(game);
   action.envelope.mailbox = &g_main_thread_query_mailbox_v1;
   action.envelope.typed_context = &action;
   xar::ck3_12003::MercenaryHireRequestV1 request{};
-  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+  if ((!actual4 && !xar::game::IsCk3_12003Descriptor(game.descriptor())) ||
       !xar::ck3_12003::ParseMercenaryHireRequestV1(step, payload, request)) {
     return CommandResultFrame(request_id, step, false,
                               "mercenary hire request is malformed or unsupported");
@@ -12825,9 +12836,12 @@ std::string RunPlayerMercenaryHire12003(
     return CommandResultFrame(request_id, step, false,
         "mercenary hire execution unresolved; query current company employer and armies");
   }
-  return xar::ck3_12003::SerializeMercenaryHireResultV1(action.observation,
+  auto frame = xar::ck3_12003::SerializeMercenaryHireResultV1(action.observation,
       request_id, ++state.player_mercenary_hire_command_sequence,
       action.envelope.expected_snapshot_revision, snapshot.date_raw);
+  return actual4
+      ? xar::game::Render12004BuildIdentity(std::move(frame), game.descriptor())
+      : frame;
 }
 
 std::string RunPlayerHolyOrderHire12003(
@@ -12835,11 +12849,13 @@ std::string RunPlayerHolyOrderHire12003(
     std::string_view request_id, std::string_view step,
     std::string_view payload) {
   xar::ck3_12003::PlayerHolyOrderHireMailboxContextV1 action{};
-  action.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);
+  const bool actual4 = xar::game::IsCk3_12004Descriptor(game.descriptor());
+  action.envelope.game = actual4
+      ? &game : &xar::ck3_12002::NativeAdapter12002(game);
   action.envelope.mailbox = &g_main_thread_query_mailbox_v1;
   action.envelope.typed_context = &action;
   xar::ck3_12003::HolyOrderHireRequestV1 request{};
-  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
+  if ((!actual4 && !xar::game::IsCk3_12003Descriptor(game.descriptor())) ||
       !xar::ck3_12003::ParseHolyOrderHireRequestV1(step, payload, request)) {
     return CommandResultFrame(request_id, step, false,
                               "holy_order hire request is malformed or unsupported");
@@ -12891,9 +12907,15 @@ std::string RunPlayerHolyOrderHire12003(
     return CommandResultFrame(request_id, step, false,
         "holy_order hire execution unresolved; query current holy order employer and armies");
   }
+  const auto sequence = ++state.player_holy_order_hire_command_sequence;
+  if (actual4)
+    return xar::ck3_12004::religion::holy_order::SerializeHolyOrderHireResult12004(
+        action.observation, request_id, sequence,
+        action.envelope.expected_snapshot_revision, snapshot.date_raw,
+        game.descriptor());
   return xar::ck3_12003::SerializeHolyOrderHireResultV1(action.observation,
-      request_id, ++state.player_holy_order_hire_command_sequence,
-      action.envelope.expected_snapshot_revision, snapshot.date_raw);
+      request_id, sequence, action.envelope.expected_snapshot_revision,
+      snapshot.date_raw);
 }
 
 std::string RunTitleHolderQueryV1(
