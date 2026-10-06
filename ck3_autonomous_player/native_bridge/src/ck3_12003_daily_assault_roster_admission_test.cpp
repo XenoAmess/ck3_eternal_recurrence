@@ -344,7 +344,7 @@ void CheckTruePrefix(const game::ArmyCurrentDailyAssaultRosterAdmissionV1 &roste
   const auto &invalid = roster.occurrences[3];
   Check(invalid.original_army_resolution.used_fallback == true &&
             invalid.original_army_resolution.selected_object_ready &&
-            invalid.gate.original_unit_kind_raw_u32 == 1 && invalid.gate.ready && invalid.gate.verdict == false &&
+            invalid.gate.original_unit_kind_raw_u32 == 1U && invalid.gate.ready && invalid.gate.verdict == false &&
             invalid.army_append_ready && invalid.army_append == false && invalid.arrg_append_ready &&
             invalid.arrg_append_full_ids_u32 && invalid.arrg_append_full_ids_u32->empty(),
         "invalid original raw Army must read the actual fallback gate and retain its decisive false result");

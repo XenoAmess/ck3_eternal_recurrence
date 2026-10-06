@@ -280,3 +280,14 @@ title-derived controller inputs, earlier per-Army pending mutations, the date
 transition and full daily assault remain explicit separate dependencies.
 New implementation source reads add0 EXE bytes. Native builds/CTest/compiled
 wire consumption/local game operations/old test runs are0.
+
+The Root-owned g97 first full native build at original immutable registration
+head `da887a09e679065ebea1d13700d7c117932934c8` is preserved as RED after
+123.89342s. The sole compiler error is the new fixture line347 comparing
+`optional<uint32_t>` with signed literal1, instantiating MSVC C4389/C2220 under
+`/WX`. Production TUs reported no errors. The minimal repair changes only this
+fixture assertion to `1U`; same-file optionalu32 literal comparisons have no
+other signed literal. No production logic, DTO, expected values or Python
+qualification changed. Root owns the necessary repaired fixture/remaining-link
+build and first CTest; neither compiled byte consumption nor a successful full
+native qualification is claimed before those receipts exist.
