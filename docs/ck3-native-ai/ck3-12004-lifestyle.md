@@ -39,6 +39,8 @@ The exact window-refresh source-use body1445E40 closes the FocusDB and PerkDB la
 | Command clone /queue |2895BD0 /2895CD0, primary+40; queue37F06D0, manager5CC1240,channel0E | Selected slot proof; central command helperd2ced923 |
 | Observer versus action outcome |Full snapshot readiness /pending ACK /later receipt | No ACK as applied outcome; no actual4 live claim |
 
+The shared played-character DWORD source has an existing actual4 instruction witness at `0xCF5801`, reading four bytes from global `0x54DBC00`. The sole mapper supplied its precise metadata locator: `Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/actual4-domain/diplomacy-map/ROOT-DELIVERY.json`, field `shared_played_id_source`, backed by `first01/war_resolution_context-DETAIL.json` in the same directory. Lifestyle reuses this source proof without rereading the body/cache or claiming runtime execution.
+
 ## Source integration recipe
 
 SOURCE_PREPARED only. No build, tests, project imports, game, SDK, Git, hashes or FIRST were executed.
