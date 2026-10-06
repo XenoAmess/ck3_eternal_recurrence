@@ -22,6 +22,8 @@ The conditional break-penalty factory now supplies the existing reader's actual 
 
 The break reader's historical stock projection, source label and `effects_complete=false` boundary remain unchanged. This source migration does not claim a fresh actual4 stock-effect outcome or complete effects observation. The final factory, field receipts and Mermaid are in `actual4-break-penalty/`.
 
+The existing ordinary marriage sender now has an independent `BindFamilyActionImage(base,SHA,actual_commands)` factory. Its caller supplies the shared actual4 command binding from `BindCommandImage12004` (entry foundation `d2ced9237c25e758f9380637eaf76e4f02891452`); the family factory adds the actual send-command constructor and primary/secondary owner identities. Faction constructor proof, the paired262B interaction-context copy and the two required sender-table slots are source closed. Typed clone/delete bodies reuse Prisoner's separately owned66B/167B proofs. The actual pending scanner's six named functions supply its storage slot and pending/marriage-special owners. `BindFamilyOutboundImage` keeps the existing scanner and DTO; its pure software component-ID predicate retains the scanner's existing `ID!=-1` contract while the actual enum proves the `pending+8` receiver and ID at `receiver+8` (`pending+0x10`). The enum source is not claimed to perform that predicate. Owned cost2496B/16physical reads; foreign clone/delete466B/4reads are not recounted. Source/proofs/Mermaid are `actual4-marriage-actions/`.
+
 Exact source trees, Mermaid diagrams and captures are under `Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/marriage-family/actual4-native/`, `actual4-heir-lineage/`, `actual4-projection-map/` and `capacity-seam/`. Shared Dynasty/member proof is `Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/prisoner/current4-collection/COLLECTION-LAYOUT-LEDGER.json`. The family native child used3331B/22physical reads; lineage used1558B/8; projection used3032B/11. The relationship chain used6663B/9. Shared evidence is reused and its physical cost is not recounted here.
 
 ```mermaid
@@ -37,6 +39,8 @@ flowchart TD
   F -. Root shared query and build integration pending .-> O[Existing strict transport and formal consumer]
   L --> O
   P --> O
+  C --> S[Independent sender and pending bindings with shared actual4 queue]
+  S -. Root shared bridge and actual qualification .-> O
   C --> A[Independently bound existing obligations alliance and war diagnostics]
   A --> O
   C --> R[Independently bound existing ranked candidate query]
@@ -51,4 +55,4 @@ The existing native-auto-run family opt-in needs the same readonly `allow_privat
 
 The already adopted call-ally action's Python transport now permits the exact frozen actual3 or actual4 identities through the existing build helper and requires the result's version/SHA to match that same source frame. Its wire step/schema/kind, permission, submission and material checks remain unchanged. The native actual4 renderer already renders the existing action receipt's version/SHA. Actual4 native submission still awaits the shared mapped command constructor/copy/queue inputs; this strict metadata delta alone does not restore action execution. Its source tree and patch receipt are `actual4-call-ally-seam/`.
 
-Ordinary marriage sender bindings and optional alliance explanation text have independent necessary binding inputs still in progress. Their migration must use actual mapped sources rather than old binders. The ranked native candidate producer, Boolean obligations alliance diagnostics and conditional break native-input factory are source implemented; Root qualification remains pending. Source closure does not claim restored runtime behavior. Root owns adapter/bridge/CMake hooks, builds and paused ordinary Robert29829 verification. This packet ran no production import, fixture FIRST, test, build or game contact and claims no new candidate opportunity or natural succession.
+Native ordinary marriage sender and outbound input factories are source implemented alongside the ranked producer, Boolean obligations alliance diagnostics and conditional break native-input factory. Existing call-ally submission wiring and optional alliance explanation text remain separate integration work. Root qualification remains pending; source closure does not claim restored runtime behavior. Root owns adapter/bridge/CMake hooks, builds and paused ordinary Robert29829 verification. This packet ran no production import, fixture FIRST, test, build or game contact and claims no new candidate opportunity or natural succession.
