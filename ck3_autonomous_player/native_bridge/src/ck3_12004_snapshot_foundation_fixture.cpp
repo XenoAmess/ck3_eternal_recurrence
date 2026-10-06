@@ -110,7 +110,7 @@ struct SnapshotMemory {
     Store(resources.data(), 0x100, kGold);
     Store(resources.data(), 0x130, kPrestige);
     Store(resources.data(), 0x110, kPiety);
-    Store(actor, 0x2F8, std::int32_t{7});
+    Store(resources.data(), 0x2F8, std::int32_t{7});
 
     Store(event.data(), 0x1B0, event_definition.data());
     Store(event.data(), 0x1BC, std::int32_t{77});
