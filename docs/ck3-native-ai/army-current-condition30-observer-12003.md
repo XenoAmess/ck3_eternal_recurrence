@@ -1,0 +1,63 @@
+# Current Army30 actual condition observer — CK3 1.20.0.3
+
+The source-first [two wrappers](army-refresh-two-byte-flags-12003.md) and [actual tail/current condition handoff](army-refresh-tail-and-condition-verdict-inputs-12003.md) were reviewed by Root before this implementation. Exact build is CK3 **1.20.0.3 Crozier / Steam25652598**, reused EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. This independent query-global family adds the **current Army30 condition operand**, covering zero1D4 and demanded actual receiver/root branches. Old qualified numeric refresh DTO/schema stays unchanged. Status is **implementation candidate awaiting Root coherent integration/native qualification**; no live or full refresh credit.
+
+The source lane starts at `164bbe0c98d5796cc2c8b940dcb41738ac2946ff`. Plan was sealed first at `C:/codex-ck3-background/packets/army-current-condition30-implementation-20261006/SOURCE-AND-API-FIRST-IMPLEMENTATION-PLAN.json`. This package makes no EXE reads: it reuses the held2C4AB70 wrapper,9F9E20 ordinary Character root,87E0E0 existing exact.3 scope destructor,372DF30 ordinary evaluator and source-qualified Unit DB routes. The separate actual20/shared21 `28B2820` source frontier is not expanded here.
+
+## Native tree and current value
+
+`2C4AB70` returns0 on rawArmy1D4zero. Otherwise it resolves Army124 Unit by complete generation or actual fallback, reads selectedUnit174 full ownerDWORD, constructs kind4/subtype0/zero-extended payload8 and evaluates the actual inline condition at **`QWORD[Army+1D8]+160`**. Normal return is1 for actual predicatefalse,0 for actual predicatetrue. Root validation/applicability rejection is a valid nativefalse; this consumer adds no owner-positive-ID gate and uses no Rule43 receiver/verdict.
+
+```mermaid
+flowchart TD
+    P["same-query post-admission ordered roster\nrecorded physical Army selection"] --> S["source resolver materializes borrowedArmy\nmatch recorded physicalidentity, no pointer parsing"]
+    S --> Z{"rawArmy1D4 ==0?"}
+    Z -- yes --> V0["current30=0\nUnit/context/receiver undemanded"]
+    Z -- no --> U["Unit store5D1E380\nwhole Unit10 fullgen or actual5D1E378 fallback"]
+    U --> O["selectedUnit174 fullDWORD\nno ID/sentinel gate"]
+    O --> C["9F9E20 own0x168 context\nuse actual returned pointer"]
+    Z -- no --> R["QWORDArmy1D8 inline160 actual receiver"]
+    C --> E["372DF30 actualreceiver/currentowner root"]
+    R --> E
+    E --> D["87E0E0 releases original owned context storage"]
+    D --> I["actualfalse→current30=1\nactualtrue→current30=0"]
+    V0 --> Q["independent current input ready"]
+    I --> Q
+    Q -. "later post20 inputs/21/31/repeated refresh unknown" .-> F["full refresh readiness unchanged"]
+```
+
+Every original raw Army occurrence, duplicate, full reference and selected physical identity is retained. The same-query post-admission DTO is borrowed as the roster/selection source; the reader materializes objects via the existing source resolver and compares recorded identity strings as identity tokens. It never reconstructs a pointer from text. No numeric gate is imposed: a missing ArRg40/numeric result does not block an independently readable current condition.
+
+## Independent API and schema
+
+Public bindings **`CurrentArmyCondition30Bindings12003`**, binder **`BindCurrentArmyCondition30Inputs12003(base,sha)`**, collector **`ReadCurrentArmyCondition30Inputs12003(bindings,const ArmyCurrentPostAdmissionRefreshInputsV1&)`**. Existing same-query native hook should call it after post-admission capture and copy the resulting owned DTO into optional field **`current_army_condition30_inputs_v1`**. Root owns those shared hooks/registration/CMake changes; this lane changes only nine new exclusive files.
+
+`ArmyCurrentCondition30InputsV1` contains the original roster, per-occurrence `ArmyCondition30OccurrenceV1` and independent current-condition readiness. Each occurrence keeps original Army resolution, `same_query_army_selection_matched`, observed cacheArmy30, raw1D4, demanded raw124/owner174, Unit resolution, actual condition-owner/inline identities, source kind4/subtype0/payload/provenance, nullable actual native bool and its current0/1 inverse.
+
+The custom Unit resolution records requested fullID, raw unsigned capacity/low24 index, indexed pointer/full generation, native fallback classification and selected physical identity. A null Unit store directly uses fallback and does not demand Army124. It does not add an unnecessary fallbackUnit10 read/metadata gate. Raw Unit fullID0 and ownerDWORD0/high-bit/FFFFFFFF retain all bits. Only actually missing reads/receiver/bindings/construction/evaluation produce nullable unavailable values with reasons; nativefalse is available. Zero1D4 returns independently with later fields undemanded. Observed cacheArmy30 remains separate and can differ from derived current0/1.
+
+The actual9F9E20 returned context is passed to372DF30. Original0x168 owned storage is destroyed by87E0E0, including a constructor's normal null return. No saved scopes, broad activity provider, tooltip evaluator, refresh executor, persistent writes or gameplay action are needed. Existing owning-callback/lifetime convention is reused, with no new gate or allocator audit.
+
+The strict Python normalizer **`normalize_current_army_condition30_inputs_v1`** retains raw fields and validates this narrow branch/identity contract. Pure **`project_current_army_condition30_inputs_12003`** computes only zero or actual bool inverse. Root's ordinary Service hook publishes per-request-row projections with the query snapshot/revision/date provenance. Current-strength and full-monthly readiness remain independent.
+
+## New qualification prepared, not executed
+
+Native producer **`src/ck3_12003_army_condition30_inputs_test.cpp`**, suggested target/CTest **`xar_bridge_ck3_12003_army_condition30_inputs_test`**, emits one JSON **`ck3_12003_army_condition30_inputs_wire.json`** with nine new samples, two repeated original occurrences each:
+
+| Sample | Value/qualification |
+| --- | --- |
+| zero1D4 | 0 with Unit/receiver reads denied and context/evaluator unbound |
+| actual true | 0; actual returned context differs from owned storage; two callbacks/destructions |
+| actual false | 1 even ownerFFFFFFFF; no consumer-invented root gate |
+| high-bit owner | complete zero-extended payloadFE000022 |
+| UnitID0 and owner0 | native full-generation0 is preserved |
+| wrong Unit generation | actual fallback owner424242; fallbackUnit10 read denied |
+| null Unit store | actual fallback; Army124/fallbackUnit10 reads denied |
+| missing receiver | nullable unknown with no evaluation; distinct from nativefalse |
+| null context return | paired owned destruction, no evaluation, nullable unknown |
+
+The actual production collector/serializer are compiled; the same-query source roster, world objects, context producer and predicate callbacks are **synthetic fixture data**, not live CK3 evaluation. A byte snapshot checks this observer leaves Army/Unit/source data unchanged. Numeric source gates deliberately remainfalse to verify independent current inputs. Fixture includes no old numeric/Core/Boolean test or wire rerun.
+
+Exactly one new Service compound is prepared in `test_army_current_condition30_service_12003.py`. It requires Root's genuinely compiled new JSON via `XAR_ARMY_CONDITION30_WIRE`, with no synthetic leaf fallback, then feeds all nine leaves through the real Service→normalizer→pure inverse path. Its minimal Army/snapshot/transport envelope is explicitly synthetic and has no old numeric/Core sample. It checks two raw duplicates per sample, actualfalse/unknown distinction, high-bit/zero/fallback inputs, cache separation, same revision and unchanged broad readiness. `XAR_ARMY_CONDITION30_CASE_OUTPUT` records outputs. Root alone configures/builds/Ctests and authorizes this first consumer after coherent source freeze. At candidate seal **tests/builds/consumer executions=0**.
+
+`actual_refresh_execution_ready`, `actual_next_occurrence_ready`, full callback/daily/monthly, actual post-stage and future-tick readiness stayfalse. This is current-state evaluation, not proof of unchanged transitive condition operands after hypothetical Army20/numeric stores. Actual20 tail/28B2820,21/31, next occurrence and full ordered refresh remain separate dependencies. No local CK3/Steam/process/SDK/pipe/UI/live access, new EXE reads/hashes, builds or push occurred.
