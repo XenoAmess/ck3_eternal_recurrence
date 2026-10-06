@@ -14,7 +14,11 @@ import sys
 import unittest
 
 ROOT = Path(__file__).resolve().parents[2]
-sys.path.insert(0, str(ROOT / "src"))
+sys.path[:0] = [
+    str(ROOT / "src"),
+    str(ROOT.parent / "tools"),
+    str(ROOT.parent / "ck3_workshop_mcp" / "src"),
+]
 
 from xar_autoplayer.bridge.mcp_server import create_server
 from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver, NativeProtocolState
