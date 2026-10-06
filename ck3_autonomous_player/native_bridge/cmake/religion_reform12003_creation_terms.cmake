@@ -8,8 +8,12 @@ if(BUILD_TESTING AND WIN32 AND
    XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
   add_executable(xar_ck3_religion_reform12003_creation_terms_test
     tests/religion_reform12003_creation_terms_test.cpp)
+  # The .3 adapter and mailbox use these existing production helper definitions.
+  target_sources(xar_ck3_religion_reform12003_creation_terms_test PRIVATE
+    src/current_first_heir_relationship_v1.cpp
+    src/observed_heir_marriage_private_v1.cpp)
   target_link_libraries(xar_ck3_religion_reform12003_creation_terms_test PRIVATE
-    xar_ck3_12002_runtime user32)
+    xar_ck3_12002_runtime xar_bridge_protocol user32)
   target_include_directories(xar_ck3_religion_reform12003_creation_terms_test PRIVATE include)
   target_compile_features(xar_ck3_religion_reform12003_creation_terms_test PRIVATE cxx_std_20)
   target_compile_definitions(xar_ck3_religion_reform12003_creation_terms_test PRIVATE
