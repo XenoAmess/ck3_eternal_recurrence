@@ -194,8 +194,9 @@ vectors and actual-null allocator. They assert the source read order and keep
 current scalar readiness independent. Root should register
 xar_bridge_daily_assault_placement_witness_12003_test, linking the existing
 xar_ck3_12002_runtime; no extra production translation unit is introduced.
-Native compilation, first CTest and first compiled full-service consumption
-remain pending Root's g95 batch. The external native-fixture folder holds exact
+At candidate handoff, native compilation, first CTest and first compiled
+full-service consumption remained pending Root's g95 batch; the first results
+are recorded below. The external native-fixture folder holds exact
 wire names, expected values and that execution recipe.
 
 Readiness is static-ready for the pure conditional value and real Python
@@ -210,3 +211,52 @@ release suffix:54E0570 and54DEB68 select8571C0, terminating at standard HeapFree
 on normal return (null buffer returns). This is peer source credit and no fresh
 capture in this package; actual witness equality selects those known callbacks.
 It does not establish a real callback execution or next-day phase association.
+
+
+## First compiled full-service qualification
+
+Root froze g95 at f2cd130e2e5743bcecece44afefdb3954765678b, including the
+candidate adopted as76d07ee1. The full fresh native build passed in118.89139s:
+four runtime targets plus only the new fixture,594 actual translation units,
+591 unique units,1316 source inputs,65 features ON/50 OFF, reuse0/generation0.
+The one new CTest passed on its first execution at2026-10-06 07:04:49 UTC,
+real0.14s/process0.177287s. No previous native fixture was rerun by this owner.
+
+The six newly emitted whole ArmyStrength wires then passed their first and
+only full immutable production service consumer:6/6 frames,154 checks and12
+conditional prefixes. Imports came from g95's archived production src/tools/
+workshop dependencies, not the mutable candidate. The actual
+GameplayBridgeService.query_army_strengths route performed strict normalization
+and exposed the new witnessed inputs before the pure staged projection.
+Matched nonempty and legitimate-zero frames crossed the source-closed
+collision; allocator mismatch, missing read and actual-null remained local
+partial results. Key-hit and direct-empty prefixes completed independently in
+all six frames. Actual full IDs, duplicate occurrences, physical relocation,
+current denominators and original strength/readiness were preserved.
+
+The route envelope, revisions and paused metadata are explicitly offline
+fixture inputs. Each compiled fake-memory frame is independent; none receives
+paused-live, coherent-frame, actual next-callback or complete daily/monthly
+credit. Native allocator/placement effects were not executed. The source-bound
+model still requires supplied staged requests; the complete original-roster
+admission observer remains the next functional input package.
+
+Build/CTest receipts:
+C:/codex-ck3-background/daily-placement-batch/strict01/BUILD-RESULT.json and
+FIRST-ONE-READONLY-CTESTS.json. The producer bytes are under
+strict01/cache-observers/daily-assault-placement-witness-wire.
+Consumer receipt and output are at this packet's
+g95-first-compiled-service01/FIRST-COMPILED-SERVICE-RESULT.json and
+FIRST-COMPILED-SERVICE-OUTPUT.json. INVOCATION.json records the actual duration
+and immutable arguments; result pins include the six wires, production
+modules, source/build receipts and output. No RED or retry occurred in this
+qualification. Previous source/cap/commit harness failures remain preserved.
+
+Final native manifest:322864 B,
+SHA9fca2ae182fce187ddb40ef290d762fffeb26b4eb9b76edf6580205c80b8b09c.
+DLL:11104256 B,
+SHAc343a2de1beadc8ef07860491ad17b3e6c38ab5bd6113120ad9153f1142afdb2.
+This qualifies the new readonly producer/serializer and bounded conditional
+value as static-ready with actual compiled-fixture evidence. The runtime is
+frozen and not run locally. No local CK3/Steam/process/SDK/pipe/UI/userdata
+operation, native build, old test or old wire replay was performed by this owner.
