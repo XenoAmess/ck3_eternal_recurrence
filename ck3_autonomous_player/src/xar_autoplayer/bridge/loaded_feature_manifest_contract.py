@@ -4,7 +4,9 @@ from __future__ import annotations
 
 from typing import Final
 
-from .version_identity import CK3_11906, CK3_12002, CK3_12003, require_exact_native_build
+from .version_identity import (
+    CK3_11906, CK3_12002, CK3_12003, CK3_12004, require_exact_native_build,
+)
 
 
 QUERY_LOADED_FEATURE_MANIFEST_V1_CAPABILITY: Final = (
@@ -78,6 +80,9 @@ _FEATURE_DEFINITIONS_BY_BUILD: Final = {
 _FEATURE_DEFINITIONS_BY_BUILD[CK3_12003.game_version] = (
     _FEATURE_DEFINITIONS_BY_BUILD[CK3_12002.game_version]
 )
+_FEATURE_DEFINITIONS_BY_BUILD[CK3_12004.game_version] = (
+    _FEATURE_DEFINITIONS_BY_BUILD[CK3_12002.game_version]
+)
 
 
 _FIELDS: Final = {
@@ -141,6 +146,13 @@ _PROVENANCE_BY_BUILD: Final = {
 _PROVENANCE_BY_BUILD[CK3_12003.game_version] = {
     **_PROVENANCE_BY_BUILD[CK3_12002.game_version],
     "backend_id": CK3_12003.backend_id("loaded-feature-manifest-v1"),
+}
+_PROVENANCE_BY_BUILD[CK3_12004.game_version] = {
+    "feature_root_slot_rva": "0x5CB87F8",
+    "feature_bitset_rva": "root+0x2B0",
+    "feature_enum_table_rva": "0x47334D0..0x4733580",
+    "script_dlc_set_rva": "0x5CC15E0",
+    "backend_id": CK3_12004.backend_id("loaded-feature-manifest-v1"),
 }
 
 _UNAVAILABLE_REASONS: Final = {

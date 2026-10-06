@@ -7,7 +7,11 @@ semantic driver interface used by the visual and data-Mod backends.
 
 from __future__ import annotations
 
-from .public_unit_contract import is_public_cunit_id
+from .public_unit_contract import (
+    canonical_public_cunit_decimal,
+    canonical_public_cunit_token,
+    is_public_cunit_id,
+)
 from .current_actor_stress_adjustment_contract import (
     CAPABILITY as CURRENT_ACTOR_STRESS_ADJUSTMENT_V1_CAPABILITY,
     STEP as CURRENT_ACTOR_STRESS_ADJUSTMENT_V1_STEP,
@@ -9645,6 +9649,7 @@ class NativeHeadlessGameplayDriver:
         return self._execute_primitive_step(
             step,
             expected_revision=expected_revision,
+            required_capability=_canonical_tactical_daily_sentinel_step_capability(step),
         )
 
     def _execute_generic_pause_map(
@@ -25810,6 +25815,49 @@ def _battle_sentinel_has_active_retreat(
         ):
             return True
     return False
+
+
+def _canonical_tactical_daily_sentinel_step_capability(step: str) -> str | None:
+    """Bind the native canonical sentinel forms to their existing templates."""
+    if not isinstance(step, str):
+        return None
+    if step.startswith(_TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX):
+        generation = step.removeprefix(_TACTICAL_DAILY_SENTINEL_CANCEL_PREFIX)
+        if (canonical_public_cunit_decimal(generation) and generation != "0"
+                and len(generation) <= 20 and int(generation) <= 2**64 - 1):
+            return _TACTICAL_DAILY_SENTINEL_CANCEL_CAPABILITY
+        return None
+    if not step.startswith(_TACTICAL_DAILY_SENTINEL_ARM_PREFIX):
+        return None
+    tokens = step.removeprefix(_TACTICAL_DAILY_SENTINEL_ARM_PREFIX).split("-")
+    army_marker = 5
+    mode = "decision"
+    if len(tokens) >= 9 and tokens[5] == "mode":
+        mode = tokens[6]
+        if mode not in {"decision", "terminal"}:
+            return None
+        army_marker = 7
+    if (len(tokens) < army_marker + 2 or tokens[1] != "to"
+            or tokens[3] != "speed" or tokens[army_marker] != "a"):
+        return None
+    try:
+        starting = canonical_public_cunit_token(tokens[0])
+        target = canonical_public_cunit_token(tokens[2])
+        speed = canonical_public_cunit_token(tokens[4])
+        count = canonical_public_cunit_token(tokens[army_marker + 1])
+        armies = [canonical_public_cunit_token(token)
+                  for token in tokens[army_marker + 2:]]
+    except ValueError:
+        return None
+    if (starting is None or starting == 0 or target is None
+            or target <= starting or (target - starting) % 24 != 0
+            or speed not in {1, 2, 3, 4, 5} or count is None
+            or count > _BATTLE_SENTINEL_MAXIMUM_ARMIES or len(armies) != count
+            or count == 0 and mode != "terminal"
+            or any(army is None for army in armies)
+            or len(set(armies)) != count):
+        return None
+    return _TACTICAL_DAILY_SENTINEL_ARM_CAPABILITY
 
 
 def _normalize_tactical_daily_sentinel_status(
