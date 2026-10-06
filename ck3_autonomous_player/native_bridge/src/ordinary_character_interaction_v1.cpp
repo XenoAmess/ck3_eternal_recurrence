@@ -312,7 +312,7 @@ void PrepareGrantTitlePickerWindowV1(const Bindings &b, const OrdinaryInteractio
   // confirmation trigger, then call only its true branch's UI leaves.
   bool confirmation_required = false;
   if (!Call(b.interaction.evaluate_trigger, confirmation_required,
-      static_cast<const void *>(static_cast<const std::byte *>(definition) + 0x13D8),
+      static_cast<void *>(static_cast<std::byte *>(definition) + 0x13D8),
       static_cast<const void *>(context.bytes.data() + 8)) || !confirmation_required) {
     out.reason = "stock_grant_confirmation_trigger_not_true"; return;
   }
