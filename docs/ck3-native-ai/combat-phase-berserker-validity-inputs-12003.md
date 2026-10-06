@@ -1,5 +1,7 @@
 # Knight berserker validity inputs — CK3 1.20.0.3
 
+Current status: the source handoff below now has a knight-only V2 implementation candidate and a FIRST Python compound GREEN. The new native fixture has not been built or consumed, and there is no current game observation. See the implementation qualification at the end; full phase readiness remains unchanged.
+
 This source-only packet continues the already qualified warmonger Core leaf. Its scope is the remaining stock knight occurrence conjuncts: North Germanic heritage or germanic Religion, and the absence of craven, berserker and calm. Warmonger alone does not make the complete event row ready.
 
 The source plan was sealed before this research at `C:/codex-ck3-background/packets/phase-berserker-validity-source-20261006/SOURCE-PLAN.json`. First reuse the stock AST, current V2 role fields, canonical native research and cached getter/definition pins. No provider, strategy or readiness change, test, build, binary scan or local runtime operation is part of this packet. Any actual missing native operand requires a concrete bounded source plan before new binary reads.
@@ -86,3 +88,44 @@ No final `event_valid`, `phase_ready` or selection output belongs in this leaf. 
 The source-only packet reuses **1,059,521 bytes of existing JSON input**: `.3` reuse metadata 769,751; cached core comparison 21,878; phase-character contract 11,812; phase-culture contract 29,088; frozen current stock AST 226,992. Native code byte patterns in the cached manifests are reused metadata, not a new EXE read. New EXE bytes, new hash/section/RTTI scans, tests, native builds and local CK3/Steam/process/SDK/pipe/UI operations are all **zero**.
 
 Readiness is **research / source-confirmed remaining-input observer handoff**. The source gap is now a concrete V2 publication dependency, with an immediately reusable three-trait seam and normal Culture/Religion read portions. There is no new live capability or full berserker readiness claim. Root owns the shared Oct6/W41 report merge; plan, selected AST/native evidence records, exact input pins and a machine-readable handoff are under `C:/codex-ck3-background/packets/phase-berserker-validity-source-20261006/`. The next bounded implementation can fill this leaf without another EXE read for its source-closed normal paths; any later attempt to claim fallback truth must use its actual source/observed operand.
+
+## Minimum implementation plan (2026-10-06)
+
+Root adopted the source handoff as `5c33040b`; this implementation starts from that exact source. The plan is frozen at `C:/codex-ck3-background/packets/phase-berserker-validity-implementation-20261006/IMPLEMENTATION-PLAN.json` before code. Add only an optional knight-row `phase_berserker_validity_inputs_v1` with independent Culture, Religion and three named-trait values/reasons. Reuse initialized TraitDB plus public unique-definition/presence functions, the narrow selected-pillar read, and the already closed Religion identity/key chain. Preserve legal zero/full-generation refs and actual Culture/Rite fallback classification; no unobserved fallback becomes false.
+
+The new pure consumer evaluates only this row's actual frozen stock validity AST in three-valued logic, joined to the existing qualified warmonger occurrence. It does not admit/select a native candidate, calculate chance, consume RNG/effects or upgrade commander/V3/overall readiness. One new FIRST compound Python case will verify full V2 normalization, occurrence attribution and actual stock AST true/false/unknown. Root alone compiles the new native fixture and integrates its external recipe. No EXE read, local runtime operation or old test is needed.
+
+## Implementation candidate and FIRST Python qualification
+
+The implementation adds `phase_berserker_validity_inputs_v1` only to `CombatKnightSnapshot` and the existing V2 knight serializer/normalizer. The `.3` binder enables it under the exact target EXE SHA; the `.2` and V3 bindings leave it disabled. `ReadCombatKnights` supplies the same concrete knight pointer and full Character identity already used by the Core leaf. The optional leaf remains omitted in unbound old producers; the Python normalizer accepts their absence.
+
+`ck3_12003_phase_berserker_validity_inputs.hpp` reuses the loaded TraitDB and the real out-of-line three-definition presence helpers, copies only the five selected Culture pillar keys, and follows the closed Character/Rite/Faith/Religion getter identities to the actual Religion key. Each domain and each trait has an independent nullable value and reason. A normal resolved key that does not match is observed false. Actual Culture/Rite fallback is explicitly `native_fallback` with unknown truth; unresolved Faith/Religion identities are not mislabeled as a fabricated fallback. Full-generation DWORD identities and legal zero survive the DTO, serializer and contract. A failed key copy retains the identities that were successfully resolved.
+
+The pure adapter joins this leaf and the existing warmonger leaf at the same public Army/Regiment/Character/member index. `phase_berserker_validity_12003.py` evaluates the **actual frozen `knight_become_berserker` validity AST**, with true/false/unknown operands. A known false conjunct or known true disjunct can decide the authored expression while other observations remain unknown; those unknown paths and reasons are retained in the result. The result is explicitly `authored_stock_knight_validity_only`, not admission, chance or selection.
+
+```mermaid
+flowchart TD
+    V2["ReadCombatKnights: same concrete occurrence"] --> W["Existing qualified Core warmonger leaf"]
+    V2 --> B["New optional berserker input leaf"]
+    B --> C["Culture identity / 5 selected keys / nullable heritage"]
+    B --> R["Rite → Faith → Religion full identities / key / nullable germanic"]
+    B --> T["3 actual named trait definitions / independent presence values"]
+    C --> N["Production V2 normalizer"]
+    R --> N
+    T --> N
+    W --> A["Same occurrence adapter"]
+    N --> A
+    A --> AST["Actual stock validity AST: true / false / unknown"]
+    C -. "native fallback truth remains unobserved" .-> U["Nullable value + actual reason"]
+    R -. "fallback / unresolved key remains unobserved" .-> U
+    T -. "missing definition remains unobserved" .-> U
+    AST -. "native admission / loaded overrides / chance / RNG / effects separate" .-> NEXT["Remaining phase frontier"]
+```
+
+On **2026-10-06 03:36:24 UTC** (11:36:24 Asia/Shanghai), the sole NEW FIRST Python method `test_compound_production_inputs_and_actual_stock_ast_three_states` passed in **0.012 s** (outer invocation **1.1313357 s**). It covers ten main AST scenarios plus legal-zero, missing-old-leaf and different-occurrence evaluations, and rejects a source Character mismatch. The path is production full V2 normalization → occurrence adapter → actual stock AST; it verifies that the existing completeness result and `monte_carlo_ready: false` remain unchanged. Previously passed test constructors are reused as data only; no old test method executes. There is **one method / thirteen AST evaluations / one identity-mismatch validation**, with no RED attempt. Receipt and logs: `C:/codex-ck3-background/packets/phase-berserker-validity-implementation-20261006/first-python/attempt01/`.
+
+The new native fixture `tests/phase_berserker_validity_12003_test.cpp` is prepared for Root's first central build as `xar_ck3_12003_phase_berserker_validity_inputs_test`. It exercises the production helper and inline serializer with fixture-owned memory, actual definition lookup/presence helpers and concrete callbacks. Its planned output is **one JSON / nine samples**, `ck3_12003_phase_berserker_validity_inputs_wire.json`: normal full-generation paths, either valid authored cultural/religious branch, neither branch, observed craven, Culture fallback, Rite fallback, one unresolved named trait, independent domain failures with known berserker, and legal zero. Trait ordinals 501–503 are fixture-owned synthetic data. The planned wire contains this new leaf only; it cannot lend genuine native credit to a separately synthetic warmonger wrapper.
+
+The external `CMAKE-RECIPE.cmake` and `CMAKE-DEPENDENCIES.json` identify the new target and the two existing serializer projectors' new direct DTO/serializer dependencies. Because the real trait helpers are out of line, any standalone target directly compiling `ck3_12002_combat.cpp` now also needs `src/ck3_12002_phase_character.cpp`; Root owns that CMake integration and avoids duplicate absolute/relative source entries. The runtime already includes this real source. No stubs or production semantic replacement are introduced.
+
+Readiness remains **research / implementation candidate with FIRST Python GREEN** until Root's exact native build and genuine new-wire consumption qualify it. New EXE bytes, native configure/build/CTest, old test methods and local CK3/Steam/process/SDK/pipe/UI operations are all zero. Current knight observations, actual fallback truth, loaded override equivalence, native candidate admission/order, chance modifiers, selection/RNG/effects and full V3/overall phase readiness remain separate next dependencies. Root merges the Oct6/W41 fields from this implementation packet.

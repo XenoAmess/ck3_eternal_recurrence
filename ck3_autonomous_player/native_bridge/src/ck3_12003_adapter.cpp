@@ -137,6 +137,8 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
   result.phase.combat.phase_rite_parameters = result.combat.phase_rite_parameters;
   result.combat.phase_warmonger_core = ck3_12003::phase_warmonger::BindImage(
       image_base, executable_sha256);
+  result.combat.phase_berserker_validity_inputs = ck3_12003::phase_berserker::BindImage(
+      image_base, executable_sha256);
   // Current cash uses its actual .3 descriptor identity and native getters.
   // The private MCP remains unadvertised; the .2 binder leaves this disabled.
   result.war_cash_current = ck3_12003::war_cash_current::BindImage(
