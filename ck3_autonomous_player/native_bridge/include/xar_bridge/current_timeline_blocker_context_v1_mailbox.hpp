@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_11906.hpp"
 #include "xar_bridge/game_adapter.hpp"
 #include "xar_bridge/ck3_12003_succession_modal.hpp"
+#include "xar_bridge/ck3_12004_succession_modal.hpp"
 #include "xar_bridge/current_timeline_blocker_context_v1.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
@@ -30,6 +31,8 @@ struct CurrentTimelineBlockerContextMailboxContextV1 {
   Bindings bindings{};
   const game::GameAdapter *selected_game = nullptr;
   ck3_12003::SuccessionModalBindings12003 succession12003{};
+  ck3_12004::SuccessionModalBindings12004 succession12004{};
+  ck3_12004::SuccessionModalGuiObservationContext12004 gui12004{};
   ZhongguoScoreboardNativeEnvironmentV1 environment{};
   ZhongguoScoreboardAccessV1 access{};
   CurrentTimelineBlockerReadRequestV1 request{};

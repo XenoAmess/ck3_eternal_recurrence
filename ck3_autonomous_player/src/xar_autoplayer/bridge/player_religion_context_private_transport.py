@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .religion_context_addon_schema import religion_context_addon_schema
+
 from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError
@@ -29,7 +31,7 @@ from .nonwar_private_build import (
     private_native_build_identity, private_native_provenance,
 )
 from .version_identity import (
-    CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build,
+    CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend, require_exact_native_build,
 )
 
 
@@ -56,7 +58,7 @@ def normalize_player_religion_context_v1(
     if not isinstance(value, dict) or set(value) != _CONTEXT_KEYS or value["schema"] != private_native_schema(SCHEMA, snapshot):
         raise ValueError("native player religion context schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(snapshot):
         raise ValueError("native player religion context belongs to another build")
     if (type(value["available"]) is not bool
             or type(value["capture_epoch"]) is not int
@@ -106,7 +108,7 @@ def normalize_player_spiritual_fulfillment_progress_v1(
         "progress_unit", "is_monthly_change",
     }
     if (not isinstance(value, dict) or set(value) != keys
-            or value["schema"] != "ck3_12003_spiritual_fulfillment_progress_v1"
+            or value["schema"] != religion_context_addon_schema("ck3_12003_spiritual_fulfillment_progress_v1", current_context)
             or value["read_only"] is not True or type(value["available"]) is not bool
             or type(value["raw_scale"]) is not int or value["raw_scale"] != 100000
             or value["progress_unit"] != "percent" or value["is_monthly_change"] is not False):
@@ -151,7 +153,7 @@ def normalize_player_mystical_communion_decision_terms_v1(
         "affordable", "costs_raw", "raw_scale", "reasons_available", "can_take_reasons",
     }
     if (not isinstance(value, dict) or set(value) != keys
-            or value["schema"] != "ck3_12003_mystical_communion_decision_terms_v1"
+            or value["schema"] != religion_context_addon_schema("ck3_12003_mystical_communion_decision_terms_v1", current_context)
             or value["read_only"] is not True or type(value["available"]) is not bool
             or value["decision_id"] != "hold_mystical_communion_decision"
             or type(value["raw_scale"]) is not int or value["raw_scale"] != 100000
@@ -196,7 +198,7 @@ def normalize_player_pilgrimage_activity_type_terms_v1(
         "reasons_available", "can_plan_reasons",
     }
     if (not isinstance(value, dict) or set(value) != keys
-            or value["schema"] != "ck3_12003_pilgrimage_activity_type_terms_v1"
+            or value["schema"] != religion_context_addon_schema("ck3_12003_pilgrimage_activity_type_terms_v1", current_context)
             or value["read_only"] is not True or type(value["available"]) is not bool
             or value["activity_id"] != "activity_pilgrimage"
             or type(value["reasons_available"]) is not bool):
@@ -232,7 +234,7 @@ def normalize_player_confession_decision_terms_v1(
         "affordable", "costs_raw", "raw_scale", "reasons_available", "can_take_reasons",
     }
     if (not isinstance(value, dict) or set(value) != keys
-            or value["schema"] != "ck3_12003_confession_decision_terms_v1"
+            or value["schema"] != religion_context_addon_schema("ck3_12003_confession_decision_terms_v1", current_context)
             or value["read_only"] is not True or type(value["available"]) is not bool
             or value["decision_id"] != "pam_decision_confession"
             or type(value["raw_scale"]) is not int or value["raw_scale"] != 100000
@@ -277,7 +279,7 @@ def normalize_player_church_income_profile_v1(
         "maximum_monthly_income_raw", "raw_scale",
     }
     if (not isinstance(value, dict) or set(value) != keys
-            or value["schema"] != "ck3_12003_player_church_income_profile_v1"
+            or value["schema"] != religion_context_addon_schema("ck3_12003_player_church_income_profile_v1", current_context)
             or value["read_only"] is not True or type(value["available"]) is not bool
             or type(value["raw_scale"]) is not int or value["raw_scale"] != 100000):
         raise ValueError("native church income profile schema is malformed")
@@ -310,7 +312,7 @@ def query_player_religion_context_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-context-v1",
         )
-        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

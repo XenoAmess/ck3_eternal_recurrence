@@ -59,13 +59,15 @@ bool VerifyAbi(const ActivityFeastGuestJoinEnvironmentV1 &env) noexcept {
          env.passive_cost->environment.executable_sha256 ==
              source.admitted_executable_sha256 &&
          ReadAt(source, source.module_base, 0x10AE220, rows_read) &&
-         rows_read == (IsActivityPlanner12002V1(source) ? std::array<std::uint8_t, 7>{0x48, 0x8B, 0x83, 0xB0, 0x16, 0, 0} : kNormalGuestRowsRead) &&
+         rows_read == (IsActivityFeastModernBuildV1(source.admitted_executable_sha256) ? std::array<std::uint8_t, 7>{0x48, 0x8B, 0x83, 0xB0, 0x16, 0, 0} : kNormalGuestRowsRead) &&
          ReadAt(source, source.module_base, 0x10AE286, join_call) &&
-         join_call == (IsActivityPlanner12002V1(source) ? std::array<std::uint8_t, 5>{0xE8, 0x05, 0x27, 0, 0} : kOriginalJoinCall) &&
+         join_call == (IsActivityFeastModernBuildV1(source.admitted_executable_sha256) ? std::array<std::uint8_t, 5>{0xE8, 0x05, 0x27, 0, 0} : kOriginalJoinCall) &&
          ReadAt(source, source.module_base, 0x10AE298, cache_write) &&
          cache_write == kPositiveJoinCacheWrite &&
          ReadAt(source, source.module_base, 0x972827, travel_call) &&
-         travel_call == (IsActivityPlanner12002V1(source) ? std::array<std::uint8_t, 5>{0xE8, 0x54, 0xAE, 0x1D, 0x02} : kNativeTravelFallbackCall) &&
+         travel_call == (IsActivity12004BuildV1(source.admitted_executable_sha256)
+              ? std::array<std::uint8_t, 5>{0xE8, 0x34, 0xAE, 0x1D, 0x02}
+              : IsActivityFeastModernBuildV1(source.admitted_executable_sha256) ? std::array<std::uint8_t, 5>{0xE8, 0x54, 0xAE, 0x1D, 0x02} : kNativeTravelFallbackCall) &&
          ReadAt(source, source.module_base, 0x9728CA, arrival_write) &&
          arrival_write == kNativeArrivalDateWrite;
 }
@@ -134,9 +136,11 @@ bool ReadArrivalInputs(const ActivityFeastGuestJoinEnvironmentV1 &env,
   }
   const auto invoke = env.invoke_activity != nullptr
                           ? env.invoke_activity
-                          : (IsActivityPlanner12002V1(source) ? &InvokeActivityFeastNativePlannerActivity12002V1 : &InvokeActivityFeastNativePlannerActivityV1);
-  inputs.activity = invoke(env.arrival_context, source.module_base,
-                           capture.planner);
+                          : (IsActivityFeastModernBuildV1(source.admitted_executable_sha256) ? &InvokeActivityFeastNativePlannerActivity12002V1 : &InvokeActivityFeastNativePlannerActivityV1);
+  inputs.activity = invoke(
+      env.invoke_activity != nullptr ? env.arrival_context
+          : ActivityFeastNativeCallbackContextV1(source.admitted_executable_sha256),
+      source.module_base, capture.planner);
   return inputs.activity != 0;
 }
 
@@ -166,8 +170,9 @@ ActivityFeastGuestJoinStatusV1 ReadOriginalArrival(
   if (!found) {
     const auto invoke = env.invoke_travel_days != nullptr
                             ? env.invoke_travel_days
-                            : (IsActivityPlanner12002V1(source) ? &InvokeActivityFeastNativeTravelDays12002V1 : &InvokeActivityFeastNativeTravelDaysV1);
-    if (!invoke(env.arrival_context, source.module_base, character,
+                            : (IsActivityFeastModernBuildV1(source.admitted_executable_sha256) ? &InvokeActivityFeastNativeTravelDays12002V1 : &InvokeActivityFeastNativeTravelDaysV1);
+    if (!invoke(env.invoke_travel_days != nullptr ? env.arrival_context
+        : ActivityFeastNativeCallbackContextV1(source.admitted_executable_sha256), source.module_base, character,
                 inputs.destination, travel_days))
       return ActivityFeastGuestJoinStatusV1::arrival_evaluation_failed;
   } else {
@@ -236,7 +241,7 @@ ActivityFeastGuestJoinStatusV1 ReadOne(
     return ActivityFeastGuestJoinStatusV1::arrival_source_unavailable;
   const auto invoke = env.invoke_join != nullptr
                           ? env.invoke_join
-                          : (IsActivityPlanner12002V1(source) ? &InvokeActivityFeastNativePlannerGuestJoin12002V1 : &InvokeActivityFeastNativePlannerGuestJoinV1);
+                          : (IsActivityFeastModernBuildV1(source.admitted_executable_sha256) ? &InvokeActivityFeastNativePlannerGuestJoin12002V1 : &InvokeActivityFeastNativePlannerGuestJoinV1);
   for (std::int32_t index = 0; index < count; ++index) {
     std::array<std::uint8_t, 16> row{};
     std::uint8_t cached = 0;
@@ -249,7 +254,8 @@ ActivityFeastGuestJoinStatusV1 ReadOne(
     std::uintptr_t character = 0;
     std::int64_t join_raw = 0;
     if (!ResolveCharacter(source, character_id, character) ||
-        !invoke(env.join_context, source.module_base, capture.planner,
+        !invoke(env.invoke_join != nullptr ? env.join_context
+        : ActivityFeastNativeCallbackContextV1(source.admitted_executable_sha256), source.module_base, capture.planner,
                 character, join_raw))
       return ActivityFeastGuestJoinStatusV1::native_evaluation_failed;
     const bool positive = join_raw > 0;
@@ -328,13 +334,14 @@ bool InvokeActivityFeastNativeTravelDaysV1(
 }
 
 bool InvokeActivityFeastNativePlannerGuestJoin12002V1(
-    void *, std::uintptr_t module_base, std::uintptr_t planner,
+    void *opaque, std::uintptr_t module_base, std::uintptr_t planner,
     std::uintptr_t character, std::int64_t &join_raw) noexcept {
   if (module_base == 0 || planner == 0 || character == 0) return false;
   using Original = std::int64_t *(__fastcall *)(
       std::int64_t *, void *, void *);
   const auto evaluator = reinterpret_cast<Original>(
-      module_base + 0x11B8350);
+      module_base + Activity12004RvaV1(
+          ActivityFeastNativeCallbackShaV1(opaque), 0x11B8350));
   std::int64_t value = 0;
   if (evaluator(&value, reinterpret_cast<void *>(planner),
                 reinterpret_cast<void *>(character)) != &value)
@@ -344,23 +351,25 @@ bool InvokeActivityFeastNativePlannerGuestJoin12002V1(
 }
 
 std::uintptr_t InvokeActivityFeastNativePlannerActivity12002V1(
-    void *, std::uintptr_t module_base,
+    void *opaque, std::uintptr_t module_base,
     std::uintptr_t planner) noexcept {
   if (module_base == 0 || planner == 0) return 0;
   using Original = void *(__fastcall *)(void *);
   const auto get_activity = reinterpret_cast<Original>(
-      module_base + 0x11D8EC0);
+      module_base + Activity12004RvaV1(
+          ActivityFeastNativeCallbackShaV1(opaque), 0x11D8EC0));
   return reinterpret_cast<std::uintptr_t>(
       get_activity(reinterpret_cast<void *>(planner)));
 }
 
 bool InvokeActivityFeastNativeTravelDays12002V1(
-    void *, std::uintptr_t module_base, std::uintptr_t character,
+    void *opaque, std::uintptr_t module_base, std::uintptr_t character,
     std::uintptr_t destination, std::int32_t &days) noexcept {
   if (module_base == 0 || character == 0 || destination == 0) return false;
   using Original = std::int32_t(__fastcall *)(void *, void *);
   const auto get_days = reinterpret_cast<Original>(
-      module_base + 0x2BBADE0);
+      module_base + Activity12004RvaV1(
+          ActivityFeastNativeCallbackShaV1(opaque), 0x2BBADE0));
   days = get_days(reinterpret_cast<void *>(character),
                   reinterpret_cast<void *>(destination));
   return days != (std::numeric_limits<std::int32_t>::max)();

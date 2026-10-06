@@ -1157,6 +1157,9 @@ list(REMOVE_DUPLICATES XAR_CK3_12002_SOURCES)
 add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
   src/ck3_12003_adapter.cpp
+    src/ck3_12004_adapter.cpp
+    src/ck3_12004_abi_profile.cpp
+    src/ck3_12004_core_frame_v1.cpp
   src/ck3_12003_commander.cpp
   src/ck3_12003_commander_target_roll.cpp
   src/ck3_12003_current_commander_martial.cpp
@@ -9274,6 +9277,7 @@ if(BUILD_TESTING AND WIN32)
   include(cmake/clergy_candidate_terms_whole_fixture.cmake)
 endif()
 include(cmake/realm_law_succession_profile_12003.cmake)
+include(cmake/realm_law_readonly_12004.cmake)
 include(cmake/player_faction_county_culture_12003.cmake)
 include(cmake/commander_target_rolls_12003.cmake)
 include(cmake/current_commander_total_martial_12003.cmake)
@@ -9282,3 +9286,30 @@ include(cmake/ordinary_holy_war_cb_cost_first_fixture.cmake)
 include(cmake/current_disembark_penalty_days_12003.cmake)
 
 include(cmake/current_army_combat_roles_phase_rule24_pins_12003.cmake)
+
+# First actual-.4 core reader, mailbox and whole command-result fixture.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_ck3_12004_core_frame_v1_test
+    src/ck3_12004_core_frame_v1_test.cpp)
+  target_link_libraries(xar_ck3_12004_core_frame_v1_test PRIVATE
+    xar_ck3_12002_runtime bcrypt)
+  target_include_directories(xar_ck3_12004_core_frame_v1_test PRIVATE include)
+  target_compile_features(xar_ck3_12004_core_frame_v1_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12004_core_frame_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_ck3_12004_core_frame_v1_test PRIVATE
+      /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_ck3_12004_core_frame_v1_test
+    COMMAND $<TARGET_FILE:xar_ck3_12004_core_frame_v1_test>
+      ${CMAKE_CURRENT_BINARY_DIR}/wire/ck3_12004_core_frame_v1)
+  include(cmake/ck3_12004_core_frame_real_link_closure.cmake)
+endif()
+
+include(cmake/snapshot_foundation_12004.cmake)
+include(cmake/army_family_12004.cmake)
+include(cmake/religion_observers_12004.cmake)
+include(cmake/commander_movement_metadata_12004.cmake)
+include(cmake/snapshot_foundation_12004_first.cmake)
+include(cmake/adopted_domains_12004.cmake)

@@ -12,12 +12,16 @@ from .g2_private_query_transport import (
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
 from .player_holy_order_hire_cost_context import validate_holy_order_hire_cost_context
 from .holy_order_current_reinforcement_v1 import normalize_holy_order_current_reinforcement_v1
-from .version_identity import CK3_12003, require_exact_native_backend, require_exact_native_build
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_backend, require_exact_native_build
 
 
 STEP = "query-player-holy-order-context-v1"
 DOMAIN_KEY = "player_holy_order_context_v1"
 SCHEMA = "ck3_12003_player_holy_order_context_v1"
+_SCHEMAS_BY_BUILD = {
+    CK3_12003: SCHEMA,
+    CK3_12004: "ck3_12004_player_holy_order_context_v1",
+}
 PERMISSION = "allow_private_player_religion_context_query"
 
 
@@ -29,10 +33,12 @@ def normalize_player_holy_order_context_v1(
     value: object, *, snapshot: Mapping[str, object],
 ) -> dict[str, object]:
     """Keep full native references and independent hire/afford observations."""
-    if not isinstance(value, dict) or value.get("schema") != SCHEMA:
+    if not isinstance(value, dict):
         raise ValueError("native holy-order context schema is malformed")
     build = require_exact_native_build(value.get("game_version"), value.get("executable_sha256"))
-    if build != CK3_12003 or build != private_native_build_identity(snapshot):
+    if build not in _SCHEMAS_BY_BUILD or value.get("schema") != _SCHEMAS_BY_BUILD[build]:
+        raise ValueError("native holy-order context schema is malformed")
+    if build != private_native_build_identity(snapshot):
         raise ValueError("native holy-order context belongs to another build")
     actor = snapshot.get("played_character")
     if (not isinstance(actor, Mapping)
@@ -210,7 +216,7 @@ def query_player_holy_order_context_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-holy-order-context-v1",
         )
-        if (build != CK3_12003 or build != private_native_build_identity(before)
+        if (build not in _SCHEMAS_BY_BUILD or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

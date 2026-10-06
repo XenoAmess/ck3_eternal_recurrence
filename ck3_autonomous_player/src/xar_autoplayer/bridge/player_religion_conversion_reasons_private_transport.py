@@ -16,7 +16,7 @@ from .nonwar_private_build import (
 from .player_religion_conversion_terms_private_transport import (
     _build, _common, _full_rite_id, _integer,
 )
-from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend
+from .version_identity import CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend
 
 
 STEP = "query-player-religion-conversion-reasons-v1"
@@ -79,7 +79,7 @@ def query_player_religion_conversion_reasons_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-conversion-reasons-v1",
         )
-        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

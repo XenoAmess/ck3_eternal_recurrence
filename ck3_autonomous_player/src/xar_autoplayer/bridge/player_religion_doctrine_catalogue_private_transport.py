@@ -13,7 +13,7 @@ from .nonwar_private_build import (
     private_native_schema,
     private_native_build_identity, private_native_provenance,
 )
-from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend
+from .version_identity import CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend
 
 
 STEP = "query-player-religion-doctrine-catalogue-v1"
@@ -36,7 +36,7 @@ def normalize_player_religion_doctrine_catalogue_v1(
         raise ValueError("native player doctrine catalogue schema is malformed")
     # The actual catalogue DTO has no build fields; its command-result envelope
     # supplies the exact build, checked by the query before normalization.
-    if private_native_build_identity(snapshot) not in (CK3_12002, CK3_12003):
+    if private_native_build_identity(snapshot) not in (CK3_12002, CK3_12003, CK3_12004):
         raise ValueError("native player doctrine catalogue belongs to another build")
     if (type(value["available"]) is not bool
             or type(value["catalogue_complete"]) is not bool
@@ -78,7 +78,7 @@ def query_player_religion_doctrine_catalogue_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-doctrine-catalogue-v1",
         )
-        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

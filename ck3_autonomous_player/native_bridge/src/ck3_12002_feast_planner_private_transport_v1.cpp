@@ -95,7 +95,9 @@ bool ResolveCurrentFeastActivity12003(
   std::int32_t highest_live = -1;
   std::uint8_t initialized = 0;
   if (!ReadCurrentActivityAt(environment, native.module_base,
-                             bridge::kActivityHosted12002GameStateRva, root) ||
+                             bridge::ActivityHostedCrozierRvaV1(
+                                 native.executable_sha256,
+                                 bridge::kActivityHosted12002GameStateRva), root) ||
       root == 0 || root != native.game_state ||
       !ReadCurrentActivityAt(environment, root, 0xA0, world) || world == 0 ||
       bridge::kActivityHosted12002ManagerOffset >
@@ -134,11 +136,12 @@ bool ResolveCurrentFeastActivity12003(
       !ReadCurrentActivityAt(environment, object, 0x3A8, observed_host) ||
       observed_host != host_id ||
       !ReadCurrentActivityAt(environment, object, 0, vtable) ||
-      vtable != native.module_base + bridge::kActivityHosted12002ActivityVtableRva ||
+      vtable != native.module_base + bridge::ActivityHostedCrozierRvaV1(
+          native.executable_sha256, bridge::kActivityHosted12002ActivityVtableRva) ||
       !ReadCurrentActivityAt(environment, object, 0x3A0, type) || type == 0 ||
       !ReadCurrentActivityAt(environment, type, 0, type_vtable) ||
-      type_vtable != native.module_base +
-                         bridge::kActivityHosted12002ActivityTypeVtableRva)
+      type_vtable != native.module_base + bridge::ActivityHostedCrozierRvaV1(
+          native.executable_sha256, bridge::kActivityHosted12002ActivityTypeVtableRva))
     return false;
   constexpr std::string_view key = "activity_feast";
   std::uint64_t size = 0, string_capacity = 0;
@@ -161,9 +164,10 @@ bool ResolveCurrentFeastActivity12003(
 }
 
 bool InvokeCurrentActivityView12003(std::uintptr_t module_base,
+                                   std::string_view admitted_sha256,
                                    std::uintptr_t activity) noexcept {
   using NativeOpen = void(__fastcall *)(void *);
-  const auto open = reinterpret_cast<NativeOpen>(module_base + 0xA90050);
+  const auto open = reinterpret_cast<NativeOpen>(module_base + bridge::Activity12004RvaV1(admitted_sha256, 0xA90050));
   __try {
     // The original Activity.OpenActivityView callback calls this receiver-only
     // presentation leaf. Its return register does not prove materialization.
@@ -219,13 +223,15 @@ bool ExecuteActivityFeastPlannerOpenPrivate12002V1(
     if (query->operation ==
         ActivityFeastPlannerOpenOperation12002V1::current_activity_view_open) {
       std::uintptr_t activity = 0;
-      if (query->actual_executable_sha256 != ck3_12003::kExecutableSha256) {
+      if (query->actual_executable_sha256 != ck3_12003::kExecutableSha256 &&
+          !bridge::IsActivity12004BuildV1(query->actual_executable_sha256)) {
         query->failure = "exact_current_activity_view_12003_build_unavailable";
       } else if (!ResolveCurrentFeastActivity12003(
                      native, query->expected_activity_id,
                      current.played_character_id, activity)) {
         query->failure = "native_current_activity_view_identity_unavailable";
-      } else if (!InvokeCurrentActivityView12003(native.module_base, activity)) {
+      } else if (!InvokeCurrentActivityView12003(
+                     native.module_base, native.executable_sha256, activity)) {
         query->failure = "native_current_activity_view_dispatch_exception";
       } else {
         query->current_view_activity_id = query->expected_activity_id;

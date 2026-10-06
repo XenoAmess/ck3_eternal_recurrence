@@ -1,9 +1,12 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_religion_context_addons.hpp"
 #include "xar_bridge/ck3_12002_religion_conversion_choices_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
+#include <utility>
 #include <windows.h>
 
 namespace xar::ck3_12002 {
@@ -77,10 +80,17 @@ bool ExecutePlayerReligionConversionChoicesMailbox12002(
     const auto &frame = envelope->expected_snapshot;
     out.date_raw = static_cast<std::int32_t>(frame.date_raw);
     out.played_character_id = static_cast<std::int32_t>(frame.played_character_id);
-    const bool faith_ok = religion_conversion::faith::ReadPlayedFaithConversionChoices12002(
-        query.faith_bindings, stamp.pump_epoch, out.faith_choices);
-    const bool rites_ok = religion_conversion_rite::ReadCurrentFaithRites12002(
-        query.rite_bindings, stamp.pump_epoch, out.current_faith_rites);
+    const bool actual4 = game::IsCk3_12004Descriptor(envelope->game->descriptor());
+    const bool faith_ok = actual4
+        ? ck3_12004::religion::ReadPlayedFaithConversionChoices12004(
+              query.faith_bindings, stamp.pump_epoch, out.faith_choices)
+        : religion_conversion::faith::ReadPlayedFaithConversionChoices12002(
+              query.faith_bindings, stamp.pump_epoch, out.faith_choices);
+    const bool rites_ok = actual4
+        ? ck3_12004::religion::ReadCurrentFaithRites12004(
+              query.rite_bindings, stamp.pump_epoch, out.current_faith_rites)
+        : religion_conversion_rite::ReadCurrentFaithRites12002(
+              query.rite_bindings, stamp.pump_epoch, out.current_faith_rites);
     auto &faith = out.faith_choices;
     auto &rites = out.current_faith_rites;
     const bool matches = (!faith_ok || (faith.played_character_id == frame.played_character_id &&
@@ -151,6 +161,9 @@ bool RunPlayerReligionConversionChoicesMailbox12002(PlayerReligionConversionChoi
       return false;
     }
     serialized = SerializePlayerReligionConversionChoicesResult12002(query, request_id);
+    if (game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+      serialized = game::Render12004BuildIdentity(
+          std::move(serialized), envelope.game->descriptor());
     if (!serialized.empty()) return true;
     failure = query.failure.empty() ? "player_religion_conversion_choices_serialization_unavailable" : query.failure;
     return false;
@@ -170,21 +183,30 @@ bool HandlePlayerReligionConversionChoicesPrivate12002(const game::GameAdapter &
   if (!ParsePlayerReligionConversionChoicesRequest12002(payload, expected)) {
     failure = "player_religion_conversion_choices_request_invalid"; return false;
   }
-  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if (!adapter.enabled() || (!actual4 &&
+      (game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+       game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_conversion_choices_current_frame_unavailable"; return false;
   }
   try {
     PlayerReligionConversionChoicesMailboxContext12002 query{};
-    query.envelope.game = &NativeAdapter12002(adapter);
+    query.envelope.game = actual4 ? &adapter : &NativeAdapter12002(adapter);
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    const auto sha = xar::game::ReviewedCrozierAbiSha256(adapter.descriptor());
-    query.faith_bindings = religion_conversion::faith::BindFaithConversionImage12002(base, sha);
-    query.rite_bindings = religion_conversion_rite::BindRiteConversionImage12002(base, sha);
+    if (actual4) {
+      const auto bindings = ck3_12004::religion::BindReligionConversionImage12004(
+          base, adapter.descriptor().executable_sha256);
+      query.faith_bindings = bindings.faith;
+      query.rite_bindings = bindings.rite;
+    } else {
+      const auto sha = game::ReviewedCrozierAbiSha256(adapter.descriptor());
+      query.faith_bindings = religion_conversion::faith::BindFaithConversionImage12002(base, sha);
+      query.rite_bindings = religion_conversion_rite::BindRiteConversionImage12002(base, sha);
+    }
     return RunPlayerReligionConversionChoicesMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_conversion_choices_handler_exception"; return false; }
 }

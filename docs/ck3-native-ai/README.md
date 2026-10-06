@@ -2,6 +2,8 @@
 
 ## 2026-10-07：本地更新至 Steam build25734779，MCP 迁移中
 
+[actual4 family关系读取](family-relationships-12004.md)闭合当前Family订婚、主配偶、spouse数组与容量字段。新增独立actual4 reader消费实际core/full-ID resolver；Family+28由真实Character1A8→Family20→DWORD数组内核receiver8路径证明。共享field windows复用，capacity有限6663B/9reads，old kernel不重读；source implemented，Root fullSnapshot接线/build/paused资格待执行，不引入未采用9a阈值功能。
+
 [实际安装更新与 MCP 迁移](installed-build-25734779-mcp-migration-2026-10-07.md)：R0051 完成一日路线循环并正常保存 h9613，累计5997；10streams冻结、ownedjob退出并证明进程回收后，Steam已更新。新EXE SHA98702f88…dd518已冻结，native文字确认1.20.0.4，text/rdata均变，实际ABI迁移正在施工。旧g105严格构建RED C4324保留，g106已采用source0597但FIRST未跑；并行迁移各MCP领域，尚无新版live信用。
 ## 2026-10-07: Army registered MCP materialization performance candidate
 

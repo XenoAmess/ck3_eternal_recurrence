@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .religion_context_addon_schema import religion_context_addon_schema
+
 from collections.abc import Mapping
 
 
@@ -22,7 +24,7 @@ def normalize_player_church_tax_inputs_v1(
         "raw_scale", "share_unit", "scope",
     }
     if (not isinstance(value, dict) or set(value) != keys
-            or value["schema"] != "ck3_12003_player_church_tax_inputs_v1"
+            or value["schema"] != religion_context_addon_schema("ck3_12003_player_church_tax_inputs_v1", current_context)
             or value["read_only"] is not True or type(value["available"]) is not bool
             or type(value["raw_scale"]) is not int or value["raw_scale"] != 100000
             or value["share_unit"] != "fraction"

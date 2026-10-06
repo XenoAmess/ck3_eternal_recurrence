@@ -14,6 +14,8 @@ inline constexpr std::string_view kCurrentStepV1 =
 // No future war estimate, per-war duplication, or null-to-zero conversion.
 std::string SerializeCurrentResourcesV1(
     const ActorResources &resources, const game::Snapshot &snapshot,
-    std::uint64_t snapshot_revision, bool same_frame_ready);
+    std::uint64_t snapshot_revision, bool same_frame_ready,
+    std::string_view game_version = ck3_12003::kGameVersion,
+    std::string_view executable_sha256 = ck3_12003::kExecutableSha256);
 
 } // namespace xar::ck3_12003::war_cash_current

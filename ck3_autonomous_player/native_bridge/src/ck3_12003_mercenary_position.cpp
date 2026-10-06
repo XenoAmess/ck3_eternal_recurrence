@@ -63,6 +63,11 @@ bool ReadMercenaryPositionV1(const MercenaryPositionBindingsV1 &bindings,
   // Active wars are realm+0x318 vector, whose count is vector+0x0C.
   output.actor_active_war_count = war_count;
   output.hire_auto_raise_attempted_in_active_war = war_count > 0;
+  if (war_count == 0 && bindings.skip_selector_when_no_active_wars) {
+    output.hire_auto_raise_position_ready = true;
+    output.hire_auto_raise_position_failure = "none";
+    return output.company_home_ready;
+  }
   const auto selected_id = bindings.select_hire_raise_province(actor);
   const void *province = world.resolve_province(world.context, selected_id);
   std::int32_t identity = -1;

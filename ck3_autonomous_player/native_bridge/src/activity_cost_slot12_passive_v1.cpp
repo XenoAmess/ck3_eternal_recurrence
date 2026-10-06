@@ -148,7 +148,7 @@ bool VerifyActivityCostSlot12ExactAbiV1(
   std::array<std::uint8_t, kActivityCostPatchBytesV1> prologue{};
   std::array<std::uint8_t, 5> call{};
   const std::array<std::uint8_t, 5> expected_call =
-      environment.executable_sha256 == kActivityFeastCosts12002ExeSha256V1
+      IsActivityFeastCostsModernBuildV1(environment.executable_sha256)
           ? std::array<std::uint8_t, 5>{0xE8, 0x71, 0x4B, 0x00, 0x00}
           : kSlot12Call;
   return ReadAt(environment, environment.module_base,

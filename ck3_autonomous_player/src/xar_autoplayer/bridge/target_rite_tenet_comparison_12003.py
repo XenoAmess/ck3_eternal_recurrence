@@ -5,8 +5,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from copy import deepcopy
 
-from .nonwar_private_build import private_native_build_identity
-from .version_identity import CK3_12003, require_exact_native_build
+from .nonwar_private_build import private_native_build_identity, private_native_schema
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 
 SCHEMA = "ck3_12003_target_rite_tenet_comparison_v1"
@@ -76,11 +76,13 @@ def normalize_target_rite_tenet_comparison_12003(
             or len(tenet_key.encode("utf-8")) > 128):
         raise ValueError("target_rite_id and tenet_key must identify the requested comparison")
     if (not isinstance(value, dict) or set(value) != _KEYS
-            or value["schema"] != SCHEMA or value["read_only"] is not True):
+            or value["schema"] != private_native_schema(SCHEMA, snapshot)
+            or value["read_only"] is not True):
         raise ValueError("native target Rite Tenet comparison schema is malformed")
-    if (require_exact_native_build(
-            tenet_rows.get("game_version"), tenet_rows.get("executable_sha256"),
-        ) != CK3_12003 or private_native_build_identity(snapshot) != CK3_12003):
+    build = require_exact_native_build(
+        tenet_rows.get("game_version"), tenet_rows.get("executable_sha256"),
+    )
+    if build not in (CK3_12003, CK3_12004) or private_native_build_identity(snapshot) != build:
         raise ValueError("native target Rite Tenet comparison belongs to another build")
     if (type(value["available"]) is not bool
             or type(value["named_comparison_ready"]) is not bool

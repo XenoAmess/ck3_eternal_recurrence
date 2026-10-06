@@ -2,9 +2,11 @@
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_holy_order_bindings.hpp"
 #include "xar_bridge/protocol.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 
+#include <utility>
 #include <windows.h>
 
 namespace xar::ck3_12003 {
@@ -18,8 +20,11 @@ bool ValidFrame(const game::Snapshot &frame, std::uint64_t revision) noexcept {
       frame.has_played_character && frame.played_character_alive &&
       frame.played_character_id > 0;
 }
-void *ResolvePlayed(const ck3_12002::CoreBindings &core, std::int32_t id) noexcept {
-  return ck3_12002::ResolveCoreCharacter(core, id);
+void *ResolvePlayed(const ck3_12002::CoreBindings &core, std::int32_t id,
+    const game::AdapterDescriptor &descriptor) noexcept {
+  return game::IsCk3_12004Descriptor(descriptor)
+      ? ck3_12004::ResolveCoreCharacter(core, id)
+      : ck3_12002::ResolveCoreCharacter(core, id);
 }
 } // namespace
 
@@ -55,7 +60,7 @@ bool ExecutePlayerHolyOrderContextMailbox12003(
     }
     const auto &frame = envelope->expected_snapshot;
     const auto actor = static_cast<std::int32_t>(frame.played_character_id);
-    auto *character = ResolvePlayed(query.core, actor);
+    auto *character = ResolvePlayed(query.core, actor, envelope->game->descriptor());
     (void)orders::ReadPlayerHolyOrderContext12003(query.bindings, character, actor,
         static_cast<std::int32_t>(frame.date_raw), stamp.pump_epoch, query.observation);
     query.completed = true;
@@ -94,6 +99,9 @@ bool RunPlayerHolyOrderContextMailbox12003(PlayerHolyOrderMailboxContext12003 &q
       return false;
     }
     serialized = SerializePlayerHolyOrderContextResult12003(query, request_id);
+    if (game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+      serialized = game::Render12004BuildIdentity(
+          std::move(serialized), envelope.game->descriptor());
     if (!serialized.empty()) return true;
     failure = query.failure.empty() ? "player_holy_order_context_serialization_unavailable" : query.failure;
     return false;
@@ -114,22 +122,29 @@ bool HandlePlayerHolyOrderContextPrivate12003(const game::GameAdapter &adapter,
   if (!ParsePlayerHolyOrderContextRevision12003(payload, expected)) {
     failure = "player_holy_order_context_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != "1.20.0.3" ||
-      adapter.descriptor().executable_sha256 != orders::kExecutableSha256 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if (!adapter.enabled() ||
+      (!game::IsCk3_12003Descriptor(adapter.descriptor()) && !actual4) ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_holy_order_context_current_frame_unavailable"; return false;
   }
   try {
     PlayerHolyOrderMailboxContext12003 query{};
-    query.envelope.game = &ck3_12002::NativeAdapter12002(adapter);
+    query.envelope.game = actual4 ? &adapter : &ck3_12002::NativeAdapter12002(adapter);
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
     const auto image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    const auto reviewed_sha = game::ReviewedCrozierAbiSha256(adapter.descriptor());
-    query.core = ck3_12002::BindCoreImage(image_base, reviewed_sha);
-    query.bindings = orders::BindPlayerHolyOrderImage12003(
-        image_base, adapter.descriptor().executable_sha256);
+    if (actual4) {
+      query.core = ck3_12004::BindCoreImage(image_base, adapter.descriptor().executable_sha256);
+      query.bindings = ck3_12004::religion::holy_order::BindPlayerHolyOrderImage12004(
+          image_base, adapter.descriptor().executable_sha256);
+    } else {
+      query.core = ck3_12002::BindCoreImage(image_base,
+          game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+      query.bindings = orders::BindPlayerHolyOrderImage12003(
+          image_base, adapter.descriptor().executable_sha256);
+    }
     return RunPlayerHolyOrderContextMailbox12003(query, request_id, serialized, failure);
   } catch (...) { failure = "player_holy_order_context_handler_exception"; return false; }
 }

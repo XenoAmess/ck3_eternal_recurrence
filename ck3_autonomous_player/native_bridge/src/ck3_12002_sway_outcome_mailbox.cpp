@@ -1,6 +1,8 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_sway_outcome_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_sway.hpp"
 #include "xar_bridge/protocol.hpp"
 
 #include <limits>
@@ -71,9 +73,11 @@ bool HandleSwayOutcomeEventV1(
   try {
     SwayOutcomeMailboxContextV1 query{};
     query.opinion_only = step == kSwayOutcomeOpinionStepV1;
+    const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
     if ((step != kSwayOutcomeEventStepV1 && !query.opinion_only) || !Parse(payload, query.opinion_only, query.request) ||
         query.request.expected_revision != revision ||
-        !adapter.enabled() || xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+        !adapter.enabled() || (!actual4 && game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256) ||
+        (actual4 && !query.opinion_only) ||
         !published.paused || !published.map_ready || !published.has_played_character ||
         !published.played_character_alive ||
         published.played_character_id != query.request.actor_character_id) {
@@ -85,9 +89,10 @@ bool HandleSwayOutcomeEventV1(
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
     query.envelope.typed_context = &query;
-    query.bindings = BindSwayOutcomeImage(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    query.bindings = actual4 ? ck3_12004::BindSwayOutcomeOpinionImage12004(
+        base, adapter.descriptor().executable_sha256) : BindSwayOutcomeImage(
+        base, game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (TrySubmitMainThreadQueryV1(mailbox, &ExecuteSwayOutcomeMailboxV1,
                                   &query.envelope, query.envelope.ticket) !=
         MainThreadQuerySubmitResultV1::submitted) {

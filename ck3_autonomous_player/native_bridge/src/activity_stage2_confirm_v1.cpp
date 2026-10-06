@@ -52,7 +52,8 @@ bool MatchCode(const ActivityPlannerDiagEnvironmentV1 &d,
                std::uintptr_t rva,
                const std::array<std::uint8_t, N> &expected) noexcept {
   std::array<std::uint8_t, N> actual{};
-  return Read(d, d.module_base, rva, actual) && actual == expected;
+  return Read(d, d.module_base,
+              Activity12004RvaV1(d.admitted_executable_sha256, rva), actual) && actual == expected;
 }
 
 bool VerifyActionAbi(const ActivityPlannerDiagEnvironmentV1 &d) noexcept {
@@ -69,7 +70,7 @@ bool VerifyActionAbi(const ActivityPlannerDiagEnvironmentV1 &d) noexcept {
   constexpr std::array<std::uint8_t, 15> kSetter12002{
       0x40, 0x53, 0x48, 0x81, 0xEC, 0xA0, 0x00, 0x00, 0x00,
       0x8B, 0x81, 0xE8, 0x1A, 0x00, 0x00};
-  const bool current = IsActivityPlanner12002V1(d);
+  const bool current = IsActivityPlannerCrozierBuildV1(d);
   std::uintptr_t stage_notification = 0;
   return d.enabled && d.module_base != 0 &&
          (d.admitted_executable_sha256 == kActivityPlannerDiagExeSha256V1 || current) &&
@@ -106,7 +107,7 @@ bool ResolveSelection(const ActivityStage1OptionEnvironmentV1 &env,
                       std::int32_t required_stage,
                       NativeSelection &out) noexcept {
   const auto &d = env.diagnostic;
-  if (IsActivityPlanner12002V1(d)) {
+  if (IsActivityPlannerCrozierBuildV1(d)) {
     ActivityPlannerIdentityV1 identity{};
     std::uintptr_t option_vtable = 0;
     if (!ResolveActivityPlannerIdentityV1(d, expected, identity) ||

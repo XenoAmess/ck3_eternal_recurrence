@@ -1,0 +1,432 @@
+{
+  "schema": "xar.ck3_12004.prisoner-domain-abi.v1",
+  "game_version": "1.20.0.4",
+  "steam_build_id": "25734779",
+  "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+  "source_base": "caa4adc3d1278e324cf4ec19774028e9b9138e28",
+  "status": "static-ready; actual4 source and bounded ABI inputs closed; compiled FIRST and paused live NOT_RUN",
+  "scope": [
+    "complete player prisoner collection",
+    "selected ordinary gold/current_gold ransom quote",
+    "selected unconditional release final terms"
+  ],
+  "native_binding": "Actual4 identity and explicit mapped entries. No old-version image binder or old SHA substitution.",
+  "software_reuse": "Copied contracts, all-off observer algorithm and value serializers; no kinship/negotiated native admission.",
+  "declared_instruction_spans": [
+    {
+      "name": "get_interaction_database",
+      "old_rva": "0x89da60",
+      "actual4_rva": "0x89da60",
+      "declared_bytes": 87,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\get_interaction_database-DETAIL.json"
+    },
+    {
+      "name": "lookup_interaction",
+      "old_rva": "0xa055e0",
+      "actual4_rva": "0xa055e0",
+      "declared_bytes": 314,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\lookup_interaction-DETAIL.json"
+    },
+    {
+      "name": "construct_two_role_context",
+      "old_rva": "0x3076c90",
+      "actual4_rva": "0x3076c70",
+      "declared_bytes": 444,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\construct_two_role_context-DETAIL.json"
+    },
+    {
+      "name": "all_role_constructor",
+      "old_rva": "0x3076e50",
+      "actual4_rva": "0x3076e30",
+      "declared_bytes": 326,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\all_role_constructor-DETAIL.json"
+    },
+    {
+      "name": "destroy_context",
+      "old_rva": "0x30773a0",
+      "actual4_rva": "0x3077380",
+      "declared_bytes": 119,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\destroy_context-DETAIL.json"
+    },
+    {
+      "name": "default_option_picker",
+      "old_rva": "0x3078650",
+      "actual4_rva": "0x3078630",
+      "declared_bytes": 163,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\default_option_picker-DETAIL.json"
+    },
+    {
+      "name": "clear_owned_options",
+      "old_rva": "0x3078700",
+      "actual4_rva": "0x30786e0",
+      "declared_bytes": 87,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\clear_owned_options-DETAIL.json"
+    },
+    {
+      "name": "select_authored_option",
+      "old_rva": "0x30787e0",
+      "actual4_rva": "0x30787c0",
+      "declared_bytes": 72,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\select_authored_option-DETAIL.json"
+    },
+    {
+      "name": "option_shown_valid",
+      "old_rva": "0x30789c0",
+      "actual4_rva": "0x30789a0",
+      "declared_bytes": 147,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\option_shown_valid-DETAIL.json"
+    },
+    {
+      "name": "refresh_context",
+      "old_rva": "0x3078a60",
+      "actual4_rva": "0x3078a40",
+      "declared_bytes": 550,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\refresh_context-DETAIL.json"
+    },
+    {
+      "name": "finalize_context",
+      "old_rva": "0x3078c90",
+      "actual4_rva": "0x3078c70",
+      "declared_bytes": 222,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\finalize_context-DETAIL.json"
+    },
+    {
+      "name": "evaluate_answer",
+      "old_rva": "0x307bc80",
+      "actual4_rva": "0x307bc60",
+      "declared_bytes": 64,
+      "initial_status": "instruction_span_partial_or_concrete_operand_delta",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\evaluate_answer-DETAIL.json"
+    },
+    {
+      "name": "context_validator",
+      "old_rva": "0x307c040",
+      "actual4_rva": "0x307c020",
+      "declared_bytes": 64,
+      "initial_status": "instruction_span_partial_or_concrete_operand_delta",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\context_validator-DETAIL.json"
+    },
+    {
+      "name": "stock_recipient_root_scope_owner",
+      "old_rva": "0x307c460",
+      "actual4_rva": "0x307c440",
+      "declared_bytes": 235,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\stock_recipient_root_scope_owner-DETAIL.json"
+    },
+    {
+      "name": "interaction_cost_evaluator",
+      "old_rva": "0x310cee0",
+      "actual4_rva": "0x310cec0",
+      "declared_bytes": 529,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\interaction_cost_evaluator-DETAIL.json"
+    },
+    {
+      "name": "redirect_roles",
+      "old_rva": "0x3148de0",
+      "actual4_rva": "0x3148dc0",
+      "declared_bytes": 1353,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\redirect_roles-DETAIL.json"
+    },
+    {
+      "name": "interaction_trigger_evaluator",
+      "old_rva": "0x372df30",
+      "actual4_rva": "0x372df10",
+      "declared_bytes": 232,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\interaction_trigger_evaluator-DETAIL.json"
+    },
+    {
+      "name": "stable_key_block_accumulator",
+      "old_rva": "0x3f7e100",
+      "actual4_rva": "0x3f7e0e0",
+      "declared_bytes": 304,
+      "initial_status": "instruction_span_partial_or_concrete_operand_delta",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\stable_key_block_accumulator-DETAIL.json"
+    },
+    {
+      "name": "hash_stable_key",
+      "old_rva": "0x3f7e240",
+      "actual4_rva": "0x3f7e220",
+      "declared_bytes": 135,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\hash_stable_key-DETAIL.json"
+    },
+    {
+      "name": "lookup_script_identifier",
+      "old_rva": "0x3f8a680",
+      "actual4_rva": "0x3f8a660",
+      "declared_bytes": 64,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\lookup_script_identifier-DETAIL.json"
+    },
+    {
+      "name": "get_script_identifier_table",
+      "old_rva": "0x3f8a800",
+      "actual4_rva": "0x3f8a7e0",
+      "declared_bytes": 64,
+      "initial_status": "instruction_span_partial_or_concrete_operand_delta",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\get_script_identifier_table-DETAIL.json"
+    },
+    {
+      "name": "named_database",
+      "old_rva": "0xa07970",
+      "actual4_rva": "0xa07970",
+      "declared_bytes": 87,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\named_database-DETAIL.json"
+    },
+    {
+      "name": "named_lookup",
+      "old_rva": "0xa07830",
+      "actual4_rva": "0xa07830",
+      "declared_bytes": 314,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\named_lookup-DETAIL.json"
+    },
+    {
+      "name": "evaluate_named_fixed",
+      "old_rva": "0x37542f0",
+      "actual4_rva": "0x37542d0",
+      "declared_bytes": 393,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\evaluate_named_fixed-DETAIL.json"
+    },
+    {
+      "name": "clone_scope",
+      "old_rva": "0x373ad10",
+      "actual4_rva": "0x373acf0",
+      "declared_bytes": 233,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\clone_scope-DETAIL.json"
+    },
+    {
+      "name": "construct_support118",
+      "old_rva": "0x3736060",
+      "actual4_rva": "0x3736040",
+      "declared_bytes": 130,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\construct_support118-DETAIL.json"
+    },
+    {
+      "name": "construct_support2a8",
+      "old_rva": "0x3735fb0",
+      "actual4_rva": "0x3735f90",
+      "declared_bytes": 171,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\construct_support2a8-DETAIL.json"
+    },
+    {
+      "name": "destroy_scope_tail",
+      "old_rva": "0x889700",
+      "actual4_rva": "0x889700",
+      "declared_bytes": 118,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\destroy_scope_tail-DETAIL.json"
+    },
+    {
+      "name": "destroy_scope_rows",
+      "old_rva": "0x889780",
+      "actual4_rva": "0x889780",
+      "declared_bytes": 93,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\destroy_scope_rows-DETAIL.json"
+    },
+    {
+      "name": "destroy_support_rows",
+      "old_rva": "0x9d7340",
+      "actual4_rva": "0x9d7340",
+      "declared_bytes": 91,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\destroy_support_rows-DETAIL.json"
+    },
+    {
+      "name": "intern_database",
+      "old_rva": "0x3f79b20",
+      "actual4_rva": "0x3f79b00",
+      "declared_bytes": 233,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\intern_database-DETAIL.json"
+    },
+    {
+      "name": "intern_string",
+      "old_rva": "0x3f79df0",
+      "actual4_rva": "0x3f79dd0",
+      "declared_bytes": 526,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\intern_string-DETAIL.json"
+    },
+    {
+      "name": "named_constructor_layout",
+      "old_rva": "0x371d120",
+      "actual4_rva": "0x371d100",
+      "declared_bytes": 266,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\named_constructor_layout-DETAIL.json"
+    },
+    {
+      "name": "source_descriptor_layout",
+      "old_rva": "0x258bd30",
+      "actual4_rva": "0x258bd10",
+      "declared_bytes": 574,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\source_descriptor_layout-DETAIL.json"
+    },
+    {
+      "name": "support_owner_layout",
+      "old_rva": "0x37616a0",
+      "actual4_rva": "0x3761680",
+      "declared_bytes": 241,
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-map01\\support_owner_layout-DETAIL.json"
+    },
+    {
+      "name": "character_house_resolution",
+      "old_rva": "0x9d56e1",
+      "actual4_rva": "0x9d56e1",
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-collection\\map01\\character_house_resolution-DETAIL.json"
+    },
+    {
+      "name": "prisoners_native_identity_search",
+      "old_rva": "0x28c1861",
+      "actual4_rva": "0x28c1841",
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-collection\\map01\\prisoners_native_identity_search-DETAIL.json"
+    },
+    {
+      "name": "inline_child_relation",
+      "old_rva": "0x2b6eef4",
+      "actual4_rva": "0x2b6eed4",
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-collection\\map01\\inline_child_relation-DETAIL.json"
+    },
+    {
+      "name": "house_dynasty_resolution",
+      "old_rva": "0xc78c90",
+      "actual4_rva": "0xc78c90",
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-collection\\leaf-map01\\house_dynasty_resolution-DETAIL.json"
+    },
+    {
+      "name": "title_template_tier_consumer",
+      "old_rva": "0x230f900",
+      "actual4_rva": "0x230f8e0",
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-collection\\leaf-map01\\title_template_tier_consumer-DETAIL.json"
+    },
+    {
+      "name": "jailer_getter",
+      "old_rva": "0x289e830",
+      "actual4_rva": "0x289e810",
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-collection\\leaf-map01\\jailer_getter-DETAIL.json"
+    },
+    {
+      "name": "character_prisoners_getter",
+      "old_rva": "0x28c1800",
+      "actual4_rva": "0x28c17e0",
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-collection\\leaf-map01\\character_prisoners_getter-DETAIL.json"
+    },
+    {
+      "name": "dread_trigger_value_getter",
+      "old_rva": "0x2b641f0",
+      "actual4_rva": "0x2b641d0",
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-collection\\leaf-map01\\dread_trigger_value_getter-DETAIL.json"
+    },
+    {
+      "name": "primary_title",
+      "old_rva": "0x289da30",
+      "actual4_rva": "0x289da10",
+      "initial_status": "complete_instruction_span_normalized_equal",
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-collection\\primary-title-map01\\primary_title-DETAIL.json"
+    }
+  ],
+  "full_entry_repairs": {
+    "evaluate_answer": {
+      "whole_bytes": 259,
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\RETAINED-STITCH-LEDGER.json"
+    },
+    "context_validator": {
+      "whole_bytes": 368,
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\RETAINED-STITCH-LEDGER.json"
+    },
+    "stable_key_block_accumulator": {
+      "whole_bytes": 320,
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\RETAINED-STITCH-LEDGER.json"
+    },
+    "get_script_identifier_table": {
+      "whole_bytes": 211,
+      "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\full-snapshot-settlement-functions\\SETTLEMENT-HELPER-FUNCTION-MAP.json",
+      "local_capture_bytes": 0
+    }
+  },
+  "context_layout": {
+    "size": "0x338",
+    "scope": "0x8",
+    "actor": "0x2d8",
+    "recipient": "0x2dc",
+    "secondary_actor": "0x2e0",
+    "secondary_recipient": "0x2e4",
+    "intermediary": "0x2e8",
+    "puppet_or_actor": "0x2ec",
+    "options_data": "0x300",
+    "options_capacity": "0x308",
+    "options_count": "0x30c",
+    "definition_option_rows": "0x2258",
+    "definition_option_count": "0x2264",
+    "definition_option_stride": "0x730",
+    "definition_option_flag": "0x368",
+    "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\CACHED-CONTEXT-SUMMARY.json"
+  },
+  "definition_member_receipts": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-context-release\\continuation\\FAMILY-MAP.json",
+  "collection_layout": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-collection\\COLLECTION-LAYOUT-LEDGER.json",
+  "resource_gold_layout": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-collection\\REUSED-RESOURCE-PROOF.json",
+  "named_secondary_layout": {
+    "secondary_vptr_offset": "0x88",
+    "actual_old_new_vbtable_int32": [
+      -8,
+      128
+    ],
+    "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\prisoner\\current4-ransom\\named-vbtable01\\VBTABLE-RECEIPT.json"
+  },
+  "source_capture_cost": {
+    "bounded_old_and_new_executable_bytes": 20044,
+    "bounded_read_calls": 106,
+    "whole_executable_reads": 0,
+    "hashes": 0,
+    "PE_reparse": 0
+  },
+  "shared_integration_dependency": {
+    "commit": "6ba4132fa7a16d4a8c3af44716cf11c895e5a5b5",
+    "api": "QuerySnapshotComparison12002::core_frame; unchanged Enter/Capture/Finish"
+  },
+  "production_route_dependency": "Existing Driver/MCP requires a real positive published snapshot revision; standalone core-first revision0 is not promoted.",
+  "qualification": {
+    "compiled_first": "NOT_RUN",
+    "registered_first": "NOT_RUN",
+    "paused_live": "NOT_RUN",
+    "commands_or_old_ransom_loop_replayed": false
+  },
+  "deferred_features": [
+    "native kinship",
+    "negotiated release",
+    "ransom/release action submission",
+    "war retention"
+  ]
+}

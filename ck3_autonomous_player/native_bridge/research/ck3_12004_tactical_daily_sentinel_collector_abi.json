@@ -1,0 +1,335 @@
+{
+  "schema": "ck3-12004-tactical-sentinel-collector-source-abi-v1",
+  "created_utc": "2026-10-06T20:14:50.727487+00:00",
+  "source_status": "finite-source-closed; qualification AUTHORED_NOTRUN",
+  "existing_domain": "TacticalDailySentinelV1",
+  "no_new_capability": true,
+  "actual_old": {
+    "version": "1.20.0.3",
+    "sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+  },
+  "actual_new": {
+    "version": "1.20.0.4",
+    "steam_build": 25734779,
+    "sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "named_root": {
+    "legacy2_source": "C:\\codex-ck3-background\\parallel-integrations-20261007\\default-sentinel-12004\\ck3_autonomous_player\\native_bridge\\research\\ck3_1_20_0_2_army.json",
+    "legacy2_identity": {
+      "product_version": "1.20.0.2",
+      "sha256": "AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D",
+      "file_size": 101039736,
+      "pe_timestamp": "0x6abad861",
+      "image_base": "0x140000000",
+      "size_of_image": "0x61c5000",
+      "architecture": "x86_64",
+      "steam_build_id": "25588574"
+    },
+    "legacy2_name": "unit_serialize",
+    "legacy2_anchor_rva": "0x24AE160",
+    "legacy2_source_role": "CUnit_primary4733948 virtual serialize slot+10",
+    "retained_source_anchor_bytes": 32,
+    "retained_source_anchor_hex": "48895c2418488954241055565741544155415641574883ec600f29742450488b",
+    "actual3_retained_named_anchor_equal": true,
+    "legacy2_bytes_registered_as_actual3": false,
+    "actual3_rva": "0x24AE160",
+    "actual4_rva": "0x24AE140",
+    "complete_body_bytes": 1377,
+    "old_pdata": [
+      38461792,
+      38463169,
+      86307956
+    ],
+    "new_pdata": [
+      38461760,
+      38463137,
+      86308200
+    ],
+    "candidate_ordinal_is_not_proof": true
+  },
+  "body_proof": {
+    "status": "complete_instruction_span_normalized_equal",
+    "complete_decode": true,
+    "normalized_body_equal": true,
+    "ordered_edge_shape_equal": true,
+    "local_control_topology_equal": true,
+    "non_relative_immediates_and_non_rip_operands_retained": true,
+    "absolute_rva_operands_blindly_masked": false,
+    "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261007\\default-manifest-sentinel-12004\\sentinel-unit30-map01\\UnitDirectTargetSerializer-DETAIL.json",
+    "old_raw": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\old-024AE160-024AE6C1.bin",
+    "new_raw": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-024AE140-024AE6A1.bin"
+  },
+  "actual_instructions": {
+    "old": [
+      {
+        "rva": 38461825,
+        "offset": 33,
+        "size": 3,
+        "bytes": "488be9",
+        "normalized_bytes": "488be9",
+        "mnemonic": "mov",
+        "op_str": "rbp, rcx"
+      },
+      {
+        "rva": 38461828,
+        "offset": 36,
+        "size": 3,
+        "bytes": "8b4918",
+        "normalized_bytes": "8b4918",
+        "mnemonic": "mov",
+        "op_str": "ecx, dword ptr [rcx + 0x18]"
+      },
+      {
+        "rva": 38461918,
+        "offset": 126,
+        "size": 4,
+        "bytes": "488b4520",
+        "normalized_bytes": "488b4520",
+        "mnemonic": "mov",
+        "op_str": "rax, qword ptr [rbp + 0x20]"
+      },
+      {
+        "rva": 38461922,
+        "offset": 130,
+        "size": 3,
+        "bytes": "4885c0",
+        "normalized_bytes": "4885c0",
+        "mnemonic": "test",
+        "op_str": "rax, rax"
+      },
+      {
+        "rva": 38461927,
+        "offset": 135,
+        "size": 10,
+        "bytes": "81b85c080000766f7250",
+        "normalized_bytes": "81b85c080000766f7250",
+        "mnemonic": "cmp",
+        "op_str": "dword ptr [rax + 0x85c], 0x50726f76"
+      },
+      {
+        "rva": 38461939,
+        "offset": 147,
+        "size": 3,
+        "bytes": "8b5810",
+        "normalized_bytes": "8b5810",
+        "mnemonic": "mov",
+        "op_str": "ebx, dword ptr [rax + 0x10]"
+      },
+      {
+        "rva": 38461999,
+        "offset": 207,
+        "size": 4,
+        "bytes": "488b4530",
+        "normalized_bytes": "488b4530",
+        "mnemonic": "mov",
+        "op_str": "rax, qword ptr [rbp + 0x30]"
+      },
+      {
+        "rva": 38462003,
+        "offset": 211,
+        "size": 3,
+        "bytes": "4885c0",
+        "normalized_bytes": "4885c0",
+        "mnemonic": "test",
+        "op_str": "rax, rax"
+      },
+      {
+        "rva": 38462006,
+        "offset": 214,
+        "size": 2,
+        "bytes": "7448",
+        "normalized_bytes": "7400",
+        "mnemonic": "je",
+        "op_str": "0x24ae280"
+      },
+      {
+        "rva": 38462008,
+        "offset": 216,
+        "size": 10,
+        "bytes": "81b85c080000766f7250",
+        "normalized_bytes": "81b85c080000766f7250",
+        "mnemonic": "cmp",
+        "op_str": "dword ptr [rax + 0x85c], 0x50726f76"
+      },
+      {
+        "rva": 38462018,
+        "offset": 226,
+        "size": 2,
+        "bytes": "753c",
+        "normalized_bytes": "7500",
+        "mnemonic": "jne",
+        "op_str": "0x24ae280"
+      },
+      {
+        "rva": 38462020,
+        "offset": 228,
+        "size": 3,
+        "bytes": "8b5810",
+        "normalized_bytes": "8b5810",
+        "mnemonic": "mov",
+        "op_str": "ebx, dword ptr [rax + 0x10]"
+      }
+    ],
+    "new": [
+      {
+        "rva": 38461793,
+        "offset": 33,
+        "size": 3,
+        "bytes": "488be9",
+        "normalized_bytes": "488be9",
+        "mnemonic": "mov",
+        "op_str": "rbp, rcx"
+      },
+      {
+        "rva": 38461796,
+        "offset": 36,
+        "size": 3,
+        "bytes": "8b4918",
+        "normalized_bytes": "8b4918",
+        "mnemonic": "mov",
+        "op_str": "ecx, dword ptr [rcx + 0x18]"
+      },
+      {
+        "rva": 38461886,
+        "offset": 126,
+        "size": 4,
+        "bytes": "488b4520",
+        "normalized_bytes": "488b4520",
+        "mnemonic": "mov",
+        "op_str": "rax, qword ptr [rbp + 0x20]"
+      },
+      {
+        "rva": 38461890,
+        "offset": 130,
+        "size": 3,
+        "bytes": "4885c0",
+        "normalized_bytes": "4885c0",
+        "mnemonic": "test",
+        "op_str": "rax, rax"
+      },
+      {
+        "rva": 38461895,
+        "offset": 135,
+        "size": 10,
+        "bytes": "81b85c080000766f7250",
+        "normalized_bytes": "81b85c080000766f7250",
+        "mnemonic": "cmp",
+        "op_str": "dword ptr [rax + 0x85c], 0x50726f76"
+      },
+      {
+        "rva": 38461907,
+        "offset": 147,
+        "size": 3,
+        "bytes": "8b5810",
+        "normalized_bytes": "8b5810",
+        "mnemonic": "mov",
+        "op_str": "ebx, dword ptr [rax + 0x10]"
+      },
+      {
+        "rva": 38461967,
+        "offset": 207,
+        "size": 4,
+        "bytes": "488b4530",
+        "normalized_bytes": "488b4530",
+        "mnemonic": "mov",
+        "op_str": "rax, qword ptr [rbp + 0x30]"
+      },
+      {
+        "rva": 38461971,
+        "offset": 211,
+        "size": 3,
+        "bytes": "4885c0",
+        "normalized_bytes": "4885c0",
+        "mnemonic": "test",
+        "op_str": "rax, rax"
+      },
+      {
+        "rva": 38461974,
+        "offset": 214,
+        "size": 2,
+        "bytes": "7448",
+        "normalized_bytes": "7400",
+        "mnemonic": "je",
+        "op_str": "0x24ae260"
+      },
+      {
+        "rva": 38461976,
+        "offset": 216,
+        "size": 10,
+        "bytes": "81b85c080000766f7250",
+        "normalized_bytes": "81b85c080000766f7250",
+        "mnemonic": "cmp",
+        "op_str": "dword ptr [rax + 0x85c], 0x50726f76"
+      },
+      {
+        "rva": 38461986,
+        "offset": 226,
+        "size": 2,
+        "bytes": "753c",
+        "normalized_bytes": "7500",
+        "mnemonic": "jne",
+        "op_str": "0x24ae260"
+      },
+      {
+        "rva": 38461988,
+        "offset": 228,
+        "size": 3,
+        "bytes": "8b5810",
+        "normalized_bytes": "8b5810",
+        "mnemonic": "mov",
+        "op_str": "ebx, dword ptr [rax + 0x10]"
+      }
+    ]
+  },
+  "collector_fields": {
+    "unit_receiver": "+33 RBP=RCX incoming named CUnit; +36 DWORD kind18 selects its existing serialized unit type",
+    "current_province_pointer": "+126 RAX=[RBP+20], null at+130, Prov marker DWORD85C at+135, ProvinceID DWORD10 at+147",
+    "direct_target_pointer": "+207 RAX=[RBP+30], null at+211/+214, Prov marker DWORD85C at+216, ProvinceID DWORD10 at+228",
+    "direct_target_province_marker": {
+      "offset": "0x85C",
+      "width": 4,
+      "value": "0x50726F76",
+      "ascii": "Prov"
+    },
+    "direct_target_province_id": {
+      "offset": "0x10",
+      "width": 4,
+      "actual_new_instruction_rva": "0x24AE224"
+    },
+    "direct_target_unit_pointer": {
+      "offset": "0x30",
+      "width": 8,
+      "actual_new_instruction_rva": "0x24AE20F"
+    },
+    "unit_kind": {
+      "offset": "0x18",
+      "width": 4,
+      "actual_new_instruction_rva": "0x24AE164"
+    },
+    "remaining_route_distinct": "Unit+38/+40/+44 route projection is not a replacement for directtarget30"
+  },
+  "software_behavior": "Existing sentinel collector reads the direct Province pointer at30 and full ID10, keeps its generation/owner/frame validation and existing null/nonpositive-ID idle normalization. The source closure supplies actual4 field semantics without modifying the getter, DTO or action protocol.",
+  "scope": "Only the one source-named complete serializer body. Other serialization instructions/keys are retained in finite mapping proof but not researched or changed. No constructor, adjacent body, serialization-callee or general engine expansion.",
+  "cost": {
+    "this_actual_partial_bytes": 2754,
+    "this_actual_partial_read_calls": 2,
+    "total_package_actual_partial_bytes": 4052,
+    "total_package_actual_partial_read_calls": 10,
+    "total_old_bytes": 2026,
+    "total_new_bytes": 2026,
+    "legacy_cached_post_bytes": 298,
+    "whole_exe_reads": 0,
+    "hashes": 0,
+    "builds": 0,
+    "project_imports": 0,
+    "project_tests": 0,
+    "game": 0
+  },
+  "execution_receipt": "Z:\\ck3_mod_rewrite_process_assets\\g2-parallel-20261007\\default-manifest-sentinel-12004\\SENTINEL-UNIT30-MAPPER-FIRST-EXECUTION.json",
+  "supersedes_frontier": [
+    "ROOT-IMPLEMENTED-DELIVERY.json source frontier as of9ea source commit",
+    "SENTINEL-INSTALL-SOURCE-READY.json separate collector frontier",
+    "feature-native/SENTINEL-DIRECTTARGET-OLD-SOURCE-LOCATORS.json old-only locator gap"
+  ],
+  "qualification": "Authored collector/install/native whole producer/sole registered Service. No actual native fixture run, installer execution, day advancement, pause call or game. Root owns new batch FIRST."
+}

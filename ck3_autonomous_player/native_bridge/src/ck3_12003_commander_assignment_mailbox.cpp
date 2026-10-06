@@ -1,6 +1,10 @@
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_army_support.hpp"
+#include "xar_bridge/ck3_12004_commander_assignment.hpp"
+#include "xar_bridge/ck3_12004_commands.hpp"
 
 namespace xar::ck3_12003 {
 namespace {
@@ -57,12 +61,18 @@ bool ExecuteArmyCommanderAssignmentMailbox(
   }
   auto &action = *static_cast<ArmyCommanderAssignmentMailboxContext *>(
       envelope->typed_context);
+  const bool actual4 = game::IsCk3_12004Descriptor(envelope->game->descriptor());
   if (envelope != &action.envelope || action.completed ||
-      !game::IsCk3_12003Descriptor(envelope->game->descriptor())) {
+      (!actual4 && !game::IsCk3_12003Descriptor(envelope->game->descriptor()))) {
     return false;
   }
-  const auto bindings = BindCommanderAssignmentImage(
-      action.image_base, envelope->game->descriptor().executable_sha256);
+  const auto sha = envelope->game->descriptor().executable_sha256;
+  const auto bindings = actual4
+      ? ck3_12004::BindCommanderAssignmentImage12004(
+            action.image_base, sha,
+            ck3_12004::BindCommanderImage12004(action.image_base, sha),
+            ck3_12004::BindCommandImage12004(action.image_base, sha))
+      : BindCommanderAssignmentImage(action.image_base, sha);
   action.apply_result = ApplyArmyCommanderAssignment(
       bindings, envelope->expected_snapshot, action.army_id,
       action.candidate_character_id, action.observation);

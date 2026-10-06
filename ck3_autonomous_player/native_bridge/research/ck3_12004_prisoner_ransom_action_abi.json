@@ -1,0 +1,93 @@
+{
+  "schema": "xar.ck3.actual4-prisoner-ransom-action-abi.v1",
+  "game_version": "1.20.0.4",
+  "steam_build_id": "25734779",
+  "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+  "source_base": "e0ea249ae557749299735bc4cf53dfaa757aad50",
+  "existing_adopted_surface": {
+    "compile_flag": "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1",
+    "registered_tool": "ck3_ransom_player_prisoner_private_v1",
+    "native_step": "submit-player-prisoner-ransom-private-v1",
+    "definition_key": "ransom_interaction",
+    "selected_option_keys": ["gold", "current_gold"]
+  },
+  "role_shape": {
+    "actor": "current played jailer",
+    "recipient": "native redirected payer",
+    "secondary_actor": -1,
+    "secondary_recipient": "full prisoner CharacterID",
+    "intermediary": -1
+  },
+  "consumed_sender": {
+    "construct_send_command_rva": "0x2968150",
+    "context_copy_rva": "0x3076B60",
+    "context_copy_proof_scope": "actual direct call edge and +0x20 copied-context argument in complete send constructor; separate complete 262-byte helper proof reused from Marriage owner",
+    "context_copy_complete_byte_count": 262,
+    "shared_copy_and_table_linkage_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/marriage-family/actual4-marriage-actions/send-copy-linkage/SEND-COPY-LINKAGE-RECEIPT.json",
+    "shared_copy_and_table_physical_bytes": 540,
+    "shared_copy_and_table_physical_read_calls": 4,
+    "shared_cost_is_local_increment": false,
+    "primary_vtable_rva": "0x448BCF0",
+    "secondary_vtable_rva": "0x448BCC0",
+    "context_size_bytes": 824,
+    "command_size_bytes": 872,
+    "copied_context_offset": "0x20",
+    "secondary_vtable_offset": "0x18",
+    "native_clone_primary_slot": "0x40",
+    "native_delete_primary_slot": "0x0",
+    "proven_actual_clone_rva": "0x86D760",
+    "proven_actual_clone_byte_count": 167,
+    "proven_actual_delete_rva": "0x86BE90",
+    "proven_actual_delete_byte_count": 66,
+    "local_ownership_body_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/prisoner/current4-action/native/send-ownership01/FAMILY-MAP.json",
+    "local_new_paired_bytes": 466,
+    "local_new_paired_read_calls": 4,
+    "channel_flags": "0x0E",
+    "proof_owner": "/root/battle_pursuit_inputs/diplomacy12004_domain",
+    "constructor_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/adopted-lifestyle-building-faction-12004/faction/SEND-COMMAND-CTOR-SOURCE-CLOSED.json",
+    "context_copy_and_vptr_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/actual4-domain/diplomacy-map/ROOT-DELIVERY.json",
+    "typed_ownership_proof": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/prisoner/current4-action/native/ROOT-DELIVERY.json"
+  },
+  "commands": {
+    "provider": "xar::ck3_12004::BindCommandImage12004",
+    "provider_commit": "d2ced9237c25e758f9380637eaf76e4f02891452",
+    "command_manager_embedded_rva": "0x5CC1240",
+    "queue_owned_command_rva": "0x37F06D0",
+    "ownership_algorithm": "ck3_12002::SubmitCommandCopy; native clone, owning-pointer queue, residual native deleting destructor",
+    "queue_result_is_gameplay_outcome": false
+  },
+  "adopted_actual4_input_reuse": [
+    "BindPrisonerRansomImage12004 and its actual4 context, named-value and payer gold readers",
+    "native loaded ordinary option IDs, selected one-option mask and roles",
+    "actual4 ReadCoreSnapshot paused player/date frame",
+    "central Commands provider and command queue proof",
+    "shared QuerySnapshotComparison12002::core_frame API"
+  ],
+  "mailbox": {
+    "collection_state": "PrisonerPrivateWorkerState12004",
+    "stored_quote_fields": ["current_quote", "quote_revision", "quote_query_sequence"],
+    "request_fields": ["expected_revision", "quote_query_sequence", "prisoner_character_id", "payer_character_id", "quoted_gold_raw"],
+    "executor": "ExecutePlayerPrisonerRansom12004",
+    "handler": "HandlePlayerPrisonerRansom12004",
+    "requires_real_positive_published_revision": true,
+    "core_revision_zero_is_public_snapshot": false
+  },
+  "receipt": {
+    "submit_ack_status": "submitted_verification_pending",
+    "ack_material_result": false,
+    "formal_submit": "submit_ransom_private",
+    "cold_ledger_reader": "read_ransom_ledger",
+    "independent_receipt_reader": "read_ransom_receipt_private",
+    "gold_condition": "prisoner absent from complete current custody and player treasury gain >= quote",
+    "current_gold_condition": "prisoner absent from complete current custody and player treasury gain > 0; amount is sampled later at native acceptance"
+  },
+  "qualification": {
+    "new_target": "ck3_12004_prisoner_ransom_action_test",
+    "new_ctest": "ck3_12004_prisoner_ransom_action_test",
+    "native_first": "AUTHORED_NOTRUN",
+    "registered_first": "AUTHORED_NOTRUN",
+    "actual4_game_action": "NOT_RUN",
+    "application_main_mailbox_fixture": "source-only; native callbacks bind in-process, no fake full adapter or extra injection surface"
+  },
+  "scope_excluded": ["negotiated release", "kinship candidate", "self-ransom reply", "non-gold options", "new policy", "live ransom solely for migration"]
+}

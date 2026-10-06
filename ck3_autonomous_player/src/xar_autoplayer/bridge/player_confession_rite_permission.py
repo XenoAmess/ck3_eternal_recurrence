@@ -1,6 +1,8 @@
 """Normalize the current Rite's fixed native confession status."""
 from __future__ import annotations
 
+from .religion_context_addon_schema import religion_context_addon_schema
+
 from typing import Mapping
 
 
@@ -13,7 +15,7 @@ def normalize_player_confession_rite_permission_v1(
             "date_raw", "played_character_id", "rite_id", "tenet_key",
             "current_rite_status", "has_at_least_permitted"}
     if (not isinstance(value, dict) or set(value) != keys
-            or value["schema"] != "ck3_12003_confession_rite_permission_v1"
+            or value["schema"] != religion_context_addon_schema("ck3_12003_confession_rite_permission_v1", current_context)
             or value["read_only"] is not True or type(value["available"]) is not bool
             or value["tenet_key"] != "tenet_confession"):
         raise ValueError("native confession Rite permission schema is malformed")

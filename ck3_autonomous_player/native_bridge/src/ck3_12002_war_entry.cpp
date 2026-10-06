@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12002_war_entry.hpp"
+#include "xar_bridge/ck3_12004_war.hpp"
 
 #include <windows.h>
 
@@ -215,6 +216,9 @@ bool EnvironmentIsExact(const WarEntryNativeEnvironmentV1 &environment) {
   }
   if (environment.module_base == 0) {
     return false;
+  }
+  if (ck3_12004::IsWarEntryNativeEnvironment12004(environment)) {
+    return true;
   }
   return reinterpret_cast<std::uintptr_t>(environment.game_state_slot) ==
              environment.module_base + kWarEntryGameStateSlotRva &&

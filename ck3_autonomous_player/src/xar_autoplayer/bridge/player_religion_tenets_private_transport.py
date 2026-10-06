@@ -14,7 +14,7 @@ from .nonwar_private_build import (
     private_native_build_identity, private_native_provenance,
 )
 from .version_identity import (
-    CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build,
+    CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend, require_exact_native_build,
 )
 from .target_rite_tenet_comparison_12003 import (
     normalize_target_rite_tenet_comparison_12003,
@@ -77,7 +77,7 @@ def normalize_player_religion_tenets_v1(
     if not isinstance(value, dict) or set(value) != expected_keys or value.get("schema") != private_native_schema(SCHEMA, snapshot):
         raise ValueError("native player religion Tenets schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(snapshot):
         raise ValueError("native player religion Tenets belongs to another build")
     if (type(value["available"]) is not bool
             or type(value["capture_epoch"]) is not int
@@ -144,8 +144,8 @@ def query_player_religion_tenets_private_v1(
             raise ValueError("include_knowledge_catalogue must be a bool")
         request_fields = _comparison_request_fields(target_rite_id, tenet_key)
         if include_knowledge_catalogue:
-            if private_native_build_identity(driver.take_snapshot()) != CK3_12003:
-                raise ValueError("player Tenet knowledge catalogue requires exact CK3 1.20.0.3")
+            if private_native_build_identity(driver.take_snapshot()) not in (CK3_12003, CK3_12004):
+                raise ValueError("player Tenet knowledge catalogue requires exact CK3 1.20.0.3 or 1.20.0.4")
             request_fields["include_knowledge_catalogue"] = True
     except ValueError as error:
         raise BridgeUnavailableError(str(error)) from error
@@ -159,7 +159,7 @@ def query_player_religion_tenets_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-tenets-v1",
         )
-        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

@@ -66,7 +66,7 @@ from .title_holder_contract import (
 from collections.abc import Iterable
 
 from .version_identity import (
-    CK3_11906, CK3_12002, CK3_12003, NativeBuildIdentity, require_exact_native_build,
+    CK3_11906, CK3_12002, CK3_12003, CK3_12004, NativeBuildIdentity, require_exact_native_build,
 )
 
 from xar_autoplayer.bridge.raiktor_war_bound_regiment_contract import (
@@ -4179,6 +4179,7 @@ def _normalize_war_termination_terms_provenance(
         "game_version": build.game_version,
         "executable_sha256": build.executable_sha256,
         "native_reader": (
+            "CWar+0x270/+0x290;0x2B9ECB0" if build == CK3_12004 else
             "CWar+0x270/+0x290;0x2B9ECD0"
             if build in (CK3_12002, CK3_12003) else _TERMINATION_TERMS_NATIVE_READER
         ),
@@ -4189,7 +4190,9 @@ def _normalize_war_termination_terms_provenance(
             **common,
             "claim_script_sha256": (
                 "887BF0197401CB17CB4588978ADD556AB6B429BF55CB482E3E5F2D0E8351CFD4"
-                if build in (CK3_12002, CK3_12003) else _TERMINATION_TERMS_CLAIM_SCRIPT_SHA256
+                # .4 retains the authored script pin by equal frozen game-data
+                # depot metadata; its native getter has a separate paired proof.
+                if build in (CK3_12002, CK3_12003, CK3_12004) else _TERMINATION_TERMS_CLAIM_SCRIPT_SHA256
             ),
         }
     elif supported_slice == _TERMINATION_TERMS_RAIKTOR_SLICE:

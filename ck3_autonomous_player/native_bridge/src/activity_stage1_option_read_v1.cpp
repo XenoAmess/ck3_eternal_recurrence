@@ -78,7 +78,7 @@ bool VerifyAbi(const ActivityStage1OptionEnvironmentV1 &env) noexcept {
          IsActivityPlannerSupportedBuildV1(d) &&
          d.read_memory != nullptr && d.read_frame != nullptr &&
          d.rtti_cast != nullptr && d.invoke_visibility != nullptr &&
-         (IsActivityPlanner12002V1(d)
+         (IsActivityPlannerCrozierBuildV1(d)
                ? MatchCode(d, kGetSelectedOptionRva,
                            std::array<std::uint8_t, 7>{0x48, 0x8B, 0x81, 0x00, 0x15, 0x00, 0x00})
                : MatchCode(d, kGetSelectedOptionRva, kSelectedSignature)) &&
@@ -111,7 +111,7 @@ bool ResolveNative(const ActivityStage1OptionEnvironmentV1 &env,
                    NativeIdentity &output,
                    std::int32_t expected_stage = 1) noexcept {
   const auto &d = env.diagnostic;
-  if (IsActivityPlanner12002V1(d)) {
+  if (IsActivityPlannerCrozierBuildV1(d)) {
     ActivityPlannerIdentityV1 native{};
     std::uintptr_t category = 0, rows = 0, selected_row = 0;
     std::int32_t count = 0;
@@ -390,7 +390,7 @@ ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
   constexpr std::array<std::uint8_t, 10> kStageSetterSignature{
       0x40, 0x53, 0x48, 0x83, 0xEC, 0x20, 0x8B, 0x81, 0xB0, 0x1A};
   std::uintptr_t stage_notification = 0;
-  const bool stage_setter_matches = IsActivityPlanner12002V1(env.diagnostic)
+  const bool stage_setter_matches = IsActivityPlannerCrozierBuildV1(env.diagnostic)
       ? MatchCode(env.diagnostic, kSetStageRva,
                   std::array<std::uint8_t, 15>{0x40, 0x53, 0x48, 0x81, 0xEC,
                     0xA0, 0x00, 0x00, 0x00, 0x8B, 0x81, 0xE8, 0x1A, 0x00, 0x00})
@@ -433,7 +433,7 @@ ActivityStage1ConfirmResultV1 ConfirmActivityStage1V1(
     constexpr std::array<std::uint8_t, 10> kProgressSignature{
         0x40, 0x53, 0x48, 0x83, 0xEC, 0x20,
         0x48, 0x63, 0x81, 0xB0};
-    const bool progress_abi_matches = IsActivityPlanner12002V1(env.diagnostic)
+    const bool progress_abi_matches = IsActivityPlannerCrozierBuildV1(env.diagnostic)
         ? MatchCode(env.diagnostic, kFindAutoRowRva,
                     std::array<std::uint8_t, 13>{0x48, 0x8B, 0x81, 0xB0, 0x15,
                       0x00, 0x00, 0x48, 0x63, 0x89, 0xBC, 0x15, 0x00}) &&

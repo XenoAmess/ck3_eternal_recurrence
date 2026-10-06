@@ -609,7 +609,10 @@ bool Utf8BytewiseLess(std::string_view left, std::string_view right) noexcept {
 
 const GovernmentDefinitionV1 *FindGovernment(
     std::string_view key, GovernmentRuntimeAdapterBuildProfileV1 profile) noexcept {
-  const auto &definitions = profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12002
+  // The .4 profile selects the existing semantic identity rows, independently
+  // of its own native image bindings and current copied government flags.
+  const auto &definitions = (profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12002 ||
+                            profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12004)
                                 ? kGovernmentDefinitions12002 : kGovernmentDefinitions;
   const auto found = std::find_if(
       definitions.begin(), definitions.end(),
@@ -653,7 +656,8 @@ GovernmentRuntimeAdapterExpectedFeatureKeysV1() noexcept {
 
 std::span<const std::string_view> GovernmentRuntimeAdapterExpectedFeatureKeysV1(
     GovernmentRuntimeAdapterBuildProfileV1 profile) noexcept {
-  if (profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12002) {
+  if (profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12002 ||
+      profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12004) {
     return kFeatureKeys12002;
   }
   return kFeatureKeys;
@@ -798,8 +802,8 @@ EvaluateGovernmentRuntimeAdapterObserverV1(
     }
     bool requirements_met = true;
     for (const auto key : definition->profile_features) {
-      if (input.feature_profile ==
-              GovernmentRuntimeAdapterBuildProfileV1::ck3_12002 &&
+      if ((input.feature_profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12002 ||
+           input.feature_profile == GovernmentRuntimeAdapterBuildProfileV1::ck3_12004) &&
           key == "barter_troops") {
         continue;
       }

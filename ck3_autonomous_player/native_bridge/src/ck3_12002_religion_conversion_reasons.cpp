@@ -74,7 +74,9 @@ bool ReadPlayedReligionConversionReasons12002(const Bindings &b,
   auto *target = ResolveRite(r, target_id);
   if (!target) { out.failure = Failure::target_rite_unavailable; return false; }
   out.current_rite_id = current_id;
-  auto command = religion_conversion_rite::MakeReadOnlyConvertRiteValue12002(
+  const auto factory = r.read_only_value_factory ? r.read_only_value_factory
+      : &religion_conversion_rite::MakeReadOnlyConvertRiteValue12002;
+  auto command = factory(
       r.module_base, frame.played_character_id, target_id, true);
   NativeReasonString native{};
   const bool accepted = r.validate(&command, &native);

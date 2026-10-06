@@ -1,0 +1,533 @@
+{
+  "schema_version": 1,
+  "build": {
+    "version": "1.20.0.4",
+    "steam_build_id": "25734779",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "identity_source": "frozen BUILD-FREEZE; no rehash"
+  },
+  "source_base": "329d1e336fe518ae7c8f49b1874a6385b6f9f3c9",
+  "api": "xar::ck3_12004::BindCombatImage12004(uintptr_t,string_view) noexcept -> ck3_12002::CombatBindings",
+  "implementation_source_complete": true,
+  "readiness": "research: source complete; parent joint native fixture/build and Root FIRST pending",
+  "runtime_registered": false,
+  "live_verified": false,
+  "default_adopted_fields": {
+    "enabled": true,
+    "base_callbacks": 14,
+    "loaded_combat_definitions": 6,
+    "ordinary_stat_inputs_enabled": true,
+    "ordinary_loaded_bases": 5,
+    "maa_stat_inputs_enabled": true,
+    "maa_callbacks": 12,
+    "knight_model_association_enabled": true,
+    "phase_rite_parameters": true,
+    "phase_warmonger_core": true,
+    "phase_berserker_validity_inputs": true,
+    "phase_berserker_chance_inputs": true
+  },
+  "source_files": [
+    "include/xar_bridge/ck3_12004_combat.hpp",
+    "src/ck3_12004_combat.cpp"
+  ],
+  "own_closed_spans": [
+    {
+      "id": "ordinary_damage_loaded_base",
+      "old_rva": "0x2c1563a",
+      "new_rva": "0x2c1561a",
+      "bytes": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\ordinary_damage_loaded_base-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "ordinary_toughness_loaded_base",
+      "old_rva": "0x2c158ea",
+      "new_rva": "0x2c158ca",
+      "bytes": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\ordinary_toughness_loaded_base-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "ordinary_siege_loaded_base",
+      "old_rva": "0x2c15b9a",
+      "new_rva": "0x2c15b7a",
+      "bytes": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\ordinary_siege_loaded_base-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "ordinary_pursuit_loaded_base",
+      "old_rva": "0x2c15e4a",
+      "new_rva": "0x2c15e2a",
+      "bytes": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\ordinary_pursuit_loaded_base-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "ordinary_screen_loaded_base",
+      "old_rva": "0x2c160fa",
+      "new_rva": "0x2c160da",
+      "bytes": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\ordinary_screen_loaded_base-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_02C42950",
+      "old_rva": "0x2c42950",
+      "new_rva": "0x2c42930",
+      "bytes": 95,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\maa_02C42950-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_02B8FCF0",
+      "old_rva": "0x2b8fcf0",
+      "new_rva": "0x2b8fcd0",
+      "bytes": 156,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\maa_02B8FCF0-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_02B9CBC0",
+      "old_rva": "0x2b9cbc0",
+      "new_rva": "0x2b9cba0",
+      "bytes": 604,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\maa_02B9CBC0-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_030BDC80",
+      "old_rva": "0x30bdc80",
+      "new_rva": "0x30bdc60",
+      "bytes": 156,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\maa_030BDC80-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_030BDD20",
+      "old_rva": "0x30bdd20",
+      "new_rva": "0x30bdd00",
+      "bytes": 156,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\maa_030BDD20-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_030BDDC0",
+      "old_rva": "0x30bddc0",
+      "new_rva": "0x30bdda0",
+      "bytes": 281,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\maa_030BDDC0-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_02B91EA0",
+      "old_rva": "0x2b91ea0",
+      "new_rva": "0x2b91e80",
+      "bytes": 110,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\maa_02B91EA0-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_02B92160",
+      "old_rva": "0x2b92160",
+      "new_rva": "0x2b92140",
+      "bytes": 75,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\maa_02B92160-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_02B924C0",
+      "old_rva": "0x2b924c0",
+      "new_rva": "0x2b924a0",
+      "bytes": 110,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\maa_02B924C0-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_actual_army_named_call",
+      "old_rva": "0x30c4532",
+      "new_rva": "0x30c4512",
+      "bytes": 5,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-call02\\maa_actual_army_named_call-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-call02\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_actual_army_full_leaf",
+      "old_rva": "0x262d050",
+      "new_rva": "0x262d030",
+      "bytes": 122,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-leaf03\\maa_actual_army_full_leaf-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-leaf03\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_suffix_02B91F0E",
+      "old_rva": "0x2b91f0e",
+      "new_rva": "0x2b91eee",
+      "bytes": 547,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\maa_suffix_02B91F0E-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_suffix_02B92131",
+      "old_rva": "0x2b92131",
+      "new_rva": "0x2b92111",
+      "bytes": 20,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\maa_suffix_02B92131-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_suffix_02B92145",
+      "old_rva": "0x2b92145",
+      "new_rva": "0x2b92125",
+      "bytes": 13,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\maa_suffix_02B92145-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_suffix_02B921AB",
+      "old_rva": "0x2b921ab",
+      "new_rva": "0x2b9218b",
+      "bytes": 724,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\maa_suffix_02B921AB-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_suffix_02B9247F",
+      "old_rva": "0x2b9247f",
+      "new_rva": "0x2b9245f",
+      "bytes": 13,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\maa_suffix_02B9247F-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_suffix_02B9248C",
+      "old_rva": "0x2b9248c",
+      "new_rva": "0x2b9246c",
+      "bytes": 48,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\maa_suffix_02B9248C-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_suffix_02B9252E",
+      "old_rva": "0x2b9252e",
+      "new_rva": "0x2b9250e",
+      "bytes": 664,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\maa_suffix_02B9252E-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_suffix_02B927C6",
+      "old_rva": "0x2b927c6",
+      "new_rva": "0x2b927a6",
+      "bytes": 20,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\maa_suffix_02B927C6-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\maa-suffix04\\FAMILY-MAP.json"
+    },
+    {
+      "id": "knight_damage_loaded",
+      "old_rva": "0x2c06d90",
+      "new_rva": "0x2c06d70",
+      "bytes": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\knight-loaded05\\knight_damage_loaded-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\knight-loaded05\\FAMILY-MAP.json"
+    },
+    {
+      "id": "knight_toughness_loaded",
+      "old_rva": "0x2c06da5",
+      "new_rva": "0x2c06d85",
+      "bytes": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\knight-loaded05\\knight_toughness_loaded-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\knight-loaded05\\FAMILY-MAP.json"
+    },
+    {
+      "id": "counter_chunk",
+      "old_rva": "0x2657970",
+      "new_rva": "0x2657950",
+      "bytes": 334,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\base06\\counter_chunk-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\base06\\FAMILY-MAP.json"
+    },
+    {
+      "id": "counter_classes",
+      "old_rva": "0x2653f10",
+      "new_rva": "0x2653ef0",
+      "bytes": 1981,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\base06\\counter_classes-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\base06\\FAMILY-MAP.json"
+    },
+    {
+      "id": "counter_context_scale",
+      "old_rva": "0x2c533e0",
+      "new_rva": "0x2c533c0",
+      "bytes": 480,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\base06\\counter_context_scale-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\base06\\FAMILY-MAP.json"
+    },
+    {
+      "id": "combat_rules",
+      "old_rva": "0x899e40",
+      "new_rva": "0x899e40",
+      "bytes": 87,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\base06\\combat_rules-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\base06\\FAMILY-MAP.json"
+    },
+    {
+      "id": "knight_effectiveness",
+      "old_rva": "0x2c06b00",
+      "new_rva": "0x2c06ae0",
+      "bytes": 558,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\base06\\knight_effectiveness-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\base06\\FAMILY-MAP.json"
+    },
+    {
+      "id": "regiment_stats_at_province",
+      "old_rva": "0x26344c0",
+      "new_rva": "0x26344a0",
+      "bytes": 603,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\base06\\regiment_stats_at_province-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\base06\\FAMILY-MAP.json"
+    },
+    {
+      "id": "culture_store",
+      "old_rva": "0x2b117e1",
+      "new_rva": "0x2b117c1",
+      "bytes": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\nested-slots07\\culture_store-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\nested-slots07\\FAMILY-MAP.json"
+    },
+    {
+      "id": "culture_fallback",
+      "old_rva": "0x2b11813",
+      "new_rva": "0x2b117f3",
+      "bytes": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\nested-slots07\\culture_fallback-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\nested-slots07\\FAMILY-MAP.json"
+    },
+    {
+      "id": "dynasty_perk_database_slot",
+      "old_rva": "0xd2bda4",
+      "new_rva": "0xd2bda4",
+      "bytes": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\nested-slots07\\dynasty_perk_database_slot-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\nested-slots07\\FAMILY-MAP.json"
+    },
+    {
+      "id": "province_terrain_leaf",
+      "old_rva": "0x247e590",
+      "new_rva": "0x247e570",
+      "bytes": 12,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\terrain08\\province_terrain_leaf-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\terrain08\\FAMILY-MAP.json"
+    },
+    {
+      "id": "dynasty_owned_perks_array",
+      "old_rva": "0x2b2041d",
+      "new_rva": "0x2b203fd",
+      "bytes": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\nested-members10\\dynasty_owned_perks_array-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\nested-members10\\FAMILY-MAP.json"
+    },
+    {
+      "id": "dynasty_owned_perks_count",
+      "old_rva": "0x2b20429",
+      "new_rva": "0x2b20409",
+      "bytes": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\nested-members10\\dynasty_owned_perks_count-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\nested-members10\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_piety_rank",
+      "old_rva": "0x28be0d0",
+      "new_rva": "0x28be0b0",
+      "bytes": 86,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\piety-gap11\\maa_piety_rank-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\piety-gap11\\FAMILY-MAP.json"
+    },
+    {
+      "id": "culture_template",
+      "old_rva": "0x2b124fa",
+      "new_rva": "0x2b124da",
+      "bytes": 4,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\culture-gap12\\culture_template-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\culture-gap12\\FAMILY-MAP.json"
+    },
+    {
+      "id": "template_resolved_data",
+      "old_rva": "0x2b124fe",
+      "new_rva": "0x2b124de",
+      "bytes": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "detail": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\culture-gap12\\template_resolved_data-DETAIL.json",
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\culture-gap12\\FAMILY-MAP.json"
+    }
+  ],
+  "shared_source_proofs": {
+    "core_slots": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/core-global-slots/CORE-GLOBAL-MAP.json",
+    "unit_army_arrg_base": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-world-family/native-main/BASE-READER-SOURCE-CLOSED.json",
+    "army_commander": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-family-12004/commander-supply/commander-gap10/armycommander_24E9ED0-DETAIL.json",
+    "commander_advantage": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-family-12004/commander-supply/support-first01/support_C6DED0-DETAIL.json",
+    "special_regiment": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-family-12004/commander-supply/writer-admission09/writeradmission_2634880-DETAIL.json",
+    "holding_defender": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-family-12004/commander-supply/support-first01/support_2C09D30-DETAIL.json",
+    "government_and_modifiers": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/actual4-domain/combat-map/pass01/FAMILY-MAP.json",
+    "roll_and_width_definitions": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/actual4-domain/combat-map/GENERAL-COMBAT-OWNER-CACHED-PROOF-HANDOFF.json",
+    "court_owner_knight_context": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/adopted-lifestyle-building-faction-12004/faction/leaf01/FAMILY-MAP.json",
+    "vector_allocator": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/war-score-membership/actual4-domain/war-map/allocator01/SharedGenericVectorAllocatorUse111E93F-DETAIL.json",
+    "rite_fallback_and_getters": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/faith-tenet/implementation-caa4/actor-map/SOURCE-READY.json",
+    "religion_other_getters": "include/xar_bridge/ck3_12004_religion_profile.hpp",
+    "trait_character": "include/xar_bridge/ck3_12004_phase_character.hpp + src/ck3_12004_phase_character.cpp",
+    "house_dynasty": "include/xar_bridge/ck3_12004_family_abi.hpp; shared actual4 collection ledger and parent producer/outcome DETAIL receipts",
+    "unit_direct_target": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/default-manifest-sentinel-12004/sentinel-unit30-map01/FAMILY-MAP.json"
+  },
+  "read_cost": {
+    "schema": "ck3.actual4-general-combat-read-cost.v1",
+    "old_partial_bytes": 2807,
+    "old_partial_read_calls": 4,
+    "new_partial_bytes": 8069,
+    "new_partial_read_calls": 40,
+    "whole_executable_reads": 0,
+    "hashes": 0,
+    "pe_parse": 0,
+    "pdata_capture": 0,
+    "production_source_imports": 0,
+    "builds": 0,
+    "tests": 0,
+    "game_queries": 0,
+    "sdk_queries": 0,
+    "git_operations": 0,
+    "cached_piety_86B_new_read_cost": 0,
+    "boundary": "Finite named existing callback bodies and loaded/member operands only; shared metadata/caches reused. Earlier global-PE work is a separate closed ledger."
+  },
+  "semantic_boundary": [
+    "Existing software DTOs and readers are reused; exact .4 addresses are populated independently. No legacy image factory or older SHA alias is called.",
+    "MAA linked callback source includes all adopted chained logical fragments; the actual-Army no-pdata 122B leaf derives from an actual 5B caller operand.",
+    "Four loaded definitions reuse Battle full-body RIP operands; two knight definitions and five ordinary bases have exact instruction-use pairs. Slots are loaded pointers, never hardcoded gameplay values.",
+    "The narrow .3-qualified Culture/Dynasty member witnesses retain their non-RIP typed operands in actual .4; shared Faith/PhaseCharacter/Family evidence supplies the other existing nested inputs. No whole phase model or future-combat qualification is inferred.",
+    "Initial no-pdata attempts read zero bytes and are resolved by actual shared/candidate-scoped leaf proofs, not a global shift rule.",
+    "Battle owns additional Combat6F8/6FE/SideC2 fields; this factory adds no new fields and does not recapture them.",
+    "No build, native fixture, Python import, game, SDK, or FIRST was executed in this lane. Existing partial model/future-readiness boundaries remain unchanged."
+  ],
+  "initial_candidate_attempts": [
+    {
+      "id": "COMMANDER_MIN_ROLL_global",
+      "old_rva": "0x237b1e3",
+      "new_rva": null,
+      "bytes": 7,
+      "status": "unresolved_boundary_candidate",
+      "detail": null,
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "COMMANDER_MAX_ROLL_global",
+      "old_rva": "0x237b4e3",
+      "new_rva": null,
+      "bytes": 7,
+      "status": "unresolved_boundary_candidate",
+      "detail": null,
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "KNIGHT_DAMAGE_global",
+      "old_rva": "0x237c593",
+      "new_rva": null,
+      "bytes": 7,
+      "status": "unresolved_boundary_candidate",
+      "detail": null,
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "KNIGHT_TOUGHNESS_global",
+      "old_rva": "0x237c8d3",
+      "new_rva": null,
+      "bytes": 7,
+      "status": "unresolved_boundary_candidate",
+      "detail": null,
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "MINIMUM_COMBAT_WIDTH_global",
+      "old_rva": "0x237bac3",
+      "new_rva": null,
+      "bytes": 7,
+      "status": "unresolved_boundary_candidate",
+      "detail": null,
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "BASE_WIDTH_RATIO_global",
+      "old_rva": "0x237b073",
+      "new_rva": null,
+      "bytes": 7,
+      "status": "unresolved_boundary_candidate",
+      "detail": null,
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\loaded01\\FAMILY-MAP.json"
+    },
+    {
+      "id": "maa_piety_rank",
+      "old_rva": "0x28be0d0",
+      "new_rva": null,
+      "bytes": 86,
+      "status": "unresolved_boundary_candidate",
+      "detail": null,
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\piety09\\FAMILY-MAP.json"
+    },
+    {
+      "id": "culture_template",
+      "old_rva": "0x2b124fa",
+      "new_rva": null,
+      "bytes": 4,
+      "status": "unresolved_boundary_candidate",
+      "detail": null,
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\nested-members10\\FAMILY-MAP.json"
+    },
+    {
+      "id": "template_resolved_data",
+      "old_rva": "0x2b124fe",
+      "new_rva": null,
+      "bytes": 7,
+      "status": "unresolved_boundary_candidate",
+      "detail": null,
+      "family_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\existing-mcp-factories-12004\\general-combat\\nested-members10\\FAMILY-MAP.json"
+    }
+  ],
+  "remaining_local_source_closure": []
+}

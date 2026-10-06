@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/activity_planner_diag_v1.hpp"
+#include "xar_bridge/ck3_12004_activity_migration_v1.hpp"
 
 namespace xar::bridge {
 
@@ -12,18 +13,22 @@ inline bool IsActivityPlanner12002V1(
   return env.admitted_executable_sha256 == kActivityPlanner12002ExeSha256V1;
 }
 
-inline bool IsActivityPlannerSupportedBuildV1(
+inline bool IsActivityPlannerCrozierBuildV1(
     const ActivityPlannerDiagEnvironmentV1 &env) noexcept {
   return IsActivityPlanner12002V1(env) ||
+         IsActivity12004BuildV1(env.admitted_executable_sha256);
+}
+
+inline bool IsActivityPlannerSupportedBuildV1(
+    const ActivityPlannerDiagEnvironmentV1 &env) noexcept {
+  return IsActivityPlannerCrozierBuildV1(env) ||
       env.admitted_executable_sha256 == kActivityPlannerDiagExeSha256V1;
 }
 
 // Version selection is semantic: these entries were recovered from the new
 // image's RTTI, native getters and callers; there is no common RVA delta.
-inline std::uintptr_t ActivityPlannerRvaV1(
-    const ActivityPlannerDiagEnvironmentV1 &env,
+inline std::uintptr_t ActivityPlanner12002RvaV1(
     std::uintptr_t legacy_rva) noexcept {
-  if (!IsActivityPlanner12002V1(env)) return legacy_rva;
   switch (legacy_rva) {
   case 0x570F7B8: return 0x5C6A520;
   case 0x4FE7EE0: return 0x54DBC00;
@@ -66,10 +71,18 @@ inline std::uintptr_t ActivityPlannerRvaV1(
   }
 }
 
+inline std::uintptr_t ActivityPlannerRvaV1(
+    const ActivityPlannerDiagEnvironmentV1 &env,
+    std::uintptr_t legacy_rva) noexcept {
+  if (!IsActivityPlannerCrozierBuildV1(env)) return legacy_rva;
+  return Activity12004RvaV1(env.admitted_executable_sha256,
+                           ActivityPlanner12002RvaV1(legacy_rva));
+}
+
 inline std::size_t ActivityPlannerObjectOffsetV1(
     const ActivityPlannerDiagEnvironmentV1 &env,
     std::size_t legacy_offset) noexcept {
-  if (!IsActivityPlanner12002V1(env)) return legacy_offset;
+  if (!IsActivityPlannerCrozierBuildV1(env)) return legacy_offset;
   switch (legacy_offset) {
   case 0x78: return 0x60;
   case 0xD0: return 0xA0;
@@ -90,7 +103,7 @@ inline std::size_t ActivityPlannerObjectOffsetV1(
 inline std::size_t ActivityPlannerTypeOffsetV1(
     const ActivityPlannerDiagEnvironmentV1 &env,
     std::size_t legacy_offset) noexcept {
-  if (!IsActivityPlanner12002V1(env)) return legacy_offset;
+  if (!IsActivityPlannerCrozierBuildV1(env)) return legacy_offset;
   switch (legacy_offset) {
   case 0xA88: return 0x960;
   case 0x3C75: return 0x3BED;

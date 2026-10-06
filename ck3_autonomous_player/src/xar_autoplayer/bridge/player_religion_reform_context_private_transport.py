@@ -16,7 +16,7 @@ from .player_religion_creation_terms12003 import (
     SCHEMA as CREATION_TERMS_SCHEMA,
     normalize_current_draft_creation_terms12003,
 )
-from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build
+from .version_identity import CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend, require_exact_native_build
 
 
 STEP = "query-player-religion-reform-context-v1"
@@ -63,7 +63,13 @@ def normalize_player_religion_reform_context_v1(
     snapshot_build = private_native_build_identity(snapshot)
     top_keys = _TOP_KEYS
     components = _COMPONENTS
-    if snapshot_build == CK3_12003:
+    # Preserve the common shape when a basic .4 owner leaves terms disabled;
+    # the restored owner publishes the actual component and readiness together.
+    terms_published = snapshot_build == CK3_12003 or (
+        snapshot_build == CK3_12004 and isinstance(value, dict)
+        and CREATION_TERMS_COMPONENT in value
+    )
+    if terms_published:
         top_keys = _TOP_KEYS | {CREATION_TERMS_COMPONENT}
         components = {
             **_COMPONENTS,
@@ -72,7 +78,7 @@ def normalize_player_religion_reform_context_v1(
     if not isinstance(value, dict) or set(value) != top_keys or value["schema"] != private_native_schema(SCHEMA, snapshot):
         raise ValueError("native player religion reform schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(snapshot):
         raise ValueError("native player religion reform belongs to another build")
     if (type(value["available"]) is not bool
             or value["scope"] != "played_character_current_model_and_already_open_draft"
@@ -129,11 +135,11 @@ def normalize_player_religion_reform_context_v1(
         "current_draft_cost_ready", "current_draft_final_eligibility_ready",
         "current_popup_collection_ready", "doctrine_final_selection_ready",
     )
-    if build == CK3_12003:
+    if terms_published:
         draft_ready_keys += (CREATION_TERMS_READY,)
     if not window["draft_observed"] and any(readiness[key] for key in draft_ready_keys):
         raise ValueError("native reform draft values have no current draft")
-    if build == CK3_12003:
+    if terms_published:
         terms = normalize_current_draft_creation_terms12003(
             value[CREATION_TERMS_COMPONENT], snapshot=snapshot,
         )
@@ -200,7 +206,7 @@ def query_player_religion_reform_context_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-reform-context-v1",
         )
-        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

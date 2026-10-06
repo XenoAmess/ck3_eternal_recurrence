@@ -25,6 +25,7 @@ struct RealmLawReadback12002 {
   private_law::RealmLawCandidateCollection11906 collection{};
   std::array<std::array<private_law::RealmLawFinalTerms12002Result,
       ck3_11906::private_law::kRealmLawMaximumRelevantCandidates11906>, 2> final{};
+  // The copied profile DTO is shared by exact .3 and mapped .4 readers.
   bool succession_profiles_12003_observed = false;
   std::array<ck3_12003::private_law::RealmLawSuccessionProfile12003,
       ck3_11906::private_law::kRealmLawMaximumRelevantCandidates11906>

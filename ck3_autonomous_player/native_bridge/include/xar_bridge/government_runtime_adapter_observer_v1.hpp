@@ -13,6 +13,7 @@ namespace xar::bridge::private_observer {
 enum class GovernmentRuntimeAdapterBuildProfileV1 : std::uint32_t {
   ck3_11906 = 0,
   ck3_12002 = 1,
+  ck3_12004 = 2,
 };
 
 enum class GovernmentRuntimeAdapterObservationStatusV1 : std::uint32_t {

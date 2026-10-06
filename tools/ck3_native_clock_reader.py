@@ -20,17 +20,36 @@ def _one(pattern: str, text: str) -> str:
 
 
 def source_contract(game_version: str = "1.20.0.2") -> dict:
-    if game_version not in {"1.20.0.2", "1.20.0.3"}:
+    if game_version not in {"1.20.0.2", "1.20.0.3", "1.20.0.4"}:
         raise RuntimeError("read-only clock requires an exact authoritative 1.20 build")
-    header_path = NATIVE_ROOT / "include/xar_bridge/ck3_12002.hpp"
-    source_path = NATIVE_ROOT / "src/ck3_12002.cpp"
-    identity_header_path = NATIVE_ROOT / (
-        "include/xar_bridge/ck3_12003.hpp" if game_version == "1.20.0.3"
-        else "include/xar_bridge/ck3_12002.hpp"
-    )
+    if game_version == "1.20.0.4":
+        # The .4 ABI profile supplies its own mapped layout; never fall back
+        # to the historical .2 layout when the new contract is incomplete.
+        header_path = NATIVE_ROOT / "include/xar_bridge/ck3_12004.hpp"
+        source_path = NATIVE_ROOT / "src/ck3_12004_abi_profile.cpp"
+        identity_header_path = header_path
+    else:
+        header_path = NATIVE_ROOT / "include/xar_bridge/ck3_12002.hpp"
+        source_path = NATIVE_ROOT / "src/ck3_12002.cpp"
+        identity_header_path = NATIVE_ROOT / (
+            "include/xar_bridge/ck3_12003.hpp" if game_version == "1.20.0.3"
+            else "include/xar_bridge/ck3_12002.hpp"
+        )
     header_bytes, source_bytes = header_path.read_bytes(), source_path.read_bytes()
     identity_header_bytes = identity_header_path.read_bytes()
     header, source = header_bytes.decode("utf-8-sig"), source_bytes.decode("utf-8-sig")
+    if game_version == "1.20.0.4":
+        # The mapped .4 reader names its readiness operands in its own header.
+        # Resolve those actual literals before the existing expression check;
+        # the resulting check still requires the layout this Python reader uses.
+        for name in (
+            "kJominiPlayersOffset", "kPlayersLocalPlayerIdOffset",
+            "kGameStateDataOffset", "kPlayerManagerEntriesOffset",
+            "kPlayerManagerCountOffset", "kPlayerEntryLocalPlayerIdOffset",
+            "kPlayerEntryCharacterIdOffset",
+        ):
+            offset = int(_one(rf"{name}\s*=\s*(0x[0-9A-Fa-f]+)", header), 16)
+            source = re.sub(rf"\b{name}\b", f"0x{offset:X}", source)
     contract = {"executable_sha256": _one(r'kExecutableSha256\[\]\s*=\s*"([A-F0-9]{64})"', identity_header_bytes.decode("utf-8-sig")),
                 "game_version": game_version,
                 "identity_header_path": identity_header_path.relative_to(NATIVE_ROOT).as_posix(),

@@ -1,0 +1,74 @@
+{
+  "schema": "xar.ck3.12004.death-succession-modal.native-abi.v1",
+  "status": "NATIVE_PINS_CLOSED_SOURCE_AUTHORED_NOT_RUN",
+  "build": {
+    "game_version": "1.20.0.4",
+    "steam_build_id": "25734779",
+    "adapter_id": "ck3-1.20.0.4-msvc-x64",
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "source_baseline": "caa4adc3d1278e324cf4ec19774028e9b9138e28",
+  "compile_option": "XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1",
+  "native_profile_ready": true,
+  "callback_rvas": {
+    "runtime_dynamic_cast": "0x4260E74",
+    "is_paused_by_succession": "0xA7C440",
+    "has_open_succession": "0xA7C4D0",
+    "controller_open": "0x10D8BC0",
+    "controller_close": "0x10D8900"
+  },
+  "controller_chain": {
+    "root_slot_rva": "0x5C6A520",
+    "root_is_jomini_not_gui_singleton": true,
+    "idler_base_offset": "0x10",
+    "cast_source_type_descriptor_rva": "0x5514438",
+    "cast_target_type_descriptor_rva": "0x5514460",
+    "ingame_handler_offset": "0x88",
+    "handler_primary_vtable_rva": "0x44BA8A0",
+    "handler_type_descriptor_rva": "0x5694B20",
+    "handler_controller_offset": "0x260",
+    "controller_primary_vtable_rva": "0x4522DA0",
+    "controller_col_rva": "0x4AFB430",
+    "controller_subobject_offset": 0,
+    "controller_open_vslot": "0x38",
+    "controller_close_vslot": "0x88"
+  },
+  "normal_command_native_owned": {
+    "primary_vtable_rva": "0x4760520",
+    "secondary_vtable_rva": "0x47605B8",
+    "secondary_offset": "0x18",
+    "executor_rva": "0x2894C20",
+    "executor_secondary_vslot": "0x08",
+    "bridge_synthesizes_payload": false,
+    "ack_proves_material_result": false
+  },
+  "proofs": {
+    "native_source_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\death-succession-actual4\\deathmapper-onlypacket\\DEATH-SUCCESSION-SOURCE-MAP.json",
+    "callback_body_map": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\death-succession-actual4\\deathmapper-onlypacket\\FAMILY-MAP.json",
+    "handler_getter": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\death-succession-actual4\\deathmapper-onlypacket\\handler\\IngameHandlerGetter-DETAIL.json",
+    "window_table": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\death-succession-actual4\\deathmapper-onlypacket\\SUCCESSION-WINDOW-TABLE.json",
+    "command_tables": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\death-succession-actual4\\deathmapper-onlypacket\\CLOSE-COMMAND-TABLES.json",
+    "shared_handler": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/faith-tenet/implementation-caa4/basic-map/route-tables/ROUTE-TABLES-CLOSED.json"
+  },
+  "native_mapper_counts": {
+    "complete_modal_bodies": 7,
+    "shared_runtime_cast_bodies": 1,
+    "source_operand_checks": 25,
+    "unique_new_partial_read_calls": 23,
+    "unique_new_partial_bytes": 1909,
+    "old_executable_read_calls": 0
+  },
+  "shared_gui_dependency": {
+    "owner": "/root/entry_next_stage_research",
+    "revision": "GuiAbiRevisionV1::crozier12004",
+    "global_slot_rva": "0x5CB87F8",
+    "global_slot_proof": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/frontend-bookmark-12004/owner-map/setup_named_constructor-DETAIL.json",
+    "find_top_level_and_reached_helper_fields": "shared owner actual4 assembly/proofs required",
+    "callback_context_lifetime": "mailbox-owned gui12004",
+    "legacy_or_12003_revision_alias": false
+  },
+  "native_whole_fixture": "AUTHORED_NOT_RUN",
+  "registered_mcp_consumer": "AUTHORED_NOT_RUN",
+  "production_live_delta": 0,
+  "name_association_boundary": "Predicate literal reflection-registration names retain the historical behavioral inference; no new reflection-name proof."
+}

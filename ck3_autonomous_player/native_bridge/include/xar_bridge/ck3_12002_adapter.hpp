@@ -24,6 +24,10 @@
 
 #include <memory>
 
+namespace xar::ck3_12004 {
+struct SnapshotFoundationBindings;
+}
+
 namespace xar::game {
 
 // Version-private dependency bundle. Production fills it with addresses from
@@ -52,6 +56,14 @@ struct Ck3_12002AdapterBindings {
   ck3_12002::PhaseBindings phase;
   ck3_12002::SettlementBindings settlement;
   ck3_12003::war_cash_current::Bindings war_cash_current;
+  // Append-only software dispatch: exact-build factories select their reader.
+  bool (*read_core_snapshot)(const ck3_12002::CoreBindings &,
+                             ck3_12002::CoreSnapshotPrefix &) noexcept =
+      ck3_12002::ReadCoreSnapshot;
+  // Append-only actual .4 snapshot source bundle. Older aggregate prefixes
+  // and their selected image bindings retain their original layout.
+  std::shared_ptr<const ck3_12004::SnapshotFoundationBindings>
+      snapshot_foundation12004;
 };
 
 // Same row publisher called by the current Army query and focused fixtures.
@@ -72,6 +84,9 @@ Ck3_12002AdapterBindings BindCk3_12002AdapterImage(
     std::uintptr_t image_base, std::string_view executable_sha256) noexcept;
 std::unique_ptr<GameAdapter> CreateCk3_12002AdapterFromBindings(
     Ck3_12002AdapterBindings bindings) noexcept;
+std::unique_ptr<GameAdapter> CreateCrozierAdapterFromBindings(
+    Ck3_12002AdapterBindings bindings,
+    const AdapterDescriptor &descriptor) noexcept;
 
 // Command-only exact-build core fields. This partial Snapshot must never be
 // published as a full gameplay snapshot. Worker timeline operations match its

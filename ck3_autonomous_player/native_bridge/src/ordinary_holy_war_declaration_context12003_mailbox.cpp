@@ -3,10 +3,13 @@
 #if defined(XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1)
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_holy_war.hpp"
 #include "xar_bridge/protocol.hpp"
 #include <charconv>
 #include <limits>
 #include <sstream>
+#include <utility>
 #include <windows.h>
 
 namespace xar::ck3_12002 {
@@ -122,7 +125,7 @@ bool ExecuteOrdinaryHolyWarDeclarationContextMailbox12003(void *opaque,
 std::string SerializeOrdinaryHolyWarDeclarationContextResult12003(
     const OrdinaryHolyWarDeclarationContextMailbox12003 &query, std::string_view request_id) {
   if (!query.completed || !query.envelope.frame_stable || !query.failure.empty()) return {};
-  return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
+  auto serialized = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kOrdinaryHolyWarDeclarationContextPrivateStep12003) +
       ",\"accepted\":true,\"status\":" + Quote(query.observation.available ? "observed" : "unavailable") +
       ",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"game_version\":\"1.20.0.3\","
@@ -133,6 +136,9 @@ std::string SerializeOrdinaryHolyWarDeclarationContextResult12003(
       ",\"public_revision\":" + std::to_string(query.request.expected_public_revision) +
       ",\"date_raw\":" + std::to_string(query.envelope.expected_snapshot.date_raw) +
       ",\"player_ordinary_holy_war_declaration_context\":" + SerializeOrdinaryHolyWarDeclarationContextV1(query.observation) + "}}";
+  if (query.envelope.game)
+    serialized = game::Render12004BuildIdentity(std::move(serialized), query.envelope.game->descriptor());
+  return serialized;
 }
 bool RunOrdinaryHolyWarDeclarationContextMailbox12003(OrdinaryHolyWarDeclarationContextMailbox12003 &query,
     std::string_view request_id, std::string &serialized, std::string &failure) noexcept {
@@ -172,8 +178,10 @@ bool HandleOrdinaryHolyWarDeclarationContextPrivate12003(const game::GameAdapter
       !ParseOrdinaryHolyWarDeclarationContextRequest12003(payload, request)) {
     failure = "ordinary_holy_war_declaration_context_request_invalid"; return false;
   }
-  if (!adapter.enabled() || adapter.descriptor().game_version != "1.20.0.3" ||
-      adapter.descriptor().executable_sha256 != kOrdinaryHolyWarExactSha12003 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  const bool actual3 = adapter.descriptor().game_version == "1.20.0.3" &&
+      adapter.descriptor().executable_sha256 == kOrdinaryHolyWarExactSha12003;
+  if (!adapter.enabled() || (!actual3 && !actual4) ||
       !FrameValid(published, revision) || request.expected_revision != revision) {
     failure = "ordinary_holy_war_declaration_context_current_frame_unavailable"; return false;
   }
@@ -185,9 +193,19 @@ bool HandleOrdinaryHolyWarDeclarationContextPrivate12003(const game::GameAdapter
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    // Reused declarations ABI is admitted only after exact .3 descriptor validation.
-    query.declarations = BindDeclarationsImage(base, game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    query.cost = BindOrdinaryHolyWarCbCostImageV1(base, adapter.descriptor().executable_sha256);
+    if (actual4) {
+      const auto *declarations = game::BorrowOrdinaryHolyWarDeclarations12004(adapter);
+      if (!declarations) {
+        failure = "ordinary_holy_war_declaration_context_bindings_unavailable"; return false;
+      }
+      query.declarations = *declarations;
+      query.cost = ck3_12004::BindOrdinaryHolyWarCbCostImage12004(
+          base, adapter.descriptor().executable_sha256);
+    } else {
+      // Archived .3 keeps its separately reviewed declarations ABI.
+      query.declarations = BindDeclarationsImage(base, game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+      query.cost = BindOrdinaryHolyWarCbCostImageV1(base, adapter.descriptor().executable_sha256);
+    }
     return RunOrdinaryHolyWarDeclarationContextMailbox12003(query, request_id, serialized, failure);
   } catch (...) { failure = "ordinary_holy_war_declaration_context_handler_exception"; return false; }
 }

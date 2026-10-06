@@ -52,6 +52,7 @@
 #include "xar_bridge/ck3_11906_adapter.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 
@@ -323,7 +324,9 @@ bool GameAdapter::supports_snapshot() const noexcept {
 
 bool GameAdapter::supports_step(std::string_view step) const noexcept {
   std::string_view capability;
-  if (step == "query-current-actor-stress-adjustment-v1") {
+  if (step == "query-core-frame-v1") {
+    capability = "game.query.core-frame.v1";
+  } else if (step == "query-current-actor-stress-adjustment-v1") {
     capability = "game.query.current-actor-stress-adjustment.v1";
   } else if (step == "pause-map") {
     capability = "game.command.pause-map";
@@ -736,7 +739,7 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
 }
 
 const AdapterDescriptor &PreferredAdapterDescriptor() noexcept {
-  return Ck3_12003AdapterDescriptor();
+  return Ck3_12004AdapterDescriptor();
 }
 
 std::unique_ptr<GameAdapter>
@@ -761,7 +764,8 @@ SelectAdapter(std::string_view executable_sha256,
 std::unique_ptr<GameAdapter> SelectCurrentProcessAdapter() noexcept {
   // Add one factory for each exact CK3 build. Order controls the preferred
   // diagnostic descriptor only; the first exact enabled match always wins.
-  constexpr std::array<AdapterFactory, 3> factories{
+  constexpr std::array<AdapterFactory, 4> factories{
+      &CreateCk3_12004Adapter,
       &CreateCk3_12003Adapter,
       &CreateCk3_12002Adapter,
       &CreateCk3_11906Adapter,

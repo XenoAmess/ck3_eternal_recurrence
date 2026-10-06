@@ -1,4 +1,4 @@
-"""Map the exact 1.20.0.3 county-conversion sibling of the clergy query."""
+"""Map the frozen Crozier county-conversion sibling of the clergy query."""
 
 from __future__ import annotations
 
@@ -6,7 +6,7 @@ from collections.abc import Mapping
 from copy import deepcopy
 
 from .nonwar_private_build import private_native_build_identity
-from .version_identity import CK3_12003, require_exact_native_build
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 
 SCHEMA = "xar.ck3.county-conversion/v1"
@@ -51,10 +51,12 @@ def normalize_player_county_conversion_v1(
     exact = value["exact_build"]
     if (not isinstance(exact, dict)
             or set(exact) != {"game_version", "steam_build", "executable_sha256"}
-            or type(exact["steam_build"]) is not int or exact["steam_build"] != 25652598):
+            or type(exact["steam_build"]) is not int):
         raise ValueError("native county conversion exact build is malformed")
     build = require_exact_native_build(exact["game_version"], exact["executable_sha256"])
-    if build != CK3_12003 or build != private_native_build_identity(snapshot):
+    if (build not in (CK3_12003, CK3_12004)
+            or exact["steam_build"] != (25734779 if build == CK3_12004 else 25652598)
+            or build != private_native_build_identity(snapshot)):
         raise ValueError("native county conversion belongs to another build")
     if (value["status"] not in ("available", "unavailable")
             or not isinstance(value["failure"], str) or not value["failure"]

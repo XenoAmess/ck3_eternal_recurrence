@@ -1,6 +1,7 @@
 ﻿#include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 
 #include <atomic>
 #include <string_view>
@@ -23,6 +24,17 @@ void RemoveArmyRoutes(game::Snapshot &snapshot) {
 bool MatchesQuerySnapshot(const QueryMailboxEnvelope &query,
                           const game::Snapshot &observed,
                           bool finishing) noexcept {
+  if (query.snapshot_comparison == QuerySnapshotComparison12002::core_frame) {
+    const auto &expected = query.expected_snapshot;
+    return observed.date_raw == expected.date_raw &&
+           observed.speed == expected.speed &&
+           observed.paused == expected.paused &&
+           observed.player_id == expected.player_id &&
+           observed.map_ready == expected.map_ready &&
+           observed.has_played_character == expected.has_played_character &&
+           observed.played_character_id == expected.played_character_id &&
+           observed.played_character_alive == expected.played_character_alive;
+  }
   if (finishing && query.snapshot_comparison ==
                        QuerySnapshotComparison12002::fixture_inbox_mutation) {
     const auto &expected = query.expected_snapshot;
@@ -55,7 +67,8 @@ bool OwnsSlot(const QueryMailboxEnvelope &query) noexcept {
       query.executor == nullptr || query.ticket.sequence == 0 ||
       query.expected_snapshot_revision == 0 || !query.entered ||
       !query.game->enabled() ||
-      !game::IsReviewedCrozierAdapter(*query.game) ||
+      (!game::IsReviewedCrozierAdapter(*query.game) &&
+       !game::IsCk3_12004Descriptor(query.game->descriptor())) ||
       GetCurrentThreadId() != query.execution_stamp.thread_id) {
     return false;
   }
@@ -70,6 +83,15 @@ bool OwnsSlot(const QueryMailboxEnvelope &query) noexcept {
              query.execution_stamp.thread_id &&
          mailbox.executor == query.executor &&
          mailbox.executor_context == &query;
+}
+
+bool ReadQuerySnapshot(const QueryMailboxEnvelope &query,
+                       game::Snapshot &output) noexcept {
+  if (query.snapshot_comparison == QuerySnapshotComparison12002::core_frame) {
+    return game::IsCk3_12004Descriptor(query.game->descriptor()) &&
+           game::ReadCk3_12002TimelineCoreSnapshot(*query.game, output);
+  }
+  return game::ReadSnapshot(*query.game, output);
 }
 
 void ReplaceIdentity(std::string &value, std::string_view from,
@@ -111,7 +133,7 @@ bool CaptureQuerySnapshot(void *opaque, game::Snapshot &output) noexcept {
   const auto *query = static_cast<const QueryMailboxEnvelope *>(opaque);
   output = {};
   return query != nullptr && OwnsSlot(*query) &&
-         game::ReadSnapshot(*query->game, output) &&
+         ReadQuerySnapshot(*query, output) &&
          MatchesQuerySnapshot(*query, output, false) && output.paused &&
          output.date_raw == query->execution_stamp.date_raw;
 }
@@ -119,7 +141,7 @@ bool CaptureQuerySnapshot(void *opaque, game::Snapshot &output) noexcept {
 bool FinishQueryMailbox(QueryMailboxEnvelope &query) noexcept {
   game::Snapshot snapshot{};
   query.frame_stable = OwnsSlot(query) &&
-      game::ReadSnapshot(*query.game, snapshot) &&
+      ReadQuerySnapshot(query, snapshot) &&
       MatchesQuerySnapshot(query, snapshot, true) && snapshot.paused &&
       snapshot.date_raw == query.execution_stamp.date_raw;
   return query.frame_stable;

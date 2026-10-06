@@ -13,7 +13,7 @@ import uuid
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12003
+from .version_identity import CK3_12003, CK3_12004
 
 
 SUBMIT_STEP = "county-conversion-task-submit-private-v1"
@@ -49,7 +49,7 @@ def _frame(driver: object, expected_revision: int) -> dict[str, object]:
             or not _full_id(actor.get("character_id"))
             or type(snapshot.get("native_revision")) is not int or snapshot["native_revision"] <= 0
             or type(snapshot.get("date_raw")) is not int
-            or private_native_build_identity(snapshot) != CK3_12003):
+            or private_native_build_identity(snapshot) not in (CK3_12003, CK3_12004)):
         raise BridgeUnavailableError("county task requires its current paused Crozier player")
     return snapshot
 

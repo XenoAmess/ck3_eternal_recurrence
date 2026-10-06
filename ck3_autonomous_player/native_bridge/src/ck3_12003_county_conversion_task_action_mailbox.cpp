@@ -1,6 +1,7 @@
 #include "xar_bridge/ck3_12003_county_conversion_task_action_mailbox.hpp"
 
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
 
@@ -12,22 +13,9 @@ namespace xar::ck3_12002 {
 namespace {
 using namespace bridge;
 namespace action = ck3_12003::religion::county_conversion::action;
-enum class Mode { submit, result };
-struct Query {
-  QueryMailboxEnvelope envelope;
-  PlayerCountyConversionTaskActionMailboxState12003 *state = nullptr;
-  Mode mode = Mode::submit;
-  action::Request request;
-  std::uint64_t public_revision = 0;
-  std::string request_id;
-  std::string submitted_request_id;
-  std::string action_id;
-  action::Submission submission;
-  action::IndependentResult independent_result;
-  std::string status;
-  std::string failure;
-  bool complete = false;
-};
+namespace action12004 = ck3_12004::religion::county_conversion::action;
+using Mode = PlayerCountyConversionTaskActionMode12003;
+using Query = PlayerCountyConversionTaskActionMailboxContext12003;
 
 std::string Quote(std::string_view value) {
   std::string out = "\"";
@@ -97,6 +85,12 @@ bool ReadRequest(std::string_view payload, std::uint64_t revision, Query &query)
 }
 } // namespace
 
+bool ParsePlayerCountyConversionTaskActionRequest12003(
+    std::string_view payload, std::uint64_t native_revision, Query &query) noexcept {
+  try { return ReadRequest(payload, native_revision, query); }
+  catch (...) { return false; }
+}
+
 bool IsPlayerCountyConversionTaskActionPrivateStep12003(std::string_view step) noexcept {
   return step == kPlayerCountyConversionTaskSubmitStep12003 ||
       step == kPlayerCountyConversionTaskResultStep12003;
@@ -109,14 +103,30 @@ bool ExecutePlayerCountyConversionTaskActionMailbox12003(
   auto &query = *static_cast<Query *>(envelope->typed_context);
   try {
     auto &state = *query.state;
-    auto access = Bind(*envelope->game);
+    const bool actual12004 = game::IsCk3_12004Descriptor(envelope->game->descriptor());
+    action::Access access{};
+    if (actual12004) {
+      if (!query.access12004)
+        query.access12004 = action12004::BindCountyConversionTaskActionImage12004(
+            reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+            envelope->game->descriptor().executable_sha256);
+      query.access12004->county.application_main_thread_id = stamp.thread_id;
+      query.access12004->county.clergy.application_main_thread_id = stamp.thread_id;
+    } else {
+      access = Bind(*envelope->game);
+    }
     access.county.application_main_thread_id = stamp.thread_id;
     access.county.clergy.application_main_thread_id = stamp.thread_id;
     if (query.mode == Mode::submit) {
       if (state.verification_pending)
         query.failure = "previous_county_conversion_task_submission_verification_pending";
       else {
-        query.submission = action::SubmitCountyConversionTask12003(access,
+        query.submission = actual12004
+            ? action12004::SubmitCountyConversionTask12004(*query.access12004,
+                envelope->expected_snapshot, query.public_revision,
+                envelope->expected_snapshot_revision, stamp.pump_epoch,
+                query.request_id, query.request)
+            : action::SubmitCountyConversionTask12003(access,
             envelope->expected_snapshot, query.public_revision,
             envelope->expected_snapshot_revision, stamp.pump_epoch, query.request_id, query.request);
         state.submission = query.submission;
@@ -132,8 +142,11 @@ bool ExecutePlayerCountyConversionTaskActionMailbox12003(
       query.failure = "independent_county_conversion_task_submission_unavailable";
     else {
       query.submission = state.submission;
-      query.independent_result = action::ReadCountyConversionTaskResult12003(access,
-          query.submission, stamp.pump_epoch);
+      query.independent_result = actual12004
+          ? action12004::ReadCountyConversionTaskResult12004(
+              *query.access12004, query.submission, stamp.pump_epoch)
+          : action::ReadCountyConversionTaskResult12003(
+              access, query.submission, stamp.pump_epoch);
       state.verification_pending = query.independent_result.verification_pending;
       query.status = query.independent_result.task_assignment_material_observed
           ? "task_assignment_material_observed" : state.verification_pending
@@ -144,6 +157,42 @@ bool ExecutePlayerCountyConversionTaskActionMailbox12003(
     return true;
   } catch (...) { query.failure = "native_county_conversion_task_action_executor_exception"; return true; }
 }
+bool RunPlayerCountyConversionTaskActionMailbox12003(Query &query,
+    std::string_view step, std::string_view request_id,
+    std::string &serialized, std::string &failure) noexcept {
+  serialized.clear(); failure.clear();
+  if (!query.envelope.game || !query.envelope.mailbox || !query.state) {
+    failure = "native_county_conversion_task_action_request_contract_invalid";
+    return false;
+  }
+  try {
+    auto &mailbox = *query.envelope.mailbox;
+    query.envelope.typed_context = &query;
+    if (ck3_11906::TrySubmitMainThreadQueryV1(mailbox,
+            &ExecutePlayerCountyConversionTaskActionMailbox12003,
+            &query.envelope, query.envelope.ticket) !=
+        ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
+      failure = "native_county_conversion_task_action_mailbox_submit_unavailable";
+      return false;
+    }
+    auto wait = ck3_11906::WaitForMainThreadQueryV1(mailbox, query.envelope.ticket, 5000);
+    while (wait == ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
+      wait = ck3_11906::WaitForMainThreadQueryV1(mailbox, query.envelope.ticket, 100);
+    const auto reclaim = ck3_11906::ReclaimMainThreadQueryV1(mailbox, query.envelope.ticket);
+    if (wait != ck3_11906::MainThreadQueryWaitResultV1::completed ||
+        reclaim != ck3_11906::MainThreadQueryReclaimResultV1::reclaimed ||
+        !query.envelope.frame_stable || !query.complete) {
+      failure = query.failure.empty()
+          ? "native_county_conversion_task_action_frame_unavailable" : query.failure;
+      return false;
+    }
+    serialized = Serialize(query, step, request_id, query.envelope.game->descriptor());
+    return true;
+  } catch (...) {
+    failure = "native_county_conversion_task_action_router_exception";
+    return false;
+  }
+}
 bool HandlePlayerCountyConversionTaskActionPrivate12003(
     PlayerCountyConversionTaskActionMailboxState12003 &state, const game::GameAdapter &adapter,
     ck3_11906::MainThreadQueryMailboxV1 &mailbox, const game::Snapshot &published,
@@ -151,7 +200,8 @@ bool HandlePlayerCountyConversionTaskActionPrivate12003(
     std::string_view request_id, std::string &serialized, std::string &failure) noexcept {
   serialized.clear(); failure.clear();
   if (!IsPlayerCountyConversionTaskActionPrivateStep12003(step) || !adapter.enabled() ||
-      !game::IsCk3_12003Descriptor(adapter.descriptor()) || request_id.empty() || request_id.size() > 63 ||
+      (!game::IsCk3_12003Descriptor(adapter.descriptor()) &&
+       !game::IsCk3_12004Descriptor(adapter.descriptor())) || request_id.empty() || request_id.size() > 63 ||
       !published.paused || !published.map_ready || !published.has_played_character || !published.played_character_alive) {
     failure = "native_county_conversion_task_action_request_contract_invalid"; return false;
   }
@@ -160,7 +210,7 @@ bool HandlePlayerCountyConversionTaskActionPrivate12003(
     query->state = &state;
     query->mode = step == kPlayerCountyConversionTaskSubmitStep12003 ? Mode::submit : Mode::result;
     query->request_id = request_id;
-    if (!ReadRequest(payload, native_revision, *query)) {
+    if (!ParsePlayerCountyConversionTaskActionRequest12003(payload, native_revision, *query)) {
       failure = "native_county_conversion_task_action_request_invalid"; return false;
     }
     query->envelope.game = &NativeAdapter12002(adapter);
@@ -168,22 +218,14 @@ bool HandlePlayerCountyConversionTaskActionPrivate12003(
     query->envelope.expected_snapshot = published;
     query->envelope.expected_snapshot_revision = native_revision;
     query->envelope.typed_context = query.get();
-    if (ck3_11906::TrySubmitMainThreadQueryV1(mailbox, &ExecutePlayerCountyConversionTaskActionMailbox12003,
-        &query->envelope, query->envelope.ticket) != ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
-      failure = "native_county_conversion_task_action_mailbox_submit_unavailable"; return false;
+    if (game::IsCk3_12004Descriptor(adapter.descriptor())) {
+      query->access12004 = action12004::BindCountyConversionTaskActionImage12004(
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+          adapter.descriptor().executable_sha256);
+      query->envelope.snapshot_comparison = QuerySnapshotComparison12002::core_frame;
     }
-    auto wait = ck3_11906::WaitForMainThreadQueryV1(mailbox, query->envelope.ticket, 5000);
-    while (wait == ck3_11906::MainThreadQueryWaitResultV1::timeout_executor_already_running)
-      wait = ck3_11906::WaitForMainThreadQueryV1(mailbox, query->envelope.ticket, 100);
-    const auto reclaim = ck3_11906::ReclaimMainThreadQueryV1(mailbox, query->envelope.ticket);
-    if (wait != ck3_11906::MainThreadQueryWaitResultV1::completed ||
-        reclaim != ck3_11906::MainThreadQueryReclaimResultV1::reclaimed ||
-        !query->envelope.frame_stable || !query->complete) {
-      failure = query->failure.empty() ? "native_county_conversion_task_action_frame_unavailable" : query->failure;
-      return false;
-    }
-    serialized = Serialize(*query, step, request_id, adapter.descriptor());
-    return true;
+    return RunPlayerCountyConversionTaskActionMailbox12003(
+        *query, step, request_id, serialized, failure);
   } catch (...) { failure = "native_county_conversion_task_action_router_exception"; return false; }
 }
 } // namespace xar::ck3_12002

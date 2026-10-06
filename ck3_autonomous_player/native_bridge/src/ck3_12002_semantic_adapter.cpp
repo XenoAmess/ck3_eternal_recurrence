@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12002_marriage_probe.hpp"
 #include <atomic>
 #include <utility>
@@ -122,7 +123,9 @@ bool WorkerAdapter::read_snapshot(game::Snapshot &output) const noexcept {
 
 bool WorkerAdapter::Observe(const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
   try {
-    if (!enabled() || !game::IsReviewedCrozierAdapter(*this) ||
+    const bool actual4 = game::IsCk3_12004Descriptor(descriptor()) &&
+        supports_snapshot();
+    if (!enabled() || (!game::IsReviewedCrozierAdapter(*this) && !actual4) ||
         GetCurrentThreadId() != stamp.thread_id || stamp.tls_initialized != 1 ||
         stamp.tls_main_thread_marker != 1) return false;
     {

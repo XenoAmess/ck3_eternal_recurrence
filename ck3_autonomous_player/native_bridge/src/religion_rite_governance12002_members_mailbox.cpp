@@ -1,4 +1,6 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_religion_adopted_observers.hpp"
 #include "xar_bridge/religion_rite_governance12002_members_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
@@ -60,8 +62,13 @@ bool ExecutePlayerRiteMembersMailbox12002(
       query.failure = "player_rite_members_published_frame_changed";
       return true;
     }
-    (void)religion::organization::members::ReadPlayedOrganizationMembers12002(
-        query.bindings, stamp.pump_epoch, query.observation);
+    if (game::IsCk3_12004Descriptor(envelope->game->descriptor())) {
+      (void)ck3_12004::religion::adopted::ReadPlayedOrganizationMembers12004(
+          query.bindings, stamp.pump_epoch, query.observation);
+    } else {
+      (void)religion::organization::members::ReadPlayedOrganizationMembers12002(
+          query.bindings, stamp.pump_epoch, query.observation);
+    }
     auto &out = query.observation;
     const auto &frame = envelope->expected_snapshot;
     if (out.available && (out.played_character_id != frame.played_character_id ||
@@ -110,6 +117,8 @@ bool RunPlayerRiteMembersMailbox12002(PlayerRiteMembersMailboxContext12002 &quer
         !ValidFrame(envelope.expected_snapshot, envelope.expected_snapshot_revision)) {
       failure = "player_rite_members_current_frame_unavailable"; return false;
     }
+    if (game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+      envelope.snapshot_comparison = QuerySnapshotComparison12002::core_frame;
     envelope.typed_context = &query;
     if (TrySubmitMainThreadQueryV1(*envelope.mailbox,
         &ExecutePlayerRiteMembersMailbox12002, &envelope, envelope.ticket) !=
@@ -148,8 +157,10 @@ bool HandlePlayerRiteMembersPrivate12002(const game::GameAdapter &adapter,
   if (!ParsePlayerRiteMembersRevision12002(payload, expected)) {
     failure = "player_rite_members_request_invalid"; return false;
   }
-  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if (!adapter.enabled() || (!actual4 &&
+      (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+       xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_rite_members_current_frame_unavailable"; return false;
   }
@@ -159,9 +170,14 @@ bool HandlePlayerRiteMembersPrivate12002(const game::GameAdapter &adapter,
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
-    query.bindings = religion::organization::members::BindOrganizationMembersImage12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    const auto image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (actual4) {
+      query.bindings = ck3_12004::religion::adopted::BindOrganizationMembersImage12004(
+          image_base, adapter.descriptor().executable_sha256);
+    } else {
+      query.bindings = religion::organization::members::BindOrganizationMembersImage12002(
+          image_base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    }
     return RunPlayerRiteMembersMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_rite_members_handler_exception"; return false; }
 }

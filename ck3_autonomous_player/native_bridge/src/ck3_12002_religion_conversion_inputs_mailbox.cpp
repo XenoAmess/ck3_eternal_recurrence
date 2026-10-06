@@ -1,9 +1,12 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_religion_context_addons.hpp"
 #include "xar_bridge/ck3_12002_religion_conversion_inputs_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
+#include <utility>
 #include <windows.h>
 
 namespace xar::ck3_12002 {
@@ -60,12 +63,23 @@ bool ExecutePlayerReligionConversionInputsMailbox12002(void *opaque,
     const auto &frame = envelope->expected_snapshot;
     auto &g = q.conversion_gates;
     auto &p = q.predicted_base_fulfillment;
-    (void)religion::conversion_gates::ReadPlayedReligionConversionGates12002(
-        q.gates_bindings, q.target_rite_id, stamp.pump_epoch, g);
-    (void)religion_conversion_ai_inputs::ReadExpectedRiteFulfillment12002(
-        q.prediction_bindings, stamp.pump_epoch, q.target_rite_id, p);
-    q.conversion_fervor_enabled = xar::game::IsCk3_12003Descriptor(envelope->game->descriptor());
-    if (q.conversion_fervor_enabled) {
+    const bool actual4 = game::IsCk3_12004Descriptor(envelope->game->descriptor());
+    if (actual4) {
+      (void)ck3_12004::religion::ReadPlayedReligionConversionGates12004(
+          q.gates_bindings, q.target_rite_id, stamp.pump_epoch, g);
+      (void)ck3_12004::religion::ReadExpectedRiteFulfillment12004(
+          q.prediction_bindings, stamp.pump_epoch, q.target_rite_id, p);
+    } else {
+      (void)religion::conversion_gates::ReadPlayedReligionConversionGates12002(
+          q.gates_bindings, q.target_rite_id, stamp.pump_epoch, g);
+      (void)religion_conversion_ai_inputs::ReadExpectedRiteFulfillment12002(
+          q.prediction_bindings, stamp.pump_epoch, q.target_rite_id, p);
+    }
+    q.conversion_fervor_enabled = actual4 || game::IsCk3_12003Descriptor(envelope->game->descriptor());
+    if (actual4) {
+      (void)ck3_12004::religion::ReadPlayedConversionFervorInputs12004(
+          q.gates_bindings, q.target_rite_id, stamp.pump_epoch, q.conversion_fervor);
+    } else if (q.conversion_fervor_enabled) {
       (void)religion::conversion_fervor::ReadPlayedConversionFervorInputs12003(
           q.gates_bindings, q.target_rite_id, stamp.pump_epoch, q.conversion_fervor);
     }
@@ -158,6 +172,9 @@ bool RunPlayerReligionConversionInputsMailbox12002(PlayerReligionConversionInput
       failure = q.failure.empty() ? "player_religion_conversion_inputs_paused_capture_unavailable" : q.failure; return false;
     }
     serialized = SerializePlayerReligionConversionInputsResult12002(q, request_id);
+    if (game::IsCk3_12004Descriptor(e.game->descriptor()))
+      serialized = game::Render12004BuildIdentity(
+          std::move(serialized), e.game->descriptor());
     if (!serialized.empty()) return true;
     failure = q.failure.empty() ? "player_religion_conversion_inputs_serialization_unavailable" : q.failure; return false;
   } catch (...) { serialized.clear(); failure = "player_religion_conversion_inputs_mailbox_exception"; return false; }
@@ -174,19 +191,29 @@ bool HandlePlayerReligionConversionInputsPrivate12002(const game::GameAdapter &a
   if (!ParsePlayerReligionConversionInputsRequest12002(payload, target, expected)) {
     failure = "player_religion_conversion_inputs_request_invalid"; return false;
   }
-  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if (!adapter.enabled() || (!actual4 &&
+      (game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+       game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
       !ValidFrame(published, revision) || (expected && expected != revision)) {
     failure = "player_religion_conversion_inputs_current_frame_unavailable"; return false;
   }
   try {
     PlayerReligionConversionInputsMailboxContext12002 q{};
-    q.envelope.game = &NativeAdapter12002(adapter); q.envelope.mailbox = &mailbox;
+    q.envelope.game = actual4 ? &adapter : &NativeAdapter12002(adapter); q.envelope.mailbox = &mailbox;
     q.envelope.expected_snapshot = published; q.envelope.expected_snapshot_revision = revision;
     q.target_rite_id = target;
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    q.gates_bindings = religion::conversion_gates::BindReligionConversionGatesImage12002(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    q.prediction_bindings = religion_conversion_ai_inputs::BindConversionAIInputsImage12002(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    if (actual4) {
+      const auto bindings = ck3_12004::religion::BindReligionConversionImage12004(
+          base, adapter.descriptor().executable_sha256);
+      q.gates_bindings = bindings.gates;
+      q.prediction_bindings = bindings.prediction;
+    } else {
+      const auto sha = game::ReviewedCrozierAbiSha256(adapter.descriptor());
+      q.gates_bindings = religion::conversion_gates::BindReligionConversionGatesImage12002(base, sha);
+      q.prediction_bindings = religion_conversion_ai_inputs::BindConversionAIInputsImage12002(base, sha);
+    }
     return RunPlayerReligionConversionInputsMailbox12002(q, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_conversion_inputs_handler_exception"; return false; }
 }

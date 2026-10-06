@@ -31,7 +31,8 @@ bool MatchCode(const ActivityPlannerDiagEnvironmentV1 &diagnostic,
   std::uintptr_t address = 0;
   std::array<std::uint8_t, N> actual{};
   return diagnostic.read_memory != nullptr &&
-         Add(diagnostic.module_base, rva, address) &&
+         Add(diagnostic.module_base,
+             Activity12004RvaV1(diagnostic.admitted_executable_sha256, rva), address) &&
          diagnostic.read_memory(diagnostic.context, address, actual.data(),
                                 actual.size()) &&
          actual == expected;
@@ -55,7 +56,7 @@ bool ExactActionAbi(const ActivityPlannerDiagEnvironmentV1 &diagnostic)
       0x40, 0x38, 0xBD, 0xED, 0x3B, 0x00, 0x00};
   constexpr std::array<std::uint8_t, 6> kPreviousStageBranch12002{
       0x8B, 0x8B, 0xEC, 0x1A, 0x00, 0x00};
-  const bool current = IsActivityPlanner12002V1(diagnostic);
+  const bool current = IsActivityPlannerCrozierBuildV1(diagnostic);
   return diagnostic.enabled && diagnostic.module_base != 0 &&
          (diagnostic.admitted_executable_sha256 ==
               kActivityPlannerDiagExeSha256V1 || current) &&

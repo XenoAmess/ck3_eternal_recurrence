@@ -1,0 +1,32 @@
+{
+  "schema": "xar.religion-parameters-12004-operands.v1",
+  "source_plan_frozen_shanghai": "2026-10-07T03:28:08+08:00",
+  "source_tree": "C:/codex-ck3-background/r4addons",
+  "baseline": "66cfb479801f0fc9f9fd518c7705c807e640cc4b",
+  "actual_build": {"game_version":"1.20.0.4","Steam_build":25734779,"executable_sha256":"98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"},
+  "shared_native_namespace": "xar::ck3_12004::religion",
+  "shared_basic_binder": "BindReligionContextImage12004",
+  "owned_native_files": ["ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12004_religion_parameter_bindings.hpp","ck3_autonomous_player/native_bridge/src/ck3_12004_religion_parameter_bindings.cpp"],
+  "owned_python_files": ["ck3_autonomous_player/src/xar_autoplayer/bridge/player_religion_numeric_special_parameters_private_transport.py","ck3_autonomous_player/src/xar_autoplayer/bridge/player_religion_personal_parameters_private_transport.py"],
+  "exact_old_software_sources": ["religion_doctrine12002_numeric.hpp/.cpp","religion_doctrine12002_numeric_final.hpp/.cpp","religion_doctrine12002_personal_parameters.hpp/.cpp"],
+  "APIs": ["BindNumericSpecialParametersImage12004","BindFaithNumericFinalImage12004","BindPersonalParametersImage12004","ReadPlayedNumericSpecialParameters12004","ReadPlayedFaithNumericFinal12004","ReadPlayedPersonalParameters12004","SerializeFaithNumericFinal12004"],
+  "reused_source": {
+    "root": "Z:/ck3_mod_rewrite_process_assets/g2-migration-20261007/faith-tenet/implementation-caa4",
+    "FaithHeresyThreshold": {"old_actual3":"0x2440920","new_actual4":"0x2440900","complete_bytes":84,"main_Rite_field":"0x7F8","native_define_RIP_operand":"0x5C68D88","proof":"basic-map/BASIC-MAPPING-CLOSED.json#/eleven_owned_direct_roots/9","detail":"basic-map/leaf8/FaithHeresyThreshold-DETAIL.json"},
+    "common_personal_operands": ["Character extension+1C8","owned personal Tenets+88","Tenet database slot5D1DEB8","BooleanParameterMembershipB9DE80","ParameterTokenKey3F4F8E0","stable Tenet key18 and CString10/18"],
+    "common_proof": "tenet-map/SOURCE-READY.json"
+  },
+  "actual_source_missing_before_code": ["five numeric cache field operands at Rite+7D0","personal collection getter","supported token set TenetDB+F20","personal membership set Tenet definition+740"],
+  "current_source_closure": {"closed":true,"packet":"C:/codex-ck3-background/packets/religion-addons-12004-migration-20261007/parameters","new_complete_or_source_use_blocks":8,"reached_cached_accessor_blocks":1,"actual_personal_getter":"0x28BD070","actual_Evaluate":"0x2B2BCF0","actual_validation_prefix":"0x2B2BC10","actual_registry_receiver":"0xA154B0 -> slot0x5D1DEB8","supported_set":"0xF20","owned_definition_set":"0x740","numeric_fields":{"minimum_fervor":"Rite+7DC i32; explicit constructor sentinel-1","fervor_per_holy_site":"Rite+7E0 i64","bonus_fervor_gain":"Rite+7E8 i64","bonus_heresy_protection":"Rite+7F0 i32","heresy_threshold":"Rite+7F8 i64"},"full_merge_rebuild_or_generic_logger_expansion":false},
+  "historical2_discovery_seeds_not_relabelled_as3": ["numeric constructor14F27B0","numeric rebuild2591180","numeric merge32908F0","personal collection28BD090","personal Evaluate2B2BD10"],
+  "finite_mapper_owner": "/root/ally_diagnostics",
+  "finite_mapper": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/shared-family-function-mapper/finite_family_mapper.py",
+  "cost": {"new_EXE_bytes":1722,"old_actual3_bytes":861,"new_actual4_bytes":861,"new_read_calls":16,"reused_accessor_bytes":174,"cache_read_calls":2,"duplicate_EXE_bytes":0,"hash_operations":0,"whole_image_reads":0,"new_PE_pdata_reads":0},
+  "old_mailbox_routing_owner": "parent",
+  "fresh_metadata_boundary": "Root Render12004BuildIdentity applies only to new serialized software DTO from actual4 descriptor; final native_getter_rva must also identify actual4 0x2440900",
+  "readiness": "source-ready implementation candidate; tests/builds/imports/FIRST/live NOTRUN",
+  "source_check": "one scoped git diff --check PASS on two tracked owned Python leaves; four new native/topic files manually reviewed",
+  "owned_file_count":6,
+  "child_git_index_commit_push":0,
+  "quality_gap": ["central fresh whole .4 compiled fixture and same-tool consumption pending","actual .4 paused Robert parameter observations pending","old2/3 live evidence remains historical","no new religion policy/action or full OODA qualification"]
+}

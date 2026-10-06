@@ -7,7 +7,7 @@ from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .nonwar_private_build import private_native_provenance
-from .version_identity import CK3_12002, CK3_12003
+from .version_identity import CK3_12002, CK3_12003, CK3_12004
 
 
 STEP_PREFIX = "query-active-scheme-sway-target-v1-private-"
@@ -89,7 +89,9 @@ def query_active_scheme_sway_target_private_v1(
     ):
         raise BridgeUnavailableError("private sway requires a living player on a paused map frame")
     provenance = private_native_provenance(before)
-    current_build = provenance["exact_ck3_build"] in (CK3_12002.game_version, CK3_12003.game_version)
+    current_build = provenance["exact_ck3_build"] in (
+        CK3_12002.game_version, CK3_12003.game_version, CK3_12004.game_version,
+    )
     expected_keys = _VALUE_KEYS | {"active_sway_instances"} if current_build else _VALUE_KEYS
     step = f"{STEP_PREFIX}{target_character_id}"
     request_id = "sway-read-" + uuid.uuid4().hex

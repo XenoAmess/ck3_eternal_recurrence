@@ -12,6 +12,9 @@ struct MercenaryPositionBindingsV1 {
   // Exact .3 native leaves. Neither submits nor mutates a company/army.
   const void *(*get_title_province)(const void *) = nullptr;
   std::int32_t (*select_hire_raise_province)(const void *) = nullptr;
+  // Actual .4 Hire skips auto-raise for an empty current war vector. Keep the
+  // old software behavior for callers that leave this binding flag false.
+  bool skip_selector_when_no_active_wars = false;
 };
 struct MercenaryPositionWorldV1 {
   void *context = nullptr;

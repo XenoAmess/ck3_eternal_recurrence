@@ -2,10 +2,13 @@
 #include "xar_bridge/religion_doctrine12002_numeric_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_religion_parameter_bindings.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
 
 #include <windows.h>
+#include <utility>
 
 namespace xar::ck3_12002 {
 namespace {
@@ -60,8 +63,13 @@ bool ExecutePlayerReligionNumericSpecialParametersMailbox12002(
       query.failure = "player_religion_numeric_special_parameters_published_frame_changed";
       return true;
     }
-    (void)religion::doctrine12002::ReadPlayedNumericSpecialParameters12002(
-        query.bindings, query.numeric_bindings, stamp.pump_epoch, query.observation);
+    const bool actual4 = game::IsCk3_12004Descriptor(envelope->game->descriptor());
+    if (actual4)
+      (void)ck3_12004::religion::ReadPlayedNumericSpecialParameters12004(
+          query.bindings, query.numeric_bindings, stamp.pump_epoch, query.observation);
+    else
+      (void)religion::doctrine12002::ReadPlayedNumericSpecialParameters12002(
+          query.bindings, query.numeric_bindings, stamp.pump_epoch, query.observation);
     auto &out = query.observation;
     const auto &frame = envelope->expected_snapshot;
     if (out.available && (out.played_character_id != static_cast<std::uint32_t>(frame.played_character_id) ||
@@ -75,9 +83,14 @@ bool ExecutePlayerReligionNumericSpecialParametersMailbox12002(
       out.date_raw = static_cast<std::int32_t>(frame.date_raw);
       out.played_character_id = static_cast<std::uint32_t>(frame.played_character_id);
     }
-    (void)religion::doctrine12002::ReadPlayedFaithNumericFinal12002(
-        query.bindings, query.numeric_bindings, query.final_bindings,
-        stamp.pump_epoch, query.final_observation);
+    if (actual4)
+      (void)ck3_12004::religion::ReadPlayedFaithNumericFinal12004(
+          query.bindings, query.numeric_bindings, query.final_bindings,
+          stamp.pump_epoch, query.final_observation);
+    else
+      (void)religion::doctrine12002::ReadPlayedFaithNumericFinal12002(
+          query.bindings, query.numeric_bindings, query.final_bindings,
+          stamp.pump_epoch, query.final_observation);
     auto &final = query.final_observation;
     const auto current_id = out.current_rite
         ? std::optional<std::uint32_t>(out.current_rite->rite_id) : std::nullopt;
@@ -110,6 +123,10 @@ std::string SerializePlayerReligionNumericSpecialParametersResult12002(
     const PlayerReligionNumericSpecialParametersMailboxContext12002 &query, std::string_view request_id) {
   if (!query.completed || !query.envelope.frame_stable || !query.failure.empty()) return {};
   const auto &frame = query.envelope.expected_snapshot;
+  const auto final_serialized = query.envelope.game &&
+      game::IsCk3_12004Descriptor(query.envelope.game->descriptor())
+      ? ck3_12004::religion::SerializeFaithNumericFinal12004(query.final_observation)
+      : religion::doctrine12002::SerializeFaithNumericFinal12002(query.final_observation);
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kPlayerReligionNumericSpecialParametersPrivateStep12002) +
       ",\"accepted\":true,\"status\":" + Quote(query.observation.available ? "observed" : "unavailable") +
@@ -122,7 +139,7 @@ std::string SerializePlayerReligionNumericSpecialParametersResult12002(
       ",\"player_religion_numeric_special_parameters\":" +
           religion::doctrine12002::SerializeNumericSpecialParameters12002(query.observation) +
       ",\"faith_numeric_final\":" +
-          religion::doctrine12002::SerializeFaithNumericFinal12002(query.final_observation) + "}}";
+          final_serialized + "}}";
 }
 
 bool RunPlayerReligionNumericSpecialParametersMailbox12002(PlayerReligionNumericSpecialParametersMailboxContext12002 &query,
@@ -153,6 +170,9 @@ bool RunPlayerReligionNumericSpecialParametersMailbox12002(PlayerReligionNumeric
       return false;
     }
     serialized = SerializePlayerReligionNumericSpecialParametersResult12002(query, request_id);
+    if (game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+      serialized = game::Render12004BuildIdentity(
+          std::move(serialized), envelope.game->descriptor());
     if (!serialized.empty()) return true;
     failure = query.failure.empty() ? "player_religion_numeric_special_parameters_serialization_unavailable" : query.failure;
     return false;
@@ -174,26 +194,31 @@ bool HandlePlayerReligionNumericSpecialParametersPrivate12002(const game::GameAd
   if (!ParsePlayerReligionNumericSpecialParametersRevision12002(payload, expected)) {
     failure = "player_religion_numeric_special_parameters_request_invalid"; return false;
   }
-  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if (!adapter.enabled() || (!actual4 &&
+      (game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+       game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_numeric_special_parameters_current_frame_unavailable"; return false;
   }
   try {
     PlayerReligionNumericSpecialParametersMailboxContext12002 query{};
-    query.envelope.game = &NativeAdapter12002(adapter);
+    query.envelope.game = actual4 ? &adapter : &NativeAdapter12002(adapter);
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
-    query.bindings = religion::BindReligionContextImage12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    query.numeric_bindings = religion::doctrine12002::BindNumericSpecialParameters12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    query.final_bindings = religion::doctrine12002::BindFaithNumericFinal12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (actual4) {
+      const auto sha = adapter.descriptor().executable_sha256;
+      query.bindings = ck3_12004::religion::BindReligionContextImage12004(base, sha);
+      query.numeric_bindings = ck3_12004::religion::BindNumericSpecialParametersImage12004(base, sha);
+      query.final_bindings = ck3_12004::religion::BindFaithNumericFinalImage12004(base, sha);
+    } else {
+      const auto sha = game::ReviewedCrozierAbiSha256(adapter.descriptor());
+      query.bindings = religion::BindReligionContextImage12002(base, sha);
+      query.numeric_bindings = religion::doctrine12002::BindNumericSpecialParameters12002(base, sha);
+      query.final_bindings = religion::doctrine12002::BindFaithNumericFinal12002(base, sha);
+    }
     return RunPlayerReligionNumericSpecialParametersMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_numeric_special_parameters_handler_exception"; return false; }
 }

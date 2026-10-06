@@ -120,6 +120,7 @@
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_prisoner_mailbox.hpp"
+#include "xar_bridge/ck3_12004_prisoner_mailbox.hpp"
 #endif
 
 namespace xar::bridge {
@@ -153,10 +154,16 @@ struct NonwarPrivateState12002 {
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   PrisonerPrivateWorkerState12002 prisoner{};
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+  ck3_12004::PrisonerPrivateWorkerState12004 prisoner12004{};
+#endif
 };
 
 void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &) noexcept;
+void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &) noexcept;
 bool IsNonwarPrivateStep12002(std::string_view step) noexcept;
+bool IsNonwarPrivateStep12004(const game::GameAdapter &,
+                             std::string_view step) noexcept;
 void PollNonwarPrivateState12002(NonwarPrivateState12002 &) noexcept;
 bool HandleNonwarPrivate12002(
     const game::GameAdapter &, ck3_11906::MainThreadQueryMailboxV1 &,

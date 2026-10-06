@@ -1,6 +1,8 @@
 """Normalize the independent current-player native spiritual-fulfillment type."""
 from __future__ import annotations
 
+from .religion_context_addon_schema import religion_context_addon_schema
+
 from typing import Mapping
 
 
@@ -13,7 +15,7 @@ def normalize_player_spiritual_fulfillment_type_v1(
             "date_raw", "played_character_id", "spiritual_fulfillment_type_key",
             "has_christian_fulfillment_type"}
     if (not isinstance(value, dict) or set(value) != keys
-            or value["schema"] != "ck3_12003_spiritual_fulfillment_type_v1"
+            or value["schema"] != religion_context_addon_schema("ck3_12003_spiritual_fulfillment_type_v1", current_context)
             or value["read_only"] is not True or type(value["available"]) is not bool):
         raise ValueError("native spiritual-fulfillment type schema is malformed")
     for key in ("capture_epoch", "date_raw", "played_character_id"):

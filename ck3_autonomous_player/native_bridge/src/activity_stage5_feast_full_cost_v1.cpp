@@ -65,14 +65,15 @@ bool InvokeFourNames(void *opaque, std::uintptr_t module_base,
   const auto &environment = *invocation.environment;
   const auto invoke = environment.invoke_named_cost != nullptr
                           ? environment.invoke_named_cost
-                          : environment.gold.diagnostic.admitted_executable_sha256 ==
-                                    kActivityFeastCosts12002ExeSha256V1
+                          : IsActivityFeastCostsModernBuildV1(
+                                    environment.gold.diagnostic.admitted_executable_sha256)
                               ? &InvokeActivityStage5NativeNamedFeastCost12002V1
                               : &InvokeActivityStage5NativeNamedFeastCostV1;
   for (std::size_t index = 0; index < kActivityFeastCostKeysV1.size(); ++index) {
     std::uint32_t resource_index = 10;
     std::int64_t value = 0;
-    if (!invoke(environment.named_context, module_base, breakdown,
+    if (!invoke(environment.invoke_named_cost != nullptr ? environment.named_context
+        : const_cast<std::string_view *>(&environment.gold.diagnostic.admitted_executable_sha256), module_base, breakdown,
                 kActivityFeastCostKeysV1[index], resource_index, value)) {
       invocation.failure = ActivityStage5FeastFullCostStatusV1::named_query_failed;
       return false;
@@ -132,10 +133,11 @@ bool InvokeActivityStage5NativeNamedFeastCostV1(
 }
 
 bool InvokeActivityStage5NativeNamedFeastCost12002V1(
-    void *, std::uintptr_t module_base, std::uintptr_t cost_breakdown,
+    void *opaque, std::uintptr_t module_base, std::uintptr_t cost_breakdown,
     std::string_view resource_key, std::uint32_t &resource_index,
     std::int64_t &cost_raw) noexcept {
-  return InvokeNativeNamedFeastCost(kActivityGetCostByName12002RvaV1, module_base,
+  return InvokeNativeNamedFeastCost(Activity12004RvaV1(
+      ActivityFeastCostNativeCallbackShaV1(opaque), kActivityGetCostByName12002RvaV1), module_base,
       cost_breakdown, resource_key, resource_index, cost_raw);
 }
 

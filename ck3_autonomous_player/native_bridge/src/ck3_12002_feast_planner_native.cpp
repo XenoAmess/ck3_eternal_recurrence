@@ -11,7 +11,8 @@ namespace {
 
 bool IsOwner(const ActivityPlanner12002NativeV1 &context) noexcept {
   return context.enabled && context.module_base != 0 &&
-         context.executable_sha256 == bridge::kActivityPlanner12002ExeSha256V1 &&
+         (context.executable_sha256 == bridge::kActivityPlanner12002ExeSha256V1 ||
+          bridge::IsActivity12004BuildV1(context.executable_sha256)) &&
          context.owner_thread_id != 0 &&
          GetCurrentThreadId() == context.owner_thread_id;
 }
@@ -60,7 +61,8 @@ std::uintptr_t CastIdler(void *opaque, std::uintptr_t source,
   if (!IsOwner(context) || source == 0 || source_type == 0 || target_type == 0)
     return 0;
   using NativeCast = void *(*)(void *, std::int32_t, void *, void *, std::int32_t);
-  const auto cast = reinterpret_cast<NativeCast>(context.module_base + 0x4260E94);
+  const auto cast = reinterpret_cast<NativeCast>(context.module_base + bridge::Activity12004RvaV1(
+          context.executable_sha256, 0x4260E94));
   __try {
     return reinterpret_cast<std::uintptr_t>(cast(
         reinterpret_cast<void *>(source), 0,
@@ -107,7 +109,8 @@ bool SelectedOption(void *opaque, std::uintptr_t planner,
   output = 0;
   if (!IsOwner(context) || planner == 0) return false;
   const auto getter = reinterpret_cast<void *(*)(void *)>(
-      context.module_base + 0x11B64C0);
+      context.module_base + bridge::Activity12004RvaV1(
+          context.executable_sha256, 0x11B64C0));
   __try {
     output = reinterpret_cast<std::uintptr_t>(getter(reinterpret_cast<void *>(planner)));
     return true;
@@ -138,7 +141,8 @@ bool CanProgress(void *opaque, std::uintptr_t planner, bool &output) noexcept {
   const auto &context = *static_cast<ActivityPlanner12002NativeV1 *>(opaque);
   if (!IsOwner(context) || planner == 0) return false;
   const auto predicate = reinterpret_cast<bool (*)(void *, void *)>(
-      context.module_base + 0x11B8670);
+      context.module_base + bridge::Activity12004RvaV1(
+          context.executable_sha256, 0x11B8670));
   __try {
     output = predicate(reinterpret_cast<void *>(planner), nullptr);
     return true;
@@ -151,7 +155,8 @@ bool SetStage(ActivityPlanner12002NativeV1 &context, std::uintptr_t planner,
               std::int32_t stage) noexcept {
   if (!IsOwner(context) || planner == 0) return false;
   const auto setter = reinterpret_cast<void (*)(void *, std::int32_t)>(
-      context.module_base + 0x11B95D0);
+      context.module_base + bridge::Activity12004RvaV1(
+          context.executable_sha256, 0x11B95D0));
   __try {
     setter(reinterpret_cast<void *>(planner), stage);
     return true;
@@ -174,7 +179,8 @@ bool FindAutoRow(void *opaque, std::uintptr_t planner,
   output = 0;
   if (!IsOwner(context) || planner == 0) return false;
   const auto finder = reinterpret_cast<void *(*)(void *)>(
-      context.module_base + 0x11B5950);
+      context.module_base + bridge::Activity12004RvaV1(
+          context.executable_sha256, 0x11B5950));
   __try {
     output = reinterpret_cast<std::uintptr_t>(finder(reinterpret_cast<void *>(planner)));
     return true;
@@ -187,7 +193,8 @@ bool ProgressNonzero(void *opaque, std::uintptr_t planner) noexcept {
   const auto &context = *static_cast<ActivityPlanner12002NativeV1 *>(opaque);
   if (!IsOwner(context) || planner == 0) return false;
   const auto progress = reinterpret_cast<void (*)(void *)>(
-      context.module_base + 0x11B8CD0);
+      context.module_base + bridge::Activity12004RvaV1(
+          context.executable_sha256, 0x11B8CD0));
   __try {
     progress(reinterpret_cast<void *>(planner));
     return true;
@@ -230,7 +237,8 @@ bool CanSelect(void *opaque, std::uintptr_t planner,
   const auto &context = *static_cast<ActivityPlanner12002NativeV1 *>(opaque);
   if (!IsOwner(context) || planner == 0 || province == 0) return false;
   const auto predicate = reinterpret_cast<bool (*)(void *, void *, void *)>(
-      context.module_base + 0x11B6F50);
+      context.module_base + bridge::Activity12004RvaV1(
+          context.executable_sha256, 0x11B6F50));
   __try {
     output = predicate(reinterpret_cast<void *>(planner),
                        reinterpret_cast<void *>(province), nullptr);
@@ -245,7 +253,8 @@ bool SelectOnce(void *opaque, std::uintptr_t planner,
   const auto &context = *static_cast<ActivityPlanner12002NativeV1 *>(opaque);
   if (!IsOwner(context) || planner == 0 || province == 0) return false;
   const auto selector = reinterpret_cast<void (*)(void *, void *)>(
-      context.module_base + 0x11B6C80);
+      context.module_base + bridge::Activity12004RvaV1(
+          context.executable_sha256, 0x11B6C80));
   __try {
     selector(reinterpret_cast<void *>(planner), reinterpret_cast<void *>(province));
     return true;
@@ -261,7 +270,8 @@ bool IsFeastType(ActivityPlanner12002NativeV1 &context,
   std::uint64_t size = 0, capacity = 0;
   std::array<char, 16> actual{};
   return ReadAt(context, type, 0, vtable) &&
-         vtable == context.module_base + 0x48BFE50 &&
+         vtable == context.module_base + bridge::Activity12004RvaV1(
+          context.executable_sha256, 0x48BFE50) &&
          ReadAt(context, type, 0x28, size) && size == key.size() &&
          ReadAt(context, type, 0x30, capacity) && capacity >= size &&
          (capacity <= 15 || ReadAt(context, type, 0x18, data)) &&
@@ -306,7 +316,8 @@ bool ReadDestinationState(void *opaque,
   std::array<char, 96> key{};
   std::uint16_t key_size = 0;
   if (!ReadAt(context, output.selected_option, 0, option_vtable) ||
-      option_vtable != context.module_base + 0x48BFD18 ||
+      option_vtable != context.module_base + bridge::Activity12004RvaV1(
+          context.executable_sha256, 0x48BFD18) ||
       !ReadAt(context, output.selected_option, 8, output.selected_option_id) ||
       !ResolveKey(opaque, output.selected_option_id, key, key_size))
     return false;
@@ -343,14 +354,17 @@ bool DispatchFeast(void *opaque, std::uintptr_t handler,
                   std::uintptr_t type) noexcept {
   const auto &context = *static_cast<ActivityPlanner12002NativeV1 *>(opaque);
   if (!IsOwner(context) || handler == 0 || type == 0) return false;
-  const auto descriptor = reinterpret_cast<void *(*)()>(context.module_base + 0xD51E50);
+  const auto descriptor = reinterpret_cast<void *(*)()>(context.module_base + bridge::Activity12004RvaV1(
+          context.executable_sha256, 0xD51E50));
   const auto dispatch = reinterpret_cast<void (*)(void *, std::int32_t, const void *)>(
-      context.module_base + 0xAF39E0);
+      context.module_base + bridge::Activity12004RvaV1(
+          context.executable_sha256, 0xAF39E0));
   NativeTypePayload payload{};
   std::memcpy(payload.data.data(), &type, sizeof(type));
   __try {
     payload.descriptor = reinterpret_cast<std::uintptr_t>(descriptor());
-    if (payload.descriptor != context.module_base + 0x54D76F0) return false;
+    if (payload.descriptor != context.module_base + bridge::Activity12004RvaV1(
+          context.executable_sha256, 0x54D76F0)) return false;
     // HostView::CanPlan (1.20 RVA 0x1643970) supplies this unchanged typed
     // event. Its event table resolves +0x98 + 0x65*8 to handler +0x3C0.
     dispatch(reinterpret_cast<void *>(handler), 0x65, &payload);
@@ -372,7 +386,8 @@ bool BindActivityPlanner12002V1(
     std::uintptr_t game_state) noexcept {
   output = {};
   if (module_base == 0 ||
-      executable_sha256 != bridge::kActivityPlanner12002ExeSha256V1 ||
+      (executable_sha256 != bridge::kActivityPlanner12002ExeSha256V1 &&
+       !bridge::IsActivity12004BuildV1(executable_sha256)) ||
       read_snapshot == nullptr || revision == 0 || owner_thread_id == 0 ||
       game_state == 0)
     return false;

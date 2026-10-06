@@ -682,6 +682,13 @@ class GameplayBridgeService:
                 return finite_reader()
         return self.driver.take_snapshot()
 
+    def query_core_frame_v1(self) -> dict[str, object]:
+        """Read a named partial core frame without refreshing world observation."""
+        query = getattr(self.driver, "query_core_frame_v1", None)
+        if not callable(query):
+            raise UnsupportedStepError("bridge driver does not implement core-frame query")
+        return query()
+
     def bridge_diagnostics(self) -> dict[str, object]:
         """Return transport/private observer diagnostics without advertising capability."""
         diagnostics = getattr(self.driver, "diagnostics", None)

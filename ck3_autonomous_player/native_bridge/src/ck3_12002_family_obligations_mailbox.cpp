@@ -2,6 +2,11 @@
 #include "xar_bridge/ck3_12002_family_obligations_mailbox.hpp"
 #include "xar_bridge/ck3_12003_call_ally_private_action.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_family.hpp"
+#include "xar_bridge/ck3_12004_family_actions.hpp"
+#include "xar_bridge/ck3_12004_commands.hpp"
+#include "xar_bridge/ck3_12004_family_obligations_alliance.hpp"
 #include "xar_bridge/protocol.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1) && \
@@ -140,13 +145,17 @@ bool HandleFamilyObligationsPrivate12002(
   } else if (!ParseFamilyObligationsPrivateRequest12002(payload, request)) {
     failure = "family_obligations_request_invalid"; return false;
   }
-  if (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 || !adapter.enabled() ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if ((!actual4 &&
+       (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
+      !adapter.enabled() ||
       revision == 0 || (request.expected_snapshot_revision != 0 &&
                        request.expected_snapshot_revision != revision) ||
       !published.paused || !published.map_ready || !published.has_played_character ||
       !published.played_character_alive || published.played_character_id <= 0 ||
-      (call_ally_submission && !game::IsCk3_12003Descriptor(adapter.descriptor()))) {
+      (call_ally_submission && !actual4 &&
+       !game::IsCk3_12003Descriptor(adapter.descriptor()))) {
     failure = "family_obligations_current_frame_unavailable"; return false;
   }
   try {
@@ -161,11 +170,22 @@ bool HandleFamilyObligationsPrivate12002(
     query.call_ally_request = action_request.native_request;
     const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     if (request.subject_character_id > 0)
-      query.lineage_bindings = family_obligations_lineage::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+      query.lineage_bindings = actual4
+          ? ck3_12004::BindFamilyLineageImage(base, adapter.descriptor().executable_sha256)
+          : family_obligations_lineage::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (call_ally_submission || request.ally_character_id > 0 || request.enumerate_current_allies)
-      query.alliance_bindings = family_obligations_alliance::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+      query.alliance_bindings = actual4
+          ? ck3_12004::BindFamilyObligationsAllianceImage(base, adapter.descriptor().executable_sha256)
+          : family_obligations_alliance::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    if (actual4 && call_ally_submission)
+      query.alliance_bindings.context = ck3_12004::BindFamilyActionImage(
+          base, adapter.descriptor().executable_sha256,
+          ck3_12004::BindCommandImage12004(
+              base, adapter.descriptor().executable_sha256)).context;
     if (request.break_recipient_character_id > 0)
-      query.break_bindings = BindFamilyObligationsBreakImageV1(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+      query.break_bindings = actual4
+          ? ck3_12004::BindFamilyObligationsBreakImageV1(base, adapter.descriptor().executable_sha256)
+          : BindFamilyObligationsBreakImageV1(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (ck3_11906::TrySubmitMainThreadQueryV1(mailbox, &ExecuteFamilyObligationsMailbox12002,
         &query.envelope, query.envelope.ticket) != ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
       failure = "family_obligations_mailbox_submit_unavailable"; return false;
@@ -183,6 +203,7 @@ bool HandleFamilyObligationsPrivate12002(
     serialized = call_ally_submission
         ? SerializeCallAllySubmissionResult12003(request_id, query)
         : SerializeFamilyObligationsResult12002(request_id, query.observation);
+    if (actual4) serialized = game::Render12004BuildIdentity(serialized, adapter.descriptor());
     return !serialized.empty();
   } catch (...) {
     serialized.clear(); failure = "family_obligations_mailbox_exception"; return false;

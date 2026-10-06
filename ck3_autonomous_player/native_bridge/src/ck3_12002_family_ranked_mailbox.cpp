@@ -2,6 +2,8 @@
 #include "xar_bridge/ck3_12002_family_ranked_mailbox.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_family_ranked.hpp"
 
 #include <algorithm>
 #include <string>
@@ -65,7 +67,8 @@ bridge::MarriageCandidateWorkerReadResultV1 ReadFamilyRankedOnApplicationMainV1(
   using Status = bridge::MarriageCandidateWorkerReadStatusV1;
   bridge::MarriageCandidateWorkerReadResultV1 result{};
   output = {};
-  if (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" || revision == 0 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if ((!actual4 && xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2") || revision == 0 ||
       !published.paused || published.played_character_id <= 0 || limit == 0 ||
       limit > bridge::kMarriageMatchmakingMaximumCandidatesV1) {
     result.status = Status::unavailable;
@@ -77,9 +80,10 @@ bridge::MarriageCandidateWorkerReadResultV1 ReadFamilyRankedOnApplicationMainV1(
   query.envelope.expected_snapshot = published;
   query.envelope.expected_snapshot_revision = revision;
   query.envelope.typed_context = &query;
-  query.bindings = BindFamilyRankedImage(
-      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+  const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  query.bindings = actual4
+      ? ck3_12004::BindFamilyRankedImage(base, adapter.descriptor().executable_sha256)
+      : BindFamilyRankedImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
   query.snapshot_id = "native:" + std::to_string(revision);
   query.request = {query.snapshot_id, revision, revision, published.date_raw,
       static_cast<std::uint32_t>(published.played_character_id),

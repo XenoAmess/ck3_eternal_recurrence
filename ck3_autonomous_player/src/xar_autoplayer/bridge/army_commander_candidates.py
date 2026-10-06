@@ -2,6 +2,10 @@
 
 from __future__ import annotations
 
+from .army_family_12004_identity import (
+    is_army_commander_candidates_v1_schema,
+    is_army_current_movement_speed_v1_schema,
+)
 from .public_unit_contract import canonical_public_cunit_token, public_cunit_id
 from .army_commander_target_rolls import (
     commander_target_province_id,
@@ -92,7 +96,7 @@ def normalize_army_commander_candidates_v1(
     if not isinstance(value, dict):
         raise ValueError("native army_commander_candidates must be an object")
     if (
-        value.get("schema") != "ck3_12003_army_commander_candidates_v1"
+        not is_army_commander_candidates_v1_schema(value.get("schema"))
         or value.get("status") not in {"available", "partial", "unavailable"}
         or type(value.get("snapshot_revision")) is not int
         or value.get("snapshot_revision") != expected_snapshot_revision
@@ -223,7 +227,7 @@ def _normalize_current_movement_speed(
     if not isinstance(value, dict):
         raise ValueError("native current_movement_speed must be an object or null")
     if (
-        value.get("schema") != "ck3_12003_army_current_movement_speed_v1"
+        not is_army_current_movement_speed_v1_schema(value.get("schema"))
         or value.get("source") != "native_selected_cunit_movement_rates"
         or type(value.get("snapshot_revision")) is not int
         or value.get("snapshot_revision") != expected_snapshot_revision
@@ -287,10 +291,10 @@ def _normalize_current_movement_speed(
     )):
         raise ValueError("unavailable current_movement_speed context must retain null fields")
     normalized = dict(value)
-    for name, getter in (
-        ("land", "0x24AA940"),
-        ("naval", "0x24AAC00"),
-        ("current_edge", "0x24AB5C0"),
+    for name, getters in (
+        ("land", ("0x24AA940", "0x24AA920")),
+        ("naval", ("0x24AAC00", "0x24AABE0")),
+        ("current_edge", ("0x24AB5C0", "0x24AB5A0")),
     ):
         rate = value.get(name)
         if not isinstance(rate, dict):
@@ -303,7 +307,7 @@ def _normalize_current_movement_speed(
             status not in allowed
             or type(rate.get("scale")) is not int
             or rate.get("scale") != 100000
-            or rate.get("native_getter_rva") != getter
+            or rate.get("native_getter_rva") not in getters
         ):
             raise ValueError(f"native current_movement_speed.{name} status/scale/source is malformed")
         raw = rate.get("raw")

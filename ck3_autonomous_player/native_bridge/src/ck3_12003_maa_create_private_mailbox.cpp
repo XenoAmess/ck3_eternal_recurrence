@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
 
@@ -101,7 +102,8 @@ bool HandleRegularMaaCreatePrivate12003(
     std::string &serialized, std::string &failure) noexcept {
   serialized.clear(); failure.clear();
   if (!IsRegularMaaCreatePrivateStep12003(step) || !adapter.enabled() ||
-      !game::IsCk3_12003Descriptor(adapter.descriptor()) || request_id.empty() || request_id.size() > 63 ||
+      (!game::IsCk3_12003Descriptor(adapter.descriptor()) &&
+       !game::IsCk3_12004Descriptor(adapter.descriptor())) || request_id.empty() || request_id.size() > 63 ||
       !published.paused || !published.map_ready || !published.has_played_character || !published.played_character_alive) {
     failure = "native_regular_maa_create_request_contract_invalid"; return false;
   }

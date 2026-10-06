@@ -1,4 +1,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_religion_bindings.hpp"
+#include "xar_bridge/ck3_12004_religion_costs_eligibility_bindings.hpp"
 #include "xar_bridge/religion_reform12002_resource_costs_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1)
@@ -140,6 +143,8 @@ bool RunPlayerReligionDraftResourceCostsMailbox12002(PlayerReligionDraftResource
         !ValidFrame(envelope.expected_snapshot, envelope.expected_snapshot_revision)) {
       failure = "player_religion_draft_resource_costs_current_frame_unavailable"; return false;
     }
+    if (game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+      envelope.snapshot_comparison = QuerySnapshotComparison12002::core_frame;
     envelope.typed_context = &query;
     if (TrySubmitMainThreadQueryV1(*envelope.mailbox,
         &ExecutePlayerReligionDraftResourceCostsMailbox12002, &envelope, envelope.ticket) !=
@@ -178,8 +183,10 @@ bool HandlePlayerReligionDraftResourceCostsPrivate12002(const game::GameAdapter 
   if (!ParsePlayerReligionDraftResourceCostsRevision12002(payload, expected)) {
     failure = "player_religion_draft_resource_costs_request_invalid"; return false;
   }
-  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if (!adapter.enabled() || (!actual4 &&
+      (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+       xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_draft_resource_costs_current_frame_unavailable"; return false;
   }
@@ -190,10 +197,17 @@ bool HandlePlayerReligionDraftResourceCostsPrivate12002(const game::GameAdapter 
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
     const auto module = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-    query.window_bindings = religion_reform::BindCurrentRiteCreationWindow12002(
-        module, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    query.cost_bindings = religion_reform::BindRiteCreationCostsImage12002(
-        module, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    if (actual4) {
+      query.window_bindings = ck3_12004::religion::BindCurrentRiteCreationWindow12004(
+          module, adapter.descriptor().executable_sha256);
+      query.cost_bindings = ck3_12004::religion::BindRiteCreationCostsImage12004(
+          module, adapter.descriptor().executable_sha256);
+    } else {
+      query.window_bindings = religion_reform::BindCurrentRiteCreationWindow12002(
+          module, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+      query.cost_bindings = religion_reform::BindRiteCreationCostsImage12002(
+          module, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    }
     return RunPlayerReligionDraftResourceCostsMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_draft_resource_costs_handler_exception"; return false; }
 }

@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from .religion_context_addon_schema import religion_context_addon_schema
+
 from collections.abc import Mapping
 
 
@@ -28,7 +30,7 @@ def normalize_player_piety_devotion_profile_v1(
             "date_raw", "played_character_id", *raw, *numbers,
             "native_terminal_threshold_branch", "raw_scale", "progress_unit", "is_monthly_change"}
     if (not isinstance(value, dict) or set(value) != keys
-            or value["schema"] != "ck3_12003_player_devotion_profile_v1"
+            or value["schema"] != religion_context_addon_schema("ck3_12003_player_devotion_profile_v1", current_context)
             or value["read_only"] is not True or type(value["available"]) is not bool
             or type(value["raw_scale"]) is not int or value["raw_scale"] != 100000
             or value["progress_unit"] != "percent" or value["is_monthly_change"] is not False):
@@ -60,7 +62,7 @@ def normalize_player_rite_virtue_sin_profile_v1(
             "date_raw", "played_character_id", "rite_id", "trait_count",
             "num_virtuous_traits", "num_sinful_traits", "traits", "scope", "counts_are_unweighted"}
     if (not isinstance(value, dict) or set(value) != keys
-            or value["schema"] != "ck3_12003_player_rite_virtue_sin_profile_v1"
+            or value["schema"] != religion_context_addon_schema("ck3_12003_player_rite_virtue_sin_profile_v1", current_context)
             or value["read_only"] is not True or type(value["available"]) is not bool
             or value["scope"] != "current-played-character-current-rite"
             or value["counts_are_unweighted"] is not True):
@@ -103,7 +105,7 @@ def normalize_player_vow_of_poverty_terms_v1(
             "date_raw", "played_character_id", "decision_id", "is_shown", "can_take",
             "affordable", "costs_raw", "raw_scale", "reasons_available", "can_take_reasons"}
     if (not isinstance(value, dict) or set(value) != keys
-            or value["schema"] != "ck3_12003_vow_of_poverty_terms_v1"
+            or value["schema"] != religion_context_addon_schema("ck3_12003_vow_of_poverty_terms_v1", current_context)
             or value["read_only"] is not True or type(value["available"]) is not bool
             or value["decision_id"] != "take_vow_of_poverty_decision"
             or type(value["raw_scale"]) is not int or value["raw_scale"] != 100000

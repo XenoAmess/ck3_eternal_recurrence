@@ -2,6 +2,7 @@
 
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_family_query_abi.hpp"
+#include "xar_bridge/ck3_12004_family_abi.hpp"
 
 #include <cstring>
 #include <limits>
@@ -47,6 +48,8 @@ constexpr std::array<std::size_t, 4> kRoleOffsets{
     family_query_abi::kContextSecondaryRecipientIdOffset};
 
 Failure Validate(const FamilyProjectionBindings &b) noexcept {
+  if (b.admitted_executable_sha256 == ck3_12004::kExecutableSha256)
+    return ck3_12004::ValidateFamilyProjectionBindingsV1(b);
   if (!b.exact_build_admitted ||
       b.admitted_executable_sha256 != kExecutableSha256 ||
       (!b.offline_fixture && b.module_base == 0))
@@ -147,13 +150,17 @@ bool SelectFamilyMatrilinealOptionV1(
   if (Validate(b) != Failure::none || context == nullptr ||
       b.set_boolean_option == nullptr) return false;
   if (!b.offline_fixture) {
+    const auto setter_rva =
+        b.admitted_executable_sha256 == ck3_12004::kExecutableSha256
+        ? ck3_12004::kFamilyProjectionSetOptionRva
+        : kFamilyProjectionSetOptionRva;
     if (reinterpret_cast<std::uintptr_t>(b.set_boolean_option) !=
-        b.module_base + kFamilyProjectionSetOptionRva) return false;
+        b.module_base + setter_rva) return false;
     constexpr std::array<std::uint8_t, 16> wanted{
         0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74,
         0x24, 0x10, 0x57, 0x48, 0x83, 0xEC, 0x20, 0x4C};
     std::array<std::uint8_t, 16> actual{};
-    if (!b.read_memory(b.memory_context, b.module_base + kFamilyProjectionSetOptionRva,
+    if (!b.read_memory(b.memory_context, b.module_base + setter_rva,
                        actual.data(), actual.size()) || actual != wanted) return false;
   }
   std::uint32_t option_id = 0;

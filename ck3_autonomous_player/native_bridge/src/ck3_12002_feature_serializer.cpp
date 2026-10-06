@@ -1,5 +1,7 @@
 ﻿#include "xar_bridge/ck3_12002_campaign.hpp"
 
+#include "xar_bridge/ck3_12004_features.hpp"
+
 #include <algorithm>
 #include <array>
 #include <charconv>
@@ -117,6 +119,20 @@ bool ValidUnavailable(const game::LoadedFeatureManifestV1 &manifest) {
 
 std::string SerializeLoadedFeatureManifestV1(
     const game::LoadedFeatureManifestV1 &manifest) {
+  constexpr detail::LoadedFeatureManifestRenderProfileV1 profile{
+      kLoadedFeatureManifestV1GameVersion,
+      kLoadedFeatureManifestV1ExecutableSha256,
+      kLoadedFeatureManifestV1BackendId,
+      "0x5CB87F8",
+      "0x47334C0..0x4733570",
+      "0x5CC15E0",
+  };
+  return detail::SerializeLoadedFeatureManifestV1ForProfile(manifest, profile);
+}
+
+std::string detail::SerializeLoadedFeatureManifestV1ForProfile(
+    const game::LoadedFeatureManifestV1 &manifest,
+    const detail::LoadedFeatureManifestRenderProfileV1 &profile) {
   if (manifest.snapshot_revision == 0) {
     return {};
   }
@@ -143,11 +159,11 @@ std::string SerializeLoadedFeatureManifestV1(
   } else {
     AppendJsonString(output, manifest.unavailable_reason);
   }
-  output +=
-      ",\"build\":{\"version\":\"1.20.0.2\","
-      "\"exe_sha256\":"
-      "\"AE1BA6FF060BA603842F6F4A2DED0AF4B7D3666B3DD271F75FB01B0DA8E81B2D\"},"
-      "\"effective_feature_flags\":{\"status\":";
+  output += ",\"build\":{\"version\":";
+  AppendJsonString(output, profile.game_version);
+  output += ",\"exe_sha256\":";
+  AppendJsonString(output, profile.executable_sha256);
+  output += "},\"effective_feature_flags\":{\"status\":";
   AppendJsonString(output, available ? "available" : "unavailable");
   output += ",\"unavailable_reason\":";
   if (available) {
@@ -208,12 +224,17 @@ std::string SerializeLoadedFeatureManifestV1(
   output += manifest.readiness.same_frame_ready ? "true" : "false";
   output += ",\"actionable_ready\":";
   output += manifest.readiness.actionable_ready ? "true" : "false";
+  output += "},\"provenance\":{\"feature_root_slot_rva\":";
+  AppendJsonString(output, profile.feature_root_slot_rva);
   output +=
-      "},\"provenance\":{\"feature_root_slot_rva\":\"0x5CB87F8\","
-      "\"feature_bitset_rva\":\"root+0x2B0\","
-      "\"feature_enum_table_rva\":\"0x47334C0..0x4733570\","
-      "\"script_dlc_set_rva\":\"0x5CC15E0\","
-      "\"backend_id\":\"ck3-1.20.0.2-native-loaded-feature-manifest-v1\"}}";
+      ",\"feature_bitset_rva\":\"root+0x2B0\","
+      "\"feature_enum_table_rva\":";
+  AppendJsonString(output, profile.feature_enum_table_rva);
+  output += ",\"script_dlc_set_rva\":";
+  AppendJsonString(output, profile.script_dlc_set_rva);
+  output += ",\"backend_id\":";
+  AppendJsonString(output, profile.backend_id);
+  output += "}}";
   return output;
 }
 

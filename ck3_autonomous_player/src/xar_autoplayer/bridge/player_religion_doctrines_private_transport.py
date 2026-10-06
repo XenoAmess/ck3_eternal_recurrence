@@ -14,7 +14,7 @@ from .nonwar_private_build import (
     private_native_build_identity, private_native_provenance,
 )
 from .version_identity import (
-    CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build,
+    CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend, require_exact_native_build,
 )
 
 
@@ -94,7 +94,7 @@ def normalize_player_religion_doctrines_v1(
     if not isinstance(value, dict) or set(value) != fields or value.get("schema") != private_native_schema(SCHEMA, snapshot):
         raise ValueError("native player religion doctrines schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(snapshot):
         raise ValueError("native player religion doctrines belongs to another build")
     _availability(value, allow_zero_epoch=False)
     current = _doctrine_rows(value["current_rite"], main_rite=False, snapshot=snapshot)
@@ -146,7 +146,7 @@ def query_player_religion_doctrines_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-doctrines-v1",
         )
-        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

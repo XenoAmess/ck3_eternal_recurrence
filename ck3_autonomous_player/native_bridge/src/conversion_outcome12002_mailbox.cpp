@@ -1,10 +1,13 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_religion_context_addons.hpp"
 #include "xar_bridge/conversion_outcome12002_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
 
+#include <utility>
 #include <windows.h>
 
 namespace xar::ck3_12002 {
@@ -67,7 +70,11 @@ bool ExecutePlayerReligionConversionOutcomeMailbox12002(
       query.failure = "player_religion_conversion_outcome_published_frame_changed";
       return true;
     }
-    (void)religion_conversion::outcome::ReadPlayedConversionOutcome12002(
+    if (game::IsCk3_12004Descriptor(envelope->game->descriptor()))
+      (void)ck3_12004::religion::ReadPlayedConversionOutcome12004(
+          query.bindings, query.target_rite_id, stamp.pump_epoch, query.observation);
+    else
+      (void)religion_conversion::outcome::ReadPlayedConversionOutcome12002(
         query.bindings, query.target_rite_id, stamp.pump_epoch, query.observation);
     auto &out = query.observation;
     const auto &frame = envelope->expected_snapshot;
@@ -151,6 +158,9 @@ bool RunPlayerReligionConversionOutcomeMailbox12002(PlayerReligionConversionOutc
       return false;
     }
     serialized = SerializePlayerReligionConversionOutcomeResult12002(query, request_id);
+    if (game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+      serialized = game::Render12004BuildIdentity(
+          std::move(serialized), envelope.game->descriptor());
     if (!serialized.empty()) return true;
     failure = query.failure.empty() ? "player_religion_conversion_outcome_serialization_unavailable" : query.failure;
     return false;
@@ -173,21 +183,26 @@ bool HandlePlayerReligionConversionOutcomePrivate12002(const game::GameAdapter &
   if (!ParsePlayerReligionConversionOutcomeRequest12002(payload, target_rite_id, expected)) {
     failure = "player_religion_conversion_outcome_request_invalid"; return false;
   }
-  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if (!adapter.enabled() || (!actual4 &&
+      (game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+       game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_conversion_outcome_current_frame_unavailable"; return false;
   }
   try {
     PlayerReligionConversionOutcomeMailboxContext12002 query{};
-    query.envelope.game = &NativeAdapter12002(adapter);
+    query.envelope.game = actual4 ? &adapter : &NativeAdapter12002(adapter);
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
     query.target_rite_id = target_rite_id;
-    query.bindings = religion_conversion::outcome::BindConversionOutcomeImage12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    query.bindings = actual4
+        ? ck3_12004::religion::BindConversionOutcomeImage12004(
+              base, adapter.descriptor().executable_sha256)
+        : religion_conversion::outcome::BindConversionOutcomeImage12002(
+              base, game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     return RunPlayerReligionConversionOutcomeMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_conversion_outcome_handler_exception"; return false; }
 }

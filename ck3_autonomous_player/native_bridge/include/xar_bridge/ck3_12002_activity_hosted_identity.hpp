@@ -1,5 +1,7 @@
 #pragma once
 
+#include "xar_bridge/ck3_12004_activity_migration_v1.hpp"
+
 #include <cstddef>
 #include <cstdint>
 #include <string_view>
@@ -16,5 +18,15 @@ inline constexpr std::uintptr_t kActivityHosted12002ActivityTypeVtableRva = 0x48
 inline constexpr std::size_t kActivityHosted12002ManagerOffset = 0x22CB8;
 inline constexpr std::size_t kActivityHosted12002ObjectStride = 0x628;
 inline constexpr std::size_t kActivityFeast12002ResourceExtensionOffset = 0x1B0;
+
+inline bool IsActivityHostedCrozierBuildV1(std::string_view sha) noexcept {
+  return sha == kActivityHostedIdentity12002ExeSha256V1 ||
+         IsActivity12004BuildV1(sha);
+}
+
+inline std::uintptr_t ActivityHostedCrozierRvaV1(
+    std::string_view sha, std::uintptr_t old12002_rva) noexcept {
+  return Activity12004RvaV1(sha, old12002_rva);
+}
 
 } // namespace xar::bridge

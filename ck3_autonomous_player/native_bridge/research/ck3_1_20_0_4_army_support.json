@@ -1,0 +1,1466 @@
+{
+  "schema": "xar.ck3-12004.army-support-source-proof.v1",
+  "date": "2026-10-07",
+  "iso_week": "2026-W41",
+  "created_utc": "2026-10-06T19:17:19.078302+00:00",
+  "status": "source-implemented / finite offline actual-build binding proof",
+  "exact_build": {
+    "version": "1.20.0.4",
+    "steam_build": 25734779,
+    "executable_sha256": "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518"
+  },
+  "source_baseline": "caa4adc3d1278e324cf4ec19774028e9b9138e28",
+  "source_tree": "C:\\codex-ck3-background\\parallel-integrations-20261007\\army-family-12004",
+  "new_sources": [
+    "include/xar_bridge/ck3_12004_army_support.hpp",
+    "src/ck3_12004_army_support.cpp"
+  ],
+  "apis": [
+    "PopulateArmySupportBindings12004(uintptr_t,string_view,ck3_12002::ArmyBindings&) noexcept",
+    "BindCommanderImage12004(uintptr_t,string_view) noexcept",
+    "BindPlayerArmyReserveImage12004V1(uintptr_t,string_view) noexcept",
+    "BindCommanderTargetRollImage12004(uintptr_t,string_view,const ck3_12002::ProvinceBindings&,const ck3_12002::CombatBindings&) noexcept"
+  ],
+  "adopted_families": [
+    "current disembark signed32",
+    "supply capacity/attrition/monthly change",
+    "gathering integer days",
+    "loss budget/eligibility/county entry",
+    "current province limit/usage/contributors/besieging",
+    "merge destination weights",
+    "route progress/duration",
+    "replenishment/scoped ordered/besieging refill",
+    "monthly caller/queue/helper Domain",
+    "land resupply/rate",
+    "fleet tick",
+    "daily dispatch",
+    "month-first flag",
+    "supply timing",
+    "commander candidates/current martial/movement",
+    "unraised reserve"
+  ],
+  "logical_functions": [
+    {
+      "id": "support_24AC3E0",
+      "old_rva": "0x24ac3e0",
+      "new_rva": "0x24ac3c0",
+      "logical_span_bytes": 93,
+      "logical_code_bytes": 93,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24AC3E0-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_2C09D30",
+      "old_rva": "0x2c09d30",
+      "new_rva": "0x2c09d10",
+      "logical_span_bytes": 103,
+      "logical_code_bytes": 103,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_2C09D30-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_2C53C10",
+      "old_rva": "0x2c53c10",
+      "new_rva": "0x2c53bf0",
+      "logical_span_bytes": 1545,
+      "logical_code_bytes": 1545,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_2C53C10-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24E2E50",
+      "old_rva": "0x24e2e50",
+      "new_rva": "0x24e2e30",
+      "logical_span_bytes": 1159,
+      "logical_code_bytes": 1159,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E2E50-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24E51A0",
+      "old_rva": "0x24e51a0",
+      "new_rva": "0x24e5180",
+      "logical_span_bytes": 3674,
+      "logical_code_bytes": 3674,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E51A0-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24AB2F0",
+      "old_rva": "0x24ab2f0",
+      "new_rva": "0x24ab2d0",
+      "logical_span_bytes": 496,
+      "logical_code_bytes": 496,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24AB2F0-DETAIL.json",
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-suffix02\\suffix_24AB2F0-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24AB060",
+      "old_rva": "0x24ab060",
+      "new_rva": "0x24ab040",
+      "logical_span_bytes": 656,
+      "logical_code_bytes": 656,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24AB060-DETAIL.json",
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-suffix02\\suffix_24AB060-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_247BEC0",
+      "old_rva": "0x247bec0",
+      "new_rva": "0x247bea0",
+      "logical_span_bytes": 1754,
+      "logical_code_bytes": 1754,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_247BEC0-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_247C5A0",
+      "old_rva": "0x247c5a0",
+      "new_rva": "0x247c580",
+      "logical_span_bytes": 1140,
+      "logical_code_bytes": 1137,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_247C5A0-DETAIL.json",
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-suffix02\\suffix_247C5A0-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24DD580",
+      "old_rva": "0x24dd580",
+      "new_rva": "0x24dd560",
+      "logical_span_bytes": 207,
+      "logical_code_bytes": 207,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24DD580-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24E32E0",
+      "old_rva": "0x24e32e0",
+      "new_rva": "0x24e32c0",
+      "logical_span_bytes": 325,
+      "logical_code_bytes": 325,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E32E0-DETAIL.json",
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-suffix02\\suffix_24E32E0-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24E8560",
+      "old_rva": "0x24e8560",
+      "new_rva": "0x24e8540",
+      "logical_span_bytes": 212,
+      "logical_code_bytes": 212,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E8560-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24E6670",
+      "old_rva": "0x24e6670",
+      "new_rva": "0x24e6650",
+      "logical_span_bytes": 716,
+      "logical_code_bytes": 716,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E6670-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24E6590",
+      "old_rva": "0x24e6590",
+      "new_rva": "0x24e6570",
+      "logical_span_bytes": 214,
+      "logical_code_bytes": 214,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E6590-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24DD9C0",
+      "old_rva": "0x24dd9c0",
+      "new_rva": "0x24dd9a0",
+      "logical_span_bytes": 199,
+      "logical_code_bytes": 199,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24DD9C0-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24E2250",
+      "old_rva": "0x24e2250",
+      "new_rva": "0x24e2230",
+      "logical_span_bytes": 420,
+      "logical_code_bytes": 420,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E2250-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_262C700",
+      "old_rva": "0x262c700",
+      "new_rva": "0x262c6e0",
+      "logical_span_bytes": 709,
+      "logical_code_bytes": 709,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_262C700-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_2657F10",
+      "old_rva": "0x2657f10",
+      "new_rva": "0x2657ef0",
+      "logical_span_bytes": 320,
+      "logical_code_bytes": 320,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_2657F10-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_262CAD0",
+      "old_rva": "0x262cad0",
+      "new_rva": "0x262cab0",
+      "logical_span_bytes": 1134,
+      "logical_code_bytes": 1134,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_262CAD0-DETAIL.json",
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\fraction-domain05\\fraction_262CAD0_suffix-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24E0160",
+      "old_rva": "0x24e0160",
+      "new_rva": "0x24e0140",
+      "logical_span_bytes": 306,
+      "logical_code_bytes": 306,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E0160-DETAIL.json",
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-suffix02\\suffix_24E0160-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24E02A0",
+      "old_rva": "0x24e02a0",
+      "new_rva": "0x24e0280",
+      "logical_span_bytes": 221,
+      "logical_code_bytes": 221,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E02A0-DETAIL.json",
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-suffix02\\suffix_24E02A0-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_2C11C10",
+      "old_rva": "0x2c11c10",
+      "new_rva": "0x2c11bf0",
+      "logical_span_bytes": 954,
+      "logical_code_bytes": 954,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_2C11C10-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_2971510",
+      "old_rva": "0x2971510",
+      "new_rva": "0x29714f0",
+      "logical_span_bytes": 428,
+      "logical_code_bytes": 428,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_2971510-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_2C0B270",
+      "old_rva": "0x2c0b270",
+      "new_rva": "0x2c0b250",
+      "logical_span_bytes": 208,
+      "logical_code_bytes": 208,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_2C0B270-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_C6DED0",
+      "old_rva": "0xc6ded0",
+      "new_rva": "0xc6ded0",
+      "logical_span_bytes": 4299,
+      "logical_code_bytes": 4299,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_C6DED0-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_28B16B0",
+      "old_rva": "0x28b16b0",
+      "new_rva": "0x28b1690",
+      "logical_span_bytes": 90,
+      "logical_code_bytes": 90,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_28B16B0-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_25A7120",
+      "old_rva": "0x25a7120",
+      "new_rva": "0x25a7100",
+      "logical_span_bytes": 1173,
+      "logical_code_bytes": 1173,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_25A7120-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_25A6790",
+      "old_rva": "0x25a6790",
+      "new_rva": "0x25a6770",
+      "logical_span_bytes": 362,
+      "logical_code_bytes": 362,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_25A6790-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_B03250",
+      "old_rva": "0xb03250",
+      "new_rva": "0xb03250",
+      "logical_span_bytes": 211,
+      "logical_code_bytes": 211,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_B03250-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_2A9A590",
+      "old_rva": "0x2a9a590",
+      "new_rva": "0x2a9a570",
+      "logical_span_bytes": 1539,
+      "logical_code_bytes": 1539,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_2A9A590-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24E4D10",
+      "old_rva": "0x24e4d10",
+      "new_rva": "0x24e4cf0",
+      "logical_span_bytes": 463,
+      "logical_code_bytes": 463,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E4D10-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_24E6000",
+      "old_rva": "0x24e6000",
+      "new_rva": "0x24e5fe0",
+      "logical_span_bytes": 1124,
+      "logical_code_bytes": 1124,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E6000-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "support_reserve_lifetime_1048C80",
+      "old_rva": "0x1048c80",
+      "new_rva": "0x1048c80",
+      "logical_span_bytes": 1995,
+      "logical_code_bytes": 1995,
+      "contiguous_retained_prefix_and_missing_suffix": true,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_reserve_lifetime_1048C80-DETAIL.json"
+      ],
+      "external_callees_expanded_by_this_export": false,
+      "purpose": "adopted callback or source-use layout witness; source-only mutators are not bound"
+    },
+    {
+      "id": "leaf_24AC160",
+      "old_rva": "0x24ac160",
+      "new_rva": "0x24ac140",
+      "logical_span_bytes": 80,
+      "logical_code_bytes": 80,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-suffix02\\leaf_24AC160-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "explicit_finite_candidate_from_owner_proof",
+        "candidate_proof_ref": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E4D10-DETAIL.json CALL offset215",
+        "old_interval": null,
+        "new_interval": null,
+        "global_shift_inferred": false,
+        "no_pdata_leaf_permitted_with_explicit_owner_candidate": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "leaf_24E8460",
+      "old_rva": "0x24e8460",
+      "new_rva": "0x24e8440",
+      "logical_span_bytes": 256,
+      "logical_code_bytes": 256,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-suffix02\\leaf_24E8460-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "explicit_finite_candidate_from_owner_proof",
+        "candidate_proof_ref": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E2E50-DETAIL.json full native fleet predicate edge",
+        "old_interval": null,
+        "new_interval": null,
+        "global_shift_inferred": false,
+        "no_pdata_leaf_permitted_with_explicit_owner_candidate": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "leaf_2A956D0",
+      "old_rva": "0x2a956d0",
+      "new_rva": "0x2a956b0",
+      "logical_span_bytes": 112,
+      "logical_code_bytes": 98,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-suffix02\\leaf_2A956D0-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "explicit_finite_candidate_from_owner_proof",
+        "candidate_proof_ref": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E2E50-DETAIL.json CALL offset285",
+        "old_interval": null,
+        "new_interval": null,
+        "global_shift_inferred": false,
+        "no_pdata_leaf_permitted_with_explicit_owner_candidate": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "component_24E4FA0_full",
+      "old_rva": "0x24e4fa0",
+      "new_rva": "0x24e4f80",
+      "logical_span_bytes": 503,
+      "logical_code_bytes": 503,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-suffix02\\component_24E4FA0_full-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "same_ordinal_candidate_only",
+        "ordinal": 128861,
+        "old_interval": [
+          38686624,
+          38686744,
+          85467992
+        ],
+        "new_interval": [
+          38686592,
+          38686712,
+          85468236
+        ],
+        "begin_delta": -32,
+        "end_delta": -32,
+        "length_equal": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "reserve_ctor_C6D5B0",
+      "old_rva": "0xc6d5b0",
+      "new_rva": "0xc6d5b0",
+      "logical_span_bytes": 148,
+      "logical_code_bytes": 148,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\reserve-ctor04\\reserve_ctor_C6D5B0-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "explicit_finite_candidate_from_owner_proof",
+        "candidate_proof_ref": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\reserve-callsite03\\reserve_ctor_call_16315A2-DETAIL.json",
+        "old_interval": null,
+        "new_interval": null,
+        "global_shift_inferred": false,
+        "no_pdata_leaf_permitted_with_explicit_owner_candidate": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "helper_domain_2C57020",
+      "old_rva": "0x2c57020",
+      "new_rva": "0x2c57000",
+      "logical_span_bytes": 471,
+      "logical_code_bytes": 471,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\fraction-domain05\\helper_domain_2C57020-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "same_ordinal_candidate_only",
+        "ordinal": 153400,
+        "old_interval": [
+          46493728,
+          46493754,
+          84972836
+        ],
+        "new_interval": [
+          46493696,
+          46493722,
+          84973076
+        ],
+        "begin_delta": -32,
+        "end_delta": -32,
+        "length_equal": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "domainleaf_2B9D2D0",
+      "old_rva": "0x2b9d2d0",
+      "new_rva": "0x2b9d2b0",
+      "logical_span_bytes": 109,
+      "logical_code_bytes": 109,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\domain-scoped06\\domainleaf_2B9D2D0-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "explicit_finite_candidate_from_owner_proof",
+        "candidate_proof_ref": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\fraction-domain05\\helper_domain_2C57020-DETAIL.json",
+        "old_interval": null,
+        "new_interval": null,
+        "global_shift_inferred": false,
+        "no_pdata_leaf_permitted_with_explicit_owner_candidate": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "domainleaf_262BBC0",
+      "old_rva": "0x262bbc0",
+      "new_rva": "0x262bba0",
+      "logical_span_bytes": 76,
+      "logical_code_bytes": 76,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\domain-scoped06\\domainleaf_262BBC0-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "explicit_finite_candidate_from_owner_proof",
+        "candidate_proof_ref": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\fraction-domain05\\helper_domain_2C57020-DETAIL.json",
+        "old_interval": null,
+        "new_interval": null,
+        "global_shift_inferred": false,
+        "no_pdata_leaf_permitted_with_explicit_owner_candidate": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "scoped_C171A0",
+      "old_rva": "0xc171a0",
+      "new_rva": "0xc171a0",
+      "logical_span_bytes": 57,
+      "logical_code_bytes": 57,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\domain-scoped06\\scoped_C171A0-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "explicit_finite_candidate_from_owner_proof",
+        "candidate_proof_ref": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_2657F10-DETAIL.json",
+        "old_interval": null,
+        "new_interval": null,
+        "global_shift_inferred": false,
+        "no_pdata_leaf_permitted_with_explicit_owner_candidate": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "scoped_AEAA20",
+      "old_rva": "0xaeaa20",
+      "new_rva": "0xaeaa20",
+      "logical_span_bytes": 57,
+      "logical_code_bytes": 57,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\domain-scoped06\\scoped_AEAA20-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "explicit_finite_candidate_from_owner_proof",
+        "candidate_proof_ref": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_2657F10-DETAIL.json",
+        "old_interval": null,
+        "new_interval": null,
+        "global_shift_inferred": false,
+        "no_pdata_leaf_permitted_with_explicit_owner_candidate": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "scoped_24ACAC0",
+      "old_rva": "0x24acac0",
+      "new_rva": "0x24acaa0",
+      "logical_span_bytes": 211,
+      "logical_code_bytes": 211,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\domain-scoped06\\scoped_24ACAC0-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "explicit_finite_candidate_from_owner_proof",
+        "candidate_proof_ref": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_2657F10-DETAIL.json",
+        "old_interval": [
+          38456000,
+          38456211,
+          86307552
+        ],
+        "new_interval": [
+          38455968,
+          38456179,
+          86307796
+        ],
+        "global_shift_inferred": false,
+        "no_pdata_leaf_permitted_with_explicit_owner_candidate": false
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "provinceholder_247D030",
+      "old_rva": "0x247d030",
+      "new_rva": "0x247d010",
+      "logical_span_bytes": 172,
+      "logical_code_bytes": 172,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\domain-scoped06\\provinceholder_247D030-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "explicit_finite_candidate_from_owner_proof",
+        "candidate_proof_ref": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_2C09D30-DETAIL.json",
+        "old_interval": null,
+        "new_interval": null,
+        "global_shift_inferred": false,
+        "no_pdata_leaf_permitted_with_explicit_owner_candidate": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "gathering_callback_24EA330",
+      "old_rva": "0x24ea330",
+      "new_rva": "0x24ea310",
+      "logical_span_bytes": 56,
+      "logical_code_bytes": 56,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\gathering-callback07\\gathering_callback_24EA330-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "same_ordinal_candidate_only",
+        "ordinal": 128913,
+        "old_interval": [
+          38708016,
+          38708072,
+          85054444
+        ],
+        "new_interval": [
+          38707984,
+          38708040,
+          85054684
+        ],
+        "begin_delta": -32,
+        "end_delta": -32,
+        "length_equal": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "gathering_24E9070",
+      "old_rva": "0x24e9070",
+      "new_rva": "0x24e9050",
+      "logical_span_bytes": 121,
+      "logical_code_bytes": 121,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\gathering-writer08\\gathering_24E9070-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "explicit_finite_candidate_from_owner_proof",
+        "candidate_proof_ref": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\gathering-callback07\\gathering_callback_24EA330-DETAIL.json",
+        "old_interval": null,
+        "new_interval": null,
+        "global_shift_inferred": false,
+        "no_pdata_leaf_permitted_with_explicit_owner_candidate": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "writeradmission_2634880",
+      "old_rva": "0x2634880",
+      "new_rva": "0x2634860",
+      "logical_span_bytes": 86,
+      "logical_code_bytes": 86,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\writer-admission09\\writeradmission_2634880-DETAIL.json"
+      ],
+      "candidate": {
+        "status": "explicit_finite_candidate_from_owner_proof",
+        "candidate_proof_ref": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\gathering-writer08\\writeradmission_call_26341D5-DETAIL.json",
+        "old_interval": null,
+        "new_interval": null,
+        "global_shift_inferred": false,
+        "no_pdata_leaf_permitted_with_explicit_owner_candidate": true
+      },
+      "external_callees_expanded_by_this_export": false
+    },
+    {
+      "id": "armycommander_24E9ED0",
+      "old_rva": "0x24e9ed0",
+      "new_rva": "0x24e9eb0",
+      "logical_span_bytes": 61,
+      "logical_code_bytes": 61,
+      "complete_normalized_span_equal": true,
+      "whole_logical_local_control_topology_equal": true,
+      "proofs": [
+        "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\commander-gap10\\armycommander_24E9ED0-DETAIL.json"
+      ],
+      "candidate": {
+        "kind": "two_adjacent_cached_runtime_boundary_offsets_candidate_only",
+        "old_previous_ordinal": 128901,
+        "old_previous": [
+          38706873,
+          38706891,
+          86319328
+        ],
+        "old_next": [
+          38706960,
+          38707069,
+          84987356
+        ],
+        "new_previous": [
+          38706841,
+          38706859,
+          86319572
+        ],
+        "new_next": [
+          38706928,
+          38707037,
+          84987596
+        ],
+        "from_previous_end": 38706864,
+        "from_next_begin": 38706864,
+        "both_offsets_agree": true,
+        "old_named_span_in_gap": true,
+        "new_named_span_in_gap": true,
+        "global_shift_inferred": false,
+        "neighbor_bodies_read": false
+      },
+      "external_callees_expanded_by_this_export": false
+    }
+  ],
+  "named_disembark": {
+    "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\disembark-first01\\DISEMBARK-NAMED-LEAF-CLOSED.json",
+    "source_pending_at_capture_resolved_by": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-world-family/native-main/BASE-READER-SOURCE-CLOSED.json",
+    "signed32_values_retained": [
+      0,
+      -1,
+      34
+    ]
+  },
+  "peer_proofs": {
+    "army_core": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-world-family/native-main/BASE-READER-SOURCE-CLOSED.json",
+    "army_active_combat_81B": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-world-family/native-main/map05/active_combat_actual_leaf-DETAIL.json",
+    "army_province_eligibility_214B": "Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/army-world-family/native-main/map03/standalone_roster_eligibility-DETAIL.json",
+    "parent_shared_roster_chunk_fields": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\shared-roster-layout\\SHARED-ROSTER-LAYOUT-CLOSURE.json",
+    "parent_shared_GDbo_key_SSO_fields": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\shared-roster-layout\\GDBO-KEY-LAYOUT-SOURCE-CLOSED.json",
+    "movement_triplet": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-commander-build25734779/movement-actual4-consumer/mapping-first01/FAMILY-MAP.json",
+    "character_modifier": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/actual4-domain/combat-map/pass01/FAMILY-MAP.json",
+    "province_modifier": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/actual4-domain/combat-map/pass01/FAMILY-MAP.json",
+    "province_has_holding_87B": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/actual4-domain/combat-map/pass04-leaves/province_has_holding-DETAIL.json",
+    "common_war_side_298B": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/actual4-domain/combat-map/pass05-common-war-side/adopted_common_war_side-DETAIL.json",
+    "besieging_strength_404B": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/actual4-domain/province-map/first01/province_besieging_strength-DETAIL.json",
+    "assault_casualties_357B": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/actual4-domain/province-map/first01/assault_daily_casualties-DETAIL.json",
+    "generic_vector_allocator_address": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/war-score-membership/actual4-domain/war-map/allocator01/SharedGenericVectorAllocatorUse111E93F-DETAIL.json"
+  },
+  "enabled_flags_capability_read_fields_injection_dependencies": {
+    "schema": "xar.army12004.enabled-input-contract.v1",
+    "native_identity": "1.20.0.4 / Steam25734779 / 98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
+    "implementation_status": "source-implemented; Root build and new whole-fixture qualification pending",
+    "tests_not_run": true,
+    "no_build": true,
+    "no_game_sdk_git_operations": true,
+    "capabilities": {
+      "strengths": "game.command.query-army-strengths-v1",
+      "commander": "game.command.query-army-commander-candidates-v1-for-army-N",
+      "commander_target": "game.command.query-army-commander-candidates-v1-for-army-N-at-province-P",
+      "reserve": "game.command.query-player-default-raise-v1",
+      "new_capsule_families": 0
+    },
+    "enabled_flags_and_read_fields": [
+      {
+        "flag": "current_disembark_penalty_enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "current_disembark_penalty_v1 signed32 remaining_days"
+        ],
+        "dependencies": [
+          "actual CArmy database/header/backlink from native-main",
+          "named typed callback/registrar and seven-byte24AA220 leaf"
+        ]
+      },
+      {
+        "flag": "current_movement_progress_enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "current normalized edge progress",
+          "first committed route-edge duration"
+        ],
+        "dependencies": [
+          "complete24AB2D0 and24AB040",
+          "current validated public CUnit route context"
+        ]
+      },
+      {
+        "flag": "loss_application_inputs_enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "supply/whole/siege/raid loss budgets",
+          "per-ArRg supply-loss eligibility",
+          "native writer-skip predicate"
+        ],
+        "dependencies": [
+          "24DD560/24E32C0/24E8540/2A956B0/2634860",
+          "actual signed loaded siege/raid rate slots"
+        ]
+      },
+      {
+        "flag": "county_entry_inputs_enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "native county-entry budget/fraction/multiplier/condition/minimum"
+        ],
+        "dependencies": [
+          "24E6650/24E6570/24DD9A0/24E2230",
+          "actual RIP minimum5C68C64",
+          "current actor and validated Army/Unit"
+        ]
+      },
+      {
+        "flag": "timing_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "current date/native-day bucket phase",
+          "Army supply-update/grace dates",
+          "loaded grace days",
+          "actual registered bucket occurrence"
+        ],
+        "dependencies": [
+          "actual core GameState date8/day9C/dataA0",
+          "actual manager bucket layout from2A9A570 source",
+          "loaded5C69AA0"
+        ]
+      },
+      {
+        "flag": "monthly_loss_budget_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "combat/gathering/fleet inputs",
+          "runtime supply-state vectors",
+          "current commander/terrain modifier inputs"
+        ],
+        "dependencies": [
+          "24AC3C0/24AC140/24E8440",
+          "complete component24E4F80 runtime four-table RIP operands",
+          "actual28C3AC0/23036E0 from Combat owner",
+          "own +68 and terrain770/772 source operands"
+        ]
+      },
+      {
+        "flag": "monthly_caller_effect_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "current commander and stored War occurrence/caller inputs"
+        ],
+        "dependencies": [
+          "actual Character/War slots and empty descriptor",
+          "2494B40 from Army World owner"
+        ]
+      },
+      {
+        "flag": "monthly_daily_queue_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "current monthly daily-queue occurrence inputs"
+        ],
+        "dependencies": [
+          "actual Army fallback5D1DE50",
+          "actual manager/current Army source layouts from native-main"
+        ]
+      },
+      {
+        "flag": "monthly_first_removal_cleanup_inputs_enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "current first-removal membership and helper-resolution inputs"
+        ],
+        "dependencies": [
+          "native-main actual current manager/source layouts",
+          "own actual queue/common slots"
+        ]
+      },
+      {
+        "flag": "monthly_current_helper_point_store_inputs_enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "current ordered helper point-store inputs"
+        ],
+        "dependencies": [
+          "native-main actual group/ArRg/Regi layouts",
+          "parent shared chunk ordinal/pending proof",
+          "actual native common storage/fallbacks"
+        ]
+      },
+      {
+        "flag": "monthly_current_helper_domain_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "current resolved helper Domain predicate/count inputs"
+        ],
+        "dependencies": [
+          "actual2C57000 source-only body",
+          "complete2B9D2B0/262BBA0 source leaves",
+          "actual Title/Character/Domain slot pairs"
+        ]
+      },
+      {
+        "flag": "current_land_resupply_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "current province resupply eligibility/loaded under-limit gain"
+        ],
+        "dependencies": [
+          "complete2C09D10",
+          "actual fleet predicate/Character slot/loaded5C69A50"
+        ]
+      },
+      {
+        "flag": "current_land_supply_rate_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "current land loss/rate components and loaded adjustment parameters"
+        ],
+        "dependencies": [
+          "C6AF20 full87B and2C4D530 from Combat owner",
+          "28C3AC0/23036E0",
+          "actual5C69A38/30/40 and5C68F68"
+        ]
+      },
+      {
+        "flag": "current_fleet_supply_tick_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "fleet date/sentinel/current terrain/commander inputs",
+          "loaded base fleet loss/floor/max"
+        ],
+        "dependencies": [
+          "actual Fleet and Character storage/fallbacks",
+          "full24E5180 +68/terrain772/fixed1A9 source",
+          "actual5C69A78/5C68F68/5C69A40"
+        ]
+      },
+      {
+        "flag": "current_daily_supply_dispatch_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "selected unsigned-day bucket and ordered Army occurrence inputs"
+        ],
+        "dependencies": [
+          "actual2A9A570 daily dispatcher source",
+          "actual core date/day and secondary manager layouts"
+        ]
+      },
+      {
+        "flag": "current_month_first_refill_call_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "GameState calendar flag byteC0 and mask2"
+        ],
+        "dependencies": [
+          "actual2A9A570 source byte/mask operands",
+          "actual core GameState"
+        ]
+      },
+      {
+        "flag": "scoped_ordered_refill_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "ordered physical persistent chunks/current nonphysical eligibility inputs"
+        ],
+        "dependencies": [
+          "actual C171A0/AEAA20 reference resolvers",
+          "24E8340 from native-main",
+          "complete24ACAA0 and247D010",
+          "parent/native-main Regi type/chunk fields"
+        ]
+      },
+      {
+        "flag": "ordered_besieging_refill_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "ordered actual besieging persistent/regiment refill inputs"
+        ],
+        "dependencies": [
+          "actual ArRg fallback5D1F338",
+          "actual besieging and scoped input profiles"
+        ]
+      },
+      {
+        "flag": "current_province_supply_contributor_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "stored current-province contributors and eligible current soldiers"
+        ],
+        "dependencies": [
+          "complete247BEA0 and247C580",
+          "2C090D0 full298B from Combat owner",
+          "native-main Unit/Army/ArRg identity and whole-current getter"
+        ]
+      },
+      {
+        "flag": "current_province_besieging_bindings.enabled",
+        "capability": "strengths",
+        "read_fields": [
+          "actual ordered besieging contributors/strength/assault expected loss"
+        ],
+        "dependencies": [
+          "24E8340/2C16670 from native-main",
+          "247F1B0/25205A0 and5452384/54524C8 actual casualty-table pairs from Province owner"
+        ]
+      },
+      {
+        "flag": "CommanderBindings.enabled and current_total_martial_observer_enabled",
+        "capability": "commander",
+        "read_fields": [
+          "current commander identity",
+          "native candidate collection/manual eligibility/base quality/generic advantage",
+          "siege phase modifier",
+          "current martial",
+          "land/naval/current-edge rates"
+        ],
+        "dependencies": [
+          "actual BindCoreImage and BindArmyImage12004",
+          "2C11BF0/29714F0/2C0B250/C6DED0/24E9EB0/28B1690",
+          "Combat28C3AC0/23036E0",
+          "movement owner24AA920/24AABE0/24AB5A0",
+          "allocator54DEBB8 with actual virtual release10/alignment8"
+        ]
+      },
+      {
+        "flag": "CommanderTargetRollBindings.enabled",
+        "capability": "commander_target",
+        "read_fields": [
+          "existing target roll bounds"
+        ],
+        "dependencies": [
+          "actual4 identity gate",
+          "caller-supplied actual4 ProvinceBindings",
+          "caller-supplied actual4 CombatBindings",
+          "enabled only when both supplied profiles enabled"
+        ]
+      },
+      {
+        "flag": "PlayerArmyReserveBindingsV1.enabled",
+        "capability": "reserve",
+        "read_fields": [
+          "unraised_soldiers/unraised_troops_ready"
+        ],
+        "dependencies": [
+          "actual caller-supplied MilitaryWorldAccess",
+          "C6D5B0/25A7100/25A6770/B03250",
+          "actual B8 aligned16 scratch lifetime"
+        ]
+      }
+    ],
+    "non_flag_callback_read_fields": {
+      "supply": [
+        "capacity",
+        "attrition fraction",
+        "monthly supply change",
+        "gathering days"
+      ],
+      "replenishment": [
+        "independent native persistent/chunk permission booleans",
+        "fresh whole-persistent monthly fraction",
+        "prepared/current physical DATA"
+      ],
+      "merge": [
+        "destination weight parts A/B"
+      ],
+      "provenance": "all direct callback entrances have complete logical span proof; no old binder or substituted old hash"
+    }
+  },
+  "global_source_pairs": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\SUPPORT-RIP-GLOBAL-MAP-CLOSED.json",
+  "source_correction": {
+    "old_source_minimum_constant": "0x5C68B64",
+    "actual_old_and_new_budget_RIP_target": "0x5C68C64",
+    "proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_24E6670-DETAIL.json",
+    "new_binding_uses_actual_native_target": true
+  },
+  "vector_ownership": {
+    "selected_allocator": "0x54DEBB8",
+    "release_virtual_offset": "0x10",
+    "alignment": 8,
+    "release_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\commander-release11\\commander_vector_release_1A29620-DETAIL.json",
+    "collector_indirect_allocation_helpers_not_expanded": true
+  },
+  "reserve_lifetime": {
+    "size": "0xB8",
+    "alignment": 16,
+    "constructor": "0xC6D5B0",
+    "owner_initializer": "0x25A7100",
+    "unraised_count": "0x25A6770",
+    "non_deleting_cleanup": "0xB03250",
+    "source_use_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\support_reserve_lifetime_1048C80-DETAIL.json"
+  },
+  "raw_reader_fields_owned_by_other_lanes": [
+    "Army/core roster/provider/common fields: current31_native",
+    "persistent Regi type tag: current31_native",
+    "chunk ordinal/pending and GDbo SSO key type18/28/30: parent shared source proof"
+  ],
+  "readiness": {
+    "root_build_and_new_whole_fixture_pending": true,
+    "static_ready": false,
+    "fixture_live": false,
+    "production_live_primitive": false,
+    "production_live_loop": false,
+    "complete": false
+  },
+  "boundaries": [
+    "caller-owned DTO/source lineage retained; no old hash substitution",
+    "target Province/Combat profiles supplied by actual family owners",
+    "no army/commander assignment or game mutation invoked",
+    "no new rule strategy, SDK/game/live run, build/test or Git operation"
+  ],
+  "finite_cost": {
+    "physical_frozen_bytes": 50794,
+    "physical_read_calls": 105,
+    "by_build": {
+      "old": {
+        "bytes": 18023,
+        "calls": 41
+      },
+      "new": {
+        "bytes": 32771,
+        "calls": 64
+      }
+    },
+    "whole_executable_hash_scan_pe_parse_pdata_reread_game_sdk_build_test_git": 0,
+    "maps": [
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\commander-gap10\\FAMILY-MAP.json",
+        "started_utc": "2026-10-06T18:58:36.867917+00:00",
+        "ended_utc": "2026-10-06T18:58:36.876042+00:00",
+        "physical_bytes": 61,
+        "physical_calls": 1
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\commander-release11\\FAMILY-MAP.json",
+        "started_utc": "2026-10-06T18:59:38.348060+00:00",
+        "ended_utc": "2026-10-06T18:59:38.642947+00:00",
+        "physical_bytes": 19,
+        "physical_calls": 1
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\disembark-first01\\FAMILY-MAP.json",
+        "started_utc": "2026-10-06T18:31:40.873216+00:00",
+        "ended_utc": "2026-10-06T18:31:41.070670+00:00",
+        "physical_bytes": 3356,
+        "physical_calls": 6
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\domain-scoped06\\FAMILY-MAP.json",
+        "started_utc": "2026-10-06T18:56:19.716393+00:00",
+        "ended_utc": "2026-10-06T18:56:19.982784+00:00",
+        "physical_bytes": 1364,
+        "physical_calls": 12
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\fraction-domain05\\FAMILY-MAP.json",
+        "started_utc": "2026-10-06T18:54:45.154716+00:00",
+        "ended_utc": "2026-10-06T18:54:45.566698+00:00",
+        "physical_bytes": 2944,
+        "physical_calls": 4
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\gathering-callback07\\FAMILY-MAP.json",
+        "started_utc": "2026-10-06T18:57:37.256040+00:00",
+        "ended_utc": "2026-10-06T18:57:37.497028+00:00",
+        "physical_bytes": 56,
+        "physical_calls": 1
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\gathering-writer08\\FAMILY-MAP.json",
+        "started_utc": "2026-10-06T18:58:00.229567+00:00",
+        "ended_utc": "2026-10-06T18:58:00.486063+00:00",
+        "physical_bytes": 131,
+        "physical_calls": 3
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\reserve-callsite03\\FAMILY-MAP.json",
+        "started_utc": "2026-10-06T18:52:11.092955+00:00",
+        "ended_utc": "2026-10-06T18:52:11.635536+00:00",
+        "physical_bytes": 5,
+        "physical_calls": 1
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\reserve-ctor04\\FAMILY-MAP.json",
+        "started_utc": "2026-10-06T18:52:30.828899+00:00",
+        "ended_utc": "2026-10-06T18:52:31.265571+00:00",
+        "physical_bytes": 148,
+        "physical_calls": 1
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-first01\\FAMILY-MAP.json",
+        "started_utc": "2026-10-06T18:36:04.562878+00:00",
+        "ended_utc": "2026-10-06T18:36:05.065672+00:00",
+        "physical_bytes": 35100,
+        "physical_calls": 50
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\support-suffix02\\FAMILY-MAP.json",
+        "started_utc": "2026-10-06T18:49:34.435277+00:00",
+        "ended_utc": "2026-10-06T18:49:34.727500+00:00",
+        "physical_bytes": 7446,
+        "physical_calls": 20
+      },
+      {
+        "path": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\commander-supply\\writer-admission09\\FAMILY-MAP.json",
+        "started_utc": "2026-10-06T18:58:24.543919+00:00",
+        "ended_utc": "2026-10-06T18:58:24.787468+00:00",
+        "physical_bytes": 86,
+        "physical_calls": 1
+      }
+    ],
+    "disembark_additional_named_leaf_literal_reads": [
+      {
+        "kind": "old",
+        "begin_rva": 38445632,
+        "end_rva_exclusive": 38445639,
+        "file_offset": 38442560,
+        "read_bytes": 7,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\old-024AA240-024AA247.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\old-024AA240-024AA247.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 38445600,
+        "end_rva_exclusive": 38445607,
+        "file_offset": 38442528,
+        "read_bytes": 7,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-024AA220-024AA227.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-024AA220-024AA227.claim"
+      },
+      {
+        "kind": "old",
+        "begin_rva": 74672912,
+        "end_rva_exclusive": 74672944,
+        "file_offset": 74668304,
+        "read_bytes": 32,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\old-04736B10-04736B30.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\old-04736B10-04736B30.claim"
+      },
+      {
+        "kind": "new",
+        "begin_rva": 74672928,
+        "end_rva_exclusive": 74672960,
+        "file_offset": 74668320,
+        "read_bytes": 32,
+        "read_calls": 1,
+        "cache": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-04736B20-04736B40.bin",
+        "claim": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\shared-span-cache\\new-04736B20-04736B40.claim"
+      }
+    ]
+  }
+}

@@ -2,6 +2,7 @@
 
 #if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_family_abi.hpp"
+#include "xar_bridge/ck3_12004_family_abi.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -571,7 +572,13 @@ bool ReadFamilyAlliancePairV1(const FamilyBindings &b, const FamilyProjectionBin
   first_has_second = second_has_first = false;
   CoreSnapshotPrefix before{}, after{};
   void *first = nullptr, *second = nullptr;
-  if (!projection.exact_build_admitted || projection.admitted_executable_sha256 != kExecutableSha256 ||
+  const bool projection_admitted =
+      (projection.exact_build_admitted &&
+       projection.admitted_executable_sha256 == kExecutableSha256) ||
+      (projection.admitted_executable_sha256 == ck3_12004::kExecutableSha256 &&
+       ck3_12004::ValidateFamilyProjectionBindingsV1(projection) ==
+           bridge::MarriageCandidateAllianceProjectionFailureV1::none);
+  if (!projection_admitted ||
       projection.is_allied == nullptr || first_id == second_id || !Frame(b, before) ||
       !Alive(b, first_id, first) || !Alive(b, second_id, second)) return false;
   const bool forward = projection.is_allied(first, second);

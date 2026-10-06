@@ -39,9 +39,9 @@ bool ReadOnce(const SwayStateBindings12002 &b, std::uint64_t epoch,
   std::int32_t capacity{}, count{};
   if (!Read(reinterpret_cast<std::uintptr_t>(b.core.game_state_slot), state) ||
       !Read(state + 0xA0, data) || !data ||
-      !Read(data + kSwayManagerOffset12002, vt) || vt != b.module_base + kSwayManagerVtableRva12002 ||
-      !Read(data + kSwayManagerOffset12002 + 0x20, storage) || !storage ||
-      !Read(storage, vt) || vt != b.module_base + kSwayStorageVtableRva12002 ||
+      !Read(data + b.manager_offset, vt) || vt != b.module_base + b.manager_vtable_rva ||
+      !Read(data + b.manager_offset + 0x20, storage) || !storage ||
+      !Read(storage, vt) || vt != b.module_base + b.storage_vtable_rva ||
       !Read(storage + 8, blocks) || !Read(storage + 0x20, slots) ||
       !Read(storage + 0x2C, capacity) || !Read(storage + 0x3C, count) ||
       capacity < 0 || capacity > 0x1000000 || count < 0 || count > capacity ||
@@ -60,7 +60,7 @@ bool ReadOnce(const SwayStateBindings12002 &b, std::uint64_t epoch,
     std::uint32_t id{}, owner{};
     if (!Read(blocks + (static_cast<std::uint32_t>(i) >> 10) * sizeof(void *), block) ||
         scheme != block + (static_cast<std::uint32_t>(i) & 0x3FF) * 0x358 ||
-        !Read(scheme, vt) || vt != b.module_base + kSwayInstanceVtableRva12002 ||
+        !Read(scheme, vt) || vt != b.module_base + b.instance_vtable_rva ||
         !Read(scheme + 0x10, id) || (id & 0xFFFFFF) != static_cast<std::uint32_t>(i) ||
         id == 0xFFFFFFFF || !Read(scheme + 0x2C, owner)) return false;
     if (owner != static_cast<std::uint32_t>(frame.played_character_id)) continue;
@@ -72,7 +72,7 @@ bool ReadOnce(const SwayStateBindings12002 &b, std::uint64_t epoch,
     generation = Hash(generation, id);
     std::uintptr_t type{};
     if (!Read(scheme + 0x20, type) || !type || !Read(type, vt) ||
-        vt != b.module_base + kSwayTypeVtableRva12002 || !Key(type, row.scheme_type_key)) return false;
+        vt != b.module_base + b.type_vtable_rva || !Key(type, row.scheme_type_key)) return false;
     if (std::strcmp(row.scheme_type_key.data(), "sway") != 0) continue;
     std::uint32_t kind{}, target{}, magic{};
     std::uint8_t basic{}, exposed{}, frozen{};

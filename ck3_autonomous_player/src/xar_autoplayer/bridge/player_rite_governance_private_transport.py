@@ -14,7 +14,7 @@ from .nonwar_private_build import (
     private_native_build_identity, private_native_provenance,
 )
 from .version_identity import (
-    CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build,
+    CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend, require_exact_native_build,
 )
 
 
@@ -60,7 +60,7 @@ def _component(
     if not isinstance(value, dict) or set(value) != _COMMON_KEYS | fields or value["schema"] != private_native_schema(schema, snapshot):
         raise ValueError(f"native Rite governance component schema is malformed: {schema}")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(snapshot):
         raise ValueError("native Rite governance component belongs to another build")
     if type(value["available"]) is not bool:
         raise ValueError("native Rite governance component availability is malformed")
@@ -158,7 +158,7 @@ def query_player_rite_governance_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-rite-governance-v1",
         )
-        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

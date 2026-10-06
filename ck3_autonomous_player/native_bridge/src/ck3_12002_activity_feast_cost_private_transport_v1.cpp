@@ -47,7 +47,7 @@ std::uintptr_t CastIdlerGold(void *opaque, std::uintptr_t source,
     return 0;
   using NativeCast = void *(*)(void *, std::int32_t, void *, void *, std::int32_t);
   const auto cast = reinterpret_cast<NativeCast>(context.module_base +
-                                                 0x4260E94);
+      bridge::Activity12004RvaV1(context.query->executable_sha256, 0x4260E94));
   void *result = nullptr;
   __try {
     result = cast(reinterpret_cast<void *>(source), 0,
@@ -84,7 +84,7 @@ bool InvokeGoldCostGold(void *opaque, std::uintptr_t module_base,
   bool succeeded = false;
   __try {
     succeeded = bridge::InvokeActivityStage5NativeGoldCost12002V1(
-        nullptr, module_base, breakdown, gold_raw);
+        &context.query->executable_sha256, module_base, breakdown, gold_raw);
   } __except (EXCEPTION_EXECUTE_HANDLER) {
     succeeded = false;
   }
@@ -131,7 +131,7 @@ bool ExecuteActivityStage5GoldCostPrivateV1(
       return true;
     }
     const auto base = query->module_base;
-    if (!query->enabled || query->executable_sha256 != bridge::kActivityFeastCosts12002ExeSha256V1 || base == 0 ||
+    if (!query->enabled || !bridge::IsActivityFeastCostsModernBuildV1(query->executable_sha256) || base == 0 ||
         !query->passive_cost->installed) {
       query->failure = "exact_activity_stage5_gold_build_unavailable";
       query->completed = true;
@@ -141,7 +141,7 @@ bool ExecuteActivityStage5GoldCostPrivateV1(
     bridge::ActivityStage5GoldCostEnvironmentV1 environment{};
     environment.enabled = true;
     environment.diagnostic = {true,
-                              bridge::kActivityFeastCosts12002ExeSha256V1,
+                              query->executable_sha256,
                               base,
                               &context,
                               &ReadMemoryGold,
@@ -243,7 +243,7 @@ std::uintptr_t CastIdlerFullCost(void *opaque, std::uintptr_t source,
     return 0;
   using NativeCast = void *(*)(void *, std::int32_t, void *, void *, std::int32_t);
   const auto cast = reinterpret_cast<NativeCast>(context.module_base +
-                                                 0x4260E94);
+      bridge::Activity12004RvaV1(context.query->executable_sha256, 0x4260E94));
   void *result = nullptr;
   __try {
     result = cast(reinterpret_cast<void *>(source), 0,
@@ -281,7 +281,7 @@ bool InvokeNamedCostFullCost(void *opaque, std::uintptr_t module_base,
   bool succeeded = false;
   __try {
     succeeded = bridge::InvokeActivityStage5NativeNamedFeastCost12002V1(
-        nullptr, module_base, breakdown, key, resource_index, cost_raw);
+        &context.query->executable_sha256, module_base, breakdown, key, resource_index, cost_raw);
   } __except (EXCEPTION_EXECUTE_HANDLER) {
     succeeded = false;
   }
@@ -296,10 +296,10 @@ bool EvaluateCanStartFullCost(void *opaque, std::uintptr_t planner,
     return false;
   const auto predicate =
       reinterpret_cast<ck3_11906::ActivityStage5CanStartPredicateV1>(
-          context.module_base + 0x11B8670);
+          context.module_base + bridge::Activity12004RvaV1(context.query->executable_sha256, 0x11B8670));
   const auto destroy_string =
       reinterpret_cast<ck3_11906::ActivityStage5NativeStringDestroyV1>(
-          context.module_base + 0x856050);
+          context.module_base + bridge::Activity12004RvaV1(context.query->executable_sha256, 0x856050));
   bool succeeded = false;
   __try {
     succeeded = ck3_11906::InvokeActivityStage5CanStartWithDisplayV1(
@@ -383,7 +383,7 @@ bool ExecuteActivityStage5FeastFullCostPrivateV1(
       return true;
     }
     const auto base = query->module_base;
-    if (!query->enabled || query->executable_sha256 != bridge::kActivityFeastCosts12002ExeSha256V1 || base == 0 ||
+    if (!query->enabled || !bridge::IsActivityFeastCostsModernBuildV1(query->executable_sha256) || base == 0 ||
         !query->passive_cost->installed) {
       query->failure = "exact_activity_stage5_feast_cost_build_unavailable";
       query->completed = true;
@@ -391,7 +391,7 @@ bool ExecuteActivityStage5FeastFullCostPrivateV1(
     }
     CaptureContextFullCost context{query, base, stamp.thread_id};
     bridge::ActivityPlannerDiagEnvironmentV1 diagnostic{
-        true, bridge::kActivityFeastCosts12002ExeSha256V1, base, &context,
+        true, query->executable_sha256, base, &context,
         &ReadMemoryFullCost, &ReadFrameFullCost, &CastIdlerFullCost, &InvokeVisibilityFullCost};
     const bridge::ActivityPlannerDiagFrameV1 expected{
         query->expected_revision, current.date_raw,

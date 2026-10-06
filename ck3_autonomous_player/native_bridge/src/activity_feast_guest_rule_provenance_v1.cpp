@@ -331,13 +331,13 @@ void RecordActivityGuestRuleEffectReturnV1(
   const auto &env = observer.environment;
   if (caller_return != env.module_base + ActivityFeastGuestRvaV1(env.executable_sha256, kActivityGuestRuleEffectReturnRvaV1) ||
       capture.planner == 0 || capture.native_read_failed || capture.overflow ||
-      effect < (env.executable_sha256 == kActivityPlanner12002ExeSha256V1 ? 0x40u : 0x38u) || temporary_output == 0)
+      effect < (IsActivityFeastModernBuildV1(env.executable_sha256) ? 0x40u : 0x38u) || temporary_output == 0)
     return;
   if (capture.rule_count == kActivityGuestRuleMaxRulesV1) {
     capture.overflow = true;
     return;
   }
-  const auto definition = effect - (env.executable_sha256 == kActivityPlanner12002ExeSha256V1 ? 0x40u : 0x38u);
+  const auto definition = effect - (IsActivityFeastModernBuildV1(env.executable_sha256) ? 0x40u : 0x38u);
   std::uintptr_t active_rows = 0;
   std::int32_t active_count = -1;
   std::uint32_t hash = 0, list_key = 0;
@@ -347,7 +347,7 @@ void RecordActivityGuestRuleEffectReturnV1(
           static_cast<std::int32_t>(kActivityGuestRuleMaxRulesV1) ||
       (active_count != 0 && active_rows == 0) ||
       !Read(env, definition, 0x14, hash) ||
-      !Read(env, definition, env.executable_sha256 == kActivityPlanner12002ExeSha256V1 ? 0x94u : 0x9Cu, list_key)) {
+      !Read(env, definition, IsActivityFeastModernBuildV1(env.executable_sha256) ? 0x94u : 0x9Cu, list_key)) {
     MarkReadFailed(capture);
     return;
   }
@@ -522,7 +522,7 @@ ActivityGuestRuleProvenanceResultV1 ReadActivityGuestRuleProvenanceV1(
   const auto &env = observer.environment;
   if (!env.enabled ||
       (env.executable_sha256 != kActivityGuestRuleProvenanceExeSha256V1 &&
-       env.executable_sha256 != kActivityPlanner12002ExeSha256V1))
+       !IsActivityFeastModernBuildV1(env.executable_sha256)))
     return result;
   ActivityGuestRuleProvenanceCaptureV1 capture{};
   {
@@ -609,7 +609,7 @@ bool VerifyActivityGuestRuleProvenanceExactAbiV1(
     const ActivityCostSlot12EnvironmentV1 &env) noexcept {
   if (!env.enabled || !env.primary_thread_suspended ||
       (env.executable_sha256 != kActivityGuestRuleProvenanceExeSha256V1 &&
-       env.executable_sha256 != kActivityPlanner12002ExeSha256V1) ||
+       !IsActivityFeastModernBuildV1(env.executable_sha256)) ||
       env.module_base == 0 || env.read_memory == nullptr ||
       env.read_frame == nullptr)
     return false;
@@ -627,11 +627,11 @@ bool VerifyActivityGuestRuleProvenanceExactAbiV1(
          ReadBytes(env, env.module_base,
                    ActivityFeastGuestRvaV1(env.executable_sha256, kActivityGuestRuleRefreshReturnRvaV1) - 5,
                    refresh_call.data(), refresh_call.size()) &&
-         refresh_call == (env.executable_sha256 == kActivityPlanner12002ExeSha256V1 ? std::array<std::uint8_t, 5>{0xE8, 0x7F, 0x4E, 0xA0, 0x01} : kRefreshCall) &&
+         refresh_call == (IsActivityFeastModernBuildV1(env.executable_sha256) ? std::array<std::uint8_t, 5>{0xE8, 0x7F, 0x4E, 0xA0, 0x01} : kRefreshCall) &&
          ReadBytes(env, env.module_base,
                    ActivityFeastGuestRvaV1(env.executable_sha256, kActivityGuestRuleEffectReturnRvaV1) - 5,
                    effect_call.data(), effect_call.size()) &&
-         effect_call == (env.executable_sha256 == kActivityPlanner12002ExeSha256V1 ? std::array<std::uint8_t, 5>{0xE8, 0x56, 0x85, 0xBA, 0} : kEffectCall);
+         effect_call == (IsActivityFeastModernBuildV1(env.executable_sha256) ? std::array<std::uint8_t, 5>{0xE8, 0x56, 0x85, 0xBA, 0} : kEffectCall);
 }
 
 bool InstallActivityGuestRuleProvenanceV1(

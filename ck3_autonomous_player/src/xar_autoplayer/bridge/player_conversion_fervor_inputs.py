@@ -5,8 +5,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from copy import deepcopy
 
-from .nonwar_private_build import private_native_build_identity
-from .version_identity import CK3_12003, require_exact_native_build
+from .nonwar_private_build import private_native_build_identity, private_native_schema
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 
 SCHEMA = "ck3_12003_conversion_fervor_inputs_v1"
@@ -30,7 +30,8 @@ def normalize_player_conversion_fervor_inputs_v1(
     snapshot: Mapping[str, object],
 ) -> dict[str, object]:
     """Keep observed zero/full Faith IDs; never modify the existing verdicts."""
-    if not isinstance(value, dict) or set(value) != _KEYS or value["schema"] != SCHEMA:
+    if (not isinstance(value, dict) or set(value) != _KEYS
+            or value["schema"] != private_native_schema(SCHEMA, snapshot)):
         raise ValueError("native conversion fervor inputs schema is malformed")
     if (value["read_only"] is not True or type(value["available"]) is not bool
             or type(value["raw_scale"]) is not int or value["raw_scale"] != 100000
@@ -44,18 +45,21 @@ def normalize_player_conversion_fervor_inputs_v1(
         raise ValueError("native conversion fervor inputs lost their source reason")
 
     if not isinstance(conversion_inputs, Mapping) or (
-            conversion_inputs.get("schema") != "ck3_12003_religion_conversion_inputs_v1"):
-        raise ValueError("native conversion fervor inputs lack their .3 owning query")
+            conversion_inputs.get("schema") != private_native_schema(
+                "ck3_12003_religion_conversion_inputs_v1", snapshot)):
+        raise ValueError("native conversion fervor inputs lack their owning query")
     prediction = conversion_inputs.get("predicted_base_fulfillment")
     gates = conversion_inputs.get("conversion_gates")
     if (not isinstance(prediction, Mapping) or not isinstance(gates, Mapping)
-            or prediction.get("schema") != "ck3_12003_expected_rite_base_fulfillment_v1"
-            or gates.get("schema") != "ck3_12003_religion_conversion_gates_v1"):
+            or prediction.get("schema") != private_native_schema(
+                "ck3_12003_expected_rite_base_fulfillment_v1", snapshot)
+            or gates.get("schema") != private_native_schema(
+                "ck3_12003_religion_conversion_gates_v1", snapshot)):
         raise ValueError("native conversion fervor inputs lack their existing source components")
     build = require_exact_native_build(
         prediction.get("game_version"), prediction.get("executable_sha256"),
     )
-    if build != CK3_12003 or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12003, CK3_12004) or build != private_native_build_identity(snapshot):
         raise ValueError("native conversion fervor inputs belong to another exact build")
 
     actor = snapshot.get("played_character")

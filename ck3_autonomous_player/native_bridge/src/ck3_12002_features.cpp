@@ -1,5 +1,7 @@
 ﻿#include "xar_bridge/ck3_12002_campaign.hpp"
 
+#include "xar_bridge/ck3_12004_features.hpp"
+
 #include <windows.h>
 
 #include <algorithm>
@@ -204,7 +206,8 @@ bool ReadNativeString(const LoadedFeatureManifestAccessV1 &access,
 }
 
 bool EnvironmentIsExact(
-    const LoadedFeatureManifestNativeEnvironmentV1 &environment) noexcept {
+    const LoadedFeatureManifestNativeEnvironmentV1 &environment,
+    const detail::LoadedFeatureManifestRvaProfileV1 &profile) noexcept {
   if (!environment.exact_build_admitted ||
       environment.feature_root_slot == nullptr ||
       environment.script_dlc_set == nullptr ||
@@ -220,14 +223,14 @@ bool EnvironmentIsExact(
   }
   const auto base = environment.module_base;
   return reinterpret_cast<std::uintptr_t>(environment.feature_root_slot) ==
-             base + kLoadedFeatureRootSlotRva &&
+             base + profile.feature_root_slot_rva &&
          reinterpret_cast<std::uintptr_t>(environment.script_dlc_set) ==
-             base + kLoadedFeatureScriptDlcSetRva &&
+             base + profile.script_dlc_set_rva &&
          reinterpret_cast<std::uintptr_t>(environment.feature_enum_table) ==
-             base + kLoadedFeatureEnumTableRva &&
+             base + profile.feature_enum_table_rva &&
          reinterpret_cast<std::uintptr_t>(
              environment.script_identifier_name) ==
-             base + kLoadedFeatureScriptIdentifierNameRva;
+             base + profile.script_identifier_name_rva;
 }
 
 bool InvokeIdentifierName(
@@ -460,6 +463,23 @@ game::ReadLoadedFeatureManifestResultV1 ReadLoadedFeatureManifestV1(
     const LoadedFeatureManifestAccessV1 &access,
     const LoadedFeatureManifestRequestV1 &request,
     game::LoadedFeatureManifestV1 &output) noexcept {
+  constexpr detail::LoadedFeatureManifestRvaProfileV1 profile{
+      kLoadedFeatureRootSlotRva,
+      kLoadedFeatureScriptDlcSetRva,
+      kLoadedFeatureEnumTableRva,
+      kLoadedFeatureScriptIdentifierNameRva,
+  };
+  return detail::ReadLoadedFeatureManifestV1ForProfile(
+      environment, access, request, profile, output);
+}
+
+game::ReadLoadedFeatureManifestResultV1
+detail::ReadLoadedFeatureManifestV1ForProfile(
+    const LoadedFeatureManifestNativeEnvironmentV1 &environment,
+    const LoadedFeatureManifestAccessV1 &access,
+    const LoadedFeatureManifestRequestV1 &request,
+    const detail::LoadedFeatureManifestRvaProfileV1 &profile,
+    game::LoadedFeatureManifestV1 &output) noexcept {
   output = {};
   output.snapshot_revision = request.expected_snapshot_revision;
   try {
@@ -488,7 +508,7 @@ game::ReadLoadedFeatureManifestResultV1 ReadLoadedFeatureManifestV1(
       SetUnavailable(output, "map_not_ready");
       return game::ReadLoadedFeatureManifestResultV1::unavailable;
     }
-    if (!EnvironmentIsExact(environment)) {
+    if (!EnvironmentIsExact(environment, profile)) {
       SetUnavailable(output, "unsupported_build");
       return game::ReadLoadedFeatureManifestResultV1::unavailable;
     }

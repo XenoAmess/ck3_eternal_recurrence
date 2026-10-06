@@ -11,7 +11,7 @@ from .player_ordinary_holy_war_declaration_context_private_observation import (
     normalize_player_ordinary_holy_war_declaration_context_v1,
     selected_ordinary_holy_war_declaration,
 )
-from .version_identity import CK3_12003, require_exact_native_backend
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_backend
 
 
 STEP = "query-player-ordinary-holy-war-declaration-context-v1"
@@ -39,7 +39,7 @@ def query_player_ordinary_holy_war_declaration_context_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-ordinary-holy-war-declaration-context-v1",
         )
-        if (build != CK3_12003 or build != private_native_build_identity(before)
+        if (build not in (CK3_12003, CK3_12004) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or type(result.get("snapshot_revision")) is not int
                 or result["snapshot_revision"] != before["native_revision"]

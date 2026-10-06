@@ -83,7 +83,8 @@ std::string Expense(const MilitaryResources &resources, std::int32_t actor,
 
 std::string SerializeCurrentResourcesV1(
     const ActorResources &resources, const game::Snapshot &snapshot,
-    std::uint64_t revision, bool same_frame_ready) {
+    std::uint64_t revision, bool same_frame_ready,
+    std::string_view game_version, std::string_view executable_sha256) {
   const bool treasury = resources.current_treasury_raw.has_value();
   const bool income = resources.monthly_net_income_raw.has_value();
   const unsigned available = static_cast<unsigned>(treasury) +
@@ -97,8 +98,8 @@ std::string SerializeCurrentResourcesV1(
       ",\"accepted\":true,\"private_build\":true,\"read_only\":true,"
       "\"advertised\":false,\"war_cash_current_resources\":{"
       "\"schema\":\"xar.ck3.war-cash-current-resources.v1\","
-      "\"game_version\":\"1.20.0.3\",\"executable_sha256\":" +
-      Quote(ck3_12003::kExecutableSha256) + ",\"status\":" + Quote(status) +
+      "\"game_version\":" + Quote(game_version) + ",\"executable_sha256\":" +
+      Quote(executable_sha256) + ",\"status\":" + Quote(status) +
       ",\"read_only\":true,\"advertised\":false,\"formal_action_ready\":false,"
       "\"played_character_id\":" + std::to_string(actor) +
       ",\"snapshot_revision\":" + std::to_string(revision) +
@@ -108,7 +109,8 @@ std::string SerializeCurrentResourcesV1(
       ",\"player_monthly_gross_income\":" + Fixed(resources.monthly_gross_income_raw) +
       ",\"player_monthly_total_expenses\":" + Fixed(resources.monthly_total_expenses_raw) +
       ",\"player_monthly_net_income\":" + Fixed(resources.monthly_net_income_raw) +
-      ",\"monthly_income_semantics\":{\"version\":\"ck3-1.20.0.3-native-income-minus-total-expenses-v2\","
+      ",\"monthly_income_semantics\":{\"version\":" +
+      Quote("ck3-" + std::string(game_version) + "-native-income-minus-total-expenses-v2") + ","
       "\"time_basis\":\"month\",\"source_scope\":\"played_character_personal_gold\","
       "\"income_source\":\"native_character_monthly_gold_income\","
       "\"expense_source\":\"native_character_monthly_total_gold_expenses\","

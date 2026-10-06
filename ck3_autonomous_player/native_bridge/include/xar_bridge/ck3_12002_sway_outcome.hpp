@@ -18,6 +18,7 @@ struct SwayOutcomeBindings {
   void **scheme_storage_slot = nullptr;
   SwayOutcomeTargetOpinion target_opinion = nullptr;
   GiftOpinionBindings12002 opinion_modifiers;
+  std::string_view build_version = "1.20.0.2";
 };
 
 SwayOutcomeBindings BindSwayOutcomeImage(
@@ -48,6 +49,7 @@ struct SwayOutcomeOpinionV1 {
   std::int32_t target_opinion_of_actor = 0;
   SwayOpinionModifierV1 scheme_sway_opinion;
   SwayOpinionModifierV1 sway_blocker_opinion;
+  std::string_view build_version = "1.20.0.2";
 };
 
 // Independent material readback, also usable after the outcome event has been

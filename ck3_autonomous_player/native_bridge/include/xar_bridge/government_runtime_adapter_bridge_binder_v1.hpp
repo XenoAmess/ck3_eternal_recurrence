@@ -2,6 +2,7 @@
 
 #include "xar_bridge/government_runtime_adapter_source_adapter_v1.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
+#include "xar_bridge/ck3_12004_government_runtime_binder.hpp"
 #include "xar_bridge/main_thread_query_mailbox_v1.hpp"
 
 #include <cstdint>
@@ -69,6 +70,7 @@ struct GovernmentRuntimeAdapterBridgeBindingStateV1 {
 
   xar::ck3_11906::CampaignRootNativeEnvironmentV1 campaign_environment;
   xar::ck3_11906::LoadedFeatureManifestNativeEnvironmentV1 feature_environment;
+  xar::ck3_12004::GovernmentRuntimeBindingsV1 government_12004;
   xar::ck3_11906::NativeCampaignRootCharacterResolverV1
       upstream_government_resolver = nullptr;
   xar::ck3_11906::CampaignRootAccessV1 upstream_campaign_access;

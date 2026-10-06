@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12002_government_mailbox.hpp"
 
 #include "xar_bridge/ck3_12002.hpp"
@@ -34,6 +35,25 @@ bool CallerIsApplicationMain(void *opaque) noexcept {
 
 bool CallerCaptureSnapshot(GovernmentCallerContext12002 &context,
                            game::Snapshot &snapshot) noexcept {
+  if (context.adapter != nullptr &&
+      game::IsCk3_12004Descriptor(context.adapter->descriptor())) {
+    if (!CallerIsApplicationMain(&context) ||
+        !game::ReadCk3_12002TimelineCoreSnapshot(*context.adapter, snapshot)) {
+      return false;
+    }
+    const auto &published = *context.published;
+    // Only the eight independently bound .4 core fields are compared. The
+    // caller's positive revision is retained without reading advanced families.
+    return snapshot.date_raw == published.date_raw &&
+           snapshot.speed == published.speed && snapshot.paused == published.paused &&
+           snapshot.player_id == published.player_id &&
+           snapshot.map_ready == published.map_ready &&
+           snapshot.has_played_character == published.has_played_character &&
+           snapshot.played_character_id == published.played_character_id &&
+           snapshot.played_character_alive == published.played_character_alive &&
+           snapshot.paused &&
+           snapshot.date_raw == context.binding->execution_stamp.date_raw;
+  }
   return CallerIsApplicationMain(&context) &&
          context.adapter->read_snapshot(snapshot) &&
          snapshot == *context.published && snapshot.paused &&
@@ -116,9 +136,11 @@ bool ReadGovernmentRuntimeAdapterOnApplicationMain12002(
   failure.clear();
   try {
     const auto &native = NativeAdapter12002(adapter);
-    if (!native.enabled() ||
+    const bool current_build = game::IsCk3_12004Descriptor(native.descriptor());
+    const bool historical_build_unavailable =
         (native.descriptor().adapter_id != "ck3-1.20.0.2-msvc-x64" && !xar::game::IsCk3_12003Descriptor(native.descriptor())) ||
-        xar::game::ReviewedCrozierAbiSha256(native.descriptor()) != kExecutableSha256) {
+        xar::game::ReviewedCrozierAbiSha256(native.descriptor()) != kExecutableSha256;
+    if (!native.enabled() || (!current_build && historical_build_unavailable)) {
       failure = "government runtime adapter exact build is unavailable";
       return false;
     }
@@ -134,8 +156,12 @@ bool ReadGovernmentRuntimeAdapterOnApplicationMain12002(
     GovernmentRuntimeAdapterBridgeBindingEnvironmentV1 environment{};
     environment.binding_enabled = true;
     environment.exact_build_admitted = true;
-    environment.admitted_game_version = xar::game::ReviewedCrozierAbiVersion(native.descriptor());
-    environment.admitted_executable_sha256 = xar::game::ReviewedCrozierAbiSha256(native.descriptor());
+    environment.admitted_game_version = current_build
+        ? xar::ck3_12004::kGameVersion
+        : xar::game::ReviewedCrozierAbiVersion(native.descriptor());
+    environment.admitted_executable_sha256 = current_build
+        ? xar::ck3_12004::kExecutableSha256
+        : xar::game::ReviewedCrozierAbiSha256(native.descriptor());
     environment.module_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
     environment.campaign_access.context = &context;
     environment.campaign_access.capture_frame = &CallerCaptureCampaignFrame;

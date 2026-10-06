@@ -1,4 +1,6 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_religion_bindings.hpp"
 #include "xar_bridge/religion_reform12002_query_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
@@ -60,8 +62,13 @@ bool ExecutePlayerReligionReformMailbox12002(
       query.failure = "player_religion_reform_published_frame_changed";
       return true;
     }
-    (void)religion_reform::query::ReadPlayedReformQuery12002(
-        query.bindings, stamp.pump_epoch, query.observation);
+    if (game::IsCk3_12004Descriptor(envelope->game->descriptor())) {
+      (void)ck3_12004::religion::ReadPlayedReformQuery12004(
+          query.bindings, stamp.pump_epoch, query.observation);
+    } else {
+      (void)religion_reform::query::ReadPlayedReformQuery12002(
+          query.bindings, stamp.pump_epoch, query.observation);
+    }
     auto &out = query.observation;
     const auto &frame = envelope->expected_snapshot;
     if (out.available && (out.played_character_id != frame.played_character_id ||
@@ -114,6 +121,8 @@ bool RunPlayerReligionReformMailbox12002(PlayerReligionReformMailboxContext12002
       failure = "player_religion_reform_current_frame_unavailable"; return false;
     }
     envelope.typed_context = &query;
+    if (game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+      envelope.snapshot_comparison = QuerySnapshotComparison12002::core_frame;
     if (TrySubmitMainThreadQueryV1(*envelope.mailbox,
         &ExecutePlayerReligionReformMailbox12002, &envelope, envelope.ticket) !=
         MainThreadQuerySubmitResultV1::submitted) {
@@ -151,8 +160,10 @@ bool HandlePlayerReligionReformPrivate12002(const game::GameAdapter &adapter,
   if (!ParsePlayerReligionReformRevision12002(payload, expected)) {
     failure = "player_religion_reform_request_invalid"; return false;
   }
-  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if (!adapter.enabled() ||
+      (!actual4 && (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+       xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_reform_current_frame_unavailable"; return false;
   }
@@ -162,13 +173,18 @@ bool HandlePlayerReligionReformPrivate12002(const game::GameAdapter &adapter,
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
-    query.bindings = religion_reform::query::BindReformQueryImage12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    query.bindings.creation_terms =
-        religion_reform::creation_terms12003::BindDraftCreationTermsImage12003(
-            reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-            adapter.descriptor().executable_sha256);
+    const auto image_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (actual4) {
+      query.bindings = ck3_12004::religion::BindReformQueryImage12004(
+          image_base, adapter.descriptor().executable_sha256);
+    } else {
+      query.bindings = religion_reform::query::BindReformQueryImage12002(
+          image_base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+      query.bindings.creation_terms =
+          religion_reform::creation_terms12003::BindDraftCreationTermsImage12003(
+              image_base, adapter.descriptor().executable_sha256);
+    }
     return RunPlayerReligionReformMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_reform_handler_exception"; return false; }
 }
