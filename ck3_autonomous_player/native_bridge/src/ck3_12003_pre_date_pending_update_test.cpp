@@ -388,7 +388,7 @@ void Scenes(const std::filesystem::path &directory) {
               r[1].contract_flag_b9_raw_u8 == 1 && !r[1].state_14c_raw_i32 &&
               r[2].state_14c_raw_i32 == 0 && !r[2].first_persistent_id_raw_u32 &&
               r[3].persistent_war_id_13c_raw_u32 == kInvalid && !r[3].war_magic_0c_raw_u32 &&
-              r[4].war_magic_0c_raw_u32 == 0 && r[5].war_resolution.used_fallback == true &&
+              r[4].war_magic_0c_raw_u32 == 0U && r[5].war_resolution.used_fallback == true &&
               r[5].war_resolution.selected_full_id_u32 == kInvalid && r[5].war_magic_0c_raw_u32 == 0x5761725FU &&
               r[6].war_resolution.selected_full_id_u32 == kWarValid && r[6].war_magic_0c_raw_u32 == 0x5761725FU,
           "mixed contract/persistent/War operands and sentinel choices must come from demanded source reads");
