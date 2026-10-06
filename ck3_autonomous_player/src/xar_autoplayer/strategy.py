@@ -22,6 +22,11 @@ from .bridge.combat_phase_contract import (
     parse_query_combat_simulation_inputs_v3_step,
     query_combat_simulation_inputs_v3_step,
 )
+from .bridge.combat_contract import (
+    QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY,
+    parse_query_combat_simulation_inputs_step,
+    query_combat_simulation_inputs_step,
+)
 from .bridge.battle_control_contract import (
     BATTLE_CONTROL_IDENTITY_PENDING_DIAGNOSTIC,
     BATTLE_CONTROL_IDENTITY_PENDING_STATUS,
@@ -16473,45 +16478,69 @@ def _general_battle_forecast_ingress(
             "another encounter can occur before the simulated target battle",
             route_preview=preview, route_contact_horizon=contact,
         )
-    query_step = query_combat_simulation_inputs_v3_step(target, entry, [army_id], list(defenders))
-    payload = snapshot.get("combat_simulation_inputs_v3")
+    use_v3 = QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY in bridge_capabilities
+    query_capability = (
+        QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY if use_v3
+        else QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY
+    )
+    query_builder = (
+        query_combat_simulation_inputs_v3_step if use_v3
+        else query_combat_simulation_inputs_step
+    )
+    query_parser = (
+        parse_query_combat_simulation_inputs_v3_step if use_v3
+        else parse_query_combat_simulation_inputs_step
+    )
+    cache_key = "combat_simulation_inputs_v3" if use_v3 else "combat_simulation_inputs"
+    query_step = query_builder(target, entry, [army_id], list(defenders))
+    payload = snapshot.get(cache_key)
     def current_query_row(row: dict[str, object]) -> bool:
         result = _effective_command_result(row)
         return bool(
             row.get("ok") is True
-            and parse_query_combat_simulation_inputs_v3_step(_effective_command(row))
+            and query_parser(_effective_command(row))
             == (target, entry, [army_id], list(defenders))
             and (_native_int(row.get("index")) or 0) > _latest_life_advance_index(commands)
             and isinstance(result, dict)
             and result.get("queried_snapshot_id") == snapshot.get("snapshot_id")
             and result.get("queried_revision") == snapshot.get("revision")
             and result.get("queried_native_revision") == snapshot.get("native_revision")
-            and result.get("status") == snapshot.get("combat_simulation_inputs_v3_status")
+            and result.get("status") == snapshot.get(f"{cache_key}_status")
         )
     exact_cached = bool(
-        isinstance(payload, dict)
-        and snapshot.get("combat_simulation_inputs_v3_target_province_id") == target
-        and snapshot.get("combat_simulation_inputs_v3_attacker_entry_province_id") == entry
-        and snapshot.get("combat_simulation_inputs_v3_attacker_army_ids") == [army_id]
-        and snapshot.get("combat_simulation_inputs_v3_defender_army_ids") == list(defenders)
-        and snapshot.get("combat_simulation_inputs_v3_queried_snapshot_id") == snapshot.get("snapshot_id")
-        and snapshot.get("combat_simulation_inputs_v3_queried_revision") == snapshot.get("revision")
+        query_capability in bridge_capabilities
+        and isinstance(payload, dict)
+        and snapshot.get(f"{cache_key}_target_province_id") == target
+        and snapshot.get(f"{cache_key}_attacker_entry_province_id") == entry
+        and snapshot.get(f"{cache_key}_attacker_army_ids") == [army_id]
+        and snapshot.get(f"{cache_key}_defender_army_ids") == list(defenders)
+        and snapshot.get(f"{cache_key}_queried_snapshot_id") == snapshot.get("snapshot_id")
+        and snapshot.get(f"{cache_key}_queried_revision") == snapshot.get("revision")
         and any(current_query_row(row) for row in _history_after_latest_restore(commands))
     )
     if not exact_cached:
         return bounded(
             "native_war_general_battle_inputs_query",
             # The native driver deliberately does not enumerate parameterized
-            # v3 queries in action_steps.  This exact read-only literal is
+            # combat queries in action_steps.  This exact read-only literal is
             # derived from the current army, route edge and hostile roster;
             # the bridge capability is the executable gate.
-            query_step if QUERY_COMBAT_SIMULATION_INPUTS_V3_CAPABILITY in bridge_capabilities else None,
+            query_step if query_capability in bridge_capabilities else None,
             "obtain same-frame per-regiment inputs for this encounter",
             route_preview=preview, route_contact_horizon=contact,
         )
     assert isinstance(payload, dict)
+    # The published V2 base already has its own observation completeness.
+    # Its existing generic model path does not claim a production V3 phase
+    # slice, native advantage or Monte Carlo fidelity readiness.
+    forecast_payload = payload if use_v3 else {
+        "schema_version": 2,
+        "source": "same_frame_v2_base",
+        "base_inputs": payload,
+        "completeness": payload.get("completeness"),
+    }
     forecast = forecast_fixed_contact(
-        payload, target_province_id=target,
+        forecast_payload, target_province_id=target,
         attacker_entry_province_id=entry,
         attacker_army_ids=(army_id,), defender_army_ids=defenders,
         capture={key: snapshot.get(key) for key in (

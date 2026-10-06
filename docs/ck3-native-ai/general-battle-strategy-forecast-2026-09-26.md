@@ -109,3 +109,8 @@ tools\.venv\Scripts\python.exe -m pytest ck3_autonomous_player\tests\unit\test_g
 ```
 
 该验收证明代码接入、冻结实机输入计算和拒绝/放行分支，不声称已在当前实机完成一次新宣战或接战后的战果回读。
+
+
+## Exact 1.20.0.3 V2 base consumer, 2026-10-06
+
+[General battle V2 input consumer](general-battle-v2-input-consumer-12003.md) seals the actual R0048/day5996 null-step cause and actual814 input boundary before implementation. Exact .3 advertises V2 while the migrated phase reader retains partial coverage; the new planner consumes a genuine same-frame V2 base through the existing generic forecast and unchanged risk budget. One new compound saved-actual replay is static-ready; Root owns fresh live qualification. No complete132-ref/V3, native-parity, calibrated odds or battle-win claim is added.
