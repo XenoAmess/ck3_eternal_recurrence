@@ -160,6 +160,8 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
         ck3_12003::BindCurrentDailyAssaultRosterAdmission12003(image_base, executable_sha256);
     result.armies.current_pre_date_dated_append_bindings =
         ck3_12003::BindPreDateDatedAppend12003(image_base, executable_sha256);
+    result.armies.current_post_admission_refresh_bindings =
+        ck3_12003::BindCurrentPostAdmissionRefresh12003(image_base, executable_sha256);
     result.armies.current_pre_date_pending_update_bindings =
         ck3_12003::BindCurrentPreDatePendingUpdate12003(image_base, executable_sha256);
     result.armies.current_assault_removal_reference_bindings =
