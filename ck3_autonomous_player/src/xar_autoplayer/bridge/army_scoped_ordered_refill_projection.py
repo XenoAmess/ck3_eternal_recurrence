@@ -66,29 +66,17 @@ def _cleanup(chunk: dict) -> bool | None:
     return magic != 0x4744624F
 
 
-def project_scoped_observed_prepared_ordered_refill(row: Mapping[str, object]) -> dict[str, object]:
-    result = {
-        'army_id': row.get('army_id'), 'native_carmy_id': row.get('native_carmy_id'),
-        'projection_kind': 'conditional_scoped_observed_prepared_ordered_core',
-        'input_basis': 'same_capture_prepared148_ordered_occurrences',
-        'context_basis': 'held_nonphysical_native_army_unit_position_political_context',
-        'status': 'unavailable', 'ordered_core_ready': False,
-        'conditional_raised_current_maximum_ready': False,
-        'actual_after': False, 'actual_post_stage_observed': False,
-        'preparation_replayed': False, 'full_manager_replayed': False,
-        'full_monthly_ready': False, 'missing_inputs': [], 'occurrences': [],
-        'physical_chunks': [], 'refresh_occurrences': [], 'conditional_regiment_strengths': [],
-        'conditional_current_soldiers': None, 'conditional_maximum_soldiers': None,
-    }
-    inputs = row.get('scoped_ordered_refill_inputs_v1')
-    data = row.get('regiment_replenishment_records_v1')
-    if not isinstance(inputs, dict):
-        result['missing_inputs'] = ['scoped_ordered_refill_inputs_v1']
-        return result
-    if (inputs['subject_army_id'] != row.get('army_id')
-            or inputs['subject_carmy_id'] != row.get('native_carmy_id')):
-        result['missing_inputs'] = ['same_capture_subject_identity']
-        return result
+def project_observed_prepared_ordered_physical_core_v1(
+    inputs: Mapping[str, object], *, prepared_input_basis: str = 'observed_prepared148',
+) -> dict[str, object]:
+    """Run the qualified physical loop once; caller owns preparation and refresh."""
+    basis = ('same_capture_prepared148_ordered_occurrences'
+             if prepared_input_basis == 'observed_prepared148' else prepared_input_basis)
+    result = {'status': 'unavailable', 'ordered_core_ready': False,
+              'input_basis': basis,
+              'context_basis': 'held_nonphysical_native_army_unit_position_political_context',
+              'occurrences': [], 'physical_chunks': [], 'failed_persistent_ids': [],
+              'missing_inputs': []}
     if inputs['native_persistent_occurrence_count'] is None:
         result['missing_inputs'] = ['native_persistent_occurrence_roster']
         return result
@@ -159,12 +147,50 @@ def project_scoped_observed_prepared_ordered_refill(row: Mapping[str, object]) -
             continue
         for chunk in persistent['chunks']:
             projected.append({**chunk, 'persistent_regiment_id': identity, 'chunk_index': chunk['physical_index']})
-    result['occurrences'], result['physical_chunks'] = receipts, projected
+    result.update(occurrences=receipts, physical_chunks=projected,
+                  failed_persistent_ids=sorted(failed), missing_inputs=list(dict.fromkeys(missing)),
+                  ordered_core_ready=not missing, status='available' if not missing else 'partial')
+    return result
+
+
+def project_scoped_ordered_refill_from_physical_v1(
+    row: Mapping[str, object], physical_projection: Mapping[str, object],
+) -> dict[str, object]:
+    result = {
+        'army_id': row.get('army_id'), 'native_carmy_id': row.get('native_carmy_id'),
+        'projection_kind': 'conditional_scoped_observed_prepared_ordered_core',
+        'input_basis': physical_projection.get('input_basis', 'same_capture_prepared148_ordered_occurrences'),
+        'context_basis': 'held_nonphysical_native_army_unit_position_political_context',
+        'status': 'unavailable', 'ordered_core_ready': False,
+        'conditional_raised_current_maximum_ready': False,
+        'actual_after': False, 'actual_post_stage_observed': False,
+        'preparation_replayed': False, 'full_manager_replayed': False,
+        'full_monthly_ready': False, 'missing_inputs': [], 'occurrences': [],
+        'physical_chunks': [], 'refresh_occurrences': [], 'conditional_regiment_strengths': [],
+        'conditional_current_soldiers': None, 'conditional_maximum_soldiers': None,
+    }
+    inputs = row.get('scoped_ordered_refill_inputs_v1')
+    data = row.get('regiment_replenishment_records_v1')
+    if not isinstance(inputs, dict):
+        result['missing_inputs'] = ['scoped_ordered_refill_inputs_v1']
+        return result
+    if (inputs['subject_army_id'] != row.get('army_id')
+            or inputs['subject_carmy_id'] != row.get('native_carmy_id')):
+        result['missing_inputs'] = ['same_capture_subject_identity']
+        return result
+    if inputs['native_persistent_occurrence_count'] is None:
+        result['missing_inputs'] = ['native_persistent_occurrence_roster']
+        return result
+    missing = list(physical_projection['missing_inputs'])
+    projected = list(physical_projection['physical_chunks'])
+    physical_ids = {p['persistent_regiment_id'] for p in inputs['persistent_regiments']}
+    result['occurrences'] = list(physical_projection['occurrences'])
+    result['physical_chunks'] = projected
     if not isinstance(data, list) or len(data) != row.get('regiment_count'):
         missing.append('complete_requested_army_DATA_roster')
     else:
         required = {record['persistent_regiment_id'] for snapshot in data for record in snapshot['records']}
-        if not required <= physical.keys():
+        if not required <= physical_ids:
             missing.append('all_requested_DATA_persistent_inputs')
         if any(snapshot['status'] != 'available' for snapshot in data):
             missing.append('complete_requested_army_DATA')
@@ -201,6 +227,13 @@ def project_scoped_observed_prepared_ordered_refill(row: Mapping[str, object]) -
     result['missing_inputs'] = list(dict.fromkeys(missing))
     result['status'] = 'available' if result['ordered_core_ready'] and result['conditional_raised_current_maximum_ready'] else 'partial'
     return result
+
+
+def project_scoped_observed_prepared_ordered_refill(row: Mapping[str, object]) -> dict[str, object]:
+    inputs = row.get('scoped_ordered_refill_inputs_v1')
+    stage = (project_observed_prepared_ordered_physical_core_v1(inputs)
+             if isinstance(inputs, dict) else {'missing_inputs': [], 'physical_chunks': [], 'occurrences': []})
+    return project_scoped_ordered_refill_from_physical_v1(row, stage)
 
 
 def project_scoped_ordered_refills_v1(rows: list[dict]) -> list[dict]:
