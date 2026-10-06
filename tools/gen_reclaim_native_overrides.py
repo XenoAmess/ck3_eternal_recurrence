@@ -21,9 +21,12 @@ MINISTRY_PRIVATE = """\
 \t\tAND = {
 \t\t\ttitle:h_china = { NOT = { exists = holder } }
 \t\t\texists = global_var:rmtm_ministry_entitlement_title
-\t\t\tprimary_title = global_var:rmtm_ministry_entitlement_title
-\t\t\tglobal_var:rmtm_ministry_entitlement_title = {
-\t\t\t\thas_variable = rmtm_restoration_hegemony
+\t\t\ttrigger_if = {
+\t\t\t\tlimit = { exists = global_var:rmtm_ministry_entitlement_title }
+\t\t\t\tprimary_title = global_var:rmtm_ministry_entitlement_title
+\t\t\t\tglobal_var:rmtm_ministry_entitlement_title = {
+\t\t\t\t\thas_variable = rmtm_restoration_hegemony
+\t\t\t\t}
 \t\t\t}
 \t\t}
 \t}
