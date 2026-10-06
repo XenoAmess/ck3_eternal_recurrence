@@ -43,3 +43,13 @@ UI20 / a79 / `4-8e1c2f1861--celestial-commerce-corruption--R0006` 从 committed 
 前两个快照仅相隔0.23秒，同cached pump epoch，观察入口正确拒绝；后取新frame3通过原严格递增要求。准备和前台交接消耗了剩余现场时间，正常选择23入口提交前原900秒hold已结束。报告12:33:20.701318 finished/RED；独立held OS handle在signaled后读到退出1，无GUI0或D0成功。`managed_session_thread_finished=true`、`cleanup_ok=true`、本场进程库存空；keeper退出0/线程退出/末4323，单次CAS4326 done/resources=[]。原报告SHA `d91ad8aa836325f417b3d5906cf6272b95bb77a4487d4fc97ff15020ccb8b1c1`，见[闭场库存](C:/workspace/ck3-upgrade-20261006/resume-root-01/a79-final-inventory-01.json)和[释放](C:/workspace/ck3-upgrade-20261006/resume-root-01/a79-screen-release-01.json)。
 
 这次不是ENOSPC，也不是原政府policy或native capability缺失。下一修复只把通知query放到当前读取完成、同一owner稳定双帧之后，复用Source18/原DLL与原预算；正常通知及D1→D3连续执行，减少现场脚本准备与人工交接。上述热成功不追认旧RED为GREEN。
+
+## R0007：启动修复生效，生产 Confirm/cancel 实际通过
+
+查询时机修复 `b870f648ca15887db00b607d5d03d1e60bb51bdf` 已普通推送，原3项测试一次PASS（2.417s）；Source18和DLL不变。UI21/a80/R0007 实际owner epoch7678→7738后发通知query，13:01:08正常选择一次、eventgone，D0资格通过。D1第一步13:01:18.473237到D3实际root13:01:53.979849，连续原路线35.51秒，无error、无重排。
+
+Root亲审当场介绍前后原图及D3/生产决议detail，真实点击“翻开账册”；随后既有getter实际读新xccc.1001并一次.f取消，fresh eventgone。actual Confirm游戏日期1066-09-18。第四档失去特质横幅有原图，但全四档缺失、冷却日期和正常GUI退出仍未取得，不以源码或横幅替代这三项。
+
+人工逐图处理耗尽原hold，13:16:18.926299报告自身GREEN/errornull，但独立held OS handle在signaled后读OS1；报告GREEN仅覆盖已排步骤，不授完整source或release。managed thread/cleanup true，库存空；keeper实际exit0/threadexit/末4378后CAS4379 done/resources=[]。[实际库存](C:/workspace/ck3-upgrade-20261006/resume-root-01/a80-final-inventory-01.json)，报告27865494B/SHA `9bfc7d92d702bce0f7fc24a080321311d87858f0907856a32896ab2364b0557a`。
+
+下一步将已审GUI导航连续执行，真实原图保存后由root亲审；模板只定位当前截图中的控件，点击仍经统一坐标map/receipt，真值仍由typed结果、原图与held OS handle证实。复用已有1.20.0.3正常菜单退出模板与0409/focus helper，原budget/source/native/core范围不扩张。
