@@ -1,13 +1,12 @@
-// FIRST_NOTRUN: seven new whole .4 command_result packets. Only owned
+// FIRST_NOTRUN: one new adopted costs/final-reasons/creation-terms whole .4 packet. Only owned
 // synthetic memory/native callbacks are used. The production .4 adapter,
 // selected core reader, topic mailboxes, DTO serializers and renderer run.
 // No old fixture main, production stub, macro replacement or game process.
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_religion_bindings.hpp"
 #include "xar_bridge/ck3_12004_religion_profile.hpp"
-#include "xar_bridge/religion_doctrine12002_mailbox.hpp"
-#include "xar_bridge/religion_doctrine12002_choices_mailbox.hpp"
-#include "xar_bridge/religion_doctrine12002_tenet_rows_mailbox.hpp"
+#include "xar_bridge/ck3_12004_religion_costs_eligibility_bindings.hpp"
+#include "xar_bridge/ck3_12004_religion_draft_bindings.hpp"
 #include "xar_bridge/religion_reform12002_query_mailbox.hpp"
 
 #include <windows.h>
@@ -65,7 +64,7 @@ struct Fixture {
   static constexpr std::int32_t actor_id = 0x03000004;
   static constexpr std::int32_t date = 53175816;
   static constexpr std::uint32_t rite_id = 0x82000002;
-  static constexpr std::uint32_t main_id = 0x83000002;
+  static constexpr std::uint32_t main_id = 0x83000003;
   static constexpr std::uint32_t faith_id = 0x84000001;
   static constexpr std::uint32_t religion_id = 0x85000001;
   static constexpr std::uint32_t target_id = 0x86000003;
@@ -94,7 +93,12 @@ struct Fixture {
   Bytes<0x28> token_a{}, token_b{}, token_c{};
   Bytes<0x90> idler{};
   Bytes<0x280> handler{};
-  Bytes<0xD0> window{};
+  Bytes<0xB30> window{};
+  Bytes<0x30> faith_storage{};
+  Bytes<0x80> faith_slots{};
+  void *faith_storage_ptr = faith_storage.data();
+  std::int64_t threshold{};
+  unsigned cost_calls{}, missing_calls{}, owned_calls{}, create_calls{}, edit_calls{}, destroy_calls{}, divergence_calls{}, lane_calls{};
   Bytes<0x30> current_states{};
   Bytes<0x10> target_states{};
   std::array<const void *, 2> current_doctrines{doctrine_a.data(), doctrine_b.data()};
@@ -172,7 +176,10 @@ struct Fixture {
     Put(target_states, 0, tenet_b.data()); Put(target_states, 8, std::uint8_t{3});
     Put(target_rite, 0x788, target_states.data()); Put(target_rite, 0x794, std::int32_t{1});
     Put(rite_storage, 0x20, rite_slots.data()); Put(rite_storage, 0x2C, std::uint32_t{8});
-    Put(rite_slots, 3 * 0x10 + 8, target_rite.data());
+    Put(rite_slots, 2 * 0x10 + 8, rite.data());
+    Put(rite_slots, 3 * 0x10 + 8, main_rite.data());
+    Put(faith_storage, 0x20, faith_slots.data()); Put(faith_storage, 0x2C, std::uint32_t{8});
+    Put(faith_slots, 1 * 0x10 + 8, faith.data());
     Put(jomini, 0x10, idler.data());
     Put(idler, 0, image_base + profile::kDraftIdlerVtableRva); Put(idler, 0x88, handler.data());
     Put(handler, 0, image_base + profile::kDraftHandlerVtableRva);
@@ -251,61 +258,57 @@ bool Visible(const void *window) {
   fixture_state->callback_scope_valid &= Owner() && window == fixture_state->window.data();
   return true;
 }
-bool BooleanMember(const void *collection, const std::int32_t *token) {
-  auto &memory = *fixture_state;
-  memory.callback_scope_valid &= Owner() && token != nullptr &&
-      (collection == memory.rite.data() + 0x7B8 || collection == memory.main_rite.data() + 0x7B8);
-  const auto *rows = Load<const std::int32_t *>(collection, 0);
-  const auto count = Load<std::int32_t>(collection, 0xC);
-  for (std::int32_t index = 0; index < count; ++index) if (rows[index] == *token) return true;
+
+constexpr std::string_view kCreateReason =
+    "Synthetic native create gate: \"blocked\"\\detail\n"
+    "\xE5\x8E\x9F\xE7\x94\x9F\xE5\x8E\x9F\xE5\x9B\xA0\xE4\xBF\x9D\xE7\x95\x99";
+void CheckWindow(const void *window) {
+  fixture_state->callback_scope_valid &= Owner() && window == fixture_state->window.data();
+}
+std::int64_t *Cost(void *window, std::int64_t *out) {
+  CheckWindow(window); ++fixture_state->cost_calls;
+  *out = 1'250'000; return out;
+}
+std::int64_t *Missing(void *window, std::int64_t *out) {
+  CheckWindow(window); ++fixture_state->missing_calls;
+  *out = 0; return out;
+}
+bool Owned(void *window) { CheckWindow(window); ++fixture_state->owned_calls; return true; }
+bool CanCreate(const void *window, void *reason) {
+  CheckWindow(window); ++fixture_state->create_calls;
+  fixture_state->callback_scope_valid &= reason != nullptr &&
+      Load<std::uint64_t>(reason, 0x10) == std::uint64_t{0} &&
+      Load<std::uint64_t>(reason, 0x18) == std::uint64_t{15};
+  auto *text = new char[kCreateReason.size() + 1];
+  std::memcpy(text, kCreateReason.data(), kCreateReason.size());
+  text[kCreateReason.size()] = 0;
+  std::memcpy(reason, &text, sizeof(text));
+  const auto size = static_cast<std::uint64_t>(kCreateReason.size());
+  std::memcpy(static_cast<std::byte *>(reason) + 0x10, &size, sizeof(size));
+  std::memcpy(static_cast<std::byte *>(reason) + 0x18, &size, sizeof(size));
   return false;
 }
-const void *ParameterKey(std::int32_t token) {
-  auto &memory = *fixture_state;
-  memory.callback_scope_valid &= Owner() && (token == 11 || token == 22 || token == 33);
-  return token == 11 ? memory.token_a.data() : (token == 22 ? memory.token_b.data() : memory.token_c.data());
+bool CanEdit(const void *window, void *reason) {
+  CheckWindow(window); ++fixture_state->edit_calls;
+  fixture_state->callback_scope_valid &= reason != nullptr &&
+      Load<std::uint64_t>(reason, 0x10) == std::uint64_t{0} &&
+      Load<std::uint64_t>(reason, 0x18) == std::uint64_t{15};
+  return true;
 }
-bool NativeKnown(void *actor, const void *definition) {
-  auto &memory = *fixture_state;
-  ++memory.knows_calls;
-  memory.callback_scope_valid &= Owner() && actor == memory.character.data() &&
-      (definition == memory.doctrine_a.data() || definition == memory.doctrine_b.data() || definition == memory.doctrine_c.data());
-  const auto *rows = Load<const void *const *>(memory.extension.data(), 0xE0);
-  const auto count = Load<std::int32_t>(memory.extension.data(), 0xEC);
-  for (std::int32_t index = 0; index < count; ++index) if (rows[index] == definition) return true;
-  return false;
+void DestroyReason(void *reason) {
+  ++fixture_state->destroy_calls;
+  fixture_state->callback_scope_valid &= Owner() && reason != nullptr;
+  if (Load<std::uint64_t>(reason, 0x18) >= std::uint64_t{16})
+    delete[] Load<char *>(reason, 0);
 }
-std::uint8_t NativeStatus(void *rite, const void *definition) {
-  auto &memory = *fixture_state;
-  memory.callback_scope_valid &= Owner() && (rite == memory.rite.data() || rite == memory.target_rite.data()) &&
-      (definition == memory.tenet_a.data() || definition == memory.tenet_b.data() || definition == memory.tenet_c.data());
-  if (rite == memory.target_rite.data()) ++memory.target_status_calls;
-  const auto *rows = Load<const std::byte *>(rite, 0x788);
-  const auto count = Load<std::int32_t>(rite, 0x794);
-  for (std::int32_t index = 0; index < count; ++index)
-    if (Load<const void *>(rows, static_cast<std::size_t>(index) * 0x10) == definition)
-      return Load<std::uint8_t>(rows, static_cast<std::size_t>(index) * 0x10 + 8);
-  return 0;
+std::int64_t *DraftDivergence(std::int64_t *out, const void *window) {
+  CheckWindow(window); ++fixture_state->divergence_calls;
+  *out = 0; return out;
 }
-const void *Extra(void *actor) {
-  ++fixture_state->extra_calls;
-  fixture_state->callback_scope_valid &= Owner() && actor == fixture_state->character.data();
-  return fixture_state->extension.data() + 0xC8;
-}
-const void *Perks(void *actor) {
-  ++fixture_state->perks_calls;
-  fixture_state->callback_scope_valid &= Owner() && actor == fixture_state->character.data();
-  return fixture_state->perk_extension.data() + 0x220;
-}
-bool DefinitionMember(const void *collection, const void *definition_slot) {
-  auto &memory = *fixture_state;
-  ++memory.contains_calls;
-  memory.callback_scope_valid &= Owner() &&
-      (collection == memory.extension.data() + 0xC8 || collection == memory.perk_extension.data() + 0x220);
-  const auto definition = Load<const void *>(definition_slot, 0);
-  const auto *rows = Load<const void *const *>(collection, 0);
-  const auto count = Load<std::int32_t>(collection, 0xC);
-  for (std::int32_t index = 0; index < count; ++index) if (rows[index] == definition) return true;
+bool NativeLane(const void *faith, const void *price_draft) {
+  ++fixture_state->lane_calls;
+  fixture_state->callback_scope_valid &= Owner() && faith == fixture_state->faith.data() &&
+      price_draft == fixture_state->window.data() + 0xB28;
   return false;
 }
 actual::CoreBindings Core(Fixture &memory) {
@@ -323,12 +326,6 @@ bindings4::ContextBindings Context(Fixture &memory) {
 }
 bindings4::ReformQueryBindings Reform(Fixture &memory) {
   auto value = bindings4::BindReformQueryImage12004(Fixture::image_base, actual::kExecutableSha256);
-  // These original seven synthetic scenes exercise the partial current DTO.
-  // New adopted-provider whole wires have their own callbacks and FIRST target.
-  value.costs = {};
-  value.eligibility = {};
-  value.choices = {};
-  value.creation_terms = {};
   value.core = Core(memory); value.context = Context(memory);
   value.rite_model.core = value.core; value.rite_model.character_rite = &CharacterRite;
   value.rite_model.rite_faith = &RiteFaith; value.rite_model.faith_main_rite = &FaithMainRite;
@@ -336,34 +333,22 @@ bindings4::ReformQueryBindings Reform(Fixture &memory) {
   value.rite_model.faith_heresy_threshold = &Heresy;
   value.main_rite.main_rite = &FaithMainRite; value.main_rite.is_unreformed = &IsUnreformed;
   value.window.core = value.core; value.window.is_visible = &Visible;
+  value.costs = bindings4::BindRiteCreationCostsImage12004(Fixture::image_base, actual::kExecutableSha256);
+  value.costs.piety_cost = &Cost; value.costs.piety_missing = &Missing;
+  value.costs.editing_owned_current_rite = &Owned;
+  value.eligibility = bindings4::BindEligibilityImage12004(Fixture::image_base, actual::kExecutableSha256);
+  value.eligibility.can_create_rite = &CanCreate; value.eligibility.can_edit_rite = &CanEdit;
+  value.eligibility.destroy_reason_string = &DestroyReason;
+  value.creation_terms = bindings4::BindDraftCreationTermsImage12004(Fixture::image_base, actual::kExecutableSha256);
+  value.creation_terms.rite_storage_global = &memory.rite_storage_ptr;
+  value.creation_terms.faith_storage_global = &memory.faith_storage_ptr;
+  value.creation_terms.draft_divergence = &DraftDivergence;
+  value.creation_terms.creation_threshold_raw = &memory.threshold;
+  value.creation_terms.native_create_faith_or_reform = &NativeLane;
+  // Separate new popup producer owns that scene and its callbacks.
+  value.choices = {};
   return value;
 }
-bindings4::CurrentDoctrineBindings Current(Fixture &memory) {
-  auto value = bindings4::BindCurrentDoctrineImage12004(Fixture::image_base, actual::kExecutableSha256);
-  value.context = Context(memory);
-  value.parameters.contains_boolean_parameter = &BooleanMember;
-  value.parameters.parameter_key = &ParameterKey;
-  return value;
-}
-bindings4::DoctrineKnowledgeBindings Knowledge(Fixture &memory) {
-  auto value = bindings4::BindDoctrineKnowledgeImage12004(Fixture::image_base, actual::kExecutableSha256);
-  value.context = Context(memory); value.knows_doctrine = &NativeKnown;
-  value.definition_database_global = &memory.doctrine_database_ptr;
-  return value;
-}
-bindings4::PlayerTenetBindings Tenets(Fixture &memory) {
-  auto value = bindings4::BindPlayerTenetImage12004(Fixture::image_base, actual::kExecutableSha256);
-  value.context = Context(memory); value.rows.tenet_state = &NativeStatus;
-  value.comparison.context = value.context; value.comparison.tenet_state = &NativeStatus;
-  value.comparison.rite_storage_global = &memory.rite_storage_ptr;
-  value.comparison.tenet_database_global = &memory.tenet_database_ptr;
-  value.knowledge.context = value.context; value.knowledge.tenet_database_global = &memory.tenet_database_ptr;
-  value.knowledge.perk_database_global = &memory.perk_database_ptr;
-  value.knowledge.actor_extra_collection = &Extra; value.knowledge.actor_perks_collection = &Perks;
-  value.knowledge.contains = &DefinitionMember;
-  return value;
-}
-
 void *tls_context = nullptr;
 void *__fastcall FixtureTls() noexcept { return tls_context; }
 struct Pump {
@@ -379,9 +364,6 @@ struct Pump {
     mailbox.tls_context_getter = &FixtureTls;
     mailbox.executor_submission_enabled = true;
     mailbox.permitted_executor_religion_reform12002 = &old::ExecutePlayerReligionReformMailbox12002;
-    mailbox.permitted_executor_religion_doctrines12002 = &old::ExecutePlayerReligionDoctrinesMailbox12002;
-    mailbox.permitted_executor_religion_doctrine_knowledge12002 = &old::ExecutePlayerReligionDoctrineKnowledgeMailbox12002;
-    mailbox.permitted_executor_religion_tenets12002 = &old::ExecutePlayerReligionTenetsMailbox12002;
     mailbox.iat_hook_installed = true;
     mailbox.state = api::MainThreadQueryMailboxStateV1::idle;
     for (unsigned index = 0; index < 2; ++index)
@@ -437,183 +419,94 @@ std::string WholeWire(Fixture &memory, const game::GameAdapter &adapter,
   return rendered;
 }
 
+
 void BinderCases() {
-  const auto base = Fixture::image_base;
-  const auto basic = bindings4::BindReformQueryImage12004(base, actual::kExecutableSha256);
-  Assert(basic.enabled && basic.core.enabled && basic.context.enabled && basic.rite_model.enabled &&
-      basic.main_rite.enabled && basic.window.enabled && basic.costs.enabled &&
-      basic.eligibility.enabled && basic.choices.window.enabled && basic.creation_terms.enabled,
-      "exact actual .4 factory includes the independently mapped adopted providers");
-  Assert(reinterpret_cast<std::uintptr_t>(basic.core.get_local_player) == base + actual::kGetLocalPlayerRva &&
-      reinterpret_cast<std::uintptr_t>(basic.context.character_rite) == base + profile::kCharacterRiteRva &&
-      reinterpret_cast<std::uintptr_t>(basic.context.character_faith) == base + profile::kCharacterFaithRva &&
-      basic.window.window_vtable == base + profile::kDraftWindowPrimaryVtableRva,
-      "actual .4 core, actor and window addresses come from independently closed profile");
-  const auto knowledge = bindings4::BindDoctrineKnowledgeImage12004(base, actual::kExecutableSha256);
-  Assert(reinterpret_cast<std::uintptr_t>(knowledge.knows_doctrine) == base + profile::kCharacterKnowsDoctrineRva &&
-      reinterpret_cast<std::uintptr_t>(knowledge.definition_database_global) == base + profile::kDoctrineDatabaseSlotRva,
-      "Doctrine factory selects actual .4 native knowledge callback and loaded registry");
-  const auto tenets = bindings4::BindPlayerTenetImage12004(base, actual::kExecutableSha256);
-  Assert(tenets.rows.enabled && reinterpret_cast<std::uintptr_t>(tenets.rows.tenet_state) == base + profile::kNativeTenetStateRva &&
-      reinterpret_cast<std::uintptr_t>(tenets.knowledge.actor_extra_collection) == base + profile::kCharacterExtraTenetsRva &&
-      reinterpret_cast<std::uintptr_t>(tenets.knowledge.actor_perks_collection) == base + profile::kCharacterActualPerksRva &&
-      reinterpret_cast<std::uintptr_t>(tenets.comparison.tenet_database_global) == base + profile::kTenetDatabaseSlotRva,
-      "Tenet factory preserves actual4 current, target and knowledge ABI sources");
-  Assert(!bindings4::BindReformQueryImage12004(base, old::kExecutableSha256).enabled &&
-      !bindings4::BindDoctrineKnowledgeImage12004(0, actual::kExecutableSha256).context.enabled &&
-      !bindings4::BindPlayerTenetImage12004(base, "unreviewed").context.enabled,
-      "actual .4 factories preserve exact own-build admission without invoking legacy factories");
-}
-template <class Observation, class Query>
-void OwnerFields(const Observation &value, const Query &query) {
-  Assert(value.available && value.capture_epoch == query.envelope.execution_stamp.pump_epoch &&
-      value.date_raw == Fixture::date &&
-      static_cast<std::uint32_t>(value.played_character_id) == static_cast<std::uint32_t>(Fixture::actor_id),
-      "actual owner metadata binds the complete domain observation to the admitted frame");
-}
-void TenetRows(const doctrine::TenetRowsContext &value) {
-  Assert(value.current_rite && value.faith_main_rite && value.current_rite->rite_id == Fixture::rite_id &&
-      value.faith_main_rite->rite_id == Fixture::main_id && value.personal_tenets.size() == std::size_t{1} &&
-      value.personal_tenets[0].key == "tenet_c" &&
-      value.effective_tenet_states.size() == std::size_t{3}, "actual current/main/personal scopes remain independently observed");
-  const std::array<std::string_view, 3> keys{"tenet_a", "tenet_b", "tenet_c"};
-  for (std::size_t index = 0; index < keys.size(); ++index)
-    Assert(value.effective_tenet_states[index].key == keys[index] &&
-        value.effective_tenet_states[index].current_rite_status == static_cast<std::uint8_t>(index),
-        "native Tenet state0 is a legal observed value and remains separate from membership");
+  constexpr auto base = Fixture::image_base;
+  const auto cost = bindings4::BindRiteCreationCostsImage12004(base, actual::kExecutableSha256);
+  const auto eligibility = bindings4::BindEligibilityImage12004(base, actual::kExecutableSha256);
+  Assert(cost.enabled && reinterpret_cast<std::uintptr_t>(cost.piety_cost) == base + 0x14F57A0 &&
+      reinterpret_cast<std::uintptr_t>(cost.piety_missing) == base + 0x14F58C0 &&
+      reinterpret_cast<std::uintptr_t>(cost.editing_owned_current_rite) == base + 0x14F43E0,
+      "cost factory supplies three complete actual4 mapped roots");
+  Assert(eligibility.enabled && reinterpret_cast<std::uintptr_t>(eligibility.can_create_rite) == base + 0x14F56B0 &&
+      reinterpret_cast<std::uintptr_t>(eligibility.can_edit_rite) == base + 0x14F5030 &&
+      reinterpret_cast<std::uintptr_t>(eligibility.destroy_reason_string) == base + 0x856050,
+      "actual4 final-gate predicates and complete native string destructor");
+  Assert(!bindings4::BindRiteCreationCostsImage12004(base, old::kExecutableSha256).enabled &&
+      !bindings4::BindEligibilityImage12004(0, actual::kExecutableSha256).enabled,
+      "exact actual4 identity and image admission retained");
+  const auto composite = bindings4::BindReformQueryImage12004(base, actual::kExecutableSha256);
+  Assert(composite.costs.enabled && composite.eligibility.enabled && composite.creation_terms.enabled,
+      "production composite restores adopted providers");
 }
 } // namespace
 
 int main(int argc, char **argv) {
   try {
-    Assert(argc == 2, "one output directory argument");
+    Assert(argc == 2, "one output directory argument is required");
     const std::filesystem::path directory(argv[1]);
     std::filesystem::create_directories(directory);
     BinderCases();
     Fixture memory;
     fixture_state = &memory;
+    memory.SetWindow(true);
     game::Ck3_12004AdapterBindings adapter_bindings{};
     adapter_bindings.core = Core(memory);
     auto adapter = game::CreateCk3_12004AdapterFromBindings(std::move(adapter_bindings));
     Assert(adapter && adapter->enabled() && game::IsCk3_12004Descriptor(adapter->descriptor()),
-        "fixture uses the actual production .4 adapter factory");
+        "actual production4 adapter factory selected");
     game::Snapshot frame{};
     Assert(game::ReadCk3_12002TimelineCoreSnapshot(*adapter, frame) && frame.paused && frame.map_ready &&
         frame.has_played_character && frame.played_character_alive &&
         frame.played_character_id == Fixture::actor_id && frame.date_raw == Fixture::date,
-        "actual4 selected core callback creates only the supported owner frame");
-    game::Snapshot full_snapshot{};
-    Assert(!adapter->read_snapshot(full_snapshot), "unsupported full gameplay snapshot remains unavailable");
-    constexpr std::string_view request = "{\"expected_snapshot_revision\":701}";
-    for (const bool present : {false, true}) {
-      memory.SetWindow(present);
-      old::PlayerReligionReformMailboxContext12002 query{};
-      std::uint64_t revision{};
-      Assert(old::ParsePlayerReligionReformRevision12002(request, revision) && revision == std::uint64_t{701},
-          "production basic reform parser retains requested native revision");
-      query.bindings = Reform(memory);
-      const auto wire = WholeWire(memory, *adapter, frame, query, &old::RunPlayerReligionReformMailbox12002,
-          directory, present ? "basic-reform-visible-window.json" : "basic-reform-absent-window.json",
-          "ck3_12004_player_religion_reform_query_v1");
-      OwnerFields(query.observation, query);
-      const auto &value = query.observation;
-      Assert(value.context.available && value.rite_model.available &&
-          value.main_rite.status == reform::MainRiteStatus::observed && value.current_window.available &&
-          value.current_window.present == present && value.current_window.visible == present &&
-          (value.current_window.window != nullptr) == present &&
-          value.current_window.failure == reform::DraftWindowFailure::none,
-          "absent and visible actual windows are independent valid current observations");
-      Assert(!value.draft_costs.available && !value.draft_eligibility.available &&
-          !value.popup_choices.available && !value.current_doctrine_selection.available &&
-          !value.publish_creation_terms && wire.find("current_draft_creation_terms") == std::string::npos,
-          "unmapped draft components retain typed unavailable output and no creation-terms publication");
-    }
-
-    old::PlayerReligionDoctrinesMailboxContext12002 current{};
+        "selected actual4 core callback supplies supported owner frame");
     std::uint64_t revision{};
-    Assert(old::ParsePlayerReligionDoctrinesRevision12002(request, revision) && revision == std::uint64_t{701},
-        "production current Doctrine request parser is used");
-    current.bindings = Current(memory);
-    WholeWire(memory, *adapter, frame, current, &old::RunPlayerReligionDoctrinesMailbox12002,
-        directory, "current-doctrines.json", "ck3_12004_current_doctrines_v1");
-    OwnerFields(current.observation, current);
-    Assert(current.observation.current_rite.rows.size() == std::size_t{2} &&
-        current.observation.faith_main_rite.rows.size() == std::size_t{1} &&
-        current.observation.boolean_parameters.current_rite &&
-        current.observation.boolean_parameters.current_rite->parameters.size() == std::size_t{3} &&
-        current.observation.boolean_parameters.faith_main_rite &&
-        current.observation.boolean_parameters.faith_main_rite->parameters.size() == std::size_t{1},
-        "actual current/main Doctrine and duplicate Boolean token scopes survive the production composite");
-
-    old::PlayerReligionDoctrineKnowledgeMailboxContext12002 learned{};
-    Assert(old::ParsePlayerReligionDoctrineKnowledgeRequest12002(request, revision, learned.doctrine_key) &&
-        revision == std::uint64_t{701} && !learned.doctrine_key, "production learned mode parser is used");
-    learned.bindings = Knowledge(memory);
-    WholeWire(memory, *adapter, frame, learned, &old::RunPlayerReligionDoctrineKnowledgeMailbox12002,
-        directory, "learned-e0-order-duplicates.json", "ck3_12004_played_doctrine_knowledge_v1");
-    OwnerFields(learned.learned_observation, learned);
-    const std::array<std::string_view, 3> learned_keys{"doctrine_b", "doctrine_a", "doctrine_b"};
-    Assert(learned.learned_observation.learned_rows.size() == learned_keys.size() && memory.knows_calls == 6U,
-        "actual learned E0 collection receives two native samples per occurrence");
-    for (std::size_t index = 0; index < learned_keys.size(); ++index)
-      Assert(learned.learned_observation.learned_rows[index].definition.doctrine_key == learned_keys[index] &&
-          learned.learned_observation.learned_rows[index].native_knows_doctrine,
-          "actual E0 order and duplicate native true remain preserved");
-
-    old::PlayerReligionDoctrineKnowledgeMailboxContext12002 lookup{};
-    Assert(old::ParsePlayerReligionDoctrineKnowledgeRequest12002(
-        "{\"expected_snapshot_revision\":701,\"doctrine_key\":\"doctrine_c\"}", revision, lookup.doctrine_key) &&
-        lookup.doctrine_key == std::optional<std::string>{"doctrine_c"}, "production named Doctrine lookup parser is used");
-    lookup.bindings = Knowledge(memory);
-    WholeWire(memory, *adapter, frame, lookup, &old::RunPlayerReligionDoctrineKnowledgeMailbox12002,
-        directory, "lookup-native-false.json", "ck3_12004_played_doctrine_knowledge_lookup_v1");
-    OwnerFields(lookup.lookup_observation, lookup);
-    Assert(lookup.lookup_observation.definition && lookup.lookup_observation.native_knows_doctrine == false &&
-        lookup.lookup_observation.definition->doctrine_key == "doctrine_c" && memory.knows_calls == 2U,
-        "actual loaded definition preserves native known false as an observed value");
-
-    for (const bool extras : {true, false}) {
-      old::PlayerReligionTenetsMailboxContext12002 query{};
-      const auto payload = extras
-          ? "{\"expected_snapshot_revision\":701,\"target_rite_id\":2248146947,\"tenet_key\":\"tenet_b\",\"include_knowledge_catalogue\":true}"
-          : "{\"expected_snapshot_revision\":701}";
-      Assert(old::ParsePlayerReligionTenetsRevision12002(payload, revision) &&
-          old::ParsePlayerReligionTenetsComparisonRequest12003(payload, query.target_rite_id, query.tenet_key) &&
-          old::ParsePlayerReligionTenetsKnowledgeRequest12003(payload, query.include_knowledge_catalogue) &&
-          revision == std::uint64_t{701} && query.include_knowledge_catalogue == extras,
-          "production request parses optional target and knowledge only when requested");
-      auto value = Tenets(memory);
-      query.bindings = value.context; query.tenet_bindings = value.rows;
-      query.comparison_bindings = value.comparison; query.knowledge_bindings = value.knowledge;
-      const auto wire = WholeWire(memory, *adapter, frame, query, &old::RunPlayerReligionTenetsMailbox12002,
-          directory, extras ? "tenets-target-knowledge.json" : "tenets-current-only.json", "ck3_12004_tenet_rows_v1");
-      OwnerFields(query.observation, query); TenetRows(query.observation);
-      if (extras) {
-        OwnerFields(query.comparison, query); OwnerFields(query.knowledge_catalogue, query);
-        Assert(query.target_rite_id == Fixture::target_id && query.comparison.actor_rite && query.comparison.target_rite &&
-            query.comparison.actor_rite->named_tenet_status == std::uint8_t{1} &&
-            query.comparison.target_rite->named_tenet_status == std::uint8_t{3} &&
-            !query.comparison.actor_rite->named_tenet_core_member && query.comparison.target_rite->named_tenet_core_member &&
-            query.comparison.target_rite->core_tenet_keys == std::vector<std::string>{"tenet_b", "tenet_b"} &&
-            memory.target_status_calls == 2U, "four actual Core collections and named native statuses remain independent");
-        const auto &catalogue = query.knowledge_catalogue;
-        Assert(catalogue.native_has_prophet == false && catalogue.extra_tenet_keys &&
-            *catalogue.extra_tenet_keys == std::vector<std::string>{"tenet_b", "tenet_b"} && catalogue.rows &&
-            catalogue.rows->size() == std::size_t{3} &&
-            (*catalogue.rows)[0].knowledge && !(*catalogue.rows)[1].knowledge && (*catalogue.rows)[2].knowledge &&
-            memory.extra_calls == 2U && memory.perks_calls == 2U && memory.contains_calls == 8U,
-            "actual C8/native Prophet inputs preserve registry order, duplicates and independent Boolean knowledge");
-      } else {
-        Assert(!query.target_rite_id && memory.extra_calls == 0U && memory.perks_calls == 0U &&
-            memory.contains_calls == 0U && memory.target_status_calls == 0U &&
-            wire.find("target_rite_tenet_comparison") == std::string::npos &&
-            wire.find("player_tenet_knowledge_catalogue") == std::string::npos,
-            "new actual4 current-only request keeps the original DTO shape and skips optional native callbacks");
-      }
-    }
-    std::cout << "PASS cases=7 checks=" << checks
+    Assert(old::ParsePlayerReligionReformRevision12002("{\"expected_snapshot_revision\":701}", revision) &&
+        revision == std::uint64_t{701}, "production request parser supplies native revision");
+    old::PlayerReligionReformMailboxContext12002 query{};
+    query.bindings = Reform(memory);
+    const auto wire = WholeWire(memory, *adapter, frame, query, &old::RunPlayerReligionReformMailbox12002,
+        directory, "visible-composite-costs-reasons.json", "ck3_12004_player_religion_reform_query_v1");
+    const auto epoch = query.envelope.execution_stamp.pump_epoch;
+    const auto &value = query.observation;
+    Assert(value.capture_epoch == epoch && value.date_raw == Fixture::date && value.played_character_id == Fixture::actor_id &&
+        value.available && value.context.available && value.rite_model.available &&
+        value.main_rite.status == reform::MainRiteStatus::observed && value.current_window.available &&
+        value.current_window.present && value.current_window.visible,
+        "restored components consume same actual visible owner window");
+    const auto &cost = value.draft_costs;
+    Assert(cost.available && cost.failure == reform::CostFailure::none && cost.capture_epoch == epoch &&
+        cost.date_raw == Fixture::date && cost.played_character_id == Fixture::actor_id &&
+        cost.source_rite_id == Fixture::rite_id && cost.editing_owned_current_rite == true &&
+        cost.piety_cost_raw == std::int64_t{1'250'000} && cost.piety_missing_signed_raw == std::int64_t{0} &&
+        cost.has_enough_piety == true && memory.cost_calls == 2U && memory.missing_calls == 2U && memory.owned_calls == 2U,
+        "two native quotes preserve legal zero signed missing and true budget gate");
+    const auto &eligibility = value.draft_eligibility;
+    Assert(eligibility.available && eligibility.failure == reform::EligibilityFailure::none &&
+        eligibility.draft_actor_id == static_cast<std::uint32_t>(Fixture::actor_id) &&
+        eligibility.can_create_rite == false && eligibility.can_edit_rite == true &&
+        eligibility.can_create_rite_native_text == std::string(kCreateReason) &&
+        eligibility.can_edit_rite_native_text == std::string{} &&
+        memory.create_calls == 1U && memory.edit_calls == 1U && memory.destroy_calls == 2U,
+        "independent native final bools retain full heap and empty inline text");
+    const auto &terms = value.draft_creation_terms;
+    Assert(value.publish_creation_terms && terms.available && terms.failure == "none" &&
+        terms.capture_epoch == epoch && terms.date_raw == Fixture::date &&
+        terms.played_character_id == static_cast<std::uint32_t>(Fixture::actor_id) &&
+        terms.source_rite_id == Fixture::rite_id && terms.source_faith_id == Fixture::faith_id &&
+        terms.source_main_rite_id == Fixture::main_id && terms.actor_faith_id == Fixture::faith_id &&
+        terms.draft_divergence_raw == std::int64_t{0} && terms.faith_creation_threshold_raw == std::int64_t{0} &&
+        terms.divergence_results_in_faith_creation == true && terms.native_create_faith_or_reform == false &&
+        memory.divergence_calls == 2U && memory.lane_calls == 2U,
+        "actual fullref source storage preserves zero UI equality and independent native lane");
+    Assert(!value.popup_choices.available && !value.current_doctrine_selection.available &&
+        wire.find("ck3_12004_current_draft_creation_terms_v1") != std::string::npos,
+        "new wholewire publishes restored terms; separate producer owns popup inputs");
+    std::cout << "PASS cases=1 checks=" << checks
         << " actual_adapter=true actual_core_reader=true actual_named_mailbox=true actual_serializer=true"
         << " actual_renderer=true actual_full_wire=true synthetic_memory=true synthetic_callbacks=true"
+        << " native_cost_calls=2 native_missing_calls=2 native_owned_calls=2 native_create_calls=1"
+        << " native_edit_calls=1 native_reason_destroy_calls=2 native_divergence_calls=2 native_lane_calls=2"
         << " legacy_main_executed=false production_stubs=false live=false\n";
     fixture_state = nullptr;
     return 0;

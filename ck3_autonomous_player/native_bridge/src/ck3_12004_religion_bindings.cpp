@@ -1,4 +1,6 @@
 #include "xar_bridge/ck3_12004_religion_bindings.hpp"
+#include "xar_bridge/ck3_12004_religion_costs_eligibility_bindings.hpp"
+#include "xar_bridge/ck3_12004_religion_draft_bindings.hpp"
 #include "xar_bridge/ck3_12004_religion_profile.hpp"
 
 #include <cstring>
@@ -126,6 +128,10 @@ ReformQueryBindings BindReformQueryImage12004(std::uintptr_t base,
   b.rite_model = BindRiteModelImage12004(base, sha);
   b.main_rite = BindFaithMainRiteUnreformedImage12004(base, sha);
   b.window = BindCurrentRiteCreationWindow12004(base, sha);
+  b.costs = BindRiteCreationCostsImage12004(base, sha);
+  b.eligibility = BindEligibilityImage12004(base, sha);
+  b.choices = BindCurrentDraftChoices12004(base, sha);
+  b.creation_terms = BindDraftCreationTermsImage12004(base, sha);
   return b;
 }
 

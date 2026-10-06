@@ -8,7 +8,7 @@ from copy import deepcopy
 from .driver import BridgeUnavailableError
 from .g2_private_query_transport import private_g2_query_metadata_v1, read_private_g2_native_query_v1
 from .nonwar_private_build import private_native_schema, private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build
+from .version_identity import CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend, require_exact_native_build
 
 
 STEP = "query-player-religion-draft-resource-costs-v1"
@@ -90,7 +90,7 @@ def normalize_player_religion_draft_resource_costs_v1(
             or base["base_resource_cost_vector_observed"] != base["available"]):
         raise ValueError("native draft base resource quote scope is malformed")
     build = require_exact_native_build(base["game_version"], base["executable_sha256"])
-    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(snapshot):
         raise ValueError("native draft base resource quote belongs to another build")
     cost = base["draft_quote"]
     if (not isinstance(cost, dict) or set(cost) != _COST_KEYS
@@ -136,7 +136,7 @@ def query_player_religion_draft_resource_costs_private_v1(
             result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-draft-resource-costs-v1",
         )
-        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):

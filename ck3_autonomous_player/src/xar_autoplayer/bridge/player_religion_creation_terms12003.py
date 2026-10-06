@@ -1,4 +1,4 @@
-"""Normalize observed current draft creation terms for the exact 1.20.0.3 build.
+"""Normalize observed current draft creation terms for exact mapped builds.
 
 This nested component describes the current draft's UI comparison and native
 command branch. Neither is final action legality or an executed action result.
@@ -9,8 +9,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from copy import deepcopy
 
-from .nonwar_private_build import private_native_build_identity
-from .version_identity import CK3_12003, require_exact_native_build
+from .nonwar_private_build import private_native_build_identity, private_native_schema
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 
 COMPONENT_KEY = "current_draft_creation_terms"
@@ -46,10 +46,10 @@ def normalize_current_draft_creation_terms12003(
     capture epoch against its composed owner. A semantic snapshot's native
     revision is not the owner's capture epoch.
     """
-    if not isinstance(value, dict) or set(value) != _KEYS or value["schema"] != SCHEMA:
+    if not isinstance(value, dict) or set(value) != _KEYS or value["schema"] != private_native_schema(SCHEMA, snapshot):
         raise ValueError("native current draft creation terms schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build != CK3_12003 or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12003, CK3_12004) or build != private_native_build_identity(snapshot):
         raise ValueError("native current draft creation terms belongs to another build")
     if type(value["available"]) is not bool:
         raise ValueError("native current draft creation terms availability is malformed")

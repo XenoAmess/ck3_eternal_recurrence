@@ -1,4 +1,6 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_religion_draft_bindings.hpp"
 #include "xar_bridge/religion_reform12002_fullchoices_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1)
@@ -60,8 +62,13 @@ bool ExecutePlayerReligionDraftDoctrineChoicesMailbox12002(
       query.failure = "player_religion_draft_doctrine_choices_published_frame_changed";
       return true;
     }
-    (void)religion_reform::ReadCurrentDraftFullDoctrineChoices12002(
-        query.bindings, stamp.pump_epoch, query.observation);
+    if (game::IsCk3_12004Descriptor(envelope->game->descriptor())) {
+      (void)ck3_12004::religion::ReadCurrentDraftFullDoctrineChoices12004(
+          query.bindings, stamp.pump_epoch, query.observation);
+    } else {
+      (void)religion_reform::ReadCurrentDraftFullDoctrineChoices12002(
+          query.bindings, stamp.pump_epoch, query.observation);
+    }
     auto &out = query.observation;
     const auto &frame = envelope->expected_snapshot;
     if (out.available &&
@@ -114,6 +121,8 @@ bool RunPlayerReligionDraftDoctrineChoicesMailbox12002(PlayerReligionDraftDoctri
         !ValidFrame(envelope.expected_snapshot, envelope.expected_snapshot_revision)) {
       failure = "player_religion_draft_doctrine_choices_current_frame_unavailable"; return false;
     }
+    if (game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+      envelope.snapshot_comparison = QuerySnapshotComparison12002::core_frame;
     envelope.typed_context = &query;
     if (TrySubmitMainThreadQueryV1(*envelope.mailbox,
         &ExecutePlayerReligionDraftDoctrineChoicesMailbox12002, &envelope, envelope.ticket) !=
@@ -152,8 +161,10 @@ bool HandlePlayerReligionDraftDoctrineChoicesPrivate12002(const game::GameAdapte
   if (!ParsePlayerReligionDraftDoctrineChoicesRevision12002(payload, expected)) {
     failure = "player_religion_draft_doctrine_choices_request_invalid"; return false;
   }
-  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if (!adapter.enabled() || (!actual4 &&
+      (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+       xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_draft_doctrine_choices_current_frame_unavailable"; return false;
   }
@@ -163,9 +174,14 @@ bool HandlePlayerReligionDraftDoctrineChoicesPrivate12002(const game::GameAdapte
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
-    query.bindings = religion_reform::BindCurrentDraftChoices12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    const auto image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (actual4) {
+      query.bindings = ck3_12004::religion::BindCurrentDraftChoices12004(
+          image_base, adapter.descriptor().executable_sha256);
+    } else {
+      query.bindings = religion_reform::BindCurrentDraftChoices12002(
+          image_base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    }
     return RunPlayerReligionDraftDoctrineChoicesMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_draft_doctrine_choices_handler_exception"; return false; }
 }

@@ -38,9 +38,9 @@ MainRiteBindings BindFaithMainRiteUnreformedImage12004(std::uintptr_t image_base
 DraftWindowBindings BindCurrentRiteCreationWindow12004(std::uintptr_t image_base,
     std::string_view executable_sha256) noexcept;
 
-// Only mapped current context/model/main-Rite/window components are enabled.
-// Cost, eligibility, popup choices and creation terms retain their existing
-// unavailable observations until their separate .4 ABI families are mapped.
+// Current context/model/main-Rite/window and the existing adopted cost,
+// eligibility, popup choices and creation-terms providers use independently
+// mapped .4 bindings. Draft absence retains its ordinary typed observations.
 ReformQueryBindings BindReformQueryImage12004(std::uintptr_t image_base,
     std::string_view executable_sha256) noexcept;
 CurrentDoctrineBindings BindCurrentDoctrineImage12004(std::uintptr_t image_base,

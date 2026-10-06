@@ -4,6 +4,10 @@ This packet restores the existing current religion, Rite, main Rite and current
 reformation-window observations through the existing MCP family. It uses actual
 .4 Core APIs and a narrow set of mapped native functions. Optional draft costs,
 final legality, choices and creation terms have independent migration scopes.
+Those existing adopted providers are restored by the subsequent
+[provider continuation](religion-adopted-providers-12004-migration.md); calling
+them future features here does not mean they were previously disabled. This
+page records the frozen narrow `1262` package rather than total MCP migration.
 
 The combined owned source now includes the exact `.4` religion profile/binder,
 four existing topic mailbox branches, seven strict Python leaves and one new

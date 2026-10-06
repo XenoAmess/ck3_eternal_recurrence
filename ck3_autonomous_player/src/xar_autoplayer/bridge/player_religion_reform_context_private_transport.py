@@ -63,9 +63,13 @@ def normalize_player_religion_reform_context_v1(
     snapshot_build = private_native_build_identity(snapshot)
     top_keys = _TOP_KEYS
     components = _COMPONENTS
-    # The .4 basic owner publishes the original common shape while creation
-    # terms remain disabled. Do not invent its component or readiness field.
-    if snapshot_build == CK3_12003:
+    # Preserve the common shape when a basic .4 owner leaves terms disabled;
+    # the restored owner publishes the actual component and readiness together.
+    terms_published = snapshot_build == CK3_12003 or (
+        snapshot_build == CK3_12004 and isinstance(value, dict)
+        and CREATION_TERMS_COMPONENT in value
+    )
+    if terms_published:
         top_keys = _TOP_KEYS | {CREATION_TERMS_COMPONENT}
         components = {
             **_COMPONENTS,
@@ -131,11 +135,11 @@ def normalize_player_religion_reform_context_v1(
         "current_draft_cost_ready", "current_draft_final_eligibility_ready",
         "current_popup_collection_ready", "doctrine_final_selection_ready",
     )
-    if build == CK3_12003:
+    if terms_published:
         draft_ready_keys += (CREATION_TERMS_READY,)
     if not window["draft_observed"] and any(readiness[key] for key in draft_ready_keys):
         raise ValueError("native reform draft values have no current draft")
-    if build == CK3_12003:
+    if terms_published:
         terms = normalize_current_draft_creation_terms12003(
             value[CREATION_TERMS_COMPONENT], snapshot=snapshot,
         )

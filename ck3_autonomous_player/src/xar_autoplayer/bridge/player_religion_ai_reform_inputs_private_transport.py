@@ -8,7 +8,7 @@ from copy import deepcopy
 from .driver import BridgeUnavailableError
 from .g2_private_query_transport import private_g2_query_metadata_v1, read_private_g2_native_query_v1
 from .nonwar_private_build import private_native_schema, private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend
+from .version_identity import CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend
 
 STEP = "query-player-religion-ai-reform-inputs-v1"
 DOMAIN_KEY = "player_religion_ai_reform_inputs_v1"
@@ -139,7 +139,7 @@ def query_player_religion_ai_reform_inputs_private_v1(
     try:
         build = require_exact_native_backend(result.get("game_version"), result.get("executable_sha256"),
             result.get("backend_id"), suffix="player-religion-ai-reform-inputs-v1")
-        if (build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(before)
+        if (build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(before)
                 or result.get("domain_key") != DOMAIN_KEY
                 or result.get("snapshot_revision") != before["native_revision"]
                 or result.get("date_raw") != before.get("date_raw")):
