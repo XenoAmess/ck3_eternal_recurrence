@@ -64,3 +64,13 @@ journal SHA `65cb16a18252bf9f7ec0aae8ad6665e085dbfce23540f0f5b6db28575dbfef50`�
 R15副本 native-state-003.jsonl 实际9,204B、-004.jsonl实际9,216B；sidecar的 wire_observed_bytes 5,283,390B / 27,038,557B记录原LIVE流当时被观察的总长度，不是副本大小。副本与来源流各自保全，不将字段值当作本轮可释放量。
 
 结束C盘空闲2,595,057,664B（2.42GiB），为并发工作期间实测，不作释放归因，也不重复累计此前19/5文件或历史清理。薄回执：[thin-result-01.json](C:/workspace/ck3-upgrade-20261006/c-drive-closed-qol-r13-r15-audit-agent-01/thin-result-01.json)，25,286B，SHA-256 `e748698bc1e04d1e32f4376cbcc72d2989dcf789c8b87a0d8b15ad1a7dc79f12`。原验收GREEN/RED和业务边界保持。
+
+## 2026-10-06 新增实际清理：精确缓存删除与无损压缩
+
+本段只计本轮新操作，历史952.17MiB、16.47GiB及120.10MiB不重计。当前大清理授权下的[实际清理薄收据](C:/workspace/ck3-upgrade-20261006/c-drive-nvidia-exact470-unpack-cache-delete-agent-01/ROOT-ACTUAL-CLEANUP-THIN-01.json)为3999B、SHA `343eac7968801f454fcf082bbea0569bd01d6148dd81da83c2aa44db734f770e`；其linked结果保全pip/build/catalog及NVIDIA逐文件执行，本段未重扫磁盘或宽hash资产。
+
+- 精确5份旧pip HTTP缓存实际删除并absent，21498869B（20.50MiB）。已闭Source09 build11的361份obj/libs无损NTFS压缩，API尺寸差67146598B（64.04MiB），完整内容SHA、size、mtime、creation与身份保持；[pip/build实际摘要](C:/workspace/ck3-upgrade-20261006/c-drive-cache-readonly-audit-agent-03/actual-space-actions-thin-result-01.json)保全原结果，构建过程资产未删除。
+- 精确3份Codex remote catalog无损压缩，内容SHA/size/mtime/creation/identity保持，GetCompressedFileSizeW差44034070B（42.00MiB）、删除0；不重新累计旧压缩量。
+- NVIDIA解包缓存精确470文件于UTC05:46:33.467875完成删除，fresh470独占native DELETE身份guard全PASS，随后实际absent470，逻辑量/API删除前尺寸均3156136199B（2.939GiB）。Root先核plan SHA `edc27cd2727eac41a642259b8aeca237b0808d7a02044a87dea247e0e1ac8ca8`及resolve后的限定根 `C:/ProgramData/NVIDIA Corporation/NVIDIA App/UpdateFramework/ota-artifacts/grd/post-processing/222e3fc2fbb5a311b745b9b47097ca1a`；目录删除0，DriverStore、已安装驱动树、项目和全部过程资产保持。result131254B/SHA `47bf5c9e32406862fff004707aab93b282f9045b574a101efdd65ccf3f1ae9cf`、journal363190B/SHA `fbf199c1b2323431e941b0709a52b9a78428205cad3407accb4fc69c38be8e39`由薄收据绑定。
+
+原下载包 `616.92-notebook-win10-win11-64bit-international-dch-whql-g.exe`（793353272B）保留，前后native identity/size/mtime/creation一致；payload未hash或重新解包，完整性UNKNOWN。已安装驱动581.80，616.92为未消费下载，不归因已消费旧版本。C盘空闲快照129269760→3285487616B（结束3.060GiB），不排他归因物理释放；该时点低盘阻点已解除。页文件约6.27GiB缺少旧同路径size对比，空间下降因果UNKNOWN；Windows Update/服务、DXCache287227904B（同已知基线不变）、未知Temp均保留。其它大清理盘点选项未执行，不宣布剩余可清空间为0。
