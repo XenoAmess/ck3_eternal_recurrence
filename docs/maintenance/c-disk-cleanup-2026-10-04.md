@@ -56,3 +56,11 @@ journal SHA `65cb16a18252bf9f7ec0aae8ad6665e085dbfce23540f0f5b6db28575dbfef50`�
 独立逐字段核对位于 `C:/workspace/ck3-upgrade-20261005/c-drive-incremental-audit-agent-01/exact19-master-record-prep-10/actual-exact19-record-validation-01.json`；该核对只读取小型执行回执，没有重复读取或解析原大日志。旧第四阶段剩余40,555条精确路径继续只读复核；没有闭场归属证据、当前活跃资源、源码、shader对象或媒体的条目不会进入后续压缩清单。
 
 同日 **01:15:14 UTC（北京时间09:15:14）**，Root另对已闭Main R10的5份精确文本执行相同无损流程，实际 `COMPLETE_ALL5_PRESERVED`、完成5、error=null；API尺寸差 **7,827,496 B（7.46 MiB）**。原内容SHA、size与mtime保持，原R10验收RED不变；不包含当前QOL场景、profile或mod源码。[实际result](C:/workspace/ck3-upgrade-20261005/c-drive-exact5-ntfs-compression-root-01/result.json)为14,848B，SHA `9a96e9aac1510221c3e7836d2ddd47ab8ac1dfb3121ba9ae4f9498ef358fd4b3`；精确plan SHA `9a3ea2caa5b5c376f95871cb3601690384cc5e6460edd780640060e5be62d199`。本轮两次新操作合计24文件、API差125,935,812B（120.10MiB），不重复累计历史记录或声称物理回收。此次结束C盘空闲12,916,170,752B，仅为当时实测。
+
+## 2026-10-06 体验优化 R13–R15 闭场窄复核（新增释放0）
+
+2026-10-06T03:08:08.019891+00:00（UTC）低优先级只读复核指定三轮18份 LIVE 文本及12份 native observer 原始副本：LIVE 文本全部已有NTFS压缩属性；副本实际均不足1MiB，完整SHA与各自sidecar记录一致。本轮合资格候选0、FSCTL调用0、删除/移动/重编码0，新增API占用差0B；全部过程资产保留，未重复读取大原始流。
+
+R15副本 native-state-003.jsonl 实际9,204B、-004.jsonl实际9,216B；sidecar的 wire_observed_bytes 5,283,390B / 27,038,557B记录原LIVE流当时被观察的总长度，不是副本大小。副本与来源流各自保全，不将字段值当作本轮可释放量。
+
+结束C盘空闲2,595,057,664B（2.42GiB），为并发工作期间实测，不作释放归因，也不重复累计此前19/5文件或历史清理。薄回执：[thin-result-01.json](C:/workspace/ck3-upgrade-20261006/c-drive-closed-qol-r13-r15-audit-agent-01/thin-result-01.json)，25,286B，SHA-256 `e748698bc1e04d1e32f4376cbcc72d2989dcf789c8b87a0d8b15ad1a7dc79f12`。原验收GREEN/RED和业务边界保持。
