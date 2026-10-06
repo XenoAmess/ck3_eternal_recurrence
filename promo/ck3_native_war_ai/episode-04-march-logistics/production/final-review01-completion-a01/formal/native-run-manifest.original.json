@@ -1,0 +1,35 @@
+{
+  "format_version": 1,
+  "kind": "xar_promo_run_manifest",
+  "run": {
+    "id": "war-e04-final-BC-Review01-20261006-a01"
+  },
+  "project_config": {
+    "path": "artifacts/project-config/sha256/33/3373C3EA8428EDC877A52225A004BF3082C7AC72003EB4939E071ED1E4B65092.json",
+    "bytes": 86413,
+    "sha256": "3373C3EA8428EDC877A52225A004BF3082C7AC72003EB4939E071ED1E4B65092"
+  },
+  "artifact_policy": {
+    "strategy": "append-only-content-addressed",
+    "raw_directory": "artifacts/raw",
+    "derived_directory": "artifacts/derived",
+    "manifest_history_directory": "artifacts/manifest-history",
+    "preserve_process_material": true
+  },
+  "phase_history": [],
+  "artifacts": [
+    {
+      "id": "Review01",
+      "collection": "derived",
+      "role": "deliverable",
+      "path": "artifacts/derived/sha256/A1/A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346.mp4",
+      "label": "Episode04 final BC Review01 pending human review",
+      "bytes": 1199061934,
+      "sha256": "A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346",
+      "media_type": "video/mp4",
+      "source_name": "CK3-War-AI-Episode04-March-Logistics-Review01.mp4"
+    }
+  ],
+  "audits": [],
+  "signoffs": []
+}

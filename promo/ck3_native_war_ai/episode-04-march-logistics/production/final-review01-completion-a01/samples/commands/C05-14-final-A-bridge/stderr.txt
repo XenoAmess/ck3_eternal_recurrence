@@ -1,0 +1,35 @@
+Input #0, mov,mp4,m4a,3gp,3g2,mj2, from 'C:\ck3-war-episode04-research-20261004-a01\e4-final-review01-a01\actual-render-a01\CK3-War-AI-Episode04-March-Logistics-Review01.mp4':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf63.1.101
+  Duration: 00:28:55.80, start: 0.000000, bitrate: 5526 kb/s
+  Stream #0:0[0x1](und): Video: h264 (Constrained Baseline) (avc1 / 0x31637661), yuv420p(progressive), 1920x1080 [SAR 1:1 DAR 16:9], 5325 kb/s, 30 fps, 30 tbr, 48k tbn (default)
+    Metadata:
+      handler_name    : VideoHandler
+      encoder         : Lavc63.1.101 libx264
+  Stream #0:1[0x2](und): Audio: aac (LC) (mp4a / 0x6134706D), 48000 Hz, stereo, fltp, 194 kb/s (default)
+    Metadata:
+      handler_name    : SoundHandler
+Stream mapping:
+  Stream #0:0 -> #0:0 (h264 (native) -> png (native))
+[Parsed_showinfo_1 @ 000001d6a35ee5c0] config in time_base: 1/48000, frame_rate: 30/1
+[Parsed_showinfo_1 @ 000001d6a35ee5c0] config out time_base: 0/0, frame_rate: 0/0
+[Parsed_showinfo_1 @ 000001d6a35ee5c0] n:   0 pts:67952000 pts_time:1415.666667 duration:   1600 duration_time:0.0333333 fmt:yuv420p cl:left sar:1/1 s:1920x1080 i:P iskey:0 type:P checksum:89FDBB27 plane_checksum:[34AC74E1 82A7CD7C C39078BB] mean:[81 123 129] stdev:[33.8 10.2 5.9]
+[Parsed_showinfo_1 @ 000001d6a35ee5c0] color_range:unknown color_space:unknown color_primaries:unknown color_trc:unknown
+Output #0, image2, to 'C:\ck3-war-episode04-research-20261004-a01\e4-final-review01-a01\final-coded-samples-a01\C05-14-final-A-bridge.png':
+  Metadata:
+    major_brand     : isom
+    minor_version   : 512
+    compatible_brands: isomiso2avc1mp41
+    encoder         : Lavf63.1.101
+  Stream #0:0(und): Video: png, rgb24(pc, gbr/unknown/unknown, progressive), 1920x1080 [SAR 1:1 DAR 16:9], q=2-31, 200 kb/s, 30 fps, 30 tbn (default)
+    Metadata:
+      encoder         : Lavc63.1.101 png
+      handler_name    : VideoHandler
+frame=    0 fps=0.0 q=0.0 size=       0KiB time=N/A bitrate=N/A speed=N/A elapsed=0:00:00.51    
+[image2 @ 000001d6a39c58c0] The specified filename 'C:\ck3-war-episode04-research-20261004-a01\e4-final-review01-a01\final-coded-samples-a01\C05-14-final-A-bridge.png' does not contain an image sequence pattern or a pattern is invalid.
+[image2 @ 000001d6a39c58c0] Use a pattern such as %03d for an image sequence or use the -update option (with -frames:v 1 if needed) to write a single image.
+[out#0/image2 @ 000001d6a1607dc0] video:1978KiB audio:0KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: unknown
+frame=    1 fps=0.0 q=-0.0 Lsize=N/A time=00:00:00.00 bitrate=N/A speed=   0x elapsed=0:00:00.69    

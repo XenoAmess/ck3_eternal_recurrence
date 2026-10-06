@@ -1,0 +1,34 @@
+{
+  "argv": [
+    "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+    "-hide_banner",
+    "-nostdin",
+    "-n",
+    "-copyts",
+    "-threads",
+    "1",
+    "-ss",
+    "1471.100000000",
+    "-i",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "-filter_threads",
+    "1",
+    "-vf",
+    "select=eq(pts\\,70708800),showinfo",
+    "-an",
+    "-frames:v",
+    "1",
+    "-fps_mode",
+    "passthrough",
+    "-threads",
+    "1",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-16-C-cash-context.png"
+  ],
+  "cwd": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01",
+  "label": "Actual final MP4 coded frame C05-16-C-cash-context",
+  "partial_artifacts": [
+    "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-16-C-cash-context.png"
+  ],
+  "schema_version": 1,
+  "shell": false
+}

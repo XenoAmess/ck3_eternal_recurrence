@@ -1,0 +1,116 @@
+{
+  "state": "PASS_ACTUAL_FRAME_PACKET_CLOCK",
+  "errors": [],
+  "actual_schema": "packets_and_frames[] with type discriminator",
+  "video_frames": 52074,
+  "video_packets": 52074,
+  "video_first_frame": {
+    "type": "frame",
+    "media_type": "video",
+    "stream_index": 0,
+    "pts": 0,
+    "best_effort_timestamp": 0,
+    "duration": 1600,
+    "width": 1920,
+    "height": 1080,
+    "pix_fmt": "yuv420p",
+    "side_data_list": [
+      {
+        "side_data_type": "H.26[45] User Data Unregistered SEI message"
+      }
+    ]
+  },
+  "video_last_frame": {
+    "type": "frame",
+    "media_type": "video",
+    "stream_index": 0,
+    "pts": 83316800,
+    "best_effort_timestamp": 83316800,
+    "duration": 1600,
+    "width": 1920,
+    "height": 1080,
+    "pix_fmt": "yuv420p"
+  },
+  "video_tick_per_frame": 1600,
+  "audio_frames": 81366,
+  "audio_packets": 81367,
+  "audio_actual_decoded_sample_frames": 83318400,
+  "audio_first_frame": {
+    "type": "frame",
+    "media_type": "audio",
+    "stream_index": 1,
+    "pts": 0,
+    "best_effort_timestamp": 0,
+    "duration": 1024,
+    "nb_samples": 1024,
+    "channels": 2
+  },
+  "audio_last_frame": {
+    "type": "frame",
+    "media_type": "audio",
+    "stream_index": 1,
+    "pts": 83317760,
+    "best_effort_timestamp": 83317760,
+    "duration": 640,
+    "nb_samples": 640,
+    "channels": 2
+  },
+  "audio_frame_boundary_delta_samples_distribution": {
+    "0": 81365
+  },
+  "audio_packet_raw_pts_step_distribution": {
+    "1024": 81366
+  },
+  "audio_effective_packet_boundary_delta_samples_distribution": {
+    "0": 81365
+  },
+  "audio_effective_packet_sample_total": 83318400,
+  "AAC_priming": {
+    "packet": {
+      "type": "packet",
+      "codec_type": "audio",
+      "stream_index": 1,
+      "pts": -1024,
+      "dts": -1024,
+      "duration": 1024,
+      "flags": "KD_",
+      "side_data_list": [
+        {
+          "side_data_type": "Skip Samples",
+          "skip_samples": 1024,
+          "discard_padding": 0
+        }
+      ]
+    },
+    "actual_skip_samples": 1024,
+    "effective_start": 0,
+    "effective_end": 0
+  },
+  "AAC_tail": {
+    "packet": {
+      "type": "packet",
+      "codec_type": "audio",
+      "stream_index": 1,
+      "pts": 83317760,
+      "dts": 83317760,
+      "duration": 640,
+      "flags": "K__",
+      "side_data_list": [
+        {
+          "side_data_type": "Skip Samples",
+          "skip_samples": 0,
+          "discard_padding": 384
+        }
+      ]
+    },
+    "actual_discard_padding": 384,
+    "effective_start": 83317760,
+    "effective_end": 83318400,
+    "policy": "duration_already_trimmed_discard_not_subtracted_twice",
+    "decoded_last_actual_nb_samples": 640,
+    "assumed_fixed_last1024": false
+  },
+  "expected_actual_presentation_sample_frames": 83318400,
+  "native_event_exact_frame": null,
+  "human_or_clean_approval": false
+}

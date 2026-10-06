@@ -1,0 +1,78 @@
+{
+  "state": "PASS_STDLIB_RELOCATION_AND_O_NEGATIVE_CHECKS",
+  "checks": [
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-text-a02\\portable_consumer_a02.py",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-text-a02"
+      ],
+      "returncode": 0,
+      "stdout": "{\"state\": \"PASS_PORTABLE_METADATA_ONLY\", \"catalog_files\": 28, \"catalog_total_bytes\": 3214311, \"bound_movie_sha256\": \"a1abb0f2abaa06f3fd38839123e9f4ddd4c4218f8dd15e0965732d3596c69346\", \"new_media_read_or_probe\": false, \"human_signoff\": false, \"actual_media_facts_independently_revalidated\": false, \"preserved_decoded_clock_table_rows_checked\": 81366, \"preserved_decoded_clock_table_endpoint_samples\": 83318400}\n",
+      "stderr": ""
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-O",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-text-a02\\portable_consumer_a02.py",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-text-a02"
+      ],
+      "returncode": 0,
+      "stdout": "{\"state\": \"PASS_PORTABLE_METADATA_ONLY\", \"catalog_files\": 28, \"catalog_total_bytes\": 3214311, \"bound_movie_sha256\": \"a1abb0f2abaa06f3fd38839123e9f4ddd4c4218f8dd15e0965732d3596c69346\", \"new_media_read_or_probe\": false, \"human_signoff\": false, \"actual_media_facts_independently_revalidated\": false, \"preserved_decoded_clock_table_rows_checked\": 81366, \"preserved_decoded_clock_table_endpoint_samples\": 83318400}\n",
+      "stderr": ""
+    },
+    {
+      "mode": "relocated-positive",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-O",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-consumer-focused-checks-a02\\relocated-positive\\portable_consumer_a02.py",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-consumer-focused-checks-a02\\relocated-positive"
+      ],
+      "returncode": 0,
+      "stdout": "{\"state\": \"PASS_PORTABLE_METADATA_ONLY\", \"catalog_files\": 28, \"catalog_total_bytes\": 3214311, \"bound_movie_sha256\": \"a1abb0f2abaa06f3fd38839123e9f4ddd4c4218f8dd15e0965732d3596c69346\", \"new_media_read_or_probe\": false, \"human_signoff\": false, \"actual_media_facts_independently_revalidated\": false, \"preserved_decoded_clock_table_rows_checked\": 81366, \"preserved_decoded_clock_table_endpoint_samples\": 83318400}\n",
+      "stderr": ""
+    },
+    {
+      "mode": "negative-path-escape",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-O",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-consumer-focused-checks-a02\\negative-path-escape\\portable_consumer_a02.py",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-consumer-focused-checks-a02\\negative-path-escape"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-consumer-focused-checks-a02\\negative-path-escape\\portable_consumer_a02.py\", line 82, in <module>\n    print(json.dumps(verify(Path(sys.argv[1])), ensure_ascii=False))\n                     ~~~~~~^^^^^^^^^^^^^^^^^^^\n  File \"C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-consumer-focused-checks-a02\\negative-path-escape\\portable_consumer_a02.py\", line 33, in verify\n    require(not pure.is_absolute() and rel == pure.as_posix() and all(x not in ('', '.', '..') for x in pure.parts), 'path escape')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-consumer-focused-checks-a02\\negative-path-escape\\portable_consumer_a02.py\", line 15, in require\n    raise RuntimeError(message)\nRuntimeError: path escape\n"
+    },
+    {
+      "mode": "negative-clock-gap-with-updated-catalog",
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-O",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-consumer-focused-checks-a02\\negative-clock-gap-with-updated-catalog\\portable_consumer_a02.py",
+        "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-consumer-focused-checks-a02\\negative-clock-gap-with-updated-catalog"
+      ],
+      "returncode": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-consumer-focused-checks-a02\\negative-clock-gap-with-updated-catalog\\portable_consumer_a02.py\", line 82, in <module>\n    print(json.dumps(verify(Path(sys.argv[1])), ensure_ascii=False))\n                     ~~~~~~^^^^^^^^^^^^^^^^^^^\n  File \"C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-consumer-focused-checks-a02\\negative-clock-gap-with-updated-catalog\\portable_consumer_a02.py\", line 67, in verify\n    require(ordinal == count and pts == endpoint, 'decoded clock table ordinal or original PTS gap')\n    ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-consumer-focused-checks-a02\\negative-clock-gap-with-updated-catalog\\portable_consumer_a02.py\", line 15, in require\n    raise RuntimeError(message)\nRuntimeError: decoded clock table ordinal or original PTS gap\n"
+    }
+  ],
+  "new_media_reads": 0
+}

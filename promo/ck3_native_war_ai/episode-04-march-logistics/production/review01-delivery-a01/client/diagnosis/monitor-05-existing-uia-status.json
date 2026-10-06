@@ -1,0 +1,32 @@
+{
+  "utc": "2026-10-06T04:15:39.926342+00:00",
+  "scope": "only existing OneDrive UIA target/statusText; no invocation/focus/input",
+  "metadata_query_performed": false,
+  "target": "CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+  "windows": [
+    {
+      "hwnd": 193530182,
+      "statusText": [
+        {
+          "name": "已备份和同步",
+          "type": "TextControl"
+        }
+      ],
+      "target_rows": [
+        {
+          "name": "CK3-War-AI-Episode04-March-Logistics-Review01.mp4. 已上传到 CK3-War-AI-20260923. 3 秒 前. 1 个最近的项，共 100 个。",
+          "automation_id": "itemHistoryButton0",
+          "type": "GroupControl"
+        },
+        {
+          "name": "CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+          "automation_id": "itemName",
+          "type": "TextControl"
+        }
+      ]
+    }
+  ],
+  "classification": "UIA_SAMPLE_ONLY",
+  "nodes_visited": 256,
+  "end_utc": "2026-10-06T04:15:40.465856+00:00"
+}

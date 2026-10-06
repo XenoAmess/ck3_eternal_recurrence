@@ -1,0 +1,21 @@
+{
+  "status": "LOCAL_COPY_VERIFIED_CLOUD_PENDING",
+  "at_utc": "2026-10-06T04:04:42.128296+00:00",
+  "source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "a1abb0f2abaa06f3fd38839123e9f4ddd4c4218f8dd15e0965732d3596c69346"
+  },
+  "target": {
+    "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "a1abb0f2abaa06f3fd38839123e9f4ddd4c4218f8dd15e0965732d3596c69346"
+  },
+  "copy_stream_bytes": 1199061934,
+  "copy_stream_sha256": "a1abb0f2abaa06f3fd38839123e9f4ddd4c4218f8dd15e0965732d3596c69346",
+  "file_count": 1,
+  "independent_remote_readback": false,
+  "human_signoff": "not-provided",
+  "old_files_preserved": true,
+  "attempt": "C:\\ck3-war-episode04-delivery-20261006-a01\\attempts\\review01-actual-copy-a01"
+}

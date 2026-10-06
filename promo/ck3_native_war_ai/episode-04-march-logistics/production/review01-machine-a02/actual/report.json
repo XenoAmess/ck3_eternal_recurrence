@@ -1,0 +1,107 @@
+{
+  "schema": "xar.e04.Review01-new-full-film-machine-audit.v1",
+  "state": "PASS_MACHINE_STRUCTURE_COUNTS_AND_EXACT_AAC_CLOCK_ONLY",
+  "started_utc": "2026-10-06T04:00:19.334079+00:00",
+  "completed_utc": "2026-10-06T04:02:33.689695+00:00",
+  "errors": [],
+  "actual_movie_identity_reused": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346"
+  },
+  "producer_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\CLOSED-MOVIE-DELIVERY-a01.json",
+    "bytes": 4673,
+    "sha256": "3ddb222eaabcb8c1db767fdb335b8b98259147abb145a3f4d156f9e7470ab2f3"
+  },
+  "producer_prior_streams_format_bound_probe_reused": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\picture.bound-probe.json",
+    "bytes": 4130,
+    "sha256": "0d358bbbfbff8a435fd60621a026531fe44d06d1325fa8a1036fd7b59fe36310"
+  },
+  "actual_video_duration_seconds": "1735.8",
+  "actual_video_decoded_frames": 52074,
+  "actual_video_frame_and_packet_counts": [
+    52074,
+    52074
+  ],
+  "actual_audio_decoded_frames": 81366,
+  "actual_audio_sample_frames_per_channel": 83318400,
+  "actual_audio_seconds": "1735.8",
+  "source_narration_sample_frames": 41658624,
+  "source_narration_rate": 24000,
+  "source_narration_seconds": "1735.776",
+  "audio_video_grid_tail_seconds": "0.024",
+  "exact_decoded_AAC_integer_clock": true,
+  "exact_packet_grid_and_priming_tail": true,
+  "AAC_tail_actual_decoded_samples": 640,
+  "mixed_decoded_NaN_Inf_counters_zero": true,
+  "decoded_float_peak_above_0dBFS": false,
+  "source_PCM_scan": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\source-PCM-full-scan.json",
+    "bytes": 3228,
+    "sha256": "f51f3862a0a70fb44d7b57ebcf5942c9adf77c77647b8433d735b60a7d7a6509"
+  },
+  "full_frame_packet_summary": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\frame-packet-clock-summary.json",
+    "bytes": 2833,
+    "sha256": "3db773ba03ef7166f46458bc1895c677233fc99f78243af9df3f245d64fcdf64"
+  },
+  "strict_decode_audio_summary": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\strict-decode-audio-summary.json",
+    "bytes": 9818,
+    "sha256": "6d55b7c11202424e41c055c73bc3464cbb5174509d490138051adb4e898cdd06"
+  },
+  "full_frame_packet_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\whole-frame-packet-probe\\result.json",
+    "bytes": 984,
+    "sha256": "7f5f42e6d71c5bfac890bdd1dd80c76bd5ae9d907466653b0f40581dc01d590a"
+  },
+  "strict_decode_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\strict-whole-video-AAC-decode\\result.json",
+    "bytes": 1003,
+    "sha256": "7518ecd0a6ad9e02d3a2a3ef325d5926e3c1c69e65b7c46ec92b477d0852f58f"
+  },
+  "source_stat_before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "mtime_ns": 1791249261689338100
+  },
+  "source_stat_after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "mtime_ns": 1791249261689338100
+  },
+  "tool_pins": {
+    "ffmpeg.exe": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "bytes": 222229504,
+      "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+    },
+    "ffprobe.exe": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "bytes": 222026240,
+      "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+    }
+  },
+  "plan_and_inputs": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\PLAN-AND-ACTUAL-INPUTS-a02.json",
+    "bytes": 4288,
+    "sha256": "bfa2c0f36ca9c4f7d6fcb8628dc1bd22ede2728c95f6536b006a87fc83485e4c"
+  },
+  "medium_SHA_reads": 0,
+  "full_new_probe_count": 1,
+  "full_new_strict_decode_count": 1,
+  "full_source_PCM_scans": 1,
+  "old_RAW_movie_media_operations": 0,
+  "original_old_A_exactPTS_RED_preserved": true,
+  "new_formal_xar_promo_adapter_validation_claimed": false,
+  "all_argv_stdio_partials_source_preserved": true,
+  "native_event_exact_encoded_tick": null,
+  "fresh_human_watch_listen_1x": false,
+  "human_signoff": false,
+  "continuous_clean_source_review": false,
+  "film_approved": false,
+  "audio_subjective_quality_verdict": null,
+  "SDK_UI_Game_bus_Git_OneDrive_operations": 0
+}

@@ -1,0 +1,24 @@
+{
+  "state": "NEW_ATTEMPT_A02_PREPARED_OLD_INCOMPLETE_ATTEMPT_PRESERVED",
+  "old_audit": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\audit_closed_review01_a01.py",
+    "bytes": 29263,
+    "sha256": "a9cbcdfcbf56903f6d092bfb4d2568430f8ef77a831928431f56a873fa13ed11"
+  },
+  "new_audit": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\audit_closed_review01_a02.py",
+    "bytes": 32343,
+    "sha256": "e7d4bd3fb504135211fa599b1d01965087745f7ad6e64aaaa634f79ffb898058"
+  },
+  "old_attempt_media_processes_absent": true,
+  "old_returncodes": null,
+  "old_probe_complete": false,
+  "old_decode_complete": false,
+  "old_PCM_scan_complete": false,
+  "new_assert_count": 0,
+  "new_input_acceptance_checks_survive_python_O": true,
+  "media_hash_reused": true,
+  "tool_hashes_reused_from_prior_validated_inputs": true,
+  "formal_xar_promo_validation_claimed": false,
+  "human_signoff": false
+}

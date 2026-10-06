@@ -1,0 +1,33 @@
+{
+  "schema": "xar.e04.pending-review-existing-samples-delivery.v1",
+  "state": "PENDING_HUMAN_REVIEW_PACKAGE_CREATED_NO_SIGNOFF",
+  "package": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\pending-human-review-existing-a01\\pending-review-package.json",
+    "bytes": 29024,
+    "sha256": "7d9a8bf3bdd0299a092b4ff8d0383af8df408f7116c2abf87c088b26044f8d6f"
+  },
+  "template": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\pending-human-review-existing-a01\\human-review-template.json",
+    "bytes": 10582,
+    "sha256": "861e8ec3e9691ba04a98b1485e85ac5f09effd5b0c4cc9a7092cbd6ecab1aac8"
+  },
+  "release_admission": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\pending-human-review-existing-a01\\release-admission.json",
+    "bytes": 3136,
+    "sha256": "d3338a6af57c9f3ead2b70ad629801bf4738b1c7201721102681eaa160d84db2"
+  },
+  "movie": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346"
+  },
+  "actual_scene_count": 69,
+  "chapter_count": 6,
+  "existing_sample_count": 18,
+  "public_template_API_returned": true,
+  "human_full_1x_review": false,
+  "human_signoff": false,
+  "new_large_media_reads": 0,
+  "OneDrive_operations": 0,
+  "Git_operations": 0
+}

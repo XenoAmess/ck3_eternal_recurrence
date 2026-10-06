@@ -1,0 +1,26 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "xar_promo",
+    "preserve",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "--run-manifest",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\toolchain-run-a01\\run-manifest.json",
+    "--artifact-id",
+    "Review01",
+    "--collection",
+    "derived",
+    "--role",
+    "deliverable",
+    "--label",
+    "Episode04 final BC Review01 pending human review",
+    "--media-type",
+    "video/mp4"
+  ],
+  "cwd": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01",
+  "start_utc": "2026-10-06T01:16:14.136570+00:00"
+}

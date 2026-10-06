@@ -1,0 +1,103 @@
+{
+  "schema": "xar.e04.actual-closed-Review01-delivery.v1",
+  "created_utc": "2026-10-06T01:14:55.904239+00:00",
+  "state": "ACTUAL_RENDER_RC0_CLOSED_PENDING_UNIQUE_WHOLE_AUDIT",
+  "movie": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346"
+  },
+  "unique_streams_format_bound_probe": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\picture.bound-probe.json",
+    "bytes": 4130,
+    "sha256": "0d358bbbfbff8a435fd60621a026531fe44d06d1325fa8a1036fd7b59fe36310"
+  },
+  "producer_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\picture-receipt.json",
+    "bytes": 551007,
+    "sha256": "ad2a22ef4ea69faf17a464e535f5834a8db30bd4bf0ee080b013f599eb00540a"
+  },
+  "actual_encode_command": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\final-encode-command-audit\\command.json",
+    "bytes": 2569,
+    "sha256": "b5209e18cca73716f8794c2883cff107eeb144f77600f6279f7e8a2ffc2c8068"
+  },
+  "actual_encode_stdio": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\final-encode-command-audit\\stderr.txt",
+      "bytes": 67232,
+      "sha256": "87682696ad3cda5c123b49a029d64f7542dc19f8748bcfd780c35181182ad002"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\final-encode-command-audit\\stdout.txt",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  ],
+  "actual_final_ffmpeg_stats": [
+    "frame=52074 fps=192 q=-1.0 Lsize= 1170959KiB time=00:28:55.80 bitrate=5526.3kbits/s speed=6.41x elapsed=0:04:30.72    "
+  ],
+  "actual_execute_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\execution-a01\\actual-render\\result.json",
+    "bytes": 866,
+    "sha256": "99510f1b1be2886d7be320e91b97662b64959028cdbaef2cc78a5af5baff349b"
+  },
+  "input_source_snapshot": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\input-snapshot.json",
+    "bytes": 96360,
+    "sha256": "e0633852afb84acd6b2d0865efd62fb5fe33c50e03396dcb8582739d9aafd13d"
+  },
+  "Root_actual_story_freeze": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-Root-actual-row-freeze-a01\\Root-final-story-freeze.json",
+    "bytes": 25852,
+    "sha256": "975ade3d256a8e84511e3206dbb60c7f04bf2131d9bc053850b26d8c0eb4caa6"
+  },
+  "source_narration_PCM": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\final-Chinese-narration.wav",
+    "bytes": 83317292,
+    "sha256": "62f3fffe64885589ed0a43f8ab66f41ff7d080d3075037c6b74798b53bce9e0a"
+  },
+  "source_PCM_actual_header": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 41658624,
+    "seconds": 1735.776
+  },
+  "music": {
+    "title": "Quiet Courtly Tension",
+    "source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v5-theme-film-attempt-001\\run\\artifacts\\raw\\sha256\\FD\\FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav",
+      "bytes": 30726160,
+      "sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f"
+    },
+    "gain_db": -17,
+    "ducking": false,
+    "normalize": false
+  },
+  "mixed_uncompressed_PCM_file": null,
+  "mixed_PCM_note": "Mixer encoded directly to AAC; no standalone full mixed PCM was produced. Unique new full AAC decode/scanning remains auditor-owned.",
+  "actual_video_frames": 52074,
+  "actual_video_seconds": 1735.8,
+  "actual_narration_seconds": 1735.776,
+  "final_grid_tail_seconds": 0.023999999999887223,
+  "expected_48k_samples_from_actual_video_grid": 83318400,
+  "audio_clock_policy": {
+    "mix_time_base": "1/48000",
+    "asetpts": "N",
+    "encoder_time_base": "1:48000",
+    "movie_timescale": 48000,
+    "video_track_timescale": 48000,
+    "AAC_frame_samples": 1024,
+    "full_decode_continuity_not_yet_verified": true
+  },
+  "unique_whole_audit_owner": "/root/move_control",
+  "producer_whole_frame_packet_decode_count": 0,
+  "full_machine_decode_or_exact_PTS_status": null,
+  "old_A_exact_audio_PTS_RED_preserved": true,
+  "human_full_1x_review": false,
+  "human_signoff": false,
+  "continuous_source_clean_review": false,
+  "OneDrive_upload": false,
+  "large_media_rehashes_for_delivery": 0
+}

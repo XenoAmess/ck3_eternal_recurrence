@@ -1,0 +1,41 @@
+{
+  "schema": "xar.e04.actual-final-delivery-text.v1",
+  "created_utc": "2026-10-06T04:23:00.397417+00:00",
+  "state": "ACTUAL_MOVIE_MACHINE_AUDIT_ROOT_CODED18_AND_CLIENT_INSYNC_COMPLETE_HUMAN_PENDING",
+  "movie": {
+    "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "a1abb0f2abaa06f3fd38839123e9f4ddd4c4218f8dd15e0965732d3596c69346"
+  },
+  "movie_seconds": 1735.8,
+  "video_frames": 52074,
+  "scene_count": 69,
+  "chapter_count": 6,
+  "bilingual_subtitle_groups": 326,
+  "whole_movie_machine_audit": "PASS_MACHINE_STRUCTURE_COUNTS_AND_EXACT_AAC_CLOCK_ONLY",
+  "Root_actual_coded_samples_viewed": 18,
+  "local_copy_SHA_verified": true,
+  "client_metadata_in_sync": true,
+  "actual_client_file_id": 1407374883646263,
+  "actual_sync_root_file_id": 5910974510929700,
+  "actual_success_samples_interval_seconds": 74.709251,
+  "independent_remote_readback": false,
+  "remote_SHA_verified": false,
+  "human_full_1x_review": false,
+  "human_signoff": false,
+  "knowledge_and_project_code_portable": true,
+  "large_media_assets_carried": false,
+  "single_command_remote_machine_render_claimed": false,
+  "exact_Git_commit_and_official_CI": "TO_BE_RECORDED_AFTER_ACTUAL_PUSH_IN_EXTERNAL_GIT_RECEIPT",
+  "research_comparison_winner": null,
+  "B_gate_stop_day": 38,
+  "C_controlled_comparison_eligibility": "NOT_GRANTED",
+  "C_sampling_deviations_retained": 15,
+  "research_full_completion_percentage": null,
+  "remaining_research": [
+    "low_supply_below10_starvation_and_applied_loss_ledger",
+    "applied_reinforcement_and_payment_ledgers",
+    "exact_half_movement_lock_boundary",
+    "native_AI_full_selection_permission_and_scheduling_chain"
+  ]
+}

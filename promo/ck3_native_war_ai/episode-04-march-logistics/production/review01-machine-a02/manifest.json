@@ -1,0 +1,297 @@
+{
+  "schema": "xar.e04.Review01-portable-machine-audit-metadata.v1",
+  "created_utc": "2026-10-06T04:04:33.761576+00:00",
+  "files": [
+    {
+      "relative_path": "actual/report.json",
+      "bytes": 5138,
+      "sha256": "9d12cb5e25df0cfd2718b95b84c9920faeba03633968a6317d98788cb17e97b7",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\report.json",
+        "bytes": 5138,
+        "sha256": "9d12cb5e25df0cfd2718b95b84c9920faeba03633968a6317d98788cb17e97b7"
+      }
+    },
+    {
+      "relative_path": "actual/frame-packet-clock-summary.json",
+      "bytes": 2833,
+      "sha256": "3db773ba03ef7166f46458bc1895c677233fc99f78243af9df3f245d64fcdf64",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\frame-packet-clock-summary.json",
+        "bytes": 2833,
+        "sha256": "3db773ba03ef7166f46458bc1895c677233fc99f78243af9df3f245d64fcdf64"
+      }
+    },
+    {
+      "relative_path": "actual/strict-decode-audio-summary.json",
+      "bytes": 9818,
+      "sha256": "6d55b7c11202424e41c055c73bc3464cbb5174509d490138051adb4e898cdd06",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\strict-decode-audio-summary.json",
+        "bytes": 9818,
+        "sha256": "6d55b7c11202424e41c055c73bc3464cbb5174509d490138051adb4e898cdd06"
+      }
+    },
+    {
+      "relative_path": "actual/source-PCM-full-scan.json",
+      "bytes": 3228,
+      "sha256": "f51f3862a0a70fb44d7b57ebcf5942c9adf77c77647b8433d735b60a7d7a6509",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\source-PCM-full-scan.json",
+        "bytes": 3228,
+        "sha256": "f51f3862a0a70fb44d7b57ebcf5942c9adf77c77647b8433d735b60a7d7a6509"
+      }
+    },
+    {
+      "relative_path": "actual/PLAN-AND-ACTUAL-INPUTS-a02.json",
+      "bytes": 4288,
+      "sha256": "bfa2c0f36ca9c4f7d6fcb8628dc1bd22ede2728c95f6536b006a87fc83485e4c",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\PLAN-AND-ACTUAL-INPUTS-a02.json",
+        "bytes": 4288,
+        "sha256": "bfa2c0f36ca9c4f7d6fcb8628dc1bd22ede2728c95f6536b006a87fc83485e4c"
+      }
+    },
+    {
+      "relative_path": "actual/decoded-AAC-frame-clock.csv",
+      "bytes": 3092395,
+      "sha256": "1795a6ab900652b8ae0b860bb6945be16577365ba48b66610e6dc507f283406b",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\decoded-AAC-frame-clock.csv",
+        "bytes": 3092395,
+        "sha256": "1795a6ab900652b8ae0b860bb6945be16577365ba48b66610e6dc507f283406b"
+      }
+    },
+    {
+      "relative_path": "actual/whole-frame-packet-probe/argv.json",
+      "bytes": 793,
+      "sha256": "e494ac2f7b69506eb4f2328c3718733b08c103881c4c48670f88966237d37a1f",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\whole-frame-packet-probe\\argv.json",
+        "bytes": 793,
+        "sha256": "e494ac2f7b69506eb4f2328c3718733b08c103881c4c48670f88966237d37a1f"
+      }
+    },
+    {
+      "relative_path": "actual/whole-frame-packet-probe/owned-process.json",
+      "bytes": 107,
+      "sha256": "b67eca191725415278a6c1c1bc3cbd88c5c8a5de51bca80eb6298aede495c816",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\whole-frame-packet-probe\\owned-process.json",
+        "bytes": 107,
+        "sha256": "b67eca191725415278a6c1c1bc3cbd88c5c8a5de51bca80eb6298aede495c816"
+      }
+    },
+    {
+      "relative_path": "actual/whole-frame-packet-probe/result.json",
+      "bytes": 984,
+      "sha256": "7f5f42e6d71c5bfac890bdd1dd80c76bd5ae9d907466653b0f40581dc01d590a",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\whole-frame-packet-probe\\result.json",
+        "bytes": 984,
+        "sha256": "7f5f42e6d71c5bfac890bdd1dd80c76bd5ae9d907466653b0f40581dc01d590a"
+      }
+    },
+    {
+      "relative_path": "actual/strict-whole-video-AAC-decode/argv.json",
+      "bytes": 1638,
+      "sha256": "b53fa50b0b77fb728d5ddcfd2e0050293cbac47726ce5a6dbe49a51f8430735a",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\strict-whole-video-AAC-decode\\argv.json",
+        "bytes": 1638,
+        "sha256": "b53fa50b0b77fb728d5ddcfd2e0050293cbac47726ce5a6dbe49a51f8430735a"
+      }
+    },
+    {
+      "relative_path": "actual/strict-whole-video-AAC-decode/owned-process.json",
+      "bytes": 107,
+      "sha256": "b4a72e3f2f90e7fe80138af10126bc91cc23a0076b59fa539768c8aef7154928",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\strict-whole-video-AAC-decode\\owned-process.json",
+        "bytes": 107,
+        "sha256": "b4a72e3f2f90e7fe80138af10126bc91cc23a0076b59fa539768c8aef7154928"
+      }
+    },
+    {
+      "relative_path": "actual/strict-whole-video-AAC-decode/result.json",
+      "bytes": 1003,
+      "sha256": "7518ecd0a6ad9e02d3a2a3ef325d5926e3c1c69e65b7c46ec92b477d0852f58f",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\strict-whole-video-AAC-decode\\result.json",
+        "bytes": 1003,
+        "sha256": "7518ecd0a6ad9e02d3a2a3ef325d5926e3c1c69e65b7c46ec92b477d0852f58f"
+      }
+    },
+    {
+      "relative_path": "actual/strict-decode-progress.txt",
+      "bytes": 1349,
+      "sha256": "23d7ff7b3a27135406c0b46f10349b5e33ac32bb78e31f5d30aaab4bf2dd60d9",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\strict-whole-video-AAC-decode\\stdout.bin",
+        "bytes": 1349,
+        "sha256": "23d7ff7b3a27135406c0b46f10349b5e33ac32bb78e31f5d30aaab4bf2dd60d9"
+      }
+    },
+    {
+      "relative_path": "ROOT-DELIVERY-a02.json",
+      "bytes": 2401,
+      "sha256": "458a2d66b51f1e87e6c41e25ca9f83efa7ceab1b7d8e3e1663fe2b650977e563",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\ROOT-DELIVERY-a02.json",
+        "bytes": 2401,
+        "sha256": "458a2d66b51f1e87e6c41e25ca9f83efa7ceab1b7d8e3e1663fe2b650977e563"
+      }
+    },
+    {
+      "relative_path": "COMPLETION-ATTEMPT-A02-PREPARATION.json",
+      "bytes": 985,
+      "sha256": "afc1e075cb32d7464363f873df986789ff1b0ee3af7f00a84da145d4c7cdb5ea",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\COMPLETION-ATTEMPT-A02-PREPARATION.json",
+        "bytes": 985,
+        "sha256": "afc1e075cb32d7464363f873df986789ff1b0ee3af7f00a84da145d4c7cdb5ea"
+      }
+    },
+    {
+      "relative_path": "INTERRUPTED-ATTEMPT-A01-PRESERVED.json",
+      "bytes": 1660,
+      "sha256": "ea4237ad8e2a61c9586b0ed8a384663bc7a50b3050402c641b330234b1e8db0f",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\INTERRUPTED-ATTEMPT-A01-PRESERVED.json",
+        "bytes": 1660,
+        "sha256": "ea4237ad8e2a61c9586b0ed8a384663bc7a50b3050402c641b330234b1e8db0f"
+      }
+    },
+    {
+      "relative_path": "audit_closed_review01_a02.py",
+      "bytes": 32343,
+      "sha256": "e7d4bd3fb504135211fa599b1d01965087745f7ad6e64aaaa634f79ffb898058",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\audit_closed_review01_a02.py",
+        "bytes": 32343,
+        "sha256": "e7d4bd3fb504135211fa599b1d01965087745f7ad6e64aaaa634f79ffb898058"
+      }
+    },
+    {
+      "relative_path": "portable_consumer_a02.py",
+      "bytes": 5400,
+      "sha256": "5b3b0c99b2347a37e9abdee8d5fe965eec11fdb35169f0a257a45b79f0dd77c0",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable_consumer_a02.py",
+        "bytes": 5400,
+        "sha256": "5b3b0c99b2347a37e9abdee8d5fe965eec11fdb35169f0a257a45b79f0dd77c0"
+      }
+    },
+    {
+      "relative_path": "historical/audit_closed_review01_a01.py.txt",
+      "bytes": 29263,
+      "sha256": "a9cbcdfcbf56903f6d092bfb4d2568430f8ef77a831928431f56a873fa13ed11",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\audit_closed_review01_a01.py",
+        "bytes": 29263,
+        "sha256": "a9cbcdfcbf56903f6d092bfb4d2568430f8ef77a831928431f56a873fa13ed11"
+      }
+    },
+    {
+      "relative_path": "historical/attempt-a01/PLAN-AND-ACTUAL-INPUTS-a01.json",
+      "bytes": 4288,
+      "sha256": "004a1afee941b414b76a3508617fe8ede40bce902608e79db11cd854a5c49878",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a01\\PLAN-AND-ACTUAL-INPUTS-a01.json",
+        "bytes": 4288,
+        "sha256": "004a1afee941b414b76a3508617fe8ede40bce902608e79db11cd854a5c49878"
+      }
+    },
+    {
+      "relative_path": "historical/attempt-a01/metadata-read-failure-preserved.json",
+      "bytes": 432,
+      "sha256": "7497d6b37f46ca1aacd59fb8ca0d44e4da2ba7d5b24c48fae6ed876e4d861d79",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a01\\metadata-read-failure-preserved.json",
+        "bytes": 432,
+        "sha256": "7497d6b37f46ca1aacd59fb8ca0d44e4da2ba7d5b24c48fae6ed876e4d861d79"
+      }
+    },
+    {
+      "relative_path": "historical/attempt-a01/whole-frame-packet-probe/argv.json",
+      "bytes": 544,
+      "sha256": "8c7727450fa5b86d9e949a8fd9deb7a998bc93284c63c734d0115a0458d0c732",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a01\\whole-frame-packet-probe\\argv.json",
+        "bytes": 544,
+        "sha256": "8c7727450fa5b86d9e949a8fd9deb7a998bc93284c63c734d0115a0458d0c732"
+      }
+    },
+    {
+      "relative_path": "historical/attempt-a01/whole-frame-packet-probe/owned-process.json",
+      "bytes": 106,
+      "sha256": "c0b94efccc658215e67f3f7df35900c138ee4e7f86c6b35e9fe756d26a505f75",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a01\\whole-frame-packet-probe\\owned-process.json",
+        "bytes": 106,
+        "sha256": "c0b94efccc658215e67f3f7df35900c138ee4e7f86c6b35e9fe756d26a505f75"
+      }
+    },
+    {
+      "relative_path": "historical/attempt-a01/strict-whole-video-AAC-decode/argv.json",
+      "bytes": 1638,
+      "sha256": "eb408f6ddda83da8ea3612c7b633fa27192366a5701aa41c511beb5855becbc5",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a01\\strict-whole-video-AAC-decode\\argv.json",
+        "bytes": 1638,
+        "sha256": "eb408f6ddda83da8ea3612c7b633fa27192366a5701aa41c511beb5855becbc5"
+      }
+    },
+    {
+      "relative_path": "historical/attempt-a01/strict-whole-video-AAC-decode/owned-process.json",
+      "bytes": 107,
+      "sha256": "e0864b42cf6789101f3ae88c156cf7bc97004a736daa33f901b12d6a8efeffa2",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a01\\strict-whole-video-AAC-decode\\owned-process.json",
+        "bytes": 107,
+        "sha256": "e0864b42cf6789101f3ae88c156cf7bc97004a736daa33f901b12d6a8efeffa2"
+      }
+    },
+    {
+      "relative_path": "producer/CLOSED-MOVIE-DELIVERY-a01.json",
+      "bytes": 4673,
+      "sha256": "3ddb222eaabcb8c1db767fdb335b8b98259147abb145a3f4d156f9e7470ab2f3",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\CLOSED-MOVIE-DELIVERY-a01.json",
+        "bytes": 4673,
+        "sha256": "3ddb222eaabcb8c1db767fdb335b8b98259147abb145a3f4d156f9e7470ab2f3"
+      }
+    },
+    {
+      "relative_path": "producer/picture.bound-probe.json",
+      "bytes": 4130,
+      "sha256": "0d358bbbfbff8a435fd60621a026531fe44d06d1325fa8a1036fd7b59fe36310",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\picture.bound-probe.json",
+        "bytes": 4130,
+        "sha256": "0d358bbbfbff8a435fd60621a026531fe44d06d1325fa8a1036fd7b59fe36310"
+      }
+    },
+    {
+      "relative_path": "README.md",
+      "bytes": 2660,
+      "sha256": "0e7661c3456b0862fbc2675bd0bd3f86d8814dc6e79e60c7074baaf36a771392",
+      "source": {
+        "generated_from_actual_reports": true
+      }
+    }
+  ],
+  "exact_movie_identity_reused": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346"
+  },
+  "current_actual_audit_state": "PASS_MACHINE_STRUCTURE_COUNTS_AND_EXACT_AAC_CLOCK_ONLY",
+  "full_movie_media_included": false,
+  "whole_decode_stdio_included": false,
+  "PCM_or_WAV_included": false,
+  "decoded_AAC_clock_table_included": true,
+  "historical_interrupted_attempt_preserved": true,
+  "human_signoff": false,
+  "metadata_catalog_verification_is_new_media_audit": false
+}

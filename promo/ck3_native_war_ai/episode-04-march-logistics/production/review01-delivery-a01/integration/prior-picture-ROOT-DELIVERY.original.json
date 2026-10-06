@@ -1,0 +1,38 @@
+{
+  "state": "COMPLETE_PRIOR_FINAL_PICTURE_TEXT_CODE_GIT_INTEGRATION",
+  "at_utc": "2026-10-06T04:00:38.022679+00:00",
+  "master_commit": "16de9d530b608522aefcce3261271aac77386d79",
+  "checkout": "C:\\w\\e4t168a01",
+  "clean": true,
+  "ordinary_FF_push": true,
+  "base": "448fcf0485799c2412ee8f2c1f26a1c440f6b8f7",
+  "original_source_files": 33,
+  "changed_paths": 36,
+  "original_push_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\final-picture-text-integration-a01\\commit-export-a02\\PUSHED.json",
+    "bytes": 1177,
+    "sha256": "c9ba6b0300cb1f601d756c6d0418550ef1c1b77c1c41abcd97abd08daa61c86b"
+  },
+  "original_true_archive_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\final-picture-text-integration-a01\\commit-export-a02\\EXACT-GIT-EXPORT.json",
+    "bytes": 931,
+    "sha256": "7230a3cdd7fbb450a9dbda7bb2a22084e77d2234b3bab8f8c85713bed01ef512"
+  },
+  "original_strict_tests_not_repeated": true,
+  "official_CI": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\review01-git-completion-a01\\prior-picture-CI-close-a01\\OFFICIAL-CI-RESULT.json",
+    "bytes": 24616,
+    "sha256": "70aa3dfb5af9fa85888b732d078ed3c750c632d045f79286b1f13dec93d972ac"
+  },
+  "official_run_url": "https://github.com/XenoAmess/ck3_eternal_recurrence/actions/runs/37398374126",
+  "official_actual_terminal_success": true,
+  "official_step_records": 82,
+  "task": "ck3-e04-final-picture-text-integrate-refill-20261006-a01",
+  "DONE_sequence": 5230,
+  "resources": [],
+  "movie_audit_OneDrive_human_signoff_credit": null,
+  "historical_RUNNING_NULL_bytes_retained": true,
+  "media_runtime_or_UI_actions": 0,
+  "main_D_checkout_mutated": false,
+  "evidence_layer": "Fresh exact official CI and existing small source integration receipts only."
+}

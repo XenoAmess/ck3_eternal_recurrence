@@ -1,0 +1,388 @@
+{
+  "schema": "xar.e04.final-coded-movie-sample-index.v1",
+  "state": "ACTUAL_18_CODED_PNGS_PENDING_ROOT_PIXEL_REVIEW",
+  "created_utc": "2026-10-06T01:18:20.034919+00:00",
+  "movie": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346"
+  },
+  "bound_probe": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\picture.bound-probe.json",
+    "bytes": 4130,
+    "sha256": "0d358bbbfbff8a435fd60621a026531fe44d06d1325fa8a1036fd7b59fe36310"
+  },
+  "producer_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\picture-receipt.json",
+    "bytes": 551007,
+    "sha256": "ad2a22ef4ea69faf17a464e535f5834a8db30bd4bf0ee080b013f599eb00540a"
+  },
+  "samples": [
+    {
+      "label": "C01-04-chapter-context",
+      "frame_zero_based": 2277,
+      "actual_video_pts": 3643200,
+      "time_base": "1/48000",
+      "actual_video_seconds": "759/10",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C01-04-chapter-context.png",
+        "bytes": 1534470,
+        "sha256": "ecf058b299ea3b88d1e25de6b9a03d274b3483700b9afcc51ed594d1815f0e50"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "stable chapter actual coded context",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C01-04-chapter-context",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C02-05-chapter-context",
+      "frame_zero_based": 8213,
+      "actual_video_pts": 13140800,
+      "time_base": "1/48000",
+      "actual_video_seconds": "8213/30",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C02-05-chapter-context.png",
+        "bytes": 2032774,
+        "sha256": "14be0d4c707b11ba758162506433cc1e98d0a6558afe6e8dd182522ff40a6d52"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "stable chapter actual coded context",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C02-05-chapter-context",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C03-09-chapter-context",
+      "frame_zero_based": 18970,
+      "actual_video_pts": 30352000,
+      "time_base": "1/48000",
+      "actual_video_seconds": "1897/3",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C03-09-chapter-context.png",
+        "bytes": 1929315,
+        "sha256": "2e68527efe25d3b1c9a165c3039e7454ae1fec40a84c068cc4fbb13ddd9e1be9"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "stable chapter actual coded context",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C03-09-chapter-context",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C04-05-chapter-context",
+      "frame_zero_based": 24525,
+      "actual_video_pts": 39240000,
+      "time_base": "1/48000",
+      "actual_video_seconds": "1635/2",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C04-05-chapter-context.png",
+        "bytes": 1709240,
+        "sha256": "54ef0e212273b8f51348f4821a13dca5f273a081dc563f5ed25d26a35bdf1147"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "stable chapter actual coded context",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C04-05-chapter-context",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C05-01-center",
+      "frame_zero_based": 29377,
+      "actual_video_pts": 47003200,
+      "time_base": "1/48000",
+      "actual_video_seconds": "29377/30",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-01-center.png",
+        "bytes": 2000060,
+        "sha256": "2e41fc40e33b214dcf6d87892501850373a724d429a069dc0d0b94103581001a"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "updated paragraph center",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C05-01-center",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C05-04-center",
+      "frame_zero_based": 31670,
+      "actual_video_pts": 50672000,
+      "time_base": "1/48000",
+      "actual_video_seconds": "3167/3",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-04-center.png",
+        "bytes": 1905902,
+        "sha256": "24daecbaf6d1905533d9fcfa2deeff962b3ad872ffea41baa3eee5e43501dac0"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "updated paragraph center",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C05-04-center",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C05-05-center",
+      "frame_zero_based": 32921,
+      "actual_video_pts": 52673600,
+      "time_base": "1/48000",
+      "actual_video_seconds": "32921/30",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-05-center.png",
+        "bytes": 2006849,
+        "sha256": "cb34838cf44356a4254f00fa777fa7fde84a42386da66dc6d8ac12c0a8a07d61"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "updated paragraph center",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C05-05-center",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C05-08-center",
+      "frame_zero_based": 35586,
+      "actual_video_pts": 56937600,
+      "time_base": "1/48000",
+      "actual_video_seconds": "5931/5",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-08-center.png",
+        "bytes": 1928457,
+        "sha256": "5a3344bbeda40817a41893d636fab15f631fed882e956e76e3221cd14485e167"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "updated paragraph center",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C05-08-center",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C05-10-center",
+      "frame_zero_based": 37571,
+      "actual_video_pts": 60113600,
+      "time_base": "1/48000",
+      "actual_video_seconds": "37571/30",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-10-center.png",
+        "bytes": 2027563,
+        "sha256": "c3071fe57e7a709aad7b45e79afc9340073f9162bf2df86ac93eef09e60826d6"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "updated paragraph center",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C05-10-center",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C05-14-center",
+      "frame_zero_based": 41489,
+      "actual_video_pts": 66382400,
+      "time_base": "1/48000",
+      "actual_video_seconds": "41489/30",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-14-center.png",
+        "bytes": 2101067,
+        "sha256": "fb9d76bdc6dfc1d4888febb7f8d54d7f61846aba552f73cec48a1bc6a045829e"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "updated paragraph center",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C05-14-center",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C05-15-center",
+      "frame_zero_based": 42966,
+      "actual_video_pts": 68745600,
+      "time_base": "1/48000",
+      "actual_video_seconds": "7161/5",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-15-center.png",
+        "bytes": 1964075,
+        "sha256": "642e700828f958b29462467ab03cebf330abb7b7090aebb65f2a24016fc841d7"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "updated paragraph center",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C05-15-center",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C05-16-center",
+      "frame_zero_based": 44165,
+      "actual_video_pts": 70664000,
+      "time_base": "1/48000",
+      "actual_video_seconds": "8833/6",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-16-center.png",
+        "bytes": 1882554,
+        "sha256": "81cbd8093a53ba29045997a1144234793b188b342cc1b7d4f7d18c59c2a974b8"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "updated paragraph center",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C05-16-center",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C06-10-center",
+      "frame_zero_based": 51461,
+      "actual_video_pts": 82337600,
+      "time_base": "1/48000",
+      "actual_video_seconds": "51461/30",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C06-10-center.png",
+        "bytes": 2062711,
+        "sha256": "1425cd7e24ab8fe35129a3e798ad9d1133a539abf167145ca70807ef25b457ff"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "updated paragraph center",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C06-10-center",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C05-14-B-postmerge-start",
+      "frame_zero_based": 40490,
+      "actual_video_pts": 64784000,
+      "time_base": "1/48000",
+      "actual_video_seconds": "4049/3",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-14-B-postmerge-start.png",
+        "bytes": 1967462,
+        "sha256": "3e9be1791cbe8efc98f851fce278f0fef7644dcc35111c209df74864e8a4b7c3"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "B actual postmerge context and limits",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C05-14-B-postmerge-start",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C05-14-final-A-bridge",
+      "frame_zero_based": 42470,
+      "actual_video_pts": 67952000,
+      "time_base": "1/48000",
+      "actual_video_seconds": "4247/3",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-14-final-A-bridge.png",
+        "bytes": 2025447,
+        "sha256": "fc363f333442b733cd56ef91a13e54eca6bbc5988f1132bf4a76cc1c7b9bf370"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "return to A bridge",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C05-14-final-A-bridge",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C05-16-A-opening",
+      "frame_zero_based": 43623,
+      "actual_video_pts": 69796800,
+      "time_base": "1/48000",
+      "actual_video_seconds": "14541/10",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-16-A-opening.png",
+        "bytes": 1782497,
+        "sha256": "bfea06a13682436c2cea5c1e27f6ef9b85a27e294b22db3b86886700d12e378e"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "A cash opening",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C05-16-A-opening",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "C05-16-C-cash-context",
+      "frame_zero_based": 44193,
+      "actual_video_pts": 70708800,
+      "time_base": "1/48000",
+      "actual_video_seconds": "14731/10",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-16-C-cash-context.png",
+        "bytes": 1928166,
+        "sha256": "ac561ea766d7394dd26e62a3df6bfcd759c298641ddf3f625a726f38e222ba45"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "C cash/context transition",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\C05-16-C-cash-context",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    },
+    {
+      "label": "final-coded-tail",
+      "frame_zero_based": 52073,
+      "actual_video_pts": 83316800,
+      "time_base": "1/48000",
+      "actual_video_seconds": "52073/30",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\final-coded-tail.png",
+        "bytes": 1934260,
+        "sha256": "8496d2c01363ebb9310cee492f7a61c1fdb9bbf851b1a6417d31d24017fdcd55"
+      },
+      "pixel_geometry": [
+        1920,
+        1080
+      ],
+      "scope": "actual final coded frame",
+      "command_audit": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\commands\\final-coded-tail",
+      "Root_actual_pixel_review": null,
+      "native_game_event_exact_PTS": false
+    }
+  ],
+  "new_movie_full_probes_or_hashes": 0,
+  "bounded_per_frame_seek_preroll_seconds": 2,
+  "whole_movie_decode_audit": false,
+  "human_full_1x": false,
+  "human_signoff": false,
+  "full_continuous_source_clean": false
+}

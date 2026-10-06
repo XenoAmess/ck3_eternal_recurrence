@@ -1,0 +1,14 @@
+{
+  "partial_artifacts": [
+    {
+      "bytes": 1967462,
+      "exists": true,
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-14-B-postmerge-start.png"
+    }
+  ],
+  "returncode": 0,
+  "schema_version": 1,
+  "status": "succeeded",
+  "stderr": "stderr.txt",
+  "stdout": "stdout.txt"
+}

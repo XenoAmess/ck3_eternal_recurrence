@@ -1,0 +1,14 @@
+{
+  "partial_artifacts": [
+    {
+      "bytes": 1199061934,
+      "exists": true,
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4"
+    }
+  ],
+  "returncode": 0,
+  "schema_version": 1,
+  "status": "succeeded",
+  "stderr": "stderr.txt",
+  "stdout": "stdout.txt"
+}

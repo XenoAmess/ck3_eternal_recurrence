@@ -1,0 +1,290 @@
+{
+  "schema": "xar.e04.Root-actual-coded18-image-review.v1",
+  "created_utc": "2026-10-06T04:01:28.529681+00:00",
+  "state": "ROOT_ACTUAL_18_CODED_IMAGE_REVIEW_NO_BLOCK",
+  "reviewer": "/root AI assistant",
+  "movie": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346"
+  },
+  "index": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\INDEX.json",
+    "bytes": 15494,
+    "sha256": "50d691f2c102c9959f3d7bb4bc39f851f1b3396f085985ed9327e9d65f107c01"
+  },
+  "closed_movie_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\CLOSED-MOVIE-DELIVERY-a01.json",
+    "bytes": 4673,
+    "sha256": "3ddb222eaabcb8c1db767fdb335b8b98259147abb145a3f4d156f9e7470ab2f3"
+  },
+  "Root_story_freeze": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-Root-actual-row-freeze-a01\\Root-final-story-freeze.json",
+    "bytes": 25852,
+    "sha256": "975ade3d256a8e84511e3206dbb60c7f04bf2131d9bc053850b26d8c0eb4caa6"
+  },
+  "review_method": "Root directly viewed all18 final-MP4 decoded PNGs through view_image(detail=original), in3batches of6, then recorded actual visible findings. This script checks bounded filebindings only.",
+  "samples": [
+    {
+      "label": "C01-04-chapter-context",
+      "frame_zero_based": 2277,
+      "actual_video_pts": 3643200,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C01-04-chapter-context.png",
+        "bytes": 1534470,
+        "sha256": "ecf058b299ea3b88d1e25de6b9a03d274b3483700b9afcc51ed594d1815f0e50"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "Chinese/English subtitle visible and readable. Independent-sample card states supply 300 with one missing soldier, separate integer +1 and weighted merge inventory. Independent replay label distinguishes map background from research statements.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C02-05-chapter-context",
+      "frame_zero_based": 8213,
+      "actual_video_pts": 13140800,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C02-05-chapter-context.png",
+        "bytes": 2032774,
+        "sha256": "14be0d4c707b11ba758162506433cc1e98d0a6558afe6e8dd182522ff40a6d52"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "Independent replay label and enlarged 1086 / supply300/300 HUD readable. Both subtitles state the first replay day14-to15 supply change from about291.23 to300.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C03-09-chapter-context",
+      "frame_zero_based": 18970,
+      "actual_video_pts": 30352000,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C03-09-chapter-context.png",
+        "bytes": 1929315,
+        "sha256": "2e68527efe25d3b1c9a165c3039e7454ae1fec40a84c068cc4fbb13ddd9e1be9"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "Chinese/English subtitles state all27 regiment identities and maximum strengths unchanged. Independent replay label and siege-event HUD remain readable; screenshot alone does not prove cause.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C04-05-chapter-context",
+      "frame_zero_based": 24525,
+      "actual_video_pts": 39240000,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C04-05-chapter-context.png",
+        "bytes": 1709240,
+        "sha256": "54ef0e212273b8f51348f4821a13dca5f273a081dc563f5ed25d26a35bdf1147"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "Independent-sample card explicitly distinguishes Jan25 progress61.875%, remaining about3.08days and UI4days/Jan29 forecast. Both subtitles readable; background marked independent replay.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C05-01-center",
+      "frame_zero_based": 29377,
+      "actual_video_pts": 47003200,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-01-center.png",
+        "bytes": 2000060,
+        "sha256": "2e41fc40e33b214dcf6d87892501850373a724d429a069dc0d0b94103581001a"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "Opaque overview card states A reachedLondon, Bday38 conditions changed/observation stopped, C first observedday77 with sampling deviations, and noABCwinner. Subtitle questions and source-context banner readable.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C05-04-center",
+      "frame_zero_based": 31670,
+      "actual_video_pts": 50672000,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-04-center.png",
+        "bytes": 1905902,
+        "sha256": "24daecbaf6d1905533d9fcfa2deeff962b3ad872ffea41baa3eee5e43501dac0"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "Card shows B27 split15+12,3337+3342=6679, originalregiment checks and explicitly independent qualification background rather than this action. No subtitle is visible at this sampled instant; this is not an assertion about entire paragraph coverage.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C05-05-center",
+      "frame_zero_based": 32921,
+      "actual_video_pts": 52673600,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-05-center.png",
+        "bytes": 2006849,
+        "sha256": "cb34838cf44356a4254f00fa777fa7fde84a42386da66dc6d8ac12c0a8a07d61"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "ActualC May21 paused terminal replay label. Map army6689 and HUD101/300 with red1% visible. Card states arrival observation interval(75,77], net+10, original27/max6747, supply110.38to101.90 and sampling/cause boundaries. Both subtitle lines readable.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C05-08-center",
+      "frame_zero_based": 35586,
+      "actual_video_pts": 56937600,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-08-center.png",
+        "bytes": 1928457,
+        "sha256": "5a3344bbeda40817a41893d636fab15f631fed882e956e76e3221cd14485e167"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "Bcard separates childday20to21 supply110.38to100 from Mainday31to32 supply106.14to126.14. Qualification background explicitly separate, and paused postwrite clip wording visible. Chinese/English subtitle agrees with child window.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C05-10-center",
+      "frame_zero_based": 37571,
+      "actual_video_pts": 60113600,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-10-center.png",
+        "bytes": 2027563,
+        "sha256": "c3071fe57e7a709aad7b45e79afc9340073f9162bf2df86ac93eef09e60826d6"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "ActualB Apr12 paused replay label, army6690 and supply100/100 visible. Card explains expected113.06109 cap100/actual100, original27 plusnew1/1, commanderchange causeunknown and no merge-click instant claim. Bilingual subtitle readable.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C05-14-center",
+      "frame_zero_based": 41489,
+      "actual_video_pts": 66382400,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-14-center.png",
+        "bytes": 2101067,
+        "sha256": "fb9d76bdc6dfc1d4888febb7f8d54d7f61846aba552f73cec48a1bc6a045829e"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "Background explicitlyA independenthistoricalreplay. Card retains Bday38 stopped/52remaining/new28th1/1/commanderunknown, noLondoncomparison, Cplanned1/actual2 sampling and no winner. Bilingual Bstop subtitle readable.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C05-15-center",
+      "frame_zero_based": 42966,
+      "actual_video_pts": 68745600,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-15-center.png",
+        "bytes": 1964075,
+        "sha256": "642e700828f958b29462467ab03cebf330abb7b7090aebb65f2a24016fc841d7"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "A historical-background label readable. OpaqueA resultcard states day51 firstobservation, interval(49,51], original27/net+10/max6747/supply106.14, no per-update casualty/refill ledger. No subtitle visible at this sampled instant.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C05-16-center",
+      "frame_zero_based": 44165,
+      "actual_video_pts": 70664000,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-16-center.png",
+        "bytes": 1882554,
+        "sha256": "81cbd8093a53ba29045997a1144234793b188b342cc1b7d4f7d18c59c2a974b8"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "C May21 paused terminal label with6689 and101/300 visible. Cashcard separately names Anet16.06 and Cnet15.82, no proven marchpayment/embarkfee, nocauseledger and noABCwinner. Both subtitles say netchange.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C06-10-center",
+      "frame_zero_based": 51461,
+      "actual_video_pts": 82337600,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C06-10-center.png",
+        "bytes": 2062711,
+        "sha256": "1425cd7e24ab8fe35129a3e798ad9d1133a539abf167145ca70807ef25b457ff"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "A independenthistoricalbackground label. Closingcard keeps Aarrival/Cday77 observation, Bconditionschanged/nocomparison, Csamplinglimitations, originalcohortscope and starvation/paymentledgerunknown. Both subtitles readable.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C05-14-B-postmerge-start",
+      "frame_zero_based": 40490,
+      "actual_video_pts": 64784000,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-14-B-postmerge-start.png",
+        "bytes": 1967462,
+        "sha256": "3e9be1791cbe8efc98f851fce278f0fef7644dcc35111c209df74864e8a4b7c3"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "ActualB Apr12 paused replay label, map6690/supply100/100. Limitscard retains new28th1/1 and Bstop/noLondoncomparison. Both subtitle lines about aligning date/event are readable.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C05-14-final-A-bridge",
+      "frame_zero_based": 42470,
+      "actual_video_pts": 67952000,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-14-final-A-bridge.png",
+        "bytes": 2025447,
+        "sha256": "fc363f333442b733cd56ef91a13e54eca6bbc5988f1132bf4a76cc1c7b9bf370"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "Background is visiblyA and labeledA independenthistoricalreplay. Chinese/English subtitle explicitly returns to whole-army direct-routeA; limitscard also names this transition.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C05-16-A-opening",
+      "frame_zero_based": 43623,
+      "actual_video_pts": 69796800,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-16-A-opening.png",
+        "bytes": 1782497,
+        "sha256": "bfea06a13682436c2cea5c1e27f6ef9b85a27e294b22db3b86886700d12e378e"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "A historicalreplay source label and London siege6689 visible. Chinese/English subtitle says netdecrease16.06. Cashcard names Afirst/Cafter and explicitly avoids classifying netcash as payment.",
+      "sample_blocker": null
+    },
+    {
+      "label": "C05-16-C-cash-context",
+      "frame_zero_based": 44193,
+      "actual_video_pts": 70708800,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\C05-16-C-cash-context.png",
+        "bytes": 1928166,
+        "sha256": "ac561ea766d7394dd26e62a3df6bfcd759c298641ddf3f625a726f38e222ba45"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "C May21 paused terminal source label,6689/101/300/red1% visible. Chinese/English subtitle says onlynetchange, with separate Anet16.06/Cnet15.82 and ledgerunknown card.",
+      "sample_blocker": null
+    },
+    {
+      "label": "final-coded-tail",
+      "frame_zero_based": 52073,
+      "actual_video_pts": 83316800,
+      "time_base": "1/48000",
+      "PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\final-coded-samples-a01\\final-coded-tail.png",
+        "bytes": 1934260,
+        "sha256": "8496d2c01363ebb9310cee492f7a61c1fdb9bbf851b1a6417d31d24017fdcd55"
+      },
+      "Root_direct_view_original_1920x1080": true,
+      "visible_findings": "Lastcodedframe52073 retains readable closingevidence/boundarycard and independentqualificationreplay label. No subtitle visible at this exact final frame. No sampledframe clipping or black final picture observed.",
+      "sample_blocker": null
+    }
+  ],
+  "blockers": [],
+  "whole_movie_rehashes": 0,
+  "full_movie_video_decode_audit": false,
+  "full_AAC_timing_or_audio_listening_review": false,
+  "full_continuous_source_clean_review": false,
+  "native_game_event_exact_PTS_review": false,
+  "human_full_1x_review": false,
+  "human_signoff": false,
+  "decision_scope": "No blocker observed in these18 static codedframes; actual wholemovie automatedaudit and humanfull1xreview are separate."
+}

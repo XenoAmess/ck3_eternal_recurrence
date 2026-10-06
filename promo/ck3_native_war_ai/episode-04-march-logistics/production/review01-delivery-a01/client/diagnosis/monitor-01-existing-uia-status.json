@@ -1,0 +1,35 @@
+{
+  "utc": "2026-10-06T04:10:51.200966+00:00",
+  "scope": "only existing OneDrive UIA target/statusText; no invocation/focus/input",
+  "metadata_query_performed": false,
+  "target": "CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+  "windows": [
+    {
+      "hwnd": 193530182,
+      "statusText": [
+        {
+          "name": "正在上传文件，剩余 532.5 MB (53%)",
+          "type": "TextControl"
+        }
+      ],
+      "target_rows": [
+        {
+          "name": "CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+          "automation_id": "progressItem",
+          "type": "ButtonControl",
+          "target_action_text": [
+            "正在上传 616.0 MB/1.1 GB"
+          ]
+        },
+        {
+          "name": "CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+          "automation_id": "itemName",
+          "type": "TextControl"
+        }
+      ]
+    }
+  ],
+  "classification": "ACTUAL_UIA_UPLOAD_IN_PROGRESS",
+  "nodes_visited": 247,
+  "end_utc": "2026-10-06T04:10:51.617238+00:00"
+}

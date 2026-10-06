@@ -1,0 +1,354 @@
+{
+  "approval_granted": false,
+  "artifact": {
+    "audio_tracks": [
+      {
+        "channels": 2,
+        "codec": "aac",
+        "index": 1,
+        "sample_rate": 48000
+      }
+    ],
+    "bytes": 1199061934,
+    "container": "mov,mp4,m4a,3gp,3g2,mj2",
+    "duration_seconds": "1735.800000",
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "resolution": {
+      "height": 1080,
+      "width": 1920
+    },
+    "sha256": "A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346",
+    "subtitle_tracks": [],
+    "video_tracks": [
+      {
+        "average_frame_rate": "30/1",
+        "codec": "h264",
+        "height": 1080,
+        "index": 0,
+        "width": 1920
+      }
+    ]
+  },
+  "binding_provenance": {
+    "is_first_and_all_boundary_frame_package": false,
+    "is_review_CLI_execution": false,
+    "movie_subject": "Existing actual producer public bound media probe + preserved native artifact; no new whole-movie hash",
+    "sample_images": "Existing 18 actual MP4 coded PNGs / original integer PTS / extraction command rc 0"
+  },
+  "format_version": 1,
+  "frame_evidence": [
+    {
+      "chapter_ids": [
+        "C01"
+      ],
+      "id": "C01-04-chapter-context",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C01-04-chapter-context.png",
+      "roles": [
+        "stable chapter actual coded context"
+      ],
+      "timestamp_seconds": "75.900000"
+    },
+    {
+      "chapter_ids": [
+        "C02"
+      ],
+      "id": "C02-05-chapter-context",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C02-05-chapter-context.png",
+      "roles": [
+        "stable chapter actual coded context"
+      ],
+      "timestamp_seconds": "273.766667"
+    },
+    {
+      "chapter_ids": [
+        "C03"
+      ],
+      "id": "C03-09-chapter-context",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C03-09-chapter-context.png",
+      "roles": [
+        "stable chapter actual coded context"
+      ],
+      "timestamp_seconds": "632.333333"
+    },
+    {
+      "chapter_ids": [
+        "C04"
+      ],
+      "id": "C04-05-chapter-context",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C04-05-chapter-context.png",
+      "roles": [
+        "stable chapter actual coded context"
+      ],
+      "timestamp_seconds": "817.500000"
+    },
+    {
+      "chapter_ids": [
+        "C05"
+      ],
+      "id": "C05-01-center",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C05-01-center.png",
+      "roles": [
+        "updated paragraph center"
+      ],
+      "timestamp_seconds": "979.233333"
+    },
+    {
+      "chapter_ids": [
+        "C05"
+      ],
+      "id": "C05-04-center",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C05-04-center.png",
+      "roles": [
+        "updated paragraph center"
+      ],
+      "timestamp_seconds": "1055.666667"
+    },
+    {
+      "chapter_ids": [
+        "C05"
+      ],
+      "id": "C05-05-center",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C05-05-center.png",
+      "roles": [
+        "updated paragraph center"
+      ],
+      "timestamp_seconds": "1097.366667"
+    },
+    {
+      "chapter_ids": [
+        "C05"
+      ],
+      "id": "C05-08-center",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C05-08-center.png",
+      "roles": [
+        "updated paragraph center"
+      ],
+      "timestamp_seconds": "1186.200000"
+    },
+    {
+      "chapter_ids": [
+        "C05"
+      ],
+      "id": "C05-10-center",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C05-10-center.png",
+      "roles": [
+        "updated paragraph center"
+      ],
+      "timestamp_seconds": "1252.366667"
+    },
+    {
+      "chapter_ids": [
+        "C05"
+      ],
+      "id": "C05-14-center",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C05-14-center.png",
+      "roles": [
+        "updated paragraph center"
+      ],
+      "timestamp_seconds": "1382.966667"
+    },
+    {
+      "chapter_ids": [
+        "C05"
+      ],
+      "id": "C05-15-center",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C05-15-center.png",
+      "roles": [
+        "updated paragraph center"
+      ],
+      "timestamp_seconds": "1432.200000"
+    },
+    {
+      "chapter_ids": [
+        "C05"
+      ],
+      "id": "C05-16-center",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C05-16-center.png",
+      "roles": [
+        "updated paragraph center"
+      ],
+      "timestamp_seconds": "1472.166667"
+    },
+    {
+      "chapter_ids": [
+        "C06"
+      ],
+      "id": "C06-10-center",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C06-10-center.png",
+      "roles": [
+        "updated paragraph center"
+      ],
+      "timestamp_seconds": "1715.366667"
+    },
+    {
+      "chapter_ids": [
+        "C05"
+      ],
+      "id": "C05-14-B-postmerge-start",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C05-14-B-postmerge-start.png",
+      "roles": [
+        "B actual postmerge context and limits"
+      ],
+      "timestamp_seconds": "1349.666667"
+    },
+    {
+      "chapter_ids": [
+        "C05"
+      ],
+      "id": "C05-14-final-A-bridge",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C05-14-final-A-bridge.png",
+      "roles": [
+        "return to A bridge"
+      ],
+      "timestamp_seconds": "1415.666667"
+    },
+    {
+      "chapter_ids": [
+        "C05"
+      ],
+      "id": "C05-16-A-opening",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C05-16-A-opening.png",
+      "roles": [
+        "A cash opening"
+      ],
+      "timestamp_seconds": "1454.100000"
+    },
+    {
+      "chapter_ids": [
+        "C05"
+      ],
+      "id": "C05-16-C-cash-context",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/C05-16-C-cash-context.png",
+      "roles": [
+        "C cash/context transition"
+      ],
+      "timestamp_seconds": "1473.100000"
+    },
+    {
+      "chapter_ids": [],
+      "id": "final-coded-tail",
+      "path": "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/final-coded-samples-a01/final-coded-tail.png",
+      "roles": [
+        "actual final coded frame"
+      ],
+      "timestamp_seconds": "1735.766667"
+    }
+  ],
+  "full_watch": {
+    "checklist": [
+      {
+        "id": "watch-complete-at-1x",
+        "instruction": "Watch and listen continuously at exactly 1.0x from 0 through 1735.800000 seconds, without skipping or scrubbing.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "id": "verify-picture-sound-subtitles",
+        "instruction": "Confirm picture and sound remain present and synchronized, and Chinese/English subtitles plus A/B/C/source labels stay readable for the full movie.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "id": "verify-entry-exit",
+        "instruction": "Inspect the actual opening during playback and the actual final coded frame. Existing samples do not include coded frame zero.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "chapter_id": "C01",
+        "id": "watch-C01",
+        "instruction": "Watch and listen to the entire chapter and compare its 69-scene timeline and evidence limits.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "chapter_id": "C02",
+        "id": "watch-C02",
+        "instruction": "Watch and listen to the entire chapter and compare its 69-scene timeline and evidence limits.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "chapter_id": "C03",
+        "id": "watch-C03",
+        "instruction": "Watch and listen to the entire chapter and compare its 69-scene timeline and evidence limits.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "chapter_id": "C04",
+        "id": "watch-C04",
+        "instruction": "Watch and listen to the entire chapter and compare its 69-scene timeline and evidence limits.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "chapter_id": "C05",
+        "id": "watch-C05",
+        "instruction": "Watch and listen to the entire chapter and compare its 69-scene timeline and evidence limits.",
+        "required": true,
+        "state": "pending"
+      },
+      {
+        "chapter_id": "C06",
+        "id": "watch-C06",
+        "instruction": "Watch and listen to the entire chapter and compare its 69-scene timeline and evidence limits.",
+        "required": true,
+        "state": "pending"
+      }
+    ],
+    "no_skipping": true,
+    "required_playback_speed": 1.0
+  },
+  "human_response": {
+    "checklist_results": {},
+    "decision": null,
+    "notes": null,
+    "reviewed_at": null,
+    "reviewer": null
+  },
+  "is_signoff": false,
+  "kind": "xar-promo-human-review-template",
+  "state": "pending-human-review",
+  "template_only": true,
+  "timeline": {
+    "chapters": [
+      {
+        "boundary_seconds": [],
+        "end_seconds": "173.266667",
+        "id": "C01",
+        "start_seconds": "0.000000"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "444.566667",
+        "id": "C02",
+        "start_seconds": "173.266667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "722.833333",
+        "id": "C03",
+        "start_seconds": "444.566667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "968.266667",
+        "id": "C04",
+        "start_seconds": "722.833333"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "1498.266667",
+        "id": "C05",
+        "start_seconds": "968.266667"
+      },
+      {
+        "boundary_seconds": [],
+        "end_seconds": "1735.800000",
+        "id": "C06",
+        "start_seconds": "1498.266667"
+      }
+    ]
+  }
+}

@@ -1,0 +1,17 @@
+{
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "-m",
+    "xar_promo",
+    "validate",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\toolchain-run-a01\\run-manifest.json",
+    "--profile",
+    "authoring",
+    "--json"
+  ],
+  "cwd": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01",
+  "start_utc": "2026-10-06T01:16:24.074693+00:00"
+}

@@ -1,0 +1,266 @@
+{
+  "utc": "2026-10-06T04:09:33.307446+00:00",
+  "scope": "existing OneDrive UIA read-only; no invoke or focus",
+  "metadata_query_performed": false,
+  "target": "CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+  "onedrive_window_status": [
+    {
+      "hwnd": 193530182,
+      "statusText": [
+        {
+          "name": "正在上传文件，剩余 685.4 MB (40%)",
+          "type": "TextControl"
+        }
+      ],
+      "target_rows": [
+        {
+          "name": "CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+          "automation_id": "progressItem",
+          "type": "ButtonControl"
+        },
+        {
+          "name": "CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+          "automation_id": "itemName",
+          "type": "TextControl"
+        }
+      ],
+      "status_markers": [
+        {
+          "markers": [
+            "正在上传"
+          ],
+          "automation_id": "statusText",
+          "type": "TextControl"
+        },
+        {
+          "markers": [
+            "正在上传"
+          ],
+          "automation_id": "itemAction",
+          "type": "TextControl"
+        }
+      ]
+    }
+  ],
+  "tray_status": [
+    {
+      "name": "OneDrive - 个人\r\n正在上传文件(40%)",
+      "automation_id": "",
+      "type": "ButtonControl"
+    }
+  ],
+  "local_diagnostics_numeric_status": {
+    "mtime_utc": "2026-10-06T03:50:58.047367+00:00",
+    "fields": [
+      {
+        "key": "BytesDownloaded",
+        "value": "0"
+      },
+      {
+        "key": "BytesToDownload",
+        "value": "0"
+      },
+      {
+        "key": "BytesToUpload",
+        "value": "0"
+      },
+      {
+        "key": "BytesUploaded",
+        "value": "0"
+      },
+      {
+        "key": "DownloadSpeedBytesPerSec",
+        "value": "0"
+      },
+      {
+        "key": "FilesToDownload",
+        "value": "0"
+      },
+      {
+        "key": "FilesToUpload",
+        "value": "0"
+      },
+      {
+        "key": "OfficeSyncActive",
+        "value": "0"
+      },
+      {
+        "key": "OfficeSyncEnabled",
+        "value": "0"
+      },
+      {
+        "key": "UploadSpeedBytesPerSec",
+        "value": "4761133"
+      },
+      {
+        "key": "bytesAvailableOnDiskDrive",
+        "value": "16131317760"
+      },
+      {
+        "key": "diskReadBytesDelta",
+        "value": "-1"
+      },
+      {
+        "key": "diskWriteBytesDelta",
+        "value": "-1"
+      },
+      {
+        "key": "drivesChangeEnumPending",
+        "value": "0"
+      },
+      {
+        "key": "drivesScanRequested",
+        "value": "0"
+      },
+      {
+        "key": "drivesWaitingForInitialSync",
+        "value": "0"
+      },
+      {
+        "key": "errorFromGetDiskSizeAPICall",
+        "value": "0"
+      },
+      {
+        "key": "failedBytesDownloadedTotal",
+        "value": "0"
+      },
+      {
+        "key": "failedBytesUploadedTotal",
+        "value": "0"
+      },
+      {
+        "key": "filesToDownload",
+        "value": "0"
+      },
+      {
+        "key": "fullScanCount",
+        "value": "0"
+      },
+      {
+        "key": "invalidatedScanCount",
+        "value": "0"
+      },
+      {
+        "key": "numAbortedReSyncNeeded",
+        "value": "0"
+      },
+      {
+        "key": "numAbortedUnexpectedHttpStatus",
+        "value": "0"
+      },
+      {
+        "key": "numDownloadErrorsReported",
+        "value": "0"
+      },
+      {
+        "key": "numDrivesNeedingEventualScan",
+        "value": "0"
+      },
+      {
+        "key": "numExternalFileUploads",
+        "value": "0"
+      },
+      {
+        "key": "numFileDownloads",
+        "value": "0"
+      },
+      {
+        "key": "numFileFailedDownloads",
+        "value": "0"
+      },
+      {
+        "key": "numFileFailedUploads",
+        "value": "0"
+      },
+      {
+        "key": "numFileUploads",
+        "value": "3"
+      },
+      {
+        "key": "numHashMismatchErrorsReported",
+        "value": "0"
+      },
+      {
+        "key": "numRealizerErrorsReported",
+        "value": "0"
+      },
+      {
+        "key": "numResyncs",
+        "value": "0"
+      },
+      {
+        "key": "numSelSyncDrives",
+        "value": "1"
+      },
+      {
+        "key": "numUploadErrorsReported",
+        "value": "0"
+      },
+      {
+        "key": "preciseScanCount",
+        "value": "0"
+      },
+      {
+        "key": "privateWorkingSetKBIncreaseDuringSyncVerification",
+        "value": "0"
+      },
+      {
+        "key": "scanState",
+        "value": "1"
+      },
+      {
+        "key": "scanStateStallDetected",
+        "value": "0"
+      },
+      {
+        "key": "seOfficeFilesToDownload",
+        "value": "0"
+      },
+      {
+        "key": "seOfficeFilesToUpload",
+        "value": "0"
+      },
+      {
+        "key": "successfulBytesDownloadedTotal",
+        "value": "0"
+      },
+      {
+        "key": "successfulBytesUploadedTotal",
+        "value": "95190145"
+      },
+      {
+        "key": "syncProgressState",
+        "value": "16777216"
+      },
+      {
+        "key": "syncStallDetected",
+        "value": "0"
+      },
+      {
+        "key": "totalDoScanWorkCpuTimeInMs",
+        "value": "449"
+      },
+      {
+        "key": "totalInvalidatedScanCpuTimeInMs",
+        "value": "0"
+      },
+      {
+        "key": "totalScanCpuTimeInMs",
+        "value": "481"
+      },
+      {
+        "key": "userOverriddenConcurrentUploads",
+        "value": "0"
+      },
+      {
+        "key": "vaultState",
+        "value": "2"
+      }
+    ]
+  },
+  "local_uploads_record": {
+    "bytes": 636,
+    "mtime_utc": "2026-10-06T04:09:04.082467+00:00",
+    "exact_target_name_present": true
+  }
+}

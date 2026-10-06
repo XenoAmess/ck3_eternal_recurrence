@@ -1,0 +1,493 @@
+{
+  "schema": "xar.e04.final-story-review-freeze.v1",
+  "approved_for_review_render": true,
+  "project_config": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a02\\promo-project-final-Review01.json",
+    "bytes": 86413,
+    "sha256": "3373c3ea8428edc877a52225a004bf3082c7ac72003eb4939e071ed1e4b65092"
+  },
+  "claim_ledger": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a02\\claim-ledger-final-BC-a06.json",
+    "bytes": 199066,
+    "sha256": "2ef65357de29c0d4245886cb06dd5a0454089849b15623f7fcbf47666e1b83c9"
+  },
+  "audio_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\ROOT-DELIVERY.json",
+    "bytes": 17606,
+    "sha256": "46269c38b047b783662862c3e336e03f2978abcc67449aad330daf9b90c7b1f0"
+  },
+  "subtitle_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\ROOT-DELIVERY.json",
+    "bytes": 23131,
+    "sha256": "66931359da98229b353383d90336ee2bc288d83509cafb70c94f0cb5579d4eae"
+  },
+  "C05_relative_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\E4-05-relative-ROOT-DELIVERY.json",
+    "bytes": 9983,
+    "sha256": "8b3a4552c2c69153d8e94dce4c6851eaf5b53908c99e1f5615ba6f0b0718c8ef"
+  },
+  "C06_relative_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\E4-06-relative-ROOT-DELIVERY.json",
+    "bytes": 6311,
+    "sha256": "2907a7ee566b09b4f052dd5ef626f9bd8cdb16829ab7c0e8dce2aeedc6cd751d"
+  },
+  "C_terminal_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-terminal-London-a01\\terminal.json",
+    "bytes": 6937,
+    "sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817"
+  },
+  "C_closed_media_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\ROOT-DELIVERY-a01.json",
+    "bytes": 5378,
+    "sha256": "6e477b4ef422ad9d756377d16d0cf3d4866ef95dc63e67ae2881368863cd3e61"
+  },
+  "release_probe": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\release-probe-a01.json",
+    "bytes": 4137,
+    "sha256": "a52578b9e3d88604a0817fccceae6e3f76a05ccaf6fb17753b2fe6e252b27e2d"
+  },
+  "picture_rows_json": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a03\\picture-rows.json",
+    "bytes": 80426,
+    "sha256": "dc0e1ff0683340868e9b8404e6727ff2a2710723848d56e4972bc73111c66787"
+  },
+  "C_sampling_deviation_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a02\\sources\\C-terminal-Root-review.json",
+    "bytes": 16482,
+    "sha256": "bfbeacb02084e5c20dc58730b8bcbb40fb2f49ee62ee922fed7ce491a5129c1b"
+  },
+  "audio_changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "subtitle_changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "picture_refresh_ids": [
+    "C05-01",
+    "C05-15"
+  ],
+  "approved_paragraphs": {
+    "C01-01": {
+      "zh_sha256": "87090d8d8ef920400dd5ee490936d496322a10e5da3618204ffe4107db8e9a51",
+      "en_sha256": "38650ea18f83bbee270850c71e720680ec81f82098163f5fdfa957be5e48ca96",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C01-02": {
+      "zh_sha256": "61880d19b30aa150166006ad00a7b9d003cddc632cca763d3e40c62d43231dd2",
+      "en_sha256": "03b15c58af5ab10f7f7916d655712fd3c7aa8aeeeb716afa8ac50d15b164e39d",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C01-03": {
+      "zh_sha256": "13c8ad8d55101b54dd082c27a576e522188d678436ad0e929999d7983d8691fc",
+      "en_sha256": "6ed57b477f91c4a4cc322a89af67b1b3f43a50a3d72d7b556aa0fb6e77332e56",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C01-04": {
+      "zh_sha256": "15802c7ce4652b8d2081c3d0c688e36387b61a0a49a9eb07ea136a3b417fc4d3",
+      "en_sha256": "88dbbd326b98a8df6b06328b7900e53514ebecac01a79ccee0dc63db602b245d",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C01-05": {
+      "zh_sha256": "222dacfaffd5f78c9b93b2b051715d50fa266056692c176cc1c04a5ba5ae936c",
+      "en_sha256": "28ed90bd9686e20686f7e65f63ffdcc300f8d5b124d830c5821ef79af4e5e8b9",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C01-06": {
+      "zh_sha256": "5a4d70f9b445af123724779cf075021610d5ee45ce845a54b4b08f4eede4ba63",
+      "en_sha256": "3b56f7172d85c57185bf24576704612b7cd00bfd349e4caeecad87d9d02797af",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C01-07": {
+      "zh_sha256": "3a280971f2e78b4ffdeaf01bacf32746471ffbe322dc7f2213884882ee3e2d74",
+      "en_sha256": "71300031789f452dce4178fab35be943edbce8b2263d6e6ee06832b4c77bcd3b",
+      "claim_status": "pending-plan"
+    },
+    "C01-08": {
+      "zh_sha256": "e3d18d79b9a5890e39422a16deea6eac35bbb5d420853c69faf59a20d66cad21",
+      "en_sha256": "289a428056fb149b40d70123392309662919d422e150477984d6d18cccfb323d",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C02-01": {
+      "zh_sha256": "df834160390c28e1afaa8c3de7dd912d183c2e8f3514bbb7d5873eab82db34e9",
+      "en_sha256": "033db0628209fc8854e6352d69eb49c9fd36dcd6d8d69d4be539bca6bda84f5d",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C02-02": {
+      "zh_sha256": "34ad4048411560b42205ea41835be9e55a5fe9e3446f0541202a4df4943f23b0",
+      "en_sha256": "be7997101970a18f655ca5ec77b536a414f1c55e1afe952baf8a14d18f15cc71",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C02-03": {
+      "zh_sha256": "f87330050e98ccc879e9adf92a0c3ff7237eb60ee21b7ce5dbbe3b215cd4b457",
+      "en_sha256": "b7b5389b9eb58d79f50488af1d48826b35e922de0d701cde6f741c11bcf0c314",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C02-04": {
+      "zh_sha256": "6f852e99e2fb59bf41012e8fedffd292fbb37adac49ce29f3a20a7c901d347c9",
+      "en_sha256": "fad2adb0baeee885aba745f087ede85ee560ae7eb7ac1ea9844c1881f7ed0e01",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C02-05": {
+      "zh_sha256": "738ef261ead27afa7f9470be8b6b81ed7d3d8558bb45ed01e232144795ab885d",
+      "en_sha256": "1c17843e9fc2ca94ba6c38260cad3a1303abbe9d7c7d0b073339b9018dd4adbc",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C02-06": {
+      "zh_sha256": "8e634c9cb1f4319a734501a8d53016a50b6e5937a8e7ceedcd12b13f1c3cca86",
+      "en_sha256": "f8a5bffbb19e8f12182ee8a56904e4352786698081f7b4ac500e5d346669e121",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C02-07": {
+      "zh_sha256": "15dbde3441d6a0a70e0ad8b18ee491459bccb062d8eed81b850459dcc1f45bf1",
+      "en_sha256": "e422c7385d4d8d213b134f377fb05d6eccd30898ba761159cea35232f3b37d88",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C02-08": {
+      "zh_sha256": "351ff80a7779a44727a17b29a3fbb08fc2f87338a14bdd4a866c06d9f6fc2573",
+      "en_sha256": "41d649e2558ba7592ee6f3fde0355a5a6a886c13f80056dea9e9f4e45636de20",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C02-09": {
+      "zh_sha256": "fda3979599d82feba2d93f08a5f995e602f3d655038cd128420b25f8004226c4",
+      "en_sha256": "52d31d1101dba32f1989de0ee811bde14273b4dccc65bbe87225696e72247e83",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C02-10": {
+      "zh_sha256": "7d88a2d884f24f876c25541446920b8446fbb4ae529791529673f0685c0b7517",
+      "en_sha256": "a5321e19ade752e285d4a6226db5cc5fe695bdb7f345f138986542306077ab6a",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C02-11": {
+      "zh_sha256": "2d58a76dcea68330be912bd441f0fcb046fdddca98c289fddd2426d1f0736cae",
+      "en_sha256": "a958898a9bdd0cc556df53beda210d6a3f181caa83ae5f0a7fdde1243e631ec1",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C02-12": {
+      "zh_sha256": "1e5ae3ab835b3fc8860cdc74eae067634b056ad549c2fcdc41a6842769e634ec",
+      "en_sha256": "b53f9eed631b122a3abf9b6a12e5db947152e86779e528118ec4c80d2cfac638",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C03-01": {
+      "zh_sha256": "744c8d54932753527b546b355802fbfaaf48036263b65a20ef3dcbc773377e24",
+      "en_sha256": "429116b2846a9b2a2436f6e9dea7bec08f25fab818fe0ebf2adb8fb877b890fa",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C03-02": {
+      "zh_sha256": "a8faa8d47f998ab23829dfcea4b7ecdf9648b00cc7a8b8e862df7f13b3235bdc",
+      "en_sha256": "b72e8d221bd687b8eb6ba82fdc124e631c89e8e1f775bb0db2e6ebccca5a4887",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C03-03": {
+      "zh_sha256": "7c99ccf5e1c136dc2ea1c499c9ac922e643035246804e3520bf6a8cdb0b61c45",
+      "en_sha256": "9964b44e86652b633b1ae78131d79369c7258caed913abb12bb61b40ab789140",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C03-04": {
+      "zh_sha256": "77593459b015e78dcd04a25bc761a1b64320d1890061c1b8e12a07ab52b36a34",
+      "en_sha256": "c42a7b20539f9c97ad12c96a991c0d554a57c2468ea0961b207f8ac304194282",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C03-05": {
+      "zh_sha256": "19cbfeb59ef16e50a5e8a322570407f2afe3bbac528baf461228e6a04abce830",
+      "en_sha256": "3d6fcd3ab9ee476e5c72b2033b5981e70c45898c7761a711ee9a6278bb79f3c3",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C03-06": {
+      "zh_sha256": "fc5a52e864e6cd3562996b4e0e8ffd7c86ce511066243c7ed9145a74fafd95a9",
+      "en_sha256": "1b5864f3c305b4cb70cb8a143351bcdccc294faee78f77ade0c00cce246bf3cf",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C03-07": {
+      "zh_sha256": "d88512a87ba8693c2f95aea2a3c8fe292b8471188589fedc851e436ca17f87ef",
+      "en_sha256": "d2d2a40a2920bfbc2271a3140618b72c1fb8c5d1d8611ba91862f2e35cc7f75a",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C03-08": {
+      "zh_sha256": "bded0343926d56f0c61e8d52f67395e080455359508dfd371279d7cb58269b64",
+      "en_sha256": "43bccfab7eb41b853baf85a856d21617bc3be3daf246dbd4e3a867d06cbd4383",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C03-09": {
+      "zh_sha256": "333efb81b9023030c05b000606a8d8be2a980a74d2d5f97b6f5301116c0add2f",
+      "en_sha256": "b4e33f59a9ec1e2454faeef2c62b06090ecc56d326481ffa96e980b00f187750",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C03-10": {
+      "zh_sha256": "7c66cbeb0ec98cdeaa757d8f7809f796d7bbfcbe80d80c308f716e33e9824211",
+      "en_sha256": "39e7be0202b3287e82e81834b37d0405639905b07ceb30284f730ffb9c9d1504",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C03-11": {
+      "zh_sha256": "d0d859b1f7adc0c84ff377779cb68f323d19aa4fc756d87ebf352b881c11677f",
+      "en_sha256": "5e40f30ddc6ba4bf7ef758a93bd09f0088e084b2f7962c8522a74260b2501121",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C03-12": {
+      "zh_sha256": "6dce564eabf16c8670f227fbf861d1209ffd7c8cd3284b02a0a623b8c8288118",
+      "en_sha256": "8718d84226b45b3ca1c3bd2ebf4f6603ad148d67dcca1606628ef032cfcb6bff",
+      "claim_status": "pending-plan"
+    },
+    "C04-01": {
+      "zh_sha256": "bf8e25e040a97fa7bfac25e33ddd8d26c367b732bf26e951f7eb65f5806ece2a",
+      "en_sha256": "e35c60eaee834119a3bcc1b3e930739629b0567d3b3a255556dc4ff5251a7db5",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C04-02": {
+      "zh_sha256": "1e01cc8eb088b75562b981abd13aba658b01a541efcea5e511e9b2955a545e25",
+      "en_sha256": "6288013a8700dfb5995d8e05842ea12220352b6e1abf1818725527a50449556e",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C04-03": {
+      "zh_sha256": "f65ccfde27e2698f02fd4d178f9251f107bc87a22ae6b115fc585a8c0e06d8a4",
+      "en_sha256": "ca821b3c1c89d8c309dfcca5b9b561b81cdbd993d0a3881edf2b22512161b8f4",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C04-04": {
+      "zh_sha256": "96a0f54f7d1e168bda66d2f828f7057850c4f381debf38266ca66e5d2b843954",
+      "en_sha256": "af760701090f42f84856657c6f7792a0c46a668658cb2bc56b4890d502ef0fb9",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C04-05": {
+      "zh_sha256": "394aa4f0b47e65aea8ec6d6f005526a4b08f1d057fc7d40458f90ab072aebc90",
+      "en_sha256": "64a1c97b06139a58585fabd34d442d701913c8873e37ccf0c31bc5ebedcf5c06",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C04-06": {
+      "zh_sha256": "ac71404283b36bb44345085136ca7cf1c9a4ab936ea38b438552d750236e1fd6",
+      "en_sha256": "643356c1d775122b4d68838d92cd8d58acef992b5e23b9b9d3f9fd0249ebe95b",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C04-07": {
+      "zh_sha256": "661d4909df899d2f2a965417d2d5ce9270a1529e57e5b8b534225897c78906b5",
+      "en_sha256": "2fa47bac7dbba44cb54f396af2ccd1d2f1793c577695d33d4bad5cc469820349",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C04-08": {
+      "zh_sha256": "7d49a1c8351e3ce27fafe24238887a13e01ea27f45e4c22bcc4c1ff9da14b2bf",
+      "en_sha256": "dfc319108d1c7660dcc9f64c3acb1ad0a44d03adaf2c90b5aee6207feec756c8",
+      "claim_status": "pending-plan"
+    },
+    "C04-09": {
+      "zh_sha256": "e3a6c6bc1642305728e1841e300f6ccbf6a7c9da2581d973e36344ff4d9681a8",
+      "en_sha256": "8f089552d6e9ec08e7ffde78c63081faec021fb193326c6b8c28148432d6da39",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C04-10": {
+      "zh_sha256": "113bf82f2f97f3783ea46eb9c73d47b372ec333eca31afc2a2d6081b8b5d85ae",
+      "en_sha256": "cfe4715224262a471f06cb7b3408e8a07476ee4596be71102c3d392bdc0ca34a",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C04-11": {
+      "zh_sha256": "84af77a54ac933bbaac446056d60b3ef5464a9e452de55d7fc712a9a8a9b24bc",
+      "en_sha256": "24cfd2fb67a8266c477fca27758663c0df6b2dd176fa228365fec3e0da2d152d",
+      "claim_status": "pending-plan"
+    },
+    "C05-01": {
+      "zh_sha256": "8576cae6140c7e1a895de782197f36363272e2f9c23cb56678b600c4a5175671",
+      "en_sha256": "b788477e1b7eb086204c9a794e28ddcb400b5decd50044c6882ca295383442e8",
+      "claim_status": "pending-plan"
+    },
+    "C05-02": {
+      "zh_sha256": "24d51fadd6776701aecb8bad9ca6affb2e77ed0b20f248b932699a7b7dfc0684",
+      "en_sha256": "b8c2a97464380d02bd1c193d792ace4d8a1c9feb54ae32c00be9fdc27159fced",
+      "claim_status": "pending-plan"
+    },
+    "C05-03": {
+      "zh_sha256": "1f3393c5227a71a0616b425d90b34c8b634193a1eaf755e811fdc058f1dae1a2",
+      "en_sha256": "1019b90248387615059aa0c53911273fb4c739c7de92e253ce97b2d568308f20",
+      "claim_status": "supported-actual-A-only-with-stated-bounds"
+    },
+    "C05-04": {
+      "zh_sha256": "0b011b01286adad9fa1075829a4bbe26bf84116c35781f402daef5f5d15014f6",
+      "en_sha256": "980435525f66a9bd1483a05f8631dd28351f584183d9c98f5f81a9369388a7cc",
+      "claim_status": "supported-actual-closed-sources-narrative-review-separate"
+    },
+    "C05-05": {
+      "zh_sha256": "259c161bf4d74e9fb4e864c88a7d9ceffbbf98ee46d9c2e2d0023c46b1d35341",
+      "en_sha256": "bb0b9e0d6a50fe1c66f7600236c3db5c5c5fc570fbd50db2917e0424161b3899",
+      "claim_status": "supported-actual-closed-sources-narrative-review-separate"
+    },
+    "C05-06": {
+      "zh_sha256": "41e80438ecca7e6b192a2f3e33464257b2c78fbd925b843a216d6ba27930b57d",
+      "en_sha256": "2bc10ffd3f1cc78b89e417f480ecda7214a2a1deca9f595e036c8ca520b4d7c8",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C05-07": {
+      "zh_sha256": "0bb3d5508107271cf431a649b1a9bc19917075d6a2e553167e18ea0ce2308125",
+      "en_sha256": "1f81603f0d3ff66996b541b7927b32bd4976db82eeaa72e2f3501e26f6db7fe6",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C05-08": {
+      "zh_sha256": "fbce990dcf813b23cb736affb7a0d0412c08f18e0719d39e63d3e90d6cdcf74e",
+      "en_sha256": "ef3ef453cb64d84870781b09a890250182522b624edebf0e724732ed0aaf8f1d",
+      "claim_status": "supported-actual-closed-sources-narrative-review-separate"
+    },
+    "C05-09": {
+      "zh_sha256": "777cb284d8099174e532544d83790f6cc0853331d463e48bc21e0fdc9214e91a",
+      "en_sha256": "8ee350e4e13549380759468acc94aad18775849d8996a3315ddbb33874467424",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C05-10": {
+      "zh_sha256": "c0bf8afe27fa1052e0d7ad244428dd33cc828cacf94a4b7c8ec68a433a50bffb",
+      "en_sha256": "48c558692976a316a14b6a007c0e990bc39e3600497af108a54d03c813bc798d",
+      "claim_status": "supported-actual-closed-sources-narrative-review-separate"
+    },
+    "C05-11": {
+      "zh_sha256": "0a75b773aee95712e9dc2927e8f1fe310c374328641fd558172d04f176f230d9",
+      "en_sha256": "d61f99bdbc974a6a52dcb03a3515d90a413ce45b66eef1d83d13b2538e92478f",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C05-12": {
+      "zh_sha256": "5718c331c7be4fe8425e76edba2bb5502192949f18528a1f45840f5e3821b646",
+      "en_sha256": "a160549a5bdd7ed33d6611314cf23eb99a1fbf58cf73d39f73c1e2dc90ac80eb",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C05-13": {
+      "zh_sha256": "3ad9467f1c6f50fbc04ed3f519f0c064f8f56228229b3549c2cd616acd7927a2",
+      "en_sha256": "c0a67b293264611c5c3242fbc7043eb0665d5bb68bf8d9b6a6ae3c8020a7e4a1",
+      "claim_status": "pending-plan"
+    },
+    "C05-14": {
+      "zh_sha256": "ebf4263426ed6bf39d7d5754dfa5fdf10ecebdf8f3c4adcfb883781994a94df7",
+      "en_sha256": "8c9d649a1ff0006e25be7672fd8f14eb828afb71c7650bf10ee33b797379a9b9",
+      "claim_status": "supported-actual-closed-sources-narrative-review-separate"
+    },
+    "C05-15": {
+      "zh_sha256": "12abbbc28e9b1b50416d7adae1131aeadf1348169812ca288da85260c2dc8aa9",
+      "en_sha256": "f69ec4603a8b445cb75f44e644906b3efb145cb872836996560b3436c02a5105",
+      "claim_status": "supported-actual-A-only-with-stated-bounds"
+    },
+    "C05-16": {
+      "zh_sha256": "7384b00c740e4e754b7d8fd2cc8fcf5c76910eff3c7e8f05831160e1bdd6d8cd",
+      "en_sha256": "1edff522f55d26567a628648a9ee6d60ab2bffdd855353e4615c9133b57dd537",
+      "claim_status": "supported-actual-closed-sources-narrative-review-separate"
+    },
+    "C06-01": {
+      "zh_sha256": "8f10459264f7583eb53ccdeaec5974180f5858dbf50c38f77fade97779bc0421",
+      "en_sha256": "d1d606a6ac360b20b316c6d1a628fbc5308e7ca08bb7df8728d150e222b149b1",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C06-02": {
+      "zh_sha256": "9ab543661e86726db21a95fd9a9c270fb055a1d8389eb01f328cfaf5cf9c5805",
+      "en_sha256": "59d6844d28f29a12308f6ef3cf0db70d6e01d247d6c237cdb8b20ab21faf6c3d",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C06-03": {
+      "zh_sha256": "791a7a6af54c39fb43fafd727d2f187f855c2a6ff616f73c6ab39b82a74e59ce",
+      "en_sha256": "8edf6043feeb58653db3407e03d730615961b3883ad4817e50c2fa18b8f0a33c",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C06-04": {
+      "zh_sha256": "42311043565145f1c929760953c2535a3fad915eb42a691d76b7667b54385625",
+      "en_sha256": "b12f374d756992ff187f4bfccd0386d468ce0d71e23f8b07ca96e72666cbee14",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C06-05": {
+      "zh_sha256": "af2a0c6611004c5bb71b0f5bb967e99e270e578fc088401247f93ab83656d820",
+      "en_sha256": "e7751c6ffefe199b29fd4677ed2b3cc026cf16060fce0c375eea42e7415ee55e",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C06-06": {
+      "zh_sha256": "a63d4ecfae187a3bc90144c8ea1a5e2073cdbb5b0313efd617d2316e64411fb5",
+      "en_sha256": "7b82f1ba06b323b366d8e13fb96debde040936d80f9a9412deef95f81da8b32b",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C06-07": {
+      "zh_sha256": "b12e0694259cd005fc9ba178f4ed85df363360fe91229e79cd61c371bd08d8cc",
+      "en_sha256": "dc5803938095dc50782570a5163b0ac20f0f7814b66a2b9ae29dfd6dda7b7f12",
+      "claim_status": "pending-plan"
+    },
+    "C06-08": {
+      "zh_sha256": "ff7f0348ca4fcb7146d983d4509e322b08427514718879c95e03b6b59667a04f",
+      "en_sha256": "1acc824fbbd0a790e4f45b6a0cbc9c8e1cda6ee2b969fb4d0f4fdb1cb0bb62df",
+      "claim_status": "pending-plan"
+    },
+    "C06-09": {
+      "zh_sha256": "83bfa149c8f9f1520cebb420400bb79affeb481f48d7eb87f78ae37bacc7ef82",
+      "en_sha256": "e4028f50e81f229180ee455d77c6e255a62987a12504260a4f40c9e68c57eaf4",
+      "claim_status": "supported-with-stated-bounds"
+    },
+    "C06-10": {
+      "zh_sha256": "6e53b396e95c1678ae88c252befbc5341c89548cc5634733760106caa4f4066b",
+      "en_sha256": "ff9dfa36438881ee5599824705653e8a0f3703b4f86de5dd3b355c224ba20031",
+      "claim_status": "supported-actual-closed-sources-narrative-review-separate"
+    }
+  },
+  "B_status": "STOPPED_GATE_INCOMPLETE",
+  "B_London_comparable": false,
+  "winner": null,
+  "C_controlled_comparison": "NOT_GRANTED",
+  "human_full_1x_review": false,
+  "human_signoff": false,
+  "pipeline_source": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\candidate-a04\\bc_pipeline.py",
+    "bytes": 39639,
+    "sha256": "4e54b21ff9eebf7ce87f79fc9a5fe9fde16667354c59db6831cfd254d1cce544"
+  },
+  "Chinese_actual_NO_BLOCK": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-Root-actual-source-review-a01\\Root-NO-BLOCK.json",
+    "bytes": 15648,
+    "sha256": "5874bd3c5cc0557a61a47a66fb3788841ed1dd78c00eb02ebe6323cc6902428f"
+  },
+  "English_actual_NO_BLOCK": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-Root-actual-English-review-a02\\Root-English-NO-BLOCK.json",
+    "bytes": 4146,
+    "sha256": "d2985d6773008eeb1a0138835c55c0b3b430cddf711d7fd9e57601110170d1f6"
+  },
+  "source_catalog": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a02\\source-catalog.json",
+    "bytes": 75585,
+    "sha256": "7b60b48f2615ff556302d56cd91ce7b441a44ee60d20d309a9df02d6438068a6"
+  },
+  "reviewed_utc": "2026-10-06T01:06:07.705496+00:00",
+  "Root_story_reviewer": "/root",
+  "audience_card_only_revision": "Root requested player-readable labels; exact narration/ASS/source windows/PCM unchanged",
+  "reviewer": "/root",
+  "source_review_status": "NO_BLOCK",
+  "actual_readable_picture_rows": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a03\\ROOT-READABLE-PICTURE-ROWS.md",
+    "bytes": 14087,
+    "sha256": "c3999fc8e33dcbaa899d9731f0b5f9d9743a4b81758911371a9de5b3c1f7e17d"
+  },
+  "pending_input_exact_pin": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a03\\pipeline-input-PENDING-Root-review.json",
+    "bytes": 96121,
+    "sha256": "dd620e6c2a86d19d6c2316a5b2b10e8162d1f0542de5661bf5f2ec2fff00f148"
+  },
+  "pending_review_template_preserved": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a03\\Root-final-row-review-PENDING.json",
+    "bytes": 22056,
+    "sha256": "4512024ee27b41d69d088aeb43600e4fa54b5c71ac0147a67dcd2b716b84dfcc"
+  },
+  "actual_extra_C_source_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-S04-extra50-actual-source-review-a01\\Root-sample-review.json",
+    "bytes": 15407,
+    "sha256": "0ddda28c6786b3244fcb51867c880cb7ad90c6948a1e3b7e9433f3908954a697"
+  },
+  "actual_row_review_basis": "Root actually read all9 final a03 picture rows, their complete Chinese text, titles/card facts, independent replay labels and every source window. Root directly reviewed seven original S04 source PNGs, earlier actual A/B/C sources and changed-language source reviews. Exact row JSON matches embedded finalinput, all69 Chinese hashes match frozen sourcebody and seven actual new-voice picture rows total10043frames. This authorizes a pending-human-review production render only.",
+  "actual_Root_row_findings": [
+    "C05-01 updates obsolete A-only pending card. C05-15 retains actual old video/audio clock with an opaque explicit A card; the14 bridge ends on actual A historical background.",
+    "C05-05 uses only actual C+77 paused London terminal background, all53.367seconds from unique contiguous S04 source frames. NativeMain6689 is not player topbar6696; exactarrival remains unknown in(75,77].",
+    "Bday6/21/27/32/38 state clips and other qualification/A/merge examples are explicitly separate historical backgrounds. Foreground numeric summaries bind native ledger observations rather than pretending all displayed backgrounds are the same case or the precise update/click event.",
+    "Bpostmerge true cap100 mathematical result remains separate from added1/1 regiment and commanderchange that prevented controlledcontinuation. B+38 stopped with52days left, no London endpoint.",
+    "C sampling deviations remain descriptive only and no strict ABC winner. C05-16 begins with A cash scope, then labels C and separate qualification backgrounds; all cash observations are netdifferences rather than itemized applied payments.",
+    "Cards use player-readable regiment/commander/condition labels; internal DATA/id/raw clock implementation stays in source records. Full actual finalpicture legibility and subtitle/source-clock appearance still need encodedframe review.",
+    "Each new original source window is used once at original speed; no source looping/still-duration filler/stretch. The production consumer must verify full source allocation and final clocks on execution.",
+    "No new native eventPTS, continuous whole-span clean proof, human1x listening or full-film signoff is granted by this source/row review. Every old RED/pending attempt remains preserved."
+  ],
+  "full_film_approved": false,
+  "human_listening_signoff": false,
+  "allowed_output": "Actual complete20-to40minute Review01 for pending human review; single authorized finalfile OneDrive client delivery after actual newmachine audits and Root codedframe review."
+}

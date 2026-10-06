@@ -1,0 +1,58 @@
+{
+  "schema": "xar.e04.Review01-actual-machine-audit-portable-delivery.v1",
+  "state": "PASS_ACTUAL_WHOLE_MOVIE_AUDIT_AND_PORTABLE_TEXT_ONLY",
+  "actual_audit_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\ROOT-DELIVERY-a02.json",
+    "bytes": 2401,
+    "sha256": "458a2d66b51f1e87e6c41e25ca9f83efa7ceab1b7d8e3e1663fe2b650977e563"
+  },
+  "actual_report": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\report.json",
+    "bytes": 5138,
+    "sha256": "9d12cb5e25df0cfd2718b95b84c9920faeba03633968a6317d98788cb17e97b7"
+  },
+  "actual_frame_packet_summary": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\frame-packet-clock-summary.json",
+    "bytes": 2833,
+    "sha256": "3db773ba03ef7166f46458bc1895c677233fc99f78243af9df3f245d64fcdf64"
+  },
+  "actual_strict_decode_audio_summary": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\strict-decode-audio-summary.json",
+    "bytes": 9818,
+    "sha256": "6d55b7c11202424e41c055c73bc3464cbb5174509d490138051adb4e898cdd06"
+  },
+  "actual_source_PCM_scan": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\source-PCM-full-scan.json",
+    "bytes": 3228,
+    "sha256": "f51f3862a0a70fb44d7b57ebcf5942c9adf77c77647b8433d735b60a7d7a6509"
+  },
+  "actual_movie_identity_reused": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346"
+  },
+  "package_root": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-text-a02",
+  "package_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-text-a02\\manifest.json",
+    "bytes": 13627,
+    "sha256": "82715e0fb6420200e91c9a1ca3c7e1545e70f174ff3f00e3bd89ad3565668f93"
+  },
+  "catalog_files": 28,
+  "catalog_total_bytes": 3214311,
+  "package_actual_files_including_manifest": 29,
+  "strict_consumer": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\portable-text-a02\\portable_consumer_a02.py",
+    "bytes": 5400,
+    "sha256": "5b3b0c99b2347a37e9abdee8d5fe965eec11fdb35169f0a257a45b79f0dd77c0"
+  },
+  "focused_checks": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\PORTABLE-CONSUMER-FOCUSED-CHECKS-a02.json",
+    "bytes": 6436,
+    "sha256": "d9c3b1e197dfa9c130db274ae8dd3b741bbb32701ac5f3c3769b63c8d70c11e0"
+  },
+  "all_catalog_source_and_copy_bytes_preserved": true,
+  "large_media_included_or_rehashed": false,
+  "human_signoff": false,
+  "independent_remote_readback": false,
+  "Git_OneDrive_operations": 0
+}

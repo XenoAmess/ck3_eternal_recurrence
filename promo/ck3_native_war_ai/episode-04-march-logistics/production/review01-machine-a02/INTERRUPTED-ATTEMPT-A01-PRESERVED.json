@@ -1,0 +1,39 @@
+{
+  "schema": "xar.e04.Review01-interrupted-audit-attempt-preserved.v1",
+  "recorded_utc": "2026-10-06T04:04:33.490735+00:00",
+  "old_attempt": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a01",
+  "state": "INCOMPLETE_PROBE_DECODE_AND_PCM_SCAN_PRESERVED",
+  "old_returncodes": null,
+  "termination_cause": null,
+  "old_probe_JSON_closed": false,
+  "old_decode_progress_end_observed": false,
+  "old_source_PCM_report_exists": false,
+  "old_final_report_exists": false,
+  "completed_old_scans_repeated": 0,
+  "old_partials_deleted_or_changed": false,
+  "inspection_observed_original_PIDs_absent": [
+    7776,
+    12428
+  ],
+  "original_auditor_process_absent_at_initial_inspection": true,
+  "original_partial_sizes": {
+    "decoded-mix-back-1s.wav": 0,
+    "decoded-mix-front-1s.wav": 0,
+    "metadata-read-failure-preserved.json": 432,
+    "PLAN-AND-ACTUAL-INPUTS-a01.json": 4288,
+    "SOURCE-ADAPTATION-a01.patch": 44114,
+    "source-narration-front-1s.pcm": 0,
+    "source-original-A-only-auditor.py.txt": 14426,
+    "strict-whole-video-AAC-decode\\argv.json": 1638,
+    "strict-whole-video-AAC-decode\\owned-process.json": 107,
+    "strict-whole-video-AAC-decode\\stderr.bin": 6098944,
+    "strict-whole-video-AAC-decode\\stdout.bin": 572,
+    "whole-frame-packet-probe\\argv.json": 544,
+    "whole-frame-packet-probe\\owned-process.json": 106,
+    "whole-frame-packet-probe\\stderr.bin": 0,
+    "whole-frame-packet-probe\\stdout.bin": 4234928
+  },
+  "old_probe_last_partial_timeline_seconds": "1186.766667",
+  "old_decode_last_progress": "progress=continue",
+  "not_assigned_success_failure_returncode": true
+}

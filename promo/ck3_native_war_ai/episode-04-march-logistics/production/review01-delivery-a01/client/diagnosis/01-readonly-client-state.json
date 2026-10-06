@@ -1,0 +1,512 @@
+{
+  "utc": "2026-10-06T04:08:53.222651+00:00",
+  "scope": "read-only local client process/config/window; no cloud content and no input",
+  "metadata_query_performed": false,
+  "onedrive_process_ids": [
+    13508
+  ],
+  "tasklist_returncode": 0,
+  "psutil_available": true,
+  "processes": [
+    {
+      "pid": 13508,
+      "status": "running",
+      "created_utc": "2026-10-03T18:06:14.415752+00:00",
+      "executable": "C:\\Users\\1\\AppData\\Local\\Microsoft\\OneDrive\\OneDrive.exe",
+      "inet_connections_by_status": {
+        "ESTABLISHED": 5
+      }
+    }
+  ],
+  "onedrive_windows": [
+    {
+      "hwnd": 193530182,
+      "pid": 13508,
+      "class": "OneDriveReactNativeWin32WindowClass",
+      "visible": true,
+      "title_status_markers": []
+    },
+    {
+      "hwnd": 7865878,
+      "pid": 13508,
+      "class": "GDI+ Hook Window Class",
+      "visible": false,
+      "title_status_markers": [
+        "onedrive"
+      ]
+    },
+    {
+      "hwnd": 787310,
+      "pid": 13508,
+      "class": "SkyDrive Class Name {026CC316-C268-4EAC-B8FB-AA51BFE323E2}",
+      "visible": false,
+      "title_status_markers": []
+    },
+    {
+      "hwnd": 132012,
+      "pid": 13508,
+      "class": "ContextSwitcherImpl",
+      "visible": false,
+      "title_status_markers": []
+    },
+    {
+      "hwnd": 132016,
+      "pid": 13508,
+      "class": "ATL:00007FFB7178C0C0",
+      "visible": false,
+      "title_status_markers": []
+    },
+    {
+      "hwnd": 132022,
+      "pid": 13508,
+      "class": "ATL:00007FFB7178C0C0",
+      "visible": false,
+      "title_status_markers": []
+    },
+    {
+      "hwnd": 4064810,
+      "pid": 13508,
+      "class": "ATL:00007FFB7178C0C0",
+      "visible": false,
+      "title_status_markers": []
+    },
+    {
+      "hwnd": 5309492,
+      "pid": 13508,
+      "class": "SkyDrive Class Name {090B42FF-7B26-4416-99B6-CB17896CF07C}-Personal",
+      "visible": false,
+      "title_status_markers": [
+        "onedrive"
+      ]
+    },
+    {
+      "hwnd": 8914486,
+      "pid": 13508,
+      "class": "ATL:00007FFB7178C0C0",
+      "visible": false,
+      "title_status_markers": []
+    },
+    {
+      "hwnd": 418384034,
+      "pid": 13508,
+      "class": "OneDriveReactNativeWin32WindowClass",
+      "visible": false,
+      "title_status_markers": []
+    },
+    {
+      "hwnd": 110430480,
+      "pid": 13508,
+      "class": "MSCTFIME UI",
+      "visible": false,
+      "title_status_markers": []
+    },
+    {
+      "hwnd": 852134,
+      "pid": 13508,
+      "class": "IME",
+      "visible": false,
+      "title_status_markers": []
+    },
+    {
+      "hwnd": 4523394,
+      "pid": 13508,
+      "class": "IME",
+      "visible": false,
+      "title_status_markers": []
+    },
+    {
+      "hwnd": 132014,
+      "pid": 13508,
+      "class": "IME",
+      "visible": false,
+      "title_status_markers": []
+    },
+    {
+      "hwnd": 132020,
+      "pid": 13508,
+      "class": "IME",
+      "visible": false,
+      "title_status_markers": []
+    },
+    {
+      "hwnd": 132026,
+      "pid": 13508,
+      "class": "IME",
+      "visible": false,
+      "title_status_markers": []
+    }
+  ],
+  "registry": [
+    {
+      "key": "Software\\Microsoft\\OneDrive",
+      "exists": true,
+      "safe_values": [
+        {
+          "name": "UserFolder",
+          "matches_expected_root": true
+        }
+      ],
+      "all_value_names": [
+        "AutoStartEnabled",
+        "BoxIdForOffice",
+        "ClientConfigTelemetryTimeStamp",
+        "ClientEverSignedIn",
+        "ClientNotSignedInBalloonState",
+        "CodecPath",
+        "CrashCountLimitToDelayInitializationForTelemetry",
+        "CrashLoopDelayMsToSendTelemetry",
+        "CurrentVersionPath",
+        "DeviceFeatureMask",
+        "DeviceIdChangeTrackWinV2",
+        "DeviceIdForODC",
+        "DownloadURSFromOneDriveLauncherSafe",
+        "ECSDownloadEnabledSafe",
+        "EmailHRDHostname",
+        "EnableDownlevelInstallOnBluePlus",
+        "EnablePerMachineARPCheck",
+        "EnableTHDFFeatures",
+        "ExpressSignInUnrecoverableFailureTimestamp",
+        "FileCoAuthFeatureRampStatusFlags",
+        "FileCoAuthRunMarker",
+        "FileCoAuthTelemetryRampStatus",
+        "FileSyncShellKillSwitchFlag",
+        "FirstRun",
+        "HasShownDehydrateMessage",
+        "HasSystrayIconBeenPromoted",
+        "HostNameCollection",
+        "InstallerType",
+        "LastOneDriveLauncherRunTime",
+        "LastRunKeyEnabledTime",
+        "LastRunOneDriveVersion",
+        "MachineGuidCollection",
+        "MigrationCompleted",
+        "MultiAccountRegMigrationComplete",
+        "NucleusECSConfigTimestamp",
+        "NucleusUpdateRingConfigTimestamp",
+        "OOBERedirection",
+        "OSVerODRanFirstTime",
+        "OduCheckForUpdateEndTime",
+        "OduCheckForUpdateStartTime",
+        "OduDownloadOneDriveSetupEndTime",
+        "OduDownloadOneDriveSetupStartTime",
+        "OfficeOriginatorID",
+        "OneDriveFRECompleted",
+        "OneDriveTrigger",
+        "OriginatorIdForODC",
+        "PreSignInSettingsConfigTimestamp",
+        "SCOOBEFolderSizeMB",
+        "SCOOBEOptIn",
+        "SCOOBEScanResult",
+        "SilentBusinessConfigByDefaultRamp",
+        "StandaloneUpdaterSafeMode",
+        "TimerGrowthToast",
+        "UpdateRingPostAuthConditions",
+        "UpdateRingSettingsLastSuccess",
+        "UpdateXMLRescanTime",
+        "UserDomainCollection",
+        "UserFolder",
+        "UserNameCollection",
+        "Version",
+        "WebView2InstallTimestamp"
+      ]
+    },
+    {
+      "key": "Software\\Microsoft\\OneDrive\\Accounts\\Personal",
+      "exists": true,
+      "safe_values": [
+        {
+          "name": "UserFolder",
+          "matches_expected_root": true
+        },
+        {
+          "name": "LastSignInTime",
+          "value": 1791050776
+        }
+      ],
+      "all_value_names": [
+        "",
+        "ACMGlobalLastDisplayTime",
+        "AccountMarket",
+        "AgeGroup",
+        "BackgroundScanMigrationSizeMB",
+        "CRBUserFactState",
+        "ClientFirstSignInTimestamp",
+        "ClientNotSignedInBalloonState",
+        "CrashDetectionKey",
+        "ECSConfigurationETag",
+        "ECSConfigurationExpires",
+        "ECSConfigurationLastSuccess",
+        "ECSConfigurationMaxAge",
+        "FeatureSupportInstance",
+        "FeatureSupportService",
+        "FirstRun",
+        "FirstRunSignInOrigin",
+        "FirstRunSignInOriginDateTime",
+        "GetOnlineStatus",
+        "HasMadeFirstUpload",
+        "IsUpgradeAvailable",
+        "KFMCampaignToast",
+        "KFMOnboardingACMInteracted",
+        "KFMOnboardingACMShown",
+        "KFMOnboardingEnabledStartTime",
+        "KFMOnboardingToastCampaign",
+        "LastAttemptedSignInTime",
+        "LastCRBUserFactAPICalledTimeStamp",
+        "LastDAUEventTimestamp_ActiveUser",
+        "LastDAUEventTimestamp_Download",
+        "LastDAUEventTimestamp_FindChanges",
+        "LastDAUEventTimestamp_Thumbnail",
+        "LastDAUEventTimestamp_Upload",
+        "LastJumpLinkTypeLibrariesUpdated",
+        "LastKnownCloudFilesEnabled",
+        "LastKnownSubscriptionAutoRenew",
+        "LastKnownSubscriptionExpiry",
+        "LastKnownSubscriptionId",
+        "LastKnownSubscriptionState",
+        "LastMigrationScanResult",
+        "LastMigrationScanResultExclusions",
+        "LastPerFolderMigrationScanResult",
+        "LastShutdownReason",
+        "LastSignInResult",
+        "LastSignInTime",
+        "LastUserActivityTimestamp",
+        "LatestSignInStack",
+        "NamespaceRootId",
+        "NextMigrationScan",
+        "NextOneRmUpdateTime",
+        "OfficePrivacySetting",
+        "OnThisDayPhotoNotificationDisabled",
+        "OneAuthAccountId",
+        "OneAuthClientId",
+        "OneDriveDeviceId",
+        "PrivacyKnowledge",
+        "PrivacySettingsACMPending",
+        "PrivacySettingsVersionSeen",
+        "ResetPreserveSelectiveSync",
+        "SilentAuthSucceeded",
+        "TimerAgeGroup",
+        "TimerNezhaTelemetryHeartbeat",
+        "TimerSubscriptionStateCheckTimer",
+        "UserEmail",
+        "UserFolder",
+        "VaultIntroToastShown",
+        "VaultShortcutPath",
+        "WebView2InstallCheckedTimeStamp",
+        "cid"
+      ]
+    }
+  ],
+  "local_client_files": [
+    {
+      "directory": "settings/Personal",
+      "exists": true,
+      "recent_entries": [
+        {
+          "name": "SyncEngineDatabase.db",
+          "bytes": 38608896,
+          "modified_utc": "2026-10-06T04:08:50.997647+00:00"
+        },
+        {
+          "name": "uploads.txt",
+          "bytes": 636,
+          "modified_utc": "2026-10-06T04:08:21.014617+00:00"
+        },
+        {
+          "name": "SyncEngineDatabase.db-wal",
+          "bytes": 8272,
+          "modified_utc": "2026-10-06T04:08:20.987633+00:00"
+        },
+        {
+          "name": "logUploaderSettings.ini",
+          "bytes": 304,
+          "modified_utc": "2026-10-06T04:07:25.153144+00:00"
+        },
+        {
+          "name": "logUploaderSettings_temp.ini",
+          "bytes": 304,
+          "modified_utc": "2026-10-06T04:07:25.153144+00:00"
+        },
+        {
+          "name": "OCSI.db-wal",
+          "bytes": 0,
+          "modified_utc": "2026-10-06T04:06:53.958534+00:00"
+        },
+        {
+          "name": "ClientPolicy.ini",
+          "bytes": 22222,
+          "modified_utc": "2026-10-06T03:55:31.733723+00:00"
+        },
+        {
+          "name": "UXDatabase.db",
+          "bytes": 540672,
+          "modified_utc": "2026-10-06T03:52:07.143632+00:00"
+        },
+        {
+          "name": "[redacted-id].ini",
+          "bytes": 22324,
+          "modified_utc": "2026-10-06T03:45:26.473063+00:00"
+        },
+        {
+          "name": "global.ini",
+          "bytes": 3782,
+          "modified_utc": "2026-10-06T00:22:42.195940+00:00"
+        }
+      ]
+    },
+    {
+      "directory": "logs/Personal",
+      "exists": true,
+      "recent_entries": [
+        {
+          "name": "[redacted-id].aodl",
+          "bytes": 382723,
+          "modified_utc": "2026-10-06T04:08:53.071867+00:00"
+        },
+        {
+          "name": "[redacted-id].odl",
+          "bytes": 1048679,
+          "modified_utc": "2026-10-06T04:08:22.387000+00:00"
+        },
+        {
+          "name": "[redacted-id].odlsent",
+          "bytes": 46055,
+          "modified_utc": "2026-10-06T04:07:25.786258+00:00"
+        },
+        {
+          "name": "[redacted-id].odlsent",
+          "bytes": 108859,
+          "modified_utc": "2026-10-06T04:07:25.667902+00:00"
+        },
+        {
+          "name": "[redacted-id].odlsent",
+          "bytes": 100595,
+          "modified_utc": "2026-10-06T04:07:25.498165+00:00"
+        },
+        {
+          "name": "[redacted-id].odlsent",
+          "bytes": 99583,
+          "modified_utc": "2026-10-06T04:07:25.368199+00:00"
+        },
+        {
+          "name": "[redacted-id].odlsent",
+          "bytes": 108302,
+          "modified_utc": "2026-10-06T04:07:25.217746+00:00"
+        },
+        {
+          "name": "SyncDiagnostics.log",
+          "bytes": 3759,
+          "modified_utc": "2026-10-06T03:50:58.047367+00:00"
+        },
+        {
+          "name": "[redacted-id].odlsent",
+          "bytes": 3982,
+          "modified_utc": "2026-10-06T03:07:24.340909+00:00"
+        },
+        {
+          "name": "[redacted-id].odlsent",
+          "bytes": 158036,
+          "modified_utc": "2026-10-06T03:07:24.279507+00:00"
+        }
+      ]
+    },
+    {
+      "directory": "logs/Common",
+      "exists": true,
+      "recent_entries": [
+        {
+          "name": "[redacted-id].aodl",
+          "bytes": 134968,
+          "modified_utc": "2026-10-06T04:03:52.184449+00:00"
+        },
+        {
+          "name": "[redacted-id].odl",
+          "bytes": 45139,
+          "modified_utc": "2026-10-05T20:15:35.670000+00:00"
+        },
+        {
+          "name": "standaloneUpdaterTelemetryCache.otc",
+          "bytes": 24576,
+          "modified_utc": "2026-10-05T20:15:35.665599+00:00"
+        },
+        {
+          "name": "[redacted-id].odl",
+          "bytes": 52858,
+          "modified_utc": "2026-10-05T19:07:28.641000+00:00"
+        },
+        {
+          "name": "telemetryCache.otc-wal",
+          "bytes": 16512,
+          "modified_utc": "2026-10-05T12:29:29.018892+00:00"
+        },
+        {
+          "name": "telemetryCache.otc-shm",
+          "bytes": 32768,
+          "modified_utc": "2026-10-05T12:29:24.232308+00:00"
+        },
+        {
+          "name": "[redacted-id].odl",
+          "bytes": 997,
+          "modified_utc": "2026-10-05T12:29:24.178000+00:00"
+        },
+        {
+          "name": "[redacted-id].odl",
+          "bytes": 52698,
+          "modified_utc": "2026-10-05T12:23:59.027000+00:00"
+        },
+        {
+          "name": "telemetryCache.otc",
+          "bytes": 24576,
+          "modified_utc": "2026-10-05T12:23:59.018570+00:00"
+        },
+        {
+          "name": "[redacted-id].odl",
+          "bytes": 997,
+          "modified_utc": "2026-10-05T12:23:51.698000+00:00"
+        }
+      ]
+    }
+  ],
+  "bounded_local_plaintext": [
+    {
+      "local_file": "settings/Personal/global.ini",
+      "bytes": 3782,
+      "safe_state_fields": [],
+      "status_words_counts": {
+        "paused": 0,
+        "pause": 0,
+        "resum": 0,
+        "error": 0,
+        "offline": 0,
+        "upload": 0,
+        "download": 0,
+        "authenticated": 0,
+        "signed out": 0
+      }
+    },
+    {
+      "local_file": "logs/Personal/SyncDiagnostics.log",
+      "bytes": 3759,
+      "safe_state_fields": [
+        {
+          "key": "clientVersion",
+          "value": "26.173.0906.0008"
+        },
+        {
+          "key": "version",
+          "value": "505"
+        }
+      ],
+      "status_words_counts": {
+        "paused": 0,
+        "pause": 0,
+        "resum": 0,
+        "error": 5,
+        "offline": 0,
+        "upload": 17,
+        "download": 12,
+        "authenticated": 0,
+        "signed out": 0
+      }
+    }
+  ]
+}

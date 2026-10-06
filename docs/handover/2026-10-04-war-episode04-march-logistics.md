@@ -120,3 +120,8 @@
 后续从[研究总账](../../promo/ck3_native_war_ai/episode-04-march-logistics/research-status-20261004.md)及[R0169 portable索引](../../promo/ck3_native_war_ai/episode-04-march-logistics/evidence/r0169-terms/index.json)继续。按原定义，十一项术语原始研究已齐，各自编码绑定10/11；移动锁定Jan25同paused首边61.875%两原图在rawfinish后保持encoded=null。不要再重复已闭getter或把Root八个实际编码单帧扩大为24全审/连续clean/1×签核。库内小JSON与只读脚本可跨机器复算数字，外置PNG/录像仍按原path/hash保全。
 
 本地B到Arun1508实际+9日仍无正月补给，两半current/max/27FullID保持，总6746/6747；不是ABC回放，完成仍0/3。下一独立有限warmup先核实际友好资格和whole正月值，再保存新的共同出发档，不沿用静态titlehistory或预览当抵达/友好证明。Dfullkeeper失败与已完成媒体PASS各自保留；Root已证明SDK/游戏树收口。未响应route probe、付款流水、饥饿阈值/独立归因、clean段、全文/TTS/成片/1×/签核/指定OneDrive视频交付仍待各自真实证据。
+
+
+## 2026-10-06 实际 Review01 制作收口追加
+
+最终六章Review01实际输出28:55.80，69段中文与326组双语字幕；新整片机器审计PASS，Root实际看过18张最终编码单帧。A抵达观测(49,51]，B第38日冻结条件变化而停止，C抵达观测(75,77]且15次采样偏差保留；本片没有ABC因果赢家。真实低库存饥饿扣兵、补员/付款流水、精确50%锁定和AI最终选点评分仍是研究缺口。正式审阅包为pending-human-review，人工1×完整观看与签核尚未完成。OneDrive结果及最终知识/代码相对包入口见[最新实际交接](2026-10-06-war-episode04-review01-delivery.md)；旧attempt、RED和当时NULL不回改。

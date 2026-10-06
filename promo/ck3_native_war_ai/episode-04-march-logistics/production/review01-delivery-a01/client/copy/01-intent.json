@@ -1,0 +1,27 @@
+{
+  "at_utc": "2026-10-06T04:04:29.957282+00:00",
+  "argv": [
+    "C:/ck3-war-episode04-delivery-preparation-20261006-a01/onedrive_episode04_review01_candidate_a01.py",
+    "copy",
+    "--tag",
+    "review01-actual-copy-a01",
+    "--source",
+    "C:/ck3-war-episode04-research-20261004-a01/e4-final-review01-a01/actual-render-a01/CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "--expected-bytes",
+    "1199061934",
+    "--expected-sha256",
+    "a1abb0f2abaa06f3fd38839123e9f4ddd4c4218f8dd15e0965732d3596c69346"
+  ],
+  "source": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+  "expected_bytes": 1199061934,
+  "expected_sha256": "a1abb0f2abaa06f3fd38839123e9f4ddd4c4218f8dd15e0965732d3596c69346",
+  "target": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+  "file_count": 1,
+  "operator": {
+    "path": "C:\\ck3-war-episode04-delivery-preparation-20261006-a01\\onedrive_episode04_review01_candidate_a01.py",
+    "bytes": 11287,
+    "sha256": "aafd0f93172cfa10bd73c16f4d6185ffb4972e80eefe341101c5638c989ec1bc"
+  },
+  "python": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "cloud_confirmation": null
+}

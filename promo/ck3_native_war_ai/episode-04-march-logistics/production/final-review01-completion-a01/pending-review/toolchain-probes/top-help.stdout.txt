@@ -1,0 +1,31 @@
+usage: xar-promo [-h] [--version]
+                 {init,start-run,validate,preserve,signoff,plan,build,audit,review,export} ...
+
+Create, verify, and preserve reusable promotional-video project metadata.
+
+positional arguments:
+  {init,start-run,validate,preserve,signoff,plan,build,audit,review,export}
+    init                create a ProjectConfig and its first bound run without
+                        overwriting files
+    start-run           create another run bound to the current exact
+                        ProjectConfig bytes
+    validate            validate a ProjectConfig, RunManifest, or legacy
+                        showcase v1 manifest
+    preserve            copy a file to immutable content-addressed storage and
+                        append its run record
+    signoff             append an explicit human decision bound to preserved
+                        artifact bytes
+    plan                compose and validate a pipeline plan without invoking
+                        providers or writing
+    build               run a composed pipeline and preserve success or
+                        failure material in its run
+    audit               write and preserve an automated audit without creating
+                        human approval
+    review              plan or create a pending human-review package without
+                        recording sign-off
+    export              validate or create an offline release bundle from an
+                        explicit policy
+
+options:
+  -h, --help            show this help message and exit
+  --version             show program's version number and exit

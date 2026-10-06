@@ -1,0 +1,19 @@
+{
+  "returncode": 0,
+  "start_utc": "2026-10-06T01:06:30.150131+00:00",
+  "end_utc": "2026-10-06T01:14:25.794318+00:00",
+  "argv": [
+    "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+    "-B",
+    "-X",
+    "utf8",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\candidate-a04\\checked_entry.py",
+    "render",
+    "--input",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\execution-a01\\pipeline-input-Root-frozen.json",
+    "--workdir",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01"
+  ],
+  "stdout": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\execution-a01\\actual-render\\stdout.txt",
+  "stderr": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\execution-a01\\actual-render\\stderr.txt"
+}

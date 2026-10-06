@@ -1,0 +1,912 @@
+{
+  "schema": "xar.e04.closed-producer-Git-catalog.v1",
+  "files": [
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/encode/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\encode\\command.json",
+        "bytes": 2569,
+        "sha256": "b5209e18cca73716f8794c2883cff107eeb144f77600f6279f7e8a2ffc2c8068"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/encode/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\encode\\result.json",
+        "bytes": 366,
+        "sha256": "2e88f953f7c3f9e328aabea0d7be0734bcb591b03727cae324fc2b0c87f5edf7"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/encode/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\encode\\stderr.txt",
+        "bytes": 67232,
+        "sha256": "87682696ad3cda5c123b49a029d64f7542dc19f8748bcfd780c35181182ad002"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/encode/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\encode\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/execution/argv.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\execution\\argv.json",
+        "bytes": 629,
+        "sha256": "1c36e41b18fcb4b8afeab6d9fddd4d07d297db8b8095af1147d6ef9146e12216"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/execution/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\execution\\result.json",
+        "bytes": 866,
+        "sha256": "99510f1b1be2886d7be320e91b97662b64959028cdbaef2cc78a5af5baff349b"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/execution/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\execution\\stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/execution/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\execution\\stdout.txt",
+        "bytes": 4153,
+        "sha256": "fe77efb3c7f6b4d094d4327f05204f4d0ee647810327e79cac90240ef101122d"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/formal/native-run-manifest.original.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\formal\\native-run-manifest.original.json",
+        "bytes": 1213,
+        "sha256": "6229a5d7ddb675abf151e46056a31a5ab89ec5b7ab90729579a70ea80cbf44f5"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/formal/preserve/argv.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\formal\\preserve\\argv.json",
+        "bytes": 819,
+        "sha256": "649cb508ccef5f01a2a94996947f7e9d81b9616ebf7aa3f43d3a67d211e8f22a"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/formal/preserve/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\formal\\preserve\\result.json",
+        "bytes": 784,
+        "sha256": "0978f932d77195df9da1fe9c17a28530c9c0269a13beb247e63c6a1bd6860b41"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/formal/preserve/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\formal\\preserve\\stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/formal/preserve/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\formal\\preserve\\stdout.txt",
+        "bytes": 218,
+        "sha256": "91684c287438b5453624cbd9cf8c23d121bba4dc5bb85615e096945173ddab66"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/formal/validate/argv.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\formal\\validate\\argv.json",
+        "bytes": 479,
+        "sha256": "1aed0eab0bc4c706a44e493f153b065e11ba08b1311aa8c135fbd8bd53ea57b5"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/formal/validate/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\formal\\validate\\result.json",
+        "bytes": 444,
+        "sha256": "0c00e6aa341ca70c63f1aae6ee62454cf82b666915367baa2d5c90aaa15b6a65"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/formal/validate/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\formal\\validate\\stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/formal/validate/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\formal\\validate\\stdout.txt",
+        "bytes": 255,
+        "sha256": "55fb5fa3612f7a46c8b1889c62959d45b134deaa435055a045de70b8ab077562"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/inputs/actual-input-snapshot.original.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\inputs\\actual-input-snapshot.original.json",
+        "bytes": 96360,
+        "sha256": "e0633852afb84acd6b2d0865efd62fb5fe33c50e03396dcb8582739d9aafd13d"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/inputs/Root-final-story-freeze.original.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\inputs\\Root-final-story-freeze.original.json",
+        "bytes": 25852,
+        "sha256": "975ade3d256a8e84511e3206dbb60c7f04bf2131d9bc053850b26d8c0eb4caa6"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/manifest.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\manifest.json",
+        "bytes": 63721,
+        "sha256": "3ad5a83f171206f3220f20d68670f7518e03ce15d67c24bfbc0d1701d9d713c8"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/pending-review/human-review-template.original.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\pending-review\\human-review-template.original.json",
+        "bytes": 10582,
+        "sha256": "861e8ec3e9691ba04a98b1485e85ac5f09effd5b0c4cc9a7092cbd6ecab1aac8"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/pending-review/latest-formal-release.raw.original.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\pending-review\\latest-formal-release.raw.original.json",
+        "bytes": 7123,
+        "sha256": "4f06955357d6d1a2cd57e3433f7c406a673a92b6c69211455c3d3cd75a76edfa"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/pending-review/pending-review-package.original.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\pending-review\\pending-review-package.original.json",
+        "bytes": 29024,
+        "sha256": "7d9a8bf3bdd0299a092b4ff8d0383af8df408f7116c2abf87c088b26044f8d6f"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/pending-review/release-admission.original.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\pending-review\\release-admission.original.json",
+        "bytes": 3136,
+        "sha256": "d3338a6af57c9f3ead2b70ad629801bf4738b1c7201721102681eaa160d84db2"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/pending-review/ROOT-DELIVERY.original.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\pending-review\\ROOT-DELIVERY.original.json",
+        "bytes": 1474,
+        "sha256": "771bfd3849f6c445b9a2ab37c595be424d7fd6250c9254c5e6a078dd564ed665"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/pending-review/toolchain-probes/review-help.stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\pending-review\\toolchain-probes\\review-help.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/pending-review/toolchain-probes/review-help.stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\pending-review\\toolchain-probes\\review-help.stdout.txt",
+        "bytes": 901,
+        "sha256": "a4d446acdeb2d702fedce22703b420cceb75aef2a058913f06240d08b5aa6b56"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/pending-review/toolchain-probes/top-help.stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\pending-review\\toolchain-probes\\top-help.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/pending-review/toolchain-probes/top-help.stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\pending-review\\toolchain-probes\\top-help.stdout.txt",
+        "bytes": 1629,
+        "sha256": "851c404fc3e56a1d792eca9439bd4c8cf93b74dd213685afc79b141f94286f6e"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/pending-review/toolchain-probes/version.stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\pending-review\\toolchain-probes\\version.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/pending-review/toolchain-probes/version.stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\pending-review\\toolchain-probes\\version.stdout.txt",
+        "bytes": 16,
+        "sha256": "991ede384a3e94036964aade9fb334611cf5f31441fb1847516671426c50902b"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/plan_metadata.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\plan_metadata.py",
+        "bytes": 1313,
+        "sha256": "e6b396439a9080b0882f35ae9e86a7fa23660ed6dc155a50165ebcb2268679e6"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/README.md",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\README.md",
+        "bytes": 2174,
+        "sha256": "1cb9b3c26217cfacf973d49f3a05d1a2d0811ba923f4c2c13e49e3a2f05bf807"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/results/closed-movie-delivery.original.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\results\\closed-movie-delivery.original.json",
+        "bytes": 4673,
+        "sha256": "3ddb222eaabcb8c1db767fdb335b8b98259147abb145a3f4d156f9e7470ab2f3"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/results/closed-producer-state.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\results\\closed-producer-state.json",
+        "bytes": 1497,
+        "sha256": "fa644df23cf92d2a3613c7d609b5d5c73fd18304523c5fbe640e9f9d62ba70d9"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/results/picture-bound-probe.original.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\results\\picture-bound-probe.original.json",
+        "bytes": 4130,
+        "sha256": "0d358bbbfbff8a435fd60621a026531fe44d06d1325fa8a1036fd7b59fe36310"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/results/picture-receipt.original.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\results\\picture-receipt.original.json",
+        "bytes": 551007,
+        "sha256": "ad2a22ef4ea69faf17a464e535f5834a8db30bd4bf0ee080b013f599eb00540a"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C01-04-chapter-context/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C01-04-chapter-context\\command.json",
+        "bytes": 1124,
+        "sha256": "5a7d0e9703607dc75e586e69916fb8f8844f3ee8b2e1ce58f1ca19e0740dc494"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C01-04-chapter-context/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C01-04-chapter-context\\result.json",
+        "bytes": 346,
+        "sha256": "fac16c3bdad0b0c6a2935a8d8bd61137477bb16c8e0111dd64641148212b01e3"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C01-04-chapter-context/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C01-04-chapter-context\\stderr.txt",
+        "bytes": 2598,
+        "sha256": "41f353c3219f3f2aacb635cdb3c08cfe40657946cb1462573352ac829c8f726e"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C01-04-chapter-context/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C01-04-chapter-context\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C02-05-chapter-context/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C02-05-chapter-context\\command.json",
+        "bytes": 1126,
+        "sha256": "79ea2bcf4df5d86330e1fe93de112ebd2d5b3aea7231e88c353aca2c8a01b2e4"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C02-05-chapter-context/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C02-05-chapter-context\\result.json",
+        "bytes": 346,
+        "sha256": "d5f79d0b948c43a61d9bb52bba01e1f2ed97c6693913a683530e003a914807c2"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C02-05-chapter-context/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C02-05-chapter-context\\stderr.txt",
+        "bytes": 2699,
+        "sha256": "1851d26725f4e84ad86e37bbe3c2a9f3348d846886dd5da6bdee9a748396159f"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C02-05-chapter-context/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C02-05-chapter-context\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C03-09-chapter-context/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C03-09-chapter-context\\command.json",
+        "bytes": 1126,
+        "sha256": "a3ec37b61018a8cde167633fb8533a746691f7687b79bc3cb6fcf3cb05b05cf3"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C03-09-chapter-context/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C03-09-chapter-context\\result.json",
+        "bytes": 346,
+        "sha256": "6efe6a973e8c37d4b3ecf0feb53a04c72e480d21e7bb9fdbd6726a6a992735fe"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C03-09-chapter-context/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C03-09-chapter-context\\stderr.txt",
+        "bytes": 2699,
+        "sha256": "e52eaafdd92fad97562b08d6f4ce4676662439ed44a3b3ae74266a978c64d4fd"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C03-09-chapter-context/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C03-09-chapter-context\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C04-05-chapter-context/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C04-05-chapter-context\\command.json",
+        "bytes": 1126,
+        "sha256": "895ad62b2b95a99b529902bf8976707371c5ebebce30955d7007ad90c45a6927"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C04-05-chapter-context/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C04-05-chapter-context\\result.json",
+        "bytes": 346,
+        "sha256": "5102670a83641ea2366a2848b993b49313f5d7e6645c1eef2678a1e5f77f7bf3"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C04-05-chapter-context/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C04-05-chapter-context\\stderr.txt",
+        "bytes": 2598,
+        "sha256": "7f9bcdb48f00b02dac33c95c0ffb846769150476ea56a4b28bf52f3988011a68"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C04-05-chapter-context/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C04-05-chapter-context\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-01-center/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-01-center\\command.json",
+        "bytes": 1099,
+        "sha256": "1a40b0d171dc8f8fa05824af4d33339a11d85487b4906adc1d300ab3d3ba5d2c"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-01-center/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-01-center\\result.json",
+        "bytes": 337,
+        "sha256": "ace35be47bc03e82a0faf85f4b460aa4730bb8ec8b94c3089f0ae2f6c998149e"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-01-center/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-01-center\\stderr.txt",
+        "bytes": 2583,
+        "sha256": "efe9b57d116158946a17048a163ef9059e1ae1a6de2098ff808daa8dda67828a"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-01-center/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-01-center\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-04-center/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-04-center\\command.json",
+        "bytes": 1100,
+        "sha256": "9a5b6299d6ee26e6d3a151615f1d3d3d16f229788c3730939887efc869378d1d"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-04-center/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-04-center\\result.json",
+        "bytes": 337,
+        "sha256": "b742cd96e793869d20e120ba1c372477cea04a1e844d7f4aa7b366332f8efa3e"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-04-center/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-04-center\\stderr.txt",
+        "bytes": 2681,
+        "sha256": "0e024cc2e4c6ad4c36341c4d6aea219a5e151b3e968c91ca97923dbcbb4d2b9c"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-04-center/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-04-center\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-05-center/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-05-center\\command.json",
+        "bytes": 1100,
+        "sha256": "8327bcc2f3544dde251e86c41d22689fe55074945a067dd6659533106f42097f"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-05-center/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-05-center\\result.json",
+        "bytes": 337,
+        "sha256": "2e8e5a157bb10cec3725eca388496571f6534a132399efded95a8bcfc6f05e4f"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-05-center/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-05-center\\stderr.txt",
+        "bytes": 2681,
+        "sha256": "f879b3396bb36084787edf8b6ffb50e78fefa1ceb72891d3352159aa38da4b15"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-05-center/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-05-center\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-08-center/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-08-center\\command.json",
+        "bytes": 1100,
+        "sha256": "29ce6c87112f8f849ddd0b90be1f807395eecc9683eda52ee1e80a9720c3510a"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-08-center/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-08-center\\result.json",
+        "bytes": 337,
+        "sha256": "6f6355815eac562764024e747cba4477b5f808874d61a82bc28a214c5bd4567f"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-08-center/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-08-center\\stderr.txt",
+        "bytes": 2580,
+        "sha256": "a5e10ca1c2a8eaf4d6e8298583ba7c69b9b45c7b02705fa08f525a30d4a4e2f8"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-08-center/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-08-center\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-10-center/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-10-center\\command.json",
+        "bytes": 1100,
+        "sha256": "8df119fd5595f5a721017816e827e7bc4222f0f34ed9061ed374ee813d16cbce"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-10-center/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-10-center\\result.json",
+        "bytes": 337,
+        "sha256": "0986abc427532343e25baf6dadab8ea6b01a7f8809b52ac3b35ac4b06b8defc4"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-10-center/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-10-center\\stderr.txt",
+        "bytes": 2584,
+        "sha256": "926db2acaaaae2a2bcf5cd48073127a51081237bddb690712f11e8065fd1c2e9"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-10-center/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-10-center\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-14-B-postmerge-start/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-14-B-postmerge-start\\command.json",
+        "bytes": 1133,
+        "sha256": "60032a98b6ad1720ded82ada5066fe80789d3c1a846293fe1925af7cae922a51"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-14-B-postmerge-start/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-14-B-postmerge-start\\result.json",
+        "bytes": 348,
+        "sha256": "37f4d6bb16090e39071e555e9aac1c1d4d3f07b34d2268f4cb819a4dbaf19add"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-14-B-postmerge-start/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-14-B-postmerge-start\\stderr.txt",
+        "bytes": 2606,
+        "sha256": "38bdae604bdc62311c56f28be1f99ef8f08bf7f080a94da2319b1e1895ead5de"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-14-B-postmerge-start/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-14-B-postmerge-start\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-14-center/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-14-center\\command.json",
+        "bytes": 1100,
+        "sha256": "c95cd8e5b007034f7f55800ba633722d2eb2ef6bd2740947936c583e40a335ac"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-14-center/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-14-center\\result.json",
+        "bytes": 337,
+        "sha256": "f7b0818b5d21d08ddfeb73eb22121212858b82799c2c57d4ec6dcf6de87971b4"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-14-center/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-14-center\\stderr.txt",
+        "bytes": 2584,
+        "sha256": "286e67ff71fa65e3bbf144393788e804a7a78c070a530e12cc3d17cd549ff56e"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-14-center/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-14-center\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-14-final-A-bridge/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-14-final-A-bridge\\command.json",
+        "bytes": 1124,
+        "sha256": "f638a542361c7dece90cb4d396063272e009704be8a17cf063e745731c1849f8"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-14-final-A-bridge/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-14-final-A-bridge\\result.json",
+        "bytes": 345,
+        "sha256": "92897346c15e0bdba5af3519e0b426a0daef7d43ef36de1044f7584284581830"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-14-final-A-bridge/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-14-final-A-bridge\\stderr.txt",
+        "bytes": 2698,
+        "sha256": "591f3209b8680c88d8b3ec4826050e2372554363eea73a078499c0cf4b5bb28c"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-14-final-A-bridge/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-14-final-A-bridge\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-15-center/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-15-center\\command.json",
+        "bytes": 1100,
+        "sha256": "90ca399e26ee78a27f366ae7259f32a0d74e8d5f9b99c00d1469c6733c02fe39"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-15-center/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-15-center\\result.json",
+        "bytes": 337,
+        "sha256": "1a708959ca39c788d643ccc8b041b3bced869714cc14c899040749a0b76a79af"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-15-center/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-15-center\\stderr.txt",
+        "bytes": 2678,
+        "sha256": "195a6a3ea7bf0fd65524c166773f8f2cfeb821a767bf6d251291402cf16f0732"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-15-center/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-15-center\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-16-A-opening/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-16-A-opening\\command.json",
+        "bytes": 1109,
+        "sha256": "981cabcc328c590e047f7843f69d7e9aaa6811dd9e3ce20ff9f3f86ce4593dad"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-16-A-opening/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-16-A-opening\\result.json",
+        "bytes": 340,
+        "sha256": "4766d40ada190c850468afa9a7de7a4fbdbe983f6a51dded67b33a705d3a951a"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-16-A-opening/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-16-A-opening\\stderr.txt",
+        "bytes": 2586,
+        "sha256": "b740326ad0deeccf9b31839f0e9201ce268100cb278c337386f1dbb48a621f6a"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-16-A-opening/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-16-A-opening\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-16-C-cash-context/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-16-C-cash-context\\command.json",
+        "bytes": 1124,
+        "sha256": "45a8c3f0bdfdbd0babbda2ebd9ac1afaec2168fbfcb263e18884ce73c2831fe2"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-16-C-cash-context/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-16-C-cash-context\\result.json",
+        "bytes": 345,
+        "sha256": "0e781a1beddcfc963feca39958b08d26d4f242f8a3d8d277ea4178e7d8a49bdb"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-16-C-cash-context/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-16-C-cash-context\\stderr.txt",
+        "bytes": 2693,
+        "sha256": "f879e3b4cf4256a1b5e819f777efcf502ac3d170a7aefae96fb58138a94acf7d"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-16-C-cash-context/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-16-C-cash-context\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-16-center/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-16-center\\command.json",
+        "bytes": 1100,
+        "sha256": "f52fae2fc398544a0a41ef1838b984efaa1b14ae5635cf4e3cc7fb51daa77b0c"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-16-center/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-16-center\\result.json",
+        "bytes": 337,
+        "sha256": "6b5be20d7c370f6d9670e6495f171e3be05968b3cd87af3acf33ab5969742847"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-16-center/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-16-center\\stderr.txt",
+        "bytes": 2681,
+        "sha256": "3d78d0c2e914a9213c99ec095db18f5df4045d64f66bf066b46f5895ad1633bf"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C05-16-center/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C05-16-center\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C06-10-center/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C06-10-center\\command.json",
+        "bytes": 1100,
+        "sha256": "227022d35ffcb30b952e3165e9fde2e2bc269ca1b5b14b4eebda6d4a5679c2af"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C06-10-center/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C06-10-center\\result.json",
+        "bytes": 337,
+        "sha256": "c74c05a64df6d0d4d545de95411b1ef6fbea63e02c6189d772da1de101197d44"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C06-10-center/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C06-10-center\\stderr.txt",
+        "bytes": 2682,
+        "sha256": "186055da2d09d790306f92901d532be936f8b9ac0d7cb4b2e4bf75cf050d0cc4"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/C06-10-center/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\C06-10-center\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/final-coded-tail/command.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\final-coded-tail\\command.json",
+        "bytes": 1109,
+        "sha256": "5512d1cfcbd5292d4f95c6ffaaee2e2fdc0756b3565244f4641e43179b36b807"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/final-coded-tail/result.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\final-coded-tail\\result.json",
+        "bytes": 340,
+        "sha256": "c7839f00e5e960e1005c6f41f2f42b654044e760a1e5a5ede8f187d6a8f739cc"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/final-coded-tail/stderr.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\final-coded-tail\\stderr.txt",
+        "bytes": 2590,
+        "sha256": "403883ff0a9d7e228acfdf2e8b2ccd5f620cc604165efc2776377eb9d59144e3"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/commands/final-coded-tail/stdout.txt",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\commands\\final-coded-tail\\stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/samples/INDEX.original.json",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\samples\\INDEX.original.json",
+        "bytes": 15494,
+        "sha256": "50d691f2c102c9959f3d7bb4bc39f851f1b3396f085985ed9327e9d65f107c01"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/source/build_pending_existing_review_a01.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\source\\build_pending_existing_review_a01.py",
+        "bytes": 13826,
+        "sha256": "e39358e7a459ce6bfc43a5088d0c98638f793503c9371c7952b3eddfce020e43"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/source/freeze_closed_producer_metadata_a01.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\source\\freeze_closed_producer_metadata_a01.py",
+        "bytes": 11710,
+        "sha256": "be14834395bd6b3be78e3e7b00b7f4618b039eaf5bc3111dd1dbbf36977d9e0a"
+      }
+    },
+    {
+      "repo_relative": "promo/ck3_native_war_ai/episode-04-march-logistics/production/final-review01-completion-a01/verify_package.py",
+      "source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\verify_package.py",
+        "bytes": 3934,
+        "sha256": "3871b3e9b97d82de38277d2aa7aa161f8ef1a6acb3a64223431577991189277b"
+      }
+    }
+  ],
+  "text_only": true,
+  "max_single_file_bytes": 1048576,
+  "large_media_included": false
+}

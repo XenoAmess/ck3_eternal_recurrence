@@ -1,0 +1,38 @@
+{
+  "status": "CLIENT_METADATA_IN_SYNC_REMOTE_UNVERIFIED",
+  "at_utc": "2026-10-06T04:17:57.821795+00:00",
+  "target": {
+    "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "a1abb0f2abaa06f3fd38839123e9f4ddd4c4218f8dd15e0965732d3596c69346"
+  },
+  "metadata": {
+    "path": "C:\\Users\\1\\OneDrive\\CK3-War-AI-20260923\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "sample_utc": "2026-10-06T04:17:57.804328+00:00",
+    "size": 1199061934,
+    "mtime_ns": 1791259477605413000,
+    "attributes_hex": "0x00000020",
+    "sync_root_hresult": "0x00000000",
+    "handle_attributes_hex": "0x00000020",
+    "reparse_tag_hex": "0x00000000",
+    "cf_placeholder_state_hex": "0x00000000",
+    "cf_placeholder_state_flags": [],
+    "placeholder_hresult": "0x00000000",
+    "placeholder_returned_bytes": 412,
+    "in_sync_state": 1,
+    "on_disk": 1199061934,
+    "validated": 1199061934,
+    "modified": 0,
+    "pin_state": 0,
+    "file_id": 1407374883646263,
+    "sync_root_file_id": 5910974510929700,
+    "stable_size_mtime": true
+  },
+  "client_metadata_in_sync": true,
+  "independent_remote_readback": false,
+  "human_signoff": "not-provided",
+  "content_read": false,
+  "settings_changed": false,
+  "software_launched": false,
+  "attempt": "C:\\ck3-war-episode04-delivery-20261006-a01\\attempts\\review01-actual-metadata-a04"
+}

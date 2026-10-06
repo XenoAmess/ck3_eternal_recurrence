@@ -1,0 +1,99 @@
+{"state": "ACTUAL_NEW_PICTURE_RENDERED", "cue": "C05-01", "frames": 659, "mode": "derived-picture-card-refresh"}
+{"state": "ACTUAL_NEW_PICTURE_RENDERED", "cue": "C05-04", "frames": 901, "mode": "new-native-picture"}
+{"state": "ACTUAL_NEW_PICTURE_RENDERED", "cue": "C05-05", "frames": 1601, "mode": "new-native-picture"}
+{"state": "ACTUAL_NEW_PICTURE_RENDERED", "cue": "C05-08", "frames": 974, "mode": "new-native-picture"}
+{"state": "ACTUAL_NEW_PICTURE_RENDERED", "cue": "C05-10", "frames": 1658, "mode": "new-native-picture"}
+{"state": "ACTUAL_NEW_PICTURE_RENDERED", "cue": "C05-14", "frames": 2119, "mode": "new-native-picture"}
+{"state": "ACTUAL_NEW_PICTURE_RENDERED", "cue": "C05-15", "frames": 834, "mode": "derived-picture-card-refresh"}
+{"state": "ACTUAL_NEW_PICTURE_RENDERED", "cue": "C05-16", "frames": 1565, "mode": "new-native-picture"}
+{"state": "ACTUAL_NEW_PICTURE_RENDERED", "cue": "C06-10", "frames": 1225, "mode": "new-native-picture"}
+{
+  "schema": "xar.e04.final-BC-review-picture.v1",
+  "state": "ACTUAL_FINAL_BC_REVIEW_CANDIDATE_RENDERED",
+  "created_utc": "2026-10-06T01:14:25.714707+00:00",
+  "picture": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346"
+  },
+  "bound_probe": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\picture.bound-probe.json",
+    "bytes": 4130,
+    "sha256": "0d358bbbfbff8a435fd60621a026531fe44d06d1325fa8a1036fd7b59fe36310"
+  },
+  "producer": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\candidate-a04\\bc_pipeline.py",
+    "bytes": 39639,
+    "sha256": "4e54b21ff9eebf7ce87f79fc9a5fe9fde16667354c59db6831cfd254d1cce544"
+  },
+  "input": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\input-snapshot.json",
+    "bytes": 96360,
+    "sha256": "e0633852afb84acd6b2d0865efd62fb5fe33c50e03396dcb8582739d9aafd13d"
+  },
+  "actual_PCM_samples": 41658624,
+  "actual_PCM_seconds": 1735.776,
+  "duration_frames": 52074,
+  "actual_video_seconds": 1735.8,
+  "final_grid_tail_seconds": 0.023999999999887223,
+  "real_last_frames_trimmed": 0,
+  "inserted_narration_silence_samples": 0,
+  "audio_changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "picture_refresh_ids": [
+    "C05-01",
+    "C05-15"
+  ],
+  "subtitle_changed_ids": [
+    "C05-04",
+    "C05-05",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16",
+    "C06-10"
+  ],
+  "whole_original_raw_rehashes": 0,
+  "old_dry_picture_rehashes": 0,
+  "exact_audio_clock_policy": {
+    "mix_time_base": "1/48000",
+    "asetpts": "N",
+    "encoder_time_base": "1:48000",
+    "movie_timescale": 48000,
+    "video_track_timescale": 48000,
+    "AAC_frame_samples": 1024,
+    "full_decode_continuity_not_yet_verified": true
+  },
+  "expected_AAC_decoded_samples_excluding_priming_and_discard_padding": 83318400,
+  "expected_AAC_final_packet_discard_padding_samples": 384,
+  "stable_dry_reuse_count": 52,
+  "B_status": "STOPPED_GATE_INCOMPLETE",
+  "B_London_comparable": false,
+  "winner": null,
+  "C_result_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-terminal-London-a01\\terminal.json",
+    "bytes": 6937,
+    "sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817"
+  },
+  "C_sampling_deviation_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a02\\sources\\C-terminal-Root-review.json",
+    "bytes": 16482,
+    "sha256": "bfbeacb02084e5c20dc58730b8bcbb40fb2f49ee62ee922fed7ce491a5129c1b"
+  },
+  "continuous_source_clean_review": false,
+  "whole_machine_video_audio_decode": null,
+  "exact_audio_PTS_continuity": null,
+  "historical_A_exact_audio_PTS_continuity": "RED",
+  "human_full_1x_review": false,
+  "human_signoff": false,
+  "full_film_ready": false,
+  "preview_only": true,
+  "Game_SDK_UI_Bus_Git_OneDrive_operations": 0
+}

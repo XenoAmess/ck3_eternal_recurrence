@@ -1,0 +1,82 @@
+{
+  "endpoint": "https://api.github.com/repos/XenoAmess/xar_promo_toolchain/releases/latest",
+  "queried_at_utc": "2026-10-06T04:02:51.903844+00:00",
+  "latest_official_tag": "v0.2.1",
+  "installed_version": "0.2.1",
+  "wheel_bytes": 190405,
+  "wheel_sha256": "f8de0711415e7fce2bf07a34d3db4edc0593f32ba1cb61034946665e27014621",
+  "raw_response": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\pending-human-review-existing-a01\\latest-formal-release.raw.json",
+    "bytes": 7123,
+    "sha256": "4f06955357d6d1a2cd57e3433f7c406a673a92b6c69211455c3d3cd75a76edfa"
+  },
+  "actual_help_probes": [
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "--version"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\pending-human-review-existing-a01\\toolchain-probes\\version.stdout.txt",
+        "bytes": 16,
+        "sha256": "991ede384a3e94036964aade9fb334611cf5f31441fb1847516671426c50902b"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\pending-human-review-existing-a01\\toolchain-probes\\version.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\pending-human-review-existing-a01\\toolchain-probes\\top-help.stdout.txt",
+        "bytes": 1629,
+        "sha256": "851c404fc3e56a1d792eca9439bd4c8cf93b74dd213685afc79b141f94286f6e"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\pending-human-review-existing-a01\\toolchain-probes\\top-help.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "argv": [
+        "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+        "-B",
+        "-X",
+        "utf8",
+        "-m",
+        "xar_promo",
+        "review",
+        "--help"
+      ],
+      "returncode": 0,
+      "stdout": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\pending-human-review-existing-a01\\toolchain-probes\\review-help.stdout.txt",
+        "bytes": 901,
+        "sha256": "a4d446acdeb2d702fedce22703b420cceb75aef2a058913f06240d08b5aa6b56"
+      },
+      "stderr": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\pending-human-review-existing-a01\\toolchain-probes\\review-help.stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  ]
+}

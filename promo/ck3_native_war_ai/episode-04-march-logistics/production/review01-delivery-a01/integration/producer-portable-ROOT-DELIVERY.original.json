@@ -1,0 +1,39 @@
+{
+  "schema": "xar.e04.closed-producer-portable-delivery.v1",
+  "source_root": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01",
+  "package_root": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01",
+  "catalog": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\CATALOG.json",
+    "bytes": 64432,
+    "sha256": "3648e8208c519e03e040fdd0e386a6d4c9e69c03eb090c5d40e971cf806d42b8"
+  },
+  "manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\manifest.json",
+    "bytes": 63721,
+    "sha256": "3ad5a83f171206f3220f20d68670f7518e03ce15d67c24bfbc0d1701d9d713c8"
+  },
+  "files": 113,
+  "total_text_bytes": 1003239,
+  "movie": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346"
+  },
+  "actual_video_frames": 52074,
+  "actual_video_seconds": 1735.8,
+  "pending_human_review": true,
+  "human_full_1x_review": false,
+  "human_signoff": false,
+  "whole_audit_and_OneDrive_not_assessed_in_this_package": true,
+  "large_media_reads": 0,
+  "Git_operations": 0,
+  "verify_argv": [
+    "python",
+    "-O",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\verify_package.py"
+  ],
+  "default_plan_argv": [
+    "python",
+    "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-review01-completion-a01\\plan_metadata.py"
+  ]
+}

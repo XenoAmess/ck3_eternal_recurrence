@@ -1,0 +1,87 @@
+{
+  "closed_utc": "2026-10-06T04:16:28.963889+00:00",
+  "status": "EXACT_TARGET_UIA_UPLOAD_COMPLETE_OBSERVED_METADATA_VERIFICATION_PENDING_WITH_ROOT",
+  "target": "CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+  "fixed_folder": "C:/Users/1/OneDrive/CK3-War-AI-20260923/",
+  "evidence_scope": "existing local client UIA statusText and exact target activity row; no independent server readback",
+  "root_cause_observed": "upload was still progressing; client process was running, and target reached the uploaded activity history",
+  "completed_observation_utc": "2026-10-06T04:15:39.926342+00:00",
+  "actual_final_statusText": [
+    "已备份和同步"
+  ],
+  "actual_uploaded_target_rows": [
+    {
+      "name": "CK3-War-AI-Episode04-March-Logistics-Review01.mp4. 已上传到 CK3-War-AI-20260923. 3 秒 前. 1 个最近的项，共 100 个。",
+      "automation_id": "itemHistoryButton0",
+      "type": "GroupControl"
+    }
+  ],
+  "monitor_count": 5,
+  "monitor_first_utc": "2026-10-06T04:10:51.200966+00:00",
+  "monitor_last_utc": "2026-10-06T04:15:39.926342+00:00",
+  "monitor_stopped": true,
+  "machine_classifier_original_retained": "UIA_SAMPLE_ONLY",
+  "classifier_note": "Original sample label UIA_SAMPLE_ONLY is retained; the exact uploaded Chinese text is the completion evidence. No historical sample was rewritten.",
+  "next_step": "Root alone queries two exact-target Cloud Files metadata samples at least ten seconds apart and checks InSync, expected bytes and stable identity; no settings changes required.",
+  "metadata_query_performed_by_this_agent": false,
+  "client_metadata_in_sync_verified_by_this_agent": false,
+  "independent_remote_readback": false,
+  "whole_movie_hash_performed_by_this_agent": false,
+  "cloud_file_content_read": false,
+  "cloud_download_requested": false,
+  "desktop_input_or_invoke": false,
+  "software_started_or_installed": false,
+  "client_settings_changed": false,
+  "metadata": [
+    {
+      "relative_path": "01-readonly-client-state.json",
+      "bytes": 14392,
+      "sha256": "7da3db5e9a4be6075dc34190faa56eadaa0a85ce96fd6c5485feac55e60c03f8"
+    },
+    {
+      "relative_path": "02-existing-uia-status.json",
+      "bytes": 5839,
+      "sha256": "b1f985d404b43a26621facc2fa79fcfcf417b4f1d95ad41af7846f13f54ab9bb"
+    },
+    {
+      "relative_path": "inspect_local_client_a01.py",
+      "bytes": 7010,
+      "sha256": "081d4f62388e9fa3e7b37ae612f09168ac0ea4dd83f07a7e30613a13672baa82"
+    },
+    {
+      "relative_path": "inspect_existing_uia_status_a01.py",
+      "bytes": 3838,
+      "sha256": "0f2ce58c4308bc7fa2f37636e98e5eb5f3cc36155de57ef2daf62d9c1b3ee5f4"
+    },
+    {
+      "relative_path": "monitor_existing_uia_target_a01.py",
+      "bytes": 3373,
+      "sha256": "8b13cce29ac86ad2ec062856867e3d6e61bea710eaa34ce0ed9ba22e51f432be"
+    },
+    {
+      "relative_path": "monitor-01-existing-uia-status.json",
+      "bytes": 1051,
+      "sha256": "215bf8b79277e48dcdbb2aa3c0ef8f1804502aec8f9aa3e989cdfe13072737ca"
+    },
+    {
+      "relative_path": "monitor-02-existing-uia-status.json",
+      "bytes": 1051,
+      "sha256": "45622eb4c3f4dd2d12c29c0f3a320abc77edfdd3adff5ccded4cf262ec955899"
+    },
+    {
+      "relative_path": "monitor-03-existing-uia-status.json",
+      "bytes": 1051,
+      "sha256": "ba0d804f3273a04c9335c9824f66fd4f27b1b8247239b9764bb1dcfc72ed0fa3"
+    },
+    {
+      "relative_path": "monitor-04-existing-uia-status.json",
+      "bytes": 1053,
+      "sha256": "75bd6317dfc44acba21bac3b0d378292659b4a84842cbbc81085034ce251fe26"
+    },
+    {
+      "relative_path": "monitor-05-existing-uia-status.json",
+      "bytes": 1006,
+      "sha256": "5369bc8abcd61123500c41ab426499186ff303cdbd8ad63c096cfef98f5704ff"
+    }
+  ]
+}

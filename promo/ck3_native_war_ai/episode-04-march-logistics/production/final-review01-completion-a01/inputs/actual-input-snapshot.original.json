@@ -1,0 +1,1757 @@
+{
+  "schema": "xar.e04.final-BC-increment-input.v1",
+  "purpose": "actual-final-Review01-awaiting-Root-picture-row-freeze",
+  "prior": {
+    "A_full_picture_receipt": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\actual-full-assembly-a01\\picture-receipt.json",
+      "bytes": 392689,
+      "sha256": "34fc6b2e57fd3c3dda5b31ca480abec4c7ae151eb37f12d3ddf43b9888b01666"
+    },
+    "A_audio_delivery": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-audio-production-a01\\ROOT-DELIVERY.json",
+      "bytes": 5126,
+      "sha256": "87044ce8e9d5e0b25110f6693deeacea2f8fbf8f63563426ed96b5da8cff9633"
+    },
+    "A_subtitle_delivery": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-A-only-subtitle-timeline-a01\\actual-subtitles-a02\\ROOT-DELIVERY.json",
+      "bytes": 5075,
+      "sha256": "ae3fc5e4eac519d76a8b903c4519fd541e9125f980b880a93f0405a8c4040060"
+    },
+    "A_C05_picture_input": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\picture-input-reviewed-preview-a02.json",
+      "bytes": 100710,
+      "sha256": "090bbdda1cba98a0d6c56a2310ab295a5b3a2a97dd67a84cc4753173baf213f6"
+    },
+    "actual_A_renderer": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\candidate-a06\\e4_picture_producer.py",
+      "bytes": 26226,
+      "sha256": "c53449b86fe8abad90b07f3ce237528241fdf88f00feee69a5da39c031b88fca"
+    },
+    "projected_A_assembler": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-production-portable-a01\\candidate-a03\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\picture-production-a01\\assemble_A_only.py",
+      "bytes": 9325,
+      "sha256": "39530005e6bcf93625a769f7d9095f904c292a354d0f28ed7cc9ae15f347df75"
+    },
+    "actual_A_audio_video_audit": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-final-machine-audit-a01\\ROOT-DELIVERY03.json",
+      "bytes": 1976,
+      "sha256": "28aa7bf817fde81a49c019900273ffb3e054d5f51187c3fcb2f31dec600fcfd2"
+    },
+    "actual_A_audit_findings": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-final-machine-audit-a01\\attempt-a01\\report-findings03.json",
+      "bytes": 6155,
+      "sha256": "867a9e87999a722394487d956336844d8ee538a77c84e36607a1294320613d1a"
+    },
+    "B_oral_candidate": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-B-merge-arithmetic-oral-a01\\ROOT-DELIVERY-a02.json",
+      "bytes": 8587,
+      "sha256": "6b0fcc14efd30497b449aa8bb1b6358882f3d656a15fee69f07760d2b0f81f8b"
+    },
+    "B_picture_recipe": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-B-increment-picture-recipe-a01\\candidate-a01\\B-picture-storyboards.json",
+      "bytes": 12527,
+      "sha256": "3ae472b40831d37781231304f9ea93f9bac8ba7d3569eaacced4b7edbe2736c3"
+    },
+    "Root_B_S01_five_stills_review": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-first-tape-encoded-review-a01\\receipt.json",
+      "bytes": 13796,
+      "sha256": "568930e15c0e8533cf151c0be102aa5cf5f79a122e38a3ee410dca9cc070da19"
+    },
+    "Root_B_S02_three_stills_review": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-S02-encoded-review-a01\\receipt.json",
+      "bytes": 3363,
+      "sha256": "95d9fe4fafb082e84c95bd018077ebf17d833c65d82553b7a77d076cd3986c4b"
+    },
+    "A_stable_picture_input": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-stable-full-picture-roughcut-a01\\picture-input-reviewed-preview-a02.json",
+      "bytes": 270206,
+      "sha256": "556445a637e5d78f9b2d51c3c49160bcf820de0e0c90af116ceccc76527e70bb"
+    },
+    "B_dynamic_candidates": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-b-dynamic-candidates-a01\\ROOT-DELIVERY-a01.json",
+      "bytes": 19897,
+      "sha256": "c64a5be8949ab7bd3f8cbc3cafdc7e3a0a2c47ec6be5eccdfe897fef09b7f31f"
+    },
+    "B_dynamic_sample_summary": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-b-dynamic-candidates-a01\\JOINT-SAMPLE-SUMMARY-a01.json",
+      "bytes": 4208,
+      "sha256": "6a23c54f2b1ef1584296f138b8cb4cb9ce535d6fb845a5531e58c09a104d15ae"
+    },
+    "Root_B_dynamic_six_center_review": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-B-dynamic-center-review-a01\\receipt.json",
+      "bytes": 9009,
+      "sha256": "612a1281f8d12ce391eb2d130cce67e029e79e717cea1e5299c58c1df79ced74"
+    }
+  },
+  "tools": {
+    "ffmpeg": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "bytes": 222229504,
+      "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+    },
+    "ffprobe": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "bytes": 222026240,
+      "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+    }
+  },
+  "fonts": {
+    "zh": {
+      "path": "C:\\Windows\\Fonts\\msyh.ttc",
+      "bytes": 19704352,
+      "sha256": "d79c55e68b1131eea0cc1c47be4f572d964f28c682e143db2ad09c1e4cb07a3f"
+    },
+    "en": {
+      "path": "C:\\Windows\\Fonts\\arial.ttf",
+      "bytes": 1036584,
+      "sha256": "c9b76220a5be42ead4733611e417cd65c5fd8aeaa33eb56576ac378a37d130a1"
+    }
+  },
+  "music": {
+    "title": "Quiet Courtly Tension",
+    "source": {
+      "path": "D:\\workspace\\ck3_native_war_ai_promo_work\\v5-theme-film-attempt-001\\run\\artifacts\\raw\\sha256\\FD\\FDA2464FB4B06CD9A2F0196E5C40CA311EB693EC263C996E4CCC24A6ADA8803F.wav",
+      "bytes": 30726160,
+      "sha256": "fda2464fb4b06cd9a2f0196e5c40ca311eb693ec263c996e4ccc24a6ada8803f"
+    },
+    "gain_db": -17,
+    "ducking": false,
+    "normalize": false
+  },
+  "output_geometry": [
+    1920,
+    1080,
+    30
+  ],
+  "final": {
+    "project_config": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a02\\promo-project-final-Review01.json",
+      "bytes": 86413,
+      "sha256": "3373c3ea8428edc877a52225a004bf3082c7ac72003eb4939e071ed1e4b65092"
+    },
+    "claim_ledger": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-story-a01\\actual-story-a02\\claim-ledger-final-BC-a06.json",
+      "bytes": 199066,
+      "sha256": "2ef65357de29c0d4245886cb06dd5a0454089849b15623f7fcbf47666e1b83c9"
+    },
+    "audio_delivery": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-English-binding-a01\\ROOT-DELIVERY.json",
+      "bytes": 17606,
+      "sha256": "46269c38b047b783662862c3e336e03f2978abcc67449aad330daf9b90c7b1f0"
+    },
+    "subtitle_delivery": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\ROOT-DELIVERY.json",
+      "bytes": 23131,
+      "sha256": "66931359da98229b353383d90336ee2bc288d83509cafb70c94f0cb5579d4eae"
+    },
+    "C05_relative_delivery": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\E4-05-relative-ROOT-DELIVERY.json",
+      "bytes": 9983,
+      "sha256": "8b3a4552c2c69153d8e94dce4c6851eaf5b53908c99e1f5615ba6f0b0718c8ef"
+    },
+    "C06_relative_delivery": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-subtitle-production-a01\\actual-subtitles-a02\\E4-06-relative-ROOT-DELIVERY.json",
+      "bytes": 6311,
+      "sha256": "2907a7ee566b09b4f052dd5ef626f9bd8cdb16829ab7c0e8dce2aeedc6cd751d"
+    },
+    "C_terminal_receipt": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-terminal-London-a01\\terminal.json",
+      "bytes": 6937,
+      "sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817"
+    },
+    "C_closed_media_receipt": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s04-terminal-window-a01\\ROOT-DELIVERY-a01.json",
+      "bytes": 5378,
+      "sha256": "6e477b4ef422ad9d756377d16d0cf3d4866ef95dc63e67ae2881368863cd3e61"
+    },
+    "release_probe": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\release-probe-a01.json",
+      "bytes": 4137,
+      "sha256": "a52578b9e3d88604a0817fccceae6e3f76a05ccaf6fb17753b2fe6e252b27e2d"
+    },
+    "picture_rows": [
+      {
+        "id": "C05-01",
+        "text_zh": "现在把这些读数放进选择里。整军直走、分兵休整会合、换路线，都回答同一组问题：什么时候真正到，剩多少兵，库存与缺员有没有恢复，途中实际付了什么钱。比较前，先确保每次从同一个已经验收的起点出发。",
+        "text_en": "Now use these readings to make choices. Marching as one army, splitting to recover and reunite, and taking another route answer the same questions. When did the army actually arrive? How many soldiers remained? Did supply and missing strength recover? What was actually paid along the way? Before comparing, every replay must begin at the same verified starting point.",
+        "title": "三个方案，三种记录",
+        "source_label": "研究记录 · 各画面独立标明回放主体",
+        "record_note": [
+          "A：整军直走；已到伦敦",
+          "B：拆军休整；第38日对照条件变化，停止观察",
+          "C：绕道；首次观测第77日到达",
+          "C 多次采样偏差，不作严格对照",
+          "本次没有 ABC 策略赢家"
+        ],
+        "duration_frames": 659,
+        "visuals": [],
+        "source_scope": "real historical post-state background; no native-event join",
+        "actual_outcome_credit": false
+      },
+      {
+        "id": "C05-04",
+        "text_zh": "方案B先分兵，让两支军队分别到合格驻点休整，再会合。这里看一次独立的B回放：在已核对的停驻窗口，两军当前补给月变化都读到正二十。它只说当时的读数，不表示库存已经增加。后面分别看人数和库存的实际变化；实际合军之后，还要重新核对兵团与统帅条件，伦敦终点仍未读到。",
+        "text_en": "Plan B splits the army. Both groups rest at qualifying locations, then reunite. Here is an independent replay of B. During the checked rest window, both armies showed a current supply change of +20 per month. That was the current rate. It does not show that supply had already increased. Next, we observe actual soldier and supply changes separately. After the actual merge, we must check the regiments and commander again. There is still no observed London endpoint for B.",
+        "title": "B：真实拆军与站点",
+        "source_label": "研究记录 · 各画面独立标明回放主体",
+        "record_note": [
+          "B 原编制 27 团拆为 15＋12 团",
+          "初始人数 3337＋3342＝6679",
+          "主军留原站；子军合法赴休整站",
+          "完整兵团身份与满员数逐项核对",
+          "背景另标独立资格样本，非本次动作"
+        ],
+        "duration_frames": 901,
+        "visuals": [
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-a02\\raw.mkv",
+              "bytes": 5780417173,
+              "sha256": "52cf0ed2c9c669a338bfbca6eea96f99be4c84516a09e3ff819dad4717a980d2"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-first-recorder-closure-a01\\finish-response.json",
+              "bytes": 1346,
+              "sha256": "e8489c01296b111f4d637a7ba1a499fcd401adc1ac04490f1496a2e738150a14"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12079,
+              "sha256": "12f4e37100a308601544569b78ac4bf522621d471f688895698306460bb70360"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-picture-row-preparation-a01\\candidate-a01\\source-reviews\\B-b-s01-day6.json",
+              "bytes": 3211,
+              "sha256": "8e5ae8b790adb1a0eb88d035fd6c2b7e3188f9c7df0ee0bb57907ca3707dd8a0"
+            },
+            "source_start_seconds": 1354.0,
+            "source_end_seconds_exclusive": 1366.0,
+            "duration_frames": 360,
+            "playback_rate": 1,
+            "semantic_role": "actual-B-paused-post-state-context-not-event",
+            "visible_context_label": "B · 1067年03月11日 · 暂停回放 · 原速",
+            "source_id": "B-S01-day6",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-raw-rest-qualification-a01\\raw.mkv",
+              "bytes": 1406113762,
+              "sha256": "058a7c1c121af0e3cffa949736cf94c033edc409f15f6e9a08fa482df1de0c9d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-recorder-finish-a01\\finish.json",
+              "bytes": 810,
+              "sha256": "d3ed413343138398fd4ce9205b41bcb64a02611295eff62ec5229f6b2677020a"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11419,
+              "sha256": "0576177af87ec51021bf8c0f0161dba13c5ef18ad401d1dcc14eca981be7ca1a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-04-00.json",
+              "bytes": 2787,
+              "sha256": "e6c47790a2339e19b280642ee5def8d2c29477969959cfb99f236d5bb2f76638"
+            },
+            "source_start_seconds": 550.0,
+            "source_end_seconds_exclusive": 561.866668,
+            "duration_frames": 356,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "独立资格样本 · 回放背景 · 原速",
+            "source_id": "REPLACED-C05-04-00",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-raw-rest-qualification-a01\\raw.mkv",
+              "bytes": 1406113762,
+              "sha256": "058a7c1c121af0e3cffa949736cf94c033edc409f15f6e9a08fa482df1de0c9d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-recorder-finish-a01\\finish.json",
+              "bytes": 810,
+              "sha256": "d3ed413343138398fd4ce9205b41bcb64a02611295eff62ec5229f6b2677020a"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11419,
+              "sha256": "0576177af87ec51021bf8c0f0161dba13c5ef18ad401d1dcc14eca981be7ca1a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-04-01.json",
+              "bytes": 2787,
+              "sha256": "b89367a01c7b39d414acb26713386a6710f8403b5c2035b58ba1219ab93e258d"
+            },
+            "source_start_seconds": 565.0,
+            "source_end_seconds_exclusive": 571.167,
+            "duration_frames": 185,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "独立资格样本 · 回放背景 · 原速",
+            "source_id": "REPLACED-C05-04-01",
+            "source_frame_offset_within_reviewed_window": 0
+          }
+        ],
+        "source_scope": "real historical post-state background; no native-event join",
+        "actual_outcome_credit": false
+      },
+      {
+        "id": "C05-05",
+        "text_zh": "方案C换路线，先经过已核验的中转点，再去伦敦。这次独立回放，在共同起点后的第七十七个游戏日，我们首次观察到主力已经抵达伦敦；第七十五日它还在路上，所以实际到达在这两次观察之间，精确时刻未知。这支主力从六千六百七十九人出发，到达观测时是六千六百八十九，净增十人；完整二十七个兵团的身份与满员数不变。补给从约一百一十点三八降到一百零一点九零，容量仍三百。终点当前损耗读到百分之一，这是当时的条件读数，不能直接换算成旅途中死了多少兵。这里报的是主力的原始编制，不是玩家所有单位的总人数。",
+        "text_en": "Plan C takes a different route, through verified waypoints to London. In this independent replay, on game day 77 after the shared start, we first observed the main army in London. It was still en route on day 75. It arrived between those observations. The exact moment is unknown. This main army started with 6,679 soldiers. At the arrival observation, it had 6,689: a net gain of ten. All 27 regiments retained their identities and maximum soldier counts. Supply fell from about 110.38 to 101.90. Supply capacity remained 300. Current attrition at the endpoint was 1%. That was the rate under current conditions. It does not tell us how many died en route. These figures describe the original main army. They are not the total soldiers in all player units.",
+        "title": "C：首次观测到达",
+        "source_label": "研究记录 · 各画面独立标明回放主体",
+        "record_note": [
+          "C 第77日首次观测伦敦；窗口(75,77]",
+          "主力原始编制 6679→6689，净＋10",
+          "原27团／最大6747／统帅身份保持",
+          "库存110.38→101.90；容量300",
+          "当前1%读数，不是已死亡账本",
+          "多次采样偏差，不作严格对照"
+        ],
+        "duration_frames": 1601,
+        "visuals": [
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\raw.mkv",
+              "bytes": 2754943503,
+              "sha256": "1c9476f462a48f9de87403cd0f8cf6da94f154f6e6b1986dfb42515680b46301"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\result.json",
+              "bytes": 1079,
+              "sha256": "4f75ca718a2f81afdc8f6e795fefbca321816c7214bb3de788905a881f88e6e1"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12162,
+              "sha256": "9007e3555652292c958b434c5f9528a0c799bebc9ec430939b8daa14e287b86a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a02\\source-reviews\\C-S04-extra-terminal-context-00.json",
+              "bytes": 1145,
+              "sha256": "b11c085d73496a68bfb7590f0ce8067d59a4bb58b8db260c65811e1205bde5dc"
+            },
+            "source_start_seconds": 1849.367,
+            "source_end_seconds_exclusive": 1859.367,
+            "duration_frames": 300,
+            "playback_rate": 1,
+            "semantic_role": "C-actual-paused-terminal-state-no-arrival-action",
+            "visible_context_label": "C · 1067年5月21日 · 暂停终态回放 · 原速",
+            "source_id": "C-S04-extra-terminal-context-00",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\raw.mkv",
+              "bytes": 2754943503,
+              "sha256": "1c9476f462a48f9de87403cd0f8cf6da94f154f6e6b1986dfb42515680b46301"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\result.json",
+              "bytes": 1079,
+              "sha256": "4f75ca718a2f81afdc8f6e795fefbca321816c7214bb3de788905a881f88e6e1"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12162,
+              "sha256": "9007e3555652292c958b434c5f9528a0c799bebc9ec430939b8daa14e287b86a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a02\\source-reviews\\C-S04-extra-terminal-context-01.json",
+              "bytes": 1145,
+              "sha256": "46ce171cb31cff5a092ac712260b9ee1403745321be04f86fe18a4573b07c60f"
+            },
+            "source_start_seconds": 1859.367,
+            "source_end_seconds_exclusive": 1869.367,
+            "duration_frames": 300,
+            "playback_rate": 1,
+            "semantic_role": "C-actual-paused-terminal-state-no-arrival-action",
+            "visible_context_label": "C · 1067年5月21日 · 暂停终态回放 · 原速",
+            "source_id": "C-S04-extra-terminal-context-01",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\raw.mkv",
+              "bytes": 2754943503,
+              "sha256": "1c9476f462a48f9de87403cd0f8cf6da94f154f6e6b1986dfb42515680b46301"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\result.json",
+              "bytes": 1079,
+              "sha256": "4f75ca718a2f81afdc8f6e795fefbca321816c7214bb3de788905a881f88e6e1"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12162,
+              "sha256": "9007e3555652292c958b434c5f9528a0c799bebc9ec430939b8daa14e287b86a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a02\\source-reviews\\C-S04-extra-terminal-context-02.json",
+              "bytes": 1145,
+              "sha256": "4c0bcd3d736697b565ab1cdcb91153511a26d2d49b299055de767d205056875f"
+            },
+            "source_start_seconds": 1869.367,
+            "source_end_seconds_exclusive": 1879.367,
+            "duration_frames": 300,
+            "playback_rate": 1,
+            "semantic_role": "C-actual-paused-terminal-state-no-arrival-action",
+            "visible_context_label": "C · 1067年5月21日 · 暂停终态回放 · 原速",
+            "source_id": "C-S04-extra-terminal-context-02",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\raw.mkv",
+              "bytes": 2754943503,
+              "sha256": "1c9476f462a48f9de87403cd0f8cf6da94f154f6e6b1986dfb42515680b46301"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\result.json",
+              "bytes": 1079,
+              "sha256": "4f75ca718a2f81afdc8f6e795fefbca321816c7214bb3de788905a881f88e6e1"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12162,
+              "sha256": "9007e3555652292c958b434c5f9528a0c799bebc9ec430939b8daa14e287b86a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a02\\source-reviews\\C-S04-extra-terminal-context-03.json",
+              "bytes": 1145,
+              "sha256": "68344f91f51b18a6f2f9eb6d95743f5bcd39955f4a6dddc269e3e6cf6156efdf"
+            },
+            "source_start_seconds": 1879.367,
+            "source_end_seconds_exclusive": 1889.367,
+            "duration_frames": 300,
+            "playback_rate": 1,
+            "semantic_role": "C-actual-paused-terminal-state-no-arrival-action",
+            "visible_context_label": "C · 1067年5月21日 · 暂停终态回放 · 原速",
+            "source_id": "C-S04-extra-terminal-context-03",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\raw.mkv",
+              "bytes": 2754943503,
+              "sha256": "1c9476f462a48f9de87403cd0f8cf6da94f154f6e6b1986dfb42515680b46301"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\result.json",
+              "bytes": 1079,
+              "sha256": "4f75ca718a2f81afdc8f6e795fefbca321816c7214bb3de788905a881f88e6e1"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12162,
+              "sha256": "9007e3555652292c958b434c5f9528a0c799bebc9ec430939b8daa14e287b86a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a02\\source-reviews\\C-S04-extra-terminal-context-04.json",
+              "bytes": 1145,
+              "sha256": "d38c3475e34d6dae25b58434facd385163349feb02677dc77e3af2b2379ce7d0"
+            },
+            "source_start_seconds": 1889.367,
+            "source_end_seconds_exclusive": 1899.367,
+            "duration_frames": 300,
+            "playback_rate": 1,
+            "semantic_role": "C-actual-paused-terminal-state-no-arrival-action",
+            "visible_context_label": "C · 1067年5月21日 · 暂停终态回放 · 原速",
+            "source_id": "C-S04-extra-terminal-context-04",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\raw.mkv",
+              "bytes": 2754943503,
+              "sha256": "1c9476f462a48f9de87403cd0f8cf6da94f154f6e6b1986dfb42515680b46301"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\result.json",
+              "bytes": 1079,
+              "sha256": "4f75ca718a2f81afdc8f6e795fefbca321816c7214bb3de788905a881f88e6e1"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12162,
+              "sha256": "9007e3555652292c958b434c5f9528a0c799bebc9ec430939b8daa14e287b86a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a02\\source-reviews\\C-S04-actual-terminal-state-last360.json",
+              "bytes": 1128,
+              "sha256": "78c775ef805ec12b2dd973a598ad8a0e61ca749f81573ec17e1a50d14c98b048"
+            },
+            "source_start_seconds": 1899.367,
+            "source_end_seconds_exclusive": 1902.733,
+            "duration_frames": 101,
+            "playback_rate": 1,
+            "semantic_role": "C-actual-paused-terminal-state-no-arrival-action",
+            "visible_context_label": "C · 1067年5月21日 · 暂停终态回放 · 原速",
+            "source_id": "C-S04-actual-terminal-state-last360",
+            "source_frame_offset_within_reviewed_window": 0
+          }
+        ],
+        "source_scope": "real historical post-state background; no native-event join",
+        "actual_outcome_credit": false
+      },
+      {
+        "id": "C05-08",
+        "text_zh": "前面的平分样本里，两队都继承约一百一十点三八补给，主军容量三百，新分队容量一百。现在看这次B回放：起点后的第二十到二十一日，新分队库存从约一百一十点三八降到一百，两军人数与完整兵团的前后读数都没变。虽然当前月变化仍是正二十，这次库存变化却是向下回到容量；它不是补兵，也不是低库存补给增加。",
+        "text_en": "In the earlier equal split, both armies inherited about 110.38 supply. The main army had capacity 300; the new group had capacity 100. Now look at this replay of B. Between days 20 and 21, the new group's supply fell from about 110.38 to 100. Both armies' soldier counts and full regiment readings were unchanged. The current monthly rate still showed +20. But the actual supply change was downward, back to capacity. This was neither reinforcement nor a supply increase from a low stock.",
+        "title": "B：两个补给窗口",
+        "source_label": "研究记录 · 各画面独立标明回放主体",
+        "record_note": [
+          "子军：第20→21日，110.38→100",
+          "以上容量回到100；允许零或负变更",
+          "主军：第31→32日，106.14→126.14",
+          "主军低于容量300，实际增加20",
+          "两窗口分开，不称同时更新",
+          "12秒片段为写回后的暂停状态"
+        ],
+        "duration_frames": 974,
+        "visuals": [
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-a02\\raw.mkv",
+              "bytes": 5780417173,
+              "sha256": "52cf0ed2c9c669a338bfbca6eea96f99be4c84516a09e3ff819dad4717a980d2"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-first-recorder-closure-a01\\finish-response.json",
+              "bytes": 1346,
+              "sha256": "e8489c01296b111f4d637a7ba1a499fcd401adc1ac04490f1496a2e738150a14"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12079,
+              "sha256": "12f4e37100a308601544569b78ac4bf522621d471f688895698306460bb70360"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-picture-row-preparation-a01\\candidate-a01\\source-reviews\\B-b-s01-day21.json",
+              "bytes": 3184,
+              "sha256": "cc224c7ef7531de53b80be083d40e623a890f422e79d7cdb5376bf3d895e5ef0"
+            },
+            "source_start_seconds": 2466.0,
+            "source_end_seconds_exclusive": 2478.0,
+            "duration_frames": 360,
+            "playback_rate": 1,
+            "semantic_role": "actual-B-paused-post-state-context-not-event",
+            "visible_context_label": "B · 1067年03月26日 · 暂停回放 · 原速",
+            "source_id": "B-S01-day21",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-raw-rest-qualification-a01\\raw.mkv",
+              "bytes": 1406113762,
+              "sha256": "058a7c1c121af0e3cffa949736cf94c033edc409f15f6e9a08fa482df1de0c9d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-recorder-finish-a01\\finish.json",
+              "bytes": 810,
+              "sha256": "d3ed413343138398fd4ce9205b41bcb64a02611295eff62ec5229f6b2677020a"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11419,
+              "sha256": "0576177af87ec51021bf8c0f0161dba13c5ef18ad401d1dcc14eca981be7ca1a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-08-00.json",
+              "bytes": 2775,
+              "sha256": "3a39e751d0f39b83904227abdd2534ceaccb0ea2713e43a2c8bb37c8517c74fe"
+            },
+            "source_start_seconds": 710.0,
+            "source_end_seconds_exclusive": 718.733334,
+            "duration_frames": 262,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "独立资格样本 · 回放背景 · 原速",
+            "source_id": "REPLACED-C05-08-00",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-raw-rest-qualification-a01\\raw.mkv",
+              "bytes": 1406113762,
+              "sha256": "058a7c1c121af0e3cffa949736cf94c033edc409f15f6e9a08fa482df1de0c9d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-recorder-finish-a01\\finish.json",
+              "bytes": 810,
+              "sha256": "d3ed413343138398fd4ce9205b41bcb64a02611295eff62ec5229f6b2677020a"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11419,
+              "sha256": "0576177af87ec51021bf8c0f0161dba13c5ef18ad401d1dcc14eca981be7ca1a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-08-01.json",
+              "bytes": 2787,
+              "sha256": "879abdd27da4b1edce346275615b234163c107ca456faabd3f3fd653b65cd0f3"
+            },
+            "source_start_seconds": 725.0,
+            "source_end_seconds_exclusive": 733.700001,
+            "duration_frames": 261,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "独立资格样本 · 回放背景 · 原速",
+            "source_id": "REPLACED-C05-08-01",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-raw-rest-qualification-a01\\raw.mkv",
+              "bytes": 1406113762,
+              "sha256": "058a7c1c121af0e3cffa949736cf94c033edc409f15f6e9a08fa482df1de0c9d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-recorder-finish-a01\\finish.json",
+              "bytes": 810,
+              "sha256": "d3ed413343138398fd4ce9205b41bcb64a02611295eff62ec5229f6b2677020a"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11419,
+              "sha256": "0576177af87ec51021bf8c0f0161dba13c5ef18ad401d1dcc14eca981be7ca1a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-08-02.json",
+              "bytes": 2787,
+              "sha256": "3869081ac8034d0881088543ce9601bb45acddd7ed38090a024c85788c9ae4a3"
+            },
+            "source_start_seconds": 740.0,
+            "source_end_seconds_exclusive": 743.033,
+            "duration_frames": 91,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "独立资格样本 · 回放背景 · 原速",
+            "source_id": "REPLACED-C05-08-02",
+            "source_frame_offset_within_reviewed_window": 0
+          }
+        ],
+        "source_scope": "real historical post-state background; no native-event join",
+        "actual_outcome_credit": false
+      },
+      {
+        "id": "C05-10",
+        "text_zh": "接着看两个不同的窗口。起点后的第二十六到二十七日，主军人数净增七，新分队净增三，两端库存相同。第三十一到三十二日，主军补给从约一百零六点一四升到一百二十六点一四，新分队两端都是一百，完整兵团的人数与编制也没变。人数净变化与补给增加各记自己的日期，不能剪成同一次结算。后来两军回到同地实际合军，合前补给约一百二十六点一四和一百。按双方各自的合军权重加权、分别取整，得到约一百一十三点零六。合后容量读到一百，库存实际也是一百。这个窗口能单独确认上限截断，不能用两队库存的普通平均代替。",
+        "text_en": "Next, consider two separate observation windows. Between days 26 and 27, the main army gained seven soldiers net; the new group gained three. Supply was unchanged at both endpoints. Between days 31 and 32, main-army supply rose from about 106.14 to 126.14. The new group had 100 at both endpoints. The full regiment roster and soldier counts were also unchanged. Record soldier changes and supply gains on their own dates. Do not edit them into a single update. Later, the two armies reunited at the same location and actually merged. Before merging, their supply was about 126.14 and 100. Apply each army's merge weight and round down each contribution. The result is about 113.06. After merging, capacity was 100, and actual supply was also 100. This window independently confirms the upper-cap clamp. A simple average of the two supply stocks cannot replace that calculation.",
+        "title": "B：合军加权与上限",
+        "source_label": "研究记录 · 各画面独立标明回放主体",
+        "record_note": [
+          "按合军权重加权并取整",
+          "截断前期望113.06109，合后上限100",
+          "实际库存100：本次数学核验通过",
+          "原27团保留，另出现新1／1团",
+          "统帅身份改变；变化原因未知",
+          "背景为状态回放，不是合军点击时刻"
+        ],
+        "duration_frames": 1658,
+        "visuals": [
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-a02\\raw.mkv",
+              "bytes": 5780417173,
+              "sha256": "52cf0ed2c9c669a338bfbca6eea96f99be4c84516a09e3ff819dad4717a980d2"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0175-first-recorder-closure-a01\\finish-response.json",
+              "bytes": 1346,
+              "sha256": "e8489c01296b111f4d637a7ba1a499fcd401adc1ac04490f1496a2e738150a14"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12079,
+              "sha256": "12f4e37100a308601544569b78ac4bf522621d471f688895698306460bb70360"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-picture-row-preparation-a01\\candidate-a01\\source-reviews\\B-b-s01-day27.json",
+              "bytes": 3185,
+              "sha256": "f850cf37db1615fca1e2b15304c5fb86a50f63db1c3d07ec1b1c4686b8f399d1"
+            },
+            "source_start_seconds": 3037.0,
+            "source_end_seconds_exclusive": 3049.0,
+            "duration_frames": 360,
+            "playback_rate": 1,
+            "semantic_role": "actual-B-paused-post-state-context-not-event",
+            "visible_context_label": "B · 1067年04月01日 · 暂停回放 · 原速",
+            "source_id": "B-S01-day27",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-continuation-a01\\raw.mkv",
+              "bytes": 3363279647,
+              "sha256": "de8f9c72f64e62bc14461ee6611a301d1dc765599f138b015cacaf54dcd7f468"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-continuation-a01\\result.json",
+              "bytes": 1057,
+              "sha256": "3db7f2f83352a157174b91aa25828e0cf21fe2b428daf8b2fa9afc8e42458d9e"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-continuation-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12022,
+              "sha256": "e4ba0ec769776e0250ea00fa5e86e4f2b9730d9f834aa22e6f113209b0cd7c3b"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-picture-row-preparation-a01\\candidate-a01\\source-reviews\\B-b-s02-main-positive.json",
+              "bytes": 3258,
+              "sha256": "f203b981691556580fe270917fc5f91d39638e009a737a2331ff040d9bd2745b"
+            },
+            "source_start_seconds": 194.0,
+            "source_end_seconds_exclusive": 206.0,
+            "duration_frames": 360,
+            "playback_rate": 1,
+            "semantic_role": "actual-B-paused-post-state-context-not-event",
+            "visible_context_label": "B · 1067年04月06日 · 暂停回放 · 原速",
+            "source_id": "B-S02-Main-positive",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-continuation-a01\\raw.mkv",
+              "bytes": 3363279647,
+              "sha256": "de8f9c72f64e62bc14461ee6611a301d1dc765599f138b015cacaf54dcd7f468"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-continuation-a01\\result.json",
+              "bytes": 1057,
+              "sha256": "3db7f2f83352a157174b91aa25828e0cf21fe2b428daf8b2fa9afc8e42458d9e"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-continuation-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12022,
+              "sha256": "e4ba0ec769776e0250ea00fa5e86e4f2b9730d9f834aa22e6f113209b0cd7c3b"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-picture-row-preparation-a01\\candidate-a01\\source-reviews\\B-b-s02-postmerge-exception.json",
+              "bytes": 3342,
+              "sha256": "36e4177e29d0b742c31c9e8219b711371bde24e2d86525d558de7afa131c2915"
+            },
+            "source_start_seconds": 1460.0,
+            "source_end_seconds_exclusive": 1466.0,
+            "duration_frames": 180,
+            "playback_rate": 1,
+            "semantic_role": "actual-B-paused-post-state-context-not-event",
+            "visible_context_label": "B · 1067年04月12日 · 暂停回放 · 原速",
+            "source_id": "B-S02-Postmerge-exception",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-raw-terms-merge-a01\\raw.mkv",
+              "bytes": 4955431127,
+              "sha256": "48fde0d7645d9ba7331dcd2a4b8dc93c93474ad2fd9cb95a59aea059e13481b9"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-raw-terms-merge-a01\\result.json",
+              "bytes": 804,
+              "sha256": "d24982b502150234206e3a71e5872d14eb022d88215fa38cc00b00c78f3793a8"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0168-capture-next-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11485,
+              "sha256": "995fd52e2ea93e584dcd8cefc58e674475ac6bd31558521069063b94c9a69ae6"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-10-00.json",
+              "bytes": 2785,
+              "sha256": "f79c71c29121ade0da9375136cc34c9f8f7647ddbc9ed706762ce368e2af7730"
+            },
+            "source_start_seconds": 3360.0,
+            "source_end_seconds_exclusive": 3369.966668,
+            "duration_frames": 299,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "独立合军样本 · 回放背景 · 原速",
+            "source_id": "REPLACED-C05-10-00",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+              "bytes": 5900357006,
+              "sha256": "ac6394f08db078207c26a64af9d2767e8d36007f8021317ff930a55a9775780a"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\result.json",
+              "bytes": 799,
+              "sha256": "9bf818e426a225cd3c3f245e3ef8d351221984e6f18aed10633b15777f33cc6e"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11770,
+              "sha256": "b14377a2a761b7b14590498dd41c50fb6df2478144f915d77ca156b638fa5e6f"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-10-01.json",
+              "bytes": 2778,
+              "sha256": "51536a70fee582d8f870b8aa5b2a935511f1479da93784c56b1d3384750abe72"
+            },
+            "source_start_seconds": 280.0,
+            "source_end_seconds_exclusive": 289.966668,
+            "duration_frames": 299,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "A · 独立历史回放背景 · 原速",
+            "source_id": "REPLACED-C05-10-01",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+              "bytes": 5900357006,
+              "sha256": "ac6394f08db078207c26a64af9d2767e8d36007f8021317ff930a55a9775780a"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\result.json",
+              "bytes": 799,
+              "sha256": "9bf818e426a225cd3c3f245e3ef8d351221984e6f18aed10633b15777f33cc6e"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11770,
+              "sha256": "b14377a2a761b7b14590498dd41c50fb6df2478144f915d77ca156b638fa5e6f"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-10-02.json",
+              "bytes": 2778,
+              "sha256": "e2c87c1469d094a594a7f1743d0fd831e3bdc76cef148651b76a97271c5ad2c3"
+            },
+            "source_start_seconds": 295.0,
+            "source_end_seconds_exclusive": 300.333,
+            "duration_frames": 160,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "A · 独立历史回放背景 · 原速",
+            "source_id": "REPLACED-C05-10-02",
+            "source_frame_offset_within_reviewed_window": 0
+          }
+        ],
+        "source_scope": "real historical post-state background; no native-event join",
+        "actual_outcome_credit": false
+      },
+      {
+        "id": "C05-14",
+        "text_zh": "结果表按同日期或同事件对齐：先看实际抵达，再看完整兵团与可用人数，然后是库存、补员和损耗窗口，最后是实际支付。这次B合军后，原二十七个兵团仍在，但又多出一条满员一人的兵团记录；合后共有六千六百九十人，满员六千七百四十八。实际统帅也变了，与原先冻结的条件不符。新增记录和统帅变化的原因还没有确认。因此，这次B在第三十八日停止，尚有五十二日预算；停止是冻结条件未通过，不是时间耗尽。这段能保留为合军机制样本，却没有可比较的伦敦终点。C也出现多次采样偏差：原计划每次最多过一天，实际跨了两天。后续只保留为描述性观察，即使已经到达，也不能恢复成严格公平的A/C对照。A和C的实际到达观测各自保留。下面回到整军直走的A。",
+        "text_en": "Align results by the same date or event. First check actual arrival, then the full regiments and available soldiers. Then check supply, reinforcement and attrition windows, and finally actual payments. After B's merge, all 27 original regiments remained. But a new regiment record appeared, with one soldier out of a maximum of one. The merged army had 6,690 soldiers, out of a maximum of 6,748. The commander also changed, breaking the conditions fixed at the start. The causes of the new record and commander change remain unconfirmed. So B stopped on day 38, with 52 days left in its budget. It stopped because the fixed conditions failed, not because time ran out. We can retain this as a sample of the merge mechanism. But it has no comparable London endpoint. C also had multiple sampling deviations. Pulses planned for at most one day actually advanced two. The later results are retained as descriptive observations only. Reaching London does not restore a strictly controlled A/C comparison. The actual arrival observations for A and C are retained separately. Now we return to A: the whole army taking the direct route.",
+        "title": "B 停止观察；C 比较限制",
+        "source_label": "研究记录 · 各画面独立标明回放主体",
+        "record_note": [
+          "B 第38日对照条件变化，停止观察，剩52日",
+          "新增第28团1／1、统帅变化原因未知",
+          "B 无可比较的伦敦终态",
+          "C 多次计划1日、实际2日采样",
+          "有采样偏差，不作严格对照；没有赢家",
+          "下面回到整军直走的 A"
+        ],
+        "duration_frames": 2119,
+        "visuals": [
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-continuation-a01\\raw.mkv",
+              "bytes": 3363279647,
+              "sha256": "de8f9c72f64e62bc14461ee6611a301d1dc765599f138b015cacaf54dcd7f468"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-continuation-a01\\result.json",
+              "bytes": 1057,
+              "sha256": "3db7f2f83352a157174b91aa25828e0cf21fe2b428daf8b2fa9afc8e42458d9e"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-continuation-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12022,
+              "sha256": "e4ba0ec769776e0250ea00fa5e86e4f2b9730d9f834aa22e6f113209b0cd7c3b"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-picture-row-preparation-a01\\candidate-a01\\source-reviews\\B-b-s02-postmerge-exception.json",
+              "bytes": 3342,
+              "sha256": "36e4177e29d0b742c31c9e8219b711371bde24e2d86525d558de7afa131c2915"
+            },
+            "source_start_seconds": 1466.0,
+            "source_end_seconds_exclusive": 1472.0,
+            "duration_frames": 180,
+            "playback_rate": 1,
+            "semantic_role": "actual-B-paused-post-state-context-not-event",
+            "visible_context_label": "B · 1067年04月12日 · 暂停回放 · 原速",
+            "source_id": "B-S02-Postmerge-exception",
+            "source_frame_offset_within_reviewed_window": 180
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-continuation-a01\\raw.mkv",
+              "bytes": 3363279647,
+              "sha256": "de8f9c72f64e62bc14461ee6611a301d1dc765599f138b015cacaf54dcd7f468"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-raw-abc-b-continuation-a01\\result.json",
+              "bytes": 1057,
+              "sha256": "3db7f2f83352a157174b91aa25828e0cf21fe2b428daf8b2fa9afc8e42458d9e"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-continuation-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12022,
+              "sha256": "e4ba0ec769776e0250ea00fa5e86e4f2b9730d9f834aa22e6f113209b0cd7c3b"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-picture-row-preparation-a01\\candidate-a01\\source-reviews\\B-b-s02-child-return.json",
+              "bytes": 3270,
+              "sha256": "fb2bfb798e04419e62525c5134ebaa9e439ef0ea2711b7e87379486503b13026"
+            },
+            "source_start_seconds": 1034.0,
+            "source_end_seconds_exclusive": 1046.0,
+            "duration_frames": 360,
+            "playback_rate": 1,
+            "semantic_role": "actual-B-paused-post-state-context-not-event",
+            "visible_context_label": "B · 1067年04月12日 · 暂停回放 · 原速",
+            "source_id": "B-S02-Child-return",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+              "bytes": 5900357006,
+              "sha256": "ac6394f08db078207c26a64af9d2767e8d36007f8021317ff930a55a9775780a"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\result.json",
+              "bytes": 799,
+              "sha256": "9bf818e426a225cd3c3f245e3ef8d351221984e6f18aed10633b15777f33cc6e"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11770,
+              "sha256": "b14377a2a761b7b14590498dd41c50fb6df2478144f915d77ca156b638fa5e6f"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-14-00.json",
+              "bytes": 2752,
+              "sha256": "9e8042af38465e6568df3105519e045ccfeb1c51727538a2bfe87523c1f315e4"
+            },
+            "source_start_seconds": 430.0,
+            "source_end_seconds_exclusive": 441.033334,
+            "duration_frames": 331,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "A · 独立历史回放背景 · 原速",
+            "source_id": "REPLACED-C05-14-00",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+              "bytes": 5900357006,
+              "sha256": "ac6394f08db078207c26a64af9d2767e8d36007f8021317ff930a55a9775780a"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\result.json",
+              "bytes": 799,
+              "sha256": "9bf818e426a225cd3c3f245e3ef8d351221984e6f18aed10633b15777f33cc6e"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11770,
+              "sha256": "b14377a2a761b7b14590498dd41c50fb6df2478144f915d77ca156b638fa5e6f"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-14-01.json",
+              "bytes": 2752,
+              "sha256": "426ccb771a4a0d5039c9c65bc764c64c194bfd8a80c854286e25e4589d23e626"
+            },
+            "source_start_seconds": 445.0,
+            "source_end_seconds_exclusive": 456.033334,
+            "duration_frames": 331,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "A · 独立历史回放背景 · 原速",
+            "source_id": "REPLACED-C05-14-01",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a01\\raw.mkv",
+              "bytes": 5619567381,
+              "sha256": "c0b68f63d37a85bb3faa69e95cb58e74570f541b644e20dee97aa3a3a7ce94c0"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a01\\result.json",
+              "bytes": 1057,
+              "sha256": "685742333a1e419240d34dbfff591b6c8d5cb9262893775b80574c96ac52fb1c"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11932,
+              "sha256": "91a792bb73d7395db320b8c0cc34f74553f7bd61c3f08b4113d3f6d885da951d"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-source-pool-a01\\Root-review-integration-a02\\source-reviews\\C-S02-London-centered-sea-context-search.json",
+              "bytes": 3845,
+              "sha256": "620c578a7ba58bf6759b55e1287cee07715fdd27a7e893524cece440537bbe44"
+            },
+            "source_start_seconds": 2286.0,
+            "source_end_seconds_exclusive": 2298.0,
+            "duration_frames": 360,
+            "playback_rate": 1,
+            "semantic_role": "actual-C-historical-paused-post-state-context-not-event",
+            "visible_context_label": "C · 1067年4月11日 · 暂停回放 · 原速",
+            "source_id": "C-S02-London-centered-sea-context-search",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a01\\raw.mkv",
+              "bytes": 5619567381,
+              "sha256": "c0b68f63d37a85bb3faa69e95cb58e74570f541b644e20dee97aa3a3a7ce94c0"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a01\\result.json",
+              "bytes": 1057,
+              "sha256": "685742333a1e419240d34dbfff591b6c8d5cb9262893775b80574c96ac52fb1c"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11932,
+              "sha256": "91a792bb73d7395db320b8c0cc34f74553f7bd61c3f08b4113d3f6d885da951d"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-source-pool-a01\\Root-review-integration-a02\\source-reviews\\C-S02-actual-tail-date-pending.json",
+              "bytes": 3808,
+              "sha256": "f002a5f5d88110b37879b235b738f3945ba51ddd0bfc12cf2f76e3a2e320a81c"
+            },
+            "source_start_seconds": 3588.0,
+            "source_end_seconds_exclusive": 3600.0,
+            "duration_frames": 360,
+            "playback_rate": 1,
+            "semantic_role": "actual-C-historical-paused-post-state-context-not-event",
+            "visible_context_label": "C · 1067年4月25日 · 暂停回放 · 原速",
+            "source_id": "C-S02-actual-tail-date-pending",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-raw-rest-qualification-a01\\raw.mkv",
+              "bytes": 1406113762,
+              "sha256": "058a7c1c121af0e3cffa949736cf94c033edc409f15f6e9a08fa482df1de0c9d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-recorder-finish-a01\\finish.json",
+              "bytes": 810,
+              "sha256": "d3ed413343138398fd4ce9205b41bcb64a02611295eff62ec5229f6b2677020a"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11419,
+              "sha256": "0576177af87ec51021bf8c0f0161dba13c5ef18ad401d1dcc14eca981be7ca1a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-04-01.json",
+              "bytes": 2787,
+              "sha256": "b89367a01c7b39d414acb26713386a6710f8403b5c2035b58ba1219ab93e258d"
+            },
+            "source_start_seconds": 571.167,
+            "source_end_seconds_exclusive": 573.1,
+            "duration_frames": 58,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "独立资格样本 · 回放背景 · 原速",
+            "source_id": "REPLACED-C05-04-01",
+            "source_frame_offset_within_reviewed_window": 185
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+              "bytes": 5900357006,
+              "sha256": "ac6394f08db078207c26a64af9d2767e8d36007f8021317ff930a55a9775780a"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\result.json",
+              "bytes": 799,
+              "sha256": "9bf818e426a225cd3c3f245e3ef8d351221984e6f18aed10633b15777f33cc6e"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11770,
+              "sha256": "b14377a2a761b7b14590498dd41c50fb6df2478144f915d77ca156b638fa5e6f"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-10-02.json",
+              "bytes": 2778,
+              "sha256": "e2c87c1469d094a594a7f1743d0fd831e3bdc76cef148651b76a97271c5ad2c3"
+            },
+            "source_start_seconds": 300.333,
+            "source_end_seconds_exclusive": 304.966668,
+            "duration_frames": 139,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "A · 独立历史回放背景 · 原速",
+            "source_id": "REPLACED-C05-10-02",
+            "source_frame_offset_within_reviewed_window": 160
+          }
+        ],
+        "source_scope": "real historical post-state background; no native-event join",
+        "actual_outcome_credit": false
+      },
+      {
+        "id": "C05-15",
+        "text_zh": "这一方案从六千六百七十九人出发，抵达观测时是六千六百八十九人，净增十人。完整二十七个兵团都还在，满员数仍是六千七百四十七。补给从约一百一十点三八变为一百零六点一四。净增十人只说旅途两端的差，不表示途中没有死伤，也不表示已经逐次读到了补员结算。",
+        "text_en": "This plan started with 6,679 soldiers. At the arrival observation it had 6,689, a net gain of 10. All 27 regiments were still present, and their total maximum soldier count remained 6,747. Supply went from about 110.38 to 106.14. The gain of 10 is only the difference between the two endpoints. It does not mean there were no casualties along the way, or that every reinforcement update was observed.",
+        "title": "A：人数与库存终态",
+        "source_label": "A · 独立历史回放背景 · 原速",
+        "record_note": [
+          "此段回到 A：第51日首次观测伦敦",
+          "首次到达窗口(49,51]，非精确瞬间",
+          "主力原27团：6679→6689，净＋10",
+          "最大6747；库存110.38→106.14",
+          "整数增长不等于逐次补员／死亡账本"
+        ],
+        "duration_frames": 834,
+        "visuals": [],
+        "source_scope": "real historical post-state background; no native-event join",
+        "actual_outcome_credit": false
+      },
+      {
+        "id": "C05-16",
+        "text_zh": "同一段日期，金币余额从约六百三十七点五五，变为六百二十一点四八，净少十六点零六。它是期间所有收支留下的净余额差，不能改名为行军费，也不能当作已经核验的登船付款。另看换路线的C回放：从共同起点到它的到达观测，余额净少约十五点八二金币。这个数字同样只是净变化。途中登船阶段曾观察到余额净少十七金币，另一个窗口又净增加约零点二五；各自原因都没有逐笔付款账来证明。现在A和C各有真实到达观测，B因冻结条件未通过而停止；C又保留采样偏差，本次不能排出严格三方案的赢家。",
+        "text_en": "Over that period, gold fell from about 637.55 to 621.48. The net decrease was 16.06. That is the net balance change after all income and expenses. It is not a march-cost ledger or a verified embarkation payment. Now consider C's replay using a different route. From the shared start to its arrival observation, gold decreased by about 15.82 net. That figure is also only a net change. During embarkation, we observed a net decrease of 17 gold. In another window, it increased by about 0.25 net. Neither cause is established by an itemized payment ledger. A and C now each have an actual arrival observation. B stopped after failing the fixed conditions. C also retains its sampling deviations. This run cannot establish a winner in a strictly controlled three-plan comparison.",
+        "title": "A／C：现金净差",
+        "source_label": "研究记录 · 各画面独立标明回放主体",
+        "record_note": [
+          "先讲 A：637.55→621.48，净−16.06",
+          "后讲 C：同起点，终态现金净−15.82",
+          "现金差不是已证行军付款或登船费",
+          "中间净−17／＋0.25，原因账本未知",
+          "B 对照条件变化，停止观察；C 有采样偏差，不作严格对照",
+          "本次不宣布 ABC 赢家"
+        ],
+        "duration_frames": 1565,
+        "visuals": [
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\raw.mkv",
+              "bytes": 4373163416,
+              "sha256": "e9be832ba02b607bcf8ce36b1b6a37d4f841fdbe674d7af924456b31c028f49d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\result.json",
+              "bytes": 968,
+              "sha256": "2dbe24bfbd559d7ecf6685f945901aa57e338a3ddf9641c4f2e1cee92f21889d"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12057,
+              "sha256": "d1925b34e59d1345c9a089d8bd69bdf2d8e687d23f951d7ead12aa9810834253"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-16-00.json",
+              "bytes": 2793,
+              "sha256": "e856497a05e1dad58427ee85d46d0b369b883ed565497c58046bfe034590d3bb"
+            },
+            "source_start_seconds": 1765.0,
+            "source_end_seconds_exclusive": 1773.600001,
+            "duration_frames": 258,
+            "playback_rate": 1,
+            "semantic_role": "record-explanation-on-independent-background",
+            "visible_context_label": "A · 独立历史回放背景 · 原速",
+            "source_id": "REPLACED-C05-16-00",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\raw.mkv",
+              "bytes": 4373163416,
+              "sha256": "e9be832ba02b607bcf8ce36b1b6a37d4f841fdbe674d7af924456b31c028f49d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\result.json",
+              "bytes": 968,
+              "sha256": "2dbe24bfbd559d7ecf6685f945901aa57e338a3ddf9641c4f2e1cee92f21889d"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12057,
+              "sha256": "d1925b34e59d1345c9a089d8bd69bdf2d8e687d23f951d7ead12aa9810834253"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-16-01.json",
+              "bytes": 2793,
+              "sha256": "8f846479d9cbee19eebc24e648dbc0a8fb25a30662875c859c603e861e1d8145"
+            },
+            "source_start_seconds": 1780.0,
+            "source_end_seconds_exclusive": 1788.600001,
+            "duration_frames": 258,
+            "playback_rate": 1,
+            "semantic_role": "record-explanation-on-independent-background",
+            "visible_context_label": "A · 独立历史回放背景 · 原速",
+            "source_id": "REPLACED-C05-16-01",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\raw.mkv",
+              "bytes": 4373163416,
+              "sha256": "e9be832ba02b607bcf8ce36b1b6a37d4f841fdbe674d7af924456b31c028f49d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-continuation-a02\\result.json",
+              "bytes": 968,
+              "sha256": "2dbe24bfbd559d7ecf6685f945901aa57e338a3ddf9641c4f2e1cee92f21889d"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-continuation-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12057,
+              "sha256": "d1925b34e59d1345c9a089d8bd69bdf2d8e687d23f951d7ead12aa9810834253"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-16-02.json",
+              "bytes": 2793,
+              "sha256": "8b466ba0480e5969a2af09a2f85574dccb9817cf34a32700d51961241920d3da"
+            },
+            "source_start_seconds": 1800.0,
+            "source_end_seconds_exclusive": 1808.600001,
+            "duration_frames": 258,
+            "playback_rate": 1,
+            "semantic_role": "record-explanation-on-independent-background",
+            "visible_context_label": "A · 独立历史回放背景 · 原速",
+            "source_id": "REPLACED-C05-16-02",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\raw.mkv",
+              "bytes": 2754943503,
+              "sha256": "1c9476f462a48f9de87403cd0f8cf6da94f154f6e6b1986dfb42515680b46301"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\result.json",
+              "bytes": 1079,
+              "sha256": "4f75ca718a2f81afdc8f6e795fefbca321816c7214bb3de788905a881f88e6e1"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-fourth-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 12162,
+              "sha256": "9007e3555652292c958b434c5f9528a0c799bebc9ec430939b8daa14e287b86a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a02\\source-reviews\\C-S04-actual-terminal-state-last360.json",
+              "bytes": 1128,
+              "sha256": "78c775ef805ec12b2dd973a598ad8a0e61ca749f81573ec17e1a50d14c98b048"
+            },
+            "source_start_seconds": 1902.733,
+            "source_end_seconds_exclusive": 1911.367,
+            "duration_frames": 259,
+            "playback_rate": 1,
+            "semantic_role": "C-actual-paused-terminal-state-no-arrival-action",
+            "visible_context_label": "C · 1067年5月21日 · 暂停终态回放 · 原速",
+            "source_id": "C-S04-actual-terminal-state-last360",
+            "source_frame_offset_within_reviewed_window": 101
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-raw-rest-qualification-a01\\raw.mkv",
+              "bytes": 1406113762,
+              "sha256": "058a7c1c121af0e3cffa949736cf94c033edc409f15f6e9a08fa482df1de0c9d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-recorder-finish-a01\\finish.json",
+              "bytes": 810,
+              "sha256": "d3ed413343138398fd4ce9205b41bcb64a02611295eff62ec5229f6b2677020a"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11419,
+              "sha256": "0576177af87ec51021bf8c0f0161dba13c5ef18ad401d1dcc14eca981be7ca1a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-05-00.json",
+              "bytes": 2788,
+              "sha256": "9741de9f5f15de2bae871a74964417fe4ca1e6d0991fdc38fdcecf7b7eee9092"
+            },
+            "source_start_seconds": 590.0,
+            "source_end_seconds_exclusive": 601.166668,
+            "duration_frames": 335,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "独立资格样本 · 回放背景 · 原速",
+            "source_id": "REPLACED-C05-05-00",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-raw-rest-qualification-a01\\raw.mkv",
+              "bytes": 1406113762,
+              "sha256": "058a7c1c121af0e3cffa949736cf94c033edc409f15f6e9a08fa482df1de0c9d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-recorder-finish-a01\\finish.json",
+              "bytes": 810,
+              "sha256": "d3ed413343138398fd4ce9205b41bcb64a02611295eff62ec5229f6b2677020a"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11419,
+              "sha256": "0576177af87ec51021bf8c0f0161dba13c5ef18ad401d1dcc14eca981be7ca1a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-05-01.json",
+              "bytes": 2788,
+              "sha256": "3e6b84535b8ec111150d67a3630c8068d135ac74e9407f4cbe57988490c36de8"
+            },
+            "source_start_seconds": 605.0,
+            "source_end_seconds_exclusive": 611.567,
+            "duration_frames": 197,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "独立资格样本 · 回放背景 · 原速",
+            "source_id": "REPLACED-C05-05-01",
+            "source_frame_offset_within_reviewed_window": 0
+          }
+        ],
+        "source_scope": "real historical post-state background; no native-event join",
+        "actual_outcome_credit": false
+      },
+      {
+        "id": "C06-10",
+        "text_zh": "本期已经分别观察到补给回满、实际补兵、不同窗口的兵员减少，以及同日分合军的库存和组织变化。后续休整也出现了真正的库存与人数增加。整军直走和换路线各自保留了真实到达观测；分兵方案因冻结条件变化停止，换路线回放又保留采样偏差，因此没有严格三方案的胜负结论。真实饥饿和逐笔付款仍等待各自证据。你可以按这个顺序读自己的军队，再让每条新结论有自己的日期、身份和结果。",
+        "text_en": "We observed full supply, actual reinforcement, and soldier decreases in separate windows. We also observed supply and roster changes during same-day splits and merges. Later rest periods produced actual increases in supply and soldier counts. The whole-army direct route and the alternate route each retain an actual arrival observation. The split-army plan stopped after its fixed conditions changed. The alternate-route replay retains sampling deviations. So there is no strictly controlled three-plan verdict. Actual starvation and itemized payments still need their own evidence. You can read your own army in this order. Give every new conclusion its own date, identity and observed result.",
+        "title": "本次证据与边界",
+        "source_label": "研究记录 · 各画面独立标明回放主体",
+        "record_note": [
+          "A 到达；C 第77日首次观测到达",
+          "B 第38日对照条件变化，停止观察，无伦敦可比",
+          "主力原始编制按完整身份核对",
+          "C 多次采样偏差，不作严格对照",
+          "库存、人数、现金净差分开记录",
+          "饥饿死亡／付款因果仍无应用账本"
+        ],
+        "duration_frames": 1225,
+        "visuals": [
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\recordings\\day15-r0165-a01\\raw.mkv",
+              "bytes": 2949921171,
+              "sha256": "6ee0a20cb16b46c74902fc281b107c451205a49584b354db74a846ae3bd13f31"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-day15-r0165-a01\\responses\\r0165-recording-finish-a01.json",
+              "bytes": 1346,
+              "sha256": "b5879ff92b3a5a53960e45c12401cf85b16a9e26bb9b5c082b8add3df721488a"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\recording-audit-r0165-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11472,
+              "sha256": "0712dc942341f6fc94e0b13a46955f4966082204cab31b7e32ca9f5fc15a7f5b"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-stable-full-picture-roughcut-a01\\source-sample-reviews-a02\\C06-10-00.json",
+              "bytes": 2955,
+              "sha256": "dc78ef23f4c905c54b780238e09254363f247128be9eb38b0a56bbd7110a056d"
+            },
+            "source_start_seconds": 1065.0,
+            "source_end_seconds_exclusive": 1077.000001,
+            "duration_frames": 360,
+            "playback_rate": 1,
+            "semantic_role": "record-explanation-on-independent-background",
+            "visible_context_label": "独立补员样本 · 回放背景 · 原速",
+            "source_id": "REPLACED-C06-10-00",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\raw.mkv",
+              "bytes": 5900357006,
+              "sha256": "ac6394f08db078207c26a64af9d2767e8d36007f8021317ff930a55a9775780a"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-raw-abc-a2-a01\\result.json",
+              "bytes": 799,
+              "sha256": "9bf818e426a225cd3c3f245e3ef8d351221984e6f18aed10633b15777f33cc6e"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11770,
+              "sha256": "b14377a2a761b7b14590498dd41c50fb6df2478144f915d77ca156b638fa5e6f"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-stable-full-picture-roughcut-a01\\source-sample-reviews-a02\\C06-10-01.json",
+              "bytes": 2947,
+              "sha256": "bc47e3fc831aedfc61279cf74ac5ef5e66419431e90a298c3a1f3e4126af639b"
+            },
+            "source_start_seconds": 1280.0,
+            "source_end_seconds_exclusive": 1296.200001,
+            "duration_frames": 486,
+            "playback_rate": 1,
+            "semantic_role": "record-explanation-on-independent-background",
+            "visible_context_label": "A · 独立历史回放背景 · 原速",
+            "source_id": "REPLACED-C06-10-01",
+            "source_frame_offset_within_reviewed_window": 0
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-raw-rest-qualification-a01\\raw.mkv",
+              "bytes": 1406113762,
+              "sha256": "058a7c1c121af0e3cffa949736cf94c033edc409f15f6e9a08fa482df1de0c9d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-recorder-finish-a01\\finish.json",
+              "bytes": 810,
+              "sha256": "d3ed413343138398fd4ce9205b41bcb64a02611295eff62ec5229f6b2677020a"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11419,
+              "sha256": "0576177af87ec51021bf8c0f0161dba13c5ef18ad401d1dcc14eca981be7ca1a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-05-01.json",
+              "bytes": 2788,
+              "sha256": "3e6b84535b8ec111150d67a3630c8068d135ac74e9407f4cbe57988490c36de8"
+            },
+            "source_start_seconds": 611.567,
+            "source_end_seconds_exclusive": 616.166668,
+            "duration_frames": 138,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "独立资格样本 · 回放背景 · 原速",
+            "source_id": "REPLACED-C05-05-01",
+            "source_frame_offset_within_reviewed_window": 197
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-raw-rest-qualification-a01\\raw.mkv",
+              "bytes": 1406113762,
+              "sha256": "058a7c1c121af0e3cffa949736cf94c033edc409f15f6e9a08fa482df1de0c9d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-recorder-finish-a01\\finish.json",
+              "bytes": 810,
+              "sha256": "d3ed413343138398fd4ce9205b41bcb64a02611295eff62ec5229f6b2677020a"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11419,
+              "sha256": "0576177af87ec51021bf8c0f0161dba13c5ef18ad401d1dcc14eca981be7ca1a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-04-01.json",
+              "bytes": 2787,
+              "sha256": "b89367a01c7b39d414acb26713386a6710f8403b5c2035b58ba1219ab93e258d"
+            },
+            "source_start_seconds": 573.1,
+            "source_end_seconds_exclusive": 576.866668,
+            "duration_frames": 113,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "独立资格样本 · 回放背景 · 原速",
+            "source_id": "REPLACED-C05-04-01",
+            "source_frame_offset_within_reviewed_window": 243
+          },
+          {
+            "kind": "sealed-native-video",
+            "source": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-raw-rest-qualification-a01\\raw.mkv",
+              "bytes": 1406113762,
+              "sha256": "058a7c1c121af0e3cffa949736cf94c033edc409f15f6e9a08fa482df1de0c9d"
+            },
+            "seal_receipt": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0173-recorder-finish-a01\\finish.json",
+              "bytes": 810,
+              "sha256": "d3ed413343138398fd4ce9205b41bcb64a02611295eff62ec5229f6b2677020a"
+            },
+            "existing_media_audit": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-media-tools-a01\\audit-attempt-a01\\report.json",
+              "bytes": 11419,
+              "sha256": "0576177af87ec51021bf8c0f0161dba13c5ef18ad401d1dcc14eca981be7ca1a"
+            },
+            "source_geometry": [
+              1920,
+              1080
+            ],
+            "source_time_base": "1/1000",
+            "window_review": {
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-A-only-full-picture-increment-a01\\source-sample-reviews-a01\\C05-08-02.json",
+              "bytes": 2787,
+              "sha256": "3869081ac8034d0881088543ce9601bb45acddd7ed38090a024c85788c9ae4a3"
+            },
+            "source_start_seconds": 743.033,
+            "source_end_seconds_exclusive": 747.3,
+            "duration_frames": 128,
+            "playback_rate": 1,
+            "semantic_role": "explicit-plan-or-unknown-boundary",
+            "visible_context_label": "独立资格样本 · 回放背景 · 原速",
+            "source_id": "REPLACED-C05-08-02",
+            "source_frame_offset_within_reviewed_window": 91
+          }
+        ],
+        "source_scope": "real historical post-state background; no native-event join",
+        "actual_outcome_credit": false
+      }
+    ],
+    "picture_rows_json": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-row-binding-a03\\picture-rows.json",
+      "bytes": 80426,
+      "sha256": "dc0e1ff0683340868e9b8404e6727ff2a2710723848d56e4972bc73111c66787"
+    },
+    "Root_final_story_freeze": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-Root-actual-row-freeze-a01\\Root-final-story-freeze.json",
+      "bytes": 25852,
+      "sha256": "975ade3d256a8e84511e3206dbb60c7f04bf2131d9bc053850b26d8c0eb4caa6"
+    }
+  },
+  "historical_A_clock": {
+    "sample_frames": 37900224,
+    "seconds": 1579.176,
+    "picture_frames": 47376
+  },
+  "final_clock": null,
+  "final_C_outcome": null,
+  "final_changed_ids": null,
+  "winner": null,
+  "candidate_B_audio_changed_ids": [
+    "C05-04",
+    "C05-08",
+    "C05-10",
+    "C05-14",
+    "C05-16"
+  ],
+  "Root_required_picture_refresh_ids": [
+    "C05-01"
+  ],
+  "C_sampling_deviation_requires_final_stated_limits": true,
+  "prepare_side_effects": {
+    "media_reads": 0,
+    "media_hashes_or_probes": 0,
+    "render": 0,
+    "TTS": 0,
+    "Game_SDK_UI_Bus_Git_OneDrive": 0
+  },
+  "candidate_C06_10_audio_or_picture_change_pending": true,
+  "stable_chapter_reuse_is_conditional": true
+}

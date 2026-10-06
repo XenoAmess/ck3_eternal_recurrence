@@ -1,0 +1,32 @@
+{
+  "schema": "xar.e04.closed-producer-facts-only.v1",
+  "created_utc": "2026-10-06T04:05:18.750413+00:00",
+  "movie": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346"
+  },
+  "actual_render_returncode": 0,
+  "actual_preserve_returncode": 0,
+  "actual_authoring_validate_returncode": 0,
+  "actual_video_frames": 52074,
+  "actual_video_seconds": 1735.8,
+  "actual_narration_samples_at_24k": 41658624,
+  "actual_narration_seconds": 1735.776,
+  "actual_scene_count": 69,
+  "chapter_count": 6,
+  "pending_human_review_package_created": true,
+  "public_template_API": "xar_promo.review.write_review_template",
+  "review_CLI_executed": false,
+  "existing_coded_sample_count": 18,
+  "new_media_probe_or_hash_or_extraction": 0,
+  "whole_movie_audit": null,
+  "whole_movie_audit_scope": "Separate auditor-owned actual receipt; not included or assessed by this producer package",
+  "Root_final_coded_pixel_review": "Separate Root receipt; not included or assessed by this producer package",
+  "OneDrive_client_state": null,
+  "OneDrive_scope": "Separate Root-owned actual client receipt; not included or assessed by this producer package",
+  "human_full_1x_review": false,
+  "human_signoff": false,
+  "independent_remote_readback": false,
+  "old_running_picture_package_remains_unchanged": true
+}

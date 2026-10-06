@@ -1,0 +1,93 @@
+{
+  "state": "PASS_NEW_SOURCE_PCM_SAMPLE_STRUCTURE",
+  "source_identity_reused": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\final-Chinese-narration.wav",
+    "bytes": 83317292,
+    "sha256": "62f3fffe64885589ed0a43f8ab66f41ff7d080d3075037c6b74798b53bce9e0a"
+  },
+  "header": {
+    "sample_rate": 24000,
+    "channels": 1,
+    "sample_width_bytes": 2,
+    "sample_frames": 41658624,
+    "seconds": "1735.776",
+    "compression": "NONE"
+  },
+  "full_scan_sample_frames": 41658624,
+  "full_sample_scan_count": 1,
+  "full_source_hash_read_count": 0,
+  "NaN_Inf_count": 0,
+  "finite_proof": "Each sample decoded from validated signed 16-bit integer PCM; NaN/Inf are not representable",
+  "min_s16": -31153,
+  "max_s16": 27192,
+  "mean_s16": 0.29801125932532,
+  "peak_normalized": 0.950714111328125,
+  "peak_dBFS": -0.43900119729343645,
+  "rms_s16": 3446.8097394941497,
+  "rms_dBFS": -19.56065247036407,
+  "samples_at_integer_limit": 0,
+  "front_back_from_same_full_scan": {
+    "front": {
+      "artifact": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\source-narration-front-1s.pcm",
+        "bytes": 48000,
+        "sha256": "afb7bad788b4aa06ffb32efc65fe5a84cf5fd36ab8419ffe73e5ded36516a9b8"
+      },
+      "statistics": {
+        "sample_frames": 24000,
+        "channels": [
+          {
+            "channel": 0,
+            "samples": 24000,
+            "min_s16": -15037,
+            "max_s16": 11799,
+            "mean_s16": 5.317916666666667,
+            "rms_s16": 3039.647891149017,
+            "rms_dBFS": -20.652533130885296,
+            "peak_normalized": 0.458892822265625,
+            "peak_dBFS": -6.765774704673412,
+            "samples_at_integer_limit": 0,
+            "NaN_Inf_possible_in_s16": false
+          }
+        ]
+      }
+    },
+    "back": {
+      "artifact": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\source-narration-back-1s.pcm",
+        "bytes": 48000,
+        "sha256": "fdf38bf8904c45dae3d3c149de7ca9c1dc626075cadfd69ace8c61217af62f9d"
+      },
+      "statistics": {
+        "sample_frames": 24000,
+        "channels": [
+          {
+            "channel": 0,
+            "samples": 24000,
+            "min_s16": -11148,
+            "max_s16": 11110,
+            "mean_s16": 0.7858333333333334,
+            "rms_s16": 1835.579136290052,
+            "rms_dBFS": -25.033536444451197,
+            "peak_normalized": 0.3402099609375,
+            "peak_dBFS": -9.365059498369027,
+            "samples_at_integer_limit": 0,
+            "NaN_Inf_possible_in_s16": false
+          }
+        ]
+      }
+    }
+  },
+  "source_stat_before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\final-Chinese-narration.wav",
+    "bytes": 83317292,
+    "mtime_ns": 1791247127866760800
+  },
+  "source_stat_after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\final-Chinese-narration.wav",
+    "bytes": 83317292,
+    "mtime_ns": 1791247127866760800
+  },
+  "source_PCM_equals_lossy_mixed_AAC_claimed": false,
+  "listening": false
+}

@@ -1,0 +1,7 @@
+{
+  "operation": "initial offline text read only",
+  "requested_wrong_path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CLOSED-MOVIE-DELIVERY-a01.json",
+  "actual_delivery_is_at_producer_root": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\CLOSED-MOVIE-DELIVERY-a01.json",
+  "error": "FileNotFoundError before any media read/process",
+  "media_audit_retries": 0
+}

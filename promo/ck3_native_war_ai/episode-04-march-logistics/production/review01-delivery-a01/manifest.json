@@ -1,0 +1,360 @@
+{
+  "schema": "xar.e04.actual-delivery-relative-text-manifest.v1",
+  "files": [
+    {
+      "relative": "client/Root-actual-OneDrive-delivery.original.json",
+      "bytes": 2442,
+      "sha256": "966073f0784b51e2042b35b5c4c370747de4d5e5cef231626619e329ee7c981d",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-delivery-20261006-a01\\Review01-actual-client-delivery-a01\\Root-actual-OneDrive-delivery.json",
+        "bytes": 2442,
+        "sha256": "966073f0784b51e2042b35b5c4c370747de4d5e5cef231626619e329ee7c981d"
+      }
+    },
+    {
+      "relative": "client/copy/01-intent.json",
+      "bytes": 1285,
+      "sha256": "63290345b91530ad003cd6afbfb801b604654cf8cd306d2bc9677bf8770a2b49",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-delivery-20261006-a01\\attempts\\review01-actual-copy-a01\\01-intent.json",
+        "bytes": 1285,
+        "sha256": "63290345b91530ad003cd6afbfb801b604654cf8cd306d2bc9677bf8770a2b49"
+      }
+    },
+    {
+      "relative": "client/copy/02-source-verified.json",
+      "bytes": 444,
+      "sha256": "cf2f3d7b0e072b0ab4a2174a4b74058ecbf48ced9ddec8c8b27ab779c19e4abc",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-delivery-20261006-a01\\attempts\\review01-actual-copy-a01\\02-source-verified.json",
+        "bytes": 444,
+        "sha256": "cf2f3d7b0e072b0ab4a2174a4b74058ecbf48ced9ddec8c8b27ab779c19e4abc"
+      }
+    },
+    {
+      "relative": "client/copy/03-copy-start.json",
+      "bytes": 186,
+      "sha256": "5d0d38e6c1c6916d7d4c27c464d9786aba2c0b05bbd02b7670ea16ef30f63d25",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-delivery-20261006-a01\\attempts\\review01-actual-copy-a01\\03-copy-start.json",
+        "bytes": 186,
+        "sha256": "5d0d38e6c1c6916d7d4c27c464d9786aba2c0b05bbd02b7670ea16ef30f63d25"
+      }
+    },
+    {
+      "relative": "client/copy/04-local-copy-verified.json",
+      "bytes": 960,
+      "sha256": "cdfec39e4167b6e0c3666c9647578e0ea1143d7750dc34d4a3002d89b9bed07c",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-delivery-20261006-a01\\attempts\\review01-actual-copy-a01\\04-local-copy-verified.json",
+        "bytes": 960,
+        "sha256": "cdfec39e4167b6e0c3666c9647578e0ea1143d7750dc34d4a3002d89b9bed07c"
+      }
+    },
+    {
+      "relative": "client/metadata/review01-actual-metadata-a01.original.json",
+      "bytes": 1228,
+      "sha256": "e3280b75d85c290eb96227840ee17fc80db635b33defbf3a4b85e292e7a55e75",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-delivery-20261006-a01\\attempts\\review01-actual-metadata-a01\\02-metadata-result.json",
+        "bytes": 1228,
+        "sha256": "e3280b75d85c290eb96227840ee17fc80db635b33defbf3a4b85e292e7a55e75"
+      }
+    },
+    {
+      "relative": "client/metadata/review01-actual-metadata-a02.original.json",
+      "bytes": 1228,
+      "sha256": "7a17ceabefbce1d6a45d02596a3d3d2eb15fee1d68983cef1cd923724eeeee42",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-delivery-20261006-a01\\attempts\\review01-actual-metadata-a02\\02-metadata-result.json",
+        "bytes": 1228,
+        "sha256": "7a17ceabefbce1d6a45d02596a3d3d2eb15fee1d68983cef1cd923724eeeee42"
+      }
+    },
+    {
+      "relative": "client/metadata/review01-actual-metadata-a03.original.json",
+      "bytes": 1228,
+      "sha256": "03308e51dd44c69b79e6c0cef0b62f72c82da9b8df34d541a50f0f555bac6dd6",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-delivery-20261006-a01\\attempts\\review01-actual-metadata-a03\\02-metadata-result.json",
+        "bytes": 1228,
+        "sha256": "03308e51dd44c69b79e6c0cef0b62f72c82da9b8df34d541a50f0f555bac6dd6"
+      }
+    },
+    {
+      "relative": "client/metadata/review01-actual-metadata-a04.original.json",
+      "bytes": 1427,
+      "sha256": "c0d97f3c4819a3c423ae17a50a3e2fe6fdbda3c92744b379b439bdbb604ddbb5",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-delivery-20261006-a01\\attempts\\review01-actual-metadata-a04\\02-metadata-result.json",
+        "bytes": 1427,
+        "sha256": "c0d97f3c4819a3c423ae17a50a3e2fe6fdbda3c92744b379b439bdbb604ddbb5"
+      }
+    },
+    {
+      "relative": "client/metadata/review01-actual-metadata-a05.original.json",
+      "bytes": 1427,
+      "sha256": "c36e17ee2e0e004a8177cd79e7766081cf483b0caaba2add5c20476e34d82793",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-delivery-20261006-a01\\attempts\\review01-actual-metadata-a05\\02-metadata-result.json",
+        "bytes": 1427,
+        "sha256": "c36e17ee2e0e004a8177cd79e7766081cf483b0caaba2add5c20476e34d82793"
+      }
+    },
+    {
+      "relative": "Root/Root-coded18-NO-BLOCK.original.json",
+      "bytes": 15127,
+      "sha256": "cd2b2f6949b86f7a67638876d1344000f212e1eff24d8b8e2e6f96c590f5b448",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-Root-actual-coded18-review-a01\\Root-coded18-NO-BLOCK.json",
+        "bytes": 15127,
+        "sha256": "cd2b2f6949b86f7a67638876d1344000f212e1eff24d8b8e2e6f96c590f5b448"
+      }
+    },
+    {
+      "relative": "Root/root_seal_Review01_actual_coded18_a01.py",
+      "bytes": 8517,
+      "sha256": "e206b24affcce43e2e0111e85115e8076295553cc9d9b2a09469add4a3622aa9",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root_seal_Review01_actual_coded18_a01.py",
+        "bytes": 8517,
+        "sha256": "e206b24affcce43e2e0111e85115e8076295553cc9d9b2a09469add4a3622aa9"
+      }
+    },
+    {
+      "relative": "client/code/root_seal_Review01_OneDrive_actual_a01.py",
+      "bytes": 5207,
+      "sha256": "98bb4b035b69f7cdc2bf21cd0cf9a1b39ee3bc11cf468635eb7960b311eeda2c",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root_seal_Review01_OneDrive_actual_a01.py",
+        "bytes": 5207,
+        "sha256": "98bb4b035b69f7cdc2bf21cd0cf9a1b39ee3bc11cf468635eb7960b311eeda2c"
+      }
+    },
+    {
+      "relative": "client/code/onedrive_episode04_review01_candidate_a01.py",
+      "bytes": 11287,
+      "sha256": "aafd0f93172cfa10bd73c16f4d6185ffb4972e80eefe341101c5638c989ec1bc",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-delivery-preparation-20261006-a01\\onedrive_episode04_review01_candidate_a01.py",
+        "bytes": 11287,
+        "sha256": "aafd0f93172cfa10bd73c16f4d6185ffb4972e80eefe341101c5638c989ec1bc"
+      }
+    },
+    {
+      "relative": "client/code/historical_cloud_status_probe_a01.py",
+      "bytes": 4964,
+      "sha256": "8488b9a4bc152825a6664c762cd842288348ad4b80271df153e4c6f81cf03e85",
+      "original_source": {
+        "path": "D:\\ck3-research-artifacts\\onedrive-cloud-status-probe-20260930-a01\\probe.py",
+        "bytes": 4964,
+        "sha256": "8488b9a4bc152825a6664c762cd842288348ad4b80271df153e4c6f81cf03e85"
+      }
+    },
+    {
+      "relative": "integration/prior-picture-ROOT-DELIVERY.original.json",
+      "bytes": 1787,
+      "sha256": "f2aa0b18493ca96fe6c624b13889dee0a351c09359a2a5c405e4bccc0b8aaa57",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\review01-git-completion-a01\\prior-picture-CI-close-a01\\ROOT-DELIVERY.json",
+        "bytes": 1787,
+        "sha256": "f2aa0b18493ca96fe6c624b13889dee0a351c09359a2a5c405e4bccc0b8aaa57"
+      }
+    },
+    {
+      "relative": "integration/prior-picture-OFFICIAL-CI-RESULT.original.json",
+      "bytes": 24616,
+      "sha256": "70aa3dfb5af9fa85888b732d078ed3c750c632d045f79286b1f13dec93d972ac",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\review01-git-completion-a01\\prior-picture-CI-close-a01\\OFFICIAL-CI-RESULT.json",
+        "bytes": 24616,
+        "sha256": "70aa3dfb5af9fa85888b732d078ed3c750c632d045f79286b1f13dec93d972ac"
+      }
+    },
+    {
+      "relative": "integration/producer-portable-ROOT-DELIVERY.original.json",
+      "bytes": 2135,
+      "sha256": "74b5de7ece2ab0272439bc046917ecf74776455a76488d5475db52201424f0ed",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\ROOT-DELIVERY.json",
+        "bytes": 2135,
+        "sha256": "74b5de7ece2ab0272439bc046917ecf74776455a76488d5475db52201424f0ed"
+      }
+    },
+    {
+      "relative": "integration/producer-source-CATALOG.original.json",
+      "bytes": 64432,
+      "sha256": "3648e8208c519e03e040fdd0e386a6d4c9e69c03eb090c5d40e971cf806d42b8",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\portable-producer-completion-a01\\CATALOG.json",
+        "bytes": 64432,
+        "sha256": "3648e8208c519e03e040fdd0e386a6d4c9e69c03eb090c5d40e971cf806d42b8"
+      }
+    },
+    {
+      "relative": "integration/audit-portable-ROOT-DELIVERY.original.json",
+      "bytes": 3008,
+      "sha256": "dd293bf26aebfe750f36bb39602d47ffbc8415367604d49bed9419f0135fc4a4",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\PORTABLE-ROOT-DELIVERY-a02.json",
+        "bytes": 3008,
+        "sha256": "dd293bf26aebfe750f36bb39602d47ffbc8415367604d49bed9419f0135fc4a4"
+      }
+    },
+    {
+      "relative": "integration/audit-FOCUSED-CHECKS.original.json",
+      "bytes": 6436,
+      "sha256": "d9c3b1e197dfa9c130db274ae8dd3b741bbb32701ac5f3c3769b63c8d70c11e0",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\PORTABLE-CONSUMER-FOCUSED-CHECKS-a02.json",
+        "bytes": 6436,
+        "sha256": "d9c3b1e197dfa9c130db274ae8dd3b741bbb32701ac5f3c3769b63c8d70c11e0"
+      }
+    },
+    {
+      "relative": "integration/original-stdio-whitespace-CORRECTION.json",
+      "bytes": 112667,
+      "sha256": "fe980b336e092de12e67515a1bfddd3930ded2b39c0aa8afc0abf6024bccad2d",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\review01-git-completion-a01\\diff-correction-a01\\CORRECTION.json",
+        "bytes": 112667,
+        "sha256": "fe980b336e092de12e67515a1bfddd3930ded2b39c0aa8afc0abf6024bccad2d"
+      }
+    },
+    {
+      "relative": "client/diagnosis/ROOT-DELIVERY.original.json",
+      "bytes": 3793,
+      "sha256": "974f8518949949a4158f7374c407b64903d251bd10b4767471c9987a0e23add8",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-onedrive-readonly-diagnosis-20261006-a01\\ROOT-DELIVERY-a01.json",
+        "bytes": 3793,
+        "sha256": "974f8518949949a4158f7374c407b64903d251bd10b4767471c9987a0e23add8"
+      }
+    },
+    {
+      "relative": "client/diagnosis/01-readonly-client-state.json",
+      "bytes": 14392,
+      "sha256": "7da3db5e9a4be6075dc34190faa56eadaa0a85ce96fd6c5485feac55e60c03f8",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-onedrive-readonly-diagnosis-20261006-a01\\01-readonly-client-state.json",
+        "bytes": 14392,
+        "sha256": "7da3db5e9a4be6075dc34190faa56eadaa0a85ce96fd6c5485feac55e60c03f8"
+      }
+    },
+    {
+      "relative": "client/diagnosis/02-existing-uia-status.json",
+      "bytes": 5839,
+      "sha256": "b1f985d404b43a26621facc2fa79fcfcf417b4f1d95ad41af7846f13f54ab9bb",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-onedrive-readonly-diagnosis-20261006-a01\\02-existing-uia-status.json",
+        "bytes": 5839,
+        "sha256": "b1f985d404b43a26621facc2fa79fcfcf417b4f1d95ad41af7846f13f54ab9bb"
+      }
+    },
+    {
+      "relative": "client/diagnosis/inspect_local_client_a01.py",
+      "bytes": 7010,
+      "sha256": "081d4f62388e9fa3e7b37ae612f09168ac0ea4dd83f07a7e30613a13672baa82",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-onedrive-readonly-diagnosis-20261006-a01\\inspect_local_client_a01.py",
+        "bytes": 7010,
+        "sha256": "081d4f62388e9fa3e7b37ae612f09168ac0ea4dd83f07a7e30613a13672baa82"
+      }
+    },
+    {
+      "relative": "client/diagnosis/inspect_existing_uia_status_a01.py",
+      "bytes": 3838,
+      "sha256": "0f2ce58c4308bc7fa2f37636e98e5eb5f3cc36155de57ef2daf62d9c1b3ee5f4",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-onedrive-readonly-diagnosis-20261006-a01\\inspect_existing_uia_status_a01.py",
+        "bytes": 3838,
+        "sha256": "0f2ce58c4308bc7fa2f37636e98e5eb5f3cc36155de57ef2daf62d9c1b3ee5f4"
+      }
+    },
+    {
+      "relative": "client/diagnosis/monitor_existing_uia_target_a01.py",
+      "bytes": 3373,
+      "sha256": "8b13cce29ac86ad2ec062856867e3d6e61bea710eaa34ce0ed9ba22e51f432be",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-onedrive-readonly-diagnosis-20261006-a01\\monitor_existing_uia_target_a01.py",
+        "bytes": 3373,
+        "sha256": "8b13cce29ac86ad2ec062856867e3d6e61bea710eaa34ce0ed9ba22e51f432be"
+      }
+    },
+    {
+      "relative": "client/diagnosis/monitor-01-existing-uia-status.json",
+      "bytes": 1051,
+      "sha256": "215bf8b79277e48dcdbb2aa3c0ef8f1804502aec8f9aa3e989cdfe13072737ca",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-onedrive-readonly-diagnosis-20261006-a01\\monitor-01-existing-uia-status.json",
+        "bytes": 1051,
+        "sha256": "215bf8b79277e48dcdbb2aa3c0ef8f1804502aec8f9aa3e989cdfe13072737ca"
+      }
+    },
+    {
+      "relative": "client/diagnosis/monitor-02-existing-uia-status.json",
+      "bytes": 1051,
+      "sha256": "45622eb4c3f4dd2d12c29c0f3a320abc77edfdd3adff5ccded4cf262ec955899",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-onedrive-readonly-diagnosis-20261006-a01\\monitor-02-existing-uia-status.json",
+        "bytes": 1051,
+        "sha256": "45622eb4c3f4dd2d12c29c0f3a320abc77edfdd3adff5ccded4cf262ec955899"
+      }
+    },
+    {
+      "relative": "client/diagnosis/monitor-03-existing-uia-status.json",
+      "bytes": 1051,
+      "sha256": "ba0d804f3273a04c9335c9824f66fd4f27b1b8247239b9764bb1dcfc72ed0fa3",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-onedrive-readonly-diagnosis-20261006-a01\\monitor-03-existing-uia-status.json",
+        "bytes": 1051,
+        "sha256": "ba0d804f3273a04c9335c9824f66fd4f27b1b8247239b9764bb1dcfc72ed0fa3"
+      }
+    },
+    {
+      "relative": "client/diagnosis/monitor-04-existing-uia-status.json",
+      "bytes": 1053,
+      "sha256": "75bd6317dfc44acba21bac3b0d378292659b4a84842cbbc81085034ce251fe26",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-onedrive-readonly-diagnosis-20261006-a01\\monitor-04-existing-uia-status.json",
+        "bytes": 1053,
+        "sha256": "75bd6317dfc44acba21bac3b0d378292659b4a84842cbbc81085034ce251fe26"
+      }
+    },
+    {
+      "relative": "client/diagnosis/monitor-05-existing-uia-status.json",
+      "bytes": 1006,
+      "sha256": "5369bc8abcd61123500c41ab426499186ff303cdbd8ad63c096cfef98f5704ff",
+      "original_source": {
+        "path": "C:\\ck3-war-episode04-onedrive-readonly-diagnosis-20261006-a01\\monitor-05-existing-uia-status.json",
+        "bytes": 1006,
+        "sha256": "5369bc8abcd61123500c41ab426499186ff303cdbd8ad63c096cfef98f5704ff"
+      }
+    },
+    {
+      "relative": "verify_package_strict.py",
+      "bytes": 3839,
+      "sha256": "71a7acc08fedf3ffb96e53ddf36a044ae18ba5ebc3c69c00468f2b79817dbf77",
+      "original_source": {
+        "path": "C:\\w\\e4t168a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\production\\final-picture-a06\\verify_package_strict.py",
+        "bytes": 3839,
+        "sha256": "71a7acc08fedf3ffb96e53ddf36a044ae18ba5ebc3c69c00468f2b79817dbf77"
+      }
+    },
+    {
+      "relative": "ACTUAL-COMPLETION.json",
+      "bytes": 1742,
+      "sha256": "d51f7b08149297fdedf59c2dd403097aad052db8e9e66a52c1d7e825422136a2",
+      "generated_from_actual_completed_receipts": true
+    },
+    {
+      "relative": "README.md",
+      "bytes": 1687,
+      "sha256": "da5cb592904edd0932a297574842210a0341b6748ef9cf22801f749ccf10224b",
+      "generated_from_actual_completed_receipts": true
+    }
+  ],
+  "external_media_reads": 0,
+  "independent_remote_readback": false,
+  "human_signoff": false
+}

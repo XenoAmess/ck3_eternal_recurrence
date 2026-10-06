@@ -1,0 +1,21 @@
+usage: xar-promo review [-h] --storyboard STORYBOARD --probe PROBE
+                        --output-directory OUTPUT_DIRECTORY
+                        --audit-directory AUDIT_DIRECTORY --ffmpeg FFMPEG
+                        [--working-directory WORKING_DIRECTORY] [--plan-only]
+                        deliverable
+
+positional arguments:
+  deliverable
+
+options:
+  -h, --help            show this help message and exit
+  --storyboard STORYBOARD
+                        storyboard timeline JSON
+  --probe PROBE         retained xar-promo-bound-media-probe v1 envelope for
+                        the deliverable
+  --output-directory OUTPUT_DIRECTORY
+  --audit-directory AUDIT_DIRECTORY
+  --ffmpeg FFMPEG       ffmpeg executable or path
+  --working-directory WORKING_DIRECTORY
+  --plan-only           validate inputs and print the frame plan without
+                        creating directories or files

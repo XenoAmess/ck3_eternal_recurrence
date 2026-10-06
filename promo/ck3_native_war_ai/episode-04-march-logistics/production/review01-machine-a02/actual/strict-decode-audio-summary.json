@@ -1,0 +1,238 @@
+{
+  "state": "PASS_STRICT_DECODE_COUNTS_AND_EXACT_AAC_SAMPLE_CLOCK",
+  "errors": [],
+  "video_decoded_frames": 52074,
+  "AAC_decoded_frame_count": 81366,
+  "AAC_sample_frames_per_channel": 83318400,
+  "expected_samples": 83318400,
+  "sample_count_delta": 0,
+  "first_actual_frame": {
+    "n": 0,
+    "pts": 0,
+    "pts_time_text": "0",
+    "format": "fltp",
+    "channels": 2,
+    "layout": "stereo",
+    "rate": 48000,
+    "nb_samples": 1024
+  },
+  "last_actual_frame": {
+    "n": 81365,
+    "pts": 83317760,
+    "pts_time_text": "1735.786667",
+    "format": "fltp",
+    "channels": 2,
+    "layout": "stereo",
+    "rate": 48000,
+    "nb_samples": 640
+  },
+  "tail_actual_nb_samples": 640,
+  "audio_frame_ordinals_complete": true,
+  "audio_original_integer_PTS_exact": true,
+  "adjacent_boundary_delta_samples_distribution": {
+    "0": 81365
+  },
+  "absolute_offset_samples_distribution": {
+    "0": 81366
+  },
+  "metadata_failure_examples": [],
+  "NaN_Inf_counter_values": [
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0,
+    0.0
+  ],
+  "peak_dBFS_channel_and_overall": [
+    -3.286156,
+    -3.55443,
+    -3.286156
+  ],
+  "RMS_dBFS_channel_and_overall": [
+    -22.336238,
+    -22.366463,
+    -22.351325
+  ],
+  "decoded_float_peak_above_0dBFS": false,
+  "astats_lines": [
+    "[Parsed_astats_2 @ 000001fe2d414d40] Channel: 1",
+    "[Parsed_astats_2 @ 000001fe2d414d40] DC offset: 0.000016",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Min level: -0.685003",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Max level: 0.589765",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Min difference: 0.000000",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Max difference: 0.326239",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Mean difference: 0.006272",
+    "[Parsed_astats_2 @ 000001fe2d414d40] RMS difference: 0.012487",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Peak level dB: -3.286156",
+    "[Parsed_astats_2 @ 000001fe2d414d40] RMS level dB: -22.336238",
+    "[Parsed_astats_2 @ 000001fe2d414d40] RMS peak dB: -11.718053",
+    "[Parsed_astats_2 @ 000001fe2d414d40] RMS through dB: -85.080459",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Crest factor: 8.964047",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Flat factor: 0.000000",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Peak count: 2",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Abs Peak count: 1",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Noise floor dB: -97.279003",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Noise floor count: 315",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Entropy: 0.779571",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Bit depth: 31/32/32/32",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Dynamic range: 200.463116",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Zero crossings: 4049172",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Zero crossings rate: 0.048599",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Number of NaNs: 0",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Number of Infs: 0",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Number of denormals: 0",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Channel: 2",
+    "[Parsed_astats_2 @ 000001fe2d414d40] DC offset: -0.000004",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Min level: -0.664169",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Max level: 0.606982",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Min difference: 0.000000",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Max difference: 0.325764",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Mean difference: 0.006255",
+    "[Parsed_astats_2 @ 000001fe2d414d40] RMS difference: 0.012484",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Peak level dB: -3.554430",
+    "[Parsed_astats_2 @ 000001fe2d414d40] RMS level dB: -22.366463",
+    "[Parsed_astats_2 @ 000001fe2d414d40] RMS peak dB: -11.739081",
+    "[Parsed_astats_2 @ 000001fe2d414d40] RMS through dB: -85.072461",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Crest factor: 8.721710",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Flat factor: 0.000000",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Peak count: 2",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Abs Peak count: 1",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Noise floor dB: -97.251442",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Noise floor count: 363",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Entropy: 0.778112",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Bit depth: 31/32/32/32",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Dynamic range: 211.787853",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Zero crossings: 4094896",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Zero crossings rate: 0.049148",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Number of NaNs: 0",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Number of Infs: 0",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Number of denormals: 0",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Overall",
+    "[Parsed_astats_2 @ 000001fe2d414d40] DC offset: 0.000016",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Min level: -0.685003",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Max level: 0.606982",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Min difference: 0.000000",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Max difference: 0.326239",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Mean difference: 0.006264",
+    "[Parsed_astats_2 @ 000001fe2d414d40] RMS difference: 0.012486",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Peak level dB: -3.286156",
+    "[Parsed_astats_2 @ 000001fe2d414d40] RMS level dB: -22.351325",
+    "[Parsed_astats_2 @ 000001fe2d414d40] RMS peak dB: -11.718053",
+    "[Parsed_astats_2 @ 000001fe2d414d40] RMS through dB: -85.080459",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Flat factor: 0.000000",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Peak count: 2.000000",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Abs Peak count: 1.000000",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Noise floor dB: -97.251442",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Noise floor count: 339.000000",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Entropy: 0.778842",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Bit depth: 31/32/32/32",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Number of samples: 83318400",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Number of NaNs: 0.000000",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Number of Infs: 0.000000",
+    "[Parsed_astats_2 @ 000001fe2d414d40] Number of denormals: 0.000000"
+  ],
+  "full_decoded_clock_table": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\decoded-AAC-frame-clock.csv",
+    "bytes": 3092395,
+    "sha256": "1795a6ab900652b8ae0b860bb6945be16577365ba48b66610e6dc507f283406b"
+  },
+  "same_single_decode_PCM_boundaries": {
+    "front": {
+      "artifact": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\decoded-mix-front-1s.wav",
+        "bytes": 192078,
+        "sha256": "865a7509b25fad36a215ddec40749f960371616b84d1183e9bf0e59559fb2b7c"
+      },
+      "header": {
+        "channels": 2,
+        "sample_width_bytes": 2,
+        "sample_rate": 48000,
+        "sample_frames": 48000
+      },
+      "statistics": {
+        "sample_frames": 48000,
+        "channels": [
+          {
+            "channel": 0,
+            "samples": 48000,
+            "min_s16": -11157,
+            "max_s16": 9341,
+            "mean_s16": 4.394520833333333,
+            "rms_s16": 2254.4273778731854,
+            "rms_dBFS": -23.248273701391806,
+            "peak_normalized": 0.340484619140625,
+            "peak_dBFS": -9.358050037621657,
+            "samples_at_integer_limit": 0,
+            "NaN_Inf_possible_in_s16": false
+          },
+          {
+            "channel": 1,
+            "samples": 48000,
+            "min_s16": -10776,
+            "max_s16": 9376,
+            "mean_s16": 1.9243958333333333,
+            "rms_s16": 2212.3389899841677,
+            "rms_dBFS": -23.411965232076245,
+            "peak_normalized": 0.328857421875,
+            "peak_dBFS": -9.659847044895773,
+            "samples_at_integer_limit": 0,
+            "NaN_Inf_possible_in_s16": false
+          }
+        ]
+      },
+      "listening": false
+    },
+    "back": {
+      "artifact": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-whole-machine-audit-a01\\attempt-a02\\decoded-mix-back-1s.wav",
+        "bytes": 192078,
+        "sha256": "7bfcd7d884aa0a4cdbfd26410ba975f0a7a590599d2322c24f9c4e13fd30cb09"
+      },
+      "header": {
+        "channels": 2,
+        "sample_width_bytes": 2,
+        "sample_rate": 48000,
+        "sample_frames": 48000
+      },
+      "statistics": {
+        "sample_frames": 48000,
+        "channels": [
+          {
+            "channel": 0,
+            "samples": 48000,
+            "min_s16": -8211,
+            "max_s16": 7930,
+            "mean_s16": -1.096125,
+            "rms_s16": 1249.6904290163225,
+            "rms_dBFS": -28.372949824966387,
+            "peak_normalized": 0.250579833984375,
+            "peak_dBFS": -12.021077656598639,
+            "samples_at_integer_limit": 0,
+            "NaN_Inf_possible_in_s16": false
+          },
+          {
+            "channel": 1,
+            "samples": 48000,
+            "min_s16": -8002,
+            "max_s16": 7861,
+            "mean_s16": -0.14516666666666667,
+            "rms_s16": 1244.324071500936,
+            "rms_dBFS": -28.410328646189384,
+            "peak_normalized": 0.24420166015625,
+            "peak_dBFS": -12.245027758334793,
+            "samples_at_integer_limit": 0,
+            "NaN_Inf_possible_in_s16": false
+          }
+        ]
+      },
+      "listening": false
+    }
+  },
+  "strict_error_lines": [],
+  "original_timestamp_repair_applied_to_audit_branch": false,
+  "fixed1024_tail_or_ceil_sample_target_used": false,
+  "mixed_PCM_equals_source_narration_PCM_claimed": false,
+  "audible_quality_verdict": null,
+  "listening_or_human_approval": false
+}

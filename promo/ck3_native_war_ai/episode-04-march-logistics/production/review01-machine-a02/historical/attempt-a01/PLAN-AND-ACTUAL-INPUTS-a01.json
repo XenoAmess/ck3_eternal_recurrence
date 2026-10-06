@@ -1,0 +1,86 @@
+{
+  "schema": "xar.e04.closed-Review01-unique-whole-audit-plan.v1",
+  "started_utc": "2026-10-06T01:19:56.075987+00:00",
+  "input_movie_identity_reused": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "sha256": "A1ABB0F2ABAA06F3FD38839123E9F4DDD4C4218F8DD15E0965732D3596C69346"
+  },
+  "producer_delivery": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\CLOSED-MOVIE-DELIVERY-a01.json",
+    "bytes": 4673,
+    "sha256": "3ddb222eaabcb8c1db767fdb335b8b98259147abb145a3f4d156f9e7470ab2f3"
+  },
+  "source_freeze_and_prior_probe_pins": {
+    "unique_streams_format_bound_probe": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\picture.bound-probe.json",
+      "bytes": 4130,
+      "sha256": "0d358bbbfbff8a435fd60621a026531fe44d06d1325fa8a1036fd7b59fe36310"
+    },
+    "producer_receipt": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\picture-receipt.json",
+      "bytes": 551007,
+      "sha256": "ad2a22ef4ea69faf17a464e535f5834a8db30bd4bf0ee080b013f599eb00540a"
+    },
+    "actual_encode_command": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\final-encode-command-audit\\command.json",
+      "bytes": 2569,
+      "sha256": "b5209e18cca73716f8794c2883cff107eeb144f77600f6279f7e8a2ffc2c8068"
+    },
+    "actual_execute_result": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\execution-a01\\actual-render\\result.json",
+      "bytes": 866,
+      "sha256": "99510f1b1be2886d7be320e91b97662b64959028cdbaef2cc78a5af5baff349b"
+    },
+    "input_source_snapshot": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\input-snapshot.json",
+      "bytes": 96360,
+      "sha256": "e0633852afb84acd6b2d0865efd62fb5fe33c50e03396dcb8582739d9aafd13d"
+    },
+    "Root_actual_story_freeze": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-Review01-Root-actual-row-freeze-a01\\Root-final-story-freeze.json",
+      "bytes": 25852,
+      "sha256": "975ade3d256a8e84511e3206dbb60c7f04bf2131d9bc053850b26d8c0eb4caa6"
+    }
+  },
+  "movie_stat_before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e4-final-review01-a01\\actual-render-a01\\CK3-War-AI-Episode04-March-Logistics-Review01.mp4",
+    "bytes": 1199061934,
+    "mtime_ns": 1791249261689338100
+  },
+  "source_narration_identity_reused": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-audio-production-a01\\final-Chinese-narration.wav",
+    "bytes": 83317292,
+    "sha256": "62f3fffe64885589ed0a43f8ab66f41ff7d080d3075037c6b74798b53bce9e0a"
+  },
+  "interpreter": "D:\\workspace\\ck3_eternal_recurrence\\tools\\.venv\\Scripts\\python.exe",
+  "python_version": "3.14.7 (tags/v3.14.7:823f032, Aug  5 2026, 10:51:32) [MSC v.1944 64 bit (AMD64)]",
+  "tool_pins": {
+    "ffmpeg.exe": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "bytes": 222229504,
+      "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+    },
+    "ffprobe.exe": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+      "bytes": 222026240,
+      "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+    }
+  },
+  "expected_video_frames": 52074,
+  "expected_audio_presentation_samples_per_channel": 83318400,
+  "operations": {
+    "new_combined_full_frames_packets_probe": 1,
+    "new_strict_whole_video_AAC_decode": 1,
+    "new_source_PCM_sample_scan": 1,
+    "movie_SHA_rehash": 0,
+    "repeated_streams_format_probe": 0,
+    "old_RAW_movie_audit": 0,
+    "max_parallel_medium_processes": 2,
+    "codec_filter_threads_each": 1
+  },
+  "mixed_standalone_source_PCM_exists": false,
+  "mixed_decode_astats_and_boundary_only": true,
+  "human_1x_watch_listen_or_signoff": false,
+  "film_approved": false
+}
