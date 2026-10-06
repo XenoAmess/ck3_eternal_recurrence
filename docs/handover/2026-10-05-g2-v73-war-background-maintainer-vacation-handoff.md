@@ -1,5 +1,8 @@
 # G2 v73战争与后台研究：维护者休假交接（2026-10-05）
 
+> 最新本机权限（2026-10-06T09:18:05+08:00）：用户要求这台Z机器不启动CK3，继续后台研究；其他机器照旧。下文旧游戏授权与PID均为历史。本机最新保存h9586/5996日，新g82修复仅static-ready，完整恢复材料与本页末尾增量保持可查。
+
+
 > 后续授权更新：接手用户要求“不要开启ck3，我自己要玩。你先只做后台能做的”。当前以 [后台接手施工](2026-10-05-g2-background-successor.md) 为准；本页下述 CK3/界面恢复授权是交接时历史，不代表接手阶段可以操作游戏。
 
 **接手先读本页。用户已重新允许本机使用CK3与界面；无需为解除先前用户游玩暂停再询问。自动任务最后实测并保存到5035天，R0046已正常退出。本次仅整理并提交交接，没有重新启动/attach/输入/查询游戏，也没有构建或运行候选。**
@@ -109,3 +112,9 @@ Entry还有确切断点：post-A/B `291C2B3→291C2FE`、`291C32C`、`291C334→
 ## Actual watch declaration, raising and V2 observation (2026-10-06T08:12:53+08:00)
 
 实际R0048/source715原Robert现 **5996/36524日，h9579**；78日增量为32+33+13，resume961/cumulative2843、natural0、G2 5/8、NW2 2/4。Watch-aware宣战一次，经独立后态确认 **War100663329**，title2132/objectives2606/2608；已有planner正常召集，当前军218104048已集结1833/2367兵在2619，未提交移动/未本战获胜。真实物理存档SHAc8f6e3e68cfadf8bbf46e7c9fb30ced282b19fb409f37325d28c488b659a4f7f/104792693B已保留。当前实际blocker为V3未advertised导致general-battle query空step；814现有V2同帧 available/input_observation_ready=true，完整MC/phase仍false。下一项正在接线已有bounded generic模型的明确V2消费者，同时Rule43实采六QWORD48B地址支持后台三段source研究。参见 [实际h9579字段](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/watch-raise-v2-h9579-report/ACTUAL-CUTOFF.json)、[watch原生树与实际宣战](Z:/gb0/docs/ck3-native-ai/player-war-entry-faction-watch-scope-12003.md)、[814实际V2](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/814-war100663329-combat-v2.json)。previous exact297c7630 CI37391070890 SUCCESS421s/job409s只复用终态；其旧h9543/5918截止与本次分开。本报告新增tests/builds/CI查询0，Root继续，不授fullperson/Entry/forecast/自然继承/完整战斗或complete。
+
+## Local background work and first production fault qualification (2026-10-06T09:18:05+08:00)
+
+**本机CK3由用户自行游玩，仅后台；其他机器保留原安排。** 原战役最新正常h9586/**5996日**、natural0；新游戏日/动作/部署0。最新保存与完整driver已留，十条输入只做文件保全。两个native实证故障最小修复在新g82/ecc15d1cfdcae9d8497cdc847af8a61be264837d一次formal四runtime+两fixture严格64编译GREEN（116.98222s、586TUs/581unique/1238inputs/0复用），FIRST新Ct **2/2 GREEN**，static-ready，未实机恢复。V2 consumer与outer路由FIRST各1/1 GREEN；fresh人物新基线FIRST1/1 GREEN，均保留完整Entry/phase/live缺口。Rule43真实154B来自三组各自绑定帧，不合成wholetruth；当前source累计850B。原844 AV/845 bit512/850拒绝与R0048stop（SDK0、CK3exit1/cleanup proven）全部保留。
+
+参见[本包资格](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/battle-terminal-mailbox-failure-01/strict02/ROOT-FIRST-QUALIFICATION.json)、[h9586十条输入](Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/runtime-upgrade-plan/source-pair-h9586-background-only/FINAL-SOURCE-PAIR.json)与[Oct6滚动日报](../autonomous-agent-progress/daily/2026-10-06.md)。下一项只读caller identity census、associated refill组合及phase候选Rite输入继续后台施工；不启动本机CK3、不重跑旧证据、不授完整forecast/war loop/自然继承/complete。新publication的commit/push与精确CI由外置回执追加，旧f990 CI终态直接复用。

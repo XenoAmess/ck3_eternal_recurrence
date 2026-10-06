@@ -1,5 +1,11 @@
 # CK3 原生 AI 决策树索引
 
+
+## 2026-10-06：本机仅后台，两项真实故障修复首次资格
+
+本机用户自行游玩CK3，后台保全原战役h9586/5996日，无新game或deploy。g82两项[typed query异常回收](typed-query-executor-exception-reclaim-12003.md)与[人物source读取故障](battle-current-person-source-read-production-fault-12003.md)一次严格formal编译、两个FIRST新Ct均GREEN，static-ready；actual844/845/850 RED保留。新增[明确V2消费者](general-battle-v2-input-consumer-12003.md)、[fresh模型基线](battle-first-contact-model-quality-814-12003.md)FIRST各路径GREEN，[Rule43真实source](battle-person-rule43-real-admission-12003.md)和[outer caller关联](battle-first-contact-outer-context-caller-association-12003.md)继续补同查询观测。完整person/Entry/phase/forecast/live仍未完成，其他机器运行安排不变。
+
+
 ## 人物后缀与月度caller预算离线资格（2026-10-05T23:06:01+08:00）
 
 原生source先封存后实现：同查询291F550/291F940贡献、explicit person baseline/prefix/291D1D0、24E4D10后stock对应的条件monthly预算已static-ready。后续13个新增native CTests、70份新原生fixture JSON生产消费者GREEN；无新paused/live样本或游戏日。[人物frontier](battle-first-contact-person-preparation-frontier-12003.md)、[显式阶段](battle-person-stage-baseline-12003.md)、[budget/writer](army-attrition-soldier-writeback-12003.md)记录实际source、失败与资格。完整人物Entry/其他monthly effects继续有可施工入口；运行时freeze不变。
