@@ -8074,6 +8074,20 @@ if(BUILD_TESTING)
       "${CMAKE_BINARY_DIR}/post_291d7e0_sources_wire.json")
 endif()
 
+if(BUILD_TESTING AND WIN32 AND MSVC)
+  add_executable(xar_ck3_12003_context_source_read_av_test
+    src/ck3_12003_context_sources.cpp
+    tests/context_source_read_av_12003_test.cpp)
+  target_include_directories(xar_ck3_12003_context_source_read_av_test PRIVATE include)
+  target_compile_features(xar_ck3_12003_context_source_read_av_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_ck3_12003_context_source_read_av_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN)
+  target_compile_options(xar_ck3_12003_context_source_read_av_test PRIVATE
+    /W4 /WX /permissive- /EHsc)
+  add_test(NAME xar_ck3_12003_context_source_read_av_test
+    COMMAND xar_ck3_12003_context_source_read_av_test)
+endif()
+
 if(BUILD_TESTING)
   add_executable(xar_ck3_12003_person_later_direct_test
     src/ck3_12003_context_sources.cpp

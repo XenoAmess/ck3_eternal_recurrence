@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12003_context_sources.hpp"
 #include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12003_current_stored_context.hpp"
 
 #include <algorithm>
 #include <cstring>
@@ -15,8 +16,7 @@ bool Copy(const ContextSourceBindingsV1 &b, const void *p, void *out,
           std::size_t bytes) noexcept {
   if (!p) return false;
   if (b.read_memory) return b.read_memory(b.read_context, p, out, bytes);
-  std::memcpy(out, p, bytes);
-  return true;
+  return current_stored_context_12003::CopyBytes(out, p, bytes);
 }
 template <typename T>
 std::optional<T> Read(const ContextSourceBindingsV1 &b, const void *p,
