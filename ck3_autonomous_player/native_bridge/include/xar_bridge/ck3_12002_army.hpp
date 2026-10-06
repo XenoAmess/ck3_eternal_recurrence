@@ -93,7 +93,6 @@ struct ArmyCurrentHelperDomainBindings12003 {
 };
 
 struct ArmyBindings {
-  ck3_12003::CurrentProvinceBesiegingBindings12003 current_province_besieging_bindings{};
   bool enabled = false;
   void **game_state_slot = nullptr;
   void **unit_storage_slot = nullptr;
@@ -168,6 +167,7 @@ struct ArmyBindings {
   ck3_12003::CurrentLandResupplyBindings12003 current_land_resupply_bindings{};
   ck3_12003::CurrentLandSupplyRateBindings12003 current_land_supply_rate_bindings{};
   ck3_12003::ScopedOrderedRefillBindings12003 scoped_ordered_refill_bindings{};
+  ck3_12003::CurrentProvinceBesiegingBindings12003 current_province_besieging_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(
