@@ -9,7 +9,7 @@ import unittest
 sys.path.insert(0, str(Path(__file__).resolve().parents[2] / 'src'))
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from xar_autoplayer.bridge.service import GameplayBridgeService
-from army_condition30_source_builder import load_compiled_condition30_wire, service_source_row
+from army_condition30_source_builder import load_compiled_condition30_wire
 
 
 class MemoryCondition30Route(GameplayBridgeService):
@@ -43,16 +43,20 @@ class ArmyCurrentCondition30Service12003Tests(unittest.TestCase):
             'constructor-null-return-paired-destroy': None,
         }
         outputs = {}
-        for name, leaf in wire['samples'].items():
+        for name, native_row in wire['samples'].items():
             with self.subTest(sample=name):
-                source = service_source_row(leaf); before = deepcopy(source)
+                # Exact AppendArmyStrengthV1 output: no baseline construction or field transplant.
+                source = deepcopy(native_row); before = deepcopy(source)
+                leaf = native_row['current_army_condition30_inputs_v1']
                 service = MemoryCondition30Route(source)
                 returned = service.query_army_strengths([11], expected_revision=42)
                 self.assertEqual(source, before)
                 self.assertEqual(service.calls, [('query-army-strengths-v1', 42)])
                 self.assertEqual(returned['status'], 'available')
                 self.assertEqual(returned['native_readiness'], {'current_strength': True, 'full_monthly': False})
-                self.assertEqual(returned['army_strengths'][0]['current_soldiers'], 160)
+                self.assertEqual(returned['army_strengths'][0]['current_soldiers'], 20)
+                self.assertEqual(returned['army_strengths'][0]['maximum_soldiers'], 40)
+                self.assertEqual(returned['army_strengths'][0]['ai_base_power_raw'], 4000000)
                 self.assertEqual(returned['source']['revision'], 42)
                 self.assertEqual(returned['source']['native_revision'], 7)
                 self.assertEqual(returned['army_strengths'][0]['current_army_condition30_inputs_v1'], leaf)
@@ -101,7 +105,7 @@ class ArmyCurrentCondition30Service12003Tests(unittest.TestCase):
         output = os.environ.get('XAR_ARMY_CONDITION30_CASE_OUTPUT')
         if output:
             Path(output).write_text(json.dumps({
-                'qualification': 'new compiled condition30 leaf only; synthetic Service envelope/Army snapshot/context/predicate',
+                'qualification': 'nine genuine whole native query/serializer outputs, no field transplant; new condition30 credit only; fixture world/context/predicate and Service snapshot/transport synthetic',
                 'actual_compound_cases': 1, 'actual_new_native_samples': 9, 'actual_occurrences': 18,
                 'outputs': outputs}, indent=2) + '\n', encoding='utf-8')
 
