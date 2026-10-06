@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #include "xar_bridge/ck3_12004_combat.hpp"
+#include "xar_bridge/ck3_12004_army.hpp"
 #include "xar_bridge/ck3_12004_province.hpp"
 
 #include "xar_bridge/ck3_12003_adapter.hpp"
@@ -151,7 +152,9 @@ bool ExecuteArmyCommanderCandidatesMailbox(
         ? ck3_12004::BindCommanderTargetRollImage12004(
               query.image_base, envelope->game->descriptor().executable_sha256,
               ck3_12004::BindProvinceImage12004(
-                  query.image_base, envelope->game->descriptor().executable_sha256),
+                  query.image_base, envelope->game->descriptor().executable_sha256,
+                  ck3_12004::BindArmyImage12004(
+                      query.image_base, envelope->game->descriptor().executable_sha256)),
               ck3_12004::BindCombatImage12004(
                   query.image_base, envelope->game->descriptor().executable_sha256))
         : BindCommanderTargetRollImage(

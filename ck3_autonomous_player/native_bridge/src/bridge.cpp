@@ -11481,7 +11481,6 @@ public:
     environment.permitted_executor_quindenary =
         &xar::ck3_12003::ExecuteArmyCommanderCandidatesMailbox;
     xar::ck3_12003::RegisterPlayerDefaultRaiseMailboxExecutorV1(environment);
-    xar::ck3_12003::RegisterPlayerDefaultRaiseMailboxExecutorV1(environment);
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1)
     environment.permitted_executor_tertiary =
         &xar::ck3_12002::ExecuteActivityPlannerDiagPrivate12002QueryV1;
