@@ -1700,6 +1700,16 @@ def create_server(
             )
 
         @server.tool(annotations=read_only_tool)
+        def ck3_query_player_seek_indulgences_terms_v1(
+            expected_revision: Annotated[int, Field(strict=True, gt=0)],
+            recipient_character_id: Annotated[int, Field(strict=True, ge=0, le=2**32 - 2)],
+        ) -> dict[str, object]:
+            """Read ordinary indulgence visibility and native final eligibility; no action."""
+            return service.query_player_seek_indulgences_terms_v1(
+                expected_revision=expected_revision, recipient_character_id=recipient_character_id,
+            )
+
+        @server.tool(annotations=read_only_tool)
         def ck3_query_player_head_of_faith_gold_context_v1(
             expected_revision: int,
         ) -> dict[str, object]:

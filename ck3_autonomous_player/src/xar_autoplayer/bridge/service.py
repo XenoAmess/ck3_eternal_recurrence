@@ -586,6 +586,15 @@ class GameplayBridgeService:
             )
         return result
 
+    def query_player_seek_indulgences_terms_v1(
+        self, *, expected_revision: int, recipient_character_id: int,
+    ) -> dict[str, object]:
+        """Read final native indulgence terms for one explicitly selected recipient."""
+        read = getattr(self.driver, "query_player_seek_indulgences_terms_private_v1", None)
+        if not callable(read):
+            raise UnsupportedStepError("selected backend cannot read player indulgence terms")
+        return read(expected_revision=expected_revision, recipient_character_id=recipient_character_id)
+
     def submit_player_religion_conversion_private_v1(
         self, *, expected_revision: int, target_rite_id: int,
         max_piety_cost_raw: int, action_id: str,

@@ -3022,6 +3022,19 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_player_seek_indulgences_terms_private_v1(
+        self, *, expected_revision: int, recipient_character_id: int,
+    ) -> dict[str, object]:
+        """Read ordinary native indulgence final eligibility for one recipient."""
+        from .player_seek_indulgences_terms_private_transport import (
+            query_player_seek_indulgences_terms_private_v1,
+        )
+
+        return query_player_seek_indulgences_terms_private_v1(
+            self, expected_revision=expected_revision, recipient_character_id=recipient_character_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_player_head_of_faith_gold_context_private_v1(
         self, *, expected_revision: int,
     ) -> dict[str, object]:

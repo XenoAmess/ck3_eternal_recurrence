@@ -96,6 +96,7 @@ void RegisterNonwarMailboxExecutorsV1(
   environment.permitted_executor_religion12002 = executors.religion;
   environment.permitted_executor_holy_order_loan12003 = executors.holy_order_loan;
   environment.permitted_executor_head_of_faith_gold12003 = executors.head_of_faith_gold;
+  environment.permitted_executor_seek_indulgences_terms12003 = executors.seek_indulgences_terms;
   environment.permitted_executor_repentance12003 = executors.repentance;
   environment.permitted_executor_holy_order_context12003 = executors.holy_order_context;
   environment.permitted_executor_holy_order_selected_title_terms12003 =

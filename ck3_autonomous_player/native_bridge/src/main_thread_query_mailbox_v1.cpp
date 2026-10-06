@@ -954,6 +954,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_holy_order_loan12003;
   mailbox.permitted_executor_head_of_faith_gold12003 =
       environment.permitted_executor_head_of_faith_gold12003;
+  mailbox.permitted_executor_seek_indulgences_terms12003 =
+      environment.permitted_executor_seek_indulgences_terms12003;
   mailbox.permitted_executor_repentance12003 =
       environment.permitted_executor_repentance12003;
   mailbox.permitted_executor_holy_order_context12003 =
@@ -1343,6 +1345,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
          mailbox.permitted_executor_religion12002 != nullptr ||
          mailbox.permitted_executor_holy_order_loan12003 != nullptr ||
          mailbox.permitted_executor_head_of_faith_gold12003 != nullptr ||
+         mailbox.permitted_executor_seek_indulgences_terms12003 != nullptr ||
          mailbox.permitted_executor_repentance12003 != nullptr ||
          mailbox.permitted_executor_holy_order_context12003 != nullptr ||
          mailbox.permitted_executor_holy_order_selected_title_terms12003 != nullptr ||
@@ -1467,6 +1470,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
        executor != mailbox.permitted_executor_religion12002 &&
        executor != mailbox.permitted_executor_holy_order_loan12003 &&
        executor != mailbox.permitted_executor_head_of_faith_gold12003 &&
+       executor != mailbox.permitted_executor_seek_indulgences_terms12003 &&
        executor != mailbox.permitted_executor_repentance12003 &&
        executor != mailbox.permitted_executor_holy_order_context12003 &&
        executor != mailbox.permitted_executor_holy_order_selected_title_terms12003 &&

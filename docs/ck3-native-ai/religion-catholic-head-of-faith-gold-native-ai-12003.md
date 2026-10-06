@@ -176,7 +176,7 @@ The real v30 amount fault is closed by this complete v31 recovery. The two artif
 
 ## Narrow reverse route: Seek Indulgences
 
-`seek_indulgences_interaction` is a source-confirmed gold→piety route, with its own five-year recipient cooldown and capital-archbishop/head/landed-prelate/chaplain hierarchy. It requires central sacraments, permitted Rite and the valid clergy/faith/blocker tree. AI-only availability prefilters must not be applied to Robert. Exact narrow proof is `indulgence/STOCK-ALTERNATIVE.md`; this is not a second implemented capability or an action recommendation.
+`seek_indulgences_interaction` is a source-confirmed gold→piety route, with its own five-year overall interaction cooldown and capital-archbishop/head/landed-prelate/chaplain hierarchy. It requires central sacraments, permitted Rite and the valid clergy/faith/blocker tree, including not being excommunicated. AI-only availability prefilters must not be applied to Robert. Exact narrow proof is `indulgence/STOCK-ALTERNATIVE.md`; the [2026-10-06 final-terms leaf](religion-seek-indulgences-final-terms-12003.md) records the corrected cooldown scope and source-prepared read-only query. Its build, FIRST and live qualification remain NOT RUN; this is not an action recommendation.
 
 Its ordinary base fee is `max(0.25 × actor head_of_faith_gold_value,50)`; better-indulgences church phase then multiplies the result by0.75. Applicable criminal fee is added before the unconditional base, at2.5/2/1.5 times actor head-of-faith base for major/medium/minor priority branches. A trait-specific validity threshold alone does not prove combined affordability.
 

@@ -928,6 +928,9 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_hof_gold_context.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_hof_gold_mailbox.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_hof_gold_wire.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_seek_indulgences_terms.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_seek_indulgences_mailbox.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_seek_indulgences_wire.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_player_repentance_context.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_clergy.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_repentance_recipient_candidates.cpp"
@@ -9152,3 +9155,4 @@ endif()
 include(cmake/realm_law_succession_profile_12003.cmake)
 include(cmake/player_faction_county_culture_12003.cmake)
 include(cmake/commander_target_rolls_12003.cmake)
+include(cmake/player_seek_indulgences_terms_12003.cmake)
