@@ -257,3 +257,6 @@ target_sources(xar_ck3_12002_runtime PRIVATE
 # Runtime TUs and two new targets, including necessary legacy link compatibility.
 include("${CMAKE_CURRENT_LIST_DIR}/existing_factories_12004.cmake")
 include("${CMAKE_CURRENT_LIST_DIR}/clergy_appointment_12004_whole_fixture.cmake")
+
+# Repair only the new strict04 fixture link failures with genuine providers.
+include("${CMAKE_CURRENT_LIST_DIR}/fixture_real_link_closure_12004.cmake")
