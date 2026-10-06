@@ -92,3 +92,36 @@ the next actual failure; they are not a completed timeout fix. No new Religion
 hook is inferred from the unrelated Activity installation defect.
 
 Receipts: `Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/actual4-entry-checkpoints/ROOT-DELIVERY.json`.
+
+## Actual faction follow-up
+
+The R0054 faction alert call was rejected by the service because the actual4
+descriptor omitted `game.command.query-player-faction-alerts-v1`. The original
+`XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1` is already enabled in
+the retained compile arguments. Actual2 advertises this token under that same
+guard, and the shared `GameAdapter::supports_step` already parses the alert
+query. Actual4 now includes the identical guarded token. This is a missing
+hook for an existing enabled query; no flag or provider behavior changes.
+
+The separate actual gift query returned `unsupported native gameplay step`.
+The source owner's finite review found the exact
+`private-query-faction-gift-member-v1` literal, original enabled exclusion from
+the unsupported gate, actual4 handler and installed executor. Root independently
+confirmed the loaded DLL's file path. The contradiction is unresolved; a
+speculative gift provider change is not justified.
+
+The same existing checkpoint mechanism now retains a fourth independent record:
+
+`diagnostics.last_heartbeat.command_entry_trace_v1.faction_gift_query`
+
+It reports the original type and parsed step, selected semantic descriptor
+`adapter_id`, exact private `parse_kind`, and actual `TypedQueryKind12002` enum
+or `-1` when no typed kind exists. This private gift literal is not a typed query.
+The outer unsupported gate and terminal dispatcher fallback have distinct
+`dispatch_route`/stage values. The existing gift handler records entry and its
+actual4 call boundary, while the unchanged response wrapper retains the original
+UUID and write outcome. No additional query strings are traced. These additions
+are source-only and await Root's single fresh failed query/diagnostic; they do
+not establish a repaired or live-ready gift query.
+
+Follow-up receipt: `Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/actual4-entry-checkpoints/faction-followup/ROOT-DELIVERY.json`.

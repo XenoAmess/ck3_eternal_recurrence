@@ -1905,11 +1905,13 @@ std::string HelloFrame(const xar::game::GameAdapter &game,
   return result;
 }
 
-// Retain only the real R0054 Timeline and termination failed command paths. The pipe worker owns
+// Retain only the real R0054 failed command paths. The pipe worker owns
 // these records and publishes checkpoints before potentially blocking calls.
 struct CommandEntryTraceV1 {
   std::string request_id;
   std::string frame_type;
+  std::string parsed_step;
+  std::string adapter_id;
   const char *stage = "not_received";
   const char *parse_kind = "not_parsed";
   const char *dispatch_route = "not_reached";
@@ -1920,6 +1922,7 @@ struct CommandEntryTraceV1 {
   bool handler_entered = false;
   std::int64_t submit_result = -1;
   std::int64_t call_result = -1;
+  std::int64_t typed_query_kind = -1;
   std::string reply_request_id;
   std::string reply_type;
   bool reply_write_success = false;
@@ -1929,6 +1932,7 @@ struct CommandEntryTracesV1 {
   CommandEntryTraceV1 timeline{};
   CommandEntryTraceV1 war_termination_options{};
   CommandEntryTraceV1 war_termination_terms{};
+  CommandEntryTraceV1 faction_gift_query{};
 };
 
 void AppendCommandEntryTraceV1(std::string &result,
@@ -1937,6 +1941,11 @@ void AppendCommandEntryTraceV1(std::string &result,
   AppendJsonString(result, trace.request_id);
   result += ",\"frame_type\":";
   AppendJsonString(result, trace.frame_type);
+  result += ",\"parsed_step\":";
+  AppendJsonString(result, trace.parsed_step);
+  result += ",\"adapter_id\":";
+  AppendJsonString(result, trace.adapter_id);
+  result += ",\"typed_query_kind\":" + SignedNumber(trace.typed_query_kind);
   result += ",\"stage\":";
   AppendJsonString(result, trace.stage);
   result += ",\"parse_kind\":";
@@ -2093,6 +2102,8 @@ std::string HeartbeatFrame(std::uint64_t sequence, const xar::game::GameAdapter 
   AppendCommandEntryTraceV1(result, command_entry_traces.war_termination_options);
   result += ",\"war_termination_terms\":";
   AppendCommandEntryTraceV1(result, command_entry_traces.war_termination_terms);
+  result += ",\"faction_gift_query\":";
+  AppendCommandEntryTraceV1(result, command_entry_traces.faction_gift_query);
   result += "}";
   result += ",\"army_strength_result_write_v1\":";
   result += xar::bridge::SerializeArmyStrengthResultWriteDiagnosticV1(army_result_write);
@@ -13590,7 +13601,8 @@ void RunConnectedSession(
         outgoing_type == "command_result";
     for (auto *trace : {&state.command_entry_traces.timeline,
                        &state.command_entry_traces.war_termination_options,
-                       &state.command_entry_traces.war_termination_terms}) {
+                       &state.command_entry_traces.war_termination_terms,
+                       &state.command_entry_traces.faction_gift_query}) {
       if (!command_result || trace->request_id.empty() ||
           frame.find(trace->request_id) == std::string::npos)
         continue;
@@ -13853,11 +13865,14 @@ void RunConnectedSession(
           "query-war-termination-options-") != std::string::npos;
       const bool raw_terms = incoming.payload.find(
           "query-war-termination-terms-v1-") != std::string::npos;
-      if (raw_timeline || raw_termination || raw_terms) {
+      const bool raw_gift = incoming.payload.find(
+          "private-query-faction-gift-member-v1") != std::string::npos;
+      if (raw_timeline || raw_termination || raw_terms || raw_gift) {
         active_command_entry_trace = raw_timeline
             ? &state.command_entry_traces.timeline
             : raw_termination ? &state.command_entry_traces.war_termination_options
-                              : &state.command_entry_traces.war_termination_terms;
+            : raw_terms ? &state.command_entry_traces.war_termination_terms
+                        : &state.command_entry_traces.faction_gift_query;
         *active_command_entry_trace = {};
         auto &trace = *active_command_entry_trace;
         trace.type_parsed = xar::bridge::JsonStringField(
@@ -13866,17 +13881,22 @@ void RunConnectedSession(
         trace.request_id_parsed = xar::bridge::JsonStringField(
             incoming.payload, "request_id", trace.request_id,
             xar::bridge::kMaximumControlStringBytes);
-        std::string parsed_step;
+        trace.adapter_id = game.descriptor().adapter_id;
         trace.step_parsed = xar::bridge::JsonStringField(
-            incoming.payload, "step", parsed_step,
+            incoming.payload, "step", trace.parsed_step,
             xar::ck3_11906::kTacticalDailySentinelMaximumArmStepBytesV1);
+        const auto typed_kind = TypedQueryKind12002(trace.parsed_step);
+        if (typed_kind.has_value())
+          trace.typed_query_kind = static_cast<std::int64_t>(typed_kind.value());
         trace.parse_kind = !trace.step_parsed ? "raw_target_unparsed"
-            : parsed_step == "query-current-timeline-blocker-context-v1"
+            : trace.parsed_step == "query-current-timeline-blocker-context-v1"
                 ? "timeline"
-                : parsed_step.starts_with("query-war-termination-options-")
+                : trace.parsed_step.starts_with("query-war-termination-options-")
                     ? "war_termination_options"
-                    : parsed_step.starts_with("query-war-termination-terms-v1-")
-                        ? "war_termination_terms" : "different_step";
+                    : trace.parsed_step.starts_with("query-war-termination-terms-v1-")
+                        ? "war_termination_terms"
+                        : trace.parsed_step == "private-query-faction-gift-member-v1"
+                            ? "faction_gift_query" : "different_step";
         trace_command_entry("frame_received");
       }
       std::string type;
@@ -13906,6 +13926,9 @@ void RunConnectedSession(
         // Keep this terminal chain outside the long dispatcher nesting
         // so MSVC can compile it without changing command precedence.
         const auto execute_native_step_tail = [&]() {
+          if (active_command_entry_trace != nullptr)
+            active_command_entry_trace->dispatch_route = "native_step_tail";
+          trace_command_entry("native_step_tail_entered");
           if (step.starts_with("merge-armies-")) {
             const auto army_ids = MergeArmiesStep(step);
             if (!army_ids.has_value()) {
@@ -14743,6 +14766,9 @@ void RunConnectedSession(
                    }()
 #endif
         ) {
+          if (active_command_entry_trace != nullptr)
+            active_command_entry_trace->dispatch_route = "outer_unsupported";
+          trace_command_entry("outer_unsupported_gate_entered");
           connected = write_frame(
               pipe, CommandResultFrame(request_id, step, false,
                                        "unsupported native gameplay step"));
@@ -14774,6 +14800,11 @@ void RunConnectedSession(
               step == xar::ck3_11906::kFactionGiftPrivateReceiptStepV1 ||
               step == xar::ck3_11906::
                           kFactionGiftPrivateColdRecoveryStepV1) {
+            if (active_command_entry_trace != nullptr) {
+              active_command_entry_trace->handler_entered = true;
+              active_command_entry_trace->dispatch_route = "faction_gift_handler";
+            }
+            trace_command_entry("faction_gift_handler_entered");
             if (!previous_snapshot.has_value()) {
               connected = write_frame(
                   pipe, CommandResultFrame(
@@ -14781,10 +14812,12 @@ void RunConnectedSession(
                             "private faction published snapshot unavailable"));
             } else if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
               std::string response, failure;
+              trace_command_entry("pre_faction_gift_handler_call");
               xar::ck3_12004::HandleFactionGiftPrivate12004(
                   game, g_main_thread_query_mailbox_v1, *previous_snapshot,
                   state_revision, step, incoming.payload, request_id,
                   state.nonwar_private12002.gift, response, failure);
+              trace_command_entry("faction_gift_handler_returned");
               if (response.empty()) response = CommandResultFrame(
                   request_id, step, false,
                   failure.empty() ? "private faction gift unavailable" : failure);
