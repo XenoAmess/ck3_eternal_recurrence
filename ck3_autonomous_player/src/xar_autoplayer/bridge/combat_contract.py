@@ -24,6 +24,7 @@ from .war_contract import army_strength_scope
 from .phase_rite_parameters_contract import normalize_phase_rite_parameters_v1
 from .phase_warmonger_core_contract import normalize_phase_warmonger_core_v1
 from .phase_berserker_validity_contract import normalize_phase_berserker_validity_inputs_v1
+from .phase_berserker_chance_contract import normalize_phase_berserker_chance_inputs_v1
 
 
 QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY = (
@@ -3379,6 +3380,8 @@ def _normalize_knights(
                 member_keys.add("phase_warmonger_core_v1")
             if isinstance(raw_member, dict) and "phase_berserker_validity_inputs_v1" in raw_member:
                 member_keys.add("phase_berserker_validity_inputs_v1")
+            if isinstance(raw_member, dict) and "phase_berserker_chance_inputs_v1" in raw_member:
+                member_keys.add("phase_berserker_chance_inputs_v1")
             member = _exact_object(
                 raw_member,
                 member_keys,
@@ -3459,6 +3462,9 @@ def _normalize_knights(
                 ),
                 "phase_berserker_validity_inputs_v1": normalize_phase_berserker_validity_inputs_v1(
                     member.get("phase_berserker_validity_inputs_v1"), expected_character_id=character_id
+                ),
+                "phase_berserker_chance_inputs_v1": normalize_phase_berserker_chance_inputs_v1(
+                    member.get("phase_berserker_chance_inputs_v1"), expected_character_id=character_id
                 ),
             }
             if "effectiveness_components" in member:

@@ -23,6 +23,7 @@ def main() -> None:
         '#include "xar_bridge/phase_rite_parameters_v1_serializer.hpp"\n'
         '#include "xar_bridge/phase_warmonger_core_v1_serializer.hpp"\n'
         '#include "xar_bridge/phase_berserker_validity_inputs_v1_serializer.hpp"\n'
+        '#include "xar_bridge/phase_berserker_chance_inputs_v1_serializer.hpp"\n'
         '#include <array>\n#include <charconv>\n#include <cstdint>\n'
         '#include <string>\n#include <string_view>\n#include <system_error>\n'
         'namespace phase_rite_wire {\nusing namespace xar;\n' + '\n'.join(functions.values()) +

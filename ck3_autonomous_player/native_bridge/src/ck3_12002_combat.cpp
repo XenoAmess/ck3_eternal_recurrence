@@ -848,6 +848,9 @@ bool ReadCombatKnights(
     knight.phase_berserker_validity_inputs_v1 = ck3_12003::phase_berserker::Read(
         bindings.phase_berserker_validity_inputs, character,
         static_cast<std::uint32_t>(knight_character_id));
+    knight.phase_berserker_chance_inputs_v1 = ck3_12003::phase_berserker_chance::Read(
+        bindings.phase_berserker_chance_inputs, character,
+        static_cast<std::uint32_t>(knight_character_id));
     knight.source_regiment_id = regiment_row.regiment_id;
     knight.army_id = internal_army_id;
     knight.prowess = LoadAt<std::int32_t>(

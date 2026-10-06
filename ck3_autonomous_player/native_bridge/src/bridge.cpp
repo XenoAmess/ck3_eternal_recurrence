@@ -22,6 +22,7 @@
 #include "xar_bridge/phase_rite_parameters_v1_serializer.hpp"
 #include "xar_bridge/phase_warmonger_core_v1_serializer.hpp"
 #include "xar_bridge/phase_berserker_validity_inputs_v1_serializer.hpp"
+#include "xar_bridge/phase_berserker_chance_inputs_v1_serializer.hpp"
 #include "xar_bridge/ck3_12003_default_raise_mailbox.hpp"
 #include "xar_bridge/ck3_12003_war_cash_current_mailbox.hpp"
 #include "xar_bridge/ck3_12003_player_mercenary_mailbox.hpp"
@@ -3509,6 +3510,10 @@ void AppendCombatKnights(std::string &result,
       if (knight.phase_warmonger_core_v1) {
         result += ",\"phase_warmonger_core_v1\":";
         xar::game::AppendPhaseWarmongerCoreV1(result, *knight.phase_warmonger_core_v1);
+      }
+      if (knight.phase_berserker_chance_inputs_v1) {
+        result += ",\"phase_berserker_chance_inputs_v1\":";
+        xar::game::AppendPhaseBerserkerChanceInputsV1(result, *knight.phase_berserker_chance_inputs_v1);
       }
       if (knight.phase_berserker_validity_inputs_v1) {
         result += ",\"phase_berserker_validity_inputs_v1\":";

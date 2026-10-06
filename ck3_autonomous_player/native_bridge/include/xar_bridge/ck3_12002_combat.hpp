@@ -5,6 +5,7 @@
 #include "xar_bridge/ck3_12003_phase_rite_parameters.hpp"
 #include "xar_bridge/ck3_12003_phase_warmonger_core.hpp"
 #include "xar_bridge/ck3_12003_phase_berserker_validity_inputs.hpp"
+#include "xar_bridge/ck3_12003_phase_berserker_chance_inputs.hpp"
 
 namespace xar::ck3_12002 {
 
@@ -79,6 +80,7 @@ struct CombatBindings {
   ck3_12003::phase_rite::Bindings phase_rite_parameters;
   ck3_12003::phase_warmonger::Bindings phase_warmonger_core;
   ck3_12003::phase_berserker::Bindings phase_berserker_validity_inputs;
+  ck3_12003::phase_berserker_chance::Bindings phase_berserker_chance_inputs;
 };
 
 // Source-closed only for exact .3; the unchanged .2 binder leaves this disabled.

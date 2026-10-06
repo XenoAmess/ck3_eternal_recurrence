@@ -1,6 +1,6 @@
 # Knight berserker chance inputs — CK3 1.20.0.3
 
-The [berserker validity leaf](combat-phase-berserker-validity-inputs-12003.md) is limited static-ready. This source-only continuation closes the inputs to the same knight occurrence's authored `chance` expression. It does not publish a new observer or calculate a current game probability. The remaining input seams already have exact `.3` cached compatibility proof; no EXE read is required to implement their normal paths.
+The [berserker validity leaf](combat-phase-berserker-validity-inputs-12003.md) is limited static-ready. The original source-only package below closes the inputs to the same knight occurrence's authored `chance` expression. A subsequent same-query V2 candidate now publishes those operands and calculates the authored row value; its first production Python compound case is GREEN, and formal native qualification remains pending. The input seams already have exact `.3` cached compatibility proof; implementation required no EXE read. No current game probability is claimed.
 
 The plan was sealed before this research at `C:/codex-ck3-background/packets/phase-berserker-chance-source-20261006/SOURCE-PLAN.json`. Source base is `c19c8fd8bdae5c0c27dbbe0537a1fc8576915cdd`. Target remains CK3 **1.20.0.3 Crozier / Steam 25652598**, with the previously frozen EXE SHA `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. No executable was opened or rehashed.
 
@@ -103,3 +103,30 @@ The next minimum implementation is a knight-only optional `phase_berserker_chanc
 The pure consumer can join this leaf with the qualified heritage operand by the same occurrence, derive player/AI Stalwart, known unique wound rank/factor and maim OR, then consume this event's actual frozen chance AST in source order. Its output must identify authored raw row value and integer weight, with an operation trace and explicit unknown dependencies. Validity, native admission/order and loaded context remain independently attributed; a valid authored expression and a known row weight do not establish native selection or an executed effect. Use one new focused production normalizer → adapter → actual AST compound case; Root owns the first exact native fixture/build/CTest and genuine new-wire consumption. No old validity/Core/Boolean case is needed.
 
 This source-only packet is **research / source-confirmed immediately implementable chance observer handoff**. It newly identifies a publication dependency and closes its required native families through cached proof; it introduces no provider, strategy, tests, native builds or game operations. Selected inputs use **1,287,192 unique bytes of cached JSON** (current AST, `.3` reuse/comparison, two required manifests, stock closure and cached survey), not new executable bytes. EXE reads/hashes, native execution, old test/sample repeats and local CK3/Steam/process/SDK/pipe/UI/live-memory operations are zero. The machine-readable modifier/input ledgers, cached pins, minimum handoff and Oct6/W41 fields are in the external packet; Root owns shared report integration and push.
+
+## Same-query candidate and first Python qualification — 2026-10-06
+
+Implementation plan was sealed before edits at `C:/codex-ck3-background/packets/phase-berserker-chance-implementation-20261006/IMPLEMENTATION-PLAN.json`. The candidate adds the optional knight-only `phase_berserker_chance_inputs_v1` to the existing V2 query, collector and serializer. The exact `.3` binder reuses the cached-compatible Character identity/trait family and extracts only the reviewed perk, House/Dynasty and Accolade seams. It does not invoke the broad V3 Culture/Misc producers or depend on their aggregate success. Real `ck3_12002_phase_character.cpp` supplies identity, unique-definition lookup and native trait presence; no stubs replace those linked helpers.
+
+The leaf contains 18 individually nullable trait values/reasons, independently nullable AI identity and Stalwart membership, raw/resolved full House/Dynasty and Accolade IDs, resolution classifications and nullable warfare/acclaimed operands. Actual legal absence is known false when its relevant loaded definition is available. Definition failure, stale full generation, native fallback identity or wrong object kind retains a domain reason; legal zero full IDs survive normalization. Failure in one domain preserves other observed inputs.
+
+The new occurrence adapter joins only the same knight's qualified heritage leaf. It derives the two Stalwart conjunctions, unique wound rank/factor and maim OR using three-state logic. The pure consumer evaluates the actual frozen 18-node chance AST in source order, returns `raw_value`, truncated `integer_weight`, an operation trace and only the dependencies needed by that calculation. A known false conjunction or true maim OR can make another unavailable operand irrelevant. Multiple wound flags retain an explicit unresolved-rank reason rather than choosing a factor.
+
+The **FIRST new Python compound case** passed once at **04:25:18.244520–04:25:19.329080 UTC** (12:25 Asia/Shanghai): **1 unittest method / 17 actual stock chance evaluations**, unittest time **0.014 s**, outer time **1.0845429 s**. It exercises the production V2 normalizer, same-query occurrence adapter and actual stock chance AST against the independent 20-clause source order, including per-operation truncation, all direct trait factors, all three wound ranks, once-only multi-maim, unknown needed/unneeded operands and full-generation zero IDs. The input remains unchanged and existing aggregate Monte Carlo readiness remains false. Example authored results are raw **87,890,625 / weight 878** for the synthetic player/Stalwart/warfare/acclaimed/wrathful/giant/patient/North Germanic case, and raw **1,347,656 / weight 13** for synthetic AI/Stalwart/warfare/acclaimed/wound2/multiple-maim. These are row values, not percentages.
+
+The receipt and stdout/stderr are under `first-python/attempt01/`; no RED attempt occurred. Existing encounter/Core/heritage constructors are explicitly synthetic context. No previous validity/Core/Boolean method, sample or native test was rerun. No executable bytes, native build/CTest or game operation were performed in this candidate package.
+
+The new genuine native fixture is `native_bridge/tests/phase_berserker_chance_12003_test.cpp`; proposed target/CTest is `xar_ck3_12003_phase_berserker_chance_inputs_test`. It will emit **one JSON / ten new leaf samples** at `ck3_12003_phase_berserker_chance_inputs_wire.json`, using the real provider/helper/inline serializer over fake memory. Root owns the formal target, full DLL build and FIRST native/compiled-wire consumer. Until those pass this is **candidate / Python-qualified**, not native-qualified static-ready. Candidate validity, native row admission/ordering, other loaded weights, normalized selection probability, RNG, effects and full phase readiness remain separate.
+
+```mermaid
+flowchart TD
+    K["Existing V2 knight occurrence / concrete Character"] --> N["New chance leaf: identity / perks / House-Dynasty / Accolade / 18 traits"]
+    K --> H["Same-query qualified heritage leaf"]
+    N --> D["Nullable Stalwart conjunctions / unique wound factor / maim OR"]
+    D --> A["Actual frozen stock chance AST, 18 ordered modifiers"]
+    H --> A
+    A --> R["Authored raw row value / truncated integer weight / dependency trace"]
+    N -. "formal new native fixture pending" .-> Q["Limited static-ready leaf qualification"]
+    R -. "separate native admitted rows and loaded weights" .-> S["Normalized selection / RNG"]
+    S -. "effects and independent feedback remain" .-> F["Full phase decision"]
+```

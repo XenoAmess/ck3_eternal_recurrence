@@ -15,6 +15,7 @@
 #include "xar_bridge/phase_rite_parameters_v1.hpp"
 #include "xar_bridge/phase_warmonger_core_v1.hpp"
 #include "xar_bridge/phase_berserker_validity_inputs_v1.hpp"
+#include "xar_bridge/phase_berserker_chance_inputs_v1.hpp"
 
 #include <array>
 #include <cstdint>
@@ -966,6 +967,7 @@ struct CombatKnightSnapshot {
   std::optional<PhaseRiteParametersV1> phase_rite_parameters_v1;
   std::optional<PhaseWarmongerCoreV1> phase_warmonger_core_v1;
   std::optional<PhaseBerserkerValidityInputsV1> phase_berserker_validity_inputs_v1;
+  std::optional<PhaseBerserkerChanceInputsV1> phase_berserker_chance_inputs_v1;
 
   friend bool operator==(const CombatKnightSnapshot &,
                          const CombatKnightSnapshot &) = default;
