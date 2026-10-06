@@ -165,6 +165,10 @@ bool HandlePlayerReligionReformPrivate12002(const game::GameAdapter &adapter,
     query.bindings = religion_reform::query::BindReformQueryImage12002(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
         xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    query.bindings.creation_terms =
+        religion_reform::creation_terms12003::BindDraftCreationTermsImage12003(
+            reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+            adapter.descriptor().executable_sha256);
     return RunPlayerReligionReformMailbox12002(query, request_id, serialized, failure);
   } catch (...) { failure = "player_religion_reform_handler_exception"; return false; }
 }

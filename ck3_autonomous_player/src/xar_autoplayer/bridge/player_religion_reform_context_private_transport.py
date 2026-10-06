@@ -10,6 +10,12 @@ from .g2_private_query_transport import (
     private_g2_query_metadata_v1, read_private_g2_native_query_v1,
 )
 from .nonwar_private_build import private_native_schema, private_native_build_identity, private_native_provenance
+from .player_religion_creation_terms12003 import (
+    COMPONENT_KEY as CREATION_TERMS_COMPONENT,
+    READINESS_KEY as CREATION_TERMS_READY,
+    SCHEMA as CREATION_TERMS_SCHEMA,
+    normalize_current_draft_creation_terms12003,
+)
 from .version_identity import CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build
 
 
@@ -54,7 +60,16 @@ def normalize_player_religion_reform_context_v1(
     value: object, *, snapshot: Mapping[str, object],
 ) -> dict[str, object]:
     """Preserve actual component values and partial readiness without filling nulls."""
-    if not isinstance(value, dict) or set(value) != _TOP_KEYS or value["schema"] != private_native_schema(SCHEMA, snapshot):
+    snapshot_build = private_native_build_identity(snapshot)
+    top_keys = _TOP_KEYS
+    components = _COMPONENTS
+    if snapshot_build == CK3_12003:
+        top_keys = _TOP_KEYS | {CREATION_TERMS_COMPONENT}
+        components = {
+            **_COMPONENTS,
+            CREATION_TERMS_COMPONENT: (CREATION_TERMS_SCHEMA, CREATION_TERMS_READY),
+        }
+    if not isinstance(value, dict) or set(value) != top_keys or value["schema"] != private_native_schema(SCHEMA, snapshot):
         raise ValueError("native player religion reform schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
     if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
@@ -76,14 +91,14 @@ def normalize_player_religion_reform_context_v1(
     elif not isinstance(value["unavailable_reason"], str) or not value["unavailable_reason"]:
         raise ValueError("native player religion reform lost its unavailable reason")
     readiness = value["readiness"]
-    expected_readiness = {pair[1] for pair in _COMPONENTS.values()} | {
+    expected_readiness = {pair[1] for pair in components.values()} | {
         "final_choice_legality_readiness",
     }
     if (not isinstance(readiness, dict) or set(readiness) != expected_readiness
             or any(type(flag) is not bool for flag in readiness.values())
             or readiness["final_choice_legality_readiness"] is not False):
         raise ValueError("native player religion reform readiness is malformed")
-    for key, (schema, ready_key) in _COMPONENTS.items():
+    for key, (schema, ready_key) in components.items():
         component = value[key]
         if (not isinstance(component, dict) or type(component.get("available")) is not bool
                 or (schema is not None and component.get("schema") != private_native_schema(schema, snapshot))
@@ -110,10 +125,25 @@ def normalize_player_religion_reform_context_v1(
         raise ValueError("native current reform window flags are malformed")
     if window["draft_observed"] and not (window["available"] and window["present"] and window["visible"]):
         raise ValueError("native reform draft is not an actual visible window")
-    if not window["draft_observed"] and any(readiness[key] for key in (
-            "current_draft_cost_ready", "current_draft_final_eligibility_ready",
-            "current_popup_collection_ready", "doctrine_final_selection_ready")):
+    draft_ready_keys = (
+        "current_draft_cost_ready", "current_draft_final_eligibility_ready",
+        "current_popup_collection_ready", "doctrine_final_selection_ready",
+    )
+    if build == CK3_12003:
+        draft_ready_keys += (CREATION_TERMS_READY,)
+    if not window["draft_observed"] and any(readiness[key] for key in draft_ready_keys):
         raise ValueError("native reform draft values have no current draft")
+    if build == CK3_12003:
+        terms = normalize_current_draft_creation_terms12003(
+            value[CREATION_TERMS_COMPONENT], snapshot=snapshot,
+        )
+        if (any(terms[key] != value[key] for key in ("capture_epoch", "date_raw"))
+                or terms["played_character_id"] != (value["played_character_id"] & 0xFFFFFFFF)):
+            raise ValueError("native draft creation terms differs from its owner frame")
+        if terms["available"] and (
+                not value["available"] or not window["draft_observed"]
+                or terms["source_rite_id"] != window.get("source_rite_id")):
+            raise ValueError("native draft creation terms lost its actual current window")
     costs = value["current_draft_costs"]
     for key in ("piety_cost_raw", "piety_missing_signed_raw"):
         _nullable_integer(costs.get(key), key)

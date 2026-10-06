@@ -36,11 +36,12 @@ bool ReadOnce(const Bindings &b, std::uint64_t epoch, Observation &out) {
   // reference, so it must never be substituted for this Faith identity.
   const auto expected_faith = out.context.available ? out.context.faith_id
       : (out.rite_model.available ? out.rite_model.faith_id : std::nullopt);
+  void *actor_faith = nullptr;
   if (expected_faith && context_bindings.character_faith) {
     auto *actor = ResolveCoreCharacter(b.core, before.played_character_id);
-    auto *faith = actor ? context_bindings.character_faith(actor) : nullptr;
+    actor_faith = actor ? context_bindings.character_faith(actor) : nullptr;
     out.main_rite = ReadFaithMainRiteUnreformed12002(
-        b.main_rite, faith, *expected_faith);
+        b.main_rite, actor_faith, *expected_faith);
   } else {
     out.main_rite.status = MainRiteStatus::faith_unavailable;
   }
@@ -96,6 +97,19 @@ bool ReadOnce(const Bindings &b, std::uint64_t epoch, Observation &out) {
     out.current_doctrine_selection.played_character_id =
         static_cast<std::uint32_t>(before.played_character_id);
     out.current_doctrine_selection.failure = out.popup_choices.failure;
+  }
+
+  if (out.publish_creation_terms) {
+    auto terms_window = out.current_window;
+    // Even an unavailable window component keeps the actual owner frame.
+    terms_window.capture_epoch = epoch;
+    terms_window.date_raw = before.clock.date_raw;
+    terms_window.played_character_id =
+        static_cast<std::uint32_t>(before.played_character_id);
+    creation_terms12003::ReadCurrentDraftCreationTerms12003(
+        b.creation_terms, terms_window, actor_faith,
+        expected_faith.value_or(religion::kAbsentReference), epoch,
+        out.draft_creation_terms);
   }
 
   CoreSnapshotPrefix after{};
@@ -218,15 +232,22 @@ bool ReadPlayedReformQuery12002(const Bindings &b, std::uint64_t epoch,
                               Observation &out) noexcept {
   out = {};
   out.capture_epoch = epoch;
+  out.publish_creation_terms = b.creation_terms.enabled;
+  out.draft_creation_terms.capture_epoch = epoch;
   if (!b.enabled || !b.core.enabled) return false;
   Observation candidate{};
   candidate.capture_epoch = epoch;
+  candidate.publish_creation_terms = b.creation_terms.enabled;
   if (!ReadGuarded(b, epoch, candidate)) {
     // Preserve only frame metadata on an incomplete composed capture. Partial
     // native values must not appear to be an available composed observation.
     out.failure = std::move(candidate.failure);
     out.date_raw = candidate.date_raw;
     out.played_character_id = candidate.played_character_id;
+    out.draft_creation_terms.failure = out.failure;
+    out.draft_creation_terms.date_raw = out.date_raw;
+    out.draft_creation_terms.played_character_id =
+        static_cast<std::uint32_t>(out.played_character_id);
     return false;
   }
   out = std::move(candidate);
@@ -250,6 +271,10 @@ std::string SerializePlayedReformQuery12002(const Observation &value) {
       ",\"current_draft_final_eligibility_ready\":" + Boolean(value.draft_eligibility.available) +
       ",\"current_popup_collection_ready\":" + Boolean(value.popup_choices.available && value.popup_choices.draft_observed) +
       ",\"doctrine_final_selection_ready\":" + Boolean(value.current_doctrine_selection.available && value.current_doctrine_selection.selection_ready) +
+      (value.publish_creation_terms
+          ? std::string(",\"current_draft_creation_terms_ready\":") +
+              Boolean(value.draft_creation_terms.available)
+          : std::string{}) +
       ",\"final_choice_legality_readiness\":false}"
       ",\"current_context\":" + religion::SerializePlayedReligionContext12002(value.context) +
       ",\"current_rite_model\":" + rite::SerializePlayedRiteModel12002(value.rite_model) +
@@ -258,7 +283,11 @@ std::string SerializePlayedReformQuery12002(const Observation &value) {
       ",\"current_draft_costs\":" + SerializeCurrentRiteCreationCosts12002(value.draft_costs) +
       ",\"current_draft_eligibility\":" + SerializeDraftEligibility12002(value.draft_eligibility) +
       ",\"current_popup_choices\":" + SerializePopup(value.popup_choices) +
-      ",\"current_doctrine_selection\":" + religion::doctrine12002::SerializeCurrentDraftDoctrineSelection12002(value.current_doctrine_selection) + '}';
+      ",\"current_doctrine_selection\":" + religion::doctrine12002::SerializeCurrentDraftDoctrineSelection12002(value.current_doctrine_selection) +
+      (value.publish_creation_terms
+          ? std::string(",\"current_draft_creation_terms\":") +
+              creation_terms12003::SerializeCurrentDraftCreationTerms12003(value.draft_creation_terms)
+          : std::string{}) + '}';
 }
 
 } // namespace xar::ck3_12002::religion_reform::query

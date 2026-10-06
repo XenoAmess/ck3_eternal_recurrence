@@ -7,6 +7,7 @@
 #include "xar_bridge/religion_reform12002_eligibility.hpp"
 #include "xar_bridge/religion_reform12002_rite.hpp"
 #include "xar_bridge/religion_reform12002_willingness.hpp"
+#include "xar_bridge/religion_reform12003_creation_terms.hpp"
 
 #include <string>
 
@@ -24,6 +25,7 @@ struct Bindings {
   CostBindings costs{};
   EligibilityBindings eligibility{};
   DraftChoiceBindings choices{};
+  creation_terms12003::Bindings creation_terms{};
 };
 
 struct Observation {
@@ -40,6 +42,9 @@ struct Observation {
   DraftEligibility draft_eligibility{};
   DraftChoices popup_choices{};
   religion::doctrine12002::CurrentDoctrineSelection current_doctrine_selection{};
+  // The actual .3 descriptor binds this component independently of reviewed .2 ABI.
+  bool publish_creation_terms = false;
+  creation_terms12003::DraftCreationTerms draft_creation_terms{};
 };
 
 Bindings BindReformQueryImage12002(std::uintptr_t module_base,
