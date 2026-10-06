@@ -5,7 +5,7 @@ import hashlib
 import re
 from collections.abc import Mapping
 from .public_unit_contract import public_cunit_id
-from .version_identity import CK3_11906, CK3_12003, NativeBuildIdentity, require_exact_native_build
+from .version_identity import CK3_11906, CK3_12003, CK3_12004, NativeBuildIdentity, require_exact_native_build
 
 NAVIGATE_STEP = "navigate-ingame-ui-v1"
 QUERY_STEP = "query-ingame-ui-window-v1"
@@ -16,6 +16,7 @@ OPERATIONS = {"open_character": "character", "select_army": "army", "open_combat
               "hover_left_knights":"combat", "hover_right_knights":"combat", "fit_combat_window":"combat",
               "hover_army_tooltip":"army", "leave_army_tooltip":"army"}
 ARMY_TOOLTIP_KINDS = {"supply_state", "attrition"}
+_CURRENT_ARMY_BUILDS = (CK3_12003, CK3_12004)
 
 
 def validate_ui_request(operation: str, kind: str, subject_id: int, revision: int, *,
@@ -61,7 +62,7 @@ def ingame_ui_build_binding(snapshot: Mapping[str, object]) -> tuple[NativeBuild
         hello.get("expected_ck3_version", hello.get("game_version")),
         hello.get("expected_ck3_sha256", hello.get("executable_sha256")),
     )
-    if build not in (CK3_11906, CK3_12003):
+    if build not in (CK3_11906, *_CURRENT_ARMY_BUILDS):
         raise ValueError("native UI exact build has no migrated presentation route")
     # A hello with both field spellings must not contradict its selected pair.
     if "game_version" in hello and hello["game_version"] != build.game_version:
@@ -75,13 +76,13 @@ def ingame_ui_build_binding(snapshot: Mapping[str, object]) -> tuple[NativeBuild
 
 def validate_ui_build_scope(build: NativeBuildIdentity, operation: str, kind: str, *,
                             army_tooltip_kind: str | None = None) -> None:
-    if build not in (CK3_11906, CK3_12003):
+    if build not in (CK3_11906, *_CURRENT_ARMY_BUILDS):
         raise ValueError("native UI exact build has no migrated presentation route")
     if army_tooltip_kind is not None:
-        if build != CK3_12003 or kind != "army" or operation not in {"query", "hover_army_tooltip", "leave_army_tooltip"}:
+        if build not in _CURRENT_ARMY_BUILDS or kind != "army" or operation not in {"query", "hover_army_tooltip", "leave_army_tooltip"}:
             raise ValueError("army tooltips require the exact current native Army route")
         return
-    if build == CK3_12003 and (kind != "army" or operation not in {"query", "select_army"}):
+    if build in _CURRENT_ARMY_BUILDS and (kind != "army" or operation not in {"query", "select_army"}):
         raise ValueError("current native UI supports army query and select only")
 
 
@@ -107,7 +108,7 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
                 "gui_owner_binding_verified"):
         if type(value.get(key)) is not bool:
             raise ValueError(f"native UI boolean missing: {key}")
-    if expected_build == CK3_12003:
+    if expected_build in _CURRENT_ARMY_BUILDS:
         owner_available = value.get("owner_character_id_available")
         if type(owner_available) is not bool or "owner_character_id" not in value:
             raise ValueError("current native UI owner availability/value missing")
@@ -121,12 +122,12 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
         elif owner is not None:
             raise ValueError("unavailable current native UI owner must be explicit null")
     for key in ("current_subject_id", "native_army_id", "owner_character_id", "thread_id", "pump_epoch"):
-        if expected_build == CK3_12003 and key == "owner_character_id":
+        if expected_build in _CURRENT_ARMY_BUILDS and key == "owner_character_id":
             continue
         n = value.get(key)
         # Missing subject evidence can be explicit null; public CUnit zero is
         # still a valid selected ID when the availability flag is true.
-        if (expected_build == CK3_12003 and key in {"current_subject_id", "native_army_id"}
+        if (expected_build in _CURRENT_ARMY_BUILDS and key in {"current_subject_id", "native_army_id"}
                 and key in value and n is None and not value["subject_id_available"]):
             continue
         if isinstance(n, bool) or not isinstance(n, int) or n < 0 or (key != "pump_epoch" and n >= 2**32):
@@ -142,7 +143,7 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
         if isinstance(n,bool) or not isinstance(n,int) or not 0<=n<limit:
             raise ValueError(f"native UI owner diagnostic missing: {key}")
     unopened_current_select_ack = (
-        expected_build == CK3_12003 and operation == "select_army" and kind == "army"
+        expected_build in _CURRENT_ARMY_BUILDS and operation == "select_army" and kind == "army"
         and value["available"] and not value["window_exists"]
         and value.get("status") == "acknowledged_verification_pending"
         and value["dispatch_invoked"] and value["verification_pending"]
@@ -173,10 +174,10 @@ def normalize_ui_result(value: object, *, operation: str, kind: str, subject_id:
     if not isinstance(tree, dict) or type(tree.get("truncated")) is not bool or type(tree.get("root_available")) is not bool:
         raise ValueError("native target-window census missing")
     count, widgets = tree.get("widget_count"), tree.get("widgets")
-    census_limit = 2048 if expected_build == CK3_12003 else 512
+    census_limit = 2048 if expected_build in _CURRENT_ARMY_BUILDS else 512
     if isinstance(count, bool) or not isinstance(count, int) or not 0 <= count <= census_limit or not isinstance(widgets, list) or len(widgets) != count:
         raise ValueError("native census count/bound mismatch")
-    if expected_build == CK3_12003 and value.get("window_name") != "army_window":
+    if expected_build in _CURRENT_ARMY_BUILDS and value.get("window_name") != "army_window":
         raise ValueError("current native UI window name is not the army window")
     if unopened_current_select_ack:
         if tree["root_available"] or count or tree["truncated"] or tree.get("scope_root_name") != "army_window":

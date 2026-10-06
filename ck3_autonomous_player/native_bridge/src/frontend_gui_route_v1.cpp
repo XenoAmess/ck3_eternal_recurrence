@@ -1,5 +1,6 @@
 #include "xar_bridge/frontend_gui_route_v1.hpp"
 #include "xar_bridge/ck3_12003.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 
 #include <windows.h>
 
@@ -863,13 +864,19 @@ bool ExecuteFrontendGuiRouteMailboxV1(
     query->ingame_result.pump_epoch = stamp.pump_epoch;
     query->ingame_result.thread_id = stamp.thread_id;
     query->ingame_result.rng_owner_thread_id = stamp.rng_owner_thread_id;
-    const bool current_ui=query->environment.gui_abi_revision==GuiAbiRevisionV1::crozier12003;
+    const bool actual4_ui=query->environment.gui_abi_revision==GuiAbiRevisionV1::crozier12004;
+    const bool current_ui=actual4_ui || query->environment.gui_abi_revision==GuiAbiRevisionV1::crozier12003;
     const auto read_ui_snapshot=[&](game::Snapshot &value) noexcept {
       if(!current_ui)return ReadSnapshot(query->ingame_bindings,value);
-      return query->ingame_game &&
-          query->ingame_game->descriptor().game_version==ck3_12003::kGameVersion &&
-          query->ingame_game->descriptor().executable_sha256==ck3_12003::kExecutableSha256 &&
-          game::ReadSnapshot(*query->ingame_game,value);
+      if(!query->ingame_game)return false;
+      const auto &descriptor=query->ingame_game->descriptor();
+      const bool matching=actual4_ui
+          ? descriptor.game_version==ck3_12004::kGameVersion &&
+            descriptor.executable_sha256==ck3_12004::kExecutableSha256 &&
+            query->environment.executable_sha256==ck3_12004::kExecutableSha256
+          : descriptor.game_version==ck3_12003::kGameVersion &&
+            descriptor.executable_sha256==ck3_12003::kExecutableSha256;
+      return matching && game::ReadSnapshot(*query->ingame_game,value);
     };
     game::Snapshot before{};
     if (!IsIngameUiPausedOwnerStampV1(*query->mailbox, stamp, GetCurrentThreadId())) {

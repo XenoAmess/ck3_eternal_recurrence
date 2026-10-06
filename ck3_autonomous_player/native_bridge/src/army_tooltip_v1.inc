@@ -1,5 +1,5 @@
 // Included only inside ingame_ui_navigation_v1.cpp's private namespace.
-// Exact .3 source: original hover3AA6040 and active-tooltip/text readback.
+// Original .3 hover3AA6040 and the independently bound .4 hover3AA6020.
 // A later application owner turn is not a GUI update or pixels proof.
 constexpr std::uintptr_t kArmyTooltipSetHoverRva=0x3AA6040;
 struct ArmyTooltipBindingV1 {
@@ -170,11 +170,16 @@ bool ArmyTooltipTextbox(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *w
   void *vt=nullptr,*col=nullptr,*getter=nullptr;std::array<std::uint32_t,6> raw{};
   constexpr std::array<unsigned char,8> pin{0x48,0x8D,0x81,0x90,0x03,0,0,0xC3};std::array<unsigned char,8> actual{};
   const auto base=env.module_base;
-  return Value(widget,0,vt)&&reinterpret_cast<std::uintptr_t>(vt)==base+0x497B828&&
-      Value(vt,66*8,getter)&&reinterpret_cast<std::uintptr_t>(getter)==base+0x1042240&&
-      Slot(base+0x497B820,col)&&reinterpret_cast<std::uintptr_t>(col)==base+0x50821A8&&
-      Read(col,raw.data(),sizeof(raw))&&raw[0]==1&&raw[1]==0&&raw[3]==0x55BD330&&raw[5]==0x50821A8&&
-      Read(reinterpret_cast<void *>(base+0x1042240),actual.data(),actual.size())&&actual==pin;
+  const bool actual4=env.gui_abi_revision==GuiAbiRevisionV1::crozier12004;
+  const auto table_rva=actual4?ck3_12004::kUiArmyTooltipTextboxVtable12004V1:0x497B828;
+  const auto col_rva=actual4?ck3_12004::kUiArmyTooltipTextboxCol12004V1:0x50821A8;
+  const auto type_rva=actual4?ck3_12004::kUiArmyTooltipTextboxTypeDescriptor12004V1:0x55BD330;
+  const auto getter_rva=actual4?ck3_12004::kUiArmyTooltipTextGetter12004V1:0x1042240;
+  return Value(widget,0,vt)&&reinterpret_cast<std::uintptr_t>(vt)==base+table_rva&&
+      Value(vt,66*8,getter)&&reinterpret_cast<std::uintptr_t>(getter)==base+getter_rva&&
+      Slot(base+table_rva-8,col)&&reinterpret_cast<std::uintptr_t>(col)==base+col_rva&&
+      Read(col,raw.data(),sizeof(raw))&&raw[0]==1&&raw[1]==0&&raw[3]==type_rva&&raw[5]==col_rva&&
+      Read(reinterpret_cast<void *>(base+getter_rva),actual.data(),actual.size())&&actual==pin;
 }
 struct ArmyTooltipTextV1 {
   void *widget=nullptr,*data=nullptr;std::uint64_t size=0,capacity=0;
@@ -188,7 +193,9 @@ bool ArmyTooltipReadText(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *
       !tree.root_available||tree.truncated||!tree.widget_count||tree.widget_count!=tree.widgets.size()||tree.widget_count>2048)return false;
   std::size_t count=0;const NamedGuiWidgetInspectionV1 *match=nullptr;
   for(const auto &row:tree.widgets)if(row.runtime_name=="TooltipText"&&row.effective_visible){match=&row;++count;}
-  if(count!=1||!match||match->vtable_rva!=0x497B828||
+  const auto textbox_rva=env.gui_abi_revision==GuiAbiRevisionV1::crozier12004
+      ?ck3_12004::kUiArmyTooltipTextboxVtable12004V1:0x497B828;
+  if(count!=1||!match||match->vtable_rva!=textbox_rva||
       !ArmyTooltipResolvePath(env,root,context,match->child_path,out.widget,false)||!ArmyTooltipTextbox(env,out.widget))return false;
   std::string name;if(!ArmyTooltipWidget(env,out.widget,context,name,false)||name!="TooltipText")return false;
   out.path=match->child_path;const auto *header=reinterpret_cast<const unsigned char *>(out.widget)+0x390;
@@ -200,12 +207,14 @@ bool ArmyTooltipReadText(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *
   return out.text.find('\0')==std::string::npos&&(out.text.empty()||
       MultiByteToWideChar(CP_UTF8,MB_ERR_INVALID_CHARS,out.text.data(),static_cast<int>(out.text.size()),nullptr,0)>0);
 }
-bool ArmyTooltipInvokeHover(std::uintptr_t base,void *context,void *target) noexcept {
+bool ArmyTooltipInvokeHover(const ZhongguoScoreboardNativeEnvironmentV1 &env,void *context,void *target) noexcept {
+  const auto rva=env.gui_abi_revision==GuiAbiRevisionV1::crozier12004
+      ?ck3_12004::kUiArmyTooltipSetHover12004V1:kArmyTooltipSetHoverRva;
 #if defined(_MSC_VER)
-  __try {reinterpret_cast<SetHoveredWidget>(base+kArmyTooltipSetHoverRva)(context,target);return true;}
+  __try {reinterpret_cast<SetHoveredWidget>(env.module_base+rva)(context,target);return true;}
   __except(EXCEPTION_EXECUTE_HANDLER){return false;}
 #else
-  reinterpret_cast<SetHoveredWidget>(base+kArmyTooltipSetHoverRva)(context,target);return true;
+  reinterpret_cast<SetHoveredWidget>(env.module_base+rva)(context,target);return true;
 #endif
 }
 void ArmyTooltipClearObservations(ArmyTooltipObservationV1 &out,std::string_view why) {
@@ -234,7 +243,7 @@ bool ArmyTooltipExecute(const ZhongguoScoreboardNativeEnvironmentV1 &env,const I
     if(leave&&(receipt.leave||(!hover&& !receipt.observed_root)))return reject("tooltip_leave_requires_hover_receipt_or_observed_root");
     if(leave&&hover&&hover!=binding.source)return reject("tooltip_leave_current_hover_differs_from_bound_source");
     std::string nonce;if(!ArmyTooltipNewNonce(nonce))return reject("tooltip_native_receipt_nonce_failed");
-    if(!ArmyTooltipInvokeHover(env.module_base,gui.context,leave?nullptr:binding.source))return reject("tooltip_original_setter_fault");
+    if(!ArmyTooltipInvokeHover(env,gui.context,leave?nullptr:binding.source))return reject("tooltip_original_setter_fault");
     const auto previous=leave?receipt.observed_root:nullptr;
     receipt={binding,nonce,stamp.pump_epoch,request.connection_generation,snapshot.date_raw,leave,previous};
     value.receipt_bound=true;value.receipt_id=nonce;value.action_owner_epoch=stamp.pump_epoch;value.later_owner_epoch_available=false;
