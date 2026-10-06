@@ -75,6 +75,7 @@ def main() -> int:
     sys.path.insert(0, str(args.projection_root / "ck3_autonomous_player/src"))
 
     try:
+        from mcp.server.mcpserver.exceptions import ToolError
         from xar_autoplayer.bridge.driver import BridgeUnavailableError
         from xar_autoplayer.bridge.frontend_gui_route_contract import (
             ACTIVATE_FRONTEND_SELECT_SUPPORTED_1066_CHARACTER_V1_CAPABILITY,
@@ -90,6 +91,16 @@ def main() -> int:
         )
         from xar_autoplayer.bridge.mcp_server import create_server
         from xar_autoplayer.bridge.native_driver import NativeHeadlessGameplayDriver, _action_steps
+
+        async def registered_call_error(server, name, arguments):
+            # Direct FastMCP calls propagate ToolError rather than returning
+            # the error envelope a network MCP client would receive. Keep the
+            # same registered route and check its actual rejection message.
+            try:
+                response = await server.call_tool(name, arguments)
+            except ToolError as error:
+                return True, str(error)
+            return getattr(response, "is_error", False) is True, response_text(response)
 
         require(args.character_name_key in FEUDAL_1066_CHARACTER_NAME_KEYS,
                 "fixture selects an existing supported bookmark character")
@@ -200,12 +211,13 @@ def main() -> int:
                         "ck3_activate_frontend_start_1066_bookmark_character_v1" in names,
                         "both checks use existing registered MCP tools")
 
-                generic = await server.call_tool(
+                generic_error, generic_detail = await registered_call_error(
+                    server,
                     "ck3_execute_step",
                     {"step": PROBE_FRONTEND_BOOKMARK_MODEL_V1_STEP, "expected_revision": 0},
                 )
-                require(getattr(generic, "is_error", False) is True and
-                        "no semantic map snapshot" in response_text(generic),
+                require(generic_error and
+                        "no semantic map snapshot" in generic_detail,
                         "generic execute_step preserves its genuine map snapshot requirement")
                 require(not driver.requests and len(driver.history) == 1
                         and driver.history[0]["ok"] is False,
@@ -230,11 +242,12 @@ def main() -> int:
                 # Requeries replay the same native model; selection ACK never
                 # rewrites it into a selected candidate or invents a map.
                 driver.__init__(packet)
-                typed = await server.call_tool(
+                typed_error, detail = await registered_call_error(
+                    server,
                     "ck3_activate_frontend_start_1066_bookmark_character_v1",
                     {"character_name_key": args.character_name_key},
                 )
-                require(getattr(typed, "is_error", False) is True,
+                require(typed_error,
                         "offline Start consumer cannot claim a verified campaign")
                 require(driver.native_frames and
                         all(frame["result"] == value for frame in driver.native_frames),
@@ -252,7 +265,6 @@ def main() -> int:
                             and 0 <= target < len(keys)
                             and keys[target] == args.character_name_key
                             and type(selected) is int and -1 <= selected < len(keys))
-                detail = response_text(typed)
                 if not eligible:
                     require(selections == starts == 0 and
                             "not bound to the requested" in detail,
