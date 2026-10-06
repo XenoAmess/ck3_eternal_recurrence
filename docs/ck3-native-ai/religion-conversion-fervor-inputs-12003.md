@@ -71,6 +71,14 @@ Root 在 joint source `71b729f0cc4894331f1dadb89155920fccd42a00` 的原 strict c
 
 这是 **harness link RED 的 source-only 修复**，实际 relink/native FIRST/registered-MCP compound 继续 NOTRUN，readiness 仍 research。Root 在下个外置 projection 首次编译修复后目标；四场景和 fresh Robert live 仍待真实结果，B 保持独立不阻挡 A。
 
+## 2026-10-06：实际四目标复链 RED 与最小 helper 修复
+
+Root 的 [four-link repair 实际 receipt](C:/codex-ck3-background/joint-source-cap64-batch/repair-four02/FOUR-LINK-REPAIR-BUILD-RESULT.json) 使用 fixture source `2738568d62a6ded29ac3b66fc564185e6b19ba16` 和原 `71b729f0cc4894331f1dadb89155920fccd42a00` runtime/protocol archive，保留实际全部 **68 项 PUBLIC compile definitions**、include 及 `bcrypt` link usage；两 archive 没有重编。该四目标批次仅本 Fervor target 链接 RED，原 [GBK stdout](C:/codex-ck3-background/joint-source-cap64-batch/repair-four02/FOUR-LINK-REPAIR-BUILD-STDOUT.log) 第 94–100 行显示 `ck3_12002_family.cpp.obj` 引出的两个真实未定义符号：`ValidateCurrentFirstHeirBilateralRelationshipV1` 和 `PrepareCurrentFirstHeirBetrothalFulfillmentSubmissionV1`。这次实际失败和前次 17-symbol RED 都保留，不覆盖原 attempt。
+
+独立 base2738 修复只在新 fixture 自有 `add_executable` 中补现有 `current_first_heir_relationship_v1.cpp`、`observed_heir_marriage_private_v1.cpp`。两定义各位于第 28、66 行，受已继承的 `XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1` 宏控制；已复用 Creation fixture 的同一两-helper closure。runtime archive、PUBLIC 定义、现 stub seam、生产 reader/MCP 和 `/W4 /WX` 等选项均未修改。外置单目标 [projection recipe](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/faith-fervor/link-repair02/single-target-projection/RECIPE.json) 从冻结 metadata 整体导入 PUBLIC usage，并只编译当前 fixture 源和这两个真实 helper；它没有创建新的 runtime。
+
+这是 **source-only harness link 修复**：本工作包没有构建、CTest、project import、wire consumer、游戏或新 EXE/hash 操作。Root 的下一次真实 relink 才能判断修复结果；本 A 仍 research，native FIRST / sole registered-MCP compound / fresh Robert paused read 全部待执行，B 继续不阻挡 A。Oct6/W41 增量字段见 [repair02 REPORT-FIELDS.json](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/faith-fervor/g104-compound/link-repair02/REPORT-FIELDS.json)。
+
 ## B 和其他未完成项
 
 B 年变化继续 **NOTRUN，不阻挡 A**。stock `window_faith.gui` 使用 `Faith.GetYearlyFervorChange`；旧 `.2` 候选 body `0x243EC60..0x244088D` 及已有 special cache 不等于 exact `.3` callable contract 或最终当前年变化。本包保留独立 [12-byte-only metadata request](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/faith-fervor/EXACT-METADATA-REQUEST.json)，没有新 EXE 采集。实际年净变化、signed contributions、未来累计结果仍各自未发布；不能以长期 null 或参数 +0.5 代替它们。

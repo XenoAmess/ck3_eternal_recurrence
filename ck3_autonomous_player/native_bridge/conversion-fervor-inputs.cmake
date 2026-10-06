@@ -24,6 +24,9 @@ if(BUILD_TESTING AND WIN32 AND XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUE
     src/ck3_12002_religion_conversion_ai_inputs.cpp
     src/ck3_12002_religion_conversion_inputs_mailbox.cpp
     src/ck3_12003_conversion_fervor_inputs.cpp
+    # The imported runtime's family closure needs these real M5 helpers.
+    src/current_first_heir_relationship_v1.cpp
+    src/observed_heir_marriage_private_v1.cpp
     src/ck3_12003_conversion_fervor_inputs_test.cpp)
   target_include_directories(xar_conversion_fervor_inputs_first_test PRIVATE include)
   # The actual identity renderer references the existing adapter/binder closure.
