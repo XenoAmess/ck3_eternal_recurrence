@@ -156,10 +156,11 @@ inline constexpr std::string_view kZhongguoScoreboardStateDomainV1 =
 
 // Common GUI ABI selection for the exact legacy and Crozier frontends.
 // The Zhongguo business readers keep the legacy default; a migrated frontend
-// caller must explicitly select crozier12003 after exact-build admission.
+// caller must explicitly select its revision after exact-build admission.
 enum class GuiAbiRevisionV1 : std::uint32_t {
   legacy11906 = 0,
   crozier12003 = 1,
+  crozier12004 = 2,
 };
 
 inline constexpr std::uintptr_t kZhongguoGuiGlobalSlotRva = 0x576CC68;
@@ -257,6 +258,7 @@ struct ZhongguoScoreboardNativeEnvironmentV1 {
   void **gui_global_slot = nullptr;
   NativeZhongguoFindTopLevelWidgetV1 find_top_level_widget = nullptr;
   GuiAbiRevisionV1 gui_abi_revision = GuiAbiRevisionV1::legacy11906;
+  std::string_view executable_sha256{};
 };
 
 using FindZhongguoFixedWidgetV1 = void *(*)(
