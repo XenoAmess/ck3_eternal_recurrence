@@ -145,3 +145,30 @@ qualified runtime production objects unchanged. The correction is authored
 only: no author compile, test or game/SDK action was performed. The actual
 campaign's Army output bytes/error and complete observation recovery remain
 unqualified.
+
+## Necessary failed-scene qualification GREEN
+
+Root adopted the fixture correction as `6db95477` and froze corrected source
+`4134743831d398465953234c7d7b34fbd973f900`. The authority is
+`C:/codex-ck3-background/current21-result-write-batch/fixture-repair01/`
+`NECESSARY-FAILED-SCENE-RECEIPT.json`, with `broken-reader-only.log`.
+On 2026-10-06 at 12:52:29.434718 UTC, the fixture-only compilation started;
+it completed GREEN in 4.7596019 s with exactly the corrected fixture source,
+reusing the original g103 `protocol.cpp.obj`. The production source remains
+`df87fd8562120b901413793ded4680b7b4dabd8e`; no production runtime was rebuilt
+and the original cache was not changed.
+
+Only `--scene broken_reader` ran, starting at 12:52:34.195077 UTC, and passed
+with exit 0 in 0.0975969 s. The actual direct WriteFile failed with WinError
+**232**, matching the helper's retained error **232**, stage `header`, success
+false, payload bytes `466`, and existing limit `2097152`. The later
+`SetLastError` preservation assertion also passed. The original 109 expectation
+was a fixture assumption, not a production error-capture defect. The original
+FIRST-TWO-CTESTS RED remains retained; neither of its first two passed scenes
+was repeated. No old test or game action was performed for this correction.
+
+Together these separate receipts qualify the three offline writer scenes;
+they are not one newly replayed full CTest run. The output observer is now
+qualified offline, while the actual campaign Army result size/write error and
+complete Army observation recovery still require Root's live evidence. No
+small error result or fixture byte count establishes functional recovery.
