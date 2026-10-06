@@ -633,7 +633,7 @@ def normalize_current_context_source_inputs(
                      "gated_temporary_tail_291c7a7", "after_gated_tail_326a8e0_2920310",
                      "provider192_and2920850", "following_2920b50", "following_2bca620",
                      "following_government_land_312a950", "following_2921350",
-                     "following_2921020"):
+                     "following_2921020", "following_diac_2920d60"):
         if isinstance(value, dict) and optional in value:
             fields.add(optional)
     raw = _dict(value, field, fields)
@@ -802,6 +802,12 @@ def normalize_current_context_source_inputs(
             if following is not None and following["character_id"] != normalized["character_id"]:
                 raise ValueError(field + "." + leaf + " character disagrees with source actor")
             normalized[leaf] = following
+    if "following_diac_2920d60" in raw:
+        from .battle_person_rule43_diac_contract import normalize_following_diac_2920d60
+        following = normalize_following_diac_2920d60(raw["following_diac_2920d60"], field + ".following_diac_2920d60")
+        if following is not None and following["character_id"] != normalized["character_id"]:
+            raise ValueError(field + ".following_diac_2920d60 character disagrees with source actor")
+        normalized["following_diac_2920d60"] = following
     return normalized
 
 

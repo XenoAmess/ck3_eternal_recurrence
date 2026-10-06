@@ -3,6 +3,7 @@
 #include "xar_bridge/ck3_12003_context_locale.hpp"
 
 #include "xar_bridge/battle_context_source_inputs_v1.hpp"
+#include "xar_bridge/ck3_12003_rule43_diac_sources.hpp"
 
 #include <cstddef>
 #include <cstdint>
@@ -106,6 +107,7 @@ struct ContextSourceBindingsV1 {
   ContextSourceFollowing312a950BindingsV1 following_312a950{};
   ContextSourceFollowing2921350BindingsV1 following_2921350{};
   ContextSourceFollowing2921020BindingsV1 following_2921020{};
+  ck3_12003::Rule43DiacBindingsV1 following_diac_2920d60{};
   void *(*provider)() = nullptr;
   bool post_291d7e0_sources_enabled = false;
   const void *post_ab_object_fallback_slot = nullptr;

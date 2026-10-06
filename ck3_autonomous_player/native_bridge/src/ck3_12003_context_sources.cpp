@@ -18,6 +18,9 @@ bool Copy(const ContextSourceBindingsV1 &b, const void *p, void *out,
   if (b.read_memory) return b.read_memory(b.read_context, p, out, bytes);
   return current_stored_context_12003::CopyBytes(out, p, bytes);
 }
+bool Rule43DiacCopy(void *context, const void *p, void *out, std::size_t bytes) noexcept {
+  return context && Copy(*static_cast<const ContextSourceBindingsV1 *>(context), p, out, bytes);
+}
 template <typename T>
 std::optional<T> Read(const ContextSourceBindingsV1 &b, const void *p,
                       std::size_t offset = 0) noexcept {
@@ -1369,6 +1372,7 @@ ContextSourceBindingsV1 BindContextSourceInputs12003(
   b.following_312a950 = BindFollowing312a950Sources12003(base);
   b.following_2921350 = BindFollowing2921350Sources12003(base);
   b.following_2921020 = BindFollowing2921020Sources12003(base);
+  b.following_diac_2920d60 = ck3_12003::BindRule43DiacSources12003(base, sha);
   b.provider = reinterpret_cast<void *(*)()>(base + 0x8FD4E0);
   b.post_291d7e0_sources_enabled = true;
   b.post_ab_object_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1E308);
@@ -1468,6 +1472,12 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.following_2921350 = Following2921350Inputs(b, character, character_id);
   if (b.following_2921020.enabled)
     out.following_2921020 = Following2921020Inputs(b, character, character_id);
+  if (b.following_diac_2920d60.enabled) {
+    auto raw = b.following_diac_2920d60;
+    raw.read_memory = Rule43DiacCopy;
+    raw.read_context = const_cast<ContextSourceBindingsV1 *>(&b);
+    out.following_diac_2920d60 = ck3_12003::ReadRule43DiacSources12003(raw, character, character_id);
+  }
   out.branch_291e210 = BranchA(b, character);
   out.branch_291d7e0 = BranchB(b, character);
   if (b.post_291d7e0_sources_enabled)
@@ -1524,6 +1534,8 @@ ReadCurrentContextSourceInputs12003(const ContextSourceBindingsV1 &b,
     out.ready = out.ready && out.following_2921350->ready;
   if (out.following_2921020)
     out.ready = out.ready && out.following_2921020->ready;
+  if (out.following_diac_2920d60)
+    out.ready = out.ready && out.following_diac_2920d60->ready;
   out.status = out.ready ? "available" : "partial";
   if (!out.ready) out.reason = "context_source_reads_unavailable";
   return out;
