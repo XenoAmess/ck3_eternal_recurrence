@@ -5,8 +5,8 @@ from __future__ import annotations
 from collections.abc import Mapping
 from copy import deepcopy
 
-from .nonwar_private_build import private_native_build_identity
-from .version_identity import CK3_12003, require_exact_native_build
+from .nonwar_private_build import private_native_build_identity, private_native_schema
+from .version_identity import CK3_12003, CK3_12004, require_exact_native_build
 
 
 SCHEMA = "ck3_12003_player_tenet_knowledge_catalogue_v1"
@@ -49,13 +49,14 @@ def normalize_player_tenet_knowledge_catalogue_12003(
 ) -> dict[str, object]:
     """Bind the complete catalogue to its real owner, without deriving legality."""
     if (not isinstance(value, dict) or set(value) != _KEYS
-            or value["schema"] != SCHEMA or value["scope"] != _SCOPE
+            or value["schema"] != private_native_schema(SCHEMA, snapshot) or value["scope"] != _SCOPE
             or value["knowledge_formula"] != _FORMULA):
         raise ValueError("native player Tenet knowledge catalogue schema is malformed")
-    if (require_exact_native_build(value["game_version"], value["executable_sha256"]) != CK3_12003
+    build = require_exact_native_build(value["game_version"], value["executable_sha256"])
+    if (build not in (CK3_12003, CK3_12004)
             or require_exact_native_build(
                 tenet_rows.get("game_version"), tenet_rows.get("executable_sha256"),
-            ) != CK3_12003 or private_native_build_identity(snapshot) != CK3_12003):
+            ) != build or private_native_build_identity(snapshot) != build):
         raise ValueError("native player Tenet knowledge catalogue belongs to another build")
     if (type(value["available"]) is not bool
             or any(type(value[key]) is not bool or value[key] != value["available"]

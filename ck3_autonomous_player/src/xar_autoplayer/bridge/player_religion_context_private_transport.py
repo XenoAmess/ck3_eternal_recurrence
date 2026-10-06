@@ -29,7 +29,7 @@ from .nonwar_private_build import (
     private_native_build_identity, private_native_provenance,
 )
 from .version_identity import (
-    CK3_12002, CK3_12003, require_exact_native_backend, require_exact_native_build,
+    CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend, require_exact_native_build,
 )
 
 
@@ -56,7 +56,7 @@ def normalize_player_religion_context_v1(
     if not isinstance(value, dict) or set(value) != _CONTEXT_KEYS or value["schema"] != private_native_schema(SCHEMA, snapshot):
         raise ValueError("native player religion context schema is malformed")
     build = require_exact_native_build(value["game_version"], value["executable_sha256"])
-    if build not in (CK3_12002, CK3_12003) or build != private_native_build_identity(snapshot):
+    if build not in (CK3_12002, CK3_12003, CK3_12004) or build != private_native_build_identity(snapshot):
         raise ValueError("native player religion context belongs to another build")
     if (type(value["available"]) is not bool
             or type(value["capture_epoch"]) is not int

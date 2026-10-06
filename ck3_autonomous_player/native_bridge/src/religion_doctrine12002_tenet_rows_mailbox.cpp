@@ -1,4 +1,6 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_religion_bindings.hpp"
 #include "xar_bridge/religion_doctrine12002_tenet_rows_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
@@ -91,8 +93,14 @@ bool ExecutePlayerReligionTenetsMailbox12002(
       query.failure = "player_religion_tenets_published_frame_changed";
       return true;
     }
-    (void)religion::doctrine12002::ReadPlayedTenetRows12002(
-        query.bindings, query.tenet_bindings, stamp.pump_epoch, query.observation);
+    const bool actual4 = game::IsCk3_12004Descriptor(envelope->game->descriptor());
+    if (actual4) {
+      (void)ck3_12004::religion::ReadPlayedTenetRows12004(
+          query.bindings, query.tenet_bindings, stamp.pump_epoch, query.observation);
+    } else {
+      (void)religion::doctrine12002::ReadPlayedTenetRows12002(
+          query.bindings, query.tenet_bindings, stamp.pump_epoch, query.observation);
+    }
     auto &out = query.observation;
     const auto &frame = envelope->expected_snapshot;
     if (out.available && (out.played_character_id != static_cast<std::uint32_t>(frame.played_character_id) ||
@@ -107,9 +115,15 @@ bool ExecutePlayerReligionTenetsMailbox12002(
       out.played_character_id = static_cast<std::uint32_t>(frame.played_character_id);
     }
     if (query.target_rite_id.has_value()) {
-      (void)ck3_12003::religion::target_tenet::ReadPlayedTargetRiteTenetComparison12003(
-          query.comparison_bindings, *query.target_rite_id, query.tenet_key,
-          stamp.pump_epoch, query.comparison);
+      if (actual4) {
+        (void)ck3_12004::religion::ReadPlayedTargetRiteTenetComparison12004(
+            query.comparison_bindings, *query.target_rite_id, query.tenet_key,
+            stamp.pump_epoch, query.comparison);
+      } else {
+        (void)ck3_12003::religion::target_tenet::ReadPlayedTargetRiteTenetComparison12003(
+            query.comparison_bindings, *query.target_rite_id, query.tenet_key,
+            stamp.pump_epoch, query.comparison);
+      }
       auto &comparison = query.comparison;
       if (comparison.available &&
           (comparison.played_character_id != static_cast<std::uint32_t>(frame.played_character_id) ||
@@ -126,8 +140,13 @@ bool ExecutePlayerReligionTenetsMailbox12002(
       comparison.played_character_id = static_cast<std::uint32_t>(frame.played_character_id);
     }
     if (query.include_knowledge_catalogue) {
-      (void)ck3_12003::religion::tenet_knowledge::ReadPlayedTenetKnowledgeCatalogue12003(
-          query.knowledge_bindings, stamp.pump_epoch, query.knowledge_catalogue);
+      if (actual4) {
+        (void)ck3_12004::religion::ReadPlayedTenetKnowledgeCatalogue12004(
+            query.knowledge_bindings, stamp.pump_epoch, query.knowledge_catalogue);
+      } else {
+        (void)ck3_12003::religion::tenet_knowledge::ReadPlayedTenetKnowledgeCatalogue12003(
+            query.knowledge_bindings, stamp.pump_epoch, query.knowledge_catalogue);
+      }
       auto &catalogue = query.knowledge_catalogue;
       if (catalogue.available &&
           (catalogue.played_character_id != static_cast<std::uint32_t>(frame.played_character_id) ||
@@ -188,6 +207,8 @@ bool RunPlayerReligionTenetsMailbox12002(PlayerReligionTenetsMailboxContext12002
       failure = "player_religion_tenets_current_frame_unavailable"; return false;
     }
     envelope.typed_context = &query;
+    if (game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+      envelope.snapshot_comparison = QuerySnapshotComparison12002::core_frame;
     if (TrySubmitMainThreadQueryV1(*envelope.mailbox,
         &ExecutePlayerReligionTenetsMailbox12002, &envelope, envelope.ticket) !=
         MainThreadQuerySubmitResultV1::submitted) {
@@ -225,15 +246,17 @@ bool HandlePlayerReligionTenetsPrivate12002(const game::GameAdapter &adapter,
   std::optional<std::uint32_t> target_rite_id;
   std::string tenet_key;
   bool include_knowledge_catalogue = false;
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
   if (!ParsePlayerReligionTenetsRevision12002(payload, expected) ||
       !ParsePlayerReligionTenetsComparisonRequest12003(payload, target_rite_id, tenet_key) ||
       !ParsePlayerReligionTenetsKnowledgeRequest12003(payload, include_knowledge_catalogue) ||
       ((target_rite_id.has_value() || include_knowledge_catalogue) &&
-       !xar::game::IsCk3_12003Descriptor(adapter.descriptor()))) {
+       !xar::game::IsCk3_12003Descriptor(adapter.descriptor()) && !actual4)) {
     failure = "player_religion_tenets_request_invalid"; return false;
   }
-  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+  if (!adapter.enabled() ||
+      (!actual4 && (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+       xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
       !ValidFrame(published, revision) || (expected != 0 && expected != revision)) {
     failure = "player_religion_tenets_current_frame_unavailable"; return false;
   }
@@ -243,15 +266,31 @@ bool HandlePlayerReligionTenetsPrivate12002(const game::GameAdapter &adapter,
     query.envelope.mailbox = &mailbox;
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
-    query.bindings = religion::BindReligionContextImage12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    query.tenet_bindings = religion::doctrine12002::BindTenetRows12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    if (target_rite_id.has_value() || include_knowledge_catalogue) {
+    const auto image_base =
+        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+    if (actual4) {
+      const auto bindings = ck3_12004::religion::BindPlayerTenetImage12004(
+          image_base, adapter.descriptor().executable_sha256);
+      query.bindings = bindings.context;
+      query.tenet_bindings = bindings.rows;
+      if (target_rite_id.has_value()) {
+        query.target_rite_id = target_rite_id;
+        query.tenet_key = std::move(tenet_key);
+        query.comparison_bindings = bindings.comparison;
+      }
+      if (include_knowledge_catalogue) {
+        query.include_knowledge_catalogue = true;
+        query.knowledge_bindings = bindings.knowledge;
+      }
+    } else {
+      query.bindings = religion::BindReligionContextImage12002(
+          image_base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+      query.tenet_bindings = religion::doctrine12002::BindTenetRows12002(
+          image_base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    }
+    if (!actual4 && (target_rite_id.has_value() || include_knowledge_catalogue)) {
       const auto source = religion_reform::BindCurrentDraftTenetSources12002(
-          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+          image_base,
           xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
       // Bind only. The current draft reader/window is never invoked.
       if (target_rite_id.has_value()) {
