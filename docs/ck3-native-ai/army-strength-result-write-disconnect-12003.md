@@ -112,3 +112,36 @@ new fixture and `src/protocol.cpp`, with the existing include directory and
 strict C++20 settings. It has no game/runtime flags or source-reading setup.
 Root integration must provide the approved optional protocol parameter before
 compilation. Compilation and FIRST execution remain **NOT RUN** by the author.
+
+## g103 first native execution and fixture-only correction
+
+Root's fresh g103 compilation at `df87fd85` was GREEN. The original two-CTest
+receipt is retained at
+`C:/codex-ck3-background/current21-result-write-batch/strict01/FIRST-TWO-CTESTS.txt`.
+The independent current21 CTest passed. The Army write fixture's ordinary
+complete-result scene passed with `payload_bytes=466`, and its size-limit scene
+passed with `payload_bytes=2097153`, `limit_bytes=2097152`; these are offline
+fixture values. Its third scene failed the assertion
+`actual immediate WinError and header phase retained` because the fixture
+required `ERROR_BROKEN_PIPE` (109) for an anonymous pipe. That receipt does not
+print the actual captured error, so no replacement numeric value is asserted.
+The integrated production writer captures `GetLastError()` immediately after
+failed `WriteFile`; no production defect is identified by this fixture RED.
+
+The minimal fixture-only correction obtains its expected error from an actual
+direct four-byte `WriteFile` to the same closed-reader pipe, preserving
+`GetLastError()` immediately. It then prints that direct error and the helper's
+saved diagnostic before assertions, compares the saved error to the actual
+probe error, and verifies its preservation across a later `SetLastError`.
+The existing header-phase, byte-count and failure checks remain in place.
+No protocol, helper, DTO or frame-size bound is changed.
+
+The new `--scene broken_reader` argument executes only the failed third scene.
+Default invocation still runs the same first two scenes followed by the
+corrected third scene; the Root repair qualification uses the explicit
+failed-scene invocation and does not replay either passed scene. Root rebuilds
+only `xar_bridge_army_strength_result_write_diagnostic_v1_test`, leaving the
+qualified runtime production objects unchanged. The correction is authored
+only: no author compile, test or game/SDK action was performed. The actual
+campaign's Army output bytes/error and complete observation recovery remain
+unqualified.

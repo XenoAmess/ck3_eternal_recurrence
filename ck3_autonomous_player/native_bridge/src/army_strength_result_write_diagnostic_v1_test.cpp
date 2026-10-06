@@ -53,11 +53,16 @@ std::string ReadWire(HANDLE reader, std::string_view expected) {
 
 } // namespace
 
-int main() {
+int main(int argc, char* argv[]) {
   using namespace xar::bridge;
+  const bool broken_reader_only = argc == 3 &&
+      std::string_view(argv[1]) == "--scene" &&
+      std::string_view(argv[2]) == "broken_reader";
+  Check(argc == 1 || broken_reader_only,
+        "usage: army_strength_result_write_diagnostic_v1_test [--scene broken_reader]");
   const std::string ordinary =
       R"({"type":"command_result","protocol_version":1,"request_id":"army-write-result","ok":true,"result":{"step":"query-army-strengths-v1","accepted":true,"status":"available","query_sequence":1,"army_strengths":[{"status":"available","army_id":218104048,"native_carmy_id":218105048,"scope_role":"player","war_ids":[],"regiment_count":3,"current_soldiers":1200,"maximum_soldiers":1500,"ai_base_power_raw":180000000,"ai_base_power_scale":100000,"unavailable_reason":null}]}})";
-  {
+  if (!broken_reader_only) {
     PipePair pipe;
     ArmyStrengthResultWriteDiagnosticV1 diagnostic;
     Check(SerializeArmyStrengthResultWriteDiagnosticV1(diagnostic) == "null",
@@ -73,7 +78,7 @@ int main() {
           "ordinary final-byte accounting and absent WinError");
     std::cout << SerializeArmyStrengthResultWriteDiagnosticV1(diagnostic) << '\n';
   }
-  {
+  if (!broken_reader_only) {
     PipePair pipe;
     ArmyStrengthResultWriteDiagnosticV1 diagnostic;
     const std::string prefix =
@@ -109,26 +114,42 @@ int main() {
     PipePair pipe;
     Check(CloseHandle(pipe.reader) != FALSE, "fixture reader closes normally");
     pipe.reader = nullptr;
+    const std::array<unsigned char, 4> header{};
+    DWORD written = 0;
+    const BOOL direct_result = WriteFile(
+        pipe.writer, header.data(), static_cast<DWORD>(header.size()),
+        &written, nullptr);
+    const DWORD direct_error = GetLastError();
     ArmyStrengthResultWriteDiagnosticV1 diagnostic;
-    Check(!WriteArmyStrengthResultFrameV1(pipe.writer, ordinary, 3U, diagnostic),
+    const bool result = WriteArmyStrengthResultFrameV1(
+        pipe.writer, ordinary, 3U, diagnostic);
+    std::cout << "broken_reader direct_write_result=" << direct_result
+              << " direct_windows_error=" << direct_error
+              << " captured="
+              << SerializeArmyStrengthResultWriteDiagnosticV1(diagnostic)
+              << std::endl;
+    Check(direct_result == FALSE, "closed reader direct WriteFile probe fails");
+    Check(!result,
           "broken reader causes an actual WriteFile failure");
     Check(diagnostic.frame.payload_bytes == ordinary.size() &&
               diagnostic.frame.limit_bytes == kMaximumFrameBytes &&
               diagnostic.frame.stage == FrameWriteStage::header &&
               !diagnostic.frame.success &&
               diagnostic.frame.windows_error ==
-                  static_cast<std::uint32_t>(ERROR_BROKEN_PIPE),
+                  static_cast<std::uint32_t>(direct_error),
           "actual immediate WinError and header phase retained");
     const auto original = diagnostic.frame.windows_error;
     SetLastError(ERROR_SUCCESS);
     const auto wire = SerializeArmyStrengthResultWriteDiagnosticV1(diagnostic);
     Check(diagnostic.frame.windows_error == original &&
               wire.find("\"windows_error\":" +
-                        std::to_string(static_cast<std::uint32_t>(ERROR_BROKEN_PIPE))) !=
+                        std::to_string(static_cast<std::uint32_t>(direct_error))) !=
                   std::string::npos,
           "later Windows calls do not overwrite the captured actual error");
     std::cout << wire << '\n';
   }
-  std::cout << "army result write diagnostic: three offline scenes passed\n";
+  std::cout << (broken_reader_only
+      ? "army result write diagnostic: broken_reader scene passed\n"
+      : "army result write diagnostic: three offline scenes passed\n");
   return EXIT_SUCCESS;
 }
