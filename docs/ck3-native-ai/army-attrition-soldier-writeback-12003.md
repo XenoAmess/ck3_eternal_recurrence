@@ -1640,3 +1640,42 @@ flowchart TD
   R -. manager preparation/order not observed .-> X[Actual monthly entry remains null]
   P -. computed state is not a new paused read .-> X
 ```
+
+## 2026-10-06 补员后统计的真实预算依赖修正
+
+上一包把 `24E8120→24E11B0→Army130..17F` 标为下一待查源入口；本包基于实际 consumer 证据**取消“重建80B统计才能构造预算”这一临时假设**，保留原封历史计划。真实预算路径不读取这80B。新source树/Mermaid/最小collector方案于2026-10-06 09:30:46+08封存：[SOURCE-PLAN-DELIVERY.json](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/post-refill-stat-budget-dependencies/SOURCE-PLAN-DELIVERY.json)，SHA `be4a68c08ed1c0fab9a3fd7d7a4c0be3b22f346ced7ff6765e7f76c82ef4e068`。
+
+完整 `24E11B0 [24E11B0,24E1E9F)`3311B/SHA `9ededc3bc98804484bc37486e5a492344f738f42fb4314bf78fcf6a1c5e73ddb` 已在换将缓存中封存，本次复用。实际补员 caller 传R8D0/R9null；null path置r13=0，跳过detail初始化、detail中的262BE30以及owner-evaluator明细分支。它按有效ArRg累加F0..138十个Q cache、必要时读持久Regi缓存A0..E8，再按舰队/Army1D4/1EC的loaded数值倍率修改local80B并返回。caller随后复制到Army130..17F。
+
+唯一必要新callee `18B55B0 [18B55B0,18B569D)`已用冻结副本窄读闭合：237B/三段.pdata，SHA `983808d6e84143b2cb2d5049d3390c760a4252ce38a83565cbab62b6e3bfaacc`。它只遍历并写RCX数组的十个qword，无call/global read；实际receiver为24E11B0的local scratch。因此这条null-stat阶段不改变四pass预算所需对象输入。首次28B只有prologue被原样保留，随后只读实际相邻的199B+10B chained fragments完成RET/内部branch闭合；总冻结I/O509B（code237+pdata240+unwind/parent32），不扫/重hashEXE。
+
+| 所需预算值 | 实际输入 | 补员后的衔接 |
+|---|---|---|
+|2C53C10 capacity|Army120 commander、角色property1D3/1D4、loaded FULL_SUPPLY；不读Army130..17F|所选current/max refill及null-stat阶段不改这些输入。无需重建80B，也不能推定未来上下文固定。|
+|24E51A0 land monthly rate|247BEC0省limit、247C5A0当前省native usage、resupply/loaded slope与gain/loss及统帅修正|会随实际合格ArRg38 current改变；当前pre-refill月变化率仍不能作post-refill值。|
+|24E32E0供给whole loss|post-update stock180、fleet-date、统帅component、eligible ArRg38|补员后需重数eligible current，并用真实相应阶段rate构造stock。|
+|24DD580围城/raid whole loss|全部有效ArRg38及分别传入的loaded rate VALUE|补员后current可用于各自独立取整；不读取80B或合并fraction后取整。|
+
+真实下一输入是 `247C5A0` 的**本省贡献者 current**。该完整已封leaf1140B/SHA `c8621d8053a3a63b1cba369f3b6c52620f38206961877dc376192a2bad801137` 遍历Province740/74C的CUnit FullID occurrences，同owner或native2C090F0当前共同战争同侧才纳入；mode0不排除移动/retreat。它逐有效ArRg按2A956D0资格累加current38，不消费Army130..17F。公开玩家/战争scope或盟约不能替代这个原生省名单，重复occurrence仍须重复累计。matching currentProvince已自然包含本军，不再另加本军future-arrival count。
+
+最小同query collector方案为可独立使用的 `current_province_supply_contributors_v1`：当前Province与owner、现有247BEC0/247C5A0的真实whole limit/usage、原生stored CUnit occurrences及对应Army/eligible ArRg current、资格与既有完整DATA。现有2A95740 flags2可提供wholeeligible数值，但receiver必须是**Army+38 descriptor**，不是CArmy。按实际不足保留partial；需要的per-ArRg DATA可支撑显式persistent调用scope中的条件补员usage。80B、无consumer字段及无关modifier树均不采集。计划与owned files/target候选在 [COLLECTOR-PLAN.md](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/post-refill-stat-budget-dependencies/COLLECTOR-PLAN.md)；共享native/authority hunks及中央fixture资格由Root协调，当前source包没有实施新的observer字段。
+
+本包readiness为`research/source-closed relevant-stat-footprint + source-defined next collector`，actual_loss仍false、actual poststage/null、full monthly false。实际manager roster/order/重复调用、准备fraction/calendar上下文和post-refill rate其余输入依旧各有具体边界。旧tests/wires0、新build0、runtime0、newgame days0；保留一次把cached disassembly误传Python导致line1 SyntaxError的source-tooling RED，它没有执行native code或构成测试/能力RED。
+
+```mermaid
+flowchart TD
+  R[Refill physical ADD] --> C[ArRg38 current refresh]
+  C --> A[24E11B0 null-detail80B stats]
+  A --> V[18B55B0 only local ten-Q writes]
+  V --> O[Army130..17F; no budget consumer]
+  P[Province740/74C stored Unit occurrences] --> Q{Same owner or native common war side?}
+  Q -- yes --> E[Valid eligible ArRg38; mode0]
+  Q -- no --> Z[No usage contribution]
+  C --> E
+  E --> U[247C5A0 current usage]
+  U --> M[24E51A0 land rate]
+  L[Native limit and remaining rate inputs] --> M
+  M --> B[Post-refill stock and loss budgets]
+  D[Actual manager preparation/dispatch] -. not observed .-> R
+  B -. conditional result is not paused post-state .-> X[Actual monthly incomplete]
+```
