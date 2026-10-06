@@ -3026,3 +3026,19 @@ CTest 的 target 名可能不同于 `add_test(NAME ...)`。本次 supply 名误�
 2026-10-06 R0048 正常准备的当前实证：Steam 旧窗口全黑时，移动／恢复／调整尺寸／重绘未使当前离线标识可读；Root 在 CK3 尚未运行期间复用官方 `steam.exe -shutdown`（退出码0）及 `-cef-disable-gpu` 重开，并用官方 `steam://open/library` 显示正常 UI。恢复08的新窗口 `HWND3082894/PID44240` 原图由 Root 直接读到“离线模式”及7:38 AM；截图1,037,741字节/SHA `545F7EB08CFA16F468ADECB338A115A13414C282E4361B4DC93A0C2D516CB8E5`。OBS114680与ToDesk41260保持，未发账号模式命令。仅窗口移动不作离线实证，组合成功不作单一黑屏根因。收据见 `Z:/ck3_mod_rewrite_process_assets/g2-runtime-next-20261006/STEAM-OFFLINE-VISUAL-REVIEW.json`；知识专题见 [Steam 离线预检／恢复](ck3-native-ai/desktop-steam-offline-recovery-2026-09-27.md)。
 
 后续 R0048 使用正常 Operator/profile `789E15F23299C5B613D006782BF818029772500936DCE6D5872049C57016E153`、job `480e5d18-ac10-4ab1-a269-eb1e7c550f95`，CK3 PID4692。首次可用冷快照751为paused public2/native1但actor/episode尚为null；第二次752已在paused public3/native2绑定原Robert29829、原episode、raw53286360／累计5918日。这是加载期间的瞬态，未重置或重播seed。独立755 composition另确认 Steward32440、stewardship11、非空席位和全部readiness true，证明当前冷恢复的holder/skill材料；它没有任务字段，不增加独立任务效益、税收收益或formal下一回合消费证明。后台 owner 只读保存的751/752/755与Steam收据；本段不计后台新增游戏日，不代替 source715 资格报告或后续真实 self-ransom 动作／回执。
+
+## Codex 环境启动 Steam 导致 launcher ENOENT（2026-10-06 实测）
+
+本次真实故障：Root 在北京时间 07:36 为修复 Steam 黑屏而正常重启 Steam，没有过滤工具环境。09:57 的只读进程环境确认 Steam PID 133724 和 Paradox Launcher 都继承了 `NODEFAULTCURRENTDIRECTORYINEXEPATH=1`。launcher 报 `spawn ck3.exe ENOENT`，尽管它记录的 binaries 工作目录和 `ck3.exe` 都存在；游戏未进入启动日志。该变量使父进程不从当前目录查找裸文件名。对复制的系统 cmd.exe 做无害实验：父 Node 带变量时 ENOENT，启动父 Node 前移除变量时 exit 0。仅修改要生成的子进程 env 不足以纠正仍受该变量影响的父 Node。两份先前失败实验保留，分别记录空 PATH 和父环境仍带变量的验证局限。
+
+用户自行正常退出、重新打开 Steam 后确认游戏可用。Root 没有执行准备好的重启脚本，没有启动 CK3、关闭用户进程、修改系统环境变量/注册表或重写游戏文件。原生构建与后台源研究不是本次启动失败的原因；直接原因是先前 Steam 重启继承了工具环境。修复后原后台研究恢复，本机禁止启动/连接/操作 CK3，其他机器安排不变。
+
+以后从工具环境启动 Steam 或 Paradox Launcher 时，显式传递以下进程环境；key 按大小写不敏感处理，不改用户/系统环境：
+
+```python
+launch_env = {key: value for key, value in os.environ.items()
+              if key.casefold() != "nodefaultcurrentdirectoryinexepath"}
+subprocess.Popen([str(steam_exe), "-silent"], env=launch_env)
+```
+
+这是有实际故障证据的启动修正；既有 Steam/launcher 若已继承该变量，须正常退出后从干净环境重新打开。不要运行 CK3 来验证用户保留的游戏现场；本次恢复确认由用户提供。[父进程环境复现](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/local-launch-diagnostic/PARENT-ENVIRONMENT-SPAWN-REPRODUCTION.json)、[环境大小写确认](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/local-launch-diagnostic/ENVIRONMENT-CASE-CONFIRMATION.json)、[用户恢复回执](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/local-launch-diagnostic/USER-SELF-RESTART-RESOLUTION.json)。
