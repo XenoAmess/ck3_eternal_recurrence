@@ -335,7 +335,7 @@ bool ReadGovernmentRuntimeCollectorSampleV1(
       output.campaign_root.unavailable_reason = "state_changed";
       return true;
     }
-    void *character = ResolveCoreCharacter(bindings.core, before.played_character_id);
+    void *character = xar::ck3_12004::ResolveCoreCharacter(bindings.core, before.played_character_id);
     if (character == nullptr) {
       output.campaign_root.unavailable_reason = "player_identity_unavailable";
       return true;
@@ -355,7 +355,7 @@ bool ReadGovernmentRuntimeCollectorSampleV1(
         !ReadValue(campaign_access, bindings.core.game_state_slot, 0, game_state_after) ||
         !ReadValue(campaign_access, bindings.core.jomini_state_slot, 0, jomini_after) ||
         game_state_after != game_state || jomini_after != jomini ||
-        ResolveCoreCharacter(bindings.core, before.played_character_id) != character ||
+        xar::ck3_12004::ResolveCoreCharacter(bindings.core, before.played_character_id) != character ||
         !ReadValue(feature_access, bindings.feature_root_slot, 0, feature_root_after) ||
         (features_available && reinterpret_cast<std::uintptr_t>(feature_root_after) !=
                                    output.feature_lifecycle_identity)) {
