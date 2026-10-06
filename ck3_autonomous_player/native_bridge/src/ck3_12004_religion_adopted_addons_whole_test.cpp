@@ -23,7 +23,6 @@
 #include <cstring>
 #include <filesystem>
 #include <fstream>
-#include <initializer_list>
 #include <iostream>
 #include <stdexcept>
 #include <string_view>
@@ -263,8 +262,7 @@ struct World {
 };
 World *world = nullptr;
 void RecordCallback(const char *name, int line, const char *predicate,
-    std::initializer_list<bool> receiver_arguments) {
-  const bool receiver_ok = receiver_arguments.size() == 0 || *receiver_arguments.begin();
+    bool receiver_ok = true) {
   const auto actual_thread = GetCurrentThreadId();
   const bool owner_thread_matches = actual_thread == world->owner;
   ++world->callbacks;
@@ -278,19 +276,18 @@ void RecordCallback(const char *name, int line, const char *predicate,
         << " actual_thread=" << actual_thread << " owner_thread=" << world->owner << '\n';
   }
 }
-#define Callback(...) RecordCallback(__func__, __LINE__, #__VA_ARGS__, {__VA_ARGS__})
-void *Player(void *owner) { Callback(owner == world->jomini.data()); return world->player.data(); }
-void *CharacterRite(void *actor) { Callback(actor == world->character.data()); return world->rite.data(); }
-void *CharacterFaith(void *actor) { Callback(actor == world->character.data()); return world->faith.data(); }
+void *Player(void *owner) { RecordCallback(__func__, __LINE__, "owner == world->jomini.data()", owner == world->jomini.data()); return world->player.data(); }
+void *CharacterRite(void *actor) { RecordCallback(__func__, __LINE__, "actor == world->character.data()", actor == world->character.data()); return world->rite.data(); }
+void *CharacterFaith(void *actor) { RecordCallback(__func__, __LINE__, "actor == world->character.data()", actor == world->character.data()); return world->faith.data(); }
 void *RiteFaith(void *rite) {
-  Callback(rite == world->rite.data() || rite == world->main_rite.data() || rite == world->target_rite.data());
+  RecordCallback(__func__, __LINE__, "rite == world->rite.data() || rite == world->main_rite.data() || rite == world->target_rite.data()", rite == world->rite.data() || rite == world->main_rite.data() || rite == world->target_rite.data());
   return world->faith.data();
 }
-void *FaithReligion(void *faith) { Callback(faith == world->faith.data()); return world->native_religion.data(); }
-void *FaithMainRite(void *faith) { Callback(faith == world->faith.data()); return world->main_rite.data(); }
-const void *FaithKey(void *faith) { Callback(faith == world->faith.data()); return world->faith.data() + 0xE0; }
-std::int64_t *Fervor(void *faith, std::int64_t *out) { Callback(faith == world->faith.data()); *out = 6'250'000; return out; }
-std::int64_t *Fulfillment(void *actor, std::int64_t *out) { Callback(actor == world->character.data()); *out = 125'000; return out; }
+void *FaithReligion(void *faith) { RecordCallback(__func__, __LINE__, "faith == world->faith.data()", faith == world->faith.data()); return world->native_religion.data(); }
+void *FaithMainRite(void *faith) { RecordCallback(__func__, __LINE__, "faith == world->faith.data()", faith == world->faith.data()); return world->main_rite.data(); }
+const void *FaithKey(void *faith) { RecordCallback(__func__, __LINE__, "faith == world->faith.data()", faith == world->faith.data()); return world->faith.data() + 0xE0; }
+std::int64_t *Fervor(void *faith, std::int64_t *out) { RecordCallback(__func__, __LINE__, "faith == world->faith.data()", faith == world->faith.data()); *out = 6'250'000; return out; }
+std::int64_t *Fulfillment(void *actor, std::int64_t *out) { RecordCallback(__func__, __LINE__, "actor == world->character.data()", actor == world->character.data()); *out = 125'000; return out; }
 actual::CoreBindings Core(World &w) { return {true, &w.state_ptr, &w.jomini_ptr, &w.character_storage_ptr, &Player}; }
 fourth::ContextBindings Context(World &w) {
   auto b = fourth::BindReligionContextImage12004(World::image_base, actual::kExecutableSha256);
@@ -300,178 +297,178 @@ fourth::ContextBindings Context(World &w) {
   return b;
 }
 std::uint8_t RiteHostility(void *component, void *source, void *target) {
-  Callback(component == static_cast<std::byte *>(source) + 0x750 &&
+  RecordCallback(__func__, __LINE__, "component == static_cast<std::byte *>(source) + 0x750 && ((source == world->rite.data() && target == world->target_rite.data()) || (source == world->target_rite.data() && target == world->rite.data()))", component == static_cast<std::byte *>(source) + 0x750 &&
       ((source == world->rite.data() && target == world->target_rite.data()) ||
        (source == world->target_rite.data() && target == world->rite.data())));
   return source == world->rite.data() ? 0 : 2;
 }
 std::uint8_t FaithHostility(void *source, void *target, bool offset) {
-  Callback(source == world->faith.data() && target == world->faith.data() && !offset); return 0;
+  RecordCallback(__func__, __LINE__, "source == world->faith.data() && target == world->faith.data() && !offset", source == world->faith.data() && target == world->faith.data() && !offset); return 0;
 }
 std::int64_t *FinalThreshold(const void *faith, std::int64_t *out) {
-  Callback(faith == world->faith.data()); *out = 7'000'000; return out;
+  RecordCallback(__func__, __LINE__, "faith == world->faith.data()", faith == world->faith.data()); *out = 7'000'000; return out;
 }
-const void *OwnedTenets(const void *actor) { Callback(actor == world->character.data()); return world->extension.data() + 0x88; }
+const void *OwnedTenets(const void *actor) { RecordCallback(__func__, __LINE__, "actor == world->character.data()", actor == world->character.data()); return world->extension.data() + 0x88; }
 bool ParameterMember(const void *set, const std::int32_t *token) {
-  Callback((set == world->tenet_database.data() + 0xF20 ||
+  RecordCallback(__func__, __LINE__, "(set == world->tenet_database.data() + 0xF20 || set == world->tenet.data() + 0x740) && token != nullptr", (set == world->tenet_database.data() + 0xF20 ||
       set == world->tenet.data() + 0x740) && token != nullptr);
   const auto *items = Load<const std::int32_t *>(set);
   const auto count = Load<std::int32_t>(set, 0xC);
   return std::find(items, items + count, *token) != items + count;
 }
 const void *TokenKey(std::int32_t token) {
-  Callback(token == 700 || token == 701); return token == 700 ? world->token_true.data() : world->token_false.data();
+  RecordCallback(__func__, __LINE__, "token == 700 || token == 701", token == 700 || token == 701); return token == 700 ? world->token_true.data() : world->token_false.data();
 }
 void *FulfillmentType(void *database, void *actor) {
-  Callback(database == world->fulfillment_database.data() && actor == world->character.data()); return world->fulfillment_type.data();
+  RecordCallback(__func__, __LINE__, "database == world->fulfillment_database.data() && actor == world->character.data()", database == world->fulfillment_database.data() && actor == world->character.data()); return world->fulfillment_type.data();
 }
 void *FulfillmentLevel(void *type, std::int64_t raw) {
-  Callback(type == world->fulfillment_type.data() && raw == 125'000); return world->fulfillment_levels.data();
+  RecordCallback(__func__, __LINE__, "type == world->fulfillment_type.data() && raw == 125'000", type == world->fulfillment_type.data() && raw == 125'000); return world->fulfillment_levels.data();
 }
 std::int64_t *FulfillmentProgress(std::int64_t *out, std::int64_t raw, std::int64_t lower, std::int64_t upper) {
-  Callback(raw == 125'000 && lower == 0 && upper == 500'000); *out = 2'500'000; return out;
+  RecordCallback(__func__, __LINE__, "raw == 125'000 && lower == 0 && upper == 500'000", raw == 125'000 && lower == 0 && upper == 500'000); *out = 2'500'000; return out;
 }
-void *RootConstruct(void *root) { Callback(); return root; }
-void Destroy(void *) { Callback(); }
+void *RootConstruct(void *root) { RecordCallback(__func__, __LINE__, "true (default)"); return root; }
+void Destroy(void *) { RecordCallback(__func__, __LINE__, "true (default)"); }
 std::uint32_t DecisionHash(void *database, const char *text, std::uint32_t length) {
-  Callback(database == world->decision_database.data());
+  RecordCallback(__func__, __LINE__, "database == world->decision_database.data()", database == world->decision_database.data());
   const std::string_view key{text, length};
   return key == third::mystical_communion::kDecisionId ? 1 : key == third::confession::kDecisionId ? 2 : 3;
 }
 const void *DecisionLookup(void *database, std::uint32_t hash) {
-  Callback(database == world->decision_database.data() && hash >= 1 && hash <= 3);
+  RecordCallback(__func__, __LINE__, "database == world->decision_database.data() && hash >= 1 && hash <= 3", database == world->decision_database.data() && hash >= 1 && hash <= 3);
   return hash == 1 ? world->communion.data() : hash == 2 ? world->confession.data() : world->vow.data();
 }
-bool DecisionShown(const void *definition, void *actor) { Callback(actor == world->character.data() && definition != nullptr); return true; }
+bool DecisionShown(const void *definition, void *actor) { RecordCallback(__func__, __LINE__, "actor == world->character.data() && definition != nullptr", actor == world->character.data() && definition != nullptr); return true; }
 bool DecisionCanTake(const void *definition, void *actor, void *root, const void *unused, void *reason) {
-  Callback(actor == world->character.data() && Load<std::int64_t>(root, 8) == World::actor_id && unused == nullptr);
+  RecordCallback(__func__, __LINE__, "actor == world->character.data() && Load<std::int64_t>(root, 8) == World::actor_id && unused == nullptr", actor == world->character.data() && Load<std::int64_t>(root, 8) == World::actor_id && unused == nullptr);
   const bool allowed = definition != world->confession.data();
   NativeString(reason, 0, allowed ? "" : "not_ready"); return allowed;
 }
-const void *DecisionCost(const void *definition) { Callback(definition != nullptr); return world->cost.data(); }
+const void *DecisionCost(const void *definition) { RecordCallback(__func__, __LINE__, "definition != nullptr", definition != nullptr); return world->cost.data(); }
 void DecisionCostEvaluate(const void *cost, void *root, std::int64_t *out) {
-  Callback(cost == world->cost.data() && Load<std::int64_t>(root, 8) == World::actor_id);
+  RecordCallback(__func__, __LINE__, "cost == world->cost.data() && Load<std::int64_t>(root, 8) == World::actor_id", cost == world->cost.data() && Load<std::int64_t>(root, 8) == World::actor_id);
   std::fill_n(out, 10, std::int64_t{0}); out[2] = 100'000; out[6] = 50'000;
 }
 bool DecisionAffordable(const void *cost, void *root, void *actor, void *unused) {
-  Callback(cost == world->cost.data() && Load<std::int64_t>(root, 8) == World::actor_id && actor == world->character.data() && unused == nullptr); return true;
+  RecordCallback(__func__, __LINE__, "cost == world->cost.data() && Load<std::int64_t>(root, 8) == World::actor_id && actor == world->character.data() && unused == nullptr", cost == world->cost.data() && Load<std::int64_t>(root, 8) == World::actor_id && actor == world->character.data() && unused == nullptr); return true;
 }
 std::uint8_t ConfessionState(void *rite, const void *definition) {
-  Callback(rite == world->rite.data() && definition == world->tenet.data()); return 2;
+  RecordCallback(__func__, __LINE__, "rite == world->rite.data() && definition == world->tenet.data()", rite == world->rite.data() && definition == world->tenet.data()); return 2;
 }
 std::int64_t *ChurchIncome(std::int64_t *out, void *actor, bool first, bool second, void *tooltip) {
-  Callback(actor == world->character.data() && !first && tooltip == nullptr); *out = second ? 250'000 : 0; return out;
+  RecordCallback(__func__, __LINE__, "actor == world->character.data() && !first && tooltip == nullptr", actor == world->character.data() && !first && tooltip == nullptr); *out = second ? 250'000 : 0; return out;
 }
-void *IncomeContext(void *actor) { Callback(actor == world->character.data()); return actor; }
-void *FaithLease(void *faith) { Callback(faith == world->faith.data()); return world->lease_contract.data(); }
+void *IncomeContext(void *actor) { RecordCallback(__func__, __LINE__, "actor == world->character.data()", actor == world->character.data()); return actor; }
+void *FaithLease(void *faith) { RecordCallback(__func__, __LINE__, "faith == world->faith.data()", faith == world->faith.data()); return world->lease_contract.data(); }
 std::int32_t *LeaseLiege(void *manager, std::int32_t *out, std::int32_t lessee) {
-  Callback(manager == world->data.data() + 0x1F1E0 && lessee == World::actor_id); *out = -1; return out;
+  RecordCallback(__func__, __LINE__, "manager == world->data.data() + 0x1F1E0 && lessee == World::actor_id", manager == world->data.data() + 0x1F1E0 && lessee == World::actor_id); *out = -1; return out;
 }
-std::int32_t *TopLease(std::int32_t *out, std::int32_t lessee) { Callback(lessee == World::actor_id); *out = lessee; return out; }
+std::int32_t *TopLease(std::int32_t *out, std::int32_t lessee) { RecordCallback(__func__, __LINE__, "lessee == World::actor_id", lessee == World::actor_id); *out = lessee; return out; }
 std::int64_t *PriorShare(void *rule, std::int64_t *out, void *scope, std::int64_t, std::int64_t,
     std::int32_t lessee, std::int32_t, std::int64_t, const void *, void *tooltip) {
-  Callback(rule == world->lease_contract.data() + 0x68 && lessee == World::actor_id && tooltip == nullptr);
+  RecordCallback(__func__, __LINE__, "rule == world->lease_contract.data() + 0x68 && lessee == World::actor_id && tooltip == nullptr", rule == world->lease_contract.data() + 0x68 && lessee == World::actor_id && tooltip == nullptr);
   *out = scope == static_cast<std::byte *>(rule) + 0x108 ? 0 : 20'000; return out;
 }
 std::int64_t *RulerShare(void *rule, std::int64_t *out, void *ruler, std::int32_t lessee, bool detail, std::int64_t remaining, void *tooltip) {
-  Callback(rule == world->lease_contract.data() + 0x68 && ruler == world->character.data() && lessee == World::actor_id && !detail && remaining == 80'000 && tooltip == nullptr);
+  RecordCallback(__func__, __LINE__, "rule == world->lease_contract.data() + 0x68 && ruler == world->character.data() && lessee == World::actor_id && !detail && remaining == 80'000 && tooltip == nullptr", rule == world->lease_contract.data() + 0x68 && ruler == world->character.data() && lessee == World::actor_id && !detail && remaining == 80'000 && tooltip == nullptr);
   *out = 30'000; return out;
 }
 third::church_tax_inputs::NativeString32 *IncomeRules(void *rule, third::church_tax_inputs::NativeString32 *out, void *ruler, void *lessee) {
-  Callback(rule == world->lease_contract.data() + 0x68 && ruler == world->character.data() && lessee == ruler);
+  RecordCallback(__func__, __LINE__, "rule == world->lease_contract.data() + 0x68 && ruler == world->character.data() && lessee == ruler", rule == world->lease_contract.data() + 0x68 && ruler == world->character.data() && lessee == ruler);
   NativeString(out, 0, "tax_rules"); return out;
 }
-void TaxStringDestroy(third::church_tax_inputs::NativeString32 *) { Callback(); }
-std::int32_t DevotionLevel(void *actor) { Callback(actor == world->character.data()); return 0; }
-std::int64_t *DevotionPercent(std::int64_t *out, void *actor) { Callback(actor == world->character.data()); *out = 0; return out; }
-std::int32_t DevotionCap(religion::devotion_profile12003::PlayerValueItemScope *) { Callback(); return 2; }
+void TaxStringDestroy(third::church_tax_inputs::NativeString32 *) { RecordCallback(__func__, __LINE__, "true (default)"); }
+std::int32_t DevotionLevel(void *actor) { RecordCallback(__func__, __LINE__, "actor == world->character.data()", actor == world->character.data()); return 0; }
+std::int64_t *DevotionPercent(std::int64_t *out, void *actor) { RecordCallback(__func__, __LINE__, "actor == world->character.data()", actor == world->character.data()); *out = 0; return out; }
+std::int32_t DevotionCap(religion::devotion_profile12003::PlayerValueItemScope *) { RecordCallback(__func__, __LINE__, "true (default)"); return 2; }
 void DevotionThreshold(religion::devotion_profile12003::PlayerValueItemScope *, std::int64_t *numerator, std::int64_t *denominator) {
-  Callback(); *numerator = 0; *denominator = 500'000;
+  RecordCallback(__func__, __LINE__, "true (default)"); *numerator = 0; *denominator = 500'000;
 }
-const void *DevotionVector(religion::devotion_profile12003::PlayerValueItemScope *) { Callback(); return world->threshold_vector.data(); }
-void *TraitDatabase() { Callback(); return world->trait_database.data(); }
+const void *DevotionVector(religion::devotion_profile12003::PlayerValueItemScope *) { RecordCallback(__func__, __LINE__, "true (default)"); return world->threshold_vector.data(); }
+void *TraitDatabase() { RecordCallback(__func__, __LINE__, "true (default)"); return world->trait_database.data(); }
 void *TraitLookup(void *database, std::int32_t id) {
-  Callback(database == world->trait_database.data() && id >= 10 && id <= 12);
+  RecordCallback(__func__, __LINE__, "database == world->trait_database.data() && id >= 10 && id <= 12", database == world->trait_database.data() && id >= 10 && id <= 12);
   return id == 10 ? world->trait_a.data() : id == 11 ? world->trait_b.data() : world->trait_c.data();
 }
 std::int32_t TraitClassification(void *trait, void *map, void **record) {
-  Callback(map == world->rite.data() + 0x950);
+  RecordCallback(__func__, __LINE__, "map == world->rite.data() + 0x950", map == world->rite.data() + 0x950);
   *record = trait == world->trait_a.data() ? world->virtue_record.data() : trait == world->trait_b.data() ? world->sin_record.data() : nullptr;
   return trait == world->trait_a.data() ? 1 : trait == world->trait_b.data() ? 2 : 0;
 }
 
 bool CanPlan(const void *type, void *actor) {
-  Callback(type == world->activity_type.data() && actor == world->character.data()); return true;
+  RecordCallback(__func__, __LINE__, "type == world->activity_type.data() && actor == world->character.data()", type == world->activity_type.data() && actor == world->character.data()); return true;
 }
 void *CanPlanTooltip(void *out, const void *type, void *actor) {
-  Callback(type == world->activity_type.data() && actor == world->character.data()); NativeString(out, 0, "can_plan"); return out;
+  RecordCallback(__func__, __LINE__, "type == world->activity_type.data() && actor == world->character.data()", type == world->activity_type.data() && actor == world->character.data()); NativeString(out, 0, "can_plan"); return out;
 }
 void ReleaseArray(const void *, void *data, std::size_t alignment) {
-  Callback(alignment == 8); delete[] static_cast<const void **>(data);
+  RecordCallback(__func__, __LINE__, "alignment == 8", alignment == 8); delete[] static_cast<const void **>(data);
 }
 void FilterProvinces(const void *filter, void *actor, factory::NativeArray *out) {
-  Callback(filter == world->activity_type.data() + 0x3BC0 && actor == world->character.data());
+  RecordCallback(__func__, __LINE__, "filter == world->activity_type.data() + 0x3BC0 && actor == world->character.data()", filter == world->activity_type.data() + 0x3BC0 && actor == world->character.data());
   out->data = new const void *[1]{world->province.data()}; out->capacity = out->count = 1;
 }
 void *ActorRootConstruct(void *root, const std::int32_t *id) {
-  Callback(*id == World::actor_id); Store(root, 0, std::int32_t{4}); Store(root, 8, static_cast<std::uint64_t>(*id)); return root;
+  RecordCallback(__func__, __LINE__, "*id == World::actor_id", *id == World::actor_id); Store(root, 0, std::int32_t{4}); Store(root, 8, static_cast<std::uint64_t>(*id)); return root;
 }
 void NamedScope(void *, std::int32_t token, const factory::ScopeToken *value) {
-  Callback(token >= 1 && token <= 3 && value != nullptr);
+  RecordCallback(__func__, __LINE__, "token >= 1 && token <= 3 && value != nullptr", token >= 1 && token <= 3 && value != nullptr);
 }
-bool Predicate(const void *definition, void *) { Callback(definition != nullptr); return true; }
+bool Predicate(const void *definition, void *) { RecordCallback(__func__, __LINE__, "definition != nullptr", definition != nullptr); return true; }
 bool PredicateWithEvaluator(const void *definition, void *, void *evaluator) {
-  Callback(definition != nullptr && evaluator != nullptr); return true;
+  RecordCallback(__func__, __LINE__, "definition != nullptr && evaluator != nullptr", definition != nullptr && evaluator != nullptr); return true;
 }
-void *Allocate(std::size_t bytes) { Callback(bytes == 0xD8); return new std::byte[bytes]{}; }
-void Deallocate(void *data, std::size_t bytes) { Callback(bytes == 0xD8); delete[] static_cast<std::byte *>(data); }
-void *EvaluatorConstruct(void *storage) { Callback(storage != nullptr); return storage; }
+void *Allocate(std::size_t bytes) { RecordCallback(__func__, __LINE__, "bytes == 0xD8", bytes == 0xD8); return new std::byte[bytes]{}; }
+void Deallocate(void *data, std::size_t bytes) { RecordCallback(__func__, __LINE__, "bytes == 0xD8", bytes == 0xD8); delete[] static_cast<std::byte *>(data); }
+void *EvaluatorConstruct(void *storage) { RecordCallback(__func__, __LINE__, "storage != nullptr", storage != nullptr); return storage; }
 void EvaluatorFormat(void **evaluator, const void *, void *reason) {
-  Callback(*evaluator != nullptr); NativeString(reason, 0, "route_ready");
+  RecordCallback(__func__, __LINE__, "*evaluator != nullptr", *evaluator != nullptr); NativeString(reason, 0, "route_ready");
 }
-std::int32_t PhaseCap(const void *type, void *) { Callback(type == world->activity_type.data()); return 2; }
+std::int32_t PhaseCap(const void *type, void *) { RecordCallback(__func__, __LINE__, "type == world->activity_type.data()", type == world->activity_type.data()); return 2; }
 void PhaseOffers(const factory::PhaseContext *context, std::int32_t filter, const void *province, factory::NativeArray *out) {
-  Callback(context->activity_type == world->activity_type.data() && context->actual_actor == world->character.data() && filter == 1 && province == world->province.data());
+  RecordCallback(__func__, __LINE__, "context->activity_type == world->activity_type.data() && context->actual_actor == world->character.data() && filter == 1 && province == world->province.data()", context->activity_type == world->activity_type.data() && context->actual_actor == world->character.data() && filter == 1 && province == world->province.data());
   out->data = nullptr; out->capacity = out->count = 0; // Native fixed default-only branch.
 }
 void *ConfigInitialize(void *config, const void *type, std::int32_t actor) {
-  Callback(type == world->activity_type.data() && actor == World::actor_id);
+  RecordCallback(__func__, __LINE__, "type == world->activity_type.data() && actor == World::actor_id", type == world->activity_type.data() && actor == World::actor_id);
   auto *row = new std::byte[factory::PhaseRowView::stride]{};
   Store(row, 0, world->phase_definition.data()); Store(row, 8, std::int32_t{-1});
   Store(config, 0x20, World::date); Store(config, 0xB0, row);
   Store(config, 0xB8, std::int32_t{1}); Store(config, 0xBC, std::int32_t{1}); return config;
 }
-const void *SelectedSpecial(const void *) { Callback(); return nullptr; }
+const void *SelectedSpecial(const void *) { RecordCallback(__func__, __LINE__, "true (default)"); return nullptr; }
 void *PhaseInsert(void *array, std::int32_t index, const void *type) {
-  Callback(index == 0 && type == world->activity_type.data()); return Load<void *>(array);
+  RecordCallback(__func__, __LINE__, "index == 0 && type == world->activity_type.data()", index == 0 && type == world->activity_type.data()); return Load<void *>(array);
 }
-void ConfigNormalize(void *) { Callback(); }
-void ConfigDestroy(void *config) { Callback(); delete[] Load<std::byte *>(config, 0xB0); }
+void ConfigNormalize(void *) { RecordCallback(__func__, __LINE__, "true (default)"); }
+void ConfigDestroy(void *config) { RecordCallback(__func__, __LINE__, "true (default)"); delete[] Load<std::byte *>(config, 0xB0); }
 void ActivityCost(const void *, std::int64_t *out) {
-  Callback(); std::fill_n(out, 10, std::int64_t{0}); out[0] = 100'000; out[6] = 50'000;
+  RecordCallback(__func__, __LINE__, "true (default)"); std::fill_n(out, 10, std::int64_t{0}); out[0] = 100'000; out[6] = 50'000;
 }
 bool ActivityAffordable(const std::int64_t *cost, void *actor, void *reason) {
-  Callback(cost[0] == 100'000 && actor == world->character.data()); NativeString(reason, 0, ""); return true;
+  RecordCallback(__func__, __LINE__, "cost[0] == 100'000 && actor == world->character.data()", cost[0] == 100'000 && actor == world->character.data()); NativeString(reason, 0, ""); return true;
 }
 void *ArrayInitialize(void *array) {
-  Callback(); Store(array, 0, static_cast<void *>(nullptr)); Store(array, 8, std::int32_t{0}); Store(array, 0xC, std::int32_t{0}); return array;
+  RecordCallback(__func__, __LINE__, "true (default)"); Store(array, 0, static_cast<void *>(nullptr)); Store(array, 8, std::int32_t{0}); Store(array, 0xC, std::int32_t{0}); return array;
 }
 void ProvinceAppend(void *array, std::int32_t index, const std::int32_t *begin, const std::int32_t *end) {
-  Callback(index == 0 && end == begin + 1 && *begin == World::province_id);
+  RecordCallback(__func__, __LINE__, "index == 0 && end == begin + 1 && *begin == World::province_id", index == 0 && end == begin + 1 && *begin == World::province_id);
   Store(array, 0, new std::int32_t{*begin}); Store(array, 8, std::int32_t{1}); Store(array, 0xC, std::int32_t{1});
 }
-void CreationInputDestroy(void *input) { Callback(); delete Load<std::int32_t *>(input, 0x20); }
+void CreationInputDestroy(void *input) { RecordCallback(__func__, __LINE__, "true (default)"); delete Load<std::int32_t *>(input, 0x20); }
 void *TravelConstruct(void *out, const void *input) {
-  Callback(Load<std::int32_t>(input) == World::actor_id && Load<std::int32_t>(input, 0x2C) == 1 &&
+  RecordCallback(__func__, __LINE__, "Load<std::int32_t>(input) == World::actor_id && Load<std::int32_t>(input, 0x2C) == 1 && *Load<const std::int32_t *>(input, 0x20) == World::province_id", Load<std::int32_t>(input) == World::actor_id && Load<std::int32_t>(input, 0x2C) == 1 &&
       *Load<const std::int32_t *>(input, 0x20) == World::province_id);
   Store(world->route_row.data(), 8, world->province.data());
   Store(out, 8, World::actor_id); Store(out, 0x360, world->route_row.data());
   Store(out, 0x36C, std::int32_t{1}); Store(out, 0x83C, std::int32_t{0}); return out;
 }
-const void *TravelStart(const void *) { Callback(); return world->start_province.data(); }
-bool EvaluateRoute(void *) { Callback(); return true; }
+const void *TravelStart(const void *) { RecordCallback(__func__, __LINE__, "true (default)"); return world->start_province.data(); }
+bool EvaluateRoute(void *) { RecordCallback(__func__, __LINE__, "true (default)"); return true; }
 void EvaluateArrival(void *data) {
-  Callback(Load<const void *>(data, 0x360) == world->route_row.data());
+  RecordCallback(__func__, __LINE__, "Load<const void *>(data, 0x360) == world->route_row.data()", Load<const void *>(data, 0x360) == world->route_row.data());
   Put(world->route_row, 0x38, World::date + 12);
 }
 
@@ -542,39 +539,39 @@ fourth::ContextAddonBindings Addons(World &w) {
   return b;
 }
 
-const void *FaithRites(void *faith) { Callback(faith == world->faith.data()); return world->faith_rites.data(); }
+const void *FaithRites(void *faith) { RecordCallback(__func__, __LINE__, "faith == world->faith.data()", faith == world->faith.data()); return world->faith_rites.data(); }
 bool FaithRule(void *actor, std::uint32_t faith, void *tooltip) {
-  Callback(actor == world->character.data() && faith == World::faith_id && tooltip == nullptr); return false;
+  RecordCallback(__func__, __LINE__, "actor == world->character.data() && faith == World::faith_id && tooltip == nullptr", actor == world->character.data() && faith == World::faith_id && tooltip == nullptr); return false;
 }
 bool ValidateConversion(const old::religion_conversion_rite::FaithAndRiteConversionCommand *command, void *reason) {
   const auto actual_value = fourth::MakeReadOnlyConvertRiteValue12004(
       World::image_base, World::actor_id, World::target_id, command->pay_piety != 0);
-  Callback(command->actor_id == World::actor_id && command->target_rite_id == World::target_id &&
+  RecordCallback(__func__, __LINE__, "command->actor_id == World::actor_id && command->target_rite_id == World::target_id && command->primary_vtable == actual_value.primary_vtable && command->secondary_vtable == actual_value.secondary_vtable && command->pay_piety <= 1", command->actor_id == World::actor_id && command->target_rite_id == World::target_id &&
       command->primary_vtable == actual_value.primary_vtable && command->secondary_vtable == actual_value.secondary_vtable &&
       command->pay_piety <= 1);
   if (reason) NativeString(reason, 0, command->pay_piety ? "" : "pay_piety");
   return command->pay_piety != 0;
 }
 std::int32_t FinalPietyCost(const religion::conversion_cost::NativeCostCommand *command, void *tooltip) {
-  Callback(command->actor_id == World::actor_id && command->target_rite_id == World::target_id && tooltip == nullptr);
+  RecordCallback(__func__, __LINE__, "command->actor_id == World::actor_id && command->target_rite_id == World::target_id && tooltip == nullptr", command->actor_id == World::actor_id && command->target_rite_id == World::target_id && tooltip == nullptr);
   return 0;
 }
-void ReasonStringDestroy(old::religion_conversion::reasons::NativeReasonString *) { Callback(); }
-void *TopLiege(void *actor) { Callback(actor == world->character.data()); return actor; }
-void *PrimaryTitle(void *actor) { Callback(actor == world->character.data()); return world->title.data(); }
-void *TitleStateRite(void *title) { Callback(title == world->title.data()); return world->target_rite.data(); }
+void ReasonStringDestroy(old::religion_conversion::reasons::NativeReasonString *) { RecordCallback(__func__, __LINE__, "true (default)"); }
+void *TopLiege(void *actor) { RecordCallback(__func__, __LINE__, "actor == world->character.data()", actor == world->character.data()); return actor; }
+void *PrimaryTitle(void *actor) { RecordCallback(__func__, __LINE__, "actor == world->character.data()", actor == world->character.data()); return world->title.data(); }
+void *TitleStateRite(void *title) { RecordCallback(__func__, __LINE__, "title == world->title.data()", title == world->title.data()); return world->target_rite.data(); }
 std::int64_t *Knowledge(std::int64_t *out, void *actor, void *rite) {
-  Callback(actor == world->character.data() && rite == world->target_rite.data()); *out = 0; return out;
+  RecordCallback(__func__, __LINE__, "actor == world->character.data() && rite == world->target_rite.data()", actor == world->character.data() && rite == world->target_rite.data()); *out = 0; return out;
 }
 std::uint32_t *ExistingAtom(void *pool, std::uint32_t *out, const religion::conversion_gates::NativeStringView *view) {
-  Callback(pool == world->atom_pool.data() && view != nullptr);
+  RecordCallback(__func__, __LINE__, "pool == world->atom_pool.data() && view != nullptr", pool == world->atom_pool.data() && view != nullptr);
   const std::string_view key{Load<const char *>(view)};
   *out = key == "faith_conversion_recently_converted" ? 1U : key == "conversion_memory_recently_created" ? 2U : 3U;
   return out;
 }
-void *FlagCollection(void *resources) { Callback(resources == world->resources.data()); return world->flags.data(); }
+void *FlagCollection(void *resources) { RecordCallback(__func__, __LINE__, "resources == world->resources.data()", resources == world->resources.data()); return world->flags.data(); }
 std::int64_t *BaseFulfillment(std::int64_t *out, void *actor, void *rite) {
-  Callback(actor == world->character.data() && rite == world->target_rite.data()); *out = -50'000; return out;
+  RecordCallback(__func__, __LINE__, "actor == world->character.data() && rite == world->target_rite.data()", actor == world->character.data() && rite == world->target_rite.data()); *out = -50'000; return out;
 }
 bool ReadMemory(void *context, std::uintptr_t address, void *out, std::size_t bytes) noexcept {
   auto &w = *static_cast<World *>(context);
@@ -583,7 +580,7 @@ bool ReadMemory(void *context, std::uintptr_t address, void *out, std::size_t by
     return address >= base && address - base <= buffer.size() && bytes <= buffer.size() - (address - base);
   };
   const bool valid = in(w.character) || in(w.resources);
-  Callback(valid); if (!valid) return false;
+  RecordCallback(__func__, __LINE__, "valid", valid); if (!valid) return false;
   std::memcpy(out, reinterpret_cast<const void *>(address), bytes); return true;
 }
 fourth::ConversionBindings Conversion(World &w) {
