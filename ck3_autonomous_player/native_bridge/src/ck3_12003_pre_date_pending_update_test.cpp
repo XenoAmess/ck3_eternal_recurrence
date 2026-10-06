@@ -451,7 +451,7 @@ void Scenes(const std::filesystem::path &directory) {
     f.memory.Deny(f.army_a, 0x44, 4); f.memory.Deny(f.manager, 0x138, 8);
     const auto rows = f.Observe(); const auto &leaf = Leaf(rows); CheckReady(leaf, 1);
     const auto &row = leaf.occurrences[0];
-    Check(row.pending_mutator_selected == false && row.combat_magic_0c_raw_u32 == 0 &&
+    Check(row.pending_mutator_selected == false && row.combat_magic_0c_raw_u32 == 0U &&
               row.army_counter_5c_raw_i32 == 1 && !row.pending_setup.ready && row.arrg_occurrences.empty() &&
               f.memory.Attempts() == 0,
           "real nonzero Army5C must bypass pending/ArRg work after invalid Combat branch");
