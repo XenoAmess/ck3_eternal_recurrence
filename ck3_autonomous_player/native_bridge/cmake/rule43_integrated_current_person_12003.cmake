@@ -17,7 +17,6 @@ if(BUILD_TESTING AND WIN32)
   add_executable(xar_ck3_12003_rule43_integrated_current_person_test
     tests/rule43_integrated_current_person_12003_test.cpp
     src/ck3_12003_context_sources.cpp
-    src/ck3_12003_current_stored_context.cpp
     src/ck3_12003_rule43_diac_sources.cpp
     src/diac_literal_numeric_inputs_12003.cpp)
   target_include_directories(xar_ck3_12003_rule43_integrated_current_person_test PRIVATE include)
