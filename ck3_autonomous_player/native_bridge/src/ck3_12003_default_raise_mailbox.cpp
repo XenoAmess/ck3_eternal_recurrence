@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12003_default_raise_mailbox.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 
 namespace xar::ck3_12003 {
 namespace {
@@ -31,7 +32,8 @@ bool ExecutePlayerDefaultRaiseMailboxV1(
           &ExecutePlayerDefaultRaiseMailboxV1)) return false;
   auto &query = *static_cast<PlayerDefaultRaiseMailboxContextV1 *>(envelope->typed_context);
   if (envelope != &query.envelope || query.completed ||
-      !game::IsCk3_12003Descriptor(envelope->game->descriptor())) return false;
+      (!game::IsCk3_12003Descriptor(envelope->game->descriptor()) &&
+       !game::IsCk3_12004Descriptor(envelope->game->descriptor()))) return false;
   game::ReadCk3_12003PlayerDefaultRaiseV1(*envelope->game, query.observation);
   query.completed = true;
   return ck3_12002::FinishQueryMailbox(*envelope);

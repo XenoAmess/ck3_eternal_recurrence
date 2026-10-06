@@ -12,6 +12,9 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_core_frame_v1.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
+#include "xar_bridge/ck3_12004_features.hpp"
+#include "xar_bridge/ck3_12004_tactical_daily_sentinel.hpp"
+#include "xar_bridge/ck3_12004_default_routes_mailbox.hpp"
 #include "xar_bridge/state_snapshot_frame_v1.hpp"
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12003_confucian_assembly_mailbox.hpp"
@@ -179,6 +182,7 @@
 #include "xar_bridge/council_application_main_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
 #include "xar_bridge/council_application_main_private_transport_v1.hpp"
+#include "xar_bridge/ck3_12004_council_runtime.hpp"
 #endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1) || \
     defined(XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1)
@@ -634,6 +638,20 @@ static bool g_player_lifestyle_action_may_have_submitted_v1 = false;
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
 static xar::bridge::CouncilApplicationMainPrivateTransportV1
     g_council_application_main_private_transport_v1{};
+struct CouncilPrivateWorkerTransport12004 {
+  const xar::game::GameAdapter *game = nullptr;
+  xar::ck3_12004::CouncilMailboxState12004 shared{};
+  xar::ck3_12004::CouncilMailboxContext12004 context{};
+  xar::game::Snapshot expected_snapshot{};
+  std::string expected_snapshot_id;
+  std::string position_key = "councillor_steward";
+  std::uint64_t published_revision = 0;
+  bool configured = false;
+  bool in_flight = false;
+  bool has_completed = false;
+  bool publish_after_ack = false;
+};
+static CouncilPrivateWorkerTransport12004 g_council_private12004{};
 #endif
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1)
 static xar::ck3_11906::CouncilCompositionStewardCandidatesBindingStateV1
@@ -10707,9 +10725,17 @@ bool ExecuteTypedQuery12002(
       access.context = envelope;
       access.capture_frame = &CaptureTypedFrame12002<xar::game::LoadedFeatureManifestFrameV1>;
       access.is_main_thread = &xar::ck3_12002::IsQueryOwningThread;
-      xar::ck3_12002::ReadLoadedFeatureManifestV1(
-          xar::ck3_12002::BindLoadedFeatureManifestNativeEnvironmentV1(query.image_base, true),
-          access, query.loaded_request, query.loaded);
+      if (xar::game::IsCk3_12004Descriptor(envelope->game->descriptor())) {
+        xar::ck3_12004::ReadLoadedFeatureManifestV1(
+            xar::ck3_12004::BindLoadedFeatureManifestNativeEnvironmentV1(
+                query.image_base,
+                xar::game::IsCk3_12004Descriptor(envelope->game->descriptor())),
+            access, query.loaded_request, query.loaded);
+      } else {
+        xar::ck3_12002::ReadLoadedFeatureManifestV1(
+            xar::ck3_12002::BindLoadedFeatureManifestNativeEnvironmentV1(query.image_base, true),
+            access, query.loaded_request, query.loaded);
+      }
       query.typed_result = true;
     } else if constexpr (Kind == QueryKind12002::pending_interaction) {
       xar::ck3_12002::PendingCharacterInteractionAccessV1 access{};
@@ -10797,6 +10823,214 @@ const std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 13>
       &ExecuteTypedQuery12002<QueryKind12002::event_window>,
       &ExecuteTypedQuery12002<QueryKind12002::title_map>,
     };
+
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+bool CouncilSourceIsApplicationMain12004(void *opaque) noexcept {
+  const auto *transport = static_cast<CouncilPrivateWorkerTransport12004 *>(opaque);
+  if (transport == nullptr || transport->game == nullptr) return false;
+  const auto *stamp = transport->context.active_stamp;
+  return stamp != nullptr && stamp->thread_id == GetCurrentThreadId() &&
+         stamp->thread_id != 0 && stamp->paused && stamp->game_state != 0 &&
+         stamp->jomini_state != 0;
+}
+
+bool ReadCouncilSourceMemory12004(void *opaque, const void *address,
+                                void *output, std::size_t size) noexcept {
+  SIZE_T copied = 0;
+  return CouncilSourceIsApplicationMain12004(opaque) && address != nullptr &&
+         output != nullptr && size != 0 &&
+         ReadProcessMemory(GetCurrentProcess(), address, output, size, &copied) &&
+         copied == size;
+}
+
+bool CaptureCouncilSource12004(
+    void *opaque, xar::ck3_12004::CouncilCandidatesFrameV1 &output) noexcept {
+  output = {};
+  auto *transport = static_cast<CouncilPrivateWorkerTransport12004 *>(opaque);
+  if (!CouncilSourceIsApplicationMain12004(opaque) ||
+      transport->published_revision == 0) return false;
+  xar::game::Snapshot current{};
+  if (!xar::game::ReadCk3_12002TimelineCoreSnapshot(*transport->game, current))
+    return false;
+  const auto &expected = transport->expected_snapshot;
+  const auto &stamp = *transport->context.active_stamp;
+  if (current.date_raw != expected.date_raw || current.speed != expected.speed ||
+      current.paused != expected.paused || current.player_id != expected.player_id ||
+      current.map_ready != expected.map_ready ||
+      current.has_played_character != expected.has_played_character ||
+      current.played_character_id != expected.played_character_id ||
+      current.played_character_alive != expected.played_character_alive ||
+      current.date_raw != stamp.date_raw || !current.paused || !current.map_ready ||
+      !current.has_played_character || !current.played_character_alive ||
+      transport->expected_snapshot_id.size() >= output.snapshot_id.size())
+    return false;
+  const void *owner = nullptr;
+  if (!xar::ck3_12004::ResolveCouncilCharacter12004(
+          transport->context.candidates_environment,
+          transport->context.candidates_access, current.played_character_id, owner))
+    return false;
+  std::copy(transport->expected_snapshot_id.begin(),
+            transport->expected_snapshot_id.end(), output.snapshot_id.begin());
+  output.public_revision = transport->published_revision;
+  output.native_revision = transport->published_revision;
+  output.date_raw = current.date_raw;
+  output.paused = current.paused;
+  output.map_ready = current.map_ready;
+  output.has_played_character = current.has_played_character;
+  output.played_character_alive = current.played_character_alive;
+  output.played_character_id = current.played_character_id;
+  output.played_character = reinterpret_cast<std::uintptr_t>(owner);
+  output.played_character_identity_round_trip = true;
+  return true;
+}
+
+bool ConfigureCouncilPrivate12004(const xar::game::GameAdapter &game) noexcept {
+  auto &transport = g_council_private12004;
+  if (transport.configured) return transport.game == &game;
+  if (!game.enabled() || !xar::game::IsCk3_12004Descriptor(game.descriptor()))
+    return false;
+  const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  const auto sha = game.descriptor().executable_sha256;
+  auto &context = transport.context;
+  context.candidates_environment = xar::ck3_12004::BindCouncilCandidates12004(base, sha);
+  context.gates_environment = xar::ck3_12004::BindCouncilGates12004(base, sha);
+  context.submit.environment = xar::ck3_12004::BindCouncilAssign12004(base, sha);
+  context.candidates_access.context = &transport;
+  context.candidates_access.capture_frame = &CaptureCouncilSource12004;
+  context.candidates_access.is_main_thread = &CouncilSourceIsApplicationMain12004;
+  context.candidates_access.read_memory = &ReadCouncilSourceMemory12004;
+  context.gates_environment.read_context = context.candidates_access.context;
+  context.gates_environment.read_memory = context.candidates_access.read_memory;
+  context.shared_state = &transport.shared;
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1)
+  context.private_action_enabled = true;
+#endif
+  transport.game = &game;
+  transport.configured = context.candidates_environment.exact_build_admitted &&
+                         context.gates_environment.exact_build_admitted &&
+                         context.submit.environment.exact_build_admitted;
+  return transport.configured;
+}
+
+void PollCouncilPrivate12004() noexcept {
+  auto &transport = g_council_private12004;
+  if (!transport.in_flight || transport.context.ticket.sequence == 0) return;
+  const auto sequence = transport.context.ticket.sequence;
+  auto &mailbox = g_main_thread_query_mailbox_v1;
+  if (mailbox.published_sequence.load(std::memory_order_acquire) != sequence) return;
+  const auto state = mailbox.state.load(std::memory_order_acquire);
+  using State = xar::ck3_11906::MainThreadQueryMailboxStateV1;
+  if (state == State::queued || state == State::executing || state == State::publishing)
+    return;
+  if (state != State::completed ||
+      mailbox.completed_sequence.load(std::memory_order_acquire) != sequence) {
+    transport.context.wire.completion =
+        xar::bridge::CouncilApplicationMainCompletionV1::infrastructure_red;
+    transport.context.wire.failure = xar::bridge::CouncilApplicationMainFailureV1::transport;
+    transport.context.wire.failure_reason = "private_mailbox_terminal_failure";
+  }
+  if (xar::ck3_11906::ReclaimMainThreadQueryV1(mailbox, transport.context.ticket) ==
+      xar::ck3_11906::MainThreadQueryReclaimResultV1::reclaimed) {
+    transport.in_flight = false;
+    transport.has_completed = true;
+  }
+}
+
+std::string CouncilTransportStatus12004(std::string_view request_id,
+    std::string_view step, std::string_view status) {
+  std::string result = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendJsonString(result, request_id);
+  result += ",\"ok\":true,\"result\":{\"private_council_transport\":true,\"advertised\":false,\"step\":";
+  AppendJsonString(result, step);
+  result += ",\"status\":";
+  AppendJsonString(result, status);
+  return result + "}}";
+}
+
+std::string RunCouncilPrivate12004(
+    const xar::game::GameAdapter &game, std::string_view step,
+    std::string_view payload, std::string_view request_id,
+    const xar::game::Snapshot &published, std::uint64_t revision) {
+  using Operation = xar::bridge::CouncilApplicationMainOperationV1;
+  auto &transport = g_council_private12004;
+  transport.publish_after_ack = false;
+  PollCouncilPrivate12004();
+  if (step == xar::bridge::kCouncilPrivateStatusStepV1) {
+    if (!transport.has_completed)
+      return CouncilTransportStatus12004(request_id, step, transport.in_flight ? "pending" : "idle");
+    auto response = xar::game::Render12004BuildIdentity(
+        xar::ck3_12004::SerializeCouncilMailbox12004(transport.context, request_id),
+        game.descriptor());
+    transport.publish_after_ack = transport.context.operation == Operation::submit_assignment &&
+        transport.context.wire.completion ==
+            xar::bridge::CouncilApplicationMainCompletionV1::submitted_verification_pending;
+    transport.has_completed = false;
+    return response.empty() ? CommandResultFrame(request_id, step, false,
+        "private_result_serialization_failed") : response;
+  }
+  if (!ConfigureCouncilPrivate12004(game) || transport.in_flight || transport.has_completed)
+    return CommandResultFrame(request_id, step, false, "private_transport_not_ready_or_busy");
+  std::uint64_t expected_revision = 0;
+  if (!xar::bridge::JsonUnsignedField(payload, "expected_revision", expected_revision) ||
+      revision == 0 || expected_revision != revision || !published.paused ||
+      !published.map_ready || !published.has_played_character || !published.played_character_alive)
+    return CommandResultFrame(request_id, step, false, "private_snapshot_revision_or_state_invalid");
+  auto &context = transport.context;
+  if (step == xar::bridge::kCouncilPrivateQueryStepV1 ||
+      step == xar::bridge::kCouncilFinalGatesPrivateStepV1) {
+    std::string position;
+    if (xar::bridge::JsonStringField(payload, "position_key", position, 128)) {
+      if (xar::ck3_12004::CouncilCandidatesCompositionProfile12004(position).position_key.empty())
+        return CommandResultFrame(request_id, step, false, "private_council_position_invalid");
+      transport.position_key = std::move(position);
+    }
+    context.operation = step == xar::bridge::kCouncilPrivateQueryStepV1 ?
+        Operation::query_candidates : Operation::query_final_gates;
+#if !defined(XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1) && \
+    !defined(XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1)
+    if (context.operation == Operation::query_final_gates)
+      return CommandResultFrame(request_id, step, false, "private_final_gate_query_not_admitted");
+#endif
+  } else if (step == xar::bridge::kCouncilPrivateAssignStepV1) {
+    if (!context.private_action_enabled)
+      return CommandResultFrame(request_id, step, false, "complete_native_action_gates_not_bound");
+    std::uint64_t candidate = 0;
+    if (!xar::bridge::JsonUnsignedField(payload, "candidate_character_id", candidate) ||
+        candidate == 0 || candidate > static_cast<std::uint64_t>((std::numeric_limits<std::int32_t>::max)()))
+      return CommandResultFrame(request_id, step, false, "private_candidate_id_invalid");
+    if (!xar::ck3_11906::PrepareCouncilAssignCouncillorActionRequestV1(
+            context.wire.query_result, static_cast<std::int32_t>(candidate), request_id,
+            context.action_request, transport.position_key) ||
+        context.action_request.expected_public_revision != revision ||
+        context.action_request.expected_native_revision != revision ||
+        context.action_request.expected_owner_character_id != published.played_character_id ||
+        context.action_request.expected_date_raw != published.date_raw)
+      return CommandResultFrame(request_id, step, false, "private_candidate_frame_changed");
+    context.operation = Operation::submit_assignment;
+  } else if (step == xar::bridge::kCouncilPrivateReceiptStepV1) {
+    if (!transport.shared.has_pending_ack || revision <= transport.shared.pending_ack.pre_native_revision)
+      return CommandResultFrame(request_id, step, false, "private_independent_receipt_frame_unavailable");
+    context.operation = Operation::verify_assignment_receipt;
+  } else {
+    return CommandResultFrame(request_id, step, false, "private_step_unknown");
+  }
+  transport.expected_snapshot = published;
+  transport.published_revision = revision;
+  transport.expected_snapshot_id = "native:" + std::to_string(revision);
+  context.query_request = {transport.expected_snapshot_id, revision, revision,
+      published.date_raw, published.played_character_id, transport.position_key};
+  context.wire.completion = xar::bridge::CouncilApplicationMainCompletionV1::not_executed;
+  context.wire.failure = xar::bridge::CouncilApplicationMainFailureV1::none;
+  context.wire.failure_reason.clear();
+  const auto submitted = xar::ck3_11906::TrySubmitMainThreadQueryV1(
+      g_main_thread_query_mailbox_v1, &xar::ck3_12004::ExecuteCouncilMailbox12004,
+      &context, context.ticket);
+  if (submitted != xar::ck3_11906::MainThreadQuerySubmitResultV1::submitted)
+    return CommandResultFrame(request_id, step, false, "private_council_queue_unavailable");
+  transport.in_flight = true;
+  return CouncilTransportStatus12004(request_id, step, "pending");
+}
+#endif
 
 class WarEntryApplicationMainMailboxWorkerLifetime final {
 public:
@@ -11209,9 +11443,24 @@ public:
         &ExecuteTypedQuery12002<QueryKind12002::battle_control>;
     environment.permitted_executor_septenary =
         &ExecuteTypedQuery12002<QueryKind12002::battle_transition>;
+    environment.permitted_executor_quaternary =
+        &xar::ck3_12003::ExecuteArmyCommanderAssignmentMailbox;
+    environment.permitted_executor_octonary =
+        &ExecuteTypedQuery12002<QueryKind12002::loaded_features>;
+    environment.permitted_executor_nonary =
+        &ExecuteTypedQuery12002<QueryKind12002::battle_reinforcement>;
+    environment.permitted_executor_denary =
+        &ExecuteTypedQuery12002<QueryKind12002::battle_terminal>;
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
     xar::ck3_12002::PopulateNonwarRouterExecutors12004(nonwar);
     nonwar.warcash = &ExecuteWarCashCurrentResources12004;
+#if defined(XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1)
+    nonwar.alliance_projection = &ExecuteMarriageCandidateAllianceMailboxQueryV1;
+    nonwar.relationship = &ExecuteCurrentFirstHeirBetrothalMailboxQueryV1;
+#if defined(XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1)
+    nonwar.marriage_submit = &ExecuteCurrentFirstHeirBetrothalFulfillmentMailboxV1;
+#endif
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1)
     nonwar.construction = &xar::ck3_12004::ExecuteConstructionMailbox12004;
 #endif
@@ -11231,9 +11480,15 @@ public:
     xar::ck3_12003::RegisterPlayerHolyOrderHireMailboxExecutorV1(environment);
     environment.permitted_executor_quindenary =
         &xar::ck3_12003::ExecuteArmyCommanderCandidatesMailbox;
+    xar::ck3_12003::RegisterPlayerDefaultRaiseMailboxExecutorV1(environment);
+    xar::ck3_12003::RegisterPlayerDefaultRaiseMailboxExecutorV1(environment);
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1)
     environment.permitted_executor_tertiary =
         &xar::ck3_12002::ExecuteActivityPlannerDiagPrivate12002QueryV1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
+    environment.permitted_executor_unquadragintary =
+        &xar::ck3_12004::ExecuteCouncilMailbox12004;
 #endif
     environment.permitted_frontend_executor =
         &xar::ck3_11906::ExecuteFrontendGuiRouteMailboxV1;
@@ -12041,7 +12296,9 @@ bool IsBattleWarTypedQuery12004(const xar::game::GameAdapter &game,
   const auto kind = TypedQueryKind12002(step);
   return kind == QueryKind12002::war_entry ||
          kind == QueryKind12002::battle_control ||
-         kind == QueryKind12002::battle_transition;
+         kind == QueryKind12002::battle_transition ||
+         kind == QueryKind12002::battle_reinforcement ||
+         kind == QueryKind12002::battle_terminal;
 }
 
 bool ParseTypedQuery12002(std::string_view step, std::string_view payload,
@@ -12188,6 +12445,11 @@ std::string RunTypedQuery12002(
   query.image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   if (!ParseTypedQuery12002(step, payload, query)) {
     return CommandResultFrame(request_id, step, false, "typed query request is malformed");
+  }
+  if (query.kind == QueryKind12002::loaded_features &&
+      xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+    query.envelope.snapshot_comparison =
+        xar::ck3_12002::QuerySnapshotComparison12002::core_frame;
   }
   if (query.combat_request.constructor_adjacency_kind_raw.has_value() &&
       !xar::game::IsCk3_12003Descriptor(game.descriptor())) {
@@ -12363,8 +12625,14 @@ std::string RunTypedQuery12002(
 #endif
     break;
   case QueryKind12002::loaded_features:
-    response = LoadedFeatureManifestResultFrame(request_id,
-        ++state.loaded_feature_manifest_query_sequence, query.loaded, true); break;
+    if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+      response = xar::ck3_12004::SerializeLoadedFeatureManifestResult12004(
+          request_id, ++state.loaded_feature_manifest_query_sequence, query.loaded);
+    } else {
+      response = LoadedFeatureManifestResultFrame(request_id,
+          ++state.loaded_feature_manifest_query_sequence, query.loaded, true);
+    }
+    break;
   case QueryKind12002::pending_interaction:
     response = PendingCharacterInteractionContextResultFrame(request_id,
         ++state.pending_character_interaction_context_query_sequence, query.pending, true); break;
@@ -12405,8 +12673,9 @@ std::string RunArmyCommanderAssignment12003(
   action.envelope.mailbox = &g_main_thread_query_mailbox_v1;
   action.envelope.typed_context = &action;
   action.image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
-      !xar::ck3_12003::ParseArmyCommanderAssignmentStep(
+  if ((!xar::game::IsCk3_12003Descriptor(game.descriptor()) &&
+       !xar::game::IsCk3_12004Descriptor(game.descriptor())) ||
+       !xar::ck3_12003::ParseArmyCommanderAssignmentStep(
           step, action.army_id, action.candidate_character_id) ||
       !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
           payload, action.envelope.expected_snapshot_revision)) {
@@ -12691,8 +12960,9 @@ std::string RunPlayerDefaultRaiseQuery12003(
   query.envelope.game = &xar::ck3_12002::NativeAdapter12002(game);
   query.envelope.mailbox = &g_main_thread_query_mailbox_v1;
   query.envelope.typed_context = &query;
-  if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
-      step != xar::ck3_12003::kPlayerDefaultRaiseStepV1 ||
+  if ((!xar::game::IsCk3_12003Descriptor(game.descriptor()) &&
+       !xar::game::IsCk3_12004Descriptor(game.descriptor())) ||
+       step != xar::ck3_12003::kPlayerDefaultRaiseStepV1 ||
       !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
           payload, query.envelope.expected_snapshot_revision)) {
     return CommandResultFrame(request_id, step, false,
@@ -12738,9 +13008,15 @@ std::string RunPlayerDefaultRaiseQuery12003(
     return CommandResultFrame(request_id, step, false,
         "application-main player-default-raise query failed or its snapshot changed");
   }
-  const auto result = xar::ck3_12003::SerializePlayerDefaultRaiseV1(
-      query.observation, ++state.player_default_raise_query_sequence,
-      query.envelope.expected_snapshot_revision, snapshot.date_raw);
+  const auto result = xar::game::IsCk3_12004Descriptor(game.descriptor())
+      ? xar::game::Render12004BuildIdentity(
+            xar::ck3_12003::SerializePlayerDefaultRaiseV1(
+                query.observation, ++state.player_default_raise_query_sequence,
+                query.envelope.expected_snapshot_revision, snapshot.date_raw),
+            game.descriptor())
+      : xar::ck3_12003::SerializePlayerDefaultRaiseV1(
+            query.observation, ++state.player_default_raise_query_sequence,
+            query.envelope.expected_snapshot_revision, snapshot.date_raw);
   std::string response =
       "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
   AppendJsonString(response, request_id);
@@ -13365,8 +13641,11 @@ void RunConnectedSession(
       if (xar::game::IsReviewedCrozierAdapter(game))
         xar::ck3_12002::PollNonwarPrivateState12002(state.nonwar_private12002);
 #if defined(XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1)
-      xar::bridge::PollCouncilApplicationMainPrivateTransportV1(
-          g_council_application_main_private_transport_v1);
+      if (xar::game::IsCk3_12004Descriptor(game.descriptor()))
+        PollCouncilPrivate12004();
+      else
+        xar::bridge::PollCouncilApplicationMainPrivateTransportV1(
+            g_council_application_main_private_transport_v1);
 #endif
       xar::ck3_11906::RetryDeferredCoatOfArmsDesignerProbeHookV1(
           g_coat_of_arms_designer_probe_hook_v1);
@@ -13686,7 +13965,9 @@ void RunConnectedSession(
         if (!early_step_dispatched &&
             ((xar::game::IsReviewedCrozierAdapter(game) &&
               TypedQueryKind12002(step).has_value()) ||
-             IsBattleWarTypedQuery12004(game, step))) {
+             IsBattleWarTypedQuery12004(game, step) ||
+             (xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
+              step == xar::ck3_12004::kLoadedFeatureManifestV1Step))) {
           std::string readonly_diagnostic;
           const auto response = RunTypedQuery12002(
               game, state, request_id, step, incoming.payload, &readonly_diagnostic);
@@ -13758,6 +14039,8 @@ void RunConnectedSession(
                     (xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
                      (step.starts_with(xar::ck3_12003::
                           kArmyCommanderCandidatesStepPrefix) ||
+                      step.starts_with(xar::ck3_12003::
+                          kArmyCommanderAssignmentStepPrefix) ||
                       step.starts_with(xar::game::kWarOccupationTargetsV1StepPrefix)))) &&
                     (step.starts_with(xar::ck3_12003::
                                          kArmyCommanderAssignmentStepPrefix) ||
@@ -16154,12 +16437,24 @@ void RunConnectedSession(
                   pipe, CommandResultFrame(request_id, step, false,
                                            "private Council snapshot unavailable"));
             } else {
-              const auto response =
-                  xar::bridge::ExecuteCouncilApplicationMainPrivateStepV1(
-                      g_council_application_main_private_transport_v1,
-                      step, incoming.payload, request_id,
-                      *previous_snapshot, state_revision);
+              const bool actual12004 = xar::game::IsCk3_12004Descriptor(game.descriptor());
+              const auto response = actual12004
+                  ? RunCouncilPrivate12004(game, step, incoming.payload, request_id,
+                        *previous_snapshot, state_revision)
+                  : xar::bridge::ExecuteCouncilApplicationMainPrivateStepV1(
+                        g_council_application_main_private_transport_v1,
+                        step, incoming.payload, request_id,
+                        *previous_snapshot, state_revision);
               connected = write_frame(pipe, response);
+              if (connected && actual12004 && g_council_private12004.publish_after_ack) {
+                g_council_private12004.publish_after_ack = false;
+                // Council fields are absent from the coarse Snapshot. Publish a
+                // real post-ACK frame so the later independent ticket can bind
+                // its receipt to the actual publisher revision, like lifestyle.
+                previous_snapshot.reset();
+                connected = PublishSnapshot(pipe, game, previous_snapshot, state_revision,
+                    checkpoint_submission, published_checkpoint_sequence);
+              }
             }
           } else
 #endif
@@ -17182,8 +17477,16 @@ void RunConnectedSession(
             const auto result =
                 xar::ck3_11906::ArmTacticalDailySentinelV1(
                     tactical_sentinel_request);
-            if (result == xar::ck3_11906::
-                              TacticalDailySentinelArmStatusV1::armed) {
+            if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+              const auto status = result == xar::ck3_11906::
+                  TacticalDailySentinelArmStatusV1::armed
+                  ? xar::ck3_11906::ReadTacticalDailySentinelStatusV1()
+                  : xar::ck3_11906::TacticalDailySentinelStatusV1{};
+              connected = write_frame(
+                  pipe, xar::ck3_12004::SerializeTacticalDailySentinelArmResult12004(
+                            request_id, step, result, status));
+            } else if (result == xar::ck3_11906::
+                                     TacticalDailySentinelArmStatusV1::armed) {
               connected = write_frame(
                   pipe, TacticalDailySentinelResultFrame(
                             request_id, step,
@@ -17217,7 +17520,11 @@ void RunConnectedSession(
                     tactical_sentinel_cancel_generation);
             using CancelStatus = xar::ck3_11906::
                 TacticalDailySentinelCancelStatusV1;
-            if (result == CancelStatus::canceled) {
+            if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+              connected = write_frame(
+                  pipe, xar::ck3_12004::SerializeTacticalDailySentinelCancelResult12004(
+                            request_id, step, result));
+            } else if (result == CancelStatus::canceled) {
               connected = write_frame(
                   pipe, CommandResultFrame(request_id, step, true,
                                            "canceled"));
@@ -17238,11 +17545,12 @@ void RunConnectedSession(
             }
           } else if (step == xar::ck3_11906::
                                       kTacticalDailySentinelStatusStepV1) {
+            const auto status = xar::ck3_11906::ReadTacticalDailySentinelStatusV1();
             connected = write_frame(
-                pipe, TacticalDailySentinelResultFrame(
-                          request_id, step,
-                          xar::ck3_11906::
-                              ReadTacticalDailySentinelStatusV1()));
+                pipe, xar::game::IsCk3_12004Descriptor(game.descriptor())
+                    ? xar::ck3_12004::SerializeTacticalDailySentinelResult12004(
+                          request_id, step, status)
+                    : TacticalDailySentinelResultFrame(request_id, step, status));
           } else if (const auto target_character_id =
                          xar::ck3_11906::ParseSetPlayedCharacterV1Step(step);
                      target_character_id.has_value()) {
@@ -22120,6 +22428,7 @@ void RunConnectedSession(
               }
             }
           }
+          }
         } else if (
             step == xar::ck3_11906::
                         kZhongguoAiOwnedCaseSnapshotV1Step) {
@@ -22254,6 +22563,10 @@ void RunConnectedSession(
         if (!native_step_dispatched) {
           native_step_dispatched = true;
         if (step == xar::ck3_11906::kLoadedFeatureManifestV1Step) {
+          if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+            connected = write_frame(pipe, RunTypedQuery12002(
+                game, state, request_id, step, incoming.payload));
+          } else {
           std::uint64_t expected_revision = 0;
           if (!xar::ck3_11906::ParseLoadedFeatureManifestExpectedRevisionV1(
                   incoming.payload, expected_revision)) {
@@ -26992,6 +27305,17 @@ XarCk3BridgePrepareStartup(LPVOID) noexcept {
     const auto bindings = BindBattleForQuery12004(base, sha);
     auto environment = xar::ck3_12004::BindBattleJournalImage12004(base, sha, bindings);
     environment.primary_thread_suspended_proven = true;
+    xar::ck3_11906::TacticalDailySentinelInstallEnvironmentV1
+        tactical_sentinel_environment{};
+    tactical_sentinel_environment.exact_build_admitted = true;
+    tactical_sentinel_environment.primary_thread_suspended_proven = true;
+    tactical_sentinel_environment.module_base = base;
+    tactical_sentinel_environment.bindings =
+        xar::ck3_12004::BindTacticalDailySentinelImage12004(base, sha);
+    if (!xar::ck3_12004::InstallTacticalDailySentinel12004(
+            g_tactical_daily_sentinel_v1, tactical_sentinel_environment, sha)) {
+      return FALSE;
+    }
     return xar::ck3_12002::InstallBattleTerminalJournalV1(
         g_battle_terminal_journal_12002_v1, environment) ? TRUE : FALSE;
   }

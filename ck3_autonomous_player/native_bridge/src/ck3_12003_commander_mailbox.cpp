@@ -1,4 +1,6 @@
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
+#include "xar_bridge/ck3_12004_combat.hpp"
+#include "xar_bridge/ck3_12004_province.hpp"
 
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
@@ -145,11 +147,13 @@ bool ExecuteArmyCommanderCandidatesMailbox(
       bindings, envelope->expected_snapshot, query.army_id,
       query.observation);
   if (query.target_province_id.has_value()) {
-    // Actual .4 target-roll needs the selected Province/Combat family bindings.
-    // Until supplied here, the shared DTO reader reports its existing explicit
-    // target_province_bindings_unavailable reason without invoking old callbacks.
     const auto target_bindings = actual4
-        ? CommanderTargetRollBindings{}
+        ? ck3_12004::BindCommanderTargetRollImage12004(
+              query.image_base, envelope->game->descriptor().executable_sha256,
+              ck3_12004::BindProvinceImage12004(
+                  query.image_base, envelope->game->descriptor().executable_sha256),
+              ck3_12004::BindCombatImage12004(
+                  query.image_base, envelope->game->descriptor().executable_sha256))
         : BindCommanderTargetRollImage(
               query.image_base, envelope->game->descriptor().executable_sha256);
     ReadArmyCommanderCandidateTargetRollBounds(

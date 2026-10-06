@@ -2,12 +2,18 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12004_commands.hpp"
+#include "xar_bridge/ck3_12004_combat.hpp"
+#include "xar_bridge/ck3_12004_military.hpp"
+#include "xar_bridge/ck3_12004_diplomacy.hpp"
+#include "xar_bridge/ck3_12004_war_declarations.hpp"
+#include "xar_bridge/ck3_12004_war_cash_claim_terms.hpp"
 #include "xar_bridge/ck3_12004_family_relationships.hpp"
 #include "xar_bridge/ck3_12004_province.hpp"
 #include "xar_bridge/ck3_12004_snapshot_foundation.hpp"
 #include "xar_bridge/ck3_12004_world.hpp"
 #include "xar_bridge/ck3_12004_army.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
+#include "xar_bridge/ck3_12003_commander_assignment_mailbox.hpp"
 
 #include <windows.h>
 #include <array>
@@ -38,8 +44,37 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.state.player-armies", "game.state.army-routes",
       "game.command.query-army-strengths-v1",
       ck3_12003::kArmyCommanderCandidatesCapability,
+      ck3_12003::kArmyCommanderCandidatesForTargetCapability,
+      ck3_12003::kArmyCommanderAssignmentCapability,
       "game.command.query-player-mercenary-context-v1",
       "game.command.hire-mercenary-v1", "game.command.hire-holy-order-v1",
+      "game.command.query-loaded-feature-manifest-v1",
+      "game.command.query-combat-simulation-inputs-v2-N",
+      "game.command.query-player-default-raise-v1",
+      "game.command.raise-troops-default",
+      "game.command.preview-move-army-N-to-N",
+      "game.command.move-army-N-to-N",
+      "game.command.halt-army-N",
+      "game.command.disband-army-N",
+      "game.command.split-army-half-N",
+      "game.command.merge-armies-N-with-N",
+      "game.command.start-assault-N",
+      "game.command.stop-assault-N",
+      "game.command.query-battle-control-snapshot-v1-N",
+      "game.command.query-battle-transition-v1-N",
+      "game.command.query-battle-terminal-transition-v1",
+      "game.command.query-battle-reinforcement-assignment-v1-N",
+      "game.command.query-war-entry-assessments-v1-N",
+      "game.command.query-declarable-wars",
+      "game.command.declare-war-N",
+      "game.command.enforce-demands-N",
+      "game.command.query-war-occupation-targets-v1-N",
+      "game.command.query-war-termination-options-N",
+      "game.command.query-war-termination-terms-v1-N",
+      "game.command.surrender-war-N",
+      "game.command.offer-white-peace-N",
+      "game.adapter.exact-build",
+      "game.adapter.minimized-headless",
       "game.command.pause-map", "game.command.resume-map",
       "game.command.set-speed-1", "game.command.set-speed-2",
       "game.command.set-speed-3", "game.command.set-speed-4",
@@ -59,6 +94,17 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
   if (!bindings.core.enabled) return bindings;
   bindings.commands = ck3_12004::BindCommandImage12004(
       image_base, executable_sha256);
+  bindings.combat = ck3_12004::BindCombatImage12004(
+      image_base, executable_sha256);
+  bindings.military = ck3_12004::BindMilitaryImage12004(
+      image_base, executable_sha256, bindings.commands);
+  bindings.native_maa_recruitment =
+      ck3_12004::BindNativeMaaRecruitmentImage12004(
+          image_base, executable_sha256);
+  bindings.native_maa_create = ck3_12004::BindNativeMaaCreateImage12004(
+      image_base, executable_sha256);
+  // The concrete adapter repairs this borrow after moving the bundle.
+  bindings.military.submit_context = nullptr;
   bindings.armies = ck3_12004::BindArmyImage12004(image_base, executable_sha256);
   bindings.owned_regiments.persistent_regiment_storage_slot =
       bindings.armies.persistent_regiment_storage_slot;
@@ -66,6 +112,13 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
   bindings.world = ck3_12004::BindWorldImage12004(image_base, executable_sha256);
   bindings.provinces = ck3_12004::BindProvinceImage12004(
       image_base, executable_sha256, bindings.armies);
+  bindings.diplomacy = ck3_12004::BindDiplomacyImage(
+      image_base, executable_sha256, bindings.core, bindings.commands);
+  bindings.declarations = ck3_12004::BindDeclarationsImage12004(
+      image_base, executable_sha256, bindings.commands);
+  bindings.terms = ck3_12004::BindClaimTermsImage(
+      image_base, executable_sha256, bindings.core, bindings.world,
+      bindings.provinces);
   try {
     bindings.snapshot_foundation12004 =
         std::make_shared<const ck3_12004::SnapshotFoundationBindings>(

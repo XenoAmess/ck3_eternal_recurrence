@@ -4,6 +4,8 @@
 #include <windows.h>
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_army_support.hpp"
+#include "xar_bridge/ck3_12004_war.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/ck3_12003_army_reserve.hpp"
 #include "xar_bridge/ck3_12003_war_occupation.hpp"
@@ -107,6 +109,14 @@ public:
       occupation_bindings_ = ck3_12003::BindWarOccupationTargetsImageV1(
           reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
           descriptor.executable_sha256);
+    } else if (IsCk3_12004Descriptor(descriptor)) {
+      const auto image_base =
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+      reserve_bindings_ = ck3_12004::BindPlayerArmyReserveImage12004V1(
+          image_base, descriptor.executable_sha256);
+      occupation_bindings_ = ck3_12004::BindWarOccupationTargets12004(
+          image_base, descriptor.executable_sha256, bindings_.world,
+          bindings_.provinces);
     }
     // Both callbacks borrow this member, never the temporary binding bundle.
     bindings_.events.submit_context = &bindings_.commands;
@@ -259,7 +269,8 @@ public:
   ck3_12002::PrewarDefaultMusterStatusV1 ReadPlayerDefaultRaise(
       ck3_12002::PlayerDefaultRaiseObservationV1 &output) const noexcept {
     output = {};
-    if (!IsCk3_12003Descriptor(*descriptor_)) return output.status;
+    if (!IsCk3_12003Descriptor(*descriptor_) &&
+        !IsCk3_12004Descriptor(*descriptor_)) return output.status;
     const auto status = ck3_12002::ReadPlayerDefaultRaiseV1(
         bindings_.military, WorldAccess(), output);
     ck3_12003::ReadPlayerUnraisedTroopsV1(reserve_bindings_, WorldAccess(), output);
@@ -452,7 +463,8 @@ public:
   ReadWarOccupationTargetsV1Result read_war_occupation_targets_v1(
       std::int32_t war, WarOccupationTargetsV1 &output) const noexcept override {
     output = {};
-    if (!IsCk3_12003Descriptor(*descriptor_))
+    if (!IsCk3_12003Descriptor(*descriptor_) &&
+        !IsCk3_12004Descriptor(*descriptor_))
       return ReadWarOccupationTargetsV1Result::unavailable;
     Snapshot scope{};
     if (!read_snapshot(scope))

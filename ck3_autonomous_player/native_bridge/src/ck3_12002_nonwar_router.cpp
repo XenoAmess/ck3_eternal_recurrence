@@ -240,12 +240,35 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
 }
 
 void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept {
+#if defined(XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1)
+  out.government = &bridge::private_observer::ExecuteGovernmentRuntimeAdapterPrivateOperationV1;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
   out.clergy = &ExecutePlayerClergyAppointmentMailbox12002;
   out.county_conversion_task_action = &ExecutePlayerCountyConversionTaskActionMailbox12003;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+  out.religion = &ExecutePlayerReligionMailbox12002;
   out.holy_order_context = &ck3_12003::ExecutePlayerHolyOrderContextMailbox12003;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+  out.religion_hostility = &ExecutePlayerReligionHostilityMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+  out.religion_doctrine_catalogue = &ExecutePlayerReligionDoctrineCatalogueMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1)
+  out.religion_numeric_special_parameters = &ExecutePlayerReligionNumericSpecialParametersMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1)
+  out.religion_personal_parameters = &ExecutePlayerReligionPersonalParametersMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  out.religion_conversion = &ExecutePlayerReligionConversionTermsMailbox12002;
+  out.religion_conversion_choices = &ExecutePlayerReligionConversionChoicesMailbox12002;
+  out.religion_conversion_inputs = &ExecutePlayerReligionConversionInputsMailbox12002;
+  out.religion_conversion_reasons = &ExecutePlayerReligionConversionReasonsMailbox12002;
+  out.religion_conversion_outcome = &ExecutePlayerReligionConversionOutcomeMailbox12002;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   out.prisoner_collection = &ck3_12004::ExecutePlayerPrisonerCollection12004;
@@ -350,13 +373,36 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
                              std::string_view step) noexcept {
   if (!adapter.enabled() ||
       !game::IsCk3_12004Descriptor(adapter.descriptor())) return false;
+#if defined(XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1)
+  if (IsGovernmentRuntimeAdapterQuery12002(step)) return true;
+#endif
   (void)step;
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
   if (IsPlayerClergyAppointmentPrivateStep12002(step)) return true;
   if (IsPlayerCountyConversionTaskActionPrivateStep12003(step)) return true;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionPrivateStep12002(step)) return true;
   if (ck3_12003::IsPlayerHolyOrderContextPrivateStep12003(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionHostilityPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionDoctrineCataloguePrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionNumericSpecialParametersPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionPersonalParametersPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionConversionTermsPrivateStep12002(step)) return true;
+  if (IsPlayerReligionConversionChoicesPrivateStep12002(step)) return true;
+  if (IsPlayerReligionConversionInputsPrivateStep12002(step)) return true;
+  if (IsPlayerReligionConversionReasonsPrivateStep12002(step)) return true;
+  if (IsPlayerReligionConversionOutcomePrivateStep12002(step)) return true;
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   std::uint32_t prisoner_ordinal = 0;

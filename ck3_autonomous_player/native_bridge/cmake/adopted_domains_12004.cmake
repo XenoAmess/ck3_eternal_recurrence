@@ -261,3 +261,15 @@ if(BUILD_TESTING AND WIN32)
     COMMAND $<TARGET_FILE:xar_ck3_12004_religion_adopted_addons_whole_test>
       "${CMAKE_CURRENT_BINARY_DIR}/wire/ck3_12004_religion_adopted_addons_native.json")
 endif()
+
+# Final adopted actual-.4 factories. The owning fixture leaf registers no Runtime
+# source, so register the three genuine factory TUs once here.
+target_sources(xar_ck3_12002_runtime PRIVATE
+  src/ck3_12004_combat.cpp
+  src/ck3_12004_military.cpp
+  src/ck3_12004_commander_assignment.cpp)
+
+# Reuse the exact owned whole-producer declarations once. Clergy owns its three
+# Runtime TUs and two new targets, including necessary legacy link compatibility.
+include("${CMAKE_CURRENT_LIST_DIR}/existing_factories_12004.cmake")
+include("${CMAKE_CURRENT_LIST_DIR}/clergy_appointment_12004_whole_fixture.cmake")
