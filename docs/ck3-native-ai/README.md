@@ -1116,3 +1116,7 @@ flowchart TD
 - [悔罪来源与恢复输入](religion-repentance-recovery-inputs-12003.md)。
 
 以上新增实现已聚焦static-ready；actual当前军务五日OODA与新DLL能力实测分开记录，详见统一进度入口。
+
+## Associated refill current and phase input source continuation (2026-10-06T09:26:17+08:00)
+
+仅后台继续：associated refill物理ADD一次、DATA按occurrence刷新current/max的新生产字段首次1/1 GREEN，bounded static-ready，actual仍false/null；完整月度、真实兵力变化未完成。phase adopted Rite参数最小source树/Mermaid已交，仍research，optional V2叶与人物identity census正在施工，不授完整V3/forecast/live。新game/nativebuild/旧tests0，原h9586/5996日/natural0不变。[FIRST](Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/associated-refill-current-assembly/FIRST-PYTHON-CASE-RECEIPT.json)、[phase原生入口](combat-phase-readonly-input-frontier-12003.md)。
