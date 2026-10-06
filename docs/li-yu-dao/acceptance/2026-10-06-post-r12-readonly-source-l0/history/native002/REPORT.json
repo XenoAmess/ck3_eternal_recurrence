@@ -1,0 +1,85 @@
+{
+  "schema": "lyd.post-r12.nativebuild001-facts-addendum.v1",
+  "created_at_utc": "2026-10-06T09:19:42.667900+00:00",
+  "status": "PRODUCER_BUILD_SUCCEEDED_ENVIRONMENT_RED_WRAPPER_CACHE_VERIFIER_ERROR_QUALIFICATION_PENDING",
+  "predecessor_INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/INDEX.json",
+    "bytes": 6489,
+    "sha256": "508d1c09a16ee319005b40423911ed536366d9d2983c5761ecf2c21ce0a9988f"
+  },
+  "original_nativebuild001_INDEX": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-actual-native-build-20261006-001/INDEX.json",
+    "bytes": 7147,
+    "sha256": "be0b323932ed5fc90c227beb544bf6708bb2803157a5b89678abcdb255109499"
+  },
+  "original_RESULT_sha256": "75819cf34f9dd2fc350e90266f66623ca7f7f4c2c2f345685235ab324cc15e02",
+  "actual_dirty_source_HEAD_anchor": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "actual_source_kind": "ACTUAL_DIRTY_WORKTREE_NOT_A_CLEAN_HEAD_ARTIFACT",
+  "native_source_before_after_identical": true,
+  "canonical_producer_configured": true,
+  "canonical_producer_built": true,
+  "canonical_producer_build_succeeded": true,
+  "producer_refs": {
+    "canonical_producer": {
+      "path": "C:/lyd13-native-20261006-001/native-msvc-result.json",
+      "bytes": 1813,
+      "sha256": "5f25f3063ac4d4107047006342ac1089d6573133d5e2e66473816130aab75f58"
+    },
+    "actual_cmake_cache": {
+      "path": "C:/lyd13-native-20261006-001/CMakeCache.txt",
+      "bytes": 37788,
+      "sha256": "0a0eef93e083b44c9f3408822fe5753fc392bc30f39adc7ac11f8fbd1ada777d"
+    },
+    "receipt": {
+      "path": "C:/lyd13-native-20261006-001/defender-exe-exclusions/20261006T091602Z-f7c50faa/receipt.json",
+      "bytes": 2567,
+      "sha256": "e58b29664d2a50be9fada1fbd7ac2b39c0d107e84d6a8b36629910b548a24ddd"
+    },
+    "manifest": {
+      "path": "C:/lyd13-native-20261006-001/defender-exe-exclusions/20261006T091602Z-f7c50faa/manifest.json",
+      "bytes": 3513,
+      "sha256": "bf863529d2190a88937e7f9111961ba81951be239eddc147fc2d0078d2529435"
+    }
+  },
+  "four_product_descriptors_external_not_read": {
+    "xar_ck3_bridge": {
+      "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge.dll",
+      "bytes": 6806528,
+      "sha256": "c0a48a4cd7ecdeb402f62426a17a62ac34e4635fda2bf4a6fb3ca87bdc059fbf"
+    },
+    "xar_ck3_bridge_injector": {
+      "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge_injector.exe",
+      "bytes": 39936,
+      "sha256": "d22db5c67597889fdbf62620e604c4612ec9c7386be04f1ff05c43fa1ebcaf9a"
+    },
+    "xar_confucian_assembly_predicates_v1_test": {
+      "path": "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe",
+      "bytes": 119808,
+      "sha256": "ad69d9233ff397d730a0e9116844b23c51a718cd793ac24d9fac7e2792ffc75e"
+    },
+    "xar_confucian_religious_title_readback_v1_test": {
+      "path": "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe",
+      "bytes": 100864,
+      "sha256": "b72cb24651a62d4b1b947e01363cf9a1ddb27f7c32ca09623f77e2a8138a03ad"
+    }
+  },
+  "outer_original_exit_code": 1,
+  "Defender_settings_status": "settings_failed",
+  "Defender_WMI_error": "(-2147352567, '发生意外。', (0, 'SWbemObjectEx', '常规故障 ', None, 0, -2147217407), None)",
+  "original_wrapper_actual_compilation_pass": false,
+  "original_wrapper_flags": {},
+  "original_wrapper_exact_flags_verified": false,
+  "wrapper_failure_classification": "ROOT-observed cache regex omitted CRLF normalization; author verifier error, not compiler failure",
+  "actual_cache_CRLF_line_count": 906,
+  "actual_cache_LF_count": 906,
+  "corrected_flag_qualification_result": null,
+  "native_first_two_test_results": null,
+  "original_two_tests_execution_count": 0,
+  "actual_rebuild_by_author": false,
+  "AV_retry_or_configuration_change_by_author": false,
+  "clean_HEAD_artifact_credit": false,
+  "new_native_private23_runtime": false,
+  "formal_I3b_C3_I4_credit": null,
+  "wholephase_GREEN": false,
+  "author_main_Git_game_pipe_collector_calls": 0
+}

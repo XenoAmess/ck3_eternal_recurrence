@@ -1,0 +1,565 @@
+{
+  "schema": "lyd.post-r12.readonly-root-import-plan.v1",
+  "source_head_historical": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "runtime_acceptance": "NOT_RUN",
+  "apply_allowed_by_author": false,
+  "authority": "ROOT executes after actual closed boundary; source author does not execute importer",
+  "target": "C:/workspace/ck3_eternal_recurrence/docs/li-yu-dao/acceptance/2026-10-06-post-r12-readonly-source-l0",
+  "importer": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/root_import_post_r12_readonly_source_l0_20261006_004.py",
+    "bytes": 12577,
+    "sha256": "6efe7279c5e5f055314893a3140ec7191d10c45057d7596757d89e2b5a803306"
+  },
+  "historical_packages": [
+    {
+      "directory": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001",
+      "destination_prefix": "history/source001",
+      "index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/INDEX.json",
+        "bytes": 6489,
+        "sha256": "508d1c09a16ee319005b40423911ed536366d9d2983c5761ecf2c21ce0a9988f"
+      },
+      "origin_map": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/ORIGIN-MAP.json",
+        "bytes": 20593,
+        "sha256": "a827d1f88ace1d9d15cb76123b8ae9438fc2cd172bfab797d45a16947bee0cda"
+      },
+      "payload_count": 31
+    },
+    {
+      "directory": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-native-build001-addendum-20261006-002",
+      "destination_prefix": "history/native002",
+      "index": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-native-build001-addendum-20261006-002/INDEX.json",
+        "bytes": 5685,
+        "sha256": "ba8b4c7a8f95195f63ade405b1df67783cb74afa3f7a7d3d7dbb3da32f3e3778"
+      },
+      "origin_map": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-native-build001-addendum-20261006-002/ORIGIN-MAP.json",
+        "bytes": 23808,
+        "sha256": "ff2f270a8864d6fda4f1d92992f9594dc4542bddc683e2ff6ee53e34a04c0165"
+      },
+      "payload_count": 27
+    }
+  ],
+  "new_originals": [
+    {
+      "role": "actual native supplemental frozen INDEX",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/INDEX.json",
+        "bytes": 6814,
+        "sha256": "21ac3d41edb10487ee150d61dc13379f66bf42c13fb5459bd9b9c36db0851347"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/after_tests/head.stdout.bin",
+        "bytes": 41,
+        "sha256": "2588775c5bc2f1426e459e17f661e51fcf6345f46c6d8640dcc9c3fa9ae44a38"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/after_tests/head_native_tree.stdout.bin",
+        "bytes": 41,
+        "sha256": "dce4857ba681dee5139a2e40b505f176743b52af97d0e880337472c8c167f58e"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/after_tests/NATIVE-INVENTORY.json",
+        "bytes": 760963,
+        "sha256": "a145318c3ab19eb29854300233b18f8de3d70873b436073381e0fc64d6ee23ec"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/after_tests/native_HEAD_delta.stdout.bin",
+        "bytes": 9265,
+        "sha256": "6ca4af9f94b6cc5c138c6a75125513f2a431109b63073b21815dd9af99d4f542"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/after_tests/native_index_delta.stdout.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/after_tests/native_status.stdout.bin",
+        "bytes": 1704,
+        "sha256": "6c1e5f0bb0ddafaaeb17bcebbab4b4638d9d72c5bcf3925016e3e78552407e19"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/after_tests/native_tracked_paths.stdout.bin",
+        "bytes": 299277,
+        "sha256": "6cb975c3b1456c4002a1080fc93b5d3a3d29a86a2393bf3f97b603af646961f7"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/after_tests/SOURCE-STATE.json",
+        "bytes": 5825,
+        "sha256": "ce70e7563277095527e1fd94bbd760a975ba3830cf73ee6a800b4c9152c2558a"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/after_tests/whole_worktree_status.stdout.bin",
+        "bytes": 283227,
+        "sha256": "b14649342df69b5844bec83bae26f8e962884cf42f2ae1af99f1415755e8bc41"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/before_tests/head.stdout.bin",
+        "bytes": 41,
+        "sha256": "2588775c5bc2f1426e459e17f661e51fcf6345f46c6d8640dcc9c3fa9ae44a38"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/before_tests/head_native_tree.stdout.bin",
+        "bytes": 41,
+        "sha256": "dce4857ba681dee5139a2e40b505f176743b52af97d0e880337472c8c167f58e"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/before_tests/NATIVE-INVENTORY.json",
+        "bytes": 760963,
+        "sha256": "a145318c3ab19eb29854300233b18f8de3d70873b436073381e0fc64d6ee23ec"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/before_tests/native_HEAD_delta.stdout.bin",
+        "bytes": 9265,
+        "sha256": "6ca4af9f94b6cc5c138c6a75125513f2a431109b63073b21815dd9af99d4f542"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/before_tests/native_index_delta.stdout.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/before_tests/native_status.stdout.bin",
+        "bytes": 1704,
+        "sha256": "6c1e5f0bb0ddafaaeb17bcebbab4b4638d9d72c5bcf3925016e3e78552407e19"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/before_tests/native_tracked_paths.stdout.bin",
+        "bytes": 299277,
+        "sha256": "6cb975c3b1456c4002a1080fc93b5d3a3d29a86a2393bf3f97b603af646961f7"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/before_tests/SOURCE-STATE.json",
+        "bytes": 5833,
+        "sha256": "34d33905970f29874bb6fcf16e17fca48b58f85033a961a4ce7a1783319c29bf"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/before_tests/whole_worktree_status.stdout.bin",
+        "bytes": 283227,
+        "sha256": "b14649342df69b5844bec83bae26f8e962884cf42f2ae1af99f1415755e8bc41"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/CORRECTED-COMPILE-LINK-FACTS.json",
+        "bytes": 14158,
+        "sha256": "2fe541904f906402d4d91ce39af69f1d158bcf3b5911194a01efb0b9d389fe04"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/FRESH-NO-CK3-BEFORE-TESTS.json",
+        "bytes": 282,
+        "sha256": "7dc330178abd46676dedc604842e92e599299f15755eb6c2ba0831d7f703955b"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/RESULT.json",
+        "bytes": 16026,
+        "sha256": "03e2db70856182514439b2eed1a8419f9ad45ff5641651388b21fe052fb4370f"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/xar_confucian_assembly_predicates_v1_test.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/xar_confucian_assembly_predicates_v1_test.stdout.bin",
+        "bytes": 69,
+        "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/xar_confucian_religious_title_readback_v1_test.stderr.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "role": "actual compilation qualification / first native focused tests raw original",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/xar_confucian_religious_title_readback_v1_test.stdout.bin",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "role": "actual ROOT Python-only command/result/stdio",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-python-only-validation-20261006-001/argv.json",
+        "bytes": 186,
+        "sha256": "c6141f2b37eb6645afd905f22c2c60ac6eff68964219ddcddd4004c3e0096622"
+      }
+    },
+    {
+      "role": "actual ROOT Python-only command/result/stdio",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-python-only-validation-20261006-001/RESULT.json",
+        "bytes": 605,
+        "sha256": "eeb9fa6a3a404602edf7e0f307e9251c2f5facc27bd6b34089e255022fef7ed1"
+      }
+    },
+    {
+      "role": "actual ROOT Python-only command/result/stdio",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-python-only-validation-20261006-001/stdout.txt",
+        "bytes": 19,
+        "sha256": "c38064bdd4bdc664f834d2dbc07bebf7f516ec14d3f017b59aa579e65a09a490"
+      }
+    },
+    {
+      "role": "actual ROOT Python-only command/result/stdio",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-python-only-validation-20261006-001/stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "role": "actual Python-only original argv",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/root-r13-python-only-argv-20261006-001.json",
+        "bytes": 172,
+        "sha256": "ef275e975d1997d1f3d5a437cbcf1bcc65d4589220ea1efaa9b32fbdc900a044"
+      }
+    },
+    {
+      "role": "source-only actual supplemental verification author and argv",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-compiled-verification-first-tests-helper-20261006-001/INDEX.json",
+        "bytes": 1910,
+        "sha256": "b169f80d76e8a6c1373318bd8672d85fa72b3eb6d34f61c5eabf2de2897ad825"
+      }
+    },
+    {
+      "role": "source-only actual supplemental verification author and argv",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-compiled-verification-first-tests-helper-20261006-001/ROOT-ARGV.json",
+        "bytes": 460,
+        "sha256": "e675189dd50bec8c7ad023cc0340582030f7f4afa9cb559903453ea8eca93ebc"
+      }
+    },
+    {
+      "role": "source-only actual supplemental verification author and argv",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-compiled-verification-first-tests-helper-20261006-001/root_verify_r13_and_test.py",
+        "bytes": 12937,
+        "sha256": "eb60f749d17056dee1467f261c3d298bb366974fbca1a4c1fcf098490739df9c"
+      }
+    },
+    {
+      "role": "source-only actual supplemental verification author and argv",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-compiled-verification-first-tests-helper-20261006-001/SOURCE-ONLY-CHECKS.json",
+        "bytes": 878,
+        "sha256": "a6dbee5553595c8840b340c332ac795e06a74cf6e05919642157702e65ad3af9"
+      }
+    },
+    {
+      "role": "source-only actual supplemental verification author and argv",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-compiled-verification-first-tests-helper-20261006-001/OUTPUT-FIELD-CONTRACT.json",
+        "bytes": 2480,
+        "sha256": "2bf216da066dca96c8422bdc6ae6bf5984b02b5e664cdf59ca32e8f5f1eaad8f"
+      }
+    },
+    {
+      "role": "source-only independent review immutable INDEX",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-g2g3-public-checkpoint-interop-independent-review-20261006-001/review-package-002/INDEX.json",
+        "bytes": 10154,
+        "sha256": "b905c4e8fb62347910afdb24a2d977b3747c086a036f1c5b1c0d77971a7161b6"
+      }
+    },
+    {
+      "role": "source-only independent review current and historical failure metadata",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-g2g3-public-checkpoint-interop-independent-review-20261006-001/review-package-002/independent/ASSERT-GATE-READBACK.json",
+        "bytes": 2232,
+        "sha256": "0deaa128ef64b0fcff61c24ce3adb01a0c2f52afa555716258892b281ce1472e"
+      }
+    },
+    {
+      "role": "source-only independent review current and historical failure metadata",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-g2g3-public-checkpoint-interop-independent-review-20261006-001/review-package-002/independent/NEW-SEAM-CHALLENGES-002.json",
+        "bytes": 2680,
+        "sha256": "b4d20058197706c11599f48bcbc781710aeac8a32f0f455d440d2aadaa8a5571"
+      }
+    },
+    {
+      "role": "source-only independent review current and historical failure metadata",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-g2g3-public-checkpoint-interop-independent-review-20261006-001/review-package-002/independent/NEW-SEAM-CHALLENGES.json",
+        "bytes": 2767,
+        "sha256": "fd6a1559988237d50c9dc5a88e433b1da79a10df2799f7d2c34dd012e7f0ed43"
+      }
+    },
+    {
+      "role": "source-only independent review current and historical failure metadata",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-g2g3-public-checkpoint-interop-independent-review-20261006-001/review-package-002/REPORT.json",
+        "bytes": 53325,
+        "sha256": "b70ef8beddf0f39312d5fd5ac0cde70421fffa3ad5176af3368bb66481dfcfca"
+      }
+    },
+    {
+      "role": "source-only independent review current and historical failure metadata",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-g2g3-public-checkpoint-interop-independent-review-20261006-001/review-package-002/REPORT.md",
+        "bytes": 1033,
+        "sha256": "b84507054a47a3391dd00724aee377269f13a224e9bd6bd727e8711c6cb6f2b9"
+      }
+    },
+    {
+      "role": "independent source review referenced focused test raw stdout/stderr",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-python-readonly-addon-20261006-001/focused-run-001/stderr.txt",
+        "bytes": 9479,
+        "sha256": "a1bc599b6fd35197bd4aef68ecc643816d67bcfa763ebcdb89abdc70c0329a6f"
+      }
+    },
+    {
+      "role": "independent source review referenced focused test raw stdout/stderr",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-python-readonly-addon-20261006-001/focused-run-001/stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "role": "independent source review referenced focused test raw stdout/stderr",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-python-readonly-addon-20261006-001/focused-run-002/stderr.txt",
+        "bytes": 978,
+        "sha256": "1e3a5bdd33e3a70c8c1e067a6944df5a164622ce0c1e93fe6af28af4358105c5"
+      }
+    },
+    {
+      "role": "independent source review referenced focused test raw stdout/stderr",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-python-readonly-addon-20261006-001/focused-run-002/stdout.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    {
+      "role": "external-only private23 SOURCE_ONLY route metadata; not applied source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-c3-private23-route-adaptation-20261006-001/INDEX.json",
+        "bytes": 3182,
+        "sha256": "7235de1e8f8fc25f6b08d9e5c4beaa28ecf9bf682af10d3031c3ca403ba7d122"
+      }
+    },
+    {
+      "role": "external-only private23 SOURCE_ONLY route metadata; not applied source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-c3-private23-route-adaptation-20261006-001/REPORT.json",
+        "bytes": 2708,
+        "sha256": "9c9cab09db1c0a4fa46a2bcd46f77fa58422c5d9ca03010fc44fbc5600589f3f"
+      }
+    },
+    {
+      "role": "external-only private23 SOURCE_ONLY route metadata; not applied source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-c3-private23-route-adaptation-20261006-001/SOURCE-PINS.json",
+        "bytes": 5972,
+        "sha256": "4669b257c3e5907cafdaf78073208d84fc3b4a1868151c846d393019481b6135"
+      }
+    },
+    {
+      "role": "external-only private23 SOURCE_ONLY route metadata; not applied source",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-c3-private23-route-adaptation-20261006-001/SOURCE-SHAPE-CHECKS.json",
+        "bytes": 833,
+        "sha256": "db76e357c5a4e884d10fa8094293ee3b886edee8f7277bfcd582f04c121f0d93"
+      }
+    },
+    {
+      "role": "actual R12 closed/source freeze release authority",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-root-actual-closed-boundary-20261006-001/PREVIOUS-BOUNDARY.actual.json",
+        "bytes": 3364,
+        "sha256": "fb36f6044473f4e3ad22c652a2fb9c4ba29d8f8c63180c3f7b8f079451498d9f"
+      }
+    },
+    {
+      "role": "actual R12 closure prerequisite closure",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-root-actual-closed-boundary-20261006-001/CLOSURE.actual.json",
+        "bytes": 2019,
+        "sha256": "09c1877d86bf32f00c3d575d0f9a26f0491c9a0ace5682d4cf161bfbfe268318"
+      }
+    },
+    {
+      "role": "actual R12 closure prerequisite source_freeze_release",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-root-actual-closed-boundary-20261006-001/SOURCE-FREEZE-RELEASE.actual.json",
+        "bytes": 867,
+        "sha256": "00b79d972714a5ebf0d95bcde889d91bde37aea5161d317756120079ddd369cb"
+      }
+    },
+    {
+      "role": "actual R12 closure prerequisite process_absence",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-root-actual-closed-boundary-20261006-001/PROCESS-ABSENCE.actual.json",
+        "bytes": 713,
+        "sha256": "fac66cd768eae520c5307162c415ed5cedd0461942268c48471d392ac8308a06"
+      }
+    },
+    {
+      "role": "actual R12 closure prerequisite keeper_final",
+      "original": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/screen-lease-live-r0012/FINAL.json",
+        "bytes": 384,
+        "sha256": "e23e5ae5ec7821ea9b37e7d144cfece61062f7cad0cfb06d34cc816eacc3655f"
+      }
+    }
+  ],
+  "native_supplement_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/RESULT.json",
+    "bytes": 16026,
+    "sha256": "03e2db70856182514439b2eed1a8419f9ad45ff5641651388b21fe052fb4370f"
+  },
+  "python_only_result": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-python-only-validation-20261006-001/RESULT.json",
+    "bytes": 605,
+    "sha256": "eeb9fa6a3a404602edf7e0f307e9251c2f5facc27bd6b34089e255022fef7ed1"
+  },
+  "closed_boundary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-root-actual-closed-boundary-20261006-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3364,
+    "sha256": "fb36f6044473f4e3ad22c652a2fb9c4ba29d8f8c63180c3f7b8f079451498d9f"
+  },
+  "source48_refs": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/SOURCE-48-SHA-PROOF.json",
+    "bytes": 47168,
+    "sha256": "7fa90e41ed1e34ca690ff2f3a1b64257adc5f7f78d2388edecb31fcb9f77b9cb"
+  },
+  "expected_on_flags": [
+    "BUILD_TESTING",
+    "XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1",
+    "XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1",
+    "XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1",
+    "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1",
+    "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1",
+    "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1",
+    "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1",
+    "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1",
+    "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1",
+    "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1"
+  ],
+  "canonical_files": [
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-final-import-20261006-003/REPORT.json",
+        "bytes": 19259,
+        "sha256": "0a087fbf370c6fb523bbc950573c71a0fb5b852210b4c7e225443becf4ba9e27"
+      },
+      "destination": "REPORT.json"
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-final-import-20261006-003/REPORT.zh.md",
+        "bytes": 1601,
+        "sha256": "9a27a93de609ff452ca33d02042ebf8938f7aff0cd7cd6914ba44bbec8098178"
+      },
+      "destination": "REPORT.zh.md"
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-final-import-20261006-003/AUTHOR-CONTRACT-PROOF.json",
+        "bytes": 1809,
+        "sha256": "bf21b6fd875ef8c5bbd6b7f35123102610a1e67caf8f09b228d3223fd28d0380"
+      },
+      "destination": "AUTHOR-CONTRACT-PROOF.json"
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-final-import-20261006-003/ROOT-INSTRUCTIONS.md",
+        "bytes": 412,
+        "sha256": "a62f60b1b3ca841ba9bbfdc72cf588ca3419026331dc3590b7294231c564bb9c"
+      },
+      "destination": "ROOT-INSTRUCTIONS.md"
+    },
+    {
+      "source": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/root_import_post_r12_readonly_source_l0_20261006_004.py",
+        "bytes": 12577,
+        "sha256": "6efe7279c5e5f055314893a3140ec7191d10c45057d7596757d89e2b5a803306"
+      },
+      "destination": "ROOT-IMPORT-TOOL.source.py"
+    }
+  ],
+  "old_gzip_recompression_allowed": false,
+  "new_raw_gzip_lossless_root_only": true,
+  "large_binary_or_save_body_import_allowed": false
+}

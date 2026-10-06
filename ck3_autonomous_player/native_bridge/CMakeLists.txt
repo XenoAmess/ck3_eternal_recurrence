@@ -805,6 +805,10 @@ option(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1
   "Compile the private READY player_clergy_appointment_private_query_v1 candidate" OFF)
 option(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1
   "Compile the private READY player_rite_members_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1
+  "Compile the exact .3 read-only complete Faith assembly predicate observation" OFF)
+option(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1
+  "Compile the exact .3 read-only native Faith religious Title/holder/properties/laws observation" OFF)
 option(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1
   "Compile the private READY player_religion_doctrines_private_query_v1 candidate" OFF)
 option(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1
@@ -962,6 +966,18 @@ if(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_organization_members.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/src/religion_rite_governance12002_members_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_confucian_assembly_predicates.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_confucian_assembly_mailbox.cpp")
+endif()
+if(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
+  list(APPEND XAR_CK3_12002_SOURCES
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_title_properties_leaf.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_title_laws_leaf.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_religious_title_readback.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/src/ck3_12003_confucian_religious_title_mailbox.cpp")
 endif()
 if(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
   list(APPEND XAR_CK3_12002_SOURCES
@@ -1332,6 +1348,8 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1
@@ -8963,3 +8981,37 @@ include(cmake/daily_assault_roster_admission_12003.cmake)
 include(cmake/current_assault_removal_references_12003.cmake)
 include(cmake/pre_date_pending_and_dated_inputs_12003.cmake)
 include(cmake/current_post_admission_refresh_inputs_12003.cmake)
+
+# Additive focused fixture: native reads and JSON only, no game or input.
+if(BUILD_TESTING)
+  add_executable(xar_confucian_assembly_predicates_v1_test
+    src/ck3_12002.cpp
+    src/ck3_12002_phase_character.cpp
+    src/ck3_12003_confucian_assembly_predicates.cpp
+    src/ck3_12003_confucian_assembly_predicates_test.cpp)
+  target_include_directories(xar_confucian_assembly_predicates_v1_test PRIVATE include)
+  target_compile_features(xar_confucian_assembly_predicates_v1_test PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(xar_confucian_assembly_predicates_v1_test PRIVATE /W4 /WX /permissive- /EHsc)
+  endif()
+  add_test(NAME xar_confucian_assembly_predicates_v1_test COMMAND xar_confucian_assembly_predicates_v1_test)
+endif()
+
+# Focused current native religious-Title fixture; no game/pipe/provider invocation.
+if(BUILD_TESTING AND WIN32)
+  add_executable(xar_confucian_religious_title_readback_v1_test
+    src/ck3_12003_title_properties_leaf.cpp
+    src/ck3_12003_title_laws_leaf.cpp
+    src/ck3_12003_religious_title_readback.cpp
+    tests/ck3_12003_religious_title_readback_fixture.cpp)
+  target_link_libraries(xar_confucian_religious_title_readback_v1_test PRIVATE xar_ck3_12002_runtime)
+  target_include_directories(xar_confucian_religious_title_readback_v1_test PRIVATE include)
+  target_compile_features(xar_confucian_religious_title_readback_v1_test PRIVATE cxx_std_20)
+  target_compile_definitions(xar_confucian_religious_title_readback_v1_test PRIVATE
+    NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE)
+  if(MSVC)
+    target_compile_options(xar_confucian_religious_title_readback_v1_test PRIVATE /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_confucian_religious_title_readback_v1_test
+    COMMAND xar_confucian_religious_title_readback_v1_test)
+endif()

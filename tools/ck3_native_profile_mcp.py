@@ -16,6 +16,7 @@ from typing import Annotated, Literal
 from pydantic import Field
 
 NormalExitRevisionV1 = Annotated[int, Field(strict=True, gt=0, lt=2**64)]
+ConfucianReadonlyRevisionV1 = Annotated[int, Field(strict=True, gt=0, lt=2**64)]
 NormalExitSignatureV1 = Annotated[str, Field(strict=True, min_length=64, max_length=64, pattern=r"^[0-9a-f]{64}$")]
 StressBaseAmountV1 = Annotated[int, Field(strict=True, ge=-300, le=300)]
 StressQueryRevisionV1 = Annotated[int, Field(strict=True, ge=0, lt=2**64)]
@@ -593,6 +594,36 @@ class NativeProfileService:
                 "result": result, "snapshot_before": before, "snapshot_after_required": False,
                 "uses_ocr": False, "uses_desktop_input": False, "uses_injection": False})
 
+    def query_confucian_readonly(self, operation: str, expected_revision: int) -> dict:
+        from xar_autoplayer.bridge.confucian_readonly_private_v1 import (
+            PERMISSION, query_binding, same_query_frame, normalize_public_query,
+        )
+        if getattr(self, "_confucian_readonly_tools_enabled_v1", False) is not True:
+            raise RuntimeError("private Confucian readonly tools are disabled")
+        name = {"assembly_predicates": "query_confucian_assembly_predicates_v1",
+                "religious_title": "query_confucian_religious_title_v1"}.get(operation)
+        if name is None:
+            raise ValueError("unsupported private Confucian readonly operation")
+        with self._lock:
+            before = self._bound_frame(expected_revision, paused=True)
+            binding = query_binding(before, expected_revision)
+            gameplay = self._gameplay_service()
+            previous = getattr(self.driver, PERMISSION, False)
+            setattr(self.driver, PERMISSION, True)
+            try:
+                result = getattr(gameplay, name)(expected_revision=expected_revision)
+            finally:
+                setattr(self.driver, PERMISSION, previous)
+            after = self._bound_frame(expected_revision, paused=True)
+            if not same_query_frame(before, after, binding):
+                raise RuntimeError("profile Confucian readonly query crossed its paused owner/frame")
+            result = normalize_public_query(result, binding, operation)
+            return self._receipt("confucian-readonly-" + operation, {
+                "status": "native_confucian_readonly_" + result["native_result"]["status"],
+                "result": result, "business_effects_verified": False,
+                "full_product_acceptance_credit": False,
+            })
+
     def query_stress_adjustment(self, base_amount: int, expected_revision: int) -> dict:
         from xar_autoplayer.bridge.current_actor_stress_adjustment_contract import (
             validate_base_amount, stress_query_binding, same_stress_query_frame, normalize_public_stress_query,
@@ -864,7 +895,10 @@ def create_clock_server(service: NativeClockProfileService):
     return server
 
 
-def create_server(service: NativeProfileService, *, player_control_tools: bool = False):
+def create_server(service: NativeProfileService, *, player_control_tools: bool = False, confucian_readonly_tools: bool = False):
+    if type(confucian_readonly_tools) is not bool:
+        raise ValueError("confucian_readonly_tools must be an explicit boolean")
+    service._confucian_readonly_tools_enabled_v1 = confucian_readonly_tools
     if type(player_control_tools) is not bool:
         raise ValueError("player_control_tools must be an explicit boolean")
     if player_control_tools:
@@ -967,6 +1001,17 @@ def create_server(service: NativeProfileService, *, player_control_tools: bool =
                  "ck3_pause_profile_simulation_v1",
                  "ck3_select_profile_event_option_v1", "ck3_save_profile_checkpoint_v1"):
         _forbid_unknown_tool_arguments_v1(server, name)
+    if confucian_readonly_tools:
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+        def ck3_query_profile_confucian_assembly_predicates_v1(expected_revision: ConfucianReadonlyRevisionV1) -> dict[str, object]:
+            """Read the current Faith's complete native rosters/predicates; unknown values remain null."""
+            return service.query_confucian_readonly("assembly_predicates", expected_revision)
+        @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
+        def ck3_query_profile_confucian_religious_title_v1(expected_revision: ConfucianReadonlyRevisionV1) -> dict[str, object]:
+            """Read actual Faith-bound head-title graph/properties/laws; script ownership remains unknown."""
+            return service.query_confucian_readonly("religious_title", expected_revision)
+        for name in ("ck3_query_profile_confucian_assembly_predicates_v1", "ck3_query_profile_confucian_religious_title_v1"):
+            _forbid_unknown_tool_arguments_v1(server, name)
     if player_control_tools:
         @server.tool(annotations=ToolAnnotations(readOnlyHint=True, destructiveHint=False, idempotentHint=True, openWorldHint=False))
         def ck3_query_profile_player_control_context_v1(expected_revision: NormalExitRevisionV1) -> dict[str, object]:
@@ -991,10 +1036,12 @@ def main() -> None:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--profile", type=Path, required=True)
     parser.add_argument("--clock-only", action="store_true")
+    parser.add_argument("--confucian-readonly-tools", action="store_true",
+                        help="Explicit private bundle with two exact-current readonly Confucian queries; default inventory remains 21")
     parser.add_argument("--player-control-tools", action="store_true",
                         help="Resume the original attached DLL and admit 23 tools only after actual readonly capability/source proof")
     args = parser.parse_args()
-    if args.clock_only and args.player_control_tools:
+    if args.clock_only and (args.player_control_tools or args.confucian_readonly_tools):
         parser.error("--player-control-tools requires the native gameplay profile")
     if args.clock_only:
         create_clock_server(NativeClockProfileService(load_clock_profile(args.profile))).run(transport="stdio")
@@ -1005,7 +1052,8 @@ def main() -> None:
             resumed = service.resume()
             if resumed.get("status") != "resumed_snapshot_verified":
                 raise RuntimeError("explicit successor tools require successful original-DLL profile resume")
-        create_server(service, player_control_tools=args.player_control_tools).run(transport="stdio")
+        create_server(service, player_control_tools=args.player_control_tools,
+                      confucian_readonly_tools=args.confucian_readonly_tools).run(transport="stdio")
     finally:
         service.close()
 

@@ -1,0 +1,18 @@
+{
+  "authority": "ROOT_ACTUAL_NATIVE_SERIALIZATION_CROSSCHECK",
+  "fixture_only": false,
+  "title_variable_type": null,
+  "collection": null,
+  "sponsor_title_path": null,
+  "qualification_evidence": {
+    "path": null,
+    "bytes": null,
+    "sha256": null
+  },
+  "actual_native_collection_count": null,
+  "actual_native_collection_title_ids": null,
+  "actual_native_challenger_sponsor_title_ids": null,
+  "discovery_checkpoint_sha256": null,
+  "native_revision": null,
+  "meaning": "Unbound preparation only; caller markers are not native authentication."
+}

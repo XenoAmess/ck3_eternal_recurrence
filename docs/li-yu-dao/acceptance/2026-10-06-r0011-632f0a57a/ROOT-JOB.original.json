@@ -1,0 +1,357 @@
+{
+  "schema": "lyd.r11.ROOT-final-collection-job.v1",
+  "source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "repository": "C:/workspace/ck3_eternal_recurrence",
+  "final_SDK_cutoff": 111,
+  "canonical_closed_boundary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r11-root-actual-closed-boundary-20261006-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3368,
+    "sha256": "31a0d18f19178265ce1f23477932ea2c5fa79ffe8f83a795a60ce54918030bb5"
+  },
+  "canonical_REPORT_zh": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r11-report-terminal-final-20261006-001/CANONICAL-REPORT.zh.md",
+    "bytes": 4151,
+    "sha256": "a565aed88c7a6278ab54f960ba87e8c3c34de51a0161da831581bda2ea90a720"
+  },
+  "phase1_overall_complete": false,
+  "whole_acceptance_GREEN": false,
+  "packages": [
+    {
+      "name": "r11-report-draft-20261006-001",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-draft-20261006-001\\INDEX.json",
+        "bytes": 13452,
+        "sha256": "06b418c3eb43dc11091e43be2fd18faed638f1c3ce099dd96c7bf2218dbdd77e"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-prelaunch-addendum-20261006-001",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-prelaunch-addendum-20261006-001\\INDEX.json",
+        "bytes": 5653,
+        "sha256": "452ea6ce28fd2032caee78d5afc602364f682208a12867136ff8b85c48268ba0"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-prelaunch-addendum-20261006-002",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-prelaunch-addendum-20261006-002\\INDEX.json",
+        "bytes": 21384,
+        "sha256": "41b6b42d50ee4ed138291744f01a94fdb944e011b9b2d3aa14d071668c8cfd52"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-launch-profile-addendum-20261006-001",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-launch-profile-addendum-20261006-001\\INDEX.json",
+        "bytes": 16511,
+        "sha256": "3b5b60e280d8963761d20eb2c6e47d08c8065d188507582e6165f3f26ce198b4"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-first-cold-runtime-addendum-20261006-001",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-first-cold-runtime-addendum-20261006-001\\INDEX.json",
+        "bytes": 23290,
+        "sha256": "874f1a834de77bb7552c10cb6d17eb82486d61b02a536b84670e8cd49c32cff3"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-postreset-small-addendum-20261006-001",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-postreset-small-addendum-20261006-001\\INDEX.json",
+        "bytes": 17536,
+        "sha256": "01fd5dcf20ccb02677b06ccec9107de85a3f25a41b10dfbbd29ada806b5a8c1c"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-first-join2-opened-addendum-20261006-001",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-first-join2-opened-addendum-20261006-001\\INDEX.json",
+        "bytes": 12663,
+        "sha256": "3fe63d4c777a8280b131c127d0ea074399de29831f1ba840616113e0e787eb32"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-first-join2-cancelled-addendum-20261006-001",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-first-join2-cancelled-addendum-20261006-001\\INDEX.json",
+        "bytes": 27888,
+        "sha256": "9a70e7309a8028c28243ee998c96706064914427a78f254eedb4af1192ba0ac2"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-round18-first-release-addendum-20261006-001",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-round18-first-release-addendum-20261006-001\\INDEX.json",
+        "bytes": 42752,
+        "sha256": "3ad8df9911ae8a57a8fc6c6fb3ab77968af1af42b2e1249a1f793b2fea227733"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-reset8-second-emission-addendum-20261006-001",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-reset8-second-emission-addendum-20261006-001\\INDEX.json",
+        "bytes": 31577,
+        "sha256": "19ef2c4a29dad7ed04e7882911199e8cf531631b75352a7e9ba88550905dd7f3"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-round19-cancelled-second-lineage-addendum-20261006-001",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-round19-cancelled-second-lineage-addendum-20261006-001\\INDEX.json",
+        "bytes": 44246,
+        "sha256": "62725b5cacd84a31c767e3cf12c145ecb9084c0c296496c1e7f47b36c3ae1f58"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-round20-opened-precommit-pending-third-lineage-addendum-20261006-001",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-round20-opened-precommit-pending-third-lineage-addendum-20261006-001\\INDEX.json",
+        "bytes": 42295,
+        "sha256": "7fb46032d4005cd663c009f4f9f871303284e51122a3746f56f5171a22d459c6"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-precommit92-namespace97-post103-pending-addendum-20261006-001",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-precommit92-namespace97-post103-pending-addendum-20261006-001\\INDEX.json",
+        "bytes": 22823,
+        "sha256": "4b8f39fad65aeff97682fe8e59100bdc7cc4826365f60ad18cda3a0e9cded8f2"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-actual-join103-cycle-sdk104-addendum-20261006-001",
+      "INDEX": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-report-actual-join103-cycle-sdk104-addendum-20261006-001\\INDEX.json",
+        "bytes": 10653,
+        "sha256": "de85039f57d89705d3f9b833c9729885a46cf24b97c82b6dc44afca898deaa76"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-terminal-final-20261006-001",
+      "INDEX": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r11-report-terminal-final-20261006-001/INDEX.json",
+        "bytes": 64550,
+        "sha256": "872c4a90b4340ccd6a72b2b8501b6c72b01c1733b383d6f3e7580f5c78174fa9"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r11-report-closed-server-stderr-addendum-20261006-001",
+      "INDEX": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r11-report-closed-server-stderr-addendum-20261006-001/INDEX.json",
+        "bytes": 597,
+        "sha256": "563941bd62eac45c2eab58ca33f05156171ebacc82a20f19894ee1d3b462e999"
+      },
+      "frozen_immutable_history": true
+    }
+  ],
+  "final_facts": [
+    {
+      "name": "first_R11_cold_reload_preservation",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-actual-cold-reload-readback-20261006-001\\REPORT.json",
+        "bytes": 3579,
+        "sha256": "73bc46e20772ef4f39b0d6647ba43fc3c69e270f84946c9195c63cc61c194154"
+      },
+      "pointer": "/status",
+      "expected_value": "ACTUAL_FIRST_R11_COLD_RELOAD_PRESERVATION_PROVEN"
+    },
+    {
+      "name": "single_nonce20_final_JOIN",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-actual-round20-post-join-readback-20261006-001\\REPORT.json",
+        "bytes": 6922,
+        "sha256": "b78980a881024703c3f40651af6336a21ec8e36f2cebbeaa45c9904efac0a489"
+      },
+      "pointer": "/final_JOIN_credit",
+      "expected_value": true
+    },
+    {
+      "name": "future_final_cold_reload_not_credited",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-actual-round20-post-join-readback-20261006-001\\REPORT.json",
+        "bytes": 6922,
+        "sha256": "b78980a881024703c3f40651af6336a21ec8e36f2cebbeaa45c9904efac0a489"
+      },
+      "pointer": "/future_final_cold_reload_persistence_credit",
+      "expected_value": false
+    },
+    {
+      "name": "namespace97_original_claim_unresolved",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-decision-confirm-requested-event-mismatch-review-20261006-001\\REPORT.json",
+        "bytes": 7164,
+        "sha256": "024ede3d22b787ab905e924b04cd0137554844073dbb287e0f8732a4034aae61"
+      },
+      "pointer": "/claim_remains_unresolved",
+      "expected_value": true
+    },
+    {
+      "name": "cycle_historical_JOIN192_actual_result1_history2JOIN2DETACH_Rite169104",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-actual-round20-post-join-readback-20261006-001\\REPORT.json",
+        "bytes": 6922,
+        "sha256": "b78980a881024703c3f40651af6336a21ec8e36f2cebbeaa45c9904efac0a489"
+      },
+      "pointer": "/checks/cycle_historical_JOIN192_actual_result1_history2JOIN2DETACH_Rite169104",
+      "expected_value": true
+    },
+    {
+      "name": "cycle_historical_DETACH240_actual_result1_history2JOIN3DETACH_Rite169107",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-actual-round20-post-join-readback-20261006-001\\REPORT.json",
+        "bytes": 6922,
+        "sha256": "b78980a881024703c3f40651af6336a21ec8e36f2cebbeaa45c9904efac0a489"
+      },
+      "pointer": "/checks/cycle_historical_DETACH240_actual_result1_history2JOIN3DETACH_Rite169107",
+      "expected_value": true
+    },
+    {
+      "name": "cycle_actual_cold0005_preserved_detached_membership_history",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-actual-round20-post-join-readback-20261006-001\\REPORT.json",
+        "bytes": 6922,
+        "sha256": "b78980a881024703c3f40651af6336a21ec8e36f2cebbeaa45c9904efac0a489"
+      },
+      "pointer": "/checks/cycle_actual_cold0005_preserved_detached_membership_history",
+      "expected_value": true
+    },
+    {
+      "name": "cycle_actual_new_JOIN103_result1_history3JOIN3DETACH_Rite169104",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-actual-round20-post-join-readback-20261006-001\\REPORT.json",
+        "bytes": 6922,
+        "sha256": "b78980a881024703c3f40651af6336a21ec8e36f2cebbeaa45c9904efac0a489"
+      },
+      "pointer": "/checks/cycle_actual_new_JOIN103_result1_history3JOIN3DETACH_Rite169104",
+      "expected_value": true
+    },
+    {
+      "name": "cycle_all_cycle_HoR169_actor31254_target104main159_old106main187_kept",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-actual-round20-post-join-readback-20261006-001\\REPORT.json",
+        "bytes": 6922,
+        "sha256": "b78980a881024703c3f40651af6336a21ec8e36f2cebbeaa45c9904efac0a489"
+      },
+      "pointer": "/checks/cycle_all_cycle_HoR169_actor31254_target104main159_old106main187_kept",
+      "expected_value": true
+    },
+    {
+      "name": "cycle_all_cycle_political7_complete_AST_and_actor_landed_kept",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-actual-round20-post-join-readback-20261006-001\\REPORT.json",
+        "bytes": 6922,
+        "sha256": "b78980a881024703c3f40651af6336a21ec8e36f2cebbeaa45c9904efac0a489"
+      },
+      "pointer": "/checks/cycle_all_cycle_political7_complete_AST_and_actor_landed_kept",
+      "expected_value": true
+    },
+    {
+      "name": "cycle_all_cycle_three_person_protected_top_alive_Rites_kept",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-actual-round20-post-join-readback-20261006-001\\REPORT.json",
+        "bytes": 6922,
+        "sha256": "b78980a881024703c3f40651af6336a21ec8e36f2cebbeaa45c9904efac0a489"
+      },
+      "pointer": "/checks/cycle_all_cycle_three_person_protected_top_alive_Rites_kept",
+      "expected_value": true
+    },
+    {
+      "name": "cycle_historical_DETACH_wallet_delta_minus200G_minus1000P",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-actual-round20-post-join-readback-20261006-001\\REPORT.json",
+        "bytes": 6922,
+        "sha256": "b78980a881024703c3f40651af6336a21ec8e36f2cebbeaa45c9904efac0a489"
+      },
+      "pointer": "/checks/cycle_historical_DETACH_wallet_delta_minus200G_minus1000P",
+      "expected_value": true
+    },
+    {
+      "name": "cycle_fresh_JOIN_after_cold_wallet_delta_minus300G_minus1500P",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-actual-round20-post-join-readback-20261006-001\\REPORT.json",
+        "bytes": 6922,
+        "sha256": "b78980a881024703c3f40651af6336a21ec8e36f2cebbeaa45c9904efac0a489"
+      },
+      "pointer": "/checks/cycle_fresh_JOIN_after_cold_wallet_delta_minus300G_minus1500P",
+      "expected_value": true
+    },
+    {
+      "name": "cycle_all_cycle_XP0_school349_and_calendar_kept",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-actual-round20-post-join-readback-20261006-001\\REPORT.json",
+        "bytes": 6922,
+        "sha256": "b78980a881024703c3f40651af6336a21ec8e36f2cebbeaa45c9904efac0a489"
+      },
+      "pointer": "/checks/cycle_all_cycle_XP0_school349_and_calendar_kept",
+      "expected_value": true
+    },
+    {
+      "name": "actual_normal_exit_typed",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-root-actual-closed-boundary-20261006-001\\CLOSURE.actual.json",
+        "bytes": 2021,
+        "sha256": "90bcc276535dc5053cb39cd83900ccc9d3a0475bb41dcffc5ab8664ef4231776"
+      },
+      "pointer": "/typed_normal_exit_observed",
+      "expected_value": true
+    },
+    {
+      "name": "actual_original_game_exit0",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-root-actual-closed-boundary-20261006-001\\CLOSURE.actual.json",
+        "bytes": 2021,
+        "sha256": "90bcc276535dc5053cb39cd83900ccc9d3a0475bb41dcffc5ab8664ef4231776"
+      },
+      "pointer": "/exit_code",
+      "expected_value": 0
+    },
+    {
+      "name": "actual_source_freeze_released",
+      "ref": {
+        "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r11-root-actual-closed-boundary-20261006-001\\SOURCE-FREEZE-RELEASE.actual.json",
+        "bytes": 867,
+        "sha256": "d415a1aa9914a6b3c8a3f36bae77143da9ce400625630f01126dfb9ccece67d2"
+      },
+      "pointer": "/source_freeze_released",
+      "expected_value": true
+    }
+  ],
+  "closed_additional_originals": [],
+  "authoring_state": "ACTUAL_ROOT_CLOSED_FINAL_JOB_READY_ROOT_COLLECTOR_NOT_EXECUTED",
+  "apply_allowed": false,
+  "required_future_append": [],
+  "closed_original_entry_schema": {
+    "ref": {
+      "path": null,
+      "bytes": null,
+      "sha256": null
+    },
+    "role": "describe actual frozen evidence",
+    "closed_only": true
+  },
+  "Client_close_response_sequence": 112,
+  "prior_immutable_JOB": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r11-root-final-collection-job-20261006-001/JOB.json",
+    "bytes": 14464,
+    "sha256": "343c1bda956313d0352746acf85013d1a5a220b86ecb4f9bbeb787655404471a"
+  },
+  "SDK_protocol_stdout_aggregate_file_ref": null,
+  "all_future_active_file_refs_resolved_after_actual_closure": true
+}

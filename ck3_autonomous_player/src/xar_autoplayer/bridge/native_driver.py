@@ -1613,6 +1613,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_active_scheme_sway_query: bool = False,
         allow_private_active_scheme_sway_action: bool = False,
         allow_private_realm_law_paused_query: bool = False,
+        allow_private_confucian_readonly_queries: bool = False,
         allow_private_activity_planner_diag_query: bool = False,
         allow_private_prisoner_ransom_action: bool = False,
         allow_private_current_first_heir_relationship_query: bool = False,
@@ -1722,6 +1723,9 @@ class NativeHeadlessGameplayDriver:
         self.allow_private_active_scheme_sway_action = (
             allow_private_active_scheme_sway_action is True
         )
+        if type(allow_private_confucian_readonly_queries) is not bool:
+            raise ValueError("private Confucian readonly permission must be explicit boolean")
+        self.allow_private_confucian_readonly_queries = allow_private_confucian_readonly_queries
         self.allow_private_realm_law_paused_query = (
             allow_private_realm_law_paused_query is True
         )
@@ -18471,6 +18475,14 @@ class NativeHeadlessGameplayDriver:
         from .normal_exit_map_driver_v1 import request_normal_exit_v1
         return request_normal_exit_v1(self, action, expected_revision=expected_revision,
                                       expected_exit_context_signature=expected_exit_context_signature)
+
+    def query_confucian_assembly_predicates_v1(self, *, expected_revision: int) -> dict[str, object]:
+        from .confucian_readonly_private_v1 import query_confucian_readonly_private_v1
+        return query_confucian_readonly_private_v1(self, "assembly_predicates", expected_revision=expected_revision)
+
+    def query_confucian_religious_title_v1(self, *, expected_revision: int) -> dict[str, object]:
+        from .confucian_readonly_private_v1 import query_confucian_readonly_private_v1
+        return query_confucian_readonly_private_v1(self, "religious_title", expected_revision=expected_revision)
 
     def query_current_actor_stress_adjustment_v1(
         self, base_amount: int, *, expected_revision: int,

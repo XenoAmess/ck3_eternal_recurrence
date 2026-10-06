@@ -1,0 +1,25 @@
+{
+  "schema": "lyd.c3.checkpoint-reader-request.v1",
+  "source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "phase": "DISCOVER",
+  "actor_id": null,
+  "incumbent_id": null,
+  "political_title_ids": [
+    null,
+    null,
+    null,
+    null,
+    null,
+    null,
+    null
+  ],
+  "save": {
+    "path": null,
+    "bytes": null,
+    "sha256": null
+  },
+  "schema_binding": null,
+  "before_state": null,
+  "expected_serial": null,
+  "output": null
+}

@@ -1,0 +1,110 @@
+{
+  "schema": "lyd.post-r12.readonly-source-integration-draft.v1",
+  "status": "SOURCE_APPLIED_PYTHON17_PASS_NATIVE_BUILD_AND_TEST_PENDING",
+  "created_at_utc": "2026-10-06T09:08:40.913816+00:00",
+  "base_applied_source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "actual_R12_closed_boundary": {
+    "path": "C:\\workspace\\ck3_lyd_runtime_20261004\\r12-root-actual-closed-boundary-20261006-001\\PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3364,
+    "sha256": "fb36f6044473f4e3ad22c652a2fb9c4ba29d8f8c63180c3f7b8f079451498d9f"
+  },
+  "permanent_R11_R12_report_imports": [
+    {
+      "receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r11-root-global-import-receipt-after-r12-20261006-001/RECEIPT.json",
+        "bytes": 1038,
+        "sha256": "8af34593dd962d005fef3fade13985b7624a899109ee1a4a155950f0446cdc4b"
+      },
+      "actual_main_report_INDEX": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-06-r0011-632f0a57a\\INDEX.json",
+        "bytes": 356782,
+        "sha256": "85aa58f2a6de0e5177bcd7986a9dc190f6ffc1fb20b88245c26b5b7b8a3fdd81"
+      },
+      "candidate_INDEX": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r11-root-global-collected-candidate-20261006-002/INDEX.json",
+        "bytes": 356618,
+        "sha256": "5710d6cee444411d331d953a07ce10bf360349156f8634f55ce001515e92414f"
+      }
+    },
+    {
+      "receipt": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-root-global-import-receipt-20261006-001/RECEIPT.json",
+        "bytes": 1036,
+        "sha256": "e1ae273de47677fd87d0a6c9c7adff5caf46753c255d245c678013cb5a875f75"
+      },
+      "actual_main_report_INDEX": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\docs\\li-yu-dao\\acceptance\\2026-10-06-r0012-632f0a57a\\INDEX.json",
+        "bytes": 82500,
+        "sha256": "02937bdf1b2b38b103f723860827b27fcc559ee6b66b7fa5e0f6242ef53c62b3"
+      },
+      "candidate_INDEX": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-root-global-collected-candidate-20261006-001/INDEX.json",
+        "bytes": 82337,
+        "sha256": "eb838142321a49cb9c1de1fedd7231d93d06bc782e4d872f42c7b6487c822202"
+      }
+    }
+  ],
+  "ROOT_actual_native20_reader23_application": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/root-readers-native-exact-application-after-r12-20261006-001/APPLIED.json",
+    "bytes": 9166,
+    "sha256": "0eca606de946da4f2f414d680d67314b5fff6cd14008f03e8b74ca68387d334f"
+  },
+  "ROOT_actual_Python5_application": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/root-python-readonly-exact-application-after-r12-20261006-001/APPLIED.json",
+    "bytes": 1458,
+    "sha256": "75a7bff32bf0c690d5a59ccd462d47e63bcd23fe862a77a25ef1281dfa7d533a"
+  },
+  "source_manifest_refs": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-native-readonly-addon-20261006-003/APPLY-MANIFEST.json",
+      "bytes": 14958,
+      "sha256": "40926d666fa091e31ad42d9df7f2beaedae34d9ffba67f9b1d0cd8a26f93050d"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/checkpoint-readers-integration-plan-independent-review-20261006-001/review-package-001/CONSOLIDATED-TARGET-MANIFEST.json",
+      "bytes": 29560,
+      "sha256": "9131a3a909be9041793bac3d451515d39eaa9562511d25d1fabad343d19192e9"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-python-readonly-addon-20261006-001/TARGETS.final.json",
+      "bytes": 4986,
+      "sha256": "9b7daf71c4b9ed5423e5dc59abe007ef7f8f5dbd6ef9ea0ae84a2e3c8ef97748"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-python-readonly-addon-20261006-001/INDEX.json",
+      "bytes": 7340,
+      "sha256": "9a30ae902978cd05f73cbb4a14056886fa034bddfd11b54f44ef0b4bce3ae8c9"
+    }
+  ],
+  "actual48_source_SHA_count": 48,
+  "source_shared_diff_count": 7,
+  "source_CURRENT_vs_APPLIED_delta_count": 0,
+  "default_SDK_tools": 21,
+  "explicit_private_tools_source_contract": 23,
+  "actual_private23_runtime_credit": false,
+  "Python_focused_tests": {
+    "count": 17,
+    "actual_exit_code": 0,
+    "RESULT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-python-focused-tests-20261006-001/RESULT.json",
+      "bytes": 608,
+      "sha256": "f21e5eda3cb29035c1ddebd1575b7ffe0bcb7b16e189ad5f26f9c814ea55c76d"
+    },
+    "argv_source": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/root-r13-python-focused-argv-20261006-001.json",
+      "bytes": 251,
+      "sha256": "f566abdc8ee8ed0738f9cda1ca242120295d9a476696daef37654183353abef8"
+    },
+    "actual_runner_schema": "lyd.r10.root-structured-argv-invocation.v1"
+  },
+  "native_build_result": null,
+  "native_compile_result": null,
+  "native_two_test_results": null,
+  "native_environment_RED": null,
+  "new_I3b_C3_I4_formal_runtime": null,
+  "whole_phase1_GREEN": false,
+  "actual_new_game_run": false,
+  "old_R11_R12_runtime_source_632_rewritten_as_current_source": false,
+  "existing_reports_archive_recompression_or_tests_repeated": false,
+  "author_Git_main_codegen_game_collector_calls": 0
+}

@@ -1,0 +1,367 @@
+{
+  "schema": "lyd.post-r12.readonly-source-integration-final.v1",
+  "utc": "2026-10-06T09:34:21.243345+00:00",
+  "status": "SOURCE_TESTS_PASS_RUNTIME_NOT_RUN_OPERATIONAL_RED_PRESERVED",
+  "phase1_overall": "NOT_GREEN",
+  "source_head_historical": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "source_kind": "ORIGINAL_DIRTY_WORKTREE",
+  "future_clean_head_equivalence": null,
+  "owned_source_refs": 48,
+  "owned_source_partition": {
+    "native": 20,
+    "readers": 23,
+    "Python": 5
+  },
+  "source48_exact_sha_proof": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/SOURCE-48-SHA-PROOF.json",
+    "bytes": 47168,
+    "sha256": "7fa90e41ed1e34ca690ff2f3a1b64257adc5f7f78d2388edecb31fcb9f77b9cb"
+  },
+  "actual_Python_focused_tests": {
+    "count": 17,
+    "result": "PASS",
+    "source_package": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/INDEX.json",
+      "bytes": 6489,
+      "sha256": "508d1c09a16ee319005b40423911ed536366d9d2983c5761ecf2c21ce0a9988f"
+    }
+  },
+  "actual_native_first_focused_tests": {
+    "count": 2,
+    "result": "PASS",
+    "tests": [
+      {
+        "target": "xar_confucian_assembly_predicates_v1_test",
+        "argv": [
+          "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe"
+        ],
+        "executable": {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "ad69d9233ff397d730a0e9116844b23c51a718cd793ac24d9fac7e2792ffc75e"
+        },
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/xar_confucian_assembly_predicates_v1_test.stdout.bin",
+          "bytes": 69,
+          "sha256": "dfa2bc28fa508d1cf212cb3b60a733a323840e6fcb56d41bf10ea14e8c974419"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/xar_confucian_assembly_predicates_v1_test.stderr.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "first_actual_R13_focused_run": true
+      },
+      {
+        "target": "xar_confucian_religious_title_readback_v1_test",
+        "argv": [
+          "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe"
+        ],
+        "executable": {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 100864,
+          "sha256": "b72cb24651a62d4b1b947e01363cf9a1ddb27f7c32ca09623f77e2a8138a03ad"
+        },
+        "exit_code": 0,
+        "stdout": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/xar_confucian_religious_title_readback_v1_test.stdout.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "stderr": {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/xar_confucian_religious_title_readback_v1_test.stderr.bin",
+          "bytes": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        "first_actual_R13_focused_run": true
+      }
+    ],
+    "result_ref": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/RESULT.json",
+      "bytes": 16026,
+      "sha256": "03e2db70856182514439b2eed1a8419f9ad45ff5641651388b21fe052fb4370f"
+    },
+    "index_ref": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/INDEX.json",
+      "bytes": 6814,
+      "sha256": "21ac3d41edb10487ee150d61dc13379f66bf42c13fb5459bd9b9c36db0851347"
+    }
+  },
+  "actual_compile_link": {
+    "result": "PASS",
+    "corrected_CRLF_cache_qualification": true,
+    "flags": {
+      "BUILD_TESTING": "ON",
+      "XAR_CK3_ENABLE_AI_TERMINAL_REENTRY_DISPATCH_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_AUB_CONFIRM_STATE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_AUB_POLICY_OPTIONS_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_COLD_MAP_VFS_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1": "ON",
+      "XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1": "ON",
+      "XAR_CK3_ENABLE_COUNCIL_COMPOSITION_CANDIDATE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_EXPERIMENTAL_COMBAT_PHASE_TRACE_MANAGED_V1": "OFF",
+      "XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_FRONTEND_GAME_RULES_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_COST_SLOT12_PASSIVE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_PROVENANCE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_PLANNING_SNAPSHOT_PRIVATE_GLUE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_CONFIRM_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_GATE_READ_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_LOCATION_READ_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_OPTION_READ_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_ACTUAL_TRUCE_EXPIRY_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_CE1_RECOVERY_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_CE1_TREATMENT_PRESENCE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_COUNCIL_APPLICATION_MAIN_PRIVATE_ROUTE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_COUNCIL_ASSIGN_PRIVATE_ACTION_GATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_COUNCIL_COMPOSITION_STEWARD_CANDIDATES_PRIVATE_PROBE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_COUNCIL_FINAL_GATE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_CULTURE_INNOVATION_ASYNC_PRIVATE_PROBE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_CANDIDATE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_DOMAIN_CONSTRUCTION_RUNTIME_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_FACTION_GIFT_MITIGATION_ASYNC_PRIVATE_GLUE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_FACTION_TARGETING_ROW_ASYNC_PRIVATE_PROBE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_GOVERNMENT_RUNTIME_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_ALLIANCE_PROJECTION_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_CHILD_MATRILINEAL_PRIVATE_ACTION_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_HEIR_MARRIAGE_PRIVATE_ACTION_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_PREWAR_SOURCES_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_RANKED_MARRIAGE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_WAR_CASH_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_M5_WAR_PRIMARY_CURRENT_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_MAJOR_DECISION_FOUND_KINGDOM_INTERNAL_ROUTE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_MILITARY_PREPARATION_SUMMARY_PRIVATE_PROBE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_MINOR_RELIGIOUS_WAR_DEFENDERS_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_CONSTRUCTION_VIEW_PROBE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_FACTION_ALERTS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_LIFESTYLE_FORMAL_WIRE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_CATALOGUE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_HOSTILITY_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_NUMERIC_SPECIAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_PERSONAL_PARAMETERS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PLAYER_WORLD_BUILDING_ACTION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_CHILD_RELATION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_RANSOM_PREVIEW_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_RELEASE_PREVIEW_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_PRISONER_TITLE_TIER_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_REALM_LAW_ENACT_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_DEFAULT_LEAF_DIAGNOSTICS_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_LEAF_CONTEXT_CAPTURE_V2": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_NATIVE_CALLSITE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_PREVIEW_ENTRY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_TRUCE_PRIVATE_CAPTURE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_WAR_BOUND_LOSS_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_G2_WAR_BOUND_PRIVATE_CAPTURE_V1": "OFF",
+      "XAR_CK3_ENABLE_H2743_PREACTION_EXISTING_TRUCE_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_H2743_STOCK_PREDICATE_READER_V1": "OFF",
+      "XAR_CK3_ENABLE_H3937_PHYSICAL_INVENTORY_MAILBOX_V1": "OFF",
+      "XAR_CK3_ENABLE_INGAME_DECISIONS_OPEN_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_INGAME_DECISION_ITEM_ACTIONS_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_INGAME_DECISION_OUTCOME_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_NAMED_PATH_583_ROOT_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_NORMAL_EXIT_MAP_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_ORDINARY_INTERACTION_PRIVATE_V1": "ON",
+      "XAR_CK3_ENABLE_PDX_PATHS_583_PRODUCER_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_COMPLETION_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_POST_CALL_LIST_IDENTITY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_POST_CALL_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_PRODUCER_CONSUMER_CORRELATION_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_PRODUCER_IDENTITY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_WRAPPER_CONSUMER_EDGE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHASE2_WRAPPER_ENTRY_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PHYSFS_MOUNTED_DATA_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_FAILURE_CONTAINMENT_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_PARTICLE2_STAGE_RECORDER_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_RBX_NULL_CALL_GUARD_V1": "OFF",
+      "XAR_CK3_ENABLE_STARTUP_WIDGET_NULL_FLAG_CALL_GUARD_V1": "OFF",
+      "XAR_CK3_ENABLE_STEWARD_DEVELOP_COUNTY_ENUMERATOR_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_VFS_MOUNT_LIFECYCLE_OBSERVER_V1": "OFF",
+      "XAR_CK3_ENABLE_WAR_ACTOR_ARMY_ROLE_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_WHITE_CONTROL_ACTIONS_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_WHITE_PLAYER_BUSINESS_VARIABLES_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_WHITE_RENDERED_TEXT_PRIVATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_CAREER_HC_WORKFORCE_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_PROJECTS_METRICS_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_PROMOTION_COMPENSATION_CANDIDATE_V1": "OFF",
+      "XAR_CK3_ENABLE_ZHONGGUO_SCOREBOARD_PRODUCTION_V1": "OFF"
+    },
+    "products_external_only": {
+      "xar_ck3_bridge": {
+        "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge.dll",
+        "bytes": 6806528,
+        "sha256": "c0a48a4cd7ecdeb402f62426a17a62ac34e4635fda2bf4a6fb3ca87bdc059fbf"
+      },
+      "xar_ck3_bridge_injector": {
+        "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge_injector.exe",
+        "bytes": 39936,
+        "sha256": "d22db5c67597889fdbf62620e604c4612ec9c7386be04f1ff05c43fa1ebcaf9a"
+      },
+      "xar_confucian_assembly_predicates_v1_test": {
+        "path": "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe",
+        "bytes": 119808,
+        "sha256": "ad69d9233ff397d730a0e9116844b23c51a718cd793ac24d9fac7e2792ffc75e"
+      },
+      "xar_confucian_religious_title_readback_v1_test": {
+        "path": "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe",
+        "bytes": 100864,
+        "sha256": "b72cb24651a62d4b1b947e01363cf9a1ddb27f7c32ca09623f77e2a8138a03ad"
+      }
+    }
+  },
+  "original_build_attempt": {
+    "outer_exit_code": 1,
+    "author_cache_regex_verifier_error_preserved": true,
+    "original_result": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-actual-native-build-20261006-001/RESULT.json",
+      "bytes": 4534,
+      "sha256": "75819cf34f9dd2fc350e90266f66623ca7f7f4c2c2f345685235ab324cc15e02"
+    },
+    "original_tests_executed": 0
+  },
+  "Defender_environment": {
+    "status": "settings_failed",
+    "verified_effectiveness": false,
+    "receipt": {
+      "path": "C:/lyd13-native-20261006-001/defender-exe-exclusions/20261006T091602Z-f7c50faa/receipt.json",
+      "bytes": 2567,
+      "sha256": "e58b29664d2a50be9fada1fbd7ac2b39c0d107e84d6a8b36629910b548a24ddd"
+    },
+    "manifest": {
+      "path": "C:/lyd13-native-20261006-001/defender-exe-exclusions/20261006T091602Z-f7c50faa/manifest.json",
+      "bytes": 3513,
+      "sha256": "bf863529d2190a88937e7f9111961ba81951be239eddc147fc2d0078d2529435"
+    },
+    "error_stage": "Add-invocation"
+  },
+  "Python_only": {
+    "result": "PASS",
+    "exit_code": 0,
+    "result_ref": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-python-only-validation-20261006-001/RESULT.json",
+      "bytes": 605,
+      "sha256": "eeb9fa6a3a404602edf7e0f307e9251c2f5facc27bd6b34089e255022fef7ed1"
+    }
+  },
+  "historical_packages_unchanged": [
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/INDEX.json",
+      "bytes": 6489,
+      "sha256": "508d1c09a16ee319005b40423911ed536366d9d2983c5761ecf2c21ce0a9988f"
+    },
+    {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-native-build001-addendum-20261006-002/INDEX.json",
+      "bytes": 5685,
+      "sha256": "ba8b4c7a8f95195f63ade405b1df67783cb74afa3f7a7d3d7dbb3da32f3e3778"
+    }
+  ],
+  "independent_source_review": {
+    "REPORT": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-g2g3-public-checkpoint-interop-independent-review-20261006-001/review-package-002/REPORT.json",
+      "bytes": 53325,
+      "sha256": "b70ef8beddf0f39312d5fd5ac0cde70421fffa3ad5176af3368bb66481dfcfca"
+    },
+    "INDEX": {
+      "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-g2g3-public-checkpoint-interop-independent-review-20261006-001/review-package-002/INDEX.json",
+      "bytes": 10154,
+      "sha256": "b905c4e8fb62347910afdb24a2d977b3747c086a036f1c5b1c0d77971a7161b6"
+    },
+    "inert_challenges_passed": 17,
+    "historical_fixture_failure_preserved": true,
+    "production_assert_gate_failures": 0,
+    "checkpoint_conversion": "PENDING",
+    "actual_game_binding": null
+  },
+  "private23_future_route": {
+    "metadata_refs": [
+      {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-c3-private23-route-adaptation-20261006-001/INDEX.json",
+        "bytes": 3182,
+        "sha256": "7235de1e8f8fc25f6b08d9e5c4beaa28ecf9bf682af10d3031c3ca403ba7d122"
+      },
+      {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-c3-private23-route-adaptation-20261006-001/REPORT.json",
+        "bytes": 2708,
+        "sha256": "9c9cab09db1c0a4fa46a2bcd46f77fa58422c5d9ca03010fc44fbc5600589f3f"
+      },
+      {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-c3-private23-route-adaptation-20261006-001/SOURCE-PINS.json",
+        "bytes": 5972,
+        "sha256": "4669b257c3e5907cafdaf78073208d84fc3b4a1868151c846d393019481b6135"
+      },
+      {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-c3-private23-route-adaptation-20261006-001/SOURCE-SHAPE-CHECKS.json",
+        "bytes": 833,
+        "sha256": "db76e357c5a4e884d10fa8094293ee3b886edee8f7277bfcd582f04c121f0d93"
+      }
+    ],
+    "source_only": true,
+    "source_focused_passes_parent_reported": 14,
+    "applied_to_main": false,
+    "actual_runtime": null
+  },
+  "tool_envelope": {
+    "default_official": 21,
+    "explicit_private": 23,
+    "private_tool_runtime_acceptance": "NOT_RUN"
+  },
+  "new_runtime": {
+    "I3b": "NOT_RUN",
+    "C3": "NOT_RUN",
+    "I4": "NOT_RUN",
+    "native_private_queries": "NOT_RUN",
+    "checkpoint_public_conversion": "NOT_RUN"
+  },
+  "historical_game_results": {
+    "R11": "JOIN100/cycle10 PASS; SDK97 UNKNOWN preserved",
+    "R12": "final JOIN cold reload58 PASS; actual closed",
+    "new_source_runtime_credit": false
+  },
+  "closed_R12_prerequisite": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-root-actual-closed-boundary-20261006-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3364,
+    "sha256": "fb36f6044473f4e3ad22c652a2fb9c4ba29d8f8c63180c3f7b8f079451498d9f"
+  },
+  "clean_HEAD_artifact_qualification": "PENDING_ROOT_EXPORT_EXACT_NATIVE_SOURCE_SUBSET_BINDING",
+  "future_CI": null,
+  "future_rebase_source_head": null,
+  "main_Git_game_build_test_calls_by_author": 0
+}

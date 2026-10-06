@@ -295,6 +295,12 @@ bool IsNonwarPrivateStep12002(std::string_view step) noexcept {
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
   if (IsPlayerRiteMembersPrivateStep12002(step)) return true;
 #endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+  if (ck3_12003::IsConfucianAssemblyPrivateStep12003(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
+  if (ck3_12003::IsConfucianReligiousTitlePrivateStep12003(step)) return true;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
   if (IsPlayerReligionConversionChoicesPrivateStep12002(step)) return true;
 #endif
@@ -518,6 +524,16 @@ bool HandleNonwarPrivate12002(
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
     if (IsPlayerRiteMembersPrivateStep12002(step))
       return HandlePlayerRiteMembersPrivate12002(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+    if (ck3_12003::IsConfucianAssemblyPrivateStep12003(step))
+      return ck3_12003::HandleConfucianAssemblyPrivate12003(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
+    if (ck3_12003::IsConfucianReligiousTitlePrivateStep12003(step))
+      return ck3_12003::HandleConfucianReligiousTitlePrivate12003(native, mailbox, published, revision,
           step, payload, request_id, serialized, failure);
 #endif
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)

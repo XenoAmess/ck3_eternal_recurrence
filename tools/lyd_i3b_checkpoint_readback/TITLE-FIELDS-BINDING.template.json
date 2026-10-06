@@ -1,0 +1,31 @@
+{
+  "schema": "lyd.native-title.saved-field-binding.v1",
+  "source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "evidence_sha256": null,
+  "law": {
+    "path": null,
+    "shape": null
+  },
+  "properties": {
+    "destroy_if_invalid_heir": {
+      "path": null,
+      "true_token": null,
+      "false_token": null
+    },
+    "no_automatic_claims": {
+      "path": null,
+      "true_token": null,
+      "false_token": null
+    },
+    "definitive_form": {
+      "path": null,
+      "true_token": null,
+      "false_token": null
+    },
+    "always_follows_primary_heir": {
+      "path": null,
+      "true_token": null,
+      "false_token": null
+    }
+  }
+}

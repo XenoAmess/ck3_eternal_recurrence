@@ -1,0 +1,112 @@
+{
+  "schema": "lyd.c3.reader-root-operation-plan.v1",
+  "source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "source_public_tool_count": 21,
+  "operations": [
+    {
+      "id": "N1-I3b",
+      "reader_phase": "DISCOVER then peer G3 STRICT_GRAPH",
+      "before": null,
+      "check": "Discover T only from actual typed result_head_title; full same Faith native pointers. Do not hand off a partial_native_title.",
+      "pair_helper": null
+    },
+    {
+      "id": "N2",
+      "reader_phase": "HANDOFF",
+      "before": "I3b result checkpoint",
+      "check": "T.holder/nativeHoF distinct NPC65865; current native main HoR169=31254, full political7/NPC baseline AST. Qualify full collection independently.",
+      "pair_helper": null
+    },
+    {
+      "id": "N4/N5",
+      "reader_phase": "REGISTER",
+      "before": "HANDOFF checkpoint",
+      "check": "Exact new C, typed owner F/R, holder actor, native C self-sponsor; complete collection adds C only; T/incumbent/HoR/protected AST stable.",
+      "pair_helper": null
+    },
+    {
+      "id": "N6",
+      "reader_phase": "REGISTER",
+      "before": "First REGISTER checkpoint",
+      "check": "Only query duplicate invalid/hidden row. Graph pair remains same C/native collection and full all_title_record_ids inventory. No duplicate confirm.",
+      "pair_helper": "Compare all_title_record_ids plus native graph/actor C3 rows; native event delivery separately recorded."
+    },
+    {
+      "id": "N7-withdraw",
+      "reader_phase": "WITHDRAW",
+      "before": "REGISTER checkpoint",
+      "check": "Old C explicitly watched even after metadata cleanup; C absent every selected native collection; every other challenger full AST/sponsor stable; old row absent or invalid-holder.",
+      "pair_helper": null
+    },
+    {
+      "id": "N7-register",
+      "reader_phase": "REGISTER",
+      "before": "WITHDRAW checkpoint",
+      "check": "Fresh observed C2 != retired C1; only exact C2 added. Snapshot alone does not prove native admission semantics.",
+      "pair_helper": "ROOT compare new actual typed claimTitle != prior observed C1."
+    },
+    {
+      "id": "N8",
+      "reader_phase": "ROUND_ACTIVE",
+      "before": "Current REGISTER checkpoint",
+      "check": "S/bindings/native delegates/all current rites/captured humans. Actor uses real .310/.311; genuine NPC .312 35/65 refusal stays negative.",
+      "pair_helper": null
+    },
+    {
+      "id": "N9",
+      "reader_phase": "ROUND_ACTIVE",
+      "before": "Current ROUND_ACTIVE checkpoint",
+      "check": "Duplicate begin query only. Exact serial/C/collection/locks unchanged; native event set must be separately observed.",
+      "pair_helper": "Compare exact actor C3 saved variables/lists; no runtime receipt invention."
+    },
+    {
+      "id": "N10-cancel",
+      "reader_phase": "ROUND_CANCELLED",
+      "before": "Current ROUND_ACTIVE checkpoint",
+      "check": "Exact current owner+serial locks/consents released; C survives; all prior humans retained as watched refs.",
+      "pair_helper": null
+    },
+    {
+      "id": "N10-repeat",
+      "reader_phase": "ROUND_ACTIVE",
+      "before": "ROUND_CANCELLED checkpoint",
+      "check": "Fresh S+1 and fresh bindings; delayed old .329 S cannot clean current round.",
+      "pair_helper": "assert_repeat_round(before,after); assert_stale_timeout_preservation(new_round_before,after_old329,old_S). Actual .329 delivery separately evidenced."
+    },
+    {
+      "id": "N11-ready",
+      "reader_phase": "ROUND_READY",
+      "before": "Current ROUND_ACTIVE checkpoint",
+      "check": "Every required delegate/human/native incumbent saved yes=1 with matching owner/S/R. Complete roster/native AI receipts remain separate. head_yes0 means no positive recognition credit.",
+      "pair_helper": null
+    },
+    {
+      "id": "N11-recognize",
+      "reader_phase": "RECOGNIZE",
+      "before": "Exact same-serial ROUND_READY checkpoint",
+      "check": "Same T becomes actor native HoF/holder; C removed/retired and only current locks/consents cleared. protected7/NPC nonreligious full AST retained.",
+      "pair_helper": null
+    },
+    {
+      "id": "N13-reload",
+      "reader_phase": "Same phase as pre-exit",
+      "before": "Pre-exit checkpoint",
+      "check": "Fresh PID/profile/revision/new save bound separately by ROOT. Stable T/C/F/R/serial graph is saved persistence evidence; reader never certifies process reload.",
+      "pair_helper": null
+    }
+  ],
+  "future_actual": {
+    "PID": null,
+    "profile_sha256": null,
+    "native_revision": null,
+    "I3b_result_head_title_id": null,
+    "C1": null,
+    "C2": null,
+    "serial": null,
+    "actual_registration_PASS": null,
+    "actual_recognition_PASS": null,
+    "actual_reload_PASS": null
+  },
+  "tooling_gap_status": "Generic bounded reader supplied; actual native serialization qualification, law/properties, human completeness, genuine NPC choice and delivery/reload receipts remain UNKNOWN/NOT_RUN.",
+  "requests_executed": 0
+}

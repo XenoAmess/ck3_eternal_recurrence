@@ -11688,6 +11688,33 @@ class GameplayBridgeService:
                         expected_exit_context_signature=expected_exit_context_signature)
         return normalize_public_exit_result(result, action=action, expected_revision=expected_revision)
 
+    def _query_confucian_readonly_v1(self, operation: str, *, expected_revision: int) -> dict[str, object]:
+        from .confucian_readonly_private_v1 import query_binding, same_query_frame, normalize_public_query
+        name = {"assembly_predicates": "query_confucian_assembly_predicates_v1",
+                "religious_title": "query_confucian_religious_title_v1"}.get(operation)
+        method = getattr(self.driver, name, None) if name is not None else None
+        if not callable(method):
+            raise UnsupportedStepError("selected backend lacks the private Confucian readonly operation")
+        before = self.driver.take_snapshot()
+        try:
+            binding = query_binding(before, expected_revision)
+        except ValueError as error:
+            raise BridgeUnavailableError(str(error)) from error
+        result = method(expected_revision=expected_revision)
+        after = self.driver.take_snapshot()
+        if not same_query_frame(before, after, binding):
+            raise BridgeUnavailableError("Confucian readonly backend crossed its paused owner/frame")
+        try:
+            return normalize_public_query(result, binding, operation)
+        except ValueError as error:
+            raise BridgeUnavailableError("malformed public Confucian read: " + str(error)) from error
+
+    def query_confucian_assembly_predicates_v1(self, *, expected_revision: int) -> dict[str, object]:
+        return self._query_confucian_readonly_v1("assembly_predicates", expected_revision=expected_revision)
+
+    def query_confucian_religious_title_v1(self, *, expected_revision: int) -> dict[str, object]:
+        return self._query_confucian_readonly_v1("religious_title", expected_revision=expected_revision)
+
     def query_current_actor_stress_adjustment_v1(
         self, base_amount: int, *, expected_revision: int,
     ) -> dict[str, object]:

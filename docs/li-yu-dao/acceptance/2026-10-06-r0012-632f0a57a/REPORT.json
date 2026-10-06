@@ -1,0 +1,589 @@
+{
+  "schema": "lyd.r12.ROOT-actual-terminal-report.v1",
+  "status": "NOT_GREEN",
+  "source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "created_at_utc": "2026-10-06T08:53:48.901699+00:00",
+  "actual_closed_boundary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-root-actual-closed-boundary-20261006-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3364,
+    "sha256": "fb36f6044473f4e3ad22c652a2fb9c4ba29d8f8c63180c3f7b8f079451498d9f"
+  },
+  "final_SDK_cutoff": 12,
+  "bounded_final_facts": {
+    "actual_R12_final_JOIN_cold_persistence": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/cold_reload_persistence_credit"
+    },
+    "no_new_JOIN_or_DETACH": {
+      "value": false,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/new_JOIN_or_DETACH_credit"
+    },
+    "namespace97_original_claim_unresolved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r11-decision-confirm-requested-event-mismatch-review-20261006-001/REPORT.json",
+        "bytes": 7164,
+        "sha256": "024ede3d22b787ab905e924b04cd0137554844073dbb287e0f8732a4034aae61"
+      },
+      "pointer": "/claim_remains_unresolved"
+    },
+    "actual_R12_schemas_and_unique_AST_receipt": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_R12_schemas_and_unique_AST_receipt"
+    },
+    "actual_request_save_descriptor_bound": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_request_save_descriptor_bound"
+    },
+    "actual_successful_new_SDK_exact_checkpoint": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_successful_new_SDK_exact_checkpoint"
+    },
+    "actual_source_frozen632_same_as_sealed0103": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_source_frozen632_same_as_sealed0103"
+    },
+    "actual_fresh_session_and_current_profile_bound": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_fresh_session_and_current_profile_bound"
+    },
+    "actual_current_PID_and_revisions_bound_without_old_values": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_current_PID_and_revisions_bound_without_old_values"
+    },
+    "actual_actor31254_date53144712_paused_noevent_pending": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_actor31254_date53144712_paused_noevent_pending"
+    },
+    "actual_preserved_calendar_current_roles": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_preserved_calendar_current_roles"
+    },
+    "actual104169_HoR31254_noHoF_main159": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual104169_HoR31254_noHoF_main159"
+    },
+    "actual_full_registry_preserved_no_link_issues": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_full_registry_preserved_no_link_issues"
+    },
+    "actual107backup188_104main159_106main187": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual107backup188_104main159_106main187"
+    },
+    "actual_nonce20_serial20_result1_joins3_detaches3_reset8": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_nonce20_serial20_result1_joins3_detaches3_reset8"
+    },
+    "actual_all_actor_variables_lists_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_all_actor_variables_lists_preserved"
+    },
+    "actual_active_and_all_selected_ownerlocks_retry_absent": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_active_and_all_selected_ownerlocks_retry_absent"
+    },
+    "actual169transition1825_school349_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual169transition1825_school349_preserved"
+    },
+    "actual_wallet743_1650_2200_XP0_no_reload_fee": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_wallet743_1650_2200_XP0_no_reload_fee"
+    },
+    "saved_stressNULL_native0_expectedNULL_separate": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/saved_stressNULL_native0_expectedNULL_separate"
+    },
+    "actual_political7_full_AST_and_domain_titles_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_political7_full_AST_and_domain_titles_preserved"
+    },
+    "actual_actor_landed_and_full_AST_outside_alive_data_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_actor_landed_and_full_AST_outside_alive_data_preserved"
+    },
+    "actual_three_role_character_vars_lists_protected_Rites_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/actual_three_role_character_vars_lists_protected_Rites_preserved"
+    },
+    "faiths_selected_IDs_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths_selected_IDs_preserved"
+    },
+    "faiths32_complete_AST_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths32_complete_AST_preserved"
+    },
+    "faiths32_all_heads_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths32_all_heads_preserved"
+    },
+    "faiths32_full_tenets_doctrines_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths32_full_tenets_doctrines_preserved"
+    },
+    "faiths32_all_variables_lists_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths32_all_variables_lists_preserved"
+    },
+    "faiths104_complete_AST_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths104_complete_AST_preserved"
+    },
+    "faiths104_all_heads_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths104_all_heads_preserved"
+    },
+    "faiths104_full_tenets_doctrines_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths104_full_tenets_doctrines_preserved"
+    },
+    "faiths104_all_variables_lists_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths104_all_variables_lists_preserved"
+    },
+    "faiths106_complete_AST_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths106_complete_AST_preserved"
+    },
+    "faiths106_all_heads_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths106_all_heads_preserved"
+    },
+    "faiths106_full_tenets_doctrines_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths106_full_tenets_doctrines_preserved"
+    },
+    "faiths106_all_variables_lists_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths106_all_variables_lists_preserved"
+    },
+    "faiths107_complete_AST_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths107_complete_AST_preserved"
+    },
+    "faiths107_all_heads_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths107_all_heads_preserved"
+    },
+    "faiths107_full_tenets_doctrines_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths107_full_tenets_doctrines_preserved"
+    },
+    "faiths107_all_variables_lists_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/faiths107_all_variables_lists_preserved"
+    },
+    "rites_selected_IDs_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites_selected_IDs_preserved"
+    },
+    "rites150_complete_AST_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites150_complete_AST_preserved"
+    },
+    "rites150_all_heads_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites150_all_heads_preserved"
+    },
+    "rites150_full_tenets_doctrines_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites150_full_tenets_doctrines_preserved"
+    },
+    "rites150_all_variables_lists_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites150_all_variables_lists_preserved"
+    },
+    "rites159_complete_AST_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites159_complete_AST_preserved"
+    },
+    "rites159_all_heads_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites159_all_heads_preserved"
+    },
+    "rites159_full_tenets_doctrines_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites159_full_tenets_doctrines_preserved"
+    },
+    "rites159_all_variables_lists_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites159_all_variables_lists_preserved"
+    },
+    "rites169_complete_AST_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites169_complete_AST_preserved"
+    },
+    "rites169_all_heads_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites169_all_heads_preserved"
+    },
+    "rites169_full_tenets_doctrines_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites169_full_tenets_doctrines_preserved"
+    },
+    "rites169_all_variables_lists_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites169_all_variables_lists_preserved"
+    },
+    "rites187_complete_AST_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites187_complete_AST_preserved"
+    },
+    "rites187_all_heads_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites187_all_heads_preserved"
+    },
+    "rites187_full_tenets_doctrines_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites187_full_tenets_doctrines_preserved"
+    },
+    "rites187_all_variables_lists_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites187_all_variables_lists_preserved"
+    },
+    "rites188_complete_AST_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites188_complete_AST_preserved"
+    },
+    "rites188_all_heads_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites188_all_heads_preserved"
+    },
+    "rites188_full_tenets_doctrines_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites188_full_tenets_doctrines_preserved"
+    },
+    "rites188_all_variables_lists_preserved": {
+      "value": true,
+      "ref": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-actual-final-join-cold-reload-readback-20261006-001/REPORT.json",
+        "bytes": 3866,
+        "sha256": "21ca64dd3bb90f1829fa3a5e57caf80f4cca6c659209c5bfa31c59c1284b0f83"
+      },
+      "pointer": "/checks/rites188_all_variables_lists_preserved"
+    }
+  },
+  "historical_appendices": [
+    {
+      "name": "r12-report-actual-terminal-final-20261006-001",
+      "INDEX": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-report-actual-terminal-final-20261006-001/INDEX.json",
+        "bytes": 1230,
+        "sha256": "5e787d5c2405e3b808f580920f6238b40c26c18752d4282851b4957602a22f4a"
+      },
+      "frozen_immutable_history": true
+    },
+    {
+      "name": "r12-report-live-cold-proof-draft-20261006-001",
+      "INDEX": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-report-live-cold-proof-draft-20261006-001/INDEX.json",
+        "bytes": 1522,
+        "sha256": "b140560d9f4a332c38a01b233d7499957789e892325e948ea23680fd16a650d6"
+      },
+      "frozen_immutable_history": true
+    }
+  ],
+  "phase1_overall_complete": false,
+  "whole_acceptance_GREEN": false,
+  "client_OS_exit_code": null,
+  "keeper_OS_exit_code": null,
+  "unresolved_97_claim_preserved": true,
+  "large_save_DLL_EXE_body_count": 0
+}

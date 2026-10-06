@@ -1,0 +1,1407 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:lyd:c3:bounded-native-checkpoint-state:v1",
+  "title": "Source-only C3 checkpoint graph projection; no native business verdict",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "identity",
+    "faiths",
+    "rites",
+    "all_faith_mains",
+    "all_rite_parents",
+    "characters",
+    "actor_variables",
+    "actor_lists",
+    "actor_landed_data",
+    "result_head_title_reference",
+    "native_title",
+    "partial_native_title",
+    "titles",
+    "native_challenger_titles",
+    "all_title_record_ids",
+    "watched_title_records",
+    "native_challenger_sponsors",
+    "protected_titles",
+    "npc_nonreligious_titles",
+    "actor_other_held_titles",
+    "qualification",
+    "native_business_credit"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lyd.c3.bounded-native-checkpoint-state.v1"
+    },
+    "identity": {
+      "type": "object",
+      "required": [
+        "actor_id",
+        "incumbent_id",
+        "faith_id",
+        "rite_id",
+        "I3b_result_head_title",
+        "saved_date",
+        "current_controller_ids"
+      ],
+      "properties": {
+        "actor_id": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "incumbent_id": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "faith_id": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "rite_id": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]*)$"
+        },
+        "I3b_result_head_title": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "saved_date": {
+          "type": "string"
+        },
+        "current_controller_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)$"
+          }
+        }
+      }
+    },
+    "faiths": {
+      "type": "object",
+      "description": "Current Faith plus all actor typed Faith references, each full ordered AST and complete qualified challenger collection."
+    },
+    "rites": {
+      "type": "object",
+      "description": "All actual current-Faith Rites selected by native parent graph, not historic fixture IDs."
+    },
+    "all_faith_mains": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "status",
+          "identity"
+        ],
+        "additionalProperties": false,
+        "properties": {
+          "status": {
+            "enum": [
+              "MISSING",
+              "INVALID_SENTINEL",
+              "VALUE"
+            ]
+          },
+          "identity": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "raw": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "all_rite_parents": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^(0|[1-9][0-9]*)$"
+      }
+    },
+    "characters": {
+      "type": "object"
+    },
+    "actor_variables": {
+      "type": "object",
+      "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+    },
+    "actor_lists": {
+      "type": "object",
+      "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+    },
+    "actor_landed_data": {
+      "anyOf": [
+        {
+          "type": "array",
+          "description": "Lossless ordered parser entries; repeated keys and anonymous values retained.",
+          "items": {
+            "type": "object",
+            "required": [
+              "key",
+              "value"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "key": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "value": {}
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "result_head_title_reference": {
+      "type": [
+        "object",
+        "null"
+      ]
+    },
+    "native_title": {
+      "anyOf": [
+        {
+          "type": "object",
+          "required": [
+            "title_id",
+            "holder",
+            "holder_id",
+            "entries",
+            "AST_sha256",
+            "variables",
+            "lists",
+            "qualification"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "title_id": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "holder": {
+              "type": "object",
+              "required": [
+                "status",
+                "identity"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "MISSING",
+                    "INVALID_SENTINEL",
+                    "VALUE"
+                  ]
+                },
+                "identity": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "string"
+                }
+              }
+            },
+            "holder_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "entries": {
+              "type": "array",
+              "description": "Lossless ordered parser entries; repeated keys and anonymous values retained.",
+              "items": {
+                "type": "object",
+                "required": [
+                  "key",
+                  "value"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "key": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "value": {}
+                }
+              }
+            },
+            "AST_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "variables": {
+              "type": "object",
+              "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+            },
+            "lists": {
+              "type": "object",
+              "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+            },
+            "qualification": {
+              "type": "object",
+              "required": [
+                "law",
+                "native_properties"
+              ],
+              "properties": {
+                "law": {
+                  "const": "UNKNOWN"
+                },
+                "native_properties": {
+                  "const": "UNKNOWN"
+                }
+              }
+            },
+            "baseline_AST_sha256": {
+              "type": "string"
+            },
+            "baseline_holder": {
+              "type": "object",
+              "required": [
+                "status",
+                "identity"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "MISSING",
+                    "INVALID_SENTINEL",
+                    "VALUE"
+                  ]
+                },
+                "identity": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "partial_native_title": {
+      "anyOf": [
+        {
+          "type": "object",
+          "required": [
+            "title_id",
+            "holder",
+            "holder_id",
+            "entries",
+            "AST_sha256",
+            "variables",
+            "lists",
+            "qualification"
+          ],
+          "additionalProperties": true,
+          "properties": {
+            "title_id": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)$"
+            },
+            "holder": {
+              "type": "object",
+              "required": [
+                "status",
+                "identity"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "MISSING",
+                    "INVALID_SENTINEL",
+                    "VALUE"
+                  ]
+                },
+                "identity": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "string"
+                }
+              }
+            },
+            "holder_id": {
+              "anyOf": [
+                {
+                  "type": "string",
+                  "pattern": "^(0|[1-9][0-9]*)$"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            },
+            "entries": {
+              "type": "array",
+              "description": "Lossless ordered parser entries; repeated keys and anonymous values retained.",
+              "items": {
+                "type": "object",
+                "required": [
+                  "key",
+                  "value"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "key": {
+                    "type": [
+                      "string",
+                      "null"
+                    ]
+                  },
+                  "value": {}
+                }
+              }
+            },
+            "AST_sha256": {
+              "type": "string",
+              "pattern": "^[0-9a-f]{64}$"
+            },
+            "variables": {
+              "type": "object",
+              "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+            },
+            "lists": {
+              "type": "object",
+              "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+            },
+            "qualification": {
+              "type": "object",
+              "required": [
+                "law",
+                "native_properties"
+              ],
+              "properties": {
+                "law": {
+                  "const": "UNKNOWN"
+                },
+                "native_properties": {
+                  "const": "UNKNOWN"
+                }
+              }
+            },
+            "baseline_AST_sha256": {
+              "type": "string"
+            },
+            "baseline_holder": {
+              "type": "object",
+              "required": [
+                "status",
+                "identity"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "status": {
+                  "enum": [
+                    "MISSING",
+                    "INVALID_SENTINEL",
+                    "VALUE"
+                  ]
+                },
+                "identity": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "pattern": "^(0|[1-9][0-9]*)$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "raw": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "titles": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "object",
+        "required": [
+          "title_id",
+          "holder",
+          "holder_id",
+          "entries",
+          "AST_sha256",
+          "variables",
+          "lists",
+          "qualification"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "title_id": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)$"
+          },
+          "holder": {
+            "type": "object",
+            "required": [
+              "status",
+              "identity"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "MISSING",
+                  "INVALID_SENTINEL",
+                  "VALUE"
+                ]
+              },
+              "identity": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw": {
+                "type": "string"
+              }
+            }
+          },
+          "holder_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "entries": {
+            "type": "array",
+            "description": "Lossless ordered parser entries; repeated keys and anonymous values retained.",
+            "items": {
+              "type": "object",
+              "required": [
+                "key",
+                "value"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "value": {}
+              }
+            }
+          },
+          "AST_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "variables": {
+            "type": "object",
+            "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+          },
+          "lists": {
+            "type": "object",
+            "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+          },
+          "qualification": {
+            "type": "object",
+            "required": [
+              "law",
+              "native_properties"
+            ],
+            "properties": {
+              "law": {
+                "const": "UNKNOWN"
+              },
+              "native_properties": {
+                "const": "UNKNOWN"
+              }
+            }
+          },
+          "baseline_AST_sha256": {
+            "type": "string"
+          },
+          "baseline_holder": {
+            "type": "object",
+            "required": [
+              "status",
+              "identity"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "MISSING",
+                  "INVALID_SENTINEL",
+                  "VALUE"
+                ]
+              },
+              "identity": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "native_challenger_titles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title_id",
+          "holder",
+          "holder_id",
+          "entries",
+          "AST_sha256",
+          "variables",
+          "lists",
+          "qualification"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "title_id": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)$"
+          },
+          "holder": {
+            "type": "object",
+            "required": [
+              "status",
+              "identity"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "MISSING",
+                  "INVALID_SENTINEL",
+                  "VALUE"
+                ]
+              },
+              "identity": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw": {
+                "type": "string"
+              }
+            }
+          },
+          "holder_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "entries": {
+            "type": "array",
+            "description": "Lossless ordered parser entries; repeated keys and anonymous values retained.",
+            "items": {
+              "type": "object",
+              "required": [
+                "key",
+                "value"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "value": {}
+              }
+            }
+          },
+          "AST_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "variables": {
+            "type": "object",
+            "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+          },
+          "lists": {
+            "type": "object",
+            "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+          },
+          "qualification": {
+            "type": "object",
+            "required": [
+              "law",
+              "native_properties"
+            ],
+            "properties": {
+              "law": {
+                "const": "UNKNOWN"
+              },
+              "native_properties": {
+                "const": "UNKNOWN"
+              }
+            }
+          },
+          "baseline_AST_sha256": {
+            "type": "string"
+          },
+          "baseline_holder": {
+            "type": "object",
+            "required": [
+              "status",
+              "identity"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "MISSING",
+                  "INVALID_SENTINEL",
+                  "VALUE"
+                ]
+              },
+              "identity": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "all_title_record_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^(0|[1-9][0-9]*)$"
+      }
+    },
+    "watched_title_records": {
+      "type": "object",
+      "additionalProperties": {
+        "anyOf": [
+          {
+            "type": "object",
+            "required": [
+              "title_id",
+              "holder",
+              "holder_id",
+              "entries",
+              "AST_sha256",
+              "variables",
+              "lists",
+              "qualification"
+            ],
+            "additionalProperties": true,
+            "properties": {
+              "title_id": {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              "holder": {
+                "type": "object",
+                "required": [
+                  "status",
+                  "identity"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "MISSING",
+                      "INVALID_SENTINEL",
+                      "VALUE"
+                    ]
+                  },
+                  "identity": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "raw": {
+                    "type": "string"
+                  }
+                }
+              },
+              "holder_id": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "entries": {
+                "type": "array",
+                "description": "Lossless ordered parser entries; repeated keys and anonymous values retained.",
+                "items": {
+                  "type": "object",
+                  "required": [
+                    "key",
+                    "value"
+                  ],
+                  "additionalProperties": false,
+                  "properties": {
+                    "key": {
+                      "type": [
+                        "string",
+                        "null"
+                      ]
+                    },
+                    "value": {}
+                  }
+                }
+              },
+              "AST_sha256": {
+                "type": "string",
+                "pattern": "^[0-9a-f]{64}$"
+              },
+              "variables": {
+                "type": "object",
+                "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+              },
+              "lists": {
+                "type": "object",
+                "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+              },
+              "qualification": {
+                "type": "object",
+                "required": [
+                  "law",
+                  "native_properties"
+                ],
+                "properties": {
+                  "law": {
+                    "const": "UNKNOWN"
+                  },
+                  "native_properties": {
+                    "const": "UNKNOWN"
+                  }
+                }
+              },
+              "baseline_AST_sha256": {
+                "type": "string"
+              },
+              "baseline_holder": {
+                "type": "object",
+                "required": [
+                  "status",
+                  "identity"
+                ],
+                "additionalProperties": false,
+                "properties": {
+                  "status": {
+                    "enum": [
+                      "MISSING",
+                      "INVALID_SENTINEL",
+                      "VALUE"
+                    ]
+                  },
+                  "identity": {
+                    "anyOf": [
+                      {
+                        "type": "string",
+                        "pattern": "^(0|[1-9][0-9]*)$"
+                      },
+                      {
+                        "type": "null"
+                      }
+                    ]
+                  },
+                  "raw": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          },
+          {
+            "type": "null"
+          }
+        ]
+      }
+    },
+    "native_challenger_sponsors": {
+      "type": [
+        "object",
+        "null"
+      ],
+      "additionalProperties": {
+        "type": "string",
+        "pattern": "^(0|[1-9][0-9]*)$"
+      }
+    },
+    "protected_titles": {
+      "type": "array",
+      "minItems": 7,
+      "maxItems": 7,
+      "items": {
+        "type": "object",
+        "required": [
+          "title_id",
+          "holder",
+          "holder_id",
+          "entries",
+          "AST_sha256",
+          "variables",
+          "lists",
+          "qualification"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "title_id": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)$"
+          },
+          "holder": {
+            "type": "object",
+            "required": [
+              "status",
+              "identity"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "MISSING",
+                  "INVALID_SENTINEL",
+                  "VALUE"
+                ]
+              },
+              "identity": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw": {
+                "type": "string"
+              }
+            }
+          },
+          "holder_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "entries": {
+            "type": "array",
+            "description": "Lossless ordered parser entries; repeated keys and anonymous values retained.",
+            "items": {
+              "type": "object",
+              "required": [
+                "key",
+                "value"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "value": {}
+              }
+            }
+          },
+          "AST_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "variables": {
+            "type": "object",
+            "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+          },
+          "lists": {
+            "type": "object",
+            "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+          },
+          "qualification": {
+            "type": "object",
+            "required": [
+              "law",
+              "native_properties"
+            ],
+            "properties": {
+              "law": {
+                "const": "UNKNOWN"
+              },
+              "native_properties": {
+                "const": "UNKNOWN"
+              }
+            }
+          },
+          "baseline_AST_sha256": {
+            "type": "string"
+          },
+          "baseline_holder": {
+            "type": "object",
+            "required": [
+              "status",
+              "identity"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "MISSING",
+                  "INVALID_SENTINEL",
+                  "VALUE"
+                ]
+              },
+              "identity": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    },
+    "npc_nonreligious_titles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title_id",
+          "holder",
+          "holder_id",
+          "entries",
+          "AST_sha256",
+          "variables",
+          "lists",
+          "qualification"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "title_id": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)$"
+          },
+          "holder": {
+            "type": "object",
+            "required": [
+              "status",
+              "identity"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "MISSING",
+                  "INVALID_SENTINEL",
+                  "VALUE"
+                ]
+              },
+              "identity": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw": {
+                "type": "string"
+              }
+            }
+          },
+          "holder_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "entries": {
+            "type": "array",
+            "description": "Lossless ordered parser entries; repeated keys and anonymous values retained.",
+            "items": {
+              "type": "object",
+              "required": [
+                "key",
+                "value"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "value": {}
+              }
+            }
+          },
+          "AST_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "variables": {
+            "type": "object",
+            "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+          },
+          "lists": {
+            "type": "object",
+            "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+          },
+          "qualification": {
+            "type": "object",
+            "required": [
+              "law",
+              "native_properties"
+            ],
+            "properties": {
+              "law": {
+                "const": "UNKNOWN"
+              },
+              "native_properties": {
+                "const": "UNKNOWN"
+              }
+            }
+          },
+          "baseline_AST_sha256": {
+            "type": "string"
+          },
+          "baseline_holder": {
+            "type": "object",
+            "required": [
+              "status",
+              "identity"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "MISSING",
+                  "INVALID_SENTINEL",
+                  "VALUE"
+                ]
+              },
+              "identity": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "description": "Conservative: every declared NPC-held Title except exact current legitimate Faith head Title."
+    },
+    "actor_other_held_titles": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": [
+          "title_id",
+          "holder",
+          "holder_id",
+          "entries",
+          "AST_sha256",
+          "variables",
+          "lists",
+          "qualification"
+        ],
+        "additionalProperties": true,
+        "properties": {
+          "title_id": {
+            "type": "string",
+            "pattern": "^(0|[1-9][0-9]*)$"
+          },
+          "holder": {
+            "type": "object",
+            "required": [
+              "status",
+              "identity"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "MISSING",
+                  "INVALID_SENTINEL",
+                  "VALUE"
+                ]
+              },
+              "identity": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw": {
+                "type": "string"
+              }
+            }
+          },
+          "holder_id": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^(0|[1-9][0-9]*)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "entries": {
+            "type": "array",
+            "description": "Lossless ordered parser entries; repeated keys and anonymous values retained.",
+            "items": {
+              "type": "object",
+              "required": [
+                "key",
+                "value"
+              ],
+              "additionalProperties": false,
+              "properties": {
+                "key": {
+                  "type": [
+                    "string",
+                    "null"
+                  ]
+                },
+                "value": {}
+              }
+            }
+          },
+          "AST_sha256": {
+            "type": "string",
+            "pattern": "^[0-9a-f]{64}$"
+          },
+          "variables": {
+            "type": "object",
+            "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+          },
+          "lists": {
+            "type": "object",
+            "description": "Pinned save_fields typed representation plus raw entries; no unknown values defaulted to zero."
+          },
+          "qualification": {
+            "type": "object",
+            "required": [
+              "law",
+              "native_properties"
+            ],
+            "properties": {
+              "law": {
+                "const": "UNKNOWN"
+              },
+              "native_properties": {
+                "const": "UNKNOWN"
+              }
+            }
+          },
+          "baseline_AST_sha256": {
+            "type": "string"
+          },
+          "baseline_holder": {
+            "type": "object",
+            "required": [
+              "status",
+              "identity"
+            ],
+            "additionalProperties": false,
+            "properties": {
+              "status": {
+                "enum": [
+                  "MISSING",
+                  "INVALID_SENTINEL",
+                  "VALUE"
+                ]
+              },
+              "identity": {
+                "anyOf": [
+                  {
+                    "type": "string",
+                    "pattern": "^(0|[1-9][0-9]*)$"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              },
+              "raw": {
+                "type": "string"
+              }
+            }
+          }
+        }
+      },
+      "description": "All actor-held Titles outside explicit political7; raw unknown/orphan offices retained without role invention."
+    },
+    "qualification": {
+      "type": "object",
+      "required": [
+        "native_collection",
+        "saved_title_scope_type",
+        "human_completeness",
+        "NPC_AI_clergy_gender",
+        "native_law_properties"
+      ]
+    },
+    "native_business_credit": {
+      "type": "null"
+    }
+  }
+}

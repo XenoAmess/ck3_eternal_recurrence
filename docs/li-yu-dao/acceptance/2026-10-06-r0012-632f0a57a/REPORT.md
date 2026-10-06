@@ -1,0 +1,13 @@
+# R12 最终JOIN冷载与生命周期实际收口：第一阶段仍 NOT_GREEN
+
+源码632f0a57a07aa6299052004589ed6f7632e7d8f7、原PID3276/create1791274575.1404467/FILETIME134357481751404466，正式21工具与新session/profile实机绑定。本轮没有新增JOIN/DETACH、reset或日历推进。
+
+最终JOIN冷载独立58项检查通过：Faith104/main159、Rite169/HoR31254（非HoF）、107 backupmain188、106 main187、history3 JOIN/3 DETACH、nonce20/result1/reset8、钱包743/1650/2200、XP0、169 transition1825/school349，以及完整Faith/Rite AST、head/tenets/registry、七政治title与三人保护均保持。新AST一次、旧保存体读取0；STATE SHA6301035e…e368a与R11已缓存最终状态精确一致，以R11已验证对象链接共享，不再复制STATE正文。90MB存档本体外置。
+
+R11第20轮正式JOIN100项、跨轮cycle10项已通过，本新附录补完其历史截止时仍NOT_RUN的最终再冷载，不改旧canonical或SDK97 UNKNOWN原claim。I3b/C3/I4与整个第一阶段仍未完成，不能宣整个GREEN；原compile/link成功与Defender设置外层RED分列，不因真实attach改写失败。
+
+ROOT正式退出以SDK6新查询为前置，7 prepare与9 continue不重复，8/10实际重新查询；11唯一confirm返回pending并保留原HANDLE，12独立observer验证Wait0/signaled、exit0、typed true、observer已关闭、nativeSubmission0；13 Client关闭与session marker真实成立。之后keeper STOP→FINAL、OS全absent、fresh CAS DONE/resource[]/无holder与ROOT source freeze解除的实际v3收据完整绑定。Client/keeper OS退出码仅按实际收据记录，未知保持NULL。
+
+原observer助手被ROOT误传SDK arguments给no-arg observe，before I/O/enqueue拒绝，无MCP/native submission、无confirm重播；修正新attempt002后唯一正式observer成功。原source002 appmanifest LastPlayed旧pin拒绝与source003动态增量重构/成功分别保留；cold capture001 mkdir缺失为tool transcript历史观察，不能制造原raw。报告作者先期待顶层STATE路径导致preoutput StopIteration，修正actual-save-001路径后独立source001失败原件保留，属于作者元数据错误。
+
+最终原件目录只保存精确path/bytes/SHA；ROOT全局收集器在真实closed boundary后，对本轮raw SDK、native/claim/闭合、source/negative preflight、已结束stdio/logs进行一次contentSHA去重和lossless gzip，解码核originalSHA。R11大archive不重扫或重压缩，sharedSTATE仅链接。最终日志完整原件保全，coverage/cap与wholecase runtime归因未实证时保持NULL，不能以缺少某条错误宣GREEN。ROOT负责R11和R12新永久目录的导入及后续dated事实链接；本作者没有main/Git/game/MCP写入，collector/importer未执行。

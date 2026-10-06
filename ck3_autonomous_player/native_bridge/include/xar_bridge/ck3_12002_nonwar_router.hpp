@@ -1,6 +1,12 @@
 #pragma once
 
 #include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12003_confucian_assembly_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12003_confucian_religious_title_mailbox.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
 #include "xar_bridge/religion_rite_governance12002_mailbox.hpp"
 #endif

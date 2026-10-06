@@ -1,0 +1,127 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "I3b checkpoint observations v1",
+  "type": "object",
+  "required": [
+    "schema",
+    "source_head",
+    "mode",
+    "stage",
+    "identity",
+    "checkpoint_sha256",
+    "actual_pass",
+    "actual_native_runtime_pass",
+    "formal_mandate_credit",
+    "round",
+    "actor",
+    "faith",
+    "rites",
+    "roster",
+    "schools",
+    "native_title",
+    "protected_titles",
+    "checks",
+    "assessment"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lyd.i3b.checkpoint-observations.v1"
+    },
+    "actual_pass": {
+      "type": "null"
+    },
+    "actual_native_runtime_pass": {
+      "type": "null"
+    },
+    "formal_mandate_credit": {
+      "type": "null"
+    },
+    "round": {
+      "type": "object",
+      "required": [
+        "serial",
+        "nonce",
+        "phase",
+        "result_code"
+      ]
+    },
+    "native_title": {
+      "anyOf": [
+        {
+          "type": "null"
+        },
+        {
+          "$ref": "#/$defs/title"
+        }
+      ]
+    },
+    "protected_titles": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/title"
+      }
+    },
+    "roster": {
+      "type": "object",
+      "required": [
+        "whole_world_living_records_scanned",
+        "living_records_scanned",
+        "faith_classification_complete",
+        "unclassified_living_ids",
+        "living_faith_ids",
+        "captured_member_ids",
+        "saved_current_human_ids",
+        "saved_current_human_faith_ids",
+        "members"
+      ]
+    },
+    "assessment": {
+      "enum": [
+        "OBSERVED_CONTRACT_MISMATCH",
+        "INCOMPLETE_NATIVE_QUALIFICATION",
+        "OBSERVED_CONTRACT_MATCH",
+        "OBSERVED_FIELDS_MATCH_NATIVE_AUTHENTICATION_PENDING"
+      ]
+    }
+  },
+  "$defs": {
+    "title": {
+      "type": "object",
+      "required": [
+        "title_id",
+        "holder",
+        "entries",
+        "AST_sha256",
+        "variables",
+        "lists",
+        "qualification"
+      ],
+      "properties": {
+        "title_id": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 4294967294
+        },
+        "holder": {
+          "type": [
+            "integer",
+            "null"
+          ]
+        },
+        "entries": {
+          "type": "array"
+        },
+        "AST_sha256": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$"
+        },
+        "variables": {
+          "type": "object"
+        },
+        "lists": {
+          "type": "object"
+        }
+      }
+    }
+  }
+}

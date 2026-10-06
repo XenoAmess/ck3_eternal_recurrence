@@ -1,0 +1,29 @@
+{
+  "schema": "lyd.i3b.native-predicates.v1",
+  "source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "checkpoint_sha256": null,
+  "identity": {
+    "actor_id": null,
+    "faith_id": null,
+    "main_rite_id": null,
+    "pid": null,
+    "session_id": null,
+    "revision": null,
+    "checkpoint_id": null
+  },
+  "complete_current_faith_roster": null,
+  "human_character_ids": null,
+  "characters": [
+    {
+      "character_id": null,
+      "alive": null,
+      "adult": null,
+      "imprisoned": null,
+      "incapable": null,
+      "learning": null,
+      "is_ai": null
+    }
+  ],
+  "rite_counties": null,
+  "evidence_sha256": null
+}

@@ -1,0 +1,53 @@
+{
+  "schema": "lyd.post-r12.metadata-contract-proof.v1",
+  "actual_metadata_contract": "PASS",
+  "old_packages": [
+    {
+      "package": "post-r12-readonly-source-integration-draft-20261006-001",
+      "index_metadata_links_exact": true,
+      "payload_count": 31,
+      "origin_count": 27,
+      "archive_body_reads": 0,
+      "gzip_calls": 0
+    },
+    {
+      "package": "post-r12-readonly-native-build001-addendum-20261006-002",
+      "index_metadata_links_exact": true,
+      "payload_count": 27,
+      "origin_count": 32,
+      "archive_body_reads": 0,
+      "gzip_calls": 0
+    }
+  ],
+  "supplement_result_pin_verified": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/RESULT.json",
+    "bytes": 16026,
+    "sha256": "03e2db70856182514439b2eed1a8419f9ad45ff5641651388b21fe052fb4370f"
+  },
+  "supplement_index_pin_verified": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-actual-compiled-first-focused-supplement-20261006-001/INDEX.json",
+    "bytes": 6814,
+    "sha256": "21ac3d41edb10487ee150d61dc13379f66bf42c13fb5459bd9b9c36db0851347"
+  },
+  "actual_first_tests_count": 2,
+  "actual_first_test_exits": [
+    0,
+    0
+  ],
+  "Python_only_actual_exit": 0,
+  "source_only_review_metadata_pin_verified": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/i3b-g2g3-public-checkpoint-interop-independent-review-20261006-001/review-package-002/INDEX.json",
+    "bytes": 10154,
+    "sha256": "b905c4e8fb62347910afdb24a2d977b3747c086a036f1c5b1c0d77971a7161b6"
+  },
+  "actual_new_original_refs": 55,
+  "old_gzip_body_reads": 0,
+  "old_gzip_roundtrips": 0,
+  "compression_calls": 0,
+  "source_body_reads": 0,
+  "save_reads": 0,
+  "runtime_calls": 0,
+  "main_writes": 0,
+  "importer_python_AST": "PASS",
+  "importer_executed": false
+}

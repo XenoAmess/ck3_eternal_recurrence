@@ -1,0 +1,977 @@
+{
+  "actual_repository_source_count": 48,
+  "source_body_copy_count": 0,
+  "Git_calls": 0,
+  "rows": [
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/CMakeLists.txt",
+        "bytes": 390203,
+        "sha256": "0efe8866c96271bc7a0fd864735fc9f381154523f8796c267d5296821aee2200"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+        "bytes": 390203,
+        "sha256": "0efe8866c96271bc7a0fd864735fc9f381154523f8796c267d5296821aee2200"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/root-readers-native-exact-application-after-r12-20261006-001/before/ck3_autonomous_player/native_bridge/CMakeLists.txt",
+        "bytes": 387268,
+        "sha256": "5f3fe4c7fafdc1b446c14a7f0d8696c51984726d3ad5e1cefd59bef17a64b37d"
+      },
+      "shared_source_diff": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/source-diffs/bf8dc37668d3b6a1.diff",
+        "bytes": 4546,
+        "sha256": "782e51acb9e4cd8559d2ea5d82498ad23a964355ac2cda6823c537a79f580703"
+      },
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": false
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_nonwar_router.hpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_nonwar_router.hpp",
+        "bytes": 7697,
+        "sha256": "2a9840230890e42b40fc3a7c5a64e9aa5d5a30e0dc0ecde119262e5adb426dfb"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_nonwar_router.hpp",
+        "bytes": 7697,
+        "sha256": "2a9840230890e42b40fc3a7c5a64e9aa5d5a30e0dc0ecde119262e5adb426dfb"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/root-readers-native-exact-application-after-r12-20261006-001/before/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12002_nonwar_router.hpp",
+        "bytes": 7404,
+        "sha256": "78d50e4ca4b24c0e23220752f297b478d1586675144ff07d5555eb9e81701ee1"
+      },
+      "shared_source_diff": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/source-diffs/d639f992202dbafb.diff",
+        "bytes": 731,
+        "sha256": "bad3583a2ab3f63a1c5661b2d4d6fc5aa12852fa97131248365c60da2c7a0a6f"
+      },
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": false
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_confucian_assembly_mailbox.hpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_confucian_assembly_mailbox.hpp",
+        "bytes": 1885,
+        "sha256": "e764e5fcbb183f0d3b6420973aafbdf6600f5f89af6ca262e53d2f0439569008"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_confucian_assembly_mailbox.hpp",
+        "bytes": 1885,
+        "sha256": "e764e5fcbb183f0d3b6420973aafbdf6600f5f89af6ca262e53d2f0439569008"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_confucian_assembly_predicates.hpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_confucian_assembly_predicates.hpp",
+        "bytes": 3635,
+        "sha256": "8ffba2db7804e4e92722ad6037038287998a18beb73bcd748ec9820fd7cc7a38"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_confucian_assembly_predicates.hpp",
+        "bytes": 3635,
+        "sha256": "8ffba2db7804e4e92722ad6037038287998a18beb73bcd748ec9820fd7cc7a38"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_confucian_religious_title_mailbox.hpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_confucian_religious_title_mailbox.hpp",
+        "bytes": 1937,
+        "sha256": "1e6808624fb4ba8eec52321c5e000473b88f396ad3380aa40f20b088bb018fa3"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_confucian_religious_title_mailbox.hpp",
+        "bytes": 1937,
+        "sha256": "1e6808624fb4ba8eec52321c5e000473b88f396ad3380aa40f20b088bb018fa3"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_readonly_revision.hpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_readonly_revision.hpp",
+        "bytes": 8280,
+        "sha256": "88f70d0e22a7326a183ce6525f6a33492fb99d8cff71be49c1727e0f01055733"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_readonly_revision.hpp",
+        "bytes": 8280,
+        "sha256": "88f70d0e22a7326a183ce6525f6a33492fb99d8cff71be49c1727e0f01055733"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_religious_title_readback.hpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_religious_title_readback.hpp",
+        "bytes": 2651,
+        "sha256": "74f5bcface1bd1da6df4b2a3c100b8b58bacda2c627a0d291e487342749f9401"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_religious_title_readback.hpp",
+        "bytes": 2651,
+        "sha256": "74f5bcface1bd1da6df4b2a3c100b8b58bacda2c627a0d291e487342749f9401"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_title_laws_leaf.hpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_title_laws_leaf.hpp",
+        "bytes": 1403,
+        "sha256": "084217d7d7d71a37ac58693775fe6d8f2a10f28fdba299954870df2e33b3ac63"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_title_laws_leaf.hpp",
+        "bytes": 1403,
+        "sha256": "084217d7d7d71a37ac58693775fe6d8f2a10f28fdba299954870df2e33b3ac63"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_title_properties_leaf.hpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_title_properties_leaf.hpp",
+        "bytes": 1932,
+        "sha256": "6497d899b8e264a0951e0ed892198322f5057b003f2ad2542988e7433f1e74d9"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/include/xar_bridge/ck3_12003_title_properties_leaf.hpp",
+        "bytes": 1932,
+        "sha256": "6497d899b8e264a0951e0ed892198322f5057b003f2ad2542988e7433f1e74d9"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/src/bridge.cpp",
+        "bytes": 1374985,
+        "sha256": "113fc17fd7a5387dcd82b51931edb2c40ede01f2c0b0587b2c5c739b78c36c76"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/bridge.cpp",
+        "bytes": 1374985,
+        "sha256": "113fc17fd7a5387dcd82b51931edb2c40ede01f2c0b0587b2c5c739b78c36c76"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/root-readers-native-exact-application-after-r12-20261006-001/before/ck3_autonomous_player/native_bridge/src/bridge.cpp",
+        "bytes": 1374283,
+        "sha256": "8364eb9df8ca5e0a586761d6ccca72c7f0612d59a95b7d87a231786aeedc3d7a"
+      },
+      "shared_source_diff": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/source-diffs/841de0623b78eee4.diff",
+        "bytes": 1235,
+        "sha256": "47968c0e9e1e8a07152b55cb8dd6b896f71b422d8b3efd7617ca898b39a6a88b"
+      },
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": false
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/src/ck3_12002_nonwar_router.cpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12002_nonwar_router.cpp",
+        "bytes": 34412,
+        "sha256": "259a06c99ff58d23925e465b0c600f189a8c0cfa98e0fc05cff5a87fdb17d77c"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12002_nonwar_router.cpp",
+        "bytes": 34412,
+        "sha256": "259a06c99ff58d23925e465b0c600f189a8c0cfa98e0fc05cff5a87fdb17d77c"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/root-readers-native-exact-application-after-r12-20261006-001/before/ck3_autonomous_player/native_bridge/src/ck3_12002_nonwar_router.cpp",
+        "bytes": 33490,
+        "sha256": "50fe6d0b2c2d46093a7af8ff0d001ecf1a91cee21ed8730652c016a9eacbac78"
+      },
+      "shared_source_diff": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/source-diffs/c4fc572093140f9d.diff",
+        "bytes": 1792,
+        "sha256": "bcfbaecbea0262699e687830c114d93451a4df351618ae3f19fedeeb667efe67"
+      },
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": false
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/src/ck3_12003_confucian_assembly_mailbox.cpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_confucian_assembly_mailbox.cpp",
+        "bytes": 7573,
+        "sha256": "7bec15bf8d2253f2377df9c098e517294f30b131cad16089de58a93e2c443053"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12003_confucian_assembly_mailbox.cpp",
+        "bytes": 7573,
+        "sha256": "7bec15bf8d2253f2377df9c098e517294f30b131cad16089de58a93e2c443053"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/src/ck3_12003_confucian_assembly_predicates.cpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_confucian_assembly_predicates.cpp",
+        "bytes": 25666,
+        "sha256": "342e72bd4b9f4da46b3d742128a7792ae71607bf9da2558c0228770faaea3936"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12003_confucian_assembly_predicates.cpp",
+        "bytes": 25666,
+        "sha256": "342e72bd4b9f4da46b3d742128a7792ae71607bf9da2558c0228770faaea3936"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/src/ck3_12003_confucian_assembly_predicates_test.cpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_confucian_assembly_predicates_test.cpp",
+        "bytes": 15844,
+        "sha256": "3e508cc088029824502bf8020a57a97f421c8465378bf41ee35d48ebaa25eb52"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12003_confucian_assembly_predicates_test.cpp",
+        "bytes": 15844,
+        "sha256": "3e508cc088029824502bf8020a57a97f421c8465378bf41ee35d48ebaa25eb52"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/src/ck3_12003_confucian_religious_title_mailbox.cpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_confucian_religious_title_mailbox.cpp",
+        "bytes": 7646,
+        "sha256": "d55832d247dc6af6c72b59e91bf06d6b69020defef22c0af3846dc3c9b6d80a4"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12003_confucian_religious_title_mailbox.cpp",
+        "bytes": 7646,
+        "sha256": "d55832d247dc6af6c72b59e91bf06d6b69020defef22c0af3846dc3c9b6d80a4"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/src/ck3_12003_religious_title_readback.cpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_religious_title_readback.cpp",
+        "bytes": 19271,
+        "sha256": "bd47a43619ec69d855c7e355c0152ead3d5de6090c734fe52c4d636d4eaa6e59"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12003_religious_title_readback.cpp",
+        "bytes": 19271,
+        "sha256": "bd47a43619ec69d855c7e355c0152ead3d5de6090c734fe52c4d636d4eaa6e59"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/src/ck3_12003_title_laws_leaf.cpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_title_laws_leaf.cpp",
+        "bytes": 8122,
+        "sha256": "1c54192f047df4eb072628d3cc0da9f0d0c0477c2e7d4e5ca746a1c47a7ae0bd"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12003_title_laws_leaf.cpp",
+        "bytes": 8122,
+        "sha256": "1c54192f047df4eb072628d3cc0da9f0d0c0477c2e7d4e5ca746a1c47a7ae0bd"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/src/ck3_12003_title_properties_leaf.cpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/src/ck3_12003_title_properties_leaf.cpp",
+        "bytes": 4436,
+        "sha256": "91104a0d58a3198595379a99ecaecea8992e4d6ca5a870705086d59159d5db9a"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/src/ck3_12003_title_properties_leaf.cpp",
+        "bytes": 4436,
+        "sha256": "91104a0d58a3198595379a99ecaecea8992e4d6ca5a870705086d59159d5db9a"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/tests/ck3_12003_readonly_revision_cases.hpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/tests/ck3_12003_readonly_revision_cases.hpp",
+        "bytes": 5311,
+        "sha256": "135f3f45001e5c286a08953e7114c07645bd08f46dd9ef106be356bf2b2ed9e4"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/tests/ck3_12003_readonly_revision_cases.hpp",
+        "bytes": 5311,
+        "sha256": "135f3f45001e5c286a08953e7114c07645bd08f46dd9ef106be356bf2b2ed9e4"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "ck3_autonomous_player/native_bridge/tests/ck3_12003_religious_title_readback_fixture.cpp",
+      "ROOT_applied_descriptor": {
+        "path": "ck3_autonomous_player/native_bridge/tests/ck3_12003_religious_title_readback_fixture.cpp",
+        "bytes": 12929,
+        "sha256": "d56910f00798b858e4a99253804d46b24241448b8ab46614a6a42af122e57d03"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/native_bridge/tests/ck3_12003_religious_title_readback_fixture.cpp",
+        "bytes": 12929,
+        "sha256": "d56910f00798b858e4a99253804d46b24241448b8ab46614a6a42af122e57d03"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+        "bytes": 37678,
+        "sha256": "eaf76fda320b6ff8414ac8390c411e42b9b79c94890cfbb5dfd2f7c1f0cd42c9"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/reader/i3b_checkpoint_reader.py",
+        "bytes": 37678,
+        "sha256": "eaf76fda320b6ff8414ac8390c411e42b9b79c94890cfbb5dfd2f7c1f0cd42c9"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/bounded_save_parser.py",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/reader/dependencies/bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/save_fields.py",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_i3b_checkpoint_readback/reader/dependencies/save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/reader/dependencies/save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py",
+        "bytes": 17085,
+        "sha256": "9607539c2bb1e43ec4f7e5f5cc2fcca54a69dad82985cb370c78d86e0f19d4a6"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/tests/test_i3b_reader.py",
+        "bytes": 17085,
+        "sha256": "9607539c2bb1e43ec4f7e5f5cc2fcca54a69dad82985cb370c78d86e0f19d4a6"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/README.md",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_i3b_checkpoint_readback/README.md",
+        "bytes": 6173,
+        "sha256": "796f27de0fa34393ab0fecffe2ace92afcd2a4c1eb927abb4591b60f6b4a32bf"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/README.md",
+        "bytes": 6173,
+        "sha256": "796f27de0fa34393ab0fecffe2ace92afcd2a4c1eb927abb4591b60f6b4a32bf"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/OUTPUT.schema.json",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_i3b_checkpoint_readback/OUTPUT.schema.json",
+        "bytes": 2673,
+        "sha256": "c23bc2c113b6d572bc3a0772d446df9414c46a41e721f1cac460490fa65963f6"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/OUTPUT.schema.json",
+        "bytes": 2673,
+        "sha256": "c23bc2c113b6d572bc3a0772d446df9414c46a41e721f1cac460490fa65963f6"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/CHECKPOINT-REQUEST.template.json",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_i3b_checkpoint_readback/CHECKPOINT-REQUEST.template.json",
+        "bytes": 134199,
+        "sha256": "21e196c3fca079736ec8721ec560457b1d377a74b0ad508f78c40eaa06a77579"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/CHECKPOINT-REQUEST.template.json",
+        "bytes": 134199,
+        "sha256": "21e196c3fca079736ec8721ec560457b1d377a74b0ad508f78c40eaa06a77579"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/NATIVE-PREDICATES.template.json",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_i3b_checkpoint_readback/NATIVE-PREDICATES.template.json",
+        "bytes": 670,
+        "sha256": "b6597fdcb9bcf98dd66dcb4297e2e59bb66524f6cc3c8e38a06d66597953f5d3"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/NATIVE-PREDICATES.template.json",
+        "bytes": 670,
+        "sha256": "b6597fdcb9bcf98dd66dcb4297e2e59bb66524f6cc3c8e38a06d66597953f5d3"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/TITLE-REFERENCE-BINDING.template.json",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_i3b_checkpoint_readback/TITLE-REFERENCE-BINDING.template.json",
+        "bytes": 172,
+        "sha256": "32f211d02eea6a990a75c94a60b4c01dd4c0598f2edace8ef5b855d11670d021"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/TITLE-REFERENCE-BINDING.template.json",
+        "bytes": 172,
+        "sha256": "32f211d02eea6a990a75c94a60b4c01dd4c0598f2edace8ef5b855d11670d021"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/TITLE-FIELDS-BINDING.template.json",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_i3b_checkpoint_readback/TITLE-FIELDS-BINDING.template.json",
+        "bytes": 691,
+        "sha256": "0f0bf4e234a8ce45bc32555fcfe60600a27af3743443f73bc30ce8ff3eb2d234"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/TITLE-FIELDS-BINDING.template.json",
+        "bytes": 691,
+        "sha256": "0f0bf4e234a8ce45bc32555fcfe60600a27af3743443f73bc30ce8ff3eb2d234"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/FORMAL-EVENT-CONTEXT.template.json",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_i3b_checkpoint_readback/FORMAL-EVENT-CONTEXT.template.json",
+        "bytes": 1075,
+        "sha256": "e511137b21c5a9890b93ea1eed1a4e10ed4040e43b54d1dcbfe6ee1ea138817a"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/FORMAL-EVENT-CONTEXT.template.json",
+        "bytes": 1075,
+        "sha256": "e511137b21c5a9890b93ea1eed1a4e10ed4040e43b54d1dcbfe6ee1ea138817a"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_i3b_checkpoint_readback/NATIVE-ADDON-CONTRACT.json",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_i3b_checkpoint_readback/NATIVE-ADDON-CONTRACT.json",
+        "bytes": 5461,
+        "sha256": "a763c48201b57f70374a9938d0e7ff4ac00eddb17fed30da28a562c679251c7b"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_i3b_checkpoint_readback/NATIVE-ADDON-CONTRACT.json",
+        "bytes": 5461,
+        "sha256": "a763c48201b57f70374a9938d0e7ff4ac00eddb17fed30da28a562c679251c7b"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_c3_checkpoint_readback/challenger_reader.py",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_c3_checkpoint_readback/challenger_reader.py",
+        "bytes": 41194,
+        "sha256": "b88305a767a6d793fedd6b117b1ffe4b05e958788bcab1e4710ffae8f12585cd"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_c3_checkpoint_readback/challenger_reader.py",
+        "bytes": 41194,
+        "sha256": "b88305a767a6d793fedd6b117b1ffe4b05e958788bcab1e4710ffae8f12585cd"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_c3_checkpoint_readback/test_bounded_reader.py",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_c3_checkpoint_readback/test_bounded_reader.py",
+        "bytes": 21575,
+        "sha256": "2ff7d2883d5be61cea554804f0cf977f7b34bc630e6d6dd90755dff8c91c1b4f"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_c3_checkpoint_readback/test_bounded_reader.py",
+        "bytes": 21575,
+        "sha256": "2ff7d2883d5be61cea554804f0cf977f7b34bc630e6d6dd90755dff8c91c1b4f"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_c3_checkpoint_readback/dependencies/bounded_save_parser.py",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_c3_checkpoint_readback/dependencies/bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_c3_checkpoint_readback/dependencies/bounded_save_parser.py",
+        "bytes": 1999,
+        "sha256": "6c1ba1006cd0dd5055c11115701b60a74562b0f23d91b756a3d9322e7d055cb7"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_c3_checkpoint_readback/dependencies/save_fields.py",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_c3_checkpoint_readback/dependencies/save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_c3_checkpoint_readback/dependencies/save_fields.py",
+        "bytes": 2236,
+        "sha256": "f23f4901f44c0aa015332256f9de02ede9006d66e59a2c2ec30fbdd752ab4933"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_c3_checkpoint_readback/ROOT-PLAN.md",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_c3_checkpoint_readback/ROOT-PLAN.md",
+        "bytes": 5800,
+        "sha256": "0c32d177b5f0b155e036bb2fcbf6d9467c5dbf3957f09b1d23e775aa01222422"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_c3_checkpoint_readback/ROOT-PLAN.md",
+        "bytes": 5800,
+        "sha256": "0c32d177b5f0b155e036bb2fcbf6d9467c5dbf3957f09b1d23e775aa01222422"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_c3_checkpoint_readback/OUTPUT.schema.json",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_c3_checkpoint_readback/OUTPUT.schema.json",
+        "bytes": 39228,
+        "sha256": "4bd72e94fad22a52675af90d715cd08c0961aa66cd7a6c5b60e1d408eee73267"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_c3_checkpoint_readback/OUTPUT.schema.json",
+        "bytes": 39228,
+        "sha256": "4bd72e94fad22a52675af90d715cd08c0961aa66cd7a6c5b60e1d408eee73267"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_c3_checkpoint_readback/ROOT-REQUEST.unbound.template.json",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_c3_checkpoint_readback/ROOT-REQUEST.unbound.template.json",
+        "bytes": 476,
+        "sha256": "9a9e5b0e73119ed3a8ceeabad283b2ee25bb35cee3dca8bd8634faacc55169f6"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_c3_checkpoint_readback/ROOT-REQUEST.unbound.template.json",
+        "bytes": 476,
+        "sha256": "9a9e5b0e73119ed3a8ceeabad283b2ee25bb35cee3dca8bd8634faacc55169f6"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_c3_checkpoint_readback/NATIVE-SERIALIZATION.unbound.template.json",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_c3_checkpoint_readback/NATIVE-SERIALIZATION.unbound.template.json",
+        "bytes": 578,
+        "sha256": "37203bf7e1d6fa72be22412476bf90c47e0aa8c1d441188196f29b68dc7fdeda"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_c3_checkpoint_readback/NATIVE-SERIALIZATION.unbound.template.json",
+        "bytes": 578,
+        "sha256": "37203bf7e1d6fa72be22412476bf90c47e0aa8c1d441188196f29b68dc7fdeda"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_c3_checkpoint_readback/NATIVE-QUALIFICATION.unbound.template.json",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_c3_checkpoint_readback/NATIVE-QUALIFICATION.unbound.template.json",
+        "bytes": 2381,
+        "sha256": "e931a1cd13d3a3540acc7f8ee6a034b33b23906586dffc0228955124d3329e12"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_c3_checkpoint_readback/NATIVE-QUALIFICATION.unbound.template.json",
+        "bytes": 2381,
+        "sha256": "e931a1cd13d3a3540acc7f8ee6a034b33b23906586dffc0228955124d3329e12"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_c3_checkpoint_readback/ROOT-CHECKPOINT-OPERATIONS.template.json",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_c3_checkpoint_readback/ROOT-CHECKPOINT-OPERATIONS.template.json",
+        "bytes": 5090,
+        "sha256": "c99b4ef6d8d9c03a4d4f26f0a870e9179529468dc568f29a6c2f7aeed1cbb654"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_c3_checkpoint_readback/ROOT-CHECKPOINT-OPERATIONS.template.json",
+        "bytes": 5090,
+        "sha256": "c99b4ef6d8d9c03a4d4f26f0a870e9179529468dc568f29a6c2f7aeed1cbb654"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "native20_readers23",
+      "repository_path": "tools/lyd_c3_checkpoint_readback/FORMAL21-OPERATIONS.inherited.template.json",
+      "ROOT_applied_descriptor": {
+        "path": "tools/lyd_c3_checkpoint_readback/FORMAL21-OPERATIONS.inherited.template.json",
+        "bytes": 10211,
+        "sha256": "14ad3de9d7fe6d07de4118dc67b2cfb1c65d911d70027adb4c698cda72e4e2b4"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/lyd_c3_checkpoint_readback/FORMAL21-OPERATIONS.inherited.template.json",
+        "bytes": 10211,
+        "sha256": "14ad3de9d7fe6d07de4118dc67b2cfb1c65d911d70027adb4c698cda72e4e2b4"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "python5",
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+      "ROOT_applied_descriptor": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\native_driver.py",
+        "bytes": 1386509,
+        "sha256": "2e9fcb7367fb7444ecc97a10dc3f05087cdd1d3a9a936ac31d6ca3d5b49478e9"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+        "bytes": 1386509,
+        "sha256": "2e9fcb7367fb7444ecc97a10dc3f05087cdd1d3a9a936ac31d6ca3d5b49478e9"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/root-python-readonly-exact-application-after-r12-20261006-001/before/ck3_autonomous_player/src/xar_autoplayer/bridge/native_driver.py",
+        "bytes": 1385576,
+        "sha256": "58a48e6a920231e4edd95bb4100432b9e21c0736c983d25a226b2432ea3ad62f"
+      },
+      "shared_source_diff": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/source-diffs/ffa58263d3fe2f85.diff",
+        "bytes": 2161,
+        "sha256": "54a54642eb084fdcbf96085c8c1cf9bd701e96f08c450c3b04907e7f10c8b0be"
+      },
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": false
+    },
+    {
+      "source_group": "python5",
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+      "ROOT_applied_descriptor": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\service.py",
+        "bytes": 615932,
+        "sha256": "7875bcfa8f6a3b5beb838f3986673ac29a5e5014119b46ac77088147fbf91df0"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+        "bytes": 615932,
+        "sha256": "7875bcfa8f6a3b5beb838f3986673ac29a5e5014119b46ac77088147fbf91df0"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/root-python-readonly-exact-application-after-r12-20261006-001/before/ck3_autonomous_player/src/xar_autoplayer/bridge/service.py",
+        "bytes": 614206,
+        "sha256": "34c1e23758c73c714658da6027a7b3ed6037636bc25c603765cee12f64d8f169"
+      },
+      "shared_source_diff": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/source-diffs/7586eb8c1f6acbfc.diff",
+        "bytes": 2269,
+        "sha256": "c9dc77f1ec338dfeb3c7ac7cd1d73e663cb5670cb9c0ab5909e7e5ca0df66fea"
+      },
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": false
+    },
+    {
+      "source_group": "python5",
+      "repository_path": "tools/ck3_native_profile_mcp.py",
+      "ROOT_applied_descriptor": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\tools\\ck3_native_profile_mcp.py",
+        "bytes": 69904,
+        "sha256": "fd5affa6a38806ba92a19bd661b78c4daaa6358cec3865f515bdc6ad0ba84f24"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/tools/ck3_native_profile_mcp.py",
+        "bytes": 69904,
+        "sha256": "fd5affa6a38806ba92a19bd661b78c4daaa6358cec3865f515bdc6ad0ba84f24"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/root-python-readonly-exact-application-after-r12-20261006-001/before/tools/ck3_native_profile_mcp.py",
+        "bytes": 66294,
+        "sha256": "a4cb9e98941c25ec4aa69f6a1a5bca05c3700872fff0b47d11f267e4fc67f7cb"
+      },
+      "shared_source_diff": {
+        "path": "C:/workspace/ck3_lyd_runtime_20261004/post-r12-readonly-source-integration-draft-20261006-001/source-diffs/453066961061b9f3.diff",
+        "bytes": 6806,
+        "sha256": "6f69a7c4233e683467e213583b3f4a70b16e1bf310efa064b1f67b60d3a17a63"
+      },
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": false
+    },
+    {
+      "source_group": "python5",
+      "repository_path": "ck3_autonomous_player/src/xar_autoplayer/bridge/confucian_readonly_private_v1.py",
+      "ROOT_applied_descriptor": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\src\\xar_autoplayer\\bridge\\confucian_readonly_private_v1.py",
+        "bytes": 22715,
+        "sha256": "a8ddde00321b53ec43fa1cebe38cd14f8ffc62407f61fbb95b8636476d044969"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/src/xar_autoplayer/bridge/confucian_readonly_private_v1.py",
+        "bytes": 22715,
+        "sha256": "a8ddde00321b53ec43fa1cebe38cd14f8ffc62407f61fbb95b8636476d044969"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    },
+    {
+      "source_group": "python5",
+      "repository_path": "ck3_autonomous_player/tests/test_confucian_readonly_private_v1.py",
+      "ROOT_applied_descriptor": {
+        "path": "C:\\workspace\\ck3_eternal_recurrence\\ck3_autonomous_player\\tests\\test_confucian_readonly_private_v1.py",
+        "bytes": 20536,
+        "sha256": "143c9c9f3931026588b4f5a98d30a588720fa61e7f06f76bdeab5e69ed5817be"
+      },
+      "current_source_ref": {
+        "path": "C:/workspace/ck3_eternal_recurrence/ck3_autonomous_player/tests/test_confucian_readonly_private_v1.py",
+        "bytes": 20536,
+        "sha256": "143c9c9f3931026588b4f5a98d30a588720fa61e7f06f76bdeab5e69ed5817be"
+      },
+      "matches_application_receipt_as_of_author_read": true,
+      "before_backup": null,
+      "shared_source_diff": null,
+      "large_before_after_bodies_copied": false,
+      "new_file_or_before_backup_missing": true
+    }
+  ],
+  "shared_diff_count": 7,
+  "ROOT_post_application_deltas": []
+}

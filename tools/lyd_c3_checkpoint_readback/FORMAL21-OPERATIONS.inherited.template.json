@@ -1,0 +1,215 @@
+{
+  "schema": "lyd.c3.formal21.operation-table-template.v1",
+  "source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "public_tool_count_static": 21,
+  "rows": [
+    {
+      "id": "N0",
+      "phase": "NEW_COLD_BASELINE",
+      "decision_key": null,
+      "operation": "Bind fresh source632 production/fixture manifests, process/profile/revision, current actor/F/main/NPC/political7; retain old saves only as provenance.",
+      "public_tools": [
+        "ck3_take_profile_native_snapshot_v1",
+        "ck3_save_profile_checkpoint_v1"
+      ],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    },
+    {
+      "id": "N1",
+      "phase": "FORMAL_I3b_RESULT_THEN_FIXTURE_HANDOFF",
+      "decision_key": null,
+      "operation": "Complete real I3b through existing decisions/events; independently prove result1/T. Author and mount separate private handoff only for a new cold attempt; this package sends no request.",
+      "public_tools": [],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    },
+    {
+      "id": "N2",
+      "phase": "NATIVE_NPC_INCUMBENT_CHECKPOINT",
+      "decision_key": null,
+      "operation": "Verify actual HoF65865/T.holder65865/HoR169=31254/protected7 and actual eligibility. A fixture private result or native setter ACK alone is insufficient.",
+      "public_tools": [
+        "ck3_take_profile_native_snapshot_v1",
+        "ck3_save_profile_checkpoint_v1"
+      ],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    },
+    {
+      "id": "N3",
+      "phase": "RECONCILE_STALE_METADATA_OPTIONAL",
+      "decision_key": "lyd_c3_reconcile_decision",
+      "operation": "Use current real row once if stale old recognized actor metadata remains; recheck native graph remains unchanged.",
+      "public_tools": [
+        "ck3_query_profile_decision_item_v1",
+        "ck3_select_profile_decision_item_v1",
+        "ck3_confirm_profile_decision_outcome_v1"
+      ],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    },
+    {
+      "id": "N4",
+      "phase": "DECLARE_AUTO_REGISTER",
+      "decision_key": "lyd_c3_declare_claim_decision",
+      "operation": "Declaration registers automatically when current native prerequisites hold. Separate register only if an existing political claim has no native office and its current row is valid.",
+      "public_tools": [
+        "ck3_open_profile_decisions_v1",
+        "ck3_query_profile_decision_item_v1",
+        "ck3_select_profile_decision_item_v1",
+        "ck3_confirm_profile_decision_outcome_v1"
+      ],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    },
+    {
+      "id": "N5",
+      "phase": "REGISTRATION_QUERY_CHECKPOINT",
+      "decision_key": null,
+      "operation": "Query real .330 or .331 instance. ACK .330 does not prove native graph; save and independently inspect exact C/native collection/incumbent/title invariants.",
+      "public_tools": [
+        "ck3_query_profile_event_window_v1",
+        "ck3_select_profile_event_option_v1",
+        "ck3_save_profile_checkpoint_v1"
+      ],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    },
+    {
+      "id": "N6",
+      "phase": "DUPLICATE_REGISTER_NEGATIVE",
+      "decision_key": "lyd_c3_register_challenger_decision",
+      "operation": "Query only while C exists; row must be hidden/invalid, no confirm/no synthetic retry. Save one unchanged-title inventory if needed.",
+      "public_tools": [
+        "ck3_query_profile_decision_item_v1",
+        "ck3_save_profile_checkpoint_v1"
+      ],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    },
+    {
+      "id": "N7",
+      "phase": "WITHDRAW_REGISTER_BRANCH",
+      "decision_key": "lyd_c3_withdraw_claim_decision",
+      "operation": "Before any active council withdraw once, verify only exact C removed/destroyed; declare again and prove fresh C2 before proceeding.",
+      "public_tools": [
+        "ck3_query_profile_decision_item_v1",
+        "ck3_select_profile_decision_item_v1",
+        "ck3_confirm_profile_decision_outcome_v1",
+        "ck3_save_profile_checkpoint_v1"
+      ],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    },
+    {
+      "id": "N8",
+      "phase": "ACTIVATE_MEANS_BEGIN_COUNCIL",
+      "decision_key": "lyd_c3_begin_council_decision",
+      "operation": "No activate endpoint exists. Begin actual council, capture new serial/locks/HoR delegates/human roster. Actor supplies own .310 and .311; NPC .312 may reject normally.",
+      "public_tools": [
+        "ck3_query_profile_decision_item_v1",
+        "ck3_select_profile_decision_item_v1",
+        "ck3_confirm_profile_decision_outcome_v1",
+        "ck3_query_profile_event_window_v1",
+        "ck3_select_profile_event_option_v1"
+      ],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    },
+    {
+      "id": "N9",
+      "phase": "DUPLICATE_BEGIN_NEGATIVE",
+      "decision_key": "lyd_c3_begin_council_decision",
+      "operation": "While active query only; row hidden/invalid. Record no serial increment/no duplicate events/locks and no new Title.",
+      "public_tools": [
+        "ck3_query_profile_decision_item_v1",
+        "ck3_save_profile_checkpoint_v1"
+      ],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    },
+    {
+      "id": "N10",
+      "phase": "CANCEL_AND_REPEAT_COUNCIL_BRANCH",
+      "decision_key": "lyd_c3_cancel_council_decision",
+      "operation": "Cancel actual active round; verify owner+serial cleanup and claim C2 persists. Fresh begin serialS+1; old delayed expiry may not close it. NPC refusal is valid negative, not a reason to force a yes.",
+      "public_tools": [
+        "ck3_query_profile_decision_item_v1",
+        "ck3_select_profile_decision_item_v1",
+        "ck3_confirm_profile_decision_outcome_v1",
+        "ck3_save_profile_checkpoint_v1"
+      ],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    },
+    {
+      "id": "N11",
+      "phase": "CONDITIONAL_RECOGNIZE",
+      "decision_key": "lyd_c3_review_council_decision",
+      "operation": "Only when current allYES and owned temporal incumbent proof hold. Select actual .320 shown/enabled recognize using live native_option_index+1. Otherwise keep WAIT/CANCEL/refusal outcome.",
+      "public_tools": [
+        "ck3_query_profile_decision_item_v1",
+        "ck3_select_profile_decision_item_v1",
+        "ck3_confirm_profile_decision_outcome_v1",
+        "ck3_query_profile_event_window_v1",
+        "ck3_select_profile_event_option_v1",
+        "ck3_save_profile_checkpoint_v1"
+      ],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    },
+    {
+      "id": "N12",
+      "phase": "REPEAT_RECOGNIZE_NEGATIVE",
+      "decision_key": "lyd_c3_review_council_decision",
+      "operation": "After success there is no active round/current claim, and actor is native incumbent; query current closed rows only, do not repeat stale event selection.",
+      "public_tools": [
+        "ck3_query_profile_decision_item_v1",
+        "ck3_save_profile_checkpoint_v1"
+      ],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    },
+    {
+      "id": "N13",
+      "phase": "SAVE_RELOAD_SEPARATE_COLD_BRANCH",
+      "decision_key": null,
+      "operation": "Freeze pre-exit checkpoint, normal exit via supported actual context. Formal21 lacks launch/load; ROOT separately manages new cold load and rebinds process/profile/revision. Then new snapshot/checkpoint/reconcile may verify persistence. No old PID or revision reused.",
+      "public_tools": [
+        "ck3_save_profile_checkpoint_v1",
+        "ck3_query_normal_exit_context_v1",
+        "ck3_request_normal_exit_v1",
+        "ck3_observe_profile_normal_exit_v1",
+        "ck3_take_profile_native_snapshot_v1"
+      ],
+      "event_instance_id": null,
+      "expected_revision": null,
+      "actual_result": null
+    }
+  ],
+  "term_activation": "Three distinct stages: native challenger register, begin active council, conditional recognize/transfer. No invented activate decision or primitive is requested.",
+  "event_option_rule": "Source native indices are forecasts only. Future event query must bind actual instance/revision/root/saved actor+serial/shown/enabled/name; public option_number=actual native_option_index+1. Never rendered index+1; no stale retries on unknown delivery.",
+  "npc_choices": "Local tools act only for the currently controlled actor. Distinct incumbent65865 answers .312 natively with source AI35/65; do not request an NPC option. Real player HoR169=31254 answers .310, and each actual captured human answers own .311.",
+  "gaps": [
+    "Default21 has no native challenger collection/Title-owner graph query endpoint; snapshot/decision event receipts are incomplete. A saved checkpoint and independent full native graph reader are required.",
+    "Default21 has no player control switch, multi-human consent creation, NPC force-vote or direct native sponsor/register endpoint. Ordinary NPC nomination only records consenting political claim metadata.",
+    "Default21 has normal exit, but no launch/load-save endpoint. Reload is a separately managed ROOT cold attempt, preserving old evidence and acquiring new runtime identities.",
+    "Public ordinary interaction key admission must be actually queried for teacher/NPC political nomination; this package does not assume every authored interaction is admitted.",
+    "No future title ID, live event/revision, NPC AI response, simultaneous multiplayer signature, registration, recognition, reload or fixture-preparation PASS is supplied."
+  ],
+  "requests_executed": 0
+}

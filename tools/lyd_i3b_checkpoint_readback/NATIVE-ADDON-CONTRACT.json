@@ -1,0 +1,94 @@
+{
+  "schema": "lyd.i3b.readonly-native-gap-patch-contract.v1",
+  "status": "PROPOSED_SOURCEONLY_REQUIREMENTS_NOT_AVAILABLE_TOOL",
+  "source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "actual_native_run": null,
+  "actual_PID": null,
+  "actual_revision": null,
+  "actual_title_id": null,
+  "actual_serial": null,
+  "actual_pass": null,
+  "scope": "ROOT may authorize additive internal read-only observation implementation after current game/client/lease closes; no provider/registry change is authored here",
+  "references": [
+    {
+      "source": "C:\\lr11s2\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12002_phase_character.hpp",
+      "external_path": "source-proof\\native-readonly-references\\include\\xar_bridge\\ck3_12002_phase_character.hpp",
+      "bytes": 3819,
+      "sha256": "b3af0a7a90c8cf7f7a8e6447da1dc1bd9a6a87842b2d64a9fdcc10847d1ecf3a"
+    },
+    {
+      "source": "C:\\lr11s2\\ck3_autonomous_player\\native_bridge\\src\\ck3_12002_phase_character.cpp",
+      "external_path": "source-proof\\native-readonly-references\\src\\ck3_12002_phase_character.cpp",
+      "bytes": 10905,
+      "sha256": "81200e3850d2ee320600d74b18ecc343df14a7b4a92f8dff8474a599d5be055a"
+    },
+    {
+      "source": "C:\\lr11s2\\ck3_autonomous_player\\native_bridge\\include\\xar_bridge\\ck3_12003_title_holder.hpp",
+      "external_path": "source-proof\\native-readonly-references\\include\\xar_bridge\\ck3_12003_title_holder.hpp",
+      "bytes": 909,
+      "sha256": "431f624d4d2e9a8deeeb6128139b62077fa59a45a73d02bc2350601fb77dd366"
+    }
+  ],
+  "G2_exact_needed_additive_observation": {
+    "input": {
+      "source_binding": null,
+      "executable_sha256": null,
+      "paused_snapshot_revision": null,
+      "checkpoint_sha256": null,
+      "actual_faith_id": null,
+      "actual_actor_id": null,
+      "actual_rite_ids": null,
+      "full_saved_faith_member_ids": null
+    },
+    "requirements": [
+      "game owning thread only",
+      "full generation-aware CharacterID resolution and identity before/after every leaf read",
+      "same paused snapshot/faith membership and no revision change across observation",
+      "complete native alive Faith-character enumeration or explicit complete saved-roster plus same-frame native membership closure",
+      "each character alive, adult, imprisoned, incapable, effective learning and human-player/is_ai predicates",
+      "every actual Rite native county count",
+      "per-ID unavailable/truncated/missing returns UNKNOWN, never false/zero/empty; no first-member shortcut"
+    ],
+    "existing_leaf_sources": {
+      "ReadIdentity": "ck3_12002::phase_character::ReadIdentity provides alive, is_ai via IsHumanPlayerCharacter, and effective learning from native character field",
+      "ReadTraitPresence": "FindUniqueTraitDefinition(\"incapable\") + CharacterHasTrait leaf; never saved numeric trait-ID guess"
+    },
+    "critical_version_boundary": "These existing phase-character leaf bindings are explicitly gated to ck3_12002::kExecutableSha256. Their names/offsets do not prove CK3 1.20.0.3 ABI compatibility. Exact current executable binding and adult/imprisoned/Faith-enumeration/counties leaves remain an implementation proof requirement.",
+    "emitted_payload_contract": "NATIVE-PREDICATES.template.json; replace null only from actual fresh observations, retain full supporting native receipts"
+  },
+  "G3_exact_needed_additive_observation": {
+    "input": {
+      "actual_title_id_from_result_head_title": null,
+      "actual_faith_id": null,
+      "actual_actor_id": null,
+      "paused_snapshot_revision": null,
+      "checkpoint_sha256": null
+    },
+    "requirements": [
+      "use actual discovered typed T, never fixed title IDs or merely office markers",
+      "current exact-build generation-aware native Title and holder before/after",
+      "actual Faith native religious_head_title and religious_head graph",
+      "owned marker and typed ownerFaith independently from full saved T AST",
+      "read temporal_head_of_faith_succession_law membership and all four Title properties via exact qualified serialized fields or new verified native getters",
+      "complete seven political Title protections plus independent native holder predicates; AST preservation alone is not a native predicate proof"
+    ],
+    "existing_leaf_source": "ck3_12003::ReadTitleHolderV1 reads a requested full title ID at any tier on current paused frame; this interface does not expose succession law/four-property getters",
+    "unresolved_bindings": {
+      "saved_Title_type": null,
+      "succession_law_saved_path_or_native_getter": null,
+      "destroy_if_invalid_heir_saved_path_or_native_getter": null,
+      "no_automatic_claims_saved_path_or_native_getter": null,
+      "definitive_form_saved_path_or_native_getter": null,
+      "always_follows_primary_heir_saved_path_or_native_getter": null
+    },
+    "emitted_payload_contracts": [
+      "TITLE-REFERENCE-BINDING.template.json",
+      "TITLE-FIELDS-BINDING.template.json"
+    ],
+    "setter_execution_is_readback": false
+  },
+  "formal_ballot_requirement": "410/411/412/413/430 callback actor/serial/nonce/phase and separate all-human412 receipts remain independent. No primitive charter fixture bypass or mandate credit.",
+  "formal_21_tools_delta": null,
+  "native_addresses_added": null,
+  "compiled_or_executed": false
+}

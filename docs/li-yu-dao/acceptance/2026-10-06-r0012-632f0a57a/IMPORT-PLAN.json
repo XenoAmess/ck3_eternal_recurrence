@@ -1,0 +1,14 @@
+{
+  "schema": "lyd.r12.ROOT-actual-closed-import-plan.v1",
+  "repository": "C:/workspace/ck3_eternal_recurrence",
+  "landing_relative_path": "docs/li-yu-dao/acceptance/2026-10-06-r0012-632f0a57a",
+  "canonical_closed_boundary": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r12-root-actual-closed-boundary-20261006-001/PREVIOUS-BOUNDARY.actual.json",
+    "bytes": 3364,
+    "sha256": "fb36f6044473f4e3ad22c652a2fb9c4ba29d8f8c63180c3f7b8f079451498d9f"
+  },
+  "apply_allowed": true,
+  "ROOT_only": true,
+  "source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "old_reports_overwrite": false
+}

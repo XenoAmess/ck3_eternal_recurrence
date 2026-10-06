@@ -1,0 +1,7 @@
+{
+  "ROOT_only": true,
+  "apply_allowed": false,
+  "old_reports_overwrite": false,
+  "target_relative": "docs/li-yu-dao/acceptance/2026-10-06-post-r12-readonly-source-l0/nativebuild001",
+  "native_qualification_and_two_first_test_receipts": null
+}

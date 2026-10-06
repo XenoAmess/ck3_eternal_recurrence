@@ -1,0 +1,35 @@
+{
+  "schema": "lyd.i3b.formal-ballot-event-context.v1",
+  "source_head": "632f0a57a07aa6299052004589ed6f7632e7d8f7",
+  "identity": {
+    "actor_id": null,
+    "faith_id": null,
+    "main_rite_id": null,
+    "pid": null,
+    "session_id": null,
+    "revision": null,
+    "checkpoint_id": null
+  },
+  "events": [
+    {
+      "event_id": null,
+      "event_root": null,
+      "actual_actor": null,
+      "serial": null,
+      "nonce": null,
+      "phase": null,
+      "native_revision": null,
+      "choice_id": null,
+      "before_receipt_sha256": null,
+      "after_receipt_sha256": null
+    }
+  ],
+  "proposal_event_410_receipts": null,
+  "per_elector_event_411_receipts": null,
+  "every_alive_human_event_412_receipts": null,
+  "per_school_delegate_event_413_receipts": null,
+  "commit_event_430_receipt": null,
+  "formal_mandate_credit": null,
+  "actual_pass": null,
+  "note": "Separate ROOT native observation requirement; checkpoint consistency cannot prove formal event callbacks, and primitive-charter fixtures provide no mandate."
+}
