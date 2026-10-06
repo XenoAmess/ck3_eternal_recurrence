@@ -143,13 +143,13 @@ void RequireOrdinaryProfile(const terms::Context &observation) {
           observation.identity.requested_recipient_character_id == kRequestedRecipient &&
           observation.identity.effective_actor_id == kActor &&
           observation.identity.effective_recipient_id == kEffectiveRecipient &&
-          observation.identity.secondary_actor_id == -1 &&
-          observation.identity.secondary_recipient_id == 888 &&
-          observation.identity.intermediary_id == -1 &&
+          observation.identity.secondary_actor_id == std::int32_t{-1} &&
+          observation.identity.secondary_recipient_id == std::int32_t{888} &&
+          observation.identity.intermediary_id == std::int32_t{-1} &&
           observation.identity.sixth_role_id == kActor,
           "six redirected native signed roles were not preserved");
-  Require(observation.options.available && observation.options.declared_count == 1 &&
-          observation.options.selected_count == 0 && observation.options.all_unselected == true,
+  Require(observation.options.available && observation.options.declared_count == std::uint32_t{1} &&
+          observation.options.selected_count == std::uint32_t{0} && observation.options.all_unselected == true,
           "stock declared option was confused with selected options");
   Require(observation.definition_stable_hash == static_cast<std::uint32_t>(kDefinitionHash),
           "definition provenance was lost");
