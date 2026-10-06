@@ -1,8 +1,8 @@
 // Fixture-owned native stores and typed queue use the same exact-build
 // layouts as the provider fixture; its standalone matrix is not rerun.
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "ck3_12004_faction_adopted_fixture.hpp"
 
-#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_faction_gift_router.hpp"
 #include "xar_bridge/ck3_12004_faction_mailbox.hpp"
 #include "xar_bridge/faction_gift_mitigation_async_glue_v1.hpp"
