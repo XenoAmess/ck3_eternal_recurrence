@@ -93,8 +93,8 @@ std::int32_t Maximum(void *receiver) {
 constexpr std::uint32_t kUnitA = 0x11000001U, kUnitB = 0x11000002U;
 constexpr std::uint32_t kArmyA = 0x22000001U, kArmyB = 0x22000002U;
 constexpr std::uint32_t kArmyWrongGeneration = 0x99000002U;
-constexpr std::uint32_t kRegA = 0xAB000001U, kRegB = 0xAB000002U;
-constexpr std::uint32_t kRegPositive = 0xAB000003U, kRegInvalid = 0xAB000004U;
+constexpr std::uint32_t kRegA = 0x2B000001U, kRegB = 0x2B000002U;
+constexpr std::uint32_t kRegPositive = 0x2B000003U, kRegInvalid = 0xAB000004U;
 constexpr std::uint32_t kRegWrongGeneration = 0xCD000002U;
 constexpr std::uint32_t kSiegeHigh = 0xFE000002U, kSiegeLow = 0x01000001U, kSiegeTail = 0xFB000003U;
 struct Fixture {
