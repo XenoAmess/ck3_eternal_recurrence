@@ -450,8 +450,8 @@ ui::FrontendGuiRouteMailboxContextV1 FrontendQuery(
   query.mailbox = &pump.mailbox;
   query.operation = operation;
   query.environment = ui::BindZhongguoScoreboardNativeEnvironmentV1(
-      gui.image.Base(), true, ui::GuiAbiRevisionV1::crozier12004);
-  query.environment.executable_sha256 = current::kExecutableSha256;
+      gui.image.Base(), true, ui::GuiAbiRevisionV1::crozier12004,
+      current::kExecutableSha256);
   Check(query.environment.exact_build_admitted && !query.environment.offline_fixture_function_overrides &&
       reinterpret_cast<std::uintptr_t>(query.environment.gui_global_slot) ==
           gui.image.Base() + current::kGuiGlobalSlotRva12004V1 &&
