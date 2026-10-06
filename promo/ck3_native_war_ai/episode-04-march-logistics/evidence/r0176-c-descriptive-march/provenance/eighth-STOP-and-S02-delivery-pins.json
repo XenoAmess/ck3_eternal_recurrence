@@ -1,0 +1,25 @@
+{
+  "files": [
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-Root-single-a01\\result.json",
+      "relative": "overshoot-day55-original-STOP.json",
+      "bytes": 325,
+      "sha256": "20765b1135613b504baadc66e6f5721706ba86de98b11d21354a83cdaa4cf625",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root_C_day55_manual_notes_a01.json",
+      "relative": "Root-day55-authored-notes.json",
+      "bytes": 2643,
+      "sha256": "4c2c3cc81dee0e977a820ca91b2a84855c7fa61a37fbacae28d1274cede7f21c",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\ROOT-DELIVERY03.json",
+      "relative": "S02-media-Root-delivery.json",
+      "bytes": 2943,
+      "sha256": "c42e2a666f45cce97f4bd14fb8a8aef42b55d7a6c82001412b887de58487191b",
+      "completed": true
+    }
+  ]
+}

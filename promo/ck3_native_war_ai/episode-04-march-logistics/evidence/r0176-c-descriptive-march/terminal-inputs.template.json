@@ -1,0 +1,31 @@
+{
+  "schema": "ck3.e04.C.review01.terminal-inputs.v1",
+  "files": [],
+  "role_aliases": {},
+  "required_actual_roles": [
+    "cold_before", "cold_health", "cold_after", "cold_commander",
+    "last_not_arrived", "last_not_arrived_commander",
+    "first_observed", "first_observed_commander",
+    "independent_endpoint", "independent_endpoint_commander",
+    "Root_terminal", "Root_numeric_acceptance", "runtime_closure",
+    "S03_sealed", "latest_Root_review"
+  ],
+  "file_entry_contract": {
+    "role": "ONE_REQUIRED_ROLE",
+    "source": null,
+    "bytes": null,
+    "sha256": null,
+    "completed": false
+  },
+  "field_bindings": {
+    "numeric_accepted": {"role": "Root_numeric_acceptance", "pointer": null},
+    "terminal_status": {"role": "Root_terminal", "pointer": null},
+    "terminal_raw": {"role": "Root_terminal", "pointer": null},
+    "runtime_closed": {"role": "runtime_closure", "pointer": null},
+    "release_resources": {"role": "runtime_closure", "pointer": null}
+  },
+  "terminal": null,
+  "winner": null,
+  "controlled_comparison_eligibility": "NOT_GRANTED",
+  "notes": "Populate only from Root completed exact JSON. Observation roles hold original embedded before/health/after; commander roles hold full typed query wrapper. JSON pointers bind actual Root facts, not proposed values. Media/save paths inside original JSON are never opened."
+}

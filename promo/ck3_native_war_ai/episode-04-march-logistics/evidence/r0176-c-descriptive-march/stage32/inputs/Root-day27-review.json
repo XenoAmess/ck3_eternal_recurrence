@@ -1,0 +1,91 @@
+{
+  "status": "ROOT_ACTUAL_C_CURRENT_BASIS_ACCEPTED_BEFORE_NEXT_RESUME",
+  "at_utc": "2026-10-05T21:47:01.495050+00:00",
+  "basis_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-WHOLE-world-a03-w001\\pulse-01\\inspect\\observation.json",
+    "bytes": 352893,
+    "sha256": "e48bd832cd9cd1254985a34135a9300446464393665bc745fc10cc8315cf9cf8"
+  },
+  "input_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-runtime-inputs-a01\\input-manifest.json",
+    "bytes": 29017,
+    "sha256": "4cbcc9f499b2c1d93447157533ccfb910a3633a138e228d4f8b10af01891ebe2"
+  },
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01",
+  "episode_run_id": "native-33388-1be6dd7a468f",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "actual_date_raw": 53149080,
+  "material_disposition_prospective": true,
+  "old_STOP_unchanged": true,
+  "no_budget_reset": true,
+  "full27reg37DATA_commander27357_and_actual_clocks_reviewed": true,
+  "Root_actual_review_notes": "Root reviewed complete frozen +26 to +27 material/world/clock delta and independently queried current paused native UI then viewed actual original 1920x1080 Apr1 frame: selected Main6689, S106/300, attrition0%, helmet commander, current route waypoint2176 with displayed remaining1day. Entire full27Reg/37DATA identities/types/max6747/comm27357/runtime/war remain intact. Six Regiment integer counts +2,+2,+1,+3,+1,+1 sum+10 agree six DATA current/effective integer growth. Prepared replenishment fractions and permission refresh recorded separately; no applied refill ledger or casualty causation inferred. S10613988/cap30000000/monthly-423728/attr0/cash63754562 and stored supply clocks unchanged. Outside protected2179/2176, already occupied1609 garrison25 to41 and known NPC1606 siege16777228/Army59 ordinary progress; no own-route siege/confound inferred. Original WHOLE material STOP retained unchanged. Accept only current sameC descriptive basis with original90day/120registry. Preserve both +12 to14 and +20 to22 overshoots and controlled A/C eligibility NOT GRANTED. Next finite5 strict serial dwell0; new source/material/pause/world uncertainties stop.",
+  "source_analysis": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day27-material-analysis-a01\\source-analysis.json",
+    "bytes": 20863,
+    "sha256": "c047dc70bc5727049598d2d7603246532841cb947804f6d176ae2047fab157ef"
+  },
+  "old_STOP": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-r0176-WHOLE-world-disposition-preparation-a02\\attempts\\r0176-C-WHOLE-world-a03\\result.json",
+    "bytes": 1097,
+    "sha256": "43c45342178c1742e288e8d3b21647d7c4effbaac52fd3eaa85a927b95afbaeb"
+  },
+  "underlying_actual_paused_STOP": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-WHOLE-world-a03-w001\\result.json",
+    "bytes": 324,
+    "sha256": "99fa9aab4d769d95a51fd24a39cbc0f1a2f0be32cc05a7f23ce033de4bb65505"
+  },
+  "prior_sampling_deviation_Root_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day25-current-basis-review-a01\\Root-review.json",
+    "bytes": 4700,
+    "sha256": "2dd6fb46103cd3c13cd32831bed53ba52494240ab054103330646811156e3a64"
+  },
+  "sampling_protocol_deviations": [
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "actual_global_budget_breach": false,
+      "actual_date_raw": 53148768,
+      "original_END_raw": 53150592,
+      "old_STOP_unchanged": true
+    },
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "source_before_raw": 53148912,
+      "source_after_raw": 53148960,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "actual_global_budget_breach": false,
+      "underlying_STOP": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a09-s01\\result.json",
+        "bytes": 325,
+        "sha256": "9c87b621dabc82cde5497790e88afb6a05400ac2f6b8e5bcaeab9dcc6706d728"
+      }
+    }
+  ],
+  "descriptive_continuation_only": true,
+  "controlled_comparison_eligibility_granted": false,
+  "actual_fresh_original_frame": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day27-native-frame-a01\\receipt.json",
+    "bytes": 1609,
+    "sha256": "fd465470b159da72cf71cb9daa328eb8e9cc6d926a558a6f2aac088c8828cea3"
+  },
+  "Root_actual_original_frame_viewed": true,
+  "continuation_recording_actual_ready": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a01\\process-ready.json",
+    "bytes": 7492,
+    "sha256": "b411071455bb1ad26dec03bd99fff3480922cf2262339b700bef967724fc55c8"
+  },
+  "continuation_Root_admission": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-continuation-admission-a01\\Root-actual-receipt.json",
+    "bytes": 13600,
+    "sha256": "97fb3a01942d6fffebcf7c775bbe4337686aa9ebf6f8d72499bc5a6a01028afa"
+  },
+  "human_signoff": false
+}

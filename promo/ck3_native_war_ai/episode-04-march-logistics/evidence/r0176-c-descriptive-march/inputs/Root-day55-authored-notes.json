@@ -1,0 +1,25 @@
+{
+  "Root_material_world_clock_review_completed": true,
+  "source_analysis": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day54-current-analysis-a01\\source-analysis.json",
+    "bytes": 4782,
+    "sha256": "0ceb84693000dbdd6b26a220e623e7899fa1b67fb050ce5561a0b424d8bb3f28"
+  },
+  "actual_date_raw": 53149752,
+  "stage": "London",
+  "Root_actual_review_notes": "Root actually reviewed +53->55 full source-analysis: all material/world/outside-world/full27Reg/full37DATA deltas empty. The directory historical name saysday54 but actual preserved JSON saysdate53149752/day55; no directory name treated as source date. Strict fullidentity/type/max6747/comm27357/runtime/war pass; Main6689/S10190260/cap30000000/monthly-423728/attr0/cash63848329 unchanged, current2176 moving6route729,965,686,628,629,1527/no combat or retreat. Native clock389571->389573/phase21->23 and actual+48raw, last_supply53149200/storage64=300337120213138960, grace53144256/storage64=300061168564366016/loaded30 unchanged. Planned1/actual2 is eighth sampling deviation, not restored controlled comparison. Root also preserves failed a13 one-pulse initial health PRE_SNAPSHOT unavailable/no native reader started: wrapper complete-file error masked actual initial-query failure, old STOP remains UNKNOWN cause. Subsequent explicit frozen single-pulse helper reobtained full native initial and finally-paused endpoint; this actual current endpoint independently passes guard, so only prospective descriptive continuation. No blanket retry/field whitelist, same original90day120batch registry/no reload or reset; genuine S03 still records. Root separately viewed actual6 codedS02 originals including Apr25 tail, only sampled state no exact native event PTS/continuousclean/human1x credit. No applied loss/refill/payment ledger invented.",
+  "old_STOP": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-Root-single-a01\\result.json",
+  "underlying_actual_paused_STOP": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-Root-single-a01\\result.json",
+  "prior_sampling_deviation_Root_receipt": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day53-current-basis-review-a01\\Root-review.json",
+  "new_sampling_deviation": {
+    "planned_max_target_days": 1,
+    "actual_days": 2,
+    "source_before_raw": 53149704,
+    "source_after_raw": 53149752,
+    "overshoot_raw": 24,
+    "window_one_day_sampling_eligible": false,
+    "actual_global_budget_breach": false
+  },
+  "original_frame_receipt": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-S02-six-encoded-review-a01\\receipt.json",
+  "human_signoff": false
+}

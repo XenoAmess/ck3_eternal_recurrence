@@ -1,0 +1,45 @@
+{
+  "status": "ROOT_ACTUAL_C_CURRENT_BASIS_ACCEPTED_BEFORE_NEXT_RESUME",
+  "at_utc": "2026-10-05T20:55:07.263706+00:00",
+  "basis_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a04-s01\\pulse-01\\inspect\\observation.json",
+    "bytes": 352624,
+    "sha256": "c44db5ce32d744253b2691eaac9defa043522da7ca2c1d66540f4b60c8b6230c"
+  },
+  "input_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-runtime-inputs-a01\\input-manifest.json",
+    "bytes": 29017,
+    "sha256": "4cbcc9f499b2c1d93447157533ccfb910a3633a138e228d4f8b10af01891ebe2"
+  },
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01",
+  "episode_run_id": "native-33388-1be6dd7a468f",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "actual_date_raw": 53148504,
+  "material_disposition_prospective": true,
+  "old_STOP_unchanged": true,
+  "no_budget_reset": true,
+  "full27reg37DATA_commander27357_and_actual_clocks_reviewed": true,
+  "Root_actual_review_notes": "Root examined the actual full +2 to +3 native source analysis and original paused Mar8 UI frame. Own full27reg/37DATA entire rows/current6679/max6747/S10613988/cap30000000/monthly-423728/comm27357/attr0/cash63754562 unchanged. Offsite NPC1609 siege3 Army7 has four ordinary progression changes and strength5257→5235; net-22 cause UNKNOWN, not credited as own loss or applied attrition. Original known-NPC wrapper correctly rejected the fifth field; its preflight and old STOP stay unchanged. Accept only actual +3 current basis for the next strict finite serial window. Future new material/identity/commander/world field changes still STOP; no whitelist widening or predicted stable strength.",
+  "source_analysis": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day3-world-analysis-a01\\source-analysis.json",
+    "bytes": 6016,
+    "sha256": "da3be8b69e1e64b051746b93a144ef1417e235712f9b001cc1d2b206e2eca918"
+  },
+  "actual_UI_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day3-native-frame-a01\\receipt.json",
+    "bytes": 1330,
+    "sha256": "aed8dafde9c2bf0f531ee9f15cbbde37073a266e13c7619eeaeb6311141140b4"
+  },
+  "old_STOP": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a04\\result.json",
+    "bytes": 1015,
+    "sha256": "91f01dfe1839e416a9ca06f7a799a12f5b1a43d57325b9e3c7637600a6f2c520"
+  },
+  "known_NPC_rejected_preflight": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-knownNPC-world-execution-a01\\process-result.json",
+    "bytes": 133,
+    "sha256": "bdd5edc962c42698931e135cbca98a688ad1e4a6933c741668065c85ddaa3a45"
+  },
+  "human_signoff": false
+}

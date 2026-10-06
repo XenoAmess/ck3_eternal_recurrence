@@ -1,0 +1,222 @@
+{
+  "at_utc": "2026-10-05T21:57:06.997363+00:00",
+  "manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-runtime-inputs-a02\\input-manifest.json",
+    "bytes": 30065,
+    "sha256": "f52765356b6f4f6adbbbae35055866076d820bf33a516dcf597723adb6b5149f"
+  },
+  "source_before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a02-s01\\initial\\observation.json",
+    "bytes": 548002,
+    "sha256": "4c4431456683355c383797c07aac77102b52140882e9a9050a14f6a0e091d749"
+  },
+  "source_after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a02-s01\\pulse-01\\inspect\\observation.json",
+    "bytes": 353247,
+    "sha256": "5240e7206079c93badaee96c2639a5f8039699a7e01444e93e49b85bbd49c0e8"
+  },
+  "before_date_raw": 53149176,
+  "after_date_raw": 53149200,
+  "actual_days_from_common": 32.0,
+  "material_delta": [
+    {
+      "path": "/scalars/current_supply_raw",
+      "before": 10613988,
+      "after": 10190260
+    },
+    {
+      "path": "/stored_clock/last_supply_update_date_raw",
+      "before": 53148480,
+      "after": 53149200
+    },
+    {
+      "path": "/stored_clock/last_supply_update_date_storage_raw64",
+      "before": 300336024996477760,
+      "after": 300337120213138960
+    }
+  ],
+  "full_world_delta": [
+    {
+      "path": "/0/objective_province_states/6/active_siege/current_work/raw",
+      "before": 494900,
+      "after": 565600
+    },
+    {
+      "path": "/0/objective_province_states/6/active_siege/days_left",
+      "before": 559,
+      "after": 558
+    },
+    {
+      "path": "/0/objective_province_states/6/active_siege/progress_fraction/raw",
+      "before": 1237,
+      "after": 1414
+    },
+    {
+      "path": "/0/objective_province_states/6/active_siege/remaining_work/raw",
+      "before": 39505100,
+      "after": 39434400
+    }
+  ],
+  "outside_world_delta": [
+    {
+      "path": "/0/objective_province_states/6/active_siege/current_work/raw",
+      "before": 494900,
+      "after": 565600
+    },
+    {
+      "path": "/0/objective_province_states/6/active_siege/days_left",
+      "before": 559,
+      "after": 558
+    },
+    {
+      "path": "/0/objective_province_states/6/active_siege/progress_fraction/raw",
+      "before": 1237,
+      "after": 1414
+    },
+    {
+      "path": "/0/objective_province_states/6/active_siege/remaining_work/raw",
+      "before": 39505100,
+      "after": 39434400
+    }
+  ],
+  "full_regiment_row_delta": [],
+  "full_DATA_container_row_delta": [],
+  "counts_before": {
+    "regiments": 27,
+    "DATA": 37
+  },
+  "counts_after": {
+    "regiments": 27,
+    "DATA": 37
+  },
+  "scalars_before": {
+    "current_soldiers": 6689,
+    "maximum_soldiers": 6747,
+    "current_supply_raw": 10613988,
+    "current_supply_scale": 100000,
+    "current_supply_capacity_raw": 30000000,
+    "current_supply_capacity_scale": 100000,
+    "current_supply_change_monthly_raw": -423728,
+    "current_supply_change_monthly_scale": 100000,
+    "current_attrition_fraction_raw": 0,
+    "current_attrition_fraction_scale": 100000
+  },
+  "scalars_after": {
+    "current_soldiers": 6689,
+    "maximum_soldiers": 6747,
+    "current_supply_raw": 10190260,
+    "current_supply_scale": 100000,
+    "current_supply_capacity_raw": 30000000,
+    "current_supply_capacity_scale": 100000,
+    "current_supply_change_monthly_raw": -423728,
+    "current_supply_change_monthly_scale": 100000,
+    "current_attrition_fraction_raw": 0,
+    "current_attrition_fraction_scale": 100000
+  },
+  "clock_before": {
+    "status": "available",
+    "ready": true,
+    "current_date_raw": 53149176,
+    "native_day_index": 389549,
+    "selected_bucket_phase": 29,
+    "observed_army_bucket_phase": 0,
+    "last_supply_update_date_storage_raw64": 300336024996477760,
+    "last_supply_update_date_raw": 53148480,
+    "grace_anchor_date_storage_raw64": 300061168564366016,
+    "grace_anchor_date_raw": 53144256,
+    "loaded_grace_days": 30,
+    "unavailable_reason": null
+  },
+  "clock_after": {
+    "status": "available",
+    "ready": true,
+    "current_date_raw": 53149200,
+    "native_day_index": 389550,
+    "selected_bucket_phase": 0,
+    "observed_army_bucket_phase": 0,
+    "last_supply_update_date_storage_raw64": 300337120213138960,
+    "last_supply_update_date_raw": 53149200,
+    "grace_anchor_date_storage_raw64": 300061168564366016,
+    "grace_anchor_date_raw": 53144256,
+    "loaded_grace_days": 30,
+    "unavailable_reason": null
+  },
+  "protected_sites": [
+    628,
+    629,
+    686,
+    729,
+    965,
+    1527,
+    2176
+  ],
+  "player_before": [
+    {
+      "army_id": 0,
+      "owner_character_id": 33388,
+      "soldiers": null,
+      "current_province_id": 2176,
+      "move_target_province_id": 1527,
+      "move_target_observable": true,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [
+        729,
+        965,
+        686,
+        628,
+        629,
+        1527
+      ],
+      "route_read_status": "complete_nonempty",
+      "route_source_count": 6,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "moving",
+      "army_state_code": 7,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    }
+  ],
+  "player_after": [
+    {
+      "army_id": 0,
+      "owner_character_id": 33388,
+      "soldiers": null,
+      "current_province_id": 2176,
+      "move_target_province_id": 1527,
+      "move_target_observable": true,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [
+        729,
+        965,
+        686,
+        628,
+        629,
+        1527
+      ],
+      "route_read_status": "complete_nonempty",
+      "route_source_count": 6,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "moving",
+      "army_state_code": 7,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    }
+  ],
+  "gold_before": {
+    "raw": 63848329,
+    "scale": 100000
+  },
+  "gold_after": {
+    "raw": 63848329,
+    "scale": 100000
+  },
+  "required_identity_max_commander_runtime_war_gate_pass": true,
+  "Root_disposition": null,
+  "no_SDK_UI_bus_raw_or_process_actions": true
+}

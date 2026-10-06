@@ -1,0 +1,26 @@
+{
+  "status": "FILE_ONLY_C_STAGE_PLAN_NO_PUBLICATION",
+  "phase": "waypoint",
+  "action": "move",
+  "input_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-capture-preparation-a01\\abc-input-preparation-a01\\ABC-INPUTS-C-waypoint-phase1-bound-a02.json",
+    "bytes": 22385,
+    "sha256": "55859214f1644f8400ea0bc2c236815a6876649c43f9de10e1be981378d22feb"
+  },
+  "output": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-move-a01",
+  "actual_API_queue_root": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-capture-preparation-a01",
+  "target_province_id": 2176,
+  "phase1_expected_fresh_whole_route": [
+    2175,
+    2179,
+    2176
+  ],
+  "phase2_London_actual_route": null,
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "cold_baseline_or_arrival_and_preview_source": null,
+  "arrival_gate": "Mainnative0/full27reg37DATA/currentcommander27357/paused/exactprovince/routeempty/regular-or-sieging/no combat or retreat",
+  "same_session_and_recorder_no_restart_or_budget_reset": true,
+  "new_PID_lease_Steam_runtime_and_recorder_admission": null,
+  "SDK_Game_UI_bus_recorder_security_Git_calls_by_default": 0
+}

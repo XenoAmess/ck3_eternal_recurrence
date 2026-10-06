@@ -1,0 +1,22 @@
+{
+  "status": "STOP_ACTUAL_C_TYPED_MOVE_ROUTE_READBACK_FOR_ROOT",
+  "actual_route": [
+    729,
+    965,
+    686,
+    628,
+    629,
+    1527
+  ],
+  "ack_not_arrival_or_completion": true,
+  "actual_paused": true,
+  "actual_date_raw": 53149104,
+  "phase": "london",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "actual_days_from_common": 28.0,
+  "same_R0176_session": true,
+  "recorder_started_or_changed_by_this_operator": false,
+  "no_budget_reset": true,
+  "comparison_completion_credit": 0
+}

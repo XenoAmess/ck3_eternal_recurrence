@@ -1,0 +1,189 @@
+{
+  "London_endpoint_metrics": null,
+  "absolute_END_raw": 53150592,
+  "actual_days_used": null,
+  "applied_refill_payment_ledger": null,
+  "closed": null,
+  "common_T0_raw": 53148432,
+  "controlled_comparison_eligibility": "NOT_GRANTED",
+  "episode_run_id": "native-33388-1be6dd7a468f",
+  "global_budget_breach": null,
+  "observed_arrival_interval_days": null,
+  "observed_terminal_date_raw": null,
+  "sampling_deviations": [
+    {
+      "actual_days": 2,
+      "observed_days": [
+        12.0,
+        14.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "stage32/inputs/overshoot-day14-original-STOP.json",
+        "sha256": "c66a2c24ffc1616d8e8a07a187b21776bae11debbcfb5128df4f260520b10995"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        20.0,
+        22.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "stage32/inputs/overshoot-day22-original-STOP.json",
+        "sha256": "9c87b621dabc82cde5497790e88afb6a05400ac2f6b8e5bcaeab9dcc6706d728"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        29.0,
+        31.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "stage32/inputs/overshoot-day31-original-STOP.json",
+        "sha256": "660610b872e8bf9f60a86235aed033d4c4ad19854bbff17810cd3c792bda4c5f"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        34.0,
+        36.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day36-original-STOP.json",
+        "sha256": "727d8fda85c50ebdc4c9990cfcf919f17e60cfe55efa8d0ba0349da180901b0b"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        40.0,
+        42.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day42-original-STOP.json",
+        "sha256": "076267bb1ce5454fabcd8105968e019529da6e77508e65150101e4710a07e386"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        45.0,
+        47.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day47-original-STOP.json",
+        "sha256": "c8cc79b46cbe77a605319937f164b90941e0198abaecef7391de6a3ea637f952"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        49.0,
+        51.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day51-original-STOP.json",
+        "sha256": "2498f750bf277fe16ab362a4b793648273dd64fcff0ddb7a89e575ea55a761bb"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        53.0,
+        55.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day55-original-STOP.json",
+        "sha256": "20765b1135613b504baadc66e6f5721706ba86de98b11d21354a83cdaa4cf625"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        57.0,
+        59.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 247,
+        "path": "inputs/overshoot-day59-failed-STOP-pause-null.json",
+        "sha256": "d551cac1b8538587bbdabb838423bc7503108d473ce5f739ef063d3c6a8cbf93"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        60.0,
+        62.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day62-original-STOP.json",
+        "sha256": "ac99d55d79bb808696d805791f0372195c16dc1ca21f13657ff4e91c6217dc8f"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        63.0,
+        65.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day65-original-STOP.json",
+        "sha256": "2c3ab3672a2b2f06389ecb4981cd8d4b0a9527ddc65b6d3c52524e3274bddbe5"
+      }
+    }
+  ],
+  "source_sha256": null,
+  "status": null,
+  "subject_scope": {
+    "all_player_total_soldiers": null,
+    "global_health_status": "partial",
+    "kind": "required_Main_original_cohort",
+    "required_full_DATA": 37,
+    "required_full_regiments": 27,
+    "required_native_carmy_ids": [
+      0
+    ],
+    "required_public_ids": [
+      0
+    ],
+    "unassessed_CUnit_ids": [
+      16777391
+    ],
+    "unassessed_health": null
+  },
+  "winner": null
+}

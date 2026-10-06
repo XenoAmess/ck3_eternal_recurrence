@@ -1,0 +1,54 @@
+{
+  "files": [
+    {
+      "bytes": 9879,
+      "completed": true,
+      "relative": "inputs/Root-day60-review.json",
+      "sha256": "c8a75a2e56834180cadcd0d311d8f19e73fcb290564ef2a3d14611a37b7a9b66",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-final-review01-preparation-a01\\append-day60-a01\\Root-day60-review.json"
+    },
+    {
+      "bytes": 15198,
+      "completed": true,
+      "relative": "inputs/day60-source-analysis.json",
+      "sha256": "684236370db4dd1275ebb19fceef14b9a520ff4bec5527897e74a8a6e81060da",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-final-review01-preparation-a01\\append-day60-a01\\day60-source-analysis.json"
+    },
+    {
+      "bytes": 2629,
+      "completed": true,
+      "relative": "inputs/FINAL-MAINPARTIAL-FIELD-MAP.json",
+      "sha256": "903721a585bf90ecd748c51c27e6d15c4388183adb77ec0beb1043e9d4c0e5db",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-final-review01-preparation-a01\\append-normalized-contract-a01\\FINAL-MAINPARTIAL-FIELD-MAP.json"
+    },
+    {
+      "bytes": 11180,
+      "completed": true,
+      "relative": "inputs/Root-day65-review.json",
+      "sha256": "acf34a166d338f86d35bb055aa0e7c223bc6ca3db1b415f4110505a6cf826339",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day65-current-basis-review-a01\\Root-review.json"
+    },
+    {
+      "bytes": 10760,
+      "completed": true,
+      "relative": "inputs/day65-source-analysis-original-day64-name.json",
+      "sha256": "3e9e8ec3833df38783b5a5aa0ff589e8d839cf77952e50121621a5ae3196aa23",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day64-current-analysis-a01\\source-analysis.json"
+    },
+    {
+      "bytes": 325,
+      "completed": true,
+      "relative": "inputs/overshoot-day62-original-STOP.json",
+      "sha256": "ac99d55d79bb808696d805791f0372195c16dc1ca21f13657ff4e91c6217dc8f",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-Main-strict-serial-a01-s01\\result.json"
+    },
+    {
+      "bytes": 325,
+      "completed": true,
+      "relative": "inputs/overshoot-day65-original-STOP.json",
+      "sha256": "2c3ab3672a2b2f06389ecb4981cd8d4b0a9527ddc65b6d3c52524e3274bddbe5",
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-Main-strict-serial-a03-s01\\result.json"
+    }
+  ],
+  "source_directory_names_do_not_override_JSON_dates": true
+}

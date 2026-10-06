@@ -1,0 +1,9 @@
+# C 已完成小报告的中期数据
+
+R0176从共同whole d052起点冷载，Root实际cold compare报告full27/37整行semantic diff0，新episode为native-33388-1be6dd7a468f。相对stdlib消费者仅核随包小报告、准备元数据和Root审阅之间的byte/source关系，不重新遍历游戏全量行、读取真实save、SDK、PNG或原片。原始JSON绝对路径仅作provenance，消费者不沿它们打开外部文件。
+
+C两阶段共享START53148432、END53150592、90实际日和120批次总上限。phase1实际typed路线2175→2179→2176；phase2London路线尚NULL。120是每臂maximum_batches_per_arm，不是另给120日，也不是每次driver或新录像段的新预算。
+
+本冻结切点为已完成第4日raw53148528小报告，不代表稍后的live current state。第2日stock11037716→10613988，原27团/37DATA整行报告无变，own6679/max6747/cap30000000/现金63754562原样，+188实际写入日期53147760→53148480。第3日仅offsite NPC1609 siege3 Army7的besieging strength5257→5235及四个围攻进度字段变化，cause UNKNOWN，不记为ownloss或applied attrition。Root独立接受+2、+3当前basis的原收据随包保存；第4日仅四个offsite围攻进度字段变化，ownmaterial/rows/cash未变，其后Root disposition未预填。
+
+IN_PROGRESS与NULL约束保留：中转stationary arrival、phase2实际路线、London到达、终点日期/whole/stock/现金、差值、截尾、闭合、媒体及winner均未观测。本包不是C完整研究或完整ABC对照；A/C模板等待真正C终点及A最终证据的相对pin，不因command accepted授到达或胜负信用。现金差将来只能叫net treasury change，来源归因与NPC/world差异需分列。

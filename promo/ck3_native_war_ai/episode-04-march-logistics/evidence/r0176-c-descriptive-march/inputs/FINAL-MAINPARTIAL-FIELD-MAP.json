@@ -1,0 +1,77 @@
+{
+  "schema": "ck3.e04.final-C-Mainpartial-field-map.v1",
+  "request_new_optional_when_Root_has_no_scope_then_required_when_linked": {
+    "key": "current_C_Main_scope_source",
+    "kind": "exact path/bytes/sha256 pin",
+    "actual_schema": "ck3.e04.abc.required-cohort-scope/v1",
+    "actual_source": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\e04-final-BC-oral-preparation-a01\\main-scope-connection-a05\\sources\\C-day59-Main-scope-addendum.json",
+      "bytes": 7323,
+      "sha256": "618d42f9d02d4f41065c295e142d44ed2db044482c65fda6e5155b9197da151d"
+    }
+  },
+  "final_normalized_C_result_subject_scope": {
+    "kind": "required_Main_original_cohort",
+    "required_public_ids": [
+      0
+    ],
+    "required_native_carmy_ids": [
+      0
+    ],
+    "required_full_regiments": 27,
+    "required_full_DATA": 37,
+    "global_health_status": "partial",
+    "unassessed_CUnit_ids": [
+      16777391
+    ],
+    "unassessed_health": null,
+    "all_player_total_soldiers": null
+  },
+  "final_ledger_extra_fields": {
+    "C_subject_scope": {
+      "kind": "required_Main_original_cohort",
+      "required_public_ids": [
+        0
+      ],
+      "required_native_carmy_ids": [
+        0
+      ],
+      "required_full_regiments": 27,
+      "required_full_DATA": 37,
+      "global_health_status": "partial",
+      "unassessed_CUnit_ids": [
+        16777391
+      ],
+      "unassessed_health": null,
+      "all_player_total_soldiers": null
+    },
+    "C_Main_scope_source_sha256": "618d42f9d02d4f41065c295e142d44ed2db044482c65fda6e5155b9197da151d"
+  },
+  "final_source_review_extra_fields": {
+    "C_subject_scope": {
+      "kind": "required_Main_original_cohort",
+      "required_public_ids": [
+        0
+      ],
+      "required_native_carmy_ids": [
+        0
+      ],
+      "required_full_regiments": 27,
+      "required_full_DATA": 37,
+      "global_health_status": "partial",
+      "unassessed_CUnit_ids": [
+        16777391
+      ],
+      "unassessed_health": null,
+      "all_player_total_soldiers": null
+    },
+    "C_Main_scope_source_sha256": "618d42f9d02d4f41065c295e142d44ed2db044482c65fda6e5155b9197da151d"
+  },
+  "these_are_required_subject_fields_not_final_endpoint_or_NO_BLOCK": true,
+  "scope_current_pin_update": "Use the actual latest Root-linked Main scope addendum in a NEW filled request. Unknown health/type/total stay explicit unless a later independent actual proof supersedes them; original/current artifacts preserved.",
+  "review01_not_gated_on_prior_human1x": true,
+  "C05_01_audio_changed": false,
+  "final_endpoint": null,
+  "source_review_NO_BLOCK": false,
+  "human_signoff": false
+}

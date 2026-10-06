@@ -1,0 +1,17 @@
+# C Review01 source package
+
+This candidate preserves completed C evidence through actual day55. It is an unfinished descriptive arm. London endpoint, endpoint deltas, runtime closure, the third recording terminal and final media remain unknown. A is a closed observed London arrival; B stopped at its merge gate on day38. These dispositions do not establish a winning strategy.
+
+Every arm started from the same unsplit d052 checkpoint, raw53148432, with an unchanged raw53150592 end and 90 actual game days. The 120 limit counts batches across both C phases. It does not add game days. C reached waypoint2176 in the observed interval (+27,+28], then received its London order on the same paused day28. The actual second route was [729,965,686,628,629,1527]. Camera centering on London on day37 did not move the army to London.
+
+C's observed own changes are separate facts: day2 stock fell by423728 raw; day27 current soldiers rose by10 while the original27 Regiment and37 DATA identities/maxima remained; day31 treasury rose by93767 raw; day32 stock fell again by423728 raw. Prepared fractions, permission changes, integer growth and supply clocks are retained separately. These observations do not identify an applied replenishment, casualty or cash-payment ledger. The offsite NPC strength change is not own loss.
+
+Eight completed windows advanced two actual days after a maximum-one-day target. Their actual raw24 overshoots and original STOPs remain failures of that sampling condition. Root's paused source review permitted descriptive continuation. Controlled comparison eligibility remains NOT GRANTED; later arrival or closure cannot retrospectively restore it. The historical directory labelled day54 contains a JSON report for actual day55, and the portable values use the actual date.
+
+S01 and S02 were normally sealed by their recorder workers. Their hashes are reused from those terminal receipts; this package never opens a recording or screenshot. S01 and S02 machine audits and selected Root frame reviews are bounded evidence. Full movie1x signoff, continuous clean spans and exact native-event PTS are not certified. S03 remains pending here.
+
+The relative consumer defaults to PLAN. Run `python -I -S -B code/verify_C_review01.py --verify` to replay bounded text evidence. It does not use the original C drive, SDK, game, bus, network or installed promo wheel. Absolute paths inside original evidence are provenance, never instructions to open files.
+
+The file-only finalizer also defaults to PLAN. After Root supplies actual completed terminal JSON pins, run `python -I -S -B code/finalize_C_review01.py --finalize --terminal-inputs ROOT-MAP.json --output NEW-DIRECTORY`. ROOT-MAP uses the contract template. Source JSON is copied exactly, original preterminal values are retained under history, and the new manifest uses relative paths. The finalizer refuses a reused output. It validates whole subject, commander and independent endpoint joins only from the declared actual sources. It does not manufacture terminal acceptance or process cleanup.
+
+Final endpoint timing is the last-not-arrived/first-observed interval. The exact native arrival tick stays unknown. Treasury differences are observed net balance changes, not travel payments. B London metrics and all rankings remain null. This file and the original +32 candidate are retained when the final candidate is appended.

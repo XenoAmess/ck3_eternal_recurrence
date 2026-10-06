@@ -1,0 +1,194 @@
+{
+  "schema": "ck3.e04.C.Root-closure-result/v1",
+  "at_utc": "2026-10-06T00:24:00.246181+00:00",
+  "status": "ALL_OWNED_RUNTIME_CLOSED_SCREEN_RELEASED",
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01",
+  "episode_run_id": "native-33388-1be6dd7a468f",
+  "screen_task_id": "war-e04-capture-abc-C-a08-20261006-a25",
+  "runtime_quiescence_verified": true,
+  "Root_completed_closing_Steam_review_verified": true,
+  "actual_screen_CAS_verified": true,
+  "all_owned_runtime_closed": true,
+  "resources": [],
+  "pending": [],
+  "failures": [],
+  "facts": {
+    "S1": {
+      "normal_closed": true,
+      "actual_job": {
+        "schema": "xar.promo.recorder-job/v1",
+        "state": "NORMAL_TREE_EMPTY",
+        "pid": 19408,
+        "returncode": 0,
+        "job_active_processes": 0,
+        "error": null,
+        "at_utc": "2026-10-05T21:24:50.706663+00:00"
+      },
+      "reported_raw_identity_no_rehash": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-long-a02\\raw.mkv",
+        "bytes": 5819513105,
+        "sha256": "20cc978d205517138e7dcd417b687c201198b014ad280874eb7cbad4295d560f"
+      }
+    },
+    "S2": {
+      "normal_closed": true,
+      "actual_job": {
+        "schema": "xar.promo.recorder-job/v1",
+        "state": "NORMAL_TREE_EMPTY",
+        "pid": 16220,
+        "returncode": 0,
+        "job_active_processes": 0,
+        "error": null,
+        "at_utc": "2026-10-05T22:28:40.617522+00:00"
+      },
+      "reported_raw_identity_no_rehash": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a01\\raw.mkv",
+        "bytes": 5619567381,
+        "sha256": "c0b68f63d37a85bb3faa69e95cb58e74570f541b644e20dee97aa3a3a7ce94c0"
+      }
+    },
+    "S3": {
+      "normal_closed": true,
+      "actual_job": {
+        "schema": "xar.promo.recorder-job/v1",
+        "state": "NORMAL_TREE_EMPTY",
+        "pid": 21992,
+        "returncode": 0,
+        "job_active_processes": 0,
+        "error": null,
+        "at_utc": "2026-10-05T23:40:39.442856+00:00"
+      },
+      "reported_raw_identity_no_rehash": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a03\\raw.mkv",
+        "bytes": 5089651164,
+        "sha256": "f37f3e185d3ab57af07563f0758623c287d58400611aa551a3a3989ff8b62f94"
+      }
+    },
+    "S4": {
+      "normal_closed": true,
+      "actual_job": {
+        "schema": "xar.promo.recorder-job/v1",
+        "state": "NORMAL_TREE_EMPTY",
+        "pid": 932,
+        "returncode": 0,
+        "job_active_processes": 0,
+        "error": null,
+        "at_utc": "2026-10-06T00:17:43.507793+00:00"
+      },
+      "reported_raw_identity_no_rehash": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\raw.mkv",
+        "bytes": 2754943503,
+        "sha256": "1c9476f462a48f9de87403cd0f8cf6da94f154f6e6b1986dfb42515680b46301"
+      }
+    },
+    "actual_Game_exit_code_preserved": 1,
+    "actual_session_process_exit_code_preserved": null,
+    "keeper_last_sequence_recorded_only": 5213,
+    "runtime_quiescence_verified": true,
+    "actual_screen_task_state": "done",
+    "screen_task_done": true,
+    "expired_release_unresolved_red": false,
+    "actual_CAS_sequence": 5214
+  },
+  "source_pins": {
+    "S1_result": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-long-a02\\result.json",
+      "bytes": 803,
+      "sha256": "8ea816e9d0c9274c42a715f08c157a904d3b36383ce0124a86ae442daa507de0"
+    },
+    "S1_ready": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-long-a02\\process-ready.json",
+      "bytes": 1022,
+      "sha256": "6cde40ebf72ac17b8bb957c3bab66ed3c471932b1611ba1fb5584662131aed3c"
+    },
+    "S2_result": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a01\\result.json",
+      "bytes": 1057,
+      "sha256": "685742333a1e419240d34dbfff591b6c8d5cb9262893775b80574c96ac52fb1c"
+    },
+    "S2_ready": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a01\\process-ready.json",
+      "bytes": 7492,
+      "sha256": "b411071455bb1ad26dec03bd99fff3480922cf2262339b700bef967724fc55c8"
+    },
+    "S3_result": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a03\\result.json",
+      "bytes": 1081,
+      "sha256": "b1908d19cc3372c20361affbecdce74f5103b261c386ce80d3ac43905b944c3d"
+    },
+    "S3_ready": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a03\\process-ready.json",
+      "bytes": 7492,
+      "sha256": "f6b2e677f516c3415c579bfb794d7f582a5a4c8ffa9cf091dac787f0940ba8ab"
+    },
+    "S4_result": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\result.json",
+      "bytes": 1079,
+      "sha256": "4f75ca718a2f81afdc8f6e795fefbca321816c7214bb3de788905a881f88e6e1"
+    },
+    "S4_ready": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\process-ready.json",
+      "bytes": 7490,
+      "sha256": "fe1d958f372aa6dfefa5547f3ce7be285f414d1667428a00b79059c466119916"
+    },
+    "S4_intent": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a04\\intent.json",
+      "bytes": 17351,
+      "sha256": "84eb71df2254ea6df7f28e47c6ae276c94a355639f3ff4e4a10bbc889fad5b6e"
+    },
+    "bootstrap": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01\\bootstrap-result.json",
+      "bytes": 13779,
+      "sha256": "4bc09b7500ca025ce84d3d1995a14ce083e1a81f143d44d648a92211af7bd148"
+    },
+    "session": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01\\session-result.json",
+      "bytes": 12420,
+      "sha256": "e61f4e26ff6fed7254ee5b8b6e67aea4b773f8c1ae9dc35572b3ac09bb490630"
+    },
+    "current_process_inventory": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-final-closure-a01\\current-process-inventory.json",
+      "bytes": 1210,
+      "sha256": "6d11fc75925212b7172975a88a9f7fc5a12485ed35c36fc0c305ecca9822dd0b"
+    },
+    "Root_closing_Steam_review": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-closing-Steam-and-CAS-a01\\Root-Steam-review.json",
+      "bytes": 1419,
+      "sha256": "7b6a180af0bb81316a417e45bbd89e3618039fb85607001c2db18cb3654cbf83"
+    },
+    "Root_Steam_original": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-closing-Steam-fresh-a01\\steam-moved.png",
+      "bytes": 2777485,
+      "sha256": "24fdf72f1db1bd1ad01e5119f9de47fef80a43ccac3d63447f20d0df91c098f4"
+    },
+    "Root_Steam_freshness": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-closing-Steam-fresh-a01\\steam-frame-freshness.json",
+      "bytes": 1178,
+      "sha256": "55d81b902c772d5895bff044cd7773130d5755aa0b8f3620c1ffc12d4c761cf2"
+    },
+    "screen_CAS_actual_argv": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-closing-Steam-and-CAS-a01\\CAS-argv.json",
+      "bytes": 732,
+      "sha256": "ba63e4449ed64db478711628386ddec54a1d4446d06aee5f0394f79a316a3ec1"
+    },
+    "screen_CAS_process_result": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-closing-Steam-and-CAS-a01\\CAS-process-result.json",
+      "bytes": 70,
+      "sha256": "96f5635d587959dce7a1068fbac28d7134881962b24cd479b6fd0449353a01ca"
+    },
+    "screen_CAS_actual_stdout": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-closing-Steam-and-CAS-a01\\CAS-stdout.json",
+      "bytes": 1664,
+      "sha256": "7c79263abdb31b6731cd4daef3ceb2250edea9fa4e92433ba8cdcc1df942cdbf"
+    }
+  },
+  "input_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-closing-Steam-and-CAS-a01\\actual-closure-inputs.json",
+    "bytes": 4174,
+    "sha256": "88136ee1f23a61d66e212283f96cfc06a65dcbf5a51fe1b4d7619b1a48997560"
+  },
+  "closed_raw_hashes_consumed_from_actual_reports_only": true,
+  "new_raw_reads_or_hashes": 0,
+  "new_sdk_UI_bus_or_process_mutations": 0,
+  "comparison_eligibility_or_human_film_signoff_granted": false
+}

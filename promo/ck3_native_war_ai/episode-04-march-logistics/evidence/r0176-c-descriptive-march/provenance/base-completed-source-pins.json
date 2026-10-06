@@ -1,0 +1,118 @@
+{
+  "schema": "ck3.e04.C.review01.base-completed-pins.v1",
+  "scope": "Completed text metadata/report sources only; old native/A/B observers were not rerun. No media/save/game/SDK action.",
+  "files": [
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-A2-arrival-results-a01\\package-a02\\A2-endpoint-values.json",
+      "relative": "archived/A-only-observed-values.json",
+      "bytes": 79747,
+      "sha256": "475420d14f654c4418412108603937dacd142c17419a5c32d199ea09fa7e6616",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-terminal-append-a01\\package-a02\\B-closed-terminal-values.json",
+      "relative": "archived/B-closed-gate-values.json",
+      "bytes": 1522,
+      "sha256": "12bd6783667388f574cfc08a69ac4e39b4522ca9e4b44a2a5a77451ef2b02bcb",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-B-merge-exception-portable-a01\\package-a01\\B-merge-exception-values.json",
+      "relative": "archived/B-merge-gate-values.json",
+      "bytes": 4311,
+      "sha256": "171e78be4912abef78bebf3214b017de6b39a048c5d21ece24c8491a2a3af22b",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-A2-arrival-results-a01\\package-a02\\code\\historical-validate-results.py",
+      "relative": "code/historical-validate-results.py",
+      "bytes": 23594,
+      "sha256": "144613e1ab9a35820323cfa2ca197e784565f02581c808fa35c6dafc8fe084e2",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-WHOLE-world-a05-w002\\result.json",
+      "relative": "inputs/overshoot-day36-original-STOP.json",
+      "bytes": 325,
+      "sha256": "727d8fda85c50ebdc4c9990cfcf919f17e60cfe55efa8d0ba0349da180901b0b",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-WHOLE-world-a06-w002\\result.json",
+      "relative": "inputs/overshoot-day42-original-STOP.json",
+      "bytes": 325,
+      "sha256": "076267bb1ce5454fabcd8105968e019529da6e77508e65150101e4710a07e386",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a08-s01\\result.json",
+      "relative": "inputs/overshoot-day47-original-STOP.json",
+      "bytes": 325,
+      "sha256": "c8cc79b46cbe77a605319937f164b90941e0198abaecef7391de6a3ea637f952",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a10-s02\\result.json",
+      "relative": "inputs/overshoot-day51-original-STOP.json",
+      "bytes": 325,
+      "sha256": "2498f750bf277fe16ab362a4b793648273dd64fcff0ddb7a89e575ea55a761bb",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a10\\result.json",
+      "relative": "inputs/day51-wrapper-STOP.json",
+      "bytes": 1011,
+      "sha256": "ca512ff165ae09696fe3ab53cc036054ea05cde86f957dd7b89f40ab1ffabcc5",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day51-current-basis-review-a01\\Root-review.json",
+      "relative": "inputs/Root-day51-review.json",
+      "bytes": 9610,
+      "sha256": "a605105c39d4860c35710a710991fd89fa9bb0fb6526ab27b26cb2b9d477ecf5",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day51-current-analysis-a01\\source-analysis.json",
+      "relative": "inputs/day51-source-analysis.json",
+      "bytes": 4780,
+      "sha256": "cf7d8843923b23e96e8df67536b2d3969da152cde85edede6b1c8cf51a5a9cad",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-London-camera-a01\\receipt.json",
+      "relative": "inputs/London-camera-day37-receipt.json",
+      "bytes": 1591,
+      "sha256": "715368f338756ca06d0890550addfee8fb20073684010e7133ba8f51518da47d",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day38-current-basis-review-a01\\Root-review.json",
+      "relative": "inputs/Root-day38-camera-review.json",
+      "bytes": 6015,
+      "sha256": "5d796e9005c2049e81f04919bf3a0327f0ad7b6968db8bc3dac6bd3b616bac00",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day31-current-analysis-a01\\source-analysis.json",
+      "relative": "inputs/day31-cash-source-analysis.json",
+      "bytes": 6118,
+      "sha256": "ebf3d2dea82920fd38141f00d50cd78e2dd6508563dfe24a5ff448f05412144b",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-long-a02\\result.json",
+      "relative": "inputs/S01-owned-recorder-terminal.json",
+      "bytes": 803,
+      "sha256": "8ea816e9d0c9274c42a715f08c157a904d3b36383ce0124a86ae442daa507de0",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a01\\result.json",
+      "relative": "inputs/S02-owned-recorder-terminal.json",
+      "bytes": 1057,
+      "sha256": "685742333a1e419240d34dbfff591b6c8d5cb9262893775b80574c96ac52fb1c",
+      "completed": true
+    }
+  ]
+}

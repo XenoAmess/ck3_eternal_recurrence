@@ -1,0 +1,77 @@
+{
+  "schema": "ck3.e04.abc.required-cohort-scope/v1",
+  "status": "ROOT_FROZEN_BEFORE_NEXT_RESUME",
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01",
+  "pipe_name": "\\\\.\\pipe\\ck3-e04-r0176-20261005-a01",
+  "episode_run_id": "native-33388-1be6dd7a468f",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "required_public_ids": [
+    0
+  ],
+  "required_native_carmy_ids": [
+    0
+  ],
+  "required_commander_character_ids": [
+    27357
+  ],
+  "required_full_regiments": 27,
+  "required_full_DATA": 37,
+  "required_Main_rows_available": true,
+  "full_native_snapshots_and_roster_preserved_without_projection": true,
+  "no_unknown_value_coerced_to_zero_or_transport": true,
+  "unassessed_current_CUnit_ids": [
+    16777391
+  ],
+  "fresh_before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\before.json",
+    "bytes": 231532,
+    "sha256": "6f885446234953287e4a544c882357bd0e3256cf0439ef8afb0046dcad1d460c"
+  },
+  "fresh_required_Main_health": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\health.json",
+    "bytes": 79197,
+    "sha256": "72dc220c70a27d1ae4256d6489056c8e452677556afbc1a130add94674f91aef"
+  },
+  "fresh_Main_commander": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\commander.json",
+    "bytes": 11376,
+    "sha256": "75280291310623974da27193f15ff03659b34ee444a56138d18802efd3983d11"
+  },
+  "fresh_after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\after.json",
+    "bytes": 231532,
+    "sha256": "a2a58950b2895ae46a9fb3ef784b77fa52c658a934523e59d50265975fb786b7"
+  },
+  "Root_manual_review_notes": "Root actually directly reviewed full actual fresh before/Main[0] health/typedcommander/after and 1920x1080 May3 paused original. Same Game7772/episode/7f-a08 runtime and war exact original; Main0 full27Reg37DATA/max6747/types/identity/commander27357 intact, current6689/S10190260/cap30000000/attr0. Main changes2176 moving->729 embarked, trims first route729 leaving965,686,628,629,1527; no combat/retreat, notLondonarrival. Entire material/world diff examined: twelve DATA record0 chunk permission true->false and twelve corresponding legacy permissions, monthlySupply-423728->0; everyReg/current/effective/max integer and DATA preparation row unchanged, no actual reinforcement/death inference. Actual clock389575->389577/phase25->27/date+48; stored supplylast53149200/raw64=300337120213138960/grace53144256/raw64=300061168564366016/30days unchanged. Cash63848329->62148329 net-1700000 raw scale100000 (=17), only net cash difference; prior UI17 agrees but executed payment ledger unavailable. Full untouched roster/world adds16777391 owner33388 regular at729, no target and emptyroute; health remains NULL/unassessed, not coerced0 or transport. Root now approves only observed nativeMain0 full27/37 scope for future descriptive C continuation, current excluded IDs exactly[16777391], global partial preserved; no allplayer health proof. Main scoped current source is actual C, no A2/B scope or unknown ID reuse. Original a15 allplayer endpoint query STOP/pause-null retained; independent fresh four proves actual59 paused. Planned1 pulse57->59 actual2 is ninth sampling deviation, observed original partial inspect-before agrees same59, no restored controlled comparison. OriginalSTART53148432/END53150592/120registry/finalreserve and same C experiment retained, no reload/reset. OriginalPNG showsselected6689/101300/0percent/helmet commander and ship-panel label登船, map London context; no ownMain sea marker visible or landing claimed. No continuousclean span/human1x full movie/watch/listen/signoff credited. Root current specific source disposition only, first future material/world/identity/runtime uncertainty must STOP.",
+  "expected_this_C_identity_not_actual_new_scope_evidence": {
+    "game_pid": 7772,
+    "episode_run_id": "native-33388-1be6dd7a468f"
+  },
+  "actual_main_current_soldiers": 6689,
+  "actual_main_maximum_soldiers": 6747,
+  "actual_global_scope_status_preserved": "partial",
+  "excluded_health": null,
+  "actual_new_scope_granted": true,
+  "comparison_controlled_eligibility": "NOT_GRANTED_DESCRIPTIVE_ONLY",
+  "source_analysis": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day59-current-analysis-a01\\source-analysis.json",
+    "bytes": 17153,
+    "sha256": "1cf2d3ca313e6a770f6a1cb97ba081f2b873b655cbce6547db32d62c56aa6a29"
+  },
+  "actual_fresh_proof": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\proof.json",
+    "bytes": 19620,
+    "sha256": "3af4a3df2e84ee6df2d2d8909bc4c81d3a87d575f657c92db107cbbdb751fd34"
+  },
+  "Root_direct_original_review": {
+    "original": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\desktop.png",
+      "bytes": 3062008,
+      "sha256": "96cd1c1f512fb00669a0e48128dabdfe485f4d99ccdb3a31f35ddf04399bb8c8"
+    },
+    "direct_original_review": true,
+    "observed_pixels": "Root actually directly reviewed full actual fresh before/Main[0] health/typedcommander/after and 1920x1080 May3 paused original. Same Game7772/episode/7f-a08 runtime and war exact original; Main0 full27Reg37DATA/max6747/types/identity/commander27357 intact, current6689/S10190260/cap30000000/attr0. Main changes2176 moving->729 embarked, trims first route729 leaving965,686,628,629,1527; no combat/retreat, notLondonarrival. Entire material/world diff examined: twelve DATA record0 chunk permission true->false and twelve corresponding legacy permissions, monthlySupply-423728->0; everyReg/current/effective/max integer and DATA preparation row unchanged, no actual reinforcement/death inference. Actual clock389575->389577/phase25->27/date+48; stored supplylast53149200/raw64=300337120213138960/grace53144256/raw64=300061168564366016/30days unchanged. Cash63848329->62148329 net-1700000 raw scale100000 (=17), only net cash difference; prior UI17 agrees but executed payment ledger unavailable. Full untouched roster/world adds16777391 owner33388 regular at729, no target and emptyroute; health remains NULL/unassessed, not coerced0 or transport. Root now approves only observed nativeMain0 full27/37 scope for future descriptive C continuation, current excluded IDs exactly[16777391], global partial preserved; no allplayer health proof. Main scoped current source is actual C, no A2/B scope or unknown ID reuse. Original a15 allplayer endpoint query STOP/pause-null retained; independent fresh four proves actual59 paused. Planned1 pulse57->59 actual2 is ninth sampling deviation, observed original partial inspect-before agrees same59, no restored controlled comparison. OriginalSTART53148432/END53150592/120registry/finalreserve and same C experiment retained, no reload/reset. OriginalPNG showsselected6689/101300/0percent/helmet commander and ship-panel label登船, map London context; no ownMain sea marker visible or landing claimed. No continuousclean span/human1x full movie/watch/listen/signoff credited. Root current specific source disposition only, first future material/world/identity/runtime uncertainty must STOP."
+  },
+  "human_signoff": false
+}

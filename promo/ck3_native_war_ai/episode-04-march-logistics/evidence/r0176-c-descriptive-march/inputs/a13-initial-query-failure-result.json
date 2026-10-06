@@ -1,0 +1,8 @@
+{
+  "status": "STOP_RUNTIME_FAILURE_OR_NEW_STATE",
+  "error": "RuntimeError(('r0176-C-London-serial-a13-s01-initial-health', [{'type': 'text', 'text': 'Error executing tool ck3_query_army_strengths: native gameplay step failed: CK3 army-strength query is unavailable [worker=pre_snapshot;native=not_started;reader=not_started;army_id=-1;scope_rows=-1;baseline_result=-1;pre_snapshot=0;paused=0;map_ready=0;submit=-1;wait=-1;reclaim=-1;enter_result=-1;entered=-1;native_snapshot=-1;native_returned=-1;finish_result=-1;frame_stable=-1;run_success=-1]', 'annotations': None, 'meta': None}], None))",
+  "no_more_resume": true,
+  "actual_paused": null,
+  "pause_not_inferred_from_failed_ack": true,
+  "blind_retry_allowed": false
+}

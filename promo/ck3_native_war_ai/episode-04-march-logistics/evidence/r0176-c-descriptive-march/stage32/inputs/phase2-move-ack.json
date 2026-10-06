@@ -1,0 +1,51 @@
+{
+  "step": "move-army-0-to-1527",
+  "accepted": true,
+  "status": "submitted",
+  "backend_id": "native-headless",
+  "war_action": {
+    "status": "moving",
+    "army_id": 0,
+    "target_province_id": 1527,
+    "submitted_date_raw": 53149104,
+    "postcondition_verified": true
+  },
+  "submitted_snapshot_id": "native:90",
+  "submitted_revision": 91,
+  "submitted_native_revision": 90,
+  "submitted_connection_generation": 1,
+  "submitted_episode_run_id": "native-33388-1be6dd7a468f",
+  "player_armies": [
+    {
+      "army_id": 0,
+      "owner_character_id": 33388,
+      "soldiers": null,
+      "current_province_id": 2176,
+      "move_target_province_id": 1527,
+      "move_target_observable": true,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [
+        729,
+        965,
+        686,
+        628,
+        629,
+        1527
+      ],
+      "route_read_status": "complete_nonempty",
+      "route_source_count": 6,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "moving",
+      "army_state_code": 7,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    }
+  ],
+  "snapshot_id": "native:91",
+  "revision": 92,
+  "army_id": 0,
+  "target_province_id": 1527
+}

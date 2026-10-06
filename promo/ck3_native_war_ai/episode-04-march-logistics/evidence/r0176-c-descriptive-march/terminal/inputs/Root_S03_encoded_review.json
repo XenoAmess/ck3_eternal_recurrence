@@ -1,0 +1,194 @@
+{
+  "schema": "episode04-C-S03-three-Root-direct-encoded-review-v1",
+  "state": "ROOT_ACTUAL_THREE_DIRECT_CODED_FRAME_REVIEWS",
+  "template_created_utc": "2026-10-06T00:06:39.774531+00:00",
+  "reviewer": "/root",
+  "reviewed_at_utc": "2026-10-05T23:54:55+00:00",
+  "Root_receipt_filled": true,
+  "Root_direct_review_reported_in_parent_task": true,
+  "source_pins": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-S03-Root-review-preparation-a01\\INPUT-PINS-a01.json",
+    "bytes": 3500,
+    "sha256": "c4b8999f3bc9300e2827d9f90257ac0b4b6f27b342c3137ec013067cbbfb4090"
+  },
+  "unique_four_audit_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-third-media-tools-a01\\audit-attempt-a01\\report.json",
+    "bytes": 12182,
+    "sha256": "f940883bbc25874c12dce66b72c76428e58c64675be65d12ebc9952aaae4adb6"
+  },
+  "closed_terminal_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a03\\result.json",
+    "bytes": 1081,
+    "sha256": "b1908d19cc3372c20361affbecdce74f5103b261c386ce80d3ac43905b944c3d"
+  },
+  "raw_terminal_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a03\\raw.mkv",
+    "bytes": 5089651164,
+    "sha256": "f37f3e185d3ab57af07563f0758623c287d58400611aa551a3a3989ff8b62f94"
+  },
+  "images": [
+    {
+      "role": "actual_new_boarding_poststate_search",
+      "encoded_original_png_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-third-media-tools-a01\\encoded-candidates-a01\\r0176-c-s03-0-actual_new_boarding_poststate_search\\candidate-00.png",
+        "bytes": 2569966,
+        "sha256": "d15e99ba27eaf319d18084ded1fa042c832355311eaf22a128df5f6a2678eaa0"
+      },
+      "candidate_index_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-third-media-tools-a01\\encoded-candidates-a01\\r0176-c-s03-0-actual_new_boarding_poststate_search\\candidate-index.json",
+        "bytes": 5394,
+        "sha256": "0910d706a91cef72ddab80ab3beb501c534dc09e0f8e444e22a53b43db6e638e"
+      },
+      "frame_index_zero_based": 43890,
+      "actual_pts": 1463000,
+      "time_base": "1/1000",
+      "actual_seconds": "1463",
+      "image_dimensions": [
+        1920,
+        1080
+      ],
+      "Root_reported_direct_observation": {
+        "source": "Parent Root NEW_TASK reported actual direct original-size PNG review",
+        "date_label": "May3",
+        "common_day": 59,
+        "paused": true,
+        "Army_count_label": 6689,
+        "supply_label": "101/300",
+        "attrition_label": "0%",
+        "commander_icon": "helmet",
+        "Army_panel_status": "embarked",
+        "map": "No clearly identifiable friendly Main map marker in the reviewed original frame.",
+        "Army_panel_status_original_text": "登船"
+      },
+      "Root_receipt_to_complete": {
+        "reviewer": "/root",
+        "reviewed_at_utc": "2026-10-05T23:54:55+00:00",
+        "directly_viewed_exact_original_png": true,
+        "observations_confirmed": true,
+        "notes": "Root directly viewed the exact original 1920x1080 coded PNG at1463s. Actual May3 1067/+59 paused, selected6689, supply101/300,0% helmet, panel says登船. Yellow route visible off France; no clearly identifiable own Main marker. This is poststate context, not exact boarding or payment event."
+      },
+      "native_event_exact_PTS": false,
+      "continuous_action_or_clean_span_credit": false
+    },
+    {
+      "role": "midway_sea_search",
+      "encoded_original_png_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-third-media-tools-a01\\encoded-candidates-a01\\r0176-c-s03-1-midway_sea_search\\candidate-00.png",
+        "bytes": 2578300,
+        "sha256": "fdbdb6e34b6c1bd9299b1745c00024976baa40e81d776e6f53d8db9e9a3c2ca4"
+      },
+      "candidate_index_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-third-media-tools-a01\\encoded-candidates-a01\\r0176-c-s03-1-midway_sea_search\\candidate-index.json",
+        "bytes": 5341,
+        "sha256": "7959cf914658acdbf6010804e0945fdce3f63695cff6071c0739fdcd5c23b39e"
+      },
+      "frame_index_zero_based": 90030,
+      "actual_pts": 3001000,
+      "time_base": "1/1000",
+      "actual_seconds": "3001",
+      "image_dimensions": [
+        1920,
+        1080
+      ],
+      "Root_reported_direct_observation": {
+        "source": "Parent Root NEW_TASK reported actual direct original-size PNG review",
+        "date_label": "May7",
+        "common_day": 63,
+        "paused": true,
+        "Army_count_label": 6689,
+        "supply_label": "101/300",
+        "attrition_label": "0%",
+        "commander_icon": "helmet",
+        "Army_panel_status": "embarked",
+        "map": "Main6689 ship marker visible at sea.",
+        "Army_panel_status_original_text": "登船"
+      },
+      "Root_receipt_to_complete": {
+        "reviewer": "/root",
+        "reviewed_at_utc": "2026-10-05T23:54:55+00:00",
+        "directly_viewed_exact_original_png": true,
+        "observations_confirmed": true,
+        "notes": "Root directly viewed exact original PNG at3001s. Actual May7/+63 paused selected6689 supply101/300 0% helmet panel登船. Own6689 ship marker is visibly at sea northeast of London and yellow route remains. Single coded context only; no continuous motion/arrival tick proof."
+      },
+      "native_event_exact_PTS": false,
+      "continuous_action_or_clean_span_credit": false
+    },
+    {
+      "role": "actual_last_encoded_frame_date_unknown",
+      "encoded_original_png_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-third-media-tools-a01\\encoded-candidates-a01\\r0176-c-s03-2-actual_last_encoded_frame_date_unknown\\candidate-00.png",
+        "bytes": 2587868,
+        "sha256": "7f8cfe069cfda7105b81bcef64bb4cf36f0dbc794eabf3a744bf8796943f44a3"
+      },
+      "candidate_index_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-third-media-tools-a01\\encoded-candidates-a01\\r0176-c-s03-2-actual_last_encoded_frame_date_unknown\\candidate-index.json",
+        "bytes": 4597,
+        "sha256": "8adfddb2aaf5f604fd8c1b7a2e95f97c3329d584c90e161520d3aeb5ad930034"
+      },
+      "frame_index_zero_based": 106972,
+      "actual_pts": 3565733,
+      "time_base": "1/1000",
+      "actual_seconds": "3565.733",
+      "image_dimensions": [
+        1920,
+        1080
+      ],
+      "Root_reported_direct_observation": {
+        "source": "Parent Root NEW_TASK reported actual direct original-size PNG review",
+        "date_label": "May12",
+        "common_day": 68,
+        "paused": true,
+        "Army_count_label": 6689,
+        "supply_label": "101/300",
+        "attrition_label": "0%",
+        "commander_icon": "helmet",
+        "Army_panel_status": "embarked",
+        "map": "Main6689 marker near London; this single frame does not prove landing or arrival.",
+        "Army_panel_status_original_text": "登船"
+      },
+      "Root_receipt_to_complete": {
+        "reviewer": "/root",
+        "reviewed_at_utc": "2026-10-05T23:54:55+00:00",
+        "directly_viewed_exact_original_png": true,
+        "observations_confirmed": true,
+        "notes": "Root directly viewed actual last encoded original frame106972 PTS3565733/tb1/1000. Actual May12/+68 paused selected6689 supply101/300 0% helmet panel登船, own6689 land-looking marker nearLondon. Independent native+68 still province629 embarked route[1527], arrivalfalse; do not infer landed or arrived from map appearance."
+      },
+      "native_event_exact_PTS": false,
+      "continuous_action_or_clean_span_credit": false
+    }
+  ],
+  "native_tail_context_separate_from_pixels": {
+    "provided_by": "Parent Root",
+    "common_day": 68,
+    "Main_province": 629,
+    "Main_embarked": true,
+    "remaining_route": [
+      1527
+    ],
+    "London_arrival": false,
+    "near_London_marker_does_not_change_native_arrival_status": true
+  },
+  "claims": {
+    "single_encoded_frames_only": true,
+    "coded_dates_require_Root_receipt_confirmation": false,
+    "native_event_exact_frame_or_tick": false,
+    "continuous_action_verified": false,
+    "continuous_clean_span": false,
+    "full_human_1x_viewing": false,
+    "human_signoff": false,
+    "final_film_approved": false,
+    "London_landing_or_arrival": false,
+    "coded_dates_actual_Root_confirmed": true,
+    "whole_human_1x_review_or_signoff": false
+  },
+  "preparation_actions": {
+    "RAW_read_stat_hash_probe_decode": 0,
+    "S04_access": 0,
+    "PNG_read_or_rehash": 0,
+    "new_media_checks": 0,
+    "SDK_UI_Game_bus_Git": 0
+  },
+  "fill_instruction": "Root should preserve this pending template and write a separate actual receipt with reviewer, actual review time and confirmed exact-image observations. No automatic signoff.",
+  "receipt_sealed_at_utc": "2026-10-06T00:07:53.162713+00:00",
+  "raw_terminal_identity_reused_without_RAW_access": true
+}

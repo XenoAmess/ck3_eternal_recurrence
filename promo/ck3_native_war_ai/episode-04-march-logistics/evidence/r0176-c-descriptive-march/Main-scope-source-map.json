@@ -1,0 +1,9 @@
+{
+  "Root_scope": "inputs/Root-Main-scope-day59.json",
+  "current_inputs": "inputs/Main-current-inputs-day59.json",
+  "fresh_proof": "inputs/fresh-Main-four-proof-day59.json",
+  "before": "inputs/Main-scope-day59-before.json",
+  "health": "inputs/Main-scope-day59-health.json",
+  "commander": "inputs/Main-scope-day59-commander.json",
+  "after": "inputs/Main-scope-day59-after.json"
+}

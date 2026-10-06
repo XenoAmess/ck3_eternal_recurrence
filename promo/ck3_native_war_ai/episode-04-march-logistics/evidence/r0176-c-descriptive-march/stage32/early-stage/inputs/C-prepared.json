@@ -1,0 +1,117 @@
+{
+  "schema": "xar.war-episode04.bootstrap.v1",
+  "prepared_at": "2026-10-05T14:14:21.378079+00:00",
+  "launch_attempted": false,
+  "live_verified": false,
+  "game_dir": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III",
+  "state_dir": "C:\\ck3-war-episode04-research-20261004-a01\\state-r0176-a01",
+  "profile_dir": "C:\\ck3-war-episode04-research-20261004-a01\\state-r0176-a01\\profile",
+  "pipe_name": "\\\\.\\pipe\\ck3-e04-r0176-20261005-a01",
+  "game": {
+    "path": "C:\\SteamLibrary\\steamapps\\common\\Crusader Kings III\\binaries\\ck3.exe",
+    "bytes": 101039736,
+    "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6"
+  },
+  "bridge_dll": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\xar_ck3_bridge.dll",
+    "bytes": 5558784,
+    "sha256": "8d4d80249ccdfed0954181df38d81daec9740f809fe59dc6c3e7b6708872cc28"
+  },
+  "bridge_injector": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\xar_ck3_bridge_injector.exe",
+    "bytes": 39936,
+    "sha256": "e2593a71317dbd1697bb9bd5b6ed2dd81c102119c5bd0e232657fcf29dd8d6e1"
+  },
+  "bridge_host": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-county-build-a08-a01\\xar_ck3_bridge_host.exe",
+    "bytes": 71680,
+    "sha256": "1f1dfeaf677706075c2bc9910cd8dd7b2b1a712f98d0fc8df9eeac5d249da4c7"
+  },
+  "profile_files": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\state-r0176-a01\\profile\\dlc_load.json",
+      "bytes": 48,
+      "sha256": "8f9f5bb7196de803ef280ccc5bd11e60ed70e55cf5eead0dbccbb5afb87c12cc"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\state-r0176-a01\\profile\\pdx_settings.txt",
+      "bytes": 388,
+      "sha256": "5b5d7e8faf0cf0b1490f85de39af2491e191b449ee88bab29bc265aaf0b13682"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\state-r0176-a01\\profile\\player\\game_rules\\presets.txt",
+      "bytes": 2785,
+      "sha256": "e835bbf1597b0ae564baefae5d1fe693761f76142cf48420937e5e60b35ef6a0"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\state-r0176-a01\\profile\\tutorial.txt",
+      "bytes": 61,
+      "sha256": "19f461abd92cc828c19d1cf77355ef6513682423721d64787756cf8465c2ef7d"
+    }
+  ],
+  "succession_lifecycle": {
+    "schema": "xar.ck3.succession-lifecycle-binding/v1",
+    "lifecycle": "ordinary_campaign_succession",
+    "xar_enabled": "xar_off",
+    "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+    "source": "pure-vanilla-enabled-mods-empty",
+    "environment_sha256": "5470fc0642e5344efc5e5525345076286eddf059a474f1125460e9f9f9d2532c"
+  },
+  "environment_sha256": "5470fc0642e5344efc5e5525345076286eddf059a474f1125460e9f9f9d2532c",
+  "selection": "root selects a normal bookmark character after actual frontend ready; selection evidence belongs to run",
+  "bridge_host_role": "artifact identity only; production supervisor uses DLL and injector",
+  "recording_started": false,
+  "source_repo": "C:\\w\\e4countybuilda01",
+  "assets_root": "C:\\ck3-war-episode04-research-20261004-a01",
+  "checkpoint": {
+    "source": {
+      "save": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0172-a01\\attempts\\r0172-whole-arrival-common-checkpoint-a01\\actual-checkpoint.ck3",
+        "bytes": 73795635,
+        "sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a"
+      },
+      "receipt": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0172-a01\\responses\\r0172-whole-arrival-common-checkpoint-a01-save.json",
+        "bytes": 8957,
+        "sha256": "6f320c75bc79cf74bd99d95a29e4695fa029e49e8cb2f2b2c746147ea1b88542"
+      },
+      "build_receipt": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\prepared-r0172-a01\\prepared.json",
+        "bytes": 5509,
+        "sha256": "affce847d8888fe799c993ae52260f7af095d7d792ee868b1a7e4224deaca054"
+      },
+      "actor_id": 33388,
+      "date_raw": 53148432,
+      "source_lifecycle": {
+        "schema": "xar.ck3.succession-lifecycle-binding/v1",
+        "lifecycle": "ordinary_campaign_succession",
+        "xar_enabled": "xar_off",
+        "pact_contract": "absent_by_fresh_campaign_xar_off_contract",
+        "source": "pure-vanilla-enabled-mods-empty",
+        "environment_sha256": "3af87dafe6f56855cbe6f412610a2d106de2f622876f19134875ffacfcf66279"
+      },
+      "load_save_name": "episode04_frozen_start",
+      "driver_history_copied": false
+    },
+    "profile_copy": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\state-r0176-a01\\profile\\save games\\episode04_frozen_start.ck3",
+      "bytes": 73795635,
+      "sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a"
+    },
+    "receipt_copy": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\prepared-r0176-a01\\checkpoint-source-receipt.json",
+      "bytes": 8957,
+      "sha256": "6f320c75bc79cf74bd99d95a29e4695fa029e49e8cb2f2b2c746147ea1b88542"
+    },
+    "build_receipt_copy": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\prepared-r0176-a01\\checkpoint-source-build.json",
+      "bytes": 5509,
+      "sha256": "affce847d8888fe799c993ae52260f7af095d7d792ee868b1a7e4224deaca054"
+    },
+    "old_attempt_modified": false
+  },
+  "open_kaishek": {
+    "status": "not-applicable",
+    "reason": "Pure vanilla process, SDK DTO and C++ supply getter sampling; no CK3 script mutation or script corpus"
+  }
+}

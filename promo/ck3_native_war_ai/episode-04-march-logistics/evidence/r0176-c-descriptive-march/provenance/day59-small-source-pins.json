@@ -1,0 +1,46 @@
+{
+  "files": [
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day59-Main-scope-review-a01\\Root-Main-scope-addendum.json",
+      "relative": "Root-Main-scope-day59.json",
+      "bytes": 7323,
+      "sha256": "618d42f9d02d4f41065c295e142d44ed2db044482c65fda6e5155b9197da151d",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day59-Main-scope-review-a01\\Root-review.json",
+      "relative": "Root-day59-review.json",
+      "bytes": 13219,
+      "sha256": "ac90dd0c54cd25738f3191fdf1a0a2d9f69105b9b5f145062c10fcfefe6d3b94",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-Main-scope-inputs-a01\\MAIN-INPUTS-current-Root-bound.json",
+      "relative": "Main-current-inputs-day59.json",
+      "bytes": 37448,
+      "sha256": "67fb994368122571cb60c79b8f8eed82aadb72a502f42d1d5da1cd1e1057a03d",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\proof.json",
+      "relative": "fresh-Main-four-proof-day59.json",
+      "bytes": 19620,
+      "sha256": "3af4a3df2e84ee6df2d2d8909bc4c81d3a87d575f657c92db107cbbdb751fd34",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day59-current-analysis-a01\\source-analysis.json",
+      "relative": "day59-source-analysis.json",
+      "bytes": 17153,
+      "sha256": "1cf2d3ca313e6a770f6a1cb97ba081f2b873b655cbce6547db32d62c56aa6a29",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a13-s01\\result.json",
+      "relative": "a13-initial-query-failure-result.json",
+      "bytes": 727,
+      "sha256": "abf3ab8bf2cd4c6be0344ca99ee23df04c328718f5f6bb8d536400cc11f70f15",
+      "completed": true
+    }
+  ]
+}

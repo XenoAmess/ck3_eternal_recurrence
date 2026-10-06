@@ -1,0 +1,82 @@
+{
+  "schema": "ck3.e04.abc.required-cohort-scope/v1",
+  "status": "ROOT_FROZEN_BEFORE_NEXT_RESUME",
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01",
+  "pipe_name": "\\\\.\\pipe\\ck3-e04-r0176-20261005-a01",
+  "episode_run_id": "native-33388-1be6dd7a468f",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "required_public_ids": [
+    0
+  ],
+  "required_native_carmy_ids": [
+    0
+  ],
+  "required_commander_character_ids": [
+    27357
+  ],
+  "required_full_regiments": 27,
+  "required_full_DATA": 37,
+  "required_Main_rows_available": true,
+  "full_native_snapshots_and_roster_preserved_without_projection": true,
+  "no_unknown_value_coerced_to_zero_or_transport": true,
+  "unassessed_current_CUnit_ids": [],
+  "fresh_before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-final-endpoint-four-a01\\four\\before.json",
+    "bytes": 217721,
+    "sha256": "4814c0abb2539c9f1bb03f40008410992249673dc06aef7af8cb14aa4f1a5654"
+  },
+  "fresh_required_Main_health": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-final-endpoint-four-a01\\four\\health.json",
+    "bytes": 79090,
+    "sha256": "06abd4f4a37641406c8815d9f4b6f55745aed61632d8c2a6b6d6abfedd8e0f95"
+  },
+  "fresh_Main_commander": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-final-endpoint-four-a01\\four\\commander-0.json",
+    "bytes": 11384,
+    "sha256": "5f9ba24571857ee39ccdbd9cfe47ebf1e974d89a2fdc07d2cfb2125e3590f0ec"
+  },
+  "fresh_after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-final-endpoint-four-a01\\four\\after.json",
+    "bytes": 217721,
+    "sha256": "d837d9d9fdbf95afdeccfdab62a51e8b64a14bf02900c232a27e1ca7d66eb04c"
+  },
+  "Root_manual_review_notes": "Root directly viewed exact original1920x1080 at actual May21 1067/+77: large暂停, Main Army selected6689/supply101/300/redskull1%, helmetcommanderportrait, land/siege artwork with围攻. Own map6689 marker at London with siege/flames, no remaining yellow movement route. UI topbar6696 is separately visible and is NOT treated as native all-player army total. Native independent four exactsame77 source/owner/episode/war, full27Reg37DATA/max6747/current typed27357 matches first-observed77, all material/world/fullrow/cash deltasempty. Main1527sieging/route[] no combat/retreat; onlyMain0 currentroster, prior unassessed16777391 absent rather than zero/dead. rawglobal available, onlyMain health/allplayer total/completenessNULL. Root accepts this actualMain endpoint numerically as descriptive Londonarrival, interval(75,77], exacttickNULL. 1percent attrition getter is not applied casualties. T0 integer6679->6689 net+10; S11037716->10190260 net-847456; cash63754562->62173052 net-1581510 atscale100000. Cash-17 atboarding+59 only net, later+24723 UNKNOWN income; no payment ledger or cause attribution. Originalbudgetstart53148432/end53150592/unspent13; not90censor. All15 sampling deviations preserved; controlledcomparison NOT_GRANTED/winnerNULL. Originalscope-mismatch wrapper actualpause/dateNULL retained, completed producer77 and new independent four prove actualpaused endpoint. No newresume/reload/reset; neither directPNG review nor numeric endpoint is exactencodedeventPTS/continuousclean/human1x/signoff.",
+  "expected_this_C_identity_not_actual_new_scope_evidence": {
+    "game_pid": 7772,
+    "episode_run_id": "native-33388-1be6dd7a468f"
+  },
+  "actual_main_current_soldiers": 6689,
+  "actual_main_maximum_soldiers": 6747,
+  "actual_global_scope_status_preserved": "available",
+  "excluded_health": null,
+  "actual_new_scope_granted": true,
+  "comparison_controlled_eligibility": "NOT_GRANTED_DESCRIPTIVE_ONLY",
+  "source_analysis": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-independent-endpoint-analysis-a77\\source-analysis.json",
+    "bytes": 7333,
+    "sha256": "10a2b24c961504772a132807135a2f2178fb48b41e882f3f7f199114e435209b"
+  },
+  "actual_fresh_proof": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-final-endpoint-four-a01\\result.json",
+    "bytes": 4412,
+    "sha256": "c21715858fc156ee9f2f5bc9085ef2550c9ad8ed1e1480bc696be198de8a8e3a"
+  },
+  "Root_direct_original_review": {
+    "original": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-final-endpoint-four-a01\\desktop.png",
+      "bytes": 3070572,
+      "sha256": "0a1b5d536be359afc66441eb29e4ed97fafd295648fc819fb857419dd7a4bd9a"
+    },
+    "direct_original_review": true,
+    "reviewer": "/root",
+    "observed_pixels": "Root directly viewed exact original1920x1080 at actual May21 1067/+77: large暂停, Main Army selected6689/supply101/300/redskull1%, helmetcommanderportrait, land/siege artwork with围攻. Own map6689 marker at London with siege/flames, no remaining yellow movement route. UI topbar6696 is separately visible and is NOT treated as native all-player army total. Native independent four exactsame77 source/owner/episode/war, full27Reg37DATA/max6747/current typed27357 matches first-observed77, all material/world/fullrow/cash deltasempty. Main1527sieging/route[] no combat/retreat; onlyMain0 currentroster, prior unassessed16777391 absent rather than zero/dead. rawglobal available, onlyMain health/allplayer total/completenessNULL. Root accepts this actualMain endpoint numerically as descriptive Londonarrival, interval(75,77], exacttickNULL. 1percent attrition getter is not applied casualties. T0 integer6679->6689 net+10; S11037716->10190260 net-847456; cash63754562->62173052 net-1581510 atscale100000. Cash-17 atboarding+59 only net, later+24723 UNKNOWN income; no payment ledger or cause attribution. Originalbudgetstart53148432/end53150592/unspent13; not90censor. All15 sampling deviations preserved; controlledcomparison NOT_GRANTED/winnerNULL. Originalscope-mismatch wrapper actualpause/dateNULL retained, completed producer77 and new independent four prove actualpaused endpoint. No newresume/reload/reset; neither directPNG review nor numeric endpoint is exactencodedeventPTS/continuousclean/human1x/signoff."
+  },
+  "human_signoff": false,
+  "actual_scope_date_raw": 53150280,
+  "at_utc": "2026-10-06T00:17:42.066909+00:00",
+  "no_further_resume": true,
+  "all_player_current_strength": null,
+  "all_player_health_complete_proved": false,
+  "terminal_numeric_accepted": true
+}

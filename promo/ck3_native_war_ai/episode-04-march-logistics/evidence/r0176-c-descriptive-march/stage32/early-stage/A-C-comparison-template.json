@@ -1,0 +1,50 @@
+{
+  "schema": "ck3.e04.A-C.pending-comparison.v1",
+  "comparison_status": "PENDING_ACTUAL_C_ENDPOINT",
+  "common_checkpoint_sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a",
+  "common_start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "maximum_actual_game_days": 90,
+  "maximum_batches_per_arm_shared_across_C_phases": 120,
+  "A": {
+    "historical_status": "OBSERVED_A2_ENDPOINT_ALREADY_ARCHIVED",
+    "published_source_commit": "3b4bbcadcbadf05474dadfc388dfabe3eb26af44",
+    "relative_pinned_endpoint_dataset": null,
+    "endpoint": null,
+    "note": "This template has not imported A's already completed native endpoint sources; import relative source pins before computing a comparison."
+  },
+  "B": {
+    "historical_status": "STOPPED_GATE_INCOMPLETE",
+    "published_source_commit": "a1511a5d9b9e1c9f37b9d221256c965fd1254b50",
+    "arrival_comparison_eligible": false,
+    "London_endpoint": null,
+    "note": "Actual day38 frozen-cohort/commander gate stop; not a90-day censored arrival and not a strategy winner."
+  },
+  "C": {
+    "status": "IN_PROGRESS",
+    "episode_run_id": "native-33388-1be6dd7a468f",
+    "phase1_actual_submitted_route": [2175, 2179, 2176],
+    "waypoint_stationary_arrival_source": null,
+    "phase2_actual_London_route": null,
+    "relative_pinned_endpoint_dataset": null,
+    "arrival_interval_raw": null,
+    "endpoint": null,
+    "net_treasury_change_raw": null,
+    "censored_at_budget_end": null,
+    "runtime_closure_source": null,
+    "media_sources": null
+  },
+  "comparison": null,
+  "winner": null,
+  "requirements_before_comparison": [
+    "Each arm has its own actual endpoint or honest disposition sources, fresh episode binding and full cohort/commander evidence.",
+    "Stationary London event stop requires actual1527, complete empty route, regular or sieging, paused, no combat or retreat, and complete subject health.",
+    "Arrival tick is bounded by the last-not-arrived and first-observed pair; do not replace the interval with an exact day.",
+    "Two C phases and every recording segment retain the same experiment T0/END/120-batch ceiling; no reset or silent extension.",
+    "No recorded endpoint at END is censored only if END was actually reached. Earlier gate stops are reported separately.",
+    "Net treasury change is a balance difference, not proven travel payment. Soldier differences and NPC/world changes do not prove a cause or applied ledger.",
+    "Machine/media source checks and single-frame reviews do not provide continuous clean spans or human1x film signoff."
+  ],
+  "human_signoff": false,
+  "final_ABC_result_credit": 0
+}

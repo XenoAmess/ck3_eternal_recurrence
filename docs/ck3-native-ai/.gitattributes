@@ -11,3 +11,6 @@ army-episode04-a2-london-arrival-12003.md -text whitespace=trailing-space,space-
 # Closed R0175 B exact knowledge source documents.
 army-episode04-B-gate-stopped-12003.md -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
 army-r0175-B-merge-upper-cap-runtime-12003.md -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol
+
+# Closed R0176 C exact descriptive knowledge source.
+army-episode04-C-descriptive-march-12003.md -text whitespace=blank-at-eol,blank-at-eof,space-before-tab,cr-at-eol

@@ -1,0 +1,397 @@
+{
+  "schema": "ck3.e04.C.stage-before-terminal.v1",
+  "status": "IN_PROGRESS",
+  "experiment": {
+    "run": "R0176-a01",
+    "episode": "native-33388-1be6dd7a468f",
+    "actor": 33388,
+    "commander": 27357,
+    "source_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+    "checkpoint": {
+      "bytes": 73795635,
+      "sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a"
+    },
+    "start_raw": 53148432,
+    "absolute_end_raw": 53150592,
+    "maximum_actual_days": 90,
+    "maximum_batches_shared_across_phases": 120,
+    "budget_reset": false
+  },
+  "last_completed_report": {
+    "raw": 53149200,
+    "day": 32,
+    "current_soldiers": 6689,
+    "maximum_soldiers": 6747,
+    "stock_raw": 10190260,
+    "capacity_raw": 30000000,
+    "monthly_raw": -423728,
+    "gold": {
+      "raw": 63848329,
+      "scale": 100000
+    }
+  },
+  "route": {
+    "phase1_actual": [
+      2175,
+      2179,
+      2176
+    ],
+    "waypoint_arrival_interval_raw": [
+      53149080,
+      53149104
+    ],
+    "waypoint_interval_open_left_closed_right": true,
+    "waypoint_exact_tick": null,
+    "same_day_phase2_move_raw": 53149104,
+    "phase2_actual": [
+      729,
+      965,
+      686,
+      628,
+      629,
+      1527
+    ]
+  },
+  "day27_integer_change": {
+    "net_current_soldiers": 10,
+    "six_Regiment_changes": [
+      {
+        "path": "/13/current_soldiers",
+        "before": 275,
+        "after": 277
+      },
+      {
+        "path": "/15/current_soldiers",
+        "before": 198,
+        "after": 200
+      },
+      {
+        "path": "/16/current_soldiers",
+        "before": 9,
+        "after": 10
+      },
+      {
+        "path": "/17/current_soldiers",
+        "before": 318,
+        "after": 321
+      },
+      {
+        "path": "/25/current_soldiers",
+        "before": 69,
+        "after": 70
+      },
+      {
+        "path": "/26/current_soldiers",
+        "before": 87,
+        "after": 88
+      }
+    ],
+    "six_DATA_current_changes": [
+      {
+        "path": "/13/records/0/current_soldiers",
+        "before": 73,
+        "after": 75
+      },
+      {
+        "path": "/15/records/0/current_soldiers",
+        "before": 198,
+        "after": 200
+      },
+      {
+        "path": "/16/records/0/current_soldiers",
+        "before": 9,
+        "after": 10
+      },
+      {
+        "path": "/17/records/0/current_soldiers",
+        "before": 299,
+        "after": 302
+      },
+      {
+        "path": "/25/records/0/current_soldiers",
+        "before": 68,
+        "after": 69
+      },
+      {
+        "path": "/26/records/1/current_soldiers",
+        "before": 68,
+        "after": 69
+      }
+    ],
+    "prepared_fraction_changes": [
+      {
+        "path": "/13/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 5325
+      },
+      {
+        "path": "/13/records/1/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 5325
+      },
+      {
+        "path": "/13/records/2/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 3750
+      },
+      {
+        "path": "/13/records/3/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 3525
+      },
+      {
+        "path": "/13/records/4/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 3075
+      },
+      {
+        "path": "/13/records/5/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 5325
+      },
+      {
+        "path": "/13/records/6/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 2925
+      },
+      {
+        "path": "/14/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 4140
+      },
+      {
+        "path": "/14/records/1/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 4140
+      },
+      {
+        "path": "/14/records/2/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 3075
+      },
+      {
+        "path": "/15/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 10000
+      },
+      {
+        "path": "/16/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 10000
+      },
+      {
+        "path": "/17/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 5760
+      },
+      {
+        "path": "/17/records/1/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 3300
+      },
+      {
+        "path": "/18/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 4050
+      },
+      {
+        "path": "/24/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 3600
+      },
+      {
+        "path": "/24/records/1/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 4950
+      },
+      {
+        "path": "/24/records/2/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 3750
+      },
+      {
+        "path": "/25/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 4665
+      },
+      {
+        "path": "/25/records/1/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 3000
+      },
+      {
+        "path": "/26/records/0/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 3600
+      },
+      {
+        "path": "/26/records/1/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 4020
+      },
+      {
+        "path": "/26/records/2/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 3450
+      },
+      {
+        "path": "/26/records/3/persistent_prepared_replenishment_fraction_raw",
+        "before": 0,
+        "after": 3450
+      }
+    ],
+    "permission_changes": [
+      {
+        "path": "/13/records/0/native_chunk_can_replenish",
+        "before": true,
+        "after": false
+      },
+      {
+        "path": "/15/records/0/native_can_replenish",
+        "before": true,
+        "after": false
+      },
+      {
+        "path": "/15/records/0/native_chunk_can_replenish",
+        "before": true,
+        "after": false
+      },
+      {
+        "path": "/16/records/0/native_can_replenish",
+        "before": true,
+        "after": false
+      },
+      {
+        "path": "/16/records/0/native_chunk_can_replenish",
+        "before": true,
+        "after": false
+      },
+      {
+        "path": "/17/records/0/native_chunk_can_replenish",
+        "before": true,
+        "after": false
+      },
+      {
+        "path": "/25/records/0/native_chunk_can_replenish",
+        "before": true,
+        "after": false
+      },
+      {
+        "path": "/26/records/1/native_chunk_can_replenish",
+        "before": true,
+        "after": false
+      }
+    ],
+    "application_ledger_or_cause": null
+  },
+  "day32_supply_change": {
+    "before": 10613988,
+    "after": 10190260,
+    "delta": -423728,
+    "scale": 100000,
+    "stored_write_before_raw": 53148480,
+    "stored_write_after_raw": 53149200,
+    "own_rows_unchanged_in_this_window": true
+  },
+  "sampling_deviations": [
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "actual_global_budget_breach": false,
+      "actual_date_raw": 53148768,
+      "original_END_raw": 53150592,
+      "old_STOP_unchanged": true
+    },
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "source_before_raw": 53148912,
+      "source_after_raw": 53148960,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "actual_global_budget_breach": false,
+      "underlying_STOP": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a09-s01\\result.json",
+        "bytes": 325,
+        "sha256": "9c87b621dabc82cde5497790e88afb6a05400ac2f6b8e5bcaeab9dcc6706d728"
+      }
+    },
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "source_before_raw": 53149128,
+      "source_after_raw": 53149176,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "actual_global_budget_breach": false,
+      "underlying_STOP": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-WHOLE-world-a04-w001\\result.json",
+        "bytes": 325,
+        "sha256": "660610b872e8bf9f60a86235aed033d4c4ad19854bbff17810cd3c792bda4c5f"
+      },
+      "old_STOP_unchanged": true,
+      "arm_controlled_comparison_eligibility_not_granted": true
+    }
+  ],
+  "descriptive_continuation_only": true,
+  "controlled_comparison_eligibility": "NOT_GRANTED",
+  "S01_media": {
+    "reported_machine_state": "PASS",
+    "duration_seconds": "3572.233000",
+    "frames": 107167,
+    "packets": 107167,
+    "six_Root_still_reviews": [
+      {
+        "ordinal": 30,
+        "PTS": 1000,
+        "pixels": "Mar5 paused Main6679/S110of300/helmetcomm/0%, waiting."
+      },
+      {
+        "ordinal": 27030,
+        "PTS": 901000,
+        "pixels": "Mar7 paused Main6679/S106of300/helmetcomm/0%, route through land/remaining6day."
+      },
+      {
+        "ordinal": 72720,
+        "PTS": 2424000,
+        "pixels": "Mar19 paused Main6679/S106of300/helmetcomm/0%, currentlegremaining4day."
+      },
+      {
+        "ordinal": 90000,
+        "PTS": 3000000,
+        "pixels": "Mar25 paused Main6679/S106of300/helmetcomm/0%, currentlegremaining8day."
+      },
+      {
+        "ordinal": 106866,
+        "PTS": 3562200,
+        "pixels": "Mar30 paused Main6679/S106of300/helmetcomm/0%, currentlegremaining3day."
+      },
+      {
+        "ordinal": 107166,
+        "PTS": 3572200,
+        "pixels": "Actual last encoded Mar30 paused Main6679/S106of300/helmetcomm/0%, remaining3day."
+      }
+    ],
+    "native_exact_event_PTS": null,
+    "continuous_clean": false,
+    "human_1x": false
+  },
+  "terminal_status": null,
+  "terminal_exact_date": null,
+  "London_arrival": null,
+  "London_arrival_interval_raw": null,
+  "endpoint_whole": null,
+  "endpoint_stock": null,
+  "endpoint_cash": null,
+  "net_treasury_change_raw": null,
+  "runtime_closure": null,
+  "S02_media": null,
+  "final_raw_pin": null,
+  "winner": null,
+  "human_signoff": false,
+  "validation_scope": "packaged completed small reports; no full native endpoint, media, live SDK or game revalidation"
+}

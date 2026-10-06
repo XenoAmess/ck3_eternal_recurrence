@@ -1,0 +1,879 @@
+{
+  "schema": "xar.e04.ABC-short-pulse-inputs/v1",
+  "status": "ROOT_FILE_BOUND_ACTUAL_C_STRICT_GLOBAL",
+  "sources": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-abc-pulse-preparation-a02\\r0174_abc_guard.py",
+      "bytes": 11260,
+      "sha256": "2cc6ef157c677a3d8964a061934fc79f6289e6eede16b0d3bb4f3d5ce1596e1b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-abc-pulse-preparation-a02\\root_r0174_abc_pulse_a03.py",
+      "bytes": 15172,
+      "sha256": "16369a288f069148ee062d91eefeb86def8e58cf8f28a36bc340e2b6c0574d5e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-abc-pulse-preparation-a02\\make_abc_inputs_a04.py",
+      "bytes": 4939,
+      "sha256": "371763c558d95cfdeb1304ea8ca1023f3c156c44e9720fb6efd16ae24669d10e"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-abc-pulse-preparation-a02\\ABC-INPUTS-pending-a01.json",
+      "bytes": 16822,
+      "sha256": "c8dbc144193ad4a990e1fd511f349aec49d8cf3e762708e79734834371f524ed"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\prepared-r0176-a01\\prepared.json",
+      "bytes": 5511,
+      "sha256": "a53a4eb26744e4e04d1c71fe5374fe82600d3cf7f03857e99cfdc7470dc01e82"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-capture-preparation-a01\\abc-input-preparation-a01\\make_abc_inputs_r0176_a01.py",
+      "bytes": 6942,
+      "sha256": "f2315be2d78f715154d651602c8f27114c29ea94c2870bb0db91b6a9a4764103"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-capture-preparation-a01\\queue_tool_r0174_root_a01.py",
+      "bytes": 11380,
+      "sha256": "dd5eac514c9543bf90283b04f1a34fae4e15c88a2e5876412ceedffd9b283391"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-capture-preparation-a01\\live_api_r0174_root_a01.py",
+      "bytes": 1410,
+      "sha256": "21e16068eaa490fe532dc37dfd8f21369f073b3d608d0b21be4c8a981d8c973b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-capture-preparation-a01\\queue_tool_r0176_root_a01.py",
+      "bytes": 11394,
+      "sha256": "d09503e52b7b873f820cc4afdae900ef96317cbc6de485e92e34d749680e48cc"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-capture-preparation-a01\\live_api_r0176_root_a01.py",
+      "bytes": 1410,
+      "sha256": "c6534de2ba51db03c58e2624045264f7d55ec4ad0746e751e109340768701cde"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-capture-preparation-a01\\read_ready_r0176.py",
+      "bytes": 2279,
+      "sha256": "5265d0ab5c1d2bfbb1747b9674f2e0576ebaecae0c675d86882773ac3f1393bf"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-capture-preparation-a01\\abc-input-preparation-a01\\ABC-INPUTS-C-London-phase2-bound-a02.json",
+      "bytes": 22385,
+      "sha256": "048e8a2fa7657f94c4a74d793ba0d752c4dc4e96e4e15429b2f36c9921f5a93f"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-cold-baseline-acceptance-a01\\compare-report.json",
+      "bytes": 5740,
+      "sha256": "db9bdb0c812d1bb1605266a83220b655a2b8ebfa1001a0f0b9bc76a4be07c64b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-runtime-admission-a04\\receipt.json",
+      "bytes": 3494,
+      "sha256": "6378c683c948ca996d6764a29476f39ae5cdb4a5a7952f0989f423b8765693b7"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-move-actual-a05\\preview.json",
+      "bytes": 1322,
+      "sha256": "127fbe3f86908ca52b6c251490e12be7198643f356e7cedbe130a2622f9b1833"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-move-actual-a05\\after.json",
+      "bytes": 219430,
+      "sha256": "10686527429f16db20ad1030f078a29a5c6b01c7db8cccddce370fe1d8479f86"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-readonly-cold-baseline-a01\\baseline.json",
+      "bytes": 34571,
+      "sha256": "6979714be753fbc0ba81c397620825dbd85fa004ce53f5f4826001cbb14045ff"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-readonly-cold-baseline-a01\\strength.json",
+      "bytes": 78964,
+      "sha256": "8fa8594fe3800ccba83524e87c1c846bef890b713ece9a76f93f526762417b31"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-readonly-cold-baseline-a01\\commander.json",
+      "bytes": 11470,
+      "sha256": "2bbb099318a1927a9b87d67df4b0b67658dcc27919b2d8321608a3e1fddfcdf3"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-readonly-cold-baseline-a01\\after.json",
+      "bytes": 217665,
+      "sha256": "622dfa58ff71622902bdcf3b3b71c75b81569299ecf682d9c7a768f840a36443"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-runtime-inputs-a01\\input-manifest.json",
+      "bytes": 29017,
+      "sha256": "4cbcc9f499b2c1d93447157533ccfb910a3633a138e228d4f8b10af01891ebe2"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a12-s01\\pulse-01\\inspect\\observation.json",
+      "bytes": 352556,
+      "sha256": "3736d8fb0ec105933f94ed600e7dd9f47af5c6ad31d457816f249e10d7f6ac63"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-runtime-inputs-a02\\basis-observation.json",
+      "bytes": 352556,
+      "sha256": "3736d8fb0ec105933f94ed600e7dd9f47af5c6ad31d457816f249e10d7f6ac63"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-two-stage-manifest-recipe-a02\\root_C_strict_two_stage_a02.py",
+      "bytes": 23721,
+      "sha256": "904131003cd8e16936460b0df17b58ea17a24f9b0b277d872985b650710b2ac8"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0175-r0176-WHOLE-world-disposition-preparation-a02\\root_BC_WHOLE_world_disposition_a02.py",
+      "bytes": 30123,
+      "sha256": "fb7bba5617232ef35a11a397e37114629e47edf5586d8a049d11457a29a25e0b"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0177-cold-baseline-compare-a01\\cold_start_compare.py",
+      "bytes": 14958,
+      "sha256": "38a64877e1a56a7a813546d92c12a48fd03f2ce2fbf8594db48353601239830f"
+    }
+  ],
+  "Root_protocol": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-abc-protocol-freeze-a01\\protocol.json",
+    "bytes": 54230,
+    "sha256": "63b143c5055f2bdf91462001dca0b4b2fb37f08e527ea5c3ea3c30c7b51780aa"
+  },
+  "required_shared_Root_protocol_for_future_explicit_binding": {
+    "path_family": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0174-abc-protocol-freeze-*\\protocol.json",
+    "sha256": null,
+    "status": "Root explicitly selects exact future shared r0174 final protocol path/SHA; no default binding."
+  },
+  "arm": "C",
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01",
+  "packets_dir": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0176-a01",
+  "pipe_name": "\\\\.\\pipe\\ck3-e04-r0176-20261005-a01",
+  "prepared": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\prepared-r0176-a01\\prepared.json",
+    "bytes": 5511,
+    "sha256": "a53a4eb26744e4e04d1c71fe5374fe82600d3cf7f03857e99cfdc7470dc01e82"
+  },
+  "common_checkpoint": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0172-a01\\attempts\\r0172-whole-arrival-common-checkpoint-a01\\actual-checkpoint.ck3",
+    "bytes": 73795635,
+    "sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a"
+  },
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "expected_player_army_count": 1,
+  "expected_complete_cohort": {
+    "mapping": {
+      "0": 0
+    },
+    "regiments": [
+      {
+        "army_regiment_id": 0,
+        "maximum_soldiers": 1000,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 1,
+        "maximum_soldiers": 800,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 2,
+        "maximum_soldiers": 100,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "conrois",
+        "siege_tier_observable": true,
+        "siege_tier": 0
+      },
+      {
+        "army_regiment_id": 3,
+        "maximum_soldiers": 20,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "onager",
+        "siege_tier_observable": true,
+        "siege_tier": 1
+      },
+      {
+        "army_regiment_id": 4,
+        "maximum_soldiers": 800,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 5,
+        "maximum_soldiers": 400,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "bowmen",
+        "siege_tier_observable": true,
+        "siege_tier": 0
+      },
+      {
+        "army_regiment_id": 6,
+        "maximum_soldiers": 20,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "onager",
+        "siege_tier_observable": true,
+        "siege_tier": 1
+      },
+      {
+        "army_regiment_id": 7,
+        "maximum_soldiers": 800,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 8,
+        "maximum_soldiers": 100,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "conrois",
+        "siege_tier_observable": true,
+        "siege_tier": 0
+      },
+      {
+        "army_regiment_id": 9,
+        "maximum_soldiers": 20,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "onager",
+        "siege_tier_observable": true,
+        "siege_tier": 1
+      },
+      {
+        "army_regiment_id": 10,
+        "maximum_soldiers": 800,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 11,
+        "maximum_soldiers": 400,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "light_footmen",
+        "siege_tier_observable": true,
+        "siege_tier": 0
+      },
+      {
+        "army_regiment_id": 12,
+        "maximum_soldiers": 400,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "pikemen_unit",
+        "siege_tier_observable": true,
+        "siege_tier": 0
+      },
+      {
+        "army_regiment_id": 50,
+        "maximum_soldiers": 277,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 51,
+        "maximum_soldiers": 38,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 52,
+        "maximum_soldiers": 200,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "armored_footmen",
+        "siege_tier_observable": true,
+        "siege_tier": 0
+      },
+      {
+        "army_regiment_id": 53,
+        "maximum_soldiers": 10,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "mangonel",
+        "siege_tier_observable": true,
+        "siege_tier": 2
+      },
+      {
+        "army_regiment_id": 54,
+        "maximum_soldiers": 321,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 55,
+        "maximum_soldiers": 6,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 56,
+        "maximum_soldiers": 1,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 57,
+        "maximum_soldiers": 1,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 58,
+        "maximum_soldiers": 1,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 59,
+        "maximum_soldiers": 1,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 60,
+        "maximum_soldiers": 1,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 61,
+        "maximum_soldiers": 71,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 62,
+        "maximum_soldiers": 70,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 82,
+        "maximum_soldiers": 89,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      }
+    ],
+    "record_identities": [
+      {
+        "army_regiment_id": 0,
+        "record_index": 0,
+        "persistent_regiment_id": 15158,
+        "chunk_index": 0,
+        "maximum_soldiers": 1000
+      },
+      {
+        "army_regiment_id": 1,
+        "record_index": 0,
+        "persistent_regiment_id": 15159,
+        "chunk_index": 0,
+        "maximum_soldiers": 800
+      },
+      {
+        "army_regiment_id": 2,
+        "record_index": 0,
+        "persistent_regiment_id": 15160,
+        "chunk_index": 0,
+        "maximum_soldiers": 100
+      },
+      {
+        "army_regiment_id": 3,
+        "record_index": 0,
+        "persistent_regiment_id": 15161,
+        "chunk_index": 0,
+        "maximum_soldiers": 20
+      },
+      {
+        "army_regiment_id": 4,
+        "record_index": 0,
+        "persistent_regiment_id": 15162,
+        "chunk_index": 0,
+        "maximum_soldiers": 800
+      },
+      {
+        "army_regiment_id": 5,
+        "record_index": 0,
+        "persistent_regiment_id": 15163,
+        "chunk_index": 0,
+        "maximum_soldiers": 400
+      },
+      {
+        "army_regiment_id": 6,
+        "record_index": 0,
+        "persistent_regiment_id": 15164,
+        "chunk_index": 0,
+        "maximum_soldiers": 20
+      },
+      {
+        "army_regiment_id": 7,
+        "record_index": 0,
+        "persistent_regiment_id": 15165,
+        "chunk_index": 0,
+        "maximum_soldiers": 800
+      },
+      {
+        "army_regiment_id": 8,
+        "record_index": 0,
+        "persistent_regiment_id": 15166,
+        "chunk_index": 0,
+        "maximum_soldiers": 100
+      },
+      {
+        "army_regiment_id": 9,
+        "record_index": 0,
+        "persistent_regiment_id": 15167,
+        "chunk_index": 0,
+        "maximum_soldiers": 20
+      },
+      {
+        "army_regiment_id": 10,
+        "record_index": 0,
+        "persistent_regiment_id": 15168,
+        "chunk_index": 0,
+        "maximum_soldiers": 800
+      },
+      {
+        "army_regiment_id": 11,
+        "record_index": 0,
+        "persistent_regiment_id": 15169,
+        "chunk_index": 0,
+        "maximum_soldiers": 400
+      },
+      {
+        "army_regiment_id": 12,
+        "record_index": 0,
+        "persistent_regiment_id": 15170,
+        "chunk_index": 0,
+        "maximum_soldiers": 400
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 0,
+        "persistent_regiment_id": 2624,
+        "chunk_index": 1,
+        "maximum_soldiers": 75
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 1,
+        "persistent_regiment_id": 2606,
+        "chunk_index": 1,
+        "maximum_soldiers": 75
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 2,
+        "persistent_regiment_id": 2626,
+        "chunk_index": 2,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 3,
+        "persistent_regiment_id": 2608,
+        "chunk_index": 2,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 4,
+        "persistent_regiment_id": 2630,
+        "chunk_index": 1,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 5,
+        "persistent_regiment_id": 2628,
+        "chunk_index": 1,
+        "maximum_soldiers": 123
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 6,
+        "persistent_regiment_id": 2632,
+        "chunk_index": 2,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 51,
+        "record_index": 0,
+        "persistent_regiment_id": 2638,
+        "chunk_index": 1,
+        "maximum_soldiers": 17
+      },
+      {
+        "army_regiment_id": 51,
+        "record_index": 1,
+        "persistent_regiment_id": 2634,
+        "chunk_index": 1,
+        "maximum_soldiers": 17
+      },
+      {
+        "army_regiment_id": 51,
+        "record_index": 2,
+        "persistent_regiment_id": 2636,
+        "chunk_index": 2,
+        "maximum_soldiers": 4
+      },
+      {
+        "army_regiment_id": 52,
+        "record_index": 0,
+        "persistent_regiment_id": 17948,
+        "chunk_index": 0,
+        "maximum_soldiers": 200
+      },
+      {
+        "army_regiment_id": 53,
+        "record_index": 0,
+        "persistent_regiment_id": 16793680,
+        "chunk_index": 0,
+        "maximum_soldiers": 10
+      },
+      {
+        "army_regiment_id": 54,
+        "record_index": 0,
+        "persistent_regiment_id": 2610,
+        "chunk_index": 0,
+        "maximum_soldiers": 302
+      },
+      {
+        "army_regiment_id": 54,
+        "record_index": 1,
+        "persistent_regiment_id": 2612,
+        "chunk_index": 0,
+        "maximum_soldiers": 19
+      },
+      {
+        "army_regiment_id": 55,
+        "record_index": 0,
+        "persistent_regiment_id": 2614,
+        "chunk_index": 1,
+        "maximum_soldiers": 6
+      },
+      {
+        "army_regiment_id": 61,
+        "record_index": 0,
+        "persistent_regiment_id": 10178,
+        "chunk_index": 1,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 61,
+        "record_index": 1,
+        "persistent_regiment_id": 2616,
+        "chunk_index": 1,
+        "maximum_soldiers": 69
+      },
+      {
+        "army_regiment_id": 61,
+        "record_index": 2,
+        "persistent_regiment_id": 2618,
+        "chunk_index": 2,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 62,
+        "record_index": 0,
+        "persistent_regiment_id": 2620,
+        "chunk_index": 1,
+        "maximum_soldiers": 69
+      },
+      {
+        "army_regiment_id": 62,
+        "record_index": 1,
+        "persistent_regiment_id": 2622,
+        "chunk_index": 2,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 82,
+        "record_index": 0,
+        "persistent_regiment_id": 2604,
+        "chunk_index": 1,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 82,
+        "record_index": 1,
+        "persistent_regiment_id": 2602,
+        "chunk_index": 1,
+        "maximum_soldiers": 69
+      },
+      {
+        "army_regiment_id": 82,
+        "record_index": 2,
+        "persistent_regiment_id": 9884,
+        "chunk_index": 2,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 82,
+        "record_index": 3,
+        "persistent_regiment_id": 9886,
+        "chunk_index": 2,
+        "maximum_soldiers": 18
+      }
+    ]
+  },
+  "arrival_target_province_id": 1527,
+  "candidate_C_waypoint": 2176,
+  "new_ready_PID_or_screen_owner_or_SDK_runtime_admission": null,
+  "owned_ck3_pid": 7772,
+  "screen_CAS": null,
+  "Steam_offline_receipt": null,
+  "actual_effective_queue_API_source_pins": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-capture-preparation-a01\\queue_tool_r0174_root_a01.py",
+      "bytes": 11380,
+      "sha256": "dd5eac514c9543bf90283b04f1a34fae4e15c88a2e5876412ceedffd9b283391"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-capture-preparation-a01\\live_api_r0174_root_a01.py",
+      "bytes": 1410,
+      "sha256": "21e16068eaa490fe532dc37dfd8f21369f073b3d608d0b21be4c8a981d8c973b"
+    }
+  ],
+  "perrun_ready_queue_API_source_pins": [
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-capture-preparation-a01\\queue_tool_r0176_root_a01.py",
+      "bytes": 11394,
+      "sha256": "d09503e52b7b873f820cc4afdae900ef96317cbc6de485e92e34d749680e48cc"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-capture-preparation-a01\\live_api_r0176_root_a01.py",
+      "bytes": 1410,
+      "sha256": "c6534de2ba51db03c58e2624045264f7d55ec4ad0746e751e109340768701cde"
+    },
+    {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-capture-preparation-a01\\read_ready_r0176.py",
+      "bytes": 2279,
+      "sha256": "5265d0ab5c1d2bfbb1747b9674f2e0576ebaecae0c675d86882773ac3f1393bf"
+    }
+  ],
+  "import_boundary": "Shared pulse_a03 imports the pinned R0174 queue/API and configure(inputs) sets its RUN/PACKETS/API.RUN to this new run. The perrun B/C queue/API/ready files are separately pinned; this manifest does not claim the shared pulse imports those copies.",
+  "expected_cohort_mapping_0_is_historical_Whole_only_Runtime_must_resolve_public_ID_fresh": true,
+  "cohort_provenance": {
+    "parent_pending_manifest": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-abc-pulse-preparation-a02\\ABC-INPUTS-pending-a01.json",
+      "bytes": 16822,
+      "sha256": "c8dbc144193ad4a990e1fd511f349aec49d8cf3e762708e79734834371f524ed"
+    },
+    "original_source_pins_preserved_as_declared_lineage_only": [
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-abc-pulse-preparation-a02\\r0174_abc_guard.py",
+        "bytes": 11260,
+        "sha256": "2cc6ef157c677a3d8964a061934fc79f6289e6eede16b0d3bb4f3d5ce1596e1b"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-abc-pulse-preparation-a02\\root_r0174_abc_pulse_a03.py",
+        "bytes": 15172,
+        "sha256": "16369a288f069148ee062d91eefeb86def8e58cf8f28a36bc340e2b6c0574d5e"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\prepared-r0174-a01\\prepared.json",
+        "bytes": 5511,
+        "sha256": "7fccc6f86a879233558bfece8768685e7624f7c863e3361c588f3e91cc498a25"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-capture-preparation-a01\\queue_tool_r0174_root_a01.py",
+        "bytes": 11380,
+        "sha256": "dd5eac514c9543bf90283b04f1a34fae4e15c88a2e5876412ceedffd9b283391"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-capture-preparation-a01\\live_api_r0174_root_a01.py",
+        "bytes": 1410,
+        "sha256": "21e16068eaa490fe532dc37dfd8f21369f073b3d608d0b21be4c8a981d8c973b"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-capture-preparation-a01\\read_ready_r0174.py",
+        "bytes": 2279,
+        "sha256": "320675d5d3068eb7feb11fe5b809df68f06e049d983aac89aa204a1524f63ce0"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0174-capture-preparation-a01\\make_recorder_job_r0174.py",
+        "bytes": 3111,
+        "sha256": "3538db6c15fae558aa5c45b3bbaf0c3ca13639436fa5569db67bb337c4872361"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-abc-protocol-preparation-a01\\candidate-a03\\protocol-candidate.json",
+        "bytes": 18332,
+        "sha256": "c8ba6380216480a5350b5b550cc131e5a30531cbb303a552244273c7b155065f"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-abc-protocol-preparation-a01\\candidate-a03\\day44-baseline.json",
+        "bytes": 66766,
+        "sha256": "a4a987a70e815ed1498365e6f5edfaf221b9c6e43448ff0b1904885d3b616e17"
+      },
+      {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0173-abc-protocol-preparation-a01\\candidate-a03\\source-checked.json",
+        "bytes": 8814,
+        "sha256": "75a767a903b5fdf9e7f6ea93deb21a8ddc0789d86c431257eea28e11c37f4adb"
+      },
+      {
+        "path": "C:\\w\\e4t168a01\\promo\\ck3_native_war_ai\\episode-04-march-logistics\\evidence\\r0172-periodic-loss\\boundaries\\landing\\after\\strength.json",
+        "bytes": 79048,
+        "sha256": "fca0d7fd18cab8fa932baa0826d37f0c34f87ca0040136a38c646846d2b467b9"
+      }
+    ],
+    "original_DTO_bytes_reopened_by_this_builder": false
+  },
+  "all_old_Jan20_qualification_budget_and_attempts_preserved": true,
+  "automatic_split_or_B_strategy_or_C_selection": false,
+  "0_3_ABC_arms_completed_by_this_manifest": true,
+  "large_save_EXE_DLL_rehash_or_new_Game_SDK_UI_bus_security_recording_calls": 0,
+  "run_id": "r0176",
+  "C_stage": "London",
+  "expected_runtime": {
+    "episode_run_id": "native-33388-1be6dd7a468f",
+    "backend_id": "native-headless",
+    "source": "injected-dll-named-pipe",
+    "local_player_id": 1,
+    "connection_generation": 1,
+    "bridge_pid": 7772,
+    "pipe_name": "\\\\.\\pipe\\ck3-e04-r0176-20261005-a01",
+    "hello": {
+      "pid": 7772,
+      "session_generation": 0,
+      "connection_generation": 1,
+      "expected_ck3_version": "1.20.0.3",
+      "expected_ck3_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+      "game_adapter_id": "ck3-1.20.0.3-msvc-x64",
+      "ck3_build_match": true
+    }
+  },
+  "expected_war_identity": [
+    {
+      "war_id": 1,
+      "player_side": "attacker",
+      "primary_opponent_character_id": 32399,
+      "player_is_primary_war_leader": true,
+      "targeted_title_ids": [
+        202
+      ]
+    }
+  ],
+  "actual_C_cold_source_pins": {
+    "baseline.json": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-readonly-cold-baseline-a01\\baseline.json",
+      "bytes": 34571,
+      "sha256": "6979714be753fbc0ba81c397620825dbd85fa004ce53f5f4826001cbb14045ff"
+    },
+    "strength.json": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-readonly-cold-baseline-a01\\strength.json",
+      "bytes": 78964,
+      "sha256": "8fa8594fe3800ccba83524e87c1c846bef890b713ece9a76f93f526762417b31"
+    },
+    "commander.json": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-readonly-cold-baseline-a01\\commander.json",
+      "bytes": 11470,
+      "sha256": "2bbb099318a1927a9b87d67df4b0b67658dcc27919b2d8321608a3e1fddfcdf3"
+    },
+    "after.json": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-readonly-cold-baseline-a01\\after.json",
+      "bytes": 217665,
+      "sha256": "622dfa58ff71622902bdcf3b3b71c75b81569299ecf682d9c7a768f840a36443"
+    }
+  },
+  "actual_C_cold_comparison": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-cold-baseline-acceptance-a01\\compare-report.json",
+    "bytes": 5740,
+    "sha256": "db9bdb0c812d1bb1605266a83220b655a2b8ebfa1001a0f0b9bc76a4be07c64b"
+  },
+  "actual_C_saved_ready_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-runtime-admission-a04\\receipt.json",
+    "bytes": 3494,
+    "sha256": "6378c683c948ca996d6764a29476f39ae5cdb4a5a7952f0989f423b8765693b7"
+  },
+  "runtime_binding_is_not_process_liveness_screen_or_recording_admission": true,
+  "actual_C_phase1_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-runtime-inputs-a01\\input-manifest.json",
+    "bytes": 29017,
+    "sha256": "4cbcc9f499b2c1d93447157533ccfb910a3633a138e228d4f8b10af01891ebe2"
+  },
+  "actual_C_waypoint_arrival_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a12-s01\\pulse-01\\inspect\\observation.json",
+    "bytes": 352556,
+    "sha256": "3736d8fb0ec105933f94ed600e7dd9f47af5c6ad31d457816f249e10d7f6ac63"
+  },
+  "actual_C_stage_basis_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-runtime-inputs-a02\\basis-observation.json",
+    "bytes": 352556,
+    "sha256": "3736d8fb0ec105933f94ed600e7dd9f47af5c6ad31d457816f249e10d7f6ac63"
+  },
+  "actual_C_stage_preview": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-move-actual-a05\\preview.json",
+    "bytes": 1322,
+    "sha256": "127fbe3f86908ca52b6c251490e12be7198643f356e7cedbe130a2622f9b1833"
+  },
+  "actual_C_stage_preview_anchor": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-move-actual-a05\\after.json",
+    "bytes": 219430,
+    "sha256": "10686527429f16db20ad1030f078a29a5c6b01c7db8cccddce370fe1d8479f86"
+  },
+  "actual_C_stage_preview_route": [
+    729,
+    965,
+    686,
+    628,
+    629,
+    1527
+  ],
+  "shared_C120_registry": "C:\\ck3-war-episode04-research-20261004-a01\\root-packets-r0176-a01\\abc-batches",
+  "budget_reset_on_phase2": false
+}

@@ -1,0 +1,23 @@
+{
+  "at_utc": "2026-10-06T00:07:13.484094+00:00",
+  "before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-final-leg-eta-actual-a01\\before-response-copy.json",
+    "bytes": 193474721,
+    "sha256": "1d5dcdbad7e5d4e57f285b44c72d64833ce7ab8fe80c117d9174fab4cc1c174a"
+  },
+  "query": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-final-leg-eta-actual-a01\\query-response-copy.json",
+    "bytes": 8171,
+    "sha256": "5b40375eb01798d77967b6499e2db5aa3b75d124afbcc6c5b0b8e31990e57e45"
+  },
+  "after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-C-final-leg-eta-actual-a01\\after-response-copy.json",
+    "bytes": 193481991,
+    "sha256": "023552624e34dc32a28c6ae3dfcc06a82ade077ad4523eba7d52078cb545c286"
+  },
+  "actual_date_raw": 53150112,
+  "actual_paused": true,
+  "no_resume_or_order": true,
+  "Root_interpretation": null,
+  "forecast_is_actual_arrival": false
+}

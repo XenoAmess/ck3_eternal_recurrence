@@ -1,0 +1,46 @@
+{
+  "files": [
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\before.json",
+      "relative": "inputs/Main-scope-day59-before.json",
+      "bytes": 231532,
+      "sha256": "6f885446234953287e4a544c882357bd0e3256cf0439ef8afb0046dcad1d460c",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\health.json",
+      "relative": "inputs/Main-scope-day59-health.json",
+      "bytes": 79197,
+      "sha256": "72dc220c70a27d1ae4256d6489056c8e452677556afbc1a130add94674f91aef",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\commander.json",
+      "relative": "inputs/Main-scope-day59-commander.json",
+      "bytes": 11376,
+      "sha256": "75280291310623974da27193f15ff03659b34ee444a56138d18802efd3983d11",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\after.json",
+      "relative": "inputs/Main-scope-day59-after.json",
+      "bytes": 231532,
+      "sha256": "a2a58950b2895ae46a9fb3ef784b77fa52c658a934523e59d50265975fb786b7",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a15-s01\\result.json",
+      "relative": "inputs/overshoot-day59-failed-STOP-pause-null.json",
+      "bytes": 247,
+      "sha256": "d551cac1b8538587bbdabb838423bc7503108d473ce5f739ef063d3c6a8cbf93",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a15-s01\\pulse-01\\inspect\\before.json",
+      "relative": "inputs/day59-original-partial-inspect-before.json",
+      "bytes": 36367,
+      "sha256": "c9010435384e962e8edbfcb870b285e3cefe7c1edbd1b49af2b73aefaa578cb1",
+      "completed": true
+    }
+  ]
+}

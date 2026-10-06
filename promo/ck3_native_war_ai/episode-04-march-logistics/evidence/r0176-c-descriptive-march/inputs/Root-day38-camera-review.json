@@ -1,0 +1,117 @@
+{
+  "status": "ROOT_ACTUAL_C_CURRENT_BASIS_ACCEPTED_BEFORE_NEXT_RESUME",
+  "at_utc": "2026-10-05T22:10:40.491859+00:00",
+  "basis_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a05-s01\\pulse-01\\inspect\\observation.json",
+    "bytes": 353676,
+    "sha256": "faf25f512d0ab3dc7ed317c1df5cac488ff769b2e39b5fda4b59c92cde1ff65f"
+  },
+  "input_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-runtime-inputs-a02\\input-manifest.json",
+    "bytes": 30065,
+    "sha256": "f52765356b6f4f6adbbbae35055866076d820bf33a516dcf597723adb6b5149f"
+  },
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01",
+  "episode_run_id": "native-33388-1be6dd7a468f",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "actual_date_raw": 53149344,
+  "material_disposition_prospective": true,
+  "old_STOP_unchanged": true,
+  "no_budget_reset": true,
+  "full27reg37DATA_commander27357_and_actual_clocks_reviewed": true,
+  "Root_actual_review_notes": "Root reviewed exact +37 to38 full paused source. Own entire27Reg37DATA rows/IDs/types/max6747/comm27357/runtime/war/current6689/S10190260/cap30000000/monthly-423728/attr0/cash63848329 and supply clocks unchanged. Entire existing enemy16777221/owner32399 still1499, regular to moving with route[1598]/target1598, combatfalse/retreatfalse, outside all protected C sea/London route provinces. Known NPC1606 siege16777228 Army59 ordinary four progress fields only. No own casualty or NPC movement cause inferred. Original world whitelist STOP preserved; no whitelist change. Root accepts only actual current +38 sameC descriptive basis before max5 strictserial dwell0. Same90day/120registry, all four sampling deviations retained, controlled A/C NOT GRANTED/no reload/extraRest/reset/STOPrewrite. ActualLondon camera titlecentering completed+37 with native settled/postcondition and ArmyUI0 readback; Root directly viewed paused Apr11 original, selected6689/S101/300/0%/helmetcomm, London/Thames/entryroute visible but current MainstillFrance outsideviewport, no arrival/follow claimed. Mandatory material/source/cohort/comm/war/pause and world uncertainty still STOP.",
+  "source_analysis": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day38-current-analysis-a01\\source-analysis.json",
+    "bytes": 7468,
+    "sha256": "648b87b9b1b8e2de55c0459882e1952c3ca82e2b523ec52235e26db1a314a1d4"
+  },
+  "old_STOP": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a05\\result.json",
+    "bytes": 1013,
+    "sha256": "4c91f83d5fa023f3a762f00d903a9b341f631965d4abb042775d1d576c1186f5"
+  },
+  "underlying_actual_paused_STOP": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a05-s01\\result.json",
+    "bytes": 324,
+    "sha256": "7c501037f4d1f710637466769d26fbb16c152b0ca8b904314606434ae28e046f"
+  },
+  "prior_sampling_deviation_Root_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day37-current-basis-review-a01\\Root-review.json",
+    "bytes": 5582,
+    "sha256": "1ce1b81aa860e37751a8985e10d4865b092a7d960ca4281887e3aa381d3acaa3"
+  },
+  "sampling_protocol_deviations": [
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "actual_global_budget_breach": false,
+      "actual_date_raw": 53148768,
+      "original_END_raw": 53150592,
+      "old_STOP_unchanged": true
+    },
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "source_before_raw": 53148912,
+      "source_after_raw": 53148960,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "actual_global_budget_breach": false,
+      "underlying_STOP": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a09-s01\\result.json",
+        "bytes": 325,
+        "sha256": "9c87b621dabc82cde5497790e88afb6a05400ac2f6b8e5bcaeab9dcc6706d728"
+      }
+    },
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "source_before_raw": 53149128,
+      "source_after_raw": 53149176,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "actual_global_budget_breach": false,
+      "underlying_STOP": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-WHOLE-world-a04-w001\\result.json",
+        "bytes": 325,
+        "sha256": "660610b872e8bf9f60a86235aed033d4c4ad19854bbff17810cd3c792bda4c5f"
+      },
+      "old_STOP_unchanged": true,
+      "arm_controlled_comparison_eligibility_not_granted": true
+    },
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "source_before_raw": 53149248,
+      "source_after_raw": 53149296,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "actual_global_budget_breach": false,
+      "underlying_STOP": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-WHOLE-world-a05-w002\\result.json",
+        "bytes": 325,
+        "sha256": "727d8fda85c50ebdc4c9990cfcf919f17e60cfe55efa8d0ba0349da180901b0b"
+      },
+      "old_STOP_unchanged": true,
+      "arm_controlled_comparison_eligibility_not_granted": true
+    }
+  ],
+  "descriptive_continuation_only": true,
+  "controlled_comparison_eligibility_granted": false,
+  "Root_authored_notes": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root_C_day38_manual_notes_a01.json",
+    "bytes": 2053,
+    "sha256": "21737dba638c7cc374f46712fc6571584643077797ed252f703aacd60656ac48"
+  },
+  "human_signoff": false,
+  "Root_actual_original_frame_review": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-London-camera-a01\\receipt.json",
+    "bytes": 1591,
+    "sha256": "715368f338756ca06d0890550addfee8fb20073684010e7133ba8f51518da47d"
+  }
+}

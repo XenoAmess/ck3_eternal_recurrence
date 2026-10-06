@@ -1,0 +1,32 @@
+{
+  "files": [
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\audit-attempt-a01\\report.json",
+      "relative": "inputs/S02-machine-audit.json",
+      "bytes": 11932,
+      "sha256": "91a792bb73d7395db320b8c0cc34f74553f7bd61c3f08b4113d3f6d885da951d",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-S02-six-encoded-review-a01\\receipt.json",
+      "relative": "inputs/Root-S02-six-encoded-review.json",
+      "bytes": 8637,
+      "sha256": "91cfe156ae7bf6e9658f9f63677083740d987cc37ce37aa5d8028484a377c40a",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day55-current-basis-review-a01\\Root-review.json",
+      "relative": "inputs/Root-day55-review.json",
+      "bytes": 8770,
+      "sha256": "878e0e1c0edfdb6a408af80d2dabf3dae40999bc5ddc2669e52d6cafda2f3b4e",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day54-current-analysis-a01\\source-analysis.json",
+      "relative": "inputs/day55-source-analysis-original-dir54.json",
+      "bytes": 4782,
+      "sha256": "0ceb84693000dbdd6b26a220e623e7899fa1b67fb050ce5561a0b424d8bb3f28",
+      "completed": true
+    }
+  ]
+}

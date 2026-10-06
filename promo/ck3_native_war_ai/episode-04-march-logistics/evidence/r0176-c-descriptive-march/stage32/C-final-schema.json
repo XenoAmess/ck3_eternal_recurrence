@@ -1,0 +1,28 @@
+{
+  "schema": "ck3.e04.C.terminal-preparation-contract.v1",
+  "current_stage": "IN_PROGRESS",
+  "current_validation_scope": "Completed packaged small JSON source/report joins only",
+  "must_remain_null_before_terminal_sources": ["terminal_status", "terminal_exact_date", "London_arrival", "London_arrival_interval_raw", "endpoint_whole", "endpoint_stock", "endpoint_cash", "net_treasury_change_raw", "runtime_closure", "S02_media", "final_raw_pin", "winner"],
+  "future_source_slots": {
+    "Root_terminal_disposition": null,
+    "last_not_arrived_and_first_observed_source_pair": null,
+    "independent_full_subject_endpoint_source": null,
+    "Root_numeric_endpoint_acceptance": null,
+    "actual_runtime_closure_and_release": null,
+    "actual_S02_owned_recorder_terminal": null,
+    "S02_unique_media_audit_and_Root_review": null,
+    "relative_pinned_archived_A_endpoint_dataset": null
+  },
+  "invariants_for_future_append": [
+    "Preserve all existing attempts and source bytes; use a new version/attempt for actual terminal data.",
+    "Keep common checkpoint d052, T0 53148432, END 53150592 and shared120 batch registry across both phases and media segments.",
+    "Keep all three actual planned1day/observed2day overshoots24 and their original STOP receipts.",
+    "Descriptive endpoint evidence does not automatically restore controlled comparison eligibility.",
+    "Use a last-not-arrived/first-observed interval; exact native arrival tick remains unknown unless separately proved.",
+    "Use complete current subject/native/cohort/commander source joins; never infer state from move ACK, preview, ETA or video mark.",
+    "Keep observed integer growth, prepared/permission changes, stock writes, NPC changes and causal/application ledgers separate.",
+    "Label cash difference net treasury change, not travel payment.",
+    "Media audit and single-frame reviews do not certify continuous clean footage or human1x full film signoff."
+  ],
+  "current_whole_C_completion_or_winner_credit": 0
+}

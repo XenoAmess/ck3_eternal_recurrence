@@ -1,0 +1,35 @@
+{
+  "status": "ROOT_ACTUAL_C_CURRENT_BASIS_ACCEPTED_BEFORE_NEXT_RESUME",
+  "at_utc": "2026-10-05T20:40:11.307319+00:00",
+  "basis_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a03-s01\\pulse-01\\inspect\\observation.json",
+    "bytes": 352618,
+    "sha256": "8628621b7c4941863a424fe30dfd61b60d5e91b6af3e80bab3a397a06e5c1438"
+  },
+  "input_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-runtime-inputs-a01\\input-manifest.json",
+    "bytes": 29017,
+    "sha256": "4cbcc9f499b2c1d93447157533ccfb910a3633a138e228d4f8b10af01891ebe2"
+  },
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01",
+  "episode_run_id": "native-33388-1be6dd7a468f",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "actual_date_raw": 53148480,
+  "material_disposition_prospective": true,
+  "old_STOP_unchanged": true,
+  "no_budget_reset": true,
+  "full27reg37DATA_commander27357_and_actual_clocks_reviewed": true,
+  "Root_actual_review_notes": "Actual +1 to +2 paused source: stock11037716→10613988 equals native before/after monthly−423728 with actual stored+188 date/raw64 write. All27reg/37DATA entire rows/current6679/max6747/cap30000000/comm27357/attr0 and cash63754562 unchanged; no integer death or payment credited. Outside change is existing NPC1609 siege3 Army7 four ordinary progression fields only. Accept actual +2 current basis; future new identity/phase/occupation/unknown/material STOP remains.",
+  "source_analysis": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day2-material-analysis-a01\\source-analysis.json",
+    "bytes": 6159,
+    "sha256": "2dfc91ff22534b268945b8fc33c072373eb840303488bc7304b8ae8dcf5b763a"
+  },
+  "old_STOP": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a03\\result.json",
+    "bytes": 1023,
+    "sha256": "3d9468356ac8ea12502bedaee70ee923ecf32e61cbc2d701d341b85bafb89999"
+  },
+  "human_signoff": false
+}

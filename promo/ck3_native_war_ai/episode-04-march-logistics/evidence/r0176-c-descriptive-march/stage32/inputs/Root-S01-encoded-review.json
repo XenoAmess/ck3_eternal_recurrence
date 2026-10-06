@@ -1,0 +1,135 @@
+{
+  "status": "ROOT_ACTUAL_SIX_C_S01_ENCODED_ORIGINAL_FRAMES_REVIEWED",
+  "at_utc": "2026-10-05T21:57:58.112404+00:00",
+  "rows": [
+    {
+      "candidate": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\encoded-candidates-a01\\r0176-c-s01-0-first_stable_t0_search\\candidate-index.json",
+        "bytes": 4273,
+        "sha256": "d3e931d1ab9477c2634139bc4d2ac7b40f9aeb31537fcd617caa520754e8b767"
+      },
+      "exact_original_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\encoded-candidates-a01\\r0176-c-s01-0-first_stable_t0_search\\candidate-00.png",
+        "bytes": 2625061,
+        "sha256": "43910cc22171009738782ea464c0a9bd25a68a58427b4d922165ea771b70e680"
+      },
+      "actual_frame_ordinal": 30,
+      "actual_pts": 1000,
+      "time_base": "1/1000",
+      "Root_direct_original_view_completed": true,
+      "Root_actual_pixels": "Mar5 paused Main6679/S110of300/helmetcomm/0%, waiting.",
+      "event_transition_exact_PTS": null,
+      "clean_continuous_span_certified": false
+    },
+    {
+      "candidate": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\encoded-candidates-a01\\r0176-c-s01-1-day2_supply_after_search\\candidate-index.json",
+        "bytes": 4373,
+        "sha256": "2053d34c9a607df08b4761bc2dd3a60b68b83cb53259ca1dc2db837285e18315"
+      },
+      "exact_original_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\encoded-candidates-a01\\r0176-c-s01-1-day2_supply_after_search\\candidate-00.png",
+        "bytes": 2802337,
+        "sha256": "42505a67c2931c2f6c78b94815c9f6edeb731e25c7202e29b32a702f7b2c5b3a"
+      },
+      "actual_frame_ordinal": 27030,
+      "actual_pts": 901000,
+      "time_base": "1/1000",
+      "Root_direct_original_view_completed": true,
+      "Root_actual_pixels": "Mar7 paused Main6679/S106of300/helmetcomm/0%, route through land/remaining6day.",
+      "event_transition_exact_PTS": null,
+      "clean_continuous_span_certified": false
+    },
+    {
+      "candidate": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\encoded-candidates-a01\\r0176-c-s01-2-day14_mar19_search\\candidate-index.json",
+        "bytes": 4669,
+        "sha256": "3b9dcc8c44da9caeef480da15a7d9ffbe08906d008960ed87db0577f05770f6b"
+      },
+      "exact_original_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\encoded-candidates-a01\\r0176-c-s01-2-day14_mar19_search\\candidate-00.png",
+        "bytes": 2852286,
+        "sha256": "748b2e2fd0707d6a241787adf9a2fc525158818fd8876ce06598322028581bf2"
+      },
+      "actual_frame_ordinal": 72720,
+      "actual_pts": 2424000,
+      "time_base": "1/1000",
+      "Root_direct_original_view_completed": true,
+      "Root_actual_pixels": "Mar19 paused Main6679/S106of300/helmetcomm/0%, currentlegremaining4day.",
+      "event_transition_exact_PTS": null,
+      "clean_continuous_span_certified": false
+    },
+    {
+      "candidate": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\encoded-candidates-a01\\r0176-c-s01-3-day20_mar25_search\\candidate-index.json",
+        "bytes": 4364,
+        "sha256": "9acdc3133081c3d10173b7d89474a8bc85ce9dda6f6ebe2c5a48e77b615394ed"
+      },
+      "exact_original_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\encoded-candidates-a01\\r0176-c-s01-3-day20_mar25_search\\candidate-00.png",
+        "bytes": 2770353,
+        "sha256": "084d54e090fd896ba89706419b8387e6b88fc7d38aa4aa6a7df165762bf870c9"
+      },
+      "actual_frame_ordinal": 90000,
+      "actual_pts": 3000000,
+      "time_base": "1/1000",
+      "Root_direct_original_view_completed": true,
+      "Root_actual_pixels": "Mar25 paused Main6679/S106of300/helmetcomm/0%, currentlegremaining8day.",
+      "event_transition_exact_PTS": null,
+      "clean_continuous_span_certified": false
+    },
+    {
+      "candidate": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\encoded-candidates-a01\\r0176-c-s01-4-day25_mar30_near_actual_encoded_tail_search\\candidate-index.json",
+        "bytes": 4519,
+        "sha256": "347ffcc8d7dc8fbbe92453d252b1ed3f96cb15b7d83c935971ec5ab697dad688"
+      },
+      "exact_original_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\encoded-candidates-a01\\r0176-c-s01-4-day25_mar30_near_actual_encoded_tail_search\\candidate-00.png",
+        "bytes": 2882431,
+        "sha256": "836fcfe6c75b2e8f4cbb7ebb9ac7408feae20812644952210dc0652f02266157"
+      },
+      "actual_frame_ordinal": 106866,
+      "actual_pts": 3562200,
+      "time_base": "1/1000",
+      "Root_direct_original_view_completed": true,
+      "Root_actual_pixels": "Mar30 paused Main6679/S106of300/helmetcomm/0%, currentlegremaining3day.",
+      "event_transition_exact_PTS": null,
+      "clean_continuous_span_certified": false
+    },
+    {
+      "candidate": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\encoded-candidates-a01\\r0176-c-s01-5-actual_last_encoded_frame\\candidate-index.json",
+        "bytes": 4303,
+        "sha256": "cded556004a1fd2631675f75e7de488b90cb7bf9a169e3d085a8d57f5cfc14cd"
+      },
+      "exact_original_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\encoded-candidates-a01\\r0176-c-s01-5-actual_last_encoded_frame\\candidate-00.png",
+        "bytes": 2879456,
+        "sha256": "f4803f36c19b78031b11ff8ece9b98080cdb7216d670c9979293f930ef30887b"
+      },
+      "actual_frame_ordinal": 107166,
+      "actual_pts": 3572200,
+      "time_base": "1/1000",
+      "Root_direct_original_view_completed": true,
+      "Root_actual_pixels": "Actual last encoded Mar30 paused Main6679/S106of300/helmetcomm/0%, remaining3day.",
+      "event_transition_exact_PTS": null,
+      "clean_continuous_span_certified": false
+    }
+  ],
+  "actual_closed_raw_identity_reused": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-long-a02\\raw.mkv",
+    "bytes": 5819513105,
+    "sha256": "20cc978d205517138e7dcd417b687c201198b014ad280874eb7cbad4295d560f"
+  },
+  "actual_media_audit": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\report.json",
+    "bytes": 12124,
+    "sha256": "a94f9d293011c1fe5bfecf36d8e37cd56d3746e4294522807dc497aa911530d8"
+  },
+  "scope": "Only six original frame contents/actual encoded PTS. First tape ends C+25, waypoint2176/London/Cterminal unavailable here. No exact native event tick-to-PTS claim.",
+  "C_sampling_deviations_and_descriptive_only_unchanged": true,
+  "one_x_full_movie_review_completed": false,
+  "human_signoff": false,
+  "new_raw_hash_or_full_media_probe": false
+}

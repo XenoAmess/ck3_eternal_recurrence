@@ -1,0 +1,554 @@
+{
+  "at_utc": "2026-10-05T23:14:10.291603+00:00",
+  "manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-Main-scope-inputs-a01\\MAIN-INPUTS-current-Root-bound.json",
+    "bytes": 37448,
+    "sha256": "67fb994368122571cb60c79b8f8eed82aadb72a502f42d1d5da1cd1e1057a03d"
+  },
+  "source_before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-Main-single-a01\\initial\\observation.json",
+    "bytes": 576958,
+    "sha256": "cf764efcf5f03a74278c55d098f638de104cc508f70fb171ad036fcbd6157fe1"
+  },
+  "source_after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-Main-single-a01\\pulse-01\\inspect\\observation.json",
+    "bytes": 368179,
+    "sha256": "a38f7f5128ae373421d7a67f07d1bc68a4da8b704e17da0e7aa62765f6b3dfef"
+  },
+  "before_date_raw": 53149848,
+  "after_date_raw": 53149872,
+  "actual_days_from_common": 60.0,
+  "material_delta": [],
+  "full_world_delta": [
+    {
+      "path": "/0/enemy_armies/0/army_state",
+      "before": "moving",
+      "after": "regular"
+    },
+    {
+      "path": "/0/enemy_armies/0/army_state_code",
+      "before": 7,
+      "after": 1
+    },
+    {
+      "path": "/0/enemy_armies/0/current_province_id",
+      "before": 1607,
+      "after": 1606
+    },
+    {
+      "path": "/0/enemy_armies/0/move_target_observable",
+      "before": true,
+      "after": false
+    },
+    {
+      "path": "/0/enemy_armies/0/move_target_province_id",
+      "before": 1606,
+      "after": null
+    },
+    {
+      "path": "/0/enemy_armies/0/route_province_ids",
+      "before": [
+        1606
+      ],
+      "after": []
+    },
+    {
+      "path": "/0/enemy_armies/0/route_read_status",
+      "before": "complete_nonempty",
+      "after": "complete_empty"
+    },
+    {
+      "path": "/0/enemy_armies/0/route_source_count",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "path": "/0/enemy_armies/1/current_province_id",
+      "before": 1607,
+      "after": 1606
+    },
+    {
+      "path": "/0/enemy_armies/1/move_target_province_id",
+      "before": 1606,
+      "after": 1609
+    },
+    {
+      "path": "/0/enemy_armies/1/route_province_ids/0",
+      "before": 1606,
+      "after": 1609
+    },
+    {
+      "path": "/0/objective_province_states/6/active_siege",
+      "before": {
+        "siege_id": 16777228,
+        "besieging_army_id": 59,
+        "player_army_besieging": false,
+        "progress_fraction": {
+          "raw": 5492,
+          "scale": 100000
+        },
+        "current_work": {
+          "raw": 2196800,
+          "scale": 100000
+        },
+        "total_work": {
+          "raw": 40000000,
+          "scale": 100000
+        },
+        "remaining_work": {
+          "raw": 37803200,
+          "scale": 100000
+        },
+        "days_left": null,
+        "ordinary_daily_progress": null,
+        "current_phase_length": null,
+        "prepared_phase_length": null,
+        "phase_counter": null,
+        "can_advance": null,
+        "phase_event_state": null,
+        "prepared_selected_phase_event_enum": null,
+        "assault_observable": true,
+        "breach_level": 0,
+        "walls_breached": false,
+        "assault_in_progress": false,
+        "can_start_assault": false,
+        "can_stop_assault": false,
+        "assault_daily_progress": {
+          "raw": 0,
+          "scale": 100000
+        },
+        "assault_daily_casualties": 0
+      },
+      "after": null
+    }
+  ],
+  "outside_world_delta": [
+    {
+      "path": "/0/enemy_armies/0/army_state",
+      "before": "moving",
+      "after": "regular"
+    },
+    {
+      "path": "/0/enemy_armies/0/army_state_code",
+      "before": 7,
+      "after": 1
+    },
+    {
+      "path": "/0/enemy_armies/0/current_province_id",
+      "before": 1607,
+      "after": 1606
+    },
+    {
+      "path": "/0/enemy_armies/0/move_target_observable",
+      "before": true,
+      "after": false
+    },
+    {
+      "path": "/0/enemy_armies/0/move_target_province_id",
+      "before": 1606,
+      "after": null
+    },
+    {
+      "path": "/0/enemy_armies/0/route_province_ids",
+      "before": [
+        1606
+      ],
+      "after": []
+    },
+    {
+      "path": "/0/enemy_armies/0/route_read_status",
+      "before": "complete_nonempty",
+      "after": "complete_empty"
+    },
+    {
+      "path": "/0/enemy_armies/0/route_source_count",
+      "before": 1,
+      "after": 0
+    },
+    {
+      "path": "/0/enemy_armies/1/current_province_id",
+      "before": 1607,
+      "after": 1606
+    },
+    {
+      "path": "/0/enemy_armies/1/move_target_province_id",
+      "before": 1606,
+      "after": 1609
+    },
+    {
+      "path": "/0/enemy_armies/1/route_province_ids/0",
+      "before": 1606,
+      "after": 1609
+    },
+    {
+      "path": "/0/objective_province_states/6/active_siege",
+      "before": {
+        "siege_id": 16777228,
+        "besieging_army_id": 59,
+        "player_army_besieging": false,
+        "progress_fraction": {
+          "raw": 5492,
+          "scale": 100000
+        },
+        "current_work": {
+          "raw": 2196800,
+          "scale": 100000
+        },
+        "total_work": {
+          "raw": 40000000,
+          "scale": 100000
+        },
+        "remaining_work": {
+          "raw": 37803200,
+          "scale": 100000
+        },
+        "days_left": null,
+        "ordinary_daily_progress": null,
+        "current_phase_length": null,
+        "prepared_phase_length": null,
+        "phase_counter": null,
+        "can_advance": null,
+        "phase_event_state": null,
+        "prepared_selected_phase_event_enum": null,
+        "assault_observable": true,
+        "breach_level": 0,
+        "walls_breached": false,
+        "assault_in_progress": false,
+        "can_start_assault": false,
+        "can_stop_assault": false,
+        "assault_daily_progress": {
+          "raw": 0,
+          "scale": 100000
+        },
+        "assault_daily_casualties": 0
+      },
+      "after": null
+    }
+  ],
+  "full_regiment_row_delta": [],
+  "full_DATA_container_row_delta": [],
+  "counts_before": {
+    "regiments": 27,
+    "DATA": 37
+  },
+  "counts_after": {
+    "regiments": 27,
+    "DATA": 37
+  },
+  "scalars_before": {
+    "current_soldiers": 6689,
+    "maximum_soldiers": 6747,
+    "current_supply_raw": 10190260,
+    "current_supply_scale": 100000,
+    "current_supply_capacity_raw": 30000000,
+    "current_supply_capacity_scale": 100000,
+    "current_supply_change_monthly_raw": 0,
+    "current_supply_change_monthly_scale": 100000,
+    "current_attrition_fraction_raw": 0,
+    "current_attrition_fraction_scale": 100000
+  },
+  "scalars_after": {
+    "current_soldiers": 6689,
+    "maximum_soldiers": 6747,
+    "current_supply_raw": 10190260,
+    "current_supply_scale": 100000,
+    "current_supply_capacity_raw": 30000000,
+    "current_supply_capacity_scale": 100000,
+    "current_supply_change_monthly_raw": 0,
+    "current_supply_change_monthly_scale": 100000,
+    "current_attrition_fraction_raw": 0,
+    "current_attrition_fraction_scale": 100000
+  },
+  "clock_before": {
+    "status": "available",
+    "ready": true,
+    "current_date_raw": 53149848,
+    "native_day_index": 389577,
+    "selected_bucket_phase": 27,
+    "observed_army_bucket_phase": 0,
+    "last_supply_update_date_storage_raw64": 300337120213138960,
+    "last_supply_update_date_raw": 53149200,
+    "grace_anchor_date_storage_raw64": 300061168564366016,
+    "grace_anchor_date_raw": 53144256,
+    "loaded_grace_days": 30,
+    "unavailable_reason": null
+  },
+  "clock_after": {
+    "status": "available",
+    "ready": true,
+    "current_date_raw": 53149872,
+    "native_day_index": 389578,
+    "selected_bucket_phase": 28,
+    "observed_army_bucket_phase": 0,
+    "last_supply_update_date_storage_raw64": 300337120213138960,
+    "last_supply_update_date_raw": 53149200,
+    "grace_anchor_date_storage_raw64": 300061168564366016,
+    "grace_anchor_date_raw": 53144256,
+    "loaded_grace_days": 30,
+    "unavailable_reason": null
+  },
+  "protected_sites": [
+    628,
+    629,
+    686,
+    729,
+    965,
+    1527
+  ],
+  "player_before": [
+    {
+      "army_id": 0,
+      "owner_character_id": 33388,
+      "soldiers": null,
+      "current_province_id": 729,
+      "move_target_province_id": 1527,
+      "move_target_observable": true,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [
+        965,
+        686,
+        628,
+        629,
+        1527
+      ],
+      "route_read_status": "complete_nonempty",
+      "route_source_count": 5,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "embarked",
+      "army_state_code": 4,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    },
+    {
+      "army_id": 16777391,
+      "owner_character_id": 33388,
+      "soldiers": null,
+      "current_province_id": 729,
+      "move_target_province_id": null,
+      "move_target_observable": false,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [],
+      "route_read_status": "complete_empty",
+      "route_source_count": 0,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "regular",
+      "army_state_code": 1,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    }
+  ],
+  "player_after": [
+    {
+      "army_id": 0,
+      "owner_character_id": 33388,
+      "soldiers": null,
+      "current_province_id": 729,
+      "move_target_province_id": 1527,
+      "move_target_observable": true,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [
+        965,
+        686,
+        628,
+        629,
+        1527
+      ],
+      "route_read_status": "complete_nonempty",
+      "route_source_count": 5,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "embarked",
+      "army_state_code": 4,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    },
+    {
+      "army_id": 16777391,
+      "owner_character_id": 33388,
+      "soldiers": null,
+      "current_province_id": 729,
+      "move_target_province_id": null,
+      "move_target_observable": false,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [],
+      "route_read_status": "complete_empty",
+      "route_source_count": 0,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "regular",
+      "army_state_code": 1,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    }
+  ],
+  "gold_before": {
+    "raw": 62148329,
+    "scale": 100000
+  },
+  "gold_after": {
+    "raw": 62173052,
+    "scale": 100000
+  },
+  "required_identity_max_commander_runtime_war_gate_pass": true,
+  "scope_before": {
+    "kind": "explicit_required_Main_only",
+    "required_public_ids": [
+      0
+    ],
+    "queried_public_ids": [
+      0
+    ],
+    "full_roster": [
+      {
+        "army_id": 0,
+        "owner_character_id": 33388,
+        "soldiers": null,
+        "current_province_id": 729,
+        "move_target_province_id": 1527,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          965,
+          686,
+          628,
+          629,
+          1527
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 5,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "embarked",
+        "army_state_code": 4,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      {
+        "army_id": 16777391,
+        "owner_character_id": 33388,
+        "soldiers": null,
+        "current_province_id": 729,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "regular",
+        "army_state_code": 1,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    ],
+    "full_roster_public_ids": [
+      0,
+      16777391
+    ],
+    "excluded_public_ids": [
+      16777391
+    ],
+    "excluded_health": null,
+    "excluded_health_queried_by_this_request": false,
+    "raw_global_scope_status": "partial",
+    "global_scope_partial": true,
+    "all_player_health_available": null,
+    "all_player_health_asserted": false,
+    "all_player_health_complete_proved": false,
+    "full_snapshot_filtered_or_mutated": false,
+    "raw_health_filtered_or_mutated": false,
+    "caller_must_validate_nativeMain0_and_full27_37_expected_cohort": true
+  },
+  "scope_after": {
+    "kind": "explicit_required_Main_only",
+    "required_public_ids": [
+      0
+    ],
+    "queried_public_ids": [
+      0
+    ],
+    "full_roster": [
+      {
+        "army_id": 0,
+        "owner_character_id": 33388,
+        "soldiers": null,
+        "current_province_id": 729,
+        "move_target_province_id": 1527,
+        "move_target_observable": true,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [
+          965,
+          686,
+          628,
+          629,
+          1527
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 5,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "embarked",
+        "army_state_code": 4,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      },
+      {
+        "army_id": 16777391,
+        "owner_character_id": 33388,
+        "soldiers": null,
+        "current_province_id": 729,
+        "move_target_province_id": null,
+        "move_target_observable": false,
+        "controllable": true,
+        "source": "native",
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0,
+        "in_combat": false,
+        "retreating": false,
+        "army_state": "regular",
+        "army_state_code": 1,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null
+      }
+    ],
+    "full_roster_public_ids": [
+      0,
+      16777391
+    ],
+    "excluded_public_ids": [
+      16777391
+    ],
+    "excluded_health": null,
+    "excluded_health_queried_by_this_request": false,
+    "raw_global_scope_status": "partial",
+    "global_scope_partial": true,
+    "all_player_health_available": null,
+    "all_player_health_asserted": false,
+    "all_player_health_complete_proved": false,
+    "full_snapshot_filtered_or_mutated": false,
+    "raw_health_filtered_or_mutated": false,
+    "caller_must_validate_nativeMain0_and_full27_37_expected_cohort": true
+  },
+  "Root_disposition": null,
+  "Root_scope_approval": null,
+  "no_SDK_UI_bus_process_raw_actions": true
+}

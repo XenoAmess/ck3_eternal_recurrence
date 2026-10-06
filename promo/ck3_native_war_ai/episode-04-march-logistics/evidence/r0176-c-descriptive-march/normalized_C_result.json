@@ -1,0 +1,285 @@
+{
+  "London_endpoint_metrics": {
+    "DATA_record_count": 37,
+    "actor_character_id": 33388,
+    "actual_player_row": {
+      "army_id": 0,
+      "army_state": "sieging",
+      "army_state_code": 3,
+      "controllable": true,
+      "current_province_id": 1527,
+      "in_combat": false,
+      "move_target_observable": false,
+      "move_target_province_id": null,
+      "owner_character_id": 33388,
+      "retreating": false,
+      "route_province_ids": [],
+      "route_read_status": "complete_empty",
+      "route_source_count": 0,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null,
+      "soldiers": null,
+      "source": "native"
+    },
+    "commander_character_id": 27357,
+    "current_attrition_fraction_raw": 1000,
+    "current_attrition_fraction_scale": 100000,
+    "current_soldiers": 6689,
+    "current_supply_capacity_raw": 30000000,
+    "current_supply_change_monthly_raw": 0,
+    "current_supply_raw": 10190260,
+    "date_raw": 53150280,
+    "exact_arrival_tick": null,
+    "maximum_soldiers": 6747,
+    "native_carmy_id": 0,
+    "public_army_id": 0,
+    "regiment_count": 27,
+    "supply_scale": 100000,
+    "treasury_raw": 62173052,
+    "treasury_scale": 100000
+  },
+  "absolute_END_raw": 53150592,
+  "actual_days_used": 77.0,
+  "applied_refill_payment_ledger": null,
+  "closed": true,
+  "common_T0_raw": 53148432,
+  "controlled_comparison_eligibility": "NOT_GRANTED",
+  "episode_run_id": "native-33388-1be6dd7a468f",
+  "global_budget_breach": false,
+  "observed_arrival_interval_days": [
+    75.0,
+    77.0
+  ],
+  "observed_terminal_date_raw": 53150280,
+  "sampling_deviations": [
+    {
+      "actual_days": 2,
+      "observed_days": [
+        12.0,
+        14.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "stage32/inputs/overshoot-day14-original-STOP.json",
+        "sha256": "c66a2c24ffc1616d8e8a07a187b21776bae11debbcfb5128df4f260520b10995"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        20.0,
+        22.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "stage32/inputs/overshoot-day22-original-STOP.json",
+        "sha256": "9c87b621dabc82cde5497790e88afb6a05400ac2f6b8e5bcaeab9dcc6706d728"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        29.0,
+        31.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "stage32/inputs/overshoot-day31-original-STOP.json",
+        "sha256": "660610b872e8bf9f60a86235aed033d4c4ad19854bbff17810cd3c792bda4c5f"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        34.0,
+        36.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day36-original-STOP.json",
+        "sha256": "727d8fda85c50ebdc4c9990cfcf919f17e60cfe55efa8d0ba0349da180901b0b"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        40.0,
+        42.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day42-original-STOP.json",
+        "sha256": "076267bb1ce5454fabcd8105968e019529da6e77508e65150101e4710a07e386"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        45.0,
+        47.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day47-original-STOP.json",
+        "sha256": "c8cc79b46cbe77a605319937f164b90941e0198abaecef7391de6a3ea637f952"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        49.0,
+        51.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day51-original-STOP.json",
+        "sha256": "2498f750bf277fe16ab362a4b793648273dd64fcff0ddb7a89e575ea55a761bb"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        53.0,
+        55.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day55-original-STOP.json",
+        "sha256": "20765b1135613b504baadc66e6f5721706ba86de98b11d21354a83cdaa4cf625"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        57.0,
+        59.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 247,
+        "path": "inputs/overshoot-day59-failed-STOP-pause-null.json",
+        "sha256": "d551cac1b8538587bbdabb838423bc7503108d473ce5f739ef063d3c6a8cbf93"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        60.0,
+        62.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day62-original-STOP.json",
+        "sha256": "ac99d55d79bb808696d805791f0372195c16dc1ca21f13657ff4e91c6217dc8f"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        63.0,
+        65.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "inputs/overshoot-day65-original-STOP.json",
+        "sha256": "2c3ab3672a2b2f06389ecb4981cd8d4b0a9527ddc65b6d3c52524e3274bddbe5"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        66.0,
+        68.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "terminal/inputs/original_deviation_12.json",
+        "sha256": "b625a68f61b9fce6797c0ca8b63c6fe9b94152f91273829ab43c45f6529b9bef"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        70.0,
+        72.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "terminal/inputs/original_deviation_13.json",
+        "sha256": "06a6e2f8de4b259cae94afa26e26512d79d2189a10fc8a505b2ca85dcb855f47"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        72.0,
+        74.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 325,
+        "path": "terminal/inputs/original_deviation_14.json",
+        "sha256": "ee9db71c945c1cd36c3469cc17c4331aac9a071926b6ab7fa942e81908706558"
+      }
+    },
+    {
+      "actual_days": 2,
+      "observed_days": [
+        75.0,
+        77.0
+      ],
+      "one_day_eligible": false,
+      "planned_max_days": 1,
+      "source_pin": {
+        "bytes": 329,
+        "path": "terminal/inputs/original_deviation_15.json",
+        "sha256": "92cf9cb37d2640c822a4219ae1745fa9b5ac0e0894ec3178c9d337054270b5ba"
+      }
+    }
+  ],
+  "source_sha256": "991f578aa40f3131681b34473636d0a8d96dc48d77f96812591f5422fe0d4817",
+  "status": "ARRIVED_LONDON",
+  "subject_scope": {
+    "all_player_total_soldiers": null,
+    "global_health_status": "available",
+    "kind": "required_Main_original_cohort",
+    "required_full_DATA": 37,
+    "required_full_regiments": 27,
+    "required_native_carmy_ids": [
+      0
+    ],
+    "required_public_ids": [
+      0
+    ],
+    "unassessed_CUnit_ids": [],
+    "unassessed_health": null
+  },
+  "winner": null
+}

@@ -1,0 +1,40 @@
+{
+  "schema": "ck3.e04.C.review01.closed-camera-cash-pins.v1",
+  "files": [
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-London-camera-a01\\receipt.json",
+      "relative": "inputs/London-camera-day37-receipt.json",
+      "bytes": 1591,
+      "sha256": "715368f338756ca06d0890550addfee8fb20073684010e7133ba8f51518da47d",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day38-current-basis-review-a01\\Root-review.json",
+      "relative": "inputs/Root-day38-camera-review.json",
+      "bytes": 6015,
+      "sha256": "5d796e9005c2049e81f04919bf3a0327f0ad7b6968db8bc3dac6bd3b616bac00",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day31-current-analysis-a01\\source-analysis.json",
+      "relative": "inputs/day31-cash-source-analysis.json",
+      "bytes": 6118,
+      "sha256": "ebf3d2dea82920fd38141f00d50cd78e2dd6508563dfe24a5ff448f05412144b",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-long-a02\\result.json",
+      "relative": "inputs/S01-owned-recorder-terminal.json",
+      "bytes": 803,
+      "sha256": "8ea816e9d0c9274c42a715f08c157a904d3b36383ce0124a86ae442daa507de0",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a01\\result.json",
+      "relative": "inputs/S02-owned-recorder-terminal.json",
+      "bytes": 1057,
+      "sha256": "685742333a1e419240d34dbfff591b6c8d5cb9262893775b80574c96ac52fb1c",
+      "completed": true
+    }
+  ]
+}

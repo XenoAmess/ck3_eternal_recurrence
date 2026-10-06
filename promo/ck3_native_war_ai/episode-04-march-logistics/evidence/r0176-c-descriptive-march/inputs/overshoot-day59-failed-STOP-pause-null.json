@@ -1,0 +1,8 @@
+{
+  "status": "STOP_RUNTIME_FAILURE_OR_NEW_STATE",
+  "error": "RuntimeError('all-player health query unavailable')",
+  "no_more_resume": true,
+  "actual_paused": null,
+  "pause_not_inferred_from_failed_ack": true,
+  "blind_retry_allowed": false
+}

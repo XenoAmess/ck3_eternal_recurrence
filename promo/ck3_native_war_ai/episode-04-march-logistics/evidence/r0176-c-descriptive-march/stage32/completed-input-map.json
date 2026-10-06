@@ -1,0 +1,120 @@
+{
+  "schema": "ck3.e04.C.completed-json-collection-map.v1",
+  "files": [
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-runtime-inputs-a02\\input-manifest.json",
+      "relative": "inputs/London-runtime-inputs.json",
+      "bytes": 30065,
+      "sha256": "f52765356b6f4f6adbbbae35055866076d820bf33a516dcf597723adb6b5149f",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day32-current-analysis-a01\\source-analysis.json",
+      "relative": "inputs/day32-source-analysis.json",
+      "bytes": 6251,
+      "sha256": "f3537e220d1a5effd0413c1128842fa982118b07aa1aa9d84c2d3b31701496cb",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day32-current-basis-review-a01\\Root-review.json",
+      "relative": "inputs/Root-day32-review.json",
+      "bytes": 4926,
+      "sha256": "19a1daf022e92f88cba75b209e24de6e639853531dd0c9e810bfacb1eb76f458",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-first-tape-encoded-review-a01\\receipt.json",
+      "relative": "inputs/Root-S01-encoded-review.json",
+      "bytes": 6870,
+      "sha256": "a431e5434ec014ebb0a615f6e651c4172d1dcb0599cad663f868693c0891b3e5",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\report.json",
+      "relative": "inputs/S01-media-audit.json",
+      "bytes": 12124,
+      "sha256": "a94f9d293011c1fe5bfecf36d8e37cd56d3746e4294522807dc497aa911530d8",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day31-current-basis-review-a01\\Root-review.json",
+      "relative": "inputs/Root-day31-review.json",
+      "bytes": 5375,
+      "sha256": "89e1a9e18d16591981a79ff2bfee32c5c04e6c665fdba00ce84309a8a88d8dca",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-WHOLE-world-a01-w004\\result.json",
+      "relative": "inputs/overshoot-day14-original-STOP.json",
+      "bytes": 325,
+      "sha256": "c66a2c24ffc1616d8e8a07a187b21776bae11debbcfb5128df4f260520b10995",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a09-s01\\result.json",
+      "relative": "inputs/overshoot-day22-original-STOP.json",
+      "bytes": 325,
+      "sha256": "9c87b621dabc82cde5497790e88afb6a05400ac2f6b8e5bcaeab9dcc6706d728",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-WHOLE-world-a04-w001\\result.json",
+      "relative": "inputs/overshoot-day31-original-STOP.json",
+      "bytes": 325,
+      "sha256": "660610b872e8bf9f60a86235aed033d4c4ad19854bbff17810cd3c792bda4c5f",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-move-actual-a05\\result.json",
+      "relative": "inputs/phase2-result.json",
+      "bytes": 507,
+      "sha256": "5620ad5f5f796db97fc741bc07d404c1de535c591940092e7a20e64fa7341ffd",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-move-actual-a05\\move-ack.json",
+      "relative": "inputs/phase2-move-ack.json",
+      "bytes": 1299,
+      "sha256": "47652ca55f0130353360ada351514e2fd38a9c003b48ec71fdf12fe9d937449e",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day27-current-basis-review-a01\\Root-review.json",
+      "relative": "inputs/Root-day27-review.json",
+      "bytes": 5180,
+      "sha256": "e3f2984e15db8b1444a58d99aacf08be61772bfca34dcffac46317701b24eecc",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day27-material-analysis-a01\\source-analysis.json",
+      "relative": "inputs/day27-source-analysis.json",
+      "bytes": 20863,
+      "sha256": "c047dc70bc5727049598d2d7603246532841cb947804f6d176ae2047fab157ef",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day28-current-analysis-a01\\source-analysis.json",
+      "relative": "inputs/day28-source-analysis.json",
+      "bytes": 6593,
+      "sha256": "60170989799f9f07ed0dd55ed40f0dde4120cf0793475864707e4ace36d27fe0",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-arrival-actual-a05\\result.json",
+      "relative": "inputs/waypoint-arrival-result.json",
+      "bytes": 404,
+      "sha256": "30fd38270788b8dda369a894447d82291f59965353b3022f1957b52f4bffbf5a",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-London-binding-execution-a02\\Root-day28-phase-transition-review.json",
+      "relative": "inputs/Root-day28-phase-transition-review.json",
+      "bytes": 2946,
+      "sha256": "c2b62ef006a921d0f1c6382f91d1dc9dd8d129f1ded292c62f8987705400040c",
+      "completed": true
+    }
+  ],
+  "future_terminal_sources": null,
+  "future_S02_sources": null,
+  "no_LIVE_or_RAW_or_PNG_sources": true
+}

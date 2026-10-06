@@ -1,0 +1,76 @@
+{
+  "schema": "episode04-C-S02-joint-machine-and-finite-pixel-evidence-v1",
+  "created_utc": "2026-10-05T22:58:43.067896+00:00",
+  "state": "WHOLE_MEDIA_PASS_ROOT_SIX_ORIGINAL_STILLS_BOUND_TWO_TRUE_CLIPS_MACHINE_AND_AGENT_SAMPLES_ONLY",
+  "sources": {
+    "media_six_actual_original_Root_review": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\ROOT-DELIVERY02.json",
+      "bytes": 7084,
+      "sha256": "9178db672d2d1144c4fc8093760012a61f4cc43009b5f143d17b7c8812a9be41"
+    },
+    "two_clips_machine_delivery": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-c-s02-dynamic-candidates-a01\\ROOT-DELIVERY-a01.json",
+      "bytes": 8394,
+      "sha256": "a7c1fca74ed32febcbcb233511bebae6df43dd73138459d5528d47c032123abe"
+    },
+    "clip_six_agent_sample_delivery": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-S02-dynamic-sample-review-a01\\ROOT-DELIVERY02.json",
+      "bytes": 1524,
+      "sha256": "d24703e40f02368626a7634dd0447183b110f654efe2fd67b3b525b140620e7e"
+    },
+    "clip_six_agent_sample_receipt": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-S02-dynamic-sample-review-a01\\RECEIPT02.json",
+      "bytes": 21175,
+      "sha256": "d9ac5d5a4eaec841c75d401cc652aa97b4eec5cdda7ed38c2716f894929585bf"
+    }
+  },
+  "machine_media": {
+    "actual_seconds": "3600.000000",
+    "frames": 108000,
+    "packets": 108000,
+    "audio_streams": 0,
+    "unique_four_checks": "PASS"
+  },
+  "Root_actual_six_original_single_frame_review": true,
+  "actual_last_original_date_read_by_Root": "1067-04-25",
+  "common_T0_days_at_actual_tail": 51,
+  "genuine_two_clips": {
+    "duration_each_seconds": 12,
+    "frames_each": 360,
+    "original_source_windows_seconds": [
+      [
+        "2286",
+        "2298"
+      ],
+      [
+        "3588",
+        "3600"
+      ]
+    ],
+    "new_clip_only_machine_probe_and_strictdecode": "PASS",
+    "agent_six_first_middle_last_samples": true,
+    "Root_direct_six_clip_sample_review": null,
+    "agent_observed_context": [
+      "Apr11/6689/S101of300/0percent/paused/rem21days",
+      "Apr25/6689/S101of300/0percent/paused/rem7days"
+    ],
+    "actual_march_progress_within_paused_window": null,
+    "Main_sea_marker_or_landing_pixel_credit": false
+  },
+  "boundaries": {
+    "exact_native_event_tick_or_PTS": null,
+    "C_completed_terminal": false,
+    "actual_fee_payment": false,
+    "winner": null,
+    "continuous_clean_span": false,
+    "full_human_1x": false,
+    "human_approval": false,
+    "film_approval": false,
+    "clip_loop_or_still_filler": false,
+    "UTC_to_exact_event_frame": false
+  },
+  "this_append_reads": "Four small exact metadata sources only; prior media, PNG, source timestamps and closed pins reused.",
+  "new_raw_SHA_probe_decode_PNG_reads": 0,
+  "LIVE_S03_SDK_UI_Game_bus_Git_OneDrive_actions": 0,
+  "all_prior_attempts_and_pending_receipts_preserved": true
+}

@@ -1,0 +1,24 @@
+{
+  "status": "STOP_FIRST_MATERIAL_WORLD_SOURCE_OR_PRODUCER_UNCERTAINTY",
+  "actual_paused": true,
+  "actual_date_raw": 53149656,
+  "completed_one_pulse_invocations": 2,
+  "latest_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a10-s02\\pulse-01\\inspect\\observation.json",
+    "bytes": 353647,
+    "sha256": "25e50f8452525ef58d2995679eb1a9f72dbd5a78b8cf68995bcc1b9312e5043f"
+  },
+  "no_more_resume": true,
+  "error": "Actual world window outside0..24raw; no history acceptance",
+  "pause_not_inferred_from_ACK": true,
+  "blind_retry": false,
+  "pause_proven_only_by_latest_validated_independent_observation": true,
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01",
+  "episode_run_id": "native-33388-1be6dd7a468f",
+  "actual_days_from_common": 51.0,
+  "original_C120_registry_unchanged": true,
+  "budget_reset": false,
+  "TERM_film_clean_ABC_or_human_signoff_credit": 0
+}

@@ -1,0 +1,710 @@
+{
+  "status": "ACTUAL_FRESH_SAME_C_FULL_REQUIRED_MAIN_PROOF_PENDING_ROOT_SCOPE_REVIEW",
+  "at_utc": "2026-10-05T23:05:30.778892+00:00",
+  "actual_raw": 53149848,
+  "actual_days_from_common": 59.0,
+  "paused": true,
+  "fresh_before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\before.json",
+    "bytes": 231532,
+    "sha256": "6f885446234953287e4a544c882357bd0e3256cf0439ef8afb0046dcad1d460c"
+  },
+  "fresh_required_Main_health": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\health.json",
+    "bytes": 79197,
+    "sha256": "72dc220c70a27d1ae4256d6489056c8e452677556afbc1a130add94674f91aef"
+  },
+  "fresh_Main_commander": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\commander.json",
+    "bytes": 11376,
+    "sha256": "75280291310623974da27193f15ff03659b34ee444a56138d18802efd3983d11"
+  },
+  "fresh_after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\after.json",
+    "bytes": 231532,
+    "sha256": "a2a58950b2895ae46a9fb3ef784b77fa52c658a934523e59d50265975fb786b7"
+  },
+  "actual_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\observation.json",
+    "bytes": 572907,
+    "sha256": "c9408308bef7a727ecaa301af0bc9035e2bf05049debe45c0f52415c11957ea7"
+  },
+  "source_base_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-runtime-inputs-a02\\input-manifest.json",
+    "bytes": 30065,
+    "sha256": "f52765356b6f4f6adbbbae35055866076d820bf33a516dcf597723adb6b5149f"
+  },
+  "full_roster": [
+    {
+      "army_id": 0,
+      "owner_character_id": 33388,
+      "soldiers": null,
+      "current_province_id": 729,
+      "move_target_province_id": 1527,
+      "move_target_observable": true,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [
+        965,
+        686,
+        628,
+        629,
+        1527
+      ],
+      "route_read_status": "complete_nonempty",
+      "route_source_count": 5,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "embarked",
+      "army_state_code": 4,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    },
+    {
+      "army_id": 16777391,
+      "owner_character_id": 33388,
+      "soldiers": null,
+      "current_province_id": 729,
+      "move_target_province_id": null,
+      "move_target_observable": false,
+      "controllable": true,
+      "source": "native",
+      "route_province_ids": [],
+      "route_read_status": "complete_empty",
+      "route_source_count": 0,
+      "in_combat": false,
+      "retreating": false,
+      "army_state": "regular",
+      "army_state_code": 1,
+      "siege_days_left": null,
+      "siege_province_holder_character_id": null,
+      "siege_province_in_player_subrealm": null
+    }
+  ],
+  "Main_scope_complete_proof": {
+    "mapping": {
+      "0": 0
+    },
+    "regiments": [
+      {
+        "army_regiment_id": 0,
+        "maximum_soldiers": 1000,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 1,
+        "maximum_soldiers": 800,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 2,
+        "maximum_soldiers": 100,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "conrois",
+        "siege_tier_observable": true,
+        "siege_tier": 0
+      },
+      {
+        "army_regiment_id": 3,
+        "maximum_soldiers": 20,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "onager",
+        "siege_tier_observable": true,
+        "siege_tier": 1
+      },
+      {
+        "army_regiment_id": 4,
+        "maximum_soldiers": 800,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 5,
+        "maximum_soldiers": 400,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "bowmen",
+        "siege_tier_observable": true,
+        "siege_tier": 0
+      },
+      {
+        "army_regiment_id": 6,
+        "maximum_soldiers": 20,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "onager",
+        "siege_tier_observable": true,
+        "siege_tier": 1
+      },
+      {
+        "army_regiment_id": 7,
+        "maximum_soldiers": 800,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 8,
+        "maximum_soldiers": 100,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "conrois",
+        "siege_tier_observable": true,
+        "siege_tier": 0
+      },
+      {
+        "army_regiment_id": 9,
+        "maximum_soldiers": 20,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "onager",
+        "siege_tier_observable": true,
+        "siege_tier": 1
+      },
+      {
+        "army_regiment_id": 10,
+        "maximum_soldiers": 800,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 11,
+        "maximum_soldiers": 400,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "light_footmen",
+        "siege_tier_observable": true,
+        "siege_tier": 0
+      },
+      {
+        "army_regiment_id": 12,
+        "maximum_soldiers": 400,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "pikemen_unit",
+        "siege_tier_observable": true,
+        "siege_tier": 0
+      },
+      {
+        "army_regiment_id": 50,
+        "maximum_soldiers": 277,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 51,
+        "maximum_soldiers": 38,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 52,
+        "maximum_soldiers": 200,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "armored_footmen",
+        "siege_tier_observable": true,
+        "siege_tier": 0
+      },
+      {
+        "army_regiment_id": 53,
+        "maximum_soldiers": 10,
+        "scale": 1,
+        "maa_type_status": "available",
+        "maa_type_key": "mangonel",
+        "siege_tier_observable": true,
+        "siege_tier": 2
+      },
+      {
+        "army_regiment_id": 54,
+        "maximum_soldiers": 321,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 55,
+        "maximum_soldiers": 6,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 56,
+        "maximum_soldiers": 1,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 57,
+        "maximum_soldiers": 1,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 58,
+        "maximum_soldiers": 1,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 59,
+        "maximum_soldiers": 1,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 60,
+        "maximum_soldiers": 1,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 61,
+        "maximum_soldiers": 71,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 62,
+        "maximum_soldiers": 70,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      },
+      {
+        "army_regiment_id": 82,
+        "maximum_soldiers": 89,
+        "scale": 1,
+        "maa_type_status": "absent",
+        "maa_type_key": null,
+        "siege_tier_observable": false,
+        "siege_tier": null
+      }
+    ],
+    "record_identities": [
+      {
+        "army_regiment_id": 0,
+        "record_index": 0,
+        "persistent_regiment_id": 15158,
+        "chunk_index": 0,
+        "maximum_soldiers": 1000
+      },
+      {
+        "army_regiment_id": 1,
+        "record_index": 0,
+        "persistent_regiment_id": 15159,
+        "chunk_index": 0,
+        "maximum_soldiers": 800
+      },
+      {
+        "army_regiment_id": 2,
+        "record_index": 0,
+        "persistent_regiment_id": 15160,
+        "chunk_index": 0,
+        "maximum_soldiers": 100
+      },
+      {
+        "army_regiment_id": 3,
+        "record_index": 0,
+        "persistent_regiment_id": 15161,
+        "chunk_index": 0,
+        "maximum_soldiers": 20
+      },
+      {
+        "army_regiment_id": 4,
+        "record_index": 0,
+        "persistent_regiment_id": 15162,
+        "chunk_index": 0,
+        "maximum_soldiers": 800
+      },
+      {
+        "army_regiment_id": 5,
+        "record_index": 0,
+        "persistent_regiment_id": 15163,
+        "chunk_index": 0,
+        "maximum_soldiers": 400
+      },
+      {
+        "army_regiment_id": 6,
+        "record_index": 0,
+        "persistent_regiment_id": 15164,
+        "chunk_index": 0,
+        "maximum_soldiers": 20
+      },
+      {
+        "army_regiment_id": 7,
+        "record_index": 0,
+        "persistent_regiment_id": 15165,
+        "chunk_index": 0,
+        "maximum_soldiers": 800
+      },
+      {
+        "army_regiment_id": 8,
+        "record_index": 0,
+        "persistent_regiment_id": 15166,
+        "chunk_index": 0,
+        "maximum_soldiers": 100
+      },
+      {
+        "army_regiment_id": 9,
+        "record_index": 0,
+        "persistent_regiment_id": 15167,
+        "chunk_index": 0,
+        "maximum_soldiers": 20
+      },
+      {
+        "army_regiment_id": 10,
+        "record_index": 0,
+        "persistent_regiment_id": 15168,
+        "chunk_index": 0,
+        "maximum_soldiers": 800
+      },
+      {
+        "army_regiment_id": 11,
+        "record_index": 0,
+        "persistent_regiment_id": 15169,
+        "chunk_index": 0,
+        "maximum_soldiers": 400
+      },
+      {
+        "army_regiment_id": 12,
+        "record_index": 0,
+        "persistent_regiment_id": 15170,
+        "chunk_index": 0,
+        "maximum_soldiers": 400
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 0,
+        "persistent_regiment_id": 2624,
+        "chunk_index": 1,
+        "maximum_soldiers": 75
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 1,
+        "persistent_regiment_id": 2606,
+        "chunk_index": 1,
+        "maximum_soldiers": 75
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 2,
+        "persistent_regiment_id": 2626,
+        "chunk_index": 2,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 3,
+        "persistent_regiment_id": 2608,
+        "chunk_index": 2,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 4,
+        "persistent_regiment_id": 2630,
+        "chunk_index": 1,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 5,
+        "persistent_regiment_id": 2628,
+        "chunk_index": 1,
+        "maximum_soldiers": 123
+      },
+      {
+        "army_regiment_id": 50,
+        "record_index": 6,
+        "persistent_regiment_id": 2632,
+        "chunk_index": 2,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 51,
+        "record_index": 0,
+        "persistent_regiment_id": 2638,
+        "chunk_index": 1,
+        "maximum_soldiers": 17
+      },
+      {
+        "army_regiment_id": 51,
+        "record_index": 1,
+        "persistent_regiment_id": 2634,
+        "chunk_index": 1,
+        "maximum_soldiers": 17
+      },
+      {
+        "army_regiment_id": 51,
+        "record_index": 2,
+        "persistent_regiment_id": 2636,
+        "chunk_index": 2,
+        "maximum_soldiers": 4
+      },
+      {
+        "army_regiment_id": 52,
+        "record_index": 0,
+        "persistent_regiment_id": 17948,
+        "chunk_index": 0,
+        "maximum_soldiers": 200
+      },
+      {
+        "army_regiment_id": 53,
+        "record_index": 0,
+        "persistent_regiment_id": 16793680,
+        "chunk_index": 0,
+        "maximum_soldiers": 10
+      },
+      {
+        "army_regiment_id": 54,
+        "record_index": 0,
+        "persistent_regiment_id": 2610,
+        "chunk_index": 0,
+        "maximum_soldiers": 302
+      },
+      {
+        "army_regiment_id": 54,
+        "record_index": 1,
+        "persistent_regiment_id": 2612,
+        "chunk_index": 0,
+        "maximum_soldiers": 19
+      },
+      {
+        "army_regiment_id": 55,
+        "record_index": 0,
+        "persistent_regiment_id": 2614,
+        "chunk_index": 1,
+        "maximum_soldiers": 6
+      },
+      {
+        "army_regiment_id": 61,
+        "record_index": 0,
+        "persistent_regiment_id": 10178,
+        "chunk_index": 1,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 61,
+        "record_index": 1,
+        "persistent_regiment_id": 2616,
+        "chunk_index": 1,
+        "maximum_soldiers": 69
+      },
+      {
+        "army_regiment_id": 61,
+        "record_index": 2,
+        "persistent_regiment_id": 2618,
+        "chunk_index": 2,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 62,
+        "record_index": 0,
+        "persistent_regiment_id": 2620,
+        "chunk_index": 1,
+        "maximum_soldiers": 69
+      },
+      {
+        "army_regiment_id": 62,
+        "record_index": 1,
+        "persistent_regiment_id": 2622,
+        "chunk_index": 2,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 82,
+        "record_index": 0,
+        "persistent_regiment_id": 2604,
+        "chunk_index": 1,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 82,
+        "record_index": 1,
+        "persistent_regiment_id": 2602,
+        "chunk_index": 1,
+        "maximum_soldiers": 69
+      },
+      {
+        "army_regiment_id": 82,
+        "record_index": 2,
+        "persistent_regiment_id": 9884,
+        "chunk_index": 2,
+        "maximum_soldiers": 1
+      },
+      {
+        "army_regiment_id": 82,
+        "record_index": 3,
+        "persistent_regiment_id": 9886,
+        "chunk_index": 2,
+        "maximum_soldiers": 18
+      }
+    ],
+    "scope": {
+      "kind": "explicit_required_Main_only",
+      "required_public_ids": [
+        0
+      ],
+      "queried_public_ids": [
+        0
+      ],
+      "full_roster": [
+        {
+          "army_id": 0,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 729,
+          "move_target_province_id": 1527,
+          "move_target_observable": true,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [
+            965,
+            686,
+            628,
+            629,
+            1527
+          ],
+          "route_read_status": "complete_nonempty",
+          "route_source_count": 5,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "embarked",
+          "army_state_code": 4,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        },
+        {
+          "army_id": 16777391,
+          "owner_character_id": 33388,
+          "soldiers": null,
+          "current_province_id": 729,
+          "move_target_province_id": null,
+          "move_target_observable": false,
+          "controllable": true,
+          "source": "native",
+          "route_province_ids": [],
+          "route_read_status": "complete_empty",
+          "route_source_count": 0,
+          "in_combat": false,
+          "retreating": false,
+          "army_state": "regular",
+          "army_state_code": 1,
+          "siege_days_left": null,
+          "siege_province_holder_character_id": null,
+          "siege_province_in_player_subrealm": null
+        }
+      ],
+      "full_roster_public_ids": [
+        0,
+        16777391
+      ],
+      "excluded_public_ids": [
+        16777391
+      ],
+      "excluded_health": null,
+      "excluded_health_queried_by_this_request": false,
+      "raw_global_scope_status": "partial",
+      "global_scope_partial": true,
+      "all_player_health_available": null,
+      "all_player_health_asserted": false,
+      "all_player_health_complete_proved": false,
+      "full_snapshot_filtered_or_mutated": false,
+      "raw_health_filtered_or_mutated": false,
+      "caller_must_validate_nativeMain0_and_full27_37_expected_cohort": true
+    }
+  },
+  "raw_global_scope_status_preserved": "partial",
+  "native_Main_material_scalars": {
+    "current_soldiers": 6689,
+    "maximum_soldiers": 6747,
+    "current_supply_raw": 10190260,
+    "current_supply_capacity_raw": 30000000,
+    "current_supply_change_monthly_raw": 0,
+    "current_attrition_fraction_raw": 0
+  },
+  "Main_clock": {
+    "status": "available",
+    "ready": true,
+    "current_date_raw": 53149848,
+    "native_day_index": 389577,
+    "selected_bucket_phase": 27,
+    "observed_army_bucket_phase": 0,
+    "last_supply_update_date_storage_raw64": 300337120213138960,
+    "last_supply_update_date_raw": 53149200,
+    "grace_anchor_date_storage_raw64": 300061168564366016,
+    "grace_anchor_date_raw": 53144256,
+    "loaded_grace_days": 30,
+    "unavailable_reason": null
+  },
+  "actual_cash": {
+    "raw": 62148329,
+    "scale": 100000
+  },
+  "source_runtime_equal_original": true,
+  "source_war_equal_original": true,
+  "foreground_game_hwnd": 787908,
+  "foreground_game_pid": 7772,
+  "S03_actual_recorder_pid": 21992,
+  "image": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-fresh-required-Main-four-a01\\desktop.png",
+    "bytes": 3062008,
+    "sha256": "96cd1c1f512fb00669a0e48128dabdfe485f4d99ccdb3a31f35ddf04399bb8c8"
+  },
+  "Root_scope_approval": null,
+  "controlled_comparison_eligibility_granted": false,
+  "human_signoff": false
+}

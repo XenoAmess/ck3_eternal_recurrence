@@ -1,0 +1,38 @@
+{
+  "schema": "ck3.e04.ABC.neutral-status-skeleton.v1",
+  "scope": "Status table preparation, not a completed controlled strategy comparison",
+  "common_checkpoint_sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a",
+  "T0_raw": 53148432,
+  "absolute_END_raw": 53150592,
+  "A": {
+    "status": "OBSERVED_A2_ENDPOINT_ARCHIVED",
+    "published_source_commit": "3b4bbcadcbadf05474dadfc388dfabe3eb26af44",
+    "source_dataset_imported_in_this_stage": false,
+    "relative_endpoint_source": null,
+    "endpoint_values_for_final_numeric_comparison": null
+  },
+  "B": {
+    "status": "STOPPED_GATE_INCOMPLETE",
+    "published_source_commit": "a1511a5d9b9e1c9f37b9d221256c965fd1254b50",
+    "actual_stop_day": 38,
+    "reason": "Observed new28th regiment and changed current commander after legal merge",
+    "London_endpoint": null,
+    "is90day_arrival_censor": false,
+    "arrival_comparison_eligible": false
+  },
+  "C": {
+    "status": "IN_PROGRESS_DESCRIPTIVE_ONLY",
+    "sampling_deviation_count_at_completed_cutoff": 3,
+    "controlled_comparison_eligibility": "NOT_GRANTED",
+    "completed_report_cutoff_day": 32,
+    "terminal": null,
+    "London_arrival": null,
+    "endpoint_cash": null,
+    "net_treasury_change_raw": null,
+    "closure": null,
+    "S02_media_or_raw": null
+  },
+  "controlled_ABC_comparison_complete": false,
+  "winner": null,
+  "human_signoff": false
+}

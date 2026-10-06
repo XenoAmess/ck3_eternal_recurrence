@@ -1,0 +1,59 @@
+{
+  "at_utc": "2026-10-05T21:50:17.255898+00:00",
+  "status": "ROOT_ACTUAL_C_WAYPOINT_AND_SAME_DAY_LONDON_MOVE_REVIEWED",
+  "source_analysis": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day28-current-analysis-a01\\source-analysis.json",
+    "bytes": 6593,
+    "sha256": "60170989799f9f07ed0dd55ed40f0dde4120cf0793475864707e4ace36d27fe0"
+  },
+  "old_STOP": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a12\\result.json",
+    "bytes": 1002,
+    "sha256": "ef796608ced6a590f1e0ab453b4d348bab324e6977a7db32846741171174b17e"
+  },
+  "arrival_fresh_full4": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-arrival-actual-a05\\result.json",
+    "bytes": 404,
+    "sha256": "30fd38270788b8dda369a894447d82291f59965353b3022f1957b52f4bffbf5a"
+  },
+  "London_move_route_readback": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-move-actual-a05\\result.json",
+    "bytes": 507,
+    "sha256": "5620ad5f5f796db97fc741bc07d404c1de535c591940092e7a20e64fa7341ffd"
+  },
+  "Root_actual_notes": "Root reviewed exact +27 to28 full own rows/scalars/clock/cash unchanged, full27Reg37DATA/max6747/comm27357 same runtime/war. Actual2176 regular/routeempty/no combat retreat; first observed interval(+27,+28], exact arrival tick NULL. Outside known NPC1606 siege16777228 Army59 only four ordinary progress fields; old outside-world STOP preserved. Fresh full4 arrival gate passed. London typed move after fresh native preview and paused same-day readback at53149104, exact route729/965/686/628/629/1527. No extra rest, no phase budget reset. Descriptive continuation only; both two-day sampling deviations retained and controlled A/C comparison NOT GRANTED.",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "no_budget_reset": true,
+  "descriptive_continuation_only": true,
+  "controlled_comparison_eligibility_granted": false,
+  "sampling_protocol_deviations": [
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "actual_global_budget_breach": false,
+      "actual_date_raw": 53148768,
+      "original_END_raw": 53150592,
+      "old_STOP_unchanged": true
+    },
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "source_before_raw": 53148912,
+      "source_after_raw": 53148960,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "actual_global_budget_breach": false,
+      "underlying_STOP": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a09-s01\\result.json",
+        "bytes": 325,
+        "sha256": "9c87b621dabc82cde5497790e88afb6a05400ac2f6b8e5bcaeab9dcc6706d728"
+      }
+    }
+  ],
+  "human_signoff": false
+}

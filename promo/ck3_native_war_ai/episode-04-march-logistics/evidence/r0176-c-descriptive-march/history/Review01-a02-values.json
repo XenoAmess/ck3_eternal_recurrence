@@ -1,0 +1,839 @@
+{
+  "ABC_descriptive_rows": {
+    "A": {
+      "archived_source": "archived/A-only-observed-values.json",
+      "arrival": {
+        "army_state": "sieging",
+        "commander_character_id": 27357,
+        "current_province_id": 1527,
+        "exact_arrival_raw": null,
+        "first_observation_elapsed_days": 51,
+        "first_observed_stationary_raw": 53149656,
+        "in_combat": false,
+        "interval": "(53149608,53149656] only; no exact tick or whole-day arrival claim",
+        "last_nonarrival_elapsed_days": 49,
+        "native_CArmy": 0,
+        "paused": true,
+        "previous_observed_not_stationary_raw": 53149608,
+        "retreating": false,
+        "route_province_ids": [],
+        "route_read_status": "complete_empty",
+        "route_source_count": 0
+      },
+      "endpoint_values": {
+        "complete_DATA_record_count": 37,
+        "current_soldiers": {
+          "initial": 6679,
+          "net": 10,
+          "terminal": 6689
+        },
+        "first_observed_stationary_elapsed_days": 51,
+        "full_regiment_count": 27,
+        "gold_delta_semantics": "observed net treasury balance difference, not travel payment, army upkeep, or application ledger",
+        "gold_raw": {
+          "initial": 63754562,
+          "net": -1606233,
+          "scale": 100000,
+          "terminal": 62148329
+        },
+        "maximum_soldiers": 6747,
+        "remaining_frozen_days_at_observation": 39,
+        "supply_capacity_raw": 30000000,
+        "supply_raw": {
+          "initial": 11037716,
+          "net": -423728,
+          "scale": 100000,
+          "terminal": 10613988
+        },
+        "terminal_monthly_supply_change_raw": 0
+      },
+      "status": "CLOSED_OBSERVED_STATIONARY_LONDON"
+    },
+    "B": {
+      "London": null,
+      "actual_raw": 53149344,
+      "archived_source": "archived/B-closed-gate-values.json",
+      "commander_preserved": false,
+      "days_used": 38,
+      "deadline_censor": false,
+      "merge_cohort_gate": "FAILED_OBSERVED_NEW28TH_REGIMENT",
+      "new_regiment_type_or_cause": null,
+      "remaining_days": 52,
+      "status": "STOPPED_GATE_INCOMPLETE"
+    },
+    "C": {
+      "controlled_comparison_eligibility": "NOT_GRANTED",
+      "status": "IN_PROGRESS",
+      "terminal": null
+    }
+  },
+  "actual_game_episode": "native-33388-1be6dd7a468f",
+  "actual_game_pid_from_cold_receipt": 7772,
+  "baseline": {
+    "capacity_raw": 30000000,
+    "commander_id": 27357,
+    "current_soldiers": 6679,
+    "gold_raw": 63754562,
+    "gold_scale": 100000,
+    "maximum_soldiers": 6747,
+    "stock_raw": 11037716,
+    "supply_scale": 100000
+  },
+  "cold_entire_row_digests": {
+    "DATA": "8dab2ce2575040214e99e7899026ab180a4a89afcaaad6f01148e3cc0eaa4d09",
+    "regiments": "63de001683d0996b8101f00a87f28c73197ce9d4150a52f21864767b24bdbfda"
+  },
+  "complete_controlled_ABC_comparison_credit": 0,
+  "continuous_clean": false,
+  "controlled_comparison_eligibility": "NOT_GRANTED",
+  "day27_integer_change": {
+    "application_ledger_or_cause": null,
+    "net_current_soldiers": 10,
+    "permission_changes": [
+      {
+        "after": false,
+        "before": true,
+        "path": "/13/records/0/native_chunk_can_replenish"
+      },
+      {
+        "after": false,
+        "before": true,
+        "path": "/15/records/0/native_can_replenish"
+      },
+      {
+        "after": false,
+        "before": true,
+        "path": "/15/records/0/native_chunk_can_replenish"
+      },
+      {
+        "after": false,
+        "before": true,
+        "path": "/16/records/0/native_can_replenish"
+      },
+      {
+        "after": false,
+        "before": true,
+        "path": "/16/records/0/native_chunk_can_replenish"
+      },
+      {
+        "after": false,
+        "before": true,
+        "path": "/17/records/0/native_chunk_can_replenish"
+      },
+      {
+        "after": false,
+        "before": true,
+        "path": "/25/records/0/native_chunk_can_replenish"
+      },
+      {
+        "after": false,
+        "before": true,
+        "path": "/26/records/1/native_chunk_can_replenish"
+      }
+    ],
+    "prepared_fraction_changes": [
+      {
+        "after": 5325,
+        "before": 0,
+        "path": "/13/records/0/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 5325,
+        "before": 0,
+        "path": "/13/records/1/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 3750,
+        "before": 0,
+        "path": "/13/records/2/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 3525,
+        "before": 0,
+        "path": "/13/records/3/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 3075,
+        "before": 0,
+        "path": "/13/records/4/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 5325,
+        "before": 0,
+        "path": "/13/records/5/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 2925,
+        "before": 0,
+        "path": "/13/records/6/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 4140,
+        "before": 0,
+        "path": "/14/records/0/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 4140,
+        "before": 0,
+        "path": "/14/records/1/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 3075,
+        "before": 0,
+        "path": "/14/records/2/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 10000,
+        "before": 0,
+        "path": "/15/records/0/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 10000,
+        "before": 0,
+        "path": "/16/records/0/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 5760,
+        "before": 0,
+        "path": "/17/records/0/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 3300,
+        "before": 0,
+        "path": "/17/records/1/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 4050,
+        "before": 0,
+        "path": "/18/records/0/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 3600,
+        "before": 0,
+        "path": "/24/records/0/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 4950,
+        "before": 0,
+        "path": "/24/records/1/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 3750,
+        "before": 0,
+        "path": "/24/records/2/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 4665,
+        "before": 0,
+        "path": "/25/records/0/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 3000,
+        "before": 0,
+        "path": "/25/records/1/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 3600,
+        "before": 0,
+        "path": "/26/records/0/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 4020,
+        "before": 0,
+        "path": "/26/records/1/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 3450,
+        "before": 0,
+        "path": "/26/records/2/persistent_prepared_replenishment_fraction_raw"
+      },
+      {
+        "after": 3450,
+        "before": 0,
+        "path": "/26/records/3/persistent_prepared_replenishment_fraction_raw"
+      }
+    ],
+    "six_DATA_current_changes": [
+      {
+        "after": 75,
+        "before": 73,
+        "path": "/13/records/0/current_soldiers"
+      },
+      {
+        "after": 200,
+        "before": 198,
+        "path": "/15/records/0/current_soldiers"
+      },
+      {
+        "after": 10,
+        "before": 9,
+        "path": "/16/records/0/current_soldiers"
+      },
+      {
+        "after": 302,
+        "before": 299,
+        "path": "/17/records/0/current_soldiers"
+      },
+      {
+        "after": 69,
+        "before": 68,
+        "path": "/25/records/0/current_soldiers"
+      },
+      {
+        "after": 69,
+        "before": 68,
+        "path": "/26/records/1/current_soldiers"
+      }
+    ],
+    "six_Regiment_changes": [
+      {
+        "after": 277,
+        "before": 275,
+        "path": "/13/current_soldiers"
+      },
+      {
+        "after": 200,
+        "before": 198,
+        "path": "/15/current_soldiers"
+      },
+      {
+        "after": 10,
+        "before": 9,
+        "path": "/16/current_soldiers"
+      },
+      {
+        "after": 321,
+        "before": 318,
+        "path": "/17/current_soldiers"
+      },
+      {
+        "after": 70,
+        "before": 69,
+        "path": "/25/current_soldiers"
+      },
+      {
+        "after": 88,
+        "before": 87,
+        "path": "/26/current_soldiers"
+      }
+    ]
+  },
+  "day2_supply_change": {
+    "after_raw": 10613988,
+    "before_raw": 11037716,
+    "delta_raw": -423728,
+    "monthly_raw": -423728,
+    "net_gold_delta_raw": 0,
+    "original27_and37_reported_entire_rows_unchanged": true,
+    "own_soldier_delta": 0,
+    "stored_update_after_raw": 53148480,
+    "stored_update_before_raw": 53147760
+  },
+  "day31_net_treasury_change": {
+    "after": {
+      "raw": 63848329,
+      "scale": 100000
+    },
+    "after_raw": 53149176,
+    "before_raw": 53149128,
+    "cause": null,
+    "initial": {
+      "raw": 63754562,
+      "scale": 100000
+    },
+    "net_raw": 93767,
+    "semantics": "Observed treasury difference, not travel payment or upkeep application."
+  },
+  "day32_supply_change": {
+    "after": 10190260,
+    "before": 10613988,
+    "delta": -423728,
+    "own_rows_unchanged_in_this_window": true,
+    "scale": 100000,
+    "stored_write_after_raw": 53149200,
+    "stored_write_before_raw": 53148480
+  },
+  "day37_camera": {
+    "actual_raw": 53149320,
+    "camera_center_is_not_Army_follow_or_arrival": true,
+    "later_Root_original_review_source": "inputs/Root-day38-camera-review.json",
+    "original_pending_receipt_preserved": true,
+    "typed_title": "b_london"
+  },
+  "day3_offsite_NPC_change": {
+    "Root_identity_label": "NPC1609 siege3 Army7",
+    "cause": null,
+    "identity_label_source": "inputs/Root-day3-review.json",
+    "net_delta": -22,
+    "own_loss_or_applied_attrition_credit": false,
+    "strength_after": 5235,
+    "strength_before": 5257
+  },
+  "descriptive_continuation_only": true,
+  "experiment": {
+    "absolute_end_raw": 53150592,
+    "actor": 33388,
+    "budget_reset": false,
+    "checkpoint": {
+      "bytes": 73795635,
+      "sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a"
+    },
+    "commander": 27357,
+    "episode": "native-33388-1be6dd7a468f",
+    "maximum_actual_days": 90,
+    "maximum_batches_shared_across_phases": 120,
+    "run": "R0176-a01",
+    "source_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+    "start_raw": 53148432
+  },
+  "failed_initial_query": {
+    "cause": null,
+    "initial_health_pre_snapshot_unavailable_reported_by_Root": true,
+    "source": "inputs/Root-day55-authored-notes.json",
+    "whole_invocation_absence_not_claimed": true
+  },
+  "human_1x_signoff": false,
+  "last_completed_preterminal_report": {
+    "actual_player_roster": [
+      {
+        "army_id": 0,
+        "army_state": "moving",
+        "army_state_code": 7,
+        "controllable": true,
+        "current_province_id": 2176,
+        "in_combat": false,
+        "move_target_observable": true,
+        "move_target_province_id": 1527,
+        "owner_character_id": 33388,
+        "retreating": false,
+        "route_province_ids": [
+          729,
+          965,
+          686,
+          628,
+          629,
+          1527
+        ],
+        "route_read_status": "complete_nonempty",
+        "route_source_count": 6,
+        "siege_days_left": null,
+        "siege_province_holder_character_id": null,
+        "siege_province_in_player_subrealm": null,
+        "soldiers": null,
+        "source": "native"
+      }
+    ],
+    "actual_raw": 53149752,
+    "clock": {
+      "current_date_raw": 53149752,
+      "grace_anchor_date_raw": 53144256,
+      "grace_anchor_date_storage_raw64": 300061168564366016,
+      "last_supply_update_date_raw": 53149200,
+      "last_supply_update_date_storage_raw64": 300337120213138960,
+      "loaded_grace_days": 30,
+      "native_day_index": 389573,
+      "observed_army_bucket_phase": 0,
+      "ready": true,
+      "selected_bucket_phase": 23,
+      "status": "available",
+      "unavailable_reason": null
+    },
+    "day": 55.0,
+    "gold": {
+      "raw": 63848329,
+      "scale": 100000
+    },
+    "own_full_DATA_container_row_differences": [],
+    "own_full_regiment_row_differences": [],
+    "scalars": {
+      "current_attrition_fraction_raw": 0,
+      "current_attrition_fraction_scale": 100000,
+      "current_soldiers": 6689,
+      "current_supply_capacity_raw": 30000000,
+      "current_supply_capacity_scale": 100000,
+      "current_supply_change_monthly_raw": -423728,
+      "current_supply_change_monthly_scale": 100000,
+      "current_supply_raw": 10190260,
+      "current_supply_scale": 100000,
+      "maximum_soldiers": 6747
+    }
+  },
+  "native_exact_event_PTS": null,
+  "recording_segments": {
+    "S01": {
+      "Root_encoded_still_review": null,
+      "continuous_clean": false,
+      "human_1x_signoff": false,
+      "job_active_processes": 0,
+      "job_returncode": 0,
+      "machine_audit": {
+        "continuous_clean": false,
+        "duration_seconds": "3572.233000",
+        "frames": 107167,
+        "human_1x": false,
+        "native_exact_event_PTS": null,
+        "packets": 107167,
+        "reported_machine_state": "PASS",
+        "six_Root_still_reviews": [
+          {
+            "PTS": 1000,
+            "ordinal": 30,
+            "pixels": "Mar5 paused Main6679/S110of300/helmetcomm/0%, waiting."
+          },
+          {
+            "PTS": 901000,
+            "ordinal": 27030,
+            "pixels": "Mar7 paused Main6679/S106of300/helmetcomm/0%, route through land/remaining6day."
+          },
+          {
+            "PTS": 2424000,
+            "ordinal": 72720,
+            "pixels": "Mar19 paused Main6679/S106of300/helmetcomm/0%, currentlegremaining4day."
+          },
+          {
+            "PTS": 3000000,
+            "ordinal": 90000,
+            "pixels": "Mar25 paused Main6679/S106of300/helmetcomm/0%, currentlegremaining8day."
+          },
+          {
+            "PTS": 3562200,
+            "ordinal": 106866,
+            "pixels": "Mar30 paused Main6679/S106of300/helmetcomm/0%, currentlegremaining3day."
+          },
+          {
+            "PTS": 3572200,
+            "ordinal": 107166,
+            "pixels": "Actual last encoded Mar30 paused Main6679/S106of300/helmetcomm/0%, remaining3day."
+          }
+        ]
+      },
+      "raw_bytes_opened_or_rehashed": false,
+      "raw_metadata_only": {
+        "bytes": 5819513105,
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-long-a02\\raw.mkv",
+        "sha256": "20cc978d205517138e7dcd417b687c201198b014ad280874eb7cbad4295d560f"
+      },
+      "state": "NORMAL_TREE_EMPTY",
+      "worker_job_pid": 19408
+    },
+    "S02": {
+      "Root_encoded_still_review": {
+        "full_film_human_approval": false,
+        "native_exact_event_PTS": null,
+        "rows": [
+          {
+            "Root_actual_observed_pixels": "selected6689,0percent,S106/300,helmet commander,movement remaining1day,map army6689 clearly visible",
+            "Root_direct_original_review": true,
+            "actual_PNG": {
+              "bytes": 2828135,
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-0-day27_6689_search\\candidate-00.png",
+              "sha256": "a5ccec18e51967bfa74441f39c5aa12688a20d4c6d73805261e27fbe8c7c3551"
+            },
+            "actual_display_date": "1067-04-01",
+            "candidate_index": {
+              "bytes": 5223,
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-0-day27_6689_search\\candidate-index.json",
+              "sha256": "cfe6a4b1557c80b58442f1552998a9f6f5b91c921930af2a992dabfa25447791"
+            },
+            "continuous_clean_span_certified": false,
+            "days_from_common_T0_read_from_encoded_date": 27,
+            "encoded_pts": 1054000,
+            "exact_native_event_tick_to_PTS_binding": null,
+            "frame_ordinal": 31620,
+            "human_full1x_watch_or_signoff": false,
+            "time_base": "1/1000"
+          },
+          {
+            "Root_actual_observed_pixels": "selected6689,0percent,S106/300,helmet commander,waiting camp,no march arrow; independent native waypoint2176 source separate, exactarrival tick not bound",
+            "Root_direct_original_review": true,
+            "actual_PNG": {
+              "bytes": 2878700,
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-1-day28_waypoint_arrival_preceding_search\\candidate-00.png",
+              "sha256": "afb19b38c81fb08a94b5e59e192afb602c472f29eed2ec4f319558525f252938"
+            },
+            "actual_display_date": "1067-04-02",
+            "candidate_index": {
+              "bytes": 5366,
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-1-day28_waypoint_arrival_preceding_search\\candidate-index.json",
+              "sha256": "00c122e78575269cea90d939c757c217a3360b0f34dcefbdbf68deec1504172c"
+            },
+            "continuous_clean_span_certified": false,
+            "days_from_common_T0_read_from_encoded_date": 28,
+            "encoded_pts": 1227000,
+            "exact_native_event_tick_to_PTS_binding": null,
+            "frame_ordinal": 36810,
+            "human_full1x_watch_or_signoff": false,
+            "time_base": "1/1000"
+          },
+          {
+            "Root_actual_observed_pixels": "selected6689,0percent,S106/300,helmet commander,remaining30days,cross-sea plottedroute and ship17 UI icon;17 is displayed candidate price, no payment ledger proof",
+            "Root_direct_original_review": true,
+            "actual_PNG": {
+              "bytes": 2829293,
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-2-day28_london_order_after_search\\candidate-00.png",
+              "sha256": "44f0fdfb60eb64cfd4f4aae7b5334bd83c9fece19b13313e6f8e7b4eae2c7ee0"
+            },
+            "actual_display_date": "1067-04-02",
+            "candidate_index": {
+              "bytes": 5630,
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-2-day28_london_order_after_search\\candidate-index.json",
+              "sha256": "e79dc8f9269b258dd257860b36f25e254e770df1473fccd0caba6bd4399388da"
+            },
+            "continuous_clean_span_certified": false,
+            "days_from_common_T0_read_from_encoded_date": 28,
+            "encoded_pts": 1303000,
+            "exact_native_event_tick_to_PTS_binding": null,
+            "frame_ordinal": 39090,
+            "human_full1x_watch_or_signoff": false,
+            "time_base": "1/1000"
+          },
+          {
+            "Root_actual_observed_pixels": "selected6689,0percent,S101/300,helmet commander,movement remaining26days,own6689map marker at French coast; native stock write timing separately",
+            "Root_direct_original_review": true,
+            "actual_PNG": {
+              "bytes": 2823902,
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-3-day32_stock101_search\\candidate-00.png",
+              "sha256": "3311637800565f826ed77590c424c9c5c6093557507c1998ed625384c0e0cad6"
+            },
+            "actual_display_date": "1067-04-06",
+            "candidate_index": {
+              "bytes": 4964,
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-3-day32_stock101_search\\candidate-index.json",
+              "sha256": "94464df14c6f65c706d6edf3e45a4c8a687d87d21c2f5afa2d0cf3738fc9ad8f"
+            },
+            "continuous_clean_span_certified": false,
+            "days_from_common_T0_read_from_encoded_date": 32,
+            "encoded_pts": 1778000,
+            "exact_native_event_tick_to_PTS_binding": null,
+            "frame_ordinal": 53340,
+            "human_full1x_watch_or_signoff": false,
+            "time_base": "1/1000"
+          },
+          {
+            "Root_actual_observed_pixels": "London Thames viewport,selected6689,0percent,S101/300,helmet commander,movement remaining21days; own Main map marker not clearly inside viewport; no Army follow or Londonarrival claim",
+            "Root_direct_original_review": true,
+            "actual_PNG": {
+              "bytes": 2561193,
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-4-day37_london_centered_search\\candidate-00.png",
+              "sha256": "d4fffa6c34d5ea22db87e56e40b70957ab2ca99d509f66a50e68557ecb66bdfe"
+            },
+            "actual_display_date": "1067-04-11",
+            "candidate_index": {
+              "bytes": 5276,
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-4-day37_london_centered_search\\candidate-index.json",
+              "sha256": "3a11ec85c261938660daddd5adcbf46ffd37594a7b7262d67805efe2f08e59ef"
+            },
+            "continuous_clean_span_certified": false,
+            "days_from_common_T0_read_from_encoded_date": 37,
+            "encoded_pts": 2292000,
+            "exact_native_event_tick_to_PTS_binding": null,
+            "frame_ordinal": 68760,
+            "human_full1x_watch_or_signoff": false,
+            "time_base": "1/1000"
+          },
+          {
+            "Root_actual_observed_pixels": "actualencoded tail: April25 paused London viewport,selected6689,0percent,S101/300,helmet commander,movement remaining7days; no ownMain sea/arrival marker credit; date+51 read directly from coded pixels/commonMar5, not late still timestamp",
+            "Root_direct_original_review": true,
+            "actual_PNG": {
+              "bytes": 2622355,
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-5-actual_last_encoded_frame_date_unknown\\candidate-00.png",
+              "sha256": "101cef7218695e4facc4fa8a0d098882a5fa2f9eb2af18ecdee4788732eb2cac"
+            },
+            "actual_display_date": "1067-04-25",
+            "candidate_index": {
+              "bytes": 5022,
+              "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-5-actual_last_encoded_frame_date_unknown\\candidate-index.json",
+              "sha256": "664274ed6b2784f7b35424dec08cb81f4f61da03ff90d50fed95fca69fc746d2"
+            },
+            "continuous_clean_span_certified": false,
+            "days_from_common_T0_read_from_encoded_date": 51,
+            "encoded_pts": 3599967,
+            "exact_native_event_tick_to_PTS_binding": null,
+            "frame_ordinal": 107999,
+            "human_full1x_watch_or_signoff": false,
+            "time_base": "1/1000"
+          }
+        ],
+        "source": "inputs/Root-S02-six-encoded-review.json"
+      },
+      "continuous_clean": false,
+      "human_1x_signoff": false,
+      "job_active_processes": 0,
+      "job_returncode": 0,
+      "machine_audit": {
+        "decoded_frames": 108000,
+        "duration_seconds": "3600.000000",
+        "source": "inputs/S02-machine-audit.json",
+        "state": "PASS",
+        "stream_counts": {
+          "all": 1,
+          "audio": 0,
+          "video": 1
+        },
+        "video_packets": 108000
+      },
+      "raw_bytes_opened_or_rehashed": false,
+      "raw_metadata_only": {
+        "bytes": 5619567381,
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a01\\raw.mkv",
+        "sha256": "c0b68f63d37a85bb3faa69e95cb58e74570f541b644e20dee97aa3a3a7ce94c0"
+      },
+      "state": "NORMAL_TREE_EMPTY",
+      "worker_job_pid": 16220
+    },
+    "S03": null
+  },
+  "route": {
+    "phase1_actual": [
+      2175,
+      2179,
+      2176
+    ],
+    "phase2_actual": [
+      729,
+      965,
+      686,
+      628,
+      629,
+      1527
+    ],
+    "same_day_phase2_move_raw": 53149104,
+    "waypoint_arrival_interval_raw": [
+      53149080,
+      53149104
+    ],
+    "waypoint_exact_tick": null,
+    "waypoint_interval_open_left_closed_right": true
+  },
+  "sampling_deviations": [
+    {
+      "actual_date_raw": 53148768,
+      "actual_days": 2,
+      "actual_global_budget_breach": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "old_STOP_unchanged": true,
+      "original_END_raw": 53150592,
+      "overshoot_raw": 24,
+      "planned_max_target_days": 1,
+      "window_one_day_sampling_eligible": false
+    },
+    {
+      "actual_days": 2,
+      "actual_global_budget_breach": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "overshoot_raw": 24,
+      "planned_max_target_days": 1,
+      "source_after_raw": 53148960,
+      "source_before_raw": 53148912,
+      "underlying_STOP": {
+        "bytes": 325,
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a09-s01\\result.json",
+        "sha256": "9c87b621dabc82cde5497790e88afb6a05400ac2f6b8e5bcaeab9dcc6706d728"
+      },
+      "window_one_day_sampling_eligible": false
+    },
+    {
+      "actual_days": 2,
+      "actual_global_budget_breach": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "old_STOP_unchanged": true,
+      "overshoot_raw": 24,
+      "planned_max_target_days": 1,
+      "source_after_raw": 53149176,
+      "source_before_raw": 53149128,
+      "underlying_STOP": {
+        "bytes": 325,
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-WHOLE-world-a04-w001\\result.json",
+        "sha256": "660610b872e8bf9f60a86235aed033d4c4ad19854bbff17810cd3c792bda4c5f"
+      },
+      "window_one_day_sampling_eligible": false
+    },
+    {
+      "actual_days": 2,
+      "actual_global_budget_breach": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "old_STOP_unchanged": true,
+      "overshoot_raw": 24,
+      "planned_max_target_days": 1,
+      "source_after_raw": 53149296,
+      "source_before_raw": 53149248,
+      "underlying_STOP": {
+        "bytes": 325,
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-WHOLE-world-a05-w002\\result.json",
+        "sha256": "727d8fda85c50ebdc4c9990cfcf919f17e60cfe55efa8d0ba0349da180901b0b"
+      },
+      "window_one_day_sampling_eligible": false
+    },
+    {
+      "actual_days": 2,
+      "actual_global_budget_breach": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "old_STOP_unchanged": true,
+      "overshoot_raw": 24,
+      "planned_max_target_days": 1,
+      "source_after_raw": 53149440,
+      "source_before_raw": 53149392,
+      "underlying_STOP": {
+        "bytes": 325,
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-WHOLE-world-a06-w002\\result.json",
+        "sha256": "076267bb1ce5454fabcd8105968e019529da6e77508e65150101e4710a07e386"
+      },
+      "window_one_day_sampling_eligible": false
+    },
+    {
+      "actual_days": 2,
+      "actual_global_budget_breach": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "old_STOP_unchanged": true,
+      "overshoot_raw": 24,
+      "planned_max_target_days": 1,
+      "source_after_raw": 53149560,
+      "source_before_raw": 53149512,
+      "underlying_STOP": {
+        "bytes": 325,
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a08-s01\\result.json",
+        "sha256": "c8cc79b46cbe77a605319937f164b90941e0198abaecef7391de6a3ea637f952"
+      },
+      "window_one_day_sampling_eligible": false
+    },
+    {
+      "actual_days": 2,
+      "actual_global_budget_breach": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "old_STOP_unchanged": true,
+      "overshoot_raw": 24,
+      "planned_max_target_days": 1,
+      "source_after_raw": 53149656,
+      "source_before_raw": 53149608,
+      "underlying_STOP": {
+        "bytes": 325,
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a10-s02\\result.json",
+        "sha256": "2498f750bf277fe16ab362a4b793648273dd64fcff0ddb7a89e575ea55a761bb"
+      },
+      "window_one_day_sampling_eligible": false
+    },
+    {
+      "actual_days": 2,
+      "actual_global_budget_breach": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "old_STOP_unchanged": true,
+      "overshoot_raw": 24,
+      "planned_max_target_days": 1,
+      "source_after_raw": 53149752,
+      "source_before_raw": 53149704,
+      "underlying_STOP": {
+        "bytes": 325,
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-Root-single-a01\\result.json",
+        "sha256": "20765b1135613b504baadc66e6f5721706ba86de98b11d21354a83cdaa4cf625"
+      },
+      "window_one_day_sampling_eligible": false
+    }
+  ],
+  "schema": "ck3.e04.C.review01.portable-values.v1",
+  "soldier_application_ledger_cause": null,
+  "status": "C_IN_PROGRESS_DESCRIPTIVE_ONLY",
+  "terminal": null,
+  "upkeep_or_travel_payment_cause": null,
+  "verification_scope": "Exact local text byte pins and stated small report joins; terminal full subject joins only when declared actual sources are present. No raw/save/UI/SDK/bus/Git/process/network access.",
+  "winner": null
+}

@@ -1,0 +1,40 @@
+{
+  "at_utc": "2026-10-05T22:06:45.959238+00:00",
+  "actual_date_raw": 53149320,
+  "actual_game_pid": 7772,
+  "same_C_episode": "native-33388-1be6dd7a468f",
+  "actual_camera_title": "b_london",
+  "native_camera_postcondition_verified": true,
+  "camera": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-London-camera-a01\\camera.json",
+    "bytes": 1466,
+    "sha256": "9bd8f0f0c03825e0e6c3f7e1b0c3c2da6dbe76d88c3d228303bd6762940a32b2"
+  },
+  "before": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-London-camera-a01\\before.json",
+    "bytes": 219890,
+    "sha256": "8b561d614f18ba37bc48001de965bc40d5531883037ad55a2729f97e5a427dc8"
+  },
+  "after": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-London-camera-a01\\after.json",
+    "bytes": 219890,
+    "sha256": "8a8d43203793d7ca49a53e6b221e5393e6f49bc543a974dd0d07870de0456b6f"
+  },
+  "ui": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-London-camera-a01\\ui.json",
+    "bytes": 85648,
+    "sha256": "be5bff1ff40f0ff42143c2f4416458d9e2244107fa5787b08e4e2e6a3cbbf158"
+  },
+  "image": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-London-camera-a01\\desktop.png",
+    "bytes": 3091934,
+    "sha256": "1aa4daaad96e415952e185b409283b5d856b0ec5e393bff134a29eb42e801d6f"
+  },
+  "actual_foreground_hwnd": 787908,
+  "same_paused_date_armies_world": true,
+  "Root_original_review_pending": true,
+  "Army_follow_not_claimed": true,
+  "LIVE_raw_not_read_or_hashed": true,
+  "mouse_keyboard_calls": 0,
+  "human_signoff": false
+}

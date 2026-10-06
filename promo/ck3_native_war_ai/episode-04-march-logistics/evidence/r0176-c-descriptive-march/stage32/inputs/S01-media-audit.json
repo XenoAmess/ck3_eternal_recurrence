@@ -1,0 +1,333 @@
+{
+  "schema": "episode04-raw-media-audit-v1",
+  "state": "PASS",
+  "started_at_utc": "2026-10-05T21:34:02.452626+00:00",
+  "completed_at_utc": "2026-10-05T21:43:19.747844+00:00",
+  "errors": [],
+  "source_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-long-a02\\raw.mkv",
+    "bytes": 5819513105,
+    "sha256": "20cc978d205517138e7dcd417b687c201198b014ad280874eb7cbad4295d560f"
+  },
+  "ffprobe_identity": {
+    "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffprobe.exe",
+    "bytes": 222026240,
+    "sha256": "afe05347caaabe479b3c4eae71992b6ec1e11c57266a1d665deb0f9fe9847208"
+  },
+  "finish_receipt_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-first-recorder-closure-a01\\finish-response.json",
+    "bytes": 1351,
+    "sha256": "bd973bb17fba8c6ae5185844ff631e3877df8b4528948bbb8516751977d34ea9"
+  },
+  "probe_receipts": {
+    "streams-format": {
+      "started_at_utc": "2026-10-05T21:34:03.356390+00:00",
+      "completed_at_utc": "2026-10-05T21:34:03.475554+00:00",
+      "elapsed_seconds": 0.119168,
+      "returncode": 0,
+      "argv_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\streams-format\\argv.json",
+        "bytes": 511,
+        "sha256": "cabd9247672a59a7fe2636110b3e79fbe83184f9dd4b7f85a668e02f7805003d"
+      },
+      "stdout_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\streams-format\\stdout.json",
+        "bytes": 2430,
+        "sha256": "bc815632349a4c0ff82bdae5165fadec613a30d2c693b41f5ed8a702d470f8da"
+      },
+      "stderr_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\streams-format\\stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "video-packets": {
+      "started_at_utc": "2026-10-05T21:34:03.357036+00:00",
+      "completed_at_utc": "2026-10-05T21:34:11.836404+00:00",
+      "elapsed_seconds": 8.4793777,
+      "returncode": 0,
+      "argv_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\video-packets\\argv.json",
+        "bytes": 627,
+        "sha256": "4208a73eaa42b920c32f029eed1fe61b59292474c645d146150fd27645b36aa7"
+      },
+      "stdout_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\video-packets\\stdout.json",
+        "bytes": 31159526,
+        "sha256": "48d3687148e8f19b6de9bc513e2c116cd935d5752302b7606cb5ecd1bfec743d"
+      },
+      "stderr_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\video-packets\\stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "strict-full-decode": {
+      "started_at_utc": "2026-10-05T21:34:03.358333+00:00",
+      "completed_at_utc": "2026-10-05T21:42:56.025489+00:00",
+      "elapsed_seconds": 532.6671703,
+      "returncode": 0,
+      "argv_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\strict-full-decode\\argv.json",
+        "bytes": 681,
+        "sha256": "d6c10353d7e17617a1658b1f520bb14e3c12af02203fc23613554aa91c71196d"
+      },
+      "stdout_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\strict-full-decode\\stdout.json",
+        "bytes": 5274,
+        "sha256": "670ae9cc3cc333560d815e00573293b9477eaa00936a7aac36d1ed68b329f256"
+      },
+      "stderr_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\strict-full-decode\\stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "video-frames": {
+      "started_at_utc": "2026-10-05T21:34:03.357954+00:00",
+      "completed_at_utc": "2026-10-05T21:43:16.759480+00:00",
+      "elapsed_seconds": 553.4015246,
+      "returncode": 0,
+      "argv_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\video-frames\\argv.json",
+        "bytes": 695,
+        "sha256": "45fa4d3cbd18d73f45e1b696258e5ec67215718dedc1bfe3560fb3b746639086"
+      },
+      "stdout_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\video-frames\\stdout.json",
+        "bytes": 46525111,
+        "sha256": "01492593c4d9ec0c7088d218110f9ffc3532fe5570ce1cb8a6c55f2004397680"
+      },
+      "stderr_identity": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-media-tools-a01\\audit-attempt-a01\\video-frames\\stderr.txt",
+        "bytes": 0,
+        "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    }
+  },
+  "raw_stat_unchanged_during_audit": true,
+  "closed_source_sha_independently_verified_once": false,
+  "sealed_terminal_hash_reused": true,
+  "audit_raw_sha_reads": 0,
+  "terminal_result_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-long-a02\\result.json",
+    "bytes": 803,
+    "sha256": "8ea816e9d0c9274c42a715f08c157a904d3b36383ce0124a86ae442daa507de0"
+  },
+  "terminal_finish_body_matches": true,
+  "sealed_capture_report_identity": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-first-recorder-closure-a01\\capture-report-sealed.json",
+    "bytes": 1050,
+    "sha256": "d696b781bbf2139e79559c596bf0c4b4724d8fc69896436e6f16ae66271c7732"
+  },
+  "codec_threads_each": 1,
+  "formal_toolchain_run": false,
+  "source_identity_after_audit": {
+    "stat_only": true,
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-long-a02\\raw.mkv",
+    "bytes": 5819513105,
+    "mtime_ns": 1791235490628140400,
+    "no_second_large_raw_rehash": true
+  },
+  "format": {
+    "filename": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-long-a02\\raw.mkv",
+    "nb_streams": 1,
+    "nb_programs": 0,
+    "nb_stream_groups": 0,
+    "format_name": "matroska,webm",
+    "format_long_name": "Matroska / WebM",
+    "start_time": "0.000000",
+    "duration": "3572.233000",
+    "size": "5819513105",
+    "bit_rate": "13032773",
+    "probe_score": 100,
+    "tags": {
+      "ENCODER": "Lavf63.1.101"
+    }
+  },
+  "video_stream": {
+    "index": 0,
+    "codec_name": "h264",
+    "codec_long_name": "H.264 / AVC / MPEG-4 AVC / MPEG-4 part 10",
+    "profile": "Constrained Baseline",
+    "codec_type": "video",
+    "codec_tag_string": "[0][0][0][0]",
+    "codec_tag": "0x0000",
+    "mime_codec_string": "avc1.42c028",
+    "width": 1920,
+    "height": 1080,
+    "coded_width": 1920,
+    "coded_height": 1080,
+    "has_b_frames": 0,
+    "pix_fmt": "yuv420p",
+    "level": 40,
+    "color_range": "tv",
+    "chroma_location": "left",
+    "field_order": "progressive",
+    "is_avc": "true",
+    "nal_length_size": "4",
+    "r_frame_rate": "30/1",
+    "avg_frame_rate": "30/1",
+    "time_base": "1/1000",
+    "start_pts": 0,
+    "start_time": "0.000000",
+    "bits_per_raw_sample": "8",
+    "extradata_size": 40,
+    "disposition": {
+      "default": 0,
+      "dub": 0,
+      "original": 0,
+      "comment": 0,
+      "lyrics": 0,
+      "karaoke": 0,
+      "forced": 0,
+      "hearing_impaired": 0,
+      "visual_impaired": 0,
+      "clean_effects": 0,
+      "attached_pic": 0,
+      "timed_thumbnails": 0,
+      "non_diegetic": 0,
+      "captions": 0,
+      "descriptions": 0,
+      "metadata": 0,
+      "dependent": 0,
+      "still_image": 0,
+      "multilayer": 0
+    },
+    "tags": {
+      "ENCODER": "Lavc63.1.101 libx264",
+      "DURATION": "00:59:32.233000000"
+    }
+  },
+  "stream_counts": {
+    "video": 1,
+    "audio": 0,
+    "all": 1
+  },
+  "actual_duration_seconds": "3572.233000",
+  "actual_duration_minutes": "59.53721666666666666666666667",
+  "decoded_frames": 107167,
+  "video_packets": 107167,
+  "decoded_frame_equivalent_seconds_at_declared_fps": "3572.233333333333333333333333",
+  "timestamps": {
+    "packet_pts": {
+      "field": "pts",
+      "count": 107167,
+      "present": 107167,
+      "missing": 0,
+      "equal_adjacent": 0,
+      "regression_examples": [],
+      "non_decreasing": true,
+      "strictly_increasing": true,
+      "first_raw": 0,
+      "last_raw": 3572200,
+      "first_seconds": "0",
+      "last_seconds": "3572.2",
+      "minimum_adjacent_delta_raw": 33,
+      "maximum_adjacent_delta_raw": 34,
+      "span_seconds": "3572.2",
+      "sum_declared_duration_seconds": "3536.511000",
+      "time_base": "1/1000"
+    },
+    "packet_dts": {
+      "field": "dts",
+      "count": 107167,
+      "present": 107167,
+      "missing": 0,
+      "equal_adjacent": 0,
+      "regression_examples": [],
+      "non_decreasing": true,
+      "strictly_increasing": true,
+      "first_raw": 0,
+      "last_raw": 3572200,
+      "first_seconds": "0",
+      "last_seconds": "3572.2",
+      "minimum_adjacent_delta_raw": 33,
+      "maximum_adjacent_delta_raw": 34,
+      "span_seconds": "3572.2",
+      "sum_declared_duration_seconds": "3536.511000",
+      "time_base": "1/1000"
+    },
+    "frame_pts": {
+      "field": "pts",
+      "count": 107167,
+      "present": 107167,
+      "missing": 0,
+      "equal_adjacent": 0,
+      "regression_examples": [],
+      "non_decreasing": true,
+      "strictly_increasing": true,
+      "first_raw": 0,
+      "last_raw": 3572200,
+      "first_seconds": "0",
+      "last_seconds": "3572.2",
+      "minimum_adjacent_delta_raw": 33,
+      "maximum_adjacent_delta_raw": 34,
+      "span_seconds": "3572.2",
+      "sum_declared_duration_seconds": "3536.511000",
+      "time_base": "1/1000"
+    },
+    "frame_best_effort_timestamp": {
+      "field": "best_effort_timestamp",
+      "count": 107167,
+      "present": 107167,
+      "missing": 0,
+      "equal_adjacent": 0,
+      "regression_examples": [],
+      "non_decreasing": true,
+      "strictly_increasing": true,
+      "first_raw": 0,
+      "last_raw": 3572200,
+      "first_seconds": "0",
+      "last_seconds": "3572.2",
+      "minimum_adjacent_delta_raw": 33,
+      "maximum_adjacent_delta_raw": 34,
+      "span_seconds": "3572.2",
+      "sum_declared_duration_seconds": "3536.511000",
+      "time_base": "1/1000"
+    },
+    "frame_packet_dts": {
+      "field": "pkt_dts",
+      "count": 107167,
+      "present": 107167,
+      "missing": 0,
+      "equal_adjacent": 0,
+      "regression_examples": [],
+      "non_decreasing": true,
+      "strictly_increasing": true,
+      "first_raw": 0,
+      "last_raw": 3572200,
+      "first_seconds": "0",
+      "last_seconds": "3572.2",
+      "minimum_adjacent_delta_raw": 33,
+      "maximum_adjacent_delta_raw": 34,
+      "span_seconds": "3572.2",
+      "sum_declared_duration_seconds": "3536.511000",
+      "time_base": "1/1000"
+    }
+  },
+  "observed_picture_types": {
+    "I": 429,
+    "P": 106738
+  },
+  "strict_full_decode": {
+    "reached_progress_end": true,
+    "final_decoded_frames": 107167,
+    "errors_on_stderr": 0,
+    "ffmpeg_identity": {
+      "path": "C:\\Users\\1\\AppData\\Local\\Microsoft\\WinGet\\Packages\\Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe\\ffmpeg-9.0.1-full_build\\bin\\ffmpeg.exe",
+      "bytes": 222229504,
+      "sha256": "57c56e369d5b4873b4d93fc1a1d833cb7cd8bc9325c14b05c34ce60b22842d8a"
+    }
+  },
+  "scope": "Finished R0176 C first tape only: full-file demux metadata, complete packet timestamps and complete decoded-frame timestamps. No human audiovisual viewing, clean span, pixel-content or final film verdict.",
+  "full_human_viewing_performed": false,
+  "clean_spans_certified": false,
+  "human_signoff": false,
+  "final_film_certified": false,
+  "sdk_requests_executed": 0,
+  "game_processes_started": 0,
+  "desktop_inputs": 0,
+  "ffmpeg_recorders_started": 0,
+  "source_media_modified": false
+}

@@ -1,0 +1,14 @@
+{
+  "status": "STOP_ACTUAL_C_PHASE_STATIONARY_ARRIVAL",
+  "actual_target": 2176,
+  "actual_paused": true,
+  "actual_date_raw": 53149104,
+  "phase": "waypoint",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "actual_days_from_common": 28.0,
+  "same_R0176_session": true,
+  "recorder_started_or_changed_by_this_operator": false,
+  "no_budget_reset": true,
+  "comparison_completion_credit": 0
+}

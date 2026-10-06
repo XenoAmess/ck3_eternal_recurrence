@@ -1,0 +1,95 @@
+{
+  "schema": "ck3.e04.C.intermediate-small-reports.v1",
+  "status": "IN_PROGRESS",
+  "validation_scope": "completed small report pins and their source metadata joins; not independent replay of full native rows",
+  "run": "R0176-a01",
+  "episode_run_id": "native-33388-1be6dd7a468f",
+  "actual_actor_id": 33388,
+  "actual_cold_pid_from_receipt": 7772,
+  "checkpoint_recorded_pin": {
+    "bytes": 73795635,
+    "sha256": "d052a2e412109a28247b8844567100a272998c536711d75f0fbc29ee6a286f6a"
+  },
+  "save_bytes_read_by_consumer": false,
+  "source_commit": "7f1db1a773e647b9f31378d4a9ccf57a60cf9e73",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "maximum_actual_days": 90,
+  "maximum_batches_per_arm": 120,
+  "shared_across_both_phases": true,
+  "budget_reset": false,
+  "completed_report_cutoff_raw": 53148528,
+  "completed_report_days_used": 4,
+  "remaining_game_days_at_report_cutoff": 86,
+  "cold_report_difference_count": 0,
+  "cold_report_counts": {
+    "regiments": 27,
+    "DATA": 37
+  },
+  "cold_entire_row_digests": {
+    "regiments": "63de001683d0996b8101f00a87f28c73197ce9d4150a52f21864767b24bdbfda",
+    "DATA": "8dab2ce2575040214e99e7899026ab180a4a89afcaaad6f01148e3cc0eaa4d09"
+  },
+  "baseline": {
+    "current_soldiers": 6679,
+    "maximum_soldiers": 6747,
+    "stock_raw": 11037716,
+    "capacity_raw": 30000000,
+    "supply_scale": 100000,
+    "commander_id": 27357,
+    "gold_raw": 63754562,
+    "gold_scale": 100000
+  },
+  "phase1": {
+    "target": 2176,
+    "actual_submitted_route": [
+      2175,
+      2179,
+      2176
+    ],
+    "typed_move_accepted": true,
+    "waypoint_stationary_arrival": null
+  },
+  "day2_supply": {
+    "before_raw": 11037716,
+    "after_raw": 10613988,
+    "delta_raw": -423728,
+    "monthly_raw": -423728,
+    "stored_update_before_raw": 53147760,
+    "stored_update_after_raw": 53148480,
+    "original27_and37_reported_entire_rows_unchanged": true,
+    "own_soldier_delta": 0,
+    "net_gold_delta_raw": 0
+  },
+  "day3_offsite": {
+    "Root_identity_label": "NPC1609 siege3 Army7",
+    "identity_label_source": "inputs/Root-day3-review.json",
+    "strength_before": 5257,
+    "strength_after": 5235,
+    "net_delta": -22,
+    "cause": null,
+    "own_loss_or_applied_attrition_credit": false
+  },
+  "day4": {
+    "own_material_delta": [],
+    "ordinary_offsite_siege_progress_field_count": 4,
+    "offsite_strength_change": false
+  },
+  "phase2_actual_London_route": null,
+  "London_arrival": null,
+  "terminal": null,
+  "endpoint_raw": null,
+  "endpoint_date": null,
+  "endpoint_whole": null,
+  "endpoint_stock": null,
+  "endpoint_gold": null,
+  "net_endpoint_deltas": null,
+  "winner": null,
+  "deadline_censored": null,
+  "runtime_closure": null,
+  "media_audit": null,
+  "human_signoff": false,
+  "Root_cold_receipt_original_pending_fields_preserved": true,
+  "day4_Root_current_basis_review": null,
+  "SDK_Game_UI_raw_media_or_external_source_calls": false
+}

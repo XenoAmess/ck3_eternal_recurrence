@@ -1,0 +1,19 @@
+{
+  "schema": "ck3.e04.C.review01.day51-pins.v1",
+  "files": [
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day51-current-basis-review-a01\\Root-review.json",
+      "relative": "inputs/Root-day51-review.json",
+      "bytes": 9610,
+      "sha256": "a605105c39d4860c35710a710991fd89fa9bb0fb6526ab27b26cb2b9d477ecf5",
+      "completed": true
+    },
+    {
+      "source": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day51-current-analysis-a01\\source-analysis.json",
+      "relative": "inputs/day51-source-analysis.json",
+      "bytes": 4780,
+      "sha256": "cf7d8843923b23e96e8df67536b2d3969da152cde85edede6b1c8cf51a5a9cad",
+      "completed": true
+    }
+  ]
+}

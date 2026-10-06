@@ -1,0 +1,11 @@
+{
+  "status": "STOP_ONE_DAY_BATCH_TARGET",
+  "actual_overshoot_raw": 24,
+  "actual_paused": true,
+  "actual_date_raw": 53149296,
+  "actual_days_from_common": 36.0,
+  "no_claim_ABC_arm_completed_from_generic_helper": true,
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "TERM_clean_film_human_signoff_credit": 0
+}

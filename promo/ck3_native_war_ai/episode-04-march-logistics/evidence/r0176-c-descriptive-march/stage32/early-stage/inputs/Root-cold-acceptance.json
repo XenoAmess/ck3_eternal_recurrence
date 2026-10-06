@@ -1,0 +1,33 @@
+{
+  "at_utc": "2026-10-05T20:20:38.066984+00:00",
+  "cold_compare_status": "PASS_COLD_BASELINE_EQUAL",
+  "semantic_difference_count": 0,
+  "full27reg37DATA_entire_rows_equal": true,
+  "actual_pid": 7772,
+  "episode": "native-33388-1be6dd7a468f",
+  "hwnd": 787908,
+  "foreground_confirmed": true,
+  "desktop_size": [
+    1920,
+    1080
+  ],
+  "image": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-cold-baseline-acceptance-a01\\desktop.png",
+    "bytes": 3155159,
+    "sha256": "ef9ac4a4c9eab2bd3ba750d5267c1f6b6f46692c4b39efe0618d06f5212a5690"
+  },
+  "compare": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-cold-baseline-acceptance-a01\\compare-report.json",
+    "bytes": 5740,
+    "sha256": "db9bdb0c812d1bb1605266a83220b655a2b8ebfa1001a0f0b9bc76a4be07c64b"
+  },
+  "native_UI_query": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-cold-baseline-acceptance-a01\\ui.json",
+    "bytes": 85638,
+    "sha256": "b4a1b4e62107612a54c17c279bc88fbb64ee0660fd454425c5be7e3903751bb6"
+  },
+  "Root_direct_original_review_pending": true,
+  "actual_UI_subject_review_pending": true,
+  "recording_started": false,
+  "actual_days_advanced": 0
+}

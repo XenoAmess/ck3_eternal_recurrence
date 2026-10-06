@@ -1,0 +1,170 @@
+{
+  "status": "ROOT_ACTUAL_C_CURRENT_BASIS_ACCEPTED_BEFORE_NEXT_RESUME",
+  "at_utc": "2026-10-05T22:41:11.468956+00:00",
+  "basis_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a10-s02\\pulse-01\\inspect\\observation.json",
+    "bytes": 353647,
+    "sha256": "25e50f8452525ef58d2995679eb1a9f72dbd5a78b8cf68995bcc1b9312e5043f"
+  },
+  "input_manifest": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-runtime-inputs-a02\\input-manifest.json",
+    "bytes": 30065,
+    "sha256": "f52765356b6f4f6adbbbae35055866076d820bf33a516dcf597723adb6b5149f"
+  },
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01",
+  "episode_run_id": "native-33388-1be6dd7a468f",
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "actual_date_raw": 53149656,
+  "material_disposition_prospective": true,
+  "old_STOP_unchanged": true,
+  "no_budget_reset": true,
+  "full27reg37DATA_commander27357_and_actual_clocks_reviewed": true,
+  "Root_actual_review_notes": "Root directly reviewed the complete +49 to +51 source-analysis: material/world/outside-world/full27 regiment/full37 DATA row deltas empty; 6689 current/max6747, S10190260/cap30000000/monthly-423728/attrition0, commander27357 and complete identities/runtime/war strict gate pass. Both endpoints current2176 moving toward1527 with all six route provinces unchanged; no combat/retreat. Cash63848329 unchanged. Actual update clock current date advances48raw; native day389567->389569 and phase17->19; last supply raw53149200 and raw64 storage300337120213138960, grace53144256/raw64 storage300061168564366016/loaded30 unchanged. Actual +49->51 is seventh two-day deviation and remains STOP; no controlled comparison eligibility. Root directly viewed the separately captured 1920x1080 original April25 paused London-centered map, selected6689/S101-of300/0percent/helmet commander, displayed movement seven days; no London arrival or embark payment inferred. Fresh same-date full before/health/typedcommander/after, actual 7 physical identities exact S02 set, clean7f/a08/foreground7772 and previous recorder Job0/absence preserved. Prospective descriptive continuation alone; same original90day/120batch budget, no reload/date reset or advance in recording gap, no historical STOP rewritten, no applied loss/refill/payment cause invented, no full movie human signoff.",
+  "source_analysis": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day51-current-analysis-a01\\source-analysis.json",
+    "bytes": 4780,
+    "sha256": "cf7d8843923b23e96e8df67536b2d3969da152cde85edede6b1c8cf51a5a9cad"
+  },
+  "old_STOP": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a10\\result.json",
+    "bytes": 1011,
+    "sha256": "ca512ff165ae09696fe3ab53cc036054ea05cde86f957dd7b89f40ab1ffabcc5"
+  },
+  "underlying_actual_paused_STOP": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a10-s02\\result.json",
+    "bytes": 325,
+    "sha256": "2498f750bf277fe16ab362a4b793648273dd64fcff0ddb7a89e575ea55a761bb"
+  },
+  "prior_sampling_deviation_Root_receipt": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-day48-current-basis-review-a01\\Root-review.json",
+    "bytes": 6600,
+    "sha256": "caae3ea6b1afa11f96b64a59edc35c5a18e1de90217de911fe5d93dc54017ff4"
+  },
+  "sampling_protocol_deviations": [
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "actual_global_budget_breach": false,
+      "actual_date_raw": 53148768,
+      "original_END_raw": 53150592,
+      "old_STOP_unchanged": true
+    },
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "source_before_raw": 53148912,
+      "source_after_raw": 53148960,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "arm_controlled_comparison_eligibility_not_granted": true,
+      "actual_global_budget_breach": false,
+      "underlying_STOP": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-waypoint-serial-a09-s01\\result.json",
+        "bytes": 325,
+        "sha256": "9c87b621dabc82cde5497790e88afb6a05400ac2f6b8e5bcaeab9dcc6706d728"
+      }
+    },
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "source_before_raw": 53149128,
+      "source_after_raw": 53149176,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "actual_global_budget_breach": false,
+      "underlying_STOP": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-WHOLE-world-a04-w001\\result.json",
+        "bytes": 325,
+        "sha256": "660610b872e8bf9f60a86235aed033d4c4ad19854bbff17810cd3c792bda4c5f"
+      },
+      "old_STOP_unchanged": true,
+      "arm_controlled_comparison_eligibility_not_granted": true
+    },
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "source_before_raw": 53149248,
+      "source_after_raw": 53149296,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "actual_global_budget_breach": false,
+      "underlying_STOP": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-WHOLE-world-a05-w002\\result.json",
+        "bytes": 325,
+        "sha256": "727d8fda85c50ebdc4c9990cfcf919f17e60cfe55efa8d0ba0349da180901b0b"
+      },
+      "old_STOP_unchanged": true,
+      "arm_controlled_comparison_eligibility_not_granted": true
+    },
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "source_before_raw": 53149392,
+      "source_after_raw": 53149440,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "actual_global_budget_breach": false,
+      "underlying_STOP": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-WHOLE-world-a06-w002\\result.json",
+        "bytes": 325,
+        "sha256": "076267bb1ce5454fabcd8105968e019529da6e77508e65150101e4710a07e386"
+      },
+      "old_STOP_unchanged": true,
+      "arm_controlled_comparison_eligibility_not_granted": true
+    },
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "source_before_raw": 53149512,
+      "source_after_raw": 53149560,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "actual_global_budget_breach": false,
+      "underlying_STOP": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a08-s01\\result.json",
+        "bytes": 325,
+        "sha256": "c8cc79b46cbe77a605319937f164b90941e0198abaecef7391de6a3ea637f952"
+      },
+      "old_STOP_unchanged": true,
+      "arm_controlled_comparison_eligibility_not_granted": true
+    },
+    {
+      "planned_max_target_days": 1,
+      "actual_days": 2,
+      "source_before_raw": 53149608,
+      "source_after_raw": 53149656,
+      "overshoot_raw": 24,
+      "window_one_day_sampling_eligible": false,
+      "actual_global_budget_breach": false,
+      "underlying_STOP": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-London-serial-a10-s02\\result.json",
+        "bytes": 325,
+        "sha256": "2498f750bf277fe16ab362a4b793648273dd64fcff0ddb7a89e575ea55a761bb"
+      },
+      "old_STOP_unchanged": true,
+      "arm_controlled_comparison_eligibility_not_granted": true
+    }
+  ],
+  "descriptive_continuation_only": true,
+  "controlled_comparison_eligibility_granted": false,
+  "human_signoff": false,
+  "Root_actual_original_frame_review": {
+    "source_proof": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-S03-admission-a01\\live-proof.json",
+      "bytes": 8656,
+      "sha256": "41ea09c375d6aeb14bb20fd86c61445ed6e1f5a08b3098077b790e3f89322a78"
+    },
+    "original": {
+      "path": "C:\\ck3-war-episode04-research-20261004-a01\\root-r0176-S03-admission-a01\\desktop.png",
+      "bytes": 3110781,
+      "sha256": "7abe61284bd732c68430587c43d17a0a26eba9447896493db9f613bc7c9dd49c"
+    },
+    "direct_original_review": true,
+    "original_captured_at_utc": "2026-10-05T22:32:53.286166+00:00",
+    "Root_actual_observed_pixels": "Root directly reviewed the complete +49 to +51 source-analysis: material/world/outside-world/full27 regiment/full37 DATA row deltas empty; 6689 current/max6747, S10190260/cap30000000/monthly-423728/attrition0, commander27357 and complete identities/runtime/war strict gate pass. Both endpoints current2176 moving toward1527 with all six route provinces unchanged; no combat/retreat. Cash63848329 unchanged. Actual update clock current date advances48raw; native day389567->389569 and phase17->19; last supply raw53149200 and raw64 storage300337120213138960, grace53144256/raw64 storage300061168564366016/loaded30 unchanged. Actual +49->51 is seventh two-day deviation and remains STOP; no controlled comparison eligibility. Root directly viewed the separately captured 1920x1080 original April25 paused London-centered map, selected6689/S101-of300/0percent/helmet commander, displayed movement seven days; no London arrival or embark payment inferred. Fresh same-date full before/health/typedcommander/after, actual 7 physical identities exact S02 set, clean7f/a08/foreground7772 and previous recorder Job0/absence preserved. Prospective descriptive continuation alone; same original90day/120batch budget, no reload/date reset or advance in recording gap, no historical STOP rewritten, no applied loss/refill/payment cause invented, no full movie human signoff."
+  }
+}

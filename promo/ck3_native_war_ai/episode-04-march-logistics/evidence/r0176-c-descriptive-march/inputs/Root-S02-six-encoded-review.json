@@ -1,0 +1,159 @@
+{
+  "schema": "xar.e04.Root.actual.encoded.still.review/v1",
+  "at_utc": "2026-10-05T22:55:02.076866+00:00",
+  "arm": "C",
+  "segment_ordinal": 2,
+  "closed_terminal": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a01\\result.json",
+    "bytes": 1057,
+    "sha256": "685742333a1e419240d34dbfff591b6c8d5cb9262893775b80574c96ac52fb1c"
+  },
+  "unique_four_media_audit": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\audit-attempt-a01\\report.json",
+    "bytes": 11932,
+    "sha256": "91a792bb73d7395db320b8c0cc34f74553f7bd61c3f08b4113d3f6d885da951d"
+  },
+  "raw_identity_copied_without_rehash": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-raw-abc-c-continuation-a01\\raw.mkv",
+    "bytes": 5619567381,
+    "sha256": "c0b68f63d37a85bb3faa69e95cb58e74570f541b644e20dee97aa3a3a7ce94c0"
+  },
+  "Root_viewed_all_six_originals": true,
+  "rows": [
+    {
+      "candidate_index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-0-day27_6689_search\\candidate-index.json",
+        "bytes": 5223,
+        "sha256": "cfe6a4b1557c80b58442f1552998a9f6f5b91c921930af2a992dabfa25447791"
+      },
+      "actual_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-0-day27_6689_search\\candidate-00.png",
+        "bytes": 2828135,
+        "sha256": "a5ccec18e51967bfa74441f39c5aa12688a20d4c6d73805261e27fbe8c7c3551"
+      },
+      "frame_ordinal": 31620,
+      "encoded_pts": 1054000,
+      "time_base": "1/1000",
+      "actual_display_date": "1067-04-01",
+      "days_from_common_T0_read_from_encoded_date": 27,
+      "Root_direct_original_review": true,
+      "Root_actual_observed_pixels": "selected6689,0percent,S106/300,helmet commander,movement remaining1day,map army6689 clearly visible",
+      "human_full1x_watch_or_signoff": false,
+      "continuous_clean_span_certified": false,
+      "exact_native_event_tick_to_PTS_binding": null
+    },
+    {
+      "candidate_index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-1-day28_waypoint_arrival_preceding_search\\candidate-index.json",
+        "bytes": 5366,
+        "sha256": "00c122e78575269cea90d939c757c217a3360b0f34dcefbdbf68deec1504172c"
+      },
+      "actual_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-1-day28_waypoint_arrival_preceding_search\\candidate-00.png",
+        "bytes": 2878700,
+        "sha256": "afb19b38c81fb08a94b5e59e192afb602c472f29eed2ec4f319558525f252938"
+      },
+      "frame_ordinal": 36810,
+      "encoded_pts": 1227000,
+      "time_base": "1/1000",
+      "actual_display_date": "1067-04-02",
+      "days_from_common_T0_read_from_encoded_date": 28,
+      "Root_direct_original_review": true,
+      "Root_actual_observed_pixels": "selected6689,0percent,S106/300,helmet commander,waiting camp,no march arrow; independent native waypoint2176 source separate, exactarrival tick not bound",
+      "human_full1x_watch_or_signoff": false,
+      "continuous_clean_span_certified": false,
+      "exact_native_event_tick_to_PTS_binding": null
+    },
+    {
+      "candidate_index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-2-day28_london_order_after_search\\candidate-index.json",
+        "bytes": 5630,
+        "sha256": "e79dc8f9269b258dd257860b36f25e254e770df1473fccd0caba6bd4399388da"
+      },
+      "actual_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-2-day28_london_order_after_search\\candidate-00.png",
+        "bytes": 2829293,
+        "sha256": "44f0fdfb60eb64cfd4f4aae7b5334bd83c9fece19b13313e6f8e7b4eae2c7ee0"
+      },
+      "frame_ordinal": 39090,
+      "encoded_pts": 1303000,
+      "time_base": "1/1000",
+      "actual_display_date": "1067-04-02",
+      "days_from_common_T0_read_from_encoded_date": 28,
+      "Root_direct_original_review": true,
+      "Root_actual_observed_pixels": "selected6689,0percent,S106/300,helmet commander,remaining30days,cross-sea plottedroute and ship17 UI icon;17 is displayed candidate price, no payment ledger proof",
+      "human_full1x_watch_or_signoff": false,
+      "continuous_clean_span_certified": false,
+      "exact_native_event_tick_to_PTS_binding": null
+    },
+    {
+      "candidate_index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-3-day32_stock101_search\\candidate-index.json",
+        "bytes": 4964,
+        "sha256": "94464df14c6f65c706d6edf3e45a4c8a687d87d21c2f5afa2d0cf3738fc9ad8f"
+      },
+      "actual_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-3-day32_stock101_search\\candidate-00.png",
+        "bytes": 2823902,
+        "sha256": "3311637800565f826ed77590c424c9c5c6093557507c1998ed625384c0e0cad6"
+      },
+      "frame_ordinal": 53340,
+      "encoded_pts": 1778000,
+      "time_base": "1/1000",
+      "actual_display_date": "1067-04-06",
+      "days_from_common_T0_read_from_encoded_date": 32,
+      "Root_direct_original_review": true,
+      "Root_actual_observed_pixels": "selected6689,0percent,S101/300,helmet commander,movement remaining26days,own6689map marker at French coast; native stock write timing separately",
+      "human_full1x_watch_or_signoff": false,
+      "continuous_clean_span_certified": false,
+      "exact_native_event_tick_to_PTS_binding": null
+    },
+    {
+      "candidate_index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-4-day37_london_centered_search\\candidate-index.json",
+        "bytes": 5276,
+        "sha256": "3a11ec85c261938660daddd5adcbf46ffd37594a7b7262d67805efe2f08e59ef"
+      },
+      "actual_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-4-day37_london_centered_search\\candidate-00.png",
+        "bytes": 2561193,
+        "sha256": "d4fffa6c34d5ea22db87e56e40b70957ab2ca99d509f66a50e68557ecb66bdfe"
+      },
+      "frame_ordinal": 68760,
+      "encoded_pts": 2292000,
+      "time_base": "1/1000",
+      "actual_display_date": "1067-04-11",
+      "days_from_common_T0_read_from_encoded_date": 37,
+      "Root_direct_original_review": true,
+      "Root_actual_observed_pixels": "London Thames viewport,selected6689,0percent,S101/300,helmet commander,movement remaining21days; own Main map marker not clearly inside viewport; no Army follow or Londonarrival claim",
+      "human_full1x_watch_or_signoff": false,
+      "continuous_clean_span_certified": false,
+      "exact_native_event_tick_to_PTS_binding": null
+    },
+    {
+      "candidate_index": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-5-actual_last_encoded_frame_date_unknown\\candidate-index.json",
+        "bytes": 5022,
+        "sha256": "664274ed6b2784f7b35424dec08cb81f4f61da03ff90d50fed95fca69fc746d2"
+      },
+      "actual_PNG": {
+        "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-continuation-media-tools-a01\\encoded-candidates-a01\\r0176-c-s02-5-actual_last_encoded_frame_date_unknown\\candidate-00.png",
+        "bytes": 2622355,
+        "sha256": "101cef7218695e4facc4fa8a0d098882a5fa2f9eb2af18ecdee4788732eb2cac"
+      },
+      "frame_ordinal": 107999,
+      "encoded_pts": 3599967,
+      "time_base": "1/1000",
+      "actual_display_date": "1067-04-25",
+      "days_from_common_T0_read_from_encoded_date": 51,
+      "Root_direct_original_review": true,
+      "Root_actual_observed_pixels": "actualencoded tail: April25 paused London viewport,selected6689,0percent,S101/300,helmet commander,movement remaining7days; no ownMain sea/arrival marker credit; date+51 read directly from coded pixels/commonMar5, not late still timestamp",
+      "human_full1x_watch_or_signoff": false,
+      "continuous_clean_span_certified": false,
+      "exact_native_event_tick_to_PTS_binding": null
+    }
+  ],
+  "only_sampled_encoded_pixel_state_review": true,
+  "human_approval": false,
+  "no_native_write_or_arrival_exact_PTS_inferred": true
+}

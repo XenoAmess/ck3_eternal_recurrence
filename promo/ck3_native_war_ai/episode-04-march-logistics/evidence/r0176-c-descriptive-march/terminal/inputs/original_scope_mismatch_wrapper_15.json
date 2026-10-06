@@ -1,0 +1,33 @@
+{
+  "status": "STOP_FIRST_MATERIAL_WORLD_SOURCE_OR_PRODUCER_UNCERTAINTY",
+  "actual_paused": null,
+  "actual_date_raw": null,
+  "completed_one_pulse_invocations": 2,
+  "latest_observation": null,
+  "no_more_resume": true,
+  "last_validated_prior_observation": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-Main-strict-serial-a10-s02-pre\\initial\\observation.json",
+    "bytes": 569650,
+    "sha256": "0e7dc3b2e8e316c06adc2a28335dbe265de7fd0669b1eda12ebf5ddac1aae572"
+  },
+  "last_validated_prior_date_raw": 53150232,
+  "current_terminal_proof_pending": true,
+  "latest_completed_producer_result": {
+    "path": "C:\\ck3-war-episode04-research-20261004-a01\\r0176-C-Main-strict-serial-a10-s01\\result.json",
+    "bytes": 324,
+    "sha256": "9f9aa925f6c32a24340dd901c45daba0edbd1e1f7a3962880be54d8cf59601f8"
+  },
+  "terminal_proof_is_post_pulse_not_internal_initial": true,
+  "error": "Current unassessed roster differs fresh Root scope",
+  "pause_not_inferred_from_ACK": true,
+  "blind_retry": false,
+  "pause_proven_only_by_latest_validated_independent_observation": false,
+  "start_raw": 53148432,
+  "absolute_end_raw": 53150592,
+  "run_dir": "C:\\ck3-war-episode04-research-20261004-a01\\native-live-r0176-a01",
+  "episode_run_id": "native-33388-1be6dd7a468f",
+  "actual_days_from_common": null,
+  "original_C120_registry_unchanged": true,
+  "budget_reset": false,
+  "TERM_film_clean_ABC_or_human_signoff_credit": 0
+}
