@@ -8031,6 +8031,8 @@ if(BUILD_TESTING AND WIN32)
       include/xar_bridge/phase_warmonger_core_v1.hpp
       include/xar_bridge/phase_berserker_validity_inputs_v1_serializer.hpp
       include/xar_bridge/phase_berserker_validity_inputs_v1.hpp
+      include/xar_bridge/phase_berserker_chance_inputs_v1_serializer.hpp
+      include/xar_bridge/phase_berserker_chance_inputs_v1.hpp
     VERBATIM)
   add_executable(xar_ck3_12003_knight_effectiveness_context_test
     src/ck3_12002_combat.cpp
@@ -8946,3 +8948,5 @@ include(cmake/phase_warmonger_core_12003.cmake)
 include(cmake/person_following_stages_12003.cmake)
 include(cmake/current_land_supply_rate_12003.cmake)
 include(cmake/phase_berserker_validity_12003.cmake)
+include(cmake/phase_berserker_chance_12003.cmake)
+include(cmake/rule43_integrated_current_person_12003.cmake)

@@ -16,7 +16,9 @@ if(BUILD_TESTING AND WIN32)
       include/xar_bridge/phase_warmonger_core_v1_serializer.hpp
       include/xar_bridge/phase_warmonger_core_v1.hpp
       include/xar_bridge/phase_berserker_validity_inputs_v1_serializer.hpp
-      include/xar_bridge/phase_berserker_validity_inputs_v1.hpp VERBATIM)
+      include/xar_bridge/phase_berserker_validity_inputs_v1.hpp
+      include/xar_bridge/phase_berserker_chance_inputs_v1_serializer.hpp
+      include/xar_bridge/phase_berserker_chance_inputs_v1.hpp VERBATIM)
   add_executable(xar_ck3_12003_phase_rite_parameters_test
     src/ck3_12002_combat.cpp tests/phase_rite_parameters_12003_test.cpp
     "${XAR_PHASE_RITE_SERIALIZER}")
