@@ -4,6 +4,7 @@
 #include <array>
 #include <cstring>
 #include <limits>
+#include <memory>
 namespace xar::ck3_12004::lifestyle {
 namespace {
 using Failure = game::PlayerLifestyleSnapshotFailureV1;
@@ -741,8 +742,12 @@ game::ReadPlayerLifestyleSnapshotResultV1 ReadPlayerLifestyleSnapshot12004V1(
       ClearUnavailable(output, initial_failure);
       return Result::unavailable;
     }
-    PlayerLifestyleSourceSampleV1 first{};
-    PlayerLifestyleSourceSampleV1 second{};
+    // Each source sample contains the full bounded candidate arrays. Keep the
+    // two independent samples off the application/fixture thread's stack.
+    const auto first_storage = std::make_unique<PlayerLifestyleSourceSampleV1>();
+    const auto second_storage = std::make_unique<PlayerLifestyleSourceSampleV1>();
+    auto &first = *first_storage;
+    auto &second = *second_storage;
     Failure source_failure = Failure::none;
     const auto read = [&](PlayerLifestyleSourceSampleV1 &sample) noexcept {
       if (environment.offline_fixture) {

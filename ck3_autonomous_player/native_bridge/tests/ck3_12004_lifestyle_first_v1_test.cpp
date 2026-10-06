@@ -3,6 +3,7 @@
 #include <filesystem>
 #include <fstream>
 #include <iostream>
+#include <memory>
 #include <stdexcept>
 namespace life = xar::ck3_12004::lifestyle;
 using namespace xar::ck3_11906;
@@ -40,8 +41,7 @@ void Write(const std::filesystem::path &path, const std::string &value) {
   stream << value << '\n';
   Require(stream.good(), "wire output failed");
 }
-Fixture Make(bool present) {
-  Fixture fixture{};
+void InitializeFixture(Fixture &fixture, bool present) {
   constexpr std::string_view id = "native:7";
   std::copy(id.begin(), id.end(), fixture.frame.snapshot_id.begin());
   fixture.frame.public_revision = 7;
@@ -75,12 +75,12 @@ Fixture Make(bool present) {
     state.owned_perk_count = 1;
     Require(life::AssignPlayerLifestyleStableKey12004V1("cutting_corners_perk", state.owned_perk_keys[0]), "perk key");
   }
-  return fixture;
 }
 void Case(const std::filesystem::path &directory, std::string_view name,
           bool present, bool drift, bool old_sha) {
-  auto fixture_storage = std::make_unique<Fixture>(Make(present));
+  auto fixture_storage = std::make_unique<Fixture>();
   auto &fixture = *fixture_storage;
+  InitializeFixture(fixture, present);
   fixture.drift = drift;
   const auto original = std::make_unique<PlayerLifestyleSourceSampleV1>(fixture.sample);
   PlayerLifestyleSnapshotEnvironmentV1 environment{};
