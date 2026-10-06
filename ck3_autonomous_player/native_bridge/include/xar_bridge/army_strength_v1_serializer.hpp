@@ -12,7 +12,6 @@
 #include "xar_bridge/army_daily_assault_roster_admission_serializer_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_dated_append_serializer_v1.inc.hpp"
 #include "xar_bridge/army_current_post_admission_refresh_serializer_v1.inc.hpp"
-#include "xar_bridge/army_current_candidate_detachment_mapper_serializer_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_pending_update_serializer_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_character_prefix_serializer_v1.inc.hpp"
 #include "xar_bridge/army_ordered_besieging_refill_inputs_v1_serializer.hpp"
@@ -21,6 +20,8 @@
 #include <string>
 
 namespace xar::game {
+
+#include "xar_bridge/army_current_candidate_detachment_mapper_serializer_v1.inc.hpp"
 
 template <class Number, class JsonString>
 inline void AppendArmyRegimentReplenishmentRecordsSnapshotV1(
