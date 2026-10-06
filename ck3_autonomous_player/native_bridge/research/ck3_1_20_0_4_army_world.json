@@ -1,0 +1,572 @@
+{
+  "schema": "xar.ck3.1.20.0.4.army-world.source-proof.v1",
+  "build": {
+    "native_version": "1.20.0.4",
+    "steam_build_id": 25734779,
+    "executable_sha256": "98702f88a547cde2eaf29a85f93b85f68ee4cf8148336a4f7afaeb75319dd518",
+    "baseline_commit": "caa4adc3d1278e324cf4ec19774028e9b9138e28",
+    "global_pe_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\global-pe-diff\\COMPACT-PE-DIFF-SUMMARY.json"
+  },
+  "status": "source_closed_implementation_awaiting_parent_first_fixture",
+  "implementation": {
+    "independent_binders": [
+      "ck3_12004::BindArmyImage12004",
+      "ck3_12004::BindWorldImage12004"
+    ],
+    "identity": "Exact .4 SHA and nonzero image base. No old SHA alias or old executable-address binder.",
+    "software_types": [
+      "ck3_12002::ArmyBindings",
+      "ck3_12002::ArmyStrengthScope",
+      "ck3_12002::WorldBindings",
+      "ck3_12002::WorldReadResult"
+    ],
+    "software_readers": "Read-only .2/.3 implementations are reused with explicitly closed actual .4 addresses; their namespace records software history. No collector copied.",
+    "support_populator": "ck3_12004::PopulateArmySupportBindings12004(base,sha,ck3_12002::ArmyBindings&) supplies separately owned supply/monthly/helper/commander/reserve dependencies.",
+    "world_abi": "get_war_score keeps adopted int32(const void*,void*) signature through decltype; other callbacks retain their adopted decltypes."
+  },
+  "army_function_source_uses": [
+    {
+      "id": "unit_state",
+      "old_rva": "0xd19140",
+      "actual_new_rva": "0xd19140",
+      "byte_count": 304,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\unit_state-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "army_current",
+      "old_rva": "0x2a95740",
+      "actual_new_rva": "0x2a95720",
+      "byte_count": 32,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\army_current-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "army_maximum",
+      "old_rva": "0x24e0450",
+      "actual_new_rva": "0x24e0430",
+      "byte_count": 31,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\army_maximum-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "province73c",
+      "old_rva": "0x2c099f0",
+      "actual_new_rva": "0x2c099d0",
+      "byte_count": 567,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\province73c-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "scope_construct",
+      "old_rva": "0x9f9e20",
+      "actual_new_rva": "0x9f9e20",
+      "byte_count": 213,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\scope_construct-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "scope_destroy",
+      "old_rva": "0x87e0e0",
+      "actual_new_rva": "0x87e0e0",
+      "byte_count": 126,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\scope_destroy-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "condition_evaluate",
+      "old_rva": "0x372df30",
+      "actual_new_rva": "0x372df10",
+      "byte_count": 232,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\condition_evaluate-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "current_shared_tail",
+      "old_rva": "0x24e3fe0",
+      "actual_new_rva": "0x24e3fc0",
+      "byte_count": 479,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\current_shared_tail-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "detachment_date",
+      "old_rva": "0x2c54340",
+      "actual_new_rva": "0x2c54320",
+      "byte_count": 397,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\detachment_date-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "pending_ready_callback",
+      "old_rva": "0x8863d0",
+      "actual_new_rva": "0x8863d0",
+      "byte_count": 33,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\pending_ready_callback-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "prefix_membership",
+      "old_rva": "0x2c12170",
+      "actual_new_rva": "0x2c12150",
+      "byte_count": 439,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\prefix_membership-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "prefix_basic_rule",
+      "old_rva": "0x1d63180",
+      "actual_new_rva": "0x1d63160",
+      "byte_count": 278,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\prefix_basic_rule-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "prefix_availability",
+      "old_rva": "0x2c129a0",
+      "actual_new_rva": "0x2c12980",
+      "byte_count": 1813,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\prefix_availability-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "holder_owner_relation",
+      "old_rva": "0x28b2820",
+      "actual_new_rva": "0x28b2800",
+      "byte_count": 160,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\holder_owner_relation-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "post_admission_source",
+      "old_rva": "0x24df3c0",
+      "actual_new_rva": "0x24df3a0",
+      "byte_count": 669,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\post_admission_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "pre_date_roster_source",
+      "old_rva": "0x2a99dc0",
+      "actual_new_rva": "0x2a99da0",
+      "byte_count": 1438,
+      "status": "instruction_span_partial_or_concrete_operand_delta",
+      "normalized_equal": false,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\pre_date_roster_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "daily_assault_admission_source",
+      "old_rva": "0x2a99b40",
+      "actual_new_rva": "0x2a99b20",
+      "byte_count": 194,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\daily_assault_admission_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "pending_update_source",
+      "old_rva": "0x2a92320",
+      "actual_new_rva": "0x2a92300",
+      "byte_count": 180,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\pending_update_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "assault_removal_source",
+      "old_rva": "0x2a978a0",
+      "actual_new_rva": "0x2a97880",
+      "byte_count": 41,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\assault_removal_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "detachment_pending_source",
+      "old_rva": "0x2a9be60",
+      "actual_new_rva": "0x2a9be40",
+      "byte_count": 50,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\detachment_pending_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "army_current_remaining_fragments",
+      "old_rva": "0x2a95760",
+      "actual_new_rva": "0x2a95740",
+      "byte_count": 155,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map02\\army_current_remaining_fragments-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "army_maximum_remaining_fragments",
+      "old_rva": "0x24e046f",
+      "actual_new_rva": "0x24e044f",
+      "byte_count": 94,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map02\\army_maximum_remaining_fragments-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "daily_assault_admission_remaining_fragments",
+      "old_rva": "0x2a99c02",
+      "actual_new_rva": "0x2a99be2",
+      "byte_count": 443,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map02\\daily_assault_admission_remaining_fragments-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "province_array_count",
+      "old_rva": "0x296b76b",
+      "actual_new_rva": "0x296b74b",
+      "byte_count": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map02\\province_array_count-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "province_array",
+      "old_rva": "0x296b774",
+      "actual_new_rva": "0x296b754",
+      "byte_count": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map02\\province_array-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "route_array_pointer",
+      "old_rva": "0x24abe3d",
+      "actual_new_rva": "0x24abe1d",
+      "byte_count": 4,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map02\\route_array_pointer-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "route_info_ProvinceID",
+      "old_rva": "0x24abe46",
+      "actual_new_rva": "0x24abe26",
+      "byte_count": 3,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map02\\route_info_ProvinceID-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "Unit_route_capacity_relative_to_path_member",
+      "old_rva": "0xd1a0d4",
+      "actual_new_rva": "0xd1a0d4",
+      "byte_count": 3,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map02\\Unit_route_capacity_relative_to_path_member-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "table_placement_source",
+      "old_rva": "0x2aa2030",
+      "actual_new_rva": "0x2aa2010",
+      "byte_count": 653,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map03\\table_placement_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "standalone_roster_eligibility",
+      "old_rva": "0x2c16690",
+      "actual_new_rva": "0x2c16670",
+      "byte_count": 214,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map03\\standalone_roster_eligibility-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "condition30_wrapper_source",
+      "old_rva": "0x2c4ab70",
+      "actual_new_rva": "0x2c4ab50",
+      "byte_count": 601,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map03\\condition30_wrapper_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "selector24_wrapper_source",
+      "old_rva": "0x1d65b00",
+      "actual_new_rva": "0x1d65ae0",
+      "byte_count": 229,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map03\\selector24_wrapper_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "selector24_provider_source",
+      "old_rva": "0x1d65660",
+      "actual_new_rva": "0x1d65640",
+      "byte_count": 87,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map04\\selector24_provider_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "flag20_actual_leaf",
+      "old_rva": "0x2c4b840",
+      "actual_new_rva": "0x2c4b820",
+      "byte_count": 202,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map05\\flag20_actual_leaf-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "active_combat_actual_leaf",
+      "old_rva": "0x24e8360",
+      "actual_new_rva": "0x24e8340",
+      "byte_count": 81,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map05\\active_combat_actual_leaf-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "roster_relationship_source",
+      "old_rva": "0x2c09810",
+      "actual_new_rva": "0x2c097f0",
+      "byte_count": 465,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map06\\roster_relationship_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "daily_assault_table_consumer_source",
+      "old_rva": "0x2a97ed0",
+      "actual_new_rva": "0x2a97eb0",
+      "byte_count": 801,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map07\\daily_assault_table_consumer_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "roster_pair_lookup_source",
+      "old_rva": "0x28bc270",
+      "actual_new_rva": "0x28bc250",
+      "byte_count": 176,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map08\\roster_pair_lookup_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "pending_update_remaining_fragments",
+      "old_rva": "0x2a923d4",
+      "actual_new_rva": "0x2a923b4",
+      "byte_count": 690,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map09\\pending_update_remaining_fragments-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "typed_pending_remaining_fragments",
+      "old_rva": "0x2a9be92",
+      "actual_new_rva": "0x2a9be72",
+      "byte_count": 256,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map09\\typed_pending_remaining_fragments-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "army_manager_empty_pending_source",
+      "old_rva": "0x2a95fb0",
+      "actual_new_rva": "0x2a95f90",
+      "byte_count": 662,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map10\\army_manager_empty_pending_source-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "pending_empty_buffer_named_helper",
+      "old_rva": "0x2a9e7f0",
+      "actual_new_rva": "0x2a9e7d0",
+      "byte_count": 93,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map11\\pending_empty_buffer_named_helper-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "persistent_regi_tag_14",
+      "old_rva": "0x2a9869e",
+      "actual_new_rva": "0x2a9867e",
+      "byte_count": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map12\\persistent_regi_tag_14-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "side_roster_header_initialization",
+      "old_rva": "0x264cab5",
+      "actual_new_rva": "0x264ca95",
+      "byte_count": 8,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map13\\side_roster_header_initialization-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    },
+    {
+      "id": "side_parent_combat_initialization",
+      "old_rva": "0x264cb3e",
+      "actual_new_rva": "0x264cb1e",
+      "byte_count": 7,
+      "status": "complete_instruction_span_normalized_equal",
+      "normalized_equal": true,
+      "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map13\\side_parent_combat_initialization-DETAIL.json",
+      "source_role": "Existing adopted source-use witness; only observer callback addresses in ck3_12004_army.cpp are invoked."
+    }
+  ],
+  "army_base": {
+    "unit_registry": "0x5D1E380",
+    "army_registry": "0x5D1DE48",
+    "raised_regiment_registry": "0x5D1F340",
+    "unit_state": "0xD19140",
+    "current_soldiers": "0x2A95720",
+    "maximum_soldiers": "0x24E0430",
+    "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\BASE-READER-SOURCE-CLOSED.json"
+  },
+  "world": {
+    "game_state_slot": "0x5C68C50",
+    "character_storage_slot": "0x5C67568",
+    "contains_participant": "0x2494B40",
+    "war_score": "0x249AC20",
+    "capital": "0x28B1CB0",
+    "raise": "0x24A5190",
+    "source_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\world-mapping\\WORLD-PROFILE-SOURCE-CLOSED.json",
+    "core_proof": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\core-global-slots\\CORE-GLOBAL-MAP.json"
+  },
+  "current_family_additional_closures": {
+    "globals": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\CURRENT-GLOBAL-SOURCE-USE-LEDGER.json",
+    "detachment_pending_callback": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\PENDING-CANONICAL-SLOT-CLOSED.json",
+    "pending_empty": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\PENDING-EMPTY-SOURCE-CLOSED.json",
+    "persistent_regi_type": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\PERSISTENT-REGI-TAG-SOURCE-CLOSED.json",
+    "combat_roles": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\CURRENT-COMBAT-ROLES-SOURCE-CLOSED.json"
+  },
+  "composition_owned_roster": {
+    "raised_type_and_signed_tier_source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map07\\daily_assault_table_consumer_source-DETAIL.json",
+    "gdbo_key": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\shared-roster-layout\\GDBO-KEY-LAYOUT-SOURCE-CLOSED.json",
+    "persistent_physical_roster": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\shared-roster-layout\\SHARED-ROSTER-LAYOUT-CLOSURE.json",
+    "chunk_C_and_14": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-family-12004\\shared-roster-layout\\chunk-map01\\FAMILY-MAP.json",
+    "distinction": "Raised ArRg tag41725267 and persistent Regi tag52656769 remain separate; GDbo tag4744624F and string fields18/28/30 use shared actual4 source.",
+    "province_signed_tier_getter": {
+      "source": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261007/battle-pursuit/migration-steam25734779/actual4-domain/province-map/first01/province_highest_eligible_siege_tier-DETAIL.json",
+      "old_rva": "0x247EFC0",
+      "actual_new_rva": "0x247EFA0",
+      "byte_count": 522,
+      "normalized_equal": true,
+      "type_pointer_actual_rva": "0x247F165",
+      "type_pointer_offset": 453,
+      "signed_tier_actual_rva": "0x247F169",
+      "signed_tier_offset": 457,
+      "operands": "ArRg+18 definition pointer; signed definition+2A0 tier"
+    }
+  },
+  "whole_query_semantics": {
+    "reader": "ck3_12002_army.cpp ReadArmyStrengthsForScope, lines1211-1373",
+    "once_collection": "Global table and loss collect before scope loop; the remaining14 adopted current optional objects collect at most once on first demand and are distributed to scope rows. Row-specific Strength readers remain row-specific.",
+    "roster": "Stored raw full32-bit IDs, native order, zero, high bits, FFFFFFFF, duplicates and occurrence indices remain retained by existing readers.",
+    "same_query": "Post-admission selected actual CArmy identity is retained and reused by current branches.",
+    "serialization": "Existing optional DTO and serializer are preserved; null/unread/undemanded remain distinct from legitimate false/zero. Native protocol unchanged.",
+    "rule31": "CallerArmy1D4 gate, raw Combat predicate, Unit/Character generation-fallback, loaded provider EF0+1380 receiver, raw Character18 root payload and ordinary ctor/eval/dtor are preserved. No loader or post-admission writer is invoked.",
+    "readiness": "Independent current inputs may become ready when actual demanded reads complete. Full callbacks, future predictions and synthetic fixture live credit remain false/unclaimed."
+  },
+  "concrete_code_delta": {
+    "old_root": "0x2A99DC0",
+    "actual_new_root": "0x2A99DA0",
+    "source": "Z:\\ck3_mod_rewrite_process_assets\\g2-background-20261007\\upstream-build-migration\\army-world-family\\native-main\\map01\\pre_date_roster_source-DETAIL.json",
+    "change": "Absolute table operands444C4B0 and444C340 exchange at old2A99E5A/2A99E78 and new2A99E3A/2A99E58. These operands were not masked. Do not claim whole body equality or future calendar replay."
+  },
+  "cost": {
+    "newly_captured_partial_bytes": 27234,
+    "newly_captured_partial_calls": 88,
+    "old_executable_partial_bytes": 13602,
+    "new_executable_partial_bytes": 13632,
+    "canonical_slot_bytes": 8,
+    "canonical_slot_calls": 1,
+    "full_executable_reads": 0,
+    "hashes": 0,
+    "pe_reparse": 0,
+    "pdata_reparse": 0,
+    "builds_tests_game_sdk": 0,
+    "support_world_shared_source_costs": "Owned and reported separately; reused receipts are not added to this owner cost."
+  },
+  "parent_integration": {
+    "source_files": [
+      "include/xar_bridge/ck3_12004_army.hpp",
+      "src/ck3_12004_army.cpp",
+      "include/xar_bridge/ck3_12004_world.hpp",
+      "src/ck3_12004_world.cpp",
+      "research/ck3_1_20_0_4_army_world.json"
+    ],
+    "recipe": "Include new family headers, compile both translation units plus separately owned army support unit, dispatch exact4 SHA to independent4 binders. Existing DTO/readers/serializers remain mounted; parent owns adapter/CMake/first wholequery fixture/commit."
+  },
+  "verification": {
+    "child_builds": 0,
+    "child_tests": 0,
+    "child_imports": 0,
+    "child_game_runs": 0,
+    "child_sdk_queries": 0,
+    "child_git_operations": 0,
+    "boundary": "This source evidence does not claim an executed first fixture or paused live snapshot."
+  }
+}
