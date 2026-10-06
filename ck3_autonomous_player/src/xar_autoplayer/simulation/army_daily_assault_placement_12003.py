@@ -172,6 +172,68 @@ def _empty_group(slot: int, control: int, full_hash: int,
     }
 
 
+def _carried_collision(groups: dict, controls: dict, original_slot: int,
+                       old: dict, tail: int, request_index: int) -> dict:
+    """Compute one matched normal-return chain without applying a partial call."""
+    working_groups, working_controls = dict(groups), dict(controls)
+    carried = deepcopy(old)
+    carried["control_raw_u8"] = (old["control_raw_u8"] + 1) & 0xFF
+    carried["allocator_provenance"] = _literal_allocators("2AA2176/2AA2450", old["allocator_provenance"])
+    slot, steps = original_slot, []
+    while True:
+        slot += 1
+        control = working_controls.get(slot)
+        distance = carried["control_raw_u8"]
+        step = {"physical_slot_i64": slot, "carried_siege_full_id_u32": carried["siege_full_id_u32"],
+                "carried_control_raw_u8": distance, "resident_control_raw_u8": control}
+        steps.append(step)
+        if control is None:
+            reason = "collision_carried_control_unobserved"
+            break
+        if control == 0:
+            moved = deepcopy(carried)
+            moved["physical_slot_i64"] = slot
+            moved["source_ledger"].append({"source": "2AA2216..2AA223F carried empty completion",
+                "request_index": request_index, "to_physical_slot_i64": slot})
+            moved["allocator_provenance"] = _literal_allocators("2AA222F/2AA2450", carried["allocator_provenance"])
+            working_groups[slot], working_controls[slot] = moved, distance
+            step.update(branch="carried_empty_completion", next_carried_control_raw_u8=None)
+            return {"ready": True, "groups": working_groups, "controls": working_controls,
+                    "steps": steps, "unavailable_reason": None}
+        if control < distance:
+            resident = working_groups.get(slot)
+            if (resident is None or resident["hash_raw_u32"] is None
+                    or resident["siege_full_id_u32"] is None or not _references_ready(resident)):
+                reason = "collision_carried_resident_value_unobserved"
+                break
+            if not all(_matched_allocator(resident, name) for name in _ALLOCATOR_RVAS):
+                reason = "collision_carried_allocator_unread_or_mismatched"
+                break
+            moved = deepcopy(carried)
+            moved["physical_slot_i64"] = slot
+            moved["source_ledger"].append({"source": "2AA21B8/2AA22C0 lower-distance exchange",
+                "request_index": request_index, "to_physical_slot_i64": slot})
+            moved["allocator_provenance"] = _literal_allocators("2AA22C0", carried["allocator_provenance"])
+            working_groups[slot], working_controls[slot] = moved, distance
+            carried = deepcopy(resident)
+            carried["allocator_provenance"] = _literal_allocators("2AA22C0", resident["allocator_provenance"])
+            # Native21BD reloads the swapped-in resident control. This arm
+            # increments that byte and advances without a tail comparison.
+            carried["control_raw_u8"] = (control + 1) & 0xFF
+            step.update(branch="lower_distance_exchange", resident_siege_full_id_u32=resident["siege_full_id_u32"],
+                        next_carried_control_raw_u8=carried["control_raw_u8"], tail_compared=False)
+        else:
+            # Native21CA leaves the resident value entirely undemanded.
+            carried["control_raw_u8"] = (distance + 1) & 0xFF
+            step.update(branch="resident_distance_at_least_carried", tail_compared=True,
+                        next_carried_control_raw_u8=carried["control_raw_u8"], tail_distance_raw_u8=tail)
+            if carried["control_raw_u8"] > tail:
+                reason = "collision_carried_tail_overflow"
+                break
+    step["unavailable_reason"] = reason
+    return {"ready": False, "steps": steps, "unavailable_reason": reason}
+
+
 def project_daily_assault_placement_prefix_12003(
     normalized_table: Mapping | None,
     requests: Sequence[DailyAssaultPlacementRequest12003], *,
@@ -297,9 +359,6 @@ def project_daily_assault_placement_prefix_12003(
                 if next_control is None:
                     stop(index, "collision_next_control_unobserved")
                     break
-                if next_control != 0:
-                    stop(index, "general_carried_collision_unmodeled")
-                    break
                 old = groups.get(slot)
                 if old is None or old["hash_raw_u32"] is None or old["siege_full_id_u32"] is None or not _references_ready(old):
                     stop(index, "collision_old_group_value_unobserved")
@@ -307,17 +366,26 @@ def project_daily_assault_placement_prefix_12003(
                 if not all(_matched_allocator(old, name) for name in _ALLOCATOR_RVAS):
                     stop(index, "collision_allocator_unread_or_mismatched")
                     break
-                branch = "immediate_next_empty_matched_allocators"
-                moved = deepcopy(old)
-                moved.update(physical_slot_i64=slot + 1, control_raw_u8=(old["control_raw_u8"] + 1) & 0xFF)
-                moved["source_ledger"].append({"source": "2AA212A..2AA214D normal-return header transfer",
-                                               "request_index": index, "from_physical_slot_i64": slot,
-                                               "to_physical_slot_i64": slot + 1})
-                moved["allocator_provenance"] = _literal_allocators("2AA2450", old["allocator_provenance"])
-                groups[slot + 1] = moved
-                controls[slot + 1] = moved["control_raw_u8"]
-                row["relocated_group"] = {"from_physical_slot_i64": slot, "to_physical_slot_i64": slot + 1,
-                                          "siege_full_id_u32": old["siege_full_id_u32"]}
+                if next_control != 0:
+                    carried = _carried_collision(groups, controls, slot, old, tail, index)
+                    row["carried_collision_ledger"] = carried["steps"]
+                    if not carried["ready"]:
+                        stop(index, carried["unavailable_reason"])
+                        break
+                    groups, controls = carried["groups"], carried["controls"]
+                    branch = "general_carried_collision_matched_allocators"
+                else:
+                    branch = "immediate_next_empty_matched_allocators"
+                    moved = deepcopy(old)
+                    moved.update(physical_slot_i64=slot + 1, control_raw_u8=(old["control_raw_u8"] + 1) & 0xFF)
+                    moved["source_ledger"].append({"source": "2AA212A..2AA214D normal-return header transfer",
+                                                   "request_index": index, "from_physical_slot_i64": slot,
+                                                   "to_physical_slot_i64": slot + 1})
+                    moved["allocator_provenance"] = _literal_allocators("2AA2450", old["allocator_provenance"])
+                    groups[slot + 1] = moved
+                    controls[slot + 1] = moved["control_raw_u8"]
+                    row["relocated_group"] = {"from_physical_slot_i64": slot, "to_physical_slot_i64": slot + 1,
+                                              "siege_full_id_u32": old["siege_full_id_u32"]}
             groups[slot] = _empty_group(slot, distance, full_hash, request, index, branch)
             controls[slot] = distance
             header["occupied_count_raw_i32"] = _wrap_i32(count + 1)
