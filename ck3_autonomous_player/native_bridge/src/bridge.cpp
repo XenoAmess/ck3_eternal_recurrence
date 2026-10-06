@@ -22558,7 +22558,6 @@ void RunConnectedSession(
         } else {
           native_step_dispatched = false;
         }
-        }
         if (!native_step_dispatched) {
           native_step_dispatched = true;
         if (step == xar::ck3_11906::kLoadedFeatureManifestV1Step) {
@@ -22679,6 +22678,7 @@ void RunConnectedSession(
                 connected = write_frame(pipe, response);
               }
             }
+          }
           }
         } else if (
             step == xar::ck3_11906::
