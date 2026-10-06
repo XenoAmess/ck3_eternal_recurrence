@@ -3048,3 +3048,7 @@ subprocess.Popen([str(steam_exe), "-silent"], env=launch_env)
 官方 CI `37417056493` 在 `ck3_12002_army_test.cpp:93` 报两个回调类型不匹配的 C2440。当前 Province B observer 将新增 bindings group 放在 `ArmyBindings` 首部，旧八成员聚合初始化因 brace elision 开始填入该嵌套 group，导致回调错位。具名赋值路径和新独立 observer fixture 的成功不能代替这个既有初始化入口的兼容结果。
 
 本次最小修复 `b9367e30` 只将新增 group 移到结构尾部，保留原成员前缀，未改旧夹具或观测算法。对修正源码执行一次 `check_native_army_routes_ci.py`，GREEN、21.6291008 秒；原官方 RED 保留，已通过的新 CTests 和 wires 没有重复。后续新增 bindings 延续这一布局即可，无需另加门禁或扩大审计。[原失败与日志](Z:/ck3_mod_rewrite_process_assets/g2-background-round17-20261006/ordered-core-assault-batch/root-publication/CI-f1a0bb8b/FINAL-CI-RESULT.json)、[一次定向检查](C:/codex-ck3-background/army-binding-prefix-ci-fix-20261006/ROOT-FIX-VERIFICATION.json)。该检查完全离线，未操作 CK3、Steam 或用户数据。
+
+## Native fixture memory GREEN 与实际服务消费的两次 harness RED (2026-10-06T14:17:02+08:00)
+
+g92 首次两项 native CTest memory assertions GREEN，真实整帧消费仍可在零场景阶段失败：ordered fixture 只在 `argc==3 && argv[1]=="--wire-dir"` 发文件，注册的 positional目录没有输出；table fake associated ArRg `0xAB000001/2/3` 在旧 `regiment_strengths` 非负 signedint32字段成为负数。修正只补输出参数、把这三个假ID改2B，保留其他highDWORD和生产合同。单个修正fixture重编译并链接已资格runtime，随后NEW9+7实际byte→immutable完整service首次全部GREEN。离线 fixture-only源码与复用runtime源码分别记录，原Ct GREEN和两个零场景 RED均留存，不把memory pass冒充service pass或fullruntime重建；[修正收据](C:/codex-ck3-background/ordered-assault-table-batch/fixture-output-repair01/CORRECTED-FIXTURE-CTESTS.json)。
