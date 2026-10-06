@@ -246,7 +246,7 @@ bool ProduceFeaturePacket(const std::filesystem::path &directory) {
   const auto before_root = fixture.root;
   const auto before_set = fixture.dlc_set;
   const auto before_buckets = fixture.buckets;
-  if (ReadLoadedFeatureManifestV1(environment, access,
+  if (xar::ck3_12004::ReadLoadedFeatureManifestV1(environment, access,
           LoadedFeatureManifestRequestV1{kRevision}, manifest) !=
       xar::game::ReadLoadedFeatureManifestResultV1::available ||
       fixture.captures != 2 ||
