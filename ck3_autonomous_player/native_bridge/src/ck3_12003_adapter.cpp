@@ -373,6 +373,10 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
         reinterpret_cast<decltype(religion.target_faith_is_unreformed)>(
             image_base + 0x2BD8960);
   }
+  if (result.armies.enabled) {
+    result.armies.current_army_flag31_bindings =
+        ck3_12003::BindCurrentArmyFlag31Inputs12003(image_base, executable_sha256);
+  }
   return result;
 }
 
