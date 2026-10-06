@@ -278,3 +278,11 @@ Root真实WM_CLOSE/noautosave/Quit Desktop后，native于19:18:59.930959以proce
 R13补充分层：现存日志scope3各1/FAIL0、宋34422/`han_8052` proof存在，截止前crossbind仍未完成，binding=null/initial rows0；独立完整原wire扫描root query/result/trace各0。[9028B非EOF失败回执](C:/workspace/ck3-upgrade-20261006/xqol-r13-thin-report-observer-agent-01/FAILURE_NON_EOF_01.json)保留该边界，不能写scope不存在或仅以rows0推断没有原生查询。
 
 R13后续实际收口：runner UTC19:24:40.359928为RED、原Timeout保留，cleanup/thread=true，唯一finish_hold仍因死后snapshot失败；thin/raw/harness gone，observer3672/session62510实际exit0。[3144B最终闭合](C:/workspace/ck3-upgrade-20261006/xqol-r13-thin-report-observer-agent-01/ACTUAL_NATIVE_HARNESS_OBSERVER_CLOSEOUT_02.json) SHA `82501663bc080c3861a59b2d1dcc6092721fc51771af1b971adce14c44db08bc`。keeper3688/thread=true/exit0后，[a67实际CAS](C:/workspace/ck3-upgrade-20261006/xqol-cold13-close-current-original-root-01/actual-a67-screen-release-01.json)3689/done/resources[]于UTC19:25:31.764299完成；此前待释放措辞为历史记录。R14现已唯一启动harness19988，不写诊断、D1/D5或业务通过。
+
+## 本机体验优化 R14/a68 实际限定结果（2026-10-06）
+
+R14资格UTC19:34:40.278299完成、initial2+diag4共6rows全OK；Source08 request `step-112-3221d07e7ddb`/PID20452/gen1/rev4/D0/queryseq1实际title16850/index4/held9of9/capital0，getter completed/nonnull=true、tag读取成功 `0x4E756C6C` Null/stock no-province=true，whole-root仍unavailable。[40905B非EOF原trace](C:/workspace/ck3-upgrade-20261006/xqol-r14-actual-native-root-trace-attribution-agent-01/ACTUAL_R14_INITIAL_ROOT_TRACE_NON_EOF_01.json) SHA `1e197f21a9d26ec18550e78ec19600551d16e496928170d83b76a0b0ecdbd189`，只证明此观察范围。
+
+原hold20:04:45.968318自动闭合harness GREEN/error=null/cleanup-thread=true，但native stop/processcode=null/shutdowncode1，不记正常OS0或product PASS。Root22:17:36实际D0 review后controller在新增control前拒绝 `No active clean hold`，D1/D5未执行、review不可供新场复用；raw/thin均实际exit0且全部game/harness/watchers gone，keeper3864后[a68实际CAS](C:/workspace/ck3-upgrade-20261006/xqol-cold14-firstmap-current-original-root-01/actual-a68-screen-release-01.json)3865/done/resources[]于UTC22:25:05.454799完成。title/getter语义待源码核查，未增加修复、业务或发布信用；此前R13及失败历史保留。
+
+R14[最终EOF薄收据](C:/workspace/ck3-upgrade-20261006/xqol-r14-thin-report-observer-agent-01/FINAL_EOF_THIN_01.json)6919B、SHA `0bd551826d92b17eb56df362473d5b849c0c35d373050cdcda9ec4bc7068b56f`：原必需标记仅4/23，三FAIL族与两reject各0，真实root query/result/trace各1；engine error.log EOF实际17415B，归因仍未知，不能写0或产品通过。
