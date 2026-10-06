@@ -105,3 +105,48 @@ This proves an evolving association input is used by the predicate: after a prec
 The separately authorized continuation read **46 additional B / 46 seeks** on October 6 **18:46:19 CST**, selecting the known `2658082` failure branch first. It loads ArRg fallback `5D1F338`, reads its actual `+140` Army FullID and queries Army registry `5D1DE48`; the new failure targets are **`26580C2`**. The last complete instruction ends at `26580AF`; one first byte of the next instruction was read before the fixed prefix end stopped decoding. No return was reached and the planned `2658070` fallthrough had not yet run when the stop occurred. The receipt preserves that actual partial outcome without repeating any source byte.
 
 `2658050-REMAINING-CONTROL-PLAN.json` now identifies only those three unfinished entries: **`2658070`, `26580AF`, `26580C2`**. It proposes up to **226 new distinct B / 226 seeks**, excluding all 78 already captured bytes, inside the already known gap ending at direct callee entry `2658180`. Incremental decode stops at actual returns; unused gap bytes, padding and neighbor bodies are not read. This finite ceiling allows the actual association-selected receiver chain to finish without assuming the whole gap is one function. It still requires Root's approval. Cumulative actual cost at this update is **216 metadata B + 78 code B / 96 seeks**. AL and complete predicate effects remain unclosed; no new numeric model or observer is implemented.
+
+## Closed actual `2658050`: association-to-owner raw count predicate
+
+Root approved that finite one-pass remainder. October 6 **18:51:38 CST**, it read only **212 additional B / 212 seeks**, reaching both actual returns at `2658162` and `2658171`. All actual direct control paths join or return within **`[2658050,2658172)` / 290 B**. The remaining 14 B before `2658180` were not read. There are **no calls, memory writes or indirect transfers**; the predicate uses only the following generation/fallback chain and raw count. Earlier 78 B were reused from their read maps, not reread or rehashed.
+
+| Link | Requested full ID | Registry / fallback | Full-ID comparison |
+| --- | --- | --- | --- |
+| Physical chunk to ArRg | DWORD chunk `+10` | `5D1F340` / `5D1F338` | Selected object `+10` |
+| ArRg to Army | DWORD selected ArRg `+140` | `5D1DE48` / `5D1DE50` | Selected object `+10` |
+| Army to Unit | DWORD selected Army `+124` | `5D1E380` / `5D1E378` | Selected object `+10` |
+| Unit to owner Character | DWORD selected Unit `+174` | `5C67568` / `5C67570` | Selected object `+18` |
+
+For every link, null registry, unsigned low24 index `>=` registry DWORD `+2C`, null slot payload, or generation mismatch selects the actual fallback pointer. There is **no magic gate or explicit FFFFFFFF-ID skip**. After Character selection, qword `Character+1C0 != null` chooses `pointer+318h`; otherwise choose actual static context **`5459D38`**. Return AL is exactly **DWORD `[chosen_context+C] != 0`**. Zero is false; any nonzero value, including signed negative, is true. Neither a guessed context name nor a positive-count test substitutes for this source expression.
+
+This closes the source bool and all of its own effects. It does not turn a captured bool into a later-stage observation: association changes select a different current chain, while later pending/Character callbacks may change linked context or registry state. The no-call predicate itself reads no chunk current/max/date. The preceding setter changes only the current/maximum pair, so it does not change this predicate's inputs; the later explicit `chunk+10=-1` store changes the next alias's requested ID.
+
+`2658050-REMAINING-CONTROL-READ-RECEIPT.json` preserves each new byte and every decoded instruction together with the cached prefix; `function-02658050-FINAL-CONTROL.asm.txt` reaches both returns. Cumulative actual frozen-EXE I/O is **216 metadata B + 290 code B = 506 B / 308 seeks**. The incomplete metadata/prefix attempts remain separate history. No EXE/body hash, code replay, native build or game operation was added.
+
+```mermaid
+flowchart LR
+    C[Physical chunk association10 rawFullID] --> A[Source generation/fallback ArRg]
+    A -->|actual140| AR[Source generation/fallback Army]
+    AR -->|actual124| U[Source generation/fallback Unit]
+    U -->|actual174| CH[Source generation/fallback owner Character]
+    CH --> E{Character1C0 pointer nonnull}
+    E -->|yes| M[Actual pointed context plus318h]
+    E -->|no| F[Actual static5459D38 context]
+    M --> N[DWORD context+C]
+    F --> N
+    N --> B{Count not equal0}
+    B -->|false| CL[Caller association10 and byte14 clear]
+    B -->|true| DT[Caller sentinel then2658180 fourargument date]
+    DT -.-> UD[Unknown selected date output/effects]
+    UD -.-> P[Unknown2A9BE60 primary/chunk pending effects]
+```
+
+## Minimum whole-incoming-DATA observer and value API
+
+The new `2658050-SOURCE-AND-OBSERVER-PLAN.json` defines the next useful query seam. A header-only reader API can take **the actual incoming ArRg receiver**, its actual passed Province/date/primary context and the existing source-shaped lookup bindings. It must capture **that ArRg's whole raw DATA `+20/+2C` sequence**, not the current mapper's first record, not a validated associated subset and not a different queried subject's DATA. Source receiver selection from `2A971A0`/persistent associations is a separate origin ledger; a copied current seed is never labeled an actual future invocation.
+
+For every source-visited record, publish raw ordinal/Regi selection, physical chunk identity and its actual current/max/association/flag/date fields. Publish the `2658050` chain roles and final **raw context count**, plus the same-capture FFFFFFFF-association fallback chain needed after the closed clear. Physical rows can be sampled once while ordered record occurrences retain repeated aliases. The pointer/fullID/tag provenance belongs to its actual role; do not add tag gates which this predicate lacks. For the setter's special clear, demand its actual raw owner/cleanup operands only on the selected branch.
+
+The minimal additive family is proposed as `current_detachment_data_inputs_v1`, with a separate builder `same_input_current_detachment_data_prefix_v1`. A source-predicate-false DATA prefix can expose real conditional current/max pair changes and association/flag clear requests from copied actual raw records. Recompute the bool from evolved association and the captured role map rather than replaying an initial bool. Stop the numerical prefix at a selected date/pending operation whose required source/evolving inputs are not yet available, retaining earlier independent effects. Its basis is **conditional current incoming-DATA**, with actual detach/post-stage/lifecycle/full monthly/live false/null.
+
+This is an implementation/API plan, not a new observer or a static-ready value claim. Root will own coherent native registration/build, the new whole-query fixture and FIRST compiled-service qualification, then a **fresh minimized paused read**. The child never attaches to the game. Before implementing a complete true date branch, close the actual `2658180`/`2A9BE60` numerical effects; do not leave permanent-null fields or expand unrelated allocator/stat trees. The external `2658180-FINITE-METADATA-PLAN.json` reuses the already-read exact 443 B record and proposes only its 4 B unwind header (plus one selected 12 B chain record if present) before a separate exact body review.
