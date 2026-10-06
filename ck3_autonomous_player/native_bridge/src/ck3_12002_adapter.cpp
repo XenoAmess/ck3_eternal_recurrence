@@ -125,9 +125,8 @@ public:
 
   bool read_snapshot(Snapshot &output) const noexcept override {
     output = {};
-    // The .4 foundation has its own partial-core publisher. Its full snapshot
-    // families are migrated separately before this complete contract is used.
-    if (IsCk3_12004Descriptor(descriptor())) return false;
+    if (IsCk3_12004Descriptor(descriptor()))
+      return ReadCk3_12004Snapshot(bindings_, output);
     ck3_12002::CoreSnapshotPrefix prefix{};
     if (!bindings_.read_core_snapshot(bindings_.core, prefix)) return false;
     Snapshot observed{};

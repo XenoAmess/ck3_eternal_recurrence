@@ -1,6 +1,12 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
+#include "xar_bridge/ck3_12004_commands.hpp"
+#include "xar_bridge/ck3_12004_family_relationships.hpp"
+#include "xar_bridge/ck3_12004_province.hpp"
+#include "xar_bridge/ck3_12004_snapshot_foundation.hpp"
+#include "xar_bridge/ck3_12004_world.hpp"
+#include "xar_bridge/ck3_12004_army.hpp"
 
 #include <windows.h>
 #include <array>
@@ -19,9 +25,21 @@ void ReplaceIdentityToken(std::string &serialized, std::string_view from,
 } // namespace
 
 const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
-  // Only the independently migrated core-frame observation is published here.
-  static constexpr std::array<std::string_view, 1> capabilities{
-      "game.query.core-frame.v1"};
+  static constexpr auto capabilities = std::to_array<std::string_view>({
+      "game.query.core-frame.v1",
+      "game.state.snapshot", "game.state.xar-one-life-settlement",
+      "game.state.map-ready", "game.state.played-character",
+      "game.state.active-event", "game.state.pending-character-interaction",
+      "game.state.active-wars", "game.state.war-primary-opponent",
+      "game.state.war-objectives", "game.state.war-objective-occupation",
+      "game.state.war-objective-fort-level", "game.state.war-objective-garrison",
+      "game.state.war-objective-siege-progress", "game.state.war-objective-assault",
+      "game.state.player-armies", "game.state.army-routes",
+      "game.command.query-army-strengths-v1",
+      "game.command.pause-map", "game.command.resume-map",
+      "game.command.set-speed-1", "game.command.set-speed-2",
+      "game.command.set-speed-3", "game.command.set-speed-4",
+      "game.command.set-speed-5", "game.command.save-checkpoint"});
   static const AdapterDescriptor descriptor{
       ck3_12004::kAdapterId, ck3_12004::kGameVersion,
       ck3_12004::kExecutableSha256, ck3_12002::kCheckpointSaveName,
@@ -34,9 +52,78 @@ Ck3_12004AdapterBindings BindCk3_12004AdapterImage(
   Ck3_12004AdapterBindings bindings{};
   bindings.core = ck3_12004::BindCoreImage(image_base, executable_sha256);
   bindings.read_core_snapshot = ck3_12004::ReadCoreSnapshot;
-  // Advanced families keep their own migration packets; this never calls the
-  // old whole-image binder or substitutes its hash for the new executable.
+  if (!bindings.core.enabled) return bindings;
+  bindings.commands = ck3_12004::BindCommandImage12004(
+      image_base, executable_sha256);
+  bindings.armies = ck3_12004::BindArmyImage12004(image_base, executable_sha256);
+  bindings.owned_regiments.persistent_regiment_storage_slot =
+      bindings.armies.persistent_regiment_storage_slot;
+  bindings.owned_regiments.read_type = ck3_12002::ReadOwnedRegimentTypeV1;
+  bindings.world = ck3_12004::BindWorldImage12004(image_base, executable_sha256);
+  bindings.provinces = ck3_12004::BindProvinceImage12004(
+      image_base, executable_sha256, bindings.armies);
+  try {
+    bindings.snapshot_foundation12004 =
+        std::make_shared<const ck3_12004::SnapshotFoundationBindings>(
+            ck3_12004::BindSnapshotFoundationImage(image_base, executable_sha256));
+  } catch (...) {
+    // The independent core observation remains available if the software
+    // snapshot bundle cannot be allocated.
+    bindings.snapshot_foundation12004.reset();
+  }
   return bindings;
+}
+
+bool ReadCk3_12004Snapshot(const Ck3_12004AdapterBindings &bindings,
+                         Snapshot &output) noexcept {
+  output = {};
+  ck3_12004::CoreSnapshotPrefix prefix{};
+  if (bindings.read_core_snapshot == nullptr ||
+      !bindings.read_core_snapshot(bindings.core, prefix)) return false;
+  Snapshot observed{};
+  observed.date_raw = prefix.clock.date_raw;
+  observed.speed = prefix.clock.speed;
+  observed.paused = prefix.clock.paused;
+  observed.player_id = prefix.local_player_id;
+  observed.map_ready = prefix.map_ready;
+  observed.has_played_character = prefix.has_played_character;
+  observed.played_character_id = prefix.played_character_id;
+  observed.played_character_alive = prefix.played_character_alive;
+  if (!prefix.map_ready) {
+    output = std::move(observed);
+    return true;
+  }
+  const auto &foundation = bindings.snapshot_foundation12004;
+  if (!foundation) return false;
+  if (prefix.has_played_character) {
+    ck3_12004::ActorResourceBalances resources{};
+    if (!ck3_12004::ReadActorResourceBalances(
+            bindings.core, prefix.played_character_id, resources)) return false;
+    observed.played_character_gold.raw = resources.gold_raw;
+    observed.played_character_prestige.raw = resources.prestige_raw;
+    observed.played_character_piety.raw = resources.piety_raw;
+    observed.played_character_stress_points = resources.stress_points;
+    PlayedCharacterRelationships12002 relationships{};
+    if (!ck3_12004::ReadPlayedCharacterRelationships(
+            bindings.core, prefix.played_character_id, relationships)) return false;
+    observed.played_character_betrothed_id = relationships.betrothed_character_id;
+    observed.played_character_primary_spouse_id =
+        relationships.primary_spouse_character_id;
+    observed.played_character_spouse_ids =
+        std::move(relationships.spouse_character_ids);
+  }
+  auto events = foundation->events;
+  events.core = bindings.core;
+  if (!ck3_12004::ReadEventsSnapshot(events, observed) ||
+      ck3_12004::ReadWorldSnapshot12004(bindings.world, bindings.armies,
+          bindings.provinces, prefix, observed) !=
+              ck3_12004::WorldReadResult::available) return false;
+  const auto settlement = ck3_12004::ReadSettlement(
+      foundation->settlement, bindings.core, observed);
+  if (settlement != ck3_12004::SettlementReadResult::published &&
+      settlement != ck3_12004::SettlementReadResult::not_published) return false;
+  output = std::move(observed);
+  return true;
 }
 
 std::unique_ptr<GameAdapter> CreateCk3_12004AdapterFromBindings(

@@ -11,6 +11,7 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_core_frame_v1.hpp"
+#include "xar_bridge/ck3_12004_thread_runtime.hpp"
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12003_confucian_assembly_mailbox.hpp"
 #endif
@@ -11227,6 +11228,17 @@ public:
     auto environment = xar::ck3_12004::BindCoreFrameMailboxEnvironmentV1(
         reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
         game_->descriptor().executable_sha256);
+    if (observer_ != nullptr && game_->supports_snapshot()) {
+      const std::array<xar::ck3_11906::MainThreadQueryExecutorV1, 2> executors{
+          &xar::ck3_12004::ExecuteCoreFrameMailboxV1,
+          &xar::ck3_12002::ExecuteSemanticAdapter12002};
+      environment = xar::ck3_12004::BindThreadRuntimeImage(
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
+          game_->descriptor().executable_sha256, executors);
+      environment.snapshot_observer_callback =
+          &xar::ck3_12002::ObserveAdapterSnapshot12002;
+      environment.snapshot_observer_context = observer_;
+    }
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -26717,7 +26729,9 @@ DWORD WINAPI WorkerMain(void *) noexcept {
       exact_ck3_build);
   xar::ck3_12002::WorkerAdapter new_worker_adapter(*game, g_main_thread_query_mailbox_v1);
   const bool new_build = game->enabled() &&
-      xar::game::IsReviewedCrozierAdapter(*game);
+      (xar::game::IsReviewedCrozierAdapter(*game) ||
+       (xar::game::IsCk3_12004Descriptor(game->descriptor()) &&
+        game->supports_snapshot()));
   const xar::game::GameAdapter &session_game = new_build
       ? static_cast<const xar::game::GameAdapter &>(new_worker_adapter) : *game;
   WarEntryApplicationMainMailboxWorkerLifetime mailbox_lifetime(

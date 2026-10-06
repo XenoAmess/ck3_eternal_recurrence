@@ -9291,3 +9291,6 @@ if(BUILD_TESTING AND WIN32)
       ${CMAKE_CURRENT_BINARY_DIR}/wire/ck3_12004_core_frame_v1)
   include(cmake/ck3_12004_core_frame_real_link_closure.cmake)
 endif()
+
+include(cmake/snapshot_foundation_12004.cmake)
+include(cmake/army_family_12004.cmake)

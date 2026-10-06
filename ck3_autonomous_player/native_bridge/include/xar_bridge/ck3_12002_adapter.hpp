@@ -24,6 +24,10 @@
 
 #include <memory>
 
+namespace xar::ck3_12004 {
+struct SnapshotFoundationBindings;
+}
+
 namespace xar::game {
 
 // Version-private dependency bundle. Production fills it with addresses from
@@ -56,6 +60,10 @@ struct Ck3_12002AdapterBindings {
   bool (*read_core_snapshot)(const ck3_12002::CoreBindings &,
                              ck3_12002::CoreSnapshotPrefix &) noexcept =
       ck3_12002::ReadCoreSnapshot;
+  // Append-only actual .4 snapshot source bundle. Older aggregate prefixes
+  // and their selected image bindings retain their original layout.
+  std::shared_ptr<const ck3_12004::SnapshotFoundationBindings>
+      snapshot_foundation12004;
 };
 
 // Same row publisher called by the current Army query and focused fixtures.
