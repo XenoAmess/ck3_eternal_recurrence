@@ -59,6 +59,7 @@
 #include "xar_bridge/ck3_12002_thread_runtime.hpp"
 #include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
 #include "xar_bridge/ck3_12002_nonwar_router.hpp"
+#include "xar_bridge/ck3_12002_feast_planner_private_transport_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 #include "xar_bridge/ck3_12002_sway_completion_execution_install.hpp"
 #endif
@@ -11246,6 +11247,10 @@ public:
     xar::ck3_12002::RegisterNonwarMailboxExecutorsV1(environment, nonwar);
     environment.permitted_executor_quindenary =
         &xar::ck3_12003::ExecuteArmyCommanderCandidatesMailbox;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_PLANNER_DIAG_PRIVATE_QUERY_V1)
+    environment.permitted_executor_tertiary =
+        &xar::ck3_12002::ExecuteActivityPlannerDiagPrivate12002QueryV1;
+#endif
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }

@@ -120,6 +120,7 @@
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12002_prisoner_mailbox.hpp"
+#include "xar_bridge/ck3_12004_prisoner_mailbox.hpp"
 #endif
 
 namespace xar::bridge {
@@ -152,6 +153,9 @@ struct NonwarPrivateState12002 {
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
   PrisonerPrivateWorkerState12002 prisoner{};
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+  ck3_12004::PrisonerPrivateWorkerState12004 prisoner12004{};
 #endif
 };
 

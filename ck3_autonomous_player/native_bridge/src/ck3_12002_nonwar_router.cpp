@@ -240,6 +240,12 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
 }
 
 void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept {
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+  out.prisoner_collection = &ck3_12004::ExecutePlayerPrisonerCollection12004;
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+  out.prisoner_ransom = &ck3_12004::ExecutePlayerPrisonerRansom12004;
+#endif
+#endif
 #if defined(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
   out.law_final_terms = &ExecuteRealmLawPausedPrivateQuery12002;
 #endif
@@ -256,6 +262,80 @@ void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
   out.religion_tenets = &ExecutePlayerReligionTenetsMailbox12002;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
+  out.religion_draft_groups = &ExecutePlayerReligionDraftGroupsMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1)
+  out.religion_draft_doctrine_choices = &ExecutePlayerReligionDraftDoctrineChoicesMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1)
+  out.religion_draft_tenet_choices = &ExecutePlayerReligionDraftTenetChoicesMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1)
+  out.religion_draft_resource_costs = &ExecutePlayerReligionDraftResourceCostsMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1)
+  out.religion_ai_reform_inputs = &ExecutePlayerReligionAIReformInputsMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+  out.rite_governance = &ExecutePlayerRiteGovernanceMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+  out.rite_members = &ExecutePlayerRiteMembersMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  out.sway_state = &ExecuteActiveSwayMailbox12002;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
+  out.sway_action = &ExecuteActiveSwayMailbox12002;
+#endif
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1)
+  out.sway_outcome_opinion = &ExecuteSwayOutcomeMailboxV1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)
+  out.family_obligations = &ExecuteFamilyObligationsMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1)
+  out.feast_open = &ExecuteActivityFeastPlannerOpenPrivate12002V1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE1_OPTION_READ_PRIVATE_V1)
+  out.feast_options = &ExecuteActivityStage1OptionReadPrivate12002V1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_CANSTART_PRIVATE_V1)
+  out.feast_can_start = &ExecuteActivityStage5CanStartPrivate12002V1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_GOLD_COST_PRIVATE_V1)
+  out.feast_gold = &ExecuteActivityStage5GoldCostPrivateV1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE5_FEAST_FULL_COST_PRIVATE_V1)
+  out.feast_full_costs = &ExecuteActivityStage5FeastFullCostPrivateV1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_STAGE2_DESTINATION_PRIVATE_V1)
+  out.feast_destination = &ExecuteActivityStage2DestinationSelectPrivate12002V1;
+  out.feast_stage2_confirm = &ExecuteActivityStage2ConfirmPrivate12002V1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_STAGE5_START_PRIVATE_V1)
+  out.feast_start = &ExecuteActivityFeastStage5Private12002V1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_CANDIDATE_PRIVATE_V1)
+  out.feast_guest = &ExecuteActivityFeastGuestCandidatePrivateV1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_RULE_TOGGLE_PRIVATE_V1)
+  out.feast_guest_rules = &ExecuteActivityFeastGuestRulePrivateV1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_GUEST_OPINION_PRIVATE_V1)
+  out.feast_guest_opinion = &ExecuteActivityFeastGuestOpinionPrivateV1;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
+  out.epidemic_treatment = &ExecutePlayerEpidemicTreatmentMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1)
+  out.epidemic_recovery = &ExecutePlayerEpidemicRecoveryMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1)
+  out.ordinary_holy_war_declaration_context =
+      &ExecuteOrdinaryHolyWarDeclarationContextMailbox12003;
+#endif
   (void)out;
 }
 
@@ -264,6 +344,14 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
   if (!adapter.enabled() ||
       !game::IsCk3_12004Descriptor(adapter.descriptor())) return false;
   (void)step;
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+  std::uint32_t prisoner_ordinal = 0;
+  if (ck3_11906::ParsePlayerPrisonerCollectionPrivateStepV1(step, prisoner_ordinal))
+    return true;
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+  if (step == "submit-player-prisoner-ransom-private-v1") return true;
+#endif
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
   if (IsPlayerReligionReformPrivateStep12002(step)) return true;
 #endif
@@ -276,10 +364,56 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
   if (IsPlayerReligionTenetsPrivateStep12002(step)) return true;
 #endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_GROUPS_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionDraftGroupsPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_DOCTRINE_CHOICES_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionDraftDoctrineChoicesPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_TENET_CHOICES_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionDraftTenetChoicesPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DRAFT_RESOURCE_COSTS_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionDraftResourceCostsPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_AI_REFORM_INPUTS_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionAIReformInputsPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1)
+  if (IsPlayerRiteGovernancePrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1)
+  if (IsPlayerRiteMembersPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
+  std::uint32_t sway_target = 0;
+  if (ck3_11906::ParseActiveSchemeSwayPrivateQueryStepV1(step, sway_target))
+    return true;
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_FORMAL_PRIVATE_ACTION_V1)
+  ck3_11906::ActiveSchemeSwayFormalModeV1 sway_mode{};
+  if (ck3_11906::ParseActiveSchemeSwayFormalStepV1(step, sway_mode, sway_target))
+    return true;
+#endif
+#endif
+#if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1)
+  if (step == kSwayOutcomeOpinionStepV1) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1)
+  if (IsFamilyObligationsPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1)
+  if (IsPlayerEpidemicTreatmentPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1)
+  if (IsEpidemicRecoveryPrivate12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1)
+  if (IsOrdinaryHolyWarDeclarationContextPrivateStep12003(step)) return true;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
   if (step == kRealmLawPausedPrivateQueryStep12002) return true;
 #endif
-  return false;
+  return IsActivityFeastPrivateStep12002(step);
 }
 
 bool IsNonwarPrivateStep12002(std::string_view step) noexcept {
@@ -447,6 +581,26 @@ bool HandleNonwarPrivate12002(
   serialized.clear(); failure.clear();
   try {
     const auto &native = NativeAdapter12002(adapter);
+    if (game::IsCk3_12004Descriptor(native.descriptor())) {
+      if (!IsNonwarPrivateStep12004(native, step)) return false;
+      if (revision == 0) {
+        failure = "exact-build nonwar published revision unavailable";
+        return false;
+      }
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_COLLECTION_PRIVATE_QUERY_V1)
+      std::uint32_t prisoner_ordinal = 0;
+      if (ck3_11906::ParsePlayerPrisonerCollectionPrivateStepV1(step, prisoner_ordinal))
+        return ck3_12004::HandlePlayerPrisonerCollection12004(
+            native, mailbox, published, revision, step, payload, request_id,
+            state.prisoner12004, serialized, failure);
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+      if (step == "submit-player-prisoner-ransom-private-v1")
+        return ck3_12004::HandlePlayerPrisonerRansom12004(
+            native, mailbox, published, revision, step, payload, request_id,
+            state.prisoner12004, serialized, failure);
+#endif
+#endif
+    }
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_SWAY_OUTCOME_OPINION_PRIVATE_QUERY_V1)
     if (step == kSwayOutcomeOpinionStepV1)
       return HandleSwayOutcomeEventV1(native, mailbox, published, revision,
