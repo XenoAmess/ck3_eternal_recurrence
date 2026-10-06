@@ -280,7 +280,9 @@ flowchart TD
     CP --> T[11244A0 header newbuffer newcount newcapacity]
     T --> SC{Reloaded signed countC positive}
     SC -->|yes| UC[11244C6 ordered oldrecord virtual0 with flags0]
-    UC -.-> CB[Selected record callback footprint unknown]
+    UC --> CB{Actual selected record slot0 target is8863D0}
+    CB -->|yes| NO[EDX0 returns receiver with no writes or calls]
+    CB -.->|other| UN[Selected callback source unknown]
     UC --> UE[11244E9 allocator slot10 normalresource boundary]
     SC -->|no| UE
     UE --> HC[Store capacity8 then buffer0 then countC and ret]
@@ -313,3 +315,13 @@ Combined with the cached 38 B primary, the 122 B direct control flow returns at 
 The direct header/storage footprint is now closed under the stated normal resource-return premise. **A positive old count also executes record callbacks before those writes. Their footprint cannot be silently labeled generic free or no-op.** Newly appended/copied records have canonical `44DEFA8`, while each old record dispatches through its own actual raw qword `+0`. A useful model must preserve that selected callback role and any actual record/buffer/header/chunk overlap; it must not infer a callback from a Regi ID or a DATA ordinal. The minimum extra source selector is the canonical vtable's first qword **`44DEFA8[0]`**, followed only by that actual target's cached source or named pdata/header selection. No selected callback code or static qword was read here.
 
 `PENDING-RECORD-CALLBACK-FINITE-SELECTION-PLAN.json` seals this next finite selector. Independent no-growth append and growth with nonpositive old count retain useful source-defined logical results; positive old-record callback effects remain a separate concrete source/input dependency. No generic allocator, exception handler, route/capital tree or tests were expanded. Cumulative source I/O is **872 metadata B + 1,542 code B = 2,414 B / 376 seeks**; constant bytes, game/SDK, native builds, tests and wire consumers remain zero.
+
+## Actual canonical record callback closes the ordinary growth path
+
+Root approved the one actual canonical slot and selected-target metadata, then an exact selected callback body no larger than 512 B after sealing its span. October 6 **21:00:24 CST**, the **8 B** qword at `44DEFA8[0]` selects VA **`1408863D0`** / RVA **`8863D0`**. Its pdata record is index **28111**, RVA **`5E155B4`** / file **`5CAC7B4`**, raw `d0638800f1638800f0941005`: exact **`[8863D0,8863F1)` / 33 B**, unwind `51094F0`, header `01060200`, version 1 / flags 0 / no CHAININFO. Metadata cost was **172 B / 15 seeks** in addition to the slot's **8 B / 1 seek**. The exact source filename catalog had no held callback body; the actual span ledger was sealed before the **33 B / 1 seek** read at **21:01:36 CST**.
+
+The callback tests `DL & 1`. For the storage caller's actual **`EDX=0`**, it returns the original record receiver in RAX at `8863F0`, with **no memory write or call**. The unused flag-bit-1 branch invokes resource routine `4223F64` with size 16; it is not selected by this caller and its internals were not followed. This closes positive-old-count storage callbacks when their **actual selected slot-0 target is `8863D0`**, without assigning a guessed lifecycle/class label. A different raw vtable with this same actual slot target has the same closed caller behavior; a genuinely different target remains separately partial. The collector should read the selected target but never execute the callback.
+
+The ordinary typed-record append/growth logical state is therefore source-defined: positive old-count canonical callbacks leave records untouched; the growth copy has already preserved ID/ordinal and canonicalized new records; normal resource release is followed by capacity, buffer and count writes in the sealed order. Actual allocated addresses are still conditional resource results, not observed later buffer pointers. No new seven-chunk/prepared/backlink gate is required. The native query can reuse **`monthly_caller_effect_inputs_v1.current_date_storage_raw64`**, already produced by the existing full-QWORD GameState `+8` load, for the explicit conditional entry-date premise.
+
+`WHOLE-INCOMING-DATA-IMPLEMENTATION-PLAN-V3.json` supersedes V2's now-closed storage gap and joins the external DTO/fixture and pure/service expectation drafts. It keeps whole ordered DATA and physical state separate, uses actual selected callbacks only on their source branch, and preserves current-versus-actual/future boundaries. Cumulative new frozen source I/O is **1,044 metadata B + 1,575 code B + 8 static-data B = 2,627 B / 393 seeks**. The 1.5 constant witness was reused without new reads; tests, native builds, game/SDK/process/UI, implementation and wire qualification remain **0**.
