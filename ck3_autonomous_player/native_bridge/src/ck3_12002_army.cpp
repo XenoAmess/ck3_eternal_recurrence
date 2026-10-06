@@ -1188,6 +1188,7 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
   std::optional<game::ArmyPreDateDatedAppendInputsV1> current_pre_date_dated_append;
   std::optional<game::ArmyCurrentPostAdmissionRefreshInputsV1> current_post_admission_refresh;
   std::optional<game::ArmyCurrentCondition30InputsV1> current_army_condition30;
+  std::optional<game::ArmyCurrentFlag20InputsV1> current_army_flag20;
   std::optional<game::ArmyCurrentPreDatePendingUpdateInputsV1> current_pre_date_pending_update;
   std::optional<game::ArmyCurrentPreDateCharacterPrefixInputsV1> current_pre_date_character_prefix;
   std::optional<game::ArmyCurrentAssaultRemovalReferenceInputsV1> current_assault_removal_references;
@@ -1233,6 +1234,13 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
           bindings.current_army_condition30_bindings, *current_post_admission_refresh);
     }
     row.current_army_condition30_inputs_v1 = current_army_condition30;
+    if (!current_army_flag20 && current_post_admission_refresh &&
+        bindings.current_army_flag20_bindings.common.enabled) {
+      diagnostic.reader.store("current_army_flag20_readonly");
+      current_army_flag20 = ck3_12003::ReadCurrentArmyFlag20Inputs12003(
+          bindings.current_army_flag20_bindings, *current_post_admission_refresh);
+    }
+    row.current_army_flag20_inputs_v1 = current_army_flag20;
     row.current_post_admission_refresh_inputs_v1 = current_post_admission_refresh;
     row.current_pre_date_pending_update_inputs_v1 = current_pre_date_pending_update;
     if (!current_pre_date_character_prefix && current_daily_assault_roster_admission &&

@@ -27,6 +27,7 @@ from .army_pre_date_dated_append_contract import normalize_current_pre_date_date
 from .army_pre_date_character_prefix_contract import normalize_current_pre_date_character_prefix_inputs_v1
 from .army_current_post_admission_refresh_contract import normalize_current_post_admission_refresh_inputs_v1
 from .army_current_condition30_inputs_contract import normalize_current_army_condition30_inputs_v1
+from .army_current_flag20_inputs_contract import normalize_current_army_flag20_inputs_v1
 from .army_current_candidate_detachment_mapper_contract import normalize_current_candidate_detachment_mapper_inputs_v1
 from .army_pre_date_pending_update_contract import normalize_current_pre_date_pending_update_inputs_v1
 from .army_ordered_besieging_refill_contract import normalize_ordered_besieging_refill_inputs_v1
@@ -307,6 +308,7 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_assault_removal_reference_inputs_v1"
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_candidate_detachment_mapper_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_pre_date_character_prefix_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_condition30_inputs_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_flag20_inputs_v1"}
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -1936,6 +1938,9 @@ def _normalize_army_strength_row(
     if "current_army_condition30_inputs_v1" in value:
         result["current_army_condition30_inputs_v1"] = normalize_current_army_condition30_inputs_v1(
             value["current_army_condition30_inputs_v1"])
+    if "current_army_flag20_inputs_v1" in value:
+        result["current_army_flag20_inputs_v1"] = normalize_current_army_flag20_inputs_v1(
+            value["current_army_flag20_inputs_v1"])
     if "current_post_admission_refresh_inputs_v1" in value:
         result["current_post_admission_refresh_inputs_v1"] = normalize_current_post_admission_refresh_inputs_v1(
             value["current_post_admission_refresh_inputs_v1"])
