@@ -1,5 +1,6 @@
 #include "xar_bridge/zhongguo_scoreboard_state_v1.hpp"
 #include "xar_bridge/zhongguo_promotion_source_progress_v1.hpp"
+#include "xar_bridge/ck3_12004.hpp"
 
 #include <windows.h>
 
@@ -309,6 +310,10 @@ bool AppendExecutableDigest(std::string &output) {
 
 bool EnvironmentIsExact(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment) noexcept {
+  if (environment.gui_abi_revision == GuiAbiRevisionV1::crozier12004 &&
+      environment.executable_sha256 != ck3_12004::kExecutableSha256) {
+    return false;
+  }
   if (!environment.exact_build_admitted ||
       !environment.variables.exact_build_admitted) {
     return false;
@@ -1747,14 +1752,26 @@ bool InspectNamedGuiSubtreeV1(
 
 ZhongguoScoreboardNativeEnvironmentV1 BindZhongguoScoreboardNativeEnvironmentV1(
     std::uintptr_t module_base, bool exact_build_admitted,
-    GuiAbiRevisionV1 gui_abi_revision) noexcept {
+    GuiAbiRevisionV1 gui_abi_revision,
+    std::string_view executable_sha256) noexcept {
   ZhongguoScoreboardNativeEnvironmentV1 environment{};
-  environment.variables =
-      BindZhongguoCaseNativeEnvironmentV1(module_base, exact_build_admitted);
+  const bool actual12004 = gui_abi_revision == GuiAbiRevisionV1::crozier12004;
+  const bool admitted = exact_build_admitted &&
+      (!actual12004 || executable_sha256 == ck3_12004::kExecutableSha256);
+  if (actual12004) {
+    // The closed .4 common-GUI packet supplies no Zhongguo variable callbacks.
+    // Retain only the common environment metadata for the GUI helper route.
+    environment.variables.module_base = module_base;
+    environment.variables.exact_build_admitted = admitted;
+  } else {
+    environment.variables =
+        BindZhongguoCaseNativeEnvironmentV1(module_base, exact_build_admitted);
+  }
   environment.module_base = module_base;
   environment.gui_abi_revision = gui_abi_revision;
-  environment.exact_build_admitted = exact_build_admitted;
-  if (module_base != 0 && exact_build_admitted) {
+  environment.executable_sha256 = executable_sha256;
+  environment.exact_build_admitted = admitted;
+  if (module_base != 0 && admitted) {
     environment.gui_global_slot = reinterpret_cast<void **>(
         module_base + GuiGlobalSlotRvaV1(environment.gui_abi_revision));
     environment.find_top_level_widget =

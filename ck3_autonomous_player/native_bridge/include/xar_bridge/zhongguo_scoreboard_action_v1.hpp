@@ -112,9 +112,14 @@ inline constexpr std::uintptr_t kZhongguoButtonBaseSlot13Rva = 0x36C69A0;
 inline constexpr std::uintptr_t kCrozierShortcutManagerActivateRva = 0x3ABC4D0;
 inline constexpr std::uintptr_t kCrozierStrictDescendantRva = 0x3A78230;
 inline constexpr std::uintptr_t kCrozierButtonBaseSlot13Rva = 0x3AA0D40;
+inline constexpr std::uintptr_t kCrozier12004ShortcutManagerActivateRva = 0x3ABC4B0;
+inline constexpr std::uintptr_t kCrozier12004StrictDescendantRva = 0x3A78210;
+inline constexpr std::uintptr_t kCrozier12004ButtonBaseSlot13Rva = 0x3AA0D20;
 
 constexpr std::uintptr_t GuiShortcutManagerActivateRvaV1(
     GuiAbiRevisionV1 revision) noexcept {
+  if (revision == GuiAbiRevisionV1::crozier12004)
+    return kCrozier12004ShortcutManagerActivateRva;
   return revision == GuiAbiRevisionV1::crozier12003
              ? kCrozierShortcutManagerActivateRva
              : kZhongguoShortcutManagerActivateRva;
@@ -122,6 +127,8 @@ constexpr std::uintptr_t GuiShortcutManagerActivateRvaV1(
 
 constexpr std::uintptr_t GuiStrictDescendantRvaV1(
     GuiAbiRevisionV1 revision) noexcept {
+  if (revision == GuiAbiRevisionV1::crozier12004)
+    return kCrozier12004StrictDescendantRva;
   return revision == GuiAbiRevisionV1::crozier12003
              ? kCrozierStrictDescendantRva
              : kZhongguoStrictDescendantRva;
@@ -129,6 +136,8 @@ constexpr std::uintptr_t GuiStrictDescendantRvaV1(
 
 constexpr std::uintptr_t GuiButtonBaseSlot13RvaV1(
     GuiAbiRevisionV1 revision) noexcept {
+  if (revision == GuiAbiRevisionV1::crozier12004)
+    return kCrozier12004ButtonBaseSlot13Rva;
   return revision == GuiAbiRevisionV1::crozier12003
              ? kCrozierButtonBaseSlot13Rva
              : kZhongguoButtonBaseSlot13Rva;
@@ -155,6 +164,8 @@ inline constexpr std::size_t kZhongguoExactImageSize = 0x5C2D000;
 inline constexpr std::size_t kCrozierExactImageSize = 0x61C5000;
 
 constexpr std::size_t GuiExactImageSizeV1(GuiAbiRevisionV1 revision) noexcept {
+  if (revision == GuiAbiRevisionV1::crozier12004)
+    return 0x61C5000;
   return revision == GuiAbiRevisionV1::crozier12003
              ? kCrozierExactImageSize
              : kZhongguoExactImageSize;

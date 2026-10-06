@@ -155,7 +155,8 @@ BindSuccessionModalGuiObservationContext12004(
   SuccessionModalGuiObservationContext12004 result{};
   if (image_base == 0 || executable_sha256 != kExecutableSha256) return result;
   result.environment = ck3_11906::BindZhongguoScoreboardNativeEnvironmentV1(
-      image_base, true, ck3_11906::GuiAbiRevisionV1::crozier12004);
+      image_base, true, ck3_11906::GuiAbiRevisionV1::crozier12004,
+      executable_sha256);
   result.actual4_bindings_ready = result.environment.exact_build_admitted &&
       result.environment.gui_abi_revision == ck3_11906::GuiAbiRevisionV1::crozier12004 &&
       result.environment.gui_global_slot != nullptr &&
