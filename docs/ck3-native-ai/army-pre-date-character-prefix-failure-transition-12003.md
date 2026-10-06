@@ -131,3 +131,11 @@ flowchart TD
 若Root先选择独立no-growth路径，具体current native输入seam已存在：同query `b.common.game_state_slot -> GS+A0 -> data+2A540` 得到manager，现collector用 `Read`／`At`取primary80／8C；可按需读取同manager **primary88 capacity DWORD**，不重新扫描Army或Character。**只有后续source确实需要按capacity分支交付时才增加该field**；若正常返回两路都证明仅logical append，优先复用既有initial80＋actual请求，不创建重复observer/kernel。current prefix仍是原stage观测，不等于growth／append／callback后的实际状态。
 
 外置 `ACTUAL-CONTINUATION-GAP.json`与 `CONTINUATION-METADATA-PLAN.json`记录上述actual branch／缓存extent／最小剩余source入口；已通过source5/native8未重放，新tests/build/model/game0。下一项是Root选择这些具体source范围，绝非generic allocator/destructor研究。
+
+## 2026-10-06：actual fast continuation extent与合并body-only计划
+
+Root批准单独index35820十二字节metadata后，一次读取record **RVA `5E2BF10`／file `5CC3110`**，实际包含target：**`[B02DC8,B02DFD)`／53 B**，UnwindRVA **`512952C`**。`FAST-CONTINUATION-METADATA.json`保存actual record；该阶段新metadata **12 B**，headers/body/chain0，验证包含后立即停止。早期metadata204B＋本次单独批准12B累计216B；没有把unused budget自动外推为授权。
+
+两个实际continuation现均已定位：growth metadata `[B02D4E,B02DC8)`122B＋fast metadata `[B02DC8,B02DFD)`53B，**body仍未读取**。外置 `MERGED-CONTINUATION-BODY-PLAN.json`将其合并为**一次body-only `[B02D4E,B02DFD)`175 B**，file `[B0214E,B021FD)`，只decode新175B；已held62B entry不重读／不重decode。新增metadata／PE／function／unwind headers／chain／hash／neighbor预算均0。此计划等待Root审阅，不在本次metadata授权内执行。
+
+后续只以这些source实际normal-return路径判vector logical writes及其与existing admission loads的交集；若仅既有logical80效果就复用原observer/pure结果，必要directcallee只先cache或已qualified normal-return语义，不展开allocator/destructor。当前仍无normal-return effects／post-effect readiness新增，model/code/tests/build/game均0。
