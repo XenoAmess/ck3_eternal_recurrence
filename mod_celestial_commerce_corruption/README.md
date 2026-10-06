@@ -29,3 +29,9 @@
 
 拟定版本 1.0.1，尚未发布。相对公开版 1.0.0，天朝政府迁移为完整原版 1.20 定义，保留新行政机制、属官发展、东亚庄园、天朝官僚、俸禄、军事与部院预算、AI 传奇与可授予神权政府的能力，仅额外启用 barter。
 四档特质、税率、事件、决议、三年冷却及九语本地化没有玩法改动。1.20.0.2 的核心与代表生产 UI 记录只作历史，不代替 1.20.0.3 验收。
+
+## 2026-10-07（上海）CCC25 / R0011 / a84：本轮源业务与正常退出已验
+
+CK3 1.20.0.3 简中源场复用 Source18/runtime31/原 f150 DLL；D0–D3 及生产 GUI Confirm、真实 `xccc.1001` 新事件 `.f` 一次选择后独立 eventgone 已完成，D1 的 `date_raw +24` 为24小时/1天。既有核心11标记各1、XCA/XCA120两族FAIL0复用 R0003 原件，不重新计入本场。Root于 UTC17:39:36 亲审本场原图，确认角色29959的 `xccc_corruption_1` 至 `_4` 全部缺失，实际 Confirm 日1066-09-18、禁用决议/确认按钮的冷却日1069-09-18；没有再推进三年。保留进程句柄独立读得OS0，native退出0、job0/treegone、cleanup及managed thread完成；最终报告27步全ok、GREEN/error=null，于UTC17:27:31.305704结束（27,243,296B，SHA `c3d880f42e7b18e6ccd04fa17a0004d37ee0f34fc7b3280cb3f9003ba3765c32`）。Keeper真实exit0/thread_exited、末序4532后CAS4533 done/resources=[]。事实与原件pins见[当次事实索引](C:/workspace/ck3-upgrade-20261006/ccc-source-acceptance-text-write-diagnostic-01/actual-source-R0011-01/actual-facts-draft.json)及[Root最终亲审](C:/workspace/ck3-upgrade-20261006/resume-root-01/a84-root-actual-business-and-normal-exit-review-01.json)（7732B，SHA `fd6f1e756bbca7c17d4d52f8548c8a5cbb5642406f19cb6a4bf161502ba65bfb`）；Root已确认本轮有界源验收通过。
+
+GUI25外层exit1及原 `route-error-no-replay.json` 保留，business_error=null：真实managed结束后磁盘 `session.report` 仍旧为null，Root一次提交原finish17使真实状态落盘，caller随后对同一finish的提交被原queue拒绝；没有重播业务或改旧失败。此边界不写成full caller0。1.0.1仍未发布，正式tag构建、公开Notes、fresh cache代表业务及发布闭环待实际完成；不外推九语实机、全档位、永久退出、独立存读或最终国库转账量已穷举。
