@@ -67,38 +67,23 @@ if(WIN32 AND XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1 AND
       "${CMAKE_CURRENT_BINARY_DIR}/ck3_12004_sway_whole_wire")
 endif()
 
-# External Epidemic16-TU recipe projected from epidemic-whole-first-hook.cmake.
-# Source-only integration hook for the exclusive entry/CMake owner.
-# AUTHORED_NOTRUN. This fragment has not been configured or compiled.
+# Epidemic fixture consumes the complete production bridge object closure.
 if(WIN32 AND BUILD_TESTING)
   add_executable(xar_ck3_12004_epidemic_whole_query_test
     src/ck3_12004_epidemic_whole_query_test.cpp
-    src/ck3_12004_epidemic.cpp
-    src/ck3_12004_abi_profile.cpp
-    src/ck3_12003_abi_profile.cpp
-    src/ck3_12002.cpp
-    src/ck3_12002_phase_definitions.cpp
-    src/ck3_12002_epidemic_recovery.cpp
-    src/ck3_12002_epidemic_recovery_mailbox.cpp
-    src/ck3_12002_epidemic_treatment_presence.cpp
-    src/ck3_12002_epidemic_treatment_mailbox.cpp
-    src/player_epidemic_recovery_v1.cpp
-    src/player_epidemic_treatment_presence_v1.cpp
-    src/ck3_12002_query_mailbox.cpp
-    src/ck3_12002_thread_runtime.cpp
-    src/main_thread_query_mailbox_v1.cpp
-    src/protocol.cpp)
+    $<TARGET_OBJECTS:xar_ck3_bridge>)
   target_include_directories(xar_ck3_12004_epidemic_whole_query_test PRIVATE include)
+  target_compile_features(xar_ck3_12004_epidemic_whole_query_test PRIVATE cxx_std_20)
   target_compile_definitions(xar_ck3_12004_epidemic_whole_query_test PRIVATE
     NOMINMAX WIN32_LEAN_AND_MEAN UNICODE _UNICODE
-    XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_RECOVERY_PRIVATE_QUERY_V1
-    XAR_CK3_ENABLE_G2_PLAYER_EPIDEMIC_TREATMENT_PRIVATE_QUERY_V1
-    XAR_EPIDEMIC_RECOVERY_MAILBOX_STANDALONE_NATIVE_ADAPTER)
+    $<TARGET_PROPERTY:xar_ck3_bridge,COMPILE_DEFINITIONS>)
   if(MSVC)
     target_compile_options(xar_ck3_12004_epidemic_whole_query_test PRIVATE
       /UNDEBUG /W4 /WX /permissive- /EHsc)
   endif()
-  target_link_libraries(xar_ck3_12004_epidemic_whole_query_test PRIVATE user32)
+  target_link_libraries(xar_ck3_12004_epidemic_whole_query_test PRIVATE
+    xar_ck3_12002_runtime xar_bridge_protocol bcrypt
+    $<TARGET_PROPERTY:xar_ck3_bridge,LINK_LIBRARIES>)
   add_test(NAME xar_ck3_native_bridge_12004_epidemic_whole_query
     COMMAND xar_ck3_12004_epidemic_whole_query_test
       "${CMAKE_CURRENT_BINARY_DIR}/fixtures/ck3_12004_epidemic_whole_query")

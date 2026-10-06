@@ -71,7 +71,7 @@
 #include "xar_bridge/frontend_bookmark_model_result_v1.hpp"
 #include "xar_bridge/frontend_gui_result_v1.hpp"
 #include "xar_bridge/ingame_ui_mailbox_v1.hpp"
-#include "xar_bridge/ck3_12002_feast_planner_private_transport_v1.hpp"
+#include "ck3_12002_feast_planner_private_transport_v1.hpp"
 #if defined(XAR_CK3_ENABLE_G2_ACTIVE_SCHEME_PRIVATE_CANDIDATE_V1)
 #include "xar_bridge/ck3_12002_sway_completion_execution_install.hpp"
 #endif
