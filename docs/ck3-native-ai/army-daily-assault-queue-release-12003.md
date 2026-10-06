@@ -34,7 +34,7 @@ flowchart TD
   P --> N[Flags0 tail count nonpositive: append original raw ArmyID]
   N --> G[9D11F0 occupied record release]
   G --> RV[ArRg then Army vector direct cleanup]
-  RV -. two buffer-release dynamic targets unclosed .-> U[Complete post-release receiver effects unknown]
+  RV -. noncanonical actual receiver still requires source .-> U[Unavailable post-release receiver effects]
   G --> O[Caller control0 and occupied count decrement]
   O --> L[Later per-Army removal and monthly stages]
   L -. intervening state required .-> D[Future callback queue drain]
@@ -78,7 +78,7 @@ The authorized frozen-file read closes `9D11F0..9D124C`,92B, raw SHA `d04dbf98b0
 
 With receiver `record+10`, the function handles the ArRg vector first: if its data at record `+28` is nonnull, it sets count `+34` to zero, calls virtual slot `+10` on the buffer-release receiver at record `+38` with `(data,4)`, then writes data `+28=0` and capacity `+30=0`. It then applies the same sequence to the Army vector at data `+10`, count `+1C`, release receiver `+20`, capacity `+18`. A null data pointer skips **all** stores for that vector; it does not manufacture zero count/capacity. Normal return reaches the separately held caller's control/count bookkeeping.
 
-There is no direct Army/ArRg registry or primary pending-queue write in these92B. The two indirect buffer-release targets are not source-closed, so this direct footprint does not promote full post-release registry/context invariance. Their concrete next locator is the actual record `+38/+20` receiver vtable slot `+10`, if a future post-release numerical consumer needs its effects. The delivered pre-release sequence consumes none of that context and needs no additional native field.
+There is no direct Army/ArRg registry or primary pending-queue write in these92B. At the initial direct-body delivery, the two indirect buffer-release targets remained unclosed; the source-selected canonical targets are now closed below. A noncanonical or unavailable actual receiver still requires its own concrete source input. The delivered pre-release sequence consumes none of that context and needs no additional native field.
 
 ## Production pre-release pending sequence
 
@@ -87,3 +87,33 @@ The independent `project_current_daily_assault_queue_append_v1(army_strength, lo
 One newly authored compound passed FIRST on2026-10-06, process1.7453002s, `Ran1 test in0.074s`. The real service preserves captured `[7,7,-2147483643]` and derived raw append requests `[12,12,0x80000005,12]`, producing stored signed32 `[7,7,-2147483643,12,12,-2147483643,12]` in exact order. Original fallback raw ID bits survive; repetitions are retained. The same compound covers a missing group1/physicalslot7 percentage with known first-group prefix, missing observed pending, unqualified empty tail, complete no-append/empty-table copy and older absent schema. Captured JSON stays unchanged and the driver records one Strength query per service invocation. It invokes no old test method or native wire.
 
 Evidence is `pure-implementation/PRESEALED-EXPECTATIONS.json`, `python-first-01/PYTHON-FIRST-TEST-RECEIPT.json` and `PYTHON-ROOT-DELIVERY.json` in the external packet. The latter is4683B SHA `8867f646d94331a78cc04fa91bb5075c9ef77b2d28b30dab15f047546ea8e2d8`. The new pure interface and production service hook are **bounded static-ready**; the direct release source is research with explicit dynamic receiver boundaries. Actual pending after-effects, actual removal, live/full daily/regular refill/calendar/fullmonthly remain false/null. No native registration/build/test, old scene rerun or local game/Steam/SDK/pipe/UI/process operation is performed for this package.
+
+## Canonical selected buffer-release callbacks
+
+The placement source's real constructor `2AA2450` assigns Army-vector release receiver image `+54E0570` at `2AA2485` and ArRg-vector receiver image `+54DEB68` at `2AA24A6`; its literal replacement path uses the same identities. The separate current placement observer captures actual record `+20/+38` identity and equality to those source singletons. Counts and vector metadata cannot substitute for the actual receiver witness. That owner's held source is reused rather than read again.
+
+Four selected frozen qword reads,32B, show `54E0570 -> vtable44E61E8[+10] -> 8571C0` and `54DEB68 -> vtable449C458[+10] -> 8571C0`. Thus one actual callback body suffices for both vectors. The dispatcher `8571C0..8571CE`,14B, returns for null RDX; otherwise it sets RCX to that raw buffer and tail-jumps to `40EC550`. The latter is a5B jump to `423545C`; its17B compiler leaf writes a stack-local zero, loads EAX and jumps to `424E384`.
+
+The actual terminal `424E384..424E3C1`,61B, returns for null RCX. Otherwise it passes `(heap=[5C5DE30], flags=0, buffer)` to import slot `43DA748`. The selected frozen hint/name is exactly `HeapFree`. Its failed-result branch uses `GetLastError` at import `43DA738` and CRT error helpers before returning; those CRT/heap internals are not expanded because the needed logical model ends at normal raw-buffer deallocation. There is no gameplay state receiver or Army/ArRg/manager operation in this selected dispatcher chain. This closes the actual canonical deallocation boundary without a general allocator catalog or runtime operation.
+
+```mermaid
+flowchart TD
+  A[Actual Army record20 equals image54E0570] --> V1[Vtable44E61E8 slot10]
+  R[Actual ArRg record38 equals image54DEB68] --> V2[Vtable449C458 slot10]
+  V1 --> S[Shared8571C0]
+  V2 --> S
+  S --> Z{Buffer null?}
+  Z -->|yes| RET[Return]
+  Z -->|no| J[40EC550 then423545C]
+  J --> F[424E384: HeapFree raw buffer]
+  F --> RET
+  F -. standard CRT error branch outside numeric model .-> ERR[GetLastError and error integer]
+  RET --> C[9D11F0 writes vector data/cap0 after call]
+  C --> H[Caller control0 and occupied count decrement]
+```
+
+The two source-selected dispatcher addresses lack matching `.pdata` function entries. Original metadata-only attempts are retained, not misreported as native build/test failures. The leaf source captures explicit terminal instructions instead. The old `40EC550` disassembly cache did not carry an exact-build identity; its5B jump is now confirmed against the current frozen source before reuse. A prep sequencing mistake also attempted a228B metadata lookup after that cache locator surfaced; it read zero code and remains included in the actual cost. The initial32B dispatcher window artifact omitted the null-return byte after the nonnull tail jump, requiring a separately retained1B branch read. None of these attempts is hidden or granted sample/test credit.
+
+All reads in this package, including original92B record release and those preserved attempts, total **1386 frozen-file bytes /92 seeks**:916B metadata,112B selected data/names and358B code-window reads. The source-relevant completed direct extents are92B+14B+5B+17B+61B; window padding and the one repeated branch byte remain charged. The original EXE identity and PE mapping are reused; no wholeEXE read/hash, old qualified body reread, native build/test or game operation occurs.
+
+This source now permits a conditional **normal-return record-release stage** only for actual canonical receiver witnesses: data-nonnull vector count/data/cap become zero; data-null vector fields remain their actual captured values; caller control/count updates stay separate. A bounded post-release pending queue equals the pre-release pending result because this selected suffix releases raw buffers and has no pending-queue write. It does not execute `2A978A0`, clear Army registry IDs, or provide a next-callback/calendar frame. The smallest future input join reuses the placement owner's actual allocator witnesses and each vector's captured data presence/count; raw capacity is only needed when exposing its preserved null-data capacity. The delivered pure pre-release field keeps its original meaning and qualification unchanged. A new post-release field remains unimplemented until that same-query join is made; actual post-stage/fullmonthly remain false/null.
