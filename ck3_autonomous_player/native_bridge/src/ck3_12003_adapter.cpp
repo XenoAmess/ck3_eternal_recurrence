@@ -162,6 +162,8 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
         ck3_12003::BindPreDateDatedAppend12003(image_base, executable_sha256);
     result.armies.current_post_admission_refresh_bindings =
         ck3_12003::BindCurrentPostAdmissionRefresh12003(image_base, executable_sha256);
+    result.armies.current_army_condition30_bindings =
+        ck3_12003::BindCurrentArmyCondition30Inputs12003(image_base, executable_sha256);
     result.armies.current_candidate_detachment_mapper_bindings =
         ck3_12003::BindCurrentCandidateDetachmentMapper12003(image_base, executable_sha256);
     result.armies.current_pre_date_pending_update_bindings =

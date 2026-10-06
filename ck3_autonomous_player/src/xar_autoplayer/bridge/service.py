@@ -23,6 +23,7 @@ from ..simulation.army_daily_assault_roster_admission_12003 import project_curre
 from ..simulation.army_pre_date_dated_append_12003 import project_pre_date_dated_append_12003
 from ..simulation.army_pre_date_character_prefix_12003 import project_current_pre_date_character_prefix_v1
 from ..simulation.army_current_post_admission_refresh_12003 import project_current_post_admission_refresh_12003
+from ..simulation.army_current_condition30_inputs_12003 import project_current_army_condition30_inputs_12003
 from .army_current_candidate_detachment_mapper_builder import build_current_candidate_detachment_mapper_preview
 from ..simulation.army_pre_date_pending_update_12003 import project_current_pre_date_pending_update_v1
 from .army_ordered_refill_besieging_assault_projection import project_ordered_refill_besieging_assaults_v1
@@ -4596,6 +4597,16 @@ class GameplayBridgeService:
                 for row in selected_rows],
             "same_input_current_candidate_detachment_mapper_v1": [
                 {"army_id": row["army_id"], "projection": build_current_candidate_detachment_mapper_preview(row)}
+                for row in selected_rows],
+            "current_army_condition30_inputs_v1": [
+                {"army_id": row["army_id"], "projection": project_current_army_condition30_inputs_12003(
+                    row.get("current_army_condition30_inputs_v1"), source_provenance={
+                        "snapshot_id": snapshot.get("snapshot_id"),
+                        "revision": snapshot.get("revision"),
+                        "native_revision": snapshot.get("native_revision"),
+                        "date_raw": snapshot.get("date_raw"),
+                        "game_version": hello.get("game_version") if isinstance(hello, dict) else None,
+                        "executable_sha256": hello.get("executable_sha256") if isinstance(hello, dict) else None})}
                 for row in selected_rows],
             "current_post_admission_refresh_inputs_v1": [
                 {"army_id": row["army_id"], "projection": project_current_post_admission_refresh_12003(
