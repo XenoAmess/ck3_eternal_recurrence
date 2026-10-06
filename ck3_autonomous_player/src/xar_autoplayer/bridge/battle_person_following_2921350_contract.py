@@ -9,6 +9,7 @@ from ..simulation.battle_person_following_2921350_12003 import (
     emit_following_2921350_requests_12003, emit_following_2921350_group_requests_12003,
     following_2921350_group_results_12003, following_2921350_fnv1a_12003,
     following_2921350_tier_index_12003,
+    following_2921350_cold_normal_return_projections_12003,
 )
 from ..simulation.battle_trait_numeric_inputs_12003 import native_wrap32_12003
 
@@ -337,22 +338,24 @@ def normalize_following_2921350(value, field=_FIELD):
     return out
 
 
-def emit_following_2921350_requests_from_current_source_inputs_12003(section):
+def emit_following_2921350_requests_from_current_source_inputs_12003(section, *, project_cold_initializer_normal_return=False):
     leaf = normalize_following_2921350(None if section is None else section.get(_FIELD))
     if leaf is None:
         raise ValueError("Required native input unavailable: " + _FIELD)
     if leaf["character_id"] != _integer(section.get("character_id"), "current_context_source_inputs.character_id", 32):
         raise ValueError(_FIELD + " character disagrees with source actor")
-    return emit_following_2921350_requests_12003(leaf)
+    return emit_following_2921350_requests_12003(leaf,
+        project_cold_initializer_normal_return=project_cold_initializer_normal_return)
 
 
-def emit_following_2921350_group_requests_from_current_source_inputs_12003(section, group_index):
+def emit_following_2921350_group_requests_from_current_source_inputs_12003(section, group_index, *, project_cold_initializer_normal_return=False):
     leaf = normalize_following_2921350(None if section is None else section.get(_FIELD))
     if leaf is None:
         raise ValueError("Required native input unavailable: " + _FIELD)
     if leaf["character_id"] != _integer(section.get("character_id"), "current_context_source_inputs.character_id", 32):
         raise ValueError(_FIELD + " character disagrees with source actor")
-    groups = following_2921350_group_results_12003(leaf)
+    groups = following_2921350_group_results_12003(leaf,
+        project_cold_initializer_normal_return=project_cold_initializer_normal_return)
     index = _integer(group_index, _FIELD + ".group_index", 32)
     if not 0 <= index < len(groups):
         raise ValueError(_FIELD + " group index outside actual manager dimension")

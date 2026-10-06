@@ -797,6 +797,7 @@ def continue_current_person_stage_chain_tail_12003(
 def continue_explicit_person_following_stages_12003(
     person_state: Mapping, *, start_baseline: PersonStageChainStart12003,
     through_stage: str = "2921020",
+    project_cold_initializer_normal_return: bool = False,
 ) -> PersonStageChainResult12003:
     """Condition held source values on an explicitly supplied later-stage context.
 
@@ -859,12 +860,19 @@ def continue_explicit_person_following_stages_12003(
     for index, (name, incoming, outgoing) in enumerate(stages):
         if index < begin or index > names.index(through_stage):
             continue
-        local, requests, independent = [], (), {}
+        local, requests, independent, cold_projections = [], (), {}, ()
         try:
             if not actor_matches:
                 raise ValueError("matching_character_source_unavailable")
             module = import_module("xar_autoplayer.bridge.battle_person_following_" + name + "_contract")
-            requests = getattr(module, "emit_following_" + name + "_requests_from_current_source_inputs_12003")(source)
+            if name == "2921350":
+                leaf = source.get("following_2921350")
+                if project_cold_initializer_normal_return and isinstance(leaf, Mapping):
+                    cold_projections = module.following_2921350_cold_normal_return_projections_12003(leaf)
+                requests = module.emit_following_2921350_requests_from_current_source_inputs_12003(
+                    source, project_cold_initializer_normal_return=project_cold_initializer_normal_return)
+            else:
+                requests = module.emit_following_2921020_requests_from_current_source_inputs_12003(source)
         except (ValueError, TypeError) as exc:
             local.append(str(exc))
             if actor_matches:
@@ -879,7 +887,8 @@ def continue_explicit_person_following_stages_12003(
                         for group in range(count):
                             try:
                                 independent[f"2921350.group{group}"] = (
-                                    module.emit_following_2921350_group_requests_from_current_source_inputs_12003(source, group))
+                                    module.emit_following_2921350_group_requests_from_current_source_inputs_12003(source, group,
+                                        project_cold_initializer_normal_return=project_cold_initializer_normal_return))
                             except (ValueError, TypeError):
                                 pass
                 else:
@@ -914,7 +923,9 @@ def continue_explicit_person_following_stages_12003(
         ordered.append({"stage": name, "explicit_incoming_stage": incoming,
                         "prospective_output_stage": outgoing, "requests_ready": not local,
                         "folded_into_contiguous_context": folded, "request_count": len(validated),
-                        "missing_inputs": tuple(local)})
+                        "missing_inputs": tuple(local),
+                        "observed_leaf_ready": (source.get("following_" + name) or {}).get("ready") if actor_matches else None,
+                        "source_derived_normal_return_occurrences": cold_projections})
         gaps.extend(name + ":" + item for item in local)
         contiguous = contiguous and not local
     ledger = {
@@ -924,6 +935,9 @@ def continue_explicit_person_following_stages_12003(
         "requested_stop": through_stage, "actual_returned_stage": stage,
         "ordered_stages": tuple(ordered), "aggregate_updates": tuple(updates),
         "conditional_on_held_source_values": True,
+        "project_cold_initializer_normal_return": project_cold_initializer_normal_return,
+        "native_cold_initializer_invoked": False,
+        "actual_cold_tls_sync_recheck_or_completion_observed": False,
         "fresh_installed_stage_identity_inferred": False,
         "earlier_admission_assumed_complete": False,
         "current_final_context_used_as_default": False,
