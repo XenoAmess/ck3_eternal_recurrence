@@ -2,6 +2,7 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_core_frame_v1.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
+#include "xar_bridge/ck3_12004_prisoner_ransom_action.hpp"
 #include "xar_bridge/player_prisoner_collection_private_transport_v1.hpp"
 #include "xar_bridge/protocol.hpp"
 
@@ -24,6 +25,14 @@ struct CollectionQuery {
   std::array<PlayerPrisonerRansomQuoteV1,
       bridge::kPlayerPrisonerMaximumRowsV1> quotes{};
   bool completed = false;
+};
+
+struct RansomQuery {
+  QueryMailboxEnvelope envelope{};
+  std::uintptr_t module = 0;
+  PrisonerRansomActionBindings12004 bindings{};
+  PlayerPrisonerRansomQuoteV1 quote{};
+  PlayerPrisonerRansomSubmitV1 result = PlayerPrisonerRansomSubmitV1::unavailable;
 };
 
 bool CapturePrisonerFrame(void *opaque,
@@ -80,9 +89,10 @@ std::string ResultPrefix(std::string_view request_id, std::string_view step) {
 }
 
 bool RunMailbox(ck3_11906::MainThreadQueryMailboxV1 &mailbox,
-    QueryMailboxEnvelope &envelope, std::string &failure) {
+    QueryMailboxEnvelope &envelope,
+    ck3_11906::MainThreadQueryExecutorV1 executor, std::string &failure) {
   const auto submitted = ck3_11906::TrySubmitMainThreadQueryV1(mailbox,
-      &ExecutePlayerPrisonerCollection12004, &envelope, envelope.ticket);
+      executor, &envelope, envelope.ticket);
   if (submitted != ck3_11906::MainThreadQuerySubmitResultV1::submitted) {
     failure = "prisoner application-main executor unavailable";
     return false;
@@ -106,8 +116,14 @@ bool RunMailbox(ck3_11906::MainThreadQueryMailboxV1 &mailbox,
 ck3_11906::MainThreadQueryInstallEnvironmentV1
 BindPrisonerCollectionMailboxEnvironment12004(std::uintptr_t module_base,
     std::string_view executable_sha256) noexcept {
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+  const std::array<ck3_11906::MainThreadQueryExecutorV1, 3> executors{
+      &ExecuteCoreFrameMailboxV1, &ExecutePlayerPrisonerCollection12004,
+      &ExecutePlayerPrisonerRansom12004};
+#else
   const std::array<ck3_11906::MainThreadQueryExecutorV1, 2> executors{
       &ExecuteCoreFrameMailboxV1, &ExecutePlayerPrisonerCollection12004};
+#endif
   return xar::ck3_12004::BindThreadRuntimeImage(
       module_base, executable_sha256, executors);
 }
@@ -191,11 +207,20 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
   query.envelope.expected_snapshot_revision = revision;
   query.envelope.typed_context = &query;
   query.envelope.snapshot_comparison = ck3_12002::QuerySnapshotComparison12002::core_frame;
-  if (!RunMailbox(mailbox, query.envelope, failure)) return true;
+  if (!RunMailbox(mailbox, query.envelope,
+      &ExecutePlayerPrisonerCollection12004, failure)) return true;
   const auto value = SerializePlayerPrisonerCollectionPrivateV1(query.collection,
       revision, query.quotes, query.completed, &query.release_previews);
   if (value.empty()) { failure = "prisoner collection serialization unavailable"; return true; }
   ++state.query_sequence;
+  state.current_quote.reset();
+  state.quote_revision = state.quote_query_sequence = 0;
+  if (query.completed && ordinal < query.collection.returned_count &&
+      query.quotes[ordinal].available) {
+    state.current_quote = query.quotes[ordinal];
+    state.quote_revision = revision;
+    state.quote_query_sequence = state.query_sequence;
+  }
   serialized = ResultPrefix(request_id, step) + ",\"status\":\"" +
       (query.collection.available ? "available" : "unavailable") +
       "\",\"query_sequence\":" + std::to_string(state.query_sequence) +
@@ -205,6 +230,89 @@ bool HandlePlayerPrisonerCollection12004(const game::GameAdapter &adapter,
       ",\"player_prisoner_collection\":" + value +
       ",\"private_build\":true,\"read_only\":true,\"advertised\":false,"
       "\"backend_id\":\"native-headless\"}}";
+  return true;
+}
+
+bool ExecutePlayerPrisonerRansom12004(void *opaque,
+    const ck3_11906::MainThreadExecutionStampV1 &stamp) noexcept {
+  auto *envelope = static_cast<QueryMailboxEnvelope *>(opaque);
+  if (!envelope || !envelope->typed_context ||
+      !ck3_12002::EnterQueryMailbox(*envelope, stamp,
+          &ExecutePlayerPrisonerRansom12004)) return true;
+  auto &query = *static_cast<RansomQuery *>(envelope->typed_context);
+  query.result = SubmitPlayerPrisonerRansomPrivateV1(query.bindings, query.module,
+      query.quote, envelope->expected_snapshot_revision, stamp.date_raw);
+  (void)ck3_12002::FinishQueryMailbox(*envelope);
+  return true;
+}
+
+std::string SerializePlayerPrisonerRansomCommandResult12004(
+    std::string_view request_id, PlayerPrisonerRansomSubmitV1 result) {
+  constexpr std::string_view step = "submit-player-prisoner-ransom-private-v1";
+  if (result == PlayerPrisonerRansomSubmitV1::submitted_verification_pending)
+    return ResultPrefix(request_id, step) +
+        ",\"status\":\"submitted_verification_pending\"}}";
+  std::string output = "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":";
+  AppendString(output, request_id);
+  output += ",\"ok\":false,\"error\":\"private ransom submit unresolved or rejected\"}";
+  return output;
+}
+
+bool HandlePlayerPrisonerRansom12004(const game::GameAdapter &adapter,
+    ck3_11906::MainThreadQueryMailboxV1 &mailbox,
+    const game::Snapshot &published_core, std::uint64_t revision,
+    std::string_view step, std::string_view payload, std::string_view request_id,
+    PrisonerPrivateWorkerState12004 &state, std::string &serialized,
+    std::string &failure) {
+#if defined(XAR_CK3_ENABLE_G2_PRISONER_RANSOM_ACTION_PRIVATE_V1)
+  const bool is_submit = step == "submit-player-prisoner-ransom-private-v1";
+#else
+  const bool is_submit = false;
+#endif
+  if (!is_submit) return false;
+  serialized.clear(); failure.clear();
+  std::uint64_t expected = 0;
+  if (!bridge::JsonUnsignedField(payload, "expected_revision", expected) ||
+      expected == 0 || expected != revision ||
+      !game::IsCk3_12004Descriptor(adapter.descriptor()) ||
+      !published_core.paused || !published_core.map_ready ||
+      !published_core.has_played_character || !published_core.played_character_alive ||
+      published_core.played_character_id <= 0) {
+    failure = "prisoner request revision or paused player frame is stale";
+    return true;
+  }
+  std::uint64_t sequence = 0, prisoner = 0, payer = 0, gold = 0;
+  if (!state.current_quote || state.quote_revision != revision || state.may_have_submitted ||
+      !bridge::JsonUnsignedField(payload, "quote_query_sequence", sequence) || sequence == 0 ||
+      sequence != state.quote_query_sequence ||
+      !bridge::JsonUnsignedField(payload, "prisoner_character_id", prisoner) ||
+      !bridge::JsonUnsignedField(payload, "payer_character_id", payer) ||
+      !bridge::JsonUnsignedField(payload, "quoted_gold_raw", gold) ||
+      prisoner != static_cast<std::uint64_t>(state.current_quote->prisoner_character_id) ||
+      payer != static_cast<std::uint64_t>(state.current_quote->payer_character_id) ||
+      gold != static_cast<std::uint64_t>(state.current_quote->quoted_gold_raw) ||
+      state.current_quote->jailer_character_id != published_core.played_character_id) {
+    failure = "private ransom quote or request is stale";
+    return true;
+  }
+  RansomQuery query{};
+  query.module = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  query.bindings = BindPrisonerRansomActionImage12004(query.module,
+      adapter.descriptor().executable_sha256);
+  query.quote = *state.current_quote;
+  query.envelope.game = &adapter;
+  query.envelope.mailbox = &mailbox;
+  query.envelope.expected_snapshot = published_core;
+  query.envelope.expected_snapshot_revision = revision;
+  query.envelope.typed_context = &query;
+  query.envelope.snapshot_comparison = ck3_12002::QuerySnapshotComparison12002::core_frame;
+  state.may_have_submitted = true;
+  if (!RunMailbox(mailbox, query.envelope,
+      &ExecutePlayerPrisonerRansom12004, failure)) {
+    if (query.envelope.ticket.sequence == 0) state.may_have_submitted = false;
+    return true;
+  }
+  serialized = SerializePlayerPrisonerRansomCommandResult12004(request_id, query.result);
   return true;
 }
 

@@ -298,6 +298,33 @@ OptionMaskState ReadOptionMaskState(
 
 } // namespace
 
+bool ValidatePrisonerRansomDefinition12004(
+    const PrisonerRansomBindings12004 &bindings, const void *definition,
+    std::int32_t stable_hash) noexcept {
+  std::int32_t option_count = 0;
+  return definition != nullptr &&
+         DefinitionKey(definition, stable_hash, kRansom) &&
+         Read(definition, kDefinitionOptionCountOffset, option_count) &&
+         option_count == static_cast<std::int32_t>(kOptionCount) &&
+         LoadedOptionFlagsMatch(bindings, definition);
+}
+
+bool ValidatePrisonerRansomSelectedContext12004(
+    const void *context, const void *definition,
+    const PlayerPrisonerRansomQuoteV1 &quote) noexcept {
+  if (quote.selected_option != "gold" &&
+      quote.selected_option != "current_gold") return false;
+  const auto option = quote.selected_option == "gold" ? 2 : 3;
+  auto failure = PlayerPrisonerRansomQuoteFailureV1::none;
+  std::optional<std::int32_t> definition_count;
+  std::optional<std::int32_t> context_count;
+  return ContextRolesMatch(context, definition, quote.jailer_character_id,
+                           quote.payer_character_id,
+                           quote.prisoner_character_id) &&
+         ReadOptionMaskState(context, option, failure, definition_count,
+                             context_count) == OptionMaskState::expected_only;
+}
+
 PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
     const PrisonerRansomBindings12004 &bindings, std::uintptr_t module,
     std::int32_t jailer_id, std::int32_t prisoner_id) noexcept {

@@ -29,4 +29,13 @@ PlayerPrisonerRansomQuoteV1 ReadPlayerPrisonerRansomQuotePrivateV1(
     std::int32_t jailer_character_id,
     std::int32_t prisoner_character_id) noexcept;
 
+// Shared software checks for the actual-build action leaf. These reuse the
+// quote reader's stock definition, nine flag identities and selected mask.
+bool ValidatePrisonerRansomDefinition12004(
+    const PrisonerRansomBindings12004 &bindings, const void *definition,
+    std::int32_t stable_hash) noexcept;
+bool ValidatePrisonerRansomSelectedContext12004(
+    const void *context, const void *definition,
+    const PlayerPrisonerRansomQuoteV1 &quote) noexcept;
+
 } // namespace xar::ck3_12004
