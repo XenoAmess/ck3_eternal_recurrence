@@ -139,13 +139,44 @@ def _label_sequence(sequence: dict | None) -> None:
                 writer["input_basis"] = "derived_same_stage_DATA_and_explicit_writer_request"
 
 
+def _selected_full_supply_rate(army: Mapping[str, object], land: Mapping[str, object]) -> dict:
+    """Select24E51A0's actual branch in the same captured query context.
+
+    The fleet branch has no selected-refill count or Province usage operand.
+    Its observed rate therefore survives refill while Fleet/date/Province,
+    commander and loaded values are held fixed. Zero is a read value; its
+    terrain/date cause is not exposed by the current rate observation.
+    """
+    branch, source = None, None
+    for name in ("current_land_resupply_v1", "current_land_supply_rate_inputs_v1"):
+        leaf = army.get(name)
+        if isinstance(leaf, Mapping) and type(leaf.get("native_land_branch_applicable")) is bool:
+            branch, source = leaf["native_land_branch_applicable"], name
+            break
+    if branch is False:
+        raw = army.get("current_supply_change_monthly_raw")
+        ready = type(raw) is int
+        return {"mode": "fleet", "ready": ready, "raw": raw if ready else None,
+                "input_basis": "observed_current_fleet_rate_fixed_context", "branch_source": source,
+                "missing_inputs": [] if ready else ["same_query_current_supply_change_monthly_raw"]}
+    if branch is True:
+        ready = land["conditional_full_land_rate_ready"]
+        return {"mode": "land", "ready": ready,
+                "raw": land["conditional_post_refill_supply_rate_raw"] if ready else None,
+                "input_basis": "conditional_post_refill_land_rate_fixed_context", "branch_source": source,
+                "missing_inputs": land["missing_inputs"]}
+    return {"mode": "unknown", "ready": False, "raw": None, "input_basis": None,
+            "branch_source": None, "missing_inputs": ["same_query_native_land_branch_applicable"]}
+
+
 def project_selected_refill_monthly_supply_assembly_v1(
     army: Mapping[str, object], *, joined_land_rate: Mapping[str, object] | None = None,
 ) -> dict[str, object]:
     """Join qualified kernels without replacing any observed row or output.
 
     Capacity and all owner/Province/commander/admission/modifier predicates are
-    explicit captured context. This does not reconstruct manager preparation,
+    explicit captured context, including Fleet association/date in its branch.
+    This does not reconstruct manager preparation,
     calendar entry, other refresh statistics or an actual post-stage snapshot.
     """
     result = {
@@ -163,6 +194,10 @@ def project_selected_refill_monthly_supply_assembly_v1(
         "selected_refill_union": None, "derived_subject_frame": None,
         "joined_post_refill_land_rate": None, "rate_required_by_updater": None,
         "selected_land_rate_ready": False, "selected_land_rate_raw": None,
+        "selected_full_supply_rate_mode": "unknown", "selected_full_supply_rate_ready": False,
+        "selected_full_supply_rate_raw": None, "selected_full_supply_rate_input_basis": None,
+        "selected_full_supply_rate_branch_source": None,
+        "selected_fleet_rate_ready": False, "selected_fleet_rate_raw": None,
         "conditional_post_stock_ready": False, "conditional_post_stock_raw": None,
         "conditional_budgets_ready": False, "conditional_loss_sequence_ready": False,
         "conditional_caller_effects_ready": False,
@@ -180,11 +215,13 @@ def project_selected_refill_monthly_supply_assembly_v1(
     frame, subject = _subject_frame(army, union, selected)
     land = (deepcopy(dict(joined_land_rate)) if joined_land_rate is not None
             else project_conditional_post_refill_land_supply_rate(army))
-    rate_ready = land["conditional_full_land_rate_ready"]
-    rate = land["conditional_post_refill_supply_rate_raw"] if rate_ready else None
+    selected_rate = _selected_full_supply_rate(army, land)
+    rate_ready, rate = selected_rate["ready"], selected_rate["raw"]
     frame["current_supply_change_monthly_raw"] = rate
     budgets = construct_conditional_monthly_loss_budgets(frame)
-    budgets["input_basis"] = "derived_selected_refill_current_DATA_counts_and_land_rate; fixed_captured_capacity_and_context"
+    budgets["input_basis"] = ("derived_selected_refill_current_DATA_counts_and_land_rate; fixed_captured_capacity_and_context"
+                             if selected_rate["mode"] == "land" else
+                             "derived_selected_refill_current_DATA_counts_and_selected_full_supply_rate; fixed_captured_capacity_and_context")
     sequence = budgets["same_input_conditional_loss_sequence_v1"]
     _label_sequence(sequence)
     effects = project_conditional_monthly_caller_effects(frame, budgets)
@@ -193,7 +230,8 @@ def project_selected_refill_monthly_supply_assembly_v1(
     missing = list(subject["missing_inputs"])
     missing.extend(union_missing)
     if required and not rate_ready:
-        missing.append({"stage": "selected_full_land_rate", "inputs": land["missing_inputs"]})
+        missing.append({"stage": "selected_full_land_rate" if selected_rate["mode"] == "land"
+                        else "selected_full_supply_rate", "inputs": selected_rate["missing_inputs"]})
     for stage, projection in (("stock_and_budgets", budgets), ("finite_caller_effects", effects)):
         if projection["missing_inputs"]:
             missing.append({"stage": stage, "inputs": projection["missing_inputs"]})
@@ -208,8 +246,18 @@ def project_selected_refill_monthly_supply_assembly_v1(
         **result, "status": "available" if ready else "partial" if any_ready else "unavailable",
         "conditional_assembly_ready": bool(ready), "selected_refill_union": union,
         "derived_subject_frame": subject, "joined_post_refill_land_rate": land,
-        "rate_required_by_updater": required, "selected_land_rate_ready": rate_ready,
-        "selected_land_rate_raw": rate, "conditional_post_stock_ready": budgets["post_supply_ready"],
+        "rate_required_by_updater": required,
+        "selected_land_rate_ready": land["conditional_full_land_rate_ready"],
+        "selected_land_rate_raw": land["conditional_post_refill_supply_rate_raw"],
+        "selected_full_supply_rate_mode": selected_rate["mode"],
+        "selected_full_supply_rate_ready": rate_ready, "selected_full_supply_rate_raw": rate,
+        "selected_full_supply_rate_input_basis": selected_rate["input_basis"],
+        "selected_full_supply_rate_branch_source": selected_rate["branch_source"],
+        "selected_fleet_rate_ready": selected_rate["mode"] == "fleet" and rate_ready,
+        "selected_fleet_rate_raw": rate if selected_rate["mode"] == "fleet" else None,
+        "captured_context_premise": result["captured_context_premise"] + (
+            ["Fleet_association_and_current_game_state_date"] if selected_rate["mode"] == "fleet" else []),
+        "conditional_post_stock_ready": budgets["post_supply_ready"],
         "conditional_post_stock_raw": budgets["conditional_post_supply_raw"],
         "conditional_budgets_ready": budgets["conditional_budgets_ready"],
         "conditional_loss_sequence_ready": bool(sequence_ready),
