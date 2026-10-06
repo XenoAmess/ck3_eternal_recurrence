@@ -11,6 +11,10 @@ from __future__ import annotations
 import re
 from typing import Final
 
+from .faction_county_culture_inputs_v1 import (
+    COUNTY_CULTURE_RELATION_FIELDS_V1,
+    normalize_county_culture_relation_v1,
+)
 from .version_identity import (
     CK3_12002,
     require_exact_native_backend,
@@ -254,8 +258,13 @@ def _nullable_county_fixed_point(
 
 
 def _county_member_observation(value: object, field: str) -> dict[str, object]:
-    if not isinstance(value, dict) or set(value) != _COUNTY_MEMBER_OBSERVATION_FIELDS:
-        raise ValueError(f"{field} must contain exactly the county observation fields")
+    if (
+        not isinstance(value, dict)
+        or not _COUNTY_MEMBER_OBSERVATION_FIELDS.issubset(value)
+        or set(value) - _COUNTY_MEMBER_OBSERVATION_FIELDS - COUNTY_CULTURE_RELATION_FIELDS_V1
+    ):
+        raise ValueError(f"{field} must contain the county fields and optional culture group")
+    culture = normalize_county_culture_relation_v1(value, field=field)
     statuses = {}
     for name in ("opinion_status", "native_final_status"):
         status = value.get(name)
@@ -294,6 +303,7 @@ def _county_member_observation(value: object, field: str) -> dict[str, object]:
             bits=32,
         ),
         **statuses,
+        **culture,
     }
 
 

@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "contract": "ck3-1.20.0.3-player-faction-county-culture-input",
+  "status": "research-source-integrated-checks-and-paused-live-pending",
+  "build": {
+    "version": "1.20.0.3",
+    "steam_build_id": "25652598",
+    "exe_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6"
+  },
+  "question": "What is a player-targeting faction member county's actual culture relative to the faction target?",
+  "purpose": "own-policy",
+  "actor": "human",
+  "owner_scope": "current player 29829 targeting factions; county members read-only",
+  "producer": "CountyData+0x388 and faction target Character+0xB0 full culture identities",
+  "caller": "existing paused application-main faction alert query",
+  "consumer": "strategy._general_war_entry_faction_context county_culture_context",
+  "trigger": "paused-query",
+  "cache_lifetime": "same existing alert frame",
+  "identity": "generation-id",
+  "mode": "offline-only",
+  "expected_signal": "two registry-resolved full CultureIDs and full-ID equality per county member",
+  "zero_sample_meaning": "no county members in that frame; no new culture live sample",
+  "stop_condition": "source integration and dedicated fixtures delivered for Root's first joint check batch",
+  "runtime_window_ref": null,
+  "source_evidence": [
+    {
+      "path": "artifacts/g2-maintainer-2026-10-02/resume-12003/m4-sway/robert-county-opinion-native-01/getter-registry/disasm-0024d4790-0024d4ca8.txt",
+      "rva": "0x24D480F",
+      "bytes": "45 8B 87 88 03 00 00",
+      "meaning": "read CountyData full CultureID at +0x388"
+    },
+    {
+      "manifest": "ck3_1_20_0_2_phase_culture.json",
+      "manifest_sha256": "6c32d06c336f3fc57e73789433eaa620ae7cb2de6eca1aa212d954abe165f7d3",
+      "reviewed_reuse": "ck3_1_20_0_3_abi_reuse.json phase_culture",
+      "character_culture_rva": "0xC6E0FB",
+      "bytes": "41 8B 85 B0 00 00 00",
+      "meaning": "read character full CultureID at +0xB0"
+    },
+    {
+      "path": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/faction-mitigation/stock/current-12003-00_populist_faction.txt",
+      "sha256": "c67853a56bcea26ed90427cdba7ed4a51968ee085ec88e34fe2976ce5437dd4d",
+      "lines": "119-163 and 415-505,581-595",
+      "meaning": "Root-authorized current stock populist validity and culture-dependent score branches"
+    }
+  ],
+  "layout": {
+    "county_data_culture_full_id": "0x388",
+    "target_character_culture_full_id": "0xB0",
+    "culture_storage_slot_rva": "0x5D1E2F0",
+    "culture_fallback_slot_rva": "0x5D1E2E8",
+    "culture_full_id": "0x10",
+    "registry_slots": "0x20",
+    "registry_capacity": "0x2C",
+    "registry_slot_stride": "0x10",
+    "registry_slot_object": "0x08",
+    "empty_full_id": -1
+  },
+  "api": {
+    "query": "query-player-faction-alerts-v1",
+    "path": "targeting_factions[].county_member_observations[]",
+    "fields": ["county_culture_id", "target_culture_id", "same_culture_as_target", "culture_relation_status"],
+    "zero": "culture full ID zero is valid when resolved",
+    "available": "both resolved signed int32 full IDs and a matching boolean",
+    "unavailable": "one or both IDs absent and relation null; existing alert/opinion/final material retained",
+    "player_target": "use faction target, never substitute direct county holder"
+  },
+  "fixtures": {
+    "native_target": "xar_ck3_12003_faction_county_culture_whole_query_test",
+    "ctest": "xar_ck3_12003_faction_county_culture_whole_query",
+    "native_source": "src/player_faction_county_culture_whole_query_fixture.cpp",
+    "python_source": "../tests/unit/test_player_faction_county_culture_inputs_v1.py",
+    "execution": "not run by this worker; Root first joint batch"
+  },
+  "new_exe_reads_or_hashes": 0,
+  "target_live_verified": false,
+  "not_published": ["heritage", "active_diarch_culture", "faith_or_rite", "full_is_county_valid", "native_score_decomposition"],
+  "no_action": "culture context is an observation dependency; it changes no watch/danger/prior scope/action choice and claims no county departure or mitigation loop"
+}

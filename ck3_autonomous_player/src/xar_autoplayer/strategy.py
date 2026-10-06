@@ -50,6 +50,9 @@ from .bridge.war_entry_contract import (
     normalize_war_entry_assessments,
     query_war_entry_assessments_step,
 )
+from .bridge.faction_county_culture_inputs_v1 import (
+    project_player_faction_county_culture_context_v1,
+)
 from .bridge.player_faction_alerts_contract import (
     QUERY_PLAYER_FACTION_ALERTS_V1_CAPABILITY,
     QUERY_PLAYER_FACTION_ALERTS_V1_STEP,
@@ -790,6 +793,7 @@ def _general_war_entry_faction_context(
         "status": status,
         "factions": [{key: copy.deepcopy(row[key]) for key in fields}
                      for row in alert["targeting_factions"]],
+        "county_culture_context": project_player_faction_county_culture_context_v1(alert),
     }
 
 

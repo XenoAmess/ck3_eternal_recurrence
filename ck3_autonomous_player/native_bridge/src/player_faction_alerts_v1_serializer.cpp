@@ -383,6 +383,14 @@ void AppendCountyMemberObservation(
   AppendJsonString(output, county.opinion_status);
   output += ",\"native_final_status\":";
   AppendJsonString(output, county.native_final_status);
+  output += ",\"county_culture_id\":";
+  AppendOptionalInt32(output, county.county_culture_id);
+  output += ",\"target_culture_id\":";
+  AppendOptionalInt32(output, county.target_culture_id);
+  output += ",\"same_culture_as_target\":";
+  AppendOptionalBool(output, county.same_culture_as_target);
+  output += ",\"culture_relation_status\":";
+  AppendJsonString(output, county.culture_relation_status);
   output.push_back('}');
 }
 

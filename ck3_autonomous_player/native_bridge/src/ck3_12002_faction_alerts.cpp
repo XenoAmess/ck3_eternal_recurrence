@@ -52,7 +52,7 @@ bool ReadBytes(const PlayerFactionAlertsAccessV1 &access, const void *base,
 
 bool Resolve(const PlayerFactionAlertsAccessV1 &access, void **storage_slot,
              void **fallback_slot, std::int32_t id, std::size_t identity_offset,
-             void *&object) noexcept {
+             void *&object, bool minus_one_is_empty = false) noexcept {
   object = nullptr;
   void *storage = nullptr;
   void *fallback = nullptr;
@@ -64,7 +64,8 @@ bool Resolve(const PlayerFactionAlertsAccessV1 &access, void **storage_slot,
       !Read(access, storage, 0x2C, capacity) || capacity < 0 ||
       capacity > 0x01000000 || (capacity && !slots)) return false;
   const auto index = static_cast<std::uint32_t>(id) & 0x00FFFFFFU;
-  if (id <= 0 || index >= static_cast<std::uint32_t>(capacity)) return true;
+  if ((minus_one_is_empty ? id == -1 : id <= 0) ||
+      index >= static_cast<std::uint32_t>(capacity)) return true;
   void *candidate = nullptr;
   std::int32_t round_trip = -1;
   if (!Read(access, slots, static_cast<std::size_t>(index) * 0x10 + 8, candidate))
@@ -194,6 +195,28 @@ bool InvokeLiege(NativeCampaignRootCharacterResolverV1 function,
 #endif
 }
 
+bool ReadCountyIdentityMaterial12003(
+    const PlayerFactionAlertsNativeEnvironmentV1 &environment,
+    const PlayerFactionAlertsAccessV1 &access, std::int32_t county_title_id,
+    FactionCountyOpinionMaterial12003 &row, void *&title,
+    void *&county) noexcept {
+  row = {};
+  row.county_title_id = county_title_id;
+  title = nullptr;
+  county = nullptr;
+  void *province = nullptr;
+  std::int32_t county_identity = -1;
+  std::uint32_t province_tag = 0;
+  return Resolve(access, environment.landed_title_storage_slot,
+                 environment.landed_title_fallback_slot, county_title_id, 0x10, title) &&
+         title && InvokeLiege(environment.title_province, title, province) && province &&
+         Read(access, province, 0x10, row.capital_province_id) &&
+         row.capital_province_id > 0 &&
+         Read(access, province, 0x85C, province_tag) && province_tag == 0x50726F76U &&
+         Read(access, province, 0x848, county) && county &&
+         Read(access, county, 0x18, county_identity) && county_identity == county_title_id;
+}
+
 bool ReadMembers(const PlayerFactionAlertsNativeEnvironmentV1 &environment,
                   const PlayerFactionAlertsAccessV1 &access, void *faction,
                   std::int32_t faction_id, std::size_t span_offset,
@@ -319,6 +342,15 @@ ReadFactionEntityResult12002 ReadEntitySample(
       !ReadMembers(environment, access, faction, faction_id, 0x60, true,
                    row.county_member_title_ids, &row.county_member_observations))
     return ReadFactionEntityResult12002::unavailable;
+  for (auto &county : row.county_member_observations) {
+    FactionCountyCultureMaterial12003 culture{};
+    const bool available = ReadCountyMemberCulture12003(
+        environment, access, county.county_title_id, row.target_character_id, culture);
+    county.county_culture_id = culture.county_culture_id;
+    county.target_culture_id = culture.target_culture_id;
+    county.same_culture_as_target = culture.same_culture_as_target;
+    if (available) county.culture_relation_status = "available";
+  }
   std::int32_t months = 0;
   if (!InvokeFactionFixed(environment.power, faction, row.power.raw) ||
       !InvokeFactionFixed(environment.power_threshold, faction, row.power_threshold.raw) ||
@@ -830,6 +862,10 @@ void BindCountyMemberObservations12003(
       : nullptr;
   environment.county_faction_finals = BindCountyFactionFinals12003(
       environment.module_base, environment.county_observations_12003);
+  environment.culture_storage_slot = environment.county_observations_12003
+      ? reinterpret_cast<void **>(environment.module_base + 0x5D1E2F0) : nullptr;
+  environment.culture_fallback_slot = environment.county_observations_12003
+      ? reinterpret_cast<void **>(environment.module_base + 0x5D1E2E8) : nullptr;
   environment.surrender_observations_12003 = environment.county_observations_12003;
   if (environment.surrender_observations_12003) {
     environment.government = reinterpret_cast<NativeCampaignRootCharacterResolverV1>(
@@ -850,19 +886,10 @@ bool ReadCountyMemberOpinion12003(
   output = {};
   try {
     if (!Admitted(environment, access) || county_title_id <= 0) return false;
-    void *title = nullptr, *province = nullptr, *county = nullptr, *holder = nullptr;
+    void *title = nullptr, *county = nullptr, *holder = nullptr;
     FactionCountyOpinionMaterial12003 row{};
-    row.county_title_id = county_title_id;
-    std::int32_t county_identity = -1;
-    std::uint32_t province_tag = 0;
-    if (!Resolve(access, environment.landed_title_storage_slot,
-                 environment.landed_title_fallback_slot, county_title_id, 0x10, title) ||
-        !title || !InvokeLiege(environment.title_province, title, province) || !province ||
-        !Read(access, province, 0x10, row.capital_province_id) ||
-        row.capital_province_id <= 0 ||
-        !Read(access, province, 0x85C, province_tag) || province_tag != 0x50726F76U ||
-        !Read(access, province, 0x848, county) || !county ||
-        !Read(access, county, 0x18, county_identity) || county_identity != county_title_id ||
+    if (!ReadCountyIdentityMaterial12003(environment, access, county_title_id,
+                                        row, title, county) ||
         !Read(access, title, 0x128, row.holder_character_id) ||
         !Resolve(access, environment.character_storage_slot,
                  environment.character_fallback_slot, row.holder_character_id, 0x18, holder) ||
@@ -870,6 +897,47 @@ bool ReadCountyMemberOpinion12003(
     output = row;
     // Signed whole-point final opinion: negative and zero are material.
     return InvokeInt(environment.county_opinion, county, output.county_opinion);
+  } catch (...) { return false; }
+}
+
+bool ReadCountyMemberCulture12003(
+    const PlayerFactionAlertsNativeEnvironmentV1 &environment,
+    const PlayerFactionAlertsAccessV1 &access, std::int32_t county_title_id,
+    std::int32_t target_character_id,
+    FactionCountyCultureMaterial12003 &output) noexcept {
+  output = {};
+  try {
+    if (!environment.county_observations_12003 ||
+        !Admitted(environment, access) || county_title_id <= 0) return false;
+
+    // Full CultureID: zero is valid; -1 is the empty sentinel.
+    const auto read_culture = [&](const void *subject, std::size_t offset,
+                                  std::optional<std::int32_t> &observed) {
+      std::int32_t id = -1;
+      void *culture = nullptr;
+      if (Read(access, subject, offset, id) && id != -1 &&
+          Resolve(access, environment.culture_storage_slot,
+                  environment.culture_fallback_slot, id, 0x10, culture, true) && culture)
+        observed = id;
+    };
+
+    // Use the faction target, independently of the county's direct holder.
+    void *target = nullptr;
+    if (Resolve(access, environment.character_storage_slot,
+                environment.character_fallback_slot, target_character_id,
+                0x18, target) && target)
+      read_culture(target, 0xB0, output.target_culture_id);
+
+    FactionCountyOpinionMaterial12003 identity{};
+    void *title = nullptr, *county = nullptr;
+    if (ReadCountyIdentityMaterial12003(environment, access, county_title_id,
+                                      identity, title, county))
+      read_culture(county, 0x388, output.county_culture_id);
+
+    if (output.county_culture_id && output.target_culture_id)
+      output.same_culture_as_target =
+          *output.county_culture_id == *output.target_culture_id;
+    return output.same_culture_as_target.has_value();
   } catch (...) { return false; }
 }
 

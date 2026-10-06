@@ -1,5 +1,7 @@
 # CK3 1.20.0.3：罗贝尔郡派系判断材料
 
+2026-10-06 的后续窄输入见 [玩家派系郡文化输入](faction-county-culture-input-12003.md)：同一 alert 郡行追加完整郡/目标文化身份与相等关系，当前 stock 的 `is_county_valid` 文化分支已冻结。该增量目前为 research / source-integrated，专用 fixture 与实机尚未执行；下面保留原 getter 与 v19 的历史证据边界。
+
 罗贝尔普通战役在日期 `53220000` 的民粹派系 **188** 只有郡成员 **2111、2115**，没有角色 leader 或 character member。既有公开查询 `ck3_query_player_faction_alerts_v1` 当时实测得到力量 **99.125**、力量门槛 **80**、不满 **18**、每月增长 **6**，并按原版规则判为危险。角色送礼或 Sway 的材料不能代替这两个郡的判断材料。本次在同一查询的派系行追加 `county_member_observations`，发布原生郡好感、最终加入分数、资格和实际移除队列状态。最新 v19 暂停查询日期为 `53220456`；该帧完整 targeting vector 中已没有派系 188，仅有下面记录的自由派系观察项。
 
 冻结版本为 **CK3 1.20.0.3 / Steam build 25652598**，EXE SHA-256 为 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`。只使用罗贝尔原普通战役作为当前测试入口；实际查询仍由 ROOT 串行执行，CK3 保持后台最小化。v19 的现有公开危险提醒查询已再次达到 **production-live primitive**。郡材料 DTO、原生 reader 与序列化/Python 契约为 **static-ready**；最新实际帧没有郡成员行，两个郡的新 getter 值仍未实机采样。不能从这次合法无郡场景或离线例值推断当前分数、当前好感或将其计为 G2 完成。

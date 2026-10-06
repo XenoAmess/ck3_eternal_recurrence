@@ -54,6 +54,10 @@ struct PlayerFactionCountyMemberObservationV1 {
   std::optional<std::int32_t> native_leave_score_threshold;
   std::string opinion_status = "unavailable";
   std::string native_final_status = "unavailable";
+  std::optional<std::int32_t> county_culture_id;
+  std::optional<std::int32_t> target_culture_id;
+  std::optional<bool> same_culture_as_target;
+  std::string culture_relation_status = "unavailable";
 
   friend bool operator==(const PlayerFactionCountyMemberObservationV1 &,
                          const PlayerFactionCountyMemberObservationV1 &) = default;

@@ -74,6 +74,8 @@ struct PlayerFactionAlertsNativeEnvironmentV1 {
   bool county_observations_12003 = false;
   NativeCountyOpinionInt32_12003 county_opinion = nullptr;
   CountyFactionFinalBindings12003 county_faction_finals;
+  void **culture_storage_slot = nullptr;
+  void **culture_fallback_slot = nullptr;
   bool surrender_observations_12003 = false;
   NativeCampaignRootCharacterResolverV1 government = nullptr;
   NativeFactionRelation12003 pair_relation = nullptr;
@@ -116,6 +118,19 @@ bool ReadCountyMemberOpinion12003(
     const PlayerFactionAlertsNativeEnvironmentV1 &environment,
     const PlayerFactionAlertsAccessV1 &access, std::int32_t county_title_id,
     FactionCountyOpinionMaterial12003 &output) noexcept;
+
+struct FactionCountyCultureMaterial12003 {
+  std::optional<std::int32_t> county_culture_id;
+  std::optional<std::int32_t> target_culture_id;
+  std::optional<bool> same_culture_as_target;
+};
+
+// Partial IDs remain material when the complete relation is unavailable.
+bool ReadCountyMemberCulture12003(
+    const PlayerFactionAlertsNativeEnvironmentV1 &environment,
+    const PlayerFactionAlertsAccessV1 &access, std::int32_t county_title_id,
+    std::int32_t target_character_id,
+    FactionCountyCultureMaterial12003 &output) noexcept;
 
 // Independent full-generation lookup for gift receipts. Absence in the
 // player's targeting vector is not evidence that a faction was destroyed.
