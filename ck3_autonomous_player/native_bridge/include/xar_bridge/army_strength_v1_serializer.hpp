@@ -532,6 +532,7 @@ inline void AppendArmyCurrentProvinceBesiegingContributorsV1(
 }
 
 #include "xar_bridge/army_daily_assault_loss_inputs_serializer_v1.inc.hpp"
+#include "xar_bridge/army_current_assault_removal_reference_serializer_v1.inc.hpp"
 
 template <class Number, class Int32Array, class JsonString>
 inline void AppendArmyStrengthV1(
@@ -595,6 +596,11 @@ inline void AppendArmyStrengthV1(
     result += ",\"current_daily_assault_roster_admission_v1\":";
     AppendArmyCurrentDailyAssaultRosterAdmissionV1(result, *strength.current_daily_assault_roster_admission_v1,
         number, append_json_string);
+  }
+  if (strength.current_assault_removal_reference_inputs_v1) {
+    result += ",\"current_assault_removal_reference_inputs_v1\":";
+    AppendArmyCurrentAssaultRemovalReferenceInputsV1(result, *strength.current_assault_removal_reference_inputs_v1,
+                                                   number, append_json_string);
   }
   if (strength.monthly_first_removal_cleanup_inputs_v1) {
     result += ",\"monthly_first_removal_cleanup_inputs_v1\":";

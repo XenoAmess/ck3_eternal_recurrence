@@ -1185,6 +1185,7 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
         bindings, *current_daily_assault_table);
   }
   std::optional<game::ArmyCurrentDailyAssaultRosterAdmissionV1> current_daily_assault_roster_admission;
+  std::optional<game::ArmyCurrentAssaultRemovalReferenceInputsV1> current_assault_removal_references;
   for (const auto &entry : scope) {
     diagnostic.army_id.store(entry.army_id);
     diagnostic.reader.store("scope_row");
@@ -1199,6 +1200,15 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
     row.current_daily_assault_table_v1 = current_daily_assault_table;
     row.current_daily_assault_loss_inputs_v1 = current_daily_assault_loss;
     row.current_daily_assault_roster_admission_v1 = current_daily_assault_roster_admission;
+    if (!current_assault_removal_references && bindings.current_assault_removal_reference_bindings.enabled) {
+      diagnostic.reader.store("current_assault_removal_references_readonly");
+      current_assault_removal_references = ck3_12003::ReadCurrentAssaultRemovalReferenceInputs12003(
+          bindings.current_assault_removal_reference_bindings,
+          row.monthly_daily_queue_inputs_v1 ? &*row.monthly_daily_queue_inputs_v1 : nullptr,
+          row.monthly_first_removal_cleanup_inputs_v1 ? &*row.monthly_first_removal_cleanup_inputs_v1 : nullptr,
+          current_daily_assault_table ? &*current_daily_assault_table : nullptr);
+    }
+    row.current_assault_removal_reference_inputs_v1 = current_assault_removal_references;
     partial = partial || !row.available;
     output.push_back(std::move(row));
   }

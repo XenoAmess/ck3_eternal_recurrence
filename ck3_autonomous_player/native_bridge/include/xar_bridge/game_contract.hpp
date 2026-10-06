@@ -731,6 +731,7 @@ struct ArmyCurrentProvinceBesiegingContributorsV1 {
 };
 
 #include "xar_bridge/army_daily_assault_active_table_v1.inc.hpp"
+#include "xar_bridge/army_current_assault_removal_reference_v1.inc.hpp"
 #include "xar_bridge/army_daily_assault_loss_inputs_v1.inc.hpp"
 #include "xar_bridge/army_daily_assault_roster_admission_v1.inc.hpp"
 
@@ -804,6 +805,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyCurrentDailyAssaultTableV1> current_daily_assault_table_v1;
   std::optional<ArmyCurrentDailyAssaultLossInputsV1> current_daily_assault_loss_inputs_v1;
   std::optional<ArmyCurrentDailyAssaultRosterAdmissionV1> current_daily_assault_roster_admission_v1;
+  std::optional<ArmyCurrentAssaultRemovalReferenceInputsV1> current_assault_removal_reference_inputs_v1;
 
   friend bool operator==(const ArmyStrengthSnapshot &,
                          const ArmyStrengthSnapshot &) = default;

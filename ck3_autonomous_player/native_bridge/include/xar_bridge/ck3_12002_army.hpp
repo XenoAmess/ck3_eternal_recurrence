@@ -8,6 +8,7 @@
 #include "xar_bridge/ck3_12003_scoped_ordered_refill_core.hpp"
 #include "xar_bridge/army_daily_assault_active_table_collector_v1.inc.hpp"
 #include "xar_bridge/ck3_12003_daily_assault_roster_admission.hpp"
+#include "xar_bridge/ck3_12003_current_assault_removal_reference.hpp"
 #include "xar_bridge/ck3_12003_ordered_besieging_refill_inputs.hpp"
 
 #include <cstdint>
@@ -173,6 +174,7 @@ struct ArmyBindings {
   ck3_12003::CurrentProvinceBesiegingBindings12003 current_province_besieging_bindings{};
   // Keep additions at the tail: legacy aggregate initializers use the prefix.
   ck3_12003::CurrentDailyAssaultTableBindings12003 current_daily_assault_table_bindings{};
+  ck3_12003::CurrentAssaultRemovalReferenceBindings12003 current_assault_removal_reference_bindings{};
   ck3_12003::OrderedBesiegingRefillBindings12003 ordered_besieging_refill_bindings{};
   bool current_daily_assault_loss_inputs_enabled = false;
   ck3_12003::CurrentDailyAssaultRosterAdmissionBindings12003 current_daily_assault_roster_admission_bindings{};

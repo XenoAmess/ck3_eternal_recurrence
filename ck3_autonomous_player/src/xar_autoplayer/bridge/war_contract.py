@@ -25,6 +25,7 @@ from .army_daily_assault_active_table_contract import normalize_current_daily_as
 from .army_daily_assault_roster_admission_contract import normalize_current_daily_assault_roster_admission_v1
 from .army_ordered_besieging_refill_contract import normalize_ordered_besieging_refill_inputs_v1
 from .army_daily_assault_loss_inputs_contract import normalize_current_daily_assault_loss_inputs_v1
+from .army_current_assault_removal_reference_contract import normalize_current_assault_removal_reference_inputs_v1
 from .army_ordered_besieging_fixed_chunk0_preparation_contract import normalize_ordered_besieging_fixed_chunk0_preparation_inputs_v1
 from .army_county_entry_inputs_contract import normalize_army_county_entry_inputs_v1
 from .battle_native_owner_recall_inputs_contract import (
@@ -296,6 +297,7 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
      "loss_application_inputs_v1", "monthly_loss_budget_inputs_v1", "monthly_caller_effect_inputs_v1", "monthly_daily_queue_inputs_v1", "monthly_first_removal_cleanup_inputs_v1", "monthly_current_helper_domain_inputs_v1", "monthly_current_helper_point_store_inputs_v1", "current_province_supply_contributors_v1", "current_province_besieging_contributors_v1", "current_land_resupply_v1", "current_land_supply_rate_inputs_v1", "scoped_ordered_refill_inputs_v1", "current_daily_assault_table_v1", "current_daily_assault_roster_admission_v1", "county_entry_inputs_v1", "native_army_resolution_v1"} | _ARMY_STRENGTH_GATHERING_DAYS_KEYS
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"ordered_besieging_refill_inputs_v1", "current_daily_assault_loss_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"ordered_besieging_fixed_chunk0_preparation_inputs_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_assault_removal_reference_inputs_v1"}
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -1913,6 +1915,9 @@ def _normalize_army_strength_row(
     if "current_daily_assault_loss_inputs_v1" in value:
         result["current_daily_assault_loss_inputs_v1"] = normalize_current_daily_assault_loss_inputs_v1(
             value["current_daily_assault_loss_inputs_v1"])
+    if "current_assault_removal_reference_inputs_v1" in value:
+        result["current_assault_removal_reference_inputs_v1"] = normalize_current_assault_removal_reference_inputs_v1(
+            value["current_assault_removal_reference_inputs_v1"])
     if "current_daily_assault_table_v1" in value:
         result["current_daily_assault_table_v1"] = normalize_current_daily_assault_table_v1(
             value["current_daily_assault_table_v1"])
