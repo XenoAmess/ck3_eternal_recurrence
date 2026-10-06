@@ -4,7 +4,7 @@ from __future__ import annotations
 
 from typing import Final
 
-from .version_identity import CK3_11906, CK3_12002, CK3_12003, require_exact_native_backend
+from .version_identity import CK3_11906, CK3_12002, CK3_12003, CK3_12004, require_exact_native_backend
 
 
 QUERY_CAMPAIGN_ROOT_CONTEXT_V1_CAPABILITY: Final = (
@@ -61,6 +61,7 @@ _LEGITIMACY_UNAVAILABLE_REASONS: Final = {
     "data_absent",
     "balance_unreadable",
     "balance_invalid",
+    "actual4_legitimacy_field_source_unavailable",
 }
 _PRIMARY_TITLE_FIELDS: Final = {"title_id", "tier_raw", "tier_key"}
 _HELD_TITLE_PARTITION_FIELDS: Final = {
@@ -218,6 +219,17 @@ _BASELINE_PROVENANCE_BY_BUILD = {
         "executable_sha256": CK3_12003.executable_sha256,
         "backend_id": CK3_12003.backend_id("campaign-root-context-v1"),
     },
+    CK3_12004.game_version: {
+        "game_version": CK3_12004.game_version,
+        "executable_sha256": CK3_12004.executable_sha256,
+        "backend_id": CK3_12004.backend_id("campaign-root-context-v1"),
+        "primary_title_rva": "0x289DA10",
+        "capital_province_rva": "0x28B1CB0",
+        "immediate_liege_rva": "0x28BFC50",
+        "top_liege_rva": "0x28BFD80",
+        "government_rva": "0x28C2DF0",
+        "selected_game_rule_service_slot_rva": "0x5CB3D78",
+    },
 }
 
 _PROVENANCE_BY_BUILD: Final = {
@@ -244,6 +256,22 @@ _PROVENANCE_BY_BUILD[CK3_12003.game_version] = {
     "game_version": CK3_12003.game_version,
     "executable_sha256": CK3_12003.executable_sha256,
     "backend_id": CK3_12003.backend_id("campaign-root-context-v1"),
+}
+_PROVENANCE_BY_BUILD[CK3_12004.game_version] = {
+    **_BASELINE_PROVENANCE_BY_BUILD[CK3_12004.game_version],
+    "monthly_gold_income_rva": "0x2BCA940",
+    "character_health_rva": "0x28C64E0",
+    "domain_size_rva": "0x28B71E0",
+    "domain_limit_rva": "0x28B71B0",
+    "has_targeting_faction_trigger_rva": "0x2B250B0",
+    "council_position_lookup_rva": "0x2684EE0",
+    "council_active_task_ids_enumerator_rva": "0x2916CC0",
+    "council_active_task_storage_slot_rva": "0x5D1DEA0",
+    "council_value_progress_current_rva": "0x31AB500",
+    "council_value_progress_maximum_rva": "0x31AB820",
+    "held_title_ids_offset": "0x1E0",
+    "title_province_rva": "0x230F8E0",
+    "province_holder_character_id_rva": "0x247D010",
 }
 
 _UNAVAILABLE_REASONS: Final = {
@@ -775,6 +803,7 @@ def _normalize_council(
     *,
     player_character_id: int,
     admitted: bool,
+    game_version: str,
 ) -> dict[str, object]:
     council = _exact_object(value, _COUNCIL_FIELDS, "council")
     if council.get("coverage_key") != _COUNCIL_COVERAGE_KEY:
@@ -789,16 +818,24 @@ def _normalize_council(
     status = council.get("status")
     if status not in {"available", "unavailable"}:
         raise ValueError("council.status is invalid")
-    if (status == "available") is not admitted:
+    reason = council.get("unavailable_reason")
+    actual4_source_unavailable = (
+        status == "unavailable"
+        and game_version == CK3_12004.game_version
+        and reason == "actual4_council_position_key_source_unavailable"
+    )
+    if (status == "available") is not admitted and not actual4_source_unavailable:
         raise ValueError("council status disagrees with the coverage scope")
     positions_value = council.get("positions")
     if not isinstance(positions_value, list):
         raise ValueError("council.positions must be a list")
-    reason = council.get("unavailable_reason")
     if status == "unavailable":
         if positions_value:
             raise ValueError("unavailable council invented positions")
-        if reason != "outside_standard_landed_non_nomadic_core_scope":
+        if (
+            reason != "outside_standard_landed_non_nomadic_core_scope"
+            and not actual4_source_unavailable
+        ):
             raise ValueError("council unavailable_reason is invalid")
         return {
             **council,
@@ -1244,7 +1281,7 @@ def normalize_campaign_root_context_v1(
         ),
         player_character_id=player_character_id,
         allow_landless_noble_family=(
-            provenance["game_version"] == CK3_12003.game_version
+            provenance["game_version"] in (CK3_12003.game_version, CK3_12004.game_version)
         ),
     )
 
@@ -1331,6 +1368,7 @@ def normalize_campaign_root_context_v1(
         frame.get("council"),
         player_character_id=player_character_id,
         admitted=admitted_council_scope,
+        game_version=provenance["game_version"],
     )
     if readiness["council_ready"] is not (council["status"] == "available"):
         raise ValueError("council readiness disagrees with council status")

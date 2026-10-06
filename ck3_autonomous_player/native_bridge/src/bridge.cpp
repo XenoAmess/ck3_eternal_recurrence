@@ -89,6 +89,7 @@
 #include "xar_bridge/ck3_12002_title_map.hpp"
 #include "xar_bridge/ck3_12002_events.hpp"
 #include "xar_bridge/ck3_12002_campaign.hpp"
+#include "xar_bridge/ck3_12004_campaign.hpp"
 #include "xar_bridge/ck3_12002_nonwar_realm.hpp"
 #include "xar_bridge/ck3_12002_nonwar_metrics.hpp"
 #include "xar_bridge/ck3_12002_pending_context.hpp"
@@ -7226,10 +7227,11 @@ std::string BattleReinforcementAssignmentResultFrame(
 std::string CampaignRootContextResultFrame(
     std::string_view request_id, std::uint64_t query_sequence,
     const xar::game::CampaignRootContextV1 &context,
-    bool crozier = false) {
-  const auto payload = crozier
-      ? xar::ck3_12002::SerializeCampaignRootContextV1(context)
-      : xar::ck3_11906::SerializeCampaignRootContextV1(context);
+    bool crozier = false, bool actual4 = false) {
+  const auto payload = actual4
+      ? xar::ck3_12004::SerializeCampaignRootContextV1(context)
+      : crozier ? xar::ck3_12002::SerializeCampaignRootContextV1(context)
+                : xar::ck3_11906::SerializeCampaignRootContextV1(context);
   if (payload.empty()) {
     return {};
   }
@@ -10711,14 +10713,23 @@ bool ExecuteTypedQuery12002(
       access.context = envelope;
       access.capture_frame = &CaptureTypedFrame12002<xar::game::CampaignRootFrameV1>;
       access.is_main_thread = &xar::ck3_12002::IsQueryOwningThread;
-      auto environment = xar::ck3_12002::BindCampaignRootNativeEnvironmentV1(
-          query.image_base, true);
-      if (xar::game::IsCk3_12003Descriptor(envelope->game->descriptor())) {
-        xar::ck3_12002::BindNonwarFinance12003(environment, query.image_base);
+      if (xar::game::IsCk3_12004Descriptor(envelope->game->descriptor())) {
+        const auto environment =
+            xar::ck3_12004::BindCampaignRootNativeEnvironmentV1(
+                query.image_base, envelope->game->descriptor().executable_sha256);
+        xar::ck3_12004::ReadCampaignRootContextV1(
+            environment, access, query.campaign_request, query.campaign,
+            &query.held_partition_failure);
+      } else {
+        auto environment = xar::ck3_12002::BindCampaignRootNativeEnvironmentV1(
+            query.image_base, true);
+        if (xar::game::IsCk3_12003Descriptor(envelope->game->descriptor())) {
+          xar::ck3_12002::BindNonwarFinance12003(environment, query.image_base);
+        }
+        xar::ck3_12002::ReadCampaignRootContextV1(
+            environment, access, query.campaign_request, query.campaign,
+            &query.held_partition_failure);
       }
-      xar::ck3_12002::ReadCampaignRootContextV1(
-          environment, access, query.campaign_request, query.campaign,
-          &query.held_partition_failure);
       query.typed_result = true;
     } else if constexpr (Kind == QueryKind12002::loaded_features) {
       xar::ck3_11906::LoadedFeatureManifestAccessV1 access{};
@@ -11451,6 +11462,8 @@ public:
         &ExecuteTypedQuery12002<QueryKind12002::battle_reinforcement>;
     environment.permitted_executor_denary =
         &ExecuteTypedQuery12002<QueryKind12002::battle_terminal>;
+    environment.permitted_executor_undenary =
+        &ExecuteTypedQuery12002<QueryKind12002::campaign>;
     xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
     xar::ck3_12002::PopulateNonwarRouterExecutors12004(nonwar);
     nonwar.warcash = &ExecuteWarCashCurrentResources12004;
@@ -12600,7 +12613,9 @@ std::string RunTypedQuery12002(
         ++state.battle_terminal_transition_query_sequence, query.terminal); break;
   case QueryKind12002::campaign:
     response = CampaignRootContextResultFrame(request_id,
-        ++state.campaign_root_context_query_sequence, query.campaign, true);
+        ++state.campaign_root_context_query_sequence, query.campaign, true,
+        xar::game::IsCk3_12004Descriptor(game.descriptor()));
+    response = RenderNativePrivateFrameV1(game, std::move(response));
     if (readonly_diagnostic != nullptr &&
         query.campaign.unavailable_reason == "held_title_partition_unavailable" &&
         !query.held_partition_failure.guard.empty()) {
@@ -13966,7 +13981,8 @@ void RunConnectedSession(
               TypedQueryKind12002(step).has_value()) ||
              IsBattleWarTypedQuery12004(game, step) ||
              (xar::game::IsCk3_12004Descriptor(game.descriptor()) &&
-              step == xar::ck3_12004::kLoadedFeatureManifestV1Step))) {
+              (step == xar::ck3_12004::kLoadedFeatureManifestV1Step ||
+               step == xar::ck3_12002::kCampaignRootContextV1Step)))) {
           std::string readonly_diagnostic;
           const auto response = RunTypedQuery12002(
               game, state, request_id, step, incoming.payload, &readonly_diagnostic);

@@ -49,6 +49,7 @@ const AdapterDescriptor &Ck3_12004AdapterDescriptor() noexcept {
       "game.command.query-player-mercenary-context-v1",
       "game.command.hire-mercenary-v1", "game.command.hire-holy-order-v1",
       "game.command.query-loaded-feature-manifest-v1",
+      "game.command.query-campaign-root-context-v1",
       "game.command.query-combat-simulation-inputs-v2-N",
       "game.command.query-player-default-raise-v1",
       "game.command.raise-troops-default",
