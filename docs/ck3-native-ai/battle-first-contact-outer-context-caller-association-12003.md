@@ -250,3 +250,40 @@ later central batch. It has **not** been compiled or executed by this child.
 Candidate qualification is Python-contract-ready/native-pending, with no new
 native-static or live credit. The earlier source-closure counts remain0; this
 separate candidate has Python1/native0/build0/game0/newEXE0.
+
+## First compiled wire qualification — 2026-10-06
+
+Root adopted the observer as `526a5486`, applied its source correction and
+qualified the formal strict03 source
+`01d98c73ca42b91b5e39c827e32a07b1afe51479`. Its central offline /WX build was
+GREEN in124.917782s; the first three new CTests were GREEN3/3 in0.38s at
+02:21:42 UTC. The model-association fixture is one of those three. Root enabled
+assertions in its Release fixture. Two earlier central compile REDs remain in
+Root's preserved receipts, including the production serializer namespace fix;
+this increment did not replay or re-audit them.
+
+The **first** actual compiled four-case wire consumption was GREEN4/4 at
+02:22:55 UTC (10:22:55 Asia/Shanghai), 0.008576s. It imported the integrated
+production normalizer from `Z:/gb0/ck3_autonomous_player/src` and consumed
+`C:/codex-ck3-background/readonly-observer-batch/strict03/cache-observers/knight_current_model_association_v1_wire.json`.
+The compiled production collector and literal serializer produced this wire
+from synthetic fake memory. The existing enclosing linked33435/selected29829
+context was reused from actual814; the new identity leaf has no game-observation
+credit.
+
+All literal fields survived production normalization. The compiled cases
+retained native indices0/1/2 and duplicate old-model positions0/2; distinguished
+same owner from model identity; retained a real paired-versus-installed true
+comparison independently of a false comparison in another occurrence; kept
+legal absent slots distinct from unread owners; preserved current known-empty
+count0 and no-carrier fallback; and preserved an independent same-owner queue
+when the installed pointer was unread. Existing knight scalar, observed damage
+and toughness remained available with zero added diagnostic input gaps.
+
+The optional **frozen-current same-query identity census is static-ready**.
+This does not qualify a historical transfer stage, completed generic exchange
+postimage, actual game identity leaf, full changed-context Entry or full person
+preparation. No old Python case or wire was rerun, and this child executed no
+native build, native CTest, game, SDK or EXE operation. The first consumption
+receipt and Oct6/W41 fields are under external
+`identity-census/compiled-wire-integration/attempt01/`.
