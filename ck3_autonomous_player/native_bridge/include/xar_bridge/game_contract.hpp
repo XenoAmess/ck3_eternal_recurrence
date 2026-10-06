@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/battle_context_source_inputs_v1.hpp"
+#include "xar_bridge/battle_current_finalizer_manager_inputs_v1.hpp"
 #include "xar_bridge/battle_current_own_nested_modifier_dto.hpp"
 #include "xar_bridge/knight_current_model_association_v1.hpp"
 
@@ -2921,6 +2922,9 @@ struct BattleControlSnapshot {
   // Null means the full native backing census was not resolved; zero is valid.
   // This additive observation does not change battle_control_ready.
   std::optional<BattleControlFullBackingInputsV1> full_backing_inputs_v1;
+  // Same-Combat current manager operands; null is unobserved, raw zero is valid.
+  std::optional<BattleControlCurrentFinalizerManagerInputsV1>
+      current_finalizer_manager_inputs_v1;
   // Runtime pursuit rules are independent nullable observations, not a gate.
   std::optional<BattleControlCurrentPursuitInputsV1> current_pursuit_inputs_v1;
   // Optional current-frame first-Army permission inputs, independent of ready.

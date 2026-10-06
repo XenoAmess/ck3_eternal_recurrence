@@ -11,6 +11,7 @@
 #include "xar_bridge/battle_current_dynamic_components_reader.hpp"
 #include "xar_bridge/battle_current_own_nested_modifier_reader.hpp"
 #include "xar_bridge/game_contract.hpp"
+#include "xar_bridge/battle_current_finalizer_manager_inputs_reader_12003.hpp"
 #include "xar_bridge/ck3_12002_phase_character.hpp"
 
 namespace xar::ck3_12002 {
@@ -126,6 +127,8 @@ struct BattleBindings {
   // Exact .3 only, and attempted only for explicit requested CharacterIDs.
   // Complete backing census is independently nullable and exact .3 only.
   bool full_backing_inputs_enabled = false;
+  // Nonzero only after the independently exact .3 manager leaf is bound.
+  std::uintptr_t current_finalizer_manager_secondary_vtable = 0;
   bool current_battle_knight_identity_enabled = false;
   bool current_person_state_enabled = false;
   bool current_person_effective_prowess_enabled = false;

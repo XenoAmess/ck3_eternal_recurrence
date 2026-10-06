@@ -1,6 +1,7 @@
 #include "xar_bridge/public_unit_id.hpp"
 #include "xar_bridge/battle_control_snapshot_v1_mailbox.hpp"
 #include "xar_bridge/battle_actual_geography_v1_serializer.hpp"
+#include "xar_bridge/battle_current_finalizer_manager_inputs_v1_serializer.hpp"
 
 #include <windows.h>
 
@@ -1986,6 +1987,9 @@ std::string SerializeBattleControlSnapshotV1(
   if (!AppendFullBackingInputsV1(output, snapshot.full_backing_inputs_v1)) {
     return {};
   }
+  output += ",\"current_finalizer_manager_inputs_v1\":";
+  bridge::AppendCurrentFinalizerManagerInputsV1(
+      output, snapshot.current_finalizer_manager_inputs_v1);
   if (snapshot.actual_geography_v1) {
     const auto geography =
         bridge::SerializeBattleActualGeographyV1(*snapshot.actual_geography_v1);
@@ -2140,6 +2144,9 @@ std::string SerializeActiveCombatResumeInputsV1(
   if (!AppendCurrentPursuitInputsV1(output, snapshot.current_pursuit_inputs_v1)) {
     return {};
   }
+  output += ",\"current_finalizer_manager_inputs_v1\":";
+  bridge::AppendCurrentFinalizerManagerInputsV1(
+      output, snapshot.current_finalizer_manager_inputs_v1);
   output += ",\"side_0_current_roll_points\":";
   if (!AppendNumber(output, snapshot.attacker.current_roll_points)) {
     return {};

@@ -744,6 +744,8 @@ bool ControlSample(const BattleBindings &b, const game::Snapshot &scope,
       ReadActiveBattleCounterInputsV1(b.commander_roll_context, combat, out);
   out.current_loss_inputs_v1 = CurrentLossInputs(b, combat, province, out);
   out.full_backing_inputs_v1 = FullBackingInputs(b, out);
+  out.current_finalizer_manager_inputs_v1 =
+      ReadCurrentFinalizerManagerInputs12003(b, combat, cid);
   out.current_pursuit_inputs_v1 = CurrentPursuitInputs(b, combat, out);
   out.current_phase_transition_inputs_v1 =
       CurrentPhaseTransitionInputs(b, combat, out);
@@ -2235,6 +2237,12 @@ ReadBattleControlSnapshot(const BattleBindings &b, const game::Snapshot &s,
     // A changing optional census cannot invalidate the existing control frame.
     a.full_backing_inputs_v1.reset();
     c.full_backing_inputs_v1.reset();
+  }
+  if (sampled && a.current_finalizer_manager_inputs_v1 !=
+                     c.current_finalizer_manager_inputs_v1) {
+    // A changing optional manager leaf retains the existing control frame.
+    a.current_finalizer_manager_inputs_v1.reset();
+    c.current_finalizer_manager_inputs_v1.reset();
   }
   if (sampled && a.current_phase_transition_inputs_v1 !=
                      c.current_phase_transition_inputs_v1) {
