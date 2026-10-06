@@ -1,6 +1,6 @@
 # Current daily-assault original roster admission - CK3 1.20.0.3
 
-Incremental source milestone, 2026-10-06 / W41. This source tree precedes the
+Selected nonempty admission source closure, 2026-10-06 / W41. This source tree precedes the
 new observer. CK3 1.20.0.3 / Steam 25652598 is bound to the reused EXE SHA-256
 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
 There is no game/process/SDK/pipe/UI/live-pointer operation, test or build.
@@ -10,7 +10,7 @@ prefix. Its next actual input is the complete original primary roster, rather
 than a permanently supplied list or the requested Army subset. The cached
 pre-date caller uses secondary=primary+8: secondary data48/count54 are original
 primary data50/count5C. It resolves every raw full DWORD in original order and
-calls `2A99B40(primary,resolvedArmy)` at `2A9A0A1`. Retain duplicates, invalid
+can reach `2A99B40(primary,resolvedArmy)` at `2A9A0A1` after earlier per-Army dispatch. Retain duplicates, invalid
 requests, the actual fallback selection and native indices independently of
 whether that occurrence's admission can be derived. The removal queue68/74
 is a separate input.
@@ -34,8 +34,15 @@ flowchart TD
     U --> C{Province73C is FFFFFFFF?}
     C -->|yes| Q[2C099F0 Character Province third argument0]
     C -->|no| D[2C09DA0 to247D030 to2C09640]
-    Q -. EAX equals0: demanded body pending .-> V[Final gate verdict]
-    D -. actual controller fields pending .-> V
+    Q -. title-derived Character and other relation predicates remain unmodeled .-> V[Final gate verdict]
+    D --> EQ{Actual selected Character full IDs equal?}
+    EQ -->|yes| Z
+    EQ -->|no| MP[28BC270: actual ordered Character pair table]
+    MP --> WA[Relation20 rawWarID then exact War registry or fallback]
+    WA --> WZ{RequestedWarID nonsentinel and actualWar358 zero?}
+    WZ -->|yes| TV[Source-bound true gate]
+    WZ -. other relation predicates remain unclosed .-> V
+    TV --> SI
     V -->|false| Z
     V -->|true| SI[Resolve actual Siege from Province788; Siege44C nonzero]
     SI --> QU[Whole removal queue68/74 excludes selected Army ID10]
@@ -73,8 +80,9 @@ Character via5C67568/70 and full Character ID18. Province73C FFFFFFFF selects
 `31c1ae747e198fbc5aa5ad7247ea69b5bd5968cbae89bea5f6d74d323eed849d`.
 It calls247D030 with Province and a stack output, resolves the returned full
 Character ID through5C67568/70, then calls2C09640 with the two actual selected
-Characters and third argument0. These two leaf input contracts and2C099F0
-remain branch-local source gaps. Cross-owner cache reuse precedes new reads.
+Characters and third argument0. The selected normal Province73C branch is now closed below. Other title-derived
+and remaining relation branches stay local source gaps; no arbitrary supplied
+boolean is used to complete them.
 
 ## Closed caller and pending selection
 
@@ -105,22 +113,83 @@ is partial. Count0 is legal complete empty without registry or gate demands.
 Whole admission readiness requires every occurrence's source selection or
 skip; the new fixture must include a genuinely true, nonempty admission.
 
-## Cost and boundary
+## Selected true and false controller branch
 
-The source child currently adds532 unique code +528 metadata =1060 actual
-frozen bytes, zero duplicate reads. Its2C099F0 metadata-only harness RED read
-52 metadata and zero code, saved unchanged. Exact pdata closes the necessary
-567-byte body extent; no metadata recapture is needed. Parent adds zero new
-EXE bytes, reusing637-byte caller and saved source ledger without rehashing.
-The gate source tree, pins, READONLY-BINDING.json and READ-COST.json are under
-`gate24e8560-source` in the packet below. Future required controller bytes
-remain separately planned and are not included as already read.
+The exact247D030 body returns Province73C unchanged when that DWORD differs
+from FFFFFFFF. It adds no title lookup demand on this branch. Resolve this full
+Character ID through5C67568/70; compare the two actual selected Character full
+IDs at18. Equal full IDs make2C09640 false before any relationship or War read.
 
-Readiness is research: concrete readonly field binding and exact short-circuit
-rejections, not a new native producer or qualified complete stream. Existing
-g95 placement qualification is unchanged. Earlier/per-Army callbacks, actual
-date association, current-final versus fresh stage, growth, and general
-collision are independent boundaries. Release raw headers are attrition-owned.
+For unequal full IDs, exact28BC270 is a readonly ordered pair lookup with no
+direct calls or mutation. It reads the associated Character1B0 component. Null
+selects the actual relationship pointer from slot5D27B70. A nonnull component
+has data20/signed count2C, stride10 (16 bytes), keyDWORD0/pointer8. The key is
+the second selected Character's full unsigned DWORD18. Execute the literal
+unsigned binary search in the packet's MINIMAL-GATE-RAW-SCHEMA.md, including
+the final target<candidate comparison. Do not sort, deduplicate, strengthen it
+to an extra equality check or require unused relationship pointers. Count0
+is a known native lookup miss and demands the actual default pointer.
+
+The selected actual relationship has raw War DWORD20. Only this requested
+War ID FFFFFFFF branches to remaining predicates. Other IDs resolve through
+War slots5D1DE58/5D1DE40, candidate full-ID equality at8. After actual registry
+or fallback selection the native code reads byte358. Zero with native third
+argument0 yields true through2C09640,2C09DA0,2C16690 and24E8560. There is no
+magic check and no rejection of a selected fallback War whose own fullID8 is
+FFFFFFFF. Requested sentinel and selected fallback ID are different facts.
+Actual ended War or requested sentinel needs2C095A0 and conditional2C097A0;
+these branches stay precisely partial. Province73C FFFFFFFF instead demands
+the title-derived Character and2C099F0 relation/hierarchy inputs, also separate.
+
+The nonempty first fixture recipe must select this real true path from actual
+raw memory: original and associated Army/Unit are different, the associated
+Unit174 Character differs from Province73C Character, relation table20/2C
+contains the actual second fullID and actual relation pointer, relation20 gives
+a nonsentinel War request, and the selected War358 is0. Also cover the early
+same-Character-ID rejection without reading relation or War fields, a real
+fallback with selectedIDFFFFFFFF, original null Province read precondition,
+original repeated raw Army IDs and pending ArRg occurrence suppression.
+
+## Outer dispatch replacement boundary
+
+The complete original raw roster is observed independently from this new
+**current standalone2A99B40** conditional evaluation. The held2A99DC0 caller
+first resolves Army128 Combat (slots5D1DE70/5D1DE18); valid Comb magic0C and
+ID8 influence the first branch. A nonvalid Combat plus Army5C==0 can call
+2A92320(Army,primary130), append ArmyID10 to removal queue68 and jump2A9A0AE,
+skipping2A99B40. Other Character120, associated Unit174, Character alive/rank
+and2C12170/1D63180/2C129A0 paths precede the eventual2A9A09A callsite. After
+2A99B40,24DF3C0 is a separate per-Army callback.
+
+This package does not replay those mutations or substitute today's observed
+table for tomorrow's initial state. The concrete next whole-stream observer
+replacement is the actual earlier Combat128/Army5C/2A92320 dispatch input and
+the demanded Character/Unit branch, with original occurrence order and evolving
+queue/admission association. This remains priority after the independent
+current admission primitive qualifies; a conditional label is not whole-stream
+completion. Growth/general collision and release suffix remain other owners.
+
+## Source pins, cost and readiness
+
+Final gate packet is `gate24e8560-source/ROOT-DELIVERY.json`. It pins SOURCE-TREE,
+MINIMAL-GATE-RAW-SCHEMA.md/json, READONLY-BINDING, READ-COST and each exact body.
+Selected bodies:24E8560 212B,2C16690 214B,2C09DA0 106B,2C099F0 567B,
+247D030 172B,2C09640 191B, and four nonoverlapping28BC270 fragments totalling
+176B. New cost is1638 unique code +904 metadata =2542 actual frozen bytes,
+zero recapture. Parent adds0 new EXE bytes and reuses the complete637-byte
+caller and existing pre-stage caller. Exact source read receipts bind the reused
+EXE pin; no whole-file hash, section scan or generic container catalog occurred.
+The52B metadata-only2C099F0 harness RED remains unchanged; its later567B body
+uses saved metadata. Intermediate1060B and2146B milestones are historical,
+not additional reads to sum again.
+
+Readiness is research / source-ready selected genuine nonempty conditional
+admission branch. New producer/strict normalizer/service/fixture are not yet
+qualified by this source milestone. Other controller branches retain exact
+missing inputs rather than false/empty substitutes. Existing g95 qualification
+is unchanged. Actual earlier dispatch/date association and full daily assault
+remain incomplete. Local game/process/SDK/pipe/UI/live-pointer operations,
+tests, builds and old wire replays are0.
 
 Packet: `Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/daily-assault-roster-admission/`.
 Root owns shared reports, publication, native registration, build and first
