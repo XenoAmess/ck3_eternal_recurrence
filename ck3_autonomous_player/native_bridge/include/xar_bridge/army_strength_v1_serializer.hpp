@@ -27,6 +27,7 @@
 namespace xar::game {
 
 #include "xar_bridge/army_current_candidate_detachment_mapper_serializer_v1.inc.hpp"
+#include "xar_bridge/army_current_detachment_data_serializer_v1.inc.hpp"
 
 template <class Number, class JsonString>
 inline void AppendArmyRegimentReplenishmentRecordsSnapshotV1(
@@ -611,6 +612,11 @@ inline void AppendArmyStrengthV1(
   if (strength.current_candidate_detachment_mapper_inputs_v1) {
     result += ",\"current_candidate_detachment_mapper_inputs_v1\":";
     AppendArmyCurrentCandidateDetachmentMapperInputsV1(result, *strength.current_candidate_detachment_mapper_inputs_v1,
+        number, append_json_string);
+  }
+  if (strength.current_detachment_data_inputs_v1) {
+    result += ",\"current_detachment_data_inputs_v1\":";
+    AppendArmyCurrentDetachmentDataInputsV1(result, *strength.current_detachment_data_inputs_v1,
         number, append_json_string);
   }
   if (strength.current_army_condition30_inputs_v1) {

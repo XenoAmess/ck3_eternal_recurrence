@@ -32,6 +32,7 @@ from .army_current_flag20_inputs_contract import normalize_current_army_flag20_i
 from .army_current_flag21_inputs_contract import normalize_current_army_flag21_inputs_v1
 from .army_current_flag31_inputs_contract import normalize_current_army_flag31_inputs_v1
 from .army_current_candidate_detachment_mapper_contract import normalize_current_candidate_detachment_mapper_inputs_v1
+from .army_current_detachment_data_contract import normalize_current_detachment_data_inputs_v1
 from .army_pre_date_pending_update_contract import normalize_current_pre_date_pending_update_inputs_v1
 from .army_ordered_besieging_refill_contract import normalize_ordered_besieging_refill_inputs_v1
 from .army_daily_assault_loss_inputs_contract import normalize_current_daily_assault_loss_inputs_v1
@@ -309,6 +310,7 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"ordered_besieging_refill_inputs_v1", "curren
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"ordered_besieging_fixed_chunk0_preparation_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_assault_removal_reference_inputs_v1", "current_pre_date_pending_update_inputs_v1", "current_pre_date_dated_append_inputs_v1", "current_post_admission_refresh_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_candidate_detachment_mapper_inputs_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_detachment_data_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_pre_date_character_prefix_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_condition30_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_flag20_inputs_v1"}
@@ -1944,6 +1946,9 @@ def _normalize_army_strength_row(
     if "current_candidate_detachment_mapper_inputs_v1" in value:
         result["current_candidate_detachment_mapper_inputs_v1"] = normalize_current_candidate_detachment_mapper_inputs_v1(
             value["current_candidate_detachment_mapper_inputs_v1"])
+    if "current_detachment_data_inputs_v1" in value:
+        result["current_detachment_data_inputs_v1"] = normalize_current_detachment_data_inputs_v1(
+            value["current_detachment_data_inputs_v1"])
     if "current_army_condition30_inputs_v1" in value:
         result["current_army_condition30_inputs_v1"] = normalize_current_army_condition30_inputs_v1(
             value["current_army_condition30_inputs_v1"])

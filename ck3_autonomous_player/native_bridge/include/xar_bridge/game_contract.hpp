@@ -744,6 +744,7 @@ struct ArmyCurrentProvinceBesiegingContributorsV1 {
 #include "xar_bridge/army_current_flag21_inputs_v1.inc.hpp"
 #include "xar_bridge/army_current_flag31_inputs_v1.inc.hpp"
 #include "xar_bridge/army_current_candidate_detachment_mapper_v1.inc.hpp"
+#include "xar_bridge/army_current_detachment_data_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_pending_update_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_character_prefix_v1.inc.hpp"
 
@@ -827,6 +828,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyCurrentFlag21InputsV1> current_army_flag21_inputs_v1;
   std::optional<ArmyCurrentFlag31InputsV1> current_army_flag31_inputs_v1;
   std::optional<ArmyCurrentCandidateDetachmentMapperInputsV1> current_candidate_detachment_mapper_inputs_v1;
+  std::optional<ArmyCurrentDetachmentDataInputsV1> current_detachment_data_inputs_v1;
   std::optional<ArmyCurrentPreDateCharacterPrefixInputsV1> current_pre_date_character_prefix_inputs_v1;
 
   friend bool operator==(const ArmyStrengthSnapshot &,

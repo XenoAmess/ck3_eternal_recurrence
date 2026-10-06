@@ -1218,6 +1218,7 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
   std::optional<game::ArmyCurrentPreDateCharacterPrefixInputsV1> current_pre_date_character_prefix;
   std::optional<game::ArmyCurrentAssaultRemovalReferenceInputsV1> current_assault_removal_references;
   std::optional<game::ArmyCurrentCandidateDetachmentMapperInputsV1> current_candidate_detachment_mapper;
+  std::optional<game::ArmyCurrentDetachmentDataInputsV1> current_detachment_data;
   for (const auto &entry : scope) {
     diagnostic.army_id.store(entry.army_id);
     diagnostic.reader.store("scope_row");
@@ -1309,6 +1310,14 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
           current_assault_removal_references ? &*current_assault_removal_references : nullptr);
     }
     row.current_candidate_detachment_mapper_inputs_v1 = current_candidate_detachment_mapper;
+    if (!current_detachment_data && bindings.current_detachment_data_bindings.common.enabled) {
+      diagnostic.reader.store("current_detachment_data_readonly");
+      current_detachment_data = ck3_12003::ReadCurrentDetachmentDataInputs12003(
+          bindings.current_detachment_data_bindings,
+          current_candidate_detachment_mapper ? &*current_candidate_detachment_mapper : nullptr,
+          row.monthly_caller_effect_inputs_v1 ? &*row.monthly_caller_effect_inputs_v1 : nullptr);
+    }
+    row.current_detachment_data_inputs_v1 = current_detachment_data;
     row.current_assault_removal_reference_inputs_v1 = current_assault_removal_references;
     partial = partial || !row.available;
     output.push_back(std::move(row));

@@ -15,6 +15,7 @@
 #include "xar_bridge/ck3_12003_army_flag21_inputs.hpp"
 #include "xar_bridge/ck3_12003_army_flag31_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_candidate_detachment_mapper.hpp"
+#include "xar_bridge/ck3_12003_current_detachment_data.hpp"
 #include "xar_bridge/ck3_12003_pre_date_pending_update.hpp"
 #include "xar_bridge/ck3_12003_pre_date_character_prefix.hpp"
 #include "xar_bridge/ck3_12003_current_assault_removal_reference.hpp"
@@ -197,6 +198,7 @@ struct ArmyBindings {
   ck3_12003::CurrentArmyFlag21Bindings12003 current_army_flag21_bindings{};
   ck3_12003::CurrentArmyFlag31Bindings12003 current_army_flag31_bindings{};
   ck3_12003::CurrentFleetSupplyTickBindings12003 current_fleet_supply_tick_bindings{};
+  ck3_12003::CurrentDetachmentDataBindings12003 current_detachment_data_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

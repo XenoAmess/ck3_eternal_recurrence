@@ -325,3 +325,36 @@ The callback tests `DL & 1`. For the storage caller's actual **`EDX=0`**, it ret
 The ordinary typed-record append/growth logical state is therefore source-defined: positive old-count canonical callbacks leave records untouched; the growth copy has already preserved ID/ordinal and canonicalized new records; normal resource release is followed by capacity, buffer and count writes in the sealed order. Actual allocated addresses are still conditional resource results, not observed later buffer pointers. No new seven-chunk/prepared/backlink gate is required. The native query can reuse **`monthly_caller_effect_inputs_v1.current_date_storage_raw64`**, already produced by the existing full-QWORD GameState `+8` load, for the explicit conditional entry-date premise.
 
 `WHOLE-INCOMING-DATA-IMPLEMENTATION-PLAN-V3.json` supersedes V2's now-closed storage gap and joins the external DTO/fixture and pure/service expectation drafts. It keeps whole ordered DATA and physical state separate, uses actual selected callbacks only on their source branch, and preserves current-versus-actual/future boundaries. Cumulative new frozen source I/O is **1,044 metadata B + 1,575 code B + 8 static-data B = 2,627 B / 393 seeks**. The 1.5 constant witness was reused without new reads; tests, native builds, game/SDK/process/UI, implementation and wire qualification remain **0**.
+
+## Current incoming whole-DATA implementation candidate
+
+October 6, 2026, the V3 implementation proceeds in the isolated C-drive source tree from Root source **`d737c60d744916777cbbfa1ab119402229dad894`**. It reuses the sealed 2,627 B source packet; this implementation adds **zero EXE reads**. The same ArmyStrength query now has the optional `current_detachment_data_inputs_v1` input family and an additive service result, `same_input_current_detachment_data_prefix_v1`. The collector runs once after the qualified current-candidate mapper and shares its copied DTO across scoped rows. The new binding is appended at the actual `ArmyBindings` tail. Absence of this family preserves older wire compatibility.
+
+The collector borrows the mapper's complete raw candidate ArRg occurrence buffer. It preserves raw full IDs, native generation/fallback roles and candidate repetitions, then captures each admitted physical incoming ArRg once. Each incoming result is an **independent current seed**, not the evolving input of a second parent detach invocation. Its full DATA count/cursor/end and stored 16 B records include invalid Regi selections; physical snapshots retain aliases. DATA `+C` ordinals and physical chunk `+C` raw ordinals remain separate. There is no added seven-chunk, prepared-cache or backlink admission test on the source-defined DATA path. A negative DATA count remains a partial nonempty cursor extent rather than being converted to empty input.
+
+The explicit conditional entry date is the existing full-QWORD `monthly_caller_effect_inputs_v1.current_date_storage_raw64`, not a new clock family or an actual future caller date. The native leaf publishes source-selected initial and cleared-association context roles and readonly `2C54340` results using the actual Unit, passed Province and selected original/capital origin. It invokes neither `2633FF0` nor its setter/pending mutators and applies none of the route timeline wrapper's duration filters. Unselected date and pending operands do not prevent an independently ready false-predicate, invalid-record or equal-date prefix.
+
+The pure consumer walks the held raw cursor in source order, overlays source stores on supplied semantic addresses and reloads each later aliased DATA/physical operand. It computes the exact signed setter/pair-clear branch, sentinel/date comparison, association/flag clears and typed pending append/growth. Pending records contain canonical vtable, reloaded owner ID and **physical raw ordinal**, not physical chunk pointers. Positive old-count growth demands each actual slot-0 target; target `8863D0` with EDX=0 has the closed no-write behavior. A different selected target stops the commit while retaining prior source effects. New buffer identities are conditional resource tokens; no invented native pointer is published or used as an observed later buffer. Header write order stays capacity, buffer, count.
+
+The new native target and CTest are both **`xar_ck3_12003_current_detachment_data`**. Its header-only collector uses the actual runtime library and whole `ReadArmyStrengthsForScope` / `AppendArmyStrengthV1` path. Eight new scenes cover ordered invalid/repeated DATA, raw ordinal separation, full-QWORD later/equal/earlier dates, signed pair cleanup, positive and zero old-count growth, an actual different callback, negative DATA count, required date failure, all-invalid records with unused date absent, and no current candidate. The single new production-service compound and compiled whole-wire consumer are authored and **NOT RUN** at candidate handoff; Root owns coherent source freezing, FIRST execution and native qualification. No older test, fixture or wire is rerun.
+
+This candidate is not a qualification result. Every output retains actual effects/detachment false, actual post-stage and caller date null, native writes/mutator invocations zero, and future drain/lifecycle/calendar/full monthly/live false. The independently available value is a conditional current whole-DATA prefix with typed pending counts/records and physical date/current effects. The Character suffix is independently partial when its actually selected inner effects are needed. Real future parent selection, serial detach registry evolution and remaining lifecycle effects still require their actual stage inputs.
+
+```mermaid
+flowchart TD
+  Q[One ArmyStrength query] --> M[Existing whole current candidate mapper]
+  Q --> D[Existing full QWORD current date]
+  M --> I[Whole incoming DATA and actual native roles]
+  D --> I
+  I --> N[Strict optional input family]
+  N --> P[Independent current incoming source-order overlay]
+  P --> S[Exact setter and evolving repeated physical chunks]
+  S --> T[Actual association context and current-input native date]
+  T --> A[Typed 16 B pending append or growth]
+  A --> R[Conditional physical and pending prefix values]
+  A -.-> C[Different selected callback partial]
+  R -.-> H[Selected Character inner effects partial]
+  R -.-> F[Actual future parent detach and drain not modeled]
+```
+
+The sole authored method is `CurrentDetachmentDataServiceCompoundTests.test_current_detachment_data_service_compound` in `tests/test_current_detachment_data_service_compound.py`, with ten new complete registered-service queries. Its expected artifact was written before any execution at `packet/PURE-DRAFT/DATA-REAL-IMPLEMENTATION-FIRST-EXPECTATIONS.json`. The external implementation recipe and eight-wire consumer are in the same round-29 packet's `implementation/` directory. Both source FIRST and compiled FIRST remain **NOT RUN** when this implementation is sealed.
