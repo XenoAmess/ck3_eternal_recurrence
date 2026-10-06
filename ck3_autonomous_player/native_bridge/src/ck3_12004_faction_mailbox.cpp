@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_faction_mailbox.hpp"
+#include "xar_bridge/player_faction_alerts_v1_mailbox.hpp"
 
 #include <windows.h>
 

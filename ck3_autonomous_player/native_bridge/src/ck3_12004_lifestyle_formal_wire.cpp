@@ -25,7 +25,7 @@ bool IsMain(void *opaque) noexcept {
 bool CurrentBound(const PlayerLifestyleFormalWireContext12004V1 &context,
                   game::Snapshot &current) noexcept {
   CoreSnapshotPrefix prefix{};
-  if (!OnMain(context) || !ReadCoreSnapshot(context.bindings12004.core, prefix) ||
+  if (!OnMain(context) || !xar::ck3_12004::ReadCoreSnapshot(context.bindings12004.core, prefix) ||
       prefix.clock.date_raw != context.expected_snapshot.date_raw ||
       prefix.clock.paused != context.expected_snapshot.paused ||
       prefix.played_character_id != context.expected_snapshot.played_character_id ||
@@ -46,7 +46,7 @@ bool CaptureCommon(PlayerLifestyleFormalWireContext12004V1 &context,
                    game::Snapshot &current) noexcept {
   character = 0;
   if (!CurrentBound(context, current)) return false;
-  character = reinterpret_cast<std::uintptr_t>(ResolveCoreCharacter(
+  character = reinterpret_cast<std::uintptr_t>(xar::ck3_12004::ResolveCoreCharacter(
       context.bindings12004.core, current.played_character_id));
   return character != 0;
 }

@@ -1,6 +1,7 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_faction_gift_router.hpp"
 #include "xar_bridge/ck3_12004.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
 
 #include "xar_bridge/faction_gift_mitigation_async_glue_v1.hpp"
 #include "xar_bridge/protocol.hpp"
