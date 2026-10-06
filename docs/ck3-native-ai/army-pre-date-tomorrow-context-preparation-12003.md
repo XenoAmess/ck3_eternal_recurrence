@@ -241,3 +241,82 @@ small production Strength rows for the same new compound to consume.
 Python syntax and source diff checks are the only checks performed by this
 lane. Native build/CTest and complete-service execution are still pending;
 this candidate has no fixture-live, production-live or full-callback claim.
+
+## 2026-10-06 first qualification — separate source compound and compiled wire
+
+The observer/pure value is now **static-ready** after Root's native compilation
+and the first new source-shaped/compiled-wire service checks. No CK3 paused
+artifact was collected; fixture-live, production-live and actual next-callback
+readiness remain false. The original pending handoff above remains its history.
+
+Root adopted `e7795966` as `3e2dd05a` and integrated the shared hooks into
+`bff1f2e57ac765e94dbb5ecbac5cbb26ac078f01`. The first source compound preserved
+two harness REDs: attempt01 raised `KeyError: combat` in an older construction
+helper before service (0 completed cases); attempt02 reached service once,
+whose strict parser correctly rejected the constructor's default false
+readiness (0 completed cases). Only the owned helper changed: `6647dc12`
+reused the existing Combat constructor, and `4f3f3756` made the two complete
+constructors explicitly ready. No production parser/model/native source was
+relaxed. Root froze the corrected service tree at
+`dd2bd192a649e7be617403b6b5258c40396cc1e1` separately from native `bff1f2e5`.
+
+Attempt03 ran the one still-unpassed method on that corrected immutable tree:
+**GREEN**, 1 method / **6 source query cases**, `0.042s` unittest and
+`2.849834s` outer. The nonempty constructed same-frame service result contains:
+
+- native clock `2147483640` → signed tomorrow `-2147483632`;
+- dated requests `[31,31,FE00001E]` and logical158
+  `[7,7,31,31,FE00001E]`, count5;
+- current Army13 pending values `[400,400]`, count2;
+- two current admission requests `(Siege5,Army13,[ArRg400])` and two applied
+  conditional placement requests.
+
+Those pending/current admission/current placement entrances use constructed
+source inputs. They do not prove the admission after pending writes or replay
+the unknown Character/Unit prefix. The source compound was not replayed after
+GREEN. Its complete response and both original REDs are under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/pre-date-dated-append/first-source-compound-01/`,
+`first-source-compound-02/`, and `first-source-compound-03/`.
+
+Root's original `g99` formal attempt was RED `117.416104s` solely because the
+other pending fixture compared an optional unsigned value to a signed literal
+under `/WX`. The dated fixture compiled. Root completed the original
+runtime/dated-target graph without rebuilding their producers:
+GREEN `2.939789s`, 595 TUs / 592 unique / 1333 inputs, 65 ON / 50 OFF.
+Final evidence is
+`C:/codex-ck3-background/pre-date-inputs-batch/runtime-completion01/REPORT-FIELDS.json`.
+The **first** dated CTest was GREEN1 at `2026-10-06T09:01:05UTC`, process
+`1.8334692s`, emitting five actual new offline native fixture rows into
+`C:/codex-ck3-background/pre-date-inputs-batch/strict01/cache-observers/pre-date-dated-append-wire/`.
+The other fixture's corrected CTest/consumer belongs to its owner, not this
+qualification.
+
+A separate first standalone consumer passed all **5/5 actual whole rows**
+through the complete immutable `g99` production service/strict parser/pure
+value at native and service source `bff1f2e5`: GREEN `1.772079s` outer, completed
+`2026-10-06T09:06:26.366346UTC`. It used only an explicit offline paused/revision
+transport wrapper; it did not mock the parser/kernel, replace a raw leaf or
+numeric wire value, add missing source domains, or invoke old/source tests.
+The compiled nonempty case gives original requests
+`[02000001,02000001,FE000002]`, logical158
+`[7,7,02000001,02000001,FE000002]`, count5, and the same signed wrap. Its four
+other rows prove independent initial158 partial, required-date partial with a
+later independently due fallback, missing-clock Combat/count skips, and signed
+source-count<=0 independent of clock.
+
+The actual compiled rows contain **no current pending, admission or active
+table domain**. Therefore this package has **zero coherent compiled placement
+credit**. The source-shaped compound's nonempty placement is kept separate.
+Native whole-row receipts/responses are under
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/pre-date-dated-append/first-native-whole-wire-01/`;
+`QUALIFICATION-FACTS.json` and the qualification delivery/report fields in the
+parent packet bind both distinct sources and preserved failures.
+
+The final Root runtime DLL is 11294720 bytes, SHA
+`26331f1298f5777861a56172cbecaf64352d5e1af404c9630186b7e0276f1c00`;
+manifest 324914 bytes, SHA
+`fba980cf0f75069090886cddd63a42d9dfbe4a26221acd624fd085067d5a4c78`.
+These identities are reused from Root's final fields, with no rehash here.
+Remaining work is the existing Character/Unit/post-admission dependency and
+then actual paused same-query observation/next-callback qualification. No new
+allocator/growth model, game operation or deployment was added by this lane.
