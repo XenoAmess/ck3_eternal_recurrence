@@ -41,7 +41,39 @@ template <std::size_t N>
 bool Match(const ActivityPlannerDiagEnvironmentV1 &env, std::uintptr_t rva,
            const std::array<std::uint8_t, N> &expected) noexcept {
   std::array<std::uint8_t, N> actual{};
-  return Read(env, env.module_base, rva, actual) && actual == expected;
+  return Read(env, env.module_base,
+              Activity12004RvaV1(env.admitted_executable_sha256, rva), actual) && actual == expected;
+}
+
+template <std::size_t N>
+bool MatchMappedRelative(const ActivityPlannerDiagEnvironmentV1 &env,
+                         std::uintptr_t old_rva,
+                         const std::array<std::uint8_t, N> &expected,
+                         std::size_t displacement_offset,
+                         std::size_t instruction_end) noexcept {
+  if (!IsActivity12004BuildV1(env.admitted_executable_sha256))
+    return Match(env, old_rva, expected);
+  std::int32_t old_displacement = 0;
+  std::memcpy(&old_displacement, expected.data() + displacement_offset,
+              sizeof(old_displacement));
+  const auto old_target = static_cast<std::uintptr_t>(
+      static_cast<std::int64_t>(old_rva) +
+      static_cast<std::int64_t>(instruction_end) + old_displacement);
+  const auto mapped_site = Activity12004RvaV1(env.admitted_executable_sha256,
+                                            old_rva);
+  const auto mapped_target = Activity12004RvaV1(env.admitted_executable_sha256,
+                                              old_target);
+  const auto displacement = static_cast<std::int64_t>(mapped_target) -
+                            static_cast<std::int64_t>(mapped_site) -
+                            static_cast<std::int64_t>(instruction_end);
+  if (displacement < (std::numeric_limits<std::int32_t>::min)() ||
+      displacement > (std::numeric_limits<std::int32_t>::max)())
+    return false;
+  auto mapped_expected = expected;
+  const auto mapped_displacement = static_cast<std::int32_t>(displacement);
+  std::memcpy(mapped_expected.data() + displacement_offset,
+              &mapped_displacement, sizeof(mapped_displacement));
+  return Match(env, old_rva, mapped_expected);
 }
 
 bool VerifyOpenAbi(const ActivityFeastPlannerOpenEnvironmentV1 &environment)
@@ -52,7 +84,7 @@ bool VerifyOpenAbi(const ActivityFeastPlannerOpenEnvironmentV1 &environment)
       environment.dispatch == nullptr ||
       !IsActivityPlannerSupportedBuildV1(env))
     return false;
-  if (IsActivityPlanner12002V1(env)) {
+  if (IsActivityPlannerCrozierBuildV1(env)) {
     std::uintptr_t descriptor_vtable = 0, descriptor_copy = 0, descriptor_move = 0;
     const auto descriptor = ActivityPlannerRvaV1(env, kTypeDescriptor);
     const auto descriptor_table = ActivityPlannerRvaV1(env, kTypeDescriptorVtable);
@@ -61,17 +93,17 @@ bool VerifyOpenAbi(const ActivityFeastPlannerOpenEnvironmentV1 &environment)
     // The new handler additionally evaluates CanDeliverPayload before queuing.
     return Match(env, 0xAF39E0,
                  std::array<std::uint8_t, 8>{0x48, 0x89, 0x5C, 0x24, 0x08, 0x48, 0x89, 0x74}) &&
-           Match(env, 0xAF39FD,
+           MatchMappedRelative(env, 0xAF39FD,
                  std::array<std::uint8_t, 13>{0xE8, 0x4E, 0xFF, 0xFF, 0xFF,
-                   0x33, 0xF6, 0x81, 0xFF, 0xAC, 0x00, 0x00, 0x00}) &&
-           Match(env, 0x1643A17,
+                   0x33, 0xF6, 0x81, 0xFF, 0xAC, 0x00, 0x00, 0x00}, 1, 5) &&
+           MatchMappedRelative(env, 0x1643A17,
                  std::array<std::uint8_t, 13>{0xBA, 0x65, 0x00, 0x00, 0x00,
-                   0x48, 0x8B, 0xCD, 0xE8, 0xBC, 0xFF, 0x4A, 0xFF}) &&
-           Match(env, 0x1642F05,
+                   0x48, 0x8B, 0xCD, 0xE8, 0xBC, 0xFF, 0x4A, 0xFF}, 9, 13) &&
+           MatchMappedRelative(env, 0x1642F05,
                  std::array<std::uint8_t, 13>{0xE8, 0xF6, 0x92, 0x2B, 0xFF,
-                   0x48, 0x8B, 0x78, 0x50, 0x48, 0x63, 0x48, 0x5C}) &&
-           Match(env, 0x23FC85A,
-                 std::array<std::uint8_t, 7>{0x48, 0x8B, 0x05, 0xDF, 0x32, 0x92, 0x03}) &&
+                   0x48, 0x8B, 0x78, 0x50, 0x48, 0x63, 0x48, 0x5C}, 1, 5) &&
+           MatchMappedRelative(env, 0x23FC85A,
+                 std::array<std::uint8_t, 7>{0x48, 0x8B, 0x05, 0xDF, 0x32, 0x92, 0x03}, 3, 7) &&
            Read(env, env.module_base, descriptor, descriptor_vtable) &&
            Read(env, env.module_base, descriptor_table + 0x58, descriptor_copy) &&
            Read(env, env.module_base, descriptor_table + 0x60, descriptor_move) &&
@@ -126,7 +158,7 @@ bool IsFeastKey(const ActivityPlannerDiagEnvironmentV1 &env,
 bool ResolveOwner(const ActivityPlannerDiagEnvironmentV1 &env,
                   std::uintptr_t &handler,
                   std::uintptr_t &planner) noexcept {
-  if (IsActivityPlanner12002V1(env)) {
+  if (IsActivityPlannerCrozierBuildV1(env)) {
     ActivityPlannerDiagFrameV1 frame{};
     ActivityPlannerIdentityV1 identity{};
     if (env.read_frame == nullptr || !env.read_frame(env.context, frame) ||
@@ -164,8 +196,8 @@ TypeLookup ResolveFeastType(const ActivityPlannerDiagEnvironmentV1 &env,
   std::uintptr_t types = 0;
   std::int32_t count = 0;
   if (!Read(env, env.module_base, ActivityPlannerRvaV1(env, kTypeManager), manager) || manager == 0 ||
-      !Read(env, manager, IsActivityPlanner12002V1(env) ? 0x50 : 0x68, types) || types == 0 ||
-      !Read(env, manager, IsActivityPlanner12002V1(env) ? 0x5C : 0x74, count) || count < 0 || count > 1024)
+      !Read(env, manager, IsActivityPlannerCrozierBuildV1(env) ? 0x50 : 0x68, types) || types == 0 ||
+      !Read(env, manager, IsActivityPlannerCrozierBuildV1(env) ? 0x5C : 0x74, count) || count < 0 || count > 1024)
     return TypeLookup::invalid;
   for (std::int32_t index = 0; index < count; ++index) {
     std::uintptr_t type = 0;

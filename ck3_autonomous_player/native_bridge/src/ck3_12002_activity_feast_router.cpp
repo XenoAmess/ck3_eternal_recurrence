@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "ck3_12002_activity_feast_router.hpp"
 
 #include "ck3_12002_activity_feast_private_transport_v1.hpp"
@@ -10,6 +11,7 @@
 #include "xar_bridge/ck3_12002_campaign.hpp"
 #include "xar_bridge/ck3_12002_event_window_context.hpp"
 #include "xar_bridge/ck3_12002_activity_feast_costs.hpp"
+#include "xar_bridge/ck3_12004_activity_migration_v1.hpp"
 #include "xar_bridge/protocol.hpp"
 
 #include <windows.h>
@@ -22,6 +24,18 @@ namespace {
 using ck3_11906::MainThreadQuerySubmitResultV1;
 using ck3_11906::MainThreadQueryWaitResultV1;
 using ck3_11906::MainThreadQueryReclaimResultV1;
+
+std::string_view ActivityAbiSha(const game::GameAdapter &adapter) noexcept {
+  if (game::IsCk3_12004Descriptor(adapter.descriptor()))
+    return adapter.descriptor().executable_sha256;
+  return game::ReviewedCrozierAbiSha256(adapter.descriptor());
+}
+
+bool ActivityAdmitted(const game::GameAdapter &adapter) noexcept {
+  const auto sha = ActivityAbiSha(adapter);
+  return sha == kExecutableSha256 || bridge::IsActivity12004BuildV1(sha);
+}
+
 
 void AppendString(std::string &output, std::string_view value) {
   constexpr char hex[] = "0123456789abcdef";
@@ -82,14 +96,14 @@ void AppendString(std::string &output, std::string_view value) {
   output = {};
   const auto *adapter = static_cast<const game::GameAdapter *>(context);
   if (adapter == nullptr || !adapter->enabled() || identifier < 0 ||
-      xar::game::ReviewedCrozierAbiSha256(adapter->descriptor()) != kExecutableSha256)
+      !ActivityAdmitted(*adapter))
     return false;
   const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   if (base == 0) return false;
   const auto table_getter = reinterpret_cast<EventGetRegistry>(
-      base + kEventScriptIdentifierTableGetterRva);
+      base + bridge::Activity12004RvaV1(ActivityAbiSha(*adapter), kEventScriptIdentifierTableGetterRva));
   const auto name_resolver = reinterpret_cast<EventResolveIdentifierName>(
-      base + kEventScriptIdentifierNameResolverRva);
+      base + bridge::Activity12004RvaV1(ActivityAbiSha(*adapter), kEventScriptIdentifierNameResolverRva));
   __try {
     void *const table = table_getter();
     if (table == nullptr) return false;
@@ -110,7 +124,9 @@ void BindQuery(Query &query, const game::GameAdapter &adapter,
   query.enabled = adapter.enabled();
   query.module_base =
       reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
-  query.executable_sha256 = xar::game::ReviewedCrozierAbiSha256(adapter.descriptor());
+  query.executable_sha256 = ActivityAbiSha(adapter);
+  if constexpr (requires { query.actual_executable_sha256; })
+    query.actual_executable_sha256 = adapter.descriptor().executable_sha256;
   if constexpr (requires { query.native_context; })
     query.native_context = const_cast<game::GameAdapter *>(&adapter);
   else
@@ -292,7 +308,7 @@ bool HandleActivityFeastPrivate12002(
     std::uint64_t requested_revision = 0;
     game::Snapshot current{};
     if (!adapter.enabled() ||
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+        !ActivityAdmitted(adapter) ||
         !bridge::JsonUnsignedField(payload, "expected_revision", requested_revision) ||
         revision == 0 || requested_revision != revision ||
         !adapter.read_snapshot(current) || current != published ||
@@ -339,8 +355,10 @@ bool HandleActivityFeastPrivate12002(
           ",\"activity_key\":\"activity_feast\",\"planning_stage\":" +
           std::to_string(capture.planning_stage) + ",\"capture_sequence\":" +
           std::to_string(capture.sequence) +
-          ",\"source\":\"normal_slot12_return_0x11B5B5F\","
-          "\"resource_mapping\":null,\"configured_cost\":null,\"raw_aggregate_i64\":[";
+          ",\"source\":\"" +
+          std::string(bridge::IsActivity12004BuildV1(ActivityAbiSha(adapter))
+              ? "normal_slot12_return_0x11B5B3F" : "normal_slot12_return_0x11B5B5F") +
+          "\",\"resource_mapping\":null,\"configured_cost\":null,\"raw_aggregate_i64\":[";
       for (std::size_t index = 0; index < capture.raw_aggregate.size(); ++index) {
         if (index != 0) native += ',';
         native += std::to_string(capture.raw_aggregate[index]);
@@ -366,7 +384,8 @@ bool HandleActivityFeastPrivate12002(
 #if defined(XAR_CK3_ENABLE_G2_ACTIVITY_FEAST_PLANNER_OPEN_PRIVATE_V1)
     if (step == kCurrentActivityViewOpenPrivate12003StepV1) {
       std::uint64_t activity_id = 0;
-      if (!game::IsCk3_12003Descriptor(adapter.descriptor()) ||
+      if ((!game::IsCk3_12003Descriptor(adapter.descriptor()) &&
+           !game::IsCk3_12004Descriptor(adapter.descriptor())) ||
           !ParseActorDate(payload, current) ||
           !bridge::JsonUnsignedField(payload, "expected_activity_id", activity_id) ||
           activity_id == 0 || activity_id >= (std::numeric_limits<std::uint32_t>::max)()) {
@@ -477,7 +496,8 @@ bool HandleActivityFeastPrivate12002(
           guest == 0 || guest > 0x7fffffffULL ||
           guest == static_cast<std::uint64_t>(current.played_character_id) ||
           (target_requested &&
-           (!game::IsCk3_12003Descriptor(adapter.descriptor()) ||
+           ((!game::IsCk3_12003Descriptor(adapter.descriptor()) &&
+           !game::IsCk3_12004Descriptor(adapter.descriptor())) ||
             !bridge::JsonUnsignedField(payload, "activity_id", activity_id) ||
             activity_id == 0 ||
             activity_id >= (std::numeric_limits<std::uint32_t>::max)()))) {

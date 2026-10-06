@@ -76,7 +76,8 @@ std::uintptr_t CastIdler(void *opaque, std::uintptr_t source,
       context.base == 0)
     return 0;
   using NativeCast = void *(*)(void *, std::int32_t, void *, void *, std::int32_t);
-  const auto cast = reinterpret_cast<NativeCast>(context.base + 0x4260E94);
+  const auto cast = reinterpret_cast<NativeCast>(context.base + bridge::Activity12004RvaV1(
+          context.query->executable_sha256, 0x4260E94));
   void *result = nullptr;
   __try {
     result = cast(reinterpret_cast<void *>(source), 0,
@@ -113,7 +114,7 @@ bool NamedCost(void *opaque, std::uintptr_t module_base,
   bool success = false;
   __try {
     success = bridge::InvokeActivityStage5NativeNamedFeastCost12002V1(
-        nullptr, module_base, breakdown, key, index, value);
+        &context.query->executable_sha256, module_base, breakdown, key, index, value);
   } __except (EXCEPTION_EXECUTE_HANDLER) {
     success = false;
   }
@@ -127,7 +128,8 @@ bool EvaluateCanStart(void *opaque, std::uintptr_t planner,
       context.base == 0)
     return false;
   using Predicate = bool (*)(void *, void *);
-  const auto predicate = reinterpret_cast<Predicate>(context.base + kFeastFinalCanStartRva);
+  const auto predicate = reinterpret_cast<Predicate>(context.base + bridge::Activity12004RvaV1(
+          context.query->executable_sha256, kFeastFinalCanStartRva));
   __try {
     value = predicate(reinterpret_cast<void *>(planner), nullptr);
     return true;
@@ -145,7 +147,7 @@ bool EvaluateGuestJoin(void *opaque, std::uintptr_t base,
   bool success = false;
   __try {
     success = bridge::InvokeActivityFeastNativePlannerGuestJoin12002V1(
-        nullptr, base, planner, character, value);
+        &context.query->executable_sha256, base, planner, character, value);
   } __except (EXCEPTION_EXECUTE_HANDLER) {
     success = false;
   }
@@ -160,7 +162,7 @@ std::uintptr_t EvaluateGuestActivity(void *opaque, std::uintptr_t base,
   std::uintptr_t activity = 0;
   __try {
     activity = bridge::InvokeActivityFeastNativePlannerActivity12002V1(
-        nullptr, base, planner);
+        &context.query->executable_sha256, base, planner);
   } __except (EXCEPTION_EXECUTE_HANDLER) {
     activity = 0;
   }
@@ -177,18 +179,19 @@ bool EvaluateGuestTravelDays(void *opaque, std::uintptr_t base,
   bool success = false;
   __try {
     success = bridge::InvokeActivityFeastNativeTravelDays12002V1(
-        nullptr, base, character, destination, days);
+        &context.query->executable_sha256, base, character, destination, days);
   } __except (EXCEPTION_EXECUTE_HANDLER) {
     success = false;
   }
   return success;
 }
 
-bool IsFeastType(std::uintptr_t base, std::uintptr_t type) noexcept {
+bool IsFeastType(std::uintptr_t base, std::string_view admitted_sha256,
+                 std::uintptr_t type) noexcept {
   constexpr char key[] = "activity_feast";
   std::uintptr_t vtable = 0, data = type + 0x18;
   std::uint64_t size = 0, capacity = 0;
-  if (!ReadAt(type, 0, vtable) || vtable != base + 0x48BFE50 ||
+  if (!ReadAt(type, 0, vtable) || vtable != base + bridge::Activity12004RvaV1(admitted_sha256, 0x48BFE50) ||
       !ReadAt(type, 0x28, size) || !ReadAt(type, 0x30, capacity) ||
       size != sizeof(key) - 1 || size > capacity ||
       (capacity > 15 && !ReadAt(type, 0x18, data)))
@@ -211,7 +214,7 @@ bool ResolvePlannerAndOption(Context &context,
                              const bridge::ActivityHostedIdentityFrameV1 &frame,
                              std::uintptr_t &planner) noexcept {
   bridge::ActivityPlannerDiagEnvironmentV1 environment{
-      true, kFeastExecutableSha256, context.base, &context,
+      true, context.query->executable_sha256, context.base, &context,
       &ReadMemory, &ReadPlannerFrame, &CastIdler, &Visibility};
   const bridge::ActivityPlannerDiagFrameV1 expected{
       frame.revision, frame.date_raw, frame.actor_character_id,
@@ -219,11 +222,13 @@ bool ResolvePlannerAndOption(Context &context,
       frame.actor_alive};
   bridge::ActivityPlannerIdentityV1 identity{};
   if (!bridge::ResolveActivityPlannerIdentityV1(environment, expected, identity) ||
-      identity.stage != 5 || !IsFeastType(context.base, identity.activity_type))
+      identity.stage != 5 || !IsFeastType(context.base, context.query->executable_sha256,
+                   identity.activity_type))
     return false;
   planner = identity.planner;
   using SelectedOption = void *(*)(void *);
-  const auto getter = reinterpret_cast<SelectedOption>(context.base + 0x11B64C0);
+  const auto getter = reinterpret_cast<SelectedOption>(context.base + bridge::Activity12004RvaV1(
+          context.query->executable_sha256, 0x11B64C0));
   std::uintptr_t option = 0, vtable = 0;
   std::int32_t option_id = -1;
   __try {
@@ -233,18 +238,19 @@ bool ResolvePlannerAndOption(Context &context,
     option = 0;
   }
   return option != 0 && ReadAt(option, 0, vtable) &&
-         vtable == context.base + 0x48BFD18 &&
+         vtable == context.base + bridge::Activity12004RvaV1(
+             context.query->executable_sha256, 0x48BFD18) &&
          ReadAt(option, 8, option_id) && GenericOption(context, option_id);
 }
 
 bridge::ActivityPlannerDiagEnvironmentV1 Diagnostic(Context &context) noexcept {
-  return {true, kFeastExecutableSha256, context.base,
+  return {true, context.query->executable_sha256, context.base,
           &context, &ReadMemory, &ReadPlannerFrame, &CastIdler, &Visibility};
 }
 
 bridge::ActivityHostedIdentityEnvironmentV1 HostedEnvironment(
     Context &context) noexcept {
-  return {true, kFeastExecutableSha256, context.base,
+  return {true, context.query->executable_sha256, context.base,
           &context, &ReadMemory, &ReadHostedFrame};
 }
 
@@ -314,7 +320,7 @@ bool Capture(void *opaque,
     ActivityFeastGuestRulePrivateQueryV1 rule_query{};
     rule_query.enabled = true;
     rule_query.module_base = context.base;
-    rule_query.executable_sha256 = kFeastExecutableSha256;
+    rule_query.executable_sha256 = query.executable_sha256;
     rule_query.snapshot_context = query.native_context;
     rule_query.read_snapshot = query.read_snapshot;
     rule_query.expected_snapshot = query.expected_snapshot;
@@ -420,7 +426,7 @@ bool InvokeCommit(void *opaque, std::uintptr_t base,
   bool returned = false;
   __try {
     returned = bridge::InvokeActivityFeastNativeCommit12002V1(
-        nullptr, base, planner);
+        &context.query->executable_sha256, base, planner);
   } __except (EXCEPTION_EXECUTE_HANDLER) {
     returned = false;
   }
@@ -500,7 +506,8 @@ bool ExecuteActivityFeastStage5Private12002V1(
     }
     const auto base = query->module_base;
     if (!query->enabled || base == 0 ||
-        query->executable_sha256 != kFeastExecutableSha256) {
+        (query->executable_sha256 != kFeastExecutableSha256 &&
+         !bridge::IsActivity12004BuildV1(query->executable_sha256))) {
       query->failure = "exact_activity_feast_stage5_build_unavailable";
       query->completed = true;
       return true;
@@ -518,7 +525,7 @@ bool ExecuteActivityFeastStage5Private12002V1(
       bridge::ActivityFeastStage5StartEnvironmentV1 environment{};
       environment.enabled = true;
       environment.admitted_executable_sha256 =
-          kFeastExecutableSha256;
+          query->executable_sha256;
       environment.module_base = base;
       environment.context = &context;
       environment.read_memory = &ReadMemory;

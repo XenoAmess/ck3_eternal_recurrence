@@ -49,8 +49,8 @@ std::uintptr_t CastIdler(void *opaque, std::uintptr_t source,
       GetCurrentThreadId() != context.owner_thread_id)
     return 0;
   using NativeCast = void *(*)(void *, std::int32_t, void *, void *, std::int32_t);
-  const auto cast = reinterpret_cast<NativeCast>(context.module_base +
-                                                 0x4260E94);
+  const auto cast = reinterpret_cast<NativeCast>(context.module_base + bridge::Activity12004RvaV1(
+          context.query->executable_sha256, 0x4260E94));
   void *result = nullptr;
   __try {
     result = cast(reinterpret_cast<void *>(source), 0,
@@ -84,7 +84,8 @@ bool EvaluateCanStart(void *opaque, std::uintptr_t planner,
   // CStartActivityCommand. nullptr requests no native failure string.
   using Predicate = bool (*)(void *, void *);
   const auto predicate =
-      reinterpret_cast<Predicate>(context.module_base + kFeastFinalCanStartRva);
+      reinterpret_cast<Predicate>(context.module_base + bridge::Activity12004RvaV1(
+          context.query->executable_sha256, kFeastFinalCanStartRva));
   __try {
     output = predicate(reinterpret_cast<void *>(planner), nullptr);
     return true;
@@ -134,7 +135,8 @@ bool ExecuteActivityStage5CanStartPrivate12002V1(
     }
     const auto base = query->module_base;
     if (!query->enabled || base == 0 ||
-        query->executable_sha256 != kFeastExecutableSha256) {
+        (query->executable_sha256 != kFeastExecutableSha256 &&
+         !bridge::IsActivity12004BuildV1(query->executable_sha256))) {
       query->failure = "exact_activity_stage5_build_unavailable";
       query->completed = true;
       return true;
@@ -142,7 +144,7 @@ bool ExecuteActivityStage5CanStartPrivate12002V1(
     CaptureContext context{query, base, stamp.thread_id};
     bridge::ActivityStage5CanStartEnvironmentV1 environment{};
     environment.diagnostic = {true,
-                              kFeastExecutableSha256,
+                              query->executable_sha256,
                               base,
                               &context,
                               &ReadMemory,

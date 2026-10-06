@@ -56,18 +56,18 @@ bool VerifyNamedCostAbi(
   return environment.enabled && environment.module_base != 0 &&
          IsActivityPlannerSupportedBuildV1(environment) &&
          ReadAt(environment, environment.module_base,
-                IsActivityPlanner12002V1(environment)
-                    ? kActivityGetCostByName12002RvaV1
+                IsActivityFeastCostsModernBuildV1(environment.admitted_executable_sha256)
+                    ? Activity12004RvaV1(environment.admitted_executable_sha256, kActivityGetCostByName12002RvaV1)
                     : kActivityGetCostByNameRvaV1, prologue) &&
          prologue == kGetCostByNamePrologue &&
          ReadAt(environment, environment.module_base,
-                IsActivityPlanner12002V1(environment)
-                    ? kActivityGetCostIndexed12002RvaV1 : 0x2CD9795,
+                IsActivityFeastCostsModernBuildV1(environment.admitted_executable_sha256)
+                    ? Activity12004RvaV1(environment.admitted_executable_sha256, kActivityGetCostIndexed12002RvaV1) : 0x2CD9795,
                 indexed_read) &&
          indexed_read == kGetCostIndexedRead &&
          ReadAt(environment, environment.module_base,
-                IsActivityPlanner12002V1(environment)
-                    ? kActivityGoldLeaf12002RvaV1 : kGoldGetterRva + 0x36,
+                IsActivityFeastCostsModernBuildV1(environment.admitted_executable_sha256)
+                    ? Activity12004RvaV1(environment.admitted_executable_sha256, kActivityGoldLeaf12002RvaV1) : kGoldGetterRva + 0x36,
                 gold_leaf) &&
          gold_leaf == kGoldGetterLeaf;
 }
@@ -100,7 +100,7 @@ bool ReadActorGold(const ActivityPlannerDiagEnvironmentV1 &environment,
       !ReadAt(environment, actor, 0x18, native_id) ||
       native_id != played_id ||
       !ReadAt(environment, actor,
-              IsActivityPlanner12002V1(environment) ? 0x1B0 : 0x1A8,
+              IsActivityFeastCostsModernBuildV1(environment.admitted_executable_sha256) ? 0x1B0 : 0x1A8,
               extension))
     return false;
   // Original CCharacter.GetGold (0xBDC460) treats a null extension as zero.
@@ -152,7 +152,7 @@ bool InvokeActivityStage5NativeGoldCostV1(
 }
 
 bool InvokeActivityStage5NativeGoldCost12002V1(
-    void *, std::uintptr_t module_base,
+    void *opaque, std::uintptr_t module_base,
     std::uintptr_t cost_breakdown, std::int64_t &gold_raw) noexcept {
   if (module_base == 0 || cost_breakdown == 0) return false;
   NativeShortString key{};
@@ -161,7 +161,8 @@ bool InvokeActivityStage5NativeGoldCost12002V1(
   using GetCost = std::int64_t *(__fastcall *)(
       std::int64_t *, const void *, const NativeShortString *);
   const auto getter = reinterpret_cast<GetCost>(
-      module_base + kActivityGetCostByName12002RvaV1);
+      module_base + Activity12004RvaV1(
+          ActivityFeastCostNativeCallbackShaV1(opaque), kActivityGetCostByName12002RvaV1));
   std::int64_t result = 0;
   if (getter(&result, reinterpret_cast<const void *>(cost_breakdown), &key) !=
       &result) return false;
@@ -241,10 +242,11 @@ ActivityStage5GoldCostResultV1 ReadActivityStage5GoldCostV1(
   std::int64_t gold_cost_raw = 0;
   const auto invoke = environment.invoke_gold_cost != nullptr
                           ? environment.invoke_gold_cost
-                          : IsActivityPlanner12002V1(diagnostic)
+                          : IsActivityFeastCostsModernBuildV1(diagnostic.admitted_executable_sha256)
                               ? &InvokeActivityStage5NativeGoldCost12002V1
                               : &InvokeActivityStage5NativeGoldCostV1;
-  if (!invoke(diagnostic.context, diagnostic.module_base,
+  if (!invoke(environment.invoke_gold_cost != nullptr ? diagnostic.context
+      : const_cast<std::string_view *>(&diagnostic.admitted_executable_sha256), diagnostic.module_base,
               breakdown, gold_cost_raw)) {
     result.status = ActivityStage5GoldCostStatusV1::native_query_failed;
     return result;

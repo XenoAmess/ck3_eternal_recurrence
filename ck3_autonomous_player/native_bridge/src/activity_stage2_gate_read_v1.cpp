@@ -41,16 +41,17 @@ bool ExactStage2Branch(const ActivityPlannerDiagEnvironmentV1 &environment)
   constexpr std::array<std::uint8_t, 14> expected_12002{
       0x48, 0x8B, 0x89, 0xB0, 0x15, 0x00, 0x00,
       0x49, 0x63, 0x80, 0xBC, 0x15, 0x00, 0x00};
-  const bool current = IsActivityPlanner12002V1(environment);
+  const bool current = IsActivityPlannerCrozierBuildV1(environment);
   return ReadAt(environment, environment.module_base,
-                current ? 0x11B86DF : kStage2GateBranchRva, actual) &&
+                Activity12004RvaV1(environment.admitted_executable_sha256,
+                                   current ? 0x11B86DF : kStage2GateBranchRva), actual) &&
          actual == (current ? expected_12002 : expected);
 }
 
 bool ResolvePlanner(const ActivityPlannerDiagEnvironmentV1 &environment,
                     const ActivityPlannerDiagFrameV1 &expected,
                     std::uintptr_t &planner) noexcept {
-  if (IsActivityPlanner12002V1(environment)) {
+  if (IsActivityPlannerCrozierBuildV1(environment)) {
     ActivityPlannerIdentityV1 identity{};
     if (!ResolveActivityPlannerIdentityV1(environment, expected, identity) ||
         identity.stage != 2)
@@ -121,7 +122,7 @@ ActivityStage2GateReadResultV1 ReadActivityStage2GateV1(
   if (!diagnostic.enabled || diagnostic.module_base == 0 ||
       (diagnostic.admitted_executable_sha256 !=
            kActivityPlannerDiagExeSha256V1 &&
-       !IsActivityPlanner12002V1(diagnostic)) ||
+       !IsActivityPlannerCrozierBuildV1(diagnostic)) ||
       !ExactStage2Branch(diagnostic))
     return result;
   if (environment.can_progress == nullptr || diagnostic.read_frame == nullptr) {

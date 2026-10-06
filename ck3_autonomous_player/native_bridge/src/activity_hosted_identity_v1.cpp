@@ -16,9 +16,9 @@ constexpr std::uint32_t kMaximumSlotIndex = 0x00FFFFFE;
 constexpr std::size_t kActivityStride = 0x5F0;
 constexpr std::size_t kSlotsPerChunk = 1024;
 
-bool Is12002(const ActivityHostedIdentityEnvironmentV1 &environment) noexcept {
-  return environment.admitted_executable_sha256 ==
-         kActivityHostedIdentity12002ExeSha256V1;
+bool IsModern(const ActivityHostedIdentityEnvironmentV1 &environment) noexcept {
+  return IsActivityHostedCrozierBuildV1(
+      environment.admitted_executable_sha256);
 }
 
 struct ManagerSample {
@@ -59,7 +59,8 @@ bool MatchCode(const ActivityHostedIdentityEnvironmentV1 &environment,
                std::uintptr_t rva,
                const std::array<std::uint8_t, Size> &expected) noexcept {
   std::array<std::uint8_t, Size> observed{};
-  return ReadAt(environment, environment.module_base, rva, observed) &&
+  return ReadAt(environment, environment.module_base,
+                ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, rva), observed) &&
          observed == expected;
 }
 
@@ -75,10 +76,10 @@ bool VerifyExactBuild(
       0x48, 0x8B, 0x07, 0x49, 0x89, 0x84, 0x24};
   return environment.enabled && environment.module_base != 0 &&
          (environment.admitted_executable_sha256 ==
-              kActivityHostedIdentityExeSha256V1 || Is12002(environment)) &&
+              kActivityHostedIdentityExeSha256V1 || IsModern(environment)) &&
          environment.read_memory != nullptr &&
          environment.read_frame != nullptr &&
-         (Is12002(environment)
+         (IsModern(environment)
               ? MatchCode(environment, 0x2ADD8EE,
                           std::array<std::uint8_t, 7>{0x49, 0x8D, 0xBF, 0xB8,
                                                        0x2C, 0x02, 0x00}) &&
@@ -126,17 +127,17 @@ bool ResolveActor(const ActivityHostedIdentityEnvironmentV1 &environment,
   std::uint32_t played_id = 0;
   std::uintptr_t storage = 0, fallback = 0, slots = 0, character = 0;
   std::uint32_t capacity = 0, observed_id = 0;
-  const bool current = Is12002(environment);
+  const bool current = IsModern(environment);
   // The admitted frame is captured by the existing native played-character
   // resolver. 1.20 does not read the old build's UI-selected CharacterID slot.
   if ((!current &&
        (!ReadAt(environment, environment.module_base, kPlayedCharacterIdRva,
                 played_id) || played_id != full_id)) ||
       !ReadAt(environment, environment.module_base,
-              current ? kActivityHosted12002CharacterStorageRva : kCharacterStorageRva,
+              current ? ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, kActivityHosted12002CharacterStorageRva) : kCharacterStorageRva,
               storage) ||
       !ReadAt(environment, environment.module_base,
-              current ? kActivityHosted12002CharacterFallbackRva : kCharacterFallbackRva,
+              current ? ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, kActivityHosted12002CharacterFallbackRva) : kCharacterFallbackRva,
               fallback) ||
       storage == 0 || !ReadAt(environment, storage, 0x20, slots) ||
       !ReadAt(environment, storage, 0x2C, capacity) || slots == 0 ||
@@ -156,7 +157,7 @@ bool ReadTypeKey(const ActivityHostedIdentityEnvironmentV1 &environment,
   std::uint64_t size = 0, capacity = 0;
   if (type == 0 || !ReadAt(environment, type, 0, vtable) ||
       vtable != environment.module_base +
-          (Is12002(environment) ? kActivityHosted12002ActivityTypeVtableRva : kActivityTypeVtableRva) ||
+          (IsModern(environment) ? ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, kActivityHosted12002ActivityTypeVtableRva) : kActivityTypeVtableRva) ||
       !ReadAt(environment, type, 0x28, size) ||
       !ReadAt(environment, type, 0x30, capacity) || size == 0 ||
       size > capacity || size >= identity.type_key.size() ||
@@ -190,7 +191,7 @@ bool ReadSlot(const ActivityHostedIdentityEnvironmentV1 &environment,
                 static_cast<std::size_t>(chunk_index) * 8, chunk) &&
          CheckedAdd(chunk,
                     static_cast<std::size_t>(index % kSlotsPerChunk) *
-                        (Is12002(environment) ? kActivityHosted12002ObjectStride : kActivityStride),
+                        (IsModern(environment) ? kActivityHosted12002ObjectStride : kActivityStride),
                     expected) &&
          object == expected;
 }
@@ -213,9 +214,9 @@ bool ResolveTargetCharacter(
   const auto index = full_id & 0x00FFFFFFU;
   return full_id != 0xFFFFFFFFU &&
          ReadAt(environment, environment.module_base,
-                kActivityHosted12002CharacterStorageRva, sample.storage) &&
+                ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, kActivityHosted12002CharacterStorageRva), sample.storage) &&
          ReadAt(environment, environment.module_base,
-                kActivityHosted12002CharacterFallbackRva, sample.fallback) &&
+                ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, kActivityHosted12002CharacterFallbackRva), sample.fallback) &&
          sample.storage != 0 &&
          ReadAt(environment, sample.storage, 0x20, sample.slots) &&
          ReadAt(environment, sample.storage, 0x2C, sample.capacity) &&
@@ -264,7 +265,7 @@ ActivityHostedTargetStatusV1 ReadHostedTargetSample(
       sample.activity == 0 ||
       !ReadAt(environment, sample.activity, 0, sample.vtable) ||
       sample.vtable != environment.module_base +
-                           kActivityHosted12002ActivityVtableRva ||
+                           ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, kActivityHosted12002ActivityVtableRva) ||
       !ReadAt(environment, sample.activity, 0x08, sample.activity_id) ||
       sample.activity_id != full_id ||
       !ReadAt(environment, sample.activity, 0x3A8,
@@ -340,9 +341,9 @@ ActivityHostedIdentityResultV1 ReadActivityHostedIdentityV1(
   }
   std::uintptr_t root = 0, world = 0, manager = 0;
   ManagerSample first{};
-  if (!ReadAt(environment, environment.module_base, (Is12002(environment) ? kActivityHosted12002GameStateRva : kManagerRootRva), root) ||
+  if (!ReadAt(environment, environment.module_base, (IsModern(environment) ? ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, kActivityHosted12002GameStateRva) : kManagerRootRva), root) ||
       root == 0 || !ReadAt(environment, root, 0xA0, world) ||
-      !CheckedAdd(world, Is12002(environment) ? kActivityHosted12002ManagerOffset : 0x1DEC0, manager) ||
+      !CheckedAdd(world, IsModern(environment) ? kActivityHosted12002ManagerOffset : 0x1DEC0, manager) ||
       !ReadManager(environment, manager, first)) {
     result.status = ActivityHostedIdentityStatusV1::manager_unavailable;
     return result;
@@ -375,7 +376,7 @@ ActivityHostedIdentityResultV1 ReadActivityHostedIdentityV1(
       std::uintptr_t vtable = 0, type = 0, row_again = 0;
       if (!ReadAt(environment, activity, 0, vtable) ||
           vtable != environment.module_base +
-              (Is12002(environment) ? kActivityHosted12002ActivityVtableRva : kActivityVtableRva) ||
+              (IsModern(environment) ? ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, kActivityHosted12002ActivityVtableRva) : kActivityVtableRva) ||
           !ReadAt(environment, activity, 0x3A0, type) ||
           !ReadTypeKey(environment, type, identity) ||
           !ReadSlot(environment, first, index, row_again) ||
@@ -385,7 +386,7 @@ ActivityHostedIdentityResultV1 ReadActivityHostedIdentityV1(
       }
       identity.activity_id = id;
       identity.host_character_id = host_id;
-      if (Is12002(environment)) {
+      if (IsModern(environment)) {
         std::uint8_t complete = 0, invalidated = 0;
         if (!ReadAt(environment, activity, 0x421, complete) ||
             !ReadAt(environment, activity, 0x422, invalidated) ||
@@ -404,7 +405,7 @@ ActivityHostedIdentityResultV1 ReadActivityHostedIdentityV1(
   ActivityHostedIdentityFrameV1 after{};
   std::uintptr_t root_after = 0, world_after = 0;
   if (seen != first.active_count ||
-      !ReadAt(environment, environment.module_base, (Is12002(environment) ? kActivityHosted12002GameStateRva : kManagerRootRva),
+      !ReadAt(environment, environment.module_base, (IsModern(environment) ? ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, kActivityHosted12002GameStateRva) : kManagerRootRva),
               root_after) ||
       root_after != root || !ReadAt(environment, root_after, 0xA0,
                                    world_after) ||
@@ -453,14 +454,18 @@ ActivityHostedTargetResultV1 ReadActivityHostedTargetV1(
   result.activity_id = activity_full_id;
   result.guest_character_id = target_character_id;
   // The same production ReviewedCrozierAbiSha256 mapping is local to this
-  // leaf. The caller must still identify the actual .3 executable, not AE1.
+  // historical .3 leaf. Actual .4 retains its independent mapped profile.
   constexpr std::string_view kActual12003Sha256 =
       "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6";
-  if (environment.admitted_executable_sha256 != kActual12003Sha256)
+  const bool actual12004 =
+      IsActivity12004BuildV1(environment.admitted_executable_sha256);
+  if (environment.admitted_executable_sha256 != kActual12003Sha256 &&
+      !actual12004)
     return result;
   auto layout_environment = environment;
-  layout_environment.admitted_executable_sha256 =
-      kActivityHostedIdentity12002ExeSha256V1;
+  if (!actual12004)
+    layout_environment.admitted_executable_sha256 =
+        kActivityHostedIdentity12002ExeSha256V1;
   if (!VerifyExactBuild(layout_environment)) return result;
   ActivityHostedIdentityFrameV1 before{};
   if (expected.revision == 0 || expected.actor_character_id <= 0 ||
@@ -486,7 +491,7 @@ ActivityHostedTargetResultV1 ReadActivityHostedTargetV1(
   std::uintptr_t root = 0, world = 0, manager_address = 0;
   ManagerSample first_manager{};
   if (!ReadAt(environment, environment.module_base,
-              kActivityHosted12002GameStateRva, root) ||
+              ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, kActivityHosted12002GameStateRva), root) ||
       root == 0 || !ReadAt(environment, root, 0xA0, world) ||
       !CheckedAdd(world, kActivityHosted12002ManagerOffset, manager_address) ||
       !ReadManager(environment, manager_address, first_manager)) {
@@ -505,7 +510,7 @@ ActivityHostedTargetResultV1 ReadActivityHostedTargetV1(
   ActivityHostedIdentityFrameV1 after{};
   std::uintptr_t root_after = 0, world_after = 0;
   if (!ReadAt(environment, environment.module_base,
-              kActivityHosted12002GameStateRva, root_after) ||
+              ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, kActivityHosted12002GameStateRva), root_after) ||
       root_after != root || !ReadAt(environment, root_after, 0xA0, world_after) ||
       world_after != world ||
       !ReadManager(environment, manager_address, last_manager) ||

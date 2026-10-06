@@ -29,13 +29,18 @@ bool Abi(const ActivityFeastStage5StartEnvironmentV1 &environment) noexcept {
   constexpr std::array<std::uint8_t, 7> kCanStart{
       0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89};
   if (environment.admitted_executable_sha256 ==
-      ck3_12002::kFeastExecutableSha256)
+      ck3_12002::kFeastExecutableSha256 ||
+      IsActivity12004BuildV1(environment.admitted_executable_sha256))
     return environment.enabled && environment.module_base != 0 &&
            environment.capture != nullptr &&
-           Match(environment, ck3_12002::kFeastCommitRva,
+           Match(environment, Activity12004RvaV1(
+                     environment.admitted_executable_sha256,
+                     ck3_12002::kFeastCommitRva),
                  ck3_12002::kFeastCommitPrefix.data(),
                  ck3_12002::kFeastCommitPrefix.size()) &&
-           Match(environment, ck3_12002::kFeastFinalCanStartRva,
+           Match(environment, Activity12004RvaV1(
+                     environment.admitted_executable_sha256,
+                     ck3_12002::kFeastFinalCanStartRva),
                  ck3_12002::kFeastFinalCanStartPrefix.data(),
                  ck3_12002::kFeastFinalCanStartPrefix.size());
   return environment.enabled && environment.module_base != 0 &&
@@ -204,17 +209,20 @@ bool InvokeActivityFeastNativeCommitV1(void *, std::uintptr_t module_base,
 }
 
 bool InvokeActivityFeastNativeCommit12002V1(
-    void *, std::uintptr_t module_base, std::uintptr_t planner) noexcept {
+    void *opaque, std::uintptr_t module_base, std::uintptr_t planner) noexcept {
 #if defined(_WIN32)
+  const auto sha = opaque == nullptr ? std::string_view{}
+                                    : *static_cast<const std::string_view *>(opaque);
+  const auto commit_rva = Activity12004RvaV1(sha, ck3_12002::kFeastCommitRva);
   if (module_base == 0 || planner == 0 ||
-      module_base > (std::numeric_limits<std::uintptr_t>::max)() -
-                        ck3_12002::kFeastCommitRva)
+      module_base > (std::numeric_limits<std::uintptr_t>::max)() - commit_rva)
     return false;
   using Commit = void(__fastcall *)(void *);
-  reinterpret_cast<Commit>(module_base + ck3_12002::kFeastCommitRva)(
+  reinterpret_cast<Commit>(module_base + commit_rva)(
       reinterpret_cast<void *>(planner));
   return true;
 #else
+  (void)opaque;
   (void)module_base;
   (void)planner;
   return false;
@@ -242,10 +250,16 @@ ActivityFeastStage5StartResultV1 StartActivityFeastStage5V1(
   const auto invoke = environment.invoke_commit != nullptr
                           ? environment.invoke_commit
                           : environment.admitted_executable_sha256 ==
-                                    ck3_12002::kFeastExecutableSha256
+                                    ck3_12002::kFeastExecutableSha256 ||
+                                    IsActivity12004BuildV1(
+                                        environment.admitted_executable_sha256)
                                 ? &InvokeActivityFeastNativeCommit12002V1
                                 : &InvokeActivityFeastNativeCommitV1;
-  result.status = invoke(environment.context, environment.module_base,
+  auto admitted_sha = environment.admitted_executable_sha256;
+  auto *invoke_context = environment.invoke_commit != nullptr
+                             ? environment.context
+                             : &admitted_sha;
+  result.status = invoke(invoke_context, environment.module_base,
                          first.planner)
                       ? ActivityFeastStage5StartStatusV1::submitted_pending
                       : ActivityFeastStage5StartStatusV1::submission_outcome_unknown;

@@ -146,8 +146,9 @@ ActivityFeastStage5PostResultV1 ReconcileActivityFeastStage5StartV1(
 // must have passed the Start core's exact build, ABI, and same-frame gates.
 bool InvokeActivityFeastNativeCommitV1(void *, std::uintptr_t module_base,
                                       std::uintptr_t planner) noexcept;
-// Exact 1.20.0.2 original accept branch; the Start core selects it only after
-// that build's prefix, same-frame final gate and resource/guest checks pass.
+// Exact Crozier accept branch; optional context is const std::string_view*
+// admitted SHA (.4 maps its own RVA, nullptr preserves .2). The Start core
+// checks that build's prefix, same-frame final gate and resource/guest checks.
 bool InvokeActivityFeastNativeCommit12002V1(void *, std::uintptr_t module_base,
                                           std::uintptr_t planner) noexcept;
 

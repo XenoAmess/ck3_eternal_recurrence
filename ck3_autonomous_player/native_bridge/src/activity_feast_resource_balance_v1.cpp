@@ -29,15 +29,15 @@ bool Sample(const ActivityHostedIdentityEnvironmentV1 &environment,
   std::uintptr_t storage = 0, fallback = 0, slots = 0, actor = 0;
   std::uintptr_t extension = 0;
   const auto base = environment.module_base;
-  const bool current = environment.admitted_executable_sha256 ==
-                       kActivityHostedIdentity12002ExeSha256V1;
+  const bool current = IsActivityHostedCrozierBuildV1(
+      environment.admitted_executable_sha256);
   if ((!current &&
        (!Read(environment, base, 0x4FE7EE0, played_id) || played_id != actor_id)) ||
       !Read(environment, base,
-            current ? kActivityHosted12002CharacterStorageRva : 0x570C130,
+            current ? ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, kActivityHosted12002CharacterStorageRva) : 0x570C130,
             storage) || storage == 0 ||
       !Read(environment, base,
-            current ? kActivityHosted12002CharacterFallbackRva : 0x570C138,
+            current ? ActivityHostedCrozierRvaV1(environment.admitted_executable_sha256, kActivityHosted12002CharacterFallbackRva) : 0x570C138,
             fallback) ||
       !Read(environment, storage, 0x20, slots) || slots == 0 ||
       !Read(environment, storage, 0x2C, slot_count) ||
@@ -75,8 +75,7 @@ ActivityFeastBalanceResultV1 ReadActivityFeastResourceBalancesV1(
   if (!environment.enabled || environment.module_base == 0 ||
       (environment.admitted_executable_sha256 !=
            kActivityHostedIdentityExeSha256V1 &&
-       environment.admitted_executable_sha256 !=
-           kActivityHostedIdentity12002ExeSha256V1) ||
+       !IsActivityHostedCrozierBuildV1(environment.admitted_executable_sha256)) ||
       environment.read_memory == nullptr || environment.read_frame == nullptr)
     return result;
   ActivityHostedIdentityFrameV1 before{};

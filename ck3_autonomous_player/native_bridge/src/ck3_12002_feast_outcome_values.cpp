@@ -1,4 +1,6 @@
 #include "xar_bridge/ck3_12002_feast_outcome_values.hpp"
+#include "xar_bridge/ck3_12004_activity_migration_v1.hpp"
+#include "xar_bridge/ck3_12004_phase_character.hpp"
 
 #include <array>
 #include <limits>
@@ -24,9 +26,9 @@ bool Sample(const FeastOutcomeEnvironmentV1 &environment,
   std::uintptr_t storage = 0, fallback = 0, slots = 0, actor = 0, extension = 0;
   std::uint32_t capacity = 0, observed_id = 0;
   if (!Read(identity, identity.module_base,
-            kActivityHosted12002CharacterStorageRva, storage) || storage == 0 ||
+            Activity12004RvaV1(identity.admitted_executable_sha256, kActivityHosted12002CharacterStorageRva), storage) || storage == 0 ||
       !Read(identity, identity.module_base,
-            kActivityHosted12002CharacterFallbackRva, fallback) ||
+            Activity12004RvaV1(identity.admitted_executable_sha256, kActivityHosted12002CharacterFallbackRva), fallback) ||
       !Read(identity, storage, 0x20, slots) || slots == 0 ||
       !Read(identity, storage, 0x2C, capacity) ||
       (actor_id & 0x00FFFFFFU) >= capacity ||
@@ -46,11 +48,15 @@ bool Sample(const FeastOutcomeEnvironmentV1 &environment,
   // Both native getters return legal zero if the extension is absent.
   output.prestige_available = true;
   output.stress_available = true;
-  auto traits = environment.traits.enabled
-                    ? environment.traits
-                    : ck3_12002::phase_character::BindImage(
-                          identity.module_base,
-                          identity.admitted_executable_sha256);
+  auto traits = environment.traits;
+  if (!traits.enabled)
+    traits = IsActivity12004BuildV1(identity.admitted_executable_sha256)
+                 ? ck3_12004::phase_character::BindImage(
+                       identity.module_base,
+                       identity.admitted_executable_sha256)
+                 : ck3_12002::phase_character::BindImage(
+                       identity.module_base,
+                       identity.admitted_executable_sha256);
   if (traits.enabled && traits.get_trait_database != nullptr) {
     auto *definition = ck3_12002::phase_character::FindUniqueTraitDefinition(
         traits.get_trait_database(), "lifestyle_reveler");
@@ -84,7 +90,8 @@ FeastOutcomeResultV1 ReadFeastOutcomeValues12002(
   result.value.frame = expected;
   const auto &identity = environment.identity;
   if (!identity.enabled || identity.module_base == 0 ||
-      identity.admitted_executable_sha256 != kActivityHostedIdentity12002ExeSha256V1 ||
+      (identity.admitted_executable_sha256 != kActivityHostedIdentity12002ExeSha256V1 &&
+       !IsActivity12004BuildV1(identity.admitted_executable_sha256)) ||
       identity.read_memory == nullptr || identity.read_frame == nullptr)
     return result;
   ActivityHostedIdentityFrameV1 before{};

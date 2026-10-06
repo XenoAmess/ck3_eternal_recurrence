@@ -1,5 +1,5 @@
 #include "xar_bridge/activity_feast_guest_rule_toggle_v1.hpp"
-#include "xar_bridge/ck3_12002_feast_planner.hpp"
+#include "xar_bridge/ck3_12002_feast_guests_abi.hpp"
 
 #if defined(_WIN32)
 #include <windows.h>
@@ -27,26 +27,26 @@ constexpr std::size_t kMaxCharacters = 4096;
 // resolver, its DB lookup, and the native window toggle/getter callers.
 std::uintptr_t RuleRva(const ActivityPlannerDiagEnvironmentV1 &env,
                        std::uintptr_t legacy) noexcept {
-  if (!IsActivityPlanner12002V1(env)) return legacy;
+  if (!IsActivityFeastModernBuildV1(env.admitted_executable_sha256)) return legacy;
   switch (legacy) {
-  case 0x4FE7EE0: return 0x54DBC00;
-  case 0x57D35F8: return 0x5D33EE8;
-  case 0x57D3618: return 0x5D33F48;
-  case 0x4400678: return 0x48B2F20;
-  case 0x4400660: return 0x48B2EC0;
-  case 0x440E308: return 0x48BFE50;
-  case 0x41676E8: return 0x457B1A0;
-  case 0x3B8B000: return 0x3F7E240;
-  case 0x2C19210: return 0x3057BC0;
-  case 0x2C1B800: return 0x305A280;
-  case 0x151C110: return 0x165A9D0;
-  case 0x151C2B0: return 0x165AB90;
+  case 0x4FE7EE0: return Activity12004RvaV1(env.admitted_executable_sha256, 0x54DBC00);
+  case 0x57D35F8: return Activity12004RvaV1(env.admitted_executable_sha256, 0x5D33EE8);
+  case 0x57D3618: return Activity12004RvaV1(env.admitted_executable_sha256, 0x5D33F48);
+  case 0x4400678: return Activity12004RvaV1(env.admitted_executable_sha256, 0x48B2F20);
+  case 0x4400660: return Activity12004RvaV1(env.admitted_executable_sha256, 0x48B2EC0);
+  case 0x440E308: return Activity12004RvaV1(env.admitted_executable_sha256, 0x48BFE50);
+  case 0x41676E8: return Activity12004RvaV1(env.admitted_executable_sha256, 0x457B1A0);
+  case 0x3B8B000: return Activity12004RvaV1(env.admitted_executable_sha256, 0x3F7E240);
+  case 0x2C19210: return Activity12004RvaV1(env.admitted_executable_sha256, 0x3057BC0);
+  case 0x2C1B800: return Activity12004RvaV1(env.admitted_executable_sha256, 0x305A280);
+  case 0x151C110: return Activity12004RvaV1(env.admitted_executable_sha256, 0x165A9D0);
+  case 0x151C2B0: return Activity12004RvaV1(env.admitted_executable_sha256, 0x165AB90);
   default: return legacy;
   }
 }
 std::size_t RulePlannerOffset(const ActivityPlannerDiagEnvironmentV1 &env,
                              std::size_t legacy) noexcept {
-  if (!IsActivityPlanner12002V1(env)) return legacy;
+  if (!IsActivityFeastModernBuildV1(env.admitted_executable_sha256)) return legacy;
   switch (legacy) {
   case 0xD0: return 0xA0;
   case 0x1538: return 0x1508;
@@ -59,12 +59,12 @@ std::size_t RulePlannerOffset(const ActivityPlannerDiagEnvironmentV1 &env,
 }
 std::size_t RuleWindowOffset(const ActivityPlannerDiagEnvironmentV1 &env,
                             std::size_t legacy) noexcept {
-  return IsActivityPlanner12002V1(env) ?
+  return IsActivityFeastModernBuildV1(env.admitted_executable_sha256) ?
       (legacy == 0x100 ? 0xD0 : legacy == 0xF8 ? 0xC8 : legacy) : legacy;
 }
 std::size_t RuleTypeOffset(const ActivityPlannerDiagEnvironmentV1 &env,
                           std::size_t legacy) noexcept {
-  return IsActivityPlanner12002V1(env) ?
+  return IsActivityFeastModernBuildV1(env.admitted_executable_sha256) ?
       (legacy == 0xD20 ? 0xBC8 : legacy == 0xD2C ? 0xBD4 : legacy) : legacy;
 }
 
@@ -99,7 +99,7 @@ bool BytesAt(const ActivityPlannerDiagEnvironmentV1 &source,
 
 bool Abi(const ActivityFeastGuestRuleEnvironmentV1 &env) noexcept {
   const auto &source = env.diagnostic;
-  const bool modern = IsActivityPlanner12002V1(source);
+  const bool modern = IsActivityFeastModernBuildV1(source.admitted_executable_sha256);
   if (!env.enabled || !source.enabled || source.module_base == 0 ||
       !IsActivityPlannerSupportedBuildV1(source) ||
       source.read_memory == nullptr ||
@@ -112,7 +112,8 @@ bool Abi(const ActivityFeastGuestRuleEnvironmentV1 &env) noexcept {
       std::array<std::uint8_t, 8>{0x89,0x4C,0x24,0x08,0x53,0x48,0x83,0xEC}) &&
       BytesAt(source, 0x2C19210,
       std::array<std::uint8_t, 8>{0x48,0x83,0xEC,0x38,0x48,0x8B,0x05,
-          static_cast<std::uint8_t>(modern ? 0x1D : 0xDD)}) &&
+          static_cast<std::uint8_t>(IsActivity12004BuildV1(source.admitted_executable_sha256)
+              ? 0x3D : modern ? 0x1D : 0xDD)}) &&
       BytesAt(source, 0x2C1B800,
       std::array<std::uint8_t, 8>{0x48,0x89,0x5C,0x24,0x08,0x45,0x33,0xC0}) &&
       BytesAt(source, 0x151C110,
@@ -195,11 +196,12 @@ std::uint32_t NativeHash(void *, std::uintptr_t base,
 #endif
 }
 
-std::uint32_t NativeHash12002(void *, std::uintptr_t base,
+std::uint32_t NativeHash12002(void *opaque, std::uintptr_t base,
                          std::string_view key) noexcept {
 #if defined(_WIN32)
   using Hash = std::uint32_t(__fastcall *)(void *, const char *, std::uint32_t);
-  return reinterpret_cast<Hash>(base + 0x3F7E240)(
+  return reinterpret_cast<Hash>(base + Activity12004RvaV1(
+      ActivityFeastNativeCallbackShaV1(opaque), 0x3F7E240))(
       nullptr, key.data(), static_cast<std::uint32_t>(key.size()));
 #else
   (void)base;
@@ -225,16 +227,18 @@ std::uintptr_t NativeLookup(void *, std::uintptr_t base,
 #endif
 }
 
-std::uintptr_t NativeLookup12002(void *, std::uintptr_t base,
+std::uintptr_t NativeLookup12002(void *opaque, std::uintptr_t base,
                             std::uint32_t hash) noexcept {
 #if defined(_WIN32)
   using GetDatabase = void *(__fastcall *)();
   using Lookup = void *(__fastcall *)(void *, std::uint32_t);
-  auto *database = reinterpret_cast<GetDatabase>(base + 0x3057BC0)();
+  auto *database = reinterpret_cast<GetDatabase>(base + Activity12004RvaV1(
+      ActivityFeastNativeCallbackShaV1(opaque), 0x3057BC0))();
   return database == nullptr
              ? 0
              : reinterpret_cast<std::uintptr_t>(
-                   reinterpret_cast<Lookup>(base + 0x305A280)(database, hash));
+                   reinterpret_cast<Lookup>(base + Activity12004RvaV1(
+      ActivityFeastNativeCallbackShaV1(opaque), 0x305A280))(database, hash));
 #else
   (void)base;
   (void)hash;
@@ -258,11 +262,12 @@ bool NativeActive(void *, std::uintptr_t base, std::uintptr_t window,
 #endif
 }
 
-bool NativeActive12002(void *, std::uintptr_t base, std::uintptr_t window,
+bool NativeActive12002(void *opaque, std::uintptr_t base, std::uintptr_t window,
                   std::uintptr_t row, bool &active) noexcept {
 #if defined(_WIN32)
   using Getter = bool(__fastcall *)(void *, void *);
-  active = reinterpret_cast<Getter>(base + 0x165AB90)(
+  active = reinterpret_cast<Getter>(base + Activity12004RvaV1(
+      ActivityFeastNativeCallbackShaV1(opaque), 0x165AB90))(
       reinterpret_cast<void *>(window), reinterpret_cast<void *>(row));
   return true;
 #else
@@ -289,11 +294,12 @@ bool NativeToggle(void *, std::uintptr_t base, std::uintptr_t window,
 #endif
 }
 
-bool NativeToggle12002(void *, std::uintptr_t base, std::uintptr_t window,
+bool NativeToggle12002(void *opaque, std::uintptr_t base, std::uintptr_t window,
                   std::uintptr_t row) noexcept {
 #if defined(_WIN32)
   using Toggle = void(__fastcall *)(void *, void *);
-  reinterpret_cast<Toggle>(base + 0x165A9D0)(
+  reinterpret_cast<Toggle>(base + Activity12004RvaV1(
+      ActivityFeastNativeCallbackShaV1(opaque), 0x165A9D0))(
       reinterpret_cast<void *>(window), reinterpret_cast<void *>(row));
   return true;
 #else
@@ -392,10 +398,12 @@ ActivityFeastGuestRuleStatusV1 Bind(
   }
   // The native lookup reads this nullable fallback only on a lookup miss.
   // A valid definition/ordered-row match does not require it to exist.
-  const auto hash = env.hash_key != nullptr ? env.hash_key : (IsActivityPlanner12002V1(env.diagnostic) ? &NativeHash12002 : &NativeHash);
-  const auto lookup = env.lookup_rule != nullptr ? env.lookup_rule : (IsActivityPlanner12002V1(env.diagnostic) ? &NativeLookup12002 : &NativeLookup);
-  binding.hash = hash(env.context, source.module_base, key);
-  binding.definition = lookup(env.context, source.module_base, binding.hash);
+  const auto hash = env.hash_key != nullptr ? env.hash_key : (IsActivityFeastModernBuildV1(env.diagnostic.admitted_executable_sha256) ? &NativeHash12002 : &NativeHash);
+  const auto lookup = env.lookup_rule != nullptr ? env.lookup_rule : (IsActivityFeastModernBuildV1(env.diagnostic.admitted_executable_sha256) ? &NativeLookup12002 : &NativeLookup);
+  binding.hash = hash(env.hash_key != nullptr ? env.context
+      : ActivityFeastNativeCallbackContextV1(source.admitted_executable_sha256), source.module_base, key);
+  binding.definition = lookup(env.lookup_rule != nullptr ? env.context
+      : ActivityFeastNativeCallbackContextV1(source.admitted_executable_sha256), source.module_base, binding.hash);
   if (binding.definition == 0 || binding.definition == missing) {
     binding.unavailable_reason = binding.definition == 0
         ? "lookup_returned_null" : "lookup_returned_missing";
@@ -458,9 +466,10 @@ ActivityFeastGuestRuleStatusV1 Observe(
         bound != binding.capture.planner || mode != -1)
       return ActivityFeastGuestRuleStatusV1::window_unbound;
     const auto active =
-        env.read_active != nullptr ? env.read_active : (IsActivityPlanner12002V1(env.diagnostic) ? &NativeActive12002 : &NativeActive);
+        env.read_active != nullptr ? env.read_active : (IsActivityFeastModernBuildV1(env.diagnostic.admitted_executable_sha256) ? &NativeActive12002 : &NativeActive);
     bool getter_active = false;
-    if (!active(env.context, source.module_base, binding.window, binding.row,
+    if (!active(env.read_active != nullptr ? env.context
+        : ActivityFeastNativeCallbackContextV1(source.admitted_executable_sha256), source.module_base, binding.window, binding.row,
                 getter_active))
       return ActivityFeastGuestRuleStatusV1::native_read_failed;
     // A bound window supplies a second source, particularly after a toggle.
@@ -519,9 +528,10 @@ ActivityFeastGuestRuleResultV1 Run(
   if (!activate || !policy_approved ||
       result.status != ActivityFeastGuestRuleStatusV1::observed_inactive)
     return result;
-  const auto invoke = env.toggle != nullptr ? env.toggle : (IsActivityPlanner12002V1(env.diagnostic) ? &NativeToggle12002 : &NativeToggle);
+  const auto invoke = env.toggle != nullptr ? env.toggle : (IsActivityFeastModernBuildV1(env.diagnostic.admitted_executable_sha256) ? &NativeToggle12002 : &NativeToggle);
   result.invoked = true;
-  if (!invoke(env.context, env.diagnostic.module_base, binding.window,
+  if (!invoke(env.toggle != nullptr ? env.context
+      : ActivityFeastNativeCallbackContextV1(env.diagnostic.admitted_executable_sha256), env.diagnostic.module_base, binding.window,
               binding.row)) {
     result.status = ActivityFeastGuestRuleStatusV1::native_action_failed;
     return result;

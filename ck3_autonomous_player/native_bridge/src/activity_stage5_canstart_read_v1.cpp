@@ -52,7 +52,8 @@ bool MatchCode(const ActivityPlannerDiagEnvironmentV1 &environment,
                std::uintptr_t rva,
                const std::array<std::uint8_t, N> &expected) noexcept {
   std::array<std::uint8_t, N> actual{};
-  return ReadAt(environment, environment.module_base, rva, actual) &&
+  return ReadAt(environment, environment.module_base,
+                Activity12004RvaV1(environment.admitted_executable_sha256, rva), actual) &&
          actual == expected;
 }
 
@@ -62,7 +63,7 @@ bool VerifyAbi(const ActivityStage5CanStartEnvironmentV1 &environment) noexcept 
       0x48, 0x89, 0x5C, 0x24, 0x10, 0x48, 0x89};
   constexpr std::array<std::uint8_t, 7> kStage5Signature{
       0x48, 0x8D, 0x91, 0x30, 0x15, 0x00, 0x00};
-  if (IsActivityPlanner12002V1(d))
+  if (IsActivityPlannerCrozierBuildV1(d))
     return d.enabled && d.module_base != 0 &&
            d.read_memory != nullptr && d.read_frame != nullptr &&
            d.rtti_cast != nullptr && d.invoke_visibility != nullptr &&
@@ -102,7 +103,7 @@ bool ResolveNative(const ActivityPlannerDiagEnvironmentV1 &environment,
                    const ActivityPlannerDiagFrameV1 &frame,
                    NativeIdentity &identity,
                    bool &selected_feast) noexcept {
-  if (IsActivityPlanner12002V1(environment)) {
+  if (IsActivityPlannerCrozierBuildV1(environment)) {
     ActivityPlannerIdentityV1 current{};
     if (!ResolveActivityPlannerIdentityV1(environment, frame, current) ||
         current.stage != 5 || current.activity_type == 0)

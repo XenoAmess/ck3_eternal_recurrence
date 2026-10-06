@@ -39,7 +39,9 @@ bool ExactCanSelect(const ActivityPlannerDiagEnvironmentV1 &environment)
       0x57, 0x41, 0x54, 0x41, 0x55, 0x41, 0x56};
   std::array<std::uint8_t, expected.size()> actual{};
   return ReadAt(environment, environment.module_base,
-                IsActivityPlanner12002V1(environment) ? 0x11B6F50 : kCanSelectRva,
+                Activity12004RvaV1(environment.admitted_executable_sha256,
+                    IsActivityPlannerCrozierBuildV1(environment)
+                        ? 0x11B6F50 : kCanSelectRva),
                 actual) &&
          actual == expected;
 }
@@ -47,7 +49,7 @@ bool ExactCanSelect(const ActivityPlannerDiagEnvironmentV1 &environment)
 bool ResolvePlanner(const ActivityPlannerDiagEnvironmentV1 &environment,
                     const ActivityPlannerDiagFrameV1 &expected,
                     std::uintptr_t &planner) noexcept {
-  if (IsActivityPlanner12002V1(environment)) {
+  if (IsActivityPlannerCrozierBuildV1(environment)) {
     ActivityPlannerIdentityV1 identity{};
     if (!ResolveActivityPlannerIdentityV1(environment, expected, identity) ||
         identity.stage != 2)
@@ -127,10 +129,10 @@ bool ReadRows(const ActivityPlannerDiagEnvironmentV1 &environment,
       // representation without reading unrelated adjacent fields.
       std::uint8_t active = 0;
       if (!ReadAt(environment, phase,
-                    IsActivityPlanner12002V1(environment) ? 0x1160 : 0x12D0,
+                    IsActivityPlannerCrozierBuildV1(environment) ? 0x1160 : 0x12D0,
                     item.phase_kind) ||
           !ReadAt(environment, phase,
-                    IsActivityPlanner12002V1(environment) ? 0x69C : 0x70C,
+                    IsActivityPlannerCrozierBuildV1(environment) ? 0x69C : 0x70C,
                     active))
         return false;
       item.phase_active_raw = active;
@@ -151,7 +153,7 @@ ActivityStage2LocationReadResultV1 ReadActivityStage2LocationV1(
   if (!diagnostic.enabled || diagnostic.module_base == 0 ||
       (diagnostic.admitted_executable_sha256 !=
            kActivityPlannerDiagExeSha256V1 &&
-       !IsActivityPlanner12002V1(diagnostic)) ||
+       !IsActivityPlannerCrozierBuildV1(diagnostic)) ||
       !ExactCanSelect(diagnostic))
     return result;
   if (diagnostic.read_frame == nullptr ||

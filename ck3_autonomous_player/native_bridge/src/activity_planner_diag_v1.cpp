@@ -61,7 +61,8 @@ bool MatchCode(const ActivityPlannerDiagEnvironmentV1 &environment,
                std::uintptr_t rva,
                const std::array<std::uint8_t, N> &bytes) noexcept {
   std::array<std::uint8_t, N> observed{};
-  return ReadAt(environment, environment.module_base, rva, observed) &&
+  return ReadAt(environment, environment.module_base,
+                Activity12004RvaV1(environment.admitted_executable_sha256, rva), observed) &&
          observed == bytes;
 }
 
@@ -106,7 +107,7 @@ bool VerifyAbi(const ActivityPlannerDiagEnvironmentV1 &environment) noexcept {
       environment.read_memory == nullptr || environment.read_frame == nullptr ||
       environment.rtti_cast == nullptr ||
       environment.invoke_visibility == nullptr ||
-      !(IsActivityPlanner12002V1(environment)
+      !(IsActivityPlannerCrozierBuildV1(environment)
             ? (MatchCode(environment, 0x11B2885,
                    std::array<std::uint8_t, 8>{0x49, 0x89, 0xB4, 0x24, 0xA0, 0, 0, 0}) &&
                MatchCode(environment, 0x21603AA,
@@ -234,9 +235,9 @@ ActivityPlannerDiagStatusV1 ReadOne(
     std::uintptr_t type = 0;
     if (!ReadAt(environment, host, 0, host_primary) ||
         !ReadAt(environment, host, 0x10, host_secondary) ||
-        !ReadAt(environment, host, (IsActivityPlanner12002V1(environment) ? 0xA0 : 0xD0), host_owner) ||
-        !ReadAt(environment, host, (IsActivityPlanner12002V1(environment) ? 0xD0 : 0x100), host_actor_id) ||
-        !ReadAt(environment, host, (IsActivityPlanner12002V1(environment) ? 0x238 : 0x268), type))
+        !ReadAt(environment, host, (IsActivityPlannerCrozierBuildV1(environment) ? 0xA0 : 0xD0), host_owner) ||
+        !ReadAt(environment, host, (IsActivityPlannerCrozierBuildV1(environment) ? 0xD0 : 0x100), host_actor_id) ||
+        !ReadAt(environment, host, (IsActivityPlannerCrozierBuildV1(environment) ? 0x238 : 0x268), type))
       return ActivityPlannerDiagStatusV1::native_read_failed;
     if (host_primary != environment.module_base + ActivityPlannerRvaV1(environment, kHostPrimaryVtable) ||
         host_secondary != environment.module_base + ActivityPlannerRvaV1(environment, kHostSecondaryVtable) ||
