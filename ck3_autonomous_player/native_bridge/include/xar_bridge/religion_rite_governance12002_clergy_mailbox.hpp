@@ -3,6 +3,8 @@
 #include "xar_bridge/ck3_12002_query_mailbox.hpp"
 #include "xar_bridge/ck3_12003_county_conversion.hpp"
 #include "xar_bridge/ck3_12003_clergy_candidate_terms.hpp"
+#include "xar_bridge/ck3_12004_clergy_appointment.hpp"
+#include "xar_bridge/ck3_12004_county_conversion.hpp"
 #include "xar_bridge/religion_rite_governance12002_clergy.hpp"
 
 namespace xar::ck3_12002 {
@@ -26,9 +28,12 @@ struct PlayerClergyAppointmentMailboxContext12002 {
   QueryMailboxEnvelope envelope{};
   PlayerClergyAppointmentRequest12002 request{};
   religion::clergy::Bindings bindings{};
+  // Independently bound actual .4 image; only the software Observation is shared.
+  std::optional<ck3_12004::religion::clergy::Bindings> bindings12004;
   religion::clergy::Observation observation{};
   // Present only for the actual exact .3 adapter; the existing .2 query is unchanged.
   std::optional<ck3_12003::religion::county_conversion::Environment> county_conversion_environment;
+  std::optional<ck3_12004::religion::county_conversion::Environment> county_conversion_environment12004;
   std::optional<ck3_12003::religion::county_conversion::Observation> county_conversion_observation;
   std::optional<ck3_12003::religion::clergy_candidate_terms::Environment> candidate_terms_environment;
   std::optional<ck3_12003::religion::clergy_candidate_terms::Observation> candidate_terms_observation;

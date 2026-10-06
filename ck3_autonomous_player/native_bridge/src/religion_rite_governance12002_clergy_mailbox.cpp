@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/religion_rite_governance12002_clergy_mailbox.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
@@ -113,9 +114,16 @@ bool ExecutePlayerClergyAppointmentMailbox12002(
       query.failure = "player_clergy_appointment_published_frame_changed";
       return true;
     }
-    query.bindings.application_main_thread_id = stamp.thread_id;
-    (void)religion::clergy::ReadClergyAppointment12002(
-        query.bindings,stamp.pump_epoch,query.request.candidate_character_id,query.observation);
+    if (query.bindings12004) {
+      query.bindings12004->application_main_thread_id = stamp.thread_id;
+      (void)ck3_12004::religion::clergy::ReadClergyAppointment12004(
+          *query.bindings12004, stamp.pump_epoch,
+          query.request.candidate_character_id, query.observation);
+    } else {
+      query.bindings.application_main_thread_id = stamp.thread_id;
+      (void)religion::clergy::ReadClergyAppointment12002(
+          query.bindings,stamp.pump_epoch,query.request.candidate_character_id,query.observation);
+    }
     auto &out = query.observation;
     const auto &frame = envelope->expected_snapshot;
     if (out.available && (out.owner_character_id != frame.played_character_id ||
@@ -129,7 +137,24 @@ bool ExecutePlayerClergyAppointmentMailbox12002(
       out.owner_character_id = static_cast<std::int32_t>(frame.played_character_id);
       out.candidate_character_id = query.request.candidate_character_id;
     }
-    if (query.county_conversion_environment) {
+    if (query.county_conversion_environment12004) {
+      namespace county = ck3_12004::religion::county_conversion;
+      auto &environment = *query.county_conversion_environment12004;
+      environment.application_main_thread_id = stamp.thread_id;
+      environment.clergy.application_main_thread_id = stamp.thread_id;
+      auto &county_out = query.county_conversion_observation.emplace();
+      (void)county::ReadCountyConversion12004(environment, stamp.pump_epoch, county_out);
+      if (county_out.available && (county_out.owner_character_id != frame.played_character_id ||
+          county_out.date_raw != frame.date_raw)) {
+        county_out = {};
+        county_out.failure = county::Failure::state_changed;
+        county_out.capture_epoch = stamp.pump_epoch;
+      }
+      if (!county_out.available) {
+        county_out.date_raw = static_cast<std::int32_t>(frame.date_raw);
+        county_out.owner_character_id = static_cast<std::int32_t>(frame.played_character_id);
+      }
+    } else if (query.county_conversion_environment) {
       namespace county = ck3_12003::religion::county_conversion;
       auto &environment = *query.county_conversion_environment;
       environment.application_main_thread_id = stamp.thread_id;
@@ -177,24 +202,37 @@ std::string SerializePlayerClergyAppointmentResult12002(
     const PlayerClergyAppointmentMailboxContext12002 &query,std::string_view request_id) {
   if (!query.completed || !query.envelope.frame_stable || !query.failure.empty()) return {};
   const auto &frame = query.envelope.expected_snapshot;
-  const auto county_wire = query.county_conversion_environment && query.county_conversion_observation
-      ? ",\"county_conversion\":" + ck3_12003::religion::county_conversion::SerializeCountyConversion12003(
+  const auto county_wire = query.county_conversion_environment12004 && query.county_conversion_observation
+      ? ",\"county_conversion\":" + ck3_12004::religion::county_conversion::SerializeCountyConversion12004(
           *query.county_conversion_observation)
-      : std::string{};
+      : query.county_conversion_environment && query.county_conversion_observation
+          ? ",\"county_conversion\":" + ck3_12003::religion::county_conversion::SerializeCountyConversion12003(
+              *query.county_conversion_observation)
+          : std::string{};
   const auto terms_wire = query.candidate_terms_environment && query.candidate_terms_observation
       ? ",\"candidate_terms\":" + ck3_12003::religion::clergy_candidate_terms::SerializeClergyCandidateTerms12003(
           *query.candidate_terms_observation)
       : std::string{};
+  const bool actual4 = query.bindings12004.has_value();
+  const auto version = actual4 ? std::string_view{ck3_12004::kGameVersion}
+                              : std::string_view{"1.20.0.2"};
+  const auto sha = actual4 ? std::string_view{ck3_12004::kExecutableSha256}
+                          : std::string_view{kExecutableSha256};
+  const auto backend = actual4 ? std::string_view{"ck3-1.20.0.4-native-player-clergy-appointment-v1"}
+                              : kPlayerClergyAppointmentBackend12002;
+  const auto clergy_wire = actual4
+      ? ck3_12004::religion::clergy::SerializeClergyAppointment12004(query.observation)
+      : religion::clergy::SerializeClergyAppointment12002(query.observation);
   return "{\"type\":\"command_result\",\"protocol_version\":1,\"request_id\":" + Quote(request_id) +
       ",\"ok\":true,\"result\":{\"step\":" + Quote(kPlayerClergyAppointmentPrivateStep12002) +
       ",\"accepted\":true,\"status\":" + Quote(query.observation.available ? "observed" : "unavailable") +
-      ",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"game_version\":\"1.20.0.2\","
-      "\"executable_sha256\":" + Quote(kExecutableSha256) +
+      ",\"private_build\":true,\"read_only\":true,\"advertised\":false,\"game_version\":" + Quote(version) +
+      ",\"executable_sha256\":" + Quote(sha) +
       ",\"domain_key\":" + Quote(kPlayerClergyAppointmentDomainKey12002) +
-      ",\"backend_id\":" + Quote(kPlayerClergyAppointmentBackend12002) +
+      ",\"backend_id\":" + Quote(backend) +
       ",\"snapshot_revision\":" + std::to_string(query.envelope.expected_snapshot_revision) +
       ",\"date_raw\":" + std::to_string(frame.date_raw) +
-      ",\"player_clergy_appointment\":" + religion::clergy::SerializeClergyAppointment12002(query.observation) + county_wire + terms_wire + "}}";
+      ",\"player_clergy_appointment\":" + clergy_wire + county_wire + terms_wire + "}}";
 }
 
 bool RunPlayerClergyAppointmentMailbox12002(
@@ -210,6 +248,8 @@ bool RunPlayerClergyAppointmentMailbox12002(
       failure = "player_clergy_appointment_current_frame_unavailable"; return false;
     }
     envelope.typed_context = &query;
+    if (game::IsCk3_12004Descriptor(envelope.game->descriptor()))
+      envelope.snapshot_comparison = QuerySnapshotComparison12002::core_frame;
     if (TrySubmitMainThreadQueryV1(*envelope.mailbox,&ExecutePlayerClergyAppointmentMailbox12002,
         &envelope,envelope.ticket) != MainThreadQuerySubmitResultV1::submitted) {
       failure = "player_clergy_appointment_mailbox_submit_unavailable"; return false;
@@ -245,8 +285,10 @@ bool HandlePlayerClergyAppointmentPrivate12002(
   if (!ParsePlayerClergyAppointmentRequest12002(payload,request)) {
     failure = "player_clergy_appointment_request_invalid"; return false;
   }
-  if (!adapter.enabled() || xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 || !ValidFrame(published,revision) ||
+  const bool actual4 = game::IsCk3_12004Descriptor(adapter.descriptor());
+  if (!adapter.enabled() || (!actual4 &&
+      (xar::game::ReviewedCrozierAbiVersion(adapter.descriptor()) != "1.20.0.2" ||
+       xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) || !ValidFrame(published,revision) ||
       (request.expected_revision && request.expected_revision != revision)) {
     failure = "player_clergy_appointment_current_frame_unavailable"; return false;
   }
@@ -257,8 +299,15 @@ bool HandlePlayerClergyAppointmentPrivate12002(
     query.envelope.expected_snapshot = published;
     query.envelope.expected_snapshot_revision = revision;
     query.request = request;
-    query.bindings = religion::clergy::BindClergyAppointmentImage12002(
-        reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    if (actual4) {
+      query.bindings12004 = ck3_12004::religion::clergy::BindClergyAppointmentImage12004(
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), adapter.descriptor().executable_sha256);
+      query.county_conversion_environment12004 = ck3_12004::religion::county_conversion::BindCountyConversionImage12004(
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), adapter.descriptor().executable_sha256);
+    } else {
+      query.bindings = religion::clergy::BindClergyAppointmentImage12002(
+          reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    }
     if (game::IsCk3_12003Descriptor(adapter.descriptor())) {
       query.county_conversion_environment = ck3_12003::religion::county_conversion::BindCountyConversionImage12003(
           reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)), adapter.descriptor().executable_sha256);
