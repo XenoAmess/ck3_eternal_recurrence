@@ -1610,3 +1610,33 @@ Actual effects/loss remainfalse, poststate staysnull, full helper/physical
 Army lifecycle/full monthly application remainfalse. New game days/runtime
 operations are0. The source-only post-group EBA050 virtual-record frontier
 above remains the next concrete source dependency.
+
+## 2026-10-06 补员 ADD 与月度扣兵前 current 的独立衔接
+
+本包复用 exact1.20.0.3 冻结源码，零新增 EXE 字节、零游戏操作。source-first 树/Mermaid/最小查询计划在实现前于 `2026-10-06T01:15:45.157396+00:00` 封存：`Z:/ck3_mod_rewrite_process_assets/g2-background-round6-20261006/associated-refill-current-assembly/SOURCE-FIRST-RECEIPT.json`，SHA `0596b4a6998b373990f0f1b5a90046381f567e8649dba137530a3982284d709d`。
+
+即时 `24E3430` 四 pass 的 current/max 子系统已经闭合；完整月初路径更早的真实输入差异是 `2A98AE0` regular refill。该 dispatcher 依 manager `+30/+3C` 的持久 Regi FullID 顺序，用 Regi `+148` prepared cache 调用 `262C9D0`；后者只填零初始化的七个 q，不写物理人数。其 AL true 后，`2A98BA0..2A98BA8` 按 physical chunk `+C` 取 q，对 current `+4` 做 signed32 ADD。`newCurrent >= maximum` 时的成对清零还要求 raw association `+10 == -1` 等实际谓词。生产完整 DATA reader 已验证关联 chunk 的 raw ordinal 与 DATA ordinal 一致，且 raw association 等于有效 ArRg FullID，所以已发布非 -1 association 的 chunk 不进入成对清零。负溢出 q 仍直接 ADD，不另加零 clamp。qualified q0 仍使 AL true；若未观察 chunk 导致 AL 未知，已关联 q0 的 current/max 在“不写”和“ADD0”两支一致。
+
+物理写回结束后，`24E8120` 在 Army `+38/+44` roster 上调 `2633340`。新纯 consumer 复用既有 `262C9D0` 算术与 current/max refresh：对每个观察到的 persistent FullID 条件化一次 core 调用，按 `(persistent FullID, ordinal)` 只 ADD 一次；刷新时每条 DATA occurrence 仍参与汇总。state3/current0 用 maximum 作为贡献；字符分支独立为1/1；汇总保留 signed32 wrap。
+
+已有 `query_army_strengths` 的 `loss_allocation_requests_v1` 新增独立 sibling `same_input_conditional_associated_refill_current_v1`，包括父级缺少 loss budget 的分支。字段发布唯一 physical chunk 的 before/q/after、DATA aliases、覆盖、每条 ArRg refresh 与 `conditional_regiment_strengths`。`associated_chunks_ready` 和 `associated_current_maximum_ready` 可真实变为 true；`complete_persistent_requests_ready` 单独反映七槽是否都观察到。缺少 legacy raw association 时保留可用 chunk/独立字符 refresh，不能给全 aggregate readiness。输入观察不改写，也不回灌原 budget 或四 pass sequence。
+
+这是 `static-ready` 的关联 current/max 条件模型，不是 manager dispatch 或月度 actual：`actual_replenishment=false`、`actual_post_stage_current=null`、`full_regular_refill_ready=false`、`full_monthly_ready=false`。尚未发布 manager persistent roster/order/重复调用、实际 calendar admission 与重新准备 fraction。`24E8120` 尾部还调 `24E11B0` 并复制80B统计到 Army `+130..17F`；该统计 footprint 仍是下一具体源入口。未证明 post-refill supply change/capacity 前，不能把当前快照的这些数值作为补员后的新输入或实际 monthly entry。
+
+唯一新增生产 query-consumer method 首次 `GREEN`，unittest0.002s / process3.2872572s，验证一次物理 ADD 与重复 DATA 计数、state3、qualified q0、低64乘法导致负 q、legacy association partial、独立无 budget 分支与源输入不变。回执 `FIRST-PYTHON-CASE-RECEIPT.json` SHA `76f4d9b2777f6718396f8f99833dfd4e9feee4026c781bb8a5312aa23249b5d6` 位于上述 packet。旧 tests/wires0，新 native build0，CK3/runtime0；本包没有 native/CMake/fixture 改动。
+
+```mermaid
+flowchart TD
+  R[2A98AE0 stored Regi IDs and prepared cache] --> Q[262C9D0 seven q requests]
+  Q --> A[AL true: signed32 physical current ADD]
+  A --> V{Observed non-minus-one association?}
+  V -- yes --> K[Keep maximum; no pair clear]
+  V -- no --> U[Outside associated observation model]
+  K --> F[2633340 current/max refresh]
+  F --> D[Count DATA aliases; state3/current0 and character1/1]
+  D --> P[Independent conditional associated current/max]
+  F -. excluded Army statistics .-> S[24E11B0; Army130..17F]
+  S -. missing post-refill input assembly .-> B[Monthly supply budgets]
+  R -. manager preparation/order not observed .-> X[Actual monthly entry remains null]
+  P -. computed state is not a new paused read .-> X
+```

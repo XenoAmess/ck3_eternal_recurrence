@@ -20,6 +20,7 @@ from .army_daily_queue_transfer_projection import project_conditional_daily_id_t
 from .army_manager_cleanup_projection import project_conditional_first_removal_manager_cleanup
 from .army_current_helper_domain_projection import project_conditional_current_helper_domain_updates
 from .army_current_helper_point_store_projection import project_conditional_current_helper_point_stores
+from .army_associated_refill_current_projection import project_conditional_associated_refill_current
 
 
 FRACTION_SCALE = 100_000
@@ -214,6 +215,7 @@ def project_observed_army_loss_requests(
         conditional_budgets = construct_conditional_monthly_loss_budgets(army)
         conditional_current_helper_domain = project_conditional_current_helper_domain_updates(army)
         conditional_current_helper_points = project_conditional_current_helper_point_stores(army)
+        conditional_associated_refill = project_conditional_associated_refill_current(army)
         conditional_caller_effects = project_conditional_monthly_caller_effects(army, conditional_budgets)
         conditional_daily_transfer = project_conditional_daily_id_transfer(army)
         conditional_manager_cleanup = project_conditional_first_removal_manager_cleanup(
@@ -232,6 +234,7 @@ def project_observed_army_loss_requests(
                 "same_input_conditional_first_removal_manager_cleanup_v1": conditional_manager_cleanup,
                 "same_input_conditional_current_helper_domain_updates_v1": conditional_current_helper_domain,
                 "same_input_conditional_current_helper_point_stores_v1": conditional_current_helper_points,
+                "same_input_conditional_associated_refill_current_v1": conditional_associated_refill,
             })
             continue
         preferred = None
@@ -287,6 +290,7 @@ def project_observed_army_loss_requests(
         projection["same_input_conditional_first_removal_manager_cleanup_v1"] = conditional_manager_cleanup
         projection["same_input_conditional_current_helper_domain_updates_v1"] = conditional_current_helper_domain
         projection["same_input_conditional_current_helper_point_stores_v1"] = conditional_current_helper_points
+        projection["same_input_conditional_associated_refill_current_v1"] = conditional_associated_refill
         result.append({
             "army_id": army["army_id"], **projection,
             "input_basis": "current_readonly_inputs; conditional requests, not updater execution",
