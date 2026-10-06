@@ -4,6 +4,7 @@
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_family.hpp"
+#include "xar_bridge/ck3_12004_family_obligations_alliance.hpp"
 #include "xar_bridge/protocol.hpp"
 
 #if defined(XAR_CK3_ENABLE_G2_M5_FAMILY_OBLIGATIONS_PRIVATE_QUERY_V1) && \
@@ -169,9 +170,10 @@ bool HandleFamilyObligationsPrivate12002(
       query.lineage_bindings = actual4
           ? ck3_12004::BindFamilyLineageImage(base, adapter.descriptor().executable_sha256)
           : family_obligations_lineage::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
-    if (!actual4 &&
-        (call_ally_submission || request.ally_character_id > 0 || request.enumerate_current_allies))
-      query.alliance_bindings = family_obligations_alliance::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    if (call_ally_submission || request.ally_character_id > 0 || request.enumerate_current_allies)
+      query.alliance_bindings = actual4
+          ? ck3_12004::BindFamilyObligationsAllianceImage(base, adapter.descriptor().executable_sha256)
+          : family_obligations_alliance::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
     if (request.break_recipient_character_id > 0)
       query.break_bindings = actual4
           ? ck3_12004::BindFamilyObligationsBreakImageV1(base, adapter.descriptor().executable_sha256)
