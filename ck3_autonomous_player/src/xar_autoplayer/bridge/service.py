@@ -15,6 +15,7 @@ from ..simulation.battle_current_special_knight_value_12003 import (
 from .version_identity import require_exact_native_build
 from .army_loss_allocation_projection import project_observed_army_loss_requests
 from .army_post_refill_land_supply_rate_projection import project_observed_post_refill_land_supply_rates_v1
+from .army_selected_refill_monthly_assembly import project_selected_refill_monthly_assemblies_v1
 
 from .driver import (
     BridgeUnavailableError,
@@ -4477,6 +4478,7 @@ class GameplayBridgeService:
             if isinstance(diagnostics, dict)
             else None
         )
+        joined_land_rates = project_observed_post_refill_land_supply_rates_v1(selected_rows)
         return {
             **result,
             "schema_version": 1,
@@ -4507,7 +4509,9 @@ class GameplayBridgeService:
             "same_input_replenishment_v1": project_observed_replenishment_v1(selected_rows),
             "loss_allocation_requests_v1": project_observed_army_loss_requests(selected_rows),
             "same_input_conditional_post_refill_land_supply_rate_v1":
-                project_observed_post_refill_land_supply_rates_v1(selected_rows),
+                joined_land_rates,
+            "same_input_conditional_selected_refill_monthly_assembly_v1":
+                project_selected_refill_monthly_assemblies_v1(selected_rows, joined_land_rates=joined_land_rates),
         }
 
     def query_campaign_root_context_v1(

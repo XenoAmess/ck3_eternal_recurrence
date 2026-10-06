@@ -97,3 +97,50 @@ Changed future owner/Province/commander or relation context likewise uses a new 
 - Existing cached manager ledger `Z:/ck3_mod_rewrite_process_assets/g2-resume-20261004/army-monthly-update-order-v61/source-clock-new-spans/NATIVE-CLOCK-ENTRY.md`: primary `+30/+3C`, C0bit2 and actual ADD/refresh. No game bytes or cached-body hashes were reread.
 
 This package grants **research/source-closed input inventory and directly implementable pure assembly plan**. Existing component qualifications remain their own static-ready facts. Assembly is not implemented by this package and has no new test, compiled sample or live credit. Actual/full-monthly flags remain false/null. Oct6/2026-W41 fields, machine-readable ledger and source-plan receipt are external in the package named above; coordinator owns shared reports and push.
+
+## Selected assembly implementation and FIRST qualification — 2026-10-06
+
+The inventory above is preserved as the `02d36db` package's historical source-first finding. The missing pure joins are implemented by the subsequent package on baseline `c2241c6adaedb785a646519d35e1ce2fea009ae1`, including the already adopted joined full-land-rate service value. The implementation-first plan is sealed at `Z:/ck3_mod_rewrite_process_assets/g2-background-round12-20261006/selected-refill-monthly-assembly/IMPLEMENTATION-FIRST-PLAN.md`; this package makes no new EXE read, native field, schema, action, strategy, gate, build or game operation.
+
+`army_selected_refill_monthly_assembly.py` exports `project_selected_refill_monthly_supply_assembly_v1`. `GameplayBridgeService.query_army_strengths` adds `same_input_conditional_selected_refill_monthly_assembly_v1` and passes its existing joined land-rate value into the new helper. Observed normalized rows, initial-frame allocation/budgets, native readiness, query date and revision retain their existing meanings.
+
+The selected physical union includes **every subject ArRg DATA snapshot**, plus admitted eligible Province contributor DATA. Subject ineligible regiments therefore receive their selected refill before all-current siege/raid counting. Each physical persistent/chunk receives one selected ADD; repeated DATA records and Province occurrences remain repeated refresh/count contributions. A private derived frame replaces DATA physical current/max and effective current, ArRg current/max and all four flags0/1/2/3 counts. The full conditional land rate replaces the private frame's monthly rate; it is never an observed post-refill rate. The existing stock/budget, four-pass writer/refresh and finite caller-effect kernels then consume this derived frame. The first pass and nested writer are explicitly labeled derived.
+
+```mermaid
+flowchart TD
+  O[One normalized Strength row; captured owner/Province/commander/predicates/modifiers/capacity] --> U[Subject ALL DATA plus admitted eligible Province DATA union]
+  U --> F[Existing selected core q; unique physical ADD once]
+  F --> D[Derived DATA aliases and ArRg current/max; original subject order]
+  D --> N[Derived signed flags0/1/2/3 counts]
+  O --> P[Existing joined Province occurrence usage and full land-rate kernel]
+  F --> P
+  P --> R[Conditional full land raw rate]
+  O --> A[Raw updater admission and original stock]
+  A --> G{Updater admitted?}
+  G -->|yes| S[Derived signed stock plus conditional rate; captured capacity]
+  R --> S
+  G -->|no| Z[Original known stock; supply budget zero; no unused rate dependency]
+  S --> B[Existing supply budget and separately rounded siege/raid]
+  Z --> B
+  N --> B
+  B --> L[Existing four-pass requests and interleaved writer/refresh]
+  D --> L
+  B --> C[Existing finite byte/date/War-side/manager-ID caller effects]
+  L --> C
+  M[Actual manager persistent roster/preparation/calendar and changed context] -. outside explicit selected model .-> U
+  C -. no actual post-stage snapshot .-> V[Actual/full regular/full monthly remain false/null]
+```
+
+Readiness is independent by stage. A known updater rejection retains stock and supply0 without requiring unused land-rate/Province families. Missing required rate preserves selected subject counts and independent siege/raid budgets. Missing ineligible subject DATA preserves ready eligible counts, Province usage, land rate, stock and supply budget; it leaves all-current/siege/raid and the full derived loss sequence partial. Unknown selected current never falls back to the original regiment current. Physical chunk completeness is published separately from the conditional current/max and finite-effect assembly; all seven persistent requests and actual regular manager execution are still separate boundaries.
+
+FIRST production service compound executed once at **2026-10-06 11:49:59.746902 Asia/Shanghai**. It uses the inherited production query, actual production normalizer and all existing/new pure kernels; only snapshot/capabilities/execute-step backend boundaries are memory fixtures. `test_selected_refill_monthly_assembly_service.py` ran **one new test, GREEN**, `0.024 s` unittest time (`3.2408652 s` process receipt). Importing existing fixture constructors did not execute their old cases. No previous case, wire or component test was rerun.
+
+| New scenario in that one compound | Verified conditional result |
+| --- | --- |
+| Nonzero refill and stock-state crossing | Unique physical current80→90 and50→70 with q10/q20, one ADD each; duplicate DATA remains8 records; subject current210→250, flags0/1/2/3=`250/180/180/180`; duplicate Province usage320→360; land raw rate700000→−50000; stock1040000→990000, state index2; S/J/R=`18/41/12` versus preserved initial-frame `0/35/10` |
+| Derived first writer and caller | First supply request reads ArRg180 and first physical writer reads current90; four-pass final aggregate108 and physical delta−71 remain conditional; original S+J=59 adds to the repeated War cell5→64→123; explicit current64 hypothetical caller date is retained, actual passed date stays null |
+| Missing required land rate | No old-rate fallback; post-stock/supply unavailable, refreshed all-current250 and independent J/R=`41/12` survive |
+| Rejected updater, rate/Province families absent | No unused-rate demand; known stock1040000 and S0, refreshed J/R=`41/12`, sequence and caller independently ready; previous date64 retained |
+| Missing ineligible subject DATA | Counts=`null/180/180/180`; selected rate−50000, stock990000 and S18 ready; J/R/current sequence partial and the missing subject current stays null |
+
+Qualification is **bounded static-ready production service assembly**, conditional on the specified selected core invocations and fixed captured context/capacity. This is no new compiled-wire or real paused qualification. `actual_replenishment`, `actual_loss`, `actual_effects`, `full_regular_refill_ready` and `full_monthly_ready` remain false; actual post-stage current/usage remain null. The original allocation's actual loss readiness also remains false. The next concrete actual-monthly entrance remains manager `GameData+2A548`, original primary persistent roster `+30/+3C`, month-first `GameState+C0` preparation and real gathering/due/bucket order; those stages must not be replaced by this selected-once union. FIRST receipt, all four service outputs, machine-readable delivery and Oct6/W41 report fields are external in the round12 package. Coordinator owns shared reports and push.
