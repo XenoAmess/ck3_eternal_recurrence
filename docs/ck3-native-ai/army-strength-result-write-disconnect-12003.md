@@ -172,3 +172,89 @@ they are not one newly replayed full CTest run. The output observer is now
 qualified offline, while the actual campaign Army result size/write error and
 complete Army observation recovery still require Root's live evidence. No
 small error result or fixture byte count establishes functional recovery.
+
+## R0050 actual size cause and minimum paired capacity repair
+
+Root cold-resumed the original ordinary Robert `29829` campaign in R0050,
+minimized CK3 PID `111932`, at raw date `53288232`. The one fresh own-Army
+query for `218104048`, expected public revision `2`, with both entry modes
+`observed_prepared`, started at 2026-10-06 13:16:58.210882 UTC and returned
+an actual typed native rejection at 13:17:08.679855 UTC (10.468973 s):
+
+`CK3 army-strength result exceeds existing native frame limit (payload_bytes=33445694;limit_bytes=2097152)`
+
+The authoritative summary is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-after-r0049-response-failure/ROOT-ACTUAL-ARMY-RESULT-WRITE-DIAGNOSIS.json`;
+its raw receipt is `gameplay-responses/003-first-actual-single-army-result-write-diagnostic.json`
+under the same directory. The post-render Army output is therefore **33,445,694
+bytes**, exceeding the existing 2,097,152-byte native frame admission bound.
+This closes the previously unknown size/write branch for this actual request;
+no new query or further WinError investigation is needed to establish it.
+The small rejection is useful diagnostic delivery, not Army observation.
+
+The approved minimum production repair, based on source baseline `be06a134`,
+raises the paired native and Python frame constants to **64 MiB (67,108,864
+bytes)**. Existing framing, complete response content, parsing and command
+deadlines remain in use. The named-pipe buffers and both reader/writer bounds
+must consume the same updated constants. No response filtering, new protocol
+or new readiness gate is part of this repair. A separate installed MCP SDK
+buffer is changed only if the existing concrete response path proves it is
+reached; speculative SDK modification is not part of this package.
+
+```mermaid
+flowchart TD
+  A[Actual R0050 own-Army request] --> B[Native complete result; post-render 33445694 bytes]
+  B --> C[Existing native bound 2097152 bytes]
+  C --> D[Actual same-request size-limit error received]
+  D --> E[Approved paired native and Python bound 67108864 bytes]
+  E --> F[New exact-length compiled writer and existing Python transport qualification]
+  F -. FIRST not run; source package in preparation .-> G[Root fresh build and first new consumer]
+  G -. actual campaign recovery pending .-> H[Full Army result consumed and independent state verified]
+```
+
+One new meaningful large-frame qualification will use the historical failing
+byte length **33,445,694**, the compiled production writer, and the existing
+Python transport/decoder/result path. It will not replay the three already
+qualified small-write diagnostic scenes or the deadline compound. All new
+build/test/transport execution belongs to Root after a coherent freeze. This
+section records the actual cause and approved source-first repair; it does
+not claim a successful large frame or restored campaign observation.
+
+The paired source candidate is `99878123c093ea7cf210f1920c32c11f848d923d`.
+It changes `protocol.hpp::kMaximumFrameBytes`,
+`native_driver.py::MAXIMUM_FRAME_BYTES`, and
+`zhongguo_scoreboard_state_v1.hpp::kNamedGuiTreeInspectionMaximumFrameBytesV1`
+to the same 64 MiB value. The third constant is required by the existing
+production equality assertion in `bridge.cpp`; native host/attach pipe buffers,
+the protocol read/write bounds and Python pipe/read bounds already use these
+constants. No separate production limit is left at 2 MiB on those closed
+paths. The old named-GUI fixture's literal 2 MiB expectation is retained and
+not rerun as part of the new Army transport qualification.
+
+The new native fixture candidate is
+`8789c8bcece259a19176bdd444135492bab0d6d1`, target
+`xar_bridge_army_large_frame_capacity_v1_fixture`. It uses
+`WriteArmyStrengthResultFrameV1` and production `WriteFrame`, then the
+consumer uses the real isolated `NativeNamedPipeServer` read loop,
+UTF-8/JSON decoder, `NativeHeadlessGameplayDriver._ingest`, and existing
+command-result cache. Its one synthetic compact ASCII body has a nonempty
+Army row and exactly 33,445,694 bytes; the separate little-endian header is
+four bytes. It does not reconstruct the historical game DTO or claim typed
+Army normalization. The external first consumer is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/r0050-army-large-frame-capacity/fixture/consume_army_large_frame_capacity_v1.py`.
+Root integrates its external CMake patch and runs only this new scene after
+its coherent joint freeze. Native and Python consumer executions remain
+**NOT RUN** by the authors.
+
+The saved actual R0050 `GAMEPLAY-COMMANDS-R0050.json` and
+`gameplay_mcp_actual_r0050.py` bind the existing full virtualenv and
+`mcp.client.stdio.stdio_client`. Root's actual module receipt binds MCP 2.0.0.
+Its installed `mcp/client/stdio.py:141-155` receives text chunks, accumulates
+them until newline and parses the whole JSON-RPC line; there is no 10 MiB
+frame rejection in this path. Its `mcp/server/stdio.py:199-205` serializes the
+message, writes the whole line and flushes without a response-size bound.
+The actual Windows process wrapper also supplies no frame-size argument.
+These exact stdio paths do not add an extra 10 MiB cap to the actual response;
+no SDK source or runtime is changed. The initial absent source locator used
+the old package-directory layout; the actual MCP 2.0.0 stdio modules are flat
+`.py` files. Only this concrete stdio response path was inspected.
