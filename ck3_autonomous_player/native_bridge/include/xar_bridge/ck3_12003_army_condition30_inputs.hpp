@@ -112,7 +112,7 @@ inline game::ArmyCondition30OccurrenceV1 Observe(const Bindings &b, const void *
   out.army_1d4_raw_u8 = Read<std::uint8_t>(b.common, army, 0x1D4);
   if (!out.army_1d4_raw_u8) return fail("condition30_army1d4_unavailable");
   if (*out.army_1d4_raw_u8 == 0) {
-    out.derived_current_30_raw_u8 = 0; out.current_condition_30_inputs_ready = true;
+    out.derived_current_30_raw_u8 = std::uint8_t{0}; out.current_condition_30_inputs_ready = true;
     Finish(out, true); return out;
   }
   const auto *unit = Unit(b, army, out);
