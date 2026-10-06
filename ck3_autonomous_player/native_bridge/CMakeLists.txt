@@ -8981,7 +8981,6 @@ include(cmake/daily_assault_roster_admission_12003.cmake)
 include(cmake/current_assault_removal_references_12003.cmake)
 include(cmake/pre_date_pending_and_dated_inputs_12003.cmake)
 include(cmake/current_post_admission_refresh_inputs_12003.cmake)
-
 # Additive focused fixture: native reads and JSON only, no game or input.
 if(BUILD_TESTING)
   add_executable(xar_confucian_assembly_predicates_v1_test
@@ -9015,3 +9014,5 @@ if(BUILD_TESTING AND WIN32)
   add_test(NAME xar_confucian_religious_title_readback_v1_test
     COMMAND xar_confucian_religious_title_readback_v1_test)
 endif()
+include(cmake/current_candidate_detachment_mapper_12003.cmake)
+

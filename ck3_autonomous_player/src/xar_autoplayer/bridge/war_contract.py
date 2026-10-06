@@ -25,6 +25,7 @@ from .army_daily_assault_active_table_contract import normalize_current_daily_as
 from .army_daily_assault_roster_admission_contract import normalize_current_daily_assault_roster_admission_v1
 from .army_pre_date_dated_append_contract import normalize_current_pre_date_dated_append_inputs_v1
 from .army_current_post_admission_refresh_contract import normalize_current_post_admission_refresh_inputs_v1
+from .army_current_candidate_detachment_mapper_contract import normalize_current_candidate_detachment_mapper_inputs_v1
 from .army_pre_date_pending_update_contract import normalize_current_pre_date_pending_update_inputs_v1
 from .army_ordered_besieging_refill_contract import normalize_ordered_besieging_refill_inputs_v1
 from .army_daily_assault_loss_inputs_contract import normalize_current_daily_assault_loss_inputs_v1
@@ -301,6 +302,7 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS = _ARMY_STRENGTH_ROW_KEYS | {
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"ordered_besieging_refill_inputs_v1", "current_daily_assault_loss_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"ordered_besieging_fixed_chunk0_preparation_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_assault_removal_reference_inputs_v1", "current_pre_date_pending_update_inputs_v1", "current_pre_date_dated_append_inputs_v1", "current_post_admission_refresh_inputs_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_candidate_detachment_mapper_inputs_v1"}
 _ARMY_STRENGTH_SCOPE_ROLES = {
     "player",
     "active_war_ally",
@@ -1924,6 +1926,9 @@ def _normalize_army_strength_row(
     if "current_daily_assault_table_v1" in value:
         result["current_daily_assault_table_v1"] = normalize_current_daily_assault_table_v1(
             value["current_daily_assault_table_v1"])
+    if "current_candidate_detachment_mapper_inputs_v1" in value:
+        result["current_candidate_detachment_mapper_inputs_v1"] = normalize_current_candidate_detachment_mapper_inputs_v1(
+            value["current_candidate_detachment_mapper_inputs_v1"])
     if "current_post_admission_refresh_inputs_v1" in value:
         result["current_post_admission_refresh_inputs_v1"] = normalize_current_post_admission_refresh_inputs_v1(
             value["current_post_admission_refresh_inputs_v1"])
