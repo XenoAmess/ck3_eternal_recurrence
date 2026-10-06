@@ -139,3 +139,44 @@ Root批准单独index35820十二字节metadata后，一次读取record **RVA `5E
 两个实际continuation现均已定位：growth metadata `[B02D4E,B02DC8)`122B＋fast metadata `[B02DC8,B02DFD)`53B，**body仍未读取**。外置 `MERGED-CONTINUATION-BODY-PLAN.json`将其合并为**一次body-only `[B02D4E,B02DFD)`175 B**，file `[B0214E,B021FD)`，只decode新175B；已held62B entry不重读／不重decode。新增metadata／PE／function／unwind headers／chain／hash／neighbor预算均0。此计划等待Root审阅，不在本次metadata授权内执行。
 
 后续只以这些source实际normal-return路径判vector logical writes及其与existing admission loads的交集；若仅既有logical80效果就复用原observer/pure结果，必要directcallee只先cache或已qualified normal-return语义，不展开allocator/destructor。当前仍无normal-return effects／post-effect readiness新增，model/code/tests/build/game均0。
+
+## 2026-10-06：175B continuation闭合正常返回logical append，复用既有80结果
+
+Root单独审阅并批准merged body-only plan后，仅一次读取 **`[B02D4E,B02DFD)`175 B**／file `[B0214E,B021FD)`，连续decode **175/175 B／53 instructions**，至 **`B02DFC RET`**。原62B entry与204B＋12B metadata直接复用，没有re-read或redecode entry；新metadata、PE／function／unwind headers、chain、neighbor与hash均0。`SOURCE-00B02D4E-B02DFD.{json,asm.txt,bin}`保存本次原始source。三个已held片段合计 **237 B**，全部显式branch都在其中；没有需要新范围的outside branch或direct named callee。
+
+| 路径／site | source正常返回效果 | tracked边界 |
+| --- | --- | --- |
+| count!=capacity，`B02DC8..DD7` | `data[old_count]=*scalar`；DWORD count++；读取new count／data | 只写传入vector backing DWORD与`receiver+C`，无去重 |
+| count==capacity，`B02D55..6F` | 用capacity float计算desired capacity，再调用context vtable **+8**，byte size=`capacity*4`，第三实参4 | 物理allocate normal-return边界；factor literal RVA `49F6400` 不读取，逻辑结果无需该值 |
+| `B02D72..A3` | newdata的old-count位置先写scalar；inline loop依原顺序复制旧count个DWORD | 旧序列与重复值保留；没有额外copy callee |
+| `B02DA5..C3` | context vtable **+10**释放旧data；写`receiver+8`容量、`receiver+0`新data、`receiver+C`新count | 只维护target vector header／storage，context `receiver+10`只读 |
+| `B02DDD..DFC` | 两路共同返回最后追加元素的pointer | originalcaller忽略RAX，不因返回值跳过admission |
+
+allocator两slot是**opaque physical resource normal-return边界**，actual实现RVA／unwind／allocation失败行为不在本source包闭合或执行；不冒称已逆向它们，也不扩大generic allocator/destructor audit。此包闭合的是本体在正常返回、backing storage有效的既有container语义下的**logical ordered-ID／count contract**，不模拟physical lifecycle。函数自身没有Army／Character字段写入，也没有clear-commander setter；failure80只是排入logical list，不能宣布人物／军队状态立即已改变。
+
+对已完整observed的initial80与该actual Army10，正常返回logical效果就是：
+
+```text
+ids_after = ids_before ++ [actual_Army10_DWORD]          // no dedup, source order retained
+count_after_bits = (count_before_bits + 1) & FFFFFFFF  // DWORD increment
+```
+
+existing qualified `project_current_pre_date_character_prefix_v1` 已按actual ordered request追加initial80，`logical_80_count_i32`采用DWORD mask再signed bitcast；source现在为这一**条件normal-return logical80 postimage**补齐真实helper证据。**不新增observer、raw capacity field、重复kernel或新测试**。capacity／growth-context／float倍率参与physical route选择，但两条正常返回路径具有相同logical结果，因而不构成本value projection的缺失输入。initial80 partial仍只能给requests，不能补造postimage。
+
+```mermaid
+flowchart TD
+    A[B02D10 primary80 / actual Army10 scalar] --> C{count equals capacity}
+    C -->|false| F[write old data at count / count DWORD plus one]
+    C -->|true| G[context vtable +8 normal return / physical opaque]
+    G --> H[write scalar then inline ordered old-ID copy]
+    H --> J[context vtable +10 normal return / header update]
+    F --> L[logical80 old IDs plus scalar / duplicate retained]
+    J --> L
+    L --> R[return last-element pointer / caller ignores]
+    R --> D[2A99B40 admission direct input footprint unchanged by failure80]
+    D --> E[24DF3C0 callback / separate effects and inputs]
+```
+
+**Admission load求交**：helper本体对prefix failure receiver写primary80 pointer、primary88 capacity、primary8C count及primary80 backing data；held637B `2A99B40` 的manager直接loads为 **primary68/74 queue、primary170 prepared-entry map、primary138/144/148 army map**，以及selected Army10/124/38/44、Unit20、Character788、selected Combat44C和selected entry vectors。它不直接读取primary80／88／8C／90。normal-returncontainer边界下，这条failure80效果与其domain/load footprint交集为空，所以可以沿用同occurrence现有admission raw输入，独立携带新logical80；不需要重新扫描Army/Character或发第二query。
+
+这是**failure80→admission入口**的source边界，不是把fixed current prefix升级为实际post-callback帧。admission自己对prepared entry+10/+28的同helper追加、callback对Army24/28等字段的写入、later dynamic removal消费80及下一occurrence变化仍属于各自已held／其他owner source；完整actual next-date／daily／physical执行仍不授予。新source/Mermaid/复用选择见外置 `NORMAL-RETURN-SOURCE-DELIVERY.json / REPORT-FIELDS-NORMAL-RETURN.json`；本包无model/code、tests/build、source5/native8 replay或game/SDK操作。
