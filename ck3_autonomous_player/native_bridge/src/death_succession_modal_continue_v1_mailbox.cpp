@@ -1,4 +1,6 @@
 #include "xar_bridge/death_succession_modal_continue_v1_mailbox.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 
 #include <windows.h>
 
@@ -71,6 +73,15 @@ bool ExecuteDeathSuccessionModalContinueMailboxV1(
   try {
     ++query->executor_invocations;
     query->execution_stamp = stamp;
+    const bool selected12004 = query->selected_game != nullptr &&
+        game::IsCk3_12004Descriptor(query->selected_game->descriptor());
+    const bool selected12003 = query->selected_game != nullptr &&
+        game::IsCk3_12003Descriptor(query->selected_game->descriptor());
+    if (query->selected_game != nullptr && !selected12004 && !selected12003) {
+      SetUnavailable(*query, "unsupported_build");
+      query->completion = DeathSuccessionModalContinueMailboxCompletionV1::completed;
+      return true;
+    }
     game::Snapshot snapshot{};
     const bool snapshot_read = query->selected_game != nullptr
         ? game::ReadSnapshot(*query->selected_game, snapshot)
@@ -97,7 +108,10 @@ bool ExecuteDeathSuccessionModalContinueMailboxV1(
         query->request.expected_played_character_id;
     read_request.paused = true;
     game::CurrentTimelineBlockerContextV1 timeline{};
-    const auto read_result = query->selected_game != nullptr
+    const auto read_result = selected12004
+        ? ck3_12004::ReadCurrentTimelineBlockerContextNative12004V1(
+              query->succession12004, read_request, timeline)
+        : selected12003
         ? ck3_12003::ReadCurrentTimelineBlockerContextNative12003V1(
               query->succession12003, read_request, timeline)
         : ReadCurrentTimelineBlockerContextNativeV1(
@@ -111,7 +125,10 @@ bool ExecuteDeathSuccessionModalContinueMailboxV1(
           DeathSuccessionModalContinueMailboxCompletionV1::completed;
       return true;
     }
-    if (query->selected_game != nullptr) {
+    if (selected12004) {
+      (void)ck3_12004::ExecuteDeathSuccessionModalContinueNative12004V1(
+          query->succession12004, query->request, timeline, query->receipt);
+    } else if (selected12003) {
       (void)ck3_12003::ExecuteDeathSuccessionModalContinueNative12003V1(
           query->succession12003, query->request, timeline, query->receipt);
     } else {

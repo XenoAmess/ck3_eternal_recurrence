@@ -1,4 +1,6 @@
 #include "xar_bridge/current_timeline_blocker_context_v1_mailbox.hpp"
+#include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 
 #include <windows.h>
 
@@ -115,6 +117,14 @@ bool ExecuteCurrentTimelineBlockerContextMailboxQueryV1(
   try {
     ++query->executor_invocations;
     query->execution_stamp = stamp;
+    const bool selected12004 = query->selected_game != nullptr &&
+        game::IsCk3_12004Descriptor(query->selected_game->descriptor());
+    const bool selected12003 = query->selected_game != nullptr &&
+        game::IsCk3_12003Descriptor(query->selected_game->descriptor());
+    if (query->selected_game != nullptr && !selected12004 && !selected12003) {
+      MakeInternalUnavailable(*query, stamp, "unsupported_build");
+      return true;
+    }
     game::Snapshot snapshot{};
     const bool snapshot_read = query->selected_game != nullptr
         ? game::ReadSnapshot(*query->selected_game, snapshot)
@@ -130,7 +140,10 @@ bool ExecuteCurrentTimelineBlockerContextMailboxQueryV1(
           CurrentTimelineBlockerContextMailboxCompletionV1::frame_changed;
       return true;
     }
-    query->read_result = query->selected_game != nullptr
+    query->read_result = selected12004
+        ? ck3_12004::ReadCurrentTimelineBlockerContextNative12004V1(
+              query->succession12004, query->request, query->result)
+        : selected12003
         ? ck3_12003::ReadCurrentTimelineBlockerContextNative12003V1(
               query->succession12003, query->request, query->result)
         : ReadCurrentTimelineBlockerContextNativeV1(
