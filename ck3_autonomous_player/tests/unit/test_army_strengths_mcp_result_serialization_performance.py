@@ -258,11 +258,14 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
             ("ck3_execute_step", "fixture_legacy_execute_result"),
             ("ck3_query_army_strengths", "fixture_legacy_army_result"),
         ]:
+            # SDK model titles contain the tool name, including synthetic baselines.
+            actual_output = advertised[production_name].output_schema
+            old_output = advertised[baseline_name].output_schema
             self.assertEqual(
-                advertised[production_name].output_schema,
-                advertised[baseline_name].output_schema,
+                {key: value for key, value in actual_output.items() if key != "title"},
+                {key: value for key, value in old_output.items() if key != "title"},
             )
-            # Argument-model titles contain the tool name; API fields are identical.
+            # Argument-model titles likewise differ; every remaining field is compared.
             actual_input = advertised[production_name].input_schema
             old_input = advertised[baseline_name].input_schema
             self.assertEqual(
