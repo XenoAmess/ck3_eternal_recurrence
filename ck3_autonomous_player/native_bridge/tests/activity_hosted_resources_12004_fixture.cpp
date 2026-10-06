@@ -138,6 +138,8 @@ struct HostedResourcesFixture {
 }  // namespace
 
 bool RunActivityHostedResources12004Fixture() {
+  if (Activity12004RvaV1(kActual4Sha, 0x23F0195) != 0x23F0175)
+    return HostedResourcesFail("closed actual4 host CharacterID write guard");
   if (Activity12004RvaV1(kActual4Sha, 0x48BFE50) != 0x48BFE60)
     return HostedResourcesFail("closed actual4 ActivityType constructor vptr");
   const auto bindings = phase4::BindImage(kModule, kActual4Sha);

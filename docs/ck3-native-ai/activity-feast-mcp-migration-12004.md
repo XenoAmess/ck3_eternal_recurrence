@@ -127,3 +127,15 @@ This correction has not been built or executed in the child; Root's affected
 native fixture retry and actual .4 MCP qualification remain pending. The first
 RED artifact is retained at
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/joint-domain-first01/activity_new/`.
+
+Root's affected native retry FIRST02 passed the planner/start and guest/cost
+groups, then returned RED in hosted/resources (exit 1, 0.1703046 seconds).
+Its first hosted query failed the exact-build guard because the finite switch
+also omitted host CharacterID write site `23F0195 -> 23F0175`. The hosted
+fixture's existing source plan independently pins `23F0175:418987A8030000`.
+This source fix restores that one mapping and adds an explicit hosted guard
+address assertion. Full identity, attendance, signed balances, known zero and
+later terminal assertions remain unchanged. The retained failure is
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/upstream-build-migration/joint-domain-first02/activity_new/`.
+No child build, execution or new native proof collection was performed;
+Root's affected native retry and actual MCP qualification remain pending.
