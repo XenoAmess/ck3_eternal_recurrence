@@ -8,6 +8,15 @@
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_adapter.hpp"
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12003_confucian_assembly_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12003_confucian_religious_title_mailbox.hpp"
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)
+#include "xar_bridge/ck3_12003_confucian_challenger_graph_mailbox.hpp"
+#endif
 #include "xar_bridge/ck3_12003_maa_create_private_mailbox.hpp"
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 #if defined(XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1)
@@ -10886,6 +10895,18 @@ public:
       environment.permitted_executor_current_actor_stress_adjustment12003 =
           &xar::ck3_12003::ExecuteCurrentActorStressAdjustmentMailboxV1;
 #endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
+      environment.permitted_executor_confucian_assembly12003 =
+          &xar::ck3_12003::ExecuteConfucianAssemblyMailbox12003;
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
+      environment.permitted_executor_confucian_religious_title12003 =
+          &xar::ck3_12003::ExecuteConfucianReligiousTitleMailbox12003;
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)
+      environment.permitted_executor_confucian_challenger_graph12003 =
+          &xar::ck3_12003::ExecuteConfucianChallengerGraphMailbox12003;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_DEATH_SUCCESSION_MODAL_PRIVATE_V1)
       environment.permitted_executor_quattuorquadragintary =
           &xar::ck3_11906::ExecuteCurrentTimelineBlockerContextMailboxQueryV1;
@@ -13792,6 +13813,12 @@ void RunConnectedSession(
             if (xar::ck3_12003::IsConfucianReligiousTitlePrivateStep12003(step)) {
               current_revision_allowed = true;
               revision_parsed = xar::ck3_12003::ParseConfucianReligiousTitleRevision12003(incoming.payload, expected_revision);
+            } else
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)
+            if (xar::ck3_12003::IsConfucianChallengerGraphPrivateStep12003(step)) {
+              current_revision_allowed = true;
+              revision_parsed = xar::ck3_12003::ParseConfucianChallengerGraphRevision12003(incoming.payload, expected_revision);
             } else
 #endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)

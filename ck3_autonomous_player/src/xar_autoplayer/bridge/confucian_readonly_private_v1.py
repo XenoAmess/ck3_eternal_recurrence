@@ -17,6 +17,9 @@ OPERATIONS = {
     'religious_title': ('query-confucian-religious-title-v1',
         'confucian_religious_title_v1', 'ck3-1.20.0.3-native-confucian-religious-title-v1',
         'confucian_religious_title', 'ck3_12003_confucian_religious_title_v1'),
+    'challenger_graph': ('query-confucian-challenger-graph-v1',
+        'confucian_challenger_graph_v1', 'ck3-1.20.0.3-native-confucian-challenger-graph-v1',
+        'confucian_challenger_graph', 'ck3_12003_confucian_challenger_graph_v1'),
 }
 ENVELOPE_KEYS = {'step','accepted','status','private_build','read_only','advertised',
     'game_version','executable_sha256','domain_key','backend_id','snapshot_revision','date_raw'}
@@ -297,16 +300,25 @@ def normalize_public_query(raw,binding,operation):
     return deepcopy(raw)
 
 
-def encode_query_request(operation,binding,request_id):
+def encode_query_request(operation,binding,request_id,faith_full_ids=None):
     if operation not in OPERATIONS or type(request_id)is not str or not request_id:
         raise ValueError('exact Confucian query operation/request identity required')
-    return {'type':'execute_step','protocol_version':1,'request_id':request_id,
+    packet = {'type':'execute_step','protocol_version':1,'request_id':request_id,
         'step':OPERATIONS[operation][0],
         'expected_snapshot_revision':integer(binding['native_revision'],1,2**64-1,'native_revision')}
+    if operation == 'challenger_graph':
+        from .confucian_challenger_graph_v1 import validate_faith_ids
+        packet['faith_full_ids'] = validate_faith_ids(faith_full_ids)
+    elif faith_full_ids is not None:raise ValueError('this query has no Faith selector')
+    return packet
 
 
-def query_confucian_readonly_private_v1(driver,operation,*,expected_revision,timeout_seconds=10.0):
-    if getattr(driver,PERMISSION,False)is not True:
+def query_confucian_readonly_private_v1(driver,operation,*,expected_revision,faith_full_ids=None,timeout_seconds=10.0):
+    permission = PERMISSION
+    if operation == 'challenger_graph':
+        from .confucian_challenger_graph_v1 import PERMISSION as permission, validate_faith_ids
+        faith_full_ids = validate_faith_ids(faith_full_ids)
+    if getattr(driver,permission,False)is not True:
         raise UnsupportedStepError('private Confucian readonly bundle is disabled')
     if type(timeout_seconds)not in (int,float)or not math.isfinite(timeout_seconds)or not 0<timeout_seconds<=60:
         raise ValueError('bounded positive query timeout required')
@@ -314,7 +326,7 @@ def query_confucian_readonly_private_v1(driver,operation,*,expected_revision,tim
     try:binding=query_binding(before,expected_revision)
     except ValueError as error:raise BridgeUnavailableError(str(error))from error
     request_id='confucian-read-'+uuid.uuid4().hex
-    driver.endpoint.send(encode_query_request(operation,binding,request_id))
+    driver.endpoint.send(encode_query_request(operation,binding,request_id,faith_full_ids))
     frame=driver.state.wait_for_command_result(request_id,float(timeout_seconds))
     if (type(frame)is not dict or frame.get('type')!='command_result'
             or type(frame.get('protocol_version'))is not int or frame['protocol_version']!=1
@@ -325,5 +337,9 @@ def query_confucian_readonly_private_v1(driver,operation,*,expected_revision,tim
     after=driver.take_snapshot()
     if not same_query_frame(before,after,binding):
         raise BridgeUnavailableError('Confucian readonly query crossed its actual paused owner/frame')
-    try:return project_native_query(frame.get('result'),binding,operation)
+    try:
+        if operation == 'challenger_graph':
+            from .confucian_challenger_graph_v1 import project_native_graph_query
+            return project_native_graph_query(frame.get('result'), binding, faith_full_ids)
+        return project_native_query(frame.get('result'),binding,operation)
     except ValueError as error:raise BridgeUnavailableError('malformed native Confucian read: '+str(error))from error

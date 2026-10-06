@@ -1,0 +1,16 @@
+{
+  "schema": "lyd.r13.lossless-archive-readback.v1",
+  "status": "PASS_SELECTED_RAW_ORIGINALS_AND_GZIP_IDENTITY",
+  "source_files": 2164,
+  "all_selected_originals_read_before_and_after": true,
+  "all_unique_gzip_objects_decoded_and_sha256_verified": true,
+  "shared_objects_are_repository_links": true,
+  "binary_refs_only": true,
+  "game_calls": 0,
+  "test_invocations": 0,
+  "importer": {
+    "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-archive-i4-agent-20261006-001/archive_r13.py",
+    "bytes": 9974,
+    "sha256": "e7ab723d242f23ad7938d17f7e1c74ae5ac2cad9c5c3dd3395fd80016895c7ec"
+  }
+}

@@ -1,0 +1,2232 @@
+{
+  "schema": "lyd.r13.permanent-external-assets.v1",
+  "originals_permanently_retained": true,
+  "save_body_read_by_this_import": false,
+  "asset_raw_hashes_not_recomputed": true,
+  "refs": [
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r13-live-baseline-preservation-20261006-002/content-3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064.ck3",
+      "actual_bytes": 91669783,
+      "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "r13-live-baseline-preservation-20261006-002",
+      "historical_pins": [
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-live-baseline-preservation-20261006-002/content-3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0621",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-live-baseline-preservation-20261006-002/content-3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0625",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-live-baseline-preservation-20261006-002/content-3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0953",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-live-baseline-preservation-20261006-002/content-3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0966",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-live-baseline-preservation-20261006-002/content-3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0977",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-live-baseline-preservation-20261006-002/content-3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0980",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-001/SOURCE.tar",
+      "actual_bytes": 133365760,
+      "sha256": "b498844ecd070747e9aee7457e2bd6b934f64f619fc7948997f19b80e891ba87",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "r13-root-head-export-20261006-001",
+      "historical_pins": [
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-001/SOURCE.tar",
+          "bytes": 133365760,
+          "sha256": "b498844ecd070747e9aee7457e2bd6b934f64f619fc7948997f19b80e891ba87",
+          "pin_original": "raw-1184",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-001/SOURCE.tar",
+          "bytes": 133365760,
+          "sha256": "b498844ecd070747e9aee7457e2bd6b934f64f619fc7948997f19b80e891ba87",
+          "pin_original": "raw-1185",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/SOURCE.tar",
+      "actual_bytes": 133519360,
+      "sha256": "28a9e15a917ca2b6c4f4ec4ab23cdccf0c3b032cabadf304c10608c5ca8166ea",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "r13-root-head-export-20261006-002",
+      "historical_pins": [
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/SOURCE.tar",
+          "bytes": 133519360,
+          "sha256": "28a9e15a917ca2b6c4f4ec4ab23cdccf0c3b032cabadf304c10608c5ca8166ea",
+          "pin_original": "raw-0592",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/SOURCE.tar",
+          "bytes": 133519360,
+          "sha256": "28a9e15a917ca2b6c4f4ec4ab23cdccf0c3b032cabadf304c10608c5ca8166ea",
+          "pin_original": "raw-0604",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/SOURCE.tar",
+          "bytes": 133519360,
+          "sha256": "28a9e15a917ca2b6c4f4ec4ab23cdccf0c3b032cabadf304c10608c5ca8166ea",
+          "pin_original": "raw-0627",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/SOURCE.tar",
+          "bytes": 133519360,
+          "sha256": "28a9e15a917ca2b6c4f4ec4ab23cdccf0c3b032cabadf304c10608c5ca8166ea",
+          "pin_original": "raw-0636",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/SOURCE.tar",
+          "bytes": 133519360,
+          "sha256": "28a9e15a917ca2b6c4f4ec4ab23cdccf0c3b032cabadf304c10608c5ca8166ea",
+          "pin_original": "raw-1193",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/SOURCE.tar",
+          "bytes": 133519360,
+          "sha256": "28a9e15a917ca2b6c4f4ec4ab23cdccf0c3b032cabadf304c10608c5ca8166ea",
+          "pin_original": "raw-1194",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-20261006-001/xar_bridge_injector.lib",
+      "actual_bytes": 149812,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-20261006-001",
+      "historical_pins": []
+    },
+    {
+      "source_path": "C:/lyd13-native-20261006-001/xar_bridge_protocol.lib",
+      "actual_bytes": 116696,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-20261006-001",
+      "historical_pins": []
+    },
+    {
+      "source_path": "C:/lyd13-native-20261006-001/xar_ck3_12002_runtime.lib",
+      "actual_bytes": 56001064,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-20261006-001",
+      "historical_pins": []
+    },
+    {
+      "source_path": "C:/lyd13-native-20261006-001/xar_ck3_bridge.dll",
+      "actual_bytes": 6806528,
+      "sha256": "c0a48a4cd7ecdeb402f62426a17a62ac34e4635fda2bf4a6fb3ca87bdc059fbf",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-20261006-001",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge.dll",
+          "bytes": 6806528,
+          "sha256": "c0a48a4cd7ecdeb402f62426a17a62ac34e4635fda2bf4a6fb3ca87bdc059fbf",
+          "pin_original": "raw-0646",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge.dll",
+          "bytes": 6806528,
+          "sha256": "c0a48a4cd7ecdeb402f62426a17a62ac34e4635fda2bf4a6fb3ca87bdc059fbf",
+          "pin_original": "raw-0649",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge.dll",
+          "bytes": 6806528,
+          "sha256": "c0a48a4cd7ecdeb402f62426a17a62ac34e4635fda2bf4a6fb3ca87bdc059fbf",
+          "pin_original": "raw-0910",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge.dll",
+          "bytes": 6806528,
+          "sha256": "c0a48a4cd7ecdeb402f62426a17a62ac34e4635fda2bf4a6fb3ca87bdc059fbf",
+          "pin_original": "raw-1036",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge.dll",
+          "bytes": 6806528,
+          "sha256": "c0a48a4cd7ecdeb402f62426a17a62ac34e4635fda2bf4a6fb3ca87bdc059fbf",
+          "pin_original": "raw-1038",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge.dll",
+          "bytes": 6806528,
+          "sha256": "c0a48a4cd7ecdeb402f62426a17a62ac34e4635fda2bf4a6fb3ca87bdc059fbf",
+          "pin_original": "raw-1039",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-20261006-001/xar_ck3_bridge.exp",
+      "actual_bytes": 1271,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-20261006-001",
+      "historical_pins": []
+    },
+    {
+      "source_path": "C:/lyd13-native-20261006-001/xar_ck3_bridge.lib",
+      "actual_bytes": 2876,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-20261006-001",
+      "historical_pins": []
+    },
+    {
+      "source_path": "C:/lyd13-native-20261006-001/xar_ck3_bridge_injector.exe",
+      "actual_bytes": 39936,
+      "sha256": "d22db5c67597889fdbf62620e604c4612ec9c7386be04f1ff05c43fa1ebcaf9a",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-20261006-001",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "d22db5c67597889fdbf62620e604c4612ec9c7386be04f1ff05c43fa1ebcaf9a",
+          "pin_original": "raw-0012",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "d22db5c67597889fdbf62620e604c4612ec9c7386be04f1ff05c43fa1ebcaf9a",
+          "pin_original": "raw-0013",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "d22db5c67597889fdbf62620e604c4612ec9c7386be04f1ff05c43fa1ebcaf9a",
+          "pin_original": "raw-0646",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "d22db5c67597889fdbf62620e604c4612ec9c7386be04f1ff05c43fa1ebcaf9a",
+          "pin_original": "raw-0649",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "d22db5c67597889fdbf62620e604c4612ec9c7386be04f1ff05c43fa1ebcaf9a",
+          "pin_original": "raw-0910",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "d22db5c67597889fdbf62620e604c4612ec9c7386be04f1ff05c43fa1ebcaf9a",
+          "pin_original": "raw-1036",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "d22db5c67597889fdbf62620e604c4612ec9c7386be04f1ff05c43fa1ebcaf9a",
+          "pin_original": "raw-1038",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "d22db5c67597889fdbf62620e604c4612ec9c7386be04f1ff05c43fa1ebcaf9a",
+          "pin_original": "raw-1039",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe",
+      "actual_bytes": 119808,
+      "sha256": "ad69d9233ff397d730a0e9116844b23c51a718cd793ac24d9fac7e2792ffc75e",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-20261006-001",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "ad69d9233ff397d730a0e9116844b23c51a718cd793ac24d9fac7e2792ffc75e",
+          "pin_original": "raw-0012",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "ad69d9233ff397d730a0e9116844b23c51a718cd793ac24d9fac7e2792ffc75e",
+          "pin_original": "raw-0013",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "ad69d9233ff397d730a0e9116844b23c51a718cd793ac24d9fac7e2792ffc75e",
+          "pin_original": "raw-0646",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "ad69d9233ff397d730a0e9116844b23c51a718cd793ac24d9fac7e2792ffc75e",
+          "pin_original": "raw-0649",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "ad69d9233ff397d730a0e9116844b23c51a718cd793ac24d9fac7e2792ffc75e",
+          "pin_original": "raw-0649",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "ad69d9233ff397d730a0e9116844b23c51a718cd793ac24d9fac7e2792ffc75e",
+          "pin_original": "raw-0910",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "ad69d9233ff397d730a0e9116844b23c51a718cd793ac24d9fac7e2792ffc75e",
+          "pin_original": "raw-1036",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "ad69d9233ff397d730a0e9116844b23c51a718cd793ac24d9fac7e2792ffc75e",
+          "pin_original": "raw-1038",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "ad69d9233ff397d730a0e9116844b23c51a718cd793ac24d9fac7e2792ffc75e",
+          "pin_original": "raw-1039",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe",
+      "actual_bytes": 100864,
+      "sha256": "b72cb24651a62d4b1b947e01363cf9a1ddb27f7c32ca09623f77e2a8138a03ad",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-20261006-001",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 100864,
+          "sha256": "b72cb24651a62d4b1b947e01363cf9a1ddb27f7c32ca09623f77e2a8138a03ad",
+          "pin_original": "raw-0012",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 100864,
+          "sha256": "b72cb24651a62d4b1b947e01363cf9a1ddb27f7c32ca09623f77e2a8138a03ad",
+          "pin_original": "raw-0013",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 100864,
+          "sha256": "b72cb24651a62d4b1b947e01363cf9a1ddb27f7c32ca09623f77e2a8138a03ad",
+          "pin_original": "raw-0646",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 100864,
+          "sha256": "b72cb24651a62d4b1b947e01363cf9a1ddb27f7c32ca09623f77e2a8138a03ad",
+          "pin_original": "raw-0649",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 100864,
+          "sha256": "b72cb24651a62d4b1b947e01363cf9a1ddb27f7c32ca09623f77e2a8138a03ad",
+          "pin_original": "raw-0649",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 100864,
+          "sha256": "b72cb24651a62d4b1b947e01363cf9a1ddb27f7c32ca09623f77e2a8138a03ad",
+          "pin_original": "raw-0910",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 100864,
+          "sha256": "b72cb24651a62d4b1b947e01363cf9a1ddb27f7c32ca09623f77e2a8138a03ad",
+          "pin_original": "raw-1036",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 100864,
+          "sha256": "b72cb24651a62d4b1b947e01363cf9a1ddb27f7c32ca09623f77e2a8138a03ad",
+          "pin_original": "raw-1038",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-20261006-001/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 100864,
+          "sha256": "b72cb24651a62d4b1b947e01363cf9a1ddb27f7c32ca09623f77e2a8138a03ad",
+          "pin_original": "raw-1039",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-002/xar_bridge_injector.lib",
+      "actual_bytes": 149816,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-002",
+      "historical_pins": []
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-002/xar_bridge_protocol.lib",
+      "actual_bytes": 116700,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-002",
+      "historical_pins": []
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-002/xar_ck3_12002_runtime.lib",
+      "actual_bytes": 72877250,
+      "sha256": "d47835ac1d40b7b754b742510a0170c62cf12f221e454055eea200d7b6093e9c",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-002",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_ck3_12002_runtime.lib",
+          "bytes": 72877250,
+          "sha256": "d47835ac1d40b7b754b742510a0170c62cf12f221e454055eea200d7b6093e9c",
+          "pin_original": "raw-0181",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-002/xar_ck3_bridge.dll",
+      "actual_bytes": 7799296,
+      "sha256": "2251e6cb7b53a4d421d3e09fe163fa4b1f29562e2663f68a28aa61af686d6782",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-002",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_ck3_bridge.dll",
+          "bytes": 7799296,
+          "sha256": "2251e6cb7b53a4d421d3e09fe163fa4b1f29562e2663f68a28aa61af686d6782",
+          "pin_original": "raw-1063",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_ck3_bridge.dll",
+          "bytes": 7799296,
+          "sha256": "2251e6cb7b53a4d421d3e09fe163fa4b1f29562e2663f68a28aa61af686d6782",
+          "pin_original": "raw-1066",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_ck3_bridge.dll",
+          "bytes": 7799296,
+          "sha256": "2251e6cb7b53a4d421d3e09fe163fa4b1f29562e2663f68a28aa61af686d6782",
+          "pin_original": "raw-1067",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-002/xar_ck3_bridge.exp",
+      "actual_bytes": 1277,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-002",
+      "historical_pins": []
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-002/xar_ck3_bridge.lib",
+      "actual_bytes": 2876,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-002",
+      "historical_pins": []
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-002/xar_ck3_bridge_injector.exe",
+      "actual_bytes": 39936,
+      "sha256": "a77c540b5489e2152854170cbf6f2ef29a8891768b353c57c456fa96d1c17d54",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-002",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "a77c540b5489e2152854170cbf6f2ef29a8891768b353c57c456fa96d1c17d54",
+          "pin_original": "raw-0028",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "a77c540b5489e2152854170cbf6f2ef29a8891768b353c57c456fa96d1c17d54",
+          "pin_original": "raw-0029",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "a77c540b5489e2152854170cbf6f2ef29a8891768b353c57c456fa96d1c17d54",
+          "pin_original": "raw-1063",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "a77c540b5489e2152854170cbf6f2ef29a8891768b353c57c456fa96d1c17d54",
+          "pin_original": "raw-1066",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "a77c540b5489e2152854170cbf6f2ef29a8891768b353c57c456fa96d1c17d54",
+          "pin_original": "raw-1067",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-002/xar_confucian_assembly_predicates_v1_test.exe",
+      "actual_bytes": 119808,
+      "sha256": "0caa0d957929e22e52842490fdb6b7a273ac7546dbc7cdf480a82d184919fcb5",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-002",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "0caa0d957929e22e52842490fdb6b7a273ac7546dbc7cdf480a82d184919fcb5",
+          "pin_original": "raw-0028",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "0caa0d957929e22e52842490fdb6b7a273ac7546dbc7cdf480a82d184919fcb5",
+          "pin_original": "raw-0029",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "0caa0d957929e22e52842490fdb6b7a273ac7546dbc7cdf480a82d184919fcb5",
+          "pin_original": "raw-1063",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "0caa0d957929e22e52842490fdb6b7a273ac7546dbc7cdf480a82d184919fcb5",
+          "pin_original": "raw-1066",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "0caa0d957929e22e52842490fdb6b7a273ac7546dbc7cdf480a82d184919fcb5",
+          "pin_original": "raw-1067",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "0caa0d957929e22e52842490fdb6b7a273ac7546dbc7cdf480a82d184919fcb5",
+          "pin_original": "raw-1067",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-002/xar_confucian_religious_title_readback_v1_test.exe",
+      "actual_bytes": 107520,
+      "sha256": "3aead8c6c28759cf3adc41cf8b93c453a1316988f7acd9a4dc4de7c0b97b9102",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-002",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 107520,
+          "sha256": "3aead8c6c28759cf3adc41cf8b93c453a1316988f7acd9a4dc4de7c0b97b9102",
+          "pin_original": "raw-0028",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 107520,
+          "sha256": "3aead8c6c28759cf3adc41cf8b93c453a1316988f7acd9a4dc4de7c0b97b9102",
+          "pin_original": "raw-0029",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 107520,
+          "sha256": "3aead8c6c28759cf3adc41cf8b93c453a1316988f7acd9a4dc4de7c0b97b9102",
+          "pin_original": "raw-1063",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 107520,
+          "sha256": "3aead8c6c28759cf3adc41cf8b93c453a1316988f7acd9a4dc4de7c0b97b9102",
+          "pin_original": "raw-1066",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 107520,
+          "sha256": "3aead8c6c28759cf3adc41cf8b93c453a1316988f7acd9a4dc4de7c0b97b9102",
+          "pin_original": "raw-1067",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-002/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 107520,
+          "sha256": "3aead8c6c28759cf3adc41cf8b93c453a1316988f7acd9a4dc4de7c0b97b9102",
+          "pin_original": "raw-1067",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-003/xar_bridge_injector.lib",
+      "actual_bytes": 149816,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-003",
+      "historical_pins": []
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-003/xar_bridge_protocol.lib",
+      "actual_bytes": 116700,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-003",
+      "historical_pins": []
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-003/xar_ck3_12002_runtime.lib",
+      "actual_bytes": 73593026,
+      "sha256": "551356eda53e6b48357d3ecaed59b8369929936ea8f8f8964127965316e9b4ae",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-003",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_12002_runtime.lib",
+          "bytes": 73593026,
+          "sha256": "551356eda53e6b48357d3ecaed59b8369929936ea8f8f8964127965316e9b4ae",
+          "pin_original": "raw-0089",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_12002_runtime.lib",
+          "bytes": 73593026,
+          "sha256": "551356eda53e6b48357d3ecaed59b8369929936ea8f8f8964127965316e9b4ae",
+          "pin_original": "raw-0180",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+      "actual_bytes": 7843328,
+      "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-003",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-0307",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-0307",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-0307",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-0308",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-0308",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-0308",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": null,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-0329",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": null,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-0331",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": null,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-0458",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-0526",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-0526",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": null,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-0537",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": null,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-0538",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-1108",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-1111",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-1113",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-1154",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-1154",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-1154",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-1166",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-1166",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-1166",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-1205",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.dll",
+          "bytes": 7843328,
+          "sha256": "68a6b0388a9c35c863303ce51df0f34eff60e17a0b88781354c3c70010d16459",
+          "pin_original": "raw-1205",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.exp",
+      "actual_bytes": 1277,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-003",
+      "historical_pins": []
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge.lib",
+      "actual_bytes": 2876,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-003",
+      "historical_pins": []
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+      "actual_bytes": 39936,
+      "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-003",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-0044",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-0045",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-0307",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-0307",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-0307",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-0308",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-0308",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-0308",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": null,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-0458",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-0526",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-0526",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": null,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-0537",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": null,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-0538",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-1108",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-1111",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-1113",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-1154",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-1154",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-1154",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-1166",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-1166",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-1166",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-1205",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_ck3_bridge_injector.exe",
+          "bytes": 39936,
+          "sha256": "3263c1a716240e56e5e89200fbf28c1e9c6c668060a3e0d3c23fb9da07585087",
+          "pin_original": "raw-1205",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+      "actual_bytes": 119808,
+      "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-003",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-0044",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-0045",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-0307",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-0307",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-0308",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-0308",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-0526",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-0526",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-1108",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-1111",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-1113",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-1113",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-1154",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-1154",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-1166",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-1166",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-1205",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_assembly_predicates_v1_test.exe",
+          "bytes": 119808,
+          "sha256": "99fd966883adca90164fde4afeb8684b4ee5dc1691f7037c39e9aa7c8fb9791a",
+          "pin_original": "raw-1205",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+      "actual_bytes": 108544,
+      "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lyd13-native-clean-20261006-003",
+      "historical_pins": [
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-0044",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-0045",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-0307",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-0307",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-0308",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-0308",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-0526",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-0526",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-1108",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-1111",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-1113",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-1113",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-1154",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-1154",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-1166",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-1166",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-1205",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lyd13-native-clean-20261006-003/xar_confucian_religious_title_readback_v1_test.exe",
+          "bytes": 108544,
+          "sha256": "d5f36e5818b3beb03568895c03dd075c508b0aba97a9a7102f478b9b304a2fc9",
+          "pin_original": "raw-1205",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lydcfsubmit2/xar_confucian_submission_regression.exe",
+      "actual_bytes": 47616,
+      "sha256": "58dad339695856791803aa82146fe9a8cc71c4f5262ebd0de02321daaf7e5ef0",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lydcfsubmit2",
+      "historical_pins": [
+        {
+          "path": "C:/lydcfsubmit2/xar_confucian_submission_regression.exe",
+          "bytes": 47616,
+          "sha256": "58dad339695856791803aa82146fe9a8cc71c4f5262ebd0de02321daaf7e5ef0",
+          "pin_original": "raw-0057",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lydcfsubmit2/xar_confucian_submission_regression.exe",
+          "bytes": 47616,
+          "sha256": "58dad339695856791803aa82146fe9a8cc71c4f5262ebd0de02321daaf7e5ef0",
+          "pin_original": "raw-0058",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lydcfsubmit2/xar_confucian_submission_regression.exe",
+          "bytes": 47616,
+          "sha256": "58dad339695856791803aa82146fe9a8cc71c4f5262ebd0de02321daaf7e5ef0",
+          "pin_original": "raw-0088",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lydcfsubmit3/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+      "actual_bytes": 128512,
+      "sha256": "7e6902686d5a25cfb13f5c066a61a2085f9383a907849a574c366b986fcd3eec",
+      "hash_verified_by_this_import": false,
+      "reason": "permanent_external_binary_or_large_asset_reference_only",
+      "package": "native-producer/lydcfsubmit3",
+      "historical_pins": [
+        {
+          "path": "C:/lydcfsubmit3/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+          "bytes": 128512,
+          "sha256": "7e6902686d5a25cfb13f5c066a61a2085f9383a907849a574c366b986fcd3eec",
+          "pin_original": "raw-0070",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lydcfsubmit3/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+          "bytes": 128512,
+          "sha256": "7e6902686d5a25cfb13f5c066a61a2085f9383a907849a574c366b986fcd3eec",
+          "pin_original": "raw-0071",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/lydcfsubmit3/xar_ck3_main_thread_query_mailbox_v1_test.exe",
+          "bytes": 128512,
+          "sha256": "7e6902686d5a25cfb13f5c066a61a2085f9383a907849a574c366b986fcd3eec",
+          "pin_original": "raw-0140",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/lydc3t3/xar_confucian_challenger_graph_v1_test.exe",
+      "actual_bytes": 171008,
+      "sha256": "c048a8a1927cecf3cf262e5624af14d3e3a3850b20c4503e3218d620fe05401d",
+      "hash_verified_by_this_import": false,
+      "reason": "historical_receipt_pin_only_permanent_external_asset",
+      "historical_pins": [
+        {
+          "path": "C:/lydc3t3/xar_confucian_challenger_graph_v1_test.exe",
+          "bytes": 171008,
+          "sha256": "c048a8a1927cecf3cf262e5624af14d3e3a3850b20c4503e3218d620fe05401d",
+          "pin_original": "raw-0188",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/lyd_r13_i3b_0240.ck3",
+      "actual_bytes": 91669783,
+      "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+      "hash_verified_by_this_import": false,
+      "reason": "historical_receipt_pin_only_permanent_external_asset",
+      "historical_pins": [
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/lyd_r13_i3b_0240.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0305",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/lyd_r13_i3b_0240.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0526",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/lyd_r13_i3b_0240.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0933",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/production/mod_li_yu_dao.zip",
+      "actual_bytes": 124795,
+      "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+      "hash_verified_by_this_import": false,
+      "reason": "historical_receipt_pin_only_permanent_external_asset",
+      "historical_pins": [
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/production/mod_li_yu_dao.zip",
+          "bytes": 124795,
+          "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+          "pin_original": "raw-0307",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/production/mod_li_yu_dao.zip",
+          "bytes": 124795,
+          "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+          "pin_original": "raw-0308",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/production/mod_li_yu_dao.zip",
+          "bytes": 124795,
+          "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+          "pin_original": "raw-1154",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/production/mod_li_yu_dao.zip",
+          "bytes": 124795,
+          "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+          "pin_original": "raw-1166",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/production/mod_li_yu_dao.zip",
+          "bytes": 124795,
+          "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+          "pin_original": "raw-1189",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-002/production/mod_li_yu_dao.zip",
+          "bytes": 124795,
+          "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+          "pin_original": "raw-1193",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+      "actual_bytes": 91669783,
+      "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+      "hash_verified_by_this_import": false,
+      "reason": "historical_receipt_pin_only_permanent_external_asset",
+      "historical_pins": [
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0307",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0308",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0765",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0767",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0772",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0780",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0782",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0792",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0793",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0795",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0827",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0827",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-0937",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-1154",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-1166",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-1203",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-1206",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-1207",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-010/checkpoints/0240-detach-second-post-save/checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "1d98f0d2482c02477f460127044690b1df128e806b2ffbfab399e945e3551a1d",
+          "pin_original": "raw-1387",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+      "actual_bytes": 101039736,
+      "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+      "hash_verified_by_this_import": false,
+      "reason": "historical_receipt_pin_only_permanent_external_asset",
+      "historical_pins": [
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+          "bytes": 101039736,
+          "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+          "pin_original": "raw-0307",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+          "bytes": 101039736,
+          "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+          "pin_original": "raw-0308",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+          "bytes": 101039736,
+          "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+          "pin_original": "raw-1154",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/Program Files (x86)/Steam/steamapps/common/Crusader Kings III/binaries/ck3.exe",
+          "bytes": 101039736,
+          "sha256": "94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6",
+          "pin_original": "raw-1166",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+      "actual_bytes": 91669783,
+      "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+      "hash_verified_by_this_import": false,
+      "reason": "historical_receipt_pin_only_permanent_external_asset",
+      "historical_pins": [
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0361",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0361",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0364",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0364",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0370",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0370",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0373",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0373",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0375",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0378",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0380",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0380",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0383",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0383",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0385",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0388",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0390",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0390",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0393",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0393",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0395",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0398",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0448",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0448",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0449",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0449",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0450",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0451",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0451",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0452",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0453",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0453",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0454",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0459",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0459",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0624",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0945",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0945",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0946",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0946",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0950",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0952",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0952",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0953",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0955",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0955",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0963",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0965",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0965",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0966",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0968",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0968",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0974",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0976",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0976",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0977",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0979",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/live-attempt-013/userdir/save games/xar_checkpoint.ck3",
+          "bytes": 91669783,
+          "sha256": "3d6948b4775b50f29e0abbb99e00391ad6bccca55a8a264423d4b1d6c0642064",
+          "pin_original": "raw-0979",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/synthetic-transition/xar_checkpoint.ck3",
+      "actual_bytes": null,
+      "sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+      "hash_verified_by_this_import": false,
+      "reason": "historical_receipt_pin_only_permanent_external_asset",
+      "historical_pins": [
+        {
+          "path": "C:/synthetic-transition/xar_checkpoint.ck3",
+          "bytes": 123,
+          "sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+          "pin_original": "raw-0742",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/synthetic-transition/xar_checkpoint.ck3",
+          "bytes": 123,
+          "sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+          "pin_original": "raw-0742",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/synthetic-transition/xar_checkpoint.ck3",
+          "bytes": 123,
+          "sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+          "pin_original": "raw-0743",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/synthetic-transition/xar_checkpoint.ck3",
+          "bytes": 123,
+          "sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+          "pin_original": "raw-0743",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/synthetic-transition/xar_checkpoint.ck3",
+          "bytes": 123,
+          "sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+          "pin_original": "raw-0743",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-001/production/mod_li_yu_dao.zip",
+      "actual_bytes": 124795,
+      "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+      "hash_verified_by_this_import": false,
+      "reason": "historical_receipt_pin_only_permanent_external_asset",
+      "historical_pins": [
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-001/production/mod_li_yu_dao.zip",
+          "bytes": 124795,
+          "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+          "pin_original": "raw-1180",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "C:/workspace/ck3_lyd_runtime_20261004/r13-root-head-export-20261006-001/production/mod_li_yu_dao.zip",
+          "bytes": 124795,
+          "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+          "pin_original": "raw-1184",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "SOURCE.tar",
+      "actual_bytes": null,
+      "sha256": null,
+      "hash_verified_by_this_import": false,
+      "reason": "historical_receipt_pin_only_permanent_external_asset",
+      "historical_pins": [
+        {
+          "path": "SOURCE.tar",
+          "bytes": 133365760,
+          "sha256": "b498844ecd070747e9aee7457e2bd6b934f64f619fc7948997f19b80e891ba87",
+          "pin_original": "raw-1181",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "SOURCE.tar",
+          "bytes": 133519360,
+          "sha256": "28a9e15a917ca2b6c4f4ec4ab23cdccf0c3b032cabadf304c10608c5ca8166ea",
+          "pin_original": "raw-1190",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    },
+    {
+      "source_path": "production/mod_li_yu_dao.zip",
+      "actual_bytes": null,
+      "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+      "hash_verified_by_this_import": false,
+      "reason": "historical_receipt_pin_only_permanent_external_asset",
+      "historical_pins": [
+        {
+          "path": "production/mod_li_yu_dao.zip",
+          "bytes": 124795,
+          "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+          "pin_original": "raw-1181",
+          "hash_verified_by_this_import": false
+        },
+        {
+          "path": "production/mod_li_yu_dao.zip",
+          "bytes": 124795,
+          "sha256": "e295a9287d93f0bb22fd381e22485011ad2fd58834527d2700f4eeba41c8e59e",
+          "pin_original": "raw-1190",
+          "hash_verified_by_this_import": false
+        }
+      ]
+    }
+  ]
+}

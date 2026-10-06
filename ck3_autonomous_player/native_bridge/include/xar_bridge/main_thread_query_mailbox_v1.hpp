@@ -380,6 +380,9 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_player_holy_order_hire12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_regular_maa_create12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_current_actor_stress_adjustment12003 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_confucian_assembly12003 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_confucian_religious_title12003 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_confucian_challenger_graph12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_ordinary_interaction12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_sway_outcome_opinion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_ai_reform_inputs12002 = nullptr;
@@ -615,6 +618,9 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_player_holy_order_hire12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_regular_maa_create12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_current_actor_stress_adjustment12003 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_confucian_assembly12003 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_confucian_religious_title12003 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_confucian_challenger_graph12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_ordinary_interaction12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_sway_outcome_opinion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_ai_reform_inputs12002 = nullptr;

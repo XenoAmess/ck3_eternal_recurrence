@@ -1614,6 +1614,7 @@ class NativeHeadlessGameplayDriver:
         allow_private_active_scheme_sway_action: bool = False,
         allow_private_realm_law_paused_query: bool = False,
         allow_private_confucian_readonly_queries: bool = False,
+        allow_private_confucian_challenger_queries: bool = False,
         allow_private_activity_planner_diag_query: bool = False,
         allow_private_prisoner_ransom_action: bool = False,
         allow_private_current_first_heir_relationship_query: bool = False,
@@ -1726,6 +1727,9 @@ class NativeHeadlessGameplayDriver:
         if type(allow_private_confucian_readonly_queries) is not bool:
             raise ValueError("private Confucian readonly permission must be explicit boolean")
         self.allow_private_confucian_readonly_queries = allow_private_confucian_readonly_queries
+        if type(allow_private_confucian_challenger_queries) is not bool:
+            raise ValueError("private Confucian challenger permission must be explicit boolean")
+        self.allow_private_confucian_challenger_queries = allow_private_confucian_challenger_queries
         self.allow_private_realm_law_paused_query = (
             allow_private_realm_law_paused_query is True
         )
@@ -18482,6 +18486,10 @@ class NativeHeadlessGameplayDriver:
     def query_confucian_assembly_predicates_v1(self, *, expected_revision: int) -> dict[str, object]:
         from .confucian_readonly_private_v1 import query_confucian_readonly_private_v1
         return query_confucian_readonly_private_v1(self, "assembly_predicates", expected_revision=expected_revision)
+
+    def query_confucian_challenger_graph_v1(self, faith_full_ids: list[int], *, expected_revision: int) -> dict[str, object]:
+        from .confucian_challenger_graph_v1 import query_confucian_challenger_graph_private_v1
+        return query_confucian_challenger_graph_private_v1(self, faith_full_ids, expected_revision=expected_revision)
 
     def query_confucian_religious_title_v1(self, *, expected_revision: int) -> dict[str, object]:
         from .confucian_readonly_private_v1 import query_confucian_readonly_private_v1

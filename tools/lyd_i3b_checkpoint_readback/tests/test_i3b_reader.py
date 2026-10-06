@@ -57,10 +57,10 @@ def fixture(stage='signed_precommit'):
    else:
     values.update({'lyd_i3b_active':1,'lyd_i3b_phase':1 if stage=='proposal' else 2,'lyd_i3b_authority_mode':1,'lyd_i3b_required_native_hor':('char',A)})
   collections={'lyd_i3b_members':[('char',i)for i,_ in members],'lyd_i3b_rites':[('rite',169),('rite',170),('rite',171)],'lyd_i3b_political_titles':[(TITLE_TYPE,i) for i in POLITICAL]} if cid==A and not post else {}
-  alive=[E('rite',str(rid)),E('variables',variables(values,collections)),E('literal',json.dumps('braces } { remain quoted'))]
-  chars[cid]=[E('first_name',json.dumps('fixture_'+str(cid))),E('alive_data',alive),E('landed_data',[E('domain',[E(None,str(i)) for i in POLITICAL])])]
+  alive=[E('variables',variables(values,collections)),E('literal',json.dumps('braces } { remain quoted'))]
+  chars[cid]=[E('first_name',json.dumps('fixture_'+str(cid))),E('rite',str(rid)),E('alive_data',alive),E('landed_data',[E('domain',[E(None,str(i)) for i in POLITICAL])])]
  # Unrelated living character and zero-valued registry ID must not break scan.
- chars[80001]=[E('alive_data',[E('rite','0')])]
+ chars[80001]=[E('rite','0'),E('alive_data',[])]
  graph_f={}
  graph_r={}
  for fid,main in ((0,0),(104,159),(106,187),(107,169)):
@@ -152,7 +152,7 @@ class ReaderTests(unittest.TestCase):
   self.assertEqual(run(d)['assessment'],'OBSERVED_CONTRACT_MISMATCH')
  def test_extra_living_uncaptured_and_unclassified(self):
   for rite in ('169',None):
-   d=fixture();d['characters'][81234]=[E('alive_data',[] if rite is None else[E('rite',rite)])]
+   d=fixture();d['characters'][81234]=([] if rite is None else [E('rite',rite)])+[E('alive_data',[])]
    s=run(d);self.assertEqual(s['assessment'],'OBSERVED_CONTRACT_MISMATCH')
    self.assertEqual(s['roster']['faith_classification_complete'],rite is not None)
  def test_old_nonce_wrong_owner_and_vote_count_fails(self):
@@ -234,5 +234,25 @@ class ReaderTests(unittest.TestCase):
   d=fixture();t=save_text(d);bad=t.replace('dead_unprunable={','31254={\n\talive_data={\n\t}\n}\ndead_unprunable={')
   with self.assertRaises(reader.ReadbackError):reader.observe_text(bad,d['request'],'4'*64)
   with self.assertRaises((reader.ReadbackError,ValueError)):list(reader.records('123={\n\talive_data={\n','living'))
+
+ def test_explicit_saved_dead_record_retained_in_living_is_excluded(self):
+  d=fixture();entries=[E('rite','169'),E('dead_data',[E('date','1066.10.1'),E('reason','death_accident')])]
+  d['characters'][81235]=entries;s=run(d)
+  self.assertEqual(s['assessment'],'OBSERVED_CONTRACT_MATCH')
+  self.assertEqual(s['roster']['living_records_scanned'],7)
+  self.assertEqual(s['roster']['living_section_numeric_records_scanned'],8)
+  self.assertEqual(s['roster']['excluded_explicit_dead_records'],[{'character_id':81235,'AST_sha256':reader.ast_sha(entries),'dead_data':reader.one(entries,'dead_data')}])
+  self.assertNotIn(81235,s['roster']['living_faith_ids'])
+ def test_contradictory_saved_character_lifecycle_rejected(self):
+  d=fixture();d['characters'][A].append(E('dead_data',[E('date','1066.10.1')]))
+  with self.assertRaises(reader.ReadbackError):run(d)
+ def test_actual_nested_title_database_retains_selected_full_ast(self):
+  d=fixture('success_postcommit');text=save_text(d)
+  original='landed_titles={\n'+''.join(block(str(i),e)for i,e in d['titles'].items())+'}\n'
+  actual='landed_titles={\n\tdynamic_templates={ { key="synthetic}quoted" tier=duchy } }\n\tlanded_titles={\n'+''.join(block(str(i),e)for i,e in d['titles'].items())+'\t}\n}\n'
+  self.assertEqual(text.count(original),1);text=text.replace(original,actual)
+  s=reader.observe_text(text,d['request'],hashlib.sha256(text.encode()).hexdigest())
+  self.assertEqual(s['assessment'],'OBSERVED_CONTRACT_MATCH')
+  self.assertEqual(s['native_title']['AST_sha256'],reader.ast_sha(d['titles'][90001]))
 
 if __name__=='__main__':unittest.main(verbosity=2)

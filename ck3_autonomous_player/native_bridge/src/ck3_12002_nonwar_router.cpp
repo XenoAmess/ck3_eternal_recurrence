@@ -301,6 +301,9 @@ bool IsNonwarPrivateStep12002(std::string_view step) noexcept {
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
   if (ck3_12003::IsConfucianReligiousTitlePrivateStep12003(step)) return true;
 #endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)
+  if (ck3_12003::IsConfucianChallengerGraphPrivateStep12003(step)) return true;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
   if (IsPlayerReligionConversionChoicesPrivateStep12002(step)) return true;
 #endif
@@ -534,6 +537,11 @@ bool HandleNonwarPrivate12002(
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
     if (ck3_12003::IsConfucianReligiousTitlePrivateStep12003(step))
       return ck3_12003::HandleConfucianReligiousTitlePrivate12003(native, mailbox, published, revision,
+          step, payload, request_id, serialized, failure);
+#endif
+#if defined(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)
+    if (ck3_12003::IsConfucianChallengerGraphPrivateStep12003(step))
+      return ck3_12003::HandleConfucianChallengerGraphPrivate12003(native, mailbox, published, revision,
           step, payload, request_id, serialized, failure);
 #endif
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)

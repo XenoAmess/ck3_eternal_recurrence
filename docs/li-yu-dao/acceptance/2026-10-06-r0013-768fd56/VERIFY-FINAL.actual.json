@@ -1,0 +1,16 @@
+{
+  "schema": "lyd.r13.final-selected-batch-verification.v1",
+  "status": "PASS_ALL_SELECTED_RAW_ARCHIVE_BATCHES",
+  "initial_index_preserved": true,
+  "selected_original_file_rows": 2396,
+  "unique_source_paths": 2339,
+  "unique_raw_objects": 1263,
+  "all_import_batches_original_before_after_sha_verified": true,
+  "all_import_batches_gzip_decode_raw_sha_verified": true,
+  "final_compressed_object_pins_verified": true,
+  "save_body_reads": 0,
+  "native_binary_body_reads": 0,
+  "test_invocations": 0,
+  "game_calls": 0,
+  "originals_deleted": false
+}

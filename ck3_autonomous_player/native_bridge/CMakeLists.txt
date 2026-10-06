@@ -7070,6 +7070,10 @@ if(BUILD_TESTING)
       ${CMAKE_CURRENT_SOURCE_DIR}/include/xar_bridge/route_contact_horizon_v1_dispatch.hpp
   )
 
+  add_test(NAME xar_ck3_native_bridge_confucian_executor_registration_v1
+    COMMAND xar_ck3_main_thread_query_mailbox_v1_test
+      --confucian-registration-only ${CMAKE_CURRENT_SOURCE_DIR}/src/bridge.cpp)
+
   add_executable(xar_ck3_main_thread_query_exception_reclaim_v1_test
     src/main_thread_query_mailbox_v1.cpp
     src/main_thread_query_exception_reclaim_v1_test.cpp)
@@ -9018,3 +9022,38 @@ include(cmake/current_candidate_detachment_mapper_12003.cmake)
 include(cmake/pre_date_character_prefix_12003.cmake)
 include(cmake/current_condition30_and_pending_carry_growth_12003.cmake)
 include(cmake/current_army_flag20_inputs_12003.cmake)
+
+
+# Separate current-.3 C3 complete challenger graph capability. Default OFF.
+option(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1
+  "Enable private read-only complete Faith challenger/sponsor graph query" OFF)
+if(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)
+  target_sources(xar_ck3_12002_runtime PRIVATE
+    src/ck3_12003_challenger_graph_readback.cpp
+    src/ck3_12003_confucian_challenger_graph_mailbox.cpp)
+  if(NOT XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)
+    target_sources(xar_ck3_12002_runtime PRIVATE
+      src/ck3_12003_title_properties_leaf.cpp
+      src/ck3_12003_title_laws_leaf.cpp
+      src/ck3_12003_religious_title_readback.cpp)
+  endif()
+  target_compile_definitions(xar_ck3_12002_runtime PUBLIC
+    XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1=1)
+  target_compile_definitions(xar_ck3_bridge PRIVATE
+    XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1=1)
+endif()
+if(BUILD_TESTING)
+  add_executable(xar_confucian_challenger_graph_v1_test
+    src/ck3_12003_title_properties_leaf.cpp
+    src/ck3_12003_title_laws_leaf.cpp
+    src/ck3_12003_religious_title_readback.cpp
+    src/ck3_12003_challenger_graph_readback.cpp
+    tests/ck3_12003_challenger_graph_fixture.cpp)
+  target_link_libraries(xar_confucian_challenger_graph_v1_test PRIVATE xar_ck3_12002_runtime)
+  target_include_directories(xar_confucian_challenger_graph_v1_test PRIVATE include)
+  target_compile_features(xar_confucian_challenger_graph_v1_test PRIVATE cxx_std_20)
+  if(MSVC)
+    target_compile_options(xar_confucian_challenger_graph_v1_test PRIVATE /W4 /WX /permissive- /EHsc /UNDEBUG)
+  endif()
+  add_test(NAME xar_confucian_challenger_graph_v1_test COMMAND xar_confucian_challenger_graph_v1_test)
+endif()

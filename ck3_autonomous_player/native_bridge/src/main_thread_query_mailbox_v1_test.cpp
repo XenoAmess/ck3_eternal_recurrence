@@ -10,6 +10,7 @@
 #include <cstdint>
 #include <cstring>
 #include <cstdio>
+#include <cstdlib>
 #include <fstream>
 #include <initializer_list>
 #include <iterator>
@@ -2520,9 +2521,111 @@ bool TestSourceContract(int argc, char **argv) {
                   0xFF});
 }
 
+
+// These fixture identities stay distinct under Release identical-code folding.
+// They exercise the production mailbox; no game query reader runs here.
+volatile std::uint32_t g_confucian_fixture_identity = 0;
+int g_confucian_registration_checks = 0;
+bool AssemblyFixtureExecutor(void* p,const xar::ck3_11906::MainThreadExecutionStampV1& s) noexcept {
+  g_confucian_fixture_identity = 1; return Execute(p,s);
+}
+bool TitleFixtureExecutor(void* p,const xar::ck3_11906::MainThreadExecutionStampV1& s) noexcept {
+  g_confucian_fixture_identity = 2; return Execute(p,s);
+}
+bool GraphFixtureExecutor(void* p,const xar::ck3_11906::MainThreadExecutionStampV1& s) noexcept {
+  g_confucian_fixture_identity = 3; return Execute(p,s);
+}
+void ConfucianRegistrationCheck(bool condition,const char* message) {
+  ++g_confucian_registration_checks;
+  if (!condition) { std::fprintf(stderr,"confucian mailbox regression: %s\n",message); std::exit(1); }
+}
+
+// Also detect the actual R13 omission in the production installer. Registering
+// fixture slots alone would miss a removed production callback assignment.
+bool ConfucianProductionRegistrationSource(const char* bridge_path) {
+  std::ifstream input(bridge_path,std::ios::binary);
+  const std::string bridge{std::istreambuf_iterator<char>(input),std::istreambuf_iterator<char>()};
+  const auto start=bridge.find("  void InstallNewAdapter() noexcept {");
+  const auto end=bridge.find("  void MaybeInstallFrontend() noexcept {",start);
+  if (!input || start==std::string::npos || end==std::string::npos) return false;
+  const auto installer=bridge.substr(start,end-start);
+  const std::string descriptor="if (xar::game::IsCk3_12003Descriptor(game_->descriptor())) {";
+  const auto scope_start=installer.rfind(descriptor);
+  const auto scope_end=installer.find("    environment.snapshot_observer_callback",scope_start);
+  if (scope_start==std::string::npos || scope_end==std::string::npos) return false;
+  const auto scope=installer.substr(scope_start,scope_end-scope_start);
+  if (scope.find("#if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)\n      environment.permitted_executor_confucian_assembly12003 =\n          &xar::ck3_12003::ExecuteConfucianAssemblyMailbox12003;\n#endif")==std::string::npos) {
+    std::fprintf(stderr,"production confucian registration missing: confucian_assembly12003\n"); return false;
+  }
+  if (scope.find("#if defined(XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1)\n      environment.permitted_executor_confucian_religious_title12003 =\n          &xar::ck3_12003::ExecuteConfucianReligiousTitleMailbox12003;\n#endif")==std::string::npos) {
+    std::fprintf(stderr,"production confucian registration missing: confucian_religious_title12003\n"); return false;
+  }
+  if (scope.find("#if defined(XAR_CK3_ENABLE_CONFUCIAN_CHALLENGER_GRAPH_PRIVATE_QUERY_V1)\n      environment.permitted_executor_confucian_challenger_graph12003 =\n          &xar::ck3_12003::ExecuteConfucianChallengerGraphMailbox12003;\n#endif")==std::string::npos) {
+    std::fprintf(stderr,"production confucian registration missing: confucian_challenger_graph12003\n"); return false;
+  }
+  return true;
+}
+
+bool TestConfucianPrivateMailboxRegistration(const char* bridge_path) {
+  using namespace xar::ck3_11906;
+  constexpr std::uint32_t owner=0x42U;
+  constexpr std::uintptr_t module=0x140000000ULL;
+  FakeRuntime runtime(owner,53'144'712);
+  void* iat=reinterpret_cast<void*>(&FakePeekMessage);
+  MainThreadQueryMailboxV1 mailbox{};
+  auto env=runtime.Environment(module,&iat,&FakePeekMessage);
+  env.permitted_executor=&Execute;
+  ExecutorContext context{};
+  MainThreadQueryTicketV1 ticket{};
+  const std::array<MainThreadQueryExecutorV1,3> readers{
+    &AssemblyFixtureExecutor,&TitleFixtureExecutor,&GraphFixtureExecutor};
+  ConfucianRegistrationCheck(readers[0]!=readers[1] && readers[0]!=readers[2] && readers[1]!=readers[2],"three distinct fixture callback identities");
+  ConfucianRegistrationCheck(InstallMainThreadQueryMailboxV1(mailbox,env),"baseline install");
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner);
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner);
+  ConfucianRegistrationCheck(ReadMainThreadQueryMailboxDiagnosticsV1(mailbox).ready,"baseline ready");
+  for(auto fn:readers) ConfucianRegistrationCheck(TrySubmitMainThreadQueryV1(mailbox,fn,&context,ticket)==MainThreadQuerySubmitResultV1::invalid_request,"unregistered rejected while ready");
+  ConfucianRegistrationCheck(context.calls==0,"rejected readers never executed");
+  ConfucianRegistrationCheck(UninstallMainThreadQueryMailboxV1(mailbox,10)==MainThreadQueryUninstallResultV1::uninstalled,"baseline uninstall");
+
+  env.permitted_executor_confucian_assembly12003=readers[0];
+  env.permitted_executor_confucian_religious_title12003=readers[1];
+  env.permitted_executor_confucian_challenger_graph12003=readers[2];
+  ConfucianRegistrationCheck(InstallMainThreadQueryMailboxV1(mailbox,env),"registered install");
+  ConfucianRegistrationCheck(mailbox.permitted_executor_confucian_assembly12003==readers[0],"assembly installed");
+  ConfucianRegistrationCheck(mailbox.permitted_executor_confucian_religious_title12003==readers[1],"title installed");
+  ConfucianRegistrationCheck(mailbox.permitted_executor_confucian_challenger_graph12003==readers[2],"graph installed");
+  for(auto fn:readers) ConfucianRegistrationCheck(TrySubmitMainThreadQueryV1(mailbox,fn,&context,ticket)==MainThreadQuerySubmitResultV1::paused_main_thread_not_observed,"registration preserves paused gate");
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner);
+  (void)ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner);
+  ConfucianRegistrationCheck(ReadMainThreadQueryMailboxDiagnosticsV1(mailbox).ready,"registered ready");
+  ConfucianRegistrationCheck(TrySubmitMainThreadQueryV1(mailbox,&ExecuteSecondary,&context,ticket)==MainThreadQuerySubmitResultV1::invalid_request,"unknown executor remains rejected");
+  for(auto fn:readers) {
+    ConfucianRegistrationCheck(TrySubmitMainThreadQueryV1(mailbox,fn,&context,ticket)==MainThreadQuerySubmitResultV1::submitted,"registered submitted");
+    ConfucianRegistrationCheck(ObserveMainThreadPumpAndDrainV1(mailbox,kSdlWindowsPumpFirstPeekReturnRva,owner),"actual mailbox drains");
+    ConfucianRegistrationCheck(WaitForMainThreadQueryV1(mailbox,ticket,0)==MainThreadQueryWaitResultV1::completed,"completed");
+    ConfucianRegistrationCheck(ReclaimMainThreadQueryV1(mailbox,ticket)==MainThreadQueryReclaimResultV1::reclaimed,"reclaimed");
+  }
+  ConfucianRegistrationCheck(context.calls==3,"all three fixture callbacks executed once");
+  ConfucianRegistrationCheck(UninstallMainThreadQueryMailboxV1(mailbox,10)==MainThreadQueryUninstallResultV1::uninstalled,"registered uninstall");
+  ConfucianRegistrationCheck(mailbox.permitted_executor_confucian_assembly12003==nullptr,"assembly cleared");
+  ConfucianRegistrationCheck(mailbox.permitted_executor_confucian_religious_title12003==nullptr,"title cleared");
+  ConfucianRegistrationCheck(mailbox.permitted_executor_confucian_challenger_graph12003==nullptr,"graph cleared");
+  env.permitted_executor=nullptr;
+  ConfucianRegistrationCheck(InstallMainThreadQueryMailboxV1(mailbox,env),"confucian-only install");
+  ConfucianRegistrationCheck(TrySubmitMainThreadQueryV1(mailbox,&Execute,&context,ticket)==MainThreadQuerySubmitResultV1::invalid_request,"new slots enforce whitelist alone");
+  ConfucianRegistrationCheck(UninstallMainThreadQueryMailboxV1(mailbox,10)==MainThreadQueryUninstallResultV1::uninstalled,"confucian-only uninstall");
+  if (!ConfucianProductionRegistrationSource(bridge_path)) return false;
+  std::printf("PASS checks=%d actual_try_submit=true actual_install_clear=true fixture_callbacks=true live=false old_suite_ran=false source_registration_contract=true\n",g_confucian_registration_checks);
+  return true;
+}
+
 } // namespace
 
 int main(int argc, char **argv) {
+  if (argc == 3 && std::string_view(argv[1]) == "--confucian-registration-only") {
+    return TestConfucianPrivateMailboxRegistration(argv[2]) ? 0 : 1;
+  }
   if (!TestMailboxStateMachine()) {
     std::fprintf(stderr, "mailbox fixture failed at %s\n", g_failure_stage);
     return 1;

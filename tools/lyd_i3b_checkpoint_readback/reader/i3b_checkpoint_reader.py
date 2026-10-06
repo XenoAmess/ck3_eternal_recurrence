@@ -131,7 +131,7 @@ def records(span, label):
         if current is None:
             m = re.fullmatch(r'([0-9]+)=\{\n', line)
             if m:
-                current = scalar_id(m.group(1), label)
+                current = scalar_id(m.group(1), label, allow_zero=(label == 'landed title'))
                 require(current not in seen, 'duplicate record ' + label)
                 seen.add(current)
                 body = [line]
@@ -145,6 +145,33 @@ def records(span, label):
                 yield current, entries
                 current, body = None, []
     require(current is None, 'truncated record ' + label)
+
+def title_database_records(text):
+    """Actual CK3 wraps its numeric database in landed_titles.landed_titles."""
+    matches = list(re.finditer(r'^\tlanded_titles=\{\n', text, re.M))
+    if not matches:
+        yield from records(section(text, 'landed_titles', 'dynasties'), 'landed title')
+        return
+    require(len(matches) == 1, 'nonunique actual nested landed_titles database')
+    outer = list(re.finditer(r'^landed_titles=\{\n', text, re.M))
+    following = list(re.finditer(r'^dynasties=\{\n', text, re.M))
+    require(len(outer) == len(following) == 1 and outer[0].end() < matches[0].start() < following[0].start(), 'actual landed_titles database boundary')
+    start = matches[0].end() - 2
+    depth, quoted, escaped = 0, False, False
+    for pos in range(start, following[0].start()):
+        ch = text[pos]
+        if quoted:
+            if escaped: escaped = False
+            elif ch == '\\': escaped = True
+            elif ch == '"': quoted = False
+        elif ch == '"': quoted = True
+        elif ch == '{': depth += 1
+        elif ch == '}':
+            depth -= 1
+            if depth == 0:
+                yield from records(text[matches[0].end():pos], 'landed title')
+                return
+    raise ReadbackError('truncated actual landed_titles database')
 
 def exact_root_block(text, key):
     # Matches multiline/inline roots. Quoted braces are handled by the tokenizer.
@@ -184,11 +211,22 @@ def graph(text, root, parent_key):
                        'heads':heads,'tenet_doctrine_rows':tenets,parent_key:one(e,parent_key)}
     return result
 
+def saved_character_is_alive(cid, entries):
+    """CK3 living section can retain explicit dead_data records until pruning."""
+    alive = one(entries, 'alive_data')
+    dead = one(entries, 'dead_data')
+    require((alive is None) != (dead is None), 'ambiguous saved character lifecycle ' + str(cid))
+    require(isinstance(alive if alive is not None else dead, list), 'bad saved character lifecycle ' + str(cid))
+    if dead is not None:
+        require(isinstance(one(dead, 'date', required=True), str), 'dead character date absent ' + str(cid))
+    return alive is not None
+
 def raw_character(cid, entries):
+    require(saved_character_is_alive(cid, entries), "explicit dead record is not a living character " + str(cid))
     alive = one(entries,'alive_data',required=True)
     require(isinstance(alive,list), 'bad alive_data')
     variables, lists, _ = stored(alive)
-    rite = scalar_id(one(alive,'rite'), 'character rite', absent=True, allow_zero=True)
+    rite = scalar_id(one(entries,'rite'), 'character rite', absent=True, allow_zero=True)
     return {'character_id':cid,'rite_id':rite,'entries':entries,'AST_sha256':ast_sha(entries),
             'variables':variables,'lists':lists,'alive_data':alive,'landed_data':one(entries,'landed_data'),
             'native_eligibility':None}
@@ -333,9 +371,15 @@ def observe_text(text, request, checkpoint_sha256):
     actual_rites=sorted(i for i,f in parents.items() if f==faith_id)
     all_living={}
     living_count=0
+    living_section_count=0
+    excluded_explicit_dead=[]
     unclassified=[]
-    # World scan is complete. Retain selected Faith members + actor only.
+    # Scan every numeric record; explicit saved dead records are not living members.
     for cid,entries in records(section(text,'living','dead_unprunable'),'living character'):
+        living_section_count+=1
+        if not saved_character_is_alive(cid, entries):
+            excluded_explicit_dead.append({'character_id':cid,'AST_sha256':ast_sha(entries),'dead_data':one(entries,'dead_data')})
+            continue
         living_count+=1
         character=raw_character(cid,entries)
         if character['rite_id'] is None or character['rite_id'] not in parents or parents[character['rite_id']] is None:
@@ -360,7 +404,7 @@ def observe_text(text, request, checkpoint_sha256):
     state={'schema':'lyd.i3b.checkpoint-observations.v1','source_head':HEAD,'mode':request['mode'],'stage':stage,
            'identity':request['identity'],'checkpoint_sha256':checkpoint_sha256,'actual_pass':None,'actual_native_runtime_pass':None,
            'round':{},'actor':actor,'faith':faiths[faith_id],'rites':[rites[i] for i in actual_rites],
-           'roster':{'whole_world_living_records_scanned':True,'living_records_scanned':living_count,'faith_classification_complete':not unclassified,'unclassified_living_ids':unclassified,'living_faith_ids':faith_living_ids,
+           'roster':{'whole_world_living_records_scanned':True,'living_records_scanned':living_count,'living_section_numeric_records_scanned':living_section_count,'excluded_explicit_dead_records':excluded_explicit_dead,'faith_classification_complete':not unclassified,'unclassified_living_ids':unclassified,'living_faith_ids':faith_living_ids,
                      'captured_member_ids':captured_members,'saved_current_human_ids':current_humans,'saved_current_human_faith_ids':saved_human_faith_ids,'members':[]},
            'schools':[],'native_title':None,'protected_titles':[],'native_predicate_qualification':None,'checks':[]}
     checks=state['checks']
@@ -473,7 +517,7 @@ def observe_text(text, request, checkpoint_sha256):
     state['result_head_title_reference']=result_title_ref
     observed_head=native_link_id(faiths[faith_id]['heads']['religious_head_title'],'actual Faith native title') if post else None
     titles={}
-    for tid,entries in records(section(text,'landed_titles','dynasties'),'landed title'):
+    for tid,entries in title_database_records(text):
         if tid in set(political_ids) or tid==discovered or tid==observed_head:
             titles[tid]=title_row(tid,entries)
     baseline_titles=request['baseline']['political_titles']

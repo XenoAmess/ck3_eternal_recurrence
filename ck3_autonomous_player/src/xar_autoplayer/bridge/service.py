@@ -11719,10 +11719,11 @@ class GameplayBridgeService:
                         expected_exit_context_signature=expected_exit_context_signature)
         return normalize_public_exit_result(result, action=action, expected_revision=expected_revision)
 
-    def _query_confucian_readonly_v1(self, operation: str, *, expected_revision: int) -> dict[str, object]:
+    def _query_confucian_readonly_v1(self, operation: str, *, expected_revision: int, faith_full_ids=None) -> dict[str, object]:
         from .confucian_readonly_private_v1 import query_binding, same_query_frame, normalize_public_query
         name = {"assembly_predicates": "query_confucian_assembly_predicates_v1",
-                "religious_title": "query_confucian_religious_title_v1"}.get(operation)
+                "religious_title": "query_confucian_religious_title_v1",
+                "challenger_graph": "query_confucian_challenger_graph_v1"}.get(operation)
         method = getattr(self.driver, name, None) if name is not None else None
         if not callable(method):
             raise UnsupportedStepError("selected backend lacks the private Confucian readonly operation")
@@ -11731,17 +11732,29 @@ class GameplayBridgeService:
             binding = query_binding(before, expected_revision)
         except ValueError as error:
             raise BridgeUnavailableError(str(error)) from error
-        result = method(expected_revision=expected_revision)
+        if operation == "challenger_graph":
+            from .confucian_challenger_graph_v1 import validate_faith_ids
+            faith_full_ids = validate_faith_ids(faith_full_ids)
+            result = method(faith_full_ids=faith_full_ids, expected_revision=expected_revision)
+        else:
+            result = method(expected_revision=expected_revision)
         after = self.driver.take_snapshot()
         if not same_query_frame(before, after, binding):
             raise BridgeUnavailableError("Confucian readonly backend crossed its paused owner/frame")
         try:
+            if operation == "challenger_graph":
+                from .confucian_challenger_graph_v1 import normalize_public_graph_query
+                return normalize_public_graph_query(result, binding, faith_full_ids)
             return normalize_public_query(result, binding, operation)
         except ValueError as error:
             raise BridgeUnavailableError("malformed public Confucian read: " + str(error)) from error
 
     def query_confucian_assembly_predicates_v1(self, *, expected_revision: int) -> dict[str, object]:
         return self._query_confucian_readonly_v1("assembly_predicates", expected_revision=expected_revision)
+
+    def query_confucian_challenger_graph_v1(self, faith_full_ids: list[int], *, expected_revision: int) -> dict[str, object]:
+        return self._query_confucian_readonly_v1("challenger_graph", expected_revision=expected_revision,
+                                               faith_full_ids=faith_full_ids)
 
     def query_confucian_religious_title_v1(self, *, expected_revision: int) -> dict[str, object]:
         return self._query_confucian_readonly_v1("religious_title", expected_revision=expected_revision)

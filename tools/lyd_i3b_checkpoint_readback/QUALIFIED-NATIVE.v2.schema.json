@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "required": [
+    "schema",
+    "runtime_binding",
+    "native_predicates",
+    "G2_status",
+    "G2_reader_compatibility",
+    "qualified_native_head",
+    "G2_raw_public",
+    "G3_raw_public",
+    "actual_pass",
+    "formal_mandate_credit",
+    "checkpoint_transition"
+  ],
+  "properties": {
+    "schema": {
+      "const": "lyd.sdk-checkpoint-qualified-native.v2"
+    },
+    "actual_pass": {
+      "type": "null"
+    },
+    "formal_mandate_credit": {
+      "type": "null"
+    },
+    "business_postcondition_verified": {
+      "const": false
+    },
+    "full_product_acceptance_credit": {
+      "const": false
+    },
+    "G2_status": {
+      "enum": [
+        "UNKNOWN",
+        "READER_SCHEMA_INCOMPATIBLE",
+        "BOUND_COMPLETE_NATIVE_OBSERVATION"
+      ]
+    },
+    "qualified_native_head": {
+      "type": "object",
+      "required": [
+        "schema",
+        "status",
+        "runtime_binding",
+        "capture_epoch",
+        "native_graph",
+        "title_properties",
+        "title_laws",
+        "static_qualification",
+        "mod_owned_marker",
+        "mod_owner_faith_variable",
+        "saved_title_join",
+        "saved_title_ownership_observed",
+        "factory_contract_match",
+        "saved_Title_type_binding",
+        "saved_title_law_property_paths",
+        "reader_compatibility",
+        "actual_pass"
+      ],
+      "properties": {
+        "schema": {
+          "const": "lyd.qualified-native-head.v1"
+        },
+        "status": {
+          "enum": [
+            "UNKNOWN",
+            "BOUND_NATIVE_HEADLESS_OBSERVATION",
+            "BOUND_NATIVE_TITLE_FIELDS_OBSERVATION",
+            "BOUND_NATIVE_FIELDS_SAVED_OWNERSHIP_UNKNOWN"
+          ]
+        },
+        "mod_owned_marker": {
+          "type": "null"
+        },
+        "mod_owner_faith_variable": {
+          "type": "null"
+        },
+        "actual_pass": {
+          "type": "null"
+        },
+        "saved_Title_type_binding": {
+          "type": "null"
+        },
+        "saved_title_law_property_paths": {
+          "type": "null"
+        }
+      }
+    },
+    "checkpoint_transition": {
+      "type": "object",
+      "required": [
+        "schema",
+        "before_binding",
+        "after_binding",
+        "snapshot_before_original",
+        "snapshot_after_original",
+        "raw_snapshot_rewritten",
+        "actual_pass",
+        "formal_mandate_credit"
+      ],
+      "properties": {
+        "schema": {
+          "const": "lyd.sdk-checkpoint-transition.v2"
+        },
+        "raw_snapshot_rewritten": {
+          "const": false
+        },
+        "actual_pass": {
+          "type": "null"
+        },
+        "formal_mandate_credit": {
+          "type": "null"
+        }
+      }
+    },
+    "runtime_binding": {
+      "type": "object",
+      "required": [
+        "sdk_metadata_sha256",
+        "sdk_metadata_artifact",
+        "sdk_metadata_tool_count",
+        "sdk_metadata_contract_sha256",
+        "sdk_codec_sha256",
+        "sdk_codec_artifact",
+        "sdk_codec_contract_sha256",
+        "sdk_codec_DTO_AST"
+      ],
+      "properties": {
+        "sdk_metadata_tool_count": {
+          "enum": [
+            23,
+            24
+          ]
+        },
+        "sdk_codec_contract_sha256": {
+          "const": "a8ddde00321b53ec43fa1cebe38cd14f8ffc62407f61fbb95b8636476d044969"
+        },
+        "sdk_codec_DTO_AST": {
+          "type": "object",
+          "required": [
+            "all_12_match",
+            "source_executed",
+            "actual_acceptance_credit"
+          ],
+          "properties": {
+            "all_12_match": {
+              "const": true
+            },
+            "source_executed": {
+              "const": false
+            },
+            "actual_acceptance_credit": {
+              "type": "null"
+            }
+          }
+        }
+      }
+    }
+  }
+}

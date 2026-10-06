@@ -25,3 +25,10 @@ Shared C3 handoff rows are defined in `OUTPUT.schema.json`: `native_title` inclu
 ## SDK qualification converter (2026-10-06)
 
 The reviewed [SDK checkpoint qualification converter](SDK-CHECKPOINT-QUALIFICATION.md) now converts the explicit private23 G2/G3 SDK receipts to the reader contracts. The existing checkpoint reader and parser remain unchanged. Fixture tests establish conversion behavior; actual session/checkpoint binding and the formal charter remain pending live acceptance.
+
+
+## Checkpoint transition v2 and SDK artifact lineage (2026-10-06)
+
+The [checkpoint transition v2 converter](CHECKPOINT-TRANSITION-V2.md) retains both actual pre/post-save snapshots, checks the single checkpoint bookkeeping transition, and binds G2/G3 to the exact post-save frame. Its provenance records the independently preserved actual 23/24-tool SDK metadata and full codec source artifacts, while checking both frozen G2/G3 Tool schemas and all 12 original pure DTO function ASTs. Frozen contract hashes remain separate from actual artifact hashes.
+
+The portable focused tests are `python -B -m unittest discover -s tools/lyd_i3b_checkpoint_readback/tests -p test_checkpoint_transition_v2.py`; the reader shape regressions use `-p test_i3b_reader.py`. These synthetic tests give source/test credit only. Actual native qualification and formal ballot acceptance still require fresh, independently bound runtime evidence.
