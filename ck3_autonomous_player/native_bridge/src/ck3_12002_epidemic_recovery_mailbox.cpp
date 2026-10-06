@@ -1,4 +1,6 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
+#include "xar_bridge/ck3_12004_epidemic.hpp"
 #include "xar_bridge/ck3_12002_epidemic_recovery_mailbox.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -90,8 +92,9 @@ bool HandleEpidemicRecoveryPrivateBound12002(
     if (!ParsePlayerEpidemicRecoveryStepV1(step, q.requested_title_id) ||
         !bridge::JsonUnsignedField(payload, "expected_revision", expected_revision) ||
         !revision || revision != expected_revision || !adapter.enabled() ||
-        (adapter.descriptor().adapter_id != "ck3-1.20.0.2-msvc-x64" && !xar::game::IsCk3_12003Descriptor(adapter.descriptor())) ||
-        xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256 ||
+        (!xar::game::IsCk3_12004Descriptor(adapter.descriptor()) &&
+         ((adapter.descriptor().adapter_id != "ck3-1.20.0.2-msvc-x64" && !xar::game::IsCk3_12003Descriptor(adapter.descriptor())) ||
+          xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()) != kExecutableSha256)) ||
         !published.paused || !published.map_ready || !published.has_played_character ||
         !published.played_character_alive || published.played_character_id <= 0 ||
         published.played_character_id > std::numeric_limits<std::int32_t>::max() ||
@@ -143,9 +146,10 @@ bool HandleEpidemicRecoveryPrivate12002(
     const game::Snapshot &published, std::uint64_t revision,
     std::string_view step, std::string_view payload, std::string_view request_id,
     std::string &serialized, std::string &failure) noexcept {
-  const auto source = epidemic_recovery::BindImage(
-      reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr)),
-      xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+  const auto base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
+  const auto source = xar::game::IsCk3_12004Descriptor(adapter.descriptor())
+      ? ck3_12004::BindEpidemicRecoveryImage(base, adapter.descriptor().executable_sha256)
+      : epidemic_recovery::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
   return HandleEpidemicRecoveryPrivateBound12002(adapter, mailbox, published,
       revision, step, payload, request_id, source, serialized, failure);
 }
