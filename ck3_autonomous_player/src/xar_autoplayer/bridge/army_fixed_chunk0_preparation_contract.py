@@ -38,6 +38,28 @@ def _status(value: dict, name: str) -> None:
         raise ValueError(f"native fixed chunk0 preparation {name} reason disagrees with readiness")
 
 
+def normalize_fixed_chunk0_preparation_persistent_v1(row: object) -> dict[str, object]:
+    """Normalize one actual containing-Regi row, independent of family scope."""
+    if not isinstance(row, dict) or set(row) != _ROW_KEYS:
+        raise ValueError("native fixed chunk0 preparation persistent row schema is malformed")
+    _status(row, "persistent row")
+    _integer(row["persistent_regiment_id"], 32, "persistent_regiment_id")
+    if type(row["fixed_chunk_index"]) is not int or row["fixed_chunk_index"] != 0:
+        raise ValueError("native fixed chunk0 preparation requires physical chunk index0")
+    _integer(row["containing_guard_138_raw"], 32, "containing_guard_138_raw", nullable=True)
+    _integer(row["containing_definition_magic_38"], 32,
+             "containing_definition_magic_38", nullable=True, signed=False)
+    _integer(row["fresh_fraction_raw"], 64, "fresh_fraction_raw", nullable=True)
+    permission = row["native_fixed_chunk0_can_replenish"]
+    if permission is not None and type(permission) is not bool:
+        raise ValueError("native fixed chunk0 preparation permission must be bool or null")
+    if type(row["fraction_scale"]) is not int or row["fraction_scale"] != 100000:
+        raise ValueError("native fixed chunk0 preparation fraction scale must be100000")
+    if row["ready"] and any(row[key] is None for key in _OPERANDS):
+        raise ValueError("native available fixed chunk0 preparation row is incomplete")
+    return dict(row)
+
+
 def normalize_fixed_chunk0_preparation_inputs_v1(
     value: object, *, expected_army_id: int | None = None,
     expected_carmy_id: int | None = None,
@@ -60,26 +82,8 @@ def normalize_fixed_chunk0_preparation_inputs_v1(
         raise ValueError("native fixed chunk0 preparation referenced-ID completeness is malformed")
     if not isinstance(value["persistent_regiments"], list):
         raise ValueError("native fixed chunk0 preparation persistent rows must be an ordered list")
-    rows = []
-    for row in value["persistent_regiments"]:
-        if not isinstance(row, dict) or set(row) != _ROW_KEYS:
-            raise ValueError("native fixed chunk0 preparation persistent row schema is malformed")
-        _status(row, "persistent row")
-        _integer(row["persistent_regiment_id"], 32, "persistent_regiment_id")
-        if type(row["fixed_chunk_index"]) is not int or row["fixed_chunk_index"] != 0:
-            raise ValueError("native fixed chunk0 preparation requires physical chunk index0")
-        _integer(row["containing_guard_138_raw"], 32, "containing_guard_138_raw", nullable=True)
-        _integer(row["containing_definition_magic_38"], 32,
-                 "containing_definition_magic_38", nullable=True, signed=False)
-        _integer(row["fresh_fraction_raw"], 64, "fresh_fraction_raw", nullable=True)
-        permission = row["native_fixed_chunk0_can_replenish"]
-        if permission is not None and type(permission) is not bool:
-            raise ValueError("native fixed chunk0 preparation permission must be bool or null")
-        if type(row["fraction_scale"]) is not int or row["fraction_scale"] != 100000:
-            raise ValueError("native fixed chunk0 preparation fraction scale must be100000")
-        if row["ready"] and any(row[key] is None for key in _OPERANDS):
-            raise ValueError("native available fixed chunk0 preparation row is incomplete")
-        rows.append(dict(row))
+    rows = [normalize_fixed_chunk0_preparation_persistent_v1(row)
+            for row in value["persistent_regiments"]]
     if value["ready"] and (
             not value["referenced_persistent_ids_complete"]
             or any(not row["ready"] for row in rows)):

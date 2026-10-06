@@ -23,6 +23,8 @@ from .army_daily_assault_loss_projection import project_current_daily_assault_lo
 from .army_post_refill_besieging_current_projection import project_post_refill_besieging_current_v1
 from .army_fixed_chunk0_preparation_projection import project_fixed_chunk0_preparations_v1
 from .army_prepare_scoped_ordered_refill_assembly import project_fixed_chunk0_prepare_scoped_ordered_refills_v1
+from .army_ordered_besieging_fixed_chunk0_preparation_projection import project_ordered_besieging_fixed_chunk0_preparations_v1
+from .army_prepare_ordered_besieging_refill_assembly import project_fixed_chunk0_prepare_ordered_besieging_assaults_v1
 
 from .driver import (
     BridgeUnavailableError,
@@ -4421,6 +4423,7 @@ class GameplayBridgeService:
         *,
         expected_revision: int | None = None,
         ordered_refill_entry_mode: str = "observed_prepared",
+        ordered_besieging_entry_mode: str = "observed_prepared",
     ) -> dict[str, object]:
         """Read a requested subset of native base aggregates atomically.
 
@@ -4430,9 +4433,13 @@ class GameplayBridgeService:
 
         ordered_refill_entry_mode selects the captured prepared148 input or
         same-query conditional fixed-chunk0 preparation for the scoped model.
+        ordered_besieging_entry_mode independently selects the actual B target
+        union's observed or same-query conditional preparation input.
         """
         if ordered_refill_entry_mode not in ("observed_prepared", "fixed_chunk0_prepare"):
             raise ValueError("unknown ordered_refill_entry_mode")
+        if ordered_besieging_entry_mode not in ("observed_prepared", "fixed_chunk0_prepare"):
+            raise ValueError("unknown ordered_besieging_entry_mode")
         requested_ids = normalize_army_strength_request_ids(army_ids)
         snapshot = self.snapshot()
         if snapshot.get("paused") is not True:
@@ -4504,6 +4511,12 @@ class GameplayBridgeService:
             if ordered_refill_entry_mode == "fixed_chunk0_prepare"
             else project_scoped_ordered_refills_v1(selected_rows)
         )
+        b_preparations = project_ordered_besieging_fixed_chunk0_preparations_v1(selected_rows)
+        ordered_besieging = (
+            project_fixed_chunk0_prepare_ordered_besieging_assaults_v1(selected_rows, b_preparations)
+            if ordered_besieging_entry_mode == "fixed_chunk0_prepare"
+            else project_ordered_refill_besieging_assaults_v1(selected_rows)
+        )
         return {
             **result,
             "schema_version": 1,
@@ -4530,6 +4543,7 @@ class GameplayBridgeService:
             },
             "army_ids": requested_ids,
             "ordered_refill_entry_mode": ordered_refill_entry_mode,
+            "ordered_besieging_entry_mode": ordered_besieging_entry_mode,
             "scope_army_ids": scope_ids,
             "army_strengths": selected_rows,
             "same_input_replenishment_v1": project_observed_replenishment_v1(selected_rows),
@@ -4549,7 +4563,8 @@ class GameplayBridgeService:
             "current_daily_assault_group_inputs_v1":
                 project_current_daily_assault_group_inputs_many_v1(selected_rows),
             "same_input_conditional_ordered_refill_besieging_assault_v1":
-                project_ordered_refill_besieging_assaults_v1(selected_rows),
+                ordered_besieging,
+            "same_input_conditional_ordered_besieging_fixed_chunk0_preparation_v1": b_preparations,
         }
 
     def query_campaign_root_context_v1(

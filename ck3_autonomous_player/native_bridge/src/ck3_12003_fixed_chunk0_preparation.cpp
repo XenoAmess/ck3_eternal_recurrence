@@ -63,6 +63,11 @@ game::FixedChunk0PreparationPersistentInputV1 ReadPersistent(
 }
 } // namespace
 
+game::FixedChunk0PreparationPersistentInputV1 ReadFixedChunk0PreparationPersistentInput12003(
+    const ck3_12002::ArmyBindings &bindings, std::int32_t id) noexcept {
+  return ReadPersistent(bindings, id);
+}
+
 game::FixedChunk0PreparationInputsV1 ReadFixedChunk0PreparationInputsV1(
     const ck3_12002::ArmyBindings &bindings,
     const game::ArmyStrengthSnapshot &strength) noexcept {

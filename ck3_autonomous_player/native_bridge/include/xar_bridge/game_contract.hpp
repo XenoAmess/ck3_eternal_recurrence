@@ -15,6 +15,7 @@
 #include "xar_bridge/army_scoped_ordered_refill_inputs_v1.hpp"
 #include "xar_bridge/ck3_12003_fixed_chunk0_preparation.hpp"
 #include "xar_bridge/army_ordered_besieging_refill_inputs_v1.hpp"
+#include "xar_bridge/army_ordered_besieging_fixed_chunk0_preparation_v1.hpp"
 #include "xar_bridge/phase_rite_parameters_v1.hpp"
 #include "xar_bridge/phase_warmonger_core_v1.hpp"
 #include "xar_bridge/phase_berserker_validity_inputs_v1.hpp"
@@ -790,6 +791,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyCurrentLandSupplyRateInputsV1> current_land_supply_rate_inputs_v1;
   std::optional<ArmyScopedOrderedRefillInputsV1> scoped_ordered_refill_inputs_v1;
   std::optional<ArmyOrderedBesiegingRefillInputsV1> ordered_besieging_refill_inputs_v1;
+  std::optional<ArmyOrderedBesiegingFixedChunk0PreparationInputsV1> ordered_besieging_fixed_chunk0_preparation_inputs_v1;
   std::optional<ArmyCountyEntryInputsV1> county_entry_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<NativeMaaRecruitmentInputsV1> native_maa_recruitment_inputs_v1;

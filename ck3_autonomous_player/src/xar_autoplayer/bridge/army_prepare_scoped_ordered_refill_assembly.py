@@ -12,6 +12,33 @@ from .army_scoped_ordered_refill_projection import (
 _INPUT_BASIS = "same_capture_fixed_chunk0_conditional_preparation_ordered_occurrences"
 
 
+def conditional_prepared_ordered_inputs_v1(
+    inputs: Mapping[str, object], preparation: Mapping[str, object], *,
+    input_name: str = "fixed_chunk0_preparation_inputs_v1",
+) -> tuple[dict[str, object], list[dict[str, object]]]:
+    """Join actual persistent IDs into private scalars; leave physical context held."""
+    prepared_by_id = {item["persistent_regiment_id"]: item
+                      for item in preparation["persistent_regiments"]}
+    private_inputs = deepcopy(inputs)
+    joins = []
+    for persistent in private_inputs["persistent_regiments"]:
+        identity = persistent["persistent_regiment_id"]
+        prepared = prepared_by_id.get(identity)
+        ready = prepared is not None and prepared["preparation_ready"]
+        fraction = prepared["conditional_prepared_fraction_raw"] if ready else None
+        joins.append({
+            "persistent_regiment_id": identity, "fixed_chunk_index": 0,
+            "observed_prepared_fraction_raw": persistent["prepared_fraction_raw"],
+            "conditional_prepared_fraction_raw": fraction,
+            "preparation_ready": bool(ready),
+            "preparation_branch": prepared["preparation_branch"] if prepared else "unavailable",
+            "missing_inputs": list(prepared["missing_inputs"]) if prepared else
+                [f"{input_name}:persistent_row"],
+        })
+        persistent["prepared_fraction_raw"] = fraction
+    return private_inputs, joins
+
+
 def project_fixed_chunk0_prepare_scoped_ordered_refill_v1(
     row: Mapping[str, object], preparation: Mapping[str, object],
 ) -> dict[str, object]:
@@ -23,29 +50,9 @@ def project_fixed_chunk0_prepare_scoped_ordered_refill_v1(
     fractions are actually demanded by that execution roster.
     """
     inputs = row.get("scoped_ordered_refill_inputs_v1")
-    prepared_by_id = {
-        item["persistent_regiment_id"]: item
-        for item in preparation["persistent_regiments"]
-    }
     joins = []
     if isinstance(inputs, dict):
-        private_inputs = deepcopy(inputs)
-        for persistent in private_inputs["persistent_regiments"]:
-            identity = persistent["persistent_regiment_id"]
-            prepared = prepared_by_id.get(identity)
-            ready = prepared is not None and prepared["preparation_ready"]
-            fraction = prepared["conditional_prepared_fraction_raw"] if ready else None
-            joins.append({
-                "persistent_regiment_id": identity,
-                "fixed_chunk_index": 0,
-                "observed_prepared_fraction_raw": persistent["prepared_fraction_raw"],
-                "conditional_prepared_fraction_raw": fraction,
-                "preparation_ready": bool(ready),
-                "preparation_branch": prepared["preparation_branch"] if prepared else "unavailable",
-                "missing_inputs": list(prepared["missing_inputs"]) if prepared else
-                    ["fixed_chunk0_preparation_inputs_v1:persistent_row"],
-            })
-            persistent["prepared_fraction_raw"] = fraction
+        private_inputs, joins = conditional_prepared_ordered_inputs_v1(inputs, preparation)
         physical = project_observed_prepared_ordered_physical_core_v1(
             private_inputs, prepared_input_basis=_INPUT_BASIS)
     else:

@@ -67,40 +67,43 @@ def _persistent_preparation(row: Mapping[str, object]) -> dict[str, object]:
     return result
 
 
+def project_fixed_chunk0_preparation_family_v1(
+    family: Mapping[str, object] | None, *, army_id: object, native_carmy_id: object,
+    coverage_key: str = "referenced_persistent_ids_complete",
+    input_name: str = "fixed_chunk0_preparation_inputs_v1",
+    projection_kind: str = "conditional_fixed_chunk0_preparation",
+) -> dict[str, object]:
+    """Reuse native preparation branches directly for a declared captured family."""
+    rows = []
+    complete = False
+    missing = []
+    if isinstance(family, Mapping):
+        complete = family[coverage_key]
+        rows = [_persistent_preparation(row) for row in family["persistent_regiments"]]
+        if not complete:
+            missing.append({"persistent_regiment_id": None, "inputs": [coverage_key]})
+        missing.extend({"persistent_regiment_id": row["persistent_regiment_id"],
+                        "inputs": list(row["missing_inputs"])}
+                       for row in rows if not row["preparation_ready"])
+    else:
+        missing.append({"persistent_regiment_id": None, "inputs": [input_name]})
+    ready = bool(complete and all(row["preparation_ready"] for row in rows))
+    return {
+        "projection_kind": projection_kind, "source_contract_game_version": "1.20.0.3",
+        "input_basis": "current_frozen_context_preparation",
+        "army_id": army_id, "native_carmy_id": native_carmy_id,
+        "status": "available" if ready else "partial" if rows or complete else "unavailable",
+        "preparation_ready": ready, coverage_key: complete,
+        "persistent_regiments": rows, "missing_inputs": missing,
+        "actual_preparation": False, "cache_write": False, "full_ordered_regular_refill": False,
+    }
+
+
 def project_fixed_chunk0_preparations_v1(
     selected_rows: Sequence[Mapping[str, object]],
 ) -> list[dict[str, object]]:
     """Project normalized Strength rows without changing DATA or observed prepared148."""
-    results = []
-    for army in selected_rows:
-        family = army.get("fixed_chunk0_preparation_inputs_v1")
-        rows = []
-        complete = False
-        missing = []
-        if isinstance(family, Mapping):
-            complete = family["referenced_persistent_ids_complete"]
-            rows = [_persistent_preparation(row) for row in family["persistent_regiments"]]
-            if not complete:
-                missing.append({"persistent_regiment_id": None,
-                                "inputs": ["referenced_persistent_ids_complete"]})
-            missing.extend({"persistent_regiment_id": row["persistent_regiment_id"],
-                            "inputs": list(row["missing_inputs"])}
-                           for row in rows if not row["preparation_ready"])
-        else:
-            missing.append({"persistent_regiment_id": None,
-                            "inputs": ["fixed_chunk0_preparation_inputs_v1"]})
-        ready = bool(complete and all(row["preparation_ready"] for row in rows))
-        results.append({
-            "projection_kind": "conditional_fixed_chunk0_preparation",
-            "source_contract_game_version": "1.20.0.3",
-            "input_basis": "current_frozen_context_preparation",
-            "army_id": army.get("army_id"), "native_carmy_id": army.get("native_carmy_id"),
-            "status": "available" if ready else "partial" if rows or complete else "unavailable",
-            "preparation_ready": ready,
-            "referenced_persistent_ids_complete": complete,
-            "persistent_regiments": rows,
-            "missing_inputs": missing,
-            "actual_preparation": False, "cache_write": False,
-            "full_ordered_regular_refill": False,
-        })
-    return results
+    return [project_fixed_chunk0_preparation_family_v1(
+        army.get("fixed_chunk0_preparation_inputs_v1"),
+        army_id=army.get("army_id"), native_carmy_id=army.get("native_carmy_id"))
+        for army in selected_rows]

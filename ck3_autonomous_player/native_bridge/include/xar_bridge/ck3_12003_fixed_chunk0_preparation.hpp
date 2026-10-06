@@ -50,6 +50,9 @@ struct FixedChunk0PreparationInputsV1 {
 } // namespace xar::game
 
 namespace xar::ck3_12003 {
+// Reuse the qualified actual containing-Regi reader for another declared scope.
+game::FixedChunk0PreparationPersistentInputV1 ReadFixedChunk0PreparationPersistentInput12003(
+    const ck3_12002::ArmyBindings &, std::int32_t persistent_id) noexcept;
 // Same owning-thread Strength sample, after complete DATA capture. This reads
 // current preparation operands only; it never calls262C6A0 or writes148.
 game::FixedChunk0PreparationInputsV1 ReadFixedChunk0PreparationInputsV1(

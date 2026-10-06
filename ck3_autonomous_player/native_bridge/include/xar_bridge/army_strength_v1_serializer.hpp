@@ -10,6 +10,7 @@
 #include "xar_bridge/army_fixed_chunk0_preparation_v1_serializer.hpp"
 #include "xar_bridge/army_daily_assault_active_table_serializer_v1.inc.hpp"
 #include "xar_bridge/army_ordered_besieging_refill_inputs_v1_serializer.hpp"
+#include "xar_bridge/army_ordered_besieging_fixed_chunk0_preparation_v1_serializer.hpp"
 
 #include <string>
 
@@ -638,6 +639,11 @@ inline void AppendArmyStrengthV1(
     result += ",\"ordered_besieging_refill_inputs_v1\":";
     AppendArmyOrderedBesiegingRefillInputsV1(
         result, *strength.ordered_besieging_refill_inputs_v1, number, append_json_string);
+  }
+  if (strength.ordered_besieging_fixed_chunk0_preparation_inputs_v1) {
+    result += ",\"ordered_besieging_fixed_chunk0_preparation_inputs_v1\":";
+    AppendOrderedBesiegingFixedChunk0PreparationInputsV1(
+        result, *strength.ordered_besieging_fixed_chunk0_preparation_inputs_v1, number, append_json_string);
   }
   result += ",\"scope_role\":\"";
   switch (strength.scope_role) {
