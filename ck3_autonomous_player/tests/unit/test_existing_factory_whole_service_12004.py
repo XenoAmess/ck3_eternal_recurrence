@@ -42,7 +42,7 @@ def _write_json(path: Path, value: object) -> None:
 class _CompiledWholeEndpoint:
     """Offline endpoint; it serves three untouched compiled result bodies."""
 
-    pipe_name = "offline-existing-factory-whole-12004"
+    pipe_name = r"\\.\pipe\offline-existing-factory-whole-12004"
 
     def __init__(
         self, frames: dict[str, dict[str, object]],
