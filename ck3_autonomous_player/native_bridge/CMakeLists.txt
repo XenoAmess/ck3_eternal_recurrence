@@ -8937,3 +8937,4 @@ if(BUILD_TESTING AND WIN32)
 endif()
 
 include(cmake/current_province_supply_contributors_12003.cmake)
+include(cmake/current_land_resupply_12003.cmake)

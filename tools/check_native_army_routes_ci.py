@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Compile and run the isolated army reader fixtures with x64 MSVC C++20.
 
-Only the army producer, its supply timing dependency and fixture test are linked.
+Only the army producer, its readonly supply dependencies and fixture test are linked.
 No game executable, native bridge DLL, Steam installation or private feature
 definition is used.
 The caller supplies a fresh build directory; logs and failures are retained.
@@ -27,6 +27,8 @@ TRANSLATION_UNITS = (
     "src/ck3_12002_army.cpp",
     "src/ck3_12003_army_supply_timing.cpp",
     "src/ck3_12003_army_replenishment_records.cpp",
+    "src/ck3_12003_current_province_supply_contributors.cpp",
+    "src/ck3_12003_current_land_resupply.cpp",
     "src/ck3_12002_army_test.cpp",
 )
 INPUTS = (
@@ -34,6 +36,8 @@ INPUTS = (
     "include/xar_bridge/ck3_12002_army.hpp",
     "include/xar_bridge/ck3_12003_army_supply_timing.hpp",
     "include/xar_bridge/ck3_12003_army_replenishment_records.hpp",
+    "include/xar_bridge/ck3_12003_current_province_supply_contributors.hpp",
+    "include/xar_bridge/ck3_12003_current_land_resupply.hpp",
     "include/xar_bridge/ck3_12002.hpp",
     "include/xar_bridge/ck3_12003.hpp",
     "include/xar_bridge/game_contract.hpp",
@@ -54,6 +58,10 @@ def run_logged(argv: list[str], name: str, build_dir: Path,
     report["steps"].append(step)
     print(json.dumps(step), flush=True)
     if result.returncode:
+        # Official CI previously hid the actual linker diagnosis in temp files.
+        for diagnostic in (result.stdout, result.stderr):
+            if diagnostic:
+                print(diagnostic.decode("utf-8", errors="replace"), flush=True)
         raise subprocess.CalledProcessError(result.returncode, argv)
     return result
 
