@@ -12,6 +12,7 @@
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_core_frame_v1.hpp"
 #include "xar_bridge/ck3_12004_thread_runtime.hpp"
+#include "xar_bridge/state_snapshot_frame_v1.hpp"
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12003_confucian_assembly_mailbox.hpp"
 #endif
@@ -26825,6 +26826,13 @@ void SignalStop() noexcept {
 }
 
 } // namespace
+
+namespace xar::bridge {
+std::string SerializeStateSnapshotFrameV1(const game::Snapshot &snapshot,
+                                        std::uint64_t revision) {
+  return StateSnapshotFrame(snapshot, revision, CheckpointSubmission{});
+}
+} // namespace xar::bridge
 
 extern "C" __declspec(dllexport) const char *WINAPI
 XarCk3BridgeIdentity() noexcept {

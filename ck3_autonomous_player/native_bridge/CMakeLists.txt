@@ -9294,3 +9294,4 @@ endif()
 
 include(cmake/snapshot_foundation_12004.cmake)
 include(cmake/army_family_12004.cmake)
+include(cmake/snapshot_foundation_12004_first.cmake)
