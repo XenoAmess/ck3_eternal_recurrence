@@ -567,7 +567,7 @@ def _gift_stage(test, stage_dir, case, mode, revision, whole_wire, entrance,
             "capabilities": ["game.state.snapshot"],
         }
         frame = _gift_frame(revision)
-        heartbeat = {"type": "heartbeat", "protocol_version": 1,
+        heartbeat = {"type": "heartbeat", "protocol_version": 1, "sequence": 1,
                      "g2_faction_gift_mitigation_async_glue_v1": {"private_build": True}}
         for name, item in (("synthetic-hello.json", hello), ("synthetic-paused-frame.json", frame),
                            ("synthetic-heartbeat.json", heartbeat)):
