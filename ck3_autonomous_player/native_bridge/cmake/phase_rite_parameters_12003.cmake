@@ -12,7 +12,9 @@ if(BUILD_TESTING AND WIN32)
       --receipt "${XAR_PHASE_RITE_WIRE_DIR}/SERIALIZER-PROJECTION.json"
     DEPENDS src/bridge.cpp tests/project_phase_rite_parameters_serializer.py
       tests/project_knight_context_serializer.py
-      include/xar_bridge/phase_rite_parameters_v1_serializer.hpp VERBATIM)
+      include/xar_bridge/phase_rite_parameters_v1_serializer.hpp
+      include/xar_bridge/phase_warmonger_core_v1_serializer.hpp
+      include/xar_bridge/phase_warmonger_core_v1.hpp VERBATIM)
   add_executable(xar_ck3_12003_phase_rite_parameters_test
     src/ck3_12002_combat.cpp tests/phase_rite_parameters_12003_test.cpp
     "${XAR_PHASE_RITE_SERIALIZER}")

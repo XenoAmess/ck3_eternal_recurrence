@@ -8027,6 +8027,8 @@ if(BUILD_TESTING AND WIN32)
       --output "${XAR_KNIGHT_CONTEXT_SERIALIZER}"
       --receipt "${XAR_KNIGHT_CONTEXT_FIXTURE_DIR}/SERIALIZER-PROJECTION.json"
     DEPENDS src/bridge.cpp tests/project_knight_context_serializer.py
+      include/xar_bridge/phase_warmonger_core_v1_serializer.hpp
+      include/xar_bridge/phase_warmonger_core_v1.hpp
     VERBATIM)
   add_executable(xar_ck3_12003_knight_effectiveness_context_test
     src/ck3_12002_combat.cpp
@@ -8938,3 +8940,4 @@ endif()
 
 include(cmake/current_province_supply_contributors_12003.cmake)
 include(cmake/current_land_resupply_12003.cmake)
+include(cmake/phase_warmonger_core_12003.cmake)
