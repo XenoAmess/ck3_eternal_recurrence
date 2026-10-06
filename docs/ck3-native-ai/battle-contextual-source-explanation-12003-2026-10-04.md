@@ -14,7 +14,7 @@
 
 faith provider 已在 g54 启用；本帧 target faith23/rite152 非 unreformed，两行 `target_faith_not_unreformed` 是有效不应用，contribution0。owner faith/rite 的 null 是短路结果。`religion_constructor_sources_ready=true`、`missing_domains=[]` 与 complete=false同时成立：现 serializer固定完整 encounter readiness=false；MC也false。旧专题的 faith pending 只保留其历史截止。
 
-安装版声明 recently-disembarked advantage−30和 `DISEMBARK_PENALTY_DAYS=30`；隐藏 holding effect声明1，stock info允许动态乘数/代码替换。因此不能从21→−9或33→41的差值认定最近登陆或holding命中。精确 disembark active/expiry getter、时间边界及动态分项仍 **Unknown**；现有13来源 ledger不含 disembark 或 nested dynamic attribution。
+安装版声明 recently-disembarked advantage−30和 `DISEMBARK_PENALTY_DAYS=30`；隐藏 holding effect声明1，stock info允许动态乘数/代码替换。因此不能从21→−9或33→41的差值认定最近登陆或holding命中。精确 disembark active/expiry predicate、时间边界及动态分项仍 **Unknown**；现有13来源 ledger不含 disembark 或 nested dynamic attribution。2026-10-06已独立闭合[当前remaining-days getter](army-current-disembark-penalty-days-12003.md)：真实CArmy+1D0/int32/core24AA240接入同Army查询，新whole FIRST尚NOTRUN；这个当前整数不替代active/expiry或effect ledger。
 
 ```mermaid
 flowchart LR

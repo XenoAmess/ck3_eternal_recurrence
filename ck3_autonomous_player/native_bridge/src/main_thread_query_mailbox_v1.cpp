@@ -617,6 +617,7 @@ bool InstallMainThreadQueryMailboxV1(
        environment.permitted_executor_sway_completion12002 == nullptr &&
        environment.permitted_executor_rite_governance12002 == nullptr &&
        environment.permitted_executor_clergy12002 == nullptr &&
+       environment.permitted_executor_ordinary_holy_war_declaration_context12003 == nullptr &&
        environment.permitted_executor_rite_members12002 == nullptr &&
        environment.permitted_executor_religion_doctrines12002 == nullptr &&
        environment.permitted_executor_religion_hostility12002 == nullptr &&
@@ -1020,6 +1021,8 @@ bool InstallMainThreadQueryMailboxV1(
       environment.permitted_executor_rite_governance12002;
   mailbox.permitted_executor_clergy12002 =
       environment.permitted_executor_clergy12002;
+  mailbox.permitted_executor_ordinary_holy_war_declaration_context12003 =
+      environment.permitted_executor_ordinary_holy_war_declaration_context12003;
   mailbox.permitted_executor_rite_members12002 =
       environment.permitted_executor_rite_members12002;
   mailbox.permitted_executor_religion_doctrines12002 =
@@ -1378,6 +1381,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
          mailbox.permitted_executor_sway_completion12002 != nullptr ||
          mailbox.permitted_executor_rite_governance12002 != nullptr ||
          mailbox.permitted_executor_clergy12002 != nullptr ||
+         mailbox.permitted_executor_ordinary_holy_war_declaration_context12003 != nullptr ||
          mailbox.permitted_executor_rite_members12002 != nullptr ||
          mailbox.permitted_executor_religion_doctrines12002 != nullptr ||
          mailbox.permitted_executor_religion_hostility12002 != nullptr ||
@@ -1503,6 +1507,7 @@ MainThreadQuerySubmitResultV1 TrySubmitMainThreadQueryV1(
       executor != mailbox.permitted_executor_sway_completion12002 &&
       executor != mailbox.permitted_executor_rite_governance12002 &&
       executor != mailbox.permitted_executor_clergy12002 &&
+      executor != mailbox.permitted_executor_ordinary_holy_war_declaration_context12003 &&
       executor != mailbox.permitted_executor_rite_members12002 &&
       executor != mailbox.permitted_executor_religion_doctrines12002 &&
       executor != mailbox.permitted_executor_religion_hostility12002 &&

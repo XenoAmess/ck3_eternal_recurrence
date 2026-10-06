@@ -3107,6 +3107,19 @@ class NativeHeadlessGameplayDriver:
             timeout_seconds=self.command_timeout_seconds,
         )
 
+    def query_player_ordinary_holy_war_declaration_context_private_v1(
+        self, *, expected_revision: int, declaration_id: str,
+    ) -> dict[str, object]:
+        """Read one selected declaration context and its independent CB quote."""
+        from .player_ordinary_holy_war_declaration_context_private_transport import (
+            query_player_ordinary_holy_war_declaration_context_private_v1,
+        )
+
+        return query_player_ordinary_holy_war_declaration_context_private_v1(
+            self, expected_revision=expected_revision, declaration_id=declaration_id,
+            timeout_seconds=self.command_timeout_seconds,
+        )
+
     def query_player_clergy_appointment_private_v1(
         self, *, expected_revision: int, candidate_character_id: int,
     ) -> dict[str, object]:

@@ -867,6 +867,18 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
   // Exact .3 selector 0x2587254 consumes this signed Q100000 operand.
   // The reviewed .2/.3 adapter binding owns the executable identity gate.
   if (Load<std::int32_t>(army, 0x124) == scope.army_id) {
+    if (bindings.current_disembark_penalty_enabled) {
+      result.current_disembark_penalty_v1.emplace();
+      auto &landing = *result.current_disembark_penalty_v1;
+      if (bindings.get_army_disembark_penalty_days != nullptr) {
+        g_army_strength_query_diagnostic_v1.reader.store("current_disembark_penalty_days_getter");
+        // Direct signed native days: no clamp, sentinel, route or gathering guard.
+        // Native active/expiry status is not inferred from this observation.
+        landing.remaining_days = bindings.get_army_disembark_penalty_days(army);
+        landing.available = true;
+        landing.unavailable_reason.clear();
+      }
+    }
     if (bindings.timing_bindings.enabled)
       result.army_update_clock_v1 = ck3_12003::ReadArmySupplyTiming(
           bindings, bindings.timing_bindings, army);
@@ -1210,6 +1222,8 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
   std::optional<game::ArmyCurrentDailyAssaultRosterAdmissionV1> current_daily_assault_roster_admission;
   std::optional<game::ArmyPreDateDatedAppendInputsV1> current_pre_date_dated_append;
   std::optional<game::ArmyCurrentPostAdmissionRefreshInputsV1> current_post_admission_refresh;
+  std::optional<game::ArmyCurrentSelectedTitleHolderOwnerRelationV1>
+      current_selected_title_holder_owner_relation;
   std::optional<game::ArmyCurrentCondition30InputsV1> current_army_condition30;
   std::optional<game::ArmyCurrentFlag20InputsV1> current_army_flag20;
   std::optional<game::ArmyCurrentFlag21InputsV1> current_army_flag21;
@@ -1253,6 +1267,16 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
           current_pre_date_pending_update ? &*current_pre_date_pending_update : nullptr,
           current_daily_assault_table ? &*current_daily_assault_table : nullptr);
     }
+    if (!current_selected_title_holder_owner_relation && current_post_admission_refresh &&
+        bindings.current_selected_title_holder_owner_relation_bindings.common.enabled) {
+      diagnostic.reader.store("current_selected_title_holder_owner_relation_readonly");
+      current_selected_title_holder_owner_relation =
+          xar::ck3_12003::ReadCurrentSelectedTitleHolderOwnerRelation12003(
+              bindings.current_selected_title_holder_owner_relation_bindings,
+              *current_post_admission_refresh);
+    }
+    row.current_selected_title_holder_owner_relation_v1 =
+        current_selected_title_holder_owner_relation;
     if (!current_army_condition30 && current_post_admission_refresh &&
         bindings.current_army_condition30_bindings.common.enabled) {
       diagnostic.reader.store("current_army_condition30_readonly");

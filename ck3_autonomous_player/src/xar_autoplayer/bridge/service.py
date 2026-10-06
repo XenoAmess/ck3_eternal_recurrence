@@ -26,7 +26,11 @@ from ..simulation.army_pre_date_character_prefix_12003 import project_current_pr
 from ..simulation.army_current_post_admission_refresh_12003 import project_current_post_admission_refresh_12003
 from ..simulation.army_current_condition30_inputs_12003 import project_current_army_condition30_inputs_12003
 from ..simulation.army_current_flag20_inputs_12003 import project_current_army_flag20_inputs_12003
+from .army_current_disembark_penalty_contract import project_current_disembark_penalty_v1
 from ..simulation.army_current_flag21_inputs_12003 import project_current_army_flag21_inputs_12003
+from ..simulation.army_current_selected_title_holder_owner_relation_12003 import (
+    project_current_selected_title_holder_owner_relation_12003,
+)
 from ..simulation.army_current_flag31_inputs_12003 import project_current_army_flag31_inputs_12003
 from .army_current_candidate_detachment_mapper_builder import build_current_candidate_detachment_mapper_preview
 from .army_current_detachment_data_builder import build_same_input_current_detachment_data_prefix
@@ -3872,6 +3876,19 @@ class GameplayBridgeService:
             )
         return result
 
+    def query_player_ordinary_holy_war_declaration_context_private_v1(
+        self, *, expected_revision: int, declaration_id: str,
+    ) -> dict[str, object]:
+        """Observe the current selected holy-war CB quote without submitting war."""
+        query = getattr(
+            self.driver, "query_player_ordinary_holy_war_declaration_context_private_v1", None,
+        )
+        if not callable(query):
+            raise UnsupportedStepError(
+                "selected backend cannot query an ordinary holy-war declaration context"
+            )
+        return query(expected_revision=expected_revision, declaration_id=declaration_id)
+
     def collect_declarable_wars_result_v1(
         self, request_id: str, *, expected_revision: int
     ) -> dict[str, object]:
@@ -4638,6 +4655,16 @@ class GameplayBridgeService:
                         "game_version": hello.get("game_version") if isinstance(hello, dict) else None,
                         "executable_sha256": hello.get("executable_sha256") if isinstance(hello, dict) else None})}
                 for row in selected_rows],
+            "current_disembark_penalty_v1": [
+                {"army_id": row["army_id"], "projection": project_current_disembark_penalty_v1(
+                    row.get("current_disembark_penalty_v1"), source_provenance={
+                        "snapshot_id": snapshot.get("snapshot_id"),
+                        "revision": snapshot.get("revision"),
+                        "native_revision": snapshot.get("native_revision"),
+                        "date_raw": snapshot.get("date_raw"),
+                        "game_version": hello.get("game_version") if isinstance(hello, dict) else None,
+                        "executable_sha256": hello.get("executable_sha256") if isinstance(hello, dict) else None})}
+                for row in selected_rows],
             "current_army_flag20_inputs_v1": [
                 {"army_id": row["army_id"], "projection": project_current_army_flag20_inputs_12003(
                     row.get("current_army_flag20_inputs_v1"), source_provenance={
@@ -4651,6 +4678,16 @@ class GameplayBridgeService:
             "current_army_flag21_inputs_v1": [
                 {"army_id": row["army_id"], "projection": project_current_army_flag21_inputs_12003(
                     row.get("current_army_flag21_inputs_v1"), source_provenance={
+                        "snapshot_id": snapshot.get("snapshot_id"),
+                        "revision": snapshot.get("revision"),
+                        "native_revision": snapshot.get("native_revision"),
+                        "date_raw": snapshot.get("date_raw"),
+                        "game_version": hello.get("game_version") if isinstance(hello, dict) else None,
+                        "executable_sha256": hello.get("executable_sha256") if isinstance(hello, dict) else None})}
+                for row in selected_rows],
+            "current_selected_title_holder_owner_relation_v1": [
+                {"army_id": row["army_id"], "projection": project_current_selected_title_holder_owner_relation_12003(
+                    row.get("current_selected_title_holder_owner_relation_v1"), source_provenance={
                         "snapshot_id": snapshot.get("snapshot_id"),
                         "revision": snapshot.get("revision"),
                         "native_revision": snapshot.get("native_revision"),

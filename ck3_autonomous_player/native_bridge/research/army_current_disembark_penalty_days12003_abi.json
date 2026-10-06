@@ -1,0 +1,69 @@
+{
+  "schema": "xar.ck3.army-current-disembark-days-abi/v1",
+  "product_version": "1.20.0.3",
+  "steam_build": "25652598",
+  "executable_sha256_reused": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+  "status": "research_source_implemented_first_notrun",
+  "native_name": "Army.GetDisembarkPenaltyDays",
+  "literal_rva": "0x4736B10",
+  "literal_xref": {
+    "rva": "0x4EB4E3",
+    "hex": "0F100526B62404",
+    "form": "MOVUPS RIP-relative target literal copy"
+  },
+  "initializer": {"begin_rva": "0x4EB470", "end_rva_exclusive": "0x4EB5FE", "bytes": 398, "pdata_row_rva": "0x5DF1F68", "callback_load_rva": "0x4EB573", "typed_register_call_rva": "0x4EB57E", "typed_register_target_rva": "0xCFCB00"},
+  "callback": {"begin_rva": "0x24EA630", "end_rva_exclusive": "0x24EA668", "bytes": 56, "pdata_row_rva": "0x5F3CB2C", "native_call_rva": "0x24EA642", "receiver": "nonnull RCX unchanged", "return_value": "AL callback success only; EAX native int32 packed through879A50"},
+  "callable_core": {
+    "begin_rva": "0x24AA240",
+    "end_rva_exclusive": "0x24AA247",
+    "bytes": 7,
+    "hex": "8B81D0010000C3",
+    "prototype": "std::int32_t (__fastcall *)(const void* actualCArmy)",
+    "receiver": "actual CArmy",
+    "receiver_field_offset": "0x1D0",
+    "return_register": "EAX",
+    "unit": "integer game days, as named stock Army GUI getter",
+    "clamp_or_sentinel": "none in complete getter",
+    "boundary": "direct named callback target; one MOV thenRET24AA246;9INT3 and distinct nextentry24AA250"
+  },
+  "receiver_proof": {
+    "complete_typed_helper": ["0xCFCB00", "0xCFCFC8"],
+    "fixed_receiver_type_id_global": "0x5D1DF94",
+    "receiver_type_load_rva": "0xCFCC47",
+    "receiver_descriptor_store_rva": "0xCFCEDE",
+    "receiver_descriptor_offset": 80,
+    "fixed_integer_return_type_id_global": "0x5C5FD8C",
+    "return_descriptor_store_rva": "0xCFCC91",
+    "return_descriptor_offset": 24,
+    "independent_actual_provider": "Existing gathering GetGatheringDaysLeft initializer4EA690 and callback24EA330 use same fixed helper; native formatterD19437 resolves CUnit+178 via CArmy store5D1DE48/fullID and calls CArmy gathering core24E9070 atD19477.",
+    "excluded_allocator": "0x54DE218 is temporary-vector allocator, not type registry"
+  },
+  "production_seam": {
+    "existing_mcp": "ck3_query_army_strengths",
+    "existing_observer_step": "query-army-strengths-v1",
+    "source_reader": "ReadArmyStrengthsForScope -> Strength; existing actual CArmy+124/publicCUnit backlink",
+    "exact_3_binding_enabled": true,
+    "optional_leaf": "current_disembark_penalty_v1",
+    "published_operand": "remaining_days",
+    "preserve": [0, -1, 34],
+    "native_active_or_future_expiry": "not inferred",
+    "old_packets": "leaf may remain absent"
+  },
+  "first": {
+    "native_source_cases": 5,
+    "compound": 1,
+    "native_target": "xar_bridge_ck3_12003_current_disembark_penalty_whole_test",
+    "native_argv": ["--emit-wire", "<absolute JSON path>"],
+    "native_sample_keys": ["zero", "negative", "nonstock", "invalidArmy", "typeUnavailable"],
+    "consumer": "NOTRUN",
+    "consumer_test": "ck3_autonomous_player/tests/test_current_disembark_penalty_mcp_compound.py",
+    "consumer_environment": ["XAR_CURRENT_DISEMBARK_NATIVE_WIRE", "XAR_CURRENT_DISEMBARK_CASE_OUTPUT"],
+    "registered_mcp_calls": 6,
+    "consumer_only_compatibility_derivations": 1,
+    "build": "NOTRUN",
+    "native": "NOTRUN",
+    "live": "NOTRUN"
+  },
+  "source_bytes_receipt_root": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/battle-crossing/exact-locator",
+  "canonical_topic": "docs/ck3-native-ai/army-current-disembark-penalty-days-12003.md"
+}

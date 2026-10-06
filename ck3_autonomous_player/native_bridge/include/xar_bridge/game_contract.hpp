@@ -747,6 +747,18 @@ struct ArmyCurrentProvinceBesiegingContributorsV1 {
 #include "xar_bridge/army_current_detachment_data_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_pending_update_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_character_prefix_v1.inc.hpp"
+#include "xar_bridge/army_current_selected_title_holder_owner_relation_v1.inc.hpp"
+
+// Exact .3 direct getter returns signed int32 remaining days without a clamp/sentinel.
+// Native active/expiry status is independent and not inferred here.
+using DisembarkPublishedDays12003 = std::int32_t;
+struct ArmyCurrentDisembarkPenaltyV1 {
+  bool available = false;
+  std::optional<DisembarkPublishedDays12003> remaining_days;
+  std::string unavailable_reason = "disembark_getter_not_bound";
+  friend bool operator==(const ArmyCurrentDisembarkPenaltyV1 &,
+                         const ArmyCurrentDisembarkPenaltyV1 &) = default;
+};
 
 struct ArmyStrengthSnapshot {
   bool available = false;
@@ -756,6 +768,8 @@ struct ArmyStrengthSnapshot {
   // Present immediately after CUnit resolves, independently of CArmy health.
   // Unreached numeric operands stay null; reference/index/capacity/ID zero is valid.
   std::optional<ArmyNativeResolutionSnapshotV1> native_army_resolution_v1;
+  // Exact .3 current landing input; omitted by old/.2 producers.
+  std::optional<ArmyCurrentDisembarkPenaltyV1> current_disembark_penalty_v1;
   ArmyStrengthScopeRole scope_role = ArmyStrengthScopeRole::player;
   std::vector<std::int32_t> war_ids;
   std::int32_t regiment_count = 0;
@@ -830,6 +844,8 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyCurrentCandidateDetachmentMapperInputsV1> current_candidate_detachment_mapper_inputs_v1;
   std::optional<ArmyCurrentDetachmentDataInputsV1> current_detachment_data_inputs_v1;
   std::optional<ArmyCurrentPreDateCharacterPrefixInputsV1> current_pre_date_character_prefix_inputs_v1;
+  std::optional<ArmyCurrentSelectedTitleHolderOwnerRelationV1>
+      current_selected_title_holder_owner_relation_v1;
 
   friend bool operator==(const ArmyStrengthSnapshot &,
                          const ArmyStrengthSnapshot &) = default;

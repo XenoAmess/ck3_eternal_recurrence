@@ -1,0 +1,95 @@
+{
+  "schema": "xar.ck3.ordinary-holy-war-declaration-context-source-contract/v1",
+  "status": "research-source-implemented-FIRST-NOTRUN",
+  "source_base_commit": "71b729f0cc4894331f1dadb89155920fccd42a00",
+  "exact_build": {
+    "game_version": "1.20.0.3",
+    "executable_sha256": "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    "sha_provenance": "Root supplied frozen installed-build; no new hash by this owner"
+  },
+  "source_package": "Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/holy-war/",
+  "actual_source_io": {
+    "reads": 35,
+    "bytes": 1358,
+    "selector": {"reads": 1, "bytes": 8},
+    "metadata": {"reads": 31, "bytes": 372},
+    "bodies": {"reads": 3, "bytes": 978},
+    "implementation_new_exe_reads": 0,
+    "unwind_reads": 0,
+    "new_hashes": 0,
+    "ledger": "SOURCE-READ-LEDGER.json"
+  },
+  "actual_source_chain": [
+    {"kind": "vtable-slot", "rva": "0x4530020", "size": 8, "raw": "50f2774201000000", "target_rva": "0x277F250"},
+    {"begin": "0x277F250", "end_exclusive": "0x277F369", "bytes": 281, "receipt": "TARGET-277F250-ACTUAL-BODY.json", "fact": "selected CB / actual context recipient and additional role / claimant native fallback / full native title array"},
+    {"begin": "0x31F4E40", "end_exclusive": "0x31F4FBE", "bytes": 382, "receipt": "TARGET-31F4E40-ACTUAL-BODY.json", "fact": "889F60 scope constructor; 2A81500(scope,additional,recipient,claimant,native_titles,0)"},
+    {"begin": "0x31F1540", "end_exclusive": "0x31F167B", "bytes": 315, "receipt": "TARGET-31F1540-ACTUAL-BODY.json", "fact": "310CEE0(CB+A80,native_CB_scope,out10), 80-byte copied output"}
+  ],
+  "reuse": {
+    "declarations": "ck3_12002_declarations.hpp/.cpp through exact 1.20.0.3 reviewed ABI reuse",
+    "cost_evaluator_rva": "0x310CEE0",
+    "cost_block_offset": "0xA80",
+    "scope_ctor_rva": "0x889F60",
+    "scope_populate_rva": "0x2A81500",
+    "scope_full_dtor_rva": "0x87E0E0",
+    "scope_size": "0x168",
+    "character_native_fallback_slot_rva": "0x5C67570",
+    "context_role_offsets": {"actor": "0x2D8", "recipient": "0x2DC", "additional": "0x2EC"},
+    "war_offsets": {"CB": "0x8", "native_title_array": "0x10", "claimant": "0x28"}
+  },
+  "readonly_query": {
+    "step": "query-player-ordinary-holy-war-declaration-context-v1",
+    "MCP_tool": "ck3_query_player_ordinary_holy_war_declaration_context_v1",
+    "wire_schema": "player_ordinary_holy_war_declaration_context_v1",
+    "backend_id": "ck3-1.20.0.3-native-player-ordinary-holy-war-declaration-context-v1",
+    "result_field": "player_ordinary_holy_war_declaration_context",
+    "macro": "XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1",
+    "allowed_cb_keys": ["minor_religious_war", "religious_war", "major_religious_war"],
+    "input": "current selected declaration row with full target/CB/configuration/claimant/ordered-title identity and expected native/public revision",
+    "capture": "one owning-thread selected native context, optional CB-only evaluated vector, full native role identity and actual final validator result",
+    "raw_type": "signed int64[10]",
+    "raw_scale": 100000,
+    "resources": ["gold", "prestige", "piety", "renown", "influence", "herd", "treasury", "treasury_or_gold", "merit", "barter_goods"],
+    "zero_semantics": "known zero requires an actual native evaluation; no unavailable-to-zero substitution",
+    "generic_interaction_cost": "unknown; separate from CB vector",
+    "total_cost": "unknown; no full-total readiness",
+    "actions": 0,
+    "legacy_endpoints": "unchanged"
+  },
+  "wire_fields": {
+    "selected_identity": ["declaration_id", "target_character_id", "casus_belli_index", "casus_belli_key", "configuration_index", "claimant_character_id", "target_title_ids"],
+    "actual_roles": ["context_actor_character_id", "context_recipient_character_id", "context_additional_role_character_id", "context_claimant_character_id"],
+    "role_type": "nullable full signed int32 native DWORD interpretation; no index masking or actor substitution",
+    "fallback_flags": ["recipient_uses_native_fallback", "additional_role_uses_native_fallback", "claimant_uses_native_fallback"],
+    "cb_cost": ["available", "unavailable_reason", "resource_keys", "resource_costs_raw", "raw_scale"],
+    "generic_interaction_cost_raw": null,
+    "total_declaration_cost_raw": null,
+    "total_cost_ready": false,
+    "final_can_send": "nullable native validator bool; readable false is independent from numeric CB availability",
+    "public_native_revision": "distinct positive uint64 frame bindings"
+  },
+  "unclosed": [
+    "outgoing generic interaction cost scope",
+    "payer and cost application semantics",
+    "names and bodies of boolean callees 31F10F0/310E710/31F07F0/31F4490",
+    "first compiled native whole fixture",
+    "first registered whole native consumption",
+    "Robert29829 genuine selected ordinary holy-war paused native quote"
+  ],
+  "qualification": {
+    "FIRST_build": "NOTRUN",
+    "FIRST_native_whole_producer": "NOTRUN",
+    "FIRST_registered_consumer": "NOTRUN",
+    "live": "NOTRUN",
+    "game_days_added": 0,
+    "fixture_producers": 1,
+    "registered_consumption_compounds": 1,
+    "native_target": "xar_ck3_12003_ordinary_holy_war_declaration_context_whole_mailbox_test",
+    "native_producer": "src/ordinary_holy_war_declaration_context12003_whole_mailbox_test.cpp",
+    "registered_consumer": "ck3_autonomous_player/tests/test_player_ordinary_holy_war_declaration_context_12003_whole_wire.py",
+    "registered_method": "PlayerOrdinaryHolyWarDeclarationContext12003WholeWireTests.test_five_compiled_whole_native_contexts_registered_service_mcp",
+    "whole_wire_files": ["native-wire-nonzero.json", "native-wire-known-zero.json", "native-wire-redirected-additional.json", "native-wire-native-fallback.json", "native-wire-cb-unavailable.json"],
+    "next_owner": "Root next joint qualification batch",
+    "fixture_provenance": "synthetic native memory/callback/frame inputs; whole packets from compiled production serializer; no Python repair"
+  }
+}

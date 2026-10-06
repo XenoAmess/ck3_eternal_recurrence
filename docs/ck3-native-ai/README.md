@@ -9,6 +9,12 @@ Root 在 R0051 原 Robert29829 普通战役、最小化暂停现场，取得完�
 
 [实际Army恢复](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-g104-h9596/ROOT-FIRST-ACTUAL-ARMY-CAP64-RECOVERY.json) · [真实完整写入](Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/managed-runtime-next-g104-h9596/ROOT-FIRST-ACTUAL-CAP64-COMPLETE-WRITE-RECEIPT.json) · [Detachment资格](Z:/ck3_mod_rewrite_process_assets/g2-background-round29-20261006/detachment-date-pending-source/implementation/QUALIFIED-ROOT-DELIVERY.json) · [Tenet FIRST](Z:/ck3_mod_rewrite_process_assets/g2-parallel-20261006/faith-tenet/g104-first/attempt01/ROOT-FIRST-DELIVERY.json)。
 
+## 2026-10-06：普通圣战所选 context 与 CB 原生费用 source
+
+[普通圣战 CB 费用](ordinary-holy-war-declaration-costs-12003.md)复用已闭合的 exact `.3` selected-context、原生 scope 与十资源 Q100000 evaluator，接入同查询 optional CB-only vector，保留实际 additional role、claimant native fallback 与完整选项 ID。generic/total cost 仍明确 unknown；旧 endpoint 保持兼容。独立 nextsource 实现、sole whole-native FIRST 与 sole registered consumption 已准备，FIRST build/native/consumer/live 全部 NOTRUN，状态为 research，不增加游戏日或 live 信用。
+## 2026-10-06：当前登陆惩罚天数接入同 Army 查询，FIRST NOTRUN
+
+[当前登陆惩罚天数](army-current-disembark-penalty-days-12003.md)已闭合 `Army.GetDisembarkPenaltyDays` literal4736B10 → callback24EA630 → 7B core24AA240，完整 typed registrar与既有实际CArmy provider证明receiver。现有 `ck3_query_army_strengths` 新增 readonly int32 current-days leaf，exact `.3`已绑定，0/-1/34均保留；active/expiry predicate与future landing日期独立。独占基线71b729f0的新whole native producer五source cases与真实strict/Service/registered MCP consumer已编写；build/native/consumer FIRST全部NOTRUN，状态 research/source implemented，零新game/query/日与live信用。既有retained crossing geography资格直接复用。
 
 ### Oct6 actual诊断与新source提交索引
 

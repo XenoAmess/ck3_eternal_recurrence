@@ -1,6 +1,9 @@
 #pragma once
 
 #include "xar_bridge/ck3_12002_nonwar_mailbox.hpp"
+#if defined(XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1)
+#include "xar_bridge/ordinary_holy_war_declaration_context12003_mailbox.hpp"
+#endif
 #if defined(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1)
 #include "xar_bridge/ck3_12003_confucian_assembly_mailbox.hpp"
 #endif

@@ -1790,6 +1790,16 @@ def create_server(
                 expected_revision=expected_revision, type_index=type_index, action_id=action_id,
             )
 
+    if getattr(driver, "allow_private_player_ordinary_holy_war_declaration_context_query", False) is True:
+        @server.tool(annotations=read_only_tool)
+        def ck3_query_player_ordinary_holy_war_declaration_context_v1(
+            expected_revision: int, declaration_id: str,
+        ) -> dict[str, object]:
+            """Read the selected ordinary holy-war context and independent CB resource quote."""
+            return service.query_player_ordinary_holy_war_declaration_context_private_v1(
+                expected_revision=expected_revision, declaration_id=declaration_id,
+            )
+
     if getattr(driver, "allow_private_player_clergy_appointment_query", False) is True:
         @server.tool(annotations=read_only_tool)
         def ck3_query_player_clergy_appointment_v1(
@@ -4338,6 +4348,10 @@ def parser() -> argparse.ArgumentParser:
         help="enable the private exact Sway instance terminal-state observation",
     )
     result.add_argument(
+        "--private-player-ordinary-holy-war-declaration-context-query", action="store_true",
+        help="Read a selected ordinary holy-war context and its independent CB quote.",
+    )
+    result.add_argument(
         "--private-player-clergy-appointment-query", action="store_true",
         help="Read native candidate appointment and reassignment observations.",
     )
@@ -4514,6 +4528,7 @@ def main(argv: list[str] | None = None) -> int:
             or args.private_player_rite_governance_query
             or args.private_player_religion_conversion_terms_query
             or args.private_active_scheme_sway_completion_query
+            or args.private_player_ordinary_holy_war_declaration_context_query
             or args.private_player_clergy_appointment_query
             or args.private_player_rite_members_query
             or args.private_player_religion_hostility_query
@@ -4617,6 +4632,8 @@ def main(argv: list[str] | None = None) -> int:
         driver.allow_private_player_religion_conversion_terms_query = True
     if args.private_active_scheme_sway_completion_query:
         driver.allow_private_active_scheme_sway_completion_query = True
+    if args.private_player_ordinary_holy_war_declaration_context_query:
+        driver.allow_private_player_ordinary_holy_war_declaration_context_query = True
     if args.private_player_clergy_appointment_query:
         driver.allow_private_player_clergy_appointment_query = True
     if args.private_player_rite_members_query:

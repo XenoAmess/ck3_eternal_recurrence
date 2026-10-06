@@ -16,6 +16,7 @@
 #include "xar_bridge/army_current_condition30_inputs_serializer_v1.inc.hpp"
 #include "xar_bridge/army_current_flag20_inputs_serializer_v1.inc.hpp"
 #include "xar_bridge/army_current_flag21_inputs_serializer_v1.inc.hpp"
+#include "xar_bridge/army_current_selected_title_holder_owner_relation_serializer_v1.inc.hpp"
 #include "xar_bridge/army_current_flag31_inputs_serializer_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_pending_update_serializer_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_character_prefix_serializer_v1.inc.hpp"
@@ -546,6 +547,22 @@ inline void AppendArmyCurrentProvinceBesiegingContributorsV1(
 #include "xar_bridge/army_daily_assault_loss_inputs_serializer_v1.inc.hpp"
 #include "xar_bridge/army_current_assault_removal_reference_serializer_v1.inc.hpp"
 
+template <class Number, class JsonString>
+inline void AppendArmyCurrentDisembarkPenaltyV1(
+    std::string &out, const ArmyCurrentDisembarkPenaltyV1 &p,
+    Number number, JsonString append_json_string) {
+  out += "{\"schema_version\":1,\"source\":";
+  append_json_string(out, "native_current_disembark_penalty_days_12003");
+  out += ",\"status\":\"";
+  out += p.available ? "available" : "unavailable";
+  out += "\",\"remaining_days\":";
+  out += p.remaining_days ? number(*p.remaining_days) : "null";
+  out += ",\"unavailable_reason\":";
+  if (p.available) out += "null";
+  else append_json_string(out, p.unavailable_reason);
+  out += '}';
+}
+
 template <class Number, class Int32Array, class JsonString>
 inline void AppendArmyStrengthV1(
     std::string &result,
@@ -560,6 +577,11 @@ inline void AppendArmyStrengthV1(
     result += number(strength.native_carmy_id);
   } else {
     result += "null";
+  }
+  if (strength.current_disembark_penalty_v1) {
+    result += ",\"current_disembark_penalty_v1\":";
+    AppendArmyCurrentDisembarkPenaltyV1(
+        result, *strength.current_disembark_penalty_v1, number, append_json_string);
   }
   if (strength.native_army_resolution_v1.has_value()) {
     const auto &resolution = *strength.native_army_resolution_v1;
@@ -632,6 +654,12 @@ inline void AppendArmyStrengthV1(
   if (strength.current_army_flag21_inputs_v1) {
     result += ",\"current_army_flag21_inputs_v1\":";
     AppendArmyCurrentFlag21InputsV1(result, *strength.current_army_flag21_inputs_v1,
+        number, append_json_string);
+  }
+  if (strength.current_selected_title_holder_owner_relation_v1) {
+    result += ",\"current_selected_title_holder_owner_relation_v1\":";
+    xar::game::AppendArmyCurrentSelectedTitleHolderOwnerRelationV1(
+        result, *strength.current_selected_title_holder_owner_relation_v1,
         number, append_json_string);
   }
   if (strength.current_army_flag31_inputs_v1) {

@@ -13,6 +13,7 @@
 #include "xar_bridge/ck3_12003_army_condition30_inputs.hpp"
 #include "xar_bridge/ck3_12003_army_flag20_inputs.hpp"
 #include "xar_bridge/ck3_12003_army_flag21_inputs.hpp"
+#include "xar_bridge/ck3_12003_selected_title_holder_owner_relation.hpp"
 #include "xar_bridge/ck3_12003_army_flag31_inputs.hpp"
 #include "xar_bridge/ck3_12003_current_candidate_detachment_mapper.hpp"
 #include "xar_bridge/ck3_12003_current_detachment_data.hpp"
@@ -41,6 +42,8 @@ inline constexpr std::uintptr_t kChunkCanReplenishRva12003 = 0x2657F10;
 inline constexpr std::uintptr_t kRegimentMonthlyReplenishmentRva12003 = 0x262CAD0;
 inline constexpr std::uintptr_t kArmyMonthlySupplyChangeRva12003 = 0x24E51A0;
 inline constexpr std::uintptr_t kArmyGatheringDaysLeftRva12003 = 0x24E9070;
+// Exact .3 callback24EA630 uses this complete readonly remaining-days core.
+inline constexpr std::uintptr_t kArmyDisembarkPenaltyDaysRva12003 = 0x24AA240;
 inline constexpr std::uintptr_t kUnitNormalizedEdgeProgressRva12003 = 0x24AB2F0;
 inline constexpr std::uintptr_t kUnitFirstRouteEdgeDurationRva12003 = 0x24AB060;
 inline constexpr std::uintptr_t kProvinceSupplyLimitRva12003 = 0x247BEC0;
@@ -130,6 +133,10 @@ struct ArmyBindings {
   std::int64_t *(*get_army_monthly_supply_change)(void *, std::int64_t *, void *, void *) = nullptr;
   // Exact .3 native CArmy receiver, integral remaining days (scale 1).
   std::int32_t (*get_army_gathering_days_left)(void *) = nullptr;
+  // Exact .3 native core: signed EAX dword return, RCX receiver, no writes.
+  using DisembarkPenaltyGetter12003 = std::int32_t (__fastcall *)(const void *);
+  bool current_disembark_penalty_enabled = false;
+  DisembarkPenaltyGetter12003 get_army_disembark_penalty_days = nullptr;
   // Exact .3 CUnit route getters; neither requires an army-AI assignment.
   // A missing getter leaves only that operand unknown. The .2 binder omits
   // this subdomain. Positive 0xFFFFFFFF is the native unavailable sentinel.
@@ -199,6 +206,8 @@ struct ArmyBindings {
   ck3_12003::CurrentArmyFlag31Bindings12003 current_army_flag31_bindings{};
   ck3_12003::CurrentFleetSupplyTickBindings12003 current_fleet_supply_tick_bindings{};
   ck3_12003::CurrentDetachmentDataBindings12003 current_detachment_data_bindings{};
+  ck3_12003::CurrentSelectedTitleHolderOwnerRelationBindings12003
+      current_selected_title_holder_owner_relation_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

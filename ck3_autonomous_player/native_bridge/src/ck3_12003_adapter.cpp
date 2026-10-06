@@ -170,6 +170,9 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
         ck3_12003::BindCurrentArmyFlag20Inputs12003(image_base, executable_sha256);
     result.armies.current_army_flag21_bindings =
         ck3_12003::BindCurrentArmyFlag21Inputs12003(image_base, executable_sha256);
+    result.armies.current_selected_title_holder_owner_relation_bindings =
+        xar::ck3_12003::BindCurrentSelectedTitleHolderOwnerRelation12003(
+            image_base, executable_sha256);
     result.armies.current_fleet_supply_tick_bindings =
         ck3_12003::BindCurrentFleetSupplyTickImage12003(image_base, executable_sha256);
     result.armies.current_candidate_detachment_mapper_bindings =
@@ -305,6 +308,12 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     result.armies.get_army_gathering_days_left =
         reinterpret_cast<decltype(result.armies.get_army_gathering_days_left)>(
             image_base + ck3_12002::kArmyGatheringDaysLeftRva12003);
+    // Exact .3 current landing getter core; no .2 binding.
+    result.armies.get_army_disembark_penalty_days =
+        reinterpret_cast<decltype(result.armies.get_army_disembark_penalty_days)>(
+            image_base + ck3_12002::kArmyDisembarkPenaltyDaysRva12003);
+    // Fixed same CArmy receiver/int32 return typeIDs as the closed gathering provider.
+    result.armies.current_disembark_penalty_enabled = true;
     result.armies.current_movement_progress_enabled = true;
     // Reuse the exact-.3 reviewed route provider address map. The .2 adapter
     // leaves this additive strengths observer disabled.

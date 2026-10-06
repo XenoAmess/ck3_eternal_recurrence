@@ -168,6 +168,10 @@ void RegisterNonwarMailboxExecutorsV1(
   environment.permitted_executor_clergy12002 = executors.clergy;
   environment.permitted_executor_county_conversion_task_action12003 = executors.county_conversion_task_action;
 #endif
+#if defined(XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1)
+  environment.permitted_executor_ordinary_holy_war_declaration_context12003 =
+      executors.ordinary_holy_war_declaration_context;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_RELIGION_CONVERSION_PRIVATE_QUERY_V1)
   environment.permitted_executor_religion_conversion12002 = executors.religion_conversion;
   environment.permitted_executor_religion_conversion_action12003 = executors.religion_conversion_action;

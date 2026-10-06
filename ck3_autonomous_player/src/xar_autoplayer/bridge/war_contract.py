@@ -29,7 +29,11 @@ from .army_pre_date_character_prefix_contract import normalize_current_pre_date_
 from .army_current_post_admission_refresh_contract import normalize_current_post_admission_refresh_inputs_v1
 from .army_current_condition30_inputs_contract import normalize_current_army_condition30_inputs_v1
 from .army_current_flag20_inputs_contract import normalize_current_army_flag20_inputs_v1
+from .army_current_disembark_penalty_contract import normalize_current_disembark_penalty_v1
 from .army_current_flag21_inputs_contract import normalize_current_army_flag21_inputs_v1
+from .army_current_selected_title_holder_owner_relation_contract import (
+    normalize_current_selected_title_holder_owner_relation_v1,
+)
 from .army_current_flag31_inputs_contract import normalize_current_army_flag31_inputs_v1
 from .army_current_candidate_detachment_mapper_contract import normalize_current_candidate_detachment_mapper_inputs_v1
 from .army_current_detachment_data_contract import normalize_current_detachment_data_inputs_v1
@@ -314,7 +318,9 @@ _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_detachment_data_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_pre_date_character_prefix_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_condition30_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_flag20_inputs_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_disembark_penalty_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_flag21_inputs_v1"}
+_ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_selected_title_holder_owner_relation_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_army_flag31_inputs_v1"}
 _ARMY_STRENGTH_SUPPLY_ROW_KEYS |= {"current_fleet_supply_tick_inputs_v1"}
 _ARMY_STRENGTH_SCOPE_ROLES = {
@@ -1952,12 +1958,20 @@ def _normalize_army_strength_row(
     if "current_army_condition30_inputs_v1" in value:
         result["current_army_condition30_inputs_v1"] = normalize_current_army_condition30_inputs_v1(
             value["current_army_condition30_inputs_v1"])
+    if "current_disembark_penalty_v1" in value:
+        if status != "available":
+            raise ValueError(f"native unavailable {name} cannot publish current_disembark_penalty_v1")
+        result["current_disembark_penalty_v1"] = normalize_current_disembark_penalty_v1(
+            value["current_disembark_penalty_v1"])
     if "current_army_flag20_inputs_v1" in value:
         result["current_army_flag20_inputs_v1"] = normalize_current_army_flag20_inputs_v1(
             value["current_army_flag20_inputs_v1"])
     if "current_army_flag21_inputs_v1" in value:
         result["current_army_flag21_inputs_v1"] = normalize_current_army_flag21_inputs_v1(
             value["current_army_flag21_inputs_v1"])
+    if "current_selected_title_holder_owner_relation_v1" in value:
+        result["current_selected_title_holder_owner_relation_v1"] = normalize_current_selected_title_holder_owner_relation_v1(
+            value["current_selected_title_holder_owner_relation_v1"])
     if "current_army_flag31_inputs_v1" in value:
         result["current_army_flag31_inputs_v1"] = normalize_current_army_flag31_inputs_v1(
             value["current_army_flag31_inputs_v1"])

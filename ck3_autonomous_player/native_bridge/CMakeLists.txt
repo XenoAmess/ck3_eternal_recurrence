@@ -803,6 +803,8 @@ option(XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1
   "Compile the private READY player_rite_governance_private_query_v1 candidate" OFF)
 option(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1
   "Compile the private READY player_clergy_appointment_private_query_v1 candidate" OFF)
+option(XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1
+  "Compile the exact .3 readonly selected ordinary holy-war context and optional CB costs" OFF)
 option(XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1
   "Compile the private READY player_rite_members_private_query_v1 candidate" OFF)
 option(XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1
@@ -1355,6 +1357,7 @@ foreach(private_option IN ITEMS
     XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_RITE_GOVERNANCE_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1
+    XAR_CK3_ENABLE_ORDINARY_HOLY_WAR_DECLARATION_CONTEXT_PRIVATE_V1
     XAR_CK3_ENABLE_G2_PLAYER_RITE_MEMBERS_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_CONFUCIAN_ASSEMBLY_PREDICATES_PRIVATE_QUERY_V1
     XAR_CK3_ENABLE_CONFUCIAN_RELIGIOUS_TITLE_PRIVATE_QUERY_V1
@@ -9128,6 +9131,7 @@ if(BUILD_TESTING)
   add_test(NAME xar_confucian_challenger_graph_v1_test COMMAND xar_confucian_challenger_graph_v1_test)
 endif()
 include(cmake/current_army_flag21_inputs_12003.cmake)
+include(cmake/current_selected_title_holder_owner_relation_12003.cmake)
 include(cmake/current_fleet_supply_tick_inputs_12003.cmake)
 include(cmake/army_strength_result_write_diagnostic_v1.cmake)
 
@@ -9157,3 +9161,5 @@ include(cmake/realm_law_succession_profile_12003.cmake)
 include(cmake/player_faction_county_culture_12003.cmake)
 include(cmake/commander_target_rolls_12003.cmake)
 include(cmake/player_seek_indulgences_terms_12003.cmake)
+include(cmake/ordinary_holy_war_cb_cost_first_fixture.cmake)
+include(cmake/current_disembark_penalty_days_12003.cmake)

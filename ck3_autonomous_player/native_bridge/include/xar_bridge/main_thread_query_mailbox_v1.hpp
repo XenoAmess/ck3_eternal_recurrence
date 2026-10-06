@@ -405,6 +405,7 @@ struct MainThreadQueryInstallEnvironmentV1 {
   MainThreadQueryExecutorV1 permitted_executor_sway_completion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_rite_governance12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_clergy12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_ordinary_holy_war_declaration_context12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_rite_members12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_doctrines12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_hostility12002 = nullptr;
@@ -644,6 +645,7 @@ struct MainThreadQueryMailboxV1 {
   MainThreadQueryExecutorV1 permitted_executor_sway_completion12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_rite_governance12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_clergy12002 = nullptr;
+  MainThreadQueryExecutorV1 permitted_executor_ordinary_holy_war_declaration_context12003 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_rite_members12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_doctrines12002 = nullptr;
   MainThreadQueryExecutorV1 permitted_executor_religion_hostility12002 = nullptr;
