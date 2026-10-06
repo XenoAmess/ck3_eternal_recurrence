@@ -16,7 +16,7 @@ The held daily callback supplies this order:
 
 Within `2A97ED0`, the group Army tail appends the **original raw group Army ID** to primary `+68` when its current flags0 count is at or below zero. Occurrence order and repeats survive. These appends occur after this callback's earlier queue drain; they are not proof of an immediate queued-removal call. Later per-Army effects and the next callback's earlier stages can change the receiver state before a future drain.
 
-The same assault consumer separately releases occupied group entries through `9D11F0(record+10)`, then writes control zero and decrements manager `+180`. The held caller closes the direct call and outer bookkeeping, but the `9D11F0` body is not held. It must not be named as Army removal or assumed to release only two vectors. `2A978A0` is the independently source-closed Army-removal entrance.
+The same assault consumer separately releases occupied group entries through `9D11F0(record+10)`, then writes control zero and decrements manager `+180`. The first sealed plan had only this caller and outer bookkeeping; the newly closed direct body is recorded below. It must not be named as Army removal. `2A978A0` is the independently source-closed Army-removal entrance.
 
 ```mermaid
 flowchart TD
@@ -33,7 +33,8 @@ flowchart TD
   A --> P[Sequential writer and actual-target refresh]
   P --> N[Flags0 tail count nonpositive: append original raw ArmyID]
   N --> G[9D11F0 occupied record release]
-  G -. body effects unclosed .-> U[Post-release object and queue state unknown]
+  G --> RV[ArRg then Army vector direct cleanup]
+  RV -. two buffer-release dynamic targets unclosed .-> U[Complete post-release receiver effects unknown]
   G --> O[Caller control0 and occupied count decrement]
   O --> L[Later per-Army removal and monthly stages]
   L -. intervening state required .-> D[Future callback queue drain]
@@ -52,14 +53,14 @@ The first-removal ledger remains `Z:/ck3_mod_rewrite_process_assets/g2-backgroun
 | New ordered append requests | `same_input_current_daily_assault_loss_v1[].projection.ordered_queue_append_requests` | Derived prefix output over a fixed observed table. Empty is meaningful only with the corresponding numeric-prefix readiness. |
 | Potential appended-ID resolution | Current loss `group.army_counts[].resolution` | Supplies actual pointer identity and full ID, but does not publish Army magic `+14`; flags0 counts alone cannot prove the drain predicate. |
 | First candidate cleanup context | `monthly_first_removal_cleanup_inputs_v1` | Selects the first valid **captured queue** candidate. An empty captured queue does not supply cleanup context for a newly derived appended ID. |
-| Record-release effects | `9D11F0(record+10)` | Known exact direct entrance; body/storage effects unclosed. Do not treat outer control/count writes as its body. |
+| Record-release effects | `9D11F0(record+10)` | Direct body now closed below; two dynamic buffer-release targets remain separate. Outer control/count writes are caller effects. |
 | Subsequent duplicate removal | Registry/cache after prior `2A978A0` | Current initial predicates cannot replace this evolved physical state. |
 
 ## Smallest numerical and observation work packages
 
 The first independent pure value is an explicitly named **conditional pre-release pending queue** for a standalone current-table invocation: copy the captured current pending occurrences, then append the computed prefix's raw ID requests in their original order. Keep captured and derived occurrence provenance separate. Do not modify or feed this list back into the observed DTO. With a complete numerical prefix, the list may be complete for that bounded stage; with a partial prefix, publish only the known append prefix and its next missing group/request. This does not need the unconsumed removal context, a full seven-chunk gate, or a new capacity limit. No actual post-state or fullmonthly readiness changes.
 
-The next necessary source leaf is `9D11F0` because it executes before the consumer returns and can determine whether current Army-resolution context is reusable. A single bounded `.pdata` lookup and frozen-file read should close its real extent and direct state footprint; only a callee that changes the required Army registry, queue or group-vector state justifies further reads. No closed manager, allocator, writer or placement body needs rereading. The separate placement owner confirms their `2AA2030` packet contains only the `9D11F0` call/address and will reuse this lane's future closure.
+The first plan identified `9D11F0` as the next necessary source leaf because it executes before the consumer returns and can determine whether current Army-resolution context is reusable. Its bounded `.pdata` lookup and frozen-file read are now delivered below. Only a real dependency on the remaining dynamic receiver effects would justify more source work. No closed manager, allocator, writer or placement body needs rereading. The separate placement owner confirms their `2AA2030` packet contained only the `9D11F0` call/address and reuses this lane's new closure.
 
 If that closure permits a conditional post-release drain seam, the smallest additive same-query collector captures Army `+14` for the real group Army reference union through the existing generation/fallback resolver. It retains original reference versus actual receiver identity, and reuses current queue resolution rows for existing pending IDs. For a new first valid appended candidate, explicitly capture the existing first-cleanup components against that actual candidate rather than repurposing an unavailable current-queue candidate DTO. Derived cache deltas stay separate from the observed cleanup context. Full removal still requires the real later lifecycle/registry suffix, so later repeats remain partial until those writes are modeled.
 
@@ -69,4 +70,20 @@ The implementation order is source plan review, independent pure queue append as
 
 This package is **research / source-first plan**, not a newly qualified numerical or live capability. Actual daily loss/effects/removal/post-stage remain false/null; complete regular-refill, calendar and fullmonthly remain false. The current daily loss native FIRST fixture RED and its minimal end-marker correction are recorded in its own topic and retained packet; this planning work grants it no wire credit.
 
-The external packet is `Z:/ck3_mod_rewrite_process_assets/g2-background-round17-20261006/daily-assault-queue-release-source/`, with the sealed scope, held canonical excerpt receipt, machine-readable input/stage ledger and Oct6/W41 coordinator fields. Root merges shared reports and pushes. Next concrete source entrance is `9D11F0`; next independently useful pure interface is current pending occurrences plus conditional ordered append requests, with no queue execution claim.
+The external packet is `Z:/ck3_mod_rewrite_process_assets/g2-background-round17-20261006/daily-assault-queue-release-source/`, with the original sealed scope, held canonical excerpt receipt, machine-readable input/stage ledger and Oct6/W41 coordinator fields. Root merges shared reports and pushes. The original source plan remains historical; the new source and independently useful pure result follow.
+
+## New direct release source
+
+The authorized frozen-file read closes `9D11F0..9D124C`,92B, raw SHA `d04dbf98b0753f1ebdd1ca022537661ad1967759e8965f61f33ae762c9d96ca9`. Verified `.pdata`/unwind metadata and body cost324B total across21 seeks; no header/fullEXE scan/hash or old function body read. `SOURCE-009D11F0.json` retains every exact read, instruction and new raw byte.
+
+With receiver `record+10`, the function handles the ArRg vector first: if its data at record `+28` is nonnull, it sets count `+34` to zero, calls virtual slot `+10` on the buffer-release receiver at record `+38` with `(data,4)`, then writes data `+28=0` and capacity `+30=0`. It then applies the same sequence to the Army vector at data `+10`, count `+1C`, release receiver `+20`, capacity `+18`. A null data pointer skips **all** stores for that vector; it does not manufacture zero count/capacity. Normal return reaches the separately held caller's control/count bookkeeping.
+
+There is no direct Army/ArRg registry or primary pending-queue write in these92B. The two indirect buffer-release targets are not source-closed, so this direct footprint does not promote full post-release registry/context invariance. Their concrete next locator is the actual record `+38/+20` receiver vtable slot `+10`, if a future post-release numerical consumer needs its effects. The delivered pre-release sequence consumes none of that context and needs no additional native field.
+
+## Production pre-release pending sequence
+
+The independent `project_current_daily_assault_queue_append_v1(army_strength, loss_projection)` uses the already computed same-query loss prefix. The service now publishes `same_input_current_daily_assault_queue_append_v1` without recomputing the writer or altering the existing loss result. It returns captured pending occurrences, known conditional append occurrences, and a composite known prefix with each source index/provenance. A complete bounded pre-release sequence becomes ready only when both actual captured pending input and the loss append sequence are available. A missing captured queue leaves the computed append prefix available; a partial group preserves its known append prefix and concrete next group/request; an unqualified empty append list cannot claim a complete tail. No queue execution, earlier drain, record release or next day is replayed.
+
+One newly authored compound passed FIRST on2026-10-06, process1.7453002s, `Ran1 test in0.074s`. The real service preserves captured `[7,7,-2147483643]` and derived raw append requests `[12,12,0x80000005,12]`, producing stored signed32 `[7,7,-2147483643,12,12,-2147483643,12]` in exact order. Original fallback raw ID bits survive; repetitions are retained. The same compound covers a missing group1/physicalslot7 percentage with known first-group prefix, missing observed pending, unqualified empty tail, complete no-append/empty-table copy and older absent schema. Captured JSON stays unchanged and the driver records one Strength query per service invocation. It invokes no old test method or native wire.
+
+Evidence is `pure-implementation/PRESEALED-EXPECTATIONS.json`, `python-first-01/PYTHON-FIRST-TEST-RECEIPT.json` and `PYTHON-ROOT-DELIVERY.json` in the external packet. The latter is4683B SHA `8867f646d94331a78cc04fa91bb5075c9ef77b2d28b30dab15f047546ea8e2d8`. The new pure interface and production service hook are **bounded static-ready**; the direct release source is research with explicit dynamic receiver boundaries. Actual pending after-effects, actual removal, live/full daily/regular refill/calendar/fullmonthly remain false/null. No native registration/build/test, old scene rerun or local game/Steam/SDK/pipe/UI/process operation is performed for this package.

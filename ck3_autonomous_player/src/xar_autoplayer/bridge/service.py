@@ -20,6 +20,7 @@ from .army_scoped_ordered_refill_projection import project_scoped_ordered_refill
 from .army_daily_assault_active_table_projection import project_current_daily_assault_group_inputs_many_v1
 from .army_ordered_refill_besieging_assault_projection import project_ordered_refill_besieging_assaults_v1
 from .army_daily_assault_loss_projection import project_current_daily_assault_loss_v1
+from .army_daily_assault_queue_append_projection import project_current_daily_assault_queue_append_v1
 from .army_post_refill_besieging_current_projection import project_post_refill_besieging_current_v1
 from .army_fixed_chunk0_preparation_projection import project_fixed_chunk0_preparations_v1
 from .army_prepare_scoped_ordered_refill_assembly import project_fixed_chunk0_prepare_scoped_ordered_refills_v1
@@ -4517,6 +4518,13 @@ class GameplayBridgeService:
             if ordered_besieging_entry_mode == "fixed_chunk0_prepare"
             else project_ordered_refill_besieging_assaults_v1(selected_rows)
         )
+        daily_assault_losses = [
+            {"army_id": row["army_id"], "projection": project_current_daily_assault_loss_v1(row)}
+            for row in selected_rows]
+        daily_assault_queues = [
+            {"army_id": row["army_id"], "projection": project_current_daily_assault_queue_append_v1(
+                row, loss["projection"])}
+            for row, loss in zip(selected_rows, daily_assault_losses)]
         return {
             **result,
             "schema_version": 1,
@@ -4557,9 +4565,8 @@ class GameplayBridgeService:
             "same_input_conditional_post_refill_besieging_current_v1": conditional_besieging,
             "same_input_conditional_fixed_chunk0_preparation_v1":
                 preparations,
-            "same_input_current_daily_assault_loss_v1": [
-                {"army_id": row["army_id"], "projection": project_current_daily_assault_loss_v1(row)}
-                for row in selected_rows],
+            "same_input_current_daily_assault_loss_v1": daily_assault_losses,
+            "same_input_current_daily_assault_queue_append_v1": daily_assault_queues,
             "current_daily_assault_group_inputs_v1":
                 project_current_daily_assault_group_inputs_many_v1(selected_rows),
             "same_input_conditional_ordered_refill_besieging_assault_v1":
