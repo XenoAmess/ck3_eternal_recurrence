@@ -304,6 +304,18 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     resupply.character_storage_slot = monthly.character_storage_slot;
     resupply.loaded_gain_raw = reinterpret_cast<const std::int64_t *>(
         image_base + ck3_12003::kLoadedUnderLimitSupplyGainRva12003);
+    auto &rate = result.armies.current_land_supply_rate_bindings;
+    rate.enabled = true;
+    rate.province_component_condition = reinterpret_cast<decltype(rate.province_component_condition)>(image_base + 0xC6AF20);
+    rate.read_province_component = reinterpret_cast<ck3_12002::ReadAdvantageModifierValue>(image_base + 0x2C4D550);
+    rate.character_storage_slot = monthly.character_storage_slot;
+    rate.character_fallback_slot = monthly.character_fallback_slot;
+    rate.get_character_modifier_aggregator = monthly.get_character_modifier_aggregator;
+    rate.read_character_modifier = monthly.read_character_modifier;
+    rate.loaded_excess_slope_raw = reinterpret_cast<const std::int64_t *>(image_base + 0x5C69A38);
+    rate.loaded_min_loss_raw = reinterpret_cast<const std::int64_t *>(image_base + 0x5C69A30);
+    rate.loaded_max_loss_raw = reinterpret_cast<const std::int64_t *>(image_base + 0x5C69A40);
+    rate.loaded_divisor_floor_raw = reinterpret_cast<const std::int64_t *>(image_base + 0x5C68F68);
   }
   if (result.phase.advantage.enabled) {
     // Constructor-faith closure is proven only for exact .3. Keep the .2

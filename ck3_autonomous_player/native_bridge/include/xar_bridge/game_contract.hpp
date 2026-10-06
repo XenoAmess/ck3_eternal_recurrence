@@ -651,6 +651,22 @@ struct ArmyCurrentLandResupplyV1 {
                          const ArmyCurrentLandResupplyV1 &) = default;
 };
 
+struct ArmyCurrentLandSupplyRateInputsV1 {
+  std::string status = "unavailable";
+  std::string unavailable_reason;
+  bool current_observation_ready = false;
+  std::optional<std::int32_t> province_id, subject_army_id, subject_carmy_id;
+  std::optional<std::int32_t> owner_character_id;
+  std::optional<std::int32_t> commander_raw_full_id, commander_resolved_full_id;
+  std::optional<bool> native_land_branch_applicable, commander_used_native_fallback;
+  std::optional<bool> native_province_component_applicable;
+  std::optional<std::int64_t> province_component_raw, commander_modifier_1a9_raw;
+  std::optional<std::int64_t> loaded_excess_slope_raw, loaded_min_loss_raw;
+  std::optional<std::int64_t> loaded_max_loss_raw, loaded_divisor_floor_raw;
+  friend bool operator==(const ArmyCurrentLandSupplyRateInputsV1 &,
+                         const ArmyCurrentLandSupplyRateInputsV1 &) = default;
+};
+
 struct ArmyStrengthSnapshot {
   bool available = false;
   std::int32_t army_id = -1;
@@ -702,6 +718,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyCurrentHelperPointStoreInputsV1> monthly_current_helper_point_store_inputs_v1;
   std::optional<ArmyCurrentProvinceSupplyContributorsV1> current_province_supply_contributors_v1;
   std::optional<ArmyCurrentLandResupplyV1> current_land_resupply_v1;
+  std::optional<ArmyCurrentLandSupplyRateInputsV1> current_land_supply_rate_inputs_v1;
   std::optional<ArmyCountyEntryInputsV1> county_entry_inputs_v1;
   std::optional<BattleNativeOwnerRecallInputsV1> native_owner_recall_inputs_v1;
   std::optional<NativeMaaRecruitmentInputsV1> native_maa_recruitment_inputs_v1;
