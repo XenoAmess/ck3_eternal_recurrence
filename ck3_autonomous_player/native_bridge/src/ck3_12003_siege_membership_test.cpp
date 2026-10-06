@@ -80,7 +80,7 @@ struct Fixture {
       const auto unit_id = index == 0 ? 0 : 0x01000000 + static_cast<std::int32_t>(index);
       const auto army_id = index == 0 ? 0 : 0x02000000 + static_cast<std::int32_t>(index);
       Put(units[index], 0x10, unit_id);
-      Put(units[index], 0x20, std::int32_t{1});
+      Put(units[index], 0x20, static_cast<void *>(province.data()));
       Put(units[index], 0x178, army_id);
       Put(armies[index], 0x10, army_id);
       Put(armies[index], 0x120, std::int32_t{-1});

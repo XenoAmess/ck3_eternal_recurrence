@@ -1,4 +1,5 @@
 ﻿#pragma once
+#include "xar_bridge/ck3_12003_current_province_besieging_contributors.hpp"
 
 #include "xar_bridge/game_contract.hpp"
 #include "xar_bridge/ck3_12003_current_province_supply_contributors.hpp"
@@ -92,6 +93,7 @@ struct ArmyCurrentHelperDomainBindings12003 {
 };
 
 struct ArmyBindings {
+  ck3_12003::CurrentProvinceBesiegingBindings12003 current_province_besieging_bindings{};
   bool enabled = false;
   void **game_state_slot = nullptr;
   void **unit_storage_slot = nullptr;

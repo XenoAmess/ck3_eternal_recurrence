@@ -62,6 +62,7 @@ struct ProvinceBindings {
   void **game_state_slot = nullptr;
   void **character_storage_slot = nullptr;
   void **unit_storage_slot = nullptr;
+  void **province_fallback_slot = nullptr;
   void **siege_storage_slot = nullptr;
   void **landed_title_storage_slot = nullptr;
   ObjectiveTitleProvinceGetter title_province = nullptr;

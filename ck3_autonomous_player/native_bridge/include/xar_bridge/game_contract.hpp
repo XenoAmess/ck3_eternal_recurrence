@@ -670,6 +670,63 @@ struct ArmyCurrentLandSupplyRateInputsV1 {
                          const ArmyCurrentLandSupplyRateInputsV1 &) = default;
 };
 
+struct ArmyProvinceBesiegingRegimentV1 {
+  std::int32_t stored_index = 0;
+  std::int32_t army_regiment_id = -1;
+  bool available = false;
+  std::string unavailable_reason;
+  std::optional<std::int32_t> current_soldiers;
+  std::optional<std::int32_t> maximum_soldiers;
+  std::optional<ArmyRegimentReplenishmentRecordsSnapshotV1> replenishment_records_v1;
+  friend bool operator==(const ArmyProvinceBesiegingRegimentV1 &,
+                         const ArmyProvinceBesiegingRegimentV1 &) = default;
+};
+
+struct ArmyProvinceBesiegingOccurrenceV1 {
+  std::int32_t stored_index = 0;
+  std::int32_t public_unit_id = -1;
+  std::optional<std::int32_t> resolved_unit_id;
+  std::optional<bool> unit_used_fallback;
+  std::optional<std::int32_t> current_province_id;
+  std::optional<bool> current_province_used_fallback;
+  std::optional<std::int32_t> raw_unit18, raw_unit170, raw_unit44;
+  std::optional<std::int32_t> native_carmy_id;
+  std::optional<bool> army_used_fallback;
+  std::optional<bool> eligible;
+  bool available = false;
+  std::string unavailable_reason;
+  std::optional<std::int32_t> native_whole_current_soldiers;
+  std::vector<ArmyProvinceBesiegingRegimentV1> regiments;
+  friend bool operator==(const ArmyProvinceBesiegingOccurrenceV1 &,
+                         const ArmyProvinceBesiegingOccurrenceV1 &) = default;
+};
+
+struct ArmyAssaultBudgetContextV1 {
+  std::string status = "unavailable";
+  std::string unavailable_reason;
+  std::optional<bool> has_active_siege;
+  std::optional<std::int32_t> siege_id;
+  std::optional<std::int32_t> breach_level_raw;
+  std::optional<std::int32_t> casualty_percentage_count;
+  std::optional<std::int64_t> casualty_percentage_raw;
+  friend bool operator==(const ArmyAssaultBudgetContextV1 &,
+                         const ArmyAssaultBudgetContextV1 &) = default;
+};
+
+struct ArmyCurrentProvinceBesiegingContributorsV1 {
+  std::string status = "unavailable";
+  std::string unavailable_reason;
+  std::int32_t province_id = -1;
+  std::optional<std::int32_t> native_province_unit_count;
+  std::optional<std::int32_t> native_besieging_strength;
+  bool contributors_ready = false;
+  std::optional<std::int32_t> native_assault_expected_loss;
+  ArmyAssaultBudgetContextV1 assault_context;
+  std::vector<ArmyProvinceBesiegingOccurrenceV1> occurrences;
+  friend bool operator==(const ArmyCurrentProvinceBesiegingContributorsV1 &,
+                         const ArmyCurrentProvinceBesiegingContributorsV1 &) = default;
+};
+
 struct ArmyStrengthSnapshot {
   bool available = false;
   std::int32_t army_id = -1;
@@ -720,6 +777,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyCurrentHelperDomainInputsV1> monthly_current_helper_domain_inputs_v1;
   std::optional<ArmyCurrentHelperPointStoreInputsV1> monthly_current_helper_point_store_inputs_v1;
   std::optional<ArmyCurrentProvinceSupplyContributorsV1> current_province_supply_contributors_v1;
+  std::optional<ArmyCurrentProvinceBesiegingContributorsV1> current_province_besieging_contributors_v1;
   std::optional<ArmyCurrentLandResupplyV1> current_land_resupply_v1;
   std::optional<ArmyCurrentLandSupplyRateInputsV1> current_land_supply_rate_inputs_v1;
   std::optional<ArmyScopedOrderedRefillInputsV1> scoped_ordered_refill_inputs_v1;

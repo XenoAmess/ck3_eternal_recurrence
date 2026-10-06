@@ -1,4 +1,5 @@
 ﻿#include "xar_bridge/ck3_12002_army.hpp"
+#include "xar_bridge/ck3_12003_current_province_besieging_contributors.hpp"
 #include "xar_bridge/army_strength_query_diagnostic_v1.hpp"
 #include "xar_bridge/ck3_12002.hpp"
 #include "xar_bridge/ck3_12002_military.hpp"
@@ -957,6 +958,18 @@ game::ArmyStrengthSnapshot Strength(const ArmyBindings &bindings,
           Province(game_data, Load<std::int32_t>(province, 0x10)) != province) province = nullptr;
       result.current_province_supply_contributors_v1 =
           ck3_12003::ReadCurrentProvinceSupplyContributors12003(bindings, army, unit, province);
+    }
+    if (bindings.current_province_besieging_bindings.enabled) {
+      g_army_strength_query_diagnostic_v1.reader.store("current_province_besieging_contributors_readonly");
+      void *province = Load<void *>(unit, 0x20);
+      if (province == nullptr && bindings.current_province_besieging_bindings.province_fallback_slot != nullptr)
+        province = *bindings.current_province_besieging_bindings.province_fallback_slot;
+      void *game_data = bindings.game_state_slot != nullptr && *bindings.game_state_slot != nullptr
+          ? Load<void *>(*bindings.game_state_slot, 0xA0) : nullptr;
+      if (province != nullptr &&
+          Province(game_data, Load<std::int32_t>(province, 0x10)) != province) province = nullptr;
+      result.current_province_besieging_contributors_v1 =
+          ck3_12003::ReadCurrentProvinceBesiegingContributors12003(bindings, province);
     }
     if (bindings.current_land_resupply_bindings.enabled) {
       g_army_strength_query_diagnostic_v1.reader.store("current_land_resupply_readonly");

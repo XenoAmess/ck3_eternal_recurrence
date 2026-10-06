@@ -446,6 +446,86 @@ inline void AppendArmyFirstRemovalCleanupInputsV1(
 
 // One row implementation shared by the bridge and its production-reader fixture.
 // The bridge supplies its existing number, array, and string-escaping helpers.
+template <class Number, class JsonString>
+inline void AppendArmyCurrentProvinceBesiegingContributorsV1(
+    std::string &result, const ArmyCurrentProvinceBesiegingContributorsV1 &input,
+    Number number, JsonString append_json_string) {
+  const auto n = [&](const auto &value) { return value ? number(*value) : std::string{"null"}; };
+  const auto b = [](const std::optional<bool> &value) {
+    return value ? (*value ? "true" : "false") : "null";
+  };
+  result += "{\"status\":";
+  append_json_string(result, input.status);
+  result += ",\"unavailable_reason\":";
+  append_json_string(result, input.unavailable_reason);
+  result += ",\"province_id\":" + number(input.province_id);
+  result += ",\"native_province_unit_count\":" + n(input.native_province_unit_count);
+  result += ",\"native_besieging_strength\":" + n(input.native_besieging_strength);
+  result += ",\"contributors_ready\":";
+  result += input.contributors_ready ? "true" : "false";
+  result += ",\"native_assault_expected_loss\":" + n(input.native_assault_expected_loss);
+  const auto &context = input.assault_context;
+  result += ",\"assault_context\":{\"status\":";
+  append_json_string(result, context.status);
+  result += ",\"unavailable_reason\":";
+  append_json_string(result, context.unavailable_reason);
+  result += ",\"has_active_siege\":";
+  result += b(context.has_active_siege);
+  result += ",\"siege_id\":" + n(context.siege_id);
+  result += ",\"breach_level_raw\":" + n(context.breach_level_raw);
+  result += ",\"casualty_percentage_count\":" + n(context.casualty_percentage_count);
+  result += ",\"casualty_percentage_raw\":" + n(context.casualty_percentage_raw);
+  result += "},\"occurrences\":[";
+  bool first = true;
+  for (const auto &row : input.occurrences) {
+    if (!first) result += ',';
+    first = false;
+    result += "{\"stored_index\":" + number(row.stored_index);
+    result += ",\"public_unit_id\":" + number(row.public_unit_id);
+    result += ",\"resolved_unit_id\":" + n(row.resolved_unit_id);
+    result += ",\"unit_used_fallback\":";
+    result += b(row.unit_used_fallback);
+    result += ",\"current_province_id\":" + n(row.current_province_id);
+    result += ",\"current_province_used_fallback\":";
+    result += b(row.current_province_used_fallback);
+    result += ",\"raw_unit18\":" + n(row.raw_unit18);
+    result += ",\"raw_unit170\":" + n(row.raw_unit170);
+    result += ",\"raw_unit44\":" + n(row.raw_unit44);
+    result += ",\"native_carmy_id\":" + n(row.native_carmy_id);
+    result += ",\"army_used_fallback\":";
+    result += b(row.army_used_fallback);
+    result += ",\"eligible\":";
+    result += b(row.eligible);
+    result += ",\"available\":";
+    result += row.available ? "true" : "false";
+    result += ",\"unavailable_reason\":";
+    append_json_string(result, row.unavailable_reason);
+    result += ",\"native_whole_current_soldiers\":" + n(row.native_whole_current_soldiers);
+    result += ",\"regiments\":[";
+    bool first_regiment = true;
+    for (const auto &regiment : row.regiments) {
+      if (!first_regiment) result += ',';
+      first_regiment = false;
+      result += "{\"stored_index\":" + number(regiment.stored_index);
+      result += ",\"army_regiment_id\":" + number(regiment.army_regiment_id);
+      result += ",\"available\":";
+      result += regiment.available ? "true" : "false";
+      result += ",\"unavailable_reason\":";
+      append_json_string(result, regiment.unavailable_reason);
+      result += ",\"current_soldiers\":" + n(regiment.current_soldiers);
+      result += ",\"maximum_soldiers\":" + n(regiment.maximum_soldiers);
+      result += ",\"replenishment_records_v1\":";
+      if (regiment.replenishment_records_v1)
+        AppendArmyRegimentReplenishmentRecordsSnapshotV1(result, *regiment.replenishment_records_v1,
+                                                      number, append_json_string);
+      else result += "null";
+      result += '}';
+    }
+    result += "]}";
+  }
+  result += "]}";
+}
+
 template <class Number, class Int32Array, class JsonString>
 inline void AppendArmyStrengthV1(
     std::string &result,
@@ -513,6 +593,11 @@ inline void AppendArmyStrengthV1(
     result += ",\"current_province_supply_contributors_v1\":";
     AppendArmyCurrentProvinceSupplyContributorsV1(
         result, *strength.current_province_supply_contributors_v1, number, append_json_string);
+  }
+  if (strength.current_province_besieging_contributors_v1) {
+    result += ",\"current_province_besieging_contributors_v1\":";
+    AppendArmyCurrentProvinceBesiegingContributorsV1(
+        result, *strength.current_province_besieging_contributors_v1, number, append_json_string);
   }
   if (strength.current_land_resupply_v1) {
     result += ",\"current_land_resupply_v1\":";

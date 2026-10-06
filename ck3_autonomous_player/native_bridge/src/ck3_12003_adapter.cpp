@@ -300,6 +300,18 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
     result.armies.current_province_supply_contributor_bindings.shares_current_war_side =
         reinterpret_cast<decltype(result.armies.current_province_supply_contributor_bindings.shares_current_war_side)>(
             image_base + ck3_12003::kSupplyContributorCommonWarSideRva12003);
+    auto &besieging = result.armies.current_province_besieging_bindings;
+    besieging.enabled = true;
+    besieging.unit_fallback_slot = reinterpret_cast<void **>(image_base + 0x5D1E378);
+    besieging.army_fallback_slot = reinterpret_cast<void **>(image_base + 0x5D1DE50);
+    besieging.province_fallback_slot = reinterpret_cast<void **>(image_base + 0x5D1E390);
+    besieging.siege_storage_slot = reinterpret_cast<void **>(image_base + 0x5D1EC88);
+    besieging.army_excluded = reinterpret_cast<decltype(besieging.army_excluded)>(image_base + 0x24E8360);
+    besieging.army_province_eligible = reinterpret_cast<decltype(besieging.army_province_eligible)>(image_base + 0x2C16690);
+    besieging.besieging_strength = reinterpret_cast<decltype(besieging.besieging_strength)>(image_base + 0x247F1D0);
+    besieging.assault_expected_loss = reinterpret_cast<decltype(besieging.assault_expected_loss)>(image_base + 0x25205C0);
+    besieging.casualty_percentage_count = reinterpret_cast<const std::int32_t *>(image_base + 0x5452384);
+    besieging.casualty_percentage_table_slot = reinterpret_cast<const std::int64_t **>(image_base + 0x54524C8);
     auto &resupply = result.armies.current_land_resupply_bindings;
     resupply.enabled = true;
     resupply.is_resupply_eligible = reinterpret_cast<ck3_12002::IsHoldingDefender>(

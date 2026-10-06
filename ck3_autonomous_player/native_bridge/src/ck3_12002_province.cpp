@@ -45,7 +45,14 @@ void ReadSiegeProvinceUnitOccurrences(
         if (army != nullptr) row.native_carmy_id = native_id;
         // The four raw CUnit tests are the exact M/K loop prerequisites.
         // Preserve false separately from an unresolved native input.
-        if (Read<std::int32_t>(unit, 0x20) != Read<std::int32_t>(province, 0x10) ||
+        void *unit_province = Read<void *>(unit, 0x20);
+        if (unit_province == nullptr && b.province_fallback_slot != nullptr)
+          unit_province = *b.province_fallback_slot;
+        if (unit_province == nullptr) {
+          rows.push_back(std::move(row));
+          continue;
+        }
+        if (Read<std::int32_t>(unit_province, 0x10) != Read<std::int32_t>(province, 0x10) ||
             Read<std::int32_t>(unit, 0x18) != 0 ||
             Read<std::int32_t>(unit, 0x170) > 0 ||
             Read<std::int32_t>(unit, 0x44) != 0) {
@@ -103,6 +110,7 @@ ProvinceBindings BindProvinceImage(std::uintptr_t base, std::string_view sha) no
   result.game_state_slot = reinterpret_cast<void **>(base + kGameStateSlotRva);
   result.character_storage_slot = reinterpret_cast<void **>(base + kCharacterStorageSlotRva);
   result.unit_storage_slot = reinterpret_cast<void **>(base + kProvinceUnitStorageSlotRva);
+  result.province_fallback_slot = reinterpret_cast<void **>(base + 0x5D1E390);
   result.siege_storage_slot = reinterpret_cast<void **>(base + kProvinceSiegeStorageSlotRva);
   result.landed_title_storage_slot = reinterpret_cast<void **>(base + kObjectiveTitleStorageSlotRva);
   result.title_province = reinterpret_cast<ObjectiveTitleProvinceGetter>(base + 0x230F900);
