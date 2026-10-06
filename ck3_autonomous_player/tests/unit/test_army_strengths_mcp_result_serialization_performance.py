@@ -132,22 +132,63 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
     async def test_first_registered_army_result_preserves_all_observations_without_duplicate_json(
         self,
     ) -> None:
-        payload = _synthetic_complete_service_result()
-        expected = copy.deepcopy(payload)
-        arguments = {
+        direct_payload = _synthetic_complete_service_result()
+        direct_expected = copy.deepcopy(direct_payload)
+        army_step = "query-army-strengths-v1"
+        other_step = "query-war-state-v1"
+        # Native execute-step shape: no direct-tool source/army_ids or projections.
+        execute_payload = {
+            "step": army_step,
+            "accepted": True,
+            "status": "available",
+            "query_sequence": 2,
+            "army_strengths": direct_payload["army_strengths"],
+            "backend_id": "synthetic_transport_fixture",
+            "queried_snapshot_id": "synthetic-execute-army-7001",
+            "queried_revision": 4,
+            "queried_native_revision": 3,
+        }
+        execute_expected = copy.deepcopy(execute_payload)
+        other_payload = {
+            "step": other_step,
+            "accepted": True,
+            "status": "available",
+            "backend_id": "synthetic_transport_fixture",
+            "war_state": {
+                "war_id": 0,
+                "full_sentinel": 0xFFFFFFFF,
+                "ended": False,
+                "unread_operand": None,
+            },
+        }
+        other_expected = copy.deepcopy(other_payload)
+        direct_arguments = {
             "army_ids": [218104048, 134218098],
             "expected_revision": 4,
             "ordered_refill_entry_mode": "observed_prepared",
             "ordered_besieging_entry_mode": "fixed_chunk0_prepare",
         }
-        legacy_calls = []
+        execute_arguments = {
+            "step": army_step,
+            "expected_revision": 4,
+            "expected_h2743_frame": None,
+        }
+        other_arguments = {**execute_arguments, "step": other_step}
+        legacy_direct_calls = []
+        legacy_execute_calls = []
+
+        def synthetic_execute(
+            _service, step, *, expected_revision=None, expected_h2743_frame=None
+        ):
+            return execute_payload if step == army_step else other_payload
 
         with patch.object(
-            GameplayBridgeService,
-            "query_army_strengths",
-            autospec=True,
-            return_value=payload,
-        ) as service_query:
+            GameplayBridgeService, "query_army_strengths", autospec=True,
+            return_value=direct_payload,
+        ) as service_query, patch.object(
+            GameplayBridgeService, "execute_step", autospec=True,
+            side_effect=synthetic_execute,
+        ) as service_execute:
             server = create_server(object())
 
             @server.tool()
@@ -161,100 +202,187 @@ class ArmyStrengthsMcpResultSerializationPerformanceTests(
                     "observed_prepared", "fixed_chunk0_prepare"
                 ] = "observed_prepared",
             ) -> dict[str, object]:
-                legacy_calls.append({
+                legacy_direct_calls.append({
                     "army_ids": army_ids,
                     "expected_revision": expected_revision,
                     "ordered_refill_entry_mode": ordered_refill_entry_mode,
                     "ordered_besieging_entry_mode": ordered_besieging_entry_mode,
                 })
-                return payload
+                return direct_payload
 
-            # Both routes use the actual installed SDK converter and serializer.
-            legacy = await server.call_tool("fixture_legacy_army_result", arguments)
-            compact = await server.call_tool("ck3_query_army_strengths", arguments)
+            @server.tool()
+            def fixture_legacy_execute_result(
+                step: str, expected_revision: int | None = None,
+                expected_h2743_frame: dict[str, object] | None = None,
+            ) -> dict[str, object]:
+                legacy_execute_calls.append({
+                    "step": step,
+                    "expected_revision": expected_revision,
+                    "expected_h2743_frame": expected_h2743_frame,
+                })
+                return execute_payload
+
+            # Installed SDK conversion, actual registered production entry.
+            legacy_execute = await server.call_tool(
+                "fixture_legacy_execute_result", execute_arguments
+            )
+            compact_execute = await server.call_tool(
+                "ck3_execute_step", execute_arguments
+            )
+            legacy_direct = await server.call_tool(
+                "fixture_legacy_army_result", direct_arguments
+            )
+            compact_direct = await server.call_tool(
+                "ck3_query_army_strengths", direct_arguments
+            )
+            unchanged_other = await server.call_tool("ck3_execute_step", other_arguments)
             advertised = {tool.name: tool for tool in await server.list_tools()}
 
         service_query.assert_called_once()
-        self.assertEqual(service_query.call_args.args[1], arguments["army_ids"])
+        self.assertEqual(service_query.call_args.args[1], direct_arguments["army_ids"])
         self.assertEqual(service_query.call_args.kwargs, {
-            key: value for key, value in arguments.items() if key != "army_ids"
+            key: value for key, value in direct_arguments.items() if key != "army_ids"
         })
-        self.assertEqual(legacy_calls, [arguments])
-        self.assertEqual(
-            advertised["ck3_query_army_strengths"].output_schema,
-            advertised["fixture_legacy_army_result"].output_schema,
-        )
-        # Argument-model titles include each tool's name; compare the API fields.
-        self.assertEqual(
-            {key: value for key, value in advertised[
-                "ck3_query_army_strengths"].input_schema.items() if key != "title"},
-            {key: value for key, value in advertised[
-                "fixture_legacy_army_result"].input_schema.items() if key != "title"},
-        )
-        self.assertFalse(legacy.is_error)
-        self.assertFalse(compact.is_error)
-        self.assertEqual(payload, expected)
-        self.assertEqual(legacy.structured_content, expected)
-        self.assertEqual(compact.structured_content, expected)
-        self.assertEqual(len(legacy.content), 1)
-        self.assertEqual(len(compact.content), 1)
-        self.assertEqual(json.loads(legacy.content[0].text), expected)
+        self.assertEqual(service_execute.call_count, 2)
+        for call_result, arguments in zip(
+            service_execute.call_args_list, [execute_arguments, other_arguments]
+        ):
+            self.assertEqual(call_result.args[1], arguments["step"])
+            self.assertEqual(call_result.kwargs, {
+                key: value for key, value in arguments.items() if key != "step"
+            })
+        self.assertEqual(legacy_direct_calls, [direct_arguments])
+        self.assertEqual(legacy_execute_calls, [execute_arguments])
 
-        summary = json.loads(compact.content[0].text)
-        self.assertEqual(set(summary), {
-            "accepted", "status", "query_sequence", "source",
-            "army_ids", "armies", "result_location",
+        for production_name, baseline_name in [
+            ("ck3_execute_step", "fixture_legacy_execute_result"),
+            ("ck3_query_army_strengths", "fixture_legacy_army_result"),
+        ]:
+            self.assertEqual(
+                advertised[production_name].output_schema,
+                advertised[baseline_name].output_schema,
+            )
+            # Argument-model titles contain the tool name; API fields are identical.
+            actual_input = advertised[production_name].input_schema
+            old_input = advertised[baseline_name].input_schema
+            self.assertEqual(
+                {key: value for key, value in actual_input.items() if key != "title"},
+                {key: value for key, value in old_input.items() if key != "title"},
+            )
+
+        self.assertEqual(direct_payload, direct_expected)
+        self.assertEqual(execute_payload, execute_expected)
+        self.assertEqual(set(execute_payload), {
+            "step", "accepted", "status", "query_sequence", "army_strengths",
+            "backend_id", "queried_snapshot_id", "queried_revision",
+            "queried_native_revision",
         })
-        self.assertEqual(summary["result_location"], "structuredContent")
-        self.assertEqual(summary["source"], {"revision": 4, "native_revision": 3})
-        self.assertEqual(summary["army_ids"], arguments["army_ids"])
-        self.assertEqual([row["army_id"] for row in summary["armies"]],
-                         arguments["army_ids"])
-        self.assertLess(len(compact.content[0].text.encode("utf-8")), 4096)
-        self.assertNotIn("occurrences", compact.content[0].text)
-        self.assertNotIn("synthetic_observed_roster", compact.content[0].text)
-        self.assertNotIn("same_input_conditional_projection", compact.content[0].text)
+        self.assertNotIn("source", execute_payload)
+        self.assertNotIn("army_ids", execute_payload)
+        self.assertFalse(unchanged_other.is_error)
+        self.assertEqual(unchanged_other.structured_content, other_expected)
+        self.assertEqual(len(unchanged_other.content), 1)
+        self.assertEqual(json.loads(unchanged_other.content[0].text), other_expected)
+        self.assertEqual(other_payload, other_expected)
 
-        # Exactly one actual wire serialization per comparison result.
-        legacy_wire = legacy.model_dump_json(
-            by_alias=True, exclude_none=True
-        ).encode("utf-8")
-        compact_wire = compact.model_dump_json(
-            by_alias=True, exclude_none=True
-        ).encode("utf-8")
-        self.assertGreater(len(legacy_wire), 256 * 1024)
-        self.assertLessEqual(len(compact_wire), len(legacy_wire) * 0.60)
-        decoded = json.loads(compact_wire)
-        self.assertEqual(decoded["structuredContent"], expected)
-        kept = decoded["structuredContent"]["army_strengths"][0]
-        occurrences = kept["synthetic_observed_roster"]["occurrences"]
-        self.assertEqual(occurrences, expected["army_strengths"][0][
-            "synthetic_observed_roster"]["occurrences"])
-        self.assertEqual([row["native_index"] for row in occurrences], list(range(4096)))
-        self.assertEqual(occurrences[1]["raw_full_id_u32"], 0xAB000001)
-        self.assertEqual(occurrences[2]["raw_full_id_u32"], 0xAB000001)
-        self.assertEqual(occurrences[0]["raw_full_id_u32"], 0)
-        self.assertIs(occurrences[0]["native_predicate"], False)
-        self.assertIsNone(occurrences[0]["nullable_operand"])
-        self.assertEqual(occurrences[1]["owner_full_id_u32"], 0xFFFFFFFF)
-        self.assertEqual(kept["synthetic_observed_scalar_inputs"]["mode_raw_u8"], 255)
+        pair_metrics = {}
+        for route, legacy, compact, expected, summary_ids in [
+            ("execute_army", legacy_execute, compact_execute, execute_expected,
+             [row["army_id"] for row in execute_expected["army_strengths"]]),
+            ("direct_army", legacy_direct, compact_direct, direct_expected,
+             direct_expected["army_ids"]),
+        ]:
+            self.assertFalse(legacy.is_error)
+            self.assertFalse(compact.is_error)
+            self.assertEqual(legacy.structured_content, expected)
+            self.assertEqual(compact.structured_content, expected)
+            self.assertEqual(len(legacy.content), 1)
+            self.assertEqual(len(compact.content), 1)
+            self.assertEqual(json.loads(legacy.content[0].text), expected)
+
+            summary = json.loads(compact.content[0].text)
+            self.assertEqual(set(summary), {
+                "accepted", "status", "query_sequence", "source",
+                "army_ids", "armies", "result_location",
+            })
+            self.assertEqual(summary["result_location"], "structuredContent")
+            self.assertEqual(summary["source"], {"revision": 4, "native_revision": 3})
+            self.assertEqual(summary["army_ids"], summary_ids)
+            self.assertEqual([row["army_id"] for row in summary["armies"]], summary_ids)
+            summary_bytes = len(compact.content[0].text.encode("utf-8"))
+            self.assertLess(summary_bytes, 4096)
+            self.assertNotIn("occurrences", compact.content[0].text)
+            self.assertNotIn("synthetic_observed_roster", compact.content[0].text)
+            self.assertNotIn("same_input_conditional_projection", compact.content[0].text)
+
+            # Exactly one actual wire serialization per result in each large pair.
+            legacy_wire = legacy.model_dump_json(
+                by_alias=True, exclude_none=True
+            ).encode("utf-8")
+            compact_wire = compact.model_dump_json(
+                by_alias=True, exclude_none=True
+            ).encode("utf-8")
+            self.assertGreater(len(legacy_wire), 256 * 1024)
+            self.assertLessEqual(len(compact_wire), len(legacy_wire) * 0.60)
+            decoded = json.loads(compact_wire)
+            self.assertEqual(decoded["structuredContent"], expected)
+            if route == "execute_army":
+                self.assertNotIn("source", decoded["structuredContent"])
+                self.assertNotIn("army_ids", decoded["structuredContent"])
+                self.assertNotIn("scope_army_ids", decoded["structuredContent"])
+                self.assertNotIn("same_input_conditional_projection",
+                                 decoded["structuredContent"])
+
+            kept = decoded["structuredContent"]["army_strengths"][0]
+            occurrences = kept["synthetic_observed_roster"]["occurrences"]
+            self.assertEqual(occurrences, expected["army_strengths"][0][
+                "synthetic_observed_roster"]["occurrences"])
+            self.assertEqual([row["native_index"] for row in occurrences],
+                             list(range(4096)))
+            self.assertEqual(occurrences[1]["raw_full_id_u32"], 0xAB000001)
+            self.assertEqual(occurrences[2]["raw_full_id_u32"], 0xAB000001)
+            self.assertEqual(occurrences[0]["raw_full_id_u32"], 0)
+            self.assertIs(occurrences[0]["native_predicate"], False)
+            self.assertIsNone(occurrences[0]["nullable_operand"])
+            self.assertEqual(occurrences[1]["owner_full_id_u32"], 0xFFFFFFFF)
+            self.assertEqual(kept["synthetic_observed_scalar_inputs"]["mode_raw_u8"], 255)
+            pair_metrics[route] = {
+                "wire_serializations": {"legacy": 1, "compact": 1},
+                "legacy_wire_bytes": len(legacy_wire),
+                "compact_wire_bytes": len(compact_wire),
+                "compact_to_legacy_byte_ratio": len(compact_wire) / len(legacy_wire),
+                "text_summary_bytes": summary_bytes,
+                "army_rows": len(expected["army_strengths"]),
+                "original_ordered_occurrences_per_row": len(occurrences),
+                "all_observation_fields_retained": True,
+            }
 
         output = os.environ.get("XAR_ARMY_RESULT_PERFORMANCE_CASE_OUTPUT")
         if output:
             destination = Path(output)
             destination.parent.mkdir(parents=True, exist_ok=True)
             metrics = {
-                "fixture_provenance": payload["fixture_provenance"],
-                "registered_service_calls": service_query.call_count,
-                "legacy_sdk_calls": len(legacy_calls),
-                "wire_serializations": {"legacy": 1, "compact": 1},
-                "legacy_wire_bytes": len(legacy_wire),
-                "compact_wire_bytes": len(compact_wire),
-                "compact_to_legacy_byte_ratio": len(compact_wire) / len(legacy_wire),
-                "text_summary_bytes": len(compact.content[0].text.encode("utf-8")),
-                "army_rows": len(payload["army_strengths"]),
-                "original_ordered_occurrences_per_row": len(occurrences),
-                "all_observation_fields_retained": True,
+                "fixture_provenance": direct_payload["fixture_provenance"],
+                "actual_production_entry": "ck3_execute_step(query-army-strengths-v1)",
+                "registered_service_calls": {
+                    "direct_army": service_query.call_count,
+                    "execute_army": sum(
+                        call.args[1] == army_step
+                        for call in service_execute.call_args_list
+                    ),
+                    "non_army_step": sum(
+                        call.args[1] == other_step
+                        for call in service_execute.call_args_list
+                    ),
+                    "execute_total": service_execute.call_count,
+                },
+                "legacy_sdk_calls": {
+                    "direct_army": len(legacy_direct_calls),
+                    "execute_army": len(legacy_execute_calls),
+                },
+                "execute_payload_without_direct_source_or_army_ids": True,
+                "non_army_legacy_text_and_structured_semantics_preserved": True,
+                "pairs": pair_metrics,
                 "new_native_producer_or_game_execution": False,
             }
             with destination.open("x", encoding="utf-8", newline="\n") as stream:

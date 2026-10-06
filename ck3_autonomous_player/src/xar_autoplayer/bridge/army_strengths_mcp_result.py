@@ -30,21 +30,33 @@ def build_army_strengths_mcp_result(payload: dict[str, object]) -> CallToolResul
     """Keep the complete Service result in structured content and summarize text.
 
     MCP imports stay lazy so baseline installs do not require the optional SDK.
-    The caller supplies the complete result of Service.query_army_strengths.
+    The caller supplies the complete Army result from a direct query or step.
     """
     from mcp.types import CallToolResult, TextContent
 
-    source = cast(dict[str, object], payload["source"])
+    source = payload.get("source")
     rows = cast(list[dict[str, object]], payload["army_strengths"])
     summary = {
         "accepted": payload.get("accepted"),
         "status": payload.get("status"),
         "query_sequence": payload.get("query_sequence"),
         "source": {
-            "revision": source.get("revision"),
-            "native_revision": source.get("native_revision"),
+            "revision": (
+                source.get("revision")
+                if isinstance(source, dict)
+                else payload.get("queried_revision")
+            ),
+            "native_revision": (
+                source.get("native_revision")
+                if isinstance(source, dict)
+                else payload.get("queried_native_revision")
+            ),
         },
-        "army_ids": payload["army_ids"],
+        "army_ids": (
+            payload["army_ids"]
+            if "army_ids" in payload
+            else [row.get("army_id") for row in rows]
+        ),
         "armies": [
             {field: row.get(field) for field in _SUMMARY_ARMY_FIELDS}
             for row in rows

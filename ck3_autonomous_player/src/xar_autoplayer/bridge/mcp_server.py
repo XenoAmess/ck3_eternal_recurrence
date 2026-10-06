@@ -2351,10 +2351,13 @@ def create_server(
         expected_h2743_frame: dict[str, object] | None = None,
     ) -> dict[str, object]:
         """Execute one semantic gameplay step through the selected backend."""
-        return service.execute_step(
+        payload = service.execute_step(
             step, expected_revision=expected_revision,
             expected_h2743_frame=expected_h2743_frame,
         )
+        if step == "query-army-strengths-v1":
+            return build_army_strengths_mcp_result(payload)
+        return payload
 
     @server.tool()
     def ck3_save_checkpoint(
