@@ -4,6 +4,8 @@
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12004_family.hpp"
+#include "xar_bridge/ck3_12004_family_actions.hpp"
+#include "xar_bridge/ck3_12004_commands.hpp"
 #include "xar_bridge/ck3_12004_family_obligations_alliance.hpp"
 #include "xar_bridge/protocol.hpp"
 
@@ -152,7 +154,8 @@ bool HandleFamilyObligationsPrivate12002(
                        request.expected_snapshot_revision != revision) ||
       !published.paused || !published.map_ready || !published.has_played_character ||
       !published.played_character_alive || published.played_character_id <= 0 ||
-      (call_ally_submission && !game::IsCk3_12003Descriptor(adapter.descriptor()))) {
+      (call_ally_submission && !actual4 &&
+       !game::IsCk3_12003Descriptor(adapter.descriptor()))) {
     failure = "family_obligations_current_frame_unavailable"; return false;
   }
   try {
@@ -174,6 +177,11 @@ bool HandleFamilyObligationsPrivate12002(
       query.alliance_bindings = actual4
           ? ck3_12004::BindFamilyObligationsAllianceImage(base, adapter.descriptor().executable_sha256)
           : family_obligations_alliance::BindImage(base, xar::game::ReviewedCrozierAbiSha256(adapter.descriptor()));
+    if (actual4 && call_ally_submission)
+      query.alliance_bindings.context = ck3_12004::BindFamilyActionImage(
+          base, adapter.descriptor().executable_sha256,
+          ck3_12004::BindCommandImage12004(
+              base, adapter.descriptor().executable_sha256)).context;
     if (request.break_recipient_character_id > 0)
       query.break_bindings = actual4
           ? ck3_12004::BindFamilyObligationsBreakImageV1(base, adapter.descriptor().executable_sha256)
