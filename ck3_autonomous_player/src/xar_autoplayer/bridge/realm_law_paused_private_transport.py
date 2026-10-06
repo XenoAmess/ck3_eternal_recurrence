@@ -93,7 +93,7 @@ def _valid_payload(value: object, *, revision: int, date_raw: int,
         if not isinstance(rows, list) or not 1 <= len(rows) <= 8:
             return False
         profile_rows = (
-            exact_ck3_build == "1.20.0.3"
+            exact_ck3_build in {"1.20.0.3", "1.20.0.4"}
             and expected_key == "succession_order_laws"
         )
         expected_row_keys = SUCCESSION_ROW_KEYS if profile_rows else ROW_KEYS
@@ -175,7 +175,7 @@ def query_realm_law_final_terms_private_v1(
         "advertised", "realm_law_final_terms", "backend_id",
     }
     allowed_envelope_keys = (envelope_keys,)
-    if provenance["exact_ck3_build"] in {"1.20.0.2", "1.20.0.3"}:
+    if provenance["exact_ck3_build"] in {"1.20.0.2", "1.20.0.3", "1.20.0.4"}:
         # The new common ReadOnlyFrame repeats the owning revision outside
         # the unchanged DTO. Legacy eight-key envelopes remain supported.
         allowed_envelope_keys += (envelope_keys | {"snapshot_revision"},)
