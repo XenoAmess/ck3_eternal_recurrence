@@ -15,7 +15,7 @@ def id_list(ids, *, count=None):
 def occurrence(index, requested, *, selected=None, dates=(), count=None, valid_combat=False):
     full = requested if selected is None else selected
     combat = 0x33000001 if valid_combat else 0xFFFFFFFF
-    return {**state(), 'native_index': index, 'original_request_full_id_u32': requested,
+    return {**state(True), 'native_index': index, 'original_request_full_id_u32': requested,
             'army_resolution': operand_resolution(requested, selected=full, fallback=full != requested),
             'combat_request_full_id_u32': combat,
             'combat_resolution': combat_resolution(combat, kind='combat', fallback=not valid_combat),
@@ -38,7 +38,7 @@ def source():
             occurrence(2, 0xFE00001E, selected=30, dates=[-2147483648]),
             occurrence(3, 33, valid_combat=True), occurrence(4, 35, count=-2),
             occurrence(5, 36, dates=[tomorrow + 1])]
-    return {**state(), 'schema_version': 1, 'source': 'native_current_pre_date_dated_append_inputs',
+    return {**state(True), 'schema_version': 1, 'source': 'native_current_pre_date_dated_append_inputs',
             'stage': 'observed_current_2a9a360_tomorrow_operands',
             'manager_loaded': True, 'manager_identity': 'native:7000000',
             'clock_source': 'same_query_army_update_clock_v1', 'clock_ready': True,
