@@ -20,6 +20,7 @@ from .army_scoped_ordered_refill_projection import project_scoped_ordered_refill
 from .army_daily_assault_active_table_projection import project_current_daily_assault_group_inputs_many_v1
 from .army_daily_assault_placement_inputs_projection import project_current_daily_assault_placement_inputs_v1
 from ..simulation.army_daily_assault_roster_admission_12003 import project_current_daily_assault_roster_admission_12003
+from ..simulation.army_pre_date_pending_update_12003 import project_current_pre_date_pending_update_v1
 from .army_ordered_refill_besieging_assault_projection import project_ordered_refill_besieging_assaults_v1
 from .army_daily_assault_loss_projection import project_current_daily_assault_loss_v1
 from .army_daily_assault_queue_append_projection import project_current_daily_assault_queue_append_v1
@@ -4496,6 +4497,8 @@ class GameplayBridgeService:
             )
         by_id = {int(row["army_id"]): row for row in rows}
         selected_rows = [by_id[army_id] for army_id in requested_ids]
+        for row in selected_rows:
+            row["same_input_conditional_current_pre_date_pending_update_v1"] = project_current_pre_date_pending_update_v1(row)
         status = army_strength_query_status(selected_rows)
         diagnostics = snapshot.get("diagnostics")
         hello = (
