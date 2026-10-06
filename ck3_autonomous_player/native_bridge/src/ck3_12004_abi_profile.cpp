@@ -58,7 +58,7 @@ bool ReadCoreSnapshot(const CoreBindings &bindings,
   if (game_state == nullptr || jomini_state == nullptr) return false;
   const auto players = LoadAt<void *>(jomini_state, kJominiPlayersOffset);
   if (players == nullptr ||
-      !DecodeClockPrefix({static_cast<const std::byte *>(game_state), 0x74},
+      !ck3_12004::DecodeClockPrefix({static_cast<const std::byte *>(game_state), 0x74},
                          {static_cast<const std::byte *>(jomini_state), 0x21},
                          output.clock)) return false;
   output.local_player_id = LoadAt<std::int32_t>(players, kPlayersLocalPlayerIdOffset);
