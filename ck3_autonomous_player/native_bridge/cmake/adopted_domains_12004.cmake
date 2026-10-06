@@ -113,7 +113,6 @@ if(BUILD_TESTING AND WIN32)
     tests/activity_guest_cost_12004_fixture.cpp
     tests/activity_hosted_resources_12004_fixture.cpp
     src/ck3_12002_feast_planner_native.cpp
-    src/ck3_12002_feast_planner.cpp
     src/activity_planner_diag_v1.cpp
     src/activity_feast_stage5_start_v1.cpp
     src/activity_cost_slot12_passive_v1.cpp
