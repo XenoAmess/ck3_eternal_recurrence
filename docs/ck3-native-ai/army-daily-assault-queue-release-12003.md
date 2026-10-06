@@ -1,5 +1,43 @@
 # Current daily assault queue append, later drain and record release — 1.20.0.3
 
+## 2026-10-06: conditional normal-return release implementation
+
+This follow-on adds `same_input_current_daily_assault_normal_return_release_v1` to the same ArmyStrength service result. It takes the already computed pre-release queue projection and the captured current table. The independent table result models one standalone invocation reaching cleanup with ordinary returning numerical calls; it does not execute native writes, earlier refill/drain, Army removal, a later callback, or calendar stages. Actual effects remain false and actual post-table/pending state remains null.
+
+The necessary new input is optional `groups[].armies/arrgs.release_header_v1`: actual header data pointer presence/identity, signed count and signed capacity, with individual unknown values retained. The collector reuses its existing count sample and positive-count data sample; zero/negative counts now also require the actual pointer read, and all counts require the capacity read. Existing reference readiness, occurrence order, duplicates and zero-count legacy data publication remain unchanged. New raw-header read failures produce `partial` and do not change an otherwise ready legacy reference vector. Absent/null optional headers remain compatible with earlier snapshots.
+
+The existing cached caller ledger establishes two different loops. Numerical groups scan to the actual end marker, irrespective of manager `+180` being nonpositive. Cleanup at `2A9819C..2A981E7` reads signed occupied count: nonpositive skips every release; positive scans controls from physical slot0, releases the first nonzero control record, writes control0 and decrements occupied count only after both vector calls return, then continues only while the reloaded signed count is positive. It does not unconditionally release every captured group. A still-positive count reaching the uncaptured end-marker payload is an exact partial next-record dependency. This new-purpose cached excerpt used zero EXE bytes and no new source hashes.
+
+Within each record, the source-defined release order is ArRg then Army. Nonnull data stores count0 before dispatch and data0/capacity0 after normal return. Only the actual same-query canonical allocator witness selects the already closed shared callback ending at standard HeapFree. Null data skips all stores and preserves the raw count/capacity; its allocator is unused. Missing null-branch capacity affects header completeness independently of known return/control/queue effects. A noncanonical nonnull receiver retains the known pre-call count0 request and any earlier completed ArRg release, but stops post-vector and control/count claims.
+
+```mermaid
+flowchart TD
+  I[Observed current table and pre-release queue prefix] --> C{Signed occupied count positive?}
+  C -->|no| B[Skip all vector releases]
+  C -->|yes| S[Scan next actual control from slot0]
+  S -->|zero| S
+  S -->|nonzero| A[Release ArRg vector first]
+  A --> R{Actual data pointer}
+  R -->|null| N[Preserve raw header; no stores]
+  R -->|nonnull| W[Count0 before selected callback]
+  W --> M{Actual canonical receiver witness?}
+  M -->|yes and normal return| Z[Data0 and capacity0]
+  M -. no or unknown .-> P[Retain known write prefix; post-state partial]
+  N --> Y[Release Army vector using the same branch rules]
+  Z --> Y
+  Y --> O[Both returned: control0 and occupied count decrement]
+  O --> C
+  B --> Q[Preserve independently known pending prefix]
+  Q --> F[Complete conditional pending sequence only if numerical queue was complete]
+  S -. payload or control unavailable .-> P
+```
+
+The new full-service compound passed FIRST once: one method,0.181s test time /1.9270851000328548s process time, exit0. It covers nonzero two-record canonical release, allocated-empty/non-null headers, actual-null preservation, unused missing operands, a retained ArRg prefix before a noncanonical Army call, count-driven first1-of2 and missing end payload, signed0/negative cleanup skips while numerical groups still run, partial numerical queue prefixes, legacy absence/null and captured-input immutability. Receipt: `Z:/ck3_mod_rewrite_process_assets/g2-background-round18-20261006/current-daily-assault-normal-return-release/pure-implementation/python-first-01/PYTHON-FIRST-TEST-RECEIPT.json`.
+
+The independent new native fixture `ck3_12003_daily_assault_release_headers_test.cpp` exercises the real whole-strength reader/serializer in six new scenes. Native build/CTest/compiled-wire qualification is pending Root. An obsolete old placement-fixture assertion that zero-count data must remain unread is changed only in this new candidate: the three newly demanded denied data reads are now expected, while ready empty legacy vectors and their unpublished legacy data stay unchanged. Archived g95 source, first qualifications and samples are retained; no old case is rerun.
+
+Readiness is bounded pure static-ready with a native observer candidate pending qualification. `actual_record_release`, `actual_effects`, `full_daily_assault_ready`, `full_regular_refill_ready`, `full_monthly_ready`, `full_calendar_ready` and `live` stay false. Conditional pending preservation is independent of future queue execution/removal. Next construction uses real appended-Army magic/receiver context and the independently held first-removal/lifecycle inputs; neither today's queue prefix nor this normal-return release establishes a future drain frame.
+
 2026-10-06 / W41. This source-first package connects the independently modeled [current daily loss groups](army-current-daily-assault-loss-inputs-12003.md) to the existing queue/removal capabilities. Exact `.3` / Steam25652598 / EXE SHA `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6` and held source receipts are reused. No EXE bytes, closed native bodies or old qualification samples are read again; no implementation, test, build or runtime operation is performed for this plan.
 
 ## Native scheduling and two distinct release paths

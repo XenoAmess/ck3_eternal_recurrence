@@ -406,9 +406,16 @@ void WitnessCases(const std::filesystem::path &directory) {
                 group.armies.occurrences.empty() && group.arrgs.occurrences.empty() &&
                 !group.armies.data_present && !group.armies.data_identity &&
                 !group.arrgs.data_present && !group.arrgs.data_identity,
-            "daily assault zero-count vector must sample allocator while leaving undemanded data unread");
+            "daily assault zero-count legacy vector leaves reference data unpublished");
     }
-    Check(f.memory.Attempts() == 0, "daily assault legitimate zero count must avoid every vector data pointer");
+    Check(f.memory.Attempts() == 3,
+          "new release headers require the three denied zero-count data pointer reads");
+    Check(!table.groups[0].arrgs.release_header_v1->ready &&
+              !table.groups[1].armies.release_header_v1->ready &&
+              !table.groups[1].arrgs.release_header_v1->ready &&
+              table.groups[0].arrgs.ready && table.groups[1].armies.ready &&
+              table.groups[1].arrgs.ready,
+          "new raw-header read failures preserve ready legacy empty references");
     Emit(directory, "zero-count-vectors-witnessed", rows);
   }
   {

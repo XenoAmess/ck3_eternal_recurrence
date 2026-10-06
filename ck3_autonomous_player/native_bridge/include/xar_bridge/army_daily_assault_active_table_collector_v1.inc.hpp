@@ -183,10 +183,22 @@ inline game::ArmyDailyAssaultReferencesV1<Occurrence> References(
   if (b.expected_army_allocator || b.expected_arrg_allocator)
     out.allocator_witness = AllocatorWitness(b, header, expected_allocator, expected_rva);
   out.count_raw_i32 = Read<std::int32_t>(b, header, 0xC);
+  const auto data = Read<const void *>(b, header);
+  game::ArmyDailyAssaultReleaseHeaderV1 raw_header{};
+  raw_header.count_raw_i32 = out.count_raw_i32;
+  raw_header.capacity_raw_i32 = Read<std::int32_t>(b, header, 8);
+  if (data) {
+    raw_header.data_present = *data != nullptr;
+    raw_header.data_identity = Identity(*data);
+  }
+  if (!data) Reason(raw_header.unavailable_reason, "daily_assault_release_data_unavailable");
+  if (!out.count_raw_i32) Reason(raw_header.unavailable_reason, "daily_assault_release_count_unavailable");
+  if (!raw_header.capacity_raw_i32) Reason(raw_header.unavailable_reason, "daily_assault_release_capacity_unavailable");
+  Finish(raw_header, data.has_value() && out.count_raw_i32.has_value() && raw_header.capacity_raw_i32.has_value());
+  out.release_header_v1 = std::move(raw_header);
   if (!out.count_raw_i32) { out.unavailable_reason = "daily_assault_vector_count_unavailable"; return finish(); }
   if (*out.count_raw_i32 < 0) { out.unavailable_reason = "daily_assault_vector_negative_count"; return finish(); }
   if (*out.count_raw_i32 == 0) { out.references_ready = true; return finish(); }
-  const auto data = Read<const void *>(b, header);
   if (data) out.data_present = *data != nullptr;
   if (!data || !*data) { out.unavailable_reason = "daily_assault_vector_data_unavailable"; return finish(); }
   out.data_identity = Identity(*data);

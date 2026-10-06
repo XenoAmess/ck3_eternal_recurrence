@@ -4,6 +4,7 @@ from __future__ import annotations
 from copy import deepcopy
 
 from .army_daily_assault_allocator_witness_contract import normalize_daily_assault_allocator_witness_v1
+from .army_daily_assault_release_header_contract import normalize_daily_assault_release_header_v1
 
 _LEAF = {'schema_version', 'source', 'stage', 'status', 'ready', 'unavailable_reason',
          'manager_loaded', 'manager_identity', 'header', 'physical_controls', 'groups',
@@ -92,10 +93,12 @@ def _resolution(value: object, requested: int | None, name: str) -> None:
 
 
 def _vector(value: object, name: str, *, arrg: bool) -> None:
-    fields = _VECTOR | {'allocator_witness'} if isinstance(value, dict) and 'allocator_witness' in value else _VECTOR
+    fields = _VECTOR | (set(value) & {'allocator_witness', 'release_header_v1'}) if isinstance(value, dict) else _VECTOR
     vector = _object(value, fields, name)
     if 'allocator_witness' in vector:
         normalize_daily_assault_allocator_witness_v1(vector['allocator_witness'], arrg=arrg)
+    if 'release_header_v1' in vector:
+        normalize_daily_assault_release_header_v1(vector['release_header_v1'])
     _state(vector, name)
     _boolean(vector['references_ready'], name + '.references_ready', nullable=False)
     count = _integer(vector['count_raw_i32'], name + '.count_raw_i32')

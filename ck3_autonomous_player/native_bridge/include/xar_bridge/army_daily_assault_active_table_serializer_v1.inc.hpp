@@ -95,6 +95,15 @@ inline void References(std::string &out, const ArmyDailyAssaultReferencesV1<Occu
     a.Boolean("matches_expected", v.matches_expected);
     out += '}';
   }
+  w.Key("release_header_v1");
+  if (!p.release_header_v1) out += "null";
+  else {
+    out += '{'; Writer<Number, JsonString> h{out, number, string};
+    const auto &v = *p.release_header_v1;
+    h.Status(v); h.Text("data_identity", v.data_identity); h.Boolean("data_present", v.data_present);
+    h.Integer("count_raw_i32", v.count_raw_i32); h.Integer("capacity_raw_i32", v.capacity_raw_i32);
+    out += '}';
+  }
   out += '}';
 }
 template <class Number, class JsonString>

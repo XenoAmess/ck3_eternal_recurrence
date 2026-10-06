@@ -22,6 +22,7 @@ from .army_daily_assault_placement_inputs_projection import project_current_dail
 from .army_ordered_refill_besieging_assault_projection import project_ordered_refill_besieging_assaults_v1
 from .army_daily_assault_loss_projection import project_current_daily_assault_loss_v1
 from .army_daily_assault_queue_append_projection import project_current_daily_assault_queue_append_v1
+from .army_daily_assault_normal_return_release_projection import project_current_daily_assault_normal_return_release_v1
 from .army_post_refill_besieging_current_projection import project_post_refill_besieging_current_v1
 from .army_fixed_chunk0_preparation_projection import project_fixed_chunk0_preparations_v1
 from .army_prepare_scoped_ordered_refill_assembly import project_fixed_chunk0_prepare_scoped_ordered_refills_v1
@@ -4526,6 +4527,10 @@ class GameplayBridgeService:
             {"army_id": row["army_id"], "projection": project_current_daily_assault_queue_append_v1(
                 row, loss["projection"])}
             for row, loss in zip(selected_rows, daily_assault_losses)]
+        daily_assault_releases = [
+            {"army_id": row["army_id"], "projection": project_current_daily_assault_normal_return_release_v1(
+                row, queue["projection"])}
+            for row, queue in zip(selected_rows, daily_assault_queues)]
         return {
             **result,
             "schema_version": 1,
@@ -4568,6 +4573,7 @@ class GameplayBridgeService:
                 preparations,
             "same_input_current_daily_assault_loss_v1": daily_assault_losses,
             "same_input_current_daily_assault_queue_append_v1": daily_assault_queues,
+            "same_input_current_daily_assault_normal_return_release_v1": daily_assault_releases,
             "current_daily_assault_group_inputs_v1":
                 project_current_daily_assault_group_inputs_many_v1(selected_rows),
             "current_daily_assault_placement_inputs_v1": [
