@@ -2468,6 +2468,7 @@ endif()
 
 include(CTest)
 include(cmake/religion_reform12003_creation_terms.cmake)
+include(cmake/prisoner_release_preview_12003.cmake)
 if(BUILD_TESTING)
   add_executable(xar_ck3_12003_siege_membership_test
     src/ck3_12002_province.cpp

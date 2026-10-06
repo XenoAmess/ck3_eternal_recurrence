@@ -7,6 +7,7 @@ from collections.abc import Mapping
 
 from .driver import BridgeUnavailableError, UnsupportedStepError
 from .nonwar_private_build import private_native_provenance
+from .prisoner_release_preview_contract_12003 import normalize_prisoner_release_preview_12003
 from .timeline_blocker_private_transport import _binding
 
 
@@ -80,6 +81,7 @@ def query_player_prisoner_collection_private_v1(
     ):
         raise BridgeUnavailableError("prisoner collection requires a living player on a paused map frame")
     request_id = "prisoner-collection-" + uuid.uuid4().hex
+    provenance = private_native_provenance(before)
     step = STEP if ransom_ordinal == 0 else f"{RANSOM_ORDINAL_STEP_PREFIX}{ransom_ordinal}"
     driver.endpoint.send({
         "type": "execute_step", "protocol_version": 1,
@@ -187,6 +189,18 @@ def query_player_prisoner_collection_private_v1(
                 raise BridgeUnavailableError("private prisoner title tier is malformed")
             if preview_version:
                 preview = row["unconditional_release_preview"]
+                if provenance.get("exact_ck3_build") == "1.20.0.3":
+                    try:
+                        preview = normalize_prisoner_release_preview_12003(
+                            preview, native_revision=native_revision, date_raw=date_raw,
+                            player_character_id=played["character_id"],
+                            prisoner_character_id=row["prisoner_character_id"],
+                        )
+                    except ValueError as error:
+                        raise BridgeUnavailableError(str(error)) from error
+                    if preview.get("status") == "available" and preview["proof_epoch"] != envelope["observation_revision"]:
+                        raise BridgeUnavailableError("private release preview differs from its collection observation")
+                    row["unconditional_release_preview"] = preview
                 if (
                     not isinstance(preview, dict)
                     or preview.get("private_build") is not True
@@ -328,7 +342,7 @@ def query_player_prisoner_collection_private_v1(
         raise BridgeUnavailableError("private prisoner collection status is malformed")
     if _binding(driver.take_snapshot()) != _binding(before):
         raise BridgeUnavailableError("private prisoner collection crossed its paused frame")
-    return {**envelope, **private_native_provenance(before),
+    return {**envelope, **provenance,
             "queried_snapshot_id": before.get("snapshot_id"),
             "queried_revision": before.get("revision"),
             "queried_native_revision": native_revision}

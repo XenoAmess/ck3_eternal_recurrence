@@ -56,7 +56,9 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
     const bridge::PlayerPrisonerCollectionSnapshotV1 &snapshot,
     std::uint64_t revision,
     const std::array<PlayerPrisonerRansomQuoteV1, bridge::kPlayerPrisonerMaximumRowsV1> &quotes,
-    bool quotes_complete) {
+    bool quotes_complete,
+    const std::array<ck3_12003::PrisonerReleasePreview12003,
+        bridge::kPlayerPrisonerMaximumRowsV1> *release_previews) {
   if (revision == 0 || snapshot.returned_count > bridge::kPlayerPrisonerMaximumRowsV1 ||
       (snapshot.available && (!snapshot.collection_complete ||
           snapshot.failure != bridge::PlayerPrisonerCollectionFailureV1::none ||
@@ -99,11 +101,14 @@ std::string SerializePlayerPrisonerCollectionPrivateV1(
       value += ",\"is_child_of_played_character\":";
       value += row.child_of_played_character ? "true" : "false";
       scalar("primary_title_tier_raw", row.primary_title_tier_raw, row.primary_title_tier_raw >= 1);
-      // This migration enables the ransom route. The separate unconditional
-      // release action has no new-version final preview in this package.
-      value += ",\"unconditional_release_preview\":{\"private_build\":true,\"read_only\":true,"
-          "\"advertised\":false,\"action_surface_present\":false,\"status\":\"unavailable\","
-          "\"unavailable_reason\":\"release_preview_not_enabled_for_12002_ransom\"}";
+      value += ",\"unconditional_release_preview\":";
+      if (release_previews != nullptr) {
+        value += ck3_12003::SerializePrisonerReleasePreview12003((*release_previews)[index]);
+      } else {
+        value += "{\"private_build\":true,\"read_only\":true,"
+            "\"advertised\":false,\"action_surface_present\":false,\"status\":\"unavailable\","
+            "\"unavailable_reason\":\"release_preview_not_enabled_for_12002_ransom\"}";
+      }
       const auto quote = ck3_11906::SerializePlayerPrisonerRansomQuotePrivateV1(
           quotes[index], revision, snapshot.frame.date_raw, snapshot.frame.proof_epoch);
       if (quote.empty()) return {};
