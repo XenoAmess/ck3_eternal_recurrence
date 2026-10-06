@@ -84,6 +84,17 @@ inline void References(std::string &out, const ArmyDailyAssaultReferencesV1<Occu
   }
   out += ']';
   w.Integer("observed_occurrence_count", p.observed_occurrence_count);
+  w.Key("allocator_witness");
+  if (!p.allocator_witness) out += "null";
+  else {
+    out += '{'; Writer<Number, JsonString> a{out, number, string};
+    const auto &v = *p.allocator_witness;
+    a.Status(v); a.Boolean("actual_read_ready", v.actual_read_ready);
+    a.Text("actual_identity", v.actual_identity); a.Text("expected_identity", v.expected_identity);
+    a.Integer("expected_rva_u32", v.expected_rva_u32);
+    a.Boolean("matches_expected", v.matches_expected);
+    out += '}';
+  }
   out += '}';
 }
 template <class Number, class JsonString>

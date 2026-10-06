@@ -21,6 +21,8 @@ struct CurrentDailyAssaultTableBindings12003 {
   const void *arrg_registry_slot = nullptr, *arrg_fallback_slot = nullptr;
   bool (*read_memory)(void *, const void *, void *, std::size_t) noexcept = nullptr;
   void *read_context = nullptr;
+  const void *expected_army_allocator = nullptr;
+  const void *expected_arrg_allocator = nullptr;
 };
 inline CurrentDailyAssaultTableBindings12003 BindCurrentDailyAssaultTable12003(
     std::uintptr_t base, std::string_view sha) noexcept {
@@ -34,6 +36,8 @@ inline CurrentDailyAssaultTableBindings12003 BindCurrentDailyAssaultTable12003(
   out.army_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1DE50);
   out.arrg_registry_slot = reinterpret_cast<const void *>(base + 0x5D1F340);
   out.arrg_fallback_slot = reinterpret_cast<const void *>(base + 0x5D1F338);
+  out.expected_army_allocator = reinterpret_cast<const void *>(base + 0x54E0570);
+  out.expected_arrg_allocator = reinterpret_cast<const void *>(base + 0x54DEB68);
   return out;
 }
 namespace daily_assault_table_detail {
@@ -150,10 +154,25 @@ inline game::ArmyDailyAssaultArRgOccurrenceV1 ArRgOccurrence(
   Finish(out, true);
   return out;
 }
+inline game::ArmyDailyAssaultAllocatorWitnessV1 AllocatorWitness(
+    const CurrentDailyAssaultTableBindings12003 &b, const void *header,
+    const void *expected, std::uint32_t expected_rva) {
+  game::ArmyDailyAssaultAllocatorWitnessV1 out{};
+  out.expected_rva_u32 = expected_rva;
+  if (expected) out.expected_identity = Identity(expected);
+  const auto actual = Read<const void *>(b, header, 0x10);
+  out.actual_read_ready = actual.has_value();
+  if (actual) out.actual_identity = Identity(*actual);
+  if (!actual) out.unavailable_reason = "daily_assault_vector_allocator_unavailable";
+  else if (!expected) out.unavailable_reason = "daily_assault_vector_expected_allocator_unbound";
+  else out.matches_expected = *actual == expected;
+  Finish(out, actual.has_value() && expected != nullptr);
+  return out;
+}
 template <typename Occurrence, typename Reader>
 inline game::ArmyDailyAssaultReferencesV1<Occurrence> References(
     const CurrentDailyAssaultTableBindings12003 &b, const void *header,
-    Reader occurrence_reader) {
+    Reader occurrence_reader, const void *expected_allocator, std::uint32_t expected_rva) {
   game::ArmyDailyAssaultReferencesV1<Occurrence> out{};
   const auto finish = [&]() {
     out.observed_occurrence_count = static_cast<std::int32_t>(out.occurrences.size());
@@ -161,6 +180,8 @@ inline game::ArmyDailyAssaultReferencesV1<Occurrence> References(
         [](const auto &row) { return row.ready; });
     Finish(out, complete); return out;
   };
+  if (b.expected_army_allocator || b.expected_arrg_allocator)
+    out.allocator_witness = AllocatorWitness(b, header, expected_allocator, expected_rva);
   out.count_raw_i32 = Read<std::int32_t>(b, header, 0xC);
   if (!out.count_raw_i32) { out.unavailable_reason = "daily_assault_vector_count_unavailable"; return finish(); }
   if (*out.count_raw_i32 < 0) { out.unavailable_reason = "daily_assault_vector_negative_count"; return finish(); }
@@ -186,8 +207,10 @@ inline game::ArmyDailyAssaultGroupV1 Group(const CurrentDailyAssaultTableBinding
   out.hash_raw_u32 = Read<std::uint32_t>(b, record, 0);
   out.siege_full_id_u32 = Read<std::uint32_t>(b, record, 8);
   out.siege_resolution = Resolve(b, b.siege_registry_slot, b.siege_fallback_slot, out.siege_full_id_u32, 8).observation;
-  out.armies = References<game::ArmyDailyAssaultOccurrenceV1>(b, At(record, 0x10), ArmyOccurrence);
-  out.arrgs = References<game::ArmyDailyAssaultArRgOccurrenceV1>(b, At(record, 0x28), ArRgOccurrence);
+  out.armies = References<game::ArmyDailyAssaultOccurrenceV1>(b, At(record, 0x10), ArmyOccurrence,
+      b.expected_army_allocator, 0x54E0570);
+  out.arrgs = References<game::ArmyDailyAssaultArRgOccurrenceV1>(b, At(record, 0x28), ArRgOccurrence,
+      b.expected_arrg_allocator, 0x54DEB68);
   out.denominator_ready = out.arrgs.ready;
   if (!out.hash_raw_u32) Reason(out.unavailable_reason, "daily_assault_group_hash_unavailable");
   if (!out.siege_full_id_u32) Reason(out.unavailable_reason, "daily_assault_group_siege_key_unavailable");

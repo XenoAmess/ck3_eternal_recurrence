@@ -3,6 +3,8 @@ from __future__ import annotations
 
 from copy import deepcopy
 
+from .army_daily_assault_allocator_witness_contract import normalize_daily_assault_allocator_witness_v1
+
 _LEAF = {'schema_version', 'source', 'stage', 'status', 'ready', 'unavailable_reason',
          'manager_loaded', 'manager_identity', 'header', 'physical_controls', 'groups',
          'observed_occupied_group_count', 'physical_scan_ready', 'raw_groups_ready'}
@@ -90,7 +92,10 @@ def _resolution(value: object, requested: int | None, name: str) -> None:
 
 
 def _vector(value: object, name: str, *, arrg: bool) -> None:
-    vector = _object(value, _VECTOR, name)
+    fields = _VECTOR | {'allocator_witness'} if isinstance(value, dict) and 'allocator_witness' in value else _VECTOR
+    vector = _object(value, fields, name)
+    if 'allocator_witness' in vector:
+        normalize_daily_assault_allocator_witness_v1(vector['allocator_witness'], arrg=arrg)
     _state(vector, name)
     _boolean(vector['references_ready'], name + '.references_ready', nullable=False)
     count = _integer(vector['count_raw_i32'], name + '.count_raw_i32')

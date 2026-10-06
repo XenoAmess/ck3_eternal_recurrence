@@ -10,8 +10,8 @@ tomorrow's actual initial state or a complete daily assault tick.
 
 Frozen build: CK3 1.20.0.3 / Steam25652598, reused EXE SHA
 94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6.
-No game, Steam, process, SDK, pipe, UI, user-data or live-pointer operation,
-native build, test or compiled-wire replay occurred in this source package.
+During source closure no game, Steam, process, SDK, pipe, UI, user-data or
+live-pointer operation, native build, test or compiled-wire replay occurred.
 The qualified current grouping service remains unchanged. Its existing
 qualification is documented in [the current-table topic](army-daily-assault-active-table-placement-12003.md).
 
@@ -103,7 +103,7 @@ service case should place a new key into an occupied slot with empty next slot,
 relocate nonempty duplicate old vectors, append the new original occurrences,
 and verify the resulting physical turn order and branch-local partial output.
 Root owns shared-hook approval, CMake, native builds and first wire qualification.
-No implementation or test is claimed by this source-only delivery.
+That source-only handoff did not claim implementation or tests.
 
 ## Pins, cost and remaining boundary
 
@@ -138,3 +138,75 @@ there is no new native-qualified, live, full-daily or full-monthly capability.
 Packet: Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/daily-assault-future-placement/.
 SOURCE-PINS.json, READ-COST.json, NATIVE-STAGE-LEDGER.json and QUERY-PLAN.json
 provide the exact body receipts, ordered handoff and remaining branches.
+
+Root approved the minimal implementation after this source seal. The plan is
+FINAL-ALLOCATOR-WITNESS-SCHEMA.json: an optional per-vector actual allocator
+witness, read before the count, with separate read readiness and match to the
+two literal singleton addresses. Older transport remains valid and original
+current-table readiness is unchanged. A new service output exposes those
+independent witnesses; the pure conditional prefix takes explicitly staged
+requests and does not claim the full original-roster admission was observed.
+
+
+## Candidate implementation and first static service case
+
+The same ArmyStrength query now reads each demanded vector's actual allocator
+identity before its count and compares it with the source-bound static address.
+The optional allocator_witness keeps actual-read readiness independent of
+identity match: a mismatched or actual-null pointer is a complete observation;
+an unread pointer remains partial. The original current table, strengths,
+denominators and forecast readiness are unchanged. Legacy transport may omit
+the optional witness. Existing bindings keep their aggregate member prefix;
+the two new expected allocator pointers are appended at the tail.
+
+GameplayBridgeService.query_army_strengths exposes
+current_daily_assault_placement_inputs_v1 with per-group actual witnesses.
+The strict production normalizer validates their source RVA, read state and
+actual identity equality. The pure
+project_daily_assault_placement_prefix_12003 takes typed explicit staged
+requests, retains current observations, and supports key hits, direct empty
+insertion and this matched immediate-next-empty family. Source-derived literal
+allocator facts in newly modeled groups are separately labeled; they are never
+written back as observed values. Missing or mismatched demanded witnesses stop
+the continuous prefix, while hits/direct-empty do not require them.
+
+One new complete-service compound passed on its first execution at
+2026-10-06 14:52:47 Asia/Shanghai:1 passed in2.16s, outer2.5944144s. It starts
+with physical slots[0,1,4]/keys[5,4,1], moves the nonempty duplicate key4 group
+from1 to2 on explicit key13 insertion, then applies a key hit and direct empty
+insertion. The result has slots[0,1,2,4,7], keys[5,13,4,1,2], occupiedcount5,
+moved Army IDs[12,12,22] and ArRg IDs[100,100,200,200]. Separate variants retain
+the completed prefix on mismatch, preserve current readiness on missing input,
+and verify unused witnesses do not block supported independent branches. The
+actual main service method and production normalizer are exercised; the source
+requests remain explicitly supplied conditional premises, not an observed full
+2A99B40 original-roster admission stream or tomorrow's real initial state.
+
+Expectations were frozen before execution in FIRST-SERVICE-CASE-EXPECTATIONS.json;
+service-case-first01/RECEIPT.json and PRODUCTION-SERVICE-OUTPUT.json retain the
+first result. Previous successful Python cases and compiled wires were not run.
+No native configure, compile, CTest, game or live operation occurred.
+
+The new standalone native fixture is
+ck3_12003_daily_assault_placement_witness_test.cpp. Six whole ArmyStrength wires
+cover matched duplicates, Army/ArRg mismatch, unread Army allocator, legal zero
+vectors and actual-null allocator. They assert the source read order and keep
+current scalar readiness independent. Root should register
+xar_bridge_daily_assault_placement_witness_12003_test, linking the existing
+xar_ck3_12002_runtime; no extra production translation unit is introduced.
+Native compilation, first CTest and first compiled full-service consumption
+remain pending Root's g95 batch. The external native-fixture folder holds exact
+wire names, expected values and that execution recipe.
+
+Readiness is static-ready for the pure conditional value and real Python
+service route, with new native reader/serializer source awaiting qualification.
+All actual-next-callback, full-future-table, full-daily and full-monthly flags
+remain false. After this selected family qualifies, the next functional package
+is the actual complete primary50/5C Army roster and2A99B40 gate/Province/Siege,
+queue68 and pending130 admission source, rather than inferred future IDs.
+
+The attrition owner additionally source-closed the canonical allocator buffer
+release suffix:54E0570 and54DEB68 select8571C0, terminating at standard HeapFree
+on normal return (null buffer returns). This is peer source credit and no fresh
+capture in this package; actual witness equality selects those known callbacks.
+It does not establish a real callback execution or next-day phase association.

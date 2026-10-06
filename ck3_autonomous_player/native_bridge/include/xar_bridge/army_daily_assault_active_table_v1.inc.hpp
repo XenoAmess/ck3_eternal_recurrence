@@ -37,6 +37,16 @@ struct ArmyDailyAssaultArRgOccurrenceV1 {
   std::optional<bool> denominator_included;
   friend bool operator==(const ArmyDailyAssaultArRgOccurrenceV1 &, const ArmyDailyAssaultArRgOccurrenceV1 &) = default;
 };
+struct ArmyDailyAssaultAllocatorWitnessV1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::string unavailable_reason;
+  bool actual_read_ready = false;
+  std::optional<std::string> actual_identity, expected_identity;
+  std::uint32_t expected_rva_u32 = 0;
+  std::optional<bool> matches_expected;
+  friend bool operator==(const ArmyDailyAssaultAllocatorWitnessV1 &, const ArmyDailyAssaultAllocatorWitnessV1 &) = default;
+};
 template <typename Occurrence> struct ArmyDailyAssaultReferencesV1 {
   std::string status = "unavailable";
   bool ready = false, references_ready = false;
@@ -46,6 +56,7 @@ template <typename Occurrence> struct ArmyDailyAssaultReferencesV1 {
   std::optional<bool> data_present;
   std::vector<Occurrence> occurrences;
   std::int32_t observed_occurrence_count = 0;
+  std::optional<ArmyDailyAssaultAllocatorWitnessV1> allocator_witness;
   friend bool operator==(const ArmyDailyAssaultReferencesV1 &, const ArmyDailyAssaultReferencesV1 &) = default;
 };
 using ArmyDailyAssaultArmyReferencesV1 = ArmyDailyAssaultReferencesV1<ArmyDailyAssaultOccurrenceV1>;
