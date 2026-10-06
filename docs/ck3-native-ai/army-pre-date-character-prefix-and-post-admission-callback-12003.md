@@ -2,11 +2,11 @@
 
 This package closes the actual caller branches at `2A99F72..2A9A0AE` by reusing the held exact-build `2A99DC0` body and existing commander sources. Status is **research / exact static source**. It adds no reader, model, runtime result, test or native qualification. The existing standalone current `2A99B40` admission query remains a separate qualified primitive; it does not observe this earlier prefix or the post-admission callback.
 
-The useful independent result is a source-proved prefix branch: an actual `Army+120 == 0xFFFFFFFF` bypasses every Character/Unit check; a non-sentinel Character-prefix failure appends the actual Army FullID to `primary+80`, then still calls admission. This provides a concrete second queue output and the precise per-occurrence input seam needed to continue the pre-date model. The next repeated-Army transition is bounded by `24DF3C0`, whose body is not yet held in this package.
+The useful independent result is a source-proved prefix branch: an actual `Army+120 == 0xFFFFFFFF` bypasses every Character/Unit check; a non-sentinel Character-prefix failure appends the actual Army FullID to `primary+80`, then still calls admission. This provides a concrete second queue output and the precise per-occurrence input seam needed to continue the pre-date model. The named post-admission `24DF3C0` body is now captured once below. Its direct numeric refresh is closed; remaining byte-cache callees and actual loaded-rule inputs are separate branch-local dependencies for the next repeated-Army transition.
 
 ## Frozen source and reuse
 
-CK3 **1.20.0.3**, Steam build **25652598**, EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. These pins are reused; this work performs no EXE hash or new EXE/code reads. Addresses below are RVAs.
+CK3 **1.20.0.3**, Steam build **25652598**, EXE SHA-256 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`. These identity pins are reused, without an EXE hash. The initial Character-prefix milestone used no new EXE/code reads; the separately authorized callback increment reads 160 metadata bytes and its exact 669-byte body once. Addresses below are RVAs.
 
 External packet: `Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/pre-date-character-prefix-post-admission-source/`. `SOURCE-FIRST-PLAN.json` preceded the narrow cached caller read; `HELD-CALLER-PREFIX-AND-CALLBACK.txt`, `HELD-NAMED-PIN-METADATA.json`, `CACHED-CHARACTER-STATE-77B.txt`, `SOURCE-PINS.json` and `MINIMAL-RAW-INPUTS.json` preserve the handoff. Cached `disasm-0x289e9f0.json` originally contains a 256-byte capture; its complete pinned getter is only `[289E9F0,289EA3D)` (77 bytes), and the following `int3` is outside that getter. No adjacent function is credited to this conclusion.
 
@@ -60,7 +60,7 @@ current availability"]
     N -->|true| A
     Q80 --> A
     A --> POST["2A9A0A9: 24DF3C0(actual Army)"]
-    POST -.-> U["unknown body-level writes
+    POST -.-> U["six known direct stores; remaining callee inputs unclosed
 next repeated Army input transition unclosed"]
     POST --> NEXT["2A9A0AE: advance original roster by 4
 no caller deduplication"]
@@ -83,10 +83,75 @@ Reuse the existing complete original raw roster with occurrence index, requested
 
 Demand raw `Army+120` only after the peer-owned earlier branch reaches this prefix. Its sentinel branch can be fully ready without a Character or Unit read. For a demanded non-sentinel branch, retain actual Character resolution/identity, raw magic/fullID/death, branch-ordered component presence for the state getter, actual Unit resolution/identity and Unit174 owner argument. For this caller's `state >= 3` verdict only, the first three presence reads (`1C8`, `1C0`, `1B8`) suffice: any non-null succeeds; all null fail without a `1B0` read. Reuse existing source-bound commander membership/basic/current-availability observations where their exact false/true/false parameters and current input stage match; a generic assignment boolean is insufficient. `primary+80` requires actual count/data and every original ID only if a concrete existing-vector postimage is requested; known count zero does not demand data.
 
-An explicit prefix model can append failure IDs to its supplied `primary80` stage-start vector and carry the independent per-occurrence admission inputs to the existing standalone `2A99B40` model. It stops **before `24DF3C0`**; completing the next repeated-Army transition requires source-closing this named callback and sampling only its demanded receiver fields. A first occurrence or independent branch value must not be labeled a complete outer dispatch.
+An explicit prefix model can append failure IDs to its supplied `primary80` stage-start vector and carry the independent per-occurrence admission inputs to the existing standalone `2A99B40` model. It stops **before `24DF3C0`**; completing the next repeated-Army transition now requires the remaining callback helper inputs and the correct actual capture stage, rather than another read of the closed669-byte wrapper. A first occurrence or independent branch value must not be labeled a complete outer dispatch.
 
 ## Remaining finite source request
 
-`24DF3C0` has no body locator in the scoped held caller/commander and peer source inventories. `MISSING-24DF3C0-CAPTURE-PLAN.json` requests the exact existing-build pdata record and unwind-header extent first, followed by its exact named body once when authorized. There is no neighbor window, section scan, EXE rehash or generic allocator/catalog request. Any necessary direct numeric or receiver-field dependency must be justified from the captured body before a further read. Until then, writes at the callback and the next occurrence's changed inputs are explicit unknowns.
+The initial scoped cache miss is preserved in `MISSING-24DF3C0-CAPTURE-PLAN.json`. Root subsequently authorized only its exact metadata stage, then the proven 669-byte body. Both receipts and the new concrete write/input tree below are retained. No neighbor window, section scan, EXE rehash or allocator/catalog read occurred. The three remaining named byte-cache callees have their own finite cache-first plan; no callee body was newly captured.
 
-Scope and ownership: this package owns only this source topic and its external packet. The earlier mutating pending-update, dated-append preparation, existing admission collector, current-table placement and conditional removal families have separate owners. **New EXE/code bytes 0; tests 0; native builds/CTest 0; local game/process/SDK/Steam/UI/pipe operations 0.** Current outputs are source research, not native-qualified or live. Oct6/W41 fields and source costs are in the packet for Root to merge into shared reports.
+Scope and ownership: this package owns only this source topic and its external packet. The earlier mutating pending-update, dated-append preparation, existing admission collector, current-table placement and conditional removal families have separate owners. **Initial prefix new EXE bytes 0; callback increment 669 unique code +160 metadata bytes (829 actual frozen-file bytes), with zero duplicate reads. Tests 0; native builds/CTest 0; local game/process/SDK/Steam/UI/pipe operations 0.** Current outputs are source research, not native-qualified or live. Oct6/W41 fields and source costs are in the packet for Root to merge into shared reports.
+
+## Exact callback capture and actual direct writes
+
+Phase ONE located pdata index **128805**, RVA `5F3C5BC`, file offset `5DD37BC`, raw `c0f34d025df64d0200a01005`: exact entry `[24DF3C0,24DF65D)` (**669 B**). Unwind header at RVA `510A000` / file `5108E00` is `01140800`: version1, flags0, prolog20, eight unwind slots, no CHAININFO. Existing PE bounds and cached point records narrowed the binary search; only **13 fresh 12-byte points + one 4-byte header =160 metadata B** were read. Codes/handler/unwind tails were not read. `phase-one-24df3c0-metadata/PHASE-ONE-EXACT-EXTENT-RECEIPT.json` preserves every actual point and offset.
+
+Phase TWO read only `[24DF3C0,24DF65D)` once, **669 unique/actual code B**, SHA-256 `942f9e6dea3a26a7015d75bc8b350b3aa85e0905cc278424a4915a1102766c3a`, fully decoded through normal `RET24DF65C`. Its new metadata cost is0. `phase-two-24df3c0-body/SOURCE-024DF3C0.{bin,json,asm.txt}` preserves the exact body; the prior metadata160 B remains separate.
+
+| Ordered direct output | Actual source and conditional demand |
+| --- | --- |
+| Army DWORD `+24` at `24DF452` | Wrap-i32 sum of **every admitted original ArRg `+38` DWORD occurrence** from Army pointer38/count44. |
+| Army QWORD `+28` at `24DF4C3` | Wrap-i64 sum of **every admitted original ArRg `+40` QWORD occurrence**, using the preserved original base pointer in the second pass. Positive `ArRg38` does not skip this40 read. |
+| Army byte `+20` at `24DF4CF` | `AL` from `2C4B840(actualArmy)`; exact inputs remain a named source dependency. |
+| Army byte `+30` at `24DF4EC` | `AL` from `2C4AB70(actualArmy)`; exact inputs remain a named source dependency. |
+| Army byte `+21` at `24DF5A6` | `Army1EC==0 ->0`. Otherwise signed `Army1F0>0` demands `24E3FE0`. For nonpositive1F0 resolve Army124 Unit, Unit174 owner Character, then select `Character1C0+318` or inline default `5459D38`; header signed countC0 gives0, nonzero demands `24E3FE0`. Preserve the actual default contents, not an inferred empty default. |
+| Army byte `+31` at `24DF63E/644` | `Army1D4==0 ->0`; otherwise source-closed activeCombat `24E8360` true ->0. Else resolve actual owner as above and call loaded `1D65B00(0x18, actual selected Character18, null)`; true ->0, false ->1. |
+
+Both sum loops use the actual ArRg registry slot **5D1F340**, fallback **5D1F338**, low24 indexing, full requested DWORD comparison at actual object10, and admit only magic14 `41725267` plus own fullID10!=FFFFFFFF. Failed resolution selects the actual fallback before its admission test. No occurrence deduplication occurs, including repeated physical pointers. Count0 gives two genuinezero numeric outputs with unused row values undemanded. The raw signed-count negative case is not modeled as an empty vector. Unknown reads in one sum preserve the independent other sum and complete earlier occurrence prefix.
+
+The first complete independent numerical frontier is **`post24DF4C3_pre24DF4C7`**, before the first remaining callee. Its output is the prospective refresh of Army24/28 from an explicitly supplied current entrance snapshot. Keep actual observed Army24/28 and all byte caches intact. Do not attach a whole-callback/future-entry label to this prefix or use actual final cache values as its historical inputs.
+
+```mermaid
+flowchart TD
+    A[Actual Army38/44 original ArRg occurrences] --> R[FullDWORD registry/fallback resolution
+magic14 + ownfullID10 admission; no dedup]
+    R --> I[Firstpass wrapi32 sum raw38
+writeArmy24]
+    I --> Q[Secondpass wrapi64 sum raw40
+writeArmy28]
+    Q --> F[Closed numeric frontier
+post24DF4C3_pre24DF4C7]
+    F -.-> B20[2C4B840 AL→Army20: exactsource pending]
+    B20 -.-> B30[2C4AB70 AL→Army30: exactsource pending]
+    B30 --> G21{Army1EC ==0?}
+    G21 -->|yes| Z21[Army21 =0]
+    G21 -->|no| T21{signedArmy1F0 >0?}
+    T21 -->|no| O[ActualUnit/owner→component1C0+318
+orinline5459D38 countC]
+    O -->|count0| Z21
+    T21 -. positive .-> H21[24E3FE0 AL→Army21: exactsource pending]
+    O -. nonzero .-> H21
+    Z21 --> G31{Army1D4 ==0?}
+    H21 --> G31
+    G31 -->|yes| Z31[Army31 =0]
+    G31 -->|no| C[Held24E8360 activeCombat fromArmy128]
+    C -->|true| Z31
+    C -->|false| R24[Actualowner Character18
+loadedrule selector0x18, tooltipnull]
+    R24 -. actual verdict unobserved .-> V[true→Army31=0; false→Army31=1]
+    Z31 --> RET[Normalreturn24DF65C]
+    V --> RET
+    classDef unknown stroke-dasharray: 6 4,fill:#fff4e5,stroke:#b36b00;
+    class B20,B30,H21,R24,V unknown;
+```
+
+`24E8360[24E8360,24E83B1)` is the already held81-byte leaf at `g2-resume-20261005/siege-engine-catalog-current/native-permission/evidence/flow-024E8360.{asm.txt,json}`: actual Army128 resolves Combat through5D1DE70 and native fallback, then checks actualCombat8/0C; it does not read physical current/max. The peer's `instruction_address_bytes_sha256` and nested receipt SHA are retained under their exact labels in `MISSING-DIRECT-FLAG-CALLEE-FINITE-PLAN.json`, not promoted to a raw-body hash. No81-byte recapture or body reread occurred.
+
+The reused229-byte `1D65B00[1D65B00,1D65BE5)` wrapper (complete body SHA `fdc7b0dd04b47906655da1d0ec62b82ea605d20be484a4d1735103070930a439`) constructs the Character root and addresses the loaded inline rule. This caller uses **slot0x18 (decimal24), array+1380**, not Rule43. Its loaded singleton/array/evaluator must be independently actual; neither the Rule43 verdict nor arbitrary suppliedbool can stand in. The basic prefix's candidate rule and this actual Unit-owner rule are also different roots.
+
+## Downstream scope and next reader seam
+
+The complete callback directly writes only `Army24/28/20/30/21/31`. It directly writes no Army120/124/38/44/5C/128/1D4/1EC, ArRg physical DATA, registry, primary80/removal68/pending130 state. The source-closed standalone admission operands are Unit18/20/170/178, associatedArmy1D4/1EC/124, Unit174, Province10/788/850/73C and actual Character/relation/War inputs; **none is one of the six direct callback stores**. This concrete intersection prevents treating every admission input as changed merely because the callback exists. It is not a whole-callee no-mutation proof: remaining source callees and actual stage association still bound a complete repeated-occurrence model.
+
+`MINIMAL-CURRENT-REFRESH-INPUTS-AND-FIXTURE-PLAN.json` proposes a disjoint same-query raw refresh family borrowing original Army occurrences/resolvers. Its indispensable new numerical field is **raw QWORD ArRg40 for every admitted original occurrence**, even when rawArRg38>0. A current daily-group denominator transport's intentionally undemanded/null40 on positive38 cannot supply this second sum. Preserve independently ready24, genuinezero40, invalid/fallback/order/repeated-pointer rows, and the precise missing40 reason. A nonempty explicit current snapshot can thus produce actual source-bound prospective24/28 values without completing flags or claiming the engine already refreshed them.
+
+Three newly identified helpers `2C4B840`, `2C4AB70`, `24E3FE0` had no complete body locator in the bounded held-root/canonical searches; `MISSING-DIRECT-FLAG-CALLEE-FINITE-PLAN.json` records exact named-RVA metadata/body requests only if their demanded byte outputs are selected next. No helper, allocator, loadedrule catalogue, native getter call or runtime execution was added. The current package's readiness remains **research / exact static source**; native observer/model, tests and live remain0.
