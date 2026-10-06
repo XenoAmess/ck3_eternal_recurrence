@@ -2649,6 +2649,17 @@ if(BUILD_TESTING)
     add_executable(${fixture_target} "${fixture}")
     target_link_libraries(${fixture_target} PRIVATE xar_ck3_12002_runtime)
     target_include_directories(${fixture_target} PRIVATE src research)
+    if(fixture_name STREQUAL "ck3_12002_event_window_context_test")
+      # Real production dependencies pulled by the event fixture adapter.
+      target_sources(${fixture_target} PRIVATE
+        src/player_faction_alerts_v1.cpp
+        src/player_faction_alerts_v1_serializer.cpp
+        src/game_adapter.cpp)
+      if(MSVC)
+        target_compile_options(${fixture_target} PRIVATE /Gy)
+        target_link_options(${fixture_target} PRIVATE /OPT:REF)
+      endif()
+    endif()
     if(fixture_name MATCHES "^ck3_12002_(activity_feast_(costs|guest_rule|guest_wire|wire|planner_open_v1|start)|activity_hosted_identity|feast_guests|feast_outcome_values)_test$")
       target_link_libraries(${fixture_target} PRIVATE
         xar_ck3_12002_feast_fixture_support)
