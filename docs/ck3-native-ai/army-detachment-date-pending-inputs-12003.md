@@ -218,7 +218,7 @@ The source rounds the signed duration by adding/subtracting 50,000 according to 
 
 These route operations have an existing production read-only entrance: `ck3_12002_routes.cpp` binds all four exact callbacks at lines 1900/1906–1908, and `ProjectPathTimeline` calls `24AADA0` at lines 504–529, documenting that active first-edge progress is already subtracted. The routes migration topic records the same native constructor/context/builder and Q duration ABIs. **The new observer should reuse the actual primitive behavior, not that timeline wrapper's extra duration filters.** It can capture `2C54340`'s computed full output qword with actual resolved Unit, passed Province, selected original/capital origin and the current frame's date as an explicit conditional entry argument. This removes the need to guess calendar high fields or re-expand already used route getters. Its value is a current-input native calculation, not an observed later detach date.
 
-The pending fragment reads a vector rooted at **actual primary receiver `+468`**: qword buffer `+0`, DWORD **capacity `+8`**, signed DWORD **count `+C`**, allocator pointer `+10`. Count is sign-extended and compared against capacity. Unequal count selects `2A9BF59`; equality follows into `2A9BE92`, after setting an 8-byte element size and converting capacity to float. **The fragment has not yet stored a chunk pointer or changed count/capacity.** Those actual reached continuations are the sole next source need; raw ArmyID queue-append semantics do not substitute for this physical-chunk vector.
+The pending fragment reads a vector rooted at **actual primary receiver `+468`**: qword buffer `+0`, DWORD **capacity `+8`**, signed DWORD **count `+C`**, allocator pointer `+10`. Count is sign-extended and compared against capacity. Unequal count selects `2A9BF59`; equality follows into `2A9BE92`, after setting allocator argument 8 and converting capacity to float. **The fragment has not yet stored a pending entry or changed count/capacity.** The earlier pointer-vector/8-byte-element interpretation was provisional and is disproved by the continuation below; raw ArmyID queue-append semantics also do not substitute for these typed records.
 
 ```mermaid
 flowchart TD
@@ -251,3 +251,34 @@ Root approved only those reached metadata selectors. October 6 **19:54:46 CST**,
 Both selected CHAININFO records contain raw **`60bea90292bea902e4cb1405`**, pointing to the already held primary fragment `[2A9BE60,2A9BE92)` and unwind `514CBE4`. The new physical chain-record addresses were read once for their actual provenance; the original record/header and 50 B code were not reread. The first selector cost 28 B / 3 seeks; the second cost 16 B / 2 seeks. Cumulative source I/O is **596 metadata B + 1,164 code B = 1,760 B / 346 seeks**.
 
 The unique finite next body proposal is exactly **199 + 57 = 256 new B / 2 seeks**. Combine only those new ranges with the cached 50 B prologue to decode the real ordered normal-return append and its count/capacity/pointer writes. A return or actual transfer, not the end of a metadata fragment, decides source closure. No code beyond `2A9BF92`, handler, allocator body, old source hash or route/capital expansion is authorized by the plan. `PENDING-CONTINUATION-EXACT-BODY-PLAN.json` seals these exact extents; both continuation bodies are **NOTRUN** pending Root's separate review.
+
+## Actual typed pending record and storage-commit boundary
+
+Root approved those exact continuation ranges. October 6 **20:01:20 CST**, actual new code cost was **256 B / 2 seeks**, reusing the 50 B primary bytes. The non-growth path returns at `2A9BF91`; the growth path reaches the actual storage-commit tail **`11244A0`**. Cumulative I/O is **596 metadata B + 1,420 code B = 2,016 B / 348 seeks**. No allocator/handler/route/capital body or neighbor was read.
+
+**The earlier physical-chunk-pointer-vector plan is disproved.** The pending buffer contains **16 B typed records**, not 8-byte chunk pointers. The appended record has qword `+0 = image+44DEFA8`, DWORD `+8 = physical_chunk+8` owner Regi FullID and DWORD `+C = physical_chunk+C` **raw chunk ordinal**. DATA record ordinal `+C` selects a physical chunk; its selected chunk's own raw ordinal `+C` is a different source operand and must be captured independently. It must not be replaced with a physical slot index or the DATA ordinal. Historical plans and receipts are retained, and `WHOLE-INCOMING-DATA-IMPLEMENTATION-PLAN-V2.json` supersedes their pointer assumptions explicitly.
+
+The no-growth branch selects `buffer + sign_extend(countC)*16`, initializes its canonical vtable / ID `FFFFFFFF` / ordinal `0`, **then reloads chunk `+C` and `+8`** and copies those raw values into the new record. Finally it increments vector count `+C` with native int32 wrap and returns. Source initialization/reload order is retained for any observed shared addresses; repeated input chunks are not deduplicated.
+
+For growth, `newCount = wrap_i32(oldCount+1)`. Convert signed capacity to float32, multiply by the actual float32 at RVA **`49F6400`**, apply `cvttss2si`, then choose the signed maximum of that result and `newCount`. The held witness in `monthly-caller-effects/tail-source/B02D10/SOURCE-B02D10.md:18` already records raw **`0000c03f` / float32 1.5**, with `growth-factor-049F6400.bin`; neither the frozen constant nor that old binary was reread or rehashed. Allocator slot **`+8`** receives byte count **zero-extended newCapacity times 16** and argument **8 as alignment**, not element size. Resource internals remain opaque on normal return.
+
+The freshly allocated slot at sign-extended current count times 16 is initialized and receives the same reloaded chunk ID/raw ordinal. If the **reloaded** current vector count is positive, existing records are copied in stored order, preserving DWORD `+8/+C` and replacing each record's qword `+0` with the canonical vtable. There is no deduplication. Tail `11244A0(vector_header, new_buffer, newCount, newCapacity)` then handles the actual storage/header commit. **Those commit effects are not yet closed; growth is independently partial rather than silently borrowing the no-growth count update.** No concrete complete cached body locator for this tail was found, so only its finite named metadata plan is proposed.
+
+```mermaid
+flowchart TD
+    P[2A9BE60 primary plus468 and actualchunk] --> C{countC equals capacity8}
+    C -->|no| D[Destination buffer plus signedcount times16]
+    D --> I[Initialize vtable44DEFA8 IDFFFFFFFF ordinal0]
+    I --> R[Reload chunkowner8 and rawordinalC]
+    R --> W[Write typedrecord ID8 ordinalC]
+    W --> N[Wrapped incrementcountC and retBF91]
+    C -->|yes| F[float32 capacity times held1.5]
+    F --> M[Signed max with wrappednewCount]
+    M --> A[Opaque allocator slot8 bytescap times16 alignment8]
+    A --> S[Initialize and fill new typedrecord]
+    S --> CP[Copy positive reloadedcount oldrecords in order]
+    CP --> T[11244A0 header newbuffer newcount newcapacity]
+    T -.-> U[Unknown actual storage and header commit]
+```
+
+The sole next source gap is that normal-return **storage-commit** footprint. `PENDING-STORAGE-COMMIT-METADATA-PLAN.json` proposes only named `11244A0` pdata/header/selected-chain metadata after cache-first reuse. It does not authorize a body, generic allocator/deallocator, exception handler or new observer implementation. The revised whole-DATA plan publishes typed pending records and the new physical `chunk+C` input; no code, test, build or game operation has begun.
