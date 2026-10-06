@@ -13393,6 +13393,9 @@ class NativeHeadlessGameplayDriver:
         result = self._execute_primitive_step(
             QUERY_ARMY_STRENGTHS_STEP,
             expected_revision=selected_revision,
+            # The native semantic reader can wait 30s for its owning thread.
+            # Leave time for that terminal result to reach this caller.
+            timeout_seconds=max(self.command_timeout_seconds, 35.0),
         )
         if (
             set(result)
