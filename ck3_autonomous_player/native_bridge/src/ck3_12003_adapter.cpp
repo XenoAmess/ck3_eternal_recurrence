@@ -166,6 +166,8 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
         ck3_12003::BindCurrentCandidateDetachmentMapper12003(image_base, executable_sha256);
     result.armies.current_pre_date_pending_update_bindings =
         ck3_12003::BindCurrentPreDatePendingUpdate12003(image_base, executable_sha256);
+    result.armies.current_pre_date_character_prefix_bindings =
+        ck3_12003::BindCurrentPreDateCharacterPrefix12003(image_base, executable_sha256);
     result.armies.current_assault_removal_reference_bindings =
         ck3_12003::BindCurrentAssaultRemovalReference12003(image_base, executable_sha256);
     result.armies.regiment_composition_enabled = true;

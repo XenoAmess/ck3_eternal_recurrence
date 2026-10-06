@@ -1188,6 +1188,7 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
   std::optional<game::ArmyPreDateDatedAppendInputsV1> current_pre_date_dated_append;
   std::optional<game::ArmyCurrentPostAdmissionRefreshInputsV1> current_post_admission_refresh;
   std::optional<game::ArmyCurrentPreDatePendingUpdateInputsV1> current_pre_date_pending_update;
+  std::optional<game::ArmyCurrentPreDateCharacterPrefixInputsV1> current_pre_date_character_prefix;
   std::optional<game::ArmyCurrentAssaultRemovalReferenceInputsV1> current_assault_removal_references;
   std::optional<game::ArmyCurrentCandidateDetachmentMapperInputsV1> current_candidate_detachment_mapper;
   for (const auto &entry : scope) {
@@ -1226,6 +1227,15 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
     }
     row.current_post_admission_refresh_inputs_v1 = current_post_admission_refresh;
     row.current_pre_date_pending_update_inputs_v1 = current_pre_date_pending_update;
+    if (!current_pre_date_character_prefix && current_daily_assault_roster_admission &&
+        bindings.current_pre_date_character_prefix_bindings.common.enabled) {
+      diagnostic.reader.store("current_pre_date_character_prefix_readonly");
+      current_pre_date_character_prefix = ck3_12003::ReadCurrentPreDateCharacterPrefixInputs12003(
+          bindings.current_pre_date_character_prefix_bindings, *current_daily_assault_roster_admission,
+          current_pre_date_pending_update ? &*current_pre_date_pending_update : nullptr,
+          row.monthly_first_removal_cleanup_inputs_v1 ? &*row.monthly_first_removal_cleanup_inputs_v1 : nullptr);
+    }
+    row.current_pre_date_character_prefix_inputs_v1 = current_pre_date_character_prefix;
     row.current_daily_assault_table_v1 = current_daily_assault_table;
     row.current_daily_assault_loss_inputs_v1 = current_daily_assault_loss;
     row.current_daily_assault_roster_admission_v1 = current_daily_assault_roster_admission;

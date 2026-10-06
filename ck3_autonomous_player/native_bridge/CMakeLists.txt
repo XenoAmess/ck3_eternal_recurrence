@@ -9015,4 +9015,5 @@ if(BUILD_TESTING AND WIN32)
     COMMAND xar_confucian_religious_title_readback_v1_test)
 endif()
 include(cmake/current_candidate_detachment_mapper_12003.cmake)
+include(cmake/pre_date_character_prefix_12003.cmake)
 

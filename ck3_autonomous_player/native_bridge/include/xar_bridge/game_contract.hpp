@@ -738,6 +738,7 @@ struct ArmyCurrentProvinceBesiegingContributorsV1 {
 #include "xar_bridge/army_current_post_admission_refresh_v1.inc.hpp"
 #include "xar_bridge/army_current_candidate_detachment_mapper_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_pending_update_v1.inc.hpp"
+#include "xar_bridge/army_pre_date_character_prefix_v1.inc.hpp"
 
 struct ArmyStrengthSnapshot {
   bool available = false;
@@ -814,6 +815,7 @@ struct ArmyStrengthSnapshot {
   std::optional<ArmyPreDateDatedAppendInputsV1> current_pre_date_dated_append_inputs_v1;
   std::optional<ArmyCurrentPostAdmissionRefreshInputsV1> current_post_admission_refresh_inputs_v1;
   std::optional<ArmyCurrentCandidateDetachmentMapperInputsV1> current_candidate_detachment_mapper_inputs_v1;
+  std::optional<ArmyCurrentPreDateCharacterPrefixInputsV1> current_pre_date_character_prefix_inputs_v1;
 
   friend bool operator==(const ArmyStrengthSnapshot &,
                          const ArmyStrengthSnapshot &) = default;

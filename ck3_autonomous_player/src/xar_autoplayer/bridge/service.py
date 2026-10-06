@@ -21,6 +21,7 @@ from .army_daily_assault_active_table_projection import project_current_daily_as
 from .army_daily_assault_placement_inputs_projection import project_current_daily_assault_placement_inputs_v1
 from ..simulation.army_daily_assault_roster_admission_12003 import project_current_daily_assault_roster_admission_12003
 from ..simulation.army_pre_date_dated_append_12003 import project_pre_date_dated_append_12003
+from ..simulation.army_pre_date_character_prefix_12003 import project_current_pre_date_character_prefix_v1
 from ..simulation.army_current_post_admission_refresh_12003 import project_current_post_admission_refresh_12003
 from .army_current_candidate_detachment_mapper_builder import build_current_candidate_detachment_mapper_preview
 from ..simulation.army_pre_date_pending_update_12003 import project_current_pre_date_pending_update_v1
@@ -4502,6 +4503,7 @@ class GameplayBridgeService:
         selected_rows = [by_id[army_id] for army_id in requested_ids]
         for row in selected_rows:
             row["same_input_conditional_current_pre_date_pending_update_v1"] = project_current_pre_date_pending_update_v1(row)
+            row["same_input_conditional_current_pre_date_character_prefix_v1"] = project_current_pre_date_character_prefix_v1(row)
         status = army_strength_query_status(selected_rows)
         diagnostics = snapshot.get("diagnostics")
         hello = (
@@ -4604,6 +4606,9 @@ class GameplayBridgeService:
                         "date_raw": snapshot.get("date_raw"),
                         "game_version": hello.get("game_version") if isinstance(hello, dict) else None,
                         "executable_sha256": hello.get("executable_sha256") if isinstance(hello, dict) else None})}
+                for row in selected_rows],
+            "current_pre_date_character_prefix_inputs_v1": [
+                {"army_id": row["army_id"], "projection": row["same_input_conditional_current_pre_date_character_prefix_v1"]}
                 for row in selected_rows],
             "current_pre_date_dated_append_inputs_v1": [
                 {"army_id": row["army_id"], "projection": project_pre_date_dated_append_12003(

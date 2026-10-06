@@ -12,6 +12,7 @@
 #include "xar_bridge/ck3_12003_post_admission_refresh.hpp"
 #include "xar_bridge/ck3_12003_current_candidate_detachment_mapper.hpp"
 #include "xar_bridge/ck3_12003_pre_date_pending_update.hpp"
+#include "xar_bridge/ck3_12003_pre_date_character_prefix.hpp"
 #include "xar_bridge/ck3_12003_current_assault_removal_reference.hpp"
 #include "xar_bridge/ck3_12003_ordered_besieging_refill_inputs.hpp"
 
@@ -186,6 +187,7 @@ struct ArmyBindings {
   ck3_12003::PreDateDatedAppendBindings12003 current_pre_date_dated_append_bindings{};
   ck3_12003::CurrentPostAdmissionRefreshBindings12003 current_post_admission_refresh_bindings{};
   ck3_12003::CurrentCandidateDetachmentMapperBindings12003 current_candidate_detachment_mapper_bindings{};
+  ck3_12003::CurrentPreDateCharacterPrefixBindings12003 current_pre_date_character_prefix_bindings{};
 };
 
 game::ArmyCurrentHelperDomainInputsV1 ReadCurrentHelperDomainInputs12003(

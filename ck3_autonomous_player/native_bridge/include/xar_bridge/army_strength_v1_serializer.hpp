@@ -14,6 +14,7 @@
 #include "xar_bridge/army_current_post_admission_refresh_serializer_v1.inc.hpp"
 #include "xar_bridge/army_current_candidate_detachment_mapper_serializer_v1.inc.hpp"
 #include "xar_bridge/army_pre_date_pending_update_serializer_v1.inc.hpp"
+#include "xar_bridge/army_pre_date_character_prefix_serializer_v1.inc.hpp"
 #include "xar_bridge/army_ordered_besieging_refill_inputs_v1_serializer.hpp"
 #include "xar_bridge/army_ordered_besieging_fixed_chunk0_preparation_v1_serializer.hpp"
 
@@ -624,6 +625,11 @@ inline void AppendArmyStrengthV1(
   if (strength.current_pre_date_pending_update_inputs_v1) {
     result += ",\"current_pre_date_pending_update_inputs_v1\":";
     AppendArmyCurrentPreDatePendingUpdateInputsV1(result, *strength.current_pre_date_pending_update_inputs_v1,
+        number, append_json_string);
+  }
+  if (strength.current_pre_date_character_prefix_inputs_v1) {
+    result += ",\"current_pre_date_character_prefix_inputs_v1\":";
+    AppendArmyCurrentPreDateCharacterPrefixInputsV1(result, *strength.current_pre_date_character_prefix_inputs_v1,
         number, append_json_string);
   }
   if (strength.monthly_first_removal_cleanup_inputs_v1) {
