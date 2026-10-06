@@ -109,3 +109,34 @@ flowchart TD
 ```
 
 Stage B metadata locates the actual rebuild fragments `[2A9FC97,2A9FD95)`254B/unwind529D904 and `[2A9FDAD,2A9FDB3)`6B/unwind529D938. Their bodies remain unread. `STAGE-C-SOURCE-FIRST-PLAN.md` freezes260 code bytes plus8 header bytes, with independent fragment decoding and no intervening-hole capture. Growth's physical extent, rehash/reset semantics and full current-query collector plan remain the concrete next frontier. The ordinary matched no-growth transfer tree is source-closed; its new observer/model is still unimplemented and research-only.
+
+## Approved Stage C: actual count-driven rebuild
+
+The approved first Stage C capture used260Bcode +8Bunwind:268 actual/unique bytes, no duplicate reads; cumulative A+B+C1619B. Each actual fragment was decoded separately, with no concatenated holes. Both headers have CHAININFO; their exact unread chain-record locations529D918 and529D93C remain in `STAGE-C-READ-RECEIPT01.json`. No chained metadata or allocator implementation was opened.
+
+In the in-range index branch, actual `2A9FC97` sets table `+18` to index+2 modulo256, computes capacity `1<<index` in32 bits, saves old data/occupiedcount and stores mask=capacity-1. It resets occupied count to0 before the table allocator's normal-return allocation request: `(capacity+new_tail+1)*40` bytes, alignment8. It publishes the returned data pointer, zeroes each control byte for physical slots `[0,capacity+tail)`, then writes controlFF at slot `capacity+tail`. Hash/key/vector bytes in empty slots are not initialized or consumed by this phase. Source-defined allocation failure/implementation is outside the declared normal-return model.
+
+The old-buffer value transfer is count-driven: compare original data with the pointer returned by actual `2A9E7F0`, then require signed old occupied count>0. Start at physical old slot0 and continue until that many nonzero control records have been consumed. A zero control advances one record without reducing the remaining count. Each nonzero control uses its stored hash and pair at key/vector `+8` as input to held `2AA2550`, then decreases remaining count once. There is no mask bound or end-marker termination in this loop. Matched moves empty old record vectors; their conditional allocator cleanup is an ordinary implementation boundary. Repeated list references and physical reinsertion order remain observable values.
+
+After rehash, another `2A9E7F0` comparison selects the old-buffer release suffix. Both its fallthrough `2A9FD95` and branch `2A9FDA8` are inside already held exact metadata `[2A9FD95,2A9FDAD)`24B/unwind529D924; that body is not read yet. The out-of-range branch fragment `2A9FDAD..2A9FDB3` restores the entry stack and returns without executing the rebuild body. The actual direct sentinel getter's body/extent is a separate cached-source frontier, not replaced by an assumed global pointer.
+
+```mermaid
+flowchart TD
+  E[2A9FC80 index-1 unsignedcompare29] -->|out of range| Q[2A9FDAD return]
+  E -->|in range| A[tail=u8 index+2;cap=1<<index;mask=cap-1;count0]
+  A --> M[Normal-return allocation:cap+tail+1 records;zero controls;FF terminal]
+  M -.-> S[2A9E7F0 actual sentinel pointer unknown]
+  S -->|olddata differs and oldcount>0| L[Old physical scan; remaining=oldcount]
+  L -->|control0| L
+  L -->|nonzero| R[2AA2550 storedhash and complete key/vector pair]
+  R --> D[remaining--]
+  D -->|positive| L
+  D -->|zero| C[Compare olddata with sentinel again]
+  S -->|sentinel or count<=0| C
+  C -.-> F[FD95/FDA8 actual release/epilogue unknown]
+  F --> Q
+```
+
+Growth's minimum same-query raw frame is now concrete: the existing signed occupied count/mask/tail/binary32 threshold; actual current-data sentinel equality; old physical controls through the count-driven consumed-record prefix; stored hash/full key/complete ordered references and required matched allocator witness for every consumed nonzero record. Empty controls do not require unused scalar/vector bytes. Allocate the derived empty private image, replay old nonzero records in native physical order with held value-preserving insertion, then retry the selected carried/original pair. No second query or guessed mask/end-bounded scan may substitute for that prefix. Same-capture nonphysical Army/ArRg inputs and normal allocator return stay explicit conditions; no table allocator identity gate is necessary for the logical allocation image.
+
+`STAGE-D-SOURCE-FIRST-PLAN.md` freezes the actual24B epilogue +4Bheader and sentinel metadata-only lookup at most216B before any further read. The sentinel and epilogue remain source frontiers; the new growth observer/model is unimplemented. Existing bounded current static qualification, actual callback/tomorrow/fullmonthly/live=false and zero test/build/game/shared edits remain unchanged.
