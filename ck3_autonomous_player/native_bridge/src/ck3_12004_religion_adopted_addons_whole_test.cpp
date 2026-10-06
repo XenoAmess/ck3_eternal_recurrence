@@ -23,6 +23,7 @@
 #include <cstring>
 #include <filesystem>
 #include <fstream>
+#include <initializer_list>
 #include <iostream>
 #include <stdexcept>
 #include <string_view>
@@ -153,6 +154,8 @@ struct World {
   const void *decision_fallback_ptr = decision_fallback.data();
   unsigned callbacks = 0;
   bool callback_scope_valid = true;
+  bool callback_failure_reported = false;
+  const char *callback_scene = "pre-query-core";
 
   World() {
     Put(state, actual::kGameStateDateOffset, date);
@@ -259,10 +262,23 @@ struct World {
   }
 };
 World *world = nullptr;
-void Callback(bool receiver_ok = true) {
+void RecordCallback(const char *name, int line, const char *predicate,
+    std::initializer_list<bool> receiver_arguments) {
+  const bool receiver_ok = receiver_arguments.size() == 0 || *receiver_arguments.begin();
+  const auto actual_thread = GetCurrentThreadId();
+  const bool owner_thread_matches = actual_thread == world->owner;
   ++world->callbacks;
-  world->callback_scope_valid &= GetCurrentThreadId() == world->owner && receiver_ok;
+  world->callback_scope_valid &= owner_thread_matches && receiver_ok;
+  if ((!owner_thread_matches || !receiver_ok) && !world->callback_failure_reported) {
+    world->callback_failure_reported = true;
+    std::cerr << "synthetic_callback_scope_failure scene=" << world->callback_scene
+        << " callback=" << name << " source_line=" << line
+        << " receiver_predicate=" << predicate << " receiver_ok=" << receiver_ok
+        << " owner_thread_matches=" << owner_thread_matches
+        << " actual_thread=" << actual_thread << " owner_thread=" << world->owner << '\n';
+  }
 }
+#define Callback(...) RecordCallback(__func__, __LINE__, #__VA_ARGS__, {__VA_ARGS__})
 void *Player(void *owner) { Callback(owner == world->jomini.data()); return world->player.data(); }
 void *CharacterRite(void *actor) { Callback(actor == world->character.data()); return world->rite.data(); }
 void *CharacterFaith(void *actor) { Callback(actor == world->character.data()); return world->faith.data(); }
@@ -620,6 +636,7 @@ std::string Whole(World &w, const game::GameAdapter &adapter, const game::Snapsh
   stamp.game_state = reinterpret_cast<std::uintptr_t>(w.state.data());
   stamp.date_raw = World::date; stamp.paused = true;
   const auto before = w.callbacks;
+  w.callback_scene = request_id;
   Require(execute(&envelope, stamp) && query.completed && envelope.frame_stable && query.failure.empty(),
       "production whole owner mailbox completes on the actual4 current frame");
   Require(w.callback_scope_valid && w.callbacks > before,
