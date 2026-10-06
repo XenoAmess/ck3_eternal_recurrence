@@ -1,0 +1,26 @@
+{
+  "source_receipt": "Z:/ck3_mod_rewrite_process_assets/g2-resume-20261006/gameplay-responses/840-v2-owner2-war100663329-plan-04.json",
+  "source_session": "g80/source1e7702aa/PID4692/connection2",
+  "snapshot_id": "native:33",
+  "revision": 2,
+  "date_raw": 53288232,
+  "actual_plan": {
+    "policy": "general-battle-forecast-v1",
+    "phase": "native_war_general_battle_inputs_query",
+    "selected_step": null,
+    "reason": "selected backend does not implement required step query-combat-simulation-inputs-v2-2606-8756-a-1-218104048-d-1-134218098",
+    "required_step": "query-combat-simulation-inputs-v2-2606-8756-a-1-218104048-d-1-134218098",
+    "baseline_phase": "native_war_pursuit",
+    "baseline_selected_step": "move-army-218104048-to-2606",
+    "encounter": {
+      "attacker_army_ids": [
+        218104048
+      ],
+      "defender_army_ids": [
+        134218098
+      ],
+      "target_province_id": 2606
+    }
+  },
+  "test_boundary": "Replay actual required_step at production plan_turn outer route; inner choose result reconstructed from required_step, not a new game query/model run"
+}

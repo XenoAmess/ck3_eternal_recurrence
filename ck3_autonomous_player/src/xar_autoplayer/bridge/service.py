@@ -47,6 +47,7 @@ from .combat_contract import (
     combat_simulation_inputs_status,
     normalize_combat_simulation_inputs,
     normalize_combat_simulation_request,
+    parse_query_combat_simulation_inputs_step,
     query_combat_simulation_inputs_step,
 )
 from .combat_phase_contract import (
@@ -1082,6 +1083,13 @@ class GameplayBridgeService:
                 )
                 is not None
                 and QUERY_BATTLE_TERMINAL_TRANSITION_V1_CAPABILITY
+                in bridge_capabilities
+            ):
+                routable_steps.add(str(selected_step))
+            if (
+                parse_query_combat_simulation_inputs_step(selected_step)
+                is not None
+                and QUERY_COMBAT_SIMULATION_INPUTS_CAPABILITY
                 in bridge_capabilities
             ):
                 routable_steps.add(str(selected_step))
