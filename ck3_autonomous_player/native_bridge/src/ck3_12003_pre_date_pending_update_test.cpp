@@ -393,8 +393,8 @@ void Scenes(const std::filesystem::path &directory) {
               r[6].war_resolution.selected_full_id_u32 == kWarValid && r[6].war_magic_0c_raw_u32 == 0x5761725FU,
           "mixed contract/persistent/War operands and sentinel choices must come from demanded source reads");
     Check(f.memory.Attempts() == 0, "mixed predicates must skip all source-unused contract/state/vector-count fields");
-    Check(leaf.removal_queue.occurrences.size() == 2 && leaf.removal_queue.occurrences[0].raw_full_id_u32 == 99 &&
-              leaf.removal_queue.occurrences[1].raw_full_id_u32 == 99,
+    Check(leaf.removal_queue.occurrences.size() == 2 && leaf.removal_queue.occurrences[0].raw_full_id_u32 == 99U &&
+              leaf.removal_queue.occurrences[1].raw_full_id_u32 == 99U,
           "mixed current source must preserve real nonmatching old removal duplicates without normalization");
     Emit(directory, "mixed-arrg-predicates", rows);
   }
