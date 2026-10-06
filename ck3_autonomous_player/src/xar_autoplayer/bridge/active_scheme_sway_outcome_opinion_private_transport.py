@@ -10,7 +10,7 @@ from collections.abc import Mapping
 from .driver import BridgeUnavailableError
 from .g2_private_query_transport import private_g2_query_metadata_v1, read_private_g2_native_query_v1
 from .nonwar_private_build import private_native_build_identity, private_native_provenance
-from .version_identity import CK3_12002, CK3_12003
+from .version_identity import CK3_12002, CK3_12003, CK3_12004
 
 
 STEP = "query-sway-outcome-opinion-v1-private"
@@ -34,7 +34,7 @@ def normalize_active_scheme_sway_outcome_opinion_v1(
     if not isinstance(value, dict) or set(value) != _KEYS or value.get("schema") != SCHEMA:
         raise ValueError("native sway material-opinion schema is malformed")
     build = private_native_build_identity(snapshot)
-    if build not in (CK3_12002, CK3_12003) or value["build"] != build.game_version:
+    if build not in (CK3_12002, CK3_12003, CK3_12004) or value["build"] != build.game_version:
         raise ValueError("native sway material-opinion belongs to another exact build")
     actor = snapshot.get("played_character")
     if (not isinstance(actor, Mapping) or value["actor_character_id"] != actor.get("character_id")
