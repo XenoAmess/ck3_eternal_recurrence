@@ -140,7 +140,8 @@ FRONTEND_GUI_ROUTE_V1_EXECUTABLE_SHA256: Final = (
 )
 FRONTEND_GUI_ROUTE_V1_GAME_ADAPTER_ID: Final = "ck3-1.19.0.6-msvc-x64"
 # Each tuple is an exact adapter/version/executable identity, including the
-# 1.20.0.3 bridge observed in the closed G2 clan bootstrap attempt.
+# 1.20.0.3 bridge observed in the closed G2 clan bootstrap attempt and the
+# 1.20.0.4 exact build used by the offline bookmark-model producer fixture.
 FRONTEND_GUI_ROUTE_V1_BUILD_IDENTITIES: Final = (
     (
         FRONTEND_GUI_ROUTE_V1_GAME_ADAPTER_ID,
@@ -151,6 +152,11 @@ FRONTEND_GUI_ROUTE_V1_BUILD_IDENTITIES: Final = (
         "ck3-1.20.0.3-msvc-x64",
         "1.20.0.3",
         "94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6",
+    ),
+    (
+        "ck3-1.20.0.4-msvc-x64",
+        "1.20.0.4",
+        "98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518",
     ),
 )
 

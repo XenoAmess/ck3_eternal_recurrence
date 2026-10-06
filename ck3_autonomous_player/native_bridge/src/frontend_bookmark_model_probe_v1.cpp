@@ -1,4 +1,5 @@
 #include "xar_bridge/frontend_bookmark_model_probe_v1.hpp"
+#include "xar_bridge/ck3_12004_frontend_bookmark.hpp"
 
 #ifndef NOMINMAX
 #define NOMINMAX
@@ -12,29 +13,6 @@
 namespace xar::ck3_11906 {
 namespace {
 
-struct FrontendModelAbiV1 {
-  std::uintptr_t application_vtable;
-  std::array<std::uintptr_t, 3> owner_vtables;
-  std::uintptr_t view_vtable;
-  std::uintptr_t handler_type;
-  std::uintptr_t view_type;
-  std::size_t view_root;
-  std::size_t selected_group;
-  std::size_t group_key;
-  std::size_t selected_bookmark;
-  std::size_t selected_index;
-  std::size_t hovered_index;
-  std::size_t bookmark_date;
-  std::size_t bookmark_characters;
-  std::uintptr_t final_government_getter;
-  std::uintptr_t character_setter;
-  std::uintptr_t bookmark_setter;
-  std::size_t setup_bookmark_collection;
-  std::uintptr_t group_setter;
-  std::uintptr_t bookmark_database_slot;
-  std::uintptr_t bookmark_database_vtable;
-};
-
 constexpr FrontendModelAbiV1 kLegacyAbi{
     0x4093158, {0x40C9BD0, 0x40F3A10, 0x40F3CF0}, 0x410B070,
     0x51FCE10, 0x5212C48, 0x78, 0x108, 0x38, 0x150, 0x158, 0x15C,
@@ -45,10 +23,16 @@ constexpr FrontendModelAbiV1 kCrozierAbi{
     0x40, 0x160, 0x321D1A0, 0x1060A90, 0x1060950, 0xC0,
     0x1060090, 0x5C67210, 0x48D0200};
 
-const FrontendModelAbiV1 &ModelAbi(
+const FrontendModelAbiV1 *ModelAbi(
     const ZhongguoScoreboardNativeEnvironmentV1 &environment) noexcept {
-  return environment.gui_abi_revision == GuiAbiRevisionV1::crozier12003
-             ? kCrozierAbi : kLegacyAbi;
+  switch (environment.gui_abi_revision) {
+  case GuiAbiRevisionV1::legacy11906: return &kLegacyAbi;
+  case GuiAbiRevisionV1::crozier12003: return &kCrozierAbi;
+  case GuiAbiRevisionV1::crozier12004:
+    return xar::ck3_12004::BindFrontendBookmarkModel12004(
+        environment.module_base, environment.executable_sha256);
+  default: return nullptr;
+  }
 }
 
 constexpr std::uintptr_t kGuiContextOwnerRegistryOffset = 0x230;
@@ -293,8 +277,13 @@ bool ResolveCurrentSetupView(
     const ZhongguoScoreboardAccessV1 &access, void *bookmarks_root,
     const FrontendBookmarkModelProbeV1 &model, void *&setup_view,
     std::string &reason) noexcept {
-  const auto &abi = ModelAbi(environment);
   setup_view = nullptr;
+  const auto *binding = ModelAbi(environment);
+  if (binding == nullptr) {
+    reason = "frontend_bookmark_build_unbound";
+    return false;
+  }
+  const auto &abi = *binding;
   // R740's sole owner route was the current GUI-context registry. The
   // direct application/idler path is also accepted when its exact vtables,
   // RTTI and independently named Bookmarks root all still match.
@@ -392,7 +381,12 @@ bool ProbeFrontendBookmarkModelV1(
     FrontendBookmarkGovernmentGetterV1 fixture_government_getter,
     FrontendBookmarkSeedTargetV1 seed_target) noexcept {
   output = {};
-  const auto &abi = ModelAbi(environment);
+  const auto *binding = ModelAbi(environment);
+  if (binding == nullptr) {
+    output.unavailable_reason = "frontend_bookmark_build_unbound";
+    return true;
+  }
+  const auto &abi = *binding;
   const auto &profile = GetFrontendBookmarkTargetProfileV1(seed_target);
   if (!environment.exact_build_admitted || environment.module_base == 0 ||
       bookmarks_root == nullptr || environment.gui_global_slot == nullptr ||
@@ -669,7 +663,12 @@ bool SelectSupportedFeudalBookmarkCharacterV1(
     FrontendBookmarkSelectionSetterV1 fixture_setter,
     FrontendBookmarkSeedTargetV1 seed_target) noexcept {
   output = {};
-  const auto &abi = ModelAbi(environment);
+  const auto *binding = ModelAbi(environment);
+  if (binding == nullptr) {
+    output.unavailable_reason = "frontend_bookmark_build_unbound";
+    return true;
+  }
+  const auto &abi = *binding;
   const auto &profile = GetFrontendBookmarkTargetProfileV1(seed_target);
   if (!ProbeFrontendBookmarkModelV1(environment, access, bookmarks_root,
                                     output.before,
@@ -748,7 +747,7 @@ bool SelectSupportedFeudalBookmarkCharacterV1(
     return true;
   }
 
-  // Exact stock setters are 0xF707E0 (legacy) and 0x1060A90 (.3).
+  // The exact profile selects the stock setter for the admitted build.
   // Each derives the index from the current native Bookmark collection.
   // This is one submission. The independent following model frame, not
   // this same-frame read or pipe ACK, proves whether it took effect.
@@ -785,7 +784,12 @@ bool SelectSupportedBookmarkV1(
     FrontendBookmarkSetterV1 fixture_setter,
     FrontendBookmarkGroupSetterV1 fixture_group_setter) noexcept {
   output = {};
-  const auto &abi = ModelAbi(environment);
+  const auto *binding = ModelAbi(environment);
+  if (binding == nullptr) {
+    output.unavailable_reason = "frontend_bookmark_build_unbound";
+    return true;
+  }
+  const auto &abi = *binding;
   const auto &profile = GetFrontendBookmarkTargetProfileV1(seed_target);
   FrontendBookmarkModelProbeV1 before{};
   if (!ProbeFrontendBookmarkModelV1(environment, access, bookmarks_root,
@@ -804,7 +808,8 @@ bool SelectSupportedBookmarkV1(
   }
   output.owner_resolved = true;
   const bool crozier =
-      environment.gui_abi_revision == GuiAbiRevisionV1::crozier12003;
+      environment.gui_abi_revision == GuiAbiRevisionV1::crozier12003 ||
+      environment.gui_abi_revision == GuiAbiRevisionV1::crozier12004;
   if (before.selected_bookmark_key == profile.bookmark_key &&
       (!crozier ||
        (before.selected_date_raw_available &&

@@ -418,3 +418,100 @@ flowchart TD
   L --> M[New modal stop; Chancellor submitted pending]
   M -. complete Feast and G2 remain open .-> O[Full background autonomous loop]
 ```
+
+
+## Adopted Frontend bookmark2 migration to actual 1.20.0.4, 2026-10-07
+
+This increment migrates the two already adopted ON options,
+`XAR_CK3_ENABLE_FEUDAL_1066_BOOKMARK_MODEL_PRIVATE_V1` and
+`XAR_CK3_ENABLE_FEUDAL_1066_SELECTED_BOOKMARK_START_PRIVATE_V1`, from the frozen
+1.20.0.3 source to CK3 **1.20.0.4**, Steam build **25734779**, executable SHA-256
+`98702F88A547CDE2EAF29A85F93B85F68EE4CF8148336A4F7AFAEB75319DD518`.
+The exact identity is reused from the actual4 frozen build inventory; this lane
+did not hash the executable or inspect any running process. Historical 1.19 and
+1.20.0.3 GREEN/live claims above keep their original build scope.
+
+The sole shared finite mapper supplied cached runtime-function candidates and
+bounded frozen-span captures. Complete instruction spans preserve all member
+offsets and nonrelative constants; only relative control and RIP displacements
+are normalized. Named constructor/store RIP operands independently identify the
+tables below. RTTI proof follows only each derived table's `[-8]` locator, its
+24-byte COL, and a 64-byte named TypeDescriptor. No table scan, whole EXE read,
+global address delta, name search, or hierarchy expansion is used.
+
+| Used frontend input | Actual4 binding | Exact source-use proof |
+| --- | --- | --- |
+| Application / idler / Gfx / handler / SetupView VTs | `449BDB8 / 44D5F40 / 4500670 / 45008C0 / 451B948` | named application constructor `88A270+2D`, factory `8929D7+F7`, handler constructor `ED7680+C4`, Setup constructor `ED7BE2+F8` |
+| Handler / SetupView RTTI TypeDescriptors | `5702BC0 / 57201F8` | derived VT locator and same decorated `CFrontEndInterfaceHandler` / `CFrontEndGameSetupView` names |
+| GUI global / BookmarkDB global | `5CB87F8 / 5C67210` | Setup constructor RIP and BookmarkDB getter `8FC260+57`, both slots unchanged |
+| BookmarkDB VT | `48D0210` | initializer `3004720` maps to `3004700`, RIP at `+4E` installs the named database table |
+| Final government getter | `321D180` | complete 52-byte body maps from `321D1A0`, preserving final `+A8/+B0` native choice |
+| Selected character / Bookmark / group setters | `1060A90 / 1060950 / 1060090` | complete 48 / 37 / 105-byte bodies; leaf candidates use agreeing adjacent cached runtime gaps, then actual bodies |
+| SetupView root / context / group / Bookmark / selected / hover | `60 / 68 / D8 / 120 / 128 / 12C` | GUI base `3AC1830` maps to `3AC1810`; Setup/leaf/group bodies retain the used fields |
+| GUI-context registry / entry stride | `230 / 50` | complete registry body `3AA9BE0+CF` maps to `3AA9BC0`, registration context `ED7FF8+55` unchanged |
+| Bookmark date / characters / character stride / parent | `40 / 160 / 1A0 / 130` | reset-view `105FDE0+2AE`, character setter, and parent copy `321C147+E` mapping to `321C127` retain the used operands |
+
+`SetupView+C0` remains a **Group pointer collection**. Bookmarks are resolved
+from the independently identified BookmarkDB `+50` collection and each
+Bookmark's `+150` Group pointer. The historical incorrect all-Bookmark
+interpretation of `C0` is not restored. Existing key-derived profiles and the
+one-setter/independent-following-model semantics are retained.
+
+`ck3_12004_frontend_bookmark.cpp` contains an independent actual4 profile.
+`BindFrontendBookmarkModel12004(module_base, executable_sha256)` selects it
+only for that executable identity. The production environment chooses the
+appended `GuiAbiRevisionV1::crozier12004` and supplies the adapter's actual SHA;
+an unbound actual4 model reports `frontend_bookmark_build_unbound`. The legacy
+and actual3 profiles remain separately selected. The existing private command
+uses the extracted shared `FrontendBookmarkModelPrivateResultFrameV1`, so the
+native fixture emits the same complete `command_result` fields as production.
+
+The Python frontend binding appends the actual4 adapter/version/SHA tuple.
+The existing registered `ck3_execute_step` route is retained: it requires a
+semantic map snapshot and cannot consume a frontend revision-zero command by
+itself. The actual registered
+`ck3_activate_frontend_start_1066_bookmark_character_v1` route already uses the
+production frontend revision-zero primitive and consumes the native model.
+No new MCP facade or generic executor exception is introduced.
+
+```mermaid
+flowchart TD
+  A[Actual4 adapter version and executable SHA] --> B[Independent actual4 frontend binder]
+  B --> C[Current named Bookmarks root and owner]
+  C --> D[Native key date parent count and final government]
+  D --> E[One stock selection submission]
+  E --> F[Independent following selected-model observation]
+  F --> G[Existing registered bookmark-character Start consumer]
+  G -. actual4 live untested .-> H[Paused Robert ordinary campaign and public root]
+```
+
+The authored native `frontend_bookmark_12004_fixture.cpp` builds synthetic
+actual4 memory through the production observer/selector/shared formatter. The
+file-only `run_frontend_bookmark_12004_mcp_fixture.py` consumes those whole
+packets through the real driver, Service and registered MCP tools. Auxiliary
+frontend route and ACK frames are explicitly fixture-only. Missing map
+observation ends the typed Start consumer at its normal unavailable boundary;
+it cannot claim a new campaign. These files are **AUTHORED_NOTRUN** in this
+delivery. This lane ran no native build, Python fixture, SDK call, CK3 launch,
+attachment, query, UI/Steam action, or process stop. Root owns the integrated
+build and execution. Actual4 readiness remains `research` until those checks;
+no `fixture-live`, production-live primitive/loop, or completed OODA is claimed.
+
+Finite source receipt directory:
+`Z:/ck3_mod_rewrite_process_assets/g2-background-20261007/frontend-bookmark-12004/`.
+`primary-map/FAMILY-MAP.json`, `owner-map/FAMILY-MAP.json`,
+`db-map/FAMILY-MAP.json`, `leaf-map/FAMILY-MAP.json`, `parent-map/FAMILY-MAP.json`, `NAMED-RTTI.json` and
+`FRONTEND-BOOKMARK-12004-SOURCE-DELIVERY.json` retain source names, body edges,
+cache claims, receipt pins and cost. Unique fresh bounded frozen reads total
+**4,245 bytes in 49 calls** across both builds; retained old JSON bodies were
+reused for owner/leaf spans. Cached metadata-only candidate work is recorded
+separately by the shared mapper. These are source-proof artifacts, not test or
+paused-live artifacts. No old GREEN was rerun.
+
+Remaining: Root merges the shared GUI enum/SHA environment and closed actual4
+lookup/dispatch helpers, the bridge formatter wrapper and actual4 environment
+selection, and CMake source/target wiring; then Root runs the new native
+wholeproducer and registered Python consumer once. Bookmark actions remain
+offline qualification only; no separate campaign may be started. Any future
+live work uses Root's existing Robert 29829 ordinary campaign entrance.
+`open_kaishek` is not applicable to these native/Python ABI/fixture changes.
