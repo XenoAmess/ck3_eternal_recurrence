@@ -1,0 +1,102 @@
+// Included inside xar::game. This is the actual current table, not a forecast.
+struct ArmyDailyAssaultResolutionV1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::string unavailable_reason;
+  std::optional<std::uint32_t> requested_full_id_u32;
+  std::optional<bool> registry_loaded;
+  std::optional<std::uint32_t> registry_capacity_u32, registry_index_u32;
+  std::optional<std::string> indexed_identity;
+  std::optional<std::uint32_t> indexed_full_id_u32;
+  std::optional<std::string> selection;
+  std::optional<bool> used_fallback;
+  std::optional<std::string> object_identity;
+  std::optional<std::uint32_t> selected_full_id_u32;
+  friend bool operator==(const ArmyDailyAssaultResolutionV1 &, const ArmyDailyAssaultResolutionV1 &) = default;
+};
+struct ArmyDailyAssaultOccurrenceV1 {
+  std::int32_t native_index = 0;
+  std::optional<std::uint32_t> raw_full_id_u32;
+  ArmyDailyAssaultResolutionV1 resolution{};
+  std::string status = "unavailable";
+  bool ready = false;
+  std::string unavailable_reason;
+  friend bool operator==(const ArmyDailyAssaultOccurrenceV1 &, const ArmyDailyAssaultOccurrenceV1 &) = default;
+};
+struct ArmyDailyAssaultArRgOccurrenceV1 {
+  std::int32_t native_index = 0;
+  std::optional<std::uint32_t> raw_full_id_u32;
+  ArmyDailyAssaultResolutionV1 resolution{};
+  std::string status = "unavailable";
+  bool ready = false;
+  std::string unavailable_reason;
+  std::optional<std::uint32_t> magic_raw_u32;
+  std::optional<bool> identity_valid;
+  std::optional<std::string> definition_identity;
+  std::optional<std::int32_t> definition_type_raw_i32, current_raw_i32;
+  std::optional<bool> denominator_included;
+  friend bool operator==(const ArmyDailyAssaultArRgOccurrenceV1 &, const ArmyDailyAssaultArRgOccurrenceV1 &) = default;
+};
+template <typename Occurrence> struct ArmyDailyAssaultReferencesV1 {
+  std::string status = "unavailable";
+  bool ready = false, references_ready = false;
+  std::string unavailable_reason;
+  std::optional<std::int32_t> count_raw_i32;
+  std::optional<std::string> data_identity;
+  std::optional<bool> data_present;
+  std::vector<Occurrence> occurrences;
+  std::int32_t observed_occurrence_count = 0;
+  friend bool operator==(const ArmyDailyAssaultReferencesV1 &, const ArmyDailyAssaultReferencesV1 &) = default;
+};
+using ArmyDailyAssaultArmyReferencesV1 = ArmyDailyAssaultReferencesV1<ArmyDailyAssaultOccurrenceV1>;
+using ArmyDailyAssaultArRgReferencesV1 = ArmyDailyAssaultReferencesV1<ArmyDailyAssaultArRgOccurrenceV1>;
+struct ArmyDailyAssaultTableHeaderV1 {
+  std::string status = "unavailable";
+  bool ready = false;
+  std::string unavailable_reason;
+  std::optional<std::string> entries_identity;
+  std::optional<bool> entries_present;
+  std::optional<std::int32_t> occupied_count_raw_i32, mask_raw_i32;
+  std::optional<std::uint8_t> tail_distance_raw_u8;
+  std::optional<std::uint32_t> load_factor_f32_bits_u32;
+  std::optional<std::int32_t> end_slot_raw_i32;
+  std::optional<std::uint8_t> end_marker_control_raw_u8;
+  friend bool operator==(const ArmyDailyAssaultTableHeaderV1 &, const ArmyDailyAssaultTableHeaderV1 &) = default;
+};
+struct ArmyDailyAssaultControlV1 {
+  std::int64_t physical_slot_i64 = 0;
+  std::optional<std::uint8_t> control_raw_u8;
+  std::string unavailable_reason;
+  friend bool operator==(const ArmyDailyAssaultControlV1 &, const ArmyDailyAssaultControlV1 &) = default;
+};
+struct ArmyDailyAssaultGroupV1 {
+  std::int32_t native_index = 0;
+  std::int64_t physical_slot_i64 = 0;
+  std::string status = "partial";
+  bool ready = false;
+  std::string unavailable_reason;
+  std::optional<std::uint32_t> hash_raw_u32;
+  std::optional<std::uint8_t> control_raw_u8;
+  std::optional<std::uint32_t> siege_full_id_u32;
+  ArmyDailyAssaultResolutionV1 siege_resolution{};
+  ArmyDailyAssaultArmyReferencesV1 armies{};
+  ArmyDailyAssaultArRgReferencesV1 arrgs{};
+  bool denominator_ready = false;
+  friend bool operator==(const ArmyDailyAssaultGroupV1 &, const ArmyDailyAssaultGroupV1 &) = default;
+};
+struct ArmyCurrentDailyAssaultTableV1 {
+  std::int32_t schema_version = 1;
+  std::string source = "native_current_daily_assault_table";
+  std::string stage = "observed_current_daily_assault_table";
+  std::string status = "unavailable";
+  bool ready = false;
+  std::string unavailable_reason;
+  std::optional<bool> manager_loaded;
+  std::optional<std::string> manager_identity;
+  ArmyDailyAssaultTableHeaderV1 header{};
+  std::vector<ArmyDailyAssaultControlV1> physical_controls;
+  std::vector<ArmyDailyAssaultGroupV1> groups;
+  std::int32_t observed_occupied_group_count = 0;
+  bool physical_scan_ready = false, raw_groups_ready = false;
+  friend bool operator==(const ArmyCurrentDailyAssaultTableV1 &, const ArmyCurrentDailyAssaultTableV1 &) = default;
+};

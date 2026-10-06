@@ -1161,10 +1161,17 @@ game::ReadArmyStrengthsResult ReadArmyStrengthsForScope(
       bindings.get_army_maximum_soldiers == nullptr)
     return game::ReadArmyStrengthsResult::unavailable;
   bool partial = false;
+  std::optional<game::ArmyCurrentDailyAssaultTableV1> current_daily_assault_table;
+  if (!scope.empty() && bindings.current_daily_assault_table_bindings.enabled) {
+    diagnostic.reader.store("current_daily_assault_table_readonly");
+    current_daily_assault_table = ck3_12003::ReadCurrentDailyAssaultTable12003(
+        bindings.current_daily_assault_table_bindings);
+  }
   for (const auto &entry : scope) {
     diagnostic.army_id.store(entry.army_id);
     diagnostic.reader.store("scope_row");
     auto row = Strength(bindings, entry);
+    row.current_daily_assault_table_v1 = current_daily_assault_table;
     partial = partial || !row.available;
     output.push_back(std::move(row));
   }

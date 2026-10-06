@@ -1,18 +1,20 @@
 # Daily assault active-table placement and current groups — CK3 1.20.0.3
 
-This source-only increment closes the concrete current-group observation
-layout and `2AA2030`'s direct probe/insertion branches. A readonly collector
-can now publish actual occupied daily-assault groups in native physical order,
-including the Army and ArRg occurrences that are absent from a requested
-Army's associated subset. That releases an input gap for the daily loss model.
+The source-first increment closes the concrete current-group observation
+layout and `2AA2030`'s direct probe/insertion branches. The subsequent candidate
+implements a readonly same-query collector and bounded service value for actual
+occupied daily-assault groups in native physical order, including Army and ArRg
+occurrences absent from a requested Army's associated subset. That releases a
+current-group input gap for the daily loss model; native qualification is pending.
 Future placement across growth remains a named numerical quality gap; it does
 not prevent reading an already populated current table.
 
 Created 2026-10-06 / ISO W41 from `066cfaa0fd3b2d91d4b5b98fd09cf2898937e67d`.
 Frozen CK3 `1.20.0.3`, Steam build `25652598`, reused EXE SHA-256
 `94B55397ABB687A3DCD436805A5D885E6BE90FA6C693FEB44A9E3BBEEADE02A6`.
-There is no new EXE hash, game observation, native reader implementation,
-build, test, policy change or live qualification in this package.
+The original source delivery had no implementation, build or test. The later
+implementation and its first service test are recorded separately below. There
+is no new EXE hash, game observation, policy change or live qualification.
 
 The source-first plan and exact captures are in
 `Z:/ck3_mod_rewrite_process_assets/g2-background-20261006/daily-assault-active-table-2aa2030/`.
@@ -21,7 +23,8 @@ owns the calendar and complete `2A99B40` / `2A97ED0` caller/consumer ledger.
 
 ## Actual entry, ownership and return extent
 
-The primary `CArmyManager` is `GameState[5C68C50]+A0+2A540`.
+The primary `CArmyManager` is **inline** at `GameState[5C68C50]+A0+2A540`;
+there is no pointer member to dereference at GameData+2A540.
 The secondary callback receiver is primary+8; the table uses the primary
 receiver. Pre-date `2A9A0A1` visits the original Army roster and calls
 `2A99B40`. Its admission sequence is already sealed: `24E8560`, Army+124 Unit,
@@ -239,3 +242,143 @@ increment. The nearest next action is the bounded current-table producer above;
 future re-placement calls, post-refill full group numeric inputs, and separate
 release/late-Army suffix remain explicit. No new allocator or safety audit is
 needed to obtain the current nonempty group input.
+
+## Same-query current-table candidate, 2026-10-06 / W41
+
+Root approved implementation after source commit `565345a2`. The dedicated
+`ReadCurrentDailyAssaultTable12003` follows one actual GameState-slot/A0 capture,
+takes the inline primary manager address, and reads its current table once per
+`ReadArmyStrengthsForScope` query. That capture is reused across requested rows.
+The new `ArmyBindings` member is appended at the tail, preserving existing
+aggregate initializer prefixes. Exact .3 adapter binding installs the reader;
+the .2 and wrong-build binders leave it disabled. No native mutator, callback,
+placement, release, writer or tick is invoked.
+
+Actual production files:
+
+- DTO `army_daily_assault_active_table_v1.inc.hpp`;
+- collector `army_daily_assault_active_table_collector_v1.inc.hpp`;
+- serializer `army_daily_assault_active_table_serializer_v1.inc.hpp`;
+- strict optional normalizer `bridge/army_daily_assault_active_table_contract.py`;
+- bounded value `bridge/army_daily_assault_active_table_projection.py`.
+
+`normalize_army_strengths` retains the optional
+`current_daily_assault_table_v1` leaf. The actual
+`GameplayBridgeService.query_army_strengths` returned result adds
+`current_daily_assault_group_inputs_v1`, one shared-manager projection per
+selected row. Original status, strength, supply and native readiness remain
+unchanged. An absent legacy leaf preserves that query and reports only the
+bounded current-group input as unavailable.
+
+The final transport contains raw header values, ordered controls **strictly
+before the end slot**, and a separate actual
+`header.end_marker_control_raw_u8`. It excludes the end marker from both controls
+and groups. Each occupied group preserves its full DWORD Siege ID, hash, control,
+physical slot, native ordinal, duplicate Army/ArRg occurrences, and actual
+registry-generation match or fallback outcome. Positive-count missing vectors,
+failed controls and negative vector extents remain local diagnostics. Count-zero
+vectors consume no data pointer. Actual table count zero remains a complete
+current-empty input even if unused placement metadata is missing.
+
+The independent numerical seam follows `2A97ED0`:
+
+1. Resolve each original ArRg occurrence through `5D1F340` / `5D1F338`, retaining
+   the actual selected fullID+10 and pointer identity.
+2. Require magic+14 `41725267` and selected fullID different from `FFFFFFFF`.
+   An observed invalid identity is known zero and does not demand Definition/current.
+3. Read selected Definition+18 and its signed +2A0 type. Type greater than zero
+   is known zero; current+38 is explicitly undemanded. Type less than or equal
+   to zero demands its actual signed current+38.
+4. Sum every admitted occurrence with signed DWORD wrap. Duplicate physical
+   references contribute repeatedly. Missing demanded current preserves complete
+   references and other groups, but does not invent a running historical prior.
+
+Each group exposes `initial_group_denominator_ready`,
+`observed_initial_eligible_current_soldiers_i32` and an occurrence ledger. Its
+basis is held current data with no earlier group writes replayed. Other
+Army/Siege resolution failures do not erase an independently complete ArRg
+denominator. This is independently useful current grouping and initial numeric
+input, not full sequential daily loss.
+
+```mermaid
+flowchart TD
+    S[ArmyStrength scope query] --> D[GameState slot then A0 GameData]
+    D --> M[Inline primary manager at GameData plus 2A540]
+    M --> H[Actual table header and separate end marker]
+    H --> C[Ascending controls strictly before end]
+    C --> G[Occupied physical groups and full Siege IDs]
+    G --> A[Ordered Army references with actual registry or fallback]
+    G --> R[Ordered ArRg references with actual registry or fallback]
+    R --> I{Observed valid ArRg identity?}
+    I -->|false| Z[Known zero occurrence]
+    I -->|true| T{Signed Definition type at 2A0 at most zero?}
+    T -->|false| Z
+    T -->|true| N[Actual signed current at 38]
+    N --> V[Duplicate-preserving wrapped initial group denominator]
+    Z --> V
+    A --> Q[Actual service current group inputs]
+    G --> Q
+    V --> Q
+    Q -. separate required numerical inputs .-> B[Per-turn Siege budget, writer DATA and target refresh]
+    B -. not implemented here .-> F[Full sequential daily assault]
+```
+
+### First service case and post-test source corrections
+
+One new production compound case calls the real service method through an
+existing memory-route builder; it does not attach a fabricated result. Its first
+executed run was **GREEN, 1 passed / 2.64 s**, at **2026-10-06 13:37:37 +08:00**
+(outer 3.028766 s). It covers physical order, full IDs, duplicate wrapped sums
+`[4,0,47]`, legal empty input, independent local missing values, legacy input,
+and unchanged original query readiness. Existing test helpers were imported;
+their old test methods were not executed.
+
+Two earlier attempts failed during collection, before any case ran: the sparse
+environment lacked `build_release`, then `ck3_workshop_mcp`. Only their concrete
+import dependencies were materialized. Both RED receipts and the first actual
+GREEN receipt remain in the external implementation packet.
+
+Final static review after that GREEN corrected two source-layout mismatches:
+the native draft's erroneous pointer read at GameData+2A540 was replaced with
+the actual inline address; the Python control census and source builder were
+aligned to native before-end controls with a separate header marker. The native
+fixture now embeds manager bytes inside GameData and denies the mistaken pointer
+read. The original GREEN pins predate these corrections. No successful case was
+rerun; final corrected byte-contract qualification awaits the first genuine
+compiled-wire consumer. This distinction is recorded in
+`POST-FIRST-SERVICE-SOURCE-CORRECTIONS.json`.
+
+### Root-owned native fixture and first wire consumer
+
+Prepared target: `xar_bridge_daily_assault_active_table_12003_test`, from
+`native_bridge/src/ck3_12003_daily_assault_active_table_test.cpp`, linked PRIVATE
+to the existing **`xar_ck3_12002_runtime`**. That real target supplies production
+`ReadArmyStrengthsForScope`, PUBLIC headers/dependencies and feature definitions;
+the serializer is the actual inline `AppendArmyStrengthV1`. No new production TU
+is required. An initial draft incorrectly named nonexistent `xar_bridge_core`;
+the recipe preserves that unbuilt draft and its correction.
+
+Nine independent fake-memory scenes are prepared: current empty, current
+nonempty, missing Army vector, missing ArRg current, missing control, actual zero
+end-marker, current empty with missing mask, actual null GameData, and negative
+ArRg count. Each uses two scope rows and verifies a single GameState/A0/header
+capture plus unchanged original whole-Army values. The complete native scene
+expects physical slots `[1,3,4]`, distinct full generation IDs and independent
+initial denominators `[200,30,0]`. The scenes are not one coherent live frame.
+
+The first consumer is prepared at
+`implementation/consume_first_compiled_wires.py`, with fixed external
+`FIRST-COMPILED-WIRE-EXPECTATIONS.json`. It will consume only these nine new
+whole-row serializer files through the real production normalizer and bounded
+projection. It has **not run**. Root owns CMake registration, native build,
+first CTest, actual wire directory and first-consumer authorization.
+
+Implementation EXE read cost is **0 B**; it reuses the original source pins and
+1778 B I/O ledger without rereading closed functions. Old test reruns, native
+builds/CTest, game/Steam/process/SDK/pipe/UI/userdata operations are all **0**.
+Readiness is an implemented source-bound candidate with a first service-path
+case; corrected native transport remains pending central fixture qualification.
+There is no live claim, fresh post-refill state, prospective placement result,
+actual daily loss, complete manager OODA or complete Entry/person forecast.
+Future allocator/growth/release and the separately owned per-turn loss/writer/
+refresh plan retain their precise boundaries.

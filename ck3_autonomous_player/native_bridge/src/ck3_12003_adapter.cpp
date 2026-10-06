@@ -153,6 +153,8 @@ Ck3_12003AdapterBindings BindCk3_12003AdapterImage(
   // These numeric GUI getter ABIs are closed only for exact .3. Do not install
   // them in BindArmyImage: that binder also serves the unchanged .2 adapter.
   if (result.armies.enabled) {
+    result.armies.current_daily_assault_table_bindings =
+        ck3_12003::BindCurrentDailyAssaultTable12003(image_base, executable_sha256);
     result.armies.regiment_composition_enabled = true;
     auto &monthly = result.armies.monthly_loss_budget_bindings;
     monthly.enabled = true;
