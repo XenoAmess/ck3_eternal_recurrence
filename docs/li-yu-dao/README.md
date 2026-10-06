@@ -2,6 +2,8 @@
 
 独立源码：[mod_li_yu_dao](../../mod_li_yu_dao/README.md)。机制依据：[可重复合流、分立与争统设计](../ck3-confucian-repeatable-reunion-and-schism-design.md)。一期采用自由时代模式；朝代分隔留到二期。
 
+2026-10-06 按用户度假指令停止新任务，现有支线及实机现场已结束。恢复入口、实际通过边界、外置候选和存档基线见[度假交接](../handover/2026-10-06-li-yu-dao-vacation-handover.md)；一期整体尚未通过验收。
+
 ## 迭代状态
 
 | 工作包 | 当前实现 | 验收状态 |

@@ -1,0 +1,12 @@
+{
+  "status": "PARTIAL_IMPORT_FAILED_PRESERVED",
+  "attempt_001_exit_code": 1,
+  "attempt_001_reason": "Review INDEX.files dictionary was unsupported.",
+  "attempt_002_exit_code": 1,
+  "attempt_002_reason": "Windows denied directory rename (WinError 5); no move completed.",
+  "original_script_sha256": "6cad4b342737a43dd9a17491146dca9939d35bd4873bbedc1105ee62ca33ca13",
+  "partial_directory": "C:\\workspace\\ck3_eternal_recurrence\\docs\\handover\\2026-10-06-li-yu-dao-vacation-evidence",
+  "partial_objects": 42,
+  "business_or_game_test_failure": false,
+  "old_attempt_preserved_in_place": true
+}
