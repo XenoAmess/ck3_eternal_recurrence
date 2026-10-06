@@ -3056,3 +3056,9 @@ g92 首次两项 native CTest memory assertions GREEN，真实整帧消费仍可
 ## Daily-loss NEW native fixture/service RED corrections (2026-10-06T14:35:14+08:00)
 
 g93 native FIRST新fixture失败源于假table结束槽control缺失；补0xA5后发NEW6。随后真实完整service拒绝fake persistent CC前缀流入旧非负signedint32字段，六场景均无新投影。只改两个fake ID到4C、不改生产合同，再一次单fixture编译/复用同target生产对象后新Ct与此前失败6个service场景全部GREEN。高位Siege/invalidArRg unsigned新字段保留，fullruntime仍原1f45来源；原失败/修正字节分别保留。Root第一次fixture-repair命令用了symbolicHEAD且子checkout为CRLF、archivedgitblob为LF；独立FIXTURE-HEAD-RESOLUTION补充实际1d8SHA及已编译blobpin、原receipt不回写，无build/test/wire重复；后续helper先解析exactSHA。[最终修正](C:/codex-ck3-background/current-daily-loss-batch/fixture-output-repair02/CORRECTED-NEW-CTEST.json)、[service结果](Z:/ck3_mod_rewrite_process_assets/g2-background-round16-20261006/current-daily-assault-loss-numeric-plan/implementation/compiled-consumer-attempt02/CONSUMER-FIRST-RECEIPT.json)。
+
+### Isolated army-route CI source closure (2026-10-06)
+
+Official CI97192b20/run37441828672 failed at the isolated native army-route compile/link with LNK2019 for `ReadCurrentAssaultRemovalReferenceInputs12003` and LNK1120. The new collector TU was present in CMake runtime/test closures, but the direct MSVC source tuple in `tools/check_native_army_routes_ci.py` omitted it. CMake GREEN does not cover this independent direct compiler entry.
+
+The concrete fix adds `src/ck3_12003_current_assault_removal_reference.cpp` to that tuple and its header to the existing input receipt. Necessary local verification used the same14 TUs, compiler flags and isolated fixture entry: compile/link GREEN33.4633789s, fixture GREEN0.1356856s. Receipt: `C:/codex-ck3-background/pre-date-inputs-batch/isolated-route-link-fix01/NECESSARY-LINK-FIX-VERIFICATION.json`. No full runtime rebuild, game access or system-settings change was performed. The original official RED stays preserved; the fixed publication needs its own official CI result.
