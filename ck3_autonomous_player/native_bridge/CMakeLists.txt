@@ -8935,3 +8935,5 @@ if(BUILD_TESTING AND WIN32)
   add_test(NAME xar_ck3_normal_exit_map_continuation_v1
     COMMAND xar_ck3_normal_exit_map_continuation_v1_test)
 endif()
+
+include(cmake/current_province_supply_contributors_12003.cmake)
