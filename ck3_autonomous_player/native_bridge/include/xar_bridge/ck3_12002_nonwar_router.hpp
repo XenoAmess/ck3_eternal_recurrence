@@ -156,7 +156,10 @@ struct NonwarPrivateState12002 {
 };
 
 void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &) noexcept;
+void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &) noexcept;
 bool IsNonwarPrivateStep12002(std::string_view step) noexcept;
+bool IsNonwarPrivateStep12004(const game::GameAdapter &,
+                             std::string_view step) noexcept;
 void PollNonwarPrivateState12002(NonwarPrivateState12002 &) noexcept;
 bool HandleNonwarPrivate12002(
     const game::GameAdapter &, ck3_11906::MainThreadQueryMailboxV1 &,

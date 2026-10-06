@@ -1,4 +1,5 @@
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12004_adapter.hpp"
 #include "xar_bridge/ck3_12002_nonwar_router.hpp"
 #include "xar_bridge/ck3_12002_semantic_adapter.hpp"
 #include "xar_bridge/protocol.hpp"
@@ -236,6 +237,49 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
   out.sway_outcome_opinion = &ExecuteSwayOutcomeMailboxV1;
 #endif
   (void)out;
+}
+
+void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept {
+#if defined(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
+  out.law_final_terms = &ExecuteRealmLawPausedPrivateQuery12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+  out.religion_reform = &ExecutePlayerReligionReformMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+  out.religion_doctrines = &ExecutePlayerReligionDoctrinesMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+  out.religion_doctrine_knowledge =
+      &ExecutePlayerReligionDoctrineKnowledgeMailbox12002;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+  out.religion_tenets = &ExecutePlayerReligionTenetsMailbox12002;
+#endif
+  (void)out;
+}
+
+bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
+                             std::string_view step) noexcept {
+  if (!adapter.enabled() ||
+      !game::IsCk3_12004Descriptor(adapter.descriptor())) return false;
+  (void)step;
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_REFORM_CONTEXT_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionReformPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINES_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionDoctrinesPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_DOCTRINE_KNOWLEDGE_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionDoctrineKnowledgePrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_TENETS_PRIVATE_QUERY_V1)
+  if (IsPlayerReligionTenetsPrivateStep12002(step)) return true;
+#endif
+#if defined(XAR_CK3_ENABLE_G2_REALM_LAW_PAUSED_PRIVATE_QUERY_V1)
+  if (step == kRealmLawPausedPrivateQueryStep12002) return true;
+#endif
+  return false;
 }
 
 bool IsNonwarPrivateStep12002(std::string_view step) noexcept {

@@ -11240,6 +11240,9 @@ public:
           &xar::ck3_12002::ObserveAdapterSnapshot12002;
       environment.snapshot_observer_context = observer_;
     }
+    xar::ck3_12002::NonwarMailboxExecutorsV1 nonwar{};
+    xar::ck3_12002::PopulateNonwarRouterExecutors12004(nonwar);
+    xar::ck3_12002::RegisterNonwarMailboxExecutorsV1(environment, nonwar);
     installed_ = xar::ck3_11906::InstallMainThreadQueryMailboxV1(
         g_main_thread_query_mailbox_v1, environment);
   }
@@ -13753,8 +13756,9 @@ void RunConnectedSession(
               request_id, step, false,
               failure.empty() ? "regular MAA Create private action unavailable" : failure);
           connected = write_frame(pipe, response);
-        } else if (xar::game::IsReviewedCrozierAdapter(game) &&
-                   xar::ck3_12002::IsNonwarPrivateStep12002(step)) {
+        } else if ((xar::game::IsReviewedCrozierAdapter(game) &&
+                    xar::ck3_12002::IsNonwarPrivateStep12002(step)) ||
+                   xar::ck3_12002::IsNonwarPrivateStep12004(game, step)) {
           std::uint64_t expected_revision = 0;
           xar::game::Snapshot current{};
           std::string response, failure;
@@ -13986,6 +13990,10 @@ void RunConnectedSession(
           if (response.empty()) response = CommandResultFrame(
               request_id, step, false,
               failure.empty() ? "nonwar private query unavailable" : failure);
+          if (xar::game::IsCk3_12004Descriptor(game.descriptor())) {
+            response = xar::game::Render12004BuildIdentity(
+                std::move(response), game.descriptor());
+          }
           connected = write_frame(pipe, response);
         } else if (!game.supports_step(step)
 #if defined(XAR_CK3_ENABLE_PLAYER_CONTROL_PRIVATE_V1)
