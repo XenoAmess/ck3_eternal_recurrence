@@ -48,7 +48,7 @@ struct Registry {
   }
 };
 constexpr std::uint32_t UA=0x11000001U,UB=0x11000002U,AA=0x22000001U,AB=0x22000002U;
-constexpr std::uint32_t RA=0xAB000001U,RB=0xAB000002U,RP=0xAB000003U,RI=0xAB000004U;
+constexpr std::uint32_t RA=0x2B000001U,RB=0x2B000002U,RP=0x2B000003U,RI=0xAB000004U;
 constexpr std::uint32_t SA=0xFE000001U,SB=0xFE000002U,SC=0xFE000003U;
 constexpr std::uint32_t PA=0xCC000001U,PP=0xCC000002U;
 Registry *reg_registry=nullptr; void *army_a=nullptr,*army_b=nullptr,*province_current=nullptr;
