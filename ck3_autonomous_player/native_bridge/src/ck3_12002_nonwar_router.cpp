@@ -240,6 +240,10 @@ void PopulateNonwarRouterExecutors12002(NonwarMailboxExecutorsV1 &out) noexcept 
 }
 
 void PopulateNonwarRouterExecutors12004(NonwarMailboxExecutorsV1 &out) noexcept {
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+  out.clergy = &ExecutePlayerClergyAppointmentMailbox12002;
+  out.county_conversion_task_action = &ExecutePlayerCountyConversionTaskActionMailbox12003;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
   out.holy_order_context = &ck3_12003::ExecutePlayerHolyOrderContextMailbox12003;
 #endif
@@ -347,6 +351,10 @@ bool IsNonwarPrivateStep12004(const game::GameAdapter &adapter,
   if (!adapter.enabled() ||
       !game::IsCk3_12004Descriptor(adapter.descriptor())) return false;
   (void)step;
+#if defined(XAR_CK3_ENABLE_G2_PLAYER_CLERGY_APPOINTMENT_PRIVATE_QUERY_V1)
+  if (IsPlayerClergyAppointmentPrivateStep12002(step)) return true;
+  if (IsPlayerCountyConversionTaskActionPrivateStep12003(step)) return true;
+#endif
 #if defined(XAR_CK3_ENABLE_G2_PLAYER_RELIGION_CONTEXT_PRIVATE_QUERY_V1)
   if (ck3_12003::IsPlayerHolyOrderContextPrivateStep12003(step)) return true;
 #endif
