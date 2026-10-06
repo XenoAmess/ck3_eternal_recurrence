@@ -5,7 +5,9 @@ layout and `2AA2030`'s direct probe/insertion branches. The subsequent candidate
 implements a readonly same-query collector and bounded service value for actual
 occupied daily-assault groups in native physical order, including Army and ArRg
 occurrences absent from a requested Army's associated subset. That releases a
-current-group input gap for the daily loss model; native qualification is pending.
+current-group input gap for the daily loss model. The corrected compiled reader
+and complete-service byte route are now **offline static-ready**; full sequential
+daily loss remains a separate numerical dependency.
 Future placement across growth remains a named numerical quality gap; it does
 not prevent reading an already populated current table.
 
@@ -382,3 +384,108 @@ There is no live claim, fresh post-refill state, prospective placement result,
 actual daily loss, complete manager OODA or complete Entry/person forecast.
 Future allocator/growth/release and the separately owned per-turn loss/writer/
 refresh plan retain their precise boundaries.
+
+### First g92 compiled full-service attempt, retained RED
+
+Root's immutable g92 source is
+`ae7819df81a6511c70a58ba371f1e99a636f2dde`, under
+`C:/codex-ck3-background/ordered-assault-table-batch/g92`.
+The full fresh native build was **GREEN / 120.59862 s**, with 595 actual TUs,
+590 unique TUs and 1306 source inputs, generator/reuse zero. Root's first two
+new CTests were **GREEN / 2 of 2**, at 2026-10-06 05:58:47 UTC, 0.25 s native /
+0.2900272 s outer. The target's nine actual whole-row JSON files are in
+`strict01/cache-observers/daily-assault-active-table-wire` beneath that batch.
+No child native build or CTest ran.
+
+The first complete-service consumer imported the real service, strict normalizer
+and projection from that immutable source, and used actual whole-row serializer
+bytes as its backend input. Supplied paused/revision/readiness envelope fields
+were explicitly offline fixture metadata. The first invocation at
+2026-10-06 05:59:28–05:59:30 UTC was **RED**, before any frame completed:
+
+```text
+army_strengths[0].regiment_strengths[0].army_regiment_id
+must be a non-negative int32 or null
+```
+
+The native fake-memory fixture used `0xAB000001` / `0xAB000003` as associated
+ArRg IDs. Its old whole-row serializer emitted actual signed legacy IDs
+`-1426063359` / `-1426063357`. That disagrees with the existing legacy field
+contract, so the complete service stopped before reaching optional table
+normalization. The first table itself was genuinely serialized ready-empty;
+that fact does not qualify the unexecuted complete-service path.
+
+There are **0 completed compiled scenes and 0 passed consumer checks**. The
+native reader/serializer fixture target is compiled/CTest-ready, while its
+complete-service byte route remains unqualified. No old passed frame, Python
+case, CTest or native build was rerun, and no immutable/production source was
+altered. The actual RED, wire pin and minimal three-constant fixture correction
+proposal are retained in `FIRST-COMPILED-WIRE-RESULT.json`,
+`FIRST-COMPILED-SERVICE-INVOCATION.json`, `FIRST-COMPILED-RED-DIAGNOSIS.json` and
+`MINIMAL-LEGACY-FIXTURE-ID-FIX.patch`. The proposed fixture correction keeps
+high unsigned Siege/Army/wrong-generation ArRg table keys while making only
+the old associated ArRg IDs fit their existing field width. It does not widen
+an unrelated production ID contract. Root owns that correction and any new
+immutable fixture bytes; that first attempt supplied no complete-service GREEN.
+
+### Corrected fixture first full-service consumption, GREEN
+
+Root adopted the strictly fixture-only correction `093ab200` as
+`b8e14d7f51e333e43cf8289979a113d8615eb01d`. Three fake associated IDs changed
+from AB to 2B in two lines; the other high full DWORD Siege, wrong-generation
+Army, invalid ArRg and requested wrong-generation ArRg keys remain unchanged.
+Production source and its old ID contract did not change.
+
+Root compiled only the corrected fixture (3.7464429 s) and linked it against
+the **existing qualified g92 runtime library** (0.0917893 s). That library's
+runtime source remains `ae7819df81a6511c70a58ba371f1e99a636f2dde`; there was no
+full-runtime rebuild at the correction head. The corrected daily-assault
+fixture CTest passed at 2026-10-06 06:09:18 UTC, reported case time 0.0940045 s.
+The shared repair receipt also contains another owner's output repair; that
+case and its wires receive no credit in this package.
+
+The **first consumption of the nine corrected whole-row outputs** was GREEN
+at **2026-10-06 14:10:10 +08:00**, **9 of 9 frames / 164 checks / 0.5269947 s
+outer**. It imported the real complete `query_army_strengths` service,
+normalizer and projection from immutable g92, rather than the candidate or
+mutable Root source. The route used the genuine compiled row as backend input
+and the service returned `current_daily_assault_group_inputs_v1` itself. The
+synthetic fixture envelope's revisions, paused flag, query sequence and supplied
+native readiness are explicitly fixture metadata, not actual CK3 observations.
+
+The byte-to-service route confirms:
+
+- Actual ascending physical slots `[1,3,4]`, full generation keys, displaced
+  tail occupancy, end-marker exclusion and duplicate original references.
+- Complete current empty input, including raw count zero with undemanded mask
+  unavailable, without inventing a future populated stage.
+- Complete initial denominators `[200,30,0]`; invalid identity and positive
+  Definition type are known zero with unused numeric fields null.
+- Missing Army-vector bytes retain independently ready ArRg denominators;
+  missing ArRg current preserves original references and other group values.
+  Missing controls/end marker and negative vector count keep their actual
+  local partial reasons instead of becoming empty groups.
+- Original normalized status, strength/base-power fields and supplied envelope
+  readiness remain unchanged. No native writes or whole daily forecast are
+  introduced by the new returned value.
+
+Original RED and expectations were retained. Corrected expectations and result
+use independent paths:
+`FIXTURE-ID-FIX-COMPILED-WIRE-EXPECTATIONS.json`,
+`FIXTURE-ID-FIX-COMPILED-SERVICE-RESULT.json`,
+`FIXTURE-ID-FIX-COMPILED-SERVICE-INVOCATION.json`, and
+`FIXTURE-ID-FIX-COMPILED-SERVICE-OUTPUT.json` under the implementation packet.
+The result pins each actual corrected wire, production service modules and both
+the original full-runtime and new fixture-only build receipts.
+
+Readiness is **static-ready current grouped observation and independent held
+initial numeric inputs**, with a compiled fake-memory reader/serializer and
+complete production service path. These are nine independent offline frames,
+not one coherent live snapshot. No successful scene, old Python case, native
+build or CTest was repeated by this child. Implementation/qualification added
+**0 EXE bytes** and no local CK3/Steam/process/SDK/pipe/UI/userdata operations.
+The next actual daily-loss dependency is the separately owned per-turn Siege
+budget, writer DATA/physical aliases and affected-target refresh input; future
+table placement/growth/release remain separate. Full daily assault, fresh
+prepared state, complete Entry/person/Rule43 equivalence and live qualification
+are not promoted.
