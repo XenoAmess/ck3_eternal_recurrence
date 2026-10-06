@@ -1,0 +1,64 @@
+# Province eligible besieging current and post-refill assault budget — 1.20.0.3
+
+2026-10-06 / W41. Exact CK3 1.20.0.3 / Steam25652598 / held EXE SHA `94b55397abb687a3dcd436805a5d885e6be90fa6c693feb44a9e3bbeeade02a6`. Scope was sealed before source work in `Z:/ck3_mod_rewrite_process_assets/g2-background-round15-20261006/assault-eligible-current/SOURCE-FIRST-PLAN.md`. This first delivery is source and implementation plan only; no new test, native build, SDK/pipe/game/Steam/UI/process/profile/save/runtime operation or live day. The [actual manager stage](army-monthly-manager-prepared-stage-inputs-12003.md) calls the daily prepared-assault consumer after optional monthly refill and before the monthly bucket. That consumer's `25205C0` budget depends on the current `247F1D0(Province)` result, which cannot be backdated from an earlier scalar.
+
+## Exact B getter and occurrence contract
+
+The necessary direct body `[247F1D0,247F364)` is404B, SHA `e82208c52be2ff4592a030f5b4384b3c3d9e3cfed34d778b70ce7a80ab15bf95`. Existing reviewed Province ABI supplied the entry signature only; the held M/K projection ended at this entry and the current-tick source referenced its call without the body. The old episode03 D: proof locator is unavailable. The completed cache search preceded the one bounded frozen-body read. Exact pdata/unwind fragments and read ledger are sealed in `SOURCE-0247F1D0.json`; actual I/O692B is404B code plus288B metadata, without new PE mapping, full EXE scan/hash or rereads of manager/25205C0.
+
+`247F1D0` initializes signed32 B=0. Province+74C count≤0 immediately returns that zero. Otherwise it captures original count and traverses Province+740 DWORD CUnit FullID occurrences in stored order, preserving repetitions. Each occurrence:
+
+1. Resolve CUnit via storage `5D1E380`, masked24-bit index and fullID at+10; unresolved uses native fallback `5D1E378`.
+2. Load **qword Province pointer** from CUnit+20; if null, use Province fallback `5D1E390`. Compare that resolved Province's DWORD+10 with the actual caller Province+10. Do not compare low32 bits of the pointer with a ProvinceID.
+3. Require raw CUnit DWORD+18=0, signed DWORD+170≤0 and DWORD+44=0. Resolve CArmy from CUnit+178 through `5D1DE48`/fallback `5D1DE50`.
+4. Require `24E8360(CArmy)` AL=0, actual Province+788!=-1 and `2C16690(CArmy,actualProvince)` AL!=0. The complete native Province relation predicate is the existing [siege membership source](siege-efficiency-inputs-12003.md), not a guessed owner or lead-Army test.
+5. Resolve that CUnit's Army again after the predicate, form its **Army+38 descriptor** and call `2A95740(descriptor,flags0)`. Add its EAX to B with signed32 wrap. There is no positive-current filter or final clamp in this getter.
+
+The outer admission is the same source-defined admission used by M/K. The consumed numeric reducer differs: B sums whole current with flags0; M uses effective siege work times normalized current; K reads qualified type tiers. Current B includes every valid ArRg count admitted by flags0, without the supply eligibility or preferred tier tests. Both Province and Army/ArRg occurrences remain repeated contributions even when they share physical DATA. No lead-army equality or merge requirement is added.
+
+The supply collector consumes the same resident Province list but admits same-owner/common-war-side contributors and counts flags2 supply-eligible current. That does **not** prove the B admission, even when its count happens to agree. A supply-qualified row cannot stand in for a siege-qualified row or vice versa.
+
+## Necessary existing membership correction
+
+`ReadSiegeProvinceUnitOccurrences` in `ck3_12002_province.cpp` currently compares `Read<int32_t>(unit,0x20)` against Province+10. Its source-defined operand is the qword Province pointer above. A real pointer whose low32 is not the ProvinceID is therefore incorrectly excluded by this current observer, independently of its native M/K scalar getters. The incorrect observer can report false/[] for actual qualifying membership; its historical owned-memory fixture is not evidence for the corrected pointer layout. Existing native B/M/K scalar getter correctness is not reopened.
+
+The direct production call is `ReadObjectiveProvince` after its rich active-Siege resolution, and that DTO feeds occupation/objective/local-siege wire through the existing normalizer. The minimal correction changes only this helper's Province operand: load qword Unit+20, apply the exact `5D1E390` null fallback, then compare the pointed Province+10. If the required pointer/fallback cannot be read, keep membership unavailable. Preserve other qualification/list/null/repeat behavior. Old owned-memory fixture inputs that stored an ID at Unit+20 must be changed to a real Province pointer with+10 ID; old tests are not rerun in this lane. One new fixture will qualify the corrected production path.
+
+## Smallest useful same-query B collector and conditional consumer
+
+The existing ArmyStrength row already resolves its actual current Province pointer and publishes supply contributors and complete DATA/current/max math. The existing occupation membership identity list is insufficient for post-refill B: it belongs to a separate capture/scope, does not publish each flags0 numeric current or full associated DATA, and presently has the pointer gate error. Add a separate optional **`current_province_besieging_contributors_v1`** family to the same ArmyStrength capture; retain the existing supply family.
+
+| Family value | Exact producer / purpose |
+| --- | --- |
+| Actual current Province/active Siege identity and original resident count | Existing validated ArmyStrength current-Province context, Province+10/+788 and generation-resolved Siege+8/+200. Preserve no-Siege separately from failed resolution. |
+| Signed native B scalar | Existing readonly `247F1D0(actualProvince)`; preserve signed wrap, real0 and unavailable independently of contributor readiness. |
+| Original CUnit occurrences | Stored index/rawID, resolved or native fallback identity, actual current-Province pointer/fallback basis and the raw gates; current exact24E8360 and2C16690 bools. Resolve each necessary receiver from the actual source route. |
+| Per-admitted Army count and ArRg occurrences | Readonly `2A95740(Army+38,flags0)`, raw/resolved Army ID and its original ArRg list. Publish signed current/max and existing complete DATA for every valid admitted ArRg, including DATA character override. No supply/tier filter. |
+| Current assault context | Same actual Siege Province/breach, source-loaded casualty table length and indexed signed Q100000 percentage; existing native25205C0 current whole return. This is an independent current expected-loss scalar, not an assertion that the assault stage executes. |
+
+A new pure consumer keeps current observed B and conditional derived B separate. Reuse the existing source-closed associated-refill physical output and `project_observed_raised_regiment_refresh` for its DATA sums. For an explicit selected physical replay, carry the complete evolving physical map into every admitted ArRg refresh, retaining DATA aliases and repeated Province/ArRg counts. Merge unchanged captured physical chunks as the stated fixed-context input, rather than dropping rows outside the selected persistent scope. Recount each Army flags0 and Province B in original occurrence order with signed32 wrap. Do not apply a second refill ADD when two occurrences share physical state.
+
+Conditional assault expected loss uses that derived B and the actual captured breach/loaded percentage with the already held25205C0 signed native fixed/whole arithmetic. B≤0, no valid Province, or breach−1 outside the loaded table are source zero paths and do not demand an unused table entry. Current predicate/context is explicitly fixed; actual post-refill admission, actual prepared table, full native ordered refill and full daily assault manager execution are not implied. The independently useful outputs are observed current eligible B/contributors and an explicit selected-refill conditional B/budget with actual/fullmonthlyfalse and actual post-stage null.
+
+## Source-first tree and qualification recipe
+
+```mermaid
+flowchart TD
+  P[Actual Province740/74C original CUnit occurrences] --> U[FullID resolution or source fallback]
+  U --> PP[Unit20 qword Province pointer or fallback; pointed10 equals actual Province10]
+  PP --> R[Unit18==0;170<=0;44==0]
+  R --> C[Army24E8360 AL0;actual Province788!=-1]
+  C --> E[Native2C16690 Army/Province AL nonzero]
+  E --> A[Re-resolve Army;2A95740 Army38 flags0]
+  A --> B[Wrap32 count per original occurrence: current B]
+  E --> MK[Existing M/K admission; independent numeric reducers]
+  S[Supply sameowner/commonwarside plus flags2] -. different qualification .-> B
+  D[Complete captured DATA and explicit selected physical refill map] --> F[Source current/max refresh; shared physical state once]
+  F --> CB[Original occurrence recount: conditional derived B]
+  CB --> Q[Held25205C0 breach/actual percentage/native fixed whole arithmetic]
+  B --> O[Current readonly B/budget observation]
+  Q --> CQ[Conditional selected-refill expected loss]
+  X[Actual future admission/ordered manager prepared table/release stages] -. still separate producers .-> CQ
+```
+
+First commit only this source/topic and external QUERY-PLAN. Coordinator review precedes implementation. The necessary new native fixture covers the production membership helper with a real non-ID-low32 Province pointer, match/mismatch and required null/fallback paths, together with the new B collector, flags0 versus supply flags2, duplicates and shared DATA. Coordinator compiles the full DLL/new target, runs its first new CTest and authorizes first consumption of its newly serialized wire. One new production Python compound covers nonzero refill, changed B/expected-loss, repeated occurrences/shared physical ADD once, and partial/source-zero branches. No old component tests/wires receive another run or credit. The next prepared-table placement2AA2030/release9D11F0 remains outside this numerical leaf.
