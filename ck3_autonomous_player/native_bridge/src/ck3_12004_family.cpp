@@ -1,5 +1,6 @@
 #include "xar_bridge/ck3_12004_family.hpp"
 #include "xar_bridge/ck3_12004_family_abi.hpp"
+#include "xar_bridge/ck3_12004_family_break_penalty.hpp"
 
 #include <cstring>
 #include <limits>
@@ -61,6 +62,7 @@ ck3_12002::FamilyObligationsBreakBindingsV1 BindFamilyObligationsBreakImageV1(
   bindings.interaction = BindFamilyContextImage(base, sha);
   if (!bindings.interaction.enabled) return bindings;
   bindings.enabled = true;
+  bindings.penalty = BindFamilyBreakPenaltyImage(base, sha);
   bindings.get_database =
       reinterpret_cast<ck3_12002::FamilyBreakDatabaseGetterV1>(
           base + kFamilyBreakDatabaseGetterRvaV1);
