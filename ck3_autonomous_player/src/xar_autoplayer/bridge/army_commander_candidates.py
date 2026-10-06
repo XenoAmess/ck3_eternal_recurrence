@@ -3,19 +3,32 @@
 from __future__ import annotations
 
 from .public_unit_contract import canonical_public_cunit_token, public_cunit_id
+from .army_commander_target_rolls import (
+    commander_target_province_id,
+    normalize_candidate_target_roll_bounds,
+)
 
 
 QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY = (
     "game.command.query-army-commander-candidates-v1-for-army-N"
+)
+QUERY_ARMY_COMMANDER_CANDIDATES_V1_FOR_TARGET_CAPABILITY = (
+    "game.command.query-army-commander-candidates-v1-for-army-N-at-province-P"
 )
 QUERY_ARMY_COMMANDER_CANDIDATES_V1_STEP_PREFIX = (
     "query-army-commander-candidates-v1-for-army-"
 )
 
 
-def query_army_commander_candidates_v1_step(army_id: int) -> str:
+def query_army_commander_candidates_v1_step(
+    army_id: int, *, target_province_id: int | None = None
+) -> str:
     subject = public_cunit_id(army_id, "army_id")
-    return f"{QUERY_ARMY_COMMANDER_CANDIDATES_V1_STEP_PREFIX}{subject}"
+    step = f"{QUERY_ARMY_COMMANDER_CANDIDATES_V1_STEP_PREFIX}{subject}"
+    if target_province_id is None:
+        return step
+    target = commander_target_province_id(target_province_id)
+    return f"{step}-at-province-{target}"
 
 
 def parse_query_army_commander_candidates_v1_step(step: object) -> int | None:
@@ -26,6 +39,25 @@ def parse_query_army_commander_candidates_v1_step(step: object) -> int | None:
     return canonical_public_cunit_token(
         step.removeprefix(QUERY_ARMY_COMMANDER_CANDIDATES_V1_STEP_PREFIX)
     )
+
+
+def parse_query_army_commander_candidates_v1_for_target_step(
+    step: object,
+) -> tuple[int, int] | None:
+    if not isinstance(step, str) or not step.startswith(
+        QUERY_ARMY_COMMANDER_CANDIDATES_V1_STEP_PREFIX
+    ):
+        return None
+    subject_token, separator, target_token = step.removeprefix(
+        QUERY_ARMY_COMMANDER_CANDIDATES_V1_STEP_PREFIX
+    ).partition("-at-province-")
+    if not separator:
+        return None
+    subject = canonical_public_cunit_token(subject_token)
+    target = canonical_public_cunit_token(target_token)
+    if subject is None or target is None or target == 0:
+        return None
+    return subject, target
 
 
 def commander_query_army_scope(
@@ -53,8 +85,9 @@ def normalize_army_commander_candidates_v1(
     expected_army_id: int,
     expected_snapshot_revision: int,
     expected_date_raw: int,
+    expected_target_province_id: int | None = None,
 ) -> dict[str, object]:
-    """Keep native eligibility, quality and selected-unit speed reads distinct."""
+    """Keep native eligibility, quality and independent unit/target reads distinct."""
     if not isinstance(value, dict):
         raise ValueError("native army_commander_candidates must be an object")
     if (
@@ -68,6 +101,18 @@ def normalize_army_commander_candidates_v1(
         or value.get("army_id") != public_cunit_id(expected_army_id, "army_id")
     ):
         raise ValueError("native army_commander_candidates frame binding disagrees")
+    if expected_target_province_id is None:
+        if value.get("target_province_id") is not None:
+            raise ValueError("native commander target header was not requested")
+    else:
+        expected_target_province_id = commander_target_province_id(
+            expected_target_province_id
+        )
+        if (
+            type(value.get("target_province_id")) is not int
+            or value.get("target_province_id") != expected_target_province_id
+        ):
+            raise ValueError("native commander target header disagrees")
     for name in ("native_carmy_id", "owner_character_id"):
         _optional_id(value.get(name), name)
     if (
@@ -128,7 +173,15 @@ def normalize_army_commander_candidates_v1(
         ):
             raise ValueError("native candidate.siege_phase_time_modifier_raw must be signed Q100000 int64 or null")
         _reason(row.get("unavailable_reason"), "candidate.unavailable_reason")
-        copied_candidates.append({**row, "siege_phase_time_modifier_raw": phase_raw})
+        copied_row = {**row, "siege_phase_time_modifier_raw": phase_raw}
+        # Missing remains missing and explicit null remains null. Target
+        # observation never changes pool completeness, quality or CanAssign.
+        if "target_roll_bounds" in row:
+            copied_row["target_roll_bounds"] = normalize_candidate_target_roll_bounds(
+                row["target_roll_bounds"],
+                expected_target_province_id=expected_target_province_id,
+            )
+        copied_candidates.append(copied_row)
     _reason(value.get("unavailable_reason"), "unavailable_reason")
     normalized = {
         **value, "current_commander": dict(current), "candidates": copied_candidates

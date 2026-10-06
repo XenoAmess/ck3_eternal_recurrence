@@ -2524,11 +2524,13 @@ def create_server(
     def ck3_query_army_commander_candidates_v1(
         army_id: PublicCUnitId,
         expected_revision: int | None = None,
+        target_province_id: Annotated[int, Field(strict=True, ge=1, le=2**31 - 1)] | None = None,
     ) -> dict[str, object]:
-        """Read native current commander and manual candidates for a player army."""
+        """Read native manual candidates and optional current target dice endpoints."""
         return service.query_army_commander_candidates_v1(
             army_id,
             expected_revision=expected_revision,
+            target_province_id=target_province_id,
         )
 
     @server.tool()

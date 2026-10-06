@@ -1152,6 +1152,7 @@ add_library(xar_ck3_12002_runtime STATIC
   ${XAR_CK3_12002_SOURCES}
   src/ck3_12003_adapter.cpp
   src/ck3_12003_commander.cpp
+  src/ck3_12003_commander_target_roll.cpp
   src/ck3_12003_war_occupation.cpp
   src/ck3_12003_title_holder.cpp
   src/ck3_12003_commander_mailbox.cpp
@@ -9111,3 +9112,4 @@ if(BUILD_TESTING AND WIN32)
 endif()
 include(cmake/realm_law_succession_profile_12003.cmake)
 include(cmake/player_faction_county_culture_12003.cmake)
+include(cmake/commander_target_rolls_12003.cmake)

@@ -12447,7 +12447,8 @@ std::string RunArmyCommanderCandidatesQuery12003(
   query.envelope.typed_context = &query;
   query.image_base = reinterpret_cast<std::uintptr_t>(GetModuleHandleW(nullptr));
   if (!xar::game::IsCk3_12003Descriptor(game.descriptor()) ||
-      !xar::ck3_12003::ParseArmyCommanderCandidatesStep(step, query.army_id) ||
+      !xar::ck3_12003::ParseArmyCommanderCandidatesRequest(
+          step, query.army_id, query.target_province_id) ||
       !xar::ck3_11906::ParseCampaignRootContextExpectedRevisionV1(
           payload, query.envelope.expected_snapshot_revision)) {
     return CommandResultFrame(request_id, step, false,

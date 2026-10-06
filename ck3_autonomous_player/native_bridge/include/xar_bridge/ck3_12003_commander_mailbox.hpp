@@ -11,6 +11,8 @@ namespace xar::ck3_12003 {
 
 inline constexpr std::string_view kArmyCommanderCandidatesCapability =
     "game.command.query-army-commander-candidates-v1-for-army-N";
+inline constexpr std::string_view kArmyCommanderCandidatesForTargetCapability =
+    "game.command.query-army-commander-candidates-v1-for-army-N-at-province-P";
 inline constexpr std::string_view kArmyCommanderCandidatesStepPrefix =
     "query-army-commander-candidates-v1-for-army-";
 
@@ -22,6 +24,29 @@ inline bool ParseArmyCommanderCandidatesStep(std::string_view step,
           step.substr(kArmyCommanderCandidatesStepPrefix.size()), army_id);
 }
 
+// Optional target route is independent of the legacy no-target parser.
+inline bool ParseArmyCommanderCandidatesRequest(
+    std::string_view step, std::int32_t &army_id,
+    std::optional<std::int32_t> &target_province_id) noexcept {
+  army_id = -1;
+  target_province_id.reset();
+  if (!step.starts_with(kArmyCommanderCandidatesStepPrefix)) return false;
+  const auto tail = step.substr(kArmyCommanderCandidatesStepPrefix.size());
+  constexpr std::string_view marker = "-at-province-";
+  const auto separator = tail.find(marker);
+  if (separator == std::string_view::npos)
+    return ParseArmyCommanderCandidatesStep(step, army_id);
+  std::int32_t subject = -1, province = -1;
+  // The shared parser supplies only canonical signed32 decimal-token syntax;
+  // Province namespace semantics remain positive ID and native resolution.
+  if (!game::ParsePublicCUnitIdV1(tail.substr(0, separator), subject) ||
+      !game::ParsePublicCUnitIdV1(tail.substr(separator + marker.size()), province) ||
+      province <= 0) return false;
+  army_id = subject;
+  target_province_id = province;
+  return true;
+}
+
 struct ArmyCommanderMailboxContext {
   ck3_12002::QueryMailboxEnvelope envelope{};
   std::uintptr_t image_base = 0;
@@ -30,6 +55,7 @@ struct ArmyCommanderMailboxContext {
   CommanderCandidatesReadResult read_result =
       CommanderCandidatesReadResult::unavailable;
   bool completed = false;
+  std::optional<std::int32_t> target_province_id;
 };
 
 bool ExecuteArmyCommanderCandidatesMailbox(

@@ -109,6 +109,7 @@ from .projected_contact_contract import (
 from .actual_contact_contract import query_actual_contact_scope_step
 from .army_commander_candidates import (
     QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY,
+    QUERY_ARMY_COMMANDER_CANDIDATES_V1_FOR_TARGET_CAPABILITY,
     commander_query_army_scope,
     normalize_army_commander_candidates_v1,
     query_army_commander_candidates_v1_step,
@@ -4284,9 +4285,12 @@ class GameplayBridgeService:
         army_id: int,
         *,
         expected_revision: int | None = None,
+        target_province_id: int | None = None,
     ) -> dict[str, object]:
-        """Read the current player army's native manual commander candidates."""
-        step = query_army_commander_candidates_v1_step(army_id)
+        """Read native manual candidates and optional current target dice endpoints."""
+        step = query_army_commander_candidates_v1_step(
+            army_id, target_province_id=target_province_id
+        )
         snapshot = self.snapshot()
         if snapshot.get("paused") is not True:
             raise BridgeUnavailableError("commander queries require a paused CK3 snapshot")
@@ -4309,8 +4313,13 @@ class GameplayBridgeService:
         if type(native_revision) is not int or native_revision <= 0 or type(date_raw) is not int:
             raise BridgeUnavailableError("commander query lacks native revision/date")
         capabilities = self.capabilities().get("bridge_capabilities")
-        if not isinstance(capabilities, list) or QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY not in capabilities:
-            raise UnsupportedStepError("selected backend cannot query native commander candidates")
+        required_capability = (
+            QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY
+            if target_province_id is None
+            else QUERY_ARMY_COMMANDER_CANDIDATES_V1_FOR_TARGET_CAPABILITY
+        )
+        if not isinstance(capabilities, list) or required_capability not in capabilities:
+            raise UnsupportedStepError("selected backend cannot query requested native commander candidates")
         result = self.execute_step(step, expected_revision=revision)
         if (
             not isinstance(result, dict)
@@ -4330,6 +4339,7 @@ class GameplayBridgeService:
                 expected_army_id=army_id,
                 expected_snapshot_revision=native_revision,
                 expected_date_raw=date_raw,
+                expected_target_province_id=target_province_id,
             )
         except ValueError as error:
             raise BridgeUnavailableError(f"native commander result is malformed: {error}") from error

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "xar_bridge/ck3_12002_army.hpp"
+#include "xar_bridge/ck3_12003_commander_target_roll_dto.hpp"
 #include "xar_bridge/game_contract.hpp"
 
 #include <cstdint>
@@ -32,6 +33,8 @@ struct CommanderCandidateSnapshot {
   bool siege_phase_time_modifier_observable = false;
   std::int64_t siege_phase_time_modifier_raw = 0;
   std::string_view unavailable_reason = "candidate_not_read";
+  // Present only when the same native query requested a target Province.
+  std::optional<CommanderCandidateTargetRollBoundsSnapshot> target_roll_bounds;
 };
 
 // Native movement-weight rates, signed Q100000. A returned raw zero is observed;
@@ -77,6 +80,7 @@ struct ArmyCommanderCandidatesSnapshot {
   std::int32_t candidate_source_count = 0;
   std::vector<CommanderCandidateSnapshot> candidates;
   std::string_view unavailable_reason = "query_not_read";
+  std::optional<std::int32_t> target_province_id;
 };
 
 enum class CommanderCandidatesReadResult { unavailable, available, partial };

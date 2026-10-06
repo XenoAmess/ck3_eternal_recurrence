@@ -43,6 +43,7 @@ const AdapterDescriptor &Ck3_12003AdapterDescriptor() noexcept {
     result.push_back(ck3_11906::kIngameUiWindowQueryV1Capability);
     result.push_back(ck3_11906::kStewardDevelopCountyCandidatesV1Capability);
     result.push_back(ck3_12003::kArmyCommanderCandidatesCapability);
+    result.push_back(ck3_12003::kArmyCommanderCandidatesForTargetCapability);
 #if defined(XAR_CK3_ENABLE_CURRENT_ACTOR_STRESS_ADJUSTMENT_PRIVATE_V1)
     result.push_back(ck3_12003::kCurrentActorStressAdjustmentV1Capability);
 #endif

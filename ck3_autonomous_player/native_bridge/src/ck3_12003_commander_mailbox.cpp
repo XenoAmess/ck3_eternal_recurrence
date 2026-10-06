@@ -1,6 +1,8 @@
 #include "xar_bridge/ck3_12003_commander_mailbox.hpp"
 
 #include "xar_bridge/ck3_12003_adapter.hpp"
+#include "xar_bridge/ck3_12003_commander_target_roll_serializer.hpp"
+#include "xar_bridge/ck3_12003_commander_target_roll.hpp"
 #include "xar_bridge/public_unit_id.hpp"
 
 namespace xar::ck3_12003 {
@@ -134,6 +136,12 @@ bool ExecuteArmyCommanderCandidatesMailbox(
   query.read_result = ReadArmyCommanderCandidates(
       bindings, envelope->expected_snapshot, query.army_id,
       query.observation);
+  if (query.target_province_id.has_value()) {
+    const auto target_bindings = BindCommanderTargetRollImage(
+        query.image_base, envelope->game->descriptor().executable_sha256);
+    ReadArmyCommanderCandidateTargetRollBounds(
+        target_bindings, *query.target_province_id, query.observation);
+  }
   // An unavailable native result is a completed read, not a transport fault.
   query.completed = true;
   return ck3_12002::FinishQueryMailbox(*envelope);
@@ -157,6 +165,10 @@ std::string SerializeArmyCommanderCandidates(
       ",\"army_id\":" + NullableId(observation.army_id) +
       ",\"native_carmy_id\":" + NullableId(observation.native_carmy_id) +
       ",\"owner_character_id\":" + NullableId(observation.owner_character_id) +
+      (observation.target_province_id
+           ? ",\"target_province_id\":" +
+                 std::to_string(*observation.target_province_id)
+           : std::string{}) +
       ",\"eligibility_mode\":" + std::to_string(observation.eligibility_mode) +
       ",\"collection_filter_now\":false,\"collection_allow_guests\":true,"
       "\"current_commander\":{\"status\":" +
@@ -197,7 +209,12 @@ std::string SerializeArmyCommanderCandidates(
         (candidate.siege_phase_time_modifier_observable
              ? std::to_string(candidate.siege_phase_time_modifier_raw) : "null") +
         ",\"unavailable_reason\":" +
-        NullableReason(candidate.unavailable_reason) + '}';
+        NullableReason(candidate.unavailable_reason);
+    if (candidate.target_roll_bounds) {
+      out += ",\"target_roll_bounds\":" +
+          SerializeCommanderCandidateTargetRollBounds(*candidate.target_roll_bounds);
+    }
+    out += '}';
   }
   out += "],\"unavailable_reason\":" +
       NullableReason(observation.unavailable_reason) + "}}";

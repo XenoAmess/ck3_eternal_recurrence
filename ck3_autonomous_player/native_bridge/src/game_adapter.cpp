@@ -561,8 +561,12 @@ bool GameAdapter::supports_step(std::string_view step) const noexcept {
   }
   if (capability.empty()) {
     std::int32_t commander_army_id = -1;
-    if (ck3_12003::ParseArmyCommanderCandidatesStep(step, commander_army_id)) {
-      capability = ck3_12003::kArmyCommanderCandidatesCapability;
+    std::optional<std::int32_t> commander_target_province_id;
+    if (ck3_12003::ParseArmyCommanderCandidatesRequest(
+            step, commander_army_id, commander_target_province_id)) {
+      capability = commander_target_province_id.has_value()
+          ? ck3_12003::kArmyCommanderCandidatesForTargetCapability
+          : ck3_12003::kArmyCommanderCandidatesCapability;
     }
   }
   if (capability.empty()) {

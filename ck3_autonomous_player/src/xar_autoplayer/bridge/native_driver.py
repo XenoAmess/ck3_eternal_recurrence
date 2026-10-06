@@ -137,6 +137,8 @@ from .army_commander_candidates import (
     QUERY_ARMY_COMMANDER_CANDIDATES_V1_STEP_PREFIX,
     commander_query_army_scope,
     parse_query_army_commander_candidates_v1_step,
+    parse_query_army_commander_candidates_v1_for_target_step,
+    QUERY_ARMY_COMMANDER_CANDIDATES_V1_FOR_TARGET_CAPABILITY,
     query_army_commander_candidates_v1_step,
 )
 from .army_commander_assignment import (
@@ -8513,7 +8515,11 @@ class NativeHeadlessGameplayDriver:
             raise UnsupportedStepError(
                 "malformed ZhongGuo scoreboard state v1 query step"
             )
-        commander_subject = parse_query_army_commander_candidates_v1_step(step)
+        commander_target_request = parse_query_army_commander_candidates_v1_for_target_step(step)
+        commander_subject = (
+            commander_target_request[0] if commander_target_request is not None
+            else parse_query_army_commander_candidates_v1_step(step)
+        )
         if (
             isinstance(step, str)
             and step.startswith(QUERY_ARMY_COMMANDER_CANDIDATES_V1_STEP_PREFIX)
@@ -9087,7 +9093,11 @@ class NativeHeadlessGameplayDriver:
             return self._execute_primitive_step(
                 step,
                 expected_revision=expected_revision,
-                required_capability=QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY,
+                required_capability=(
+                    QUERY_ARMY_COMMANDER_CANDIDATES_V1_FOR_TARGET_CAPABILITY
+                    if commander_target_request is not None
+                    else QUERY_ARMY_COMMANDER_CANDIDATES_V1_CAPABILITY
+                ),
             )
         if commander_assignment is not None:
             _validate_revision(expected_revision, "expected_revision")
