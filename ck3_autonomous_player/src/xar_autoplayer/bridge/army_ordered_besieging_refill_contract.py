@@ -12,13 +12,18 @@ _TOP = {'source', 'status', 'unavailable_reason', 'subject_army_id', 'subject_ca
 _REFRESH = {'manager_stored_index', 'raw_carmy_id', 'resolved_carmy_id',
             'army_used_fallback', 'native_regiment_occurrence_count', 'regiments'}
 _REGIMENT = {'stored_index', 'raw_army_regiment_id', 'army_regiment_id'}
+_TARGET_IDS_COMPLETE = 'target_persistent_ids_complete'
 
 
 def normalize_ordered_besieging_refill_inputs_v1(value: object) -> dict | None:
     if value is None:
         return None
-    if not isinstance(value, dict) or set(value) != _TOP:
+    if not isinstance(value, dict) or set(value) not in (_TOP, _TOP | {_TARGET_IDS_COMPLETE}):
         raise ValueError('ordered besieging refill schema is malformed')
+    # The first qualified v1 producer predates this additive field. Missing is
+    # unproven legacy coverage, while every new native capture emits a bool.
+    if _TARGET_IDS_COMPLETE in value and type(value[_TARGET_IDS_COMPLETE]) is not bool:
+        raise ValueError('ordered besieging target ID completeness must be bool')
     if value['source'] != 'native_ordered_besieging_refill_scope':
         raise ValueError('ordered besieging refill source is malformed')
     if value['status'] not in {'available', 'partial', 'unavailable'}:
@@ -83,7 +88,8 @@ def normalize_ordered_besieging_refill_inputs_v1(value: object) -> dict | None:
     })
     if value['status'] == 'available' and not value['refresh_membership_ready']:
         raise ValueError('available ordered besieging membership is absent')
-    return {**value, 'target_army_regiment_ids': list(targets),
+    return {**value, _TARGET_IDS_COMPLETE: value.get(_TARGET_IDS_COMPLETE),
+            'target_army_regiment_ids': list(targets),
             'refresh_occurrences': refreshes,
             'persistent_occurrences': physical['persistent_occurrences'],
             'persistent_regiments': physical['persistent_regiments']}

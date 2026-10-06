@@ -98,19 +98,35 @@ game::ArmyOrderedBesiegingRefillInputsV1 ReadOrderedBesiegingRefillInputs12003(
     if (!event.regiments.empty()) r.refresh_occurrences.push_back(std::move(event));
   }
   std::vector<std::int32_t> requested;
+  bool target_ids_complete = r.refresh_membership_ready && family.contributors_ready;
   for (const auto *target : targets) {
     if (!Contains(refreshed, target->army_regiment_id)) continue;
-    if (!target->replenishment_records_v1) { partial = true; continue; }
+    if (!target->replenishment_records_v1) { partial = true; target_ids_complete = false; continue; }
     const auto &data = *target->replenishment_records_v1;
     if (data.native_loss_writer_skipped == true) continue; //2633340 special Character branch is1/1.
+    // Raw DATA IDs precede per-record physical/context validation. A partial
+    // record may therefore still publish the complete dependency union.
+    if (data.native_loss_writer_skipped != false ||
+        data.status == game::ArmyRegimentReplenishmentRecordsStatusV1::unavailable ||
+        !data.native_data_record_count || *data.native_data_record_count < 0 ||
+        static_cast<std::size_t>(*data.native_data_record_count) != data.records.size())
+      target_ids_complete = false;
     partial = partial || data.status != game::ArmyRegimentReplenishmentRecordsStatusV1::available;
+    std::int32_t record_index = 0;
     for (const auto &record : data.records) {
-      if (record.persistent_regiment_id == -1) { partial = true; continue; }
+      if (record.record_index != record_index++) target_ids_complete = false;
+      if (record.persistent_regiment_id == -1) { partial = true; target_ids_complete = false; continue; }
       if (!Contains(requested, record.persistent_regiment_id)) requested.push_back(record.persistent_regiment_id);
     }
   }
+  r.target_persistent_ids_complete = target_ids_complete;
   const void *persistent_ids = nullptr;
-  if (!List(manager, 0x30, persistent_ids, count)) return unavailable("ordered_besieging_persistent_roster_unavailable");
+  if (!List(manager, 0x30, persistent_ids, count)) {
+    // Nonempty requested IDs would otherwise be omitted from the published
+    // persistent_regiments array. A genuine empty dependency union stays known.
+    if (!requested.empty()) r.target_persistent_ids_complete = false;
+    return unavailable("ordered_besieging_persistent_roster_unavailable");
+  }
   r.native_persistent_occurrence_count = count;
   for (std::int32_t index = 0; index < count; ++index) {
     const auto id = Load<std::int32_t>(persistent_ids, static_cast<std::size_t>(index) * 4);

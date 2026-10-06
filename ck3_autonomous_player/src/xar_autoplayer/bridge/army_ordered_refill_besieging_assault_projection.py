@@ -9,6 +9,14 @@ from .army_scoped_ordered_refill_projection import (
 from .army_regiment_refresh_projection import project_observed_raised_regiment_refresh
 from .army_post_refill_besieging_current_projection import _assault_projection
 
+_OBSERVED_INPUT_BASIS = 'same_capture_observed_prepared148_ordered_physical_and_actual_target_ArRg_refresh; held_nonphysical_B_context'
+
+
+def _same_capture_context(row: Mapping, inputs: Mapping, family: Mapping) -> bool:
+    return (inputs['subject_army_id'] == row.get('army_id')
+            and inputs['subject_carmy_id'] == row.get('native_carmy_id')
+            and inputs['province_id'] == family['province_id'])
+
 
 def adapt_ordered_physical_chunks_v1(stage: Mapping, inputs: Mapping) -> list[dict]:
     """Give final values explicit availability; never ADD or silently fall back."""
@@ -23,11 +31,14 @@ def adapt_ordered_physical_chunks_v1(stage: Mapping, inputs: Mapping) -> list[di
     return physical
 
 
-def project_ordered_refill_besieging_assault_v1(row: Mapping[str, object]) -> dict:
+def project_ordered_refill_besieging_assault_from_physical_v1(
+    row: Mapping[str, object], physical_projection: Mapping | None,
+) -> dict:
+    """Refresh actual targets from one supplied physical stage; no core or ADD."""
     result = {'projection_kind': 'conditional_ordered_refill_besieging_assault',
         'source_contract_game_version': '1.20.0.3', 'army_id': row.get('army_id'),
         'native_carmy_id': row.get('native_carmy_id'), 'status': 'unavailable',
-        'input_basis': 'same_capture_observed_prepared148_ordered_physical_and_actual_target_ArRg_refresh; held_nonphysical_B_context',
+        'input_basis': _OBSERVED_INPUT_BASIS,
         'ordered_physical_ready': False, 'target_refresh_ready': False,
         'conditional_besieging_strength_ready': False, 'conditional_besieging_strength': None,
         'conditional_assault_expected_loss_ready': False, 'conditional_assault_expected_loss': None,
@@ -49,16 +60,19 @@ def project_ordered_refill_besieging_assault_v1(row: Mapping[str, object]) -> di
             ('ordered_besieging_refill_inputs_v1', inputs),
             ('current_province_besieging_contributors_v1', family)) if not isinstance(value, dict)]
         return result
-    if (inputs['subject_army_id'] != row.get('army_id')
-            or inputs['subject_carmy_id'] != row.get('native_carmy_id')
-            or inputs['province_id'] != family['province_id']):
+    if not _same_capture_context(row, inputs, family):
         result['missing_inputs'] = ['same_capture_subject_Province_context']
         return result
+    if physical_projection is None:
+        result['missing_inputs'] = ['ordered_physical_projection']
+        return result
     missing = []
-    stage = project_observed_prepared_ordered_physical_core_v1(inputs)
+    stage = physical_projection
     physical = adapt_ordered_physical_chunks_v1(stage, inputs)
     result.update(physical_core=stage, final_physical_chunks=physical,
-                  physical_core_invocations=1, ordered_physical_ready=stage['ordered_core_ready'])
+                  ordered_physical_ready=stage['ordered_core_ready'],
+                  physical_input_basis=stage['input_basis'], context_basis=stage['context_basis'],
+                  input_basis=stage['input_basis'] + '; actual_target_ArRg_refresh; held_nonphysical_B_context')
     missing.extend(stage['missing_inputs'])
     snapshots = {}
     for occurrence in family['occurrences']:
@@ -134,6 +148,20 @@ def project_ordered_refill_besieging_assault_v1(row: Mapping[str, object]) -> di
     missing.extend(assault['missing_inputs'])
     result['missing_inputs'] = list(dict.fromkeys(missing))
     result['status'] = 'available' if b_ready and assault['ready'] else 'partial'
+    return result
+
+
+def project_ordered_refill_besieging_assault_v1(row: Mapping[str, object]) -> dict:
+    """Observed-prepared default: compute the physical stage once, then consume."""
+    inputs = row.get('ordered_besieging_refill_inputs_v1')
+    family = row.get('current_province_besieging_contributors_v1')
+    stage = None
+    if (isinstance(inputs, dict) and isinstance(family, dict)
+            and _same_capture_context(row, inputs, family)):
+        stage = project_observed_prepared_ordered_physical_core_v1(inputs)
+    result = project_ordered_refill_besieging_assault_from_physical_v1(row, stage)
+    result['input_basis'] = _OBSERVED_INPUT_BASIS
+    result['physical_core_invocations'] = 1 if stage is not None else 0
     return result
 
 

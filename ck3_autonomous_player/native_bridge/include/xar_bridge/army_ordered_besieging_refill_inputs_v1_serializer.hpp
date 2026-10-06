@@ -16,6 +16,7 @@ inline void AppendArmyOrderedBesiegingRefillInputsV1(
   plain("subject_army_id", r.subject_army_id); plain("subject_carmy_id", r.subject_carmy_id);
   plain("province_id", r.province_id);
   out += ",\"refresh_membership_ready\":"; out += r.refresh_membership_ready ? "true" : "false";
+  out += ",\"target_persistent_ids_complete\":"; out += r.target_persistent_ids_complete ? "true" : "false";
   out += ",\"native_persistent_occurrence_count\":";
   out += r.native_persistent_occurrence_count ? number(*r.native_persistent_occurrence_count) : "null";
   out += ",\"native_army_refresh_occurrence_count\":";

@@ -22,6 +22,8 @@ struct ArmyOrderedBesiegingRefillInputsV1 {
   std::vector<ArmyOrderedRefillOccurrenceV1> persistent_occurrences;
   std::vector<ArmyOrderedRefillPersistentV1> persistent_regiments;
   std::vector<ArmyTargetRefreshOccurrenceV1> refresh_occurrences;
+  // Complete published target dependency IDs, independent of later full7/context reads.
+  bool target_persistent_ids_complete = false;
   friend bool operator==(const ArmyOrderedBesiegingRefillInputsV1 &, const ArmyOrderedBesiegingRefillInputsV1 &) = default;
 };
 } // namespace xar::game
